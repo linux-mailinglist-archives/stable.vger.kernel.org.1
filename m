@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-202077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0E1CC4448
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:26:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC4FCC2183
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17E5731272A5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:18:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92B5A30552C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8AF35C196;
-	Tue, 16 Dec 2025 12:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F454341AB0;
+	Tue, 16 Dec 2025 11:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCuJiihQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6nSnMln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E763935C191;
-	Tue, 16 Dec 2025 12:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74E4341AAE
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886741; cv=none; b=Hi32T6KgCBg8aJE/fn1WRfMqG3UlefpnpJlKXNnuP+Cns10TT2+JUw5luyBQlM2Xy7N5uzijO4XP4eZHWoEK3YUpG6Ae2fz6zPhJSZeJwPddn9Pri1LkyhluQmQdvdoMLNjwkveIaDkCONHWiv1vlBaYIVreclcPg6lIUY3VLnY=
+	t=1765883216; cv=none; b=BHyGOPjcl+AVhRu2VUK7BLlN4hCYtUU57zhwizkzvYjMKIW/9s3u9Fx386Kb7HYpSHZ97nUjV/rzWIOqdfS11UsX+063y9CAiyoL4akLAs++mcBo99ix8OrIqgvElYqGoFbKLQBEK5DQZXS9eCu9cM/D95Xr9DvWCcHU+HdB1hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886741; c=relaxed/simple;
-	bh=7C6MZHZqFKXCMqOpXdpPhH18QlEp2HRJfhRQVRWk8q8=;
+	s=arc-20240116; t=1765883216; c=relaxed/simple;
+	bh=syhhIjJPtMJifv4oy+P7bqnw49828fdiHnzSyS5jz64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSmiwm9JsvoaQ9UcIYjcmOIUFBwQQegeAsj4DL2EJBvAUIZ/KhMtl6SKdhPAj+fLi0q6fsvA+zPI9lRZyyW9MQRv/Pt4ZcOvsmcgAzRqvyikKEEDdQhLgv/sp+7hHPv9s6jAD6QRmCARZA7oorP0HV7+EB/jBu1uYZ7qcUHgQgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCuJiihQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08698C4CEF1;
-	Tue, 16 Dec 2025 12:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886740;
-	bh=7C6MZHZqFKXCMqOpXdpPhH18QlEp2HRJfhRQVRWk8q8=;
+	 MIME-Version; b=rbwaCSXOlBpBS677hEoejl2VDkwxXiNA9VwHC4h7nZaqvEvai/fsY4CD+M/SBbI+Gd7/BSBV2wJnCTdTxivEAwBhrzdLG/a3jk51dqtLRciihZimmafV2RQWvCznTGTR9mQNQODqGBhS/Zrt0R05qe5R22PiN1DGDv0jC+Y/kqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6nSnMln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291FEC4CEF1;
+	Tue, 16 Dec 2025 11:06:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765883216;
+	bh=syhhIjJPtMJifv4oy+P7bqnw49828fdiHnzSyS5jz64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCuJiihQq48yYC6/12VYeQV/zEh3To0MY1rDzgfBb2Dt6bvXAPmr+WinkyTAtr6fT
-	 1DK8KoO8xv9RaYAIj2pWLJaHCRHPuFyifGolq3gpigWOYTWf6vZ1INguz/6yYojK/E
-	 eeYUkss6t79kAtfzCzzdAQ6HKataNe6hxsaeUmsc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=I6nSnMln7rtWrjr8HVQFAQquUK9QIYTloNibBzEOa1sN244AEam0QsJAcNja9tORz
+	 /osKbsSvf3vw/7RnsZRymyqQZWgMO2A699OLw+rz31nAD3WiaS420unVlDMsvlumHd
+	 kdYAV0i4aPztZ8RldALXWO/6NgxpU83Z38U+v7DIFfAwdwrN6Etr4iKLtoyAC0H4BQ
+	 /xXf3do5gFIq1c1POPQRVTJgsEt/T2WxjvfLMSOXGQEjmF7q+8WxO3jN5tlsJ9srH+
+	 ATAqsKMHEiWlJmE3f0E6M7Ri3ozb0IQDaNImEvL9UdRnLw5lvL1D997J2xlC+uqZYJ
+	 AzGCxdnY5SgEA==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jaroslav Kysela <perex@perex.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/614] bpf: Fix sleepable context for async callbacks
-Date: Tue, 16 Dec 2025 12:06:26 +0100
-Message-ID: <20251216111402.000186331@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Subject: [PATCH 5.15.y 1/2] ALSA: wavefront: Use standard print API
+Date: Tue, 16 Dec 2025 06:06:26 -0500
+Message-ID: <20251216110628.2753962-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025121618-refuse-macaw-9005@gregkh>
+References: <2025121618-refuse-macaw-9005@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,204 +58,1008 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: Takashi Iwai <tiwai@suse.de>
 
-------------------
+[ Upstream commit 8b4ac5429938dd5f1fbf2eea0687f08cbcccb6be ]
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Use the standard print API with dev_*() instead of the old house-baked
+one.  It gives better information and allows dynamically control of
+debug prints.
 
-[ Upstream commit 469d638d1520a9332cd0d034690e75e845610a51 ]
-
-Fix the BPF verifier to correctly determine the sleepable context of
-async callbacks based on the async primitive type rather than the arming
-program's context.
-
-The bug is in in_sleepable() which uses OR logic to check if the current
-execution context is sleepable. When a sleepable program arms a timer
-callback, the callback's state correctly has in_sleepable=false, but
-in_sleepable() would still return true due to env->prog->sleepable being
-true. This incorrectly allows sleepable helpers like
-bpf_copy_from_user() inside timer callbacks when armed from sleepable
-programs, even though timer callbacks always execute in non-sleepable
-context.
-
-Fix in_sleepable() to rely solely on env->cur_state->in_sleepable, and
-initialize state->in_sleepable to env->prog->sleepable in
-do_check_common() for the main program entry. This ensures the sleepable
-context is properly tracked per verification state rather than being
-overridden by the program's sleepability.
-
-The env->cur_state NULL check in in_sleepable() was only needed for
-do_misc_fixups() which runs after verification when env->cur_state is
-set to NULL. Update do_misc_fixups() to use env->prog->sleepable
-directly for the storage_get_function check, and remove the redundant
-NULL check from in_sleepable().
-
-Introduce is_async_cb_sleepable() helper to explicitly determine async
-callback sleepability based on the primitive type:
-  - bpf_timer callbacks are never sleepable
-  - bpf_wq and bpf_task_work callbacks are always sleepable
-
-Add verifier_bug() check to catch unhandled async callback types,
-ensuring future additions cannot be silently mishandled. Move the
-is_task_work_add_kfunc() forward declaration to the top alongside other
-callback-related helpers. We update push_async_cb() to adjust to the new
-changes.
-
-At the same time, while simplifying in_sleepable(), we notice a problem
-in do_misc_fixups. Fix storage_get helpers to use GFP_ATOMIC when called
-from non-sleepable contexts within sleepable programs, such as bpf_timer
-callbacks.
-
-Currently, the check in do_misc_fixups assumes that env->prog->sleepable,
-previously in_sleepable(env) which only resolved to this check before
-last commit, holds across the program's execution, but that is not true.
-Instead, the func_atomic bit must be set whenever we see the function
-being called in an atomic context. Previously, this is being done when
-the helper is invoked in atomic contexts in sleepable programs, we can
-simply just set the value to true without doing an in_sleepable() check.
-
-We must also do a standalone in_sleepable() check to handle cases where
-the async callback itself is armed from a sleepable program, but is
-itself non-sleepable (e.g., timer callback) and invokes such a helper,
-thus needing the func_atomic bit to be true for the said call.
-
-Adjust do_misc_fixups() to drop any checks regarding sleepable nature of
-the program, and just depend on the func_atomic bit to decide which GFP
-flag to pass.
-
-Fixes: 81f1d7a583fa ("bpf: wq: add bpf_wq_set_callback_impl")
-Fixes: b00fa38a9c1c ("bpf: Enable non-atomic allocations in local storage")
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20251007220349.3852807-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240807133452.9424-36-tiwai@suse.de
+Stable-dep-of: 0c4a13ba8859 ("ALSA: wavefront: Fix integer overflow in sample size validation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+ include/sound/snd_wavefront.h         |   4 -
+ sound/isa/wavefront/wavefront.c       |  61 ++++----
+ sound/isa/wavefront/wavefront_fx.c    |  36 ++---
+ sound/isa/wavefront/wavefront_midi.c  |  15 +-
+ sound/isa/wavefront/wavefront_synth.c | 196 +++++++++++++-------------
+ 5 files changed, 158 insertions(+), 154 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index fbe4bb91c564a..460107b0449fe 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -515,6 +515,7 @@ static bool is_callback_calling_kfunc(u32 btf_id);
- static bool is_bpf_throw_kfunc(struct bpf_insn *insn);
+diff --git a/include/sound/snd_wavefront.h b/include/sound/snd_wavefront.h
+index 55053557c898e..27f7e8a477c24 100644
+--- a/include/sound/snd_wavefront.h
++++ b/include/sound/snd_wavefront.h
+@@ -137,8 +137,4 @@ extern int  snd_wavefront_fx_ioctl  (struct snd_hwdep *,
+ extern int snd_wavefront_fx_open    (struct snd_hwdep *, struct file *);
+ extern int snd_wavefront_fx_release (struct snd_hwdep *, struct file *);
  
- static bool is_bpf_wq_set_callback_impl_kfunc(u32 btf_id);
-+static bool is_task_work_add_kfunc(u32 func_id);
- 
- static bool is_sync_callback_calling_function(enum bpf_func_id func_id)
- {
-@@ -547,6 +548,21 @@ static bool is_async_callback_calling_insn(struct bpf_insn *insn)
- 	       (bpf_pseudo_kfunc_call(insn) && is_async_callback_calling_kfunc(insn->imm));
- }
- 
-+static bool is_async_cb_sleepable(struct bpf_verifier_env *env, struct bpf_insn *insn)
-+{
-+	/* bpf_timer callbacks are never sleepable. */
-+	if (bpf_helper_call(insn) && insn->imm == BPF_FUNC_timer_set_callback)
-+		return false;
-+
-+	/* bpf_wq and bpf_task_work callbacks are always sleepable. */
-+	if (bpf_pseudo_kfunc_call(insn) && insn->off == 0 &&
-+	    (is_bpf_wq_set_callback_impl_kfunc(insn->imm) || is_task_work_add_kfunc(insn->imm)))
-+		return true;
-+
-+	verifier_bug(env, "unhandled async callback in is_async_cb_sleepable");
-+	return false;
-+}
-+
- static bool is_may_goto_insn(struct bpf_insn *insn)
- {
- 	return insn->code == (BPF_JMP | BPF_JCOND) && insn->src_reg == BPF_MAY_GOTO;
-@@ -5826,8 +5842,7 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
- 
- static bool in_sleepable(struct bpf_verifier_env *env)
- {
--	return env->prog->sleepable ||
--	       (env->cur_state && env->cur_state->in_sleepable);
-+	return env->cur_state->in_sleepable;
- }
- 
- /* The non-sleepable programs and sleepable programs with explicit bpf_rcu_read_lock()
-@@ -10368,8 +10383,6 @@ typedef int (*set_callee_state_fn)(struct bpf_verifier_env *env,
- 				   struct bpf_func_state *callee,
- 				   int insn_idx);
- 
--static bool is_task_work_add_kfunc(u32 func_id);
+-/* prefix in all snd_printk() delivered messages */
 -
- static int set_callee_state(struct bpf_verifier_env *env,
- 			    struct bpf_func_state *caller,
- 			    struct bpf_func_state *callee, int insn_idx);
-@@ -10588,8 +10601,7 @@ static int push_callback_call(struct bpf_verifier_env *env, struct bpf_insn *ins
- 		env->subprog_info[subprog].is_async_cb = true;
- 		async_cb = push_async_cb(env, env->subprog_info[subprog].start,
- 					 insn_idx, subprog,
--					 is_bpf_wq_set_callback_impl_kfunc(insn->imm) ||
--					 is_task_work_add_kfunc(insn->imm));
-+					 is_async_cb_sleepable(env, insn));
- 		if (!async_cb)
- 			return -EFAULT;
- 		callee = async_cb->frame[0];
-@@ -11428,7 +11440,7 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
- 			return -EINVAL;
- 		}
+-#define LOGNAME "WaveFront: "
+-
+ #endif  /* __SOUND_SND_WAVEFRONT_H__ */
+diff --git a/sound/isa/wavefront/wavefront.c b/sound/isa/wavefront/wavefront.c
+index e6e46a0266b07..621ab420a60f9 100644
+--- a/sound/isa/wavefront/wavefront.c
++++ b/sound/isa/wavefront/wavefront.c
+@@ -140,7 +140,7 @@ snd_wavefront_pnp (int dev, snd_wavefront_card_t *acard, struct pnp_card_link *c
  
--		if (in_sleepable(env) && is_storage_get_function(func_id))
-+		if (is_storage_get_function(func_id))
- 			env->insn_aux_data[insn_idx].storage_get_func_atomic = true;
+ 	err = pnp_activate_dev(pdev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "PnP WSS pnp configure failure\n");
++		dev_err(&pdev->dev, "PnP WSS pnp configure failure\n");
+ 		return err;
  	}
  
-@@ -11439,7 +11451,7 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
- 			return -EINVAL;
- 		}
- 
--		if (in_sleepable(env) && is_storage_get_function(func_id))
-+		if (is_storage_get_function(func_id))
- 			env->insn_aux_data[insn_idx].storage_get_func_atomic = true;
+@@ -156,7 +156,7 @@ snd_wavefront_pnp (int dev, snd_wavefront_card_t *acard, struct pnp_card_link *c
+ 	
+ 	err = pnp_activate_dev(pdev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "PnP ICS2115 pnp configure failure\n");
++		dev_err(&pdev->dev, "PnP ICS2115 pnp configure failure\n");
+ 		return err;
  	}
  
-@@ -11450,10 +11462,17 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
- 			return -EINVAL;
+@@ -174,26 +174,27 @@ snd_wavefront_pnp (int dev, snd_wavefront_card_t *acard, struct pnp_card_link *c
+ 
+ 		err = pnp_activate_dev(pdev);
+ 		if (err < 0) {
+-			snd_printk(KERN_ERR "PnP MPU401 pnp configure failure\n");
++			dev_err(&pdev->dev, "PnP MPU401 pnp configure failure\n");
+ 			cs4232_mpu_port[dev] = SNDRV_AUTO_PORT;
+ 		} else {
+ 			cs4232_mpu_port[dev] = pnp_port_start(pdev, 0);
+ 			cs4232_mpu_irq[dev] = pnp_irq(pdev, 0);
  		}
  
--		if (in_sleepable(env) && is_storage_get_function(func_id))
-+		if (is_storage_get_function(func_id))
- 			env->insn_aux_data[insn_idx].storage_get_func_atomic = true;
+-		snd_printk (KERN_INFO "CS4232 MPU: port=0x%lx, irq=%i\n", 
+-			    cs4232_mpu_port[dev], 
+-			    cs4232_mpu_irq[dev]);
++		dev_info(&pdev->dev, "CS4232 MPU: port=0x%lx, irq=%i\n",
++			 cs4232_mpu_port[dev],
++			 cs4232_mpu_irq[dev]);
  	}
  
-+	/*
-+	 * Non-sleepable contexts in sleepable programs (e.g., timer callbacks)
-+	 * are atomic and must use GFP_ATOMIC for storage_get helpers.
-+	 */
-+	if (!in_sleepable(env) && is_storage_get_function(func_id))
-+		env->insn_aux_data[insn_idx].storage_get_func_atomic = true;
-+
- 	meta.func_id = func_id;
- 	/* check args */
- 	for (i = 0; i < MAX_BPF_FUNC_REG_ARGS; i++) {
-@@ -22485,8 +22504,7 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+-	snd_printdd ("CS4232: pcm port=0x%lx, fm port=0x%lx, dma1=%i, dma2=%i, irq=%i\nICS2115: port=0x%lx, irq=%i\n", 
+-		    cs4232_pcm_port[dev], 
+-		    fm_port[dev],
+-		    dma1[dev], 
+-		    dma2[dev], 
+-		    cs4232_pcm_irq[dev],
+-		    ics2115_port[dev], 
+-		    ics2115_irq[dev]);
++	dev_dbg(&pdev->dev,
++		"CS4232: pcm port=0x%lx, fm port=0x%lx, dma1=%i, dma2=%i, irq=%i\nICS2115: port=0x%lx, irq=%i\n",
++		cs4232_pcm_port[dev],
++		fm_port[dev],
++		dma1[dev],
++		dma2[dev],
++		cs4232_pcm_irq[dev],
++		ics2115_port[dev],
++		ics2115_irq[dev]);
+ 	
+ 	return 0;
+ }
+@@ -251,7 +252,7 @@ static struct snd_hwdep *snd_wavefront_new_fx(struct snd_card *card,
+ 	struct snd_hwdep *fx_processor;
+ 
+ 	if (snd_wavefront_fx_start (&acard->wavefront)) {
+-		snd_printk (KERN_ERR "cannot initialize YSS225 FX processor");
++		dev_err(card->dev, "cannot initialize YSS225 FX processor");
+ 		return NULL;
+ 	}
+ 
+@@ -282,7 +283,7 @@ static struct snd_rawmidi *snd_wavefront_new_midi(struct snd_card *card,
+ 		first = 0;
+ 		acard->wavefront.midi.base = port;
+ 		if (snd_wavefront_midi_start (acard)) {
+-			snd_printk (KERN_ERR "cannot initialize MIDI interface\n");
++			dev_err(card->dev, "cannot initialize MIDI interface\n");
+ 			return NULL;
+ 		}
+ 	}
+@@ -349,7 +350,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 			     cs4232_pcm_irq[dev], dma1[dev], dma2[dev],
+ 			     WSS_HW_DETECT, 0, &chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "can't allocate WSS device\n");
++		dev_err(card->dev, "can't allocate WSS device\n");
+ 		return err;
+ 	}
+ 
+@@ -369,7 +370,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 		err = snd_opl3_create(card, fm_port[dev], fm_port[dev] + 2,
+ 				      OPL3_HW_OPL3_CS, 0, &opl3);
+ 		if (err < 0) {
+-			snd_printk (KERN_ERR "can't allocate or detect OPL3 synth\n");
++			dev_err(card->dev, "can't allocate or detect OPL3 synth\n");
+ 			return err;
  		}
  
- 		if (is_storage_get_function(insn->imm)) {
--			if (!in_sleepable(env) ||
--			    env->insn_aux_data[i + delta].storage_get_func_atomic)
-+			if (env->insn_aux_data[i + delta].storage_get_func_atomic)
- 				insn_buf[0] = BPF_MOV64_IMM(BPF_REG_5, (__force __s32)GFP_ATOMIC);
- 			else
- 				insn_buf[0] = BPF_MOV64_IMM(BPF_REG_5, (__force __s32)GFP_KERNEL);
-@@ -23156,6 +23174,7 @@ static int do_check_common(struct bpf_verifier_env *env, int subprog)
- 	state->curframe = 0;
- 	state->speculative = false;
- 	state->branches = 1;
-+	state->in_sleepable = env->prog->sleepable;
- 	state->frame[0] = kzalloc(sizeof(struct bpf_func_state), GFP_KERNEL_ACCOUNT);
- 	if (!state->frame[0]) {
- 		kfree(state);
+@@ -385,14 +386,14 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 		devm_request_region(card->dev, ics2115_port[dev], 16,
+ 				    "ICS2115");
+ 	if (acard->wavefront.res_base == NULL) {
+-		snd_printk(KERN_ERR "unable to grab ICS2115 i/o region 0x%lx-0x%lx\n",
+-			   ics2115_port[dev], ics2115_port[dev] + 16 - 1);
++		dev_err(card->dev, "unable to grab ICS2115 i/o region 0x%lx-0x%lx\n",
++			ics2115_port[dev], ics2115_port[dev] + 16 - 1);
+ 		return -EBUSY;
+ 	}
+ 	if (devm_request_irq(card->dev, ics2115_irq[dev],
+ 			     snd_wavefront_ics2115_interrupt,
+ 			     0, "ICS2115", acard)) {
+-		snd_printk(KERN_ERR "unable to use ICS2115 IRQ %d\n", ics2115_irq[dev]);
++		dev_err(card->dev, "unable to use ICS2115 IRQ %d\n", ics2115_irq[dev]);
+ 		return -EBUSY;
+ 	}
+ 	
+@@ -402,7 +403,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 
+ 	wavefront_synth = snd_wavefront_new_synth(card, hw_dev, acard);
+ 	if (wavefront_synth == NULL) {
+-		snd_printk (KERN_ERR "can't create WaveFront synth device\n");
++		dev_err(card->dev, "can't create WaveFront synth device\n");
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -414,7 +415,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 
+ 	err = snd_wss_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk (KERN_ERR "can't allocate mixer device\n");
++		dev_err(card->dev, "can't allocate mixer device\n");
+ 		return err;
+ 	}
+ 
+@@ -425,7 +426,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 					  cs4232_mpu_port[dev], 0,
+ 					  cs4232_mpu_irq[dev], NULL);
+ 		if (err < 0) {
+-			snd_printk (KERN_ERR "can't allocate CS4232 MPU-401 device\n");
++			dev_err(card->dev, "can't allocate CS4232 MPU-401 device\n");
+ 			return err;
+ 		}
+ 		midi_dev++;
+@@ -441,7 +442,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 						ics2115_port[dev],
+ 						internal_mpu);
+ 		if (ics2115_internal_rmidi == NULL) {
+-			snd_printk (KERN_ERR "can't setup ICS2115 internal MIDI device\n");
++			dev_err(card->dev, "can't setup ICS2115 internal MIDI device\n");
+ 			return -ENOMEM;
+ 		}
+ 		midi_dev++;
+@@ -457,7 +458,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 						ics2115_port[dev],
+ 						external_mpu);
+ 		if (ics2115_external_rmidi == NULL) {
+-			snd_printk (KERN_ERR "can't setup ICS2115 external MIDI device\n");
++			dev_err(card->dev, "can't setup ICS2115 external MIDI device\n");
+ 			return -ENOMEM;
+ 		}
+ 		midi_dev++;
+@@ -471,7 +472,7 @@ snd_wavefront_probe (struct snd_card *card, int dev)
+ 						     acard,
+ 						     ics2115_port[dev]);
+ 		if (fx_processor == NULL) {
+-			snd_printk (KERN_ERR "can't setup FX device\n");
++			dev_err(card->dev, "can't setup FX device\n");
+ 			return -ENOMEM;
+ 		}
+ 
+@@ -525,11 +526,11 @@ static int snd_wavefront_isa_match(struct device *pdev,
+ 		return 0;
+ #endif
+ 	if (cs4232_pcm_port[dev] == SNDRV_AUTO_PORT) {
+-		snd_printk(KERN_ERR "specify CS4232 port\n");
++		dev_err(pdev, "specify CS4232 port\n");
+ 		return 0;
+ 	}
+ 	if (ics2115_port[dev] == SNDRV_AUTO_PORT) {
+-		snd_printk(KERN_ERR "specify ICS2115 port\n");
++		dev_err(pdev, "specify ICS2115 port\n");
+ 		return 0;
+ 	}
+ 	return 1;
+@@ -585,7 +586,7 @@ static int snd_wavefront_pnp_detect(struct pnp_card_link *pcard,
+ 
+ 	if (snd_wavefront_pnp (dev, card->private_data, pcard, pid) < 0) {
+ 		if (cs4232_pcm_port[dev] == SNDRV_AUTO_PORT) {
+-			snd_printk (KERN_ERR "isapnp detection failed\n");
++			dev_err(card->dev, "isapnp detection failed\n");
+ 			return -ENODEV;
+ 		}
+ 	}
+diff --git a/sound/isa/wavefront/wavefront_fx.c b/sound/isa/wavefront/wavefront_fx.c
+index 3c21324b2a0e3..77e56fc92c5e2 100644
+--- a/sound/isa/wavefront/wavefront_fx.c
++++ b/sound/isa/wavefront/wavefront_fx.c
+@@ -38,7 +38,7 @@ wavefront_fx_idle (snd_wavefront_t *dev)
+ 	}
+ 
+ 	if (x & 0x80) {
+-		snd_printk ("FX device never idle.\n");
++		dev_err(dev->card->dev, "FX device never idle.\n");
+ 		return 0;
+ 	}
+ 
+@@ -64,14 +64,14 @@ wavefront_fx_memset (snd_wavefront_t *dev,
+ 		     unsigned short *data)
+ {
+ 	if (page < 0 || page > 7) {
+-		snd_printk ("FX memset: "
+-			"page must be >= 0 and <= 7\n");
++		dev_err(dev->card->dev,
++			"FX memset: page must be >= 0 and <= 7\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (addr < 0 || addr > 0x7f) {
+-		snd_printk ("FX memset: "
+-			"addr must be >= 0 and <= 7f\n");
++		dev_err(dev->card->dev,
++			"FX memset: addr must be >= 0 and <= 7f\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -83,7 +83,7 @@ wavefront_fx_memset (snd_wavefront_t *dev,
+ 		outb ((data[0] >> 8), dev->fx_dsp_msb);
+ 		outb ((data[0] & 0xff), dev->fx_dsp_lsb);
+ 
+-		snd_printk ("FX: addr %d:%x set to 0x%x\n",
++		dev_err(dev->card->dev, "FX: addr %d:%x set to 0x%x\n",
+ 			page, addr, data[0]);
+ 
+ 	} else {
+@@ -102,9 +102,9 @@ wavefront_fx_memset (snd_wavefront_t *dev,
+ 		}
+ 
+ 		if (i != cnt) {
+-			snd_printk ("FX memset "
+-				    "(0x%x, 0x%x, 0x%lx, %d) incomplete\n",
+-				    page, addr, (unsigned long) data, cnt);
++			dev_err(dev->card->dev,
++				"FX memset (0x%x, 0x%x, 0x%lx, %d) incomplete\n",
++				page, addr, (unsigned long) data, cnt);
+ 			return -EIO;
+ 		}
+ 	}
+@@ -123,7 +123,7 @@ snd_wavefront_fx_detect (snd_wavefront_t *dev)
+ 	*/
+ 
+ 	if (inb (dev->fx_status) & 0x80) {
+-		snd_printk ("Hmm, probably a Maui or Tropez.\n");
++		dev_err(dev->card->dev, "Hmm, probably a Maui or Tropez.\n");
+ 		return -1;
+ 	}
+ 
+@@ -180,15 +180,15 @@ snd_wavefront_fx_ioctl (struct snd_hwdep *sdev, struct file *file,
+ 
+ 	case WFFX_MEMSET:
+ 		if (r.data[2] <= 0) {
+-			snd_printk ("cannot write "
+-				"<= 0 bytes to FX\n");
++			dev_err(dev->card->dev,
++				"cannot write <= 0 bytes to FX\n");
+ 			return -EIO;
+ 		} else if (r.data[2] == 1) {
+ 			pd = (unsigned short *) &r.data[3];
+ 		} else {
+ 			if (r.data[2] > 256) {
+-				snd_printk ("cannot write "
+-					    "> 512 bytes to FX\n");
++				dev_err(dev->card->dev,
++					"cannot write > 512 bytes to FX\n");
+ 				return -EIO;
+ 			}
+ 			page_data = memdup_user((unsigned char __user *)
+@@ -208,8 +208,8 @@ snd_wavefront_fx_ioctl (struct snd_hwdep *sdev, struct file *file,
+ 		break;
+ 
+ 	default:
+-		snd_printk ("FX: ioctl %d not yet supported\n",
+-			    r.request);
++		dev_err(dev->card->dev, "FX: ioctl %d not yet supported\n",
++			r.request);
+ 		return -ENOTTY;
+ 	}
+ 	return err;
+@@ -254,8 +254,8 @@ snd_wavefront_fx_start (snd_wavefront_t *dev)
+ 				goto out;
+ 			}
+ 		} else {
+-			snd_printk(KERN_ERR "invalid address"
+-				   " in register data\n");
++			dev_err(dev->card->dev,
++				"invalid address in register data\n");
+ 			err = -1;
+ 			goto out;
+ 		}
+diff --git a/sound/isa/wavefront/wavefront_midi.c b/sound/isa/wavefront/wavefront_midi.c
+index 72e775ac7ad7f..ead8cbe638ded 100644
+--- a/sound/isa/wavefront/wavefront_midi.c
++++ b/sound/isa/wavefront/wavefront_midi.c
+@@ -501,7 +501,8 @@ snd_wavefront_midi_start (snd_wavefront_card_t *card)
+ 	for (i = 0; i < 30000 && !output_ready (midi); i++);
+ 
+ 	if (!output_ready (midi)) {
+-		snd_printk ("MIDI interface not ready for command\n");
++		dev_err(card->wavefront.card->dev,
++			"MIDI interface not ready for command\n");
+ 		return -1;
+ 	}
+ 
+@@ -523,7 +524,8 @@ snd_wavefront_midi_start (snd_wavefront_card_t *card)
+ 	}
+ 
+ 	if (!ok) {
+-		snd_printk ("cannot set UART mode for MIDI interface");
++		dev_err(card->wavefront.card->dev,
++			"cannot set UART mode for MIDI interface");
+ 		dev->interrupts_are_midi = 0;
+ 		return -1;
+ 	}
+@@ -531,7 +533,8 @@ snd_wavefront_midi_start (snd_wavefront_card_t *card)
+ 	/* Route external MIDI to WaveFront synth (by default) */
+     
+ 	if (snd_wavefront_cmd (dev, WFC_MISYNTH_ON, rbuf, wbuf)) {
+-		snd_printk ("can't enable MIDI-IN-2-synth routing.\n");
++		dev_warn(card->wavefront.card->dev,
++			 "can't enable MIDI-IN-2-synth routing.\n");
+ 		/* XXX error ? */
+ 	}
+ 
+@@ -547,14 +550,16 @@ snd_wavefront_midi_start (snd_wavefront_card_t *card)
+ 	*/
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_VMIDI_OFF, rbuf, wbuf)) { 
+-		snd_printk ("virtual MIDI mode not disabled\n");
++		dev_warn(card->wavefront.card->dev,
++			 "virtual MIDI mode not disabled\n");
+ 		return 0; /* We're OK, but missing the external MIDI dev */
+ 	}
+ 
+ 	snd_wavefront_midi_enable_virtual (card);
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_VMIDI_ON, rbuf, wbuf)) {
+-		snd_printk ("cannot enable virtual MIDI mode.\n");
++		dev_warn(card->wavefront.card->dev,
++			 "cannot enable virtual MIDI mode.\n");
+ 		snd_wavefront_midi_disable_virtual (card);
+ 	} 
+ 	return 0;
+diff --git a/sound/isa/wavefront/wavefront_synth.c b/sound/isa/wavefront/wavefront_synth.c
+index 2aaaa68071744..ab4017918ba8d 100644
+--- a/sound/isa/wavefront/wavefront_synth.c
++++ b/sound/isa/wavefront/wavefront_synth.c
+@@ -116,7 +116,7 @@ MODULE_PARM_DESC(osrun_time, "how many seconds to wait for the ICS2115 OS");
+ 
+ #define DPRINT(cond, ...) \
+        if ((dev->debug & (cond)) == (cond)) { \
+-	     snd_printk (__VA_ARGS__); \
++	     pr_debug(__VA_ARGS__); \
+        }
+ #else
+ #define DPRINT(cond, args...)
+@@ -341,7 +341,7 @@ snd_wavefront_cmd (snd_wavefront_t *dev,
+ 
+ 	wfcmd = wavefront_get_command(cmd);
+ 	if (!wfcmd) {
+-		snd_printk ("command 0x%x not supported.\n",
++		dev_err(dev->card->dev, "command 0x%x not supported.\n",
+ 			cmd);
+ 		return 1;
+ 	}
+@@ -625,7 +625,7 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
+ 	/* check sample status */
+     
+ 	if (snd_wavefront_cmd (dev, WFC_GET_NSAMPLES, rbuf, wbuf)) {
+-		snd_printk ("cannot request sample count.\n");
++		dev_err(dev->card->dev, "cannot request sample count.\n");
+ 		return -1;
+ 	} 
+     
+@@ -637,8 +637,8 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
+ 		wbuf[1] = i >> 7;
+ 
+ 		if (snd_wavefront_cmd (dev, WFC_IDENTIFY_SAMPLE_TYPE, rbuf, wbuf)) {
+-			snd_printk(KERN_WARNING "cannot identify sample "
+-				   "type of slot %d\n", i);
++			dev_warn(dev->card->dev,
++				 "cannot identify sample type of slot %d\n", i);
+ 			dev->sample_status[i] = WF_ST_EMPTY;
+ 			continue;
+ 		}
+@@ -663,9 +663,9 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
+ 			break;
+ 
+ 		default:
+-			snd_printk ("unknown sample type for "
+-				    "slot %d (0x%x)\n", 
+-				    i, rbuf[0]);
++			dev_err(dev->card->dev,
++				"unknown sample type for slot %d (0x%x)\n",
++				i, rbuf[0]);
+ 		}
+ 
+ 		if (rbuf[0] != WF_ST_EMPTY) {
+@@ -673,9 +673,10 @@ wavefront_get_sample_status (snd_wavefront_t *dev, int assume_rom)
+ 		} 
+ 	}
+ 
+-	snd_printk ("%d samples used (%d real, %d aliases, %d multi), "
+-		    "%d empty\n", dev->samples_used, sc_real, sc_alias, sc_multi,
+-		    WF_MAX_SAMPLE - dev->samples_used);
++	dev_info(dev->card->dev,
++		 "%d samples used (%d real, %d aliases, %d multi), %d empty\n",
++		 dev->samples_used, sc_real, sc_alias, sc_multi,
++		 WF_MAX_SAMPLE - dev->samples_used);
+ 
+ 
+ 	return (0);
+@@ -708,8 +709,8 @@ wavefront_get_patch_status (snd_wavefront_t *dev)
+ 		} else if (x == 3) { /* Bad patch number */
+ 			dev->patch_status[i] = 0;
+ 		} else {
+-			snd_printk ("upload patch "
+-				    "error 0x%x\n", x);
++			dev_err(dev->card->dev,
++				"upload patch error 0x%x\n", x);
+ 			dev->patch_status[i] = 0;
+ 			return 1;
+ 		}
+@@ -726,7 +727,8 @@ wavefront_get_patch_status (snd_wavefront_t *dev)
+ 		}
+ 	
+ 	}
+-	snd_printk ("%d patch slots filled, %d in use\n", cnt, cnt2);
++	dev_info(dev->card->dev, "%d patch slots filled, %d in use\n",
++		 cnt, cnt2);
+ 
+ 	return (0);
+ }
+@@ -762,8 +764,8 @@ wavefront_get_program_status (snd_wavefront_t *dev)
+ 		} else if (x == 1) { /* Bad program number */
+ 			dev->prog_status[i] = 0;
+ 		} else {
+-			snd_printk ("upload program "
+-				    "error 0x%x\n", x);
++			dev_err(dev->card->dev,
++				"upload program error 0x%x\n", x);
+ 			dev->prog_status[i] = 0;
+ 		}
+ 	}
+@@ -774,7 +776,7 @@ wavefront_get_program_status (snd_wavefront_t *dev)
+ 		}
+ 	}
+ 
+-	snd_printk ("%d programs slots in use\n", cnt);
++	dev_info(dev->card->dev, "%d programs slots in use\n", cnt);
+ 
+ 	return (0);
+ }
+@@ -798,7 +800,7 @@ wavefront_send_patch (snd_wavefront_t *dev, wavefront_patch_info *header)
+ 	munge_buf ((unsigned char *)&header->hdr.p, bptr, WF_PATCH_BYTES);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PATCH, NULL, buf)) {
+-		snd_printk ("download patch failed\n");
++		dev_err(dev->card->dev, "download patch failed\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -839,7 +841,7 @@ wavefront_send_program (snd_wavefront_t *dev, wavefront_patch_info *header)
+ 	munge_buf ((unsigned char *)&header->hdr.pr, &buf[1], WF_PROGRAM_BYTES);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PROGRAM, NULL, buf)) {
+-		snd_printk ("download patch failed\n");	
++		dev_err(dev->card->dev, "download patch failed\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -853,7 +855,7 @@ wavefront_freemem (snd_wavefront_t *dev)
+ 	char rbuf[8];
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_REPORT_FREE_MEMORY, rbuf, NULL)) {
+-		snd_printk ("can't get memory stats.\n");
++		dev_err(dev->card->dev, "can't get memory stats.\n");
+ 		return -1;
+ 	} else {
+ 		return demunge_int32 (rbuf, 4);
+@@ -903,7 +905,7 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 		x = wavefront_find_free_sample(dev);
+ 		if (x < 0)
+ 			return -ENOMEM;
+-		snd_printk ("unspecified sample => %d\n", x);
++		dev_info(dev->card->dev, "unspecified sample => %d\n", x);
+ 		header->number = x;
+ 	}
+ 
+@@ -937,9 +939,9 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 
+ 		if (dev->rom_samples_rdonly) {
+ 			if (dev->sample_status[header->number] & WF_SLOT_ROM) {
+-				snd_printk ("sample slot %d "
+-					    "write protected\n",
+-					    header->number);
++				dev_err(dev->card->dev,
++					"sample slot %d write protected\n",
++					header->number);
+ 				return -EACCES;
+ 			}
+ 		}
+@@ -951,9 +953,9 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 		dev->freemem = wavefront_freemem (dev);
+ 
+ 		if (dev->freemem < (int)header->size) {
+-			snd_printk ("insufficient memory to "
+-				    "load %d byte sample.\n",
+-				    header->size);
++			dev_err(dev->card->dev,
++				"insufficient memory to load %d byte sample.\n",
++				header->size);
+ 			return -ENOMEM;
+ 		}
+ 	
+@@ -962,8 +964,8 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 	skip = WF_GET_CHANNEL(&header->hdr.s);
+ 
+ 	if (skip > 0 && header->hdr.s.SampleResolution != LINEAR_16BIT) {
+-		snd_printk ("channel selection only "
+-			    "possible on 16-bit samples");
++		dev_err(dev->card->dev,
++			"channel selection only possible on 16-bit samples");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1059,8 +1061,8 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 			   header->size ?
+ 			   WFC_DOWNLOAD_SAMPLE : WFC_DOWNLOAD_SAMPLE_HEADER,
+ 			   NULL, sample_hdr)) {
+-		snd_printk ("sample %sdownload refused.\n",
+-			    header->size ? "" : "header ");
++		dev_err(dev->card->dev, "sample %sdownload refused.\n",
++			header->size ? "" : "header ");
+ 		return -EIO;
+ 	}
+ 
+@@ -1085,8 +1087,8 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 		}
+ 
+ 		if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_BLOCK, NULL, NULL)) {
+-			snd_printk ("download block "
+-				    "request refused.\n");
++			dev_err(dev->card->dev,
++				"download block request refused.\n");
+ 			return -EIO;
+ 		}
+ 
+@@ -1147,13 +1149,13 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 		dma_ack = wavefront_read(dev);
+ 		if (dma_ack != WF_DMA_ACK) {
+ 			if (dma_ack == -1) {
+-				snd_printk ("upload sample "
+-					    "DMA ack timeout\n");
++				dev_err(dev->card->dev,
++					"upload sample DMA ack timeout\n");
+ 				return -EIO;
+ 			} else {
+-				snd_printk ("upload sample "
+-					    "DMA ack error 0x%x\n",
+-					    dma_ack);
++				dev_err(dev->card->dev,
++					"upload sample DMA ack error 0x%x\n",
++					dma_ack);
+ 				return -EIO;
+ 			}
+ 		}
+@@ -1197,7 +1199,7 @@ wavefront_send_alias (snd_wavefront_t *dev, wavefront_patch_info *header)
+ 	munge_int32 (*(&header->hdr.a.FrequencyBias+1), &alias_hdr[23], 2);
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_SAMPLE_ALIAS, NULL, alias_hdr)) {
+-		snd_printk ("download alias failed.\n");
++		dev_err(dev->card->dev, "download alias failed.\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -1250,7 +1252,7 @@ wavefront_send_multisample (snd_wavefront_t *dev, wavefront_patch_info *header)
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_MULTISAMPLE, 
+ 			   (unsigned char *) (long) ((num_samples*2)+3),
+ 			   msample_hdr)) {
+-		snd_printk ("download of multisample failed.\n");
++		dev_err(dev->card->dev, "download of multisample failed.\n");
+ 		kfree(msample_hdr);
+ 		return -EIO;
+ 	}
+@@ -1273,7 +1275,7 @@ wavefront_fetch_multisample (snd_wavefront_t *dev,
+ 	munge_int32 (header->number, number, 2);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_UPLOAD_MULTISAMPLE, log_ns, number)) {
+-		snd_printk ("upload multisample failed.\n");
++		dev_err(dev->card->dev, "upload multisample failed.\n");
+ 		return -EIO;
+ 	}
+     
+@@ -1292,16 +1294,16 @@ wavefront_fetch_multisample (snd_wavefront_t *dev,
+ 	
+ 		val = wavefront_read(dev);
+ 		if (val == -1) {
+-			snd_printk ("upload multisample failed "
+-				    "during sample loop.\n");
++			dev_err(dev->card->dev,
++				"upload multisample failed during sample loop.\n");
+ 			return -EIO;
+ 		}
+ 		d[0] = val;
+ 
+ 		val = wavefront_read(dev);
+ 		if (val == -1) {
+-			snd_printk ("upload multisample failed "
+-				    "during sample loop.\n");
++			dev_err(dev->card->dev,
++				"upload multisample failed during sample loop.\n");
+ 			return -EIO;
+ 		}
+ 		d[1] = val;
+@@ -1336,7 +1338,7 @@ wavefront_send_drum (snd_wavefront_t *dev, wavefront_patch_info *header)
+ 	}
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_EDRUM_PROGRAM, NULL, drumbuf)) {
+-		snd_printk ("download drum failed.\n");
++		dev_err(dev->card->dev, "download drum failed.\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -1354,7 +1356,7 @@ wavefront_find_free_sample (snd_wavefront_t *dev)
+ 			return i;
+ 		}
+ 	}
+-	snd_printk ("no free sample slots!\n");
++	dev_err(dev->card->dev, "no free sample slots!\n");
+ 	return -1;
+ }
+ 
+@@ -1370,7 +1372,7 @@ wavefront_find_free_patch (snd_wavefront_t *dev)
+ 			return i;
+ 		}
+ 	}
+-	snd_printk ("no free patch slots!\n");
++	dev_err(dev->card->dev, "no free patch slots!\n");
+ 	return -1;
+ }
+ #endif
+@@ -1387,7 +1389,7 @@ wavefront_load_patch (snd_wavefront_t *dev, const char __user *addr)
+ 
+ 	if (copy_from_user (header, addr, sizeof(wavefront_patch_info) -
+ 			    sizeof(wavefront_any))) {
+-		snd_printk ("bad address for load patch.\n");
++		dev_err(dev->card->dev, "bad address for load patch.\n");
+ 		err = -EFAULT;
+ 		goto __error;
+ 	}
+@@ -1465,8 +1467,8 @@ wavefront_load_patch (snd_wavefront_t *dev, const char __user *addr)
+ 		break;
+ 
+ 	default:
+-		snd_printk ("unknown patch type %d.\n",
+-			    header->subkey);
++		dev_err(dev->card->dev, "unknown patch type %d.\n",
++			header->subkey);
+ 		err = -EINVAL;
+ 		break;
+ 	}
+@@ -1529,13 +1531,13 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
+ 	switch (wc->cmd) {
+ 		
+ 	case WFC_DISABLE_INTERRUPTS:
+-		snd_printk ("interrupts disabled.\n");
++		dev_dbg(dev->card->dev, "interrupts disabled.\n");
+ 		outb (0x80|0x20, dev->control_port);
+ 		dev->interrupts_are_midi = 1;
+ 		return 0;
+ 
+ 	case WFC_ENABLE_INTERRUPTS:
+-		snd_printk ("interrupts enabled.\n");
++		dev_dbg(dev->card->dev, "interrupts enabled.\n");
+ 		outb (0x80|0x40|0x20, dev->control_port);
+ 		dev->interrupts_are_midi = 1;
+ 		return 0;
+@@ -1552,7 +1554,7 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
+ 	case WFC_IDENTIFY_SLOT_TYPE:
+ 		i = wc->wbuf[0] | (wc->wbuf[1] << 7);
+ 		if (i <0 || i >= WF_MAX_SAMPLE) {
+-			snd_printk ("invalid slot ID %d\n",
++			dev_err(dev->card->dev, "invalid slot ID %d\n",
+ 				i);
+ 			wc->status = EINVAL;
+ 			return -EINVAL;
+@@ -1563,7 +1565,7 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
+ 
+ 	case WFC_DEBUG_DRIVER:
+ 		dev->debug = wc->wbuf[0];
+-		snd_printk ("debug = 0x%x\n", dev->debug);
++		dev_dbg(dev->card->dev, "debug = 0x%x\n", dev->debug);
+ 		return 0;
+ 
+ 	case WFC_UPLOAD_PATCH:
+@@ -1580,8 +1582,8 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
+ 		return 0;
+ 
+ 	case WFC_UPLOAD_SAMPLE_ALIAS:
+-		snd_printk ("support for sample alias upload "
+-			"being considered.\n");
++		dev_err(dev->card->dev,
++			"support for sample alias upload being considered.\n");
+ 		wc->status = EINVAL;
+ 		return -EINVAL;
+ 	}
+@@ -1622,9 +1624,8 @@ wavefront_synth_control (snd_wavefront_card_t *acard,
+ 			break;
+ 
+ 		case WFC_UPLOAD_SAMPLE_ALIAS:
+-			snd_printk ("support for "
+-				    "sample aliases still "
+-				    "being considered.\n");
++			dev_err(dev->card->dev,
++				"support for sample aliases still being considered.\n");
+ 			break;
+ 
+ 		case WFC_VMIDI_OFF:
+@@ -1762,7 +1763,7 @@ snd_wavefront_internal_interrupt (snd_wavefront_card_t *card)
+ */
+ 
+ static int
+-snd_wavefront_interrupt_bits (int irq)
++snd_wavefront_interrupt_bits(snd_wavefront_t *dev, int irq)
+ 
+ {
+ 	int bits;
+@@ -1782,7 +1783,7 @@ snd_wavefront_interrupt_bits (int irq)
+ 		break;
+ 	
+ 	default:
+-		snd_printk ("invalid IRQ %d\n", irq);
++		dev_err(dev->card->dev, "invalid IRQ %d\n", irq);
+ 		bits = -1;
+ 	}
+ 
+@@ -1817,7 +1818,7 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
+ 
+ 	/* IRQ already checked */
+ 
+-	bits = snd_wavefront_interrupt_bits (dev->irq);
++	bits = snd_wavefront_interrupt_bits(dev, dev->irq);
+ 
+ 	/* try reset of port */
+ 
+@@ -1887,7 +1888,7 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
+ 	 */
+ 
+ 	if (!dev->irq_ok) {
+-		snd_printk ("intr not received after h/w un-reset.\n");
++		dev_err(dev->card->dev, "intr not received after h/w un-reset.\n");
+ 		goto gone_bad;
+ 	} 
+ 
+@@ -1911,18 +1912,18 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
+ 					 dev->data_port, ramcheck_time*HZ);
+ 
+ 	if (!dev->irq_ok) {
+-		snd_printk ("post-RAM-check interrupt not received.\n");
++		dev_err(dev->card->dev, "post-RAM-check interrupt not received.\n");
+ 		goto gone_bad;
+ 	} 
+ 
+ 	if (!wavefront_wait (dev, STAT_CAN_READ)) {
+-		snd_printk ("no response to HW version cmd.\n");
++		dev_err(dev->card->dev, "no response to HW version cmd.\n");
+ 		goto gone_bad;
+ 	}
+ 	
+ 	hwv[0] = wavefront_read(dev);
+ 	if (hwv[0] == -1) {
+-		snd_printk ("board not responding correctly.\n");
++		dev_err(dev->card->dev, "board not responding correctly.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -1934,11 +1935,11 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
+ 		
+ 		hwv[0] = wavefront_read(dev);
+ 		if (hwv[0] == -1) {
+-			snd_printk ("on-board RAM test failed "
+-				    "(bad error code).\n");
++			dev_err(dev->card->dev,
++				"on-board RAM test failed (bad error code).\n");
+ 		} else {
+-			snd_printk ("on-board RAM test failed "
+-				    "(error code: 0x%x).\n",
++			dev_err(dev->card->dev,
++				"on-board RAM test failed (error code: 0x%x).\n",
+ 				hwv[0]);
+ 		}
+ 		goto gone_bad;
+@@ -1948,12 +1949,12 @@ wavefront_reset_to_cleanliness (snd_wavefront_t *dev)
+ 
+ 	hwv[1] = wavefront_read(dev);
+ 	if (hwv[1] == -1) {
+-		snd_printk ("incorrect h/w response.\n");
++		dev_err(dev->card->dev, "incorrect h/w response.\n");
+ 		goto gone_bad;
+ 	}
+ 
+-	snd_printk ("hardware version %d.%d\n",
+-		    hwv[0], hwv[1]);
++	dev_info(dev->card->dev, "hardware version %d.%d\n",
++		 hwv[0], hwv[1]);
+ 
+ 	return 0;
+ 
+@@ -1973,7 +1974,7 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
+ 
+ 	err = request_firmware(&firmware, path, dev->card->dev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "firmware (%s) download failed!!!\n", path);
++		dev_err(dev->card->dev, "firmware (%s) download failed!!!\n", path);
+ 		return 1;
+ 	}
+ 
+@@ -1984,16 +1985,16 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
+ 		if (section_length == 0)
+ 			break;
+ 		if (section_length < 0 || section_length > WF_SECTION_MAX) {
+-			snd_printk(KERN_ERR
+-				   "invalid firmware section length %d\n",
+-				   section_length);
++			dev_err(dev->card->dev,
++				"invalid firmware section length %d\n",
++				section_length);
+ 			goto failure;
+ 		}
+ 		buf++;
+ 		len++;
+ 
+ 		if (firmware->size < len + section_length) {
+-			snd_printk(KERN_ERR "firmware section read error.\n");
++			dev_err(dev->card->dev, "firmware section read error.\n");
+ 			goto failure;
+ 		}
+ 
+@@ -2010,15 +2011,14 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
+ 	
+ 		/* get ACK */
+ 		if (!wavefront_wait(dev, STAT_CAN_READ)) {
+-			snd_printk(KERN_ERR "time out for firmware ACK.\n");
++			dev_err(dev->card->dev, "time out for firmware ACK.\n");
+ 			goto failure;
+ 		}
+ 		err = inb(dev->data_port);
+ 		if (err != WF_ACK) {
+-			snd_printk(KERN_ERR
+-				   "download of section #%d not "
+-				   "acknowledged, ack = 0x%x\n",
+-				   section_cnt_downloaded + 1, err);
++			dev_err(dev->card->dev,
++				"download of section #%d not acknowledged, ack = 0x%x\n",
++				section_cnt_downloaded + 1, err);
+ 			goto failure;
+ 		}
+ 
+@@ -2030,7 +2030,7 @@ wavefront_download_firmware (snd_wavefront_t *dev, char *path)
+ 
+  failure:
+ 	release_firmware(firmware);
+-	snd_printk(KERN_ERR "firmware download failed!!!\n");
++	dev_err(dev->card->dev, "firmware download failed!!!\n");
+ 	return 1;
+ }
+ 
+@@ -2042,7 +2042,7 @@ wavefront_do_reset (snd_wavefront_t *dev)
+ 	char voices[1];
+ 
+ 	if (wavefront_reset_to_cleanliness (dev)) {
+-		snd_printk ("hw reset failed.\n");
++		dev_err(dev->card->dev, "hw reset failed.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -2066,7 +2066,7 @@ wavefront_do_reset (snd_wavefront_t *dev)
+ 						  (osrun_time*HZ));
+ 
+ 		if (!dev->irq_ok) {
+-			snd_printk ("no post-OS interrupt.\n");
++			dev_err(dev->card->dev, "no post-OS interrupt.\n");
+ 			goto gone_bad;
+ 		}
+ 		
+@@ -2076,7 +2076,7 @@ wavefront_do_reset (snd_wavefront_t *dev)
+ 						  dev->data_port, (10*HZ));
+ 		
+ 		if (!dev->irq_ok) {
+-			snd_printk ("no post-OS interrupt(2).\n");
++			dev_err(dev->card->dev, "no post-OS interrupt(2).\n");
+ 			goto gone_bad;
+ 		}
+ 
+@@ -2096,20 +2096,20 @@ wavefront_do_reset (snd_wavefront_t *dev)
+ 	if (dev->freemem < 0)
+ 		goto gone_bad;
+ 		
+-	snd_printk ("available DRAM %dk\n", dev->freemem / 1024);
++	dev_info(dev->card->dev, "available DRAM %dk\n", dev->freemem / 1024);
+ 
+ 	if (wavefront_write (dev, 0xf0) ||
+ 	    wavefront_write (dev, 1) ||
+ 	    (wavefront_read (dev) < 0)) {
+ 		dev->debug = 0;
+-		snd_printk ("MPU emulation mode not set.\n");
++		dev_err(dev->card->dev, "MPU emulation mode not set.\n");
+ 		goto gone_bad;
+ 	}
+ 
+ 	voices[0] = 32;
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_SET_NVOICES, NULL, voices)) {
+-		snd_printk ("cannot set number of voices to 32.\n");
++		dev_err(dev->card->dev, "cannot set number of voices to 32.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -2189,8 +2189,8 @@ snd_wavefront_detect (snd_wavefront_card_t *card)
+ 		dev->fw_version[0] = rbuf[0];
+ 		dev->fw_version[1] = rbuf[1];
+ 
+-		snd_printk ("firmware %d.%d already loaded.\n",
+-			    rbuf[0], rbuf[1]);
++		dev_info(dev->card->dev, "firmware %d.%d already loaded.\n",
++			 rbuf[0], rbuf[1]);
+ 
+ 		/* check that a command actually works */
+       
+@@ -2199,22 +2199,24 @@ snd_wavefront_detect (snd_wavefront_card_t *card)
+ 			dev->hw_version[0] = rbuf[0];
+ 			dev->hw_version[1] = rbuf[1];
+ 		} else {
+-			snd_printk ("not raw, but no "
+-				    "hardware version!\n");
++			dev_err(dev->card->dev,
++				"not raw, but no hardware version!\n");
+ 			return -1;
+ 		}
+ 
+ 		if (!wf_raw) {
+ 			return 0;
+ 		} else {
+-			snd_printk ("reloading firmware as you requested.\n");
++			dev_info(dev->card->dev,
++				 "reloading firmware as you requested.\n");
+ 			dev->israw = 1;
+ 		}
+ 
+ 	} else {
+ 
+ 		dev->israw = 1;
+-		snd_printk ("no response to firmware probe, assume raw.\n");
++		dev_info(dev->card->dev,
++			 "no response to firmware probe, assume raw.\n");
+ 
+ 	}
+ 
 -- 
 2.51.0
-
-
 
 
