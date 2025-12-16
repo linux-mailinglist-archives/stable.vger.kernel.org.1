@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FE7CC2340
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF5ECC2DF7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D664301DE3D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C022630ECB44
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3A0342530;
-	Tue, 16 Dec 2025 11:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73810343D64;
+	Tue, 16 Dec 2025 11:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkLQauU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaNMLx3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CFE343D79;
-	Tue, 16 Dec 2025 11:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2908E31B118;
+	Tue, 16 Dec 2025 11:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884405; cv=none; b=Up5/XgWsQnekZ6sxd4+KLS8xYJrNcwZCjV+8COFScM3O/8595Qx499AgVyJy6hbAL7fCk+28JaN3AYjLyrz6NeaR3zy5jEvwUBpOWRiN/AC9hgZr2xAjoFfIosRbGT0/9r4B7kLl/GWXcvr5kf73cPuiDz5jsO+iLgMzR1JhUr8=
+	t=1765886016; cv=none; b=VJIyUhhKJ+PQhyjp3V0HEbUpwe9+1ufTFX4cqeIrFmP+dQHOnD6cMkkqrLDfnaNPC4Zt46Tgg3B6zSr369XGHEsCCnwaphFF9QAVDg/cyxeRSx6+5xquG8r9q3pT28r0lxbRWN74K0zCOVLVvEy1sTQoR0/ySt9p30uQ+HAaqSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884405; c=relaxed/simple;
-	bh=LU34r/w76VOcjbjNZ/PVN3i88/CGhus6/0YNABV7k18=;
+	s=arc-20240116; t=1765886016; c=relaxed/simple;
+	bh=Cti7EVLBVE3MqQWMEOIPOG008tHFBXXuJC7KVQgBkO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4DC4npkZck7EuxeepIfyNQePX6toJwOQfCBvO5eKC0UiBtAi3I6uZumA1TCYvltNpPdwzlqHYvjWmTGpf6zuE+miwFAMkdVkqZZ9+yARMhGsdh/dpwXAszwilmlg1gMcsSqP44OO18J+JOjTByYXE4bRLMe+jeXM/tS9CDpwFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkLQauU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5249C16AAE;
-	Tue, 16 Dec 2025 11:26:44 +0000 (UTC)
+	 MIME-Version; b=VfKykXUJNt0u0swPIMt9C14a64HRAOxBTbd7fUU4lODW/hTr/2rSjJCf0aIel6N7Wlksz/CwVC/IDdiuf+AAHgdVOyeVkd5tY996AsHL3L+aTbmxnP7X8jzsDqKshkibZZdJht0LYecsUl5C3CRBy0oqYSl2Oe8L4i/tLE+COqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaNMLx3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732BEC4CEF1;
+	Tue, 16 Dec 2025 11:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884405;
-	bh=LU34r/w76VOcjbjNZ/PVN3i88/CGhus6/0YNABV7k18=;
+	s=korg; t=1765886015;
+	bh=Cti7EVLBVE3MqQWMEOIPOG008tHFBXXuJC7KVQgBkO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkLQauU1ZZ1shxeu+jyOOR3a5BY5w2R9QByFwm+Q9BsxD0Wc8xTyKkQJ2/CYlZuDk
-	 Wb9QrQ5p7z3JQJFoaVBSIt6OpvRSPAmIyJrJ1hlwFwkCCxGuQdwdk36Jb9P0w6Fy7t
-	 z60me9P2PXkWJNz+/CPeDvnHHmIdYGXUANKI5pOs=
+	b=PaNMLx3e9BT+tHqZz9k6c6b5Lcvd1QFodKU0U72RbUJC/e6jhjmrZAuqWHSJAxPAe
+	 xeFLNCBEtPUWhzH60se6WAGigQxv9A2kcXbC+Dpj8BKqWrYnF/jnppJdlzop7ZY/bG
+	 5t7xX4/UiOpygH22UZGi4DLw7GB4VrqG8nzQZfeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/354] perf arm-spe: Extend branch operations
-Date: Tue, 16 Dec 2025 12:12:31 +0100
-Message-ID: <20251216111327.577441609@linuxfoundation.org>
+Subject: [PATCH 6.17 311/507] crypto: starfive - Correctly handle return of sg_nents_for_len
+Date: Tue, 16 Dec 2025 12:12:32 +0100
+Message-ID: <20251216111356.736828381@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 64d86c03e1441742216b6332bdfabfb6ede31662 ]
+[ Upstream commit e9eb52037a529fbb307c290e9951a62dd728b03d ]
 
-In Arm ARM (ARM DDI 0487, L.a), the section "D18.2.7 Operation Type
-packet", the branch subclass is extended for Call Return (CR), Guarded
-control stack data access (GCS).
+The return value of sg_nents_for_len was assigned to an unsigned long
+in starfive_hash_digest, causing negative error codes to be converted
+to large positive integers.
 
-This commit adds support CR and GCS operations.  The IND (indirect)
-operation is defined only in bit [1], its macro is updated accordingly.
+Add error checking for sg_nents_for_len and return immediately on
+failure to prevent potential buffer overflows.
 
-Move the COND (Conditional) macro into the same group with other
-operations for better maintenance.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/20250304111240.3378214-8-leo.yan@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: 33e1fffea492 ("perf arm_spe: Fix memset subclass in operation")
+Fixes: 7883d1b28a2b ("crypto: starfive - Add hash and HMAC support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c  | 12 +++++++++---
- .../perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h  | 11 ++++++++---
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/crypto/starfive/jh7110-hash.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-index 4cef10a83962f..625834da7e20e 100644
---- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-+++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-@@ -397,10 +397,16 @@ static int arm_spe_pkt_desc_op_type(const struct arm_spe_pkt *packet,
+diff --git a/drivers/crypto/starfive/jh7110-hash.c b/drivers/crypto/starfive/jh7110-hash.c
+index 6cfe0238f615f..66a8b04c0a55b 100644
+--- a/drivers/crypto/starfive/jh7110-hash.c
++++ b/drivers/crypto/starfive/jh7110-hash.c
+@@ -326,6 +326,7 @@ static int starfive_hash_digest(struct ahash_request *req)
+ 	struct starfive_cryp_ctx *ctx = crypto_ahash_ctx(tfm);
+ 	struct starfive_cryp_request_ctx *rctx = ahash_request_ctx(req);
+ 	struct starfive_cryp_dev *cryp = ctx->cryp;
++	int sg_len;
  
- 		if (payload & SPE_OP_PKT_COND)
- 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " COND");
--
--		if (SPE_OP_PKT_IS_INDIRECT_BRANCH(payload))
-+		if (payload & SPE_OP_PKT_INDIRECT_BRANCH)
- 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " IND");
--
-+		if (payload & SPE_OP_PKT_GCS)
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " GCS");
-+		if (SPE_OP_PKT_CR_BL(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-BL");
-+		if (SPE_OP_PKT_CR_RET(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-RET");
-+		if (SPE_OP_PKT_CR_NON_BL_RET(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-NON-BL-RET");
- 		break;
- 	default:
- 		/* Unknown index */
-diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-index 464a912b221cd..32d760ede7013 100644
---- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-+++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-@@ -7,6 +7,7 @@
- #ifndef INCLUDE__ARM_SPE_PKT_DECODER_H__
- #define INCLUDE__ARM_SPE_PKT_DECODER_H__
+ 	memset(rctx, 0, sizeof(struct starfive_cryp_request_ctx));
  
-+#include <linux/bitfield.h>
- #include <stddef.h>
- #include <stdint.h>
+@@ -334,7 +335,10 @@ static int starfive_hash_digest(struct ahash_request *req)
+ 	rctx->in_sg = req->src;
+ 	rctx->blksize = crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
+ 	rctx->digsize = crypto_ahash_digestsize(tfm);
+-	rctx->in_sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
++	sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
++	if (sg_len < 0)
++		return sg_len;
++	rctx->in_sg_len = sg_len;
+ 	ctx->rctx = rctx;
  
-@@ -116,8 +117,6 @@ enum arm_spe_events {
- 
- #define SPE_OP_PKT_IS_OTHER_SVE_OP(v)		(((v) & (BIT(7) | BIT(3) | BIT(0))) == 0x8)
- 
--#define SPE_OP_PKT_COND				BIT(0)
--
- #define SPE_OP_PKT_LDST_SUBCLASS_GET(v)		((v) & GENMASK_ULL(7, 1))
- #define SPE_OP_PKT_LDST_SUBCLASS_GP_REG		0x0
- #define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP	0x4
-@@ -148,7 +147,13 @@ enum arm_spe_events {
- #define SPE_OP_PKT_SVE_PRED			BIT(2)
- #define SPE_OP_PKT_SVE_FP			BIT(1)
- 
--#define SPE_OP_PKT_IS_INDIRECT_BRANCH(v)	(((v) & GENMASK_ULL(7, 1)) == 0x2)
-+#define SPE_OP_PKT_CR_MASK			GENMASK_ULL(4, 3)
-+#define SPE_OP_PKT_CR_BL(v)			(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 1)
-+#define SPE_OP_PKT_CR_RET(v)			(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 2)
-+#define SPE_OP_PKT_CR_NON_BL_RET(v)		(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 3)
-+#define SPE_OP_PKT_GCS				BIT(2)
-+#define SPE_OP_PKT_INDIRECT_BRANCH		BIT(1)
-+#define SPE_OP_PKT_COND				BIT(0)
- 
- const char *arm_spe_pkt_name(enum arm_spe_pkt_type);
- 
+ 	return crypto_transfer_hash_request_to_engine(cryp->engine, req);
 -- 
 2.51.0
 
