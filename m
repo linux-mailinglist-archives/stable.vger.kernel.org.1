@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09DFCC2956
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09322CC30F2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5AFCA3005D1D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0BA13073A01
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDB034E76E;
-	Tue, 16 Dec 2025 12:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67A839B6DF;
+	Tue, 16 Dec 2025 12:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jgxk174F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TP4tAx2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768B934E764;
-	Tue, 16 Dec 2025 12:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15939B6DC;
+	Tue, 16 Dec 2025 12:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886609; cv=none; b=PAhV5Vf5JqYMZQBtddTf/aFuYMj9cYZ+pCTMudGzM5vB62yKuLSv2o1F4EdZBSSuO2ySXL76o5GEMOCylQsPyTLGydz+qKgK4nN++U2BmmKNym3UEQkDUbd67nDazAuZ+sb3/fgvU7yJyF6GwOmvEiQahreyLOmjFXmiV+jWF8w=
+	t=1765888671; cv=none; b=oB/7p/4UYILzYAS6vw/wOYBNIlXuYHxNbplYsnnCn81RQ+1P+dlXE6tBg9jdVDA+5BM8x1RPEO822Xr3W9RKhx2aS0d2LkNS+6qJWYiJfQpN/CpyORzLwUVJOifFfg4n1m1SDizrpfNAG3Lp4GW0u3BCFtSPQIY/eyZ8LImE9qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886609; c=relaxed/simple;
-	bh=k/9jufGshW1/11wjJIYvmNp602eMEXH4kBv36GKuqDs=;
+	s=arc-20240116; t=1765888671; c=relaxed/simple;
+	bh=LHDLUN/UG06xuBscLgVCHuSa/6K9LaghPdzC9WvztxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYt8ntEJ4t75lFDqhaXsqneL/HGiKiREELzpteO7T0NJ/HmOdvO1EYLk7x8j2trmLSSwkygr668KRlFTyMmdB8on0f+NlLiONA/SoX8q5cFCnWlN1Tn+GtpuuD0AKbS3QmYgoIhKolPXYbCyCHDj6Jgpr1cFpm0TzpserbCoubk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jgxk174F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD616C4CEF5;
-	Tue, 16 Dec 2025 12:03:28 +0000 (UTC)
+	 MIME-Version; b=kHAQU8bC9Xwk/5yoiCnqNrrFB06ZQ4PTHwUzQsBNyYYJnMm6X4ZgI2KwrBsIsIYLDSoG3hHeKpYqQsct0+zifxS5GMz55zUX5yhCAbnTsWBSrksTz8ML2N7E/x84olRKQ5qqcFHo6P87rVkQGq2WBeFsicGQFQ1qs11RWA9qN/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TP4tAx2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF124C4CEF1;
+	Tue, 16 Dec 2025 12:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886609;
-	bh=k/9jufGshW1/11wjJIYvmNp602eMEXH4kBv36GKuqDs=;
+	s=korg; t=1765888671;
+	bh=LHDLUN/UG06xuBscLgVCHuSa/6K9LaghPdzC9WvztxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jgxk174FoGAmzFwLEfU2tNtGKSs2Z1Nn1R6VFHFU3FDY0Vh9pdD3p62B7+J3IEXzc
-	 kW1CEl/AJCpGTc8Ewnt8BILJnAu/SH74Vfb1qPUcx7dmkIb+WF7x08OvXyy8LRS9S5
-	 tKEvX2a3YNqVjf++Ge0xfc3onp5QJEVT6m96b93A=
+	b=TP4tAx2XxNuGZ63nFH4sa5ZV0DckEQcyf0h/nzKeUJbKH6KDtPBQ3ByERwJNRBnO5
+	 4H1p08K1DW4wEAvVNZ5n+g4vyuYrlf93UkV8opTjXD0+7VQZWJwOcaU7HSynG7o4cb
+	 dY8GkxVQY9iTJY+4G5oLHtNT2Ut8YmiLJF2LINaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>,
-	Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 486/507] ASoC: amd: acp: update tdm channels for specific DAI
+Subject: [PATCH 6.18 560/614] drm/panel: novatek-nt35560: avoid on-stack device structure
 Date: Tue, 16 Dec 2025 12:15:27 +0100
-Message-ID: <20251216111403.048258744@linuxfoundation.org>
+Message-ID: <20251216111421.669981918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f34836a8ddf9216ff919927cddb705022bf30aab ]
+[ Upstream commit 1a7a7b80a22448dff55e1ad69a4681fd8b760b85 ]
 
-TDM channel updates were applied to all DAIs, causing configurations
-to overwrite for unrelated streams. The logic is modified to update
-channels only for targeted DAI. This prevents corruption of other DAI
-settings and resolves audio issues observed during system suspend and
-resume cycles.
+A cleanup patch apparently by accident used a local device structure
+instead of a pointer to one in the nt35560_read_id() function, causing
+a warning about stack usage:
 
-Fixes: 12229b7e50cf ("ASoC: amd: acp: Add TDM support for acp i2s stream")
-Signed-off-by: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
-Signed-off-by: Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>
-Link: https://patch.msgid.link/20251203120136.2591395-1-raghavendraprasad.mallela@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+drivers/gpu/drm/panel/panel-novatek-nt35560.c: In function 'nt35560_read_id':
+drivers/gpu/drm/panel/panel-novatek-nt35560.c:249:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+
+Change this to a pointer as was liley intended here.
+
+Fixes: 5fbc0dbb92d6 ("drm/panel: novatek-nt35560: Clean up driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251204094550.1030506-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-i2s.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/panel/panel-novatek-nt35560.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
-index 4ba0a66981ea9..283a674c7e2c3 100644
---- a/sound/soc/amd/acp/acp-i2s.c
-+++ b/sound/soc/amd/acp/acp-i2s.c
-@@ -157,6 +157,8 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+index 561e6643dcbb6..6e5173f98a226 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+@@ -213,7 +213,7 @@ static const struct backlight_properties nt35560_bl_props = {
  
- 	spin_lock_irq(&chip->acp_lock);
- 	list_for_each_entry(stream, &chip->stream_list, list) {
-+		if (dai->id != stream->dai_id)
-+			continue;
- 		switch (chip->acp_rev) {
- 		case ACP_RN_PCI_ID:
- 		case ACP_RMB_PCI_ID:
+ static void nt35560_read_id(struct mipi_dsi_multi_context *dsi_ctx)
+ {
+-	struct device dev = dsi_ctx->dsi->dev;
++	struct device *dev = &dsi_ctx->dsi->dev;
+ 	u8 vendor, version, panel;
+ 	u16 val;
+ 
+@@ -225,7 +225,7 @@ static void nt35560_read_id(struct mipi_dsi_multi_context *dsi_ctx)
+ 		return;
+ 
+ 	if (vendor == 0x00) {
+-		dev_err(&dev, "device vendor ID is zero\n");
++		dev_err(dev, "device vendor ID is zero\n");
+ 		dsi_ctx->accum_err = -ENODEV;
+ 		return;
+ 	}
+@@ -236,12 +236,12 @@ static void nt35560_read_id(struct mipi_dsi_multi_context *dsi_ctx)
+ 	case DISPLAY_SONY_ACX424AKP_ID2:
+ 	case DISPLAY_SONY_ACX424AKP_ID3:
+ 	case DISPLAY_SONY_ACX424AKP_ID4:
+-		dev_info(&dev,
++		dev_info(dev,
+ 			 "MTP vendor: %02x, version: %02x, panel: %02x\n",
+ 			 vendor, version, panel);
+ 		break;
+ 	default:
+-		dev_info(&dev,
++		dev_info(dev,
+ 			 "unknown vendor: %02x, version: %02x, panel: %02x\n",
+ 			 vendor, version, panel);
+ 		break;
 -- 
 2.51.0
 
