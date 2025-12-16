@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAED8CC26F8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213C9CC2B37
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4853308C480
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CDC23130E29
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A70347FE1;
-	Tue, 16 Dec 2025 11:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A04135F8B8;
+	Tue, 16 Dec 2025 12:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdgyfCf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIxElQue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3207434D3BD;
-	Tue, 16 Dec 2025 11:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FAF35F8AD;
+	Tue, 16 Dec 2025 12:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885391; cv=none; b=WRjvfW9dzNn73flrdU7Nj8WxF//2Ebgx0an8GCfhwjMwgXqx9DQXtYcuLpGmdvyP2uJBQbtSJEurky+qB0Fo8IG6tZe5REMmGLQiIZZjauigKe+RKEoj/XlVvQUOBv2rwj+vUC4UQ8WE18F5PuCLSv73f9gvo7asVsbD+j3L75U=
+	t=1765887340; cv=none; b=pIHkl1FGeKBGIaGke11hX97PPyV+Nqglfop+G+s2TyNE5OaCiW1W6Zj7LV41YYs0bZCQ3bFXf7l65rjZq2OgxIfjO6VzKPDZ/7AttLA9eOLbCDdXpAorf8/IV1UYCi/rpngRopPd/QQoc9zXT2VtVlA1JFhVuWWXZcxB7Nae95I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885391; c=relaxed/simple;
-	bh=h4TD0yuoOWZslL8g/vl0dbsi6E7oB84ufrzaFTsFwO4=;
+	s=arc-20240116; t=1765887340; c=relaxed/simple;
+	bh=1XiS0S2XIfTs/1Acyqrsn7+if0R0RUgHDMjpm86vXMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PVdl1X/jYqIXi9o3A2F7owjhBnk3mzeKJIGR+WFdbvvUJd1YayEr32AJ16UIVo9VFT9YZtXyzrceveXvWqbaOgLsnxUUz9oOzCL9HFl2l5DzE4xIcwFoQ/9uA9TWPtncT3VX/ZVJ4MzcpMO4nTs32E4mAE7vMSErm/MIOZSVzfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdgyfCf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7581C4CEF1;
-	Tue, 16 Dec 2025 11:43:10 +0000 (UTC)
+	 MIME-Version; b=XYyp/UoqcX5RwDPws8UDBSOHukW6OL+YpXs7ZpQss0Fat4B1jnz1e4RWziqJlAxKFm0T1irT7Q+Vchn7BxyG+LXeHDSzZwHwBxJiQL+HRB0FuCewsJdL9UeZtnfLsr5K8Fse/6RNIsLdcCwJeifcoRJUsdv8OHdySx9aPofsIic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIxElQue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D4AC4CEF1;
+	Tue, 16 Dec 2025 12:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885391;
-	bh=h4TD0yuoOWZslL8g/vl0dbsi6E7oB84ufrzaFTsFwO4=;
+	s=korg; t=1765887340;
+	bh=1XiS0S2XIfTs/1Acyqrsn7+if0R0RUgHDMjpm86vXMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdgyfCf5PlnHcmHST6xT9JroMy9a7U16ti/8qXL7/PrTE79jwvGqD9D7UJ0WIyJTt
-	 4p7zOCBXqVsdTkyu8dOD636cismn/YZ4OnfHAoj3x0ULhyLHz4yTLZVLzdiEDQDz/o
-	 Z88vqenZbmwl3K2VaRMOttB2So7U5NW5JKGCQdd0=
+	b=hIxElQueuSSCDzS+1xgyNnYGX4a3stIc6GaRV3EB3y7iKESynbhe9/YluSHixWZwn
+	 ML1uQ/WiBpY3g8U8kt55t8cqk918T2/waofP/MhW6Kt/63/x9PAaF/REVHDDm3oRuq
+	 EtEvcpk8JQuVaBVwu07VO1UdmIeaPgeIwN0dGZds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 125/507] tools/nolibc/dirent: avoid errno in readdir_r
+Subject: [PATCH 6.18 199/614] cleanup: fix scoped_class()
 Date: Tue, 16 Dec 2025 12:09:26 +0100
-Message-ID: <20251216111350.060590242@linuxfoundation.org>
+Message-ID: <20251216111408.589206300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,45 +58,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 4ada5679f18dbbe92d87c37a842c3368e6ab5e4a ]
+[ Upstream commit 4e97bae1b412cd6ed8053b3d8a242122952985cc ]
 
-Using errno is not possible when NOLIBC_IGNORE_ERRNO is set. Use
-sys_lseek instead of lseek as that avoids using errno.
+This is a class, not a guard so why on earth is it checking for guard
+pointers or conditional lock acquisition? None of it makes any sense at
+all.
 
-Fixes: 665fa8dea90d ("tools/nolibc: add support for directory access")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+I'm not sure what happened back then. Maybe I had a brief psychedelic
+period that I completely forgot about and spaced out into a zone where
+that initial macro implementation made any sense at all.
+
+Link: https://patch.msgid.link/20251103-work-creds-init_cred-v1-1-cb3ec8711a6a@kernel.org
+Fixes: 5c21c5f22d07 ("cleanup: add a scoped version of CLASS()")
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/dirent.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/cleanup.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/tools/include/nolibc/dirent.h b/tools/include/nolibc/dirent.h
-index 758b95c48e7a4..61a122a60327d 100644
---- a/tools/include/nolibc/dirent.h
-+++ b/tools/include/nolibc/dirent.h
-@@ -86,9 +86,9 @@ int readdir_r(DIR *dirp, struct dirent *entry, struct dirent **result)
- 	 * readdir() can only return one entry at a time.
- 	 * Make sure the non-returned ones are not skipped.
- 	 */
--	ret = lseek(fd, ldir->d_off, SEEK_SET);
--	if (ret == -1)
--		return errno;
-+	ret = sys_lseek(fd, ldir->d_off, SEEK_SET);
-+	if (ret < 0)
-+		return -ret;
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 2573585b7f068..19c7e475d3a4d 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -290,15 +290,16 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+ 	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
+ 		class_##_name##_constructor
  
- 	entry->d_ino = ldir->d_ino;
- 	/* the destination should always be big enough */
+-#define scoped_class(_name, var, args)                          \
+-	for (CLASS(_name, var)(args);                           \
+-	     __guard_ptr(_name)(&var) || !__is_cond_ptr(_name); \
+-	     ({ goto _label; }))                                \
+-		if (0) {                                        \
+-_label:                                                         \
+-			break;                                  \
++#define __scoped_class(_name, var, _label, args...)        \
++	for (CLASS(_name, var)(args); ; ({ goto _label; })) \
++		if (0) {                                   \
++_label:                                                    \
++			break;                             \
+ 		} else
+ 
++#define scoped_class(_name, var, args...) \
++	__scoped_class(_name, var, __UNIQUE_ID(label), args)
++
+ /*
+  * DEFINE_GUARD(name, type, lock, unlock):
+  *	trivial wrapper around DEFINE_CLASS() above specifically
 -- 
 2.51.0
 
