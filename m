@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C58CC2BC2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD62ECC22BF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B214530A3235
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0729B30391FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A675F363C7D;
-	Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3D734214A;
+	Tue, 16 Dec 2025 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNxG0djY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc2z5Ql4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B047363C79;
-	Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09350341069;
+	Tue, 16 Dec 2025 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887760; cv=none; b=bfgjrW2TlGMmj88A1MhYAAScjuaxNfVrpb0MVPwhC1s4Wc4RqS7zeNeFveQ9TYLUrbfcvZY3vZk/ZFPojYyZODGNfZb0wJ1iV1L3DpOcIVu+lXC+RUcRVo3g0PCmlxcmVfbxOme10C356H/02kbheQplIYEjIDviHOQWPR/MDjo=
+	t=1765884169; cv=none; b=gWjQIWEB70K/M5lNCqb8jR5dytfVFKqjsve6dKHoVnsX+DtzLix2wT4u8OTdAcqdythPZSpQijQnsjeDg9yDb0sRK4gHQtEZfi0diNKyIC/TMxcZ6fkJtB/bWrHwmqDvVahzpsjOGbRvE8KdlSht3quUcqKK0Dtor1QGTHawEgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887760; c=relaxed/simple;
-	bh=hw9XPCFc8aLgL+4qr2CUuj9XVWEa4sfDMBR6BfL9yG4=;
+	s=arc-20240116; t=1765884169; c=relaxed/simple;
+	bh=Q2f9VFPbfDJkrAKfUZGKEz220GgktzLPCsZb3hoVywc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxt24/DQZTPGfyHykksFdveObPYlAlawoZJk3uBRSzrYvT2gJ4u/r9T+bNcIlpg4qNzTHo0AcEF8BhdFQCTDyG2rqXhOgiZU/O0TneDN59UMczsPTnCJ4f16qGZCobjLNhAbdsdHviaTiUXZ3yMfJvD9dWRTh7kEJ3EpWpgDYwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNxG0djY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB950C4CEF1;
-	Tue, 16 Dec 2025 12:22:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NSP6wcAv2fjomM1pbrbjvJMo2+6KGbBDRumASXSyXb1Lx1Ziy+IFb5snT7jU7PWA1wi43kDIjQPGiNG5LyNzUuBpqIu2BPnKVnjR7SZBbjhvQ3xyScZBENkZ60dTG4l6DPhTxhAbje7znF70PCWaE8DkwIO/BVNdVdsn8xRL7mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc2z5Ql4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80094C4CEF5;
+	Tue, 16 Dec 2025 11:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887760;
-	bh=hw9XPCFc8aLgL+4qr2CUuj9XVWEa4sfDMBR6BfL9yG4=;
+	s=korg; t=1765884168;
+	bh=Q2f9VFPbfDJkrAKfUZGKEz220GgktzLPCsZb3hoVywc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNxG0djYUWuXcFvWRjf3q9IzkUCWrgntU1tZVl3EiREyN4NAjuJemNpf8dlFIxwsj
-	 gFy3St2QIiAOFml2eggSLG7saZD5QFN0zbp/hdbXxmUZdTwmPFtDBT3VBis0kF2fnu
-	 5b0mm0ddp3JNDA2nQT/Y+TV7mmGiLbnxGw/2zWqc=
+	b=Vc2z5Ql4draZWOxUvfbwZMRRHKghTZI2vgrEtTH3banxAKCuNO+i91WoyS2KdMp08
+	 gekmE5c7MxkLeADPXueFYWKbR3+V8Zn4tFGOZuaxq1//mOC5WqcoqgNJbeP9K3l6YM
+	 ihU82iy2j1grkIozDLDMeztWWrBh5E74/OuTUvf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 312/614] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
-Date: Tue, 16 Dec 2025 12:11:19 +0100
-Message-ID: <20251216111412.672098134@linuxfoundation.org>
+Subject: [PATCH 6.12 113/354] drm/panthor: Fix group_free_queue() for partially initialized queues
+Date: Tue, 16 Dec 2025 12:11:20 +0100
+Message-ID: <20251216111325.016712035@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,69 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
+[ Upstream commit 94a6d20feadbbe24e8a7b1c56394789ea5358fcc ]
 
-In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
-allocations in a loop. When an allocation fails, the previously
-successful allocations are not freed on exit.
+group_free_queue() can be called on a partially initialized queue
+object if something fails in group_create_queue(). Make sure we don't
+call drm_sched_entity_destroy() on an entity that hasn't been
+initialized.
 
-Fix that by jumping to err_free_rings label on error, which calls
-rtl8180_free_rx_ring() to free the allocations. Remove the free of
-rx_ring in rtl8180_init_rx_ring() error path, and set the freed
-priv->rx_buf entry to null, to avoid double free.
-
-Fixes: f653211197f3 ("Add rtl8180 wireless driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
+Fixes: 7d9c3442b02a ("drm/panthor: Defer scheduler entitiy destruction to queue release")
+Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patch.msgid.link/20251031160318.832427-2-boris.brezillon@collabora.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index 2905baea62390..070c0431c4821 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 875b9a78d34bc..81ea3a79ab49c 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -865,7 +865,8 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
+ 	if (IS_ERR_OR_NULL(queue))
+ 		return;
  
- 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
-+			priv->rx_buf[i] = NULL;
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+-	drm_sched_entity_destroy(&queue->entity);
++	if (queue->entity.fence_context)
++		drm_sched_entity_destroy(&queue->entity);
  
- 	ret = rtl8180_init_rx_ring(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_rings;
- 
- 	for (i = 0; i < (dev->queues + 1); i++)
- 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
+ 	if (queue->scheduler.ops)
+ 		drm_sched_fini(&queue->scheduler);
 -- 
 2.51.0
 
