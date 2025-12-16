@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AC0CC300D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6131CC362D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C0C03231739
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F46C3058E4A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A00343D70;
-	Tue, 16 Dec 2025 11:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E387396555;
+	Tue, 16 Dec 2025 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZDG8d7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdrbVheJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D067D347BC7;
-	Tue, 16 Dec 2025 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C820396550;
+	Tue, 16 Dec 2025 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886361; cv=none; b=TcJusLbAwaJuPJTkhFfrbAyWq+NVB/hWczhJ/dTgPNgl1h3QUQxAPodQ7lY7KT35JzXv7qB1fzcf9rRGxXO5QBOZ0h3ZPM5SYqQSTHX+jvaymgtMS/vYWviyZJDjLZ2ZM9EIlhhFvBnD+/PMyMPdUGTuXbzisZdzamKskHT354E=
+	t=1765888305; cv=none; b=Xn+G1+svlPjn9OVxJL2Qdi/+smrSOPy9f6QBLgfFqFETGSq7mA5fHDb0JWCBXTptIabDmE2pS3dI4M/vlStQMmylRGietZ9rY1BcVzMiGcyaSAxeFR4lp8TXI57Mliys+b6VTpS63+nKY899+Wq8JVGY4Cd6djUb4Yks2qu5cF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886361; c=relaxed/simple;
-	bh=gYiTWZ8Jpvis7C28GpYv3K59Fp3DXVA3Rez/bG7fqR0=;
+	s=arc-20240116; t=1765888305; c=relaxed/simple;
+	bh=yGLvqjQltyMy6SkwtI93cBYEbOYVhiYgu6y8uMnqi04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ol/4lfn/JcwdAXS98hndSpXTUkY9PoB0D9jyi4JjEHTE2Egfx2oDkL4aCnm37WfV0yBuqpBDVRtYtVJipM3f9X2aTAIVF1GRp5YqJJKZ1Xs/ftX10EnLou4VnocXw6VIaPCsc2dxUu32CsJbufEy9zJZjva0rxmJYQrBqitvwGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZDG8d7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5D1C4CEF1;
-	Tue, 16 Dec 2025 11:59:21 +0000 (UTC)
+	 MIME-Version; b=DbJKz/gmoVsxjdldrhgLNqvHC6rM1HuMflMh4+jLYwahDFHjigxABvSXjbNGeXQKPEXC9ZIMi4fnZ0yvjWkEXyR4xR1SGcVQefy8tgAwyMl2aYtV9aDfrrbCxAIOnhsxh8lURLNwC4nGdl+sPl7XQeNtEQhxWeSuzQglStH3kII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdrbVheJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82137C4CEF5;
+	Tue, 16 Dec 2025 12:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886361;
-	bh=gYiTWZ8Jpvis7C28GpYv3K59Fp3DXVA3Rez/bG7fqR0=;
+	s=korg; t=1765888304;
+	bh=yGLvqjQltyMy6SkwtI93cBYEbOYVhiYgu6y8uMnqi04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZDG8d7Nz5fn3nKXe+FRh+4dZoOfa4deFr31EzYePIp6OsRAcc70r8cD4kfSnC4WA
-	 xfkSUQK9JnJA822wggNrAgRtWU2XwU82ObQSp+G0Aa0rnWvREVIU0tVpe/NWFIVGgO
-	 8QgdKmbf3jrW+f9dm2AP1W+YBqDjT9u8Ny/OanXE=
+	b=FdrbVheJE/82xGztNFYIxmWEFb0wdXZGECVWkK9LdjNQzEJS9g2J6G5UvCj6S49oN
+	 43RmNOTdNH2zaHcZCoRVNpE/hiDYz8pbq/261gMJnAFSP6wcYggYg6c0yHyo74mOy1
+	 3vTO/gDb+JKIqc/kSW12KUpYYqQBVtCL/YoLQVPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 387/507] ARM: dts: samsung: exynos4210-i9100: turn off SDIO WLAN chip during system suspend
+Subject: [PATCH 6.18 461/614] virtio: fix whitespace in virtio_config_ops
 Date: Tue, 16 Dec 2025 12:13:48 +0100
-Message-ID: <20251216111359.477459181@linuxfoundation.org>
+Message-ID: <20251216111418.072150479@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 863d69923bdb6f414d0a3f504f1dfaeacbc00b09 ]
+[ Upstream commit 7831791e77a1cd29528d4dc336ce14466aef5ba6 ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+The finalize_features documentation uses a tab between words.
+Use space instead.
 
-Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-3-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: d16c0cd27331 ("docs: driver-api: virtio: virtio on Linux")
+Message-Id: <39d7685c82848dc6a876d175e33a1407f6ab3fc1.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-index df229fb8a16be..8a635bee59fa9 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-@@ -853,6 +853,7 @@ &sdhci_3 {
- 	#size-cells = <0>;
- 
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 	mmc-pwrseq = <&wlan_pwrseq>;
- 	vmmc-supply = <&vtf_reg>;
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 1ea5baa62141f..dbc7eff1f101f 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -86,7 +86,7 @@ struct virtqueue_info {
+  *	vdev: the virtio_device
+  *	This sends the driver feature bits to the device: it can change
+  *	the dev->feature bits if it wants.
+- *	Note that despite the name this	can be called any number of
++ *	Note that despite the name this can be called any number of
+  *	times.
+  *	Returns 0 on success or error status
+  * @bus_name: return the bus name associated with the device (optional)
 -- 
 2.51.0
 
