@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1C0CC27CA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F4CC2289
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB289305F645
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E6E23000959
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AA7355029;
-	Tue, 16 Dec 2025 11:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D467341AD6;
+	Tue, 16 Dec 2025 11:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9H+ObgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwDzfvAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9E355026;
-	Tue, 16 Dec 2025 11:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2C1341645;
+	Tue, 16 Dec 2025 11:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885902; cv=none; b=hhiVtBB95clC0eUngqmh1IZdBZJtrTOWutbGTCXTHu3O4H+MQovclpnMcwU2BiY4s9NTZc7C/1+BkoA2gARlZfBc3ZqDKsX8oIHrKW8cOudJwQnLFMeRLn/RNiMvvDngRNcA/Zbk0lWd5O/4ebAYXQvXhz+JZ7jhn6IlqdkZJ7U=
+	t=1765884192; cv=none; b=O5vQyUaqF+J1E/lHadiWi2DQlSVhSWxwOf7LTmjKKIBwf1puSOvn2UnTBckUJ5Y++rxbnmGaktFrwTAHel44TBdPdytgggWAI/xPRD8ViaNY9bjUY9S1v2zTXCA3Y71v2JH/21VrfhfV+KG1DJ2hWEvShvPXGduLcZ+AIt37Q4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885902; c=relaxed/simple;
-	bh=mMMMQXR1uit5zSwFfzr3/n1V+XfbTcHByhBpTMLi15c=;
+	s=arc-20240116; t=1765884192; c=relaxed/simple;
+	bh=lKXSLTgqfl7cx4hsY+zttnqVnDhGmZQTcZAt35X+PtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxNB9y9LBJ6vQ56lzlNaSNIuu4vkCQ3w2IvfNzz+J4RFs2Bw/5wvGrHaFpGT1hkP/n6bcSkec2GL4S9k0sbgR2mSxH38WWpQ1GmpwcYQwOiPd0p0hVlrecxdzDFUIjjN20U1uT+xihXFs91g7mTfHXyQEEXdg+xC4zLpPGnuRPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9H+ObgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62363C4CEF1;
-	Tue, 16 Dec 2025 11:51:41 +0000 (UTC)
+	 MIME-Version; b=qrFOee1eyR0btaoA/iM9amQFO7/5Dt6ssvdaiWPR+d2kSIx6HeNAKmahRm/vLmLE06f+NYcT4cxHF6GMsMDqc5OZrOQ6s717wwEAzp5C1lOSHoFylJ+ywRwW0f2AWqYbY/OsgevccVmL0z46ps/NwR/hTG7QYtVU5F0e+9MjT/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwDzfvAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AE8C4CEF1;
+	Tue, 16 Dec 2025 11:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885901;
-	bh=mMMMQXR1uit5zSwFfzr3/n1V+XfbTcHByhBpTMLi15c=;
+	s=korg; t=1765884191;
+	bh=lKXSLTgqfl7cx4hsY+zttnqVnDhGmZQTcZAt35X+PtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9H+ObgYg2dkUAQPfrxRTGqu7NpcVPM3IfXUafwnLL0t28moN7x7atpeBxs5Njjhp
-	 Z4f69QyL4SF9ZTg0RIBCDwXjfD8mObXAwdqepl4d8mNMcY/fipXoPbOR/AGo2ix86a
-	 +n4uaWsE9YfJnXR4NHCLaXkTS2tE+L7gA4e8IG2g=
+	b=kwDzfvAyzrKq6vQkTnzkAeKF7FEuoxHLC7H8py7UKvVSWGmTzqDRf4r8VquDdK2Y6
+	 frwQrQKTwJBwIqkO+tLTlcVIX7mHDvledZ4CQ7QusekfZrsX/IGK7+EUp6SGc82Jo0
+	 2E9T+vttHNsRqlX4ZN6mfWrED+o7Q1XWwJ1UO8ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yegor Yefremov <yegorslists@googlemail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 245/507] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
+Subject: [PATCH 6.12 119/354] ARM: dts: am335x-netcom-plus-2xx: add missing GPIO labels
 Date: Tue, 16 Dec 2025 12:11:26 +0100
-Message-ID: <20251216111354.372695964@linuxfoundation.org>
+Message-ID: <20251216111325.236966136@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
+[ Upstream commit d0c4b1723c419a18cb434903c7754954ecb51d35 ]
 
-The bpf_skb_check_mtu helper needs to use skb->transport_header when
-the BPF_MTU_CHK_SEGS flag is used:
+Fixes: 8e9d75fd2ec2 ("ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 2-port devices")
 
-	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
-
-The transport_header is not always set. There is a WARN_ON_ONCE
-report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
-bpf_prog_test_run is used:
-
-WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
- skb_gso_validate_network_len
- bpf_skb_check_mtu
- bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
- bpf_test_run
- bpf_prog_test_run_skb
-
-For a normal ingress skb (not test_run), skb_reset_transport_header
-is performed but there is plan to avoid setting it as described in
-commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
-
-This patch fixes the bpf helper by checking
-skb_transport_header_was_set(). The check is done just before
-skb->transport_header is used, to avoid breaking the existing bpf prog.
-The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
-
-Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Link: https://lore.kernel.org/r/20251007103851.3765678-1-yegorslists@googlemail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b20d5fecdbc95..47366ec94e589 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6414,9 +6414,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
- 	 */
- 	if (skb_is_gso(skb)) {
- 		ret = BPF_MTU_CHK_RET_SUCCESS;
--		if (flags & BPF_MTU_CHK_SEGS &&
--		    !skb_gso_validate_network_len(skb, mtu))
--			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		if (flags & BPF_MTU_CHK_SEGS) {
-+			if (!skb_transport_header_was_set(skb))
-+				return -EINVAL;
-+			if (!skb_gso_validate_network_len(skb, mtu))
-+				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		}
- 	}
- out:
- 	*mtu_len = mtu;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+index f66d57bb685ee..f0519ab301416 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+@@ -222,10 +222,10 @@ &gpio3 {
+ 		"ModeA1",
+ 		"ModeA2",
+ 		"ModeA3",
+-		"NC",
+-		"NC",
+-		"NC",
+-		"NC",
++		"ModeB0",
++		"ModeB1",
++		"ModeB2",
++		"ModeB3",
+ 		"NC",
+ 		"NC",
+ 		"NC",
 -- 
 2.51.0
 
