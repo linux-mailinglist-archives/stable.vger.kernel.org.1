@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57938CC30AD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AE6CC35BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01FC83046BA4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EF3630237BA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BC5359708;
-	Tue, 16 Dec 2025 12:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148EA364051;
+	Tue, 16 Dec 2025 12:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcYlO6i8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot+lzW3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A693596F6;
-	Tue, 16 Dec 2025 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BC8364042;
+	Tue, 16 Dec 2025 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886693; cv=none; b=c9D7X1nBHdMmoyrGLLdzMiIk9n6aNGAuZZjHMCnG/6LvNqaAWhTGaXWz5tYDC6R1aI7XYeFgycSZWVJkg6FuYnj8nFnL7rzMd4vsLIe9kiqvXsftCl5Q1/xzvlvqbhX48DgNWBTdPGddAXELAzq0YDNNfr4ZssZF3SKRcGITyxw=
+	t=1765888568; cv=none; b=cdt477qmAHt9pLX30KtZx8Jbc1vcb4c3zubIBB6obXeECAVFYQaJeBPzr20AewpkROJL/nkR1HUPPoSTedjtbBFyPgjV8cnMRBMbGCVEA9rkl0YnuJTFseQQh2zK0q+gwPjZ1EXphlxAmVC0cwi/7phNxpOu3UD8L1pW6AstTp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886693; c=relaxed/simple;
-	bh=KPrSPBbVcicVVOYT9OeTO0sxqc/OeKEVaGoL9/mzrhg=;
+	s=arc-20240116; t=1765888568; c=relaxed/simple;
+	bh=/9y1G9mD9ZNQ39rpRXBsfwFQmBusJbeTlJ6R1VFZyuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rco6B5Z9jhPtQjl/hHWI6aHnTwVB/5w8YsBdY2PGgfST4wCjqPwVvpYRAFp9LZSBtcHNyW0E0E5p5GHlDvwOvmfrZ0Tf92XykrmZl6BQXCP9y5GyMXVz2P04rmR46jFaRHpsdVXDFOXzQh+WaeoIaWqx6QIyyj+6eeIK8pxIy5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcYlO6i8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF28C4CEF1;
-	Tue, 16 Dec 2025 12:04:53 +0000 (UTC)
+	 MIME-Version; b=tJtKN+TDyS/8fIVbcjGrh7fcFaRaV09pMJjSdFEyRhQk+SViF3lHYU7SwNqLSNVJ8D54IKxu9+bBbD5YT9IpLYvJCaRuIi7M7Y+Q2LrbRMthme7abqxdB+VzqnA4uF+HdwkTFX+v7Tv2DdEaJJ7ZtJ7Sy+mG62ZLUInyDkWPAKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot+lzW3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3738BC4CEF5;
+	Tue, 16 Dec 2025 12:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886693;
-	bh=KPrSPBbVcicVVOYT9OeTO0sxqc/OeKEVaGoL9/mzrhg=;
+	s=korg; t=1765888568;
+	bh=/9y1G9mD9ZNQ39rpRXBsfwFQmBusJbeTlJ6R1VFZyuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcYlO6i87w5/CmA9C3H7WsR5EsesodVJS2BlUQ9opJKo4VLtXOdHcKo7cW+2XKplZ
-	 1tDh1EFAbzTJG/rBLCw8i9evatPuE9JDkzDCo3eYsdt28cVgoqpK96MHcret6lC8xS
-	 2F7iJho4+y+dyEb8nPuaM5dvj5vPagP2A+8Oh3eQ=
+	b=ot+lzW3sq9m0VOOjnz8I0mHv4NE6aUOy+791Rk4d67qEFQZDGN6wB82GfouMA8EiY
+	 IyLzXFwMP97ZnZ5k2UZn960bsbTaiQ6n/4MjcSXN3ibJXosUT0wEQAVDcuWCrE51nd
+	 SBsRYnEoCLYIU8WozfoBuyaZcSQ++fo2t1xA2Ft8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH 6.17 499/507] usb: typec: ucsi: fix probe failure in gaokun_ucsi_probe()
-Date: Tue, 16 Dec 2025 12:15:40 +0100
-Message-ID: <20251216111403.517483210@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 574/614] gpio: tb10x: fix OF_GPIO dependency
+Date: Tue, 16 Dec 2025 12:15:41 +0100
+Message-ID: <20251216111422.181772538@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 6b120ef99fbcba9e413783561f8cc160719db589 upstream.
+[ Upstream commit dd44d4d0c55a4ecf5eabf7856f96ed47e0684780 ]
 
-The gaokun_ucsi_probe() uses ucsi_create() to allocate a UCSI instance.
-The ucsi_create() validates whether ops->poll_cci is defined, and if not,
-it directly returns -EINVAL. However, the gaokun_ucsi_ops structure does
-not define the poll_cci, causing ucsi_create() always fail with -EINVAL.
-This issue can be observed in the kernel log with the following error:
+Selecting OF_GPIO is generally not allowed, it always gets enabled
+when both GPIOLIB and OF are turned on.
 
-ucsi_huawei_gaokun.ucsi huawei_gaokun_ec.ucsi.0: probe with driver
-ucsi_huawei_gaokun.ucsi failed with error -22
+The tb10x driver now warns about this after it was enabled for
+compile-testing:
 
-Fix the issue by adding the missing poll_cci callback to gaokun_ucsi_ops.
+WARNING: unmet direct dependencies detected for OF_GPIO
+  Depends on [n]: GPIOLIB [=y] && OF [=n] && HAS_IOMEM [=y]
+  Selected by [y]:
+  - GPIO_TB10X [=y] && GPIOLIB [=y] && HAS_IOMEM [=y] && (ARC_PLAT_TB10X || COMPILE_TEST [=y])
 
-Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Pengyu Luo <mitltlatltl@gmail.com>
-Link: https://patch.msgid.link/4d077d6439d728be68646bb8c8678436a3a0885e.1764065838.git.duoming@zju.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+OF_GPIO is not required for compile-testing and is already enabled
+when the driver is usable, so just drop the 'select' line.
+
+Fixes: 682fbb18e14c ("gpio: tb10x: allow building the module with COMPILE_TEST=y")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20251205095429.1291866-1-arnd@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-index 7b5222081bbb..8401ab414bd9 100644
---- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-+++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-@@ -196,6 +196,7 @@ static void gaokun_ucsi_connector_status(struct ucsi_connector *con)
- const struct ucsi_operations gaokun_ucsi_ops = {
- 	.read_version = gaokun_ucsi_read_version,
- 	.read_cci = gaokun_ucsi_read_cci,
-+	.poll_cci = gaokun_ucsi_read_cci,
- 	.read_message_in = gaokun_ucsi_read_message_in,
- 	.sync_control = ucsi_sync_control_common,
- 	.async_control = gaokun_ucsi_async_control,
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 7ee3afbc2b05d..e053524c5e35f 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -738,7 +738,6 @@ config GPIO_TB10X
+ 	depends on ARC_PLAT_TB10X || COMPILE_TEST
+ 	select GPIO_GENERIC
+ 	select GENERIC_IRQ_CHIP
+-	select OF_GPIO
+ 
+ config GPIO_TEGRA
+ 	tristate "NVIDIA Tegra GPIO support"
 -- 
-2.52.0
+2.51.0
 
 
 
