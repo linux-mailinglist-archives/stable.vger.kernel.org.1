@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-202007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B77CC4624
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BC5CC30CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C81B30442B8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FB6F30E81C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9B73563D3;
-	Tue, 16 Dec 2025 12:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05283344041;
+	Tue, 16 Dec 2025 12:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6F2ee1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwjRHzBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6605E3563D7;
-	Tue, 16 Dec 2025 12:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAB6396579;
+	Tue, 16 Dec 2025 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886520; cv=none; b=ENJviuC2LiGWR/dB+uT70+mGuSZP0jID7xuTIysbddc+Q5X0WuWsEMtVKyspzLlv7JOokAboccdOQ1BHLfD2B8ia+Q1VRIfOStOLB47tqlEluH6MWqvY1Khoq5bYEicRVoVHrWr0WxBe7w6skHNZZtcYdXyWzQhlxS0oTPU2x/M=
+	t=1765888325; cv=none; b=CWRpf9r59C9XTUIB85xwy9M5V39sI0sTfwWusaRM24B6ugC9U1WA59tnvp3WC+39FU0cfl8ScCmTi8bdcFi9xzJOlPjuGETu0Ylqc6l6UM2DRO1Z0cBcE12UpAVAYxv77pWhwQXkUuLJVOHGI830AYuY0Vr6SPJpaxNUy3nCIe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886520; c=relaxed/simple;
-	bh=b7k8OZRtY5yg9oCssVCDB3/fvqKa45ae9jVK/ziCwVU=;
+	s=arc-20240116; t=1765888325; c=relaxed/simple;
+	bh=F0E8z3YJS7za89WtMyi2ZHrRlSWo61zD/M21UzUw104=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7co+3T2ZR5cZBAKTQn15VpXlQT0ZQlc2i4L2EPrL8r1FUUcUC/DkwqDMwViGql3DVhOMY+HyxgvYtyKdkLdQ0UID2+sg3PvgfFbPkIGof+/1wPJlwHq204lAr2WIqkLNCpIHCRLW+WSsfDMBaQOPahll92nyPs98P7Cg4cGCic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6F2ee1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7194AC4CEF5;
-	Tue, 16 Dec 2025 12:01:58 +0000 (UTC)
+	 MIME-Version; b=HePL37YdaRRVRiCGaQ3cAwqG88/1p96YVYvYyMM03KeZqgBINmTtrHpDa8IxkyFvneeSWrFM4rIFyd9CxOrjruc+v37Jjqx2al2g8DWzmY5IjXomwDHUx9A4NtJgRnQ3AgCnJrdyFpOWt9AUn1x9dFBuDrugRN3G5ZECzkj2rCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwjRHzBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CDAC4CEF1;
+	Tue, 16 Dec 2025 12:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886518;
-	bh=b7k8OZRtY5yg9oCssVCDB3/fvqKa45ae9jVK/ziCwVU=;
+	s=korg; t=1765888325;
+	bh=F0E8z3YJS7za89WtMyi2ZHrRlSWo61zD/M21UzUw104=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6F2ee1n9WJ+diNck+zlTdhnJMrAmH/G7SB2MmkkTtmUt409kLEtsmvX+fLZXqAvz
-	 uhHeiOO3NJ2c2Ki3wFTx5Soy0AHmmwJsKhskMupejcrz++Aa1vlNkThbqj45x6H1H6
-	 K9fQ3ubigBZn6d7atYOzr+An9fBDi/hnLxzh9XaI=
+	b=BwjRHzBSrjwfPm7KOrzdRSxhBpsdJ7D2vgisduC/0lCwzA4XhCGhw1nl8seDQsrkY
+	 BlhgLhr2DgeMV5W//f+pdIQKHF1qFnybPkec1uYcAxK7vEXxJ7eB5g3iHxy5kd3hNl
+	 CE7ZJS3ubtkOOxjHhOYsY5ch1MOY+71sAOUHlXxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 427/507] perf tools: Mark split kallsyms DSOs as loaded
+Subject: [PATCH 6.18 501/614] smb: smbdirect: introduce SMBDIRECT_DEBUG_ERR_PTR() helper
 Date: Tue, 16 Dec 2025 12:14:28 +0100
-Message-ID: <20251216111400.931059745@linuxfoundation.org>
+Message-ID: <20251216111419.521874013@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +67,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 7da4d60db33cccd8f4c445ab20bba71531435ee5 ]
+[ Upstream commit 1f3fd108c5c5a9885c6c276a2489c49b60a6b90d ]
 
-The maps__split_kallsyms() will split symbols to module DSOs if it comes
-from a module.  It also handled some unusual kernel symbols after modules
-by creating new kernel maps like "[kernel].0".
+This can be used like this:
 
-But they are pseudo DSOs to have those unexpected symbols.  They should
-not be considered as unloaded kernel DSOs.  Otherwise the dso__load()
-for them will end up calling dso__load_kallsyms() and then
-maps__split_kallsyms() again and again.
+  int err = somefunc();
+  pr_warn("err=%1pe\n", SMBDIRECT_DEBUG_ERR_PTR(err));
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+This will be used in the following fixes in order
+to be prepared to identify real world problems
+more easily.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 425c32750b48 ("smb: server: relax WARN_ON_ONCE(SMBDIRECT_SOCKET_*) checks in recv_done() and smb_direct_cm_handler()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/common/smbdirect/smbdirect_socket.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 3fed54de54016..93c81c65b6c40 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -967,6 +967,7 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
- 				return -1;
+diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
+index ee5a90d691c89..611986827a5e2 100644
+--- a/fs/smb/common/smbdirect/smbdirect_socket.h
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -74,6 +74,19 @@ const char *smbdirect_socket_status_string(enum smbdirect_socket_status status)
+ 	return "<unknown>";
+ }
  
- 			dso__set_kernel(ndso, dso__kernel(dso));
-+			dso__set_loaded(ndso);
- 
- 			curr_map = map__new2(pos->start, ndso);
- 			if (curr_map == NULL) {
++/*
++ * This can be used with %1pe to print errors as strings or '0'
++ * And it avoids warnings like: warn: passing zero to 'ERR_PTR'
++ * from smatch -p=kernel --pedantic
++ */
++static __always_inline
++const void * __must_check SMBDIRECT_DEBUG_ERR_PTR(long error)
++{
++	if (error == 0)
++		return NULL;
++	return ERR_PTR(error);
++}
++
+ enum smbdirect_keepalive_status {
+ 	SMBDIRECT_KEEPALIVE_NONE,
+ 	SMBDIRECT_KEEPALIVE_PENDING,
 -- 
 2.51.0
 
