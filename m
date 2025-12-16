@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EA1CC2659
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0504DCC2F26
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4EA30A7A17
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F29E323BAFC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE155342C8F;
-	Tue, 16 Dec 2025 11:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DE233A6EF;
+	Tue, 16 Dec 2025 12:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxtdUXbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv0eLGPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865E341648;
-	Tue, 16 Dec 2025 11:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5F62DAFB0;
+	Tue, 16 Dec 2025 12:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884815; cv=none; b=YZpDMvCXM3ZFGu8mCyAkcklp6xn/h0FBSsIyKnPqTLwkgoKLXq3/u6U7s6KolgNySVZ0p7JBUUAUPslK3++SlTiseKfY7IORXidTfoSmwX1gDDHM1AETfES7laxKJjemEV6lahGmoLsTPcBeuMqNwfOlK2gOZg8IPLrIZq5OhvA=
+	t=1765886425; cv=none; b=FPn1cWjT4sbpI5KgjKxWlgSvgFujA2nXTwTJhZ3Oln5rUOPGCqcinRoovjyslKY9re5uAXHBfpQN8tzGq1LnsPIpMaTbJjj+k76DPOA8LjL6YKpn/CrV7ckXzXxZQBIV34cet53pIDnVHemlBwAOfS+OoeNaEfRzraAFou4u5RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884815; c=relaxed/simple;
-	bh=pCoxKBFY1ccyDQwbi/XcGuxrx/xB8ogtEARbPUdn1dU=;
+	s=arc-20240116; t=1765886425; c=relaxed/simple;
+	bh=tmliHKG+Atnpj1IfhKH/DnJUEk9m5F71Zs/wt0uiZGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/X7OFS/74HAyk8WL7YEcXlCUs2H5WMnQ3phZFeEYursi5JDm0uJ1CWdOyH/6ygFT98ry6oUeYcKJQMz8wQb3///Pcvk+m56M96Q1dZIzk4T/jfQiSSVhuh/6HKQdObBDiTpOuseFDIKs9DcrRh7qQkjGqRBsP5kBt3PZECoSkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxtdUXbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91F3C4CEF1;
-	Tue, 16 Dec 2025 11:33:34 +0000 (UTC)
+	 MIME-Version; b=c9KVFa72B/jvGVaaz5fiV+AjLxfc+EvNuXOGsIau0X/E/ujbANJMMl1SIb6PgFInyhXLkHMrI1GArNIbTtOdfSxSmHqXWwM8z/gEqPiaHeIMcIVDjEji3WIarxkmoaFQNZdaFUjlvRNE0QBkXDLHQPcvMu5mJoAwt8SiDDTOgtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv0eLGPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEA1C4CEF1;
+	Tue, 16 Dec 2025 12:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884815;
-	bh=pCoxKBFY1ccyDQwbi/XcGuxrx/xB8ogtEARbPUdn1dU=;
+	s=korg; t=1765886424;
+	bh=tmliHKG+Atnpj1IfhKH/DnJUEk9m5F71Zs/wt0uiZGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxtdUXbHN2e0nKpUCZyUcL11C5wxZoTPUkmpQ8G/+fRA+rINMpZK1zO9eFy+9UkjZ
-	 Wh8O8+qDJbZOqKxlNzUnXCOZK5gFijr/yVWR7jadx8wXRhARJSAzu74wmBhzmh+U45
-	 HnEIFBaKkLOk+RSPKCHoPlUjFwVKx0KNnl4xUX7A=
+	b=zv0eLGPjNfTeGpCedaf2cqt5fr511Khf4T6Y5DUZVuT8UO44suoHIb7skZq5LXLLN
+	 N/8TwKl4BSa27qTgn2+FdhWNQwPs3wtt47BG2svwAkT/OCG8tf8qQqC2zyISyHsZYg
+	 V0BkjrC2J2lVNcTvsDies0svqYJdxGdi3nrASObo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stoler <michael.stoler@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	xupengbo <xupengbo@oppo.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/354] NFS: Initialise verifiers for visible dentries in _nfs4_open_and_get_state
+Subject: [PATCH 6.17 433/507] sched/fair: Fix unfairness caused by stalled tg_load_avg_contrib when the last task migrates out
 Date: Tue, 16 Dec 2025 12:14:34 +0100
-Message-ID: <20251216111332.034824571@linuxfoundation.org>
+Message-ID: <20251216111401.145992602@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: xupengbo <xupengbo@oppo.com>
 
-[ Upstream commit 0f900f11002ff52391fc2aa4a75e59f26ed1c242 ]
+[ Upstream commit ca125231dd29fc0678dd3622e9cdea80a51dffe4 ]
 
-Ensure that the verifiers are initialised before calling
-d_splice_alias() in _nfs4_open_and_get_state().
+When a task is migrated out, there is a probability that the tg->load_avg
+value will become abnormal. The reason is as follows:
 
-Reported-by: Michael Stoler <michael.stoler@vastdata.com>
-Fixes: cf5b4059ba71 ("NFSv4: Fix races between open and dentry revalidation")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+1. Due to the 1ms update period limitation in update_tg_load_avg(), there
+   is a possibility that the reduced load_avg is not updated to tg->load_avg
+   when a task migrates out.
+
+2. Even though __update_blocked_fair() traverses the leaf_cfs_rq_list and
+   calls update_tg_load_avg() for cfs_rqs that are not fully decayed, the key
+   function cfs_rq_is_decayed() does not check whether
+   cfs->tg_load_avg_contrib is null. Consequently, in some cases,
+   __update_blocked_fair() removes cfs_rqs whose avg.load_avg has not been
+   updated to tg->load_avg.
+
+Add a check of cfs_rq->tg_load_avg_contrib in cfs_rq_is_decayed(),
+which fixes the case (2.) mentioned above.
+
+Fixes: 1528c661c24b ("sched/fair: Ratelimit update to tg->load_avg")
+Signed-off-by: xupengbo <xupengbo@oppo.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Aaron Lu <ziqianlu@bytedance.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Aaron Lu <ziqianlu@bytedance.com>
+Link: https://patch.msgid.link/20250827022208.14487-1-xupengbo@oppo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ kernel/sched/fair.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 7fe71aaa18666..172ff213b50b6 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3148,18 +3148,6 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
- 	if (opendata->o_res.rflags & NFS4_OPEN_RESULT_PRESERVE_UNLINKED)
- 		set_bit(NFS_INO_PRESERVE_UNLINKED, &NFS_I(state->inode)->flags);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 35b98cad06515..434df3fb6c443 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4062,6 +4062,9 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
+ 	if (child_cfs_rq_on_list(cfs_rq))
+ 		return false;
  
--	dentry = opendata->dentry;
--	if (d_really_is_negative(dentry)) {
--		struct dentry *alias;
--		d_drop(dentry);
--		alias = d_splice_alias(igrab(state->inode), dentry);
--		/* d_splice_alias() can't fail here - it's a non-directory */
--		if (alias) {
--			dput(ctx->dentry);
--			ctx->dentry = dentry = alias;
--		}
--	}
--
- 	switch(opendata->o_arg.claim) {
- 	default:
- 		break;
-@@ -3170,7 +3158,20 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
- 			break;
- 		if (opendata->o_res.delegation.type != 0)
- 			dir_verifier = nfs_save_change_attribute(dir);
--		nfs_set_verifier(dentry, dir_verifier);
-+	}
++	if (cfs_rq->tg_load_avg_contrib)
++		return false;
 +
-+	dentry = opendata->dentry;
-+	nfs_set_verifier(dentry, dir_verifier);
-+	if (d_really_is_negative(dentry)) {
-+		struct dentry *alias;
-+		d_drop(dentry);
-+		alias = d_splice_alias(igrab(state->inode), dentry);
-+		/* d_splice_alias() can't fail here - it's a non-directory */
-+		if (alias) {
-+			dput(ctx->dentry);
-+			nfs_set_verifier(alias, dir_verifier);
-+			ctx->dentry = dentry = alias;
-+		}
- 	}
+ 	return true;
+ }
  
- 	/* Parse layoutget results before we check for access */
 -- 
 2.51.0
 
