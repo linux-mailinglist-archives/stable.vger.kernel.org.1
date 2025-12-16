@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A61CC3ACA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83566CC21CA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41615300C8C0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49EDE30073D2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750AE34E762;
-	Tue, 16 Dec 2025 11:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6A633DED4;
+	Tue, 16 Dec 2025 11:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KqT8Opy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J27+QQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C2A34E75D;
-	Tue, 16 Dec 2025 11:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA973233EE;
+	Tue, 16 Dec 2025 11:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885603; cv=none; b=QAdCglrOuAwAbyVGovyh9G8z/RE7+t3m7HWUkR8bpooSnDbc9RoS1B/femQl6GtBgx7gfEwBYszlqvMeP4G4/tzGoWkucscWNtT2QlFdnEyEupZ0IlaohskO8hnxCIukqZ/99yrliIJoopDkwFmIKuqt/gScbPhjasLqAO8/sb0=
+	t=1765883942; cv=none; b=LdGOw8zY8M3z32bk8vwweJfcqcUgmOW3zwQjgbzbDRF0wvV+Maf9j7alGbylaAd2FduNrK9x0Ih+Kc7e4N0YAaucoMTnsntsynO3fTcAdp3MsmNKaQ98YTKVJFKhL9rmuaeXxKpBzMPFTcpZCZDcT/K0moZZ6yl9U5+uBAtm7E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885603; c=relaxed/simple;
-	bh=S5w4xo/ogjz52YSVSfBC2K0YGxM+jz8mv6ou7UGDqhY=;
+	s=arc-20240116; t=1765883942; c=relaxed/simple;
+	bh=5p0U9E2s4neOpmsmBhSNrI7fGmfRpJBYSe9GnRxDB14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXuRgcnn/IpCeodt4mLLIGPybt7lBf4dD57iRVbb0o6FeSOtpOy1uKfgxiia0ynMpyvcsN34oyE73BIQ0bvlKN2PlT9e4lqaX6uO9m7O8h7AYdQa/k9T/dJzkt+XaNQEuXuFJdV2jm18mbF0e9o9wMTSpX7hIiKDT7bSgdoZVEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KqT8Opy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8799C4CEF1;
-	Tue, 16 Dec 2025 11:46:42 +0000 (UTC)
+	 MIME-Version; b=Ro65EJYF2zY8K9H/5tZ2fTfdhKZ1/Eh5H4ViaXanKJCIRjg6JWe/lC6CpHPetxaeVeyhYLk5r3oeOzh38nW4/2EaeszVkFyEq4F95j5Bs93dVQ04icKLvcQ+VjBULEIHiVZh57SwKbVoTPb1HMDTJXChKAooRFQfbxV1RGfO+7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J27+QQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EC5C4CEF1;
+	Tue, 16 Dec 2025 11:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885603;
-	bh=S5w4xo/ogjz52YSVSfBC2K0YGxM+jz8mv6ou7UGDqhY=;
+	s=korg; t=1765883942;
+	bh=5p0U9E2s4neOpmsmBhSNrI7fGmfRpJBYSe9GnRxDB14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KqT8Opy9s8bJ7TdJ10gYEyEQ7bpykQSL1Y4PuaYiAj05h41NDfAETOMmSzxXtxCa
-	 VllkjbGn6rDWcFY+cwq2cXI1NUIThogYRJI1K/j6/9H1PRGf8OretR+iYaRuDqus+r
-	 G0pWpoNpgKwS/WAQ5Uhdh1bcqRNGIpx7Qn+FmV4g=
+	b=1J27+QQEVQsRD+uuNjvJmN3o1V3G1Hof8YXoOXq4q8+iB2cXjMGqA/+BjWVJKAvnO
+	 tc2YUGUKd80TnL7cI0ILgijjdLVe8lHfkVM/OwEw1Ai4qvNzkeBgVVweSBAYEmcLic
+	 UrAmEEF+2FUZhN73id4GSmgnSoNSbSXpf9bvHlYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 171/507] libbpf: Fix parsing of multi-split BTF
+Subject: [PATCH 6.12 045/354] inet: Avoid ehash lookup race in inet_twsk_hashdance_schedule()
 Date: Tue, 16 Dec 2025 12:10:12 +0100
-Message-ID: <20251216111351.713300006@linuxfoundation.org>
+Message-ID: <20251216111322.548366513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit 4f596acc260e691a2e348f64230392f3472feea3 ]
+[ Upstream commit b8ec80b130211e7bf076ef72365952979d5f7a72 ]
 
-When creating multi-split BTF we correctly set the start string offset
-to be the size of the base string section plus the base BTF start
-string offset; the latter is needed for multi-split BTF since the
-offset is non-zero there.
+Since ehash lookups are lockless, if another CPU is converting sk to tw
+concurrently, fetching the newly inserted tw with tw->tw_refcnt == 0 cause
+lookup failure.
 
-Unfortunately the BTF parsing case needed that logic and it was
-missed.
+The call trace map is drawn as follows:
+   CPU 0                                CPU 1
+   -----                                -----
+				     inet_twsk_hashdance_schedule()
+				     spin_lock()
+				     inet_twsk_add_node_rcu(tw, ...)
+__inet_lookup_established()
+(find tw, failure due to tw_refcnt = 0)
+				     __sk_nulls_del_node_init_rcu(sk)
+				     refcount_set(&tw->tw_refcnt, 3)
+				     spin_unlock()
 
-Fixes: 4e29128a9ace ("libbpf/btf: Fix string handling to support multi-split BTF")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20251104203309.318429-2-alan.maguire@oracle.com
+By replacing sk with tw atomically via hlist_nulls_replace_init_rcu() after
+setting tw_refcnt, we ensure that tw is either fully initialized or not
+visible to other CPUs, eliminating the race.
+
+It's worth noting that we held lock_sock() before the replacement, so
+there's no need to check if sk is hashed. Thanks to Kuniyuki Iwashima!
+
+Fixes: 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use RCU / hlist_nulls")
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251015020236.431822-4-xuanqiang.luo@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/inet_timewait_sock.c | 35 ++++++++++++-----------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index 37682908cb0f3..ea9f3311bbac6 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -1062,7 +1062,7 @@ static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf, b
- 	if (base_btf) {
- 		btf->base_btf = base_btf;
- 		btf->start_id = btf__type_cnt(base_btf);
--		btf->start_str_off = base_btf->hdr->str_len;
-+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
- 	}
- 
- 	if (is_mmap) {
-@@ -5819,7 +5819,7 @@ void btf_set_base_btf(struct btf *btf, const struct btf *base_btf)
- {
- 	btf->base_btf = (struct btf *)base_btf;
- 	btf->start_id = btf__type_cnt(base_btf);
--	btf->start_str_off = base_btf->hdr->str_len;
-+	btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index 337390ba85b40..74b84ac418e93 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -86,12 +86,6 @@ void inet_twsk_put(struct inet_timewait_sock *tw)
  }
+ EXPORT_SYMBOL_GPL(inet_twsk_put);
  
- int btf__relocate(struct btf *btf, const struct btf *base_btf)
+-static void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
+-				   struct hlist_nulls_head *list)
+-{
+-	hlist_nulls_add_head_rcu(&tw->tw_node, list);
+-}
+-
+ static void inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo)
+ {
+ 	__inet_twsk_schedule(tw, timeo, false);
+@@ -111,13 +105,12 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
+ {
+ 	const struct inet_sock *inet = inet_sk(sk);
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	struct inet_ehash_bucket *ehead = inet_ehash_bucket(hashinfo, sk->sk_hash);
+ 	spinlock_t *lock = inet_ehash_lockp(hashinfo, sk->sk_hash);
+ 	struct inet_bind_hashbucket *bhead, *bhead2;
+ 
+-	/* Step 1: Put TW into bind hash. Original socket stays there too.
+-	   Note, that any socket with inet->num != 0 MUST be bound in
+-	   binding cache, even if it is closed.
++	/* Put TW into bind hash. Original socket stays there too.
++	 * Note, that any socket with inet->num != 0 MUST be bound in
++	 * binding cache, even if it is closed.
+ 	 */
+ 	bhead = &hashinfo->bhash[inet_bhashfn(twsk_net(tw), inet->inet_num,
+ 			hashinfo->bhash_size)];
+@@ -139,19 +132,6 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
+ 
+ 	spin_lock(lock);
+ 
+-	/* Step 2: Hash TW into tcp ehash chain */
+-	inet_twsk_add_node_rcu(tw, &ehead->chain);
+-
+-	/* Step 3: Remove SK from hash chain */
+-	if (__sk_nulls_del_node_init_rcu(sk))
+-		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+-
+-
+-	/* Ensure above writes are committed into memory before updating the
+-	 * refcount.
+-	 * Provides ordering vs later refcount_inc().
+-	 */
+-	smp_wmb();
+ 	/* tw_refcnt is set to 3 because we have :
+ 	 * - one reference for bhash chain.
+ 	 * - one reference for ehash chain.
+@@ -161,6 +141,15 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
+ 	 */
+ 	refcount_set(&tw->tw_refcnt, 3);
+ 
++	/* Ensure tw_refcnt has been set before tw is published.
++	 * smp_wmb() provides the necessary memory barrier to enforce this
++	 * ordering.
++	 */
++	smp_wmb();
++
++	hlist_nulls_replace_init_rcu(&sk->sk_nulls_node, &tw->tw_node);
++	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++
+ 	inet_twsk_schedule(tw, timeo);
+ 
+ 	spin_unlock(lock);
 -- 
 2.51.0
 
