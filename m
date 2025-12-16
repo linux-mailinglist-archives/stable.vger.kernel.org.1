@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-202591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701F8CC3013
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D08CC2505
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 666E232347D2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB2B930216A7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95202397D02;
-	Tue, 16 Dec 2025 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3CA344038;
+	Tue, 16 Dec 2025 11:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u++qQF+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yO4UtYPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509CC396DD7;
-	Tue, 16 Dec 2025 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9B0344041;
+	Tue, 16 Dec 2025 11:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888394; cv=none; b=VPB2/BaJq5GuDjr6dVpklndPcz5nxzxvvp6uSlwHfFcJYVE9w8OyxKPLBftB+wajfu56xKXHdNBDaRgwXtRhlBV8cKkazNm/AdZtG+Yi6edbV6aWqMqY5MT2AXz22fRNzNA8/Mxd6Ys8Bk4g8Oain9nB0OGQA6i80GV6sLAtyvQ=
+	t=1765884968; cv=none; b=ullmY5UR8nFzGoSGteqcW0LyysCvBkBU6zpU/hc8Eld+j+Nf3Q5D4+PDEzaozjvmvSGBEEP8+402WVf95qQI82l0DqE3t3dfhqO/iMjjeP3RzrUqZdtaYp4sRd6c6zMHuGD8OYhfzLuGIw4ojKfLqa1QwFG4G7mfOBuauMOsD50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888394; c=relaxed/simple;
-	bh=8Qvl/OWRxtm9+YXx2dcih/9wM8VeBmBa1CpNjbRNP+c=;
+	s=arc-20240116; t=1765884968; c=relaxed/simple;
+	bh=+wK3HiCl/Jey9SICwOAES0jnPmyXpV6ahorTY7U8QN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m81aG8SaoW+RqMBsukEke3pn9YYT3sYi4JxcQDsklEf6ZcBeaLbY2aKIeiyVdddWJ0CVLLMfx7YO/pvIHkl1aRlDqxBxY+9Aa2KkcuplhI0PP8BgH5paus1x8VEeIk/hk6UjVYJ7If7bl4wg9aMUUrGa5tlMsSE1VEB3PD/VS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u++qQF+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACC7C4CEF1;
-	Tue, 16 Dec 2025 12:33:13 +0000 (UTC)
+	 MIME-Version; b=elLYosjBgVg+BryEfGQvKA3xPFwanDOcgQDYLpJRIiPdrrkHCMlFcr/sOf7LM9AoPParW9Y56Z35LkWRGPfv6xUPAtiLSOa19ddQB5clWB9J+tFKUkCYEtU1A8tfHDa3hN3S5PwNLqB7GDSki4GrJ1hePu5jTUR0Q8TOVc5Kuv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yO4UtYPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F48C4CEF1;
+	Tue, 16 Dec 2025 11:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888394;
-	bh=8Qvl/OWRxtm9+YXx2dcih/9wM8VeBmBa1CpNjbRNP+c=;
+	s=korg; t=1765884968;
+	bh=+wK3HiCl/Jey9SICwOAES0jnPmyXpV6ahorTY7U8QN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u++qQF+JAlklrwWGUvb3xObB5kgZYWyssCns2cevyM5KmFGPguIVJ2ZjoUwrUYH5A
-	 uSDzB+y1fUk+pCZAZe1DHtvHNnYK+dHdvMOVJbedfbuMuWNVi9nLb+IgorGPyXQQHp
-	 CqV+l64TYGyfoCEmI97we5jjeY5z0Wo9PDsac3NQ=
+	b=yO4UtYPaOTOWu11kTsOD0vq8m0pva5rsn96Hhij3h/Bz19cOlUlt2lM/aX4stiRGN
+	 FBzNzja3sLvVLASORyI4n5gBPTMpt+nJhSS6Lnc6SwcZGt1Rc6MhuGEs+CojGH/uB1
+	 5lDYmwnT7E2tlc1SV/+4hiSOz7nwyTMCzaY2NxrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lukasz Majewski <lukma@denx.de>,
-	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cong Zhang <cong.zhang@oss.qualcomm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 520/614] net: hsr: create an API to get hsr port type
+Subject: [PATCH 6.12 320/354] blk-mq: Abort suspend when wakeup events are pending
 Date: Tue, 16 Dec 2025 12:14:47 +0100
-Message-ID: <20251216111420.212006832@linuxfoundation.org>
+Message-ID: <20251216111332.503841906@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +58,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+From: Cong Zhang <cong.zhang@oss.qualcomm.com>
 
-[ Upstream commit a0244e76213980f3b9bb5d40b0b6705fcf24230d ]
+[ Upstream commit c196bf43d706592d8801a7513603765080e495fb ]
 
-Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1 ("net:
-hsr: Provide RedBox support (HSR-SAN)"), we see that different port
-types require different settings for hardware offload, which was not the
-case before when we only had HSR_PT_SLAVE_A and HSR_PT_SLAVE_B. But
-there is currently no way to know which port is which type, so create
-the hsr_get_port_type() API function and export it.
+During system suspend, wakeup capable IRQs for block device can be
+delayed, which can cause blk_mq_hctx_notify_offline() to hang
+indefinitely while waiting for pending request to complete.
+Skip the request waiting loop and abort suspend when wakeup events are
+pending to prevent the deadlock.
 
-When hsr_get_port_type() is called from the device driver, the port can
-must be found in the HSR port list. An important use case is for this
-function to work from offloading drivers' NETDEV_CHANGEUPPER handler,
-which is triggered by hsr_portdev_setup() -> netdev_master_upper_dev_link().
-Therefore, we need to move the addition of the hsr_port to the HSR port
-list prior to calling hsr_portdev_setup(). This makes the error
-restoration path also more similar to hsr_del_port(), where
-kfree_rcu(port) is already used.
-
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Lukasz Majewski <lukma@denx.de>
-Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
-Link: https://patch.msgid.link/20251130131657.65080-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
+Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
+Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_hsr.h |  9 +++++++++
- net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
- net/hsr/hsr_slave.c    |  7 ++++---
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ block/blk-mq.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index d7941fd880329..f4cf2dd36d193 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
- struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- 				     enum hsr_port_type pt);
-+int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+		      enum hsr_port_type *type);
- #else
- static inline bool is_hsr_master(struct net_device *dev)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index e1bca29dc358b..9115419d33ed9 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -23,6 +23,7 @@
+ #include <linux/cache.h>
+ #include <linux/sched/topology.h>
+ #include <linux/sched/signal.h>
++#include <linux/suspend.h>
+ #include <linux/delay.h>
+ #include <linux/crash_dump.h>
+ #include <linux/prefetch.h>
+@@ -3655,6 +3656,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
  {
-@@ -59,6 +61,13 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- {
- 	return ERR_PTR(-EINVAL);
- }
-+
-+static inline int hsr_get_port_type(struct net_device *hsr_dev,
-+				    struct net_device *dev,
-+				    enum hsr_port_type *type)
-+{
-+	return -EINVAL;
-+}
- #endif /* CONFIG_HSR */
+ 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
+ 			struct blk_mq_hw_ctx, cpuhp_online);
++	int ret = 0;
  
- #endif /*_LINUX_IF_HSR_H_*/
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 492cbc78ab75a..d1bfc49b5f017 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -690,6 +690,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- }
- EXPORT_SYMBOL(hsr_get_port_ndev);
- 
-+int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+		      enum hsr_port_type *type)
-+{
-+	struct hsr_priv *hsr = netdev_priv(hsr_dev);
-+	struct hsr_port *port;
-+
-+	rcu_read_lock();
-+	hsr_for_each_port(hsr, port) {
-+		if (port->dev == dev) {
-+			*type = port->type;
-+			rcu_read_unlock();
-+			return 0;
+ 	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
+ 		return 0;
+@@ -3675,12 +3677,24 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ 	 * frozen and there are no requests.
+ 	 */
+ 	if (percpu_ref_tryget(&hctx->queue->q_usage_counter)) {
+-		while (blk_mq_hctx_has_requests(hctx))
++		while (blk_mq_hctx_has_requests(hctx)) {
++			/*
++			 * The wakeup capable IRQ handler of block device is
++			 * not called during suspend. Skip the loop by checking
++			 * pm_wakeup_pending to prevent the deadlock and improve
++			 * suspend latency.
++			 */
++			if (pm_wakeup_pending()) {
++				clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
++				ret = -EBUSY;
++				break;
++			}
+ 			msleep(5);
 +		}
-+	}
-+	rcu_read_unlock();
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(hsr_get_port_type);
-+
- /* Default multicast address for HSR Supervision frames */
- static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
- 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 8177ac6c2d26d..afe06ba00ea44 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -207,14 +207,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	port->type = type;
- 	ether_addr_copy(port->original_macaddress, dev->dev_addr);
- 
-+	list_add_tail_rcu(&port->port_list, &hsr->ports);
-+
- 	if (type != HSR_PT_MASTER) {
- 		res = hsr_portdev_setup(hsr, dev, port, extack);
- 		if (res)
- 			goto fail_dev_setup;
+ 		percpu_ref_put(&hctx->queue->q_usage_counter);
  	}
  
--	list_add_tail_rcu(&port->port_list, &hsr->ports);
--
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	netdev_update_features(master->dev);
- 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
-@@ -222,7 +222,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	return 0;
- 
- fail_dev_setup:
--	kfree(port);
-+	list_del_rcu(&port->port_list);
-+	kfree_rcu(port, rcu);
- 	return res;
+-	return 0;
++	return ret;
  }
  
+ /*
 -- 
 2.51.0
 
