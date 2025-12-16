@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D557CCC2EF9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773BBCC3708
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C9603042ACC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDD06303D9FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E30434FF58;
-	Tue, 16 Dec 2025 12:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711135771B;
+	Tue, 16 Dec 2025 12:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bK50gAvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr0i56SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A372266B6B;
-	Tue, 16 Dec 2025 12:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5813570B0;
+	Tue, 16 Dec 2025 12:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888479; cv=none; b=L2DUFUABTG92k1w25MwKFeXyT32eHpdOs7dP1yFMjZKidlOtNp/yrWW6gUSOvVLm1VYUcbQtq3wOIfOSuqHKW33KiivY+3C1VtzTHK7GmzHHaRnPOznBypWPjXDYDVv3GxKB4FYVbYMx4tU/lCY3xrQIT7jiOSq6mEyAmdRx97k=
+	t=1765886556; cv=none; b=lxf4KuNO0aumnuFNDhOYUoT+uHcxJ5z3Vrsn+QdS26mBieh3uDJn1+B5aEM5n7LmBhEC4wMKAlRUptFz47Rdcu49qqMDQDH9l/vxuaIfZMPFo6O4JIAK+86qbiZT8gNwxjAWVQgzncrhqGnaEn/pry1wJIQwOiFNOZRqOWnZizk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888479; c=relaxed/simple;
-	bh=Ez9qjHFSGntU3OwXy49vNKoNnrNZfUatPyeV/KBgCXY=;
+	s=arc-20240116; t=1765886556; c=relaxed/simple;
+	bh=Cb6GkD7mCr5uzxCdhRbY/ZxliOkGzjumHmw9ii9xzAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJABuz/4y1QguvUXUCsxSAxR+FfZI0fz4kUc2AY5UFhqkfIIu0Us8F7gd9E2ZCDhtduet3A4vd4BKwO8YcdP8pw938EHwqwQBz8aGA4wwoa40QJRiCilHblKRYx/4aNQgU//+lp4N23pyQ+w7jJQmpLCztOi8iO2IxoCOAjICqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK50gAvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F36AC4CEF1;
-	Tue, 16 Dec 2025 12:34:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BY59gG9MWeXdmLGcbrzBvw6ke4K/1061SIRntnyNlyfOq9ZAhqd9i7FWl7BhQ7HrluVKHmLnUKWofXk3EW7BE7xLD9VVXV4qmQ38AYCNRTDiZjrO+/KSa+j2LNI89Iuvhnsmg+9f2UxbSTYgxaM/3g9a6CO6XXxB6jaHDS6KcoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr0i56SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D6DC4CEF1;
+	Tue, 16 Dec 2025 12:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888479;
-	bh=Ez9qjHFSGntU3OwXy49vNKoNnrNZfUatPyeV/KBgCXY=;
+	s=korg; t=1765886555;
+	bh=Cb6GkD7mCr5uzxCdhRbY/ZxliOkGzjumHmw9ii9xzAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bK50gAvKZYSl4z6bO4uq0AOlm1L++s0QKVDNLvbtAMZlLiVC1VS5U8IOLoGFKGpg5
-	 w4klR9wIfG2zUYZJ8jgOZeY6ZqTqPwjXthWn9FuZ4FyxvBcOrejeUydUoDT/YKxc2I
-	 qDB4rGkINd+WgeDadw6hIJcl/B1rzgnrPR/I+cUM=
+	b=vr0i56SRnqoCBRyevJ25WLEmaUSIOcU7t7XAGCxULxAWr1svWHgWMOOjqwC4MT3PU
+	 1Lrztc4pBkVPyPVpJjG93jfXQOHE0TD7FQtofab+RxIsWoFdbC60Jr6sYi2WkO7yGv
+	 5yLoO0NUWO4hvdPQzp4HB/pfh1iIZbZVdw4m6xJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Akash Goel <akash.goel@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Michael Opdenacker <michael.opdenacker@rootcommit.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 546/614] drm/panthor: Prevent potential UAF in group creation
+Subject: [PATCH 6.17 472/507] i2c: spacemit: fix detect issue
 Date: Tue, 16 Dec 2025 12:15:13 +0100
-Message-ID: <20251216111421.162590606@linuxfoundation.org>
+Message-ID: <20251216111402.543925448@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akash Goel <akash.goel@arm.com>
+From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
 
-[ Upstream commit eec7e23d848d2194dd8791fcd0f4a54d4378eecd ]
+[ Upstream commit 25faa5364638b86ec0d0edb4486daa9d40a0be8f ]
 
-This commit prevents the possibility of a use after free issue in the
-GROUP_CREATE ioctl function, which arose as pointer to the group is
-accessed in that ioctl function after storing it in the Xarray.
-A malicious userspace can second guess the handle of a group and try
-to call GROUP_DESTROY ioctl from another thread around the same time
-as GROUP_CREATE ioctl.
+This commit addresses two issues causing i2c detect to fail.
 
-To prevent the use after free exploit, this commit uses a mark on an
-entry of group pool Xarray which is added just before returning from
-the GROUP_CREATE ioctl function. The mark is checked for all ioctls
-that specify the group handle and so userspace won't be abe to delete
-a group that isn't marked yet.
+The identified issues are:
 
-v2: Add R-bs and fixes tags
+1. Incorrect error handling for BED (Bus Error No ACK/NAK):
+   Before this commit, Both ALD (Arbitration Loss Detected) and
+   BED returned -EAGAIN.
+2. Missing interrupt status clear after initialization in xfer():
+   On the K1 SoC, simply fixing the first issue changed the error
+   from -EAGAIN to -ETIMEOUT. Through tracing, it was determined that
+   this is likely due to MSD (Master Stop Detected) latency issues.
 
-Fixes: de85488138247 ("drm/panthor: Add the scheduler logical block")
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Akash Goel <akash.goel@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
-Link: https://patch.msgid.link/20251127164912.3788155-1-akash.goel@arm.com
+   That means the MSD bit in the ISR may still be set on the next transfer.
+   As a result, the controller won't work — we can see from the scope that
+   it doesn't issue any signal.
+   (This only occurs during rapid consecutive I2C transfers.
+   That explains why the issue only shows up with i2cdetect.)
+
+With these two fixes, i2c device detection now functions correctly on the K1 SoC.
+
+Fixes: 5ea558473fa31 ("i2c: spacemit: add support for SpacemiT K1 SoC")
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Tested-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20251113-fix-k1-detect-failure-v2-1-b02a9a74f65a@linux.spacemit.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-k1.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 0279e19aadae9..881a07ffbabc8 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -772,6 +772,12 @@ struct panthor_job_profiling_data {
-  */
- #define MAX_GROUPS_PER_POOL 128
+diff --git a/drivers/i2c/busses/i2c-k1.c b/drivers/i2c/busses/i2c-k1.c
+index 6b918770e612e..d42c03ef5db59 100644
+--- a/drivers/i2c/busses/i2c-k1.c
++++ b/drivers/i2c/busses/i2c-k1.c
+@@ -158,11 +158,16 @@ static int spacemit_i2c_handle_err(struct spacemit_i2c_dev *i2c)
+ {
+ 	dev_dbg(i2c->dev, "i2c error status: 0x%08x\n", i2c->status);
  
-+/*
-+ * Mark added on an entry of group pool Xarray to identify if the group has
-+ * been fully initialized and can be accessed elsewhere in the driver code.
-+ */
-+#define GROUP_REGISTERED XA_MARK_1
+-	if (i2c->status & (SPACEMIT_SR_BED | SPACEMIT_SR_ALD)) {
++	/* Arbitration Loss Detected */
++	if (i2c->status & SPACEMIT_SR_ALD) {
+ 		spacemit_i2c_reset(i2c);
+ 		return -EAGAIN;
+ 	}
+ 
++	/* Bus Error No ACK/NAK */
++	if (i2c->status & SPACEMIT_SR_BED)
++		spacemit_i2c_reset(i2c);
 +
- /**
-  * struct panthor_group_pool - Group pool
-  *
-@@ -2900,7 +2906,7 @@ void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
- 		return;
- 
- 	xa_lock(&gpool->xa);
--	xa_for_each(&gpool->xa, i, group) {
-+	xa_for_each_marked(&gpool->xa, i, group, GROUP_REGISTERED) {
- 		guard(spinlock)(&group->fdinfo.lock);
- 		pfile->stats.cycles += group->fdinfo.data.cycles;
- 		pfile->stats.time += group->fdinfo.data.time;
-@@ -3575,6 +3581,8 @@ int panthor_group_create(struct panthor_file *pfile,
- 
- 	group_init_task_info(group);
- 
-+	xa_set_mark(&gpool->xa, gid, GROUP_REGISTERED);
-+
- 	return gid;
- 
- err_put_group:
-@@ -3589,6 +3597,9 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
- 	struct panthor_scheduler *sched = ptdev->scheduler;
- 	struct panthor_group *group;
- 
-+	if (!xa_get_mark(&gpool->xa, group_handle, GROUP_REGISTERED))
-+		return -EINVAL;
-+
- 	group = xa_erase(&gpool->xa, group_handle);
- 	if (!group)
- 		return -EINVAL;
-@@ -3614,12 +3625,12 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
+ 	return i2c->status & SPACEMIT_SR_ACKNAK ? -ENXIO : -EIO;
  }
  
- static struct panthor_group *group_from_handle(struct panthor_group_pool *pool,
--					       u32 group_handle)
-+					       unsigned long group_handle)
+@@ -224,6 +229,12 @@ static void spacemit_i2c_check_bus_release(struct spacemit_i2c_dev *i2c)
+ 	}
+ }
+ 
++static inline void
++spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
++{
++	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
++}
++
+ static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
  {
- 	struct panthor_group *group;
+ 	u32 val;
+@@ -267,12 +278,8 @@ static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
+ 	val = readl(i2c->base + SPACEMIT_IRCR);
+ 	val |= SPACEMIT_RCR_SDA_GLITCH_NOFIX;
+ 	writel(val, i2c->base + SPACEMIT_IRCR);
+-}
  
- 	xa_lock(&pool->xa);
--	group = group_get(xa_load(&pool->xa, group_handle));
-+	group = group_get(xa_find(&pool->xa, &group_handle, group_handle, GROUP_REGISTERED));
- 	xa_unlock(&pool->xa);
+-static inline void
+-spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
+-{
+-	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
++	spacemit_i2c_clear_int_status(i2c, SPACEMIT_I2C_INT_STATUS_MASK);
+ }
  
- 	return group;
-@@ -3706,7 +3717,7 @@ panthor_fdinfo_gather_group_mem_info(struct panthor_file *pfile,
- 		return;
- 
- 	xa_lock(&gpool->xa);
--	xa_for_each(&gpool->xa, i, group) {
-+	xa_for_each_marked(&gpool->xa, i, group, GROUP_REGISTERED) {
- 		stats->resident += group->fdinfo.kbo_sizes;
- 		if (group->csg_id >= 0)
- 			stats->active += group->fdinfo.kbo_sizes;
+ static void spacemit_i2c_start(struct spacemit_i2c_dev *i2c)
 -- 
 2.51.0
 
