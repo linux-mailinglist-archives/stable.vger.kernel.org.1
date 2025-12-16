@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1364ECC21EA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D283ACC4399
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB3EE305678B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65F353064525
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4D0257AEC;
-	Tue, 16 Dec 2025 11:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940C136B06C;
+	Tue, 16 Dec 2025 12:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY+OvTHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPvEAFuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8AE495E5;
-	Tue, 16 Dec 2025 11:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0236B062;
+	Tue, 16 Dec 2025 12:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883876; cv=none; b=AS0qKErEAoWn5LfMaPTX3RsU5Q3xSAc0542GQo+5HiGh8Il//G38p07feF73b5fA7xA+oUylhuyP3v8ECs323wCf9DZENIRylWdheIeUHB7rVEfEpjQRr4fHik58oLpRcE1vzTpYqcy8vcXU3Ut1rXszjzGQb8XoHaamAnMO5sY=
+	t=1765887423; cv=none; b=J+WZp2fuspu6kLXiblR7Xg3E5P2TW2t8wxgByF2wprDURHt0NlpfxyjMknJAozhjRtzL5jNANePeRRY5CEZgXXndf/hzFtn/zDbeOsuujwiuc/s4TadQqyEL7zQfVKAivL0WRxBH59qXUJtVqlUPfVaI9pBI99rLeBIc9z18VdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883876; c=relaxed/simple;
-	bh=EyNKUZk84DIhs5InZGbNBzSa9vzQVdYxuJSBlPIoMyo=;
+	s=arc-20240116; t=1765887423; c=relaxed/simple;
+	bh=rOH+f4/Q0w28ug+ffgQReJ5LSmTnnh9+EoQfnQcIoW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9qwu/2bQl9hMiHfrnhMXc43UGqdfZ5m813ztcyGi9mJ3Z3KTa94VeiyCpIFrqNKVDyrbD7HWkbdEvQlm1jz+ZeXI/uQuGCZXR/gsqGvaC27sccxnBK0JdZX/wo4JwXLs7gX09fmkze0EI+rjBC7UeW1be6YG1akA/F9uZiYgfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY+OvTHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C20C4CEF5;
-	Tue, 16 Dec 2025 11:17:55 +0000 (UTC)
+	 MIME-Version; b=YAbrugN8t2+qvtEI6bxDlqOUE2mmqH8387hJescCb+foqp/AxUoBF+XUf8KL3Nfa3d3x4d+z0q7znHx5cqfa0KpOapYY0ehnhXKY/jxgnl73qEKUByvjOnbZ1bg1eVL3/euh3CRSpSeCNkFGG5lv7YMv52TUX/+R32NlpXoMMA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPvEAFuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2E1C4CEF1;
+	Tue, 16 Dec 2025 12:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883876;
-	bh=EyNKUZk84DIhs5InZGbNBzSa9vzQVdYxuJSBlPIoMyo=;
+	s=korg; t=1765887423;
+	bh=rOH+f4/Q0w28ug+ffgQReJ5LSmTnnh9+EoQfnQcIoW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vY+OvTHC6qCmJSw4aBgcYchY/VMQM6xwM0vExHccwaddwmzcxgWnclojDEd8nlmk1
-	 FhCSx+5FCeX1Dzq/B/toGB0p2O306PwSHcCr4ixKTxQoJTdAJRYNpsuMM+PtO4NztW
-	 0pp4XPfCLdYSXzlNsISrK9eJ5Zl4gJ+8QXD/moVY=
+	b=IPvEAFuEsXPyMwyIW2C6lSeqAShNcxa6jMPEWKzdzsLVVgwO3t60BI4QTDmar8aNd
+	 z2w/wL4AJFFqhaPhuMeJEmy371VF0CwScf+2LPtubyMGHl1pL5bLHjaYxkuNwdQO1f
+	 Za9yYJCgciV7qW8mLaPkwjTiScMXnaTRzYpl58HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/354] wifi: ath10k: Avoid vdev delete timeout when firmware is already down
+Subject: [PATCH 6.18 225/614] regulator: core: disable supply if enabling main regulator fails
 Date: Tue, 16 Dec 2025 12:09:52 +0100
-Message-ID: <20251216111321.823012249@linuxfoundation.org>
+Message-ID: <20251216111409.525134083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,108 +60,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit dc9c4252fe0d7a7f1ee904405ea91534277305bf ]
+[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
 
-In some scenarios, the firmware may be stopped before the interface is
-removed, either due to a crash or because the remoteproc (e.g., MPSS)
-is shut down early during system reboot or shutdown.
+For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
+may enable supply before enabling the main regulator, however if the
+latter fails, the function returns with an error but the supply remains
+enabled.
 
-This leads to a delay during interface teardown, as the driver waits for
-a vdev delete response that never arrives, eventually timing out.
+When this happens, the regulator_register() function continues on the
+error path where it puts the supply regulator. Since enabling the supply
+is not balanced with a disable call, a warning similar to the following
+gets issued from _regulator_put():
 
-Example (SNOC):
-$ echo stop > /sys/class/remoteproc/remoteproc0/state
-[ 71.64] remoteproc remoteproc0: stopped remote processor modem
-$ reboot
-[ 74.84] ath10k_snoc c800000.wifi: failed to transmit packet, dropping: -108
-[ 74.84] ath10k_snoc c800000.wifi: failed to submit frame: -108
-[...]
-[ 82.39] ath10k_snoc c800000.wifi: Timeout in receiving vdev delete response
+    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
+    [    1.603908] Modules linked in:
+    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
+    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
+    [    1.603945] Workqueue: async async_run_entry_fn
+    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    [    1.603967] pc : _regulator_put+0x8c/0xa0
+    [    1.603976] lr : _regulator_put+0x7c/0xa0
+    ...
+    [    1.604140] Call trace:
+    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
+    [    1.604156]  regulator_register+0x2ec/0xbf0
+    [    1.604166]  devm_regulator_register+0x60/0xb0
+    [    1.604178]  rpm_reg_probe+0x120/0x208
+    [    1.604187]  platform_probe+0x64/0xa8
+    ...
 
-To avoid this, skip waiting for the vdev delete response if the firmware is
-already marked as unreachable (`ATH10K_FLAG_CRASH_FLUSH`), similar to how
-`ath10k_mac_wait_tx_complete()` and `ath10k_vdev_setup_sync()` handle this case.
+In order to avoid this, change the set_machine_constraints() function to
+disable the supply if enabling the main regulator fails.
 
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250522131704.612206-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Stable-dep-of: f35a07a4842a ("wifi: ath10k: move recovery check logic into a new work")
+Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 33 ++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ drivers/regulator/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 74ee3c4f7a6a2..68d049289359b 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index dd7b10e768c06..fc93612f4ec0c 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1618,6 +1618,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 	 * and we have control then make sure it is enabled.
+ 	 */
+ 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
++		bool supply_enabled = false;
++
+ 		/* If we want to enable this regulator, make sure that we know
+ 		 * the supplying regulator.
+ 		 */
+@@ -1637,11 +1639,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 				rdev->supply = NULL;
+ 				return ret;
+ 			}
++			supply_enabled = true;
+ 		}
  
- #include "mac.h"
-@@ -1030,6 +1031,26 @@ static inline int ath10k_vdev_setup_sync(struct ath10k *ar)
- 	return ar->last_wmi_vdev_start_status;
- }
+ 		ret = _regulator_do_enable(rdev);
+ 		if (ret < 0 && ret != -EINVAL) {
+ 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
++			if (supply_enabled)
++				regulator_disable(rdev->supply);
+ 			return ret;
+ 		}
  
-+static inline int ath10k_vdev_delete_sync(struct ath10k *ar)
-+{
-+	unsigned long time_left;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (!test_bit(WMI_SERVICE_SYNC_DELETE_CMDS, ar->wmi.svc_map))
-+		return 0;
-+
-+	if (test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
-+		return -ESHUTDOWN;
-+
-+	time_left = wait_for_completion_timeout(&ar->vdev_delete_done,
-+						ATH10K_VDEV_DELETE_TIMEOUT_HZ);
-+	if (time_left == 0)
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
- static int ath10k_monitor_vdev_start(struct ath10k *ar, int vdev_id)
- {
- 	struct cfg80211_chan_def *chandef = NULL;
-@@ -5908,7 +5929,6 @@ static void ath10k_remove_interface(struct ieee80211_hw *hw,
- 	struct ath10k *ar = hw->priv;
- 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
- 	struct ath10k_peer *peer;
--	unsigned long time_left;
- 	int ret;
- 	int i;
- 
-@@ -5948,13 +5968,10 @@ static void ath10k_remove_interface(struct ieee80211_hw *hw,
- 		ath10k_warn(ar, "failed to delete WMI vdev %i: %d\n",
- 			    arvif->vdev_id, ret);
- 
--	if (test_bit(WMI_SERVICE_SYNC_DELETE_CMDS, ar->wmi.svc_map)) {
--		time_left = wait_for_completion_timeout(&ar->vdev_delete_done,
--							ATH10K_VDEV_DELETE_TIMEOUT_HZ);
--		if (time_left == 0) {
--			ath10k_warn(ar, "Timeout in receiving vdev delete response\n");
--			goto out;
--		}
-+	ret = ath10k_vdev_delete_sync(ar);
-+	if (ret) {
-+		ath10k_warn(ar, "Error in receiving vdev delete response: %d\n", ret);
-+		goto out;
- 	}
- 
- 	/* Some firmware revisions don't notify host about self-peer removal
 -- 
 2.51.0
 
