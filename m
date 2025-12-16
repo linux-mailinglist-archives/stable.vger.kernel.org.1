@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-201907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BF7CC28B1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8A2CC3B27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D05C31A1E19
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDCCE30C8AD5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E62734F24E;
-	Tue, 16 Dec 2025 11:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A535505A;
+	Tue, 16 Dec 2025 12:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP31f4ah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZg4tVX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416733502A4;
-	Tue, 16 Dec 2025 11:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBFB336EFF;
+	Tue, 16 Dec 2025 12:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886186; cv=none; b=jTmOrquLkDrhBajJ+EuQd5prN+0S+VbGKIg7o29FisPvuOoBekDIh8Xg4PCdfaL/T/zgfkDYtiJO7ocHxt9GCbOKa6qOihVxHAlvd0wrZXlLcK03TdfwUJ7atF4MNO/MCWq43DFrN61jdXLFufs5KVxyUahOSpAd/483mR0fsKs=
+	t=1765888120; cv=none; b=FQWTMLJ15EZOT6lcOvdlXaidNGPXikgsyNTLai/zVYOSQzi35NeXTDX6JA8tw3J8akPmUl9J6/4lhaVuAf+qRp21MiRzvbYSk+oymWalZFs0pZZfHHy47cMkVKkqEFhDgm5y4xmicYX1itOnHMudc/dnmb/DzJrKVdVqBNv8DNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886186; c=relaxed/simple;
-	bh=zTRnUs8LngfGLrUFkTGdw7ly1RSi2Rz7H3KC7TqshpE=;
+	s=arc-20240116; t=1765888120; c=relaxed/simple;
+	bh=X8lZhWYfw9y32RK4GZ+UEF+BJ47yECQk/OuV7PD6j04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1XOgSPDfS0eIVoyNq1Wtu+3o9QHnWXKf4M0fiZ0mv/Sz5UkHgKfnnwgFGr36G3ikHbi6lKNsjGuOSSxplKO9cEjsBYkHBfiHp8RDAzt/mI16l+urFZYv6Zx3cJ0E9Rf1uMlJYzBLkq3P1s9LREiCrG3P9R0FSBDIjXeAJDyoxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP31f4ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C842C4CEF1;
-	Tue, 16 Dec 2025 11:56:25 +0000 (UTC)
+	 MIME-Version; b=ivef0Ns2kSgz37yoRDTpwa+ID6nKPB27kLRYr54wbYsvPjswjwoN0Hy5kWb+mzCJvM4nAM1ROSyQYw5njg+R7+N4GdW1p2pVD7f1b9YdMaxFdLjj9qMe6APUSRVsLpL5aeEwsWmNmQE6brqlYCVFqfBZBNBYfDnhOsUJk19rEZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZg4tVX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39168C4CEF1;
+	Tue, 16 Dec 2025 12:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886186;
-	bh=zTRnUs8LngfGLrUFkTGdw7ly1RSi2Rz7H3KC7TqshpE=;
+	s=korg; t=1765888120;
+	bh=X8lZhWYfw9y32RK4GZ+UEF+BJ47yECQk/OuV7PD6j04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MP31f4ah0eGIOZjH8U9tLBpl87cpliNOivqgFBFm+lA/AMCs76xnL8t9pP4E1ao3Q
-	 Ij4cJmCojGhpJQHvs8zbPpB5ec7aK5kE8q9mWvSClGyvkHoa0zbkaib56J++CtqOlZ
-	 3Pib9sAGTazCieSFfqEB/WenP2z8fNyeVKczjKaA=
+	b=SZg4tVX/ZJjdFntq8T73XuDh8LkQRahINu/iI4K/J9Xum6uOokEE6gKm5FyLpVNVM
+	 dHxeOrHwj7wZmTDgwlHBfRnhtf2sSfb3/dk7Z7gmASoshTFdbhMJG1Oeolf/qF4P1I
+	 dpNEfpWNr5U/IHD0NGFr4YVEnFJXO1ikn5RrX/UY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 364/507] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS select FW_LOADER
+Subject: [PATCH 6.18 438/614] ASoC: nau8325: use simple i2c probe function
 Date: Tue, 16 Dec 2025 12:13:25 +0100
-Message-ID: <20251216111358.646009876@linuxfoundation.org>
+Message-ID: <20251216111417.243479270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Jaroslav Kysela <perex@perex.cz>
 
-[ Upstream commit 9906efa545d1d2cf25a614eeb219d3f8d5a302cd ]
+[ Upstream commit b4d072c98e47c562834f2a050ca98a1c709ef4f9 ]
 
-The use of firmware_loader is an implementation detail of drivers rather
-than a dependency. FW_LOADER is typically selected rather than depended
-on; the Rust abstractions should do the same thing.
+The i2c probe functions here don't use the id information provided in
+their second argument, so the single-parameter i2c probe function
+("probe_new") can be used instead.
 
-Fixes: de6582833db0 ("rust: add firmware abstractions")
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Link: https://patch.msgid.link/20251106-b4-select-rust-fw-v3-1-771172257755@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This avoids scanning the identifier tables during probes.
+
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+Link: https://patch.msgid.link/20251126091759.2490019-2-perex@perex.cz
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: cd41d3420ef6 ("ASoC: nau8325: add missing build config")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/firmware_loader/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/nau8325.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
-index 752b9a9bea038..15eff8a4b5053 100644
---- a/drivers/base/firmware_loader/Kconfig
-+++ b/drivers/base/firmware_loader/Kconfig
-@@ -38,7 +38,7 @@ config FW_LOADER_DEBUG
- config RUST_FW_LOADER_ABSTRACTIONS
- 	bool "Rust Firmware Loader abstractions"
- 	depends on RUST
--	depends on FW_LOADER=y
-+	select FW_LOADER
- 	help
- 	  This enables the Rust abstractions for the firmware loader API.
+diff --git a/sound/soc/codecs/nau8325.c b/sound/soc/codecs/nau8325.c
+index 2266f320a8f22..5b3115b0a7e58 100644
+--- a/sound/soc/codecs/nau8325.c
++++ b/sound/soc/codecs/nau8325.c
+@@ -829,8 +829,7 @@ static int nau8325_read_device_properties(struct device *dev,
+ 	return 0;
+ }
  
+-static int nau8325_i2c_probe(struct i2c_client *i2c,
+-			     const struct i2c_device_id *id)
++static int nau8325_i2c_probe(struct i2c_client *i2c)
+ {
+ 	struct device *dev = &i2c->dev;
+ 	struct nau8325 *nau8325 = dev_get_platdata(dev);
 -- 
 2.51.0
 
