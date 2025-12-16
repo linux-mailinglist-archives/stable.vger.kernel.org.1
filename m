@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-201790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45330CC34F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:44:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD45CC4522
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E53130D1298
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9CD6308A961
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0612E354AE6;
-	Tue, 16 Dec 2025 11:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915633446D1;
+	Tue, 16 Dec 2025 12:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt2JDpNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0CwuseM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A11354ADA;
-	Tue, 16 Dec 2025 11:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA0825C80D;
+	Tue, 16 Dec 2025 12:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885797; cv=none; b=Dtn524Wjbx/HRcrTZczVfZac69H10WFt7GxNqdzoS9NcgzcQl/1VfWA8UMH62lSPhB0C95206kMAacZjzX2hLMtmfm2ILCdpVuI4lkIMbMmaK5WPPy07x0F6j4LlDGRIAbGn9MuD0QWkBAgzoIOxLb/b40KCHECyIz4c874NkkU=
+	t=1765887625; cv=none; b=GuK8eEOg3wvj2IJh3LiT0uFu4C3ljp6Q95tfUw/ZzES1Sq/4YV7vJkFfTRjXKQ11GoJOjVDvOC3Gc+rBO9nV/eZs+1lafWGvViRMbocjwrJhRetFTjfCu0UBlnwwjHK8j6A7rY39gJm76dVa3cL14XembhXqecyiLFNejyhoaKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885797; c=relaxed/simple;
-	bh=7LX2lUUXELWLiI28dMylPPuNIQ1/sa5JIDTwg6yZVBw=;
+	s=arc-20240116; t=1765887625; c=relaxed/simple;
+	bh=assF2pLgz5df4xs7IzpSSMqVsTgpjue3q4vgkHdSgVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLNxMAgVAa7pEvayTkrivObtOuP1Nn2Zhx8HIJ+hVsFnsIfTMB2pecIPIbO4QdWOk5Mbq9hN6s1QnReWkZxsJcdcK435YR3YlwXhFf6sBan99zKNew4eAQAcdZI+MB5+MWZ59M5/4cgBBiLG4pKsbJo2PRJZDU1GDM7gu/DFI4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt2JDpNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E12C4CEF1;
-	Tue, 16 Dec 2025 11:49:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MHST/8s58Stq4ZShyxFBGmlq+6ojz6yPjQqZrSBn7iYBYFekW9QunS3FctSJ98P4pCehNLNip7LVwUId5JazqA54m3IeiET0fqdvPYOnrKgCJPwzSibSbBuIn5M9aI2I+bGQYmSTrLaOavqP9WGwakYm811TO5mUEyGdS2mXH4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0CwuseM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D06C4CEF5;
+	Tue, 16 Dec 2025 12:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885797;
-	bh=7LX2lUUXELWLiI28dMylPPuNIQ1/sa5JIDTwg6yZVBw=;
+	s=korg; t=1765887625;
+	bh=assF2pLgz5df4xs7IzpSSMqVsTgpjue3q4vgkHdSgVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vt2JDpNekqO6yppXvqrsHk+CU4mocVkRR5UTiQZkinHTLLP/xs4lUeO5usBQbtYdn
-	 MYgD/u02SdxOc+mvH5h1VvgaOkMqM0k3kVal9856XItcSTfPjhyCGQ6jgSzA0I7fp8
-	 BashfwaeCd/lsn4ZRpVSYtj2s5xQArtvhtVzdvv8=
+	b=M0CwuseMhl+lx2UjaplGWU1/SYJGB5wumzQthQsthC32hB2m4cE2V/ecNdv/rjopq
+	 rGZlr3k7A/hop077yUxyEgGySXjzWxwj1wF1PoBoTiu0rs3GI/9SNV1QbeSFkPmbxP
+	 aH4U8r1jkiRxWTalWXp3/mtytQDDwKPGHTkQT7Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 214/507] coresight: etm3x: Always set tracers device mode on target CPU
-Date: Tue, 16 Dec 2025 12:10:55 +0100
-Message-ID: <20251216111353.260677489@linuxfoundation.org>
+Subject: [PATCH 6.18 289/614] PCI: Prevent resource tree corruption when BAR resize fails
+Date: Tue, 16 Dec 2025 12:10:56 +0100
+Message-ID: <20251216111411.841358743@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,180 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit ab3fde32afe6a77e5cc60f868e44e6e09424752b ]
+[ Upstream commit 91c4c89db41499eea1b29c56655f79c3bae66e93 ]
 
-The ETMv3 driver shares the same issue as ETMv4 regarding race
-conditions when accessing the device mode.
+pbus_reassign_bridge_resources() saves bridge windows into the saved
+list before attempting to adjust resource assignments to perform a BAR
+resize operation. If resource adjustments cannot be completed fully,
+rollback is attempted by restoring the resource from the saved list.
 
-This commit applies the same fix: ensuring that the device mode is
-modified only by the target CPU to eliminate race conditions across
-CPUs.
+The rollback, however, does not check whether the resources it restores were
+assigned by the partial resize attempt. If restore changes addresses of the
+resource, it can result in corrupting the resource tree.
 
-Fixes: 22fd532eaa0c ("coresight: etm3x: adding operation mode for etm_enable()")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-3-f55553b6c8b3@arm.com
+An example of a corrupted resource tree with overlapping addresses:
+
+  6200000000000-6203fbfffffff : pciex@620c3c0000000
+    6200000000000-6203fbff0ffff : PCI Bus 0030:01
+      6200020000000-62000207fffff : 0030:01:00.0
+      6200000000000-6203fbff0ffff : PCI Bus 0030:02
+
+A resource that are assigned into the resource tree must remain
+unchanged. Thus, release such a resource before attempting to restore
+and claim it back.
+
+For simplicity, always do the release and claim back for the resource
+even in the cases where it is restored to the same address range.
+
+Note: this fix may "break" some cases where devices "worked" because
+the resource tree corruption allowed address space double counting to
+fit more resource than what can now be assigned without double
+counting. The upcoming changes to BAR resizing should address those
+scenarios (to the extent possible).
+
+Fixes: 8bb705e3e79d ("PCI: Add pci_resize_resource() for resizing BARs")
+Reported-by: Simon Richter <Simon.Richter@hogyros.de>
+Link: https://lore.kernel.org/linux-pci/67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de/
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Link: https://lore.kernel.org/linux-pci/874irqop6b.fsf@draig.linaro.org/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org> # AVA, AMD GPU
+Link: https://patch.msgid.link/20251113162628.5946-2-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm3x-core.c          | 59 +++++++++++++------
- 1 file changed, 40 insertions(+), 19 deletions(-)
+ drivers/pci/setup-bus.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm3x-core.c b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-index baba2245b1dfb..602648eb33ec5 100644
---- a/drivers/hwtracing/coresight/coresight-etm3x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-@@ -439,13 +439,26 @@ struct etm_enable_arg {
- 	int rc;
- };
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 3645f392a9fd3..5ba878f15db35 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -2504,6 +2504,11 @@ int pbus_reassign_bridge_resources(struct pci_bus *bus, struct resource *res)
+ 		bridge = dev_res->dev;
+ 		i = pci_resource_num(bridge, res);
  
--static void etm_enable_hw_smp_call(void *info)
-+static void etm_enable_sysfs_smp_call(void *info)
- {
- 	struct etm_enable_arg *arg = info;
-+	struct coresight_device *csdev;
- 
- 	if (WARN_ON(!arg))
- 		return;
++		if (res->parent) {
++			release_child_resources(res);
++			pci_release_resource(bridge, i);
++		}
 +
-+	csdev = arg->drvdata->csdev;
-+	if (!coresight_take_mode(csdev, CS_MODE_SYSFS)) {
-+		/* Someone is already using the tracer */
-+		arg->rc = -EBUSY;
-+		return;
-+	}
-+
- 	arg->rc = etm_enable_hw(arg->drvdata);
-+
-+	/* The tracer didn't start */
-+	if (arg->rc)
-+		coresight_set_mode(csdev, CS_MODE_DISABLED);
- }
+ 		restore_dev_resource(dev_res);
  
- static int etm_cpu_id(struct coresight_device *csdev)
-@@ -465,16 +478,26 @@ static int etm_enable_perf(struct coresight_device *csdev,
- 			   struct coresight_path *path)
- {
- 	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-+	int ret;
- 
- 	if (WARN_ON_ONCE(drvdata->cpu != smp_processor_id()))
- 		return -EINVAL;
- 
-+	if (!coresight_take_mode(csdev, CS_MODE_PERF))
-+		return -EBUSY;
-+
- 	/* Configure the tracer based on the session's specifics */
- 	etm_parse_event_config(drvdata, event);
- 	drvdata->traceid = path->trace_id;
- 
- 	/* And enable it */
--	return etm_enable_hw(drvdata);
-+	ret = etm_enable_hw(drvdata);
-+
-+	/* Failed to start tracer; roll back to DISABLED mode */
-+	if (ret)
-+		coresight_set_mode(csdev, CS_MODE_DISABLED);
-+
-+	return ret;
- }
- 
- static int etm_enable_sysfs(struct coresight_device *csdev, struct coresight_path *path)
-@@ -494,7 +517,7 @@ static int etm_enable_sysfs(struct coresight_device *csdev, struct coresight_pat
- 	if (cpu_online(drvdata->cpu)) {
- 		arg.drvdata = drvdata;
- 		ret = smp_call_function_single(drvdata->cpu,
--					       etm_enable_hw_smp_call, &arg, 1);
-+					       etm_enable_sysfs_smp_call, &arg, 1);
- 		if (!ret)
- 			ret = arg.rc;
- 		if (!ret)
-@@ -517,12 +540,6 @@ static int etm_enable(struct coresight_device *csdev, struct perf_event *event,
- 		      enum cs_mode mode, struct coresight_path *path)
- {
- 	int ret;
--	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
--
--	if (!coresight_take_mode(csdev, mode)) {
--		/* Someone is already using the tracer */
--		return -EBUSY;
--	}
- 
- 	switch (mode) {
- 	case CS_MODE_SYSFS:
-@@ -535,17 +552,12 @@ static int etm_enable(struct coresight_device *csdev, struct perf_event *event,
- 		ret = -EINVAL;
- 	}
- 
--	/* The tracer didn't start */
--	if (ret)
--		coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
--
- 	return ret;
- }
- 
--static void etm_disable_hw(void *info)
-+static void etm_disable_hw(struct etm_drvdata *drvdata)
- {
- 	int i;
--	struct etm_drvdata *drvdata = info;
- 	struct etm_config *config = &drvdata->config;
- 	struct coresight_device *csdev = drvdata->csdev;
- 
-@@ -567,6 +579,15 @@ static void etm_disable_hw(void *info)
- 		"cpu: %d disable smp call done\n", drvdata->cpu);
- }
- 
-+static void etm_disable_sysfs_smp_call(void *info)
-+{
-+	struct etm_drvdata *drvdata = info;
-+
-+	etm_disable_hw(drvdata);
-+
-+	coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
-+}
-+
- static void etm_disable_perf(struct coresight_device *csdev)
- {
- 	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-@@ -588,6 +609,8 @@ static void etm_disable_perf(struct coresight_device *csdev)
- 
- 	CS_LOCK(drvdata->csa.base);
- 
-+	coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
-+
- 	/*
- 	 * perf will release trace ids when _free_aux()
- 	 * is called at the end of the session
-@@ -612,7 +635,8 @@ static void etm_disable_sysfs(struct coresight_device *csdev)
- 	 * Executing etm_disable_hw on the cpu whose ETM is being disabled
- 	 * ensures that register writes occur when cpu is powered.
- 	 */
--	smp_call_function_single(drvdata->cpu, etm_disable_hw, drvdata, 1);
-+	smp_call_function_single(drvdata->cpu, etm_disable_sysfs_smp_call,
-+				 drvdata, 1);
- 
- 	spin_unlock(&drvdata->spinlock);
- 	cpus_read_unlock();
-@@ -652,9 +676,6 @@ static void etm_disable(struct coresight_device *csdev,
- 		WARN_ON_ONCE(mode);
- 		return;
- 	}
--
--	if (mode)
--		coresight_set_mode(csdev, CS_MODE_DISABLED);
- }
- 
- static const struct coresight_ops_source etm_source_ops = {
+ 		pci_claim_resource(bridge, i);
 -- 
 2.51.0
 
