@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-201792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32914CC2B5C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8E4CC27A0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C631430A7A38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ED643028FE1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF03354AF3;
-	Tue, 16 Dec 2025 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ECD35502B;
+	Tue, 16 Dec 2025 11:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIdN6Dgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdIVui9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B535354AEF;
-	Tue, 16 Dec 2025 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C875355027;
+	Tue, 16 Dec 2025 11:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885804; cv=none; b=iTvD795kNCSwq8VlWk5+VKX7hF4pYq8zBawfK3ueT7krMs89Y+8KcZB5NUpHd9U+Cm24QAt2nVIS+9MSeXkzldUv6/joMG8j4+mSJr9izLNjkDKQhJImLNPKIAGBsF3iYDyzu8V+KLRI0erqrlRtiY7QKrzYrTx7TXBgHkNlDEw=
+	t=1765885841; cv=none; b=VFxzL2MkT3kALupk4Pml0iGHY+iG+qGwhZW7DVmHaZYEeBYLlw335XtRzgWWPJ7/0u9XvScMwBi2o/YwgVhQvboQ0Yj0iA1+LcqmMxpOdyYM28ClPGByzkUeMXqfGHhlCgKekeHUkUe4lGaXwBB7U/Oj481H9gNd5Xe0u/VPoNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885804; c=relaxed/simple;
-	bh=+Uw0ajCvnhKfBtUidam7iNEJEzO/dt7W3kU/7Ej/1GM=;
+	s=arc-20240116; t=1765885841; c=relaxed/simple;
+	bh=xLS/X9pZ2E7XsezUXH1ora0aQiX/XAIGxpOJvIYeKAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOPbR0kqMkssDEhj6CNhEXg2dVZwPNnOeO25rM1UHiekFjpIRLkXYeHQhjkkTKeSZmC6b2F2pjFVcDjEF00LyYaOvFmRydT8vi/9J7sQEnq6o+xl3eR6jYezYgL47EfvlNaaOyU3emk0S2YYYk8v99VspX6AIKMryDNGcqKJ9j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIdN6Dgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E82C4CEF1;
-	Tue, 16 Dec 2025 11:50:03 +0000 (UTC)
+	 MIME-Version; b=qgbPqcQpxtSakiU4KZ12r3joW+d8YUH5CBS+Aku6vEvtPJdDrvImmhDk5rcp4TrcIQ0Cx5yQU+DUzlymrlvnXF1fdvB4NTKf//wqt2IkNo9JeTqpjMTgO4wyjC+MolI+hc6nYt4r8QcgJcqIkWLW6bjlZyMToTAcadOcBDr/9dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdIVui9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40915C4CEF1;
+	Tue, 16 Dec 2025 11:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885804;
-	bh=+Uw0ajCvnhKfBtUidam7iNEJEzO/dt7W3kU/7Ej/1GM=;
+	s=korg; t=1765885840;
+	bh=xLS/X9pZ2E7XsezUXH1ora0aQiX/XAIGxpOJvIYeKAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIdN6DgshjKUdN9uzvz0vAxjn5QL9U2FyinAdIOmHVoqip9+QPtwIE3ibJ9Cg0m9p
-	 ZE/B6vAAYOCMn5Z76q/KbL/ykCllBRBLH9ZnjzzBOSwTP+qofQD0ooE5HOGLt2lfbv
-	 xe3Tr0t+AKXxSzpIjJjNQvnkOjnlx7cKSnqvTBVc=
+	b=GdIVui9hShCaYCUDX7o0Av1foXrUd2eYG5EeRdBR8OlGZ1PXwK7rkFUAe5bnlMNKJ
+	 g9GoLMN8zTdj++nyqST70Vse0TL6vqOmiwhDHyjkFmNIl+7k1H/7pNEsTLiy61X2nE
+	 stQotSbPjw0IVL9TOZkWhHpqBZo1FSCzIxMCpZz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sahil Chandna <chandna.sahil@gmail.com>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Song Liu <song@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 242/507] bpf: Prevent nesting overflow in bpf_try_get_buffers
-Date: Tue, 16 Dec 2025 12:11:23 +0100
-Message-ID: <20251216111354.265517663@linuxfoundation.org>
+Subject: [PATCH 6.17 243/507] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
+Date: Tue, 16 Dec 2025 12:11:24 +0100
+Message-ID: <20251216111354.301447838@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -67,61 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sahil Chandna <chandna.sahil@gmail.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit c1da3df7191f1b4df9256bcd30d78f78201e1d17 ]
+[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
 
-bpf_try_get_buffers() returns one of multiple per-CPU buffers based on a
-per-CPU nesting counter. This mechanism expects that buffers are not
-endlessly acquired before being returned. migrate_disable() ensures that a
-task remains on the same CPU, but it does not prevent the task from being
-preempted by another task on that CPU.
+The error that returned by ftrace_set_filter_ip() in register_fentry() is
+not handled properly. Just fix it.
 
-Without disabled preemption, a task may be preempted while holding a
-buffer, allowing another task to run on same CPU and acquire an
-additional buffer. Several such preemptions can cause the per-CPU
-nest counter to exceed MAX_BPRINTF_NEST_LEVEL and trigger the warning in
-bpf_try_get_buffers(). Adding preempt_disable()/preempt_enable() around
-buffer acquisition and release prevents this task preemption and
-preserves the intended bounded nesting behavior.
-
-Reported-by: syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68f6a4c8.050a0220.1be48.0011.GAE@google.com/
-Fixes: 4223bf833c849 ("bpf: Remove preempt_disable in bpf_try_get_buffers")
-Suggested-by: Yonghong Song <yonghong.song@linux.dev>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
-Link: https://lore.kernel.org/r/20251114064922.11650-1-chandna.sahil@gmail.com
+Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/trampoline.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 3eb02ce0dba3b..722314912ba8f 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -774,9 +774,11 @@ int bpf_try_get_buffers(struct bpf_bprintf_buffers **bufs)
- {
- 	int nest_level;
- 
-+	preempt_disable();
- 	nest_level = this_cpu_inc_return(bpf_bprintf_nest_level);
- 	if (WARN_ON_ONCE(nest_level > MAX_BPRINTF_NEST_LEVEL)) {
- 		this_cpu_dec(bpf_bprintf_nest_level);
-+		preempt_enable();
- 		return -EBUSY;
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 0db5673812108..1ce8696f6f6d9 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -220,7 +220,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
  	}
- 	*bufs = this_cpu_ptr(&bpf_bprintf_bufs[nest_level - 1]);
-@@ -789,6 +791,7 @@ void bpf_put_buffers(void)
- 	if (WARN_ON_ONCE(this_cpu_read(bpf_bprintf_nest_level) == 0))
- 		return;
- 	this_cpu_dec(bpf_bprintf_nest_level);
-+	preempt_enable();
- }
  
- void bpf_bprintf_cleanup(struct bpf_bprintf_data *data)
+ 	if (tr->func.ftrace_managed) {
+-		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		if (ret)
++			return ret;
+ 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
+ 	} else {
+ 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
 -- 
 2.51.0
 
