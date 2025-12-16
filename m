@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFCBCC27F1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8272BCC31B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1085D3078C9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80B92306502D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53735504A;
-	Tue, 16 Dec 2025 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F8636BCD0;
+	Tue, 16 Dec 2025 12:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgACkCwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTDPg0pF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F14A355045;
-	Tue, 16 Dec 2025 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5B936920B;
+	Tue, 16 Dec 2025 12:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885926; cv=none; b=XmdZctfLa5gVPPaYvtK+2sBbc6wZ+CdzFn5Z7w4T14RGgxvNfOEkDTFqGe6ztp270ctwVx/ihKYnZY8mHUHKyIzRqIHGDU95Xr/lH/MjYWRuDo040a+U2wcH/cPk8RjaQfeh93j3/WoyVEIHjcdWj1yg5Ykr7Ls7wDvE7HA+AfY=
+	t=1765887946; cv=none; b=fvu05aNgdOv3G5CSgbYpWdJhrVodQmaUVKT5DrrQ0A80GZw2PqkycdMCOCDWtLbcoIF+E7GfAxluDJFD8MGgTPjhtYP7q0zn9UUEqK7cFHIpP5+I9w35WEu0B6W2liBbBLWK+sUoMBvkLKDrXKHjaw7128sRbN+2fUBXR8dkhVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885926; c=relaxed/simple;
-	bh=uCCzhD+yyjGCNmblAaSpwwOrV9LV91q6JiYvg7rKWu8=;
+	s=arc-20240116; t=1765887946; c=relaxed/simple;
+	bh=Dqe0cNhcvWvqus1o/ptEkUIf3ZE9vaw+O7R2sgvkoIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6p/c+gc9VwPeEM3+qRvnUc7ewZr8IcrgulGSfSpjcgr+TWJu92aKbhNu43E806eK7H4HN5ilpmS1i5G7dffcRyR3QCFBM9Upjn2EAXeDt+AxsYDo26DcrGGGbkMFcq+fmBcKl1MeT5xHOruQjFfeMkTrj5d6wgcEZTf3bUYXsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgACkCwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE22C16AAE;
-	Tue, 16 Dec 2025 11:52:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FqzwBys5YJaIgTkZebZtzGAG/MIoieUQq9yLhum3cM7+ztKd7D/qK4hgDc041obe5wCcK8Yg10VYd2+lUoOVt05Zf8m5q9e9HHU6rHesFurkFOcnP66oZdMn3kNai3CsZe/Z23Mjj0LFik3JyCvfS6zD2ZOBAflAonAI+9EZVwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTDPg0pF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB7C4CEF1;
+	Tue, 16 Dec 2025 12:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885926;
-	bh=uCCzhD+yyjGCNmblAaSpwwOrV9LV91q6JiYvg7rKWu8=;
+	s=korg; t=1765887946;
+	bh=Dqe0cNhcvWvqus1o/ptEkUIf3ZE9vaw+O7R2sgvkoIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgACkCweB+ryghh6qFDXKfEKnC0QLJwahXUWjgua5Dc0noXhwk2DIU1TfsVS+M6Ee
-	 i8d2+RlRQ4BZHnhv9HbGSdwO3iliXM4WP37vdj4nzTurEwXvmflIVItTUk3bwt8u3I
-	 STB3Wj8cbmM9rDP22iJv7ZwrRjyqRl3NnY1v5FDo=
+	b=gTDPg0pFx57AbyyOzDCQLTp3sxUBmhqjKOsqCFWDkPiR8VHPD+M6WQNTlqkBMcQ3h
+	 n6LooTF7xSO1bhdc2orl9OJB4FjsAea7/koBjPT6FVjN/81wZbSGOXIgoBmGY8YiY9
+	 a/bWF9cR1INR7xlWzFCGuby/nXFWdUqIBBkBqOVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Alexander Dahl <ada@thorsis.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 278/507] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
-Date: Tue, 16 Dec 2025 12:11:59 +0100
-Message-ID: <20251216111355.553651210@linuxfoundation.org>
+Subject: [PATCH 6.18 353/614] net: phy: adin1100: Fix software power-down ready condition
+Date: Tue, 16 Dec 2025 12:12:00 +0100
+Message-ID: <20251216111414.152378867@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Alexander Dahl <ada@thorsis.com>
 
-[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
+[ Upstream commit bccaf1fe08f2c9f96f6bc38391d41e67f6bf38e3 ]
 
-The .free callback cleared among others the enable bit PWENx in the
-control register. When the PWM is requested later again this bit isn't
-restored but the core assumes the PWM is enabled and thus skips a
-request to configure the same state as before.
+Value CRSM_SFT_PD written to Software Power-Down Control Register
+(CRSM_SFT_PD_CNTRL) is 0x01 and therefor different to value
+CRSM_SFT_PD_RDY (0x02) read from System Status Register (CRSM_STAT) for
+confirmation powerdown has been reached.
 
-To fix that don't touch the hardware configuration in .free(). For
-symmetry also drop .request() and configure the mode completely in
-.apply().
+The condition could have only worked when disabling powerdown
+(both 0x00), but never when enabling it (0x01 != 0x02).
 
-Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Result is a timeout, like so:
+
+    $ ifdown eth0
+    macb f802c000.ethernet eth0: Link is Down
+    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
+    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
+
+Fixes: 7eaf9132996a ("net: phy: adin1100: Add initial support for ADIN1100 industrial PHY")
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20251119124737.280939-2-ada@thorsis.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ drivers/net/phy/adin1100.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
-index 578e95e0296c6..532903da521fd 100644
---- a/drivers/pwm/pwm-bcm2835.c
-+++ b/drivers/pwm/pwm-bcm2835.c
-@@ -34,29 +34,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
- 	return pwmchip_get_drvdata(chip);
+diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
+index bd7a47a903aca..10b796c2daee7 100644
+--- a/drivers/net/phy/adin1100.c
++++ b/drivers/net/phy/adin1100.c
+@@ -201,7 +201,7 @@ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
+ 		return ret;
+ 
+ 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, ADIN_CRSM_STAT, ret,
+-					 (ret & ADIN_CRSM_SFT_PD_RDY) == val,
++					 !!(ret & ADIN_CRSM_SFT_PD_RDY) == en,
+ 					 1000, 30000, true);
  }
- 
--static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--
--	return 0;
--}
--
--static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--}
--
- static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			     const struct pwm_state *state)
- {
-@@ -102,6 +79,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	/* set polarity */
- 	val = readl(pc->base + PWM_CONTROL);
- 
-+	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
-+
- 	if (state->polarity == PWM_POLARITY_NORMAL)
- 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
- 	else
-@@ -119,8 +99,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- }
- 
- static const struct pwm_ops bcm2835_pwm_ops = {
--	.request = bcm2835_pwm_request,
--	.free = bcm2835_pwm_free,
- 	.apply = bcm2835_pwm_apply,
- };
  
 -- 
 2.51.0
