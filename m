@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-201643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4E8CC26B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AEACC3905
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 595CC304CC38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:41:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 186633096FE7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DC134D3B9;
-	Tue, 16 Dec 2025 11:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEB634A784;
+	Tue, 16 Dec 2025 11:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MXMyKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKNF9LGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A561734D3BA;
-	Tue, 16 Dec 2025 11:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A79734A77D;
+	Tue, 16 Dec 2025 11:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885315; cv=none; b=fobvmec4sjBFiX6R07sya6gaZVwr4t7i16ZBQItsH++HBjhuUuF/9Y6g3iXMt/qq7fu6mRikKw8CyuOPmVZ/YwXQyfloCoUkpyM56O9kh/pGDjsqKb0yUy7Ho6bnR4RV3jhHoyBA94F7rgYIir+gnluyDUjEx4XJYhLl9kRM77o=
+	t=1765885206; cv=none; b=tnTezsOOBGnhKZoXP+gJ1NBmhox2u5dnFs0CHSBIfU+D2s+uBrNEXcnH1JDcPdMJiV/WN0QlurD6FTty2jPNuUWs1qcI2SZ0U34YtLRiTgMSF9CFw8hZH9QzPPoPsXN7o4FxPpVNj4E8OCKzPXf2T6gbftulXHnIk/71gf26TVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885315; c=relaxed/simple;
-	bh=76RrOdDxolX6wmw6xsnwdPTzgoi+Pcy04igDCkvuS8Y=;
+	s=arc-20240116; t=1765885206; c=relaxed/simple;
+	bh=otH6QjS8pSLgoOtX20j3PVGAvlA9A8LUP4vbPdkAM5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrCrLBrvAkVbaaXAMGMsO4Nr7i1zsMq2zsWWJS53M7W3lF13TJMWxKzcK4jAnURVSoaLAtBG8+qcdJSqPqgptzEUE3gSi2KkJ9xgHxBEQoOLRgNCg7C0fcohREEW9Muqv2kqEUgPgNE4id14E+ZkgZYC74SeU5Fu8/FcPwdjhDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MXMyKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B126FC4CEF1;
-	Tue, 16 Dec 2025 11:41:54 +0000 (UTC)
+	 MIME-Version; b=k6/erCqYqJyw1edNkAyxliUaKTQlKhky8EpHPns7BJ1g7ywl1j2ekBqO9HcAqVMbZI3xC65wcvpHQPFxN/6ufkpTberzoU3Us4WtDW8/GNqJ+pRUZIxcihiQcCxNw9OQBuuE62zq9Ni61SU6JlqYqDAebM9PLw+cs6v0AMaW7cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKNF9LGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29359C16AAE;
+	Tue, 16 Dec 2025 11:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885315;
-	bh=76RrOdDxolX6wmw6xsnwdPTzgoi+Pcy04igDCkvuS8Y=;
+	s=korg; t=1765885205;
+	bh=otH6QjS8pSLgoOtX20j3PVGAvlA9A8LUP4vbPdkAM5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5MXMyKCBS18Dyq34S3Xoy/8j3QKS7HGUAol1tZLbiXmAoPoahQaCWJpLWdyeN21M
-	 xi1nTmXB9Hxm15sNok0Y1+vmC3vcjADttvSD/ULaqBuV3+Sp43KSilfbUIhAEiP++J
-	 EGzT3ABDVSjPCtQrrOlM7hEk+yHq8xH1Yn21oiZQ=
+	b=iKNF9LGZBmSV2rVMV65UMhcHbDL4tUjJwAvw34BPRrJuI9s43+oLR9GxUCPYS1qij
+	 4hMsgctpXDcucJphtaq0I4HP1hs2VPTp7TPMEnsCeC4L7pQ7q6eT/ipcf36YM0msJh
+	 n6xPtxCSBdL6KGnoW6qTAo2b6TB/uKlYlUqjEWvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 069/507] tty: introduce tty_port_tty guard()
-Date: Tue, 16 Dec 2025 12:08:30 +0100
-Message-ID: <20251216111348.042883962@linuxfoundation.org>
+Subject: [PATCH 6.17 070/507] tty: serial: imx: Only configure the wake register when device is set as wakeup source
+Date: Tue, 16 Dec 2025 12:08:31 +0100
+Message-ID: <20251216111348.079136334@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -63,52 +64,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit e8398b8aed50382c21fcec77e80a5314e7c45c25 ]
+[ Upstream commit d55f3d2375ceeb08330d30f1e08196993c0b6583 ]
 
-Having this, guards like these work:
-  scoped_guard(tty_port_tty, port)
-    tty_wakeup(scoped_tty());
+Currently, the i.MX UART driver enables wake-related registers for all
+UART devices by default. However, this is unnecessary for devices that
+are not configured as wakeup sources. To address this, add a
+device_may_wakeup() check before configuring the UART wake-related
+registers.
 
-See e.g. "tty_port: use scoped_guard()" later in this series.
-
-The definitions depend on CONFIG_TTY. It's due to tty_kref_put().
-On !CONFIG_TTY, it is an inline and its declaration would conflict. The
-guards are not needed in that case, of course.
-
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250814072456.182853-3-jirislaby@kernel.org
+Fixes: db1a9b55004c ("tty: serial: imx: Allow UART to be a source for wakeup")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251002045259.2725461-2-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: d55f3d2375ce ("tty: serial: imx: Only configure the wake register when device is set as wakeup source")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/tty_port.h | 14 ++++++++++++++
+ drivers/tty/serial/imx.c | 14 ++++++++++++++
  1 file changed, 14 insertions(+)
 
-diff --git a/include/linux/tty_port.h b/include/linux/tty_port.h
-index 332ddb93603ec..660c254f1efe5 100644
---- a/include/linux/tty_port.h
-+++ b/include/linux/tty_port.h
-@@ -270,4 +270,18 @@ static inline void tty_port_tty_vhangup(struct tty_port *port)
- 	__tty_port_tty_hangup(port, false, false);
- }
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 500dfc009d03e..90e2ea1e8afe5 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2697,8 +2697,22 @@ static void imx_uart_save_context(struct imx_port *sport)
+ /* called with irq off */
+ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+ {
++	struct tty_port *port = &sport->port.state->port;
++	struct device *tty_dev;
++	bool may_wake = false;
+ 	u32 ucr3;
  
-+#ifdef CONFIG_TTY
-+void tty_kref_put(struct tty_struct *tty);
-+__DEFINE_CLASS_IS_CONDITIONAL(tty_port_tty, true);
-+__DEFINE_UNLOCK_GUARD(tty_port_tty, struct tty_struct, tty_kref_put(_T->lock));
-+static inline class_tty_port_tty_t class_tty_port_tty_constructor(struct tty_port *tport)
-+{
-+	class_tty_port_tty_t _t = {
-+		.lock = tty_port_tty_get(tport),
-+	};
-+	return _t;
-+}
-+#define scoped_tty()	((struct tty_struct *)(__guard_ptr(tty_port_tty)(&scope)))
-+#endif
++	scoped_guard(tty_port_tty, port) {
++		struct tty_struct *tty = scoped_tty();
 +
- #endif
++		tty_dev = tty->dev;
++		may_wake = tty_dev && device_may_wakeup(tty_dev);
++	}
++
++	/* only configure the wake register when device set as wakeup source */
++	if (!may_wake)
++		return;
++
+ 	uart_port_lock_irq(&sport->port);
+ 
+ 	ucr3 = imx_uart_readl(sport, UCR3);
 -- 
 2.51.0
 
