@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA86CC281B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57275CC3528
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C9BF301CC7C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A52E30EB618
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02AA3557E7;
-	Tue, 16 Dec 2025 11:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB5135A926;
+	Tue, 16 Dec 2025 12:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HShdcz2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZguCecXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B73557E8;
-	Tue, 16 Dec 2025 11:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4404734B1AF;
+	Tue, 16 Dec 2025 12:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886233; cv=none; b=jxBtkV8Eil2KseF8FYI+wfETDkzqZKw6vljgF4O29KxSvOtMpDL9AiS3Z3DXdxNV5cyTxVR/BlrEVXeklcjZqi2K1RC1zwq/J1OBM5SmtDEsgIEFCsXer0XVdbBMqBa6IMMfQtOJo+uFtXUpXQvIfl2yMB0KTipNiFU4o23pAxY=
+	t=1765888166; cv=none; b=ESr4kau/ms9VsZ+3XeA6mkNM01N7EWd/E3HmHNOH9LvcMPXnOADDaQZAg/JDvoaX+FsfmQEIEPEm5DT0iA/UYx0uLZkz3vo/ND0Bsrzg9vQh5U60LYO3CeIZv27vUWZJZbKhJPH2qaOr2ANl2yFrplEAxEFUepl4vEYiOFqMuWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886233; c=relaxed/simple;
-	bh=BijKMYWAqo/FgVWME6NFPDK9W/LtH8xodBJZNrinNvU=;
+	s=arc-20240116; t=1765888166; c=relaxed/simple;
+	bh=HybJVE9MDi0PbI752Qz9AGbfrOHcgh2z6XqrOFD9XxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLQrDCbjcBihP6YsRiRE0uZZ5Y/T/cd7m8IZniA/prIt5Eo65i485pmdKvrU3nMnaAeR9zdQUWxz9TYlWWspNa4KSgXzz2qxNXXCATuXIo2PSP8OQDulTCou7KawvBkO4Juf4usHhDK7K46zivLAd61uwP58HhYGbkRSlZC90U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HShdcz2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCE9C4CEF1;
-	Tue, 16 Dec 2025 11:57:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bslm4xwB5nd+0m+v/77RMXEf3z5PsJWvRMmZFUv2IBBNWnCozfV/xh8WStWqv++qzInLhC5zj+y5a74p3QnixiAVVkkKOMFI384dloQu9vuVGrGxsSS8X6+jBPxSn2SxGbiQFE7EaltbHqJ7n/fT67AqGAybeWipozTH2KcmIe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZguCecXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A29C4CEF1;
+	Tue, 16 Dec 2025 12:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886233;
-	bh=BijKMYWAqo/FgVWME6NFPDK9W/LtH8xodBJZNrinNvU=;
+	s=korg; t=1765888166;
+	bh=HybJVE9MDi0PbI752Qz9AGbfrOHcgh2z6XqrOFD9XxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HShdcz2jkI6zq+H6E/qQ2u9K8uqVsWgv601CAgFWQZ1cM9jmWo0AwM5Rlhy7mr/gT
-	 f6uke18s9jyTOeWZRND0sAtzvtDVQVb/IvZZuuo+mzktqaWMsFbOfzwL+iiFAoOfZK
-	 CCuC98/ttv4HsMGRO8qs3BnYmqCidulb1wgBSr+I=
+	b=ZguCecXvuVeJPOTFU1wdLhhgOXgHp/ezShGWfz6xh85K5UxatK5y1ZgDZdiXGf3Zt
+	 I31g0atFspYMsm/sp9s9rgJo+Silcza9iSWA8wtn9gy/ZZlY6pnQSbMwGF5mGqfjmW
+	 xoKZ6n32FU7PNzz+NooSBOHq7qn3UfIQmsyH9k2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 376/507] virtio: fix typo in virtio_device_ready() comment
-Date: Tue, 16 Dec 2025 12:13:37 +0100
-Message-ID: <20251216111359.082510070@linuxfoundation.org>
+Subject: [PATCH 6.18 451/614] ACPI: processor_core: fix map_x2apic_id for amd-pstate on am4
+Date: Tue, 16 Dec 2025 12:13:38 +0100
+Message-ID: <20251216111417.709971721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +58,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 361173f95ae4b726ebbbf0bd594274f5576c4abc ]
+[ Upstream commit 17e7972979e147cc51d4a165e6b6b0f93273ca68 ]
 
-"coherenct" -> "coherent"
+On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
+and equivalent Gigabyte, amd-pstate does not initialize when the
+x2apic is enabled in the BIOS. Kernel debug messages include:
 
-Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
-Message-Id: <db286e9a65449347f6584e68c9960fd5ded2b4b0.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
+[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
+[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
+
+I tracked this down to map_x2apic_id() checking device_declaration
+passed in via the type argument of acpi_get_phys_id() via
+map_madt_entry() while map_lapic_id() does not.
+
+It appears these BIOSes use Processor statements for declaring the CPUs
+in the ACPI namespace instead of processor device objects (which should
+have been used). CPU declarations via Processor statements were
+deprecated in ACPI 6.0 that was released 10 years ago. They should not
+be used any more in any contemporary platform firmware.
+
+I tried to contact Asus support multiple times, but never received a
+reply nor did any BIOS update ever change this.
+
+Fix amd-pstate w/ x2apic on am4 by allowing map_x2apic_id() to work with
+CPUs declared via Processor statements for IDs less than 255, which is
+consistent with ACPI 5.0 that still allowed Processor statements to be
+used for declaring CPUs.
+
+Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
+Signed-off-by: René Rebe <rene@exactco.de>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251126.165513.1373131139292726554.rene@exactco.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
+ drivers/acpi/processor_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 7427b79d6f3d5..148dc5056002f 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -290,7 +290,7 @@ void virtio_device_ready(struct virtio_device *dev)
- 	 * specific set_status() method.
- 	 *
- 	 * A well behaved device will only notify a virtqueue after
--	 * DRIVER_OK, this means the device should "see" the coherenct
-+	 * DRIVER_OK, this means the device should "see" the coherent
- 	 * memory write that set vq->broken as false which is done by
- 	 * the driver when it sees DRIVER_OK, then the following
- 	 * driver's vring_interrupt() will see vq->broken as false so
+diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+index 9b6b71a2ffb54..a4498357bd165 100644
+--- a/drivers/acpi/processor_core.c
++++ b/drivers/acpi/processor_core.c
+@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
+ 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
+ 		return -ENODEV;
+ 
+-	if (device_declaration && (apic->uid == acpi_id)) {
++	if (apic->uid == acpi_id && (device_declaration || acpi_id < 255)) {
+ 		*apic_id = apic->local_apic_id;
+ 		return 0;
+ 	}
 -- 
 2.51.0
 
