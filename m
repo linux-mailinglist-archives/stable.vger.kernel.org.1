@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC77CC3BF7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1C0CC27CA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 371EF3121CD7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB289305F645
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A559C346778;
-	Tue, 16 Dec 2025 12:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AA7355029;
+	Tue, 16 Dec 2025 11:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi9gLJtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9H+ObgY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA1133ADAD;
-	Tue, 16 Dec 2025 12:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9E355026;
+	Tue, 16 Dec 2025 11:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887833; cv=none; b=XtbNJkoRwo34w4w1McEJy6gGlTxwUyKBFcY9Hg6UGm9aanAP9hpsGPbiw2zW1eFv/CaFN/h3iUdpeDj+ACfBdg82A/NndwGLxS8W8lTBPUsrbWMa3wB7Yh7Iv5PrODOzwd/KlwYMqxcJf7wnTuSJVnJhXqY3wAVEOB0i1nO+Gv0=
+	t=1765885902; cv=none; b=hhiVtBB95clC0eUngqmh1IZdBZJtrTOWutbGTCXTHu3O4H+MQovclpnMcwU2BiY4s9NTZc7C/1+BkoA2gARlZfBc3ZqDKsX8oIHrKW8cOudJwQnLFMeRLn/RNiMvvDngRNcA/Zbk0lWd5O/4ebAYXQvXhz+JZ7jhn6IlqdkZJ7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887833; c=relaxed/simple;
-	bh=+ETTEnlZCu1HOFhZRpiFbjjJm83d3r0dXMcgrnhZemk=;
+	s=arc-20240116; t=1765885902; c=relaxed/simple;
+	bh=mMMMQXR1uit5zSwFfzr3/n1V+XfbTcHByhBpTMLi15c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtN0v/kFvg7I4mYWsYsYYgjY2eZEuAeXrgNNKy3Z/s4vf4XKdYTo8bJcL/BuubEh2Cvv6rJA9kAhbI2Sr3MAhol8pGpObo8pP+9ZmQ9MxDgfrbEbwVRjRrlOBXaowM3dx8jDcZ9ctmvqYpCNS6GZn5AUW1NgcX2YIzkl/dKej/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi9gLJtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D08C4CEF1;
-	Tue, 16 Dec 2025 12:23:52 +0000 (UTC)
+	 MIME-Version; b=fxNB9y9LBJ6vQ56lzlNaSNIuu4vkCQ3w2IvfNzz+J4RFs2Bw/5wvGrHaFpGT1hkP/n6bcSkec2GL4S9k0sbgR2mSxH38WWpQ1GmpwcYQwOiPd0p0hVlrecxdzDFUIjjN20U1uT+xihXFs91g7mTfHXyQEEXdg+xC4zLpPGnuRPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9H+ObgY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62363C4CEF1;
+	Tue, 16 Dec 2025 11:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887833;
-	bh=+ETTEnlZCu1HOFhZRpiFbjjJm83d3r0dXMcgrnhZemk=;
+	s=korg; t=1765885901;
+	bh=mMMMQXR1uit5zSwFfzr3/n1V+XfbTcHByhBpTMLi15c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bi9gLJtIkK/TjFf+InM39YePTFYcgwczS3azJ/REOlsJ4C93yPRdFw8QkwehdN+Hv
-	 QprIflL3aIlBbzqRuqckBx9qs2SH7gNLNyvGzn0egneaYLlba33wcMGOhKaW1Wtv+p
-	 qwfrrQgrS5CuCXhglPLHHJr6H0ifYLbbnEsEJNtQ=
+	b=E9H+ObgYg2dkUAQPfrxRTGqu7NpcVPM3IfXUafwnLL0t28moN7x7atpeBxs5Njjhp
+	 Z4f69QyL4SF9ZTg0RIBCDwXjfD8mObXAwdqepl4d8mNMcY/fipXoPbOR/AGo2ix86a
+	 +n4uaWsE9YfJnXR4NHCLaXkTS2tE+L7gA4e8IG2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 318/614] net: stmmac: Fix VLAN 0 deletion in vlan_del_hw_rx_fltr()
-Date: Tue, 16 Dec 2025 12:11:25 +0100
-Message-ID: <20251216111412.886731025@linuxfoundation.org>
+Subject: [PATCH 6.17 245/507] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
+Date: Tue, 16 Dec 2025 12:11:26 +0100
+Message-ID: <20251216111354.372695964@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit d9db25723677c3741a0cf3643f7f7429fc983921 ]
+[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
 
-When the "rx-vlan-filter" feature is enabled on a network device, the 8021q
-module automatically adds a VLAN 0 hardware filter when the device is
-brought administratively up.
+The bpf_skb_check_mtu helper needs to use skb->transport_header when
+the BPF_MTU_CHK_SEGS flag is used:
 
-For stmmac, this causes vlan_add_hw_rx_fltr() to create a new entry for
-VID 0 in the mac_device_info->vlan_filter array, in the following format:
+	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
 
-    VLAN_TAG_DATA_ETV | VLAN_TAG_DATA_VEN | vid
+The transport_header is not always set. There is a WARN_ON_ONCE
+report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
+bpf_prog_test_run is used:
 
-Here, VLAN_TAG_DATA_VEN indicates that the hardware filter is enabled for
-that VID.
+WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
+ skb_gso_validate_network_len
+ bpf_skb_check_mtu
+ bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
+ bpf_test_run
+ bpf_prog_test_run_skb
 
-However, on the delete path, vlan_del_hw_rx_fltr() searches the vlan_filter
-array by VID only, without verifying whether a VLAN entry is enabled. As a
-result, when the 8021q module attempts to remove VLAN 0, the function may
-mistakenly match a zero-initialized slot rather than the actual VLAN 0
-entry, causing incorrect deletions and leaving stale entries in the
-hardware table.
+For a normal ingress skb (not test_run), skb_reset_transport_header
+is performed but there is plan to avoid setting it as described in
+commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
 
-Fix this by verifying that the VLAN entry's enable bit (VLAN_TAG_DATA_VEN)
-is set before matching and deleting by VID. This ensures only active VLAN
-entries are removed and avoids leaving stale entries in the VLAN filter
-table, particularly for VLAN ID 0.
+This patch fixes the bpf helper by checking
+skb_transport_header_was_set(). The check is done just before
+skb->transport_header is used, to avoid breaking the existing bpf prog.
+The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
 
-Fixes: ed64639bc1e08 ("net: stmmac: Add support for VLAN Rx filtering")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20251113112721.70500-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/filter.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-index ff02a79c00d4f..b18404dd5a8be 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-@@ -122,7 +122,8 @@ static int vlan_del_hw_rx_fltr(struct net_device *dev,
- 
- 	/* Extended Rx VLAN Filter Enable */
- 	for (i = 0; i < hw->num_vlan; i++) {
--		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid) {
-+		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VEN) &&
-+		    ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid)) {
- 			ret = vlan_write_filter(dev, hw, i, 0);
- 
- 			if (!ret)
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b20d5fecdbc95..47366ec94e589 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6414,9 +6414,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+ 	 */
+ 	if (skb_is_gso(skb)) {
+ 		ret = BPF_MTU_CHK_RET_SUCCESS;
+-		if (flags & BPF_MTU_CHK_SEGS &&
+-		    !skb_gso_validate_network_len(skb, mtu))
+-			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		if (flags & BPF_MTU_CHK_SEGS) {
++			if (!skb_transport_header_was_set(skb))
++				return -EINVAL;
++			if (!skb_gso_validate_network_len(skb, mtu))
++				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		}
+ 	}
+ out:
+ 	*mtu_len = mtu;
 -- 
 2.51.0
 
