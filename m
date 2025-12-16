@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BED0CC25E0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CD9CC3381
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4712D30B2129
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D741305162F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21914341674;
-	Tue, 16 Dec 2025 11:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1703328B57;
+	Tue, 16 Dec 2025 12:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5XwQ3iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KW0htVtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D230233B966;
-	Tue, 16 Dec 2025 11:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7AB3570CD;
+	Tue, 16 Dec 2025 12:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884723; cv=none; b=sP9iXLWglr2cEoIJfmo12dalpkmeX4oIKMRF0Oc8z/6jZ2oP4z95mzytZBY3XzXJ+9QcwzOviEnG0MWsMI5HfgDsRSA3Rnul/FclbmJ4nmVF/MkO4Xk4DvflawsKmX9zRQh0UuLSlVh2+K9QBl1+7rWF0Ry5LnKLY2B3DAATU9E=
+	t=1765888149; cv=none; b=u/G5K9wwZMRbrzK1T+QiFlUVfqbSCQO04WIctaQ2Nas+wufQ2KejGu9i9WtU1E/Ke+DTWwF652LdNxToP+VF00rNKZwkQr+XgzZ/ePxKLW/SCJOOby8ja6mDOuKhWfne4eZ8bk3Ewvy61GZ22bvC5AvWaKO10l1wcIb69ZX4QVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884723; c=relaxed/simple;
-	bh=oZMsFywdm7Ky51yN+lojpxOJlkAuff19+mDOSG8QVrs=;
+	s=arc-20240116; t=1765888149; c=relaxed/simple;
+	bh=puQp9YOQ/DJip3AOF60lovAXQC9bAoTss44CBIeVRMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2xaEdZEz/MX6M/YzTWMDTHx6K8LVEl0XRld5jExSryGgX8GoSdIABXEhkA9BJSBZmjt6LN7KO47vnm8ck/aISuNTmd5anLtOUPGIROzb4f2UbeCGPlerZzHvZhjhdGHLiA72QqbB4SKSFmJxM2ihRSDrdRism0UAdtLaOnQzL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5XwQ3iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F56FC4CEF1;
-	Tue, 16 Dec 2025 11:32:02 +0000 (UTC)
+	 MIME-Version; b=u0zdwiD65msWf5vqeq0Gr5IXp6s30GE3BRobfM8Opp3LZnay6/tid2lmQXgRdSiNKOOIIwnUPnM206/LKAkUg7QsqP3sKSDavs8bur7keCGVEACvH1Y5jnsBWLxf3qK5atCmOiRSD8HrCDGoY8121cudyiWzc35gDE0DxTty7nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KW0htVtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF90BC4CEF1;
+	Tue, 16 Dec 2025 12:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884723;
-	bh=oZMsFywdm7Ky51yN+lojpxOJlkAuff19+mDOSG8QVrs=;
+	s=korg; t=1765888149;
+	bh=puQp9YOQ/DJip3AOF60lovAXQC9bAoTss44CBIeVRMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5XwQ3izuQGK25pV1QdoACj5vHnOEPgHZwlkFbd+3KntMY64HHAM/DgRjzwEoR1Sg
-	 nXw+ypUoOqE1+Lvi2Pjp4DUGgYl9XsdWFJJDS/EIpRbIUZ7EeWoSX31yaDhbnSMShA
-	 f5YbWwBVxU00UuSea+Kth8/AQ3UTONow8fcnMSiw=
+	b=KW0htVtXra7jhNCjy666fOJ+rfj1T6ed6Al2UY/zTnRVnhA02i5mVGTQS7gTFHJDu
+	 +xyoqWFa5Bms71ls6ilRRQwGh1nc48zrui8CaJLp4Ixb5vNFUvOqqfqUiEjFl3QeYc
+	 +PtZmLTJbeYRA2GZMiMchhJKGJFy8P2BhOSQ02XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Gao <rabenda.cn@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andrea della Porta <andrea.porta@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/354] of: Skip devicetree kunit tests when RISCV+ACPI doesnt populate root node
+Subject: [PATCH 6.18 446/614] misc: rp1: Fix an error handling path in rp1_probe()
 Date: Tue, 16 Dec 2025 12:13:33 +0100
-Message-ID: <20251216111329.825669578@linuxfoundation.org>
+Message-ID: <20251216111417.532237198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 546dbb0223102813ffb5bbcb9443a47c3183f195 ]
+[ Upstream commit 43cd4b634ef90c4e2ff75eaeb361786fa04c8874 ]
 
-Starting with commit 69a8b62a7aa1 ("riscv: acpi: avoid errors caused by
-probing DT devices when ACPI is used"), riscv images no longer populate
-devicetree if ACPI is enabled. This causes unit tests to fail which require
-the root node to be set.
+When DT is used to get the reference of 'rp1_node', it should be released
+when not needed anymore, otherwise it is leaking.
 
-  # Subtest: of_dtb
-  # module: of_test
-  1..2
-  # of_dtb_root_node_found_by_path: EXPECTATION FAILED at drivers/of/of_test.c:21
-  Expected np is not null, but is
-  # of_dtb_root_node_found_by_path: pass:0 fail:1 skip:0 total:1
-  not ok 1 of_dtb_root_node_found_by_path
-  # of_dtb_root_node_populates_of_root: EXPECTATION FAILED at drivers/of/of_test.c:31
-  Expected of_root is not null, but is
-  # of_dtb_root_node_populates_of_root: pass:0 fail:1 skip:0 total:1
-  not ok 2 of_dtb_root_node_populates_of_root
+In such a case, add the missing of_node_put() call at the end of the probe,
+as already done in the error handling path.
 
-Skip those tests for RISCV if the root node is not populated.
-
-Fixes: 69a8b62a7aa1 ("riscv: acpi: avoid errors caused by probing DT devices when ACPI is used")
-Cc: Han Gao <rabenda.cn@gmail.com>
-Cc: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Paul Walmsley <pjw@kernel.org>  # arch/riscv
-Link: https://patch.msgid.link/20251023160415.705294-1-linux@roeck-us.net
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 49d63971f963 ("misc: rp1: RaspberryPi RP1 misc driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrea della Porta <andrea.porta@suse.com>
+Link: https://patch.msgid.link/9bc1206de787fa86384f3e5ba0a8027947bc00ff.1762585959.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/of_kunit_helpers.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/misc/rp1/rp1_pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/of/of_kunit_helpers.c b/drivers/of/of_kunit_helpers.c
-index 7b3ed5a382aaa..f6ed1af8b62aa 100644
---- a/drivers/of/of_kunit_helpers.c
-+++ b/drivers/of/of_kunit_helpers.c
-@@ -18,8 +18,9 @@
-  */
- void of_root_kunit_skip(struct kunit *test)
- {
--	if (IS_ENABLED(CONFIG_ARM64) && IS_ENABLED(CONFIG_ACPI) && !of_root)
--		kunit_skip(test, "arm64+acpi doesn't populate a root node");
-+	if ((IS_ENABLED(CONFIG_ARM64) || IS_ENABLED(CONFIG_RISCV)) &&
-+	    IS_ENABLED(CONFIG_ACPI) && !of_root)
-+		kunit_skip(test, "arm64/riscv+acpi doesn't populate a root node");
- }
- EXPORT_SYMBOL_GPL(of_root_kunit_skip);
+diff --git a/drivers/misc/rp1/rp1_pci.c b/drivers/misc/rp1/rp1_pci.c
+index 803832006ec87..a342bcc6164bb 100644
+--- a/drivers/misc/rp1/rp1_pci.c
++++ b/drivers/misc/rp1/rp1_pci.c
+@@ -289,6 +289,9 @@ static int rp1_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_unload_overlay;
+ 	}
  
++	if (skip_ovl)
++		of_node_put(rp1_node);
++
+ 	return 0;
+ 
+ err_unload_overlay:
 -- 
 2.51.0
 
