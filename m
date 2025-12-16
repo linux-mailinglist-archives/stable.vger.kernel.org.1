@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A257CC24FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38ACFCC3A40
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1AD193022180
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39F2D3062BF2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AE0342CB8;
-	Tue, 16 Dec 2025 11:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5A3352926;
+	Tue, 16 Dec 2025 12:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYNZyrCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08bcAhr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5027342521;
-	Tue, 16 Dec 2025 11:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C91350D7F;
+	Tue, 16 Dec 2025 12:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884939; cv=none; b=Auxc+PbVl6WytPnYWqFztzY8DPr1iCjcOVqlzg3Sp5Sh8qek33a8aFOKVeNJtGd7su9h0CCE0ssscnzpMzCk+Q9mWo5t37lyxqA4o6ll602EbcjoLbyJukVfzVei1yAMegvuiwL37rCDwGfuJqqelUef+/T78kEvZ4LBtO8exE0=
+	t=1765886465; cv=none; b=SmjPcS57hbnc/nosGUlmxyUgM74ZzhaYvajGV0w+6J1mS9rYlMpEEmcEA0wKiPV9DrXH50RpTDC2oFjU2NXbPo2UiIbMbLxWKMRkogC1rjfheywh4esawBaTxNRgfGTyPJ0VYOozGNvgbyiuEA0qC55kGLn6FGvvNyIo3xpfkHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884939; c=relaxed/simple;
-	bh=3NHuBdquzmqBYkszDplX5GiTQ5G6aIfeFFFmJwacqSA=;
+	s=arc-20240116; t=1765886465; c=relaxed/simple;
+	bh=TR9ed/fe1oCHOVjx26/bR7ciNgeMyhInQ9+ApNVACuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5vdSVeY7irq1QUdRFKrUqc4bNWi/2tHL28QDwhhipK0/PR6Db4CwznWexJujGxAwLlnHNFRIxMBg8dHiVz93pi9wTbRpg1EzJEM7TmKbHySdTdiKP31nuEnjN8nXEbDiEZWigTMeggxbTv4hEr+NYxwR5r3I/+GBfYE/UPe3Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYNZyrCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E305EC4CEF1;
-	Tue, 16 Dec 2025 11:35:38 +0000 (UTC)
+	 MIME-Version; b=kAf+WEiYg2MDjHwisS3Qhn8K5EzCS8AJaebOpoa0YlCwp/5DGZmgMGu8SJpjQeDg6516zQivF2JEOitzxurkyWI064bwZK3ddl6XWZ1Ml9UrdIA5q+qvEZ9sSpd3zn0aH64QgkYul/rPjYqcYAXAVMyAGpxtCxqDJFjVh7GGGiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08bcAhr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A929C4CEF1;
+	Tue, 16 Dec 2025 12:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884939;
-	bh=3NHuBdquzmqBYkszDplX5GiTQ5G6aIfeFFFmJwacqSA=;
+	s=korg; t=1765886465;
+	bh=TR9ed/fe1oCHOVjx26/bR7ciNgeMyhInQ9+ApNVACuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYNZyrCM2GtATIUaC++5E6vuDlfJQLJz5jTKbRRtQucCdgavEmXoyilxaGh8V6Q5A
-	 T9+AhbD3fsJVD3dL8pB6pqSoMoYK05waUR8oO9V8Rp9jn6D/S4LSsKxR25mE6/uW2D
-	 ptjqz1U8PiPbPZAfhWns4vWhqxJ3i8CVxNmGwrzo=
+	b=08bcAhr09pWRt8LVj8ZlADh3fQi05hXtXM5kDVppO9EtHocJeGLaaomZvk1LMBYp8
+	 X22dpiSyTuC7Ex7/eQPmLBIRSzFrZqCvb/vH5uVw1JaozrpsofwEtmK8YhjmDaGDgA
+	 WyIzHjSScGtT7TNi/9QZ6eZv/xTonFqEIXOYgI/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/354] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
-Date: Tue, 16 Dec 2025 12:14:44 +0100
-Message-ID: <20251216111332.394957851@linuxfoundation.org>
+Subject: [PATCH 6.17 444/507] NFS: Initialise verifiers for visible dentries in _nfs4_open_and_get_state
+Date: Tue, 16 Dec 2025 12:14:45 +0100
+Message-ID: <20251216111401.541621649@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 0f900f11002ff52391fc2aa4a75e59f26ed1c242 ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in _nfs4_open_and_get_state().
 
-Add error checking for of_dma_configure() and return on failure.
-
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: cf5b4059ba71 ("NFSv4: Fix races between open and dentry revalidation")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index 018f2372e892c..3fd7a03f1edaa 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -354,7 +354,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index a1e95732fd031..106f0bf881376 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3174,18 +3174,6 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
+ 	if (opendata->o_res.rflags & NFS4_OPEN_RESULT_PRESERVE_UNLINKED)
+ 		set_bit(NFS_INO_PRESERVE_UNLINKED, &NFS_I(state->inode)->flags);
  
- 	i2s_priv = dev_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0)->dev);
+-	dentry = opendata->dentry;
+-	if (d_really_is_negative(dentry)) {
+-		struct dentry *alias;
+-		d_drop(dentry);
+-		alias = d_splice_alias(igrab(state->inode), dentry);
+-		/* d_splice_alias() can't fail here - it's a non-directory */
+-		if (alias) {
+-			dput(ctx->dentry);
+-			ctx->dentry = dentry = alias;
+-		}
+-	}
+-
+ 	switch(opendata->o_arg.claim) {
+ 	default:
+ 		break;
+@@ -3196,7 +3184,20 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
+ 			break;
+ 		if (opendata->o_res.delegation.type != 0)
+ 			dir_verifier = nfs_save_change_attribute(dir);
+-		nfs_set_verifier(dentry, dir_verifier);
++	}
++
++	dentry = opendata->dentry;
++	nfs_set_verifier(dentry, dir_verifier);
++	if (d_really_is_negative(dentry)) {
++		struct dentry *alias;
++		d_drop(dentry);
++		alias = d_splice_alias(igrab(state->inode), dentry);
++		/* d_splice_alias() can't fail here - it's a non-directory */
++		if (alias) {
++			dput(ctx->dentry);
++			nfs_set_verifier(alias, dir_verifier);
++			ctx->dentry = dentry = alias;
++		}
+ 	}
  
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
+ 	/* Parse layoutget results before we check for access */
 -- 
 2.51.0
 
