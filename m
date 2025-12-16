@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4558CC23D9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFAB8CC2EF0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D746230688E1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44FD831057C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478E341645;
-	Tue, 16 Dec 2025 11:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA48C34F250;
+	Tue, 16 Dec 2025 12:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bBYMgi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIIEJWKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C7C313E13;
-	Tue, 16 Dec 2025 11:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D00134EEE8;
+	Tue, 16 Dec 2025 12:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884316; cv=none; b=gn6YrFT1Rv6deAXD8i+9h+Nb3igSZ4FpI1c4Ir6x5hjFw8BVDuaxrTxR1YO162ooQLiO4wh/XemzYLWyG+fxigYryzXe0ZBZVre8ugaruZ0G45da8XPbRPb26WzQhYFFZFDsT4kjfMHy3VCjoRBa0GWwsWMpRyZ0W5pHlLGc7iY=
+	t=1765887846; cv=none; b=rhYVtBGmB1FMTet+XFLGw3YKpgNHTEnMVIEvuFaUyc5xSukPKSmHeqW7/dPsoqmaEOyi4Dq8TVc1kGCezHG/+l3TxSdcsvvheIoPuBudFqBPdg8X/2gOSzUNxVCo1K4YC6wsql6cpAyu8SBzMLOAWpsmu7aqL69yvFooVQLkI9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884316; c=relaxed/simple;
-	bh=wr0oJk0GriS2Uzy5rBPEBk5AmOTEEu05cElB42kWu/k=;
+	s=arc-20240116; t=1765887846; c=relaxed/simple;
+	bh=sJGGcgbNpZMqhzDUna1PKX8AuPdCw5r/NXeRId0HdNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFpC6F1JG6yZNauQ5jQu6g+oN3eWb+AEiYipxzMkInNh9e0moeCmS80l8qBUqBpX95BpO+SQZp4efij+qzvePTYSxQmisNdeZHmy94M006tRBllswwVzJrMHOyWr79SVAFO28gB4voTrbtBflLLpMGvz3808s6unFjN7sQ9v9f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bBYMgi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953CDC4CEF5;
-	Tue, 16 Dec 2025 11:25:15 +0000 (UTC)
+	 MIME-Version; b=qeQHcOthH9Wh0uTD+vxvGCveTWsqaxRXvJEMLqAnzNAVaoQBlpNOPXKyc1o+lYJYJGPUzGwGRGcIrzdpjMC6p6PhlmwwFPmmyV079+aAqP9Xd/Rb/RHoqrHLgBEgC48D7EMm2yhR0dL25m8tdayIZKPwpDBp/jtfYJq6RPD2ga4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIIEJWKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EC0C4CEF1;
+	Tue, 16 Dec 2025 12:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884316;
-	bh=wr0oJk0GriS2Uzy5rBPEBk5AmOTEEu05cElB42kWu/k=;
+	s=korg; t=1765887846;
+	bh=sJGGcgbNpZMqhzDUna1PKX8AuPdCw5r/NXeRId0HdNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bBYMgi5eobIgTQxbPf2yRqtgu6stlGpyTGwCrXia7I+ZEcP4qA7V7/lfajtnsvPp
-	 qmIZ0/gmAqkSL5oWzKLXTbM9/mw36+ytj2JqJeyNdk9Mh+6zza5EdMdM5jkujx3Efp
-	 M2JERlzxqgi9SQGe7xTLxMLHQmM6cNq807XgnwR8=
+	b=KIIEJWKmE8UxmJ6uimQyc3lM1sKV3gHNx0YQGYJk/gV8dI3i0gTPMZdOWh7s9kmZY
+	 13pK9XWU7hZka8K4+idt/cH/mb2MJZZbIVV40LpjXd2nn/5ROx7uOhByMlv97uCahG
+	 KnwiZV2RCeFybsc7JOkBY5OTvTWLpO/jq4V2GSw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/354] PCI: keystone: Exit ks_pcie_probe() for invalid mode
+Subject: [PATCH 6.18 356/614] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
 Date: Tue, 16 Dec 2025 12:12:03 +0100
-Message-ID: <20251216111326.567238238@linuxfoundation.org>
+Message-ID: <20251216111414.259611078@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
+[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
 
-Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
-When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
-the PCIe Controller is configured accordingly. However, when the mode is
-neither of them, an error message is displayed, but the driver probe
-succeeds. Since this "invalid" mode is not associated with a functional
-PCIe Controller, the probe should fail.
+The rtl8187_rx_cb() calculates the rx descriptor header address
+by subtracting its size from the skb tail pointer.
+However, it does not validate if the received packet
+(skb->len from urb->actual_length) is large enough to contain this
+header.
 
-Fix the behavior by exiting "ks_pcie_probe()" with the return value of
-"-EINVAL" in addition to displaying the existing error message when the
-mode is invalid.
+If a truncated packet is received, this will lead to a buffer
+underflow, reading memory before the start of the skb data area,
+and causing a kernel panic.
 
-Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
+Add length checks for both rtl8187 and rtl8187b descriptor headers
+before attempting to access them, dropping the packet cleanly if the
+check fails.
+
+Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 4f75d13fe1dee..1c34ea8e7c61e 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1339,6 +1339,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", mode);
-+		ret = -EINVAL;
-+		goto err_get_sync;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+index 0c5c66401daa6..7aa2da0cd63cc 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
+ 	skb_put(skb, urb->actual_length);
  
- 	ks_pcie_enable_error_irq(ks_pcie);
+-	if (unlikely(urb->status)) {
+-		dev_kfree_skb_irq(skb);
+-		return;
+-	}
++	if (unlikely(urb->status))
++		goto free_skb;
+ 
+ 	if (!priv->is_rtl8187b) {
+-		struct rtl8187_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187_rx_hdr))
++			goto free_skb;
++
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		flags = le32_to_cpu(hdr->flags);
+ 		/* As with the RTL8187B below, the AGC is used to calculate
+ 		 * signal strength. In this case, the scaling
+@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 		rx_status.antenna = (hdr->signal >> 7) & 1;
+ 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
+ 	} else {
+-		struct rtl8187b_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187b_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
++			goto free_skb;
++
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		/* The Realtek datasheet for the RTL8187B shows that the RX
+ 		 * header contains the following quantities: signal quality,
+ 		 * RSSI, AGC, the received power in dB, and the measured SNR.
+@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 		skb_unlink(skb, &priv->rx_queue);
+ 		dev_kfree_skb_irq(skb);
+ 	}
++	return;
++
++free_skb:
++	dev_kfree_skb_irq(skb);
++	return;
+ }
+ 
+ static int rtl8187_init_urbs(struct ieee80211_hw *dev)
 -- 
 2.51.0
 
