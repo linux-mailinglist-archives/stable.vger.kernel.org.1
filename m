@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-202651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC46CC35A6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:52:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF92CC2AB6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E386B30A321E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE2E530C921C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6453B37C11E;
-	Tue, 16 Dec 2025 12:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1723596F3;
+	Tue, 16 Dec 2025 12:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFGC5wz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0G2i4xj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057CA37C11A;
-	Tue, 16 Dec 2025 12:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4B3596EC;
+	Tue, 16 Dec 2025 12:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888597; cv=none; b=I8xD85srtLk1NCbyR8qY51umVdZFIfbzHeBIAOXkFIWsaXBH50LY4BtTTqmcSRHdjnWnMVvRmrXcQwIU/4jQrCgXdFOIi3RIgpcILYmBWAIMAFyMU4Gc/ngbChkoop6CUfZK8LmqL1pUokXJdHPZJaEZGU798IrxWSNgark1MRQ=
+	t=1765886673; cv=none; b=uEjOVT/9dcJTNF0Cu9ZfK0kkKrYmdBsGS3rCiqxww4J7kDmBv5KledrKXt3BufJQSNmDniuCKlulAkg42/Bn4Z+syTMs/27pYxEGUchFN8a9PlwgARYwZ91NomKA+ik4qz6J4Dp6BHTJ9bVPsntfYLP/lrxC8HcWIkoD2tOB3oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888597; c=relaxed/simple;
-	bh=yLF8SPy09RRIb2fnFSatR3E+KytTqyC/gUZL51miT8E=;
+	s=arc-20240116; t=1765886673; c=relaxed/simple;
+	bh=tmjnlk1t9lXJ2dRRqndlMqMIzehKHxWfk0+5534ldSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LHgohLb1JLIEuf5l1jIjBI7ohLmS6BhrZ7vMioD4Gp8PdATlp8ZMACIZqlUsR4TVQZ+7E+ByPoXRiyOgoQQY7Gi2ruZplQ38lvJEt5soY3Cq5HtRvpnKeiOtrUfUqI2Y//4UtDk1uvWKof44J7njcOUPSix2NDZAEwWkLUnn+Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFGC5wz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613FFC4CEF1;
-	Tue, 16 Dec 2025 12:36:36 +0000 (UTC)
+	 MIME-Version; b=nsShRiAHw0z/VlgtsqPc1ZnJyMxRXfdkHPvn9ZpHaax4mJFcsniTsqsVWcfXQ9+Dg44umUmVIkdQbQKbMAx/etWTP4McN/pQnNhmfVk5zK9H+UbHrI3hsP/YUDkA98oQ+uGLCE1tr1oDpHYtKZ16Yv+/wSBF33qarBKOz5+SsVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0G2i4xj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D27C4CEF1;
+	Tue, 16 Dec 2025 12:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888596;
-	bh=yLF8SPy09RRIb2fnFSatR3E+KytTqyC/gUZL51miT8E=;
+	s=korg; t=1765886673;
+	bh=tmjnlk1t9lXJ2dRRqndlMqMIzehKHxWfk0+5534ldSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFGC5wz3TidWE9JEhXFtm6atvz+xt5a1OiHL+sJXWzuOCJfNg8IbykNXQqHTsUoDz
-	 OpELbjnORhizqgM+d2pqfYmlMSWQmReTjq1kJlzpUBwS5GsgaK68RxIbf/A2ay7coJ
-	 W3agfJpB3dJX9r1L0ykH9/QOTd1KnQHcUJNzImdc=
+	b=A0G2i4xjO8GV36k7rJpM4vDfKNN6PYBwBEyqr6tFxF5fXJsqVvsIrHqcDA4e0yOE0
+	 9NFnMnccdCIY6dgFXLljEtjB5kkDtbeggkRotFL2Oa8mSNRjqgoZaFQfI3kj9cLJH+
+	 QyQDkN1mXJIZJPQwEnsCDhNuYeR4uPx+41qMN4jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 581/614] rtc: max31335: Fix ignored return value in set_alarm
+	Junrui Luo <moonafterrain@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 507/507] ALSA: wavefront: Fix integer overflow in sample size validation
 Date: Tue, 16 Dec 2025 12:15:48 +0100
-Message-ID: <20251216111422.438305072@linuxfoundation.org>
+Message-ID: <20251216111403.805402009@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +57,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit f07640f9fb8df2158199da1da1f8282948385a84 ]
+commit 0c4a13ba88594fd4a27292853e736c6b4349823d upstream.
 
-Return the result from regmap_update_bits() instead of ignoring it
-and always returning 0.
+The wavefront_send_sample() function has an integer overflow issue
+when validating sample size. The header->size field is u32 but gets
+cast to int for comparison with dev->freemem
 
-Fixes: dedaf03b99d6 ("rtc: max31335: add driver support")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20251128-max31335-handler-error-v1-1-6b6f7f78dbda@analog.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by using unsigned comparison to avoid integer overflow.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881B47789D1B060CE8BF4C3AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-max31335.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/isa/wavefront/wavefront_synth.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-max31335.c b/drivers/rtc/rtc-max31335.c
-index dfb5bad3a3691..23b7bf16b4cd5 100644
---- a/drivers/rtc/rtc-max31335.c
-+++ b/drivers/rtc/rtc-max31335.c
-@@ -391,10 +391,8 @@ static int max31335_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
- 	if (ret)
- 		return ret;
+--- a/sound/isa/wavefront/wavefront_synth.c
++++ b/sound/isa/wavefront/wavefront_synth.c
+@@ -950,9 +950,9 @@ wavefront_send_sample (snd_wavefront_t *
+ 	if (header->size) {
+ 		dev->freemem = wavefront_freemem (dev);
  
--	ret = regmap_update_bits(max31335->regmap, max31335->chip->int_status_reg,
--				 MAX31335_STATUS1_A1F, 0);
--
--	return 0;
-+	return regmap_update_bits(max31335->regmap, max31335->chip->int_status_reg,
-+				  MAX31335_STATUS1_A1F, 0);
- }
- 
- static int max31335_alarm_irq_enable(struct device *dev, unsigned int enabled)
--- 
-2.51.0
-
+-		if (dev->freemem < (int)header->size) {
++		if (dev->freemem < 0 || dev->freemem < header->size) {
+ 			dev_err(dev->card->dev,
+-				"insufficient memory to load %d byte sample.\n",
++				"insufficient memory to load %u byte sample.\n",
+ 				header->size);
+ 			return -ENOMEM;
+ 		}
 
 
 
