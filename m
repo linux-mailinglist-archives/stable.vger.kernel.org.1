@@ -1,145 +1,103 @@
-Return-Path: <stable+bounces-202519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFC6CC32BE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD79CC2CE6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8EF4830303AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02FCF300D8E8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D825A3590DF;
-	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD49393DC5;
+	Tue, 16 Dec 2025 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh3SghvL"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OnH1CasT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0B3590CF;
-	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13C9365A1A
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 12:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888159; cv=none; b=F/OaLWju4scVcrP2XQkjWHLIbVpI7Gd7blEEFWaBwu3JvymRj+JgbWILYEC910PQmMm8MjmFAX8EkVva9g5aTUHHeGWMstfm0pL+LSKzsXFm0EppZgR6wPvpATOEiiMKOTAVKNKsfoGvUWqXJjRivMwVZbkI+u3WIP3wMLqX8hE=
+	t=1765888224; cv=none; b=h2r/oe7edIeG7PxckyFtk7qQFPFw/J4XYTEFUHcEG7lk4t/4vjD022ilYgqMo9RuUs3W9ylwW3OqbsoALKXLGC1Tf1ASAFxSX/gjZNrnheqQbMmH7KGFBvqzLzou+a2aN/ls4fT69Fo+doEWEWJr9Yqb8O7U8ZMgLUZj085LL8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888159; c=relaxed/simple;
-	bh=F8gszaYKbV5HBAp35rcM076dRwaoeGkXE5yARasU2g4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=G5jjtGA2e1u7xeOEm8UDV/k+6TYTD8Q2kdGu8Iriha+Xu+T4FsCReKvLBe0gVFZy/KMH2f6htn8LNpHQXMoBGg+ur2rMm0b0QA0XCbZjfZH2H5PEZw3CRHB7W+Sj+rr+Ora36KGlFq49ewy8GemBX7E3TEqK2E6HP3esSHiYyjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh3SghvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F760C4CEF1;
-	Tue, 16 Dec 2025 12:29:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765888159;
-	bh=F8gszaYKbV5HBAp35rcM076dRwaoeGkXE5yARasU2g4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Qh3SghvL1mqI8azw0usigfFwIY8XyF4eC5pT4vaoNJnGM+a1pPsLYECT4xH3p3Wpt
-	 LteN/WvdZkQG0o9yF+J4D4DiDIBI+49yJR9Asv4oj8Mu8TmfYpDKEJ0WBazGjt5Y9R
-	 ksBZKvHZkXkRGjzmHhrJaGBOIhacJxt6Ar8VqC9zy3DH+tWbieUg88lOpgWrYlPPzK
-	 94tm5toYvy4XfGe1OflwYkDyz1Ei2yPiPm171K0UQMQjsTVmTsHhdiNyqFAO4iDWbr
-	 oebAIY+GELTjZmWI6AU71LUea6giBvRK7tumGmMysvdScJTy65gfu+wQdhCsJhhr+d
-	 7E7WuAyZd5EPQ==
+	s=arc-20240116; t=1765888224; c=relaxed/simple;
+	bh=7yolT636jRC/mcRZn8I84hXqpMW0x0YQIEGWsjGb/HI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=RdjyEobxfS9F/GgmbZQqcGUdn5YkYQ0Lr3n+NL+S3W3MKNtUFDwsd59I2zaqImToAaN8qLdnAN3fWNV6n3xYqY0+OtSGLst2snSzH0cW4Tz1pBD6AAxlkAwan4QdBVkB8Oc+G/gm9ToN9bzJgQb2VY1Req9Im2vSBsGjGKuBljI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OnH1CasT; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765888204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XBitbS+AynqjT0TC+eWlmRVTfBavzMnQ+1VJqNBkJPg=;
+	b=OnH1CasTfPSRcU5klJLi5CIaLBzImZNknFeKresWTMlR1mzx0f8Mkwowsd0MOWyvVHtykW
+	gTq4CRpGnLE6YhxNfGwtx1S5IEqMomBa/KPXsRF4sk4ZxZifIovbGheoicl0NatoTslXUR
+	Ji0gvwdWrzlsooBFqaGojnT9Hci9RXc=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Dec 2025 13:29:14 +0100
-Message-Id: <DEZN3V4LT8XM.VQRQ1IXP4DDU@kernel.org>
-Subject: Re: [PATCH v1] rust: Add some DMA helpers for architectures without
- CONFIG_HAS_DMA
-Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>,
- <abdiel.janulgue@gmail.com>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
- <daniel.almeida@collabora.com>, <gary@garyguo.net>, <lossin@kernel.org>,
- <robin.murphy@arm.com>, <rust-for-linux@vger.kernel.org>,
- <tmgross@umich.edu>, <stable@vger.kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251204160639.364936-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20251204160639.364936-1-fujita.tomonori@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in
+ alarms_store
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
+Date: Tue, 16 Dec 2025 13:30:01 +0100
+Cc: David Laight <david.laight.linux@gmail.com>,
+ Huisong Li <lihuisong@huawei.com>,
+ Akira Shimahara <akira215corp@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <2434C572-231F-416D-AE42-BAE8AA86B52E@linux.dev>
+References: <20251111204422.41993-2-thorsten.blum@linux.dev>
+ <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-(Cc: stable@vger.kernel.org)
+On 16. Dec 2025, at 08:11, Krzysztof Kozlowski wrote:
+> On 11/11/2025 21:44, Thorsten Blum wrote:
+>> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+>> bytes and a NUL terminator is appended. However, the 'size' argument
+>> does not account for this extra byte. The original code then allocated
+>> 'size' bytes and used strcpy() to copy 'buf', which always writes one
+>> byte past the allocated buffer since strcpy() copies until the NUL
+>> terminator at index 'size'.
+>> 
+>> Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+>> without allocating any intermediate memory or string copying. This
+>> removes the overflow while simplifying the code.
+>> 
+>> Cc: stable@vger.kernel.org
+>> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+>> ---
+>> [...]
+>> 
+>> +	if (p == endp || *endp != ' ')
+>> +		ret = -EINVAL;
+>> +	else if (temp < INT_MIN || temp > INT_MAX)
+>> +		ret = -ERANGE;
+>> 	if (ret) {
+>> 		dev_info(device,
+>> 			"%s: error parsing args %d\n", __func__, ret);
+>> -		goto free_m;
+>> +		goto err;
+> 
+> So this is just return size.
 
-On Thu Dec 4, 2025 at 5:06 PM CET, FUJITA Tomonori wrote:
-> Add dma_set_mask(), dma_set_coherent_mask(), dma_map_sgtable(), and
-> dma_max_mapping_size() helpers to fix a build error when
-> CONFIG_HAS_DMA is not enabled.
->
-> Note that when CONFIG_HAS_DMA is enabled, they are included in both
-> bindings_generated.rs and bindings_helpers_generated.rs. The former
-> takes precedence so behavior remains unchanged in that case.
->
-> This fixes the following build error on UML:
->
-> error[E0425]: cannot find function `dma_set_mask` in crate `bindings`
->      --> /linux/rust/kernel/dma.rs:46:38
->       |
->    46 |         to_result(unsafe { bindings::dma_set_mask(self.as_ref().a=
-s_raw(), mask.value()) })
->       |                                      ^^^^^^^^^^^^ help: a functio=
-n with a similar name exists: `xa_set_mark`
->       |
->      ::: /build/um/rust/bindings/bindings_generated.rs:24690:5
->       |
-> 24690 |     pub fn xa_set_mark(arg1: *mut xarray, index: ffi::c_ulong, ar=
-g2: xa_mark_t);
->       |     -------------------------------------------------------------=
---------------- similarly named function `xa_set_mark` defined here
->
-> error[E0425]: cannot find function `dma_set_coherent_mask` in crate `bind=
-ings`
->      --> /linux/rust/kernel/dma.rs:63:38
->       |
->    63 |         to_result(unsafe { bindings::dma_set_coherent_mask(self.a=
-s_ref().as_raw(), mask.value()) })
->       |                                      ^^^^^^^^^^^^^^^^^^^^^ help: =
-a function with a similar name exists: `dma_coherent_ok`
->       |
->      ::: /build/um/rust/bindings/bindings_generated.rs:52745:5
->       |
-> 52745 |     pub fn dma_coherent_ok(dev: *mut device, phys: phys_addr_t, s=
-ize: usize) -> bool_;
->       |     -------------------------------------------------------------=
---------------------- similarly named function `dma_coherent_ok` defined he=
-re
->
-> error[E0425]: cannot find function `dma_map_sgtable` in crate `bindings`
->     --> /linux/rust/kernel/scatterlist.rs:212:23
->      |
->  212 |               bindings::dma_map_sgtable(dev.as_raw(), sgt.as_ptr()=
-, dir.into(), 0)
->      |                         ^^^^^^^^^^^^^^^ help: a function with a si=
-milar name exists: `dma_unmap_sgtable`
->      |
->     ::: /build/um/rust/bindings/bindings_helpers_generated.rs:1351:5
->      |
-> 1351 | /     pub fn dma_unmap_sgtable(
-> 1352 | |         dev: *mut device,
-> 1353 | |         sgt: *mut sg_table,
-> 1354 | |         dir: dma_data_direction,
-> 1355 | |         attrs: ffi::c_ulong,
-> 1356 | |     );
->      | |______- similarly named function `dma_unmap_sgtable` defined here
->
-> error[E0425]: cannot find function `dma_max_mapping_size` in crate `bindi=
-ngs`
->    --> /linux/rust/kernel/scatterlist.rs:356:52
->     |
-> 356 |         let max_segment =3D match unsafe { bindings::dma_max_mappin=
-g_size(dev.as_raw()) } {
->     |                                                    ^^^^^^^^^^^^^^^^=
-^^^^ not found in `bindings`
->
-> error: aborting due to 4 previous errors
->
-> Fixes: 101d66828a4ee ("rust: dma: add DMA addressing capabilities")
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Yes, all 'goto err' could be replaced with 'return size'. I only renamed
+the label to keep the changes minimal.
 
-Applied to driver-core-linus, thanks!
-
-    [ Use relative paths in the error splat; add 'dma' prefix. - Danilo ]
 
