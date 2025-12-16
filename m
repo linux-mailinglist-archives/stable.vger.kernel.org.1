@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA99BCC26F5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2758DCC2E50
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB92C30223C5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57BE831F1EA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA7835502B;
-	Tue, 16 Dec 2025 11:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6449364059;
+	Tue, 16 Dec 2025 12:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbq10O5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPBhiSHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAF355026;
-	Tue, 16 Dec 2025 11:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FAC364036;
+	Tue, 16 Dec 2025 12:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885844; cv=none; b=ZJdRcXvxYgyHT8RBEw0Sa5ADFVYxY1WOsMe+P/rCJkVE6ORetT3/XnROXA+7QyCTiROH8GIg/md3roydo4op47a0r3PSA3kWXDWI8OxyhKJ5Ghc9ojEtcCOwcxVLPIUp0LcHaUyrofs7HgRMEamVMOvvzGLUj9MtL5JS4d8jCto=
+	t=1765887780; cv=none; b=mi80oqTEILpEjF/Jie9fDX4L7ufVLIGgWREtWJwieECJ/iyzA9iWAiWePf21u0rcPn6fKe2AhY7KSAqf4WYFVbWGjpU1HkdjZHlkHmrGWFNAtIjxX384kfGKIH1ey8VBC9hO8uEmhp/kkCxK0VT6ZgubpkUy5QXxSRENPwgU/fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885844; c=relaxed/simple;
-	bh=FrUbSom7Z0WMLXdlAatOLADiVPmI3f4bUGZHxia1oK0=;
+	s=arc-20240116; t=1765887780; c=relaxed/simple;
+	bh=irMPozeV6/ocbQUHh1/Vz3ILUoON3zHoylHzzHTs9GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcC2MEh1P+jXgBk+eOAd7eWwca2FZASVZsv0eDe0ju00pyE9ALOMj/q6yw4u7iE8xBygvwhRjuEfMfFGtY7ApsXr/LoOzY1GeymFXvnQ9quVNa18bXIPm1AKlWDnqXIOHjjsU4Vn/91e+KNv7sQpHhaNkbIyyzpNsdCou5GU3X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbq10O5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B155CC4CEF1;
-	Tue, 16 Dec 2025 11:50:43 +0000 (UTC)
+	 MIME-Version; b=czBbIi9m+35mrOjvHutjqZa8XRFTxRT0zj5yM9pfs9KcTBIX1L3KrxCxL0YIhR5aCIy8z8Hu7YgVtCQ5yzh98YvII71dmxBVnt0dWPFe/bDq/MaqH0pLwC9mJ1jHya1s4sGezwjd9E3wOnp4jgIA/zcsgkdbDWq5XcQr8LwO6aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPBhiSHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2B2C4CEF1;
+	Tue, 16 Dec 2025 12:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885844;
-	bh=FrUbSom7Z0WMLXdlAatOLADiVPmI3f4bUGZHxia1oK0=;
+	s=korg; t=1765887780;
+	bh=irMPozeV6/ocbQUHh1/Vz3ILUoON3zHoylHzzHTs9GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbq10O5lyno30tNxHsyYByo0DRokiy7eijGr4Rv042uAnOO8JrZfl3JJxzHsMkT4/
-	 9vxaX7UL/R3ir0PcFVhBb7PxOUBEoghT/oFM2rSdhEtU2ir7FsYw5Ck6U7jM0L3NpI
-	 4fzmTQibb4TCrlZpx6hacGFXQBqyQ+m7WJYsUR7M=
+	b=qPBhiSHbOjUad8+CZHbCi1kAPsXHV5EHpvOHT/nMROyHSL8dl+++OKf3BqbaWp48L
+	 gFrts/mJwvy4sApWPtzeSrqynENSz55zXDyUPGOcFa8XBaI3+tEhhT6/73K2mggvi/
+	 9P5TCZR6k/YvcTp6ouG2u01ITcEtE3JN0649Baas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 261/507] drm/msm/a2xx: stop over-complaining about the legacy firmware
+Subject: [PATCH 6.18 335/614] tools/rtla: Fix unassigned nr_cpus
 Date: Tue, 16 Dec 2025 12:11:42 +0100
-Message-ID: <20251216111354.943949423@linuxfoundation.org>
+Message-ID: <20251216111413.502577065@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Costa Shulyupin <costa.shul@redhat.com>
 
-[ Upstream commit a3a22373fce576560757f5616eb48dbf85891d9c ]
+[ Upstream commit b4275b23010df719ec6508ddbc84951dcd24adce ]
 
-If the rootfs have a legacy A200 firmware, currently the driver will
-complain each time the hw is reinited (which can happen a lot). E.g.
-with GL testsuite the hw is reinited after each test, spamming the
-console.
+In recently introduced timerlat_free(),
+the variable 'nr_cpus' is not assigned.
 
-Make sure that the message is printed only once: when we detect the
-firmware that doesn't support protection.
+Assign it with sysconf(_SC_NPROCESSORS_CONF) as done elsewhere.
+Remove the culprit: -Wno-maybe-uninitialized. The rest of the
+code is clean.
 
-Fixes: 302295070d3c ("drm/msm/a2xx: support loading legacy (iMX) firmware")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688098/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+Reviewed-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 2f3172f9dd58 ("tools/rtla: Consolidate code between osnoise/timerlat and hist/top")
+Link: https://lore.kernel.org/r/20251002170846.437888-1-costa.shul@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/Makefile.rtla  | 2 +-
+ tools/tracing/rtla/src/timerlat.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-index ec38db45d8a36..963c0f669ee50 100644
---- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-@@ -234,7 +234,7 @@ static int a2xx_hw_init(struct msm_gpu *gpu)
- 	 * word (0x20xxxx for A200, 0x220xxx for A220, 0x225xxx for A225).
- 	 * Older firmware files, which lack protection support, have 0 instead.
- 	 */
--	if (ptr[1] == 0) {
-+	if (ptr[1] == 0 && !a2xx_gpu->protection_disabled) {
- 		dev_warn(gpu->dev->dev,
- 			 "Legacy firmware detected, disabling protection support\n");
- 		a2xx_gpu->protection_disabled = true;
+diff --git a/tools/tracing/rtla/Makefile.rtla b/tools/tracing/rtla/Makefile.rtla
+index 08c1b40883d3a..1743d91829d46 100644
+--- a/tools/tracing/rtla/Makefile.rtla
++++ b/tools/tracing/rtla/Makefile.rtla
+@@ -18,7 +18,7 @@ export CC AR STRIP PKG_CONFIG LD_SO_CONF_PATH LDCONFIG
+ FOPTS		:= -flto=auto -ffat-lto-objects -fexceptions -fstack-protector-strong	\
+ 		-fasynchronous-unwind-tables -fstack-clash-protection
+ WOPTS		:= -O -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2		\
+-		-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
++		-Wp,-D_GLIBCXX_ASSERTIONS
+ 
+ ifeq ($(CC),clang)
+   FOPTS		:= $(filter-out -flto=auto -ffat-lto-objects, $(FOPTS))
+diff --git a/tools/tracing/rtla/src/timerlat.c b/tools/tracing/rtla/src/timerlat.c
+index b692128741279..11ad447a8dd78 100644
+--- a/tools/tracing/rtla/src/timerlat.c
++++ b/tools/tracing/rtla/src/timerlat.c
+@@ -215,7 +215,8 @@ void timerlat_analyze(struct osnoise_tool *tool, bool stopped)
+ void timerlat_free(struct osnoise_tool *tool)
+ {
+ 	struct timerlat_params *params = to_timerlat_params(tool->params);
+-	int nr_cpus, i;
++	int nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
++	int i;
+ 
+ 	timerlat_aa_destroy();
+ 	if (dma_latency_fd >= 0)
 -- 
 2.51.0
 
