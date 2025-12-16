@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E86CC311F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5154DCC3DF7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 411D030345B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBD40304557A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0D434CFCE;
-	Tue, 16 Dec 2025 11:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C44536828C;
+	Tue, 16 Dec 2025 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU4WCEUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVMetHUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2C934CFC5;
-	Tue, 16 Dec 2025 11:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA595368289;
+	Tue, 16 Dec 2025 12:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885289; cv=none; b=H74Oqfy6PhIi9XUSwxokVl3AUL6WF7sUCV+kZ+y1xEZagi+Admfh2g93//pYCeE7Gt6WITvarctzdfUdciiGP07f3EH21NbJE52dChzlTBm2GcezzbEWcAyDSfIWDHiFXxhIuPpgYljC5+P+nBDMBfjN7FZ3P71y/u2izZ09iyE=
+	t=1765887374; cv=none; b=EQAWmuCv6Dx2tAgV4PmHAf0wejNooU4RlNeeK9NHySEsXYiWyZsKsOzSFkPv8hq5sAbZeljzT02aAkfOutPf22E3NoBanzfoGZ1Nu/WyAu7bxKQMy66AxId/TFnmbhWyfZrMknMX/+AzJgOaudysohZyP231tJzbiUoMmnP1RPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885289; c=relaxed/simple;
-	bh=CkBbyIeaY7AKjG1sanex3i25U44dgsv/UQCTzV+BHUw=;
+	s=arc-20240116; t=1765887374; c=relaxed/simple;
+	bh=k31IFOoRKxtc8pLlet0xN4ukyiTxiNvYjvsX6nb7Ycs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKRuBH/TJtedYy9/JykrUt8hp4uhmONobGbIMoHrtefGEohoNnrYqh6jIthvYZSv/NYJXR9d1DhQMzHDPu5/LpD0yXj71UvI8T9NcwTEGrXWrGxPzXwxh8LXETBHZM1dG8/NKYJbok5Ry5nKKhEFhgVekdYgGk1DOT0kxR45OZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU4WCEUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C073C4CEF1;
-	Tue, 16 Dec 2025 11:41:28 +0000 (UTC)
+	 MIME-Version; b=gNONvHBWIhxpJpNzbpayvtlcGyLEQL+aVlypmHHaZ3qGqylURpsb9C48rwF0MCm001qsjEG21m4NMt2+8U3w+m04HXuI07uiVVwbrHpf79aatyLR8LflBoTVd3cnnXEaJGouOsAywIqDEk+1FmHG73h4c9e8MqMGPNS/e7WpQNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVMetHUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F03C4CEF5;
+	Tue, 16 Dec 2025 12:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885288;
-	bh=CkBbyIeaY7AKjG1sanex3i25U44dgsv/UQCTzV+BHUw=;
+	s=korg; t=1765887374;
+	bh=k31IFOoRKxtc8pLlet0xN4ukyiTxiNvYjvsX6nb7Ycs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vU4WCEUV0F6tP/fWPqfuKhg0ebq0bX9ec7y4nsSC9k4TO1yKX5yx1yjHVmBFWRTZl
-	 ORhS6Q4L0O7Jbp62R7my559W2UcvCrbv+FIsS9eFjhobWZoRqyQalEv7fR/g7nRF9K
-	 KmuW/XuU0OifNKNHIq1TABaS8tst/Znq3ycblWTM=
+	b=CVMetHUCyztYrOQ9MkHTPmEs0BkYvpOH00gqhauc07mNIxaP/MhSkAzc1+JswkQLT
+	 2qoDWiRTQ6OVowKVn2P8Bv0ZLQt4pD/0KteQVfBW53kd4ueoH0dth5dkoCcCZvZx2h
+	 9cbwOK6nTHF4IMg8KcG0gCZodUzoDTRwmLXh7Kx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 093/507] arm64: dts: qcom: x1e80100: Add missing quirk for HS only USB controller
+Subject: [PATCH 6.18 167/614] accel/amdxdna: Fix incorrect command state for timed out job
 Date: Tue, 16 Dec 2025 12:08:54 +0100
-Message-ID: <20251216111348.907522805@linuxfoundation.org>
+Message-ID: <20251216111407.387740631@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 6b3e8a5d6c88609d9ce93789524f818cca0aa485 ]
+[ Upstream commit 6fb7f298883246e21f60f971065adcb789ae6eba ]
 
-The PIPE clock is provided by the USB3 PHY, which is predictably not
-connected to the HS-only controller. Add "qcom,select-utmi-as-pipe-clk"
-quirk to  HS only USB controller to disable pipe clock requirement.
+When a command times out, mark it as ERT_CMD_STATE_TIMEOUT. Any other
+commands that are canceled due to this timeout should be marked as
+ERT_CMD_STATE_ABORT.
 
-Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20251024105019.2220832-2-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20251029193423.2430463-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/accel/amdxdna/aie2_ctx.c    | 15 +++++++++++++--
+ drivers/accel/amdxdna/amdxdna_ctx.h |  1 +
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 2022aebf4889c..67c888ae94de5 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -4859,6 +4859,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 			interconnect-names = "usb-ddr",
- 					     "apps-usb";
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index e9f9b1fa5dc1b..c9f712f0ec00c 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -204,10 +204,13 @@ aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
  
-+			qcom,select-utmi-as-pipe-clk;
- 			wakeup-source;
+ 	cmd_abo = job->cmd_bo;
  
- 			status = "disabled";
+-	if (unlikely(!data))
++	if (unlikely(job->job_timeout)) {
++		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_TIMEOUT);
++		ret = -EINVAL;
+ 		goto out;
++	}
+ 
+-	if (unlikely(size != sizeof(u32))) {
++	if (unlikely(!data) || unlikely(size != sizeof(u32))) {
+ 		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_ABORT);
+ 		ret = -EINVAL;
+ 		goto out;
+@@ -260,6 +263,13 @@ aie2_sched_cmdlist_resp_handler(void *handle, void __iomem *data, size_t size)
+ 	int ret = 0;
+ 
+ 	cmd_abo = job->cmd_bo;
++
++	if (unlikely(job->job_timeout)) {
++		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_TIMEOUT);
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	if (unlikely(!data) || unlikely(size != sizeof(u32) * 3)) {
+ 		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_ABORT);
+ 		ret = -EINVAL;
+@@ -362,6 +372,7 @@ aie2_sched_job_timedout(struct drm_sched_job *sched_job)
+ 
+ 	xdna = hwctx->client->xdna;
+ 	trace_xdna_job(sched_job, hwctx->name, "job timedout", job->seq);
++	job->job_timeout = true;
+ 	mutex_lock(&xdna->dev_lock);
+ 	aie2_hwctx_stop(xdna, hwctx, sched_job);
+ 
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
+index 7cd7a55936f09..8c1d181df6e79 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.h
++++ b/drivers/accel/amdxdna/amdxdna_ctx.h
+@@ -105,6 +105,7 @@ struct amdxdna_sched_job {
+ 	/* user can wait on this fence */
+ 	struct dma_fence	*out_fence;
+ 	bool			job_done;
++	bool			job_timeout;
+ 	u64			seq;
+ 	struct amdxdna_gem_obj	*cmd_bo;
+ 	size_t			bo_cnt;
 -- 
 2.51.0
 
