@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204B0CC229B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C12CC2BB0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8DD693003111
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4660D30D08C8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6676342160;
-	Tue, 16 Dec 2025 11:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C9C3624AC;
+	Tue, 16 Dec 2025 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUqO+2Sy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwzLtV4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED0534167A;
-	Tue, 16 Dec 2025 11:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE313624BE;
+	Tue, 16 Dec 2025 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884211; cv=none; b=rtY8A9Xk0SWPCHPBdK/Spjw3FEfZASp8Z4Ef4TyOyuAE5zqp448pSeRSxPhyMYGShpEhwBRLwz3VDg1LCDgaSHrmTtdEdc64JMMmAfsRDs+VdcjkRn8YRs8iKCF26a1fQsQ/udyWJa0HHyVAA5KuU/WNBtyKClltmVE3L9Ocxlo=
+	t=1765887745; cv=none; b=C6EdtQKPruHzno9p3Rkhc2L3VQKyEEJLjLeTaIq7LFb2I1BkzVmDaS1/rJBSoH0/SdJfZCPXjgyDr9gtnCAm77uQvylRjg86qVUviJygLlV/M9szUTkiPnq+TRqkF+yfygez0BEhUH7LxOEe/lfqNBSRQQZduHkM3XC3MGsyTLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884211; c=relaxed/simple;
-	bh=NRwXkqof4V/NVpyBlsz6c69V0a9F240r7IHP/TIjtFs=;
+	s=arc-20240116; t=1765887745; c=relaxed/simple;
+	bh=dpZ30WiSNypazF1v/2AvuZZodCKu0jS5zPLQrYnOV2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoLIHmwx/JTSqz10rU2bLfIpzLuDkoNKHSCqQeuYEWEffs+ZqFcyxNI82lBa6E3R8IBYxXzpklCHwa7q2CsdClY18kxru2OWBaptaISUyBJwiN1NsEzqaDwAONoU7oY6AjL/KvNIA/40vZqDhmnVieIAfTDLFy1shVmFAlxj3aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUqO+2Sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D766AC4CEF1;
-	Tue, 16 Dec 2025 11:23:30 +0000 (UTC)
+	 MIME-Version; b=W9SUd1CtUpjLNWx8jbJG+v+771tvLZ99eTDQHl828rdtJZ+MSdFrKlKZU/A8UaGqLlrpTJjL25jp4O5lkEtJq2ZUydPToBvceCrg3HLgzJm522ZMBiJsjxuZF+Esi418UyXsoqwMhUIg2amklJgxJhCuqSe9OsTJjaUKAyiMY2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwzLtV4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89F1C4CEF1;
+	Tue, 16 Dec 2025 12:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884211;
-	bh=NRwXkqof4V/NVpyBlsz6c69V0a9F240r7IHP/TIjtFs=;
+	s=korg; t=1765887745;
+	bh=dpZ30WiSNypazF1v/2AvuZZodCKu0jS5zPLQrYnOV2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUqO+2SyK1DAntDiKIELGQVx9ScGan44F+ljHm9xlhd/WUCHlQtQ+6Tm63BlHop4Q
-	 Bp8TC6cjY7AY5n5JSueqxB2F5VEU2F37B233VWX2PLO3xwluJaKciSIsXestzxeruh
-	 DnBLHXeZPYA+8EP1OtrYazqfUrP644Grj7Nf7ra0=
+	b=rwzLtV4zWlt37sShgOUJstoaP3jgIB1TqTZwR7hv+oWGMtM/uemlAavhCsRDNpa2f
+	 J0UnfSnwd1kvOu1ZcP1lIOmk4m+YrFggiMtVyssm9ppF+YwZlZzOB0eh3Ru9ZHRFYf
+	 2JpdjnW6cXihgvKiryWP5ZMbg1FelR1JnowN4V+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Longbin Li <looong.bin@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/354] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Subject: [PATCH 6.18 325/614] spi: sophgo: Fix incorrect use of bus width value macros
 Date: Tue, 16 Dec 2025 12:11:32 +0100
-Message-ID: <20251216111325.451373140@linuxfoundation.org>
+Message-ID: <20251216111413.141469701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Longbin Li <looong.bin@gmail.com>
 
-[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
+[ Upstream commit d9813cd23d5a7b254cc1b1c1ea042634d8da62e6 ]
 
-When da9055_device_init() fails after regmap_add_irq_chip()
-succeeds but mfd_add_devices() fails, the error handling path
-only calls mfd_remove_devices() but forgets to call
-regmap_del_irq_chip(). This results in a resource leak.
+The previous code initialized the 'reg' value with specific bus-width
+values (BUS_WIDTH_2_BIT and BUS_WIDTH_4_BIT), which introduces ambiguity.
+Replace them with BUS_WIDTH_MASK to express the intention clearly.
 
-Fix this by adding regmap_del_irq_chip() to the error path so
-that resources are released properly.
-
-Fixes: 2896434cf272 ("mfd: DA9055 core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: de16c322eefb ("spi: sophgo: add SG2044 SPI NOR controller driver")
+Signed-off-by: Longbin Li <looong.bin@gmail.com>
+Link: https://patch.msgid.link/20251117090559.78288-1-looong.bin@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9055-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-sg2044-nor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
-index 1f727ef60d638..8c989b74f924e 100644
---- a/drivers/mfd/da9055-core.c
-+++ b/drivers/mfd/da9055-core.c
-@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
- 
- err:
- 	mfd_remove_devices(da9055->dev);
-+	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
- 	return ret;
- }
- 
+diff --git a/drivers/spi/spi-sg2044-nor.c b/drivers/spi/spi-sg2044-nor.c
+index af48b1fcda930..37f1cfe10be46 100644
+--- a/drivers/spi/spi-sg2044-nor.c
++++ b/drivers/spi/spi-sg2044-nor.c
+@@ -42,6 +42,7 @@
+ #define SPIFMC_TRAN_CSR_TRAN_MODE_RX		BIT(0)
+ #define SPIFMC_TRAN_CSR_TRAN_MODE_TX		BIT(1)
+ #define SPIFMC_TRAN_CSR_FAST_MODE		BIT(3)
++#define SPIFMC_TRAN_CSR_BUS_WIDTH_MASK		GENMASK(5, 4)
+ #define SPIFMC_TRAN_CSR_BUS_WIDTH_1_BIT		(0x00 << 4)
+ #define SPIFMC_TRAN_CSR_BUS_WIDTH_2_BIT		(0x01 << 4)
+ #define SPIFMC_TRAN_CSR_BUS_WIDTH_4_BIT		(0x02 << 4)
+@@ -122,8 +123,7 @@ static u32 sg2044_spifmc_init_reg(struct sg2044_spifmc *spifmc)
+ 	reg = readl(spifmc->io_base + SPIFMC_TRAN_CSR);
+ 	reg &= ~(SPIFMC_TRAN_CSR_TRAN_MODE_MASK |
+ 		 SPIFMC_TRAN_CSR_FAST_MODE |
+-		 SPIFMC_TRAN_CSR_BUS_WIDTH_2_BIT |
+-		 SPIFMC_TRAN_CSR_BUS_WIDTH_4_BIT |
++		 SPIFMC_TRAN_CSR_BUS_WIDTH_MASK |
+ 		 SPIFMC_TRAN_CSR_DMA_EN |
+ 		 SPIFMC_TRAN_CSR_ADDR_BYTES_MASK |
+ 		 SPIFMC_TRAN_CSR_WITH_CMD |
 -- 
 2.51.0
 
