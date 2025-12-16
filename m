@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6D5CC3062
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F02CC24E7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECD5B30576A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 794A7310113F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE871376BEB;
-	Tue, 16 Dec 2025 12:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFDD3233EE;
+	Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwwzKlc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPNNnDdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D80376BE8;
-	Tue, 16 Dec 2025 12:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F1956B81;
+	Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888075; cv=none; b=nXFbMZhZPzN0VMQYNft6KzYfbydn9kjF5rd3qQn6BnXEJejymGJZ1ekGUcql2BGIrXi7WQ5pAdG7YMq6XxUpEkRL6dA31qLTSit0q56l4ZvIX4SsGAuGe62lzcJhXarBRyY7numB+v5vt4ZM9WppbhFoj0dy0WWasJBr2S2ncDQ=
+	t=1765884516; cv=none; b=nACCJ4tZZxJJC6yal6orUYvOFJUCHsg8OF6sa+D53o+tI5PAJ5+PJ+ma6QcStYrnbqJghVn5VnDfucs8tQNgYyWJcXGInBURWmJfgt7ANfD6WAYa1cwQIQbLxbbAoZJaFLFdurg6jZ25kxCRziGdabaSykV4Tvv+aoIc8gE8/wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888075; c=relaxed/simple;
-	bh=Xsx6Yss8PvMqK98fqPn8svVK0afpa2trf9fzLtq/U+s=;
+	s=arc-20240116; t=1765884516; c=relaxed/simple;
+	bh=IRmOuIRdJ6zf0874unu21phAc1YO6i28V1XJUDcuXPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2wzE9vi0Cg/y0X3HPTnvu5hqmBTZVXvyvSaEL7WeZ3Kfvrbm6tOf+YqrqVxU4Ls7enEHllgHjhUau0Cta2hUKwL7MIauKSuguajIEJES3temOoYx9m43iQ2YtpphVB+Kxh94eLdxECZGvSNhGNQFcHcycfoZ37liUyXtMHmWAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwwzKlc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB1FC4CEF1;
-	Tue, 16 Dec 2025 12:27:54 +0000 (UTC)
+	 MIME-Version; b=Hp0vyu3uzocaBb+gzEDpm/OLYWk8ALwi+vODB+Pw4PKT0OueNWOUJfzQGAHfMZGvBSOtZFMu4/YQD9DXTeU/Zhci5AprkEOUTEs2SBULhObSBfV3oHTlzU/GYq5LYbY93SZnCmiaM2kEkoKJODdhc3nAcJ9cCojFdXmmxLXOPpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPNNnDdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607E8C4CEF1;
+	Tue, 16 Dec 2025 11:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888075;
-	bh=Xsx6Yss8PvMqK98fqPn8svVK0afpa2trf9fzLtq/U+s=;
+	s=korg; t=1765884515;
+	bh=IRmOuIRdJ6zf0874unu21phAc1YO6i28V1XJUDcuXPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwwzKlc7Hki5RivUvyhV2hCpWEYsEL7j/tw1pWsIlhoKTZ5QyL1gItas3ky7IEbXd
-	 7fjU/s3uy5cB65QuKDZwNEiTXHjh7itnPXC/lXC5YqTVZb2ouXAkhwfoC4+psoujuQ
-	 FUi1NG3BL44fYNGbNjHgGIu7d96Lrc5L0JGv1npw=
+	b=TPNNnDdjDc24aYK7XfreubElzanWr7bctEv3H4xRexvxiDyhd+SCYnzX7bzAmNKAY
+	 QX6Ym+QCl8iryUNvCOCn0oJFujmnHGfPaTVqC/ms4iGCT7Z+1t/DL2N2DP9PIbhBKn
+	 PiPVJKQZHXp1NEXqJv4FiUcCAizq4bAZCYVGlwkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ria Thomas <ria.thomas@morsemicro.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jianglei Nie <niejianglei2021@163.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 417/614] wifi: ieee80211: correct FILS status codes
-Date: Tue, 16 Dec 2025 12:13:04 +0100
-Message-ID: <20251216111416.480068302@linuxfoundation.org>
+Subject: [PATCH 6.12 218/354] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
+Date: Tue, 16 Dec 2025 12:13:05 +0100
+Message-ID: <20251216111328.816979235@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ria Thomas <ria.thomas@morsemicro.com>
+From: Jianglei Nie <niejianglei2021@163.com>
 
-[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
+[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
 
-The FILS status codes are set to 108/109, but the IEEE 802.11-2020
-spec defines them as 112/113. Update the enum so it matches the
-specification and keeps the kernel consistent with standard values.
+fbtft_probe_common() allocates a memory chunk for "info" with
+fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
+function returns without releasing the "info", which will lead to a
+memory leak.
 
-Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
-Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
-Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix it by calling fbtft_framebuffer_release() when "display->buswidth
+== 0" is true.
+
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 4 ++--
+ drivers/staging/fbtft/fbtft-core.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index ddff9102f6332..1f4679092e69d 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -3594,8 +3594,8 @@ enum ieee80211_statuscode {
- 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
- 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
- 	/* 802.11ai */
--	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
--	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
-+	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
-+	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
- 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
- 	WLAN_STATUS_SAE_PK = 127,
- 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 8fab5126765d4..69649c0ef8739 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -1170,8 +1170,8 @@ int fbtft_probe_common(struct fbtft_display *display,
+ 	par->pdev = pdev;
+ 
+ 	if (display->buswidth == 0) {
+-		dev_err(dev, "buswidth is not set\n");
+-		return -EINVAL;
++		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
++		goto out_release;
+ 	}
+ 
+ 	/* write register functions */
 -- 
 2.51.0
 
