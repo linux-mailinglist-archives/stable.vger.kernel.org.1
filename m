@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7820CC4934
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAFBCC299F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 375FD3054837
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC5253066DF7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971ED36C5BF;
-	Tue, 16 Dec 2025 12:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB4834FF4D;
+	Tue, 16 Dec 2025 11:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIlALCfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adoqJ9hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A4336CDED;
-	Tue, 16 Dec 2025 12:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB45B34F49F;
+	Tue, 16 Dec 2025 11:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887976; cv=none; b=GTda7IC0xT43b9AJquOx2ssmgn0Dc3ji7cxim8ROiwqO2Vo2EvOPT79M7MNonX/TSODpKpPxvtb5Dnr1lRos+jCHIeZXntX5878ETFstese/kYSL87ijeRNQLXu3O9fMOK6h6DKt8eO83OyXN26F09S/Hj3ZrJeUaTkGwI0ph5Y=
+	t=1765886153; cv=none; b=gTcnOsG/w3XZw3UhvkBefgaFigsyOc5YPyEOzbSJbG/Vo5HOAUzqL97/KEVubQorN9tteTxjpU+Ddz8Pdcw346e6pqZkIDexysnXfbEucDoNd10BO3bXqhZFx+xNqB/OSBcTU88bkICyivEbDs38qkIPO70fM8eUd+dB+ZFe9yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887976; c=relaxed/simple;
-	bh=9ORLiLaPERRfPMKyQV+KYLc2ZX+bd/qjH4EythWCsmw=;
+	s=arc-20240116; t=1765886153; c=relaxed/simple;
+	bh=ctlcZ/DEGnhQ84XgBrMJX8AsaGhgFGwVla9zUAI01D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKd9KjZetzyInKwEr3F8gFtsswZFh7W5O4B344A9VZ/8Sz4TqBo/r9RkYu261+ZOhoKseY2XIL0FDRnBjwPpNwudIagYwJ3QM391kW4hGldF4IVb/Z33g3otpN7fTzoux6BWKfgyZUov4c9GhC6fQUCK01xCPnMLt+UC0nwwLsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIlALCfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6F4C4CEF1;
-	Tue, 16 Dec 2025 12:26:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IY1YMnhV0EJEy1ZN2TB6ZMq2VwlN5LO2+yXWvw8ZtoeqxHWC4kUBmuWun/oPMaCnjMSfAgBXutD4jm9WStceZRVb7gu0j+SDYhZERn8cZSBAGR1Twm3yjHz6ja+QFQISZGhBZv6L7tv3Zl1ar8JQUneBzope+4HL3OERgNhb6xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adoqJ9hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD7C4CEF1;
+	Tue, 16 Dec 2025 11:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887975;
-	bh=9ORLiLaPERRfPMKyQV+KYLc2ZX+bd/qjH4EythWCsmw=;
+	s=korg; t=1765886152;
+	bh=ctlcZ/DEGnhQ84XgBrMJX8AsaGhgFGwVla9zUAI01D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIlALCfKj+bGVOrg/+S56ayF4fL7HLyzMJl2tM/gCdTDGb6dEzjegnt/7S4flRgkh
-	 M/cHyuYvES+ENXZ3ZOV0N1KwkXtygYt9sIslcNoZOvZwUMyBnsbytlKQLKmo7zvRCC
-	 3Qyte35FTtRbtDNs2XSqt7AJmQZIKnvyiWQxLuFY=
+	b=adoqJ9huisjbutLw9WTtHdXMwuNS1lORRODn3Vx5eW2vxwh3CZbpSyq0lrioSlaOy
+	 591LY+L9eHkGVfdHLDsGQztDYrGOVj13L46Avt3XqSjnTHtUtBaTgGobhYu0/Nr/nl
+	 V+uNuzIsHeSLD3xNp5EMGb9obIJtKmB4w+HgrAmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 395/614] wifi: mt76: mt7996: fix using wrong phy to start in mt7996_mac_restart()
+Subject: [PATCH 6.17 321/507] ASoC: tas2781: correct the wrong period
 Date: Tue, 16 Dec 2025 12:12:42 +0100
-Message-ID: <20251216111415.686168299@linuxfoundation.org>
+Message-ID: <20251216111357.096639630@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit f1e9f369ae42ee433836b24467e645192d046a51 ]
+[ Upstream commit 950167a99dfd27eeaf177092908c598a31c79a7e ]
 
-Pass the correct mt7996_phy to mt7996_run().
+A wrong preiod at the end of the sentence was reported by one of my
+customers. Their thorough code review is greatly appreciated.
 
-Fixes: 0a5df0ec47f7 ("wifi: mt76: mt7996: remove redundant per-phy mac80211 calls during restart")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-11-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 49e2e353fb0d ("ASoC: tas2781: Add Calibration Kcontrols for Chromebook")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20251121234427.402-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ sound/soc/codecs/tas2781-i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index fe31db5440a84..b06728a98a691 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2341,7 +2341,7 @@ mt7996_mac_restart(struct mt7996_dev *dev)
- 		if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
- 			continue;
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 9890b1a6d2924..e3a4d95b2b827 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -1340,7 +1340,7 @@ static int tasdevice_create_cali_ctrls(struct tasdevice_priv *priv)
  
--		ret = mt7996_run(&dev->phy);
-+		ret = mt7996_run(phy);
- 		if (ret)
- 			goto out;
- 	}
+ 	/*
+ 	 * Alloc kcontrol via devm_kzalloc(), which don't manually
+-	 * free the kcontrol。
++	 * free the kcontrol.
+ 	 */
+ 	cali_ctrls = devm_kcalloc(priv->dev, nctrls,
+ 		sizeof(cali_ctrls[0]), GFP_KERNEL);
 -- 
 2.51.0
 
