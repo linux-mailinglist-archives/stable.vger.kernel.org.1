@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-201304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A6CCC22ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49657CC2E28
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4D1FD303C439
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DB2E31CB9A4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D964E34214A;
-	Tue, 16 Dec 2025 11:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0327361DBE;
+	Tue, 16 Dec 2025 12:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhdZ1iLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/QdPQT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B9C341069;
-	Tue, 16 Dec 2025 11:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99B2361DD2;
+	Tue, 16 Dec 2025 12:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884201; cv=none; b=Ra8OkovGMAx4m0rMy/2+2j3K2VIi22/+fMNWm68pgZpgvumHmaLhA4GVj2Uukh5F/yhgaRpwlOks9ScdKw4M4Vf+OAHmd9rA4JK9C6dVUDcb/JhHXX3OGNAdrh+1MJNE97/oWo9LVDfRAL82PFo2J1DRwnh847LjpSnmNOQg3Gc=
+	t=1765887735; cv=none; b=k8tfmZiBLScKOh5xCzvz+W33KtFyHesgB4NqiEj3BaRBh6Z+weW9UPnn/0SbVLChh4p5nO4D8LEJojPQZbT7dz52bE3ogLKQaHu6UFNMoVcK0PKgyp5SGf/D+KvmX3TRpy0y2Pn6m3bxfU/oG3RqybPGzhpQ61/blH8To1n/ah4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884201; c=relaxed/simple;
-	bh=RflQ2igDhDZGOZUxIfDMJupjcMRWH2ksqGYmai82IC4=;
+	s=arc-20240116; t=1765887735; c=relaxed/simple;
+	bh=A7kGOVvEK4I0vnBZuy09NUk76G6pQhiLNiIZ0e3O8bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suiI4UbrKqIYZebhXmAoRHxhxnIgiafct5nK3I7tGTwIuAVcSGT7bwWoxIx7IjibhZnEEEWmOI4KTzFj5TsWdhA74uAEcIvQIA6DBpaBjWvFHVUoXisscZxbUH3mvlYZ3c9ld/XFGcpxW6XaxY0gdVdEd05fifjIAtTP3Ecal6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhdZ1iLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F06C4CEF1;
-	Tue, 16 Dec 2025 11:23:20 +0000 (UTC)
+	 MIME-Version; b=Tl2IaHSfKwgrfL9+u5nQgw1AdIslWWzjFbquDpwZScdqHf2F1pu/Se/FIVAYo3HvUJXEV1rixjYWbxBnwqjuqW4arNLeOMzl7g+jjTLb7qoYgagUoHMyDabXBHcSKiTIkwNOzxGI3ZcL0FV4j23E85rMGlobtI7tOnUnF1c3q0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/QdPQT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A61C4CEF1;
+	Tue, 16 Dec 2025 12:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884201;
-	bh=RflQ2igDhDZGOZUxIfDMJupjcMRWH2ksqGYmai82IC4=;
+	s=korg; t=1765887734;
+	bh=A7kGOVvEK4I0vnBZuy09NUk76G6pQhiLNiIZ0e3O8bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhdZ1iLyUg6dvszyQyFSfXFRLOAWHN1dBQlaB/PR7+RYs6Y8z3uUS5L4DxLZzcuIr
-	 qgm6VMYtmgXElFGS5HCVso9NgfYM1lPkoQxgwuwi5p+VubAfVMdmRO1H51Ga1gRzFi
-	 05WOY4OmHxJysBoQSjhPq/kAIn4FACMoJoxwWpiM=
+	b=z/QdPQT+zLs6SqoaWSMVopZcA3tutcsbaupLsbMegd7YHLClPU+Xw6Vt71/uVBPws
+	 qhsy8XJovPT7eINBu3AVBQUXDz5WgLVrGimJa3SzxBgjadIbxaI44MQqDcIiUE1H9l
+	 GT7BdCn5qi8AFh78fixC4jhn/P7zV7NHM+P0pxvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/354] x86/boot: Fix page table access in 5-level to 4-level paging transition
+Subject: [PATCH 6.18 322/614] drm/msm/a6xx: Flush LRZ cache before PT switch
 Date: Tue, 16 Dec 2025 12:11:29 +0100
-Message-ID: <20251216111325.343957694@linuxfoundation.org>
+Message-ID: <20251216111413.030712176@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit eb2266312507d7b757859e2227aa5c4ba6280ebe ]
+[ Upstream commit 180349b8407f3b268b2ceac0e590b8199e043081 ]
 
-When transitioning from 5-level to 4-level paging, the existing code
-incorrectly accesses page table entries by directly dereferencing CR3 and
-applying PAGE_MASK. This approach has several issues:
+As per the recommendation, A7x and newer GPUs should flush the LRZ cache
+before switching the pagetable. Update a6xx_set_pagetable() to do this.
+While we are at it, sync both BV and BR before issuing  a
+CP_RESET_CONTEXT_STATE command, to match the downstream sequence.
 
-- __native_read_cr3() returns the raw CR3 register value, which on x86_64
-  includes not just the physical address but also flags. Bits above the
-  physical address width of the system i.e. above __PHYSICAL_MASK_SHIFT) are
-  also not masked.
-
-- The PGD entry is masked by PAGE_SIZE which doesn't take into account the
-  higher bits such as _PAGE_BIT_NOPTISHADOW.
-
-Replace this with proper accessor functions:
-
-- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
-  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
-  reserved and must be 0.
-
-- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
-  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
-  the max physical address are reserved and must be 0.
-
-Fixes: e9d0e6330eb8 ("x86/boot/compressed/64: Prepare new top-level page table for trampoline")
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/a482fd68-ce54-472d-8df1-33d6ac9f6bb5@intel.com
+Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688995/
+Message-ID: <20251118-kaana-gpu-support-v4-2-86eeb8e93fb6@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/pgtable_64.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index d8c5de40669d3..b20a5790c193d 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -3,6 +3,7 @@
- #include <asm/bootparam.h>
- #include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
-+#include <asm/pgtable.h>
- #include <asm/processor.h>
- #include "pgtable.h"
- #include "../string.h"
-@@ -176,9 +177,10 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
- 		 */
--		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
-+		*trampoline_32bit = native_read_cr3_pa() | _PAGE_TABLE_NOENC;
- 	} else {
--		unsigned long src;
-+		u64 *new_cr3;
-+		pgd_t *pgdp;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index b8f8ae940b55f..6f7ed07670b12 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -224,7 +224,7 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 		OUT_RING(ring, submit->seqno - 1);
  
- 		/*
- 		 * For 5- to 4-level paging transition, copy page table pointed
-@@ -188,8 +190,9 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * We cannot just point to the page table from trampoline as it
- 		 * may be above 4G.
- 		 */
--		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
--		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
-+		pgdp = (pgd_t *)native_read_cr3_pa();
-+		new_cr3 = (u64 *)(native_pgd_val(pgdp[0]) & PTE_PFN_MASK);
-+		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
+ 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+-		OUT_RING(ring, CP_SET_THREAD_BOTH);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
+ 
+ 		/* Reset state used to synchronize BR and BV */
+ 		OUT_PKT7(ring, CP_RESET_CONTEXT_STATE, 1);
+@@ -235,7 +235,13 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 			 CP_RESET_CONTEXT_STATE_0_RESET_GLOBAL_LOCAL_TS);
+ 
+ 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+-		OUT_RING(ring, CP_SET_THREAD_BR);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
++
++		OUT_PKT7(ring, CP_EVENT_WRITE, 1);
++		OUT_RING(ring, LRZ_FLUSH);
++
++		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
  	}
  
- 	toggle_la57(trampoline_32bit);
+ 	if (!sysprof) {
 -- 
 2.51.0
 
