@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3ABCC2230
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6622FCC3AFD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7FCF306D8E4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D51523005D28
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E41B3148B3;
-	Tue, 16 Dec 2025 11:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88861346E67;
+	Tue, 16 Dec 2025 11:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tI4J9XK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiKKuTB7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B71261B9D;
-	Tue, 16 Dec 2025 11:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45218346E5D;
+	Tue, 16 Dec 2025 11:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883907; cv=none; b=mR/hSCSmdigm+edgkGFq4rtmhS7ZiGZtAuDe2BmN3fN3LANFcXtGPjVWa8K9Hblily/RF19PMkQ+rJXV+nrLHve1fBPbqhR8xJNbFDWxBgW8NeTswRvIopDm0gqdxVh7vWJkKtDeNFzMQGoP5HGqoAklYGaSXG/wPDD/n0UsCnI=
+	t=1765885543; cv=none; b=bH5h/EbL3eihQZ4mZYJk/VrGSbcbmCdpNvO9h+Gr6Jl2EWfTGq5jBDO5Kv+2LLmNK5GtZ2nwN7OOL5F+qtrCHoMdbnIyWSptggmuuVoVH/mt2mSGh5f2Q6ajS12JSq+F0k4VsnPiLSzqcOL30GkjKzOAPF6uGVt9oo0jqsfbces=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883907; c=relaxed/simple;
-	bh=F09vRDA5fZ08MR9kPqbJu99wpwIk4CKl9DZNYELV50k=;
+	s=arc-20240116; t=1765885543; c=relaxed/simple;
+	bh=FPTw8rAw+K/1xLd9xYAFZQ5sZNccYjmvOUjZLEGglc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntsDMbJXpS3mvTJn/UMLuGWk/5vgBLlEbwPED3048tltKzeG/PRc5a7zueK4ESPNLuQmAI6NiH9F6p9A6B3LbOVkshNJnYD0b/suF07nsPuQd2QHhb/QE0ehR91qOWidZ+YesgVG7wLPCLBn9110Y/RoO79MezbFQ90jVKDDJn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tI4J9XK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999D5C4CEF1;
-	Tue, 16 Dec 2025 11:18:26 +0000 (UTC)
+	 MIME-Version; b=GOP2RsfbqUB6KFLOjV1OAe3zLzepwVvvHBHwzE3hRP/QD9RIjoN9KZyCpjxeg4CbuXFQmUDtGeuY9XGUsnaOns/8Jkfn4Y39ly6AAAqjkldA3WkBaAL+faZ1qPzE7bXZZCBVSDeYZ9DsbPlgVNYdArjlSmI8bSC9Bx16/7rvCgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiKKuTB7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75F4C4CEF1;
+	Tue, 16 Dec 2025 11:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883907;
-	bh=F09vRDA5fZ08MR9kPqbJu99wpwIk4CKl9DZNYELV50k=;
+	s=korg; t=1765885543;
+	bh=FPTw8rAw+K/1xLd9xYAFZQ5sZNccYjmvOUjZLEGglc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tI4J9XKgSF7YaEcJWGnxXM/gNUVSjTHLOAuo8k46pO10M64lqK8OnWua/WQRBuof
-	 uwoy6hD/lwKaoR/GOJBIeShtEaC4e0a7DGZU2T/Mf2fi9yVqAri5Q1iKxsvQgLhbxH
-	 L3Ah44a09hW/D0k0X30cdHajWVuxmezqtQLBk6Qo=
+	b=EiKKuTB7vZmjLAgD/f+WaTCEiLHjpSCGn2v4Wa3Cz0OMcIKDQMJzwYJ4IUW8qXXyd
+	 VrzeV+l6x/DlEj7S/My1un1v/oz8ouOJv5EBWPaYwhCoR6wLuaGeSqRaFDC3srb2X5
+	 XJaMFqn7ziPi8K6fxtCHORvbixvAET04SEmBTRuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/354] accel/ivpu: Prevent runtime suspend during context abort work
-Date: Tue, 16 Dec 2025 12:09:36 +0100
-Message-ID: <20251216111321.244743368@linuxfoundation.org>
+Subject: [PATCH 6.17 136/507] docs: kdoc: fix duplicate section warning message
+Date: Tue, 16 Dec 2025 12:09:37 +0100
+Message-ID: <20251216111350.456986729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +60,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 7806bad76ac397a767f0c369534133c71c73b157 ]
+[ Upstream commit e5e7ca66a7fc6b8073c30a048e1157b88d427980 ]
 
-Increment the runtime PM counter when entering
-ivpu_context_abort_work_fn() to prevent the device
-from suspending while the function is executing.
+The python version of the kernel-doc parser emits some strange warnings
+with just a line number in certain cases:
 
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250204084622.2422544-3-jacek.lawrynowicz@linux.intel.com
-Stable-dep-of: 9f6c63285737 ("accel/ivpu: Ensure rpm_runtime_put in case of engine reset/resume fail")
+$ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
+Warning: 174
+Warning: 184
+Warning: 190
+Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
+Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
+Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
+Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
+
+I eventually tracked this down to the lone call of emit_msg() in the
+KernelEntry class, which looks like:
+
+  self.emit_msg(self.new_start_line, f"duplicate section name '{name}'\n")
+
+This looks like all the other emit_msg calls. Unfortunately, the definition
+within the KernelEntry class takes only a message parameter and not a line
+number. The intended message is passed as the warning!
+
+Pass the filename to the KernelEntry class, and use this to build the log
+message in the same way as the KernelDoc class does.
+
+To avoid future errors, mark the warning parameter for both emit_msg
+definitions as a keyword-only argument. This will prevent accidentally
+passing a string as the warning parameter in the future.
+
+Also fix the call in dump_section to avoid an unnecessary additional
+newline.
+
+Fixes: e3b42e94cf10 ("scripts/lib/kdoc/kdoc_parser.py: move kernel entry to a class")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <20251030-jk-fix-kernel-doc-duplicate-return-warning-v2-1-ec4b5c662881@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_job.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ scripts/lib/kdoc/kdoc_parser.py | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
-index e631098718b15..a0dca1c253b74 100644
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -8,6 +8,7 @@
- #include <linux/bitfield.h>
- #include <linux/highmem.h>
- #include <linux/pci.h>
-+#include <linux/pm_runtime.h>
- #include <linux/module.h>
- #include <uapi/drm/ivpu_accel.h>
+diff --git a/scripts/lib/kdoc/kdoc_parser.py b/scripts/lib/kdoc/kdoc_parser.py
+index fe730099eca86..386e4938c9c76 100644
+--- a/scripts/lib/kdoc/kdoc_parser.py
++++ b/scripts/lib/kdoc/kdoc_parser.py
+@@ -134,6 +134,8 @@ class KernelEntry:
  
-@@ -848,6 +849,9 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 	struct ivpu_job *job;
- 	unsigned long id;
+         self.leading_space = None
  
-+	if (drm_WARN_ON(&vdev->drm, pm_runtime_get_if_active(vdev->drm.dev) <= 0))
-+		return;
++        self.fname = fname
 +
- 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
- 		if (ivpu_jsm_reset_engine(vdev, 0))
- 			return;
-@@ -864,7 +868,7 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 	mutex_unlock(&vdev->context_list_lock);
+         # State flags
+         self.brcount = 0
+         self.declaration_start_line = ln + 1
+@@ -148,9 +150,11 @@ class KernelEntry:
+         return '\n'.join(self._contents) + '\n'
  
- 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
--		return;
-+		goto runtime_put;
+     # TODO: rename to emit_message after removal of kernel-doc.pl
+-    def emit_msg(self, log_msg, warning=True):
++    def emit_msg(self, ln, msg, *, warning=True):
+         """Emit a message"""
  
- 	if (ivpu_jsm_hws_resume_engine(vdev, 0))
- 		return;
-@@ -878,4 +882,8 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 		if (job->file_priv->aborted)
- 			ivpu_job_signal_and_destroy(vdev, job->job_id, DRM_IVPU_JOB_STATUS_ABORTED);
- 	mutex_unlock(&vdev->submitted_jobs_lock);
++        log_msg = f"{self.fname}:{ln} {msg}"
 +
-+runtime_put:
-+	pm_runtime_mark_last_busy(vdev->drm.dev);
-+	pm_runtime_put_autosuspend(vdev->drm.dev);
- }
+         if not warning:
+             self.config.log.info(log_msg)
+             return
+@@ -196,7 +200,7 @@ class KernelEntry:
+                 # Only warn on user-specified duplicate section names
+                 if name != SECTION_DEFAULT:
+                     self.emit_msg(self.new_start_line,
+-                                  f"duplicate section name '{name}'\n")
++                                  f"duplicate section name '{name}'")
+                 # Treat as a new paragraph - add a blank line
+                 self.sections[name] += '\n' + contents
+             else:
+@@ -247,15 +251,15 @@ class KernelDoc:
+             self.emit_msg(0,
+                           'Python 3.7 or later is required for correct results')
+ 
+-    def emit_msg(self, ln, msg, warning=True):
++    def emit_msg(self, ln, msg, *, warning=True):
+         """Emit a message"""
+ 
+-        log_msg = f"{self.fname}:{ln} {msg}"
+-
+         if self.entry:
+-            self.entry.emit_msg(log_msg, warning)
++            self.entry.emit_msg(ln, msg, warning=warning)
+             return
+ 
++        log_msg = f"{self.fname}:{ln} {msg}"
++
+         if warning:
+             self.config.log.warning(log_msg)
+         else:
 -- 
 2.51.0
 
