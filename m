@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-202203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC75CC2C9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4E8CC26B9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35656312DEC1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 595CC304CC38
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2A53659F7;
-	Tue, 16 Dec 2025 12:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DC134D3B9;
+	Tue, 16 Dec 2025 11:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2l5Myqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MXMyKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992B749C;
-	Tue, 16 Dec 2025 12:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A561734D3BA;
+	Tue, 16 Dec 2025 11:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887152; cv=none; b=ikmNQFKAi5uPeoy9NKR7sDePWpfDTd0D99gHlE9fOeQiPyKbrI82jZLfK6duZGHzeyW7/9CjGIDZs5TMBfalJ+ZCP6VoRlBuSdir4g9lG3xA3RFpVA+LmzS0l0udcattzzwzX/LniBnWpsgOpSmwI0B7Rv2TCRvXCvX8CfmUwfQ=
+	t=1765885315; cv=none; b=fobvmec4sjBFiX6R07sya6gaZVwr4t7i16ZBQItsH++HBjhuUuF/9Y6g3iXMt/qq7fu6mRikKw8CyuOPmVZ/YwXQyfloCoUkpyM56O9kh/pGDjsqKb0yUy7Ho6bnR4RV3jhHoyBA94F7rgYIir+gnluyDUjEx4XJYhLl9kRM77o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887152; c=relaxed/simple;
-	bh=2njQImmUuqr//3tK1SMhvb/odYYGusP3xbgcXQKkUbU=;
+	s=arc-20240116; t=1765885315; c=relaxed/simple;
+	bh=76RrOdDxolX6wmw6xsnwdPTzgoi+Pcy04igDCkvuS8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2t/C0tHELSZtOOsPT+H0ht4AoONWXa/2iguV7q4sEZI78/fzFBAbVkga1oRg4ftYFZEjDPIg9uzLQ45XRjO0VfopuAk0VIdfycOioQOiFuhnyZ0qWCRgflTDmWtgHZCn5iqQ0D5WfUFRbh33CYZA5bDHsurQqxjJwVN26/3ogU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2l5Myqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18A9C4CEF5;
-	Tue, 16 Dec 2025 12:12:31 +0000 (UTC)
+	 MIME-Version; b=LrCrLBrvAkVbaaXAMGMsO4Nr7i1zsMq2zsWWJS53M7W3lF13TJMWxKzcK4jAnURVSoaLAtBG8+qcdJSqPqgptzEUE3gSi2KkJ9xgHxBEQoOLRgNCg7C0fcohREEW9Muqv2kqEUgPgNE4id14E+ZkgZYC74SeU5Fu8/FcPwdjhDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MXMyKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B126FC4CEF1;
+	Tue, 16 Dec 2025 11:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887152;
-	bh=2njQImmUuqr//3tK1SMhvb/odYYGusP3xbgcXQKkUbU=;
+	s=korg; t=1765885315;
+	bh=76RrOdDxolX6wmw6xsnwdPTzgoi+Pcy04igDCkvuS8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2l5Myqz8BLQaQuHHFCnEkaRTre9xSASdP8omQXDpiPRH1gNdYuabJFcrnGbEmy8R
-	 tScKkmIhYgKzTvBB57rpXVuIJK4qf6Zr4DHRhE0KOgtVfqPOa0IGs4MtHLWOyB1roR
-	 UIfnDeMU+CZtt7EULRrt/zBnTrmK+iExfpbOAnwc=
+	b=F5MXMyKCBS18Dyq34S3Xoy/8j3QKS7HGUAol1tZLbiXmAoPoahQaCWJpLWdyeN21M
+	 xi1nTmXB9Hxm15sNok0Y1+vmC3vcjADttvSD/ULaqBuV3+Sp43KSilfbUIhAEiP++J
+	 EGzT3ABDVSjPCtQrrOlM7hEk+yHq8xH1Yn21oiZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 143/614] drm/rcar-du: dsi: Fix missing parameter in RXSETR_...EN macros
+Subject: [PATCH 6.17 069/507] tty: introduce tty_port_tty guard()
 Date: Tue, 16 Dec 2025 12:08:30 +0100
-Message-ID: <20251216111406.516777981@linuxfoundation.org>
+Message-ID: <20251216111348.042883962@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 42bbf82b73bda18bbc3e158cb6fda040bb586feb ]
+[ Upstream commit e8398b8aed50382c21fcec77e80a5314e7c45c25 ]
 
-The RXSETR_CRCEN(n) and RXSETR_ECCEN(n) macros both take parameter (n),
-add the missing macro parameter. Neither of those macros is used by the
-driver, so for now the bug is harmless.
+Having this, guards like these work:
+  scoped_guard(tty_port_tty, port)
+    tty_wakeup(scoped_tty());
 
-Fixes: 685e8dae19df ("drm/rcar-du: dsi: Implement DSI command support")
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reported-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://patch.msgid.link/20251028232959.109936-2-marek.vasut+renesas@mailbox.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+See e.g. "tty_port: use scoped_guard()" later in this series.
+
+The definitions depend on CONFIG_TTY. It's due to tty_kref_put().
+On !CONFIG_TTY, it is an inline and its declaration would conflict. The
+guards are not needed in that case, of course.
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250814072456.182853-3-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: d55f3d2375ce ("tty: serial: imx: Only configure the wake register when device is set as wakeup source")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/tty_port.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-index 76521276e2af8..dd871e17dcf53 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-@@ -50,8 +50,8 @@
- #define TXCMPPD3R			0x16c
+diff --git a/include/linux/tty_port.h b/include/linux/tty_port.h
+index 332ddb93603ec..660c254f1efe5 100644
+--- a/include/linux/tty_port.h
++++ b/include/linux/tty_port.h
+@@ -270,4 +270,18 @@ static inline void tty_port_tty_vhangup(struct tty_port *port)
+ 	__tty_port_tty_hangup(port, false, false);
+ }
  
- #define RXSETR				0x200
--#define RXSETR_CRCEN			(((n) & 0xf) << 24)
--#define RXSETR_ECCEN			(((n) & 0xf) << 16)
-+#define RXSETR_CRCEN(n)			(((n) & 0xf) << 24)
-+#define RXSETR_ECCEN(n)			(((n) & 0xf) << 16)
- #define RXPSETR				0x210
- #define RXPSETR_LPPDACC			(1 << 0)
- #define RXPSR				0x220
++#ifdef CONFIG_TTY
++void tty_kref_put(struct tty_struct *tty);
++__DEFINE_CLASS_IS_CONDITIONAL(tty_port_tty, true);
++__DEFINE_UNLOCK_GUARD(tty_port_tty, struct tty_struct, tty_kref_put(_T->lock));
++static inline class_tty_port_tty_t class_tty_port_tty_constructor(struct tty_port *tport)
++{
++	class_tty_port_tty_t _t = {
++		.lock = tty_port_tty_get(tport),
++	};
++	return _t;
++}
++#define scoped_tty()	((struct tty_struct *)(__guard_ptr(tty_port_tty)(&scope)))
++#endif
++
+ #endif
 -- 
 2.51.0
 
