@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-202202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB8ECC2C8E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FB4CC26B8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A71231282F8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03AC7303D689
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E59365A10;
-	Tue, 16 Dec 2025 12:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B491634D3BA;
+	Tue, 16 Dec 2025 11:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDQjmo90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKUsy4Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2151365A08;
-	Tue, 16 Dec 2025 12:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619F034D3B8;
+	Tue, 16 Dec 2025 11:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887148; cv=none; b=WO7ceH5xswEjgDchBjYl2Y5thre2slHJExD17jJ6Mzif4vToKsDBWUzt1lknz2fa57XUtcRj32rB0gWc27d+btmgrcVWIt2MKoZRLqUE4Do2mPCJnLLoJ9eJ+/SOiUSrPQZ6UYoqYd2CzpH9+xw79o1IJj97bVAzI63cJojgFl0=
+	t=1765885312; cv=none; b=VW7mH7GvB7XMyQre4fE7U/V/+TNnHHbPZAPMlouS1cY4JwhtXgiwfuEU/q7MutxEiD8ogH9668CSzxTqPdmtEXIE+f8ud5jNbbEBqAbDtacKTVcjqHr8el0+LnBJBtK/IKRPMkYsCpFqjoTzl4fUJo8divTJVDLq7GRhnJfljF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887148; c=relaxed/simple;
-	bh=coozyttKnIgaCKmbdwvywM8LUfQEZIA/UQS8gZiMNrw=;
+	s=arc-20240116; t=1765885312; c=relaxed/simple;
+	bh=7t6VMloQX96bYhwn/peRNsQhHmTOGQ7IFqqecQ2rQfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtDxKq831YTcnplPYgRn+UWkSjEUkz5aXdDhBBRqX8dpbQVsFk6zHm4/LmvQTb32QupSM/VIxuCtaSsOZDdsOkuCYb+Rdq93Nd9VQpIQ06ewzAAGQUXTEgcId5tXqUwgp/Zy0yrZdzPDIGqQzFELInvCwJ/vh8b0vbvMRyB1AdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDQjmo90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A6DC4CEF5;
-	Tue, 16 Dec 2025 12:12:28 +0000 (UTC)
+	 MIME-Version; b=l5MAKFLkGDN2LAhxaRzWtXO1svOzqH/XUhJTeW/kKsUfB5m3FvI1ZzvskZEj5Co+x1Kksv/YCcpSOBpqy8hAlBDmbsQ0BoWLH9CJ2uyojbeOfGYwSpT9879FqBTves2osy9IDyna+SDNnoAE71BDFsAYcZ57wmKHeERr6q9HPZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKUsy4Gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877D0C4CEF1;
+	Tue, 16 Dec 2025 11:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887148;
-	bh=coozyttKnIgaCKmbdwvywM8LUfQEZIA/UQS8gZiMNrw=;
+	s=korg; t=1765885312;
+	bh=7t6VMloQX96bYhwn/peRNsQhHmTOGQ7IFqqecQ2rQfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDQjmo90YMGW6OLVz9y3dFSUYDx5CRQKPlFcqQr8N3oiiisbBNavKCM8YhfcBajjE
-	 PNMAtpo5F/P6yF1DlebsTC13zhOxOllO1DtYTFgav9rY9/CmFxYBz4UpN3HHbrsdUE
-	 sIeU6/krj/C7F43wEW74Nded01mtluZz+jqdnOF8=
+	b=nKUsy4GrFcHup9IYeNXkCjW9UTEL4+rIB0/mTVMk7bju+u9i9QeO9PIr9e1a/eYZn
+	 QCiB8xOI0Zm/JjfGftzV7zhX5dS3c6+U4W75xbDYxflQ/9Y8VbZ7KqnO32VH4h8gFW
+	 b0XEisKI9mp1Pd7NHINETr+oSQjZwsDKlVeQcdhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Li Qiang <liqiang01@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 142/614] task_work: Fix NMI race condition
+Subject: [PATCH 6.17 068/507] uio: uio_fsl_elbc_gpcm:: Add null pointer check to uio_fsl_elbc_gpcm_probe
 Date: Tue, 16 Dec 2025 12:08:29 +0100
-Message-ID: <20251216111406.481388821@linuxfoundation.org>
+Message-ID: <20251216111348.007261825@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-[ Upstream commit ef1ea98c8fffe227e5319215d84a53fa2a4bcebc ]
+[ Upstream commit d48fb15e6ad142e0577428a8c5028136e10c7b3d ]
 
-  __schedule()
-  // disable irqs
-      <NMI>
-	  task_work_add(current, work, TWA_NMI_CURRENT);
-      </NMI>
-  // current = next;
-  // enable irqs
-      <IRQ>
-	  task_work_set_notify_irq()
-	  test_and_set_tsk_thread_flag(current,
-                                       TIF_NOTIFY_RESUME); // wrong task!
-      </IRQ>
-  // original task skips task work on its next return to user (or exit!)
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Fixes: 466e4d801cd4 ("task_work: Add TWA_NMI_CURRENT as an additional notify mode.")
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://patch.msgid.link/20250924080118.425949403@infradead.org
+Fixes: d57801c45f53e ("uio: uio_fsl_elbc_gpcm: use device-managed allocators")
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Link: https://patch.msgid.link/20251015064020.56589-1-liqiang01@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/task_work.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/uio/uio_fsl_elbc_gpcm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/task_work.c b/kernel/task_work.c
-index d1efec571a4a4..0f7519f8e7c93 100644
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -9,7 +9,12 @@ static struct callback_head work_exited; /* all we need is ->next == NULL */
- #ifdef CONFIG_IRQ_WORK
- static void task_work_set_notify_irq(struct irq_work *entry)
- {
--	test_and_set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
-+	/*
-+	 * no-op IPI
-+	 *
-+	 * TWA_NMI_CURRENT will already have set the TIF flag, all
-+	 * this interrupt does it tickle the return-to-user path.
-+	 */
+diff --git a/drivers/uio/uio_fsl_elbc_gpcm.c b/drivers/uio/uio_fsl_elbc_gpcm.c
+index 81454c3e2484c..338dd2aaabc87 100644
+--- a/drivers/uio/uio_fsl_elbc_gpcm.c
++++ b/drivers/uio/uio_fsl_elbc_gpcm.c
+@@ -384,6 +384,11 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+ 
+ 	/* set all UIO data */
+ 	info->mem[0].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOFn", node);
++	if (!info->mem[0].name) {
++		ret = -ENODEV;
++		goto out_err3;
++	}
++
+ 	info->mem[0].addr = res.start;
+ 	info->mem[0].size = resource_size(&res);
+ 	info->mem[0].memtype = UIO_MEM_PHYS;
+@@ -423,6 +428,8 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+ out_err2:
+ 	if (priv->shutdown)
+ 		priv->shutdown(info, true);
++
++out_err3:
+ 	iounmap(info->mem[0].internal_addr);
+ 	return ret;
  }
- static DEFINE_PER_CPU(struct irq_work, irq_work_NMI_resume) =
- 	IRQ_WORK_INIT_HARD(task_work_set_notify_irq);
-@@ -86,6 +91,7 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
- 		break;
- #ifdef CONFIG_IRQ_WORK
- 	case TWA_NMI_CURRENT:
-+		set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
- 		irq_work_queue(this_cpu_ptr(&irq_work_NMI_resume));
- 		break;
- #endif
 -- 
 2.51.0
 
