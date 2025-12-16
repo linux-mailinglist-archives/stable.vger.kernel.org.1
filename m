@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385E4CC24C6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46857CC45D0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7BBA30F8F30
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D72B3302EFDD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E077A33E36F;
-	Tue, 16 Dec 2025 11:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B5F347FE1;
+	Tue, 16 Dec 2025 11:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz3GMHVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7bOG6zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9930833E37C;
-	Tue, 16 Dec 2025 11:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2640334F470;
+	Tue, 16 Dec 2025 11:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884033; cv=none; b=AosawLThHbQJxEy+adw1RiPZOu5mZ56YMnR/cdLiuF13R/JTG6dLrqR4zRXMWu2IUit0wXI/Tq5FoLKIw8duTxjHp3MIcb3bhVbg0SbZZWq7NZl04kscv3auDKZF0YVOBlv/o/Mr9m7+2s7uba2BYaaFyEHD0CrUYg3j28WHk6k=
+	t=1765885642; cv=none; b=cAmTDVUVWl88ywLKixzKsJBpq0QBjU/gp1W5bjBf3KqF/KBwClxrGxBjo/SBiSD0GS4wsTWxNT9Q5WM3hUDoHhr58BmrRqUM/AY+F4L2HgWzR4XZdfcK8cWhZZv6NSfaC2vuHKmFE9TrFMcQktK3S0QxRpjtf/NaQ9vxrW5HUJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884033; c=relaxed/simple;
-	bh=O5elhKqgimEE3u4GkVJ47dTr9B363725gwbBOJQILT8=;
+	s=arc-20240116; t=1765885642; c=relaxed/simple;
+	bh=4EO4NJT0bjDUXVM8SWizht92enNYlOzPB5SgIAo3VGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BagfqbCvQiSmHaGt9xspQAAwjLxIK5us/liL6WZml8JzAULW2rmFYJpNoKhi4IWoqZXIW6cbvjLOyxh/tPI7wC7rTQShmjINnZDJKnAGkubaViq501W457MKaxdBuYa5/c6uc7idMCUOwKA76AK8npu5uddg7kja++bdVWH7Lgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz3GMHVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E5FC4CEF1;
-	Tue, 16 Dec 2025 11:20:32 +0000 (UTC)
+	 MIME-Version; b=YYiVdgViA3d1L1w5Q8gzDkG7cN7r/a2zUpVbNb07W4tDR5UZ0cW6G5SrtANYyB3m1Bsuzz20nrgu0czElYbb63fZtYpyJk1Df90jTij2yFuUr3OHXQHSA39Yug9sQP4ma43gwz3/vKsej2QPuoDLuwdQ0l7r3xe8ANWgAj3KPSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7bOG6zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87C1C4CEF1;
+	Tue, 16 Dec 2025 11:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884033;
-	bh=O5elhKqgimEE3u4GkVJ47dTr9B363725gwbBOJQILT8=;
+	s=korg; t=1765885642;
+	bh=4EO4NJT0bjDUXVM8SWizht92enNYlOzPB5SgIAo3VGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz3GMHVzZeV/tsZIDV1LzGQhFMt3C1iV5eC8tzaUOcF8oKtLw4ZiulifCfxMhXso8
-	 ix2lcvdzQmThYKxWIgUrOIdoV7G/LdpWzN0dDf+wOJa80ihAJGzqF5PWYLDnLd+2PF
-	 xbmMep0yEIFQ3qKjX9c2RYEUqbN6srQtCjWZvuWs=
+	b=r7bOG6zxgeG7lOcyUiw0iQf5gGaHYELe1758HuSlpsvEZL0Vttth57IarX7lC3hcr
+	 RBny5Y1YlYWr5LPWFsqsE7aihWzPr26fC+WieaPtXse8qAa1BLLfGAJbqYTZSkNKpD
+	 m6lqpONsHJ2GMIjlzvCBINUEuerqBS2pPaZuY2hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/354] arm64: dts: qcom: x1e80100: Add missing quirk for HS only USB controller
+Subject: [PATCH 6.17 199/507] RDMA/rtrs: server: Fix error handling in get_or_create_srv
 Date: Tue, 16 Dec 2025 12:10:40 +0100
-Message-ID: <20251216111323.569604738@linuxfoundation.org>
+Message-ID: <20251216111352.718007390@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 6b3e8a5d6c88609d9ce93789524f818cca0aa485 ]
+[ Upstream commit a338d6e849ab31f32c08b4fcac11c0c72afbb150 ]
 
-The PIPE clock is provided by the USB3 PHY, which is predictably not
-connected to the HS-only controller. Add "qcom,select-utmi-as-pipe-clk"
-quirk to  HS only USB controller to disable pipe clock requirement.
+After device_initialize() is called, use put_device() to release the
+device according to kernel device management rules. While direct
+kfree() work in this case, using put_device() is more correct.
 
-Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20251024105019.2220832-2-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by code review.
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251110005158.13394-1-make24@iscas.ac.cn
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index b03f3ce250dbc..8536403e6ac99 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -4272,6 +4272,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 			interconnect-names = "usb-ddr",
- 					     "apps-usb";
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index ef4abdea3c2d2..9ecc6343455d6 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1450,7 +1450,7 @@ static struct rtrs_srv_sess *get_or_create_srv(struct rtrs_srv_ctx *ctx,
+ 	kfree(srv->chunks);
  
-+			qcom,select-utmi-as-pipe-clk;
- 			wakeup-source;
+ err_free_srv:
+-	kfree(srv);
++	put_device(&srv->dev);
+ 	return ERR_PTR(-ENOMEM);
+ }
  
- 			status = "disabled";
 -- 
 2.51.0
 
