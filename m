@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CF2CC2B89
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:28:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA0BCC2259
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 866D7310938B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 234C83030BAE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973C934B19A;
-	Tue, 16 Dec 2025 11:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1401341AD7;
+	Tue, 16 Dec 2025 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1DDISU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQHUgkIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5179734AB1D;
-	Tue, 16 Dec 2025 11:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE94341645;
+	Tue, 16 Dec 2025 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885711; cv=none; b=Alb4E8zV07JPybH0zoaR0TbMdV5OOm9ewd0G8Ze9ZCyn0DSxxVoOaFFKGM9UKNWoWkx5NovCzdj5YPBGzp1YJY+iaNvp5agpZTRqrqsCeozyccm5wNNlVjii7i4e8rOwcE07DTt9Wg6r3/KTGZ16C9NUWlYGnzbUQhE/N0qpk0c=
+	t=1765884124; cv=none; b=oQdFwMuMhB3Qo6xkG9YBlcnV8qa4Co/HTBYhVEtH0QZsNl0eXHTHNkaYMzorqT99Vp5mdUdbjgZiqWi55NeYosd30Fij6U0PV9AydprIkwzLvq2kY2c5nEA0Hlcp7IMGs3tGfziOH7n/zpa989EFZ3mXO1andrz4aftl3lJ1NCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885711; c=relaxed/simple;
-	bh=gvHpRLTdsZvSFo3ZuLuvlyB2bYvhKzAqLqP9+QABCAI=;
+	s=arc-20240116; t=1765884124; c=relaxed/simple;
+	bh=bjhvss62HsBeuoYowWj9Ei6I5iMix6IIrkx1JHaBt4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcX84zTub7oqLQ3pyLuqqcHpb38PALd0AKm2QGXkjwMFvtiLo22Zn9tuJdLPrqjJ24TzbvPkrwQq/XjXXT5NHmOaVkne3LEMSFRGVPXV/GH7ZzHl0aSVnsmsQ1WDDTb+LXn/fVFo4EHXvj/Ia177VWsG+yGZYpxPJ3tVQfG9AWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1DDISU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC497C4CEF1;
-	Tue, 16 Dec 2025 11:48:30 +0000 (UTC)
+	 MIME-Version; b=Vn0s4l53TIqof7uy00UM2oTuv9MTzO2b2I9g+2TxFrSieS9YVmctFCAGxHF3G8h6koHJlyA2fO/NJsyuHYj043cdDkKWqJxTU5QIsuoxRJjpa2mNpFHwRDODqJBE0+jr65BwbIYLUoI6LjlyvD8jFQE5C9CS7chd3G/vdJvOS24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQHUgkIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECECC4CEF5;
+	Tue, 16 Dec 2025 11:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885711;
-	bh=gvHpRLTdsZvSFo3ZuLuvlyB2bYvhKzAqLqP9+QABCAI=;
+	s=korg; t=1765884124;
+	bh=bjhvss62HsBeuoYowWj9Ei6I5iMix6IIrkx1JHaBt4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1DDISU0f+QAxHWZY1j7oygWCyUctwzLB+DvGxWKl+ZgZ8GPckerGFnJbOpKm7r2r
-	 cXSqnuRZnNlMi1TcVtuwpKTYSlyP/e86CTo2UkxckbqBMQnGOGuFNG0j+awPcwq5KJ
-	 mkIFoTGHI8fWt3iHitlO3KMz1lUq8SwqXT8TMA5c=
+	b=kQHUgkIwmlxi0xc1xuUwFCRq/MdNPS1gXH11uXiqfzGMN9HcywI8BchMbFgedm2E0
+	 20EPHJ0Q20gF6PyTc2V/r7/3kNvCTwW4f7w2DbD9SqoGN039g0lS4AKKYYrQSCjyKv
+	 I19OmsftrG0ZAKm2rlfMpBPnwFxHTfLTlHJbfmLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 222/507] clk: renesas: r9a06g032: Fix memory leak in error path
-Date: Tue, 16 Dec 2025 12:11:03 +0100
-Message-ID: <20251216111353.549072223@linuxfoundation.org>
+Subject: [PATCH 6.12 097/354] interconnect: qcom: msm8996: add missing link to SLAVE_USB_HS
+Date: Tue, 16 Dec 2025 12:11:04 +0100
+Message-ID: <20251216111324.434965148@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit f8def051bbcf8677f64701e9699bf6d11e2780cd ]
+[ Upstream commit 8cf9b43f6b4d90e19a9341edefdd46842d4adb55 ]
 
-The current code uses of_iomap() to map registers but never calls
-iounmap() on any error path after the mapping. This causes a memory
-leak when probe fails after successful ioremap, for example when
-of_clk_add_provider() or r9a06g032_add_clk_domain() fails.
+>From the initial submission the interconnect driver missed the link from
+SNOC_PNOC to the USB 2 configuration space. Add missing link in order to
+let the platform configure and utilize this path.
 
-Replace of_iomap() with devm_of_iomap() to automatically unmap the
-region on probe failure. Update the error check accordingly to use
-IS_ERR() and PTR_ERR() since devm_of_iomap() returns ERR_PTR on error.
-
-Fixes: 4c3d88526eba ("clk: renesas: Renesas R9A06G032 clock driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251030061603.1954-1-vulab@iscas.ac.cn
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 7add937f5222 ("interconnect: qcom: Add MSM8996 interconnect provider driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-1-a36a05d1f869@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a06g032-clocks.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/interconnect/qcom/msm8996.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
-index dcda19318b2a9..0f5c91b5dfa99 100644
---- a/drivers/clk/renesas/r9a06g032-clocks.c
-+++ b/drivers/clk/renesas/r9a06g032-clocks.c
-@@ -1333,9 +1333,9 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
- 	if (IS_ERR(mclk))
- 		return PTR_ERR(mclk);
- 
--	clocks->reg = of_iomap(np, 0);
--	if (WARN_ON(!clocks->reg))
--		return -ENOMEM;
-+	clocks->reg = devm_of_iomap(dev, np, 0, NULL);
-+	if (IS_ERR(clocks->reg))
-+		return PTR_ERR(clocks->reg);
- 
- 	r9a06g032_init_h2mode(clocks);
- 
+diff --git a/drivers/interconnect/qcom/msm8996.c b/drivers/interconnect/qcom/msm8996.c
+index 788131400cd13..6c8c6e974c811 100644
+--- a/drivers/interconnect/qcom/msm8996.c
++++ b/drivers/interconnect/qcom/msm8996.c
+@@ -552,6 +552,7 @@ static struct qcom_icc_node mas_venus_vmem = {
+ static const u16 mas_snoc_pnoc_links[] = {
+ 	MSM8996_SLAVE_BLSP_1,
+ 	MSM8996_SLAVE_BLSP_2,
++	MSM8996_SLAVE_USB_HS,
+ 	MSM8996_SLAVE_SDCC_1,
+ 	MSM8996_SLAVE_SDCC_2,
+ 	MSM8996_SLAVE_SDCC_4,
 -- 
 2.51.0
 
