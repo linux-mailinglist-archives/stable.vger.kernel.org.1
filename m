@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-201562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1AECC3E7C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F643CC2C77
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1935F30C8AC1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D671310A722
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FF3345CB0;
-	Tue, 16 Dec 2025 11:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0BC3659ED;
+	Tue, 16 Dec 2025 12:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRhRWknV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEdvQteq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B95345757;
-	Tue, 16 Dec 2025 11:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B686364EBB;
+	Tue, 16 Dec 2025 12:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885045; cv=none; b=KcD2waELoVh2XVx9Jw/2glliQ6EQqRsoG8e8kwKglHh8fw4Eyo3JVBXhlArIfq3DEnqkoX236sqzZwcPe4xVU5MvpccP+MFdynlkNmUnioriImFWNEFM21/tn6d5uqxr5kM7D04a+/t+TJLkMsJpPl2VtBUPSwHW4VmDCncyceE=
+	t=1765887139; cv=none; b=VGMcoWIHHM0HhHIEZa8ZJQVEVFB7AGLLYSmi4nHkzYR23j0nLQPBmdemqsXyRxT1zuyaFSa5GKNZ6+lUZqTrm3+PyVXsOwmZyJyj0bu2jZIl2PwsZhm/wnqGqzdO5cNSzoF55SEWgOVG05fugfmIhZKP2zdrYGWTL+K9funn/48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885045; c=relaxed/simple;
-	bh=FYEnq9l3VNuvDx8eHoD6JZrD3zYndHir5a7RSTGuWFA=;
+	s=arc-20240116; t=1765887139; c=relaxed/simple;
+	bh=qUxEiObG25LZgaLdwCRDk+XLiaF7t+pGqls9oYK8J8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wps1kTJxmg1tDH86wAaHjbFpu+dhwSZeTUkXhDRW74l92+7XqZoIPZ1hf39/bz9aB958nC0McO49aQTIhtEFgcJCgzYhZ0YGqwiBn0kk/7SNDMwV59so75kbqemvLL7JUAk85PWJcl2kZiPa9oIwhXLaLn/Dw1g33MVPEuI6HT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRhRWknV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5F9C4CEF1;
-	Tue, 16 Dec 2025 11:37:24 +0000 (UTC)
+	 MIME-Version; b=r+Ms+1eqhYsBK4wVOeE8wcejWo2A5x6lEmt2MhK0PE8m9QXWAslp8PCMxspisR74z5DAXrbPhEwAd6tZaLLzdzDwRGazLbhxySr3Zc8P4/jvtwlJiaCK7IDKM8MAh9EyonzsYr/8sOf535IgKi+3A7048ROmLOZZdluN08M9mLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEdvQteq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9781FC4CEF1;
+	Tue, 16 Dec 2025 12:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885044;
-	bh=FYEnq9l3VNuvDx8eHoD6JZrD3zYndHir5a7RSTGuWFA=;
+	s=korg; t=1765887139;
+	bh=qUxEiObG25LZgaLdwCRDk+XLiaF7t+pGqls9oYK8J8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRhRWknVlYnLGtOM82nmqKv+EOK8lmhm4WZ7RhzANygmpYV6EPn97qdmKbux/LiZ+
-	 1yDrp+5PYIgJ3a05D75datNsY97J9Vrd8dGx0p+0kz8rkeYMiytBYpmDeibegKILfr
-	 eA+xFtar0wLSvwJ6sAb4pQZ0trjZwwABNC1OLyBY=
+	b=tEdvQteqjoJHsjZfRMA/sh4DeRuEyuDxLmaMVwJBmF0NSVggNQuLYywANbFeUQv/9
+	 nHZNm8mXrS1SMyfp6FlP817NHpXpffAkdvkS3MTB9zN0Fu87XCAsOTkZ6EPgh8MbfB
+	 G6sxtjouyJM3Gk1ipjN5VQ/sUxXVDFwCnrO4dOgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Andrej Tkalcec <andrej.tkalcec@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 021/507] ima: Attach CREDS_CHECK IMA hook to bprm_creds_from_file LSM hook
+Subject: [PATCH 6.18 095/614] tools/power turbostat: Regression fix Uncore MHz printed in hex
 Date: Tue, 16 Dec 2025 12:07:42 +0100
-Message-ID: <20251216111346.303960829@linuxfoundation.org>
+Message-ID: <20251216111404.762190786@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,136 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 8f3fc4f3f8aa6e99266c69cc78bdaa58379e65fc ]
+[ Upstream commit 92664f2e6ab2228a3330734fc72dabeaf8a49ee1 ]
 
-Since commit 56305aa9b6fa ("exec: Compute file based creds only once"), the
-credentials to be applied to the process after execution are not calculated
-anymore for each step of finding intermediate interpreters (including the
-final binary), but only after the final binary to be executed without
-interpreter has been found.
+A patch to allow specifying FORMAT_AVERAGE to added counters...
+broke the internally added counter for Cluster Uncore MHz -- printing it in HEX.
 
-In particular, that means that the bprm_check_security LSM hook will not
-see the updated cred->e[ug]id for the intermediate and for the final binary
-to be executed, since the function doing this task has been moved from
-prepare_binprm(), which calls the bprm_check_security hook, to
-bprm_creds_from_file().
-
-This breaks the IMA expectation for the CREDS_CHECK hook, introduced with
-commit d906c10d8a31 ("IMA: Support using new creds in appraisal policy"),
-which expects to evaluate "the credentials that will be committed when the
-new process is started". This is clearly not the case for the CREDS_CHECK
-IMA hook, which is attached to bprm_check_security.
-
-This issue does not affect systems which load a policy with the BPRM_CHECK
-hook with no other criteria, as is the case with the built-in "tcb" and/or
-"appraise_tcb" IMA policies. The "tcb" built-in policy measures all
-executions regardless of the new credentials, and the "appraise_tcb" policy
-is written in terms of the file owner, rather than IMA hooks.
-
-However, it does affect systems without a BPRM_CHECK policy rule or with a
-BPRM_CHECK policy rule that does not include what CREDS_CHECK evaluates. As
-an extreme example, taking a standalone rule like:
-
-measure func=CREDS_CHECK euid=0
-
-This will not measure for example sudo (because CREDS_CHECK still sees the
-bprm->cred->euid set to the regular user UID), but only the subsequent
-commands after the euid was applied to the children.
-
-Make set[ug]id programs measured/appraised again by splitting
-ima_bprm_check() in two separate hook implementations (CREDS_CHECK now
-being implemented by ima_creds_check()), and by attaching CREDS_CHECK to
-the bprm_creds_from_file LSM hook.
-
-The limitation of this approach is that CREDS_CHECK will not be invoked
-anymore for the intermediate interpreters, like it was before, but only for
-the final binary. This limitation can be removed only by reverting commit
-56305aa9b6fa ("exec: Compute file based creds only once").
-
-Link: https://github.com/linux-integrity/linux/issues/3
-Fixes: 56305aa9b6fa ("exec: Compute file based creds only once")
-Cc: Serge E. Hallyn <serge@hallyn.com>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: dcd1c379b0f1 ("tools/power turbostat: add format "average" for external attributes")
+Reported-by: Andrej Tkalcec <andrej.tkalcec@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_main.c | 42 ++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index cdd225f65a629..ebaebccfbe9ab 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -573,18 +573,41 @@ static int ima_file_mprotect(struct vm_area_struct *vma, unsigned long reqprot,
-  */
- static int ima_bprm_check(struct linux_binprm *bprm)
- {
--	int ret;
- 	struct lsm_prop prop;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index f2512d78bcbd8..1b5ca2f4e92ff 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -3285,13 +3285,13 @@ int format_counters(PER_THREAD_PARAMS)
  
- 	security_current_getlsmprop_subj(&prop);
--	ret = process_measurement(bprm->file, current_cred(),
--				  &prop, NULL, 0, MAY_EXEC, BPRM_CHECK);
--	if (ret)
--		return ret;
--
--	security_cred_getlsmprop(bprm->cred, &prop);
--	return process_measurement(bprm->file, bprm->cred, &prop, NULL, 0,
--				   MAY_EXEC, CREDS_CHECK);
-+	return process_measurement(bprm->file, current_cred(),
-+				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK);
-+}
-+
-+/**
-+ * ima_creds_check - based on policy, collect/store measurement.
-+ * @bprm: contains the linux_binprm structure
-+ * @file: contains the file descriptor of the binary being executed
-+ *
-+ * The OS protects against an executable file, already open for write,
-+ * from being executed in deny_write_access() and an executable file,
-+ * already open for execute, from being modified in get_write_access().
-+ * So we can be certain that what we verify and measure here is actually
-+ * what is being executed.
-+ *
-+ * The difference from ima_bprm_check() is that ima_creds_check() is invoked
-+ * only after determining the final binary to be executed without interpreter,
-+ * and not when searching for intermediate binaries. The reason is that since
-+ * commit 56305aa9b6fab ("exec: Compute file based creds only once"), the
-+ * credentials to be applied to the process are calculated only at that stage
-+ * (bprm_creds_from_file security hook instead of bprm_check_security).
-+ *
-+ * On success return 0.  On integrity appraisal error, assuming the file
-+ * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
-+ */
-+static int ima_creds_check(struct linux_binprm *bprm, const struct file *file)
-+{
-+	struct lsm_prop prop;
-+
-+	security_current_getlsmprop_subj(&prop);
-+	return process_measurement((struct file *)file, bprm->cred, &prop, NULL,
-+				   0, MAY_EXEC, CREDS_CHECK);
- }
+ 	/* Added counters */
+ 	for (i = 0, mp = sys.tp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)t->counter[i]);
+ 			else
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), t->counter[i]);
+-		} else if (mp->format == FORMAT_DELTA) {
++		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
+ 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
+ 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), t->counter[i]);
+ 			else
+@@ -3382,13 +3382,13 @@ int format_counters(PER_THREAD_PARAMS)
+ 		outp += sprintf(outp, "%s%lld", (printed++ ? delim : ""), c->core_throt_cnt);
  
- /**
-@@ -1242,6 +1265,7 @@ static int __init init_ima(void)
- static struct security_hook_list ima_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(bprm_check_security, ima_bprm_check),
- 	LSM_HOOK_INIT(bprm_creds_for_exec, ima_bprm_creds_for_exec),
-+	LSM_HOOK_INIT(bprm_creds_from_file, ima_creds_check),
- 	LSM_HOOK_INIT(file_post_open, ima_file_check),
- 	LSM_HOOK_INIT(inode_post_create_tmpfile, ima_post_create_tmpfile),
- 	LSM_HOOK_INIT(file_release, ima_file_free),
+ 	for (i = 0, mp = sys.cp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)c->counter[i]);
+ 			else
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), c->counter[i]);
+-		} else if (mp->format == FORMAT_DELTA) {
++		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
+ 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
+ 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), c->counter[i]);
+ 			else
+@@ -3581,7 +3581,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), p->uncore_mhz);
+ 
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)p->counter[i]);
+@@ -3758,7 +3758,7 @@ int delta_package(struct pkg_data *new, struct pkg_data *old)
+ 	    new->rapl_dram_perf_status.raw_value - old->rapl_dram_perf_status.raw_value;
+ 
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE)
++		if (mp->format == FORMAT_RAW)
+ 			old->counter[i] = new->counter[i];
+ 		else if (mp->format == FORMAT_AVERAGE)
+ 			old->counter[i] = new->counter[i];
 -- 
 2.51.0
 
