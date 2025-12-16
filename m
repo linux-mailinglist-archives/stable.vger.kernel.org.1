@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B89CC3C2F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:54:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B784CC2328
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E899F305E72E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52D2D3041998
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06933469E7;
-	Tue, 16 Dec 2025 12:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC44341648;
+	Tue, 16 Dec 2025 11:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD7cbpnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi/1rRlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A789134676C;
-	Tue, 16 Dec 2025 12:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF94756B81;
+	Tue, 16 Dec 2025 11:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887563; cv=none; b=IiXnG2K/9ei+lWOxhyvahAB3qhVIbPXdfF9u6I+xS2sl5ENA4bbWPbsJZ9udieNwyRG5kUr5Gj1rhc7/xcDNqPzxo0rTz43G49msQxuZUS3IXdGxxnjB5XM1cfb4SZGqqGTrzHx11KlHc5W70hRxd1z/+/NiHJ2unTQ2p8Ck8ng=
+	t=1765884137; cv=none; b=U1Ove/EGPis57GCIxUEz+OCbiMrKFY7zUhR4Lv3lDQ5pwjcQC6OhCXT4VrNX5lfCJ3WEnFM5uTl44kfVjsA+8o8CwVFyN2J4F0RFwKq64ow2yW6zyKeKtR1SQDnhpEQ71beWgdjO6uTO2cx3O7y0ebTPMn5ydapJzTcnPJ798Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887563; c=relaxed/simple;
-	bh=txldcZ3Wv02VA9WTEN8mKTqJeRDEYI840xhziEXg50E=;
+	s=arc-20240116; t=1765884137; c=relaxed/simple;
+	bh=EvKJUxun6mAhRzfnazPrIyVHUqvgsMj0xzIHyWGyjZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TO1h9tTCzNnxQin9K4wFaZwJ/CTcDCjDSzUfBhLROKqHt8OICw/npq0nHct0Nwn3sv6waz3G5kzc5x5Q6wGQnV+yrt4YFQBp8Ti2V9cYW95JqkKdoXtdIPCkG1fRuha9Spxlp966mhSCE/lNEwI3oof2Jg5eYtAfOrJyLxbBZw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD7cbpnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC823C4CEF5;
-	Tue, 16 Dec 2025 12:19:22 +0000 (UTC)
+	 MIME-Version; b=L4Tipjf2kKtlyhGOafkv3gnG6gvQr5wlhgWhO3nYvarLoLRdl917eT78udj3PA3lCJsPcRpdX8EbvX5AUdP2l5Ln0wj56BSso1W3v7MzwFseF+y4Z725Tg51ggwpj/B3m9a0UzBGDz7CVZqJuAeaYYJQd8RAPRYjZiZHniKXJv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi/1rRlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C261C4CEF1;
+	Tue, 16 Dec 2025 11:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887563;
-	bh=txldcZ3Wv02VA9WTEN8mKTqJeRDEYI840xhziEXg50E=;
+	s=korg; t=1765884137;
+	bh=EvKJUxun6mAhRzfnazPrIyVHUqvgsMj0xzIHyWGyjZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BD7cbpnLAPgnhYTaLz+3ksNisfKha6UCbJj8OUVINMnRQzgZmCKfE+i76O6H10dX4
-	 cfVbBi0ojO75b5vcSMPvoVTJzNJ+ZtnRK6g3jqQN+lH9YBbc5IOs1Xfajbfq34m4Ou
-	 SBDimKQP/Gj8GHnbbM0aSo9v4mjUgQp5vK8CNxOI=
+	b=fi/1rRlYJ3JORdat+zuqTXm9ZHtpoJd+IBn4zwAyQGz5QZYYUIg53qZSidBUC6XIA
+	 uwIAfUNzsZHAuY6pQmbOt26yhxpq4QsXrcJmTl7fhaqMGQ794VCtsiPn1WaUkHop9m
+	 aEw83s2WG0zLiLvouVX1DHSEOU4yCFLaTZqaiVvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 268/614] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
-Date: Tue, 16 Dec 2025 12:10:35 +0100
-Message-ID: <20251216111411.084582530@linuxfoundation.org>
+Subject: [PATCH 6.12 069/354] s390/ap: Dont leak debug feature files if AP instructions are not available
+Date: Tue, 16 Dec 2025 12:10:36 +0100
+Message-ID: <20251216111323.425705012@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
+[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
 
-The driver calls ioport_map() to map I/O ports in sim710_probe_common()
-but never calls ioport_unmap() to release the mapping. This causes
-resource leaks in both the error path when request_irq() fails and in
-the normal device removal path via sim710_device_remove().
+If no AP instructions are available the AP bus module leaks registered
+debug feature files. Change function call order to fix this.
 
-Add ioport_unmap() calls in the out_release error path and in
-sim710_device_remove().
-
-Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sim710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/s390/crypto/ap_bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
-index e519df68d603d..70c75ab1453a1 100644
---- a/drivers/scsi/sim710.c
-+++ b/drivers/scsi/sim710.c
-@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
-  out_put_host:
- 	scsi_host_put(host);
-  out_release:
-+	ioport_unmap(hostdata->base);
- 	release_region(base_addr, 64);
-  out_free:
- 	kfree(hostdata);
-@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
+diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
+index e14638936de6b..e7068016a9868 100644
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -2419,15 +2419,15 @@ static int __init ap_module_init(void)
+ {
+ 	int rc;
  
- 	scsi_remove_host(host);
- 	NCR_700_release(host);
-+	ioport_unmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	release_region(host->base, 64);
+-	rc = ap_debug_init();
+-	if (rc)
+-		return rc;
+-
+ 	if (!ap_instructions_available()) {
+ 		pr_warn("The hardware system does not support AP instructions\n");
+ 		return -ENODEV;
+ 	}
+ 
++	rc = ap_debug_init();
++	if (rc)
++		return rc;
++
+ 	/* init ap_queue hashtable */
+ 	hash_init(ap_queues);
+ 
 -- 
 2.51.0
 
