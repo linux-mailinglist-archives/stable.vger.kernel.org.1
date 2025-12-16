@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-202613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C4ECC310A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD25CC2E94
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD46C309B5FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE49130073ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B911A359F98;
-	Tue, 16 Dec 2025 12:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB40834F270;
+	Tue, 16 Dec 2025 12:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIPsmfIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2L4cTMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7664B358D27;
-	Tue, 16 Dec 2025 12:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E43314D24;
+	Tue, 16 Dec 2025 12:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888469; cv=none; b=j5oXSTST6eplZY9sdEFYn1jMYm1+gJaVpmZh1BpN67Ch7sNtj8aoWWoJQ1KTs4ZGoGYi3+TpHiPpws3JAWXQ+nNMIEMx344yLkKHV6qU/smmXzFqSrevfTWF+3dmRSAWZCpy7TjoJRdgTqO19s7i28leZ64SO5a5oqPHN9Nsdqo=
+	t=1765888506; cv=none; b=AL7qccB/Tf6dENGZpl+/W3ZzYeOzIYGnbMJJJYT4a45V++eDMnJHpuG/GnGiSFbZkIY5ltjRze/MpoHC7UflYCwCAL5J78ZskucsxUYndpXr03oNPaTgnDhxrtRyTwSQMb94ZNTu2dDY+j6vZvA9gRwxIiEPL2hPeMEq1E6Axlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888469; c=relaxed/simple;
-	bh=py0xIVuC7qmBNk+yqb1mdV2qMur3R8pJSsbDBg3bDPE=;
+	s=arc-20240116; t=1765888506; c=relaxed/simple;
+	bh=Oz0ynnMGdh2kQSRtTSBikUFuY1EDKdru5JCtC3ktSBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7H/lxFotDCWC9j3l28HkzycI7lRTRrJkg0dWM3qLnzrCx3lnCSlgVvfCn5YSusYUMFLpBH/ZPF+tCX99bPNt2q4d7/8D24vFAREO3NRkPm6MFZ2cGenDp6z+JrVyhLOgQpu3uG+hfcsvvorMo+Jt9x8u4GhmTP9oVclrPP/9kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIPsmfIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F166C4CEF1;
-	Tue, 16 Dec 2025 12:34:28 +0000 (UTC)
+	 MIME-Version; b=pn3HW7Cc57p7FpFJZ4/nfsxuJMnMh0lDs8Flb45SQdWLWtScLngTcw0fa8AaSfhwIPg97vQexyLnNxrbRL0UpJqsB7S+DccpgYRMFHTxpPcUvBp2NBFSqhIHzN8nmU0rgcYilkaktcOHITTw93AYr99Skgcv5atxvEXo8M9KRtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2L4cTMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D40C4CEF1;
+	Tue, 16 Dec 2025 12:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888469;
-	bh=py0xIVuC7qmBNk+yqb1mdV2qMur3R8pJSsbDBg3bDPE=;
+	s=korg; t=1765888506;
+	bh=Oz0ynnMGdh2kQSRtTSBikUFuY1EDKdru5JCtC3ktSBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIPsmfIJXLDKMPPxqYlxjHQJnVYt7buODD30PNrQyrwKlfBu4wL9Mw7nKP3JaM11/
-	 Nlja7EAZjqDFk+dOPABJo/614GtjMTMJPzIul9i5RoQVQDRKNLze+HFFhdwSW6mZCx
-	 Bwxc7KNMKNm7KL0eBUd6tmaOF4G16Z4ui2C1hQq8=
+	b=A2L4cTMeRCroJS0I0ab+ziHS8VDKHS0swXG5HrBC4pKvJ0p4d4bSuJuxCLr8toGh6
+	 QZ/x6hj5+8k6VAjsovrBvwAtX2CXwT4obgjtShZC/Nt5eBRq51YJJS8JBQf9mLlKJj
+	 Sw9GZ+hQIlS7e5+KH+Gyg9rCrAfM7X3Vj1EW7nPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 526/614] perf tools: Mark split kallsyms DSOs as loaded
-Date: Tue, 16 Dec 2025 12:14:53 +0100
-Message-ID: <20251216111420.434051819@linuxfoundation.org>
+Subject: [PATCH 6.18 527/614] perf tools: Fix split kallsyms DSO counting
+Date: Tue, 16 Dec 2025 12:14:54 +0100
+Message-ID: <20251216111420.470801019@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -66,37 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 7da4d60db33cccd8f4c445ab20bba71531435ee5 ]
+[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
 
-The maps__split_kallsyms() will split symbols to module DSOs if it comes
-from a module.  It also handled some unusual kernel symbols after modules
-by creating new kernel maps like "[kernel].0".
-
-But they are pseudo DSOs to have those unexpected symbols.  They should
-not be considered as unloaded kernel DSOs.  Otherwise the dso__load()
-for them will end up calling dso__load_kallsyms() and then
-maps__split_kallsyms() again and again.
+It's counted twice as it's increased after calling maps__insert().  I
+guess we want to increase it only after it's added properly.
 
 Reviewed-by: Ian Rogers <irogers@google.com>
 Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/symbol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 948d3e8ad782b..aed65b1abe669 100644
+index aed65b1abe669..f6c268c588a56 100644
 --- a/tools/perf/util/symbol.c
 +++ b/tools/perf/util/symbol.c
-@@ -976,6 +976,7 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
- 				return -1;
+@@ -964,11 +964,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
+ 			if (dso__kernel(dso) == DSO_SPACE__KERNEL_GUEST)
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[guest.kernel].%d",
+-					kernel_range++);
++					kernel_range);
+ 			else
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[kernel].%d",
+-					kernel_range++);
++					kernel_range);
  
- 			dso__set_kernel(ndso, dso__kernel(dso));
-+			dso__set_loaded(ndso);
- 
- 			curr_map = map__new2(pos->start, ndso);
- 			if (curr_map == NULL) {
+ 			ndso = dso__new(dso_name);
+ 			map__zput(curr_map);
 -- 
 2.51.0
 
