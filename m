@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-202407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEF8CC2F2F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4E7CC34CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEEBB312D81E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 413BE30A4217
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EB43644CB;
-	Tue, 16 Dec 2025 12:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69D5352F8A;
+	Tue, 16 Dec 2025 11:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBBtxpzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h15YRkhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16ED3644C8;
-	Tue, 16 Dec 2025 12:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EDE352F86;
+	Tue, 16 Dec 2025 11:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887796; cv=none; b=puHHhnkmUVGSmTOPqVohFMi2f5emlnWwJqpT7Oqjh/eqxib1G9Dw+AoeVogRY3dF8BWr4rB0DeGCmu9LvCqWehAeCeThN3ZtU3BltLOBjHFFzrHGectIWjVUS0rdbtBsATFRddxFXsEmxyeTEJdqv16LUDyaDrZzvLWQkz20Z6w=
+	t=1765885773; cv=none; b=jB52R1Xg7MtBd8yDyNqmJPahLh9nvH8fqZlGUifGxfxgZGsNCMK63Ihet5N6ubHBoMEeO7vvQIgVV8fQooOKqAjxh5gvLbDMVrjDYRzJGt4QJayVFmvpOcaMDO4Ddi+0DfJlbRyiAEpPjr4i/cnzglOriMcmLIyx16doGnWYy5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887796; c=relaxed/simple;
-	bh=BGNzjgoV9IRhumlhr/KS6lFESUOUjplYkgthA3qKLwg=;
+	s=arc-20240116; t=1765885773; c=relaxed/simple;
+	bh=yFQQsSsg4aNNIP4EuHmOwKc7LzGhmti/2gaKedrEeAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+cORNb8V/+3xnzFcVzQKZfx4IFCOLLYBA8Y7W6XKXFymi9hCx5t7W0PyWpysxMe98bIbQyTpObX4WNQuwBNiad2oiN+bQecmFZ68npGlXjXmEb00Uhnc8YWnwb0iC1M84NKrTxmzbUgOTcuqg7mPbxoHM2YEOR9QdyU5EL1uJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBBtxpzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6005BC19422;
-	Tue, 16 Dec 2025 12:23:15 +0000 (UTC)
+	 MIME-Version; b=QDGR+xBerNcLZW5wMRXrX2rrKzESzntCJUNF8ocZBjscurwZ7M92WSBrqyOZiDke04tXV69YcfYG+0nyBADnDhJzpE+8ZHeD3fin8Tk/tZ95bEzbSQdDsGJABUn/mYHZu8UKPZ6xYAZio+LRRUZ23ZjojBISok9VxphUGCvHOlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h15YRkhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BB0C4CEF1;
+	Tue, 16 Dec 2025 11:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887795;
-	bh=BGNzjgoV9IRhumlhr/KS6lFESUOUjplYkgthA3qKLwg=;
+	s=korg; t=1765885773;
+	bh=yFQQsSsg4aNNIP4EuHmOwKc7LzGhmti/2gaKedrEeAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBBtxpzzGlk4068D1hxgXnyQVL25E0Ns/XC6e2Dad2cUlBQdfVio/mTOmCQ3JgkgJ
-	 rZhIMqomTupyKv2AR1ds+41H4qx6DGxsUr8uNwxXOb/VXVa0A8B5hF8WJ2ZVeX0WVR
-	 LnSWZCrcaK7ZP45cKXhpiC7SGPrEc8/tSihFBzDc=
+	b=h15YRkhjrDuqpFby8X5pnFYAgPj+N0MbdcxNoCZ9AVNQo92v/I/mhQ+37rrccNuBa
+	 jalmfhesk4NYyHub/Yde/EETvFLQZt22jsU1NsqBKY7ljvKaMzBV0gP+MH75DGB0VM
+	 iT7zL/BIUS6tP5BVxRGboLTd4jjhE/aILzsfgf10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 313/614] net: phy: Add helper for fixing RGMII PHY mode based on internal mac delay
+Subject: [PATCH 6.17 239/507] drm/msm/dpu: drop dpu_hw_dsc_destroy() prototype
 Date: Tue, 16 Dec 2025 12:11:20 +0100
-Message-ID: <20251216111412.708008419@linuxfoundation.org>
+Message-ID: <20251216111354.157411389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 24afd7827efb7c69adfc41835390470e3eec4740 ]
+[ Upstream commit d9792823d18ff9895eaf5769a29a54804f24bc25 ]
 
-The "phy-mode" property of devicetree indicates whether the PCB has
-delay now, which means the mac needs to modify the PHY mode based
-on whether there is an internal delay in the mac.
+The commit a106ed98af68 ("drm/msm/dpu: use devres-managed allocation for
+HW blocks") dropped all dpu_hw_foo_destroy() functions, but the
+prototype for dpu_hw_dsc_destroy() was omitted. Drop it now to clean up
+the header.
 
-This modification is similar for many ethernet drivers. To simplify
-code, define the helper phy_fix_phy_mode_for_mac_delays(speed, mac_txid,
-mac_rxid) to fix PHY mode based on whether mac adds internal delay.
-
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251114003805.494387-3-inochiama@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: db37c6e510de ("net: stmmac: dwmac-sophgo: Add phy interface filter")
+Fixes: a106ed98af68 ("drm/msm/dpu: use devres-managed allocation for HW blocks")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Jessica Zhang <jesszhan0024@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/683697/
+Link: https://lore.kernel.org/r/20251027-dpu-drop-dsc-destroy-v1-1-968128de4bf6@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy-core.c | 43 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        |  3 +++
- 2 files changed, 46 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-index 605ca20ae192d..0c63e6ba2cb0c 100644
---- a/drivers/net/phy/phy-core.c
-+++ b/drivers/net/phy/phy-core.c
-@@ -101,6 +101,49 @@ const char *phy_rate_matching_to_str(int rate_matching)
- }
- EXPORT_SYMBOL_GPL(phy_rate_matching_to_str);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
+index b7013c9822d23..cc7cc6f6f7cda 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
+@@ -71,12 +71,6 @@ struct dpu_hw_dsc *dpu_hw_dsc_init_1_2(struct drm_device *dev,
+ 				       const struct dpu_dsc_cfg *cfg,
+ 				       void __iomem *addr);
  
-+/**
-+ * phy_fix_phy_mode_for_mac_delays - Convenience function for fixing PHY
-+ * mode based on whether mac adds internal delay
-+ *
-+ * @interface: The current interface mode of the port
-+ * @mac_txid: True if the mac adds internal tx delay
-+ * @mac_rxid: True if the mac adds internal rx delay
-+ *
-+ * Return: fixed PHY mode, or PHY_INTERFACE_MODE_NA if the interface can
-+ * not apply the internal delay
-+ */
-+phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-+						bool mac_txid, bool mac_rxid)
-+{
-+	if (!phy_interface_mode_is_rgmii(interface))
-+		return interface;
-+
-+	if (mac_txid && mac_rxid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	if (mac_txid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII_RXID;
-+		if (interface == PHY_INTERFACE_MODE_RGMII_TXID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	if (mac_rxid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII_TXID;
-+		if (interface == PHY_INTERFACE_MODE_RGMII_RXID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	return interface;
-+}
-+EXPORT_SYMBOL_GPL(phy_fix_phy_mode_for_mac_delays);
-+
- /**
-  * phy_interface_num_ports - Return the number of links that can be carried by
-  *			     a given MAC-PHY physical link. Returns 0 if this is
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 3c7634482356e..0bc00a4cceb24 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1813,6 +1813,9 @@ static inline bool phy_is_pseudo_fixed_link(struct phy_device *phydev)
- 	return phydev->is_pseudo_fixed_link;
- }
- 
-+phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-+						bool mac_txid, bool mac_rxid);
-+
- int phy_save_page(struct phy_device *phydev);
- int phy_select_page(struct phy_device *phydev, int page);
- int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
+-/**
+- * dpu_hw_dsc_destroy - destroys dsc driver context
+- * @dsc:   Pointer to dsc driver context returned by dpu_hw_dsc_init
+- */
+-void dpu_hw_dsc_destroy(struct dpu_hw_dsc *dsc);
+-
+ static inline struct dpu_hw_dsc *to_dpu_hw_dsc(struct dpu_hw_blk *hw)
+ {
+ 	return container_of(hw, struct dpu_hw_dsc, base);
 -- 
 2.51.0
 
