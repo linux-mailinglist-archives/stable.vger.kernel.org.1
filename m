@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-202271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CC7CC3E94
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C6DCC2CDE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 939EC30CEAB5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B993930287F4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D1F366556;
-	Tue, 16 Dec 2025 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89BC34106F;
+	Tue, 16 Dec 2025 11:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNltOoKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtLew5ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F06D366551;
-	Tue, 16 Dec 2025 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929B1341047;
+	Tue, 16 Dec 2025 11:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887365; cv=none; b=eP1dYEsolwgoqsLCNoNwYu+eNL0zDE+RYjztUqVhS14DWO15kvel0bD+EG/oXTf4nmnEEZOJcx5n5YHJbY5XvykiNXfsMQoEIRFJGqNpIFnGY0fleyD/q9lcI0CYvoM4sJDuiRImkCy1WuWUtQX04IsnirPp9ljCECJbFkjRaYg=
+	t=1765885418; cv=none; b=iNOaD3SCrmA0yP2tWUTYaI1Tbl6t22CO3fu1ZmGQsY01c3jF1mxsiIrvuNSGNxaoh7l1797zFbo+xlMdZoBUGKMbAijY7psRZEaz2IaBRWMDs2akIKvmdlOE+6a+aR6FudQMzhkO/2SWt9pKmZqlqCyCVDxUGxB0FCsmBFuG3k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887365; c=relaxed/simple;
-	bh=aRnH7rvOaIn0aLEhD8a2qmeGtY2riHAtt4vnDR9QZw0=;
+	s=arc-20240116; t=1765885418; c=relaxed/simple;
+	bh=Ys6yYXhOuvawoVuvgeSJHRp+0kMI6l+QI4gGOe7HmyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEgBxflKHUdGciHIWQqjlViA0XHqVyPa4izIvTJ0IxVjH728QGDtWn0G1bvQoiA1IBHAGhFl3jdrds2YgIbzPSMHawnibBnXQZ9LmkT6wg6y3+hpz4JxHcljXZCSHhd656f9TDi1ohmcrlW9rl/dtZ1CFPfEYnK5HvCvI58sc90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNltOoKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC1C4CEF1;
-	Tue, 16 Dec 2025 12:16:04 +0000 (UTC)
+	 MIME-Version; b=SElRpZY0RG6xoJl77fDxeYQBS9uKa/v6M3xJk76q4Eu6QwFJtPjE3+8uX1maUrKX5dAkToopEPLy6a7wINt3LDfJabdVoZft6oKJtWX5K18akUe11WffdEmYCH8Mg8pDFtHbctLp3HkcpN2iW/fC9wm76x+RZ72ITO6ZWUKNhsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtLew5ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88615C16AAE;
+	Tue, 16 Dec 2025 11:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887365;
-	bh=aRnH7rvOaIn0aLEhD8a2qmeGtY2riHAtt4vnDR9QZw0=;
+	s=korg; t=1765885418;
+	bh=Ys6yYXhOuvawoVuvgeSJHRp+0kMI6l+QI4gGOe7HmyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNltOoKJ9BXotuPIbrh+MhiGJx9pjq7UTnOIGdJjJx+7dQgZCw9rkeXjdSDmHDwYp
-	 7xK7CEryYbHF6Qsyqmd5YQ8OhzCVbd4fLEQBCgLej9WIdYd/x8HOo6XyOBFkxgF8Tx
-	 ar0jRoDyPxlCbwFFWAozN6bGMBWU6X94FdsqDKlI=
+	b=mtLew5otFbFNzmu0N1Wrdkn4VniMGr1F9bXDhxeSMxDWkruL/W/qbDpQLmXyax2Ks
+	 +Euha2NOWe+QmldmT8xdVAc0irYXYhpPVMmqE6MYuwWkBC+I/Eyyx+OZ2UrO3nDcY9
+	 dOr5fjeuz7Aee6hpQeYEBDUqM0mlFZxHmBqf1Kjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Alexander Martinz <amartinz@shiftphones.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/614] clk: qcom: tcsrcc-glymur: Update register offsets for clock refs
+Subject: [PATCH 6.17 100/507] arm64: dts: qcom: qcm6490-shift-otter: Add missing reserved-memory
 Date: Tue, 16 Dec 2025 12:09:01 +0100
-Message-ID: <20251216111407.664830432@linuxfoundation.org>
+Message-ID: <20251216111349.162766513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,210 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <taniya.das@oss.qualcomm.com>
+From: Alexander Martinz <amartinz@shiftphones.com>
 
-[ Upstream commit a4aa1ceb89f5c0d27a55671d88699cf5eae7331b ]
+[ Upstream commit f404fdcb50021fdad6bc734d69468cc777901a80 ]
 
-Update the register offsets for all the clock ref branches to match the
-new address mapping in the TCSR subsystem.
+It seems we also need to reserve a region of 81 MiB called "removed_mem"
+otherwise we can easily hit memory errors with higher RAM usage.
 
-Fixes: 2c1d6ce4f3da ("clk: qcom: Add TCSR clock driver for Glymur SoC")
-Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Tested-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251031-tcsrcc_glymur-v1-1-0efb031f0ac5@oss.qualcomm.com
+Fixes: 249666e34c24 ("arm64: dts: qcom: add QCM6490 SHIFTphone 8")
+Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/tcsrcc-glymur.c | 54 ++++++++++++++++----------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/qcom/tcsrcc-glymur.c b/drivers/clk/qcom/tcsrcc-glymur.c
-index c1f8b6d10b7fd..215bc2ac548da 100644
---- a/drivers/clk/qcom/tcsrcc-glymur.c
-+++ b/drivers/clk/qcom/tcsrcc-glymur.c
-@@ -28,10 +28,10 @@ enum {
- };
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+index b9a0f7ac4d9c9..3fe4e8b763343 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+@@ -118,6 +118,11 @@ cdsp_mem: cdsp@88f00000 {
+ 			no-map;
+ 		};
  
- static struct clk_branch tcsr_edp_clkref_en = {
--	.halt_reg = 0x1c,
-+	.halt_reg = 0x60,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x1c,
-+		.enable_reg = 0x60,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_edp_clkref_en",
-@@ -45,10 +45,10 @@ static struct clk_branch tcsr_edp_clkref_en = {
- };
- 
- static struct clk_branch tcsr_pcie_1_clkref_en = {
--	.halt_reg = 0x4,
-+	.halt_reg = 0x48,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x4,
-+		.enable_reg = 0x48,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_pcie_1_clkref_en",
-@@ -62,10 +62,10 @@ static struct clk_branch tcsr_pcie_1_clkref_en = {
- };
- 
- static struct clk_branch tcsr_pcie_2_clkref_en = {
--	.halt_reg = 0x8,
-+	.halt_reg = 0x4c,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x8,
-+		.enable_reg = 0x4c,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_pcie_2_clkref_en",
-@@ -79,10 +79,10 @@ static struct clk_branch tcsr_pcie_2_clkref_en = {
- };
- 
- static struct clk_branch tcsr_pcie_3_clkref_en = {
--	.halt_reg = 0x10,
-+	.halt_reg = 0x54,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x10,
-+		.enable_reg = 0x54,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_pcie_3_clkref_en",
-@@ -96,10 +96,10 @@ static struct clk_branch tcsr_pcie_3_clkref_en = {
- };
- 
- static struct clk_branch tcsr_pcie_4_clkref_en = {
--	.halt_reg = 0x14,
-+	.halt_reg = 0x58,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x14,
-+		.enable_reg = 0x58,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_pcie_4_clkref_en",
-@@ -113,10 +113,10 @@ static struct clk_branch tcsr_pcie_4_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb2_1_clkref_en = {
--	.halt_reg = 0x28,
-+	.halt_reg = 0x6c,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x28,
-+		.enable_reg = 0x6c,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb2_1_clkref_en",
-@@ -130,10 +130,10 @@ static struct clk_branch tcsr_usb2_1_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb2_2_clkref_en = {
--	.halt_reg = 0x2c,
-+	.halt_reg = 0x70,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x2c,
-+		.enable_reg = 0x70,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb2_2_clkref_en",
-@@ -147,10 +147,10 @@ static struct clk_branch tcsr_usb2_2_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb2_3_clkref_en = {
--	.halt_reg = 0x30,
-+	.halt_reg = 0x74,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x30,
-+		.enable_reg = 0x74,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb2_3_clkref_en",
-@@ -164,10 +164,10 @@ static struct clk_branch tcsr_usb2_3_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb2_4_clkref_en = {
--	.halt_reg = 0x44,
-+	.halt_reg = 0x88,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x44,
-+		.enable_reg = 0x88,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb2_4_clkref_en",
-@@ -181,10 +181,10 @@ static struct clk_branch tcsr_usb2_4_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb3_0_clkref_en = {
--	.halt_reg = 0x20,
-+	.halt_reg = 0x64,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x20,
-+		.enable_reg = 0x64,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb3_0_clkref_en",
-@@ -198,10 +198,10 @@ static struct clk_branch tcsr_usb3_0_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb3_1_clkref_en = {
--	.halt_reg = 0x24,
-+	.halt_reg = 0x68,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x24,
-+		.enable_reg = 0x68,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb3_1_clkref_en",
-@@ -215,10 +215,10 @@ static struct clk_branch tcsr_usb3_1_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb4_1_clkref_en = {
--	.halt_reg = 0x0,
-+	.halt_reg = 0x44,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x0,
-+		.enable_reg = 0x44,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb4_1_clkref_en",
-@@ -232,10 +232,10 @@ static struct clk_branch tcsr_usb4_1_clkref_en = {
- };
- 
- static struct clk_branch tcsr_usb4_2_clkref_en = {
--	.halt_reg = 0x18,
-+	.halt_reg = 0x5c,
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
--		.enable_reg = 0x18,
-+		.enable_reg = 0x5c,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_usb4_2_clkref_en",
-@@ -268,7 +268,7 @@ static const struct regmap_config tcsr_cc_glymur_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.max_register = 0x44,
-+	.max_register = 0x94,
- 	.fast_io = true,
- };
- 
++		removed_mem: removed@c0000000 {
++			reg = <0x0 0xc0000000 0x0 0x5100000>;
++			no-map;
++		};
++
+ 		rmtfs_mem: rmtfs@f8500000 {
+ 			compatible = "qcom,rmtfs-mem";
+ 			reg = <0x0 0xf8500000 0x0 0x600000>;
 -- 
 2.51.0
 
