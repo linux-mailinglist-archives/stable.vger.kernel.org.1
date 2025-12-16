@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56764CC2481
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF38CC2D7F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55AA730214D5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54A0631723AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A3A343D7D;
-	Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A027328604;
+	Tue, 16 Dec 2025 11:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCycpwaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTSeyRK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2C632B9A5;
-	Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5411F3446C0;
+	Tue, 16 Dec 2025 11:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884453; cv=none; b=a6xCFnWnV1jgn+enIalL9rUcJcaOsnvMAOs74BUmL24+l1XmVzKmrz3WGTVFkdS3dcdoP6DeJsJLnumRHYGJkH0fY4MOsLYiz04MDItzHTXE3O9RSdLsBP3EYp4PEfANdPEPYpDtRj1RtVXb97bL17AfW7UZrPIjBEnOCcUb7UI=
+	t=1765886052; cv=none; b=uZznOv1QOPZOBdPnxvpHk6Y3jyeZSccAFg/Y1damUhvXBOEAEXZMjjgO+b9iu+HXt33ionpDeA7QizgoKeCQVy0GOpaPVDoXUianQ5VJSx2ByJcApUj5CfIYoKbdR15LLxNRnWcOs4GubnAoSbp4Ned/WHRt68Tuq7NYxJ7Ez4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884453; c=relaxed/simple;
-	bh=TbfwnoM2N7NyBsZP++GwSxWSZULzNFwHuJGcdVbsjgc=;
+	s=arc-20240116; t=1765886052; c=relaxed/simple;
+	bh=bxCnYt5/wyIzlJ6OysRwX/koE3km/p2ALd9Ia3xAz3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBO1vAL8nw5z9/LTTRCX6feVdmFf5BgCMO+14eCpLpeTAAlN3CN04rfpyFkIjgLAkNvjrMA/9yy7OADMdKQUxbnIO0bD0cAwKiH1jQ3M/lJccHD3gssvGDB/qAB+wefQrPyXSIkPei6chxv0Ngo4xqRH25BHzXtXztFiZvmbvhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCycpwaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F5FC4CEF1;
-	Tue, 16 Dec 2025 11:27:32 +0000 (UTC)
+	 MIME-Version; b=UMXhwdVtuNvUHKjX3MvXTawGJhP0KJvotAT+fXebtstAksPlwLfKh0MOJdPJozCaTPz/nABTgxkC1sHn4YB+jLas0mHuFncCXOdQuDnCi5Qi4R04ZMZbind7CpqFTSnLZlT1TVPsZC5LEEgNfBCORaBjE3/4lN4rQuJYyCJpKQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTSeyRK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6005AC4CEF1;
+	Tue, 16 Dec 2025 11:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884453;
-	bh=TbfwnoM2N7NyBsZP++GwSxWSZULzNFwHuJGcdVbsjgc=;
+	s=korg; t=1765886051;
+	bh=bxCnYt5/wyIzlJ6OysRwX/koE3km/p2ALd9Ia3xAz3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCycpwaW2p4i0e4QJNjHQGw1fI77szWiv44aZmbIeoXEoJoFJk9HzihPhzN9dLt9N
-	 78Ri2VSSlfyjmTM5zYciXBiMEeIFQvABZObf+YnBDp+rsKa9HOEbvnFgxfO/0n4OtJ
-	 A2z+kyZKk3TOYIPj/CKQz/wVpwbYMc2f0MLWoFLQ=
+	b=hTSeyRK3brlhanGJdjpOgNpNie7HuJq7gE0/puKyQOvxj0hYqXOO0VUqyQ+CxhdMV
+	 y1VH1NF4WxJzBy/gRoYNMJ4euauQoxsbpkp/KAB1G6osI1y1RzuHf96/MxhyeyJHss
+	 QvcRxlrCIxivgnJCN/Ii25eIxCvVwECMpcjBjU2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/354] cpuset: Treat cpusets in attaching as populated
+Subject: [PATCH 6.17 324/507] wifi: mt76: mt7925: add MBSSID support
 Date: Tue, 16 Dec 2025 12:12:45 +0100
-Message-ID: <20251216111328.085848860@linuxfoundation.org>
+Message-ID: <20251216111357.203862300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
+[ Upstream commit 74e756b9e28af3ee94a7ea480bb39694be5fbd96 ]
 
-Currently, the check for whether a partition is populated does not
-account for tasks in the cpuset of attaching. This is a corner case
-that can leave a task stuck in a partition with no effective CPUs.
+Enable MBSSID support for MT7925 by setting the
+appropriate capability to the firmware.
 
-The race condition occurs as follows:
-
-cpu0				cpu1
-				//cpuset A  with cpu N
-migrate task p to A
-cpuset_can_attach
-// with effective cpus
-// check ok
-
-// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
-				// making effective cpus empty
-				update_exclusive_cpumask
-				// tasks_nocpu_error check ok
-				// empty effective cpus, partition valid
-cpuset_attach
-...
-// task p stays in A, with non-effective cpus.
-
-To fix this issue, this patch introduces cs_is_populated, which considers
-tasks in the attaching cpuset. This new helper is used in validate_change
-and partition_is_populated.
-
-Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250729084932.264155-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: cdb2941a516c ("Revert "wifi: mt76: mt792x: improve monitor interface handling"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  1 +
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 23 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt792x_core.c  |  7 +++++-
+ 3 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 13eb986172499..4bb7ad4479e43 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -314,6 +314,15 @@ static inline bool is_in_v2_mode(void)
- 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index b0e053b152273..c7903972b1d59 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -240,6 +240,7 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
+ {
+ 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
+ 	static const u8 ext_capa_sta[] = {
++		[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
+ 		[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
+ 	};
+ 	static struct wiphy_iftype_ext_capab ext_capab[] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index cd457be26523e..10d68d241ba1f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2621,6 +2621,25 @@ mt7925_mcu_bss_qos_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf
+ 	qos->qos = link_conf->qos;
  }
  
-+static inline bool cpuset_is_populated(struct cpuset *cs)
++static void
++mt7925_mcu_bss_mbssid_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
++			  bool enable)
 +{
-+	lockdep_assert_held(&cpuset_mutex);
++	struct bss_info_uni_mbssid *mbssid;
++	struct tlv *tlv;
 +
-+	/* Cpusets in the process of attaching should be considered as populated */
-+	return cgroup_is_populated(cs->css.cgroup) ||
-+		cs->attach_in_progress;
++	if (!enable && !link_conf->bssid_indicator)
++		return;
++
++	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_11V_MBSSID,
++				      sizeof(*mbssid));
++
++	mbssid = (struct bss_info_uni_mbssid *)tlv;
++	mbssid->max_indicator = link_conf->bssid_indicator;
++	mbssid->mbss_idx = link_conf->bssid_index;
++	mbssid->tx_bss_omac_idx = 0;
 +}
 +
- /**
-  * partition_is_populated - check if partition has tasks
-  * @cs: partition root to be checked
-@@ -326,21 +335,31 @@ static inline bool is_in_v2_mode(void)
- static inline bool partition_is_populated(struct cpuset *cs,
- 					  struct cpuset *excluded_child)
- {
--	struct cgroup_subsys_state *css;
--	struct cpuset *child;
-+	struct cpuset *cp;
-+	struct cgroup_subsys_state *pos_css;
+ static void
+ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
+ 		      struct mt792x_phy *phy)
+@@ -2787,8 +2806,10 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ 		mt7925_mcu_bss_color_tlv(skb, link_conf, enable);
+ 	}
  
--	if (cs->css.cgroup->nr_populated_csets)
-+	/*
-+	 * We cannot call cs_is_populated(cs) directly, as
-+	 * nr_populated_domain_children may include populated
-+	 * csets from descendants that are partitions.
-+	 */
-+	if (cs->css.cgroup->nr_populated_csets ||
-+	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts)
- 		return cgroup_is_populated(cs->css.cgroup);
+-	if (enable)
++	if (enable) {
+ 		mt7925_mcu_bss_rlm_tlv(skb, phy->mt76, link_conf, ctx);
++		mt7925_mcu_bss_mbssid_tlv(skb, link_conf, enable);
++	}
  
- 	rcu_read_lock();
--	cpuset_for_each_child(child, css, cs) {
--		if (child == excluded_child)
-+	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
-+		if (cp == cs || cp == excluded_child)
- 			continue;
--		if (is_partition_valid(child))
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				     MCU_UNI_CMD(BSS_INFO_UPDATE), true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index e3a703398b30c..44378f7394e8d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -689,8 +689,13 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+ 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
+-	if (is_mt7921(&dev->mt76))
 +
-+		if (is_partition_valid(cp)) {
-+			pos_css = css_rightmost_descendant(pos_css);
- 			continue;
--		if (cgroup_is_populated(child->css.cgroup)) {
-+		}
-+
-+		if (cpuset_is_populated(cp)) {
- 			rcu_read_unlock();
- 			return true;
- 		}
-@@ -571,7 +590,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
- 	 * be changed to have empty cpus_allowed or mems_allowed.
- 	 */
- 	ret = -ENOSPC;
--	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
-+	if (cpuset_is_populated(cur)) {
- 		if (!cpumask_empty(cur->cpus_allowed) &&
- 		    cpumask_empty(trial->cpus_allowed))
- 			goto out;
++	if (is_mt7921(&dev->mt76)) {
+ 		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
++	} else {
++		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
++		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
++	}
+ 
+ 	if (dev->pm.enable)
+ 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
 -- 
 2.51.0
 
