@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64227CC302C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88684CC21E4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E3D5312D810
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D16A3053B2B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CC836B046;
-	Tue, 16 Dec 2025 12:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D536F258ED4;
+	Tue, 16 Dec 2025 11:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTe6lexv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzKtaGiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FC736B061;
-	Tue, 16 Dec 2025 12:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9143556B81;
+	Tue, 16 Dec 2025 11:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887417; cv=none; b=PLyn2+q/74Z3gA82LP/e1rJY7g22ltGBVQQ3meWrzcFY7oyabXSPDNYBOadHwWn5Oej2e23muZkm3ulwI7It4KaRL5CXR9CE56SCe3Fes3qkiCVq57u6MVKtjL1RNl3qEW+ZC1PjAF75gbUQPt8HfBf38wtDLB6D2PGSAm2K61g=
+	t=1765883872; cv=none; b=G0qFNX3+7OhKHu5u4xbSLS1oCYwLeshd2uyqvHFpJn9WLfamKoguUkARQZIqxHgA95EgR3PStaaHw5Vf+aiSbFmY33t/oYkDqZ1NCgiyhOq0mzbGRB1s6FGuixxn/LJ2cbtfW01488NN/dOzEgwEIux2cQ4i5oy31tc5v4WZlqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887417; c=relaxed/simple;
-	bh=lm5Jr7O23B9ncFzgXiwrrpK8WIBOSBpkBeKvAlYtF1w=;
+	s=arc-20240116; t=1765883872; c=relaxed/simple;
+	bh=F/tPcaJBAmoFsQ1aNW9axAirOLjLfejSaRghG7eqKl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aybHdMKq8CSv3470gB9ZNTF+1sdbBZ51eMiZVDxii625c4WV1sLVx7y8DNpcsgToolFy0o/mvTdp38sAUy8zWXPiGHLiNzbgnEqbdfVhv7utLRDSUCXbnQOJKTxLg91YoWaCWMKClKF0jVPmfCpEGKNPUz8f1SiaPEREW1KtahM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTe6lexv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258A3C4CEF1;
-	Tue, 16 Dec 2025 12:16:55 +0000 (UTC)
+	 MIME-Version; b=HmCPtHgxNAskoYl9Pcz7rwpMNFJIsNBIxJfIJjRyy/r0EOT1OTCt3T1ftibKHvbkPsQkJKVA2jF/253NwOIXuhPOe6KK8d5p2UOSVcp1+ZcGxDkSyjVkUfmCw0dlC63xb1BaKC5JSc8ZsSxmBDjsePZYiPAPj4nUVlKBze4VwIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzKtaGiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CAFC4CEF1;
+	Tue, 16 Dec 2025 11:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887416;
-	bh=lm5Jr7O23B9ncFzgXiwrrpK8WIBOSBpkBeKvAlYtF1w=;
+	s=korg; t=1765883872;
+	bh=F/tPcaJBAmoFsQ1aNW9axAirOLjLfejSaRghG7eqKl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTe6lexv0oyZz+OIq+icPI6N2fdRbzHLbzYk0dzAGIuCVrr5RnPKp//UY+8EjM3Cx
-	 Tn5eWXsL++Qsgx42ATGCyF9/gKJjpVhWbFvrxBwkF2HtHoDAzZwISkWIsDQnDvuMrx
-	 hlADi5bYEtv2DJ1Fmd9VqcMm5UlCTTb22T9/cBek=
+	b=VzKtaGizSYVtx92Rn56FO+y9aV3k7h9RtK0jEdAounBRKCkQEiJsy7xj9tPPrpcnG
+	 cTUyQFGmEAbeDE9jHp3QbVivQm3dK2ghNbi/eZkcrDVYmpNcFJ/FgIpU4W9fE4IVcN
+	 Vg1xi2/VUMmxY3f63HBnicJACJlvDYsKqvmYYxNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 223/614] perf/x86: Fix NULL event access and potential PEBS record loss
-Date: Tue, 16 Dec 2025 12:09:50 +0100
-Message-ID: <20251216111409.452419138@linuxfoundation.org>
+Subject: [PATCH 6.12 024/354] objtool: Fix weak symbol detection
+Date: Tue, 16 Dec 2025 12:09:51 +0100
+Message-ID: <20251216111321.786783257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 7e772a93eb61cb6265bdd1c5bde17d0f2718b452 ]
+[ Upstream commit 72567c630d32bc31f671977f78228c80937ed80e ]
 
-When intel_pmu_drain_pebs_icl() is called to drain PEBS records, the
-perf_event_overflow() could be called to process the last PEBS record.
+find_symbol_hole_containing() fails to find a symbol hole (aka stripped
+weak symbol) if its section has no symbols before the hole.  This breaks
+weak symbol detection if -ffunction-sections is enabled.
 
-While perf_event_overflow() could trigger the interrupt throttle and
-stop all events of the group, like what the below call-chain shows.
+Fix that by allowing the interval tree to contain section symbols, which
+are always at offset zero for a given section.
 
-perf_event_overflow()
-  -> __perf_event_overflow()
-    ->__perf_event_account_interrupt()
-      -> perf_event_throttle_group()
-        -> perf_event_throttle()
-          -> event->pmu->stop()
-            -> x86_pmu_stop()
+Fixes a bunch of (-ffunction-sections) warnings like:
 
-The side effect of stopping the events is that all corresponding event
-pointers in cpuc->events[] array are cleared to NULL.
+  vmlinux.o: warning: objtool: .text.__x64_sys_io_setup+0x10: unreachable instruction
 
-Assume there are two PEBS events (event a and event b) in a group. When
-intel_pmu_drain_pebs_icl() calls perf_event_overflow() to process the
-last PEBS record of PEBS event a, interrupt throttle is triggered and
-all pointers of event a and event b are cleared to NULL. Then
-intel_pmu_drain_pebs_icl() tries to process the last PEBS record of
-event b and encounters NULL pointer access.
-
-To avoid this issue, move cpuc->events[] clearing from x86_pmu_stop()
-to x86_pmu_del(). It's safe since cpuc->active_mask or
-cpuc->pebs_enabled is always checked before access the event pointer
-from cpuc->events[].
-
-Closes: https://lore.kernel.org/oe-lkp/202507042103.a15d2923-lkp@intel.com
-Fixes: 9734e25fbf5a ("perf: Fix the throttle logic for a group")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251029102136.61364-3-dapeng1.mi@linux.intel.com
+Fixes: 4adb23686795 ("objtool: Ignore extra-symbol code")
+Acked-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Joe Lawrence <joe.lawrence@redhat.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/objtool/elf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index fa6c47b509897..dd9ff120ad437 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1344,6 +1344,7 @@ static void x86_pmu_enable(struct pmu *pmu)
- 				hwc->state |= PERF_HES_ARCH;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 3d27983dc908d..19021f9755ac7 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -108,7 +108,7 @@ struct symbol_hole {
+ };
  
- 			x86_pmu_stop(event, PERF_EF_UPDATE);
-+			cpuc->events[hwc->idx] = NULL;
- 		}
+ /*
+- * Find !section symbol where @offset is after it.
++ * Find the last symbol before @offset.
+  */
+ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ {
+@@ -119,8 +119,7 @@ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ 		return -1;
  
- 		/*
-@@ -1365,6 +1366,7 @@ static void x86_pmu_enable(struct pmu *pmu)
- 			 * if cpuc->enabled = 0, then no wrmsr as
- 			 * per x86_pmu_enable_event()
- 			 */
-+			cpuc->events[hwc->idx] = event;
- 			x86_pmu_start(event, PERF_EF_RELOAD);
- 		}
- 		cpuc->n_added = 0;
-@@ -1531,7 +1533,6 @@ static void x86_pmu_start(struct perf_event *event, int flags)
- 
- 	event->hw.state = 0;
- 
--	cpuc->events[idx] = event;
- 	__set_bit(idx, cpuc->active_mask);
- 	static_call(x86_pmu_enable)(event);
- 	perf_event_update_userpage(event);
-@@ -1610,7 +1611,6 @@ void x86_pmu_stop(struct perf_event *event, int flags)
- 	if (test_bit(hwc->idx, cpuc->active_mask)) {
- 		static_call(x86_pmu_disable)(event);
- 		__clear_bit(hwc->idx, cpuc->active_mask);
--		cpuc->events[hwc->idx] = NULL;
- 		WARN_ON_ONCE(hwc->state & PERF_HES_STOPPED);
- 		hwc->state |= PERF_HES_STOPPED;
+ 	if (sh->key >= s->offset + s->len) {
+-		if (s->type != STT_SECTION)
+-			sh->sym = s;
++		sh->sym = s;
+ 		return 1;
  	}
-@@ -1648,6 +1648,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
- 	 * Not a TXN, therefore cleanup properly.
- 	 */
- 	x86_pmu_stop(event, PERF_EF_UPDATE);
-+	cpuc->events[event->hw.idx] = NULL;
  
- 	for (i = 0; i < cpuc->n_events; i++) {
- 		if (event == cpuc->event_list[i])
+@@ -408,7 +407,8 @@ static void elf_add_symbol(struct elf *elf, struct symbol *sym)
+ 	sym->len = sym->sym.st_size;
+ 
+ 	__sym_for_each(iter, &sym->sec->symbol_tree, sym->offset, sym->offset) {
+-		if (iter->offset == sym->offset && iter->type == sym->type)
++		if (iter->offset == sym->offset && iter->type == sym->type &&
++		    iter->len == sym->len)
+ 			iter->alias = sym;
+ 	}
+ 
 -- 
 2.51.0
 
