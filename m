@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-201329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1E5CC2397
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4DFCC3BE7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE7BF305D422
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03DBB310C8BA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD24B341645;
-	Tue, 16 Dec 2025 11:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955EB350299;
+	Tue, 16 Dec 2025 12:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvmliTME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/3pC6s8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A008313E13;
-	Tue, 16 Dec 2025 11:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F88B34AAF4;
+	Tue, 16 Dec 2025 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884286; cv=none; b=l05JlW/NUM9himtDCT9em+b1DoCyufWtJO5Xdea0+EKPprLxN2FfuD7uJ+kscMr1GO/7emUjnruj0aYf5rZjFz6X42PmRZXjdItIBOWxamgYkuxWLMhQj4xsmse+Etqigpd/iS+Olx2OJrMrTQHE20REO2iShtF+oeq/ihq9EDU=
+	t=1765887879; cv=none; b=ETluIi1zq4Hu5LFGe4ZndZZmBk2jJHPPsR6Z8qSYP9OfrnsfldFDt/K2ymHA1mtuUaNsZoBY6PBc9botPkTcglcGCtulpYPVcp0SgnkCSV24j9h45R+YnTP0f66w5bKR/PsfeGN/iPfPdfCWAkfmFTOVe782dVE/7bCj+3BNP8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884286; c=relaxed/simple;
-	bh=/L/86DuubljrsqzS+FXaHZlLUpEvbDIr2w/pLksfhCw=;
+	s=arc-20240116; t=1765887879; c=relaxed/simple;
+	bh=cSnjclsOVAKcijX+3MfY8aSScdRP0uuYhPFd7frt1+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbhwr2upNCEtIFf/9YxZqrV0TjgEPXU5wrzwQKjGOeQujeMCYxZl+hj4cuSOaGhQsYUX2+atQ9wEK5gNTP3eVql+1JEcaWHtbsPKfTwXNvT8iyKvUl4xIabvbVuP6C0coLjKftR51Qhbylgt2Ppzp5fXUAomu5FfDTQYbp7E/m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvmliTME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA7EC4CEF1;
-	Tue, 16 Dec 2025 11:24:45 +0000 (UTC)
+	 MIME-Version; b=VRPOH0CxEPtKsTq8faWe/0sikJuAshETZsP1tCXl5pPi0dJ7wWx1oz4kSKgpefrkenkFVSplNInPc5xM1VsP9xbwG3mNQurk73EzWNOh7gV8ZA8aPc/IY/yD/7BgkBw0y7CxgtLZYnVA/dO0t53EWjreou/cV88bxeo3wZXt1Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/3pC6s8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AED3C4CEF1;
+	Tue, 16 Dec 2025 12:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884286;
-	bh=/L/86DuubljrsqzS+FXaHZlLUpEvbDIr2w/pLksfhCw=;
+	s=korg; t=1765887878;
+	bh=cSnjclsOVAKcijX+3MfY8aSScdRP0uuYhPFd7frt1+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvmliTMEV2+VQG5ebGnxeBnbtN90IJbgsBSmqSEgn7LIRQ5rPqK2GulAZ8Q5IdQc5
-	 Dh368UmN5Yo5fAg85eFyHfTmReeEHwbvazqO95tphjDNvxTq5HtPfPCUgVbCg2NNSM
-	 HmcBYDeSY+5X7kyjtqG6vRCmes71CTfBiN/F7bcA=
+	b=g/3pC6s8/Qlw/XU3h2ODT1JrzP7PaI4rxY2CHn2vaNvKz1F+hj1w5RiB4+B/4s9LC
+	 t1P98fVnQ/tzFySMmf5hBMtdLl29NSnD4fiWSrgm4Pgoa7XG4kjK1MtZdYET1QRCaP
+	 HWcucadIzlr2aI2SJMBCON4RNyuBPjbVfMRj4qLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	Yeoreun Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/354] coresight: etm4x: Add context synchronization before enabling trace
+Subject: [PATCH 6.18 348/614] phy: rockchip: samsung-hdptx: Fix reported clock rate in high bpc mode
 Date: Tue, 16 Dec 2025 12:11:55 +0100
-Message-ID: <20251216111326.278275095@linuxfoundation.org>
+Message-ID: <20251216111413.971569397@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
+[ Upstream commit 72126e9623e1696ea83c77ef6d0306a6263bdd6b ]
 
-According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
-Context synchronization event is required before enabling the trace
-unit.
+When making use of the clock provider functionality, the output clock
+does normally match the TMDS character rate, which is what the PHY PLL
+gets configured to.
 
-An ISB is added to meet this requirement, particularly for guarding the
-operations in the flow:
+However, this is only applicable for default color depth of 8 bpc.  For
+higher depths, the output clock is further divided by the hardware
+according to the formula:
 
-  etm4x_allow_trace()
-   `> kvm_tracing_set_el1_configuration()
-	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+  output_clock_rate = tmds_char_rate * 8 / bpc
 
-Improved the barrier comments to provide more accurate information.
+Since the existence of the clock divider wasn't taken into account when
+support for high bpc has been introduced, make the necessary adjustments
+to report the correct clock rate.
 
-Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
+Fixes: 9d0ec51d7c22 ("phy: rockchip: samsung-hdptx: Add high color depth management")
+Reported-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-1-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 853a170439608..730ba893bf4cd 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -436,10 +436,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 01bbf668e05ef..aee03e8655f66 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -1037,7 +1037,8 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx)
  
- 	etm4x_allow_trace(drvdata);
-+
-+	/*
-+	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee the trace unit
-+	 * will observe the new values of the System registers.
-+	 */
-+	if (!csa->io_mem)
-+		isb();
-+
- 	/* Enable the trace unit */
- 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+ 	ret = rk_hdptx_post_enable_pll(hdptx);
+ 	if (!ret)
+-		hdptx->hw_rate = hdptx->hdmi_cfg.tmds_char_rate;
++		hdptx->hw_rate = DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8,
++						       hdptx->hdmi_cfg.bpc);
  
--	/* Synchronize the register updates for sysreg access */
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using system
-+	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-+	 * self-hosted trace analyzer must perform a Context synchronization
-+	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-+	 */
- 	if (!csa->io_mem)
- 		isb();
- 
-@@ -919,11 +933,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	return ret;
+ }
+@@ -1895,19 +1896,20 @@ static long rk_hdptx_phy_clk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	 * hence ensure rk_hdptx_phy_clk_set_rate() won't be invoked with
+ 	 * a different rate argument.
  	 */
- 	etm4x_prohibit_trace(drvdata);
+-	return hdptx->hdmi_cfg.tmds_char_rate;
++	return DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8, hdptx->hdmi_cfg.bpc);
+ }
+ 
+ static int rk_hdptx_phy_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 				     unsigned long parent_rate)
+ {
+ 	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
++	unsigned long long tmds_rate = DIV_ROUND_CLOSEST_ULL(rate * hdptx->hdmi_cfg.bpc, 8);
+ 
+ 	/* Revert any unlikely TMDS char rate change since round_rate() */
+-	if (hdptx->hdmi_cfg.tmds_char_rate != rate) {
+-		dev_warn(hdptx->dev, "Reverting unexpected rate change from %lu to %llu\n",
+-			 rate, hdptx->hdmi_cfg.tmds_char_rate);
+-		hdptx->hdmi_cfg.tmds_char_rate = rate;
++	if (hdptx->hdmi_cfg.tmds_char_rate != tmds_rate) {
++		dev_warn(hdptx->dev, "Reverting unexpected rate change from %llu to %llu\n",
++			 tmds_rate, hdptx->hdmi_cfg.tmds_char_rate);
++		hdptx->hdmi_cfg.tmds_char_rate = tmds_rate;
+ 	}
+ 
  	/*
--	 * Make sure everything completes before disabling, as recommended
--	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
--	 * SSTATUS") of ARM IHI 0064D
-+	 * Prevent being speculative at the point of disabling the trace unit,
-+	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
-+	 * Register, SSTATUS") of ARM IHI 0064D
- 	 */
- 	dsb(sy);
-+	/*
-+	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee no new
-+	 * program-flow trace is generated.
-+	 */
- 	isb();
- 	/* Trace synchronization barrier, is a nop if not supported */
- 	tsb_csync();
 -- 
 2.51.0
 
