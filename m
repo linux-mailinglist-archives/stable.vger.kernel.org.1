@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B969CC244B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02186CC3AC7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1241B3022A6C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 946163030DA1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20609340DB7;
-	Tue, 16 Dec 2025 11:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF63148A7;
+	Tue, 16 Dec 2025 12:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn6FootA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CN6rh2BM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1834166B;
-	Tue, 16 Dec 2025 11:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D63734106A;
+	Tue, 16 Dec 2025 12:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884749; cv=none; b=mXSThT/eZ0YVQU769ncoWNkTrzkhBn4G3j9dSx2mw3VksSqCO2qR5YMOUww8OW1sUXrFqBhbplKsnbMNy+QWOu8hgqqE4Zj3BZDwyE4KdcWi0S4/eCVkQGfPNA3Sk5OOzRagieJfoTeKakx8iuQfByvsYVVwbmMawbEUwqrbGZc=
+	t=1765888427; cv=none; b=RkqsBffeBEAaD/vTaLAAO0wN3sTElt3xuQqG+IQjm/4Qe6ax8MQZCSZjAp8JYsxUDXguc4LOoEziK8AfiuCMfNYFSM4prw8uKWZGAmcRVQ3rhRJ9N9q9SIon+HRX0Lt/ZAqAunXCIQieGT5BgJcJLR4GJJueVOiu40hEIwXiZng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884749; c=relaxed/simple;
-	bh=a0kaj3/zo2vpFvIuuEftPtw9oYCdtGRjYfhLjq2BnoU=;
+	s=arc-20240116; t=1765888427; c=relaxed/simple;
+	bh=Xci+LabOWJqUSEH9M4qdoPtaDe3Hl0emJE8NgWarRAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4opk/r0xxqc8uWpr023nhd0I8Tgqja4OfJt/K5Kn/oszN1yR9SDdRW/r4bVG7D1UqM5kKFuAfC3QVSBjXL9wEoTK4m12EZYRKkfccS/HS5dUX03wC39ySX6w0hYhoYHrv9YV9Og9eJEOqT1QFTcitJZ61hZ6wDokpL82pWbJgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn6FootA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD85C4CEF1;
-	Tue, 16 Dec 2025 11:32:29 +0000 (UTC)
+	 MIME-Version; b=PLDuse3kujLWAZyu8NzNC1gf/UaR2Xxki9+3doe4wOa4Ucn6bTURxT02v5ziBANC4eUDr1Jy4Q/dYe7oHwQTJpvuiU2bi+JLjvYMDXmt9jerEQkrMTea57AXapT98bJ5n9eJFUMGsN9dyor1UJU+rrd7CA5N66XilaEueQfeEyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CN6rh2BM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B305C4CEF1;
+	Tue, 16 Dec 2025 12:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884749;
-	bh=a0kaj3/zo2vpFvIuuEftPtw9oYCdtGRjYfhLjq2BnoU=;
+	s=korg; t=1765888427;
+	bh=Xci+LabOWJqUSEH9M4qdoPtaDe3Hl0emJE8NgWarRAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pn6FootACjCsH/NTWmA1eeot/6fGLgbWp+RZNMPbzQL3nmrcfUOLmZhiRiyXXG34Y
-	 IwmDmOmaJ/lYmiXmBVjL1g4bCZd2vRL8PPt8kAp69L1h2XHsotSfhYoT5cjdFHsZMW
-	 xJnjZRzTwWbvx5fjKEDn2rs9FoUpf0OByXQsqV3M=
+	b=CN6rh2BM8J7pJlUqIFOTabtFpDxck87h8/Df5PgJfZl2TJvvOI5Yxwq/M6ozTWOuF
+	 3D1qnEV3uIk1ca+Y1OqYVngjdOrz+jcLpeHfWntjWJaTTzKFmdGaKcHD83ik/BRi9j
+	 fjwdk37R4/9M5JQug8KOHxRbKwjtzU/AkNE7z7fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Linus Walleij <linusw@kernel.org>,
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 288/354] pinctrl: single: Fix incorrect type for error return variable
+Subject: [PATCH 6.18 488/614] spi: ch341: fix out-of-bounds memory access in ch341_transfer_one
 Date: Tue, 16 Dec 2025 12:14:15 +0100
-Message-ID: <20251216111331.347523521@linuxfoundation.org>
+Message-ID: <20251216111419.050852685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-[ Upstream commit 61d1bb53547d42c6bdaec9da4496beb3a1a05264 ]
+[ Upstream commit 545d1287e40a55242f6ab68bcc1ba3b74088b1bc ]
 
-pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
-but assign it the return values of pcs_get_function() that may return
-negative error codes. This causes negative error codes to be
-converted to large positive values.
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-Change ret from unsigned int to int in both functions.
+The 'len' variable is calculated as 'min(32, trans->len + 1)',
+which includes the 1-byte command header.
 
-Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+When copying data from 'trans->tx_buf' to 'ch341->tx_buf + 1', using 'len'
+as the length is incorrect because:
+
+1. It causes an out-of-bounds read from 'trans->tx_buf' (which has size
+   'trans->len', i.e., 'len - 1' in this context).
+2. It can cause an out-of-bounds write to 'ch341->tx_buf' if 'len' is
+   CH341_PACKET_LENGTH (32). Writing 32 bytes to ch341->tx_buf + 1
+   overflows the buffer.
+
+Fix this by copying 'len - 1' bytes.
+
+Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Link: https://patch.msgid.link/20251128160630.0f922c45ec6084a46fb57099@linux.dev
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-ch341.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 1df0a00ae1ee8..2218d65a7d842 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -485,7 +485,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
- 	enum pin_config_param param;
--	unsigned offset = 0, data = 0, i, j, ret;
-+	unsigned offset = 0, data = 0, i, j;
-+	int ret;
+diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
+index 46bc208f2d050..79d2f9ab4ef03 100644
+--- a/drivers/spi/spi-ch341.c
++++ b/drivers/spi/spi-ch341.c
+@@ -78,7 +78,7 @@ static int ch341_transfer_one(struct spi_controller *host,
  
- 	ret = pcs_get_function(pctldev, pin, &func);
- 	if (ret)
-@@ -549,9 +550,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- {
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
--	unsigned offset = 0, shift = 0, i, data, ret;
-+	unsigned offset = 0, shift = 0, i, data;
- 	u32 arg;
--	int j;
-+	int j, ret;
- 	enum pin_config_param param;
+ 	ch341->tx_buf[0] = CH341A_CMD_SPI_STREAM;
  
- 	ret = pcs_get_function(pctldev, pin, &func);
+-	memcpy(ch341->tx_buf + 1, trans->tx_buf, len);
++	memcpy(ch341->tx_buf + 1, trans->tx_buf, len - 1);
+ 
+ 	ret = usb_bulk_msg(ch341->udev, ch341->write_pipe, ch341->tx_buf, len,
+ 			   NULL, CH341_DEFAULT_TIMEOUT);
 -- 
 2.51.0
 
