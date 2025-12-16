@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3541ACC3B9F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:48:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE958CC24ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 391AA303FE05
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D540030223F5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956F234D912;
-	Tue, 16 Dec 2025 12:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C21E34321F;
+	Tue, 16 Dec 2025 11:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DubnlQFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYP63Dlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB1D34D4E7;
-	Tue, 16 Dec 2025 12:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FFB3314B4;
+	Tue, 16 Dec 2025 11:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888445; cv=none; b=Or7SPI43pVep60KAqr2n/u1gGa51HHkSEytRuXuJMg8Zoe0O5WGejRAfAYO4LEZGTLgaqkaL02t2EFctMkZSb5018HP8K+TF2IuubLHsJ4n2xiG2lMVuHLBNevlg/RoMmTRQrJKxAGl5MldM/f4mIjXQ8zuggUJLQe/uy8OTRPM=
+	t=1765884916; cv=none; b=dM4IPBYi/M96pZuc1BvO/E9aiVO9YagJWWvHjNlIlQCw0pmkDZf65lZveOxNQGB/5mLj3wgENE2qv3tp4Xgae1XhqlBQFq4EARbFYwMeZ2GsZbIhGDrRjP+fepCwSKUzjsTIUeVFECFKPqTedTKhYY2IjEUyB8Xsv3VBoqz7XLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888445; c=relaxed/simple;
-	bh=vAePhrvbSsl8tAcnSIo6jSoJMQ2xwoWsN5ippSz3FUI=;
+	s=arc-20240116; t=1765884916; c=relaxed/simple;
+	bh=lZZdmZmW+77EILlD8BqNZCBfMvcuSHpMg5xgz6Dk/qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eL5g5c4n1K0fNtHtaeCXw94fvrqo3nhL1ivTSHBQenY1Iw6XC8u5zZ0kIqXSE/Z31tnn7HKSma0LzXDQK2wg91K20KqPtxw+uJmYB402g5zIrheI27zwBYTnrr23GzYijhtBdxarjBFm5jbD1gxAZQEOB1j0Mqs1OUNt/+KN0t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DubnlQFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0CDC4CEF1;
-	Tue, 16 Dec 2025 12:34:04 +0000 (UTC)
+	 MIME-Version; b=oGNz3dsOO14+/ZIWnu8XOsP8nC9to74P6BoDyws5y/v1JdgjVnt/9h6zzAt23jlhdBs5oP0ARpMHv8iwz8vU14PupZ6njSLJkpzsJVP0Fr2+qhTgNertjr90HoGWtdc1FN7lDmEmdnx5li8y9NwfDDndrjOEs6k56sfofv8vxy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYP63Dlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57696C4CEF1;
+	Tue, 16 Dec 2025 11:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888445;
-	bh=vAePhrvbSsl8tAcnSIo6jSoJMQ2xwoWsN5ippSz3FUI=;
+	s=korg; t=1765884915;
+	bh=lZZdmZmW+77EILlD8BqNZCBfMvcuSHpMg5xgz6Dk/qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DubnlQFkOasuwhCGqjSlTlKUqXOn0kaloOK/o74abITNUiTbf/gZBXTUI+leinO1U
-	 U5VPnZ7fdh9QD0moGmIfk80Grx/9W00s7LuDnh4dhZEFxh14iYX9ux2963HDW96MsO
-	 CNj5rjXEyTPDJoGLPAdO79lByXAmawtm4QUMQDLU=
+	b=hYP63Dlw3SvQ87sE5KDyIKgdL2rIyhLymcVRWnYntmsvhZaWiBypovYilUXUWD5m1
+	 toZM9Fk2GPMeM+eLqcq4V4kVnFQ2gH/cUZASIyveyotHtY44Ci4eDExZDslq2zEbNR
+	 HOS71Cxb+ySfs6qRldBJyqDoPb9NYhRJkYjopwOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 537/614] f2fs: maintain one time GC mode is enabled during whole zoned GC cycle
+Subject: [PATCH 6.12 337/354] block: return unsigned int from queue_dma_alignment
 Date: Tue, 16 Dec 2025 12:15:04 +0100
-Message-ID: <20251216111420.835901186@linuxfoundation.org>
+Message-ID: <20251216111333.117339143@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e462fc48ceb8224811c3224650afed05cb7f0872 ]
+[ Upstream commit ed5db174cf39374215934f21b04639a7a1513023 ]
 
-The current version missed setting one time GC for normal zoned GC
-cycle. So, valid threshold control is not working. Need to fix it to
-prevent excessive GC for zoned devices.
+The underlying limit is defined as an unsigned int, so return that from
+queue_dma_alignment as well.
 
-Fixes: e791d00bd06c ("f2fs: add valid block ratio not to do excessive GC for one time GC")
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241119160932.1327864-3-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 2c38ec934ddf ("block: fix cached zone reports on devices with native zone append")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ include/linux/blkdev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index a7708cf80c04e..8abf521530ff3 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -38,13 +38,14 @@ static int gc_thread_func(void *data)
- 	struct f2fs_gc_control gc_control = {
- 		.victim_segno = NULL_SEGNO,
- 		.should_migrate_blocks = false,
--		.err_gc_skipped = false };
-+		.err_gc_skipped = false,
-+		.one_time = false };
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index cd9c97f6f9484..11d0a1b8daa2c 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1450,7 +1450,7 @@ static inline bool bdev_is_zone_start(struct block_device *bdev,
+ int blk_zone_issue_zeroout(struct block_device *bdev, sector_t sector,
+ 			   sector_t nr_sects, gfp_t gfp_mask);
  
- 	wait_ms = gc_th->min_sleep_time;
- 
- 	set_freezable();
- 	do {
--		bool sync_mode, foreground = false;
-+		bool sync_mode, foreground = false, gc_boost = false;
- 
- 		wait_event_freezable_timeout(*wq,
- 				kthread_should_stop() ||
-@@ -52,8 +53,12 @@ static int gc_thread_func(void *data)
- 				gc_th->gc_wake,
- 				msecs_to_jiffies(wait_ms));
- 
--		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq))
-+		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq)) {
- 			foreground = true;
-+			gc_control.one_time = false;
-+		} else if (f2fs_sb_has_blkzoned(sbi)) {
-+			gc_control.one_time = true;
-+		}
- 
- 		/* give it a try one time */
- 		if (gc_th->gc_wake)
-@@ -81,8 +86,6 @@ static int gc_thread_func(void *data)
- 			continue;
- 		}
- 
--		gc_control.one_time = false;
--
- 		/*
- 		 * [GC triggering condition]
- 		 * 0. GC is not conducted currently.
-@@ -132,7 +135,7 @@ static int gc_thread_func(void *data)
- 		if (need_to_boost_gc(sbi)) {
- 			decrease_sleep_time(gc_th, &wait_ms);
- 			if (f2fs_sb_has_blkzoned(sbi))
--				gc_control.one_time = true;
-+				gc_boost = true;
- 		} else {
- 			increase_sleep_time(gc_th, &wait_ms);
- 		}
-@@ -141,7 +144,7 @@ static int gc_thread_func(void *data)
- 					FOREGROUND : BACKGROUND);
- 
- 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
--			(gc_control.one_time && gc_th->boost_gc_greedy);
-+			(gc_boost && gc_th->boost_gc_greedy);
- 
- 		/* foreground GC was been triggered via f2fs_balance_fs() */
- 		if (foreground && !f2fs_sb_has_blkzoned(sbi))
+-static inline int queue_dma_alignment(const struct request_queue *q)
++static inline unsigned int queue_dma_alignment(const struct request_queue *q)
+ {
+ 	return q->limits.dma_alignment;
+ }
 -- 
 2.51.0
 
