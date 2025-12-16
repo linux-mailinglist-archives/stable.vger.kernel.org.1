@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B7FCC2F3E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E530CC21A8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D6DF31667C6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 765CB3020594
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBCF36A03F;
-	Tue, 16 Dec 2025 12:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA54525FA10;
+	Tue, 16 Dec 2025 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8mRSAFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXfVOZKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A19836A02F;
-	Tue, 16 Dec 2025 12:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49D62459D7;
+	Tue, 16 Dec 2025 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887404; cv=none; b=NmhXfmsYKCcRpW1RMInkZrOzK6zPrmK3NCuORGu/nkz9htJ02Ka59tgv9167LBmMCVdsGC8OM4Y6MmxOXilcjIVHKGQjVRlzDa6gsU9FFadcQ3qYoi4QvPkMkKj2HhV6Jnomd+GRwFV3Ko+MYOxQrEkJj9bOHdVEwhUbnZZJG+g=
+	t=1765883858; cv=none; b=LiTLYMnjd0kEHAHmduEDc48uL+i3APHwfNr1clGugHIBUK8mqB7HrmzK/ZifHi0kgTgLmSygX4aRM//W8/9Wntq213eQ1snpEv7HIy8wwFlweoTw6zdmTYo0oXNI5QifvW5qz88sjTcymUclydADTkzBrZuvgQfRJVvNgkmq7Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887404; c=relaxed/simple;
-	bh=gG9YqInE5oYxalkC/cJwip4LywMw7klPPAnjXkZljJ8=;
+	s=arc-20240116; t=1765883858; c=relaxed/simple;
+	bh=F5HLs4RDVaDnfVBSl3yAQ/kAROpjXhO8tib12avtf7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4I1iGwSCsofypG8qwBhfmGAHYTvPurb1fFXmaFS+uH06d8NbrnkOvSBQOfYNx/zstYJFSTNFFWht0cgQsCUd04N4LpEtHBQEkxQrOsEXUGMRZYr390AP/hLKhJkUFR/ggl4Uk0NcJ+ZX3ecMKCVVoA3zVq6zBEweIjQuNrs8Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8mRSAFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2065C4CEF1;
-	Tue, 16 Dec 2025 12:16:43 +0000 (UTC)
+	 MIME-Version; b=dpRIzA2sni0LoPyrvdpQxazi8AluK39B4WqoMXLLTgPl41qkWY5o88lePSY4eNDKDsgB9QZpkN18xc7gB6HeiJiIIR75bZi//6Gh3lgtlHt+QbrtXrCVwSJjYj9NBffWg8sYVPJyRgohxusNK3o8elSUWB2uln9lIRI8IWuGTbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXfVOZKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BF8C4CEF1;
+	Tue, 16 Dec 2025 11:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887404;
-	bh=gG9YqInE5oYxalkC/cJwip4LywMw7klPPAnjXkZljJ8=;
+	s=korg; t=1765883858;
+	bh=F5HLs4RDVaDnfVBSl3yAQ/kAROpjXhO8tib12avtf7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8mRSAFaMMEa4okLrSA99oEYUpDYqfFmkla8weNKU05T+tN/qVVdyV3v09CkOhPAq
-	 LWnA1XH69wQgc8HYsfCiGwfbPlvIMUBiTJsEPB+F/EkCOGtel1i5EZL1y9KM8xk+K7
-	 AkvQKi570CkYzweE2V1yVc2dUxTyCdpNQNUqZDJ4=
+	b=tXfVOZKma6vZ8z9hj/pLX0Mn/b7OPG2WRFmVdeq3JSGdCSY6opaKIDA0LS4cQravu
+	 e+EB1ApnTsZxfIR7BnqbFrhoLc4oBqn+TkJ+YpctQIip0jNxHxPb3ySg/5I2UIFsmi
+	 7Ls5JzRCMvwb7HEu05MOwaqJNmz55oiKgYqI/7mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 220/614] hfs: fix potential use after free in hfs_correct_next_unused_CNID()
+Subject: [PATCH 6.12 020/354] clk: renesas: cpg-mssr: Read back reset registers to assure values latched
 Date: Tue, 16 Dec 2025 12:09:47 +0100
-Message-ID: <20251216111409.344986639@linuxfoundation.org>
+Message-ID: <20251216111321.642222447@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit c105e76bb17cf4b55fe89c6ad4f6a0e3972b5b08 ]
+[ Upstream commit b91401af6c00ffab003698bfabd4c166df30748b ]
 
-This code calls hfs_bnode_put(node) which drops the refcount and then
-dreferences "node" on the next line.  It's only safe to use "node"
-when we're holding a reference so flip these two lines around.
+On R-Car V4H, the PCIEC controller DBI read would generate an SError in
+case the controller reset is released by writing SRSTCLR register first,
+and immediately afterward reading some PCIEC controller DBI register.
+The issue triggers in rcar_gen4_pcie_additional_common_init() on
+dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW), which on V4H is the first
+read after reset_control_deassert(dw->core_rsts[DW_PCIE_PWR_RST].rstc).
 
-Fixes: a06ec283e125 ("hfs: add logic of correcting a next unused CNID")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/aN-Xw8KnbSnuIcLk@stanley.mountain
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+The reset controller which contains the SRSTCLR register and the PCIEC
+controller which contains the DBI register share the same root access
+bus, but the bus then splits into separate segments before reaching each
+IP.  Even if the SRSTCLR write access was posted on the bus before the
+DBI read access, it seems the DBI read access may reach the PCIEC
+controller before the SRSTCLR write completed, and trigger the SError.
+
+Mitigate the issue by adding a dummy SRSTCLR read, which assures the
+SRSTCLR write completes fully and is latched into the reset controller,
+before the PCIEC DBI read access can occur.
+
+Fixes: 0ab55cf18341 ("clk: renesas: cpg-mssr: Add support for R-Car V4H")
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250922162113.113223-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/catalog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/renesas/renesas-cpg-mssr.c | 46 ++++++++++++--------------
+ 1 file changed, 21 insertions(+), 25 deletions(-)
 
-diff --git a/fs/hfs/catalog.c b/fs/hfs/catalog.c
-index caebabb6642f1..b80ba40e38776 100644
---- a/fs/hfs/catalog.c
-+++ b/fs/hfs/catalog.c
-@@ -322,9 +322,9 @@ int hfs_correct_next_unused_CNID(struct super_block *sb, u32 cnid)
- 			}
- 		}
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index 291a01778aa48..e0f0dc8c0e56d 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -615,18 +615,32 @@ static int __init cpg_mssr_add_clk_domain(struct device *dev,
  
-+		node_id = node->prev;
- 		hfs_bnode_put(node);
+ #define rcdev_to_priv(x)	container_of(x, struct cpg_mssr_priv, rcdev)
  
--		node_id = node->prev;
- 	} while (node_id >= leaf_head);
+-static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+-			  unsigned long id)
++static int cpg_mssr_reset_operate(struct reset_controller_dev *rcdev,
++				  const char *func, bool set, unsigned long id)
+ {
+ 	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
+ 	unsigned int reg = id / 32;
+ 	unsigned int bit = id % 32;
++	const u16 off = set ? priv->reset_regs[reg] : priv->reset_clear_regs[reg];
+ 	u32 bitmask = BIT(bit);
  
- 	return -ENOENT;
+-	dev_dbg(priv->dev, "reset %u%02u\n", reg, bit);
++	if (func)
++		dev_dbg(priv->dev, "%s %u%02u\n", func, reg, bit);
++
++	writel(bitmask, priv->pub.base0 + off);
++	readl(priv->pub.base0 + off);
++	barrier_data(priv->pub.base0 + off);
++
++	return 0;
++}
++
++static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
++			  unsigned long id)
++{
++	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
+ 
+ 	/* Reset module */
+-	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
++	cpg_mssr_reset_operate(rcdev, "reset", true, id);
+ 
+ 	/*
+ 	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
+@@ -639,36 +653,18 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+ 		usleep_range(35, 1000);
+ 
+ 	/* Release module from reset state */
+-	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
+-
+-	return 0;
++	return cpg_mssr_reset_operate(rcdev, NULL, false, id);
+ }
+ 
+ static int cpg_mssr_assert(struct reset_controller_dev *rcdev, unsigned long id)
+ {
+-	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
+-	unsigned int reg = id / 32;
+-	unsigned int bit = id % 32;
+-	u32 bitmask = BIT(bit);
+-
+-	dev_dbg(priv->dev, "assert %u%02u\n", reg, bit);
+-
+-	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
+-	return 0;
++	return cpg_mssr_reset_operate(rcdev, "assert", true, id);
+ }
+ 
+ static int cpg_mssr_deassert(struct reset_controller_dev *rcdev,
+ 			     unsigned long id)
+ {
+-	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
+-	unsigned int reg = id / 32;
+-	unsigned int bit = id % 32;
+-	u32 bitmask = BIT(bit);
+-
+-	dev_dbg(priv->dev, "deassert %u%02u\n", reg, bit);
+-
+-	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
+-	return 0;
++	return cpg_mssr_reset_operate(rcdev, "deassert", false, id);
+ }
+ 
+ static int cpg_mssr_status(struct reset_controller_dev *rcdev,
 -- 
 2.51.0
 
