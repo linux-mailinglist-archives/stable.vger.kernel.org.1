@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-202321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C7FCC3795
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:15:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BFECC3CA1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:58:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75F6830335B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 533F23186BCB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6F1344028;
-	Tue, 16 Dec 2025 12:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8F934D90B;
+	Tue, 16 Dec 2025 11:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn7TNRvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Utxb7mJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8EE749C;
-	Tue, 16 Dec 2025 12:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA1034D903;
+	Tue, 16 Dec 2025 11:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887523; cv=none; b=mxVL43OzVwmHT7DbzWaXjL0SR78tTblcKO7QCjhuBR2vIKYmzTkJ+KQYTUotc1s/FzqAJMn40LlGwT1ucdfdlULh7thhn8iaVomkrqz4p3lJTdFYp5jnDFrhVniwi9wgoW3iPKeMLwon753Zs8e4KirZ7ya1tt38MXi4J0FtmCA=
+	t=1765885583; cv=none; b=ZeyOJvTOMEnrNpOCu4MIB0AeWGS5marYTiB8O7YV9OEPp1Ip7BOBhuJ3f7SKS0YtBQ0ffWEVejYCjBNYvjcYcPznob+WVWP9Xu6cyuk2S9Xx2KyRor9Q1ZC0Xbt0bHZ3SGN+tr1GUfWs8CSZP4JsmfBgWyJphPx/2r8GHcghjBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887523; c=relaxed/simple;
-	bh=30q0YZ6t5IdP8GZAOjJ6wL0CHR7v2v49xZPMfd2uruc=;
+	s=arc-20240116; t=1765885583; c=relaxed/simple;
+	bh=atcNpFlFvhjLRiqYLVhlOZeWy+6bavROg/7J+Alxe9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0b6BfzD/ogID7sM/UwzcHlBY1tMgk6MJ12BDRi5r6c7h0ckUPchRpkEhMOYNUkrdJ0xO24LgHc473p4PtvqzwsnKYI8TggJTTfzzH6qXbYCBXKRRvssxOeVkHfXrPAgvzYnRXMmvR/as+M7ZtehbvrbGGCmMlZxpvT6vm1HrWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn7TNRvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4701CC4CEF1;
-	Tue, 16 Dec 2025 12:18:43 +0000 (UTC)
+	 MIME-Version; b=uCrZFg6HxPOBwE8K18W1gjYS4VMVIGMQQWywO1vHJENpeMSBZ2goHI/oLRCSKGze0TWnEQU7qU8s20ko9o9L95YmDpzxO6HZACH2RPxmRRtExaocKKwRAbAxGkXFN5A6jqdSbc0pX4h0ucZdr0qVG/y1cReUn1uwLw+MaZewFBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Utxb7mJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93FCC4CEF1;
+	Tue, 16 Dec 2025 11:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887523;
-	bh=30q0YZ6t5IdP8GZAOjJ6wL0CHR7v2v49xZPMfd2uruc=;
+	s=korg; t=1765885583;
+	bh=atcNpFlFvhjLRiqYLVhlOZeWy+6bavROg/7J+Alxe9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bn7TNRvQe2+IIvOhxQcnsBrEl+9d4CZDX7mEFx4k1WVu1M4UNRrV0ix450ixZBzUL
-	 up4ojLixaR7p+Q/8Q9Eh9uACSUzmHpQv1NbJBeD+h0Ojipvh3Brg5hgj4TqzviyLo6
-	 T39Wim3zOlqLa1zVXTk70SwOt3UcoYkddB8CIJRM=
+	b=Utxb7mJRaq+NP4t0MLPPp4k6KcE6H1CaMkbvIIwUZTgNuzT0Vee6wTTBc+Cim3KHC
+	 fY35RZ+xUWsZKVRLEcfpo4R+4lErDCie1WXrbKc1UmlQ2yjTTFMu+W7RvoiN2R0S5k
+	 S5IlcA/hpSbyNz1bB/T1PBsFgQZM5i46fgavINSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 257/614] coresight: etm4x: Properly control filter in CPU idle with FEAT_TRF
+Subject: [PATCH 6.17 183/507] wifi: ath12k: Fix timeout error during beacon stats retrieval
 Date: Tue, 16 Dec 2025 12:10:24 +0100
-Message-ID: <20251216111410.684954431@linuxfoundation.org>
+Message-ID: <20251216111352.145380811@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
 
-[ Upstream commit 1fdc2cd347a7bc58acacb6144404ee892cea6c2e ]
+[ Upstream commit 2977567b244f056d86658160659f06cd6c78ba3d ]
 
-If a CPU supports FEAT_TRF, as described in the section K5.5 "Context
-switching", Arm ARM (ARM DDI 0487 L.a), it defines a flow to prohibit
-program-flow trace, execute a TSB CSYNC instruction for flushing,
-followed by clearing TRCPRGCTLR.EN bit.
+Currently, for beacon_stats, ath12k_mac_get_fw_stats() is called
+for each started BSS on the specified hardware.
+ath12k_mac_get_fw_stats() will wait for the fw_stats_done completion
+after fetching the requested data from firmware. For the beacon_stats,
+fw_stats_done completion will be set only when stats are received for
+all BSSes. However, for other stats like vdev_stats or pdev_stats, there
+is one request to the firmware for all enabled BSSes. Since beacon_stats
+is fetched individually for all BSSes enabled in that pdev, waiting for
+the completion event results in a timeout error when multiple BSSes are
+enabled.
 
-To restore the state, the reverse sequence is required.
+Avoid this by completing the fw_stats_done immediately after
+updating the requested BSS's beacon stats in the list. Subsequently,
+this list will be used to display the beacon stats for all enabled
+BSSes in the requested pdev.
 
-This differs from the procedure described in the section 3.4.1 "The
-procedure when powering down the PE" of ARM IHI0064H.b, which involves
-the OS Lock to prevent external debugger accesses and implicitly
-disables trace.
+Additionally, remove 'num_bcn_recvd' from the ath12k_fw_stats struct
+as it is no longer needed.
 
-To be compatible with different ETM versions, explicitly control trace
-unit using etm4_disable_trace_unit() and etm4_enable_trace_unit()
-during CPU idle to comply with FEAT_TRF.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-As a result, the save states for TRFCR_ELx and trcprgctlr are redundant,
-remove them.
-
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-6-f55553b6c8b3@arm.com
+Fixes: 9fe4669ae919 ("wifi: ath12k: Request beacon stats from firmware")
+Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251031-beacon_stats-v1-2-f52fce7b03ac@qti.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 14 +++++++-------
- drivers/hwtracing/coresight/coresight-etm4x.h      |  3 ---
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c |  2 --
+ drivers/net/wireless/ath/ath12k/core.h |  1 -
+ drivers/net/wireless/ath/ath12k/wmi.c  | 10 +---------
+ 3 files changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 5e707d082537a..fdda924a2c711 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1858,9 +1858,11 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		goto out;
- 	}
- 
-+	if (!drvdata->paused)
-+		etm4_disable_trace_unit(drvdata);
-+
- 	state = drvdata->save_state;
- 
--	state->trcprgctlr = etm4x_read32(csa, TRCPRGCTLR);
- 	if (drvdata->nr_pe)
- 		state->trcprocselr = etm4x_read32(csa, TRCPROCSELR);
- 	state->trcconfigr = etm4x_read32(csa, TRCCONFIGR);
-@@ -1970,9 +1972,6 @@ static int etm4_cpu_save(struct etmv4_drvdata *drvdata)
- {
- 	int ret = 0;
- 
--	/* Save the TRFCR irrespective of whether the ETM is ON */
--	if (drvdata->trfcr)
--		drvdata->save_trfcr = read_trfcr();
- 	/*
- 	 * Save and restore the ETM Trace registers only if
- 	 * the ETM is active.
-@@ -1994,7 +1993,6 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 	etm4_cs_unlock(drvdata, csa);
- 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
- 
--	etm4x_relaxed_write32(csa, state->trcprgctlr, TRCPRGCTLR);
- 	if (drvdata->nr_pe)
- 		etm4x_relaxed_write32(csa, state->trcprocselr, TRCPROCSELR);
- 	etm4x_relaxed_write32(csa, state->trcconfigr, TRCCONFIGR);
-@@ -2079,13 +2077,15 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 
- 	/* Unlock the OS lock to re-enable trace and external debug access */
- 	etm4_os_unlock(drvdata);
-+
-+	if (!drvdata->paused)
-+		etm4_enable_trace_unit(drvdata);
-+
- 	etm4_cs_lock(drvdata, csa);
- }
- 
- static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- {
--	if (drvdata->trfcr)
--		write_trfcr(drvdata->save_trfcr);
- 	if (drvdata->state_needs_restore)
- 		__etm4_cpu_restore(drvdata);
- }
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 13ec9ecef46f5..b8796b4271025 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -866,7 +866,6 @@ struct etmv4_config {
-  * struct etm4_save_state - state to be preserved when ETM is without power
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index a2137b363c2fe..cc352eef19399 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
- struct etmv4_save_state {
--	u32	trcprgctlr;
- 	u32	trcprocselr;
- 	u32	trcconfigr;
- 	u32	trcauxctlr;
-@@ -980,7 +979,6 @@ struct etmv4_save_state {
-  *		at runtime, due to the additional setting of TRFCR_CX when
-  *		in EL2. Otherwise, 0.
-  * @config:	structure holding configuration parameters.
-- * @save_trfcr:	Saved TRFCR_EL1 register during a CPU PM event.
-  * @save_state:	State to be preserved across power loss
-  * @state_needs_restore: True when there is context to restore after PM exit
-  * @skip_power_up: Indicates if an implementation can skip powering up
-@@ -1037,7 +1035,6 @@ struct etmv4_drvdata {
- 	bool				lpoverride;
- 	u64				trfcr;
- 	struct etmv4_config		config;
--	u64				save_trfcr;
- 	struct etmv4_save_state		*save_state;
- 	bool				state_needs_restore;
- 	bool				skip_power_up;
+ 
+@@ -1250,7 +1249,6 @@ void ath12k_fw_stats_reset(struct ath12k *ar)
+ 	spin_lock_bh(&ar->data_lock);
+ 	ath12k_fw_stats_free(&ar->fw_stats);
+ 	ar->fw_stats.num_vdev_recvd = 0;
+-	ar->fw_stats.num_bcn_recvd = 0;
+ 	spin_unlock_bh(&ar->data_lock);
+ }
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 519f826f56c8e..65b75cae1fb99 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -640,7 +640,6 @@ struct ath12k_fw_stats {
+ 	struct list_head vdevs;
+ 	struct list_head bcn;
+ 	u32 num_vdev_recvd;
+-	u32 num_bcn_recvd;
+ };
+ 
+ struct ath12k_dbg_htt_stats {
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index c69be688e189c..82d0773b0380d 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -8298,18 +8298,10 @@ static void ath12k_wmi_fw_stats_process(struct ath12k *ar,
+ 			ath12k_warn(ab, "empty beacon stats");
+ 			return;
+ 		}
+-		/* Mark end until we reached the count of all started VDEVs
+-		 * within the PDEV
+-		 */
+-		if (ar->num_started_vdevs)
+-			is_end = ((++ar->fw_stats.num_bcn_recvd) ==
+-				  ar->num_started_vdevs);
+ 
+ 		list_splice_tail_init(&stats->bcn,
+ 				      &ar->fw_stats.bcn);
+-
+-		if (is_end)
+-			complete(&ar->fw_stats_done);
++		complete(&ar->fw_stats_done);
+ 	}
+ }
+ 
 -- 
 2.51.0
 
