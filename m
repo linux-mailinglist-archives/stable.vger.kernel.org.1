@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-201232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3D1CC2283
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE8ECC379C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6ABA03050591
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 009433051D38
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4163358A8;
-	Tue, 16 Dec 2025 11:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F8834FF57;
+	Tue, 16 Dec 2025 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mijd0Awn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNBZyDYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE11D2459D7;
-	Tue, 16 Dec 2025 11:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54B34FF4E;
+	Tue, 16 Dec 2025 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883965; cv=none; b=LNn5cS+6O9/hBWT8yj0Q5+pNCBcqVpi2b5u9W+4Fkyknox+DMaHdAEBcoQ8FKSxK67QC0gOwqVLRvj2QsQ1CZEbqLR3v8JDxulbxvKxZ+OF6X9CAbo7+OZd+giDIhpI3bsgzi6iIranv8cIw0o6UiaL/3edexVhwaGguihm/6Dk=
+	t=1765885678; cv=none; b=qpSIrylokjZkLvaISIVV7hMWsp2YJvGp+8f0AlJStF1ZnsVKp1J+B192tIQj+Kt2wscxyJA1muYqMjO8cbnNUZropOomrS9egO/CWFof6zHCzutyD78vy55bIQ5RUaYZ152i9RUFgrcF7bz5suzvjrUWVCJJCMT3EEVBD48q37Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883965; c=relaxed/simple;
-	bh=Cyv2UlWQT255qyTQHiwNLh8cBfHfFJzCQ7sedmgSZGE=;
+	s=arc-20240116; t=1765885678; c=relaxed/simple;
+	bh=vh8wfOeBhOPJTpctlyuavo+kSgRjl3vZzD30n2sajXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9OfjOMMXkhr4LQRm1iEkBupsdhsO9K5sFve6yYzIbZnX1aB1MtGiCBx/BXJQKIrmmSVYPbE+bi35HfmOP6IzSgsEAk4NlNh/8/15sfO/zD9JxM1Taz8DsWJdttGn0LetQLwE7+GjUTEseMQPjCO3VrdHLNa5j6irq4CcMwHtsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mijd0Awn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E22C4CEF1;
-	Tue, 16 Dec 2025 11:19:25 +0000 (UTC)
+	 MIME-Version; b=G42apVFLqxPuqlQWbMv1LRvfHsGQNkXAAb6ltz9ajwXKet/UCXejvxFBiYkjz3FYgF3tqmgFX6kuJ/sSrk8KXitjxCADPRrbiUbTNr9ujIDTVlXEHAI+j4veGH2pgWuKPxnn3jKDAco/HxsfyekviZrD5ULU/LwxL+0K+JUUa0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNBZyDYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E03AC4CEF1;
+	Tue, 16 Dec 2025 11:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883965;
-	bh=Cyv2UlWQT255qyTQHiwNLh8cBfHfFJzCQ7sedmgSZGE=;
+	s=korg; t=1765885678;
+	bh=vh8wfOeBhOPJTpctlyuavo+kSgRjl3vZzD30n2sajXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mijd0AwnlLv5KR32LPV680KWyan69m4FB/1qJHTzSGNggA1zFaEcWD1Iyu68R3Bw2
-	 c4inYzNrb6ZeZzZ6jX0Nj47ZdtoCFE+R+nagsIC+n7s/ciekjS77bQ05Yl5w4mC44Y
-	 KOExo0LA+Khdrm/A2rLoKwLrhlKefDJnq4tq860g=
+	b=pNBZyDYtQifwAeGr4i6MimdBjwcHnaWxaAYtjlzFp9XuZ/9Z3ZjqhcroYzoHlpy2/
+	 viL57KeNu7dh5sJXye/gP8LqEqiXIUN6Lrmc7pKKJOFzaEDHyCMf3HXz9PyqhL3F2Q
+	 TI8E78kDpskyK714970AviVw5rqbN7uiLgcPvTfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/354] arm64: dts: imx8mm-venice-gw72xx: remove unused sdhc1 pinctrl
-Date: Tue, 16 Dec 2025 12:10:18 +0100
-Message-ID: <20251216111322.765911134@linuxfoundation.org>
+Subject: [PATCH 6.17 178/507] efi/libstub: Fix page table access in 5-level to 4-level paging transition
+Date: Tue, 16 Dec 2025 12:10:19 +0100
+Message-ID: <20251216111351.964780033@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit d949b8d12d6e8fa119bca10d3157cd42e810f6f7 ]
+[ Upstream commit 84361123413efc84b06f3441c6c827b95d902732 ]
 
-The SDHC1 interface is not used on the imx8mm-venice-gw72xx. Remove the
-unused pinctrl_usdhc1 iomux node.
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-Fixes: 6f30b27c5ef5 ("arm64: dts: imx8mm: Add Gateworks i.MX 8M Mini Development Kits")
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags Bits above the
+  physical address width of the system (i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
+
+- The pgd value is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
+
+Replace this with proper accessor functions:
+
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
+
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20251103141002.2280812-3-usamaarif642@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mm-venice-gw72xx.dtsi      | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/firmware/efi/libstub/x86-5lvl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-index 752caa38eb03b..266038fbbef97 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-@@ -351,17 +351,6 @@ MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
- 		>;
- 	};
+diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
+index f1c5fb45d5f7c..c00d0ae7ed5d5 100644
+--- a/drivers/firmware/efi/libstub/x86-5lvl.c
++++ b/drivers/firmware/efi/libstub/x86-5lvl.c
+@@ -66,7 +66,7 @@ void efi_5level_switch(void)
+ 	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
+ 	bool need_toggle = want_la57 ^ have_la57;
+ 	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
+-	u64 *cr3 = (u64 *)__native_read_cr3();
++	pgd_t *cr3 = (pgd_t *)native_read_cr3_pa();
+ 	u64 *new_cr3;
  
--	pinctrl_usdhc1: usdhc1grp {
--		fsl,pins = <
--			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
--			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d0
--			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d0
--			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d0
--			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d0
--			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d0
--		>;
--	};
--
- 	pinctrl_usdhc2: usdhc2grp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
+ 	if (!la57_toggle || !need_toggle)
+@@ -82,7 +82,7 @@ void efi_5level_switch(void)
+ 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+ 	} else {
+ 		/* take the new root table pointer from the current entry #0 */
+-		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
++		new_cr3 = (u64 *)(native_pgd_val(cr3[0]) & PTE_PFN_MASK);
+ 
+ 		/* copy the new root table if it is not 32-bit addressable */
+ 		if ((u64)new_cr3 > U32_MAX)
 -- 
 2.51.0
 
