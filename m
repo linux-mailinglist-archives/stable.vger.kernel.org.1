@@ -1,88 +1,56 @@
-Return-Path: <stable+bounces-201522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D77CC2686
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67894CC26C5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10E1E30EA636
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C84A30802EE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2A6343D88;
-	Tue, 16 Dec 2025 11:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2E434D3BD;
+	Tue, 16 Dec 2025 11:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUhzeYdp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjAIUoJG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0767E342CBD
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE4034D3B8
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884912; cv=none; b=pYoP+h5Y7UGT8JpkzwLVolhSodpkAwMVlBokEqdIT1q8VHDZmEqtfzuqCUEgTK7j5wSZAcQBuFkXImVfFZjpjoFkXtrnQ+DLitcABxtkBQIsacPyVTwQQrIW5HsyE3rkNjlYHBTjEZYuSkWEb4ARdgjLNEVqXdEvDopUquhzBwQ=
+	t=1765885362; cv=none; b=WNhhotpwuyzIc7tbMrOVhYFQUkVCJZewuUDNkOFrwmY7pa6ng3ESt87Je0E6WxmiO7PmvMtqNO3Qusk2qUXayib58KYCTciH10xnonXtWm7NnwGT/eMsI1Ktc3WFgQ229I7TFdIAtU3okPTZxc6ihpEbzgPybP3IbkCaZP112nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884912; c=relaxed/simple;
-	bh=7Ng6cOzBWaVAN8sB8ImGFB9WnRkcD7FTemvHnnoD6Uw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l1LSFIuEbYJFZFOfNY5PzpL2lRfXul5GGC9Y/p4hZsXlkEmAuxnkkJ+J5Nsrrc5dX1qYrZhywGEqGk4LAF1DBRf+nDhooyz7s9yOYuu/eEFgMmjOUiS2a9KfsJMqLtusAucNbPPi4RwvLxCl4P2qxZKsu34LbIykbE0EaTTEtiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUhzeYdp; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0bae9aca3so32224005ad.3
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 03:35:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765884910; x=1766489710; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dNyMQo50MvCPMYMV7kY9HjLSNhtx0TsG7Ml7tk8tygg=;
-        b=QUhzeYdpoPq486xWS5CUTiFHOXHXOkrqTQIcA8arCgXoKPn5INapjKdc5DCJQ217Nt
-         QCI4Iz7qmG6Hmd/HQEMktlJ+oZKp+wydU3s8Xqp50PIUB1tM8ej+GeLqzfNYlDWIME7w
-         VmqY+Lq6XTdJaWlsmbzDW0THHxwI1v4rZj7AtpaV1opN3nOf854IjiF7GpJqk3vPivSF
-         9SfErAXmBtJ/s2UoaJyfUfEQRXrXJaGGT7pYfAEmOsn+Bvok3b7LAm0SHGJoGoFEfLTs
-         xyFTKVGJU5po1Qtm/obZ5CfYCtuN5sYGCKK2KufClkfezrxowVQzrxCIDMHDMmppkKb3
-         7dmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765884910; x=1766489710;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dNyMQo50MvCPMYMV7kY9HjLSNhtx0TsG7Ml7tk8tygg=;
-        b=mnnj59egMGIp0UInULtbfQTaWamsiA0wgYjcGBvGWaVs8KPM1TAw/VBFsOJ/w97RQx
-         EC1jMuRJagN03pCaC+G0ofWill0mNCYEreTxTtse4Fm4x6bq3dAG55debSlgoQAV9GbO
-         +Cqq9gz8LqLXsrcS3mThbxhMUzcfz6I58gGm4xo2K9TKAbPsb72esTKtTFXEuICcY4Om
-         eWcBkz2e57TTtiB8IJ6PgxRgV4sxDLvabdNhBXAXI4zILIZy9QoRCKOtMoMEK80pe61N
-         sARrwUZqr6HMe2NfovsWOX3Ci0RswDJ+RUfgeribXs7n+nAwDMEk4MtFqWRrMF3ZI0ed
-         07Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCXpfEDm8NPBsG3NNcZcwOinJQdNbBB4r+yNW1JrTge7Nd619JiJ2yhX3OkQBV6RI8rWWV9uwMo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXpUmRE7iBWqlWaGFc9f1aHoO2jWFkGbBvjLq7hKulMq+UOLvU
-	a5Zl3r1jShkx9XFVzdv/U+wxPzGbg7C0uuPaT9XpdIcteLv89aerQ3UK
-X-Gm-Gg: AY/fxX4grFH4R4CKPSiG/NduCc0p1lvJ+ciegOyvZGftasfaBsimmMfsgD85I/QMjXU
-	i07bOWJTnuGihDhBr8hX8bxiWQuaWOhXBs/jPFcFLelWryfuV9SdhrIz+4ZbtmrLnRJdw2ZA0nE
-	F2rLSwbt6+odHbAcnYWyZEN034LbqMTrYG9oC8LNHsNef2antdNMA2WAFPJ56gGMRwW90WOQXDs
-	nG7PeQ70NV0y15UXWFy/iV7KkLev5x0toGZ85/YzfGMQsKZtURAQMLOCNmMhtRJSupA+mxC/CAP
-	BltIByn06uUIpw8abd7JopeKHBVVPhSlCzVufF4JkPLFTkARcPsfnYhhN2SGvPH5ATC4XYjj+tQ
-	2S0AbUlK99YeWZtbETfotIj9sFd91C5fEIEglAEd0RHNcIoxDtEQcr0FuHJ+0geQwHG/Prw6yls
-	m9Dq908JCm579jlw==
-X-Google-Smtp-Source: AGHT+IErTs5c9CgixuwPe66I1GrE+7CrIdKOxcUVXSYOh9APmUqT1anvr8jNO2CVyH2qF3wF65kKhQ==
-X-Received: by 2002:a17:902:cecc:b0:2a1:3895:e0d8 with SMTP id d9443c01a7336-2a13895e17dmr20413945ad.60.1765884910053;
-        Tue, 16 Dec 2025 03:35:10 -0800 (PST)
-Received: from localhost ([2a12:a304:100::105b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0ced60ff4sm73566345ad.76.2025.12.16.03.35.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 03:35:09 -0800 (PST)
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: "Theodore Ts'o" <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jinchao Wang <wangjinchao600@gmail.com>,
-	stable@vger.kernel.org,
-	syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-Subject: [PATCH] ext4: xattr: fix wrong search.here in clone_block
-Date: Tue, 16 Dec 2025 19:34:55 +0800
-Message-ID: <20251216113504.297535-1-wangjinchao600@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765885362; c=relaxed/simple;
+	bh=iy4h/Tf+/VjIuNTw7lJBpYp/C7Ehs1Npp/gB4Ei9YKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=K379cuWqhhiB6QL/+7JrqpiSM6Tf3UARTQr7uo0RJHDOcIF54phsTIIn/muwg20mwm97DnXKQG3p4u9xIQpXGmW6MeWKSujnUD+awGpA0WJk/mwVsZlRMG6PbVVhv29V12oBc4zgeI5ALI694vRIp4OaP5eEs7XdkGR+VSb+iCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjAIUoJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C20C4CEF1;
+	Tue, 16 Dec 2025 11:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765885362;
+	bh=iy4h/Tf+/VjIuNTw7lJBpYp/C7Ehs1Npp/gB4Ei9YKI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kjAIUoJGOtdgWF7ilnmrokqR50iXmy+JYE55AUrphlxrP1vP4QMQGqXSS8+R0PHt+
+	 8HCRJVqIPVcxXjltm7y39i+pTotLARJE42XJilR3j24yMHiIwn0zSMhRGAJydwnqjA
+	 Da8agQYgtPmYVzJB0rL5Dqz612Uf24GtCYgZL1MYMLN7l3pgF3UM2zu1cNSBghr52P
+	 6R2MlZEJ6Y1LQDk62t2/1RgSfhIW73N28EScvajwBmhWP6VJFGZ1mMAqcnCbgI0Bv4
+	 yZf9SPLxeXFtY+GmLxza+i4NCB/mqYWxivCY+nuLNqpxSAo54y0oKTXoMR0GhExhU9
+	 sLeVFv28+NwIA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Denis Arefev <arefev@swemel.ru>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] ALSA: hda: cs35l41: Fix NULL pointer dereference in cs35l41_hda_read_acpi()
+Date: Tue, 16 Dec 2025 06:42:26 -0500
+Message-ID: <20251216114226.2766048-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025121643-crust-motocross-9384@gregkh>
+References: <2025121643-crust-motocross-9384@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,46 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-syzbot reported a KASAN out-of-bounds Read in ext4_xattr_set_entry()[1].
+From: Denis Arefev <arefev@swemel.ru>
 
-When xattr_find_entry() returns -ENODATA, search.here still points to the
-position after the last valid entry. ext4_xattr_block_set() clones the xattr
-block because the original block maybe shared and must not be modified in
-place.
+[ Upstream commit c34b04cc6178f33c08331568c7fd25c5b9a39f66 ]
 
-In the clone_block, search.here is recomputed unconditionally from the old
-offset, which may place it past search.first. This results in a negative
-reset size and an out-of-bounds memmove() in ext4_xattr_set_entry().
+The acpi_get_first_physical_node() function can return NULL, in which
+case the get_device() function also returns NULL, but this value is
+then dereferenced without checking,so add a check to prevent a crash.
 
-Fix this by initializing search.here correctly when search.not_found is set.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-[1] https://syzkaller.appspot.com/bug?extid=f792df426ff0f5ceb8d1
-
-Fixes: fd48e9acdf2 (ext4: Unindent codeblock in ext4_xattr_block_set)
+Fixes: 7b2f3eb492da ("ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251202101338.11437-1-arefev@swemel.ru
+[ NULL check right after acpi_dev_put(adev) cleanup call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/pci/hda/cs35l41_hda.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 2e02efbddaac..cc30abeb7f30 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1980,7 +1980,10 @@ ext4_xattr_block_set(handle_t *handle, struct inode *inode,
- 			goto cleanup;
- 		s->first = ENTRY(header(s->base)+1);
- 		header(s->base)->h_refcount = cpu_to_le32(1);
--		s->here = ENTRY(s->base + offset);
-+		if (s->not_found)
-+			s->here = s->first;
-+		else
-+			s->here = ENTRY(s->base + offset);
- 		s->end = s->base + bs->bh->b_size;
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index b437beae9b516..cbc350ec03cc4 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1432,6 +1432,8 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
  
- 		/*
+ 	physdev = get_device(acpi_get_first_physical_node(adev));
+ 	acpi_dev_put(adev);
++	if (!physdev)
++		return -ENODEV;
+ 
+ 	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+ 	if (IS_ERR(sub))
 -- 
-2.43.0
+2.51.0
 
 
