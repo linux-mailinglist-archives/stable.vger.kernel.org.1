@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15BECC2BE6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:31:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC40BCC25B6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 067F631F8F26
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41FFC302C5E8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0243559CA;
-	Tue, 16 Dec 2025 12:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFC334D3BB;
+	Tue, 16 Dec 2025 11:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkhxmofT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvWwLDVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7468035502B;
-	Tue, 16 Dec 2025 12:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3A934D3B8;
+	Tue, 16 Dec 2025 11:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887249; cv=none; b=qbsOqOm7wtIlZeY9KsNnU63KijeUJE8JVyfU0COX07TkccOjtfdatBgmLaZ3fKXvGuSr0ECSPWDywMKsecG/Tbc2m1yx3lfB1cyxZV/9uU6or1WYwTU2nHGU+bWBu6ThpPHjX4PJNL4Qvm4ni8b0jb639759ktn3/ZJY9ZlN3pY=
+	t=1765885302; cv=none; b=H4JUbyQAsU3QlQv9VX29haYBdneGwxik8ya1EulSdMCToSodDp0+q3K5JDi1ni5MhcMzjhG5FSlTYzQ37DgLd3wfohRDAqPoQhP6vX4M2jDJIoYubUu9fNbcbcl4d+48l+HWJ9+tXrCGmE7HJpWHOM6ocOZb3SLa5WDZ4WgQbn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887249; c=relaxed/simple;
-	bh=AFD1PFy+pPRcLhBKHBWo/2Lvfy3bLlOODXSV9h7CAgo=;
+	s=arc-20240116; t=1765885302; c=relaxed/simple;
+	bh=BdImmlOFTUYUIu+7HaeJzcwZbV/p4QNEs6a32R4jzDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bs9sbD7QadO738wbbQ2gyA8d43w7teuPU7GsKSdTlcX250xsi3Pg8bp3kX/YsUD8iLgKCHjNPHEpMfy7jQi3WWZ0VLJxkDyvwTdvv7AI2SfYphLS5uTYKrUkrxw0EhPC7Cw3OrfFOk/Fb8sepUOtb631omGSiM8PXXk2/6n+ykg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkhxmofT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91504C4CEF1;
-	Tue, 16 Dec 2025 12:14:08 +0000 (UTC)
+	 MIME-Version; b=ORGSuuziSr+AzRO61mofe1LLFHpouwPtyZ7TIvMplI5pNr58cQ6t8MmvJMQxa7lwQEzqQUOdpAnze9NXCUBrqfL7KkRFJGrbLkLJ8yAMMjnuxKT8ktqdvCUK+hHOR2t05WAb/ZAUqKXqr959yrB8NpIoNc8G7zZEWbsEL92Qg1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvWwLDVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3F0C4CEF1;
+	Tue, 16 Dec 2025 11:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887249;
-	bh=AFD1PFy+pPRcLhBKHBWo/2Lvfy3bLlOODXSV9h7CAgo=;
+	s=korg; t=1765885302;
+	bh=BdImmlOFTUYUIu+7HaeJzcwZbV/p4QNEs6a32R4jzDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkhxmofTjh2Tf672GW31Ad3rCSmUwl1rMP+xOd5weITV5QOBhBPQd4g/RcmKVF2YV
-	 ttCh1vFwmIb4cPIP+NsoUuf17Y6cE4P5X+HDZ3S7HOsOdZaiyJ89V/yiher1IdHi/n
-	 /VYgWa4T+6liiHbizsi1DBdahieB1VhkKYdR5fYc=
+	b=RvWwLDVMziMvfJxHFOKLudbVZgKGchFFGk7ab72QwVILLzPnP+ohp+fyddtJoBEM+
+	 lFcZk0rNKK4k5VbkZtDXCzVB+YrM+rboMVNqEIQSwouPvYIduEKLhFtkjLgzKUU0A7
+	 QS/m6hn/PVETi6KVbyWzebrprGaB2pZGc6H6/QdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Song Liu <song@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Tianyou Li <tianyou.li@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 139/614] bpf: Refactor stack map trace depth calculation into helper function
+Subject: [PATCH 6.17 065/507] perf annotate: Check return value of evsel__get_arch() properly
 Date: Tue, 16 Dec 2025 12:08:26 +0100
-Message-ID: <20251216111406.370067421@linuxfoundation.org>
+Message-ID: <20251216111347.898576596@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Tianyou Li <tianyou.li@intel.com>
 
-[ Upstream commit e17d62fedd10ae56e2426858bd0757da544dbc73 ]
+[ Upstream commit f1204e5846d22fb2fffbd1164eeb19535f306797 ]
 
-Extract the duplicated maximum allowed depth computation for stack
-traces stored in BPF stacks from bpf_get_stackid() and __bpf_get_stack()
-into a dedicated stack_map_calculate_max_depth() helper function.
+Check the error code of evsel__get_arch() in the symbol__annotate().
+Previously it checked non-zero value but after the refactoring it does
+only for negative values.
 
-This unifies the logic for:
-- The max depth computation
-- Enforcing the sysctl_perf_event_max_stack limit
-
-No functional changes for existing code paths.
-
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/bpf/20251025192858.31424-1-contact@arnaud-lcm.com
-Stable-dep-of: 23f852daa4ba ("bpf: Fix stackmap overflow check in __bpf_get_stackid()")
+Fixes: 0669729eb0afb0cf ("perf annotate: Factor out evsel__get_arch()")
+Suggested-by: James Clark <james.clark@linaro.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/stackmap.c | 47 +++++++++++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 15 deletions(-)
+ tools/perf/util/annotate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 4d53cdd1374cf..5e9ad050333c2 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -42,6 +42,28 @@ static inline int stack_map_data_size(struct bpf_map *map)
- 		sizeof(struct bpf_stack_build_id) : sizeof(u64);
- }
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 0dd475a744b6d..3c3fb8c2a36d8 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1020,7 +1020,7 @@ int symbol__annotate(struct map_symbol *ms, struct evsel *evsel,
+ 	int err, nr;
  
-+/**
-+ * stack_map_calculate_max_depth - Calculate maximum allowed stack trace depth
-+ * @size:  Size of the buffer/map value in bytes
-+ * @elem_size:  Size of each stack trace element
-+ * @flags:  BPF stack trace flags (BPF_F_USER_STACK, BPF_F_USER_BUILD_ID, ...)
-+ *
-+ * Return: Maximum number of stack trace entries that can be safely stored
-+ */
-+static u32 stack_map_calculate_max_depth(u32 size, u32 elem_size, u64 flags)
-+{
-+	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-+	u32 max_depth;
-+	u32 curr_sysctl_max_stack = READ_ONCE(sysctl_perf_event_max_stack);
-+
-+	max_depth = size / elem_size;
-+	max_depth += skip;
-+	if (max_depth > curr_sysctl_max_stack)
-+		return curr_sysctl_max_stack;
-+
-+	return max_depth;
-+}
-+
- static int prealloc_elems_and_freelist(struct bpf_stack_map *smap)
- {
- 	u64 elem_size = sizeof(struct stack_map_bucket) +
-@@ -300,20 +322,17 @@ static long __bpf_get_stackid(struct bpf_map *map,
- BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
- 	   u64, flags)
- {
--	u32 max_depth = map->value_size / stack_map_data_size(map);
--	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-+	u32 elem_size = stack_map_data_size(map);
- 	bool user = flags & BPF_F_USER_STACK;
- 	struct perf_callchain_entry *trace;
- 	bool kernel = !user;
-+	u32 max_depth;
+ 	err = evsel__get_arch(evsel, &arch);
+-	if (err < 0)
++	if (err)
+ 		return err;
  
- 	if (unlikely(flags & ~(BPF_F_SKIP_FIELD_MASK | BPF_F_USER_STACK |
- 			       BPF_F_FAST_STACK_CMP | BPF_F_REUSE_STACKID)))
- 		return -EINVAL;
- 
--	max_depth += skip;
--	if (max_depth > sysctl_perf_event_max_stack)
--		max_depth = sysctl_perf_event_max_stack;
--
-+	max_depth = stack_map_calculate_max_depth(map->value_size, elem_size, flags);
- 	trace = get_perf_callchain(regs, kernel, user, max_depth,
- 				   false, false);
- 
-@@ -406,7 +425,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 			    struct perf_callchain_entry *trace_in,
- 			    void *buf, u32 size, u64 flags, bool may_fault)
- {
--	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
-+	u32 trace_nr, copy_len, elem_size, max_depth;
- 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
- 	bool crosstask = task && task != current;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-@@ -438,21 +457,20 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 		goto clear;
- 	}
- 
--	num_elem = size / elem_size;
--	max_depth = num_elem + skip;
--	if (sysctl_perf_event_max_stack < max_depth)
--		max_depth = sysctl_perf_event_max_stack;
-+	max_depth = stack_map_calculate_max_depth(size, elem_size, flags);
- 
- 	if (may_fault)
- 		rcu_read_lock(); /* need RCU for perf's callchain below */
- 
--	if (trace_in)
-+	if (trace_in) {
- 		trace = trace_in;
--	else if (kernel && task)
-+		trace->nr = min_t(u32, trace->nr, max_depth);
-+	} else if (kernel && task) {
- 		trace = get_callchain_entry_for_task(task, max_depth);
--	else
-+	} else {
- 		trace = get_perf_callchain(regs, kernel, user, max_depth,
- 					   crosstask, false);
-+	}
- 
- 	if (unlikely(!trace) || trace->nr < skip) {
- 		if (may_fault)
-@@ -461,7 +479,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	}
- 
- 	trace_nr = trace->nr - skip;
--	trace_nr = (trace_nr <= num_elem) ? trace_nr : num_elem;
- 	copy_len = trace_nr * elem_size;
- 
- 	ips = trace->ip + skip;
+ 	if (parch)
 -- 
 2.51.0
 
