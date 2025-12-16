@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FC7CC289C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88575CC238E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AACB93073960
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CAE68301CDBB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAAF34E75A;
-	Tue, 16 Dec 2025 11:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041C832860D;
+	Tue, 16 Dec 2025 11:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVn85dvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+OqlU7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC734E765;
-	Tue, 16 Dec 2025 11:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DF231ED9A;
+	Tue, 16 Dec 2025 11:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886122; cv=none; b=fVlV/H+qp9xIr/Ms7xBb1+CqVVfxGM715ibZxguQAPrcVUmWjMY+ljRYyjnt/r+C1XVi0oivl2GPKvWjQ8ttU6nLFtw1QQyCLQIDSHUrOpf6k2wmVi8jQbVJ6slDwpmfoNVyc6sM5EfmNm959WBVB1ATUSybbYW2rOb7ZJTv3EY=
+	t=1765884512; cv=none; b=Notg3e/NuV0m46CLnLPCnsrHo8gEcezsMfoVP0fRHXg/QR9kfLTggNKmaFk6iLjhurlGgCkO8JardbhmhyBrkKWM+B15Fb5HJiFXks4xeEdqxbsSZGwxZdBnLzX/o0+YIMifGXFYIFgpMeUcHVnsfkQz2n7fxWiY8+66FOiI6Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886122; c=relaxed/simple;
-	bh=ohH+PWaRBGr/TJYXDUqcgyBRKoHy8LWVgbRaEcywoFk=;
+	s=arc-20240116; t=1765884512; c=relaxed/simple;
+	bh=J0buNbhCdodVZBU+/MBR6C+ayutUFc+r5/ONxCldvqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afxW9I/iQxzFAaMkzLwhGhrisbFpc6Cm7x5r+GW3QRa/7h4vGSafd6EQMM/V87fEZwa2c4x27f28lKSIw5XgFN60+5KNrMjO3OhIIERUA11oVYZGzgIENZ3e5JYrQ8V1lrr63lW1mAWPjykdk//TZuSAkvdjIUbfv8ISgsmzacg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVn85dvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6650C4CEF1;
-	Tue, 16 Dec 2025 11:55:21 +0000 (UTC)
+	 MIME-Version; b=GKIg4m8e4EqNGeGCZm1w4dZ86LydtenzItCN9KKOY6tqrfxfnDteANWYGhFHupNYmbbr1tob5jTXxPG40RrTVofpVKWbvq1Iovrb0h36fZ6wdw60kcaHjgdiuwhS0JxPWSaFZlMbuIHWL60w4XgSNBgMtfgT9KU39shhqqIhx+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+OqlU7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB83C4CEF1;
+	Tue, 16 Dec 2025 11:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886122;
-	bh=ohH+PWaRBGr/TJYXDUqcgyBRKoHy8LWVgbRaEcywoFk=;
+	s=korg; t=1765884512;
+	bh=J0buNbhCdodVZBU+/MBR6C+ayutUFc+r5/ONxCldvqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVn85dvq1Tw6+0B2emaFOflpO53L9CSam+fGSPLR35THGkz95P+mCMvpH2iOdrojD
-	 CFLWX7rDm8ijoStVbD8v4sOCLluBEA+vVn9S7m1zAfLTjarHwBLsuKuhTFcFox4rq7
-	 tIIMbLxOUG7k13dvqhsuMzXp7XhLMIM0WrDq95mI=
+	b=E+OqlU7a1F+3LI8h7Bcvo/Cu5HNgHIMpKpmznEr08DYG53QZGUQJOJxTl7lOyt0De
+	 Y3o0wl9DQckVfT8QuWcVAMXQhSim+Jk64eIg+Rqb2zFoIofZMH75XoDC2rxFSrAUKE
+	 3cSphMu+/fDzpfdI0pKJdt/IayNsYfn15RZWsqDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 343/507] btrfs: fix leaf leak in an error path in btrfs_del_items()
+Subject: [PATCH 6.12 217/354] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
 Date: Tue, 16 Dec 2025 12:13:04 +0100
-Message-ID: <20251216111357.886721819@linuxfoundation.org>
+Message-ID: <20251216111328.780306106@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
 
-[ Upstream commit e7dd1182fcedee7c6097c9f49eba8de94a4364e3 ]
+[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
 
-If the call to btrfs_del_leaf() fails we return without decrementing the
-extra ref we took on the leaf, therefore leaking it. Fix this by ensuring
-we drop the ref count before returning the error.
+Fix this warning that was generated from "make htmldocs":
 
-Fixes: 751a27615dda ("btrfs: do not BUG_ON() on tree mod log failures at btrfs_del_ptr()")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
+not described in 'stratix10_svc'
+
+Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/stratix10-svc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 74e6d7f3d2660..47776c4487bcd 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -4557,9 +4557,9 @@ int btrfs_del_items(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 			if (btrfs_header_nritems(leaf) == 0) {
- 				path->slots[1] = slot;
- 				ret = btrfs_del_leaf(trans, root, path, leaf);
-+				free_extent_buffer(leaf);
- 				if (ret < 0)
- 					return ret;
--				free_extent_buffer(leaf);
- 				ret = 0;
- 			} else {
- 				/* if we're still in the path, make sure
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 554b6b95187b4..4627a00a5590b 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
+ /**
+  * struct stratix10_svc - svc private data
+  * @stratix10_svc_rsu: pointer to stratix10 RSU device
++ * @intel_svc_fcs: pointer to the FCS device
+  */
+ struct stratix10_svc {
+ 	struct platform_device *stratix10_svc_rsu;
 -- 
 2.51.0
 
