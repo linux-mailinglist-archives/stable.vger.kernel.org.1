@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED401CC2FFE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A55C6CC29FC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16D01303C020
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B128302E591
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A9636CE0B;
-	Tue, 16 Dec 2025 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35CD33A013;
+	Tue, 16 Dec 2025 11:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1466BFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5HAUN6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726D336CDF8;
-	Tue, 16 Dec 2025 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9726B33D6E5;
+	Tue, 16 Dec 2025 11:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887989; cv=none; b=TvmO2soIDV/LWbHVxMk2ZmH+axBwvhdFfd9sifSKBbAA4QRU5r92w9kRTQjZKX3ONL9uBsG2fxbU8HnbtkWLebsLm4xm2j5ahL4rOjTZAllyszL9ujNCrGKrArN1E7YHUeHGJFhru7cuAvGtKqbzze6nrJt7xC23/vB3IzvaLfE=
+	t=1765886055; cv=none; b=kxRO9mLMZCTb+C/MVB5ExjpWiCeMcXHSMlUWFSOuoOTCbo+hDRzqSmXQdklekhKCuqBcgb6bmW1b0CrgQFSWMB4EuBtRuaBCk0PdbpI8uDvIoA73XyZ23nYdaYlo2fiAUWO7TaGnJTT5xlef6YKlDaMavI+RF3gbxKQVDwNn6xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887989; c=relaxed/simple;
-	bh=DCsgb2BFvohP9pppSZ3/eSsFrsSlf2R92NKWduE68Vw=;
+	s=arc-20240116; t=1765886055; c=relaxed/simple;
+	bh=Swvaz41RXOn+tjpBXZJhoa2f9+S9YJU9xapDTKhOMeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUBozl4XYI7AmzZD6eyPyxDJ+ipM+cPGwIrwu33UOMCzMWuuP1BMZmQqC+CI9SSjHB0879Gqnp32Bh/d3eMuhMwFotlLpEUNRMif/Ag/cBvoeZFTyYDOEE24/5ZSxyabQFOILcJKDN9rxlH2hoEOSaH3Hw7ESxiwCjQXPg9MVDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1466BFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A8EC16AAE;
-	Tue, 16 Dec 2025 12:26:28 +0000 (UTC)
+	 MIME-Version; b=WL7yjusm7obuJls3g7W7Kn9LAqkj5F2S/jmO9JKVaAEj5GSHK0c4eTrD8WKCWh6pURRRtHeMTAn4xmhsPoUAOfdQYlG8XNvw76RImtu6rnTzGbeZiT5yeizXewD952F932q5T8PtXDN5qezkVkGGW878rFQClx+XsnTTeUYw10Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5HAUN6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D4DC4CEF1;
+	Tue, 16 Dec 2025 11:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887989;
-	bh=DCsgb2BFvohP9pppSZ3/eSsFrsSlf2R92NKWduE68Vw=;
+	s=korg; t=1765886055;
+	bh=Swvaz41RXOn+tjpBXZJhoa2f9+S9YJU9xapDTKhOMeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1466BFMnXco899+WlRrztlseKGpVZRPIzZJn44I52hse9IfeulCZ1KiXJQmUQ1jE
-	 aCvs0bj7GucXzeFXZSrerB2pM4MD9AlSRuPIfu7NpGUpu7oWw4lmgldC1Q7zcdKMse
-	 3Ty3Vl3+c9/bbcQiulU6sGFRpkkUg3ObJwp0KXFA=
+	b=x5HAUN6eZKIRpKMX7NHgJL794Mavk0DgbSuA2fxhdldLE8C85iJ6EYDhZZkSSr2Vz
+	 MDY5wNIREVnp+uQHO4QhJ3J6Mna0my5gMBR/fL7byV3qRhwHgEsES2A4JjxdPK/hwI
+	 5i3PyMuEuNp7cuXTu486t1pWCkOSvHy3EryE0ca8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ben Greear <greearb@candelatech.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 399/614] wifi: mt76: mt7996: skip deflink accounting for offchannel links
+Subject: [PATCH 6.17 325/507] wifi: mt76: mt7921: add MBSSID support
 Date: Tue, 16 Dec 2025 12:12:46 +0100
-Message-ID: <20251216111415.830395669@linuxfoundation.org>
+Message-ID: <20251216111357.240328352@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 4fe823b9ee0317b04ddc6d9e00fea892498aa0f2 ]
+[ Upstream commit 7ae99dd459ba1ea83a9b3d8de254f374182e602c ]
 
-Do not take into account offchannel links for deflink accounting.
+Enable MBSSID support for MT7921 by setting the
+appropriate capability to the firmware.
 
-Fixes: a3316d2fc669f ("wifi: mt76: mt7996: set vif default link_id adding/removing vif links")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-4-259ebf11f654@kernel.org
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250812111642.3620845-1-mingyen.hsieh@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: cdb2941a516c ("Revert "wifi: mt76: mt792x: improve monitor interface handling"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 25 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt792x_core.c  |  5 ++--
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index ead56ce4c0362..5ff7ab596f88c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -370,7 +370,8 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 16db0f2082d1e..fc3e6728fcfbf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1662,6 +1662,31 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 			return err;
+ 	}
  
- 	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
++	if (enable && vif->bss_conf.bssid_indicator) {
++		struct {
++			struct {
++				u8 bss_idx;
++				u8 pad[3];
++			} __packed hdr;
++			struct bss_info_uni_mbssid mbssid;
++		} mbssid_req = {
++			.hdr = {
++				.bss_idx = mvif->idx,
++			},
++			.mbssid = {
++				.tag = cpu_to_le16(UNI_BSS_INFO_11V_MBSSID),
++				.len = cpu_to_le16(sizeof(struct bss_info_uni_mbssid)),
++				.max_indicator = vif->bss_conf.bssid_indicator,
++				.mbss_idx =  vif->bss_conf.bssid_index,
++			},
++		};
++
++		err = mt76_mcu_send_msg(mdev, MCU_UNI_CMD(BSS_INFO_UPDATE),
++					&mbssid_req, sizeof(mbssid_req), true);
++		if (err < 0)
++			return err;
++	}
++
+ 	return mt76_connac_mcu_uni_set_chctx(phy, mvif, ctx);
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_uni_add_bss);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index 44378f7394e8d..c0e56541a9547 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -689,12 +689,11 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+ 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
++	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
++	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
  
--	if (mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
-+	if (!mlink->wcid->offchannel &&
-+	    mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
- 		mvif->mt76.deflink_id = link_conf->link_id;
+ 	if (is_mt7921(&dev->mt76)) {
+ 		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
+-	} else {
+-		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+-		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
+ 	}
  
- 	return 0;
-@@ -401,7 +402,8 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
- 
--	if (mvif->mt76.deflink_id == link_conf->link_id) {
-+	if (!mlink->wcid->offchannel &&
-+	    mvif->mt76.deflink_id == link_conf->link_id) {
- 		struct ieee80211_bss_conf *iter;
- 		unsigned int link_id;
- 
+ 	if (dev->pm.enable)
 -- 
 2.51.0
 
