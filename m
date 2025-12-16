@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8B3CC2965
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:15:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66238CC26E0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2ED0C302EDB8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 854D03083FC1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7539B35CBB6;
-	Tue, 16 Dec 2025 12:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD9134D3BD;
+	Tue, 16 Dec 2025 11:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbgxex0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ135wSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AB335CBB2;
-	Tue, 16 Dec 2025 12:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3843C347FE1;
+	Tue, 16 Dec 2025 11:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887318; cv=none; b=uufXCu/CUz5pXfRLjVws/nBmIrigQd8Rgj0V9oyGvoDw++Nr/AzXMTz8XhZZLiDZ5YhXJw6UHwYLkTzB8i6JTDuwyGjZ3zd8uSMRn/0jHX6TJnadaA0Qb7Mg+3BqFDnI60wGHcavo5F3GoS30mfX5xN92qC5WKQ/O5kQkMnyC0g=
+	t=1765885372; cv=none; b=oweqWcX+6mn7ttpuEJmqXtoBU3SJSLZpLawEuorpouwgA1b9er4kzJTEQUf/5Tn4s056AvFMo9mussblrP63hLa1cx+wVPPivMoZrGtn0YbyCvu7ggNOcHPGmzt6kxDds3agdvOF9Vmc8hyVvFyh6SbblRUJc2Ta0elmt5+Fh54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887318; c=relaxed/simple;
-	bh=R9UJ24gZ5AK6CROSITZymQm1wHhZuDzMOJDVkUjD0DU=;
+	s=arc-20240116; t=1765885372; c=relaxed/simple;
+	bh=hLgPnabaMFJUga6FgBhn29hx82f9xjyAb/Kogoh1x0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKISpnU42ifn2O758aFUfs6Ke6Kh97UEM0WnDXrio2muHcqFQxM5HUfNfynPuBU821o72ZPNJVdMuhRwqolYnOuFQoEOn9vwiFpd18B+yebEAxHCB0MEJhyhF65/1yWa096pFdLaFFs/q61r3g4hVslgi8qq9uqnBY13Cpwl68c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbgxex0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913E5C4CEF1;
-	Tue, 16 Dec 2025 12:15:17 +0000 (UTC)
+	 MIME-Version; b=CvTqaETlcmyDooA5sfpTkbYctKeZJEI84aS86C18M3wfsCmQHijMJAkdurhSXWOFKblHJs0hJKUoEwrbcGx8IjDu7KSSLUlwVheMNslWoxGiks2fw+1FzztpCgaHJ9iZJ8HSg0vLXFGe6YS+ghOdB0ZOelX2WEO19pcINK0KN7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ135wSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5014DC4CEF1;
+	Tue, 16 Dec 2025 11:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887318;
-	bh=R9UJ24gZ5AK6CROSITZymQm1wHhZuDzMOJDVkUjD0DU=;
+	s=korg; t=1765885370;
+	bh=hLgPnabaMFJUga6FgBhn29hx82f9xjyAb/Kogoh1x0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbgxex0bMGBCDz4jIgfSi7N0N+1ZSLLuckl34i/DXX/SqcrZHAyu9u/FYq6/Bf7a6
-	 PxdItrVzTHeDhbAiobEhnC85L1g7Gs1YrZa/fZ2MU4mhDSDQNJJAPib1kHJvFqSguq
-	 sZAPlkjQxkdRVWEhKruBUDjXZsXSVfgTz9bRn7+8=
+	b=JZ135wSzfnyMfH9hU8bQ+8Ah6qrolp4WTICuH0ZjUoc+k0/8XugNwFhDLMtCvwoTi
+	 gHvD5byBqo8ILGT6cb06naVa3NUBn6ACC6ZZPBvQcJF6IcdLOhD2BRTXOtLEgRNx6a
+	 hn+VDBf+p/T8/psGu4UcRmE4EmbO4jiQEWVYoUhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ketil Johnsen <ketil.johnsen@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 193/614] drm/panthor: Fix race with suspend during unplug
+Subject: [PATCH 6.17 119/507] perf/x86/intel/cstate: Remove PC3 support from LunarLake
 Date: Tue, 16 Dec 2025 12:09:20 +0100
-Message-ID: <20251216111408.363520520@linuxfoundation.org>
+Message-ID: <20251216111349.844734894@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ketil Johnsen <ketil.johnsen@arm.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 08be57e6e8aa20ea5a6dd2552e38ac168d6a9b11 ]
+[ Upstream commit 4ba45f041abe60337fdeeb68553b9ee1217d544e ]
 
-There is a race between panthor_device_unplug() and
-panthor_device_suspend() which can lead to IRQ handlers running on a
-powered down GPU. This is how it can happen:
-- unplug routine calls drm_dev_unplug()
-- panthor_device_suspend() can now execute, and will skip a lot of
-  important work because the device is currently marked as unplugged.
-- IRQs will remain active in this case and IRQ handlers can therefore
-  try to access a powered down GPU.
+LunarLake doesn't support Package C3. Remove the PC3 residency counter
+support from LunarLake.
 
-The fix is simply to take the PM ref in panthor_device_unplug() a
-little bit earlier, before drm_dev_unplug().
-
-Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
-Fixes: 5fe909cae118a ("drm/panthor: Add the device logical block")
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251022103242.1083311-1-ketil.johnsen@arm.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Fixes: 26579860fbd5 ("perf/x86/intel/cstate: Add Lunarlake support")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://patch.msgid.link/20251023223754.1743928-3-zide.chen@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/cstate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 81df49880bd87..962a10e00848e 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -83,6 +83,8 @@ void panthor_device_unplug(struct panthor_device *ptdev)
- 		return;
- 	}
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index ec753e39b0077..6f5286a99e0c3 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -70,7 +70,7 @@
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
+  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
+- *						ADL,RPL,MTL,ARL,LNL
++ *						ADL,RPL,MTL,ARL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
+  *			       perf code: 0x02
+@@ -522,7 +522,6 @@ static const struct cstate_model lnl_cstates __initconst = {
+ 				  BIT(PERF_CSTATE_CORE_C7_RES),
  
-+	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
-+
- 	/* Call drm_dev_unplug() so any access to HW blocks happening after
- 	 * that point get rejected.
- 	 */
-@@ -93,8 +95,6 @@ void panthor_device_unplug(struct panthor_device *ptdev)
- 	 */
- 	mutex_unlock(&ptdev->unplug.lock);
- 
--	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
--
- 	/* Now, try to cleanly shutdown the GPU before the device resources
- 	 * get reclaimed.
- 	 */
+ 	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
+-				  BIT(PERF_CSTATE_PKG_C3_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C6_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C10_RES),
+ };
 -- 
 2.51.0
 
