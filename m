@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC490CC3004
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1E1CC4017
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4941730FB186
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5348E307B66F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98843398B6A;
-	Tue, 16 Dec 2025 12:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6034C33E36E;
+	Tue, 16 Dec 2025 12:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGzDiZrR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXonR/Tr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B6A398B62;
-	Tue, 16 Dec 2025 12:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C74B33E366;
+	Tue, 16 Dec 2025 12:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888358; cv=none; b=c4b/MpNjqQ+Sb01kEQFA58BFBg9Jv5gUBGboAByPhvleyr4YYK9/16DfJaUHdHiqoMfeyduIZuiFqE3IwnByhmsF+xnYdunvtbr/aPloWJVDBEtkbIbjMfp+itTv5MsgIk5tT4/bV/1oFdN3FxLlKICV4z1zxmUH2A/ub9RrP3A=
+	t=1765886435; cv=none; b=U61jnVe6v4XgmIDpTS12gRbDup3n4FNXH2fBxMrh5CVwTH8MBQmJ7TIwgXGR1+820i0fe+0QL4fic5z0xIVtvs8a7oCn4vuWbYkBa07R2LYjQ8tDqNP/i789udKgxUSKILU/g+pLNiCBV2DohWB/CJoObYbyOFXZMC5OmbezHaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888358; c=relaxed/simple;
-	bh=Rsju1NiN7gPYOHhfQcprKzUxzZ3oJSKMf3kHN7iawps=;
+	s=arc-20240116; t=1765886435; c=relaxed/simple;
+	bh=UfQ83/rNqCnHmQXB+UjWeEjUHfvHwYhrhesu1u3+gV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3gZ6a60z2MGSYxfL1dMGUwwwTz12G0Iip8rVLoBSwDxndz9VxrsnR7jTBw5Y4Yotr2T4g9v5p8rdrMsBllmMD26qubI8YtyrQkLKZHj6Q0S1SFT+8c+8BpnKuZDJzQ/irmwcrhrNzQNUAd6mDxKD+AytXh8XO9Dx1im2qA4DIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGzDiZrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A911C4CEF1;
-	Tue, 16 Dec 2025 12:32:37 +0000 (UTC)
+	 MIME-Version; b=PTk2/SU+Bj7Yy4HTeG7GQrccsYcorMIRf6wbh71MNsaHH6dbWmaYjOfPNhBeqsNJRsym2l8eI0vaytHzl4zXEPi/BPnAHNMXAiAChiAiWFFzpWCjtZGh4JOrnCWirUIfQVhZYC6U92gaOB87ipG0enuHsq3IjE7238WFhKnvmng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXonR/Tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631D9C4CEF1;
+	Tue, 16 Dec 2025 12:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888357;
-	bh=Rsju1NiN7gPYOHhfQcprKzUxzZ3oJSKMf3kHN7iawps=;
+	s=korg; t=1765886434;
+	bh=UfQ83/rNqCnHmQXB+UjWeEjUHfvHwYhrhesu1u3+gV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGzDiZrRHSDour53G17yIQyli64MEebvLAp8gYPkz8xfuHL3AiPGfS+YigVBUvylz
-	 YCBXDMd6DoiZcCdRHHC8BeUyMaCVNMm22qvy5N76peUv8sshunGowoenlG+n+o8AUD
-	 ESVoTuMcW6nrq2s1s9EvfzEKP1vRBMI3a0F/y7+o=
+	b=nXonR/TrWFe/pRW6nLK96wo5rVKPwJCXlgLNb4U/W19wJXx74tMleeFuenXwScYBi
+	 Fn9DK50Y3rzlJnTbm0iZzt6qaJZtcSGifumCrMIyavYZOlKSHWUe4i4RgGkTM4BTL9
+	 aFQzZCMC0axFchu7adDM+Ar/oKXkI+cEZd01M2/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 510/614] net: dsa: b53: move writing ARL entries into their own functions
+Subject: [PATCH 6.17 436/507] f2fs: maintain one time GC mode is enabled during whole zoned GC cycle
 Date: Tue, 16 Dec 2025 12:14:37 +0100
-Message-ID: <20251216111419.846589237@linuxfoundation.org>
+Message-ID: <20251216111401.253690799@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit bf6e9d2ae1dbafee53ec4ccd126595172e1e5278 ]
+[ Upstream commit e462fc48ceb8224811c3224650afed05cb7f0872 ]
 
-Move writing ARL entries into individual functions for each format.
+The current version missed setting one time GC for normal zoned GC
+cycle. So, valid threshold control is not working. Need to fix it to
+prevent excessive GC for zoned devices.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-4-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Fixes: e791d00bd06c ("f2fs: add valid block ratio not to do excessive GC for one time GC")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 38 ++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 12 deletions(-)
+ fs/f2fs/gc.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 41dcd2d03230d..4c418e0531f73 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1840,6 +1840,16 @@ static void b53_arl_read_entry_25(struct b53_device *dev,
- 	b53_arl_to_entry_25(ent, mac_vid);
- }
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 5734e03864685..5a300f2bc85b4 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -38,13 +38,14 @@ static int gc_thread_func(void *data)
+ 	struct f2fs_gc_control gc_control = {
+ 		.victim_segno = NULL_SEGNO,
+ 		.should_migrate_blocks = false,
+-		.err_gc_skipped = false };
++		.err_gc_skipped = false,
++		.one_time = false };
  
-+static void b53_arl_write_entry_25(struct b53_device *dev,
-+				   const struct b53_arl_entry *ent, u8 idx)
-+{
-+	u64 mac_vid;
-+
-+	b53_arl_from_entry_25(&mac_vid, ent);
-+	b53_write64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		    mac_vid);
-+}
-+
- static void b53_arl_read_entry_95(struct b53_device *dev,
- 				  struct b53_arl_entry *ent, u8 idx)
- {
-@@ -1852,6 +1862,19 @@ static void b53_arl_read_entry_95(struct b53_device *dev,
- 	b53_arl_to_entry(ent, mac_vid, fwd_entry);
- }
+ 	wait_ms = gc_th->min_sleep_time;
  
-+static void b53_arl_write_entry_95(struct b53_device *dev,
-+				   const struct b53_arl_entry *ent, u8 idx)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
-+
-+	b53_arl_from_entry(&mac_vid, &fwd_entry, ent);
-+	b53_write64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		    mac_vid);
-+	b53_write32(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx),
-+		    fwd_entry);
-+}
-+
- static int b53_arl_read(struct b53_device *dev, const u8 *mac,
- 			u16 vid, struct b53_arl_entry *ent, u8 *idx)
- {
-@@ -1892,9 +1915,8 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 		      const unsigned char *addr, u16 vid, bool is_valid)
- {
- 	struct b53_arl_entry ent;
--	u32 fwd_entry;
--	u64 mac, mac_vid = 0;
- 	u8 idx = 0;
-+	u64 mac;
- 	int ret;
+ 	set_freezable();
+ 	do {
+-		bool sync_mode, foreground = false;
++		bool sync_mode, foreground = false, gc_boost = false;
  
- 	/* Convert the array into a 64-bit MAC */
-@@ -1931,7 +1953,6 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 		/* We could not find a matching MAC, so reset to a new entry */
- 		dev_dbg(dev->dev, "{%pM,%.4d} not found, using idx: %d\n",
- 			addr, vid, idx);
--		fwd_entry = 0;
- 		break;
- 	default:
- 		dev_dbg(dev->dev, "{%pM,%.4d} found, using idx: %d\n",
-@@ -1959,16 +1980,9 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 	ent.is_age = false;
- 	memcpy(ent.mac, addr, ETH_ALEN);
- 	if (is5325(dev) || is5365(dev))
--		b53_arl_from_entry_25(&mac_vid, &ent);
-+		b53_arl_write_entry_25(dev, &ent, idx);
- 	else
--		b53_arl_from_entry(&mac_vid, &fwd_entry, &ent);
+ 		wait_event_freezable_timeout(*wq,
+ 				kthread_should_stop() ||
+@@ -52,8 +53,12 @@ static int gc_thread_func(void *data)
+ 				gc_th->gc_wake,
+ 				msecs_to_jiffies(wait_ms));
+ 
+-		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq))
++		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq)) {
+ 			foreground = true;
++			gc_control.one_time = false;
++		} else if (f2fs_sb_has_blkzoned(sbi)) {
++			gc_control.one_time = true;
++		}
+ 
+ 		/* give it a try one time */
+ 		if (gc_th->gc_wake)
+@@ -81,8 +86,6 @@ static int gc_thread_func(void *data)
+ 			continue;
+ 		}
+ 
+-		gc_control.one_time = false;
 -
--	b53_write64(dev, B53_ARLIO_PAGE,
--		    B53_ARLTBL_MAC_VID_ENTRY(idx), mac_vid);
--
--	if (!is5325(dev) && !is5365(dev))
--		b53_write32(dev, B53_ARLIO_PAGE,
--			    B53_ARLTBL_DATA_ENTRY(idx), fwd_entry);
-+		b53_arl_write_entry_95(dev, &ent, idx);
+ 		/*
+ 		 * [GC triggering condition]
+ 		 * 0. GC is not conducted currently.
+@@ -132,7 +135,7 @@ static int gc_thread_func(void *data)
+ 		if (need_to_boost_gc(sbi)) {
+ 			decrease_sleep_time(gc_th, &wait_ms);
+ 			if (f2fs_sb_has_blkzoned(sbi))
+-				gc_control.one_time = true;
++				gc_boost = true;
+ 		} else {
+ 			increase_sleep_time(gc_th, &wait_ms);
+ 		}
+@@ -141,7 +144,7 @@ static int gc_thread_func(void *data)
+ 					FOREGROUND : BACKGROUND);
  
- 	return b53_arl_rw_op(dev, 0);
- }
+ 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
+-			(gc_control.one_time && gc_th->boost_gc_greedy);
++			(gc_boost && gc_th->boost_gc_greedy);
+ 
+ 		/* foreground GC was been triggered via f2fs_balance_fs() */
+ 		if (foreground && !f2fs_sb_has_blkzoned(sbi))
 -- 
 2.51.0
 
