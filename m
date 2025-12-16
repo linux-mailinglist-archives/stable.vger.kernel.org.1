@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-202186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A372DCC2D19
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D1FCC2C68
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1625130C19CA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4AA030F8F1D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E0C3659E7;
-	Tue, 16 Dec 2025 12:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519233659E7;
+	Tue, 16 Dec 2025 12:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDsRQq/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bp/m5pa9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DF31A7F5;
-	Tue, 16 Dec 2025 12:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030CF33A036;
+	Tue, 16 Dec 2025 12:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887096; cv=none; b=jggiohUFBakkorvc0Dmc5rO3NV43K8sR7McOILke9AWGrfrMPOAnBHwlThv7BErrt7QA4Y9yH8aKI2jvgDlcSJm/PZu1ok7Fpao/mQy5QcE/6VCvybp3oVIlLQgbU/rRfTw6JV6cuZEBtgy1s726Xm7JpqEU87n2nYnGff+abaI=
+	t=1765887119; cv=none; b=TFnqmywkcSTcIiu9piaj1sjxaHmf5N4C/pPzIBsAXpspUzRJDJNPD/+xoDdLlewWEYdXWYNhZzxFAFg4uZLL1/lAa55LIHVAzfMjwr0aDcxNQAW3WQIkCEwEXjHHzajZqFC9mZebI+NPbf6Jf9VICWUOH8BkAR5b6GQUn5xRCeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887096; c=relaxed/simple;
-	bh=ns/g47w/kKA0obY2s4oVE/s1jfDCo0oyk0xbQ7Wx3KU=;
+	s=arc-20240116; t=1765887119; c=relaxed/simple;
+	bh=eoGDjfCjFtP+KGE34vq2h12rkedTspdLcsLIjnuWXtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUWyCbKDKjDMfdNArfhT4Ie/1KhtEL/2zvT2f8c/fBn2YxbQwHrPkFJaD6ukZk6Vn+BGyRdKbQLuJIPRTGFurmL/c+n1NbIf6wYvLOM68GJsanbSZJobdslv9/nLiFNB1WVIazPxoElVYgXsfXXJGFD/KkPfRfoCXbTWtiMevYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDsRQq/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34128C4CEF1;
-	Tue, 16 Dec 2025 12:11:35 +0000 (UTC)
+	 MIME-Version; b=CLBT+W4tcNXQUxHTZaSITJhuLc6bQYTBKykoIPKvPQ0zn+cr1YZF/Y9ETVmtHJM80OHq5QnVbnUCBYHhKrJkHPZ82T0+dny6f8vPHowJ9qU+8X78+Tpj7vQSZmuTAclHd0w7MCW4KdqRBkCkVIVbWoX9kKTE+xv3Gyd60bjU5S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bp/m5pa9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653D6C4CEF1;
+	Tue, 16 Dec 2025 12:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887096;
-	bh=ns/g47w/kKA0obY2s4oVE/s1jfDCo0oyk0xbQ7Wx3KU=;
+	s=korg; t=1765887118;
+	bh=eoGDjfCjFtP+KGE34vq2h12rkedTspdLcsLIjnuWXtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDsRQq/BbaZ9bp81hIqnH3KwGLxR6qbSoM9hU3mTSyQqrUvPbwuh1aDNIUkN0E1sW
-	 /J2/og8CkQy5oQTJqsS469TabLX6AZZXE2lu7Xftuq9DoceyiqVbe7i/fIJQ4jEcMa
-	 Yr2UiD2DrNKIcrJ/qYmeTkDPH6Dc9CxD+2PZI+TI=
+	b=bp/m5pa9NqUOmFxVuCf8XvGwoGWcQ5X+JrS9yAUn2v9v3yq/vAno/KwIprcKe6l51
+	 29AjUBmBjo2dWqY/ChsxvF9W7tY5x2llhahHxTlhxu4u1zCvX4EjTcCf0XoIgCuBXh
+	 o5R9wXSieifJ0cuDh/wkqAFP5PSlOcubS67/gNyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 098/614] ice: move service task start out of ice_init_pf()
-Date: Tue, 16 Dec 2025 12:07:45 +0100
-Message-ID: <20251216111404.868619632@linuxfoundation.org>
+Subject: [PATCH 6.18 099/614] ice: move ice_init_interrupt_scheme() prior ice_init_pf()
+Date: Tue, 16 Dec 2025 12:07:46 +0100
+Message-ID: <20251216111404.908220361@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -67,98 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit 806c4f32a80627f8977fda53520afc41491d162f ]
+[ Upstream commit 2fe18288fce6b421f1dc585bcb9dd3afa32d3ad9 ]
 
-Move service task start out of ice_init_pf(). Do analogous with deinit.
-Service task is needed up to the very end of driver removal, later commit
-of the series will move it later on execution timeline.
+Move ice_init_interrupt_scheme() prior ice_init_pf().
+To enable the move ice_set_pf_caps() was moved out from ice_init_pf()
+to the caller (ice_init_dev()), and placed prior to the irq scheme init.
+
+The move makes deinit order of ice_deinit_dev() and failure-path of
+ice_init_pf() match (at least in terms of not calling
+ice_clear_interrupt_scheme() and ice_deinit_pf() in opposite ways).
+
+The new order aligns with findings made by Jakub Buchocki in
+the commit 24b454bc354a ("ice: Fix ice module unload").
 
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Stable-dep-of: 1390b8b3d2be ("ice: remove duplicate call to ice_deinit_hw() on error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h      |  1 +
- drivers/net/ethernet/intel/ice/ice_main.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 25 ++++++++++-------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 22b8323ff0d0e..0e58a58c23eb3 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1029,6 +1029,7 @@ int ice_open(struct net_device *netdev);
- int ice_open_internal(struct net_device *netdev);
- int ice_stop(struct net_device *netdev);
- void ice_service_task_schedule(struct ice_pf *pf);
-+void ice_start_service_task(struct ice_pf *pf);
- int ice_load(struct ice_pf *pf);
- void ice_unload(struct ice_pf *pf);
- void ice_adv_lnk_speed_maps_init(void);
 diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 86f5859e88ef5..41c2f0d52ce0d 100644
+index 41c2f0d52ce0d..13db83fb383e6 100644
 --- a/drivers/net/ethernet/intel/ice/ice_main.c
 +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3951,7 +3951,6 @@ u16 ice_get_avail_rxq_count(struct ice_pf *pf)
+@@ -4043,8 +4043,6 @@ void ice_start_service_task(struct ice_pf *pf)
   */
- static void ice_deinit_pf(struct ice_pf *pf)
+ static int ice_init_pf(struct ice_pf *pf)
  {
--	ice_service_task_stop(pf);
- 	mutex_destroy(&pf->lag_mutex);
- 	mutex_destroy(&pf->adev_mutex);
- 	mutex_destroy(&pf->sw_mutex);
-@@ -4030,6 +4029,14 @@ static void ice_set_pf_caps(struct ice_pf *pf)
- 	pf->max_pf_rxqs = func_caps->common_cap.num_rxq;
- }
- 
-+void ice_start_service_task(struct ice_pf *pf)
-+{
-+	timer_setup(&pf->serv_tmr, ice_service_timer, 0);
-+	pf->serv_tmr_period = HZ;
-+	INIT_WORK(&pf->serv_task, ice_service_task);
-+	clear_bit(ICE_SERVICE_SCHED, pf->state);
-+}
-+
- /**
-  * ice_init_pf - Initialize general software structures (struct ice_pf)
-  * @pf: board private structure to initialize
-@@ -4049,12 +4056,6 @@ static int ice_init_pf(struct ice_pf *pf)
- 
- 	init_waitqueue_head(&pf->reset_wait_queue);
- 
--	/* setup service timer and periodic service task */
--	timer_setup(&pf->serv_tmr, ice_service_timer, 0);
--	pf->serv_tmr_period = HZ;
--	INIT_WORK(&pf->serv_task, ice_service_task);
--	clear_bit(ICE_SERVICE_SCHED, pf->state);
+-	ice_set_pf_caps(pf);
 -
- 	mutex_init(&pf->avail_q_mutex);
- 	pf->avail_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
- 	if (!pf->avail_txqs)
-@@ -4745,6 +4746,7 @@ int ice_init_dev(struct ice_pf *pf)
+ 	mutex_init(&pf->sw_mutex);
+ 	mutex_init(&pf->tc_mutex);
+ 	mutex_init(&pf->adev_mutex);
+@@ -4746,11 +4744,18 @@ int ice_init_dev(struct ice_pf *pf)
  		ice_set_safe_mode_caps(hw);
  	}
  
-+	ice_start_service_task(pf);
++	ice_set_pf_caps(pf);
++	err = ice_init_interrupt_scheme(pf);
++	if (err) {
++		dev_err(dev, "ice_init_interrupt_scheme failed: %d\n", err);
++		return -EIO;
++	}
++
+ 	ice_start_service_task(pf);
  	err = ice_init_pf(pf);
  	if (err) {
  		dev_err(dev, "ice_init_pf failed: %d\n", err);
-@@ -4791,6 +4793,7 @@ int ice_init_dev(struct ice_pf *pf)
- 	ice_clear_interrupt_scheme(pf);
+-		return err;
++		goto unroll_irq_scheme_init;
+ 	}
+ 
+ 	pf->hw.udp_tunnel_nic.set_port = ice_udp_tunnel_set_port;
+@@ -4768,14 +4773,6 @@ int ice_init_dev(struct ice_pf *pf)
+ 		pf->hw.udp_tunnel_nic.tables[1].tunnel_types =
+ 			UDP_TUNNEL_TYPE_GENEVE;
+ 	}
+-
+-	err = ice_init_interrupt_scheme(pf);
+-	if (err) {
+-		dev_err(dev, "ice_init_interrupt_scheme failed: %d\n", err);
+-		err = -EIO;
+-		goto unroll_pf_init;
+-	}
+-
+ 	/* In case of MSIX we are going to setup the misc vector right here
+ 	 * to handle admin queue events etc. In case of legacy and MSI
+ 	 * the misc functionality and queue processing is combined in
+@@ -4784,16 +4781,16 @@ int ice_init_dev(struct ice_pf *pf)
+ 	err = ice_req_irq_msix_misc(pf);
+ 	if (err) {
+ 		dev_err(dev, "setup of misc vector failed: %d\n", err);
+-		goto unroll_irq_scheme_init;
++		goto unroll_pf_init;
+ 	}
+ 
+ 	return 0;
+ 
+-unroll_irq_scheme_init:
+-	ice_clear_interrupt_scheme(pf);
  unroll_pf_init:
  	ice_deinit_pf(pf);
-+	ice_service_task_stop(pf);
++unroll_irq_scheme_init:
+ 	ice_service_task_stop(pf);
++	ice_clear_interrupt_scheme(pf);
  	return err;
  }
  
-@@ -4799,6 +4802,7 @@ void ice_deinit_dev(struct ice_pf *pf)
- 	ice_free_irq_msix_misc(pf);
- 	ice_deinit_pf(pf);
- 	ice_deinit_hw(&pf->hw);
-+	ice_service_task_stop(pf);
- 
- 	/* Service task is already stopped, so call reset directly. */
- 	ice_reset(&pf->hw, ICE_RESET_PFR);
 -- 
 2.51.0
 
