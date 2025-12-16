@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD9FCC2890
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:07:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7E9CC34A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC42D31597E7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5ACFC3007740
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BD6341AD7;
-	Tue, 16 Dec 2025 11:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F71736CE10;
+	Tue, 16 Dec 2025 12:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSsk4e3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EsKx0x5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99247126C02;
-	Tue, 16 Dec 2025 11:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F4636D4E7;
+	Tue, 16 Dec 2025 12:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886078; cv=none; b=fuYID1cL3C9/OT2CtW6vd7iTvxj76u0RHun8VAxUqenFQmj/egYl7hwsoxUUCKyRdCGtKDWp7wahXuoWElLuxnL2N3VSRsuFxcs2/wZaaB+NdgnmsiXM+OfwziUO3sGPxPOXdjjAwUH94i3+E7+6oKq92zFSf52jYijksfOWxsU=
+	t=1765888016; cv=none; b=d9d7fpTdr/Sw128RiK4dom3pVd8+6GxlNHZepp1PuVNc4NcRveNl40AUkl7We0FlL+UMgiGdawuPz8Dudo2IzN5LiKlf7hm4G7Dk0wbl/6sFwXj7J+IXENDhlMrmtnydCC36XY95kqnvT5aQU4CcsxDX8QFCBgS87t6j0d0HRFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886078; c=relaxed/simple;
-	bh=Wvk6gydHNzcd9yWyZulc6+PBFhpWvSt75y6xzDR/Gtc=;
+	s=arc-20240116; t=1765888016; c=relaxed/simple;
+	bh=x3S/59zaeYEDO6HEzziMsxu6bWYDN7A2FEF5/Cjmgck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t198mq4mJa0NaX1mwQQhN+YI3cmypW9F4HPYBAdsSDIdvHSujQLjKJFpZcsASpvB0ItozcPg6LH0atMqV5kMZOfNnn0hNJwEgQ+hnjEETIQLDPVs/vQDn1t4yYlyfBH1dupDEy7KtlDVHSfrRXH+UMNCsR2yY67C2JhqCWNDyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSsk4e3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05835C4CEF1;
-	Tue, 16 Dec 2025 11:54:37 +0000 (UTC)
+	 MIME-Version; b=KQ3QQp98ehaJWEVuWFfB7YzwSVylug9r2a+b+TyvS5yZVHhBFji6ggWELWJceYCLcMLH8Mb/9L7UJsUf8zCA0rwCd2Q9zZRq477OB8NG8DDIn1d42yB7erFszxPSnMIqJMybYOd/1aOEE6/Fu4WoqUH9yYDS3w8TmnZf17YMPho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EsKx0x5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DCAC4CEF1;
+	Tue, 16 Dec 2025 12:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886078;
-	bh=Wvk6gydHNzcd9yWyZulc6+PBFhpWvSt75y6xzDR/Gtc=;
+	s=korg; t=1765888016;
+	bh=x3S/59zaeYEDO6HEzziMsxu6bWYDN7A2FEF5/Cjmgck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSsk4e3slCc2hxDLuVNg6NTW2bmSGGHdF9XtNULUVbLnjj1Eo7C+Lo4Ce+nPMiJEi
-	 vK/kPULz+D9AR5fzFy4Bg4wQucEJA9m+Q8GXDgTYSASuQ0ncWm4rokU5DLxMilSphy
-	 L5qFiYq6ZghJw0MKZzmCN5F6eRcz7R78NrRfnYT8=
+	b=0EsKx0x5PqdFPDyrePAfWawf7tWUKj0MUWc3Iw8qooz460dYC/wWq+dOpmTeFFqW9
+	 P6Squ2iEd/7qf4POTjGp/hey3Ftp/YxAP9QFwRI4WTSbfqSFBr6Ti2PbKFJiZE3xya
+	 J5zNLBMPBMSirbroCX6ytRMcFcEz3vxMmehXGs1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Song Liu <song@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 332/507] wifi: mt76: mt7996: fix MLD group index assignment
+Subject: [PATCH 6.18 406/614] bpftool: Allow bpftool to build with openssl < 3
 Date: Tue, 16 Dec 2025 12:12:53 +0100
-Message-ID: <20251216111357.493386457@linuxfoundation.org>
+Message-ID: <20251216111416.084488181@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 4fb3b4e7d1ca5453c6167816230370afc15f26bf ]
+[ Upstream commit 90ae54b4c7eca42d5ce006dd0a8cb0b5bfbf80d0 ]
 
-Fix extender mode and MBSS issues caused by incorrect assignment of the
-MLD group and remap indices.
+ERR_get_error_all()[1] is a openssl v3 API, so to make code
+compatible with openssl v1 utilize ERR_get_err_line_data
+instead.  Since openssl is already a build requirement for
+the kernel (minimum requirement openssl 1.0.0), this will
+allow bpftool to compile where opensslv3 is not available.
+Signing-related BPF selftests pass with openssl v1.
 
-Fixes: ed01c310eca9 ("wifi: mt76: mt7996: Fix mt7996_mcu_bss_mld_tlv routine")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-9-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[1] https://docs.openssl.org/3.4/man3/ERR_get_error/
+
+Fixes: 40863f4d6ef2 ("bpftool: Add support for signing BPF programs")
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Song Liu <song@kernel.org>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20251120084754.640405-2-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/main.c  | 58 +++++++++++++------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ tools/bpf/bpftool/sign.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index b8bd2bda5172f..14e90ecf925e1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -90,9 +90,11 @@ static void mt7996_stop(struct ieee80211_hw *hw, bool suspend)
+diff --git a/tools/bpf/bpftool/sign.c b/tools/bpf/bpftool/sign.c
+index b34f74d210e9c..f9b742f4bb104 100644
+--- a/tools/bpf/bpftool/sign.c
++++ b/tools/bpf/bpftool/sign.c
+@@ -28,6 +28,12 @@
+ 
+ #define OPEN_SSL_ERR_BUF_LEN 256
+ 
++/* Use deprecated in 3.0 ERR_get_error_line_data for openssl < 3 */
++#if !defined(OPENSSL_VERSION_MAJOR) || (OPENSSL_VERSION_MAJOR < 3)
++#define ERR_get_error_all(file, line, func, data, flags) \
++	ERR_get_error_line_data(file, line, data, flags)
++#endif
++
+ static void display_openssl_errors(int l)
  {
- }
- 
--static inline int get_free_idx(u32 mask, u8 start, u8 end)
-+static inline int get_free_idx(u64 mask, u8 start, u8 end)
- {
--	return ffs(~mask & GENMASK(end, start));
-+	if (~mask & GENMASK_ULL(end, start))
-+		return __ffs64(~mask & GENMASK_ULL(end, start)) + 1;
-+	return 0;
- }
- 
- static int get_omac_idx(enum nl80211_iftype type, u64 mask)
-@@ -311,12 +313,6 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	if (idx < 0)
- 		return -ENOSPC;
- 
--	if (!dev->mld_idx_mask) { /* first link in the group */
--		mvif->mld_group_idx = get_own_mld_idx(dev->mld_idx_mask, true);
--		mvif->mld_remap_idx = get_free_idx(dev->mld_remap_idx_mask,
--						   0, 15);
--	}
--
- 	mld_idx = get_own_mld_idx(dev->mld_idx_mask, false);
- 	if (mld_idx < 0)
- 		return -ENOSPC;
-@@ -334,10 +330,6 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 		return ret;
- 
- 	dev->mt76.vif_mask |= BIT_ULL(mlink->idx);
--	if (!dev->mld_idx_mask) {
--		dev->mld_idx_mask |= BIT_ULL(mvif->mld_group_idx);
--		dev->mld_remap_idx_mask |= BIT_ULL(mvif->mld_remap_idx);
--	}
- 	dev->mld_idx_mask |= BIT_ULL(link->mld_idx);
- 	phy->omac_mask |= BIT_ULL(mlink->omac_idx);
- 
-@@ -421,11 +413,6 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	dev->mt76.vif_mask &= ~BIT_ULL(mlink->idx);
- 	dev->mld_idx_mask &= ~BIT_ULL(link->mld_idx);
- 	phy->omac_mask &= ~BIT_ULL(mlink->omac_idx);
--	if (!(dev->mld_idx_mask & ~BIT_ULL(mvif->mld_group_idx))) {
--		/* last link */
--		dev->mld_idx_mask &= ~BIT_ULL(mvif->mld_group_idx);
--		dev->mld_remap_idx_mask &= ~BIT_ULL(mvif->mld_remap_idx);
--	}
- 
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	if (!list_empty(&msta_link->wcid.poll_list))
-@@ -2181,7 +2168,42 @@ mt7996_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			u16 old_links, u16 new_links,
- 			struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS])
- {
--	return 0;
-+	struct mt7996_dev *dev = mt7996_hw_dev(hw);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	int ret = 0;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	if (!old_links) {
-+		int idx;
-+
-+		idx = get_own_mld_idx(dev->mld_idx_mask, true);
-+		if (idx < 0) {
-+			ret = -ENOSPC;
-+			goto out;
-+		}
-+		mvif->mld_group_idx = idx;
-+		dev->mld_idx_mask |= BIT_ULL(mvif->mld_group_idx);
-+
-+		idx = get_free_idx(dev->mld_remap_idx_mask, 0, 15) - 1;
-+		if (idx < 0) {
-+			ret = -ENOSPC;
-+			goto out;
-+		}
-+		mvif->mld_remap_idx = idx;
-+		dev->mld_remap_idx_mask |= BIT_ULL(mvif->mld_remap_idx);
-+	}
-+
-+	if (new_links)
-+		goto out;
-+
-+	dev->mld_idx_mask &= ~BIT_ULL(mvif->mld_group_idx);
-+	dev->mld_remap_idx_mask &= ~BIT_ULL(mvif->mld_remap_idx);
-+
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret;
- }
- 
- const struct ieee80211_ops mt7996_ops = {
+ 	char buf[OPEN_SSL_ERR_BUF_LEN];
 -- 
 2.51.0
 
