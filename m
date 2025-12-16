@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD39CC37EA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FCDCC24E1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 092F330BA703
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69B9630F8EF8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E5A35028C;
-	Tue, 16 Dec 2025 11:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2581341650;
+	Tue, 16 Dec 2025 11:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJOOcPv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkyY7rWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1525E350286;
-	Tue, 16 Dec 2025 11:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C05833DEE1;
+	Tue, 16 Dec 2025 11:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885688; cv=none; b=OroyfVMgPLniESrXInni0SZJvObMalCh1B/QWzhqdfzyLrOEk9AQAit8Z8fYFpUYzjdM3CBcqJ010ZOZb7h5Rl3XKU8ncCBxcbXaQD7EmKS0lsRq2tcX1ShmDmGrxAItrlFfc09gT62aLhWkQ1x9qfB+uuxCl0n+ojix2m2ZV1A=
+	t=1765884089; cv=none; b=c4flOIxNDs5vHfY4cN21twksKtbF4dVKjtURc5Ju4FYcRPOUlZHC0YwdHcD+2RuujdMZ0X8bUy3/upZ3vVUQnp/Xlx3IvWfwtUNZdyJDQyb0SXax8H3IpE4d15xW/HLc7LaGBHsTYO4MD6+mg0aV9Hqo3UcRLOfGMu8m2SaF2J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885688; c=relaxed/simple;
-	bh=jnLddWrYZTPKFqQMSPG1YtjCgrz7ZUQ8+zN+ExkVDjM=;
+	s=arc-20240116; t=1765884089; c=relaxed/simple;
+	bh=IrqE6gxUp3uhVFHjsoAHk12+2oYUoviQ/SVdcRBK5zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3f6NMOVnGiluaahWJQpfu4UgqvNrO2dppv0Mn9HFkdTkVwnzhYGF4ddlF8WO5c7sz2UxB09ooMnrvoWzc3++6Qm5UpUkQqFpWB0/xNfIy2TM3NLAevey73wxephuwQqkcCSyCmKp86ihaPnaKTaspKKTARRh4Q91jy2ZDZRIog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJOOcPv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD2FC4CEF1;
-	Tue, 16 Dec 2025 11:48:07 +0000 (UTC)
+	 MIME-Version; b=UzLxEjW57Uw+asiDlaKO0PPWhvzWX59QZTvzTdMiGtOJV1hxpbqprND5du4EE1NeHOJEvQ70dGFw0Ab8W6D+cnBJKkAyOq50ln0TO42q2Te0kG+x49F/5fjcv+2UkYBRu6wEuQ2qBrvuerI74WeJg1r9MjMyeeEKuxj4iQeMdTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkyY7rWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E7DC2BCAF;
+	Tue, 16 Dec 2025 11:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885687;
-	bh=jnLddWrYZTPKFqQMSPG1YtjCgrz7ZUQ8+zN+ExkVDjM=;
+	s=korg; t=1765884089;
+	bh=IrqE6gxUp3uhVFHjsoAHk12+2oYUoviQ/SVdcRBK5zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJOOcPv/9Aazf9/pVJapBfe6cIHT1NwLcO35mU3VRT3IZQ0Aek5vTyJ+usZswg/td
-	 giIVbYWq1TxDgpO78yzlH0HLCFhJvV+6xrrOmmyquSAIPWbfU7pNZQIY/FLBtwoUgA
-	 ++IdV/YdJolkDJ/Dfckne8uUgbUUDyI5aPkhRnJo=
+	b=vkyY7rWMhXq37xYiB2CnYkl5g5bmagtoYLxH03tnFW258O3Z8QxFmPrw9QrkbDcLF
+	 F3dfJfu6nxgzI4YLWFxq+KHK3EkBbMGtQdFXSs2fHGCwncH8M7LghcNeq8v+b6wb/1
+	 MhD2OIW2569PAnDDGrOlojTwCK142oSsWhYx1V2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 215/507] coresight: etm4x: Correct polling IDLE bit
+Subject: [PATCH 6.12 089/354] task_work: Fix NMI race condition
 Date: Tue, 16 Dec 2025 12:10:56 +0100
-Message-ID: <20251216111353.297291110@linuxfoundation.org>
+Message-ID: <20251216111324.147872871@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
+[ Upstream commit ef1ea98c8fffe227e5319215d84a53fa2a4bcebc ]
 
-Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
-the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
-instead of the IDLE bit.
+  __schedule()
+  // disable irqs
+      <NMI>
+	  task_work_add(current, work, TWA_NMI_CURRENT);
+      </NMI>
+  // current = next;
+  // enable irqs
+      <IRQ>
+	  task_work_set_notify_irq()
+	  test_and_set_tsk_thread_flag(current,
+                                       TIF_NOTIFY_RESUME); // wrong task!
+      </IRQ>
+  // original task skips task work on its next return to user (or exit!)
 
-This commit corrects the typo.
-
-Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
+Fixes: 466e4d801cd4 ("task_work: Add TWA_NMI_CURRENT as an additional notify mode.")
+Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://patch.msgid.link/20250924080118.425949403@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/task_work.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index baf38142b317f..1fa6d123b8143 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1924,7 +1924,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
- 
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
+diff --git a/kernel/task_work.c b/kernel/task_work.c
+index c969f1f26be58..48ab6275e6e7e 100644
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -9,7 +9,12 @@ static struct callback_head work_exited; /* all we need is ->next == NULL */
+ #ifdef CONFIG_IRQ_WORK
+ static void task_work_set_notify_irq(struct irq_work *entry)
+ {
+-	test_and_set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
++	/*
++	 * no-op IPI
++	 *
++	 * TWA_NMI_CURRENT will already have set the TIF flag, all
++	 * this interrupt does it tickle the return-to-user path.
++	 */
+ }
+ static DEFINE_PER_CPU(struct irq_work, irq_work_NMI_resume) =
+ 	IRQ_WORK_INIT_HARD(task_work_set_notify_irq);
+@@ -98,6 +103,7 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
+ 		break;
+ #ifdef CONFIG_IRQ_WORK
+ 	case TWA_NMI_CURRENT:
++		set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
+ 		irq_work_queue(this_cpu_ptr(&irq_work_NMI_resume));
+ 		break;
+ #endif
 -- 
 2.51.0
 
