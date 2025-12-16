@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0357CC344D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37329CC248A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D72E300A556
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 180AB3025293
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0191B36CDF2;
-	Tue, 16 Dec 2025 12:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D222343206;
+	Tue, 16 Dec 2025 11:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymiy7KbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUlqUDC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F8436CDED;
-	Tue, 16 Dec 2025 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48921342507;
+	Tue, 16 Dec 2025 11:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887972; cv=none; b=CqkRCXeBRjNFMgNJNbF8jJZ0p9jyr9eprLl/QHknHXHsy8kXBTDY1a2Z+dP/qk0PAuJj0tyz2/j3Ei24cdcif7zXu+PbXwlVp+DHb4JiXxgU0dEsSGUuKDisMUNPM+Iwfg3Bofp59LA7RgepWGkGerlH8t9eksXuNGRHzgTMbYo=
+	t=1765884443; cv=none; b=Jv/Mq9W3nWg7kgWvrAtcLgrHVvm5B6PLHKGYbBmM61h4hcNI8m9Qh2pKYEeClnR0cDnmtakc/hAn13n/gTSIhQqd856cA55Qbgylv8Cq/jMsOEXGk3U119U/zDLiNW4+4B9nxvIpT4m3uZshkLDUHuf6yGLx6CYO6O2TUBnPBSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887972; c=relaxed/simple;
-	bh=H2gBH9RwXHQgIipGDc+f578d8XjIM+ToH9tFqDQCQL0=;
+	s=arc-20240116; t=1765884443; c=relaxed/simple;
+	bh=yZ4BDz8CNnqNt1QWU3nTeQviA4dP0lzS7Z2ZXmVZVsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdL6r2N4R+8k51RWYAwIZao64bS/FYTru+RC7qfMTXtwEn76OgPKaO1Pg1DG40m+olLxxHakCxrGKoSdsiDVVmW1/a7Q/vBB2ryE9s3kKqlk2n/FFRlcvwD2+LL6jWktR6AT0vOD/t7DdJoybvN95yLMhPbLH01dxAyt0LRQCag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymiy7KbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E42C4CEF1;
-	Tue, 16 Dec 2025 12:26:11 +0000 (UTC)
+	 MIME-Version; b=XWSv62iUVUQBcpXj/Y8U3OmaQBGfia71HwTRr0JmVlHOXBRRIx8eLktIaJNEy4K2jCOAMan/vSfgL9qcXuhVrdCRKq+arSdFdzMvmo+uj7PyTySEFt0+HrTSA5a36WQz5oolZa2K8+BwpNCGRIGTY85RKMdXHyCGejxRX+iEBgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUlqUDC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EFFC4CEF1;
+	Tue, 16 Dec 2025 11:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887972;
-	bh=H2gBH9RwXHQgIipGDc+f578d8XjIM+ToH9tFqDQCQL0=;
+	s=korg; t=1765884443;
+	bh=yZ4BDz8CNnqNt1QWU3nTeQviA4dP0lzS7Z2ZXmVZVsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymiy7KbV7XrAho3B0Go3UzQatvy7LEXnDmXYKlXve5HdPfkD12r/eY4b4YzpfKUho
-	 ueKr59NM5RHRGxxdp7HMeemmO77Jbp/uyQg75V/fpEEj8nZCY/DIBccLXmVLXLsG13
-	 Qbzfe0XPcbbDIzHWNAJ+muo/AZb5TnUlYciVo4oE=
+	b=ZUlqUDC0UqeDGSqlhNhQqpGp5BUi9dzbC4TtIv2eTXxPC72u6jp44PeOepOnwqZye
+	 TOHPEi6NNypBEBxDC37RBlBtS7HK/m2DUnt+BtJ7NACyyI87Tt08qR6qMseEhnuDCt
+	 BIeiLegGvPI2dkFGyj1CkVUo71qGuLB3Iosv23b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Allen Ye <allen.ye@mediatek.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Algea Cao <algea.cao@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 394/614] wifi: mt76: mt7996: fix MLO set key and group key issues
-Date: Tue, 16 Dec 2025 12:12:41 +0100
-Message-ID: <20251216111415.650177913@linuxfoundation.org>
+Subject: [PATCH 6.12 195/354] phy: rockchip: samsung-hdptx: Reduce ROPLL loop bandwidth
+Date: Tue, 16 Dec 2025 12:12:42 +0100
+Message-ID: <20251216111327.976708927@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,193 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit e11be918d91e7d33ac4bad41dbe666a9abf1cfaa ]
+[ Upstream commit 8daaced9f5eeb4a2c8ca08b0a8286b6a498a8387 ]
 
-This patch fixes the following key issues:
-- Pass correct link BSS to mt7996_mcu_add_key(), and use HW beacon
-  protection mode for mt7990 chipset
-- Do not do group key deletion for GTK and IGTK due to FW design, the
-  delete key command will delete all group keys of a link BSS
-- For deleting BIGTK, FW adds a new flow, but the "sec->add" field
-  should be filled with "SET_KEY". Note that if BIGTK is not deleted, it
-  will cause beacon decryption issue when switching from an AP interface
-  to a station interface
+Due to its relatively low frequency, a noise stemming from the 24MHz PLL
+reference clock may traverse the low-pass loop filter of ROPLL, which
+could potentially generate some HDMI flash artifacts.
 
-Fixes: 0c45d52276fd ("wifi: mt76: mt7996: fix setting beacon protection keys")
-Co-developed-by: Allen Ye <allen.ye@mediatek.com>
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20251106064203.1000505-10-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reduce ROPLL loop bandwidth in an attempt to mitigate the problem.
+
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-2-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |  7 +++-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  5 +--
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 35 +++++++++++++------
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  2 +-
- 4 files changed, 34 insertions(+), 15 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 284f2eea71e5b..fe31db5440a84 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -794,6 +794,7 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
- 	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
- 	__le16 fc = hdr->frame_control, sc = hdr->seq_ctrl;
- 	u16 seqno = le16_to_cpu(sc);
-+	bool hw_bigtk = false;
- 	u8 fc_type, fc_stype;
- 	u32 val;
- 
-@@ -819,7 +820,11 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
- 	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
- 		val |= MT_TXD1_FIXED_RATE;
- 
--	if (key && multicast && ieee80211_is_robust_mgmt_frame(skb)) {
-+	if (is_mt7990(&dev->mt76) && ieee80211_is_beacon(fc) &&
-+	    (wcid->hw_key_idx2 == 6 || wcid->hw_key_idx2 == 7))
-+		hw_bigtk = true;
-+
-+	if ((key && multicast && ieee80211_is_robust_mgmt_frame(skb)) || hw_bigtk) {
- 		val |= MT_TXD1_BIP;
- 		txwi[3] &= ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index dc0fcf5cb7fb1..beb455185f904 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -249,12 +249,13 @@ mt7996_set_hw_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	else if (idx == *wcid_keyidx)
- 		*wcid_keyidx = -1;
- 
--	if (cmd != SET_KEY && sta)
-+	/* only do remove key for BIGTK */
-+	if (cmd != SET_KEY && !is_bigtk)
- 		return 0;
- 
- 	mt76_wcid_key_setup(&dev->mt76, &msta_link->wcid, key);
- 
--	err = mt7996_mcu_add_key(&dev->mt76, vif, key,
-+	err = mt7996_mcu_add_key(&dev->mt76, link, key,
- 				 MCU_WMWA_UNI_CMD(STA_REC_UPDATE),
- 				 &msta_link->wcid, cmd);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 21be88e76c655..5bde9959bbb99 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2527,7 +2527,7 @@ int mt7996_mcu_teardown_mld_sta(struct mt7996_dev *dev,
- }
- 
- static int
--mt7996_mcu_sta_key_tlv(struct mt76_wcid *wcid,
-+mt7996_mcu_sta_key_tlv(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		       struct sk_buff *skb,
- 		       struct ieee80211_key_conf *key,
- 		       enum set_key_cmd cmd)
-@@ -2539,7 +2539,10 @@ mt7996_mcu_sta_key_tlv(struct mt76_wcid *wcid,
- 
- 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_KEY_V2, sizeof(*sec));
- 	sec = (struct sta_rec_sec_uni *)tlv;
--	sec->add = 0;
-+	/* due to connac3 FW design, we only do remove key for BIGTK; even for
-+	 * removal, the field should be filled with SET_KEY
-+	 */
-+	sec->add = SET_KEY;
- 	sec->n_cipher = 1;
- 	sec_key = &sec->key[0];
- 	sec_key->wlan_idx = cpu_to_le16(wcid->idx);
-@@ -2579,29 +2582,33 @@ mt7996_mcu_sta_key_tlv(struct mt76_wcid *wcid,
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 		sec_key->cipher_id = MCU_CIPHER_BCN_PROT_GMAC_256;
- 		break;
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		if (!is_mt7990(dev))
-+			return -EOPNOTSUPP;
-+		sec_key->cipher_id = MCU_CIPHER_BCN_PROT_CMAC_256;
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
- 
--	sec_key->bcn_mode = BP_SW_MODE;
-+	sec_key->bcn_mode = is_mt7990(dev) ? BP_HW_MODE : BP_SW_MODE;
- 
- 	return 0;
- }
- 
--int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
-+int mt7996_mcu_add_key(struct mt76_dev *dev, struct mt7996_vif_link *link,
- 		       struct ieee80211_key_conf *key, int mcu_cmd,
- 		       struct mt76_wcid *wcid, enum set_key_cmd cmd)
- {
--	struct mt76_vif_link *mvif = (struct mt76_vif_link *)vif->drv_priv;
- 	struct sk_buff *skb;
- 	int ret;
- 
--	skb = __mt76_connac_mcu_alloc_sta_req(dev, mvif, wcid,
--					      MT7996_STA_UPDATE_MAX_SIZE);
-+	skb = __mt76_connac_mcu_alloc_sta_req(dev, (struct mt76_vif_link *)link,
-+					      wcid, MT7996_STA_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
- 
--	ret = mt7996_mcu_sta_key_tlv(wcid, skb, key, cmd);
-+	ret = mt7996_mcu_sta_key_tlv(dev, wcid, skb, key, cmd);
- 	if (ret) {
- 		dev_kfree_skb(skb);
- 		return ret;
-@@ -2721,12 +2728,18 @@ mt7996_mcu_beacon_mbss(struct sk_buff *rskb, struct sk_buff *skb,
- static void
- mt7996_mcu_beacon_cont(struct mt7996_dev *dev,
- 		       struct ieee80211_bss_conf *link_conf,
-+		       struct mt7996_vif_link *link,
- 		       struct sk_buff *rskb, struct sk_buff *skb,
- 		       struct bss_bcn_content_tlv *bcn,
- 		       struct ieee80211_mutable_offsets *offs)
- {
--	struct mt76_wcid *wcid = &dev->mt76.global_wcid;
--	u8 *buf;
-+	u8 *buf, keyidx = link->msta_link.wcid.hw_key_idx2;
-+	struct mt76_wcid *wcid;
-+
-+	if (is_mt7990(&dev->mt76) && (keyidx == 6 || keyidx == 7))
-+		wcid = &link->msta_link.wcid;
-+	else
-+		wcid = &dev->mt76.global_wcid;
- 
- 	bcn->pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
- 	bcn->tim_ie_pos = cpu_to_le16(offs->tim_offset);
-@@ -2801,7 +2814,7 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	info = IEEE80211_SKB_CB(skb);
- 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, mlink->band_idx);
- 
--	mt7996_mcu_beacon_cont(dev, link_conf, rskb, skb, bcn, &offs);
-+	mt7996_mcu_beacon_cont(dev, link_conf, link, rskb, skb, bcn, &offs);
- 	if (link_conf->bssid_indicator)
- 		mt7996_mcu_beacon_mbss(rskb, skb, bcn, &offs);
- 	mt7996_mcu_beacon_cntdwn(rskb, skb, &offs, link_conf->csa_active);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 1727e73a99ce6..b942928c79e28 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -848,7 +848,7 @@ void mt7996_update_channel(struct mt76_phy *mphy);
- int mt7996_init_debugfs(struct mt7996_dev *dev);
- void mt7996_debugfs_rx_fw_monitor(struct mt7996_dev *dev, const void *data, int len);
- bool mt7996_debugfs_rx_log(struct mt7996_dev *dev, const void *data, int len);
--int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
-+int mt7996_mcu_add_key(struct mt76_dev *dev, struct mt7996_vif_link *link,
- 		       struct ieee80211_key_conf *key, int mcu_cmd,
- 		       struct mt76_wcid *wcid, enum set_key_cmd cmd);
- int mt7996_mcu_bcn_prot_enable(struct mt7996_dev *dev,
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 5547f8df8e717..d287e818fb03c 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -385,9 +385,7 @@ static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0043), 0x00),
+ 	REG_SEQ0(CMN_REG(0044), 0x46),
+ 	REG_SEQ0(CMN_REG(0045), 0x24),
+-	REG_SEQ0(CMN_REG(0046), 0xff),
+ 	REG_SEQ0(CMN_REG(0047), 0x00),
+-	REG_SEQ0(CMN_REG(0048), 0x44),
+ 	REG_SEQ0(CMN_REG(0049), 0xfa),
+ 	REG_SEQ0(CMN_REG(004a), 0x08),
+ 	REG_SEQ0(CMN_REG(004b), 0x00),
+@@ -460,6 +458,8 @@ static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0034), 0x00),
+ 	REG_SEQ0(CMN_REG(003d), 0x40),
+ 	REG_SEQ0(CMN_REG(0042), 0x78),
++	REG_SEQ0(CMN_REG(0046), 0xdd),
++	REG_SEQ0(CMN_REG(0048), 0x11),
+ 	REG_SEQ0(CMN_REG(004e), 0x34),
+ 	REG_SEQ0(CMN_REG(005c), 0x25),
+ 	REG_SEQ0(CMN_REG(005e), 0x4f),
 -- 
 2.51.0
 
