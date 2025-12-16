@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F635CC3BC3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D43CC21C0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B201E307017B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A02930446BA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0F834105B;
-	Tue, 16 Dec 2025 11:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F63E56B81;
+	Tue, 16 Dec 2025 11:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc8cEeJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHWk/djr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE86834252F;
-	Tue, 16 Dec 2025 11:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACBD2459D7;
+	Tue, 16 Dec 2025 11:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885445; cv=none; b=ZmPYnfYUzDxCWfhJDXCYFmSXPcIYkf6ysA9egnyEifub6bTnans3i1MjZzY316+lIkPNccL2aWfMV1O5TvYaDr9qMq9t73EnD0A/PMMXSFkAWrn2iyhYKTVYsyZ4VMnyd+lTxl9GkYvxNYi42EH3Nhi2kbOe9QJi15+0LPM6h9A=
+	t=1765883845; cv=none; b=OtlF0VFSpcbwV2uqPzrxaQXR4uKvIacJ/qDJTtnjTwjB4fc0umVHoqrC8cdKBrYyN84/kku72LcuThjl6FMwMIr6+ikb5ZSYp5QHfBBXOvoyhHe5uYcysRtEfsUzp7mLDEM4/pQUElScJlXIsUNzkMDycu7Tb/jzmfbIWwsfRGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885445; c=relaxed/simple;
-	bh=EidaZke1PlA2Tr98JpVW/9mYzer8LzEPsu4k6J0dlbc=;
+	s=arc-20240116; t=1765883845; c=relaxed/simple;
+	bh=Q8WLLTcDuTsosWd6LV5cT8tgr5DXhXeENHrUhJQuNJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGdrQaAdwFoKVNopcTpmIlEo3gfsIlzF6I76DWD4Jw6NC2fse626fZwH1pI8vlhlYZaSRnQfs+4YKbihY2W3GzMTIPQDDF9XJ+NUJjzXu5TTVSh20+1GLS+yI4e+jq7Goofz0amagtmKVr686t0ugF2N05alSh1j6NYzyyuRkvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc8cEeJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3157EC4CEF1;
-	Tue, 16 Dec 2025 11:44:04 +0000 (UTC)
+	 MIME-Version; b=EYh23F4UrVJb/3FPvIdyf7Zwrg++r/hY+rs6pJ9Oh3GjYjaYZCTwOGDlGXwqnoGoC8nNUmSrDuZQBacejNsSJ0zTu9D0Qc3MLpNnzETV0nNfDDswoGDmgvw1EO68j/o1IcrLvi+k3T/UhGJVbUQdITcRBwsX8Lbr/r+4WOiLJGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHWk/djr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDF6C4CEF1;
+	Tue, 16 Dec 2025 11:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885445;
-	bh=EidaZke1PlA2Tr98JpVW/9mYzer8LzEPsu4k6J0dlbc=;
+	s=korg; t=1765883844;
+	bh=Q8WLLTcDuTsosWd6LV5cT8tgr5DXhXeENHrUhJQuNJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jc8cEeJuFW8e3iR+Fx1QKpnh3hk8tcuMFOEPssdotVThLHyr1Ug8IsrlmcwhaH39z
-	 4zXkj4KahliQWCUpiuJwzgOkpbLWAmcW6lCN56swdLomifLjJsTjXjx/BBEMQuWuS6
-	 lEKqREMk7UXqsUAzEfBi8o+ZE2vxztbatvvkZBuA=
+	b=jHWk/djrb77P8+8/0cdxUC1RxMS0Dt1zT5cULXbvl+xw9bdtJnTAN2MHVL+siRNMk
+	 4FT9AUU3dmkkqAUM0Klb3nHLG5WSDE8f10z51YvpIk4RaQXPH7JbrsRmjWm7/cHtt7
+	 9om/1IPDINXi8KbeYAxxY2ioiE7IJNU8AAWptx00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 142/507] arm64: dts: qcom: msm8996: add interconnect paths to USB2 controller
-Date: Tue, 16 Dec 2025 12:09:43 +0100
-Message-ID: <20251216111350.672652799@linuxfoundation.org>
+Subject: [PATCH 6.12 017/354] clk: renesas: cpg-mssr: Add missing 1ms delay into reset toggle callback
+Date: Tue, 16 Dec 2025 12:09:44 +0100
+Message-ID: <20251216111321.532625638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 242f7558e7bf54cb63c06506f7b0630dd67d45a4 ]
+[ Upstream commit 62abfd7bedc2b3d86d4209a4146f9d2b5ae21fab ]
 
-Add the missing interconnects to the USB2 host. The Fixes tag points to
-the commit which broke probing of the USB host on that platform.
+R-Car V4H Reference Manual R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025 page
+583 Figure 9.3.1(a) Software Reset flow (A) as well as flow (B) / (C)
+indicate after reset has been asserted by writing a matching reset bit
+into register SRCR, it is mandatory to wait 1ms.
 
-Fixes: 130733a10079 ("interconnect: qcom: msm8996: Promote to core_initcall")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Acked-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-2-a36a05d1f869@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+This 1ms delay is documented on R-Car V4H and V4M, it is currently
+unclear whether S4 is affected as well.  This patch does apply the extra
+delay on R-Car S4 as well.
+
+Fix the reset driver to respect the additional delay when toggling
+resets.  Drivers which use separate reset_control_(de)assert() must
+assure matching delay in their driver code.
+
+Fixes: 0ab55cf18341 ("clk: renesas: cpg-mssr: Add support for R-Car V4H")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250918030552.331389-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/renesas/renesas-cpg-mssr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index f91605de49095..8575f4aff94c2 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3496,6 +3496,9 @@ usb2: usb@76f8800 {
- 					  <&gcc GCC_USB20_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <60000000>;
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index 112ed81f648ee..ecb7e2024d589 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -630,8 +630,15 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+ 	/* Reset module */
+ 	writel(bitmask, priv->base + priv->reset_regs[reg]);
  
-+			interconnects = <&pnoc MASTER_USB_HS &bimc SLAVE_EBI_CH0>,
-+					<&bimc MASTER_AMPSS_M0 &pnoc SLAVE_USB_HS>;
-+			interconnect-names = "usb-ddr", "apps-usb";
- 			power-domains = <&gcc USB30_GDSC>;
- 			qcom,select-utmi-as-pipe-clk;
- 			status = "disabled";
+-	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
+-	udelay(35);
++	/*
++	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
++	 * On older SoCs, delay after SRCR has been written is 35us
++	 * (one cycle of the RCLK clock @ ca. 32 kHz).
++	 */
++	if (priv->reg_layout == CLK_REG_LAYOUT_RCAR_GEN4)
++		usleep_range(1000, 2000);
++	else
++		usleep_range(35, 1000);
+ 
+ 	/* Release module from reset state */
+ 	writel(bitmask, priv->base + priv->reset_clear_regs[reg]);
 -- 
 2.51.0
 
