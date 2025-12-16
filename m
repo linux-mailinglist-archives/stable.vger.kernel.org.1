@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E592CCC2809
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF58BCC332D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB7EE30842B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1793088B9A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A76B355033;
-	Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB90350D4C;
+	Tue, 16 Dec 2025 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAj6QzN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWBKVOHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58835355029;
-	Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5878E350A39;
+	Tue, 16 Dec 2025 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885952; cv=none; b=WExqObFxGqnZ4Y9BEX7WSE8kgiObUQFSS3OcnvYmo7QAg4hfPG8kKKLvwak06nJm8Va+iDJ/utRBWlX+XfokFrFXNHKsNtsPOh/JbOuFJtOUuKSanLxA8cfue8i0RLd+KFy8jlTpGoVi63UD9XShygShlK0TyqJpn++BVwY91bc=
+	t=1765887892; cv=none; b=LLKrmolRRobZV1Z/9fJE2FjssgRiMWTQCAX5A03x7rFLIAhUqx/GMxaklh4OFCggTnQ06KYRGiuV/fopSx3vSfC7ck7xD7zjyfQlHptvxW3vgl0zfwxT3GKBnQ45PeYpgmaI3vJ9a6iipSa5FXBnIn3lZpIuQ5JBnyjnVY1cEiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885952; c=relaxed/simple;
-	bh=iT8OnL2vG91fWzoBOOO7o9MdVHKHmQKdBlof5MSSOZY=;
+	s=arc-20240116; t=1765887892; c=relaxed/simple;
+	bh=D3d0PUvB0fPjUkvS6T8IRpKasY0+RA/p2QKAZggWjdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhpUCDdK2VJOba6l94k0A0I4QmoIRt9JeFmYrclIvq47/9Q57k194KjRUN3KhhLakzebjwrXrb27+tEVdryq8Z2MPvUwx+AaVxEj8bSENmBexvoRXK7U3Q5dM26Sv0KbipzUG8+RioYozIXevMk+x3XMhE32dWvNQgBwthac+Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAj6QzN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2187C4CEF1;
-	Tue, 16 Dec 2025 11:52:31 +0000 (UTC)
+	 MIME-Version; b=FWpIIokLGEotgC8LgPd9v+3/hMmP3HKmWpOJ2VckwcnHBSOoHxs+ceGfC96GsSVZndg7YjlqQZkniwz5lipTvzX8eANr0zECdds2Y/2mhE+1cB/iLqkArFt+T25brFatvsuSWO7X+6Ze9wywD1usGMUYJWraATqpkxpemuZws70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWBKVOHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C90C4CEF1;
+	Tue, 16 Dec 2025 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885952;
-	bh=iT8OnL2vG91fWzoBOOO7o9MdVHKHmQKdBlof5MSSOZY=;
+	s=korg; t=1765887892;
+	bh=D3d0PUvB0fPjUkvS6T8IRpKasY0+RA/p2QKAZggWjdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAj6QzN408LstAy/pET13ED+y7uaXHmiOqgoP3zWpo6DiN9ExmtfWRgD75tdIlnKk
-	 JcJwawVcJypnp2wTbPsvz0uYNujtu6PsTaseH6GjOXI968rF8ooeuQoCJn2zrnbZS/
-	 quhSj5Br1EjHeJFBu5Y1sKMvidZYbki0I7HWv9O4=
+	b=EWBKVOHHe58O+zVks3ki8cR03kReAqCED9SFLiFDH7mr1uoXAFwKV2xGa1k9ixn79
+	 FKxBxSJmgCiAW40jGe/PVZIQr6h+UljoXHaSeX/hVhw/3a0Kew4hUcIjpFDf+POoHd
+	 pKeNqhgEiE3u8QFAQEycApsx6tiw5l3cBWTK4gWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Algea Cao <algea.cao@rock-chips.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Xing Guo <higuoxing@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 294/507] phy: rockchip: samsung-hdptx: Reduce ROPLL loop bandwidth
-Date: Tue, 16 Dec 2025 12:12:15 +0100
-Message-ID: <20251216111356.127313213@linuxfoundation.org>
+Subject: [PATCH 6.18 369/614] selftests/bpf: Update test_tag to use sha256
+Date: Tue, 16 Dec 2025 12:12:16 +0100
+Message-ID: <20251216111414.729533193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Xing Guo <higuoxing@gmail.com>
 
-[ Upstream commit 8daaced9f5eeb4a2c8ca08b0a8286b6a498a8387 ]
+[ Upstream commit b7f7d76d6e354a5acc711da37cb2829ccf40558f ]
 
-Due to its relatively low frequency, a noise stemming from the 24MHz PLL
-reference clock may traverse the low-pass loop filter of ROPLL, which
-could potentially generate some HDMI flash artifacts.
+commit 603b44162325 ("bpf: Update the bpf_prog_calc_tag to use SHA256")
+changed digest of prog_tag to SHA256 but forgot to update tests
+correspondingly. Fix it.
 
-Reduce ROPLL loop bandwidth in an attempt to mitigate the problem.
-
-Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
-Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-2-ecc642a59d94@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 603b44162325 ("bpf: Update the bpf_prog_calc_tag to use SHA256")
+Signed-off-by: Xing Guo <higuoxing@gmail.com>
+Link: https://lore.kernel.org/r/20251121061458.3145167-1-higuoxing@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_tag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 8adf6e84fc0b7..9751f7ad00f4f 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -500,9 +500,7 @@ static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
- 	REG_SEQ0(CMN_REG(0043), 0x00),
- 	REG_SEQ0(CMN_REG(0044), 0x46),
- 	REG_SEQ0(CMN_REG(0045), 0x24),
--	REG_SEQ0(CMN_REG(0046), 0xff),
- 	REG_SEQ0(CMN_REG(0047), 0x00),
--	REG_SEQ0(CMN_REG(0048), 0x44),
- 	REG_SEQ0(CMN_REG(0049), 0xfa),
- 	REG_SEQ0(CMN_REG(004a), 0x08),
- 	REG_SEQ0(CMN_REG(004b), 0x00),
-@@ -575,6 +573,8 @@ static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
- 	REG_SEQ0(CMN_REG(0034), 0x00),
- 	REG_SEQ0(CMN_REG(003d), 0x40),
- 	REG_SEQ0(CMN_REG(0042), 0x78),
-+	REG_SEQ0(CMN_REG(0046), 0xdd),
-+	REG_SEQ0(CMN_REG(0048), 0x11),
- 	REG_SEQ0(CMN_REG(004e), 0x34),
- 	REG_SEQ0(CMN_REG(005c), 0x25),
- 	REG_SEQ0(CMN_REG(005e), 0x4f),
+diff --git a/tools/testing/selftests/bpf/test_tag.c b/tools/testing/selftests/bpf/test_tag.c
+index 5546b05a04866..f1300047c1e0a 100644
+--- a/tools/testing/selftests/bpf/test_tag.c
++++ b/tools/testing/selftests/bpf/test_tag.c
+@@ -116,7 +116,7 @@ static void tag_from_alg(int insns, uint8_t *tag, uint32_t len)
+ 	static const struct sockaddr_alg alg = {
+ 		.salg_family	= AF_ALG,
+ 		.salg_type	= "hash",
+-		.salg_name	= "sha1",
++		.salg_name	= "sha256",
+ 	};
+ 	int fd_base, fd_alg, ret;
+ 	ssize_t size;
 -- 
 2.51.0
 
