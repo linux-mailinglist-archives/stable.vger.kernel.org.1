@@ -1,138 +1,163 @@
-Return-Path: <stable+bounces-202735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497C4CC50E1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 20:59:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B989ACC50FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 21:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 732A7304066C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:59:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7F24303DD27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 20:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994A43370EA;
-	Tue, 16 Dec 2025 19:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D93E2ECE8F;
+	Tue, 16 Dec 2025 20:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WedSVydp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nTYyEzGe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79393358AF
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC99258ED7
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 20:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765915178; cv=none; b=HalgSKEjByDh6sSXTabj1TaRdf24FbI2N9ifcOjkz3e8cT81k7yxIz/uBw/7lG565Gq5afhQEOjA97zJP1/jOB1rmt4x5BU6fMIRogudm5AWCGt3dY0pyjZJqRVdJvSgDSol20ktTxD9qz6ijoVvmYZNiFddl7zta3qYskOUDPc=
+	t=1765915556; cv=none; b=H7QJY7vndnjpDvvXAzKConKjj0Mc7r3K2Nj9wAWQw+Doc2EN9rjGwDfff8DaqjnlmiDSpzP8dRM5fv6hWw+Q6lhjyblV3mkEeqxG3rH4aN5gxui0Y+AHOysa5tM5nYfXKZRyU+fq0jwf834o8F247QIYQ4sTRzIhAyEI4QYtrUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765915178; c=relaxed/simple;
-	bh=8d8vMlcuqrcetGiukAccRMJhujaTPxUi42V0eQLoMBM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TUOXw6f/xvDL7+iw4mPJQNgCn+xr9j4WEvxHf3BUWBbeb9d/fWrCrXM26qmn7MzqLqiPpDsY8GluUkiIuSbyfKUbH3RFCNS5GTuhRgH7LyYRYI9TGI8w1Gp36gVSVRWfCtNRqBd9pPwvNzdlsHIOhqdQTXHYfnhGmsNDbsfaqw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WedSVydp; arc=none smtp.client-ip=209.85.208.176
+	s=arc-20240116; t=1765915556; c=relaxed/simple;
+	bh=2gtWttGGpvweLIEYAm1LIdNsm1ecj87EixohqJgLCSU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=id1h+eK9BMc7i7mxDYlizUvW7sgwRHfJXHEKJadCO9gueu9WcUSqlqLoI9EjzyqmM2a7NB9OitJTYvK1ZjqJOVCMAQu1LMHBv0oVL6y7cj/bMMWC1aRFW0LvEd0fVcnXrZeOlQeXl4O8xqVZX9QmEOrx2lJ/Bd1RuQP48HXvhkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nTYyEzGe; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-37b99da107cso49339841fa.1
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:59:35 -0800 (PST)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a0d0788adaso27304765ad.3
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 12:05:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765915174; x=1766519974; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jKP3/pV9HL8rJ89JiBKTKQm/pSwijNbQxYatjpzb6Ao=;
-        b=WedSVydpy85NYKGNB8ur8X7mjR1Lcu6Amn5VLqvNvETFo2PrM3C0CHmy8KxMOePviI
-         0WrEyvVL3pa0cE76LMi+F1D4F2ipZzvaDALNhbcWaVDPOHdsJXhCJsaxCdMmRDhOXx5R
-         szEAn9fFCJfDTjSeQqKdinBchJddm5nnQHYnNwcIWQGNbLxA2+NoqtYONLOftkLdBhG+
-         OFIkQv5Xc66GnlWy+BfmllogRY8lSVBDsFqLEbVJ5smJK8GG4ONRZiujZPMBZhfEORIC
-         vLmLPFAG0xGYBvmH/Qa6d+g9EnzLBve0MX+OcKz+w/aOhV53mY1GaqVT9ow993xNi4nF
-         MyQA==
+        d=gmail.com; s=20230601; t=1765915554; x=1766520354; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nk5VEo3f/bbA5JsoMBtqnTR2AhljYyWjNqK2HiCPcog=;
+        b=nTYyEzGeHbkSOiH1YmQhyL0ks8Mxv1oYx++nnDDjHKlpUZDNirWxV9M6cAZcQSc+9i
+         DglkE1PeMeabBJx6YuGy03J96NAXMU3Qs8CpvnokgcsWamEX6ZhjufBCPnZnF938jjZc
+         Dqag8tN/kbtYuwSLBNFPtdM9UgE531rNhcse/ggr62YHXlEXEHeEwF2vesP4APs3TyNM
+         9L5kVq3/An1bx19ev/XhGTbiAIP39ZTSzAbbi1xt1hIAJHNRad7OL5pbTzCaLiCBYovB
+         yFwQkBRX1LCi6E/7jCqctb32EDUM9hXALj8IVvyfJkiBZ6Rra6KrnahgMtrFM1MQ7GCv
+         bYQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765915174; x=1766519974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jKP3/pV9HL8rJ89JiBKTKQm/pSwijNbQxYatjpzb6Ao=;
-        b=M8bWCVx8Z3wmBSBiYE9X59G8HXsYnDAUK4MBwIDubHQsVTzHXPz51BqVdgwcMMgY+P
-         x2wtsPi7cT8YJiHhqsvVA6+kw+vCXdpAsWNbCDqXFSy6BTe9tgsayuWRjb6UVkd+jNfN
-         GzPEx2IruHCM7pKHsqEuj+wls8H2tK6FhOdi7EwMMfGbyw5e5Mv12yxwnD0kt7UQxMCp
-         68bXzyIa/YPomjYWfVf99bIYIMG1sEy/4YrdpJlvS/PQlIopel9j0r+krcE8Yb2Q7Ln9
-         em8FNJz3Z27wZ8fivaVm+7U/VYg9Ecm1wJ5scbjc0GAhVXLT4HPQ3qF3Q+TSj3pCoFG4
-         LHOA==
-X-Gm-Message-State: AOJu0YyMgJkU2G8kC5BqdHKvS9iMPvMfOq3xU35AyI4S/7imVsobU1CF
-	USl7ljs+QccIJMTpzW9jgewAZG9yyoe7exXEU5oywPVBTavDElmy1jkPE1KtIZt06gLP4vBUUo2
-	6AZD5HvLOKDmsCxjpP+YtWqlDqI08Eg0=
-X-Gm-Gg: AY/fxX4+Dx+oLhOktlLxZNxhYjldzwoA0A4YgdYr1cfXfC/JlqzJYELjZVQDd4IGD7t
-	/Vz048UqYCbdvJxmz2Dn7d5qKPuSoe9Lair7j9WIGoMtytGlCWcNA2dhnxFpAlGUUMewE+RO4Xp
-	G2YL3ZBrww3XKtI//lcbkuXQlDPK9emX8nYMve42VRg1egSI+74CDDzL0EDXwW89BA6C1GBVqQJ
-	Kg6h/ut3d/30WHs6C7mD4HmDug4Ab1vPml8FiSdVNy6eRUUv7FYwZtBdvkmJ+gwbh53BQOWrNGU
-	Q87DCOqhDTnWvzD2BUkcSoKjxmfO
-X-Google-Smtp-Source: AGHT+IEoOwx2O+UDgb2f0yIKh4N1D7Pr3XV6xfDNke54zDaPEw72IJS4jRqNFlBTPI0ntktOfvWQhWxSFoYmzXQrTsg=
-X-Received: by 2002:a05:651c:1c7:b0:37a:2b5d:e855 with SMTP id
- 38308e7fff4ca-37fd08e94d1mr48591801fa.40.1765915173887; Tue, 16 Dec 2025
- 11:59:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765915554; x=1766520354;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nk5VEo3f/bbA5JsoMBtqnTR2AhljYyWjNqK2HiCPcog=;
+        b=IQTdz6Pf1cwwJ1kTn1itzl3CAHjn2RGeyk3CKYbR9zMbgeXi8dcczM+J362lV6lhiy
+         TfxC4MGwCEc+kB78B1r6lb5sHvHG8jZ+QNKCh1+vTwDOs8Xjr4B6sT4GMIYxjnsH2wte
+         UJhItHRe2MuFqBSMAVsU+0WeRUnKXzJWR59EIdwLzoTreNvnwdHNYGrUMIBhbclQ4fSZ
+         K9XwFI++cHMrxl0b9JbcGMwMTaQkt/EyoyggAMVbdEgdJdBCoo67Gu7mD+DAN4yL4OaT
+         crNYiA03kkZvpED9q7t778s+Fg9nLsXR2B1ckp4O6mYisyWT8qjtJv2AliQMljcTc7sg
+         B/nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1Lu7sVHFki8Horxprj+SnJbbfuBHQN4e7DmGHKPV2JdUXdiZxZT1Z9E50IGp0AiDNR9S6W+g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8CWfkD5S/sTbHEEMwi02jnwaHwhIa6smLR/sBBz4WjwLSkq87
+	DEUeQUC4Y3JGK77zjnVimLQjXFO/5kmzuA+1mqY2drBMfmY6PpWdYDCr
+X-Gm-Gg: AY/fxX60wB+nksKxiv1H30EEMUyxXrNjxNKBOwGDw5UYNSl7r5mPBr7FMs1XfWY98vS
+	e/Hznr0CwqWczRmQR0Wpi512hagSDNweu8qqVucQLNHZOZgYoUTIQ1rlERe8J/NxywNVKtAe4tr
+	LD4PD1YcEPAo7CsgsUGIfAWO4S/RbW8l5QCVu+UuIAmlzwMr7zAUDtVPxXSqXdB35NG8dezEWg2
+	9s4PrEH/Wkz67pIe8T3iNnyJ4E+JBR7DWUsI/dZdDxQjltWtB0kFnsjYlWI2bBz0GexoiCsOXTK
+	HE+/tPrSab3oo/+AFjppPdvXTVUoiVrWsYd5/RPRQTTMj7vlWyO07+Wbbdui0Nsw9cvocZzgnoh
+	WcoKtdMvl3jVALLDaEga4Cz+j3u47YQ1n1Y0867g7pLcz/yWmmEKfAo5IaqGl42E2/huoQSuP2X
+	XfsjDrNH19vIPMWbx//f7AppfC1Nw=
+X-Google-Smtp-Source: AGHT+IFBB9lpgo0EscsFPmTDrekwuTdVKsOIVSCKfGeWbaP7aOmozgyPAliYKh+tJ6xigpQG1/qjWQ==
+X-Received: by 2002:a17:903:234a:b0:2a0:9eed:5182 with SMTP id d9443c01a7336-2a09eed5585mr124313435ad.20.1765915553651;
+        Tue, 16 Dec 2025 12:05:53 -0800 (PST)
+Received: from localhost.localdomain ([111.125.240.40])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d38ae7sm175407925ad.35.2025.12.16.12.05.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Dec 2025 12:05:53 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com
+Cc: ocfs2-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] ocfs2: handle OCFS2_SUPER_BLOCK_FL flag in system dinode
+Date: Wed, 17 Dec 2025 01:35:44 +0530
+Message-ID: <20251216200544.4114-1-activprithvi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251216111947.723989795@linuxfoundation.org>
-In-Reply-To: <20251216111947.723989795@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Wed, 17 Dec 2025 01:29:22 +0530
-X-Gm-Features: AQt7F2oW5vTlzd7FXzKICbt4nLS9t6NSWyDjk-BuP4m6qMC0a_yiDrofInRso24
-Message-ID: <CAC-m1rq9fSvZf5cPy-zAj+vYk3=nODsfT4QL+rcuDeCdqbfctg@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/506] 6.17.13-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 16, 2025 at 6:40=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.13 release.
-> There are 506 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 18 Dec 2025 11:18:24 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.13-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When ocfs2_populate_inode() is called during mount process, if the flag
+OCFS2_SUPER_BLOCK_FL is set in on-disk system dinode, then BUG() is
+triggered, causing kernel to panic. This is indicative of metadata
+corruption.
 
-Build and Boot Report for 6.17.13-rc2
+This is fixed by calling ocfs2_error() to print the error log and the
+corresponding inode is marked as 'bad', so that it is not used further
+during the mount process. It is ensured that the fact of that inode being
+bad is propagated to caller ocfs2_populate_inode() i.e.
+ocfs2_read_locked_inode() using is_bad_inode() and further behind along
+the call trace as well.
 
-The kernel version 6.17.13 was built and boot-tested using qemu-x86_64
-and qemu-arm64 with the default configuration (defconfig). The build and bo=
-ot
-processes completed successfully, and the kernel operated as expected
-in the virtualized environments without any issues.
-No dmesg regressions found.
+Reported-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=779d072a1067a8b1a917
+Tested-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+---
+ fs/ocfs2/inode.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Build Details :
-Builds : arm64, x86_64
-Kernel Version: 6.17.13
-Configuration : defconfig
-Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git
-Commit :
+diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+index 12e5d1f73325..f439dc801845 100644
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -347,7 +347,12 @@ void ocfs2_populate_inode(struct inode *inode, struct ocfs2_dinode *fe,
+ 	} else if (fe->i_flags & cpu_to_le32(OCFS2_SUPER_BLOCK_FL)) {
+ 		/* we can't actually hit this as read_inode can't
+ 		 * handle superblocks today ;-) */
+-		BUG();
++		ocfs2_error(sb,
++			    "System Inode %llu has "
++			    "OCFS2_SUPER_BLOCK_FL set",
++			    (unsigned long long)le64_to_cpu(fe->i_blkno));
++		make_bad_inode(inode);
++		return;
+ 	}
+ 
+ 	switch (inode->i_mode & S_IFMT) {
+@@ -555,6 +560,11 @@ static int ocfs2_read_locked_inode(struct inode *inode,
+ 
+ 	ocfs2_populate_inode(inode, fe, 0);
+ 
++	if (is_bad_inode(inode)) {
++		status = -EIO;
++		goto bail;
++	}
++
+ 	BUG_ON(args->fi_blkno != le64_to_cpu(fe->i_blkno));
+ 
+ 	if (buffer_dirty(bh) && !buffer_jbd(bh)) {
+@@ -576,7 +586,7 @@ static int ocfs2_read_locked_inode(struct inode *inode,
+ 	if (can_lock)
+ 		ocfs2_inode_unlock(inode, lock_level);
+ 
+-	if (status < 0)
++	if (status < 0 && !is_bad_inode(inode))
+ 		make_bad_inode(inode);
+ 
+ 	brelse(bh);
 
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+base-commit: d76bb1ebb5587f66b0f8b8099bfbb44722bc08b3
+-- 
+2.43.0
 
-Best regards,
-Dileep Malepu
 
