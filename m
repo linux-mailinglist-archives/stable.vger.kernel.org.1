@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-202431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5160FCC31C7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5FBCC3B3A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DADF830BC05E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4B4E30586E6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FAF350A25;
-	Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966E7350A32;
+	Tue, 16 Dec 2025 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZm/4V7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ti87DJ//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ECB350A0F;
-	Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514AE34C137;
+	Tue, 16 Dec 2025 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887875; cv=none; b=Y6Bb0KuNvnEbdm93RalaA38HGTWYKTq2v2iWXU8nzJzmHmssIPsooPyqePA24YeaQKNxCaTUJHkA0aE1PRcR6w8bgEk18JPUjEceLsNcnbgnHqYqhJ8pCgks53z5UfCVnJEmkHtFM5iUAT6FhIn6RSl+oqyIvWNKhw1rfDZsuP4=
+	t=1765887882; cv=none; b=nEunxuGfXI0gO6Ugejm7+JxrbongKudcHwpTCbbays7jzbAL+v1NmdpnllYSb2r/k09T5KKspY0X1osyJDX+ATw6YggJOJjCxVzCHty5iGYFLubHCyx4eUasIn5pRS4Yb1138UwOCwbxrEHAimAxdTbAyYsD0sOkK05oL5RnbPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887875; c=relaxed/simple;
-	bh=lorCw/3s+Bhp4e9mDRVcb0SIdZCs9U0QTPLlstgh39I=;
+	s=arc-20240116; t=1765887882; c=relaxed/simple;
+	bh=oJfCecZVWlBXtgsGwR9B7V3EYG1gHVSkrmWMlK67utM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbQdn44yRP9/G51JbhsYSOpILgLipI67MjmdaUssZuj02pSF2z5hqM05a+ZQ/kHBfbPGnaKzWTZYJx22DgCoePFtx63oO6ZiP0CPHsIWL3fPkWWC8K6aw4mJA/GFr15jzE1nvy10LTnCNRs5KeB/Kf/sbWVwMNTgmYLWSFFqeV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZm/4V7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13110C16AAE;
-	Tue, 16 Dec 2025 12:24:34 +0000 (UTC)
+	 MIME-Version; b=EPW2UsKzhH4Am+rIFFmikaTsPv8YsCMHBuJatx9MnHzAl8JKQjN3edAzXOF6PPwYH5rK9OBaT3PcofhPVJ8z4awUwmixBja2d5te1pd7g8vqdS2pLj0hMR7zmgSijFasDgpMXpqs+wKetZO1HJa/PddCnKrIY/PXSP68vHax9bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ti87DJ//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CE6C4CEF5;
+	Tue, 16 Dec 2025 12:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887875;
-	bh=lorCw/3s+Bhp4e9mDRVcb0SIdZCs9U0QTPLlstgh39I=;
+	s=korg; t=1765887882;
+	bh=oJfCecZVWlBXtgsGwR9B7V3EYG1gHVSkrmWMlK67utM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZm/4V7i+F8oYd1FV8liEASGazsgxjGk62pEf+WyLCsjy5n61jyyRVmRYv1R0XdT+
-	 IVmPJvstJZGBk+QjpHa4Ukppq2oaEUbipiZOazCE4JYwTnNAQTQEZyKeHWkrSpQNL/
-	 6tshevrHqtjsXuA0S5n+UfYjLndDxIyOj4cVz2hg=
+	b=ti87DJ///z1K/3l3JLyiNYIyvoHt1dGxtaQ7/4YSegfzegFx0MRsgw8a/yifwJBgd
+	 O0z/AEvRIsebiree4ovi4Q6A1wA582B5DNetvXMU5Km6DxQhqTBlk+irjuwzqYeFx2
+	 PelT0LiRIPHYTzzogd8tHRkAc5yAU5bCp3BJwYmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 365/614] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
-Date: Tue, 16 Dec 2025 12:12:12 +0100
-Message-ID: <20251216111414.584790667@linuxfoundation.org>
+Subject: [PATCH 6.18 366/614] regulator: pca9450: Fix error code in probe()
+Date: Tue, 16 Dec 2025 12:12:13 +0100
+Message-ID: <20251216111414.620587765@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,60 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
+[ Upstream commit 670500b41e543c5cb09eb9f7f0e4e26c5b5fdf7e ]
 
-The previous commit removed the PAGE_SIZE limit on transfer length of
-raw_io buffer in order to avoid any problems with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length. However
-this also removes the upperbound on user supplied length, allowing very
-large values to be passed to the allocator.
+Return "PTR_ERR(pca9450->sd_vsel_gpio)" instead of "ret".  The "ret"
+variable is success at this point.
 
-syzbot on fuzzing the transfer length with very large value (1.81GB)
-results in kmalloc() to fall back to the page allocator, which triggers
-a kernel warning as the page allocator cannot handle allocations more
-than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
-
-Since there is no limit imposed on the size of buffer for both control
-and non control transfers, cap the raw_io transfer length to
-KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
-prevent any warnings from the page allocator.
-
-Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
-Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ce6f4f943dd ("regulator: pca9450: Fix control register for LDO5")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aSBqnPoBrsNB1Ale@stanley.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/regulator/pca9450-regulator.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
-index b71680c58de6c..46f343ba48b3d 100644
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 4be270f4d6c35..91b96dbab328b 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -1251,10 +1251,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	 * to this signal (if SION bit is set in IOMUX).
+ 	 */
+ 	pca9450->sd_vsel_gpio = gpiod_get_optional(&ldo5->dev, "sd-vsel", GPIOD_IN);
+-	if (IS_ERR(pca9450->sd_vsel_gpio)) {
+-		dev_err(&i2c->dev, "Failed to get SD_VSEL GPIO\n");
+-		return ret;
+-	}
++	if (IS_ERR(pca9450->sd_vsel_gpio))
++		return dev_err_probe(&i2c->dev, PTR_ERR(pca9450->sd_vsel_gpio),
++				     "Failed to get SD_VSEL GPIO\n");
  
- static DEFINE_IDA(driver_id_numbers);
- #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
-+#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
- 
- #define RAW_EVENT_QUEUE_SIZE	16
- 
-@@ -667,6 +668,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
-+	if (io->length > USB_RAW_IO_LENGTH_MAX)
-+		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+ 	pca9450->sd_vsel_fixed_low =
+ 		of_property_read_bool(ldo5->dev.of_node, "nxp,sd-vsel-fixed-low");
 -- 
 2.51.0
 
