@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F405CCC22D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62804CC2E13
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D9B730671CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECFB631C1EBC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353CC340DB0;
-	Tue, 16 Dec 2025 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F093590C9;
+	Tue, 16 Dec 2025 12:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDff1ygq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqUkIH78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47F733F378;
-	Tue, 16 Dec 2025 11:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9613590AB;
+	Tue, 16 Dec 2025 12:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884037; cv=none; b=au6Y33RmSeE6mdN/k8pEDf0RDqLzbQ7micEyENu0/hGUY3zMTYmWcAEnmMJ6hDGfR0r+TBJDYtgqrSkjgZIuv+6Bi+YPid40wNinzeLxZL0ov1u2kNCF3IQZe2xYMu0+Z9iTO81+H54d9cFPlwjGt/TvwqsHVg1d7qI9iQFkJ8w=
+	t=1765887721; cv=none; b=ru/aX/6thcQbls3w7+oU4jK8TQ5H0H4rEeBt1nbCR8SVsFOzaRXfKaXjWLkjz3hThU+M4XV7lFxPXzv+p1B/KSNXo6liFracpzo8RrLTFbLBdoIN/rKGSPaJ4tmHnK1Bg/KEVPqs+glua9AKn+7/euTYMEeV2gCUaRuVgI5DUEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884037; c=relaxed/simple;
-	bh=stSdIohe07yS0CGdx9HahDRvrE5eZsZKj4wpLGiaO9E=;
+	s=arc-20240116; t=1765887721; c=relaxed/simple;
+	bh=OzDtLYZXxwBFTUhu1BTufURPTQ3Qy80/VrBwiic9eEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAbpwMs2yFVk9cR5yOjeZoMbdt107xM8SEeH3b1MQCS2QEbRkHnUS6e4BC+c3LnNEPCh0r5/MxOCml9PT6wLe5ysFaHcE9hW3tvbDdNao6HmBeo63SNqWsSCGswdRg113oJVMYuDtV/F7XVFc2kuXvpMYamjhTu8Edh4gnDE9EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDff1ygq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CBDC4CEF1;
-	Tue, 16 Dec 2025 11:20:36 +0000 (UTC)
+	 MIME-Version; b=UjnzqLWmEV23Y5IDiWzYem9ludyrYaPpjPBL1o1HLU2YVGs92bgdKkyBLriNPJU/rmThTY1gBJLxHcID6GrjdsYvtYR1KRoWLlbVqlGWEfx0mZvQYG150ZskaPGgO2xk+m9v6stILau21wCV+BAsxgg+xb0GXXO/VaHZCp3quYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqUkIH78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0111C4CEF1;
+	Tue, 16 Dec 2025 12:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884036;
-	bh=stSdIohe07yS0CGdx9HahDRvrE5eZsZKj4wpLGiaO9E=;
+	s=korg; t=1765887721;
+	bh=OzDtLYZXxwBFTUhu1BTufURPTQ3Qy80/VrBwiic9eEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDff1ygqbJWOUGAUAix1ii0CCkf9/AvB7CLHEn83E59OcfmgDZnRJpV6+qZ7UZU09
-	 2jiDbaJujRY8QdShdrwrM2g9+zg0oDknaSOcj/y1GsAle/MEpZXfQKLTPenDy6vJUS
-	 k4qHUiDfvqt1S+ikAcugN9RTg9qJMAFzRYltvDoU=
+	b=RqUkIH78NVnKiyX95OOqbxkCd951kzV5Ue0ooCUi5AuoYXUk8PLzF+ZQGfT6//Hog
+	 52CCJuihLEID+pPl/zbT472fb2Q/obCTh3Bda2MjzoWjJI0alBKJw5cbFKiimyzC8A
+	 MsLdScxt/5oQ8qUk9UvXwESxuqZ8QrM5UHmFkb3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	David Heidelberg <david@ixit.cz>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/354] arm64: dts: qcom: sdm845-oneplus: Correct gpio used for slider
+Subject: [PATCH 6.18 274/614] PCI: keystone: Exit ks_pcie_probe() for invalid mode
 Date: Tue, 16 Dec 2025 12:10:41 +0100
-Message-ID: <20251216111323.605377484@linuxfoundation.org>
+Message-ID: <20251216111411.302612746@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit d7ec7d34237498fab7a6afed8da4b7139b0e387c ]
+[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
 
-The previous GPIO numbers were wrong. Update them to the correct
-ones and fix the label.
+Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
+When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
+the PCIe Controller is configured accordingly. However, when the mode is
+neither of them, an error message is displayed, but the driver probe
+succeeds. Since this "invalid" mode is not associated with a functional
+PCIe Controller, the probe should fail.
 
-Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250927-slider-correct-v1-1-fb8cc7fdcedf@ixit.cz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix the behavior by exiting "ks_pcie_probe()" with the return value of
+"-EINVAL" in addition to displaying the existing error message when the
+mode is invalid.
+
+Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 46e25c53829ad..d0cbf9106a792 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -803,8 +803,8 @@ hall_sensor_default: hall-sensor-default-state {
- 		bias-disable;
- 	};
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index eb00aa3807220..25b8193ffbcf1 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1337,6 +1337,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
+ 		break;
+ 	default:
+ 		dev_err(dev, "INVALID device type %d\n", mode);
++		ret = -EINVAL;
++		goto err_get_sync;
+ 	}
  
--	tri_state_key_default: tri-state-key-default-state {
--		pins = "gpio40", "gpio42", "gpio26";
-+	alert_slider_default: alert-slider-default-state {
-+		pins = "gpio126", "gpio52", "gpio24";
- 		function = "gpio";
- 		drive-strength = <2>;
- 		bias-disable;
+ 	ks_pcie_enable_error_irq(ks_pcie);
 -- 
 2.51.0
 
