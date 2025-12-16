@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED9ECC25D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAB2CC3BA8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F06F30B01A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2BF314568D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E748341660;
-	Tue, 16 Dec 2025 11:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF15637831D;
+	Tue, 16 Dec 2025 12:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rj2MX96Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR1YgHlH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AF8338F25;
-	Tue, 16 Dec 2025 11:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FE8378319;
+	Tue, 16 Dec 2025 12:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884717; cv=none; b=sp86zxzZN8tiN+CMXzqNyUK3urnHi8YZdL3TBaM6pdaxgEFcD8fy1Dk0P8yY4U+PnlsCqeAX1UC2U0E1eQGRD6RdWYs9/M3A8wt80rt/tDDuk53w7Gnwjl/raOUesRIg2fmwYmAt60Uy2sujqhg1iKSg/ZVOVqvuT1ef5uj59ms=
+	t=1765888247; cv=none; b=SCegjtTbxKlhqel86riFktwONGkCvNdZ0QpY094b/ul1qleOxMt66WwSJFzXOG9IZWz76vhETj2WB6xSiYxJ+a0YryUJEzT5ncRy6LZS2mfnqS53UOcvNUUoUw4GC29IhQIz78b+SaMhPwFd/HmjXzdn5uiq465mGhOsHUxY6LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884717; c=relaxed/simple;
-	bh=8Pbgt+VOOFEAUniPS+AtJL/JHLSMBwFbAjwXAHcgqh0=;
+	s=arc-20240116; t=1765888247; c=relaxed/simple;
+	bh=2CXTmNpIQBVjd5vinhsuZDSkC7p6CgjMefUR7O6rixw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bY4+Zw6fnqQLaRiXm3MEqMhkKiO9Y3ipNhgdJrujEDsk+suwKaZRwVKYN6Jm90bo4BwfA+OSlMpoUBpF1LjspopUHl+47UXqTJDtIdEENG7aYnaNPpL3uDWVJvapEcwebNHJiICDhrSt4dzTH4s5IotPu8Hd9rzRCWYKU1Sx2Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rj2MX96Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5E6C4CEF1;
-	Tue, 16 Dec 2025 11:31:56 +0000 (UTC)
+	 MIME-Version; b=nctVzyw5u74bhlFopTY1rZsiOk6AfG2awVN/PsJEGgcN3uzHY89Zav5BVclZ3UmwbBaAI2rkJTytCA55z8CfKWAL+gWZNR6fr+qdx8VET3Xn6LkDA2nETP+DqnGtQRThcNzFlsWO4j5713RScT9EtRjdoEezlBvWzLcev00mNMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR1YgHlH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA9CC4CEF5;
+	Tue, 16 Dec 2025 12:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884717;
-	bh=8Pbgt+VOOFEAUniPS+AtJL/JHLSMBwFbAjwXAHcgqh0=;
+	s=korg; t=1765888247;
+	bh=2CXTmNpIQBVjd5vinhsuZDSkC7p6CgjMefUR7O6rixw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rj2MX96Qkk/lVnooZz4HtM/x2/LLZCrMlBfEAAejswyql33Fqw4uy9XqsLPQQ3AjZ
-	 YvQPkXgMotIhPbPcvMmAGLO5520EZJy1Z2meVGz08+Je0snOu69p3C4hEkpNDwMBSe
-	 mZAuAoZNjmvO70GfBb5CdSxBok2ovDDtUOgKKb4w=
+	b=VR1YgHlHswuANnjRd72qtI2/A1O/ZPiwRCDNJ8B7PItSDRgXJjT+TwDyrOK9rl6dy
+	 C+SnfUrDS7iAv8tcfLfdEHixxcSDPZVizZb2SvL0niLbuUzmD+E+CyStqTSQDF/wbq
+	 1u5QGX8as6b6AnWaDz/XHUZznZeEimPF4weoiqfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 276/354] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
+Subject: [PATCH 6.18 476/614] ARM: dts: samsung: exynos4210-trats: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:14:03 +0100
-Message-ID: <20251216111330.914126114@linuxfoundation.org>
+Message-ID: <20251216111418.616575647@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
+[ Upstream commit 97cc9c346b2c9cde075b9420fc172137d2427711 ]
 
-The "qcom,halt-regs" consists of a phandle reference followed by the
-three offsets within syscon for halt registers. Thus, we need to
-request 4 integers from of_property_read_variable_u32_array(), with
-the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
--EOVERFLOW, causing .probe() to fail.
-
-Increase MAX_HALT_REG to 4, and update the indexes accordingly.
-
-Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a19f6efc01df ("ARM: dts: exynos: Enable WLAN support for the Trats board")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-4-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4210-trats.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-index e913dabae9924..c560b81b72631 100644
---- a/drivers/remoteproc/qcom_q6v5_wcss.c
-+++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-@@ -85,7 +85,7 @@
- #define TCSR_WCSS_CLK_MASK	0x1F
- #define TCSR_WCSS_CLK_ENABLE	0x14
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-trats.dts b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+index 95e0e01b6ff6b..6bd902cb8f4ad 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-trats.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+@@ -518,6 +518,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
--#define MAX_HALT_REG		3
-+#define MAX_HALT_REG		4
- enum {
- 	WCSS_IPQ8074,
- 	WCSS_QCS404,
-@@ -864,9 +864,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
- 		return -EINVAL;
- 	}
- 
--	wcss->halt_q6 = halt_reg[0];
--	wcss->halt_wcss = halt_reg[1];
--	wcss->halt_nc = halt_reg[2];
-+	wcss->halt_q6 = halt_reg[1];
-+	wcss->halt_wcss = halt_reg[2];
-+	wcss->halt_nc = halt_reg[3];
- 
- 	return 0;
- }
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&tflash_reg>;
 -- 
 2.51.0
 
