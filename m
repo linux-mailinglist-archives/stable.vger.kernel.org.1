@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8492CC2E2E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F76CC27DF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D367C30439FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D838E3064AF2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2780362128;
-	Tue, 16 Dec 2025 12:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85EE355029;
+	Tue, 16 Dec 2025 11:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fV/YPnCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ+MRxHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF81362129;
-	Tue, 16 Dec 2025 12:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63051355026;
+	Tue, 16 Dec 2025 11:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887738; cv=none; b=Q5JhH5QicgIbUdr4jY7dyYWac9Ix4dDSQRmqyel9PW8lJ26dQ6VpA1FfgpXE6+9Mo+yIwtMSjSI4sP/pNaywsb9Htk/paHf7ZmloMvm+b/lFvVGx9XiHC0bhg/uBaYcRLartTfzweEqIkWztHPRZ6oALtIIGCApQSMb7RGGp96A=
+	t=1765885915; cv=none; b=MKa0YuQl3nqMQhPLPFuiTWHWftE/bbUDE7WSKf5+8llcBPeqZEjtYkqarJfykiYV4kz8vLLdSmtpdqlhBj6SGaP6wlNY/8zzbl9QBFuVvUjma1xEjZsV9+Hroq2Hnb8mMs0Lk2Bac3eIG53JB4p7BFOd/aVBx+4Lxc9SX2iAuzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887738; c=relaxed/simple;
-	bh=OK2GZo8+BBHN8L9u5k1ACdSJNL5tZ44SL9iC6QbG1Rk=;
+	s=arc-20240116; t=1765885915; c=relaxed/simple;
+	bh=CGRsz9c0j0fiw/czQRVnwcaZKMtVKlJwXcriLbkX/Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBPi15pKRp7Tvbcx/Av4f7UHHb7/QNAEMn/DbDUAUXl0A7zAncsaljvmPYbbLH0ZzsGjK5I8gffHAaxXznRgdNHzR049Sm+tQiznV85mXR1NqzsHpOXQBdr15VAl2OIzZWUv+cYp3qit25XJJ+n1LTVUH+rQKVaiJhmUXk7FwD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fV/YPnCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9B2C4CEF1;
-	Tue, 16 Dec 2025 12:22:17 +0000 (UTC)
+	 MIME-Version; b=kAseitulXW8m6KfQEaV8Fey+z4ZfbEk+2+1f9/ZsMiabYEP8HG1CaenpqsNogVvc+oN82EApkaz2kci7tDNh3yjhxhW4ml3GMVOjK1CK3t4LxxSGO/cGPupY/LUkboKFbJclhtQc1Gp71jNpJ74cJjprYaOfnmfkcXB4C4ThTp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ+MRxHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E79C4CEF1;
+	Tue, 16 Dec 2025 11:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887738;
-	bh=OK2GZo8+BBHN8L9u5k1ACdSJNL5tZ44SL9iC6QbG1Rk=;
+	s=korg; t=1765885915;
+	bh=CGRsz9c0j0fiw/czQRVnwcaZKMtVKlJwXcriLbkX/Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fV/YPnCSE9eIc0igQWiwPaC8wKnDYY2rt9P26gpNa4UnRgcwQ1RqT//fJ7NOhr3Sg
-	 HqdZ08aZrNx2eTxg+w/6o8EZDNakWC5ydKXNLQCoHd6myQ6WSf3DxUpMdaWBMy36ej
-	 aCIvcsj7S6qXVs9emoVWp6CxMsjPwBZzlMtv12/A=
+	b=RQ+MRxHFTPz49gzho2tBD7yx2MCRuYWM/X9shV0iJev2T9UXo3pv542llw/SVuB3x
+	 0TtNE6vOb+ALwWuTYt4SYVSIQxy2A9ZyESRowHRCQ59NoE+mtNrfUCyfG077xN+qac
+	 D54LBeVuJkEy8v0DwgDLPWHnb67JhCrsrAVXUokY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Michael Kelley <mkhlinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 323/614] drm/msm/a6xx: Fix the gemnoc workaround
+Subject: [PATCH 6.17 249/507] Drivers: hv: Free msginfo when the buffer fails to decrypt
 Date: Tue, 16 Dec 2025 12:11:30 +0100
-Message-ID: <20251216111413.066560662@linuxfoundation.org>
+Message-ID: <20251216111354.515090883@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Roman Kisel <romank@linux.microsoft.com>
 
-[ Upstream commit ff7a6de043fce21ea5891311746b16121b385c59 ]
+[ Upstream commit 510164539f16062e842a9de762616b5008616fa1 ]
 
-Correct the register offset and enable this workaround for all A7x
-and newer GPUs to match the recommendation. Also, downstream does this
-w/a after moving the fence to allow mode. So do the same.
+The early failure path in __vmbus_establish_gpadl() doesn't deallocate
+msginfo if the buffer fails to decrypt.
 
-Fixes: dbfbb376b50c ("drm/msm/a6xx: Add A621 support")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688997/
-Message-ID: <20251118-kaana-gpu-support-v4-3-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fix the leak by breaking out the cleanup code into a separate function
+and calling it where required.
+
+Fixes: d4dccf353db80 ("Drivers: hv: vmbus: Mark vmbus ring buffer visible to host in Isolation VM")
+Reported-by: Michael Kelley <mkhlinux@outlook.com>
+Closes: https://lore.kernel.org/linux-hyperv/SN6PR02MB41573796F9787F67E0E97049D472A@SN6PR02MB4157.namprd02.prod.outlook.com
+Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/hv/channel.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 4e6dc16e4a4c4..605bb55de8d52 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -485,8 +485,9 @@ static void a6xx_gemnoc_workaround(struct a6xx_gmu *gmu)
- 	 * in the power down sequence not being fully executed. That in turn can
- 	 * prevent CX_GDSC from collapsing. Assert Qactive to avoid this.
- 	 */
--	if (adreno_is_a621(adreno_gpu) || adreno_is_7c3(adreno_gpu))
--		gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, BIT(0));
-+	if (adreno_is_a7xx(adreno_gpu) || (adreno_is_a621(adreno_gpu) ||
-+				adreno_is_7c3(adreno_gpu)))
-+		gmu_write(gmu, REG_A6XX_GPU_GMU_CX_GMU_CX_FALNEXT_INTF, BIT(0));
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index 1621b95263a5b..70270202209b6 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -410,6 +410,21 @@ static int create_gpadl_header(enum hv_gpadl_type type, void *kbuffer,
+ 	return 0;
  }
  
- /* Let the GMU know that we are about to go into slumber */
-@@ -522,10 +523,9 @@ static int a6xx_gmu_notify_slumber(struct a6xx_gmu *gmu)
++static void vmbus_free_channel_msginfo(struct vmbus_channel_msginfo *msginfo)
++{
++	struct vmbus_channel_msginfo *submsginfo, *tmp;
++
++	if (!msginfo)
++		return;
++
++	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
++				 msglistentry) {
++		kfree(submsginfo);
++	}
++
++	kfree(msginfo);
++}
++
+ /*
+  * __vmbus_establish_gpadl - Establish a GPADL for a buffer or ringbuffer
+  *
+@@ -429,7 +444,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 	struct vmbus_channel_gpadl_header *gpadlmsg;
+ 	struct vmbus_channel_gpadl_body *gpadl_body;
+ 	struct vmbus_channel_msginfo *msginfo = NULL;
+-	struct vmbus_channel_msginfo *submsginfo, *tmp;
++	struct vmbus_channel_msginfo *submsginfo;
+ 	struct list_head *curr;
+ 	u32 next_gpadl_handle;
+ 	unsigned long flags;
+@@ -459,6 +474,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 			dev_warn(&channel->device_obj->device,
+ 				"Failed to set host visibility for new GPADL %d.\n",
+ 				ret);
++			vmbus_free_channel_msginfo(msginfo);
+ 			return ret;
+ 		}
  	}
+@@ -535,12 +551,8 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
+ 	list_del(&msginfo->msglistentry);
+ 	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
+-	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
+-				 msglistentry) {
+-		kfree(submsginfo);
+-	}
  
- out:
--	a6xx_gemnoc_workaround(gmu);
--
- 	/* Put fence into allow mode */
- 	gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
-+	a6xx_gemnoc_workaround(gmu);
- 	return ret;
- }
+-	kfree(msginfo);
++	vmbus_free_channel_msginfo(msginfo);
  
+ 	if (ret) {
+ 		/*
 -- 
 2.51.0
 
