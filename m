@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37329CC248A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7820CC4934
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 180AB3025293
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 375FD3054837
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D222343206;
-	Tue, 16 Dec 2025 11:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971ED36C5BF;
+	Tue, 16 Dec 2025 12:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUlqUDC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIlALCfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48921342507;
-	Tue, 16 Dec 2025 11:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A4336CDED;
+	Tue, 16 Dec 2025 12:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884443; cv=none; b=Jv/Mq9W3nWg7kgWvrAtcLgrHVvm5B6PLHKGYbBmM61h4hcNI8m9Qh2pKYEeClnR0cDnmtakc/hAn13n/gTSIhQqd856cA55Qbgylv8Cq/jMsOEXGk3U119U/zDLiNW4+4B9nxvIpT4m3uZshkLDUHuf6yGLx6CYO6O2TUBnPBSY=
+	t=1765887976; cv=none; b=GTda7IC0xT43b9AJquOx2ssmgn0Dc3ji7cxim8ROiwqO2Vo2EvOPT79M7MNonX/TSODpKpPxvtb5Dnr1lRos+jCHIeZXntX5878ETFstese/kYSL87ijeRNQLXu3O9fMOK6h6DKt8eO83OyXN26F09S/Hj3ZrJeUaTkGwI0ph5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884443; c=relaxed/simple;
-	bh=yZ4BDz8CNnqNt1QWU3nTeQviA4dP0lzS7Z2ZXmVZVsI=;
+	s=arc-20240116; t=1765887976; c=relaxed/simple;
+	bh=9ORLiLaPERRfPMKyQV+KYLc2ZX+bd/qjH4EythWCsmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWSv62iUVUQBcpXj/Y8U3OmaQBGfia71HwTRr0JmVlHOXBRRIx8eLktIaJNEy4K2jCOAMan/vSfgL9qcXuhVrdCRKq+arSdFdzMvmo+uj7PyTySEFt0+HrTSA5a36WQz5oolZa2K8+BwpNCGRIGTY85RKMdXHyCGejxRX+iEBgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUlqUDC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EFFC4CEF1;
-	Tue, 16 Dec 2025 11:27:22 +0000 (UTC)
+	 MIME-Version; b=fKd9KjZetzyInKwEr3F8gFtsswZFh7W5O4B344A9VZ/8Sz4TqBo/r9RkYu261+ZOhoKseY2XIL0FDRnBjwPpNwudIagYwJ3QM391kW4hGldF4IVb/Z33g3otpN7fTzoux6BWKfgyZUov4c9GhC6fQUCK01xCPnMLt+UC0nwwLsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIlALCfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6F4C4CEF1;
+	Tue, 16 Dec 2025 12:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884443;
-	bh=yZ4BDz8CNnqNt1QWU3nTeQviA4dP0lzS7Z2ZXmVZVsI=;
+	s=korg; t=1765887975;
+	bh=9ORLiLaPERRfPMKyQV+KYLc2ZX+bd/qjH4EythWCsmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUlqUDC0UqeDGSqlhNhQqpGp5BUi9dzbC4TtIv2eTXxPC72u6jp44PeOepOnwqZye
-	 TOHPEi6NNypBEBxDC37RBlBtS7HK/m2DUnt+BtJ7NACyyI87Tt08qR6qMseEhnuDCt
-	 BIeiLegGvPI2dkFGyj1CkVUo71qGuLB3Iosv23b0=
+	b=QIlALCfKj+bGVOrg/+S56ayF4fL7HLyzMJl2tM/gCdTDGb6dEzjegnt/7S4flRgkh
+	 M/cHyuYvES+ENXZ3ZOV0N1KwkXtygYt9sIslcNoZOvZwUMyBnsbytlKQLKmo7zvRCC
+	 3Qyte35FTtRbtDNs2XSqt7AJmQZIKnvyiWQxLuFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Algea Cao <algea.cao@rock-chips.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/354] phy: rockchip: samsung-hdptx: Reduce ROPLL loop bandwidth
+Subject: [PATCH 6.18 395/614] wifi: mt76: mt7996: fix using wrong phy to start in mt7996_mac_restart()
 Date: Tue, 16 Dec 2025 12:12:42 +0100
-Message-ID: <20251216111327.976708927@linuxfoundation.org>
+Message-ID: <20251216111415.686168299@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 8daaced9f5eeb4a2c8ca08b0a8286b6a498a8387 ]
+[ Upstream commit f1e9f369ae42ee433836b24467e645192d046a51 ]
 
-Due to its relatively low frequency, a noise stemming from the 24MHz PLL
-reference clock may traverse the low-pass loop filter of ROPLL, which
-could potentially generate some HDMI flash artifacts.
+Pass the correct mt7996_phy to mt7996_run().
 
-Reduce ROPLL loop bandwidth in an attempt to mitigate the problem.
-
-Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
-Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-2-ecc642a59d94@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 0a5df0ec47f7 ("wifi: mt76: mt7996: remove redundant per-phy mac80211 calls during restart")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251106064203.1000505-11-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 5547f8df8e717..d287e818fb03c 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -385,9 +385,7 @@ static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
- 	REG_SEQ0(CMN_REG(0043), 0x00),
- 	REG_SEQ0(CMN_REG(0044), 0x46),
- 	REG_SEQ0(CMN_REG(0045), 0x24),
--	REG_SEQ0(CMN_REG(0046), 0xff),
- 	REG_SEQ0(CMN_REG(0047), 0x00),
--	REG_SEQ0(CMN_REG(0048), 0x44),
- 	REG_SEQ0(CMN_REG(0049), 0xfa),
- 	REG_SEQ0(CMN_REG(004a), 0x08),
- 	REG_SEQ0(CMN_REG(004b), 0x00),
-@@ -460,6 +458,8 @@ static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
- 	REG_SEQ0(CMN_REG(0034), 0x00),
- 	REG_SEQ0(CMN_REG(003d), 0x40),
- 	REG_SEQ0(CMN_REG(0042), 0x78),
-+	REG_SEQ0(CMN_REG(0046), 0xdd),
-+	REG_SEQ0(CMN_REG(0048), 0x11),
- 	REG_SEQ0(CMN_REG(004e), 0x34),
- 	REG_SEQ0(CMN_REG(005c), 0x25),
- 	REG_SEQ0(CMN_REG(005e), 0x4f),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index fe31db5440a84..b06728a98a691 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -2341,7 +2341,7 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 		if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+ 			continue;
+ 
+-		ret = mt7996_run(&dev->phy);
++		ret = mt7996_run(phy);
+ 		if (ret)
+ 			goto out;
+ 	}
 -- 
 2.51.0
 
