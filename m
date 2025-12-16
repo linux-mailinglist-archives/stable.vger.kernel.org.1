@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212A5CC2C5E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F254CC38F6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EE2930F6681
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0C13308CF9D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB853659FB;
-	Tue, 16 Dec 2025 12:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50845349AF1;
+	Tue, 16 Dec 2025 11:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0F8vRLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvHDwRH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F09365A02;
-	Tue, 16 Dec 2025 12:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5E3349AE7;
+	Tue, 16 Dec 2025 11:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887113; cv=none; b=lZUS6Lz530S0mdotMGMQvmKJQLXfJO563fGbEvK+8tRVcgVdSTzaYEyz+HjUy4H4l8t/5nIzVpNgkdurMgvs7PfQO1+f0oFoCVr6+u6BnNRhnPWtUefEgZbPu4AmxR150wbomirRwWQFwIMnTARgTdp6fyzp4TSJmRg1AchZ9Dg=
+	t=1765885165; cv=none; b=cMDE4y/foep6m7EOIyDW/nhn3Qr76oJg278jOWoOMNxr1LfeokDeaLlY+KQAypvJsdeqWGyX2D5hHNvihnuyHzKRylTINsHL+zEMGVh3cOK/wWkLhLARMKuSUesI6j0KwvL9F2tD7FP6Yqiv0zHU4ypq8LaTEezsSK5IJlBrJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887113; c=relaxed/simple;
-	bh=4VWCsu98lJkEZUxvrvt74tK/Xx9NX4HhxLKkOG2FcFI=;
+	s=arc-20240116; t=1765885165; c=relaxed/simple;
+	bh=gUlxE7T/X3TXOl3GMWsnB/EewsF3sH2Cq6HdW3dMq/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLk6eCAHnPgyKIUCN/zYwSKc2NqOa/0pw11VJbvGDaqPdROsgK+qcJNzLgZuowJ2qI+7g97lw+sod0EfbvcIGLocF2D6MHOv3guiARqdKLa6a1uzdzCciYpANJ2JePXd/8loBhuYoRS/42fomQ+U4zQNc1iesmgGVR5y7dzf8Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0F8vRLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B32C4CEF1;
-	Tue, 16 Dec 2025 12:11:52 +0000 (UTC)
+	 MIME-Version; b=Bv4SmpD3t1X4sv4XO/dclvjGFDUwyuN3P4Ly1q7lxh9VyPQ0s9J3A5P+AKryW/rReHcxJzS257BEzbjV0fpH/UBHUV3+1YlXMZFFkT4+EBAyc4X0ck4lnOgWW80Y6gb+ZsZLUO2ZlLBFZnwVkGQI19Bu3nsecla+gpUmAxML0QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvHDwRH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DE5C4CEF1;
+	Tue, 16 Dec 2025 11:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887112;
-	bh=4VWCsu98lJkEZUxvrvt74tK/Xx9NX4HhxLKkOG2FcFI=;
+	s=korg; t=1765885164;
+	bh=gUlxE7T/X3TXOl3GMWsnB/EewsF3sH2Cq6HdW3dMq/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0F8vRLdoW3Lg+vT+WHBJreDHezwxz3+zHcDYcbbyWHEMOIZeKf6c65DaGsf8ewZy
-	 36ocSl72bTAv7UMQlR00tLdTc9jdQoNx9nfbsyQLr1gOpDxTxVHPDVwVAK1/FbMkY5
-	 goAq6FSkGh+qaw/FFJT8Btvle3teFW3EJjDCG2+8=
+	b=bvHDwRH56jXU1kfTIO1fkaunkRe6MVFHi8VVcjTB4VJ/ttqUACVTTAbXV3rAi0M87
+	 da642V6+rzsHvkVQ71a596V5dBJQW/xHgaSQ3qJ2ShDI9dhGVddCDwp+21f7otAypC
+	 GVQZ6KMYueaSS2/OMsoAQEKiezqs7Nou/f7mjVW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 129/614] arm64: dts: qcom: qcm2290: Fix camss register prop ordering
-Date: Tue, 16 Dec 2025 12:08:16 +0100
-Message-ID: <20251216111406.010811225@linuxfoundation.org>
+Subject: [PATCH 6.17 056/507] firmware: qcom: tzmem: fix qcom_tzmem_policy kernel-doc
+Date: Tue, 16 Dec 2025 12:08:17 +0100
+Message-ID: <20251216111347.572996448@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 67445dc8a8060309eeb7aebbc41fa0e58302fc09 ]
+[ Upstream commit edd548dc64a699d71ea4f537f815044e763d01e1 ]
 
-The qcm2290 CAMSS node has been applied from the V4 series, but a later
-version changed the order of the register property, fix it to prevent
-dtb check error.
+Fix kernel-doc warnings by using correct kernel-doc syntax and
+formatting to prevent warnings:
 
-Fixes: 2b3aef30dd9d ("arm64: dts: qcom: qcm2290: Add CAMSS node")
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250918155456.1158691-1-loic.poulain@oss.qualcomm.com
+Warning: include/linux/firmware/qcom/qcom_tzmem.h:25 Enum value
+ 'QCOM_TZMEM_POLICY_STATIC' not described in enum 'qcom_tzmem_policy'
+Warning: ../include/linux/firmware/qcom/qcom_tzmem.h:25 Enum value
+ 'QCOM_TZMEM_POLICY_MULTIPLIER' not described in enum 'qcom_tzmem_policy'
+Warning: ../include/linux/firmware/qcom/qcom_tzmem.h:25 Enum value
+ 'QCOM_TZMEM_POLICY_ON_DEMAND' not described in enum 'qcom_tzmem_policy'
+
+Fixes: 84f5a7b67b61 ("firmware: qcom: add a dedicated TrustZone buffer allocator")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20251017191323.1820167-1-rdunlap@infradead.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm2290.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/firmware/qcom/qcom_tzmem.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-index 08141b41de246..3b0ba590ee825 100644
---- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-@@ -1685,25 +1685,25 @@ cci_i2c1: i2c-bus@1 {
- 			};
- 		};
- 
--		camss: camss@5c6e000 {
-+		camss: camss@5c11000 {
- 			compatible = "qcom,qcm2290-camss";
- 
--			reg = <0x0 0x5c6e000 0x0 0x1000>,
-+			reg = <0x0 0x5c11000 0x0 0x1000>,
-+			      <0x0 0x5c6e000 0x0 0x1000>,
- 			      <0x0 0x5c75000 0x0 0x1000>,
- 			      <0x0 0x5c52000 0x0 0x1000>,
- 			      <0x0 0x5c53000 0x0 0x1000>,
- 			      <0x0 0x5c66000 0x0 0x400>,
- 			      <0x0 0x5c68000 0x0 0x400>,
--			      <0x0 0x5c11000 0x0 0x1000>,
- 			      <0x0 0x5c6f000 0x0 0x4000>,
- 			      <0x0 0x5c76000 0x0 0x4000>;
--			reg-names = "csid0",
-+			reg-names = "top",
-+				    "csid0",
- 				    "csid1",
- 				    "csiphy0",
- 				    "csiphy1",
- 				    "csitpg0",
- 				    "csitpg1",
--				    "top",
- 				    "vfe0",
- 				    "vfe1";
+diff --git a/include/linux/firmware/qcom/qcom_tzmem.h b/include/linux/firmware/qcom/qcom_tzmem.h
+index b83b63a0c049b..e1e26dc4180e7 100644
+--- a/include/linux/firmware/qcom/qcom_tzmem.h
++++ b/include/linux/firmware/qcom/qcom_tzmem.h
+@@ -17,11 +17,20 @@ struct qcom_tzmem_pool;
+  * enum qcom_tzmem_policy - Policy for pool growth.
+  */
+ enum qcom_tzmem_policy {
+-	/**< Static pool, never grow above initial size. */
++	/**
++	 * @QCOM_TZMEM_POLICY_STATIC: Static pool,
++	 * never grow above initial size.
++	 */
+ 	QCOM_TZMEM_POLICY_STATIC = 1,
+-	/**< When out of memory, add increment * current size of memory. */
++	/**
++	 * @QCOM_TZMEM_POLICY_MULTIPLIER: When out of memory,
++	 * add increment * current size of memory.
++	 */
+ 	QCOM_TZMEM_POLICY_MULTIPLIER,
+-	/**< When out of memory add as much as is needed until max_size. */
++	/**
++	 * @QCOM_TZMEM_POLICY_ON_DEMAND: When out of memory
++	 * add as much as is needed until max_size.
++	 */
+ 	QCOM_TZMEM_POLICY_ON_DEMAND,
+ };
  
 -- 
 2.51.0
