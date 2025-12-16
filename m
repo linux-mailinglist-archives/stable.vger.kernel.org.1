@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C1CC2211
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55641CC2649
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6346A3066DEC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D73E3024242
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FED2261B9D;
-	Tue, 16 Dec 2025 11:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A623446C4;
+	Tue, 16 Dec 2025 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvPAKI+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVWzF2+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE8C2459D7;
-	Tue, 16 Dec 2025 11:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5183446A9;
+	Tue, 16 Dec 2025 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883882; cv=none; b=CmYX5fLaMOoU7ZcOZXsPKwLUH4WnfJwCork0li5qu8kEVhCnzCFFITOeutpZrRp0K3QFp7kMizT5ZTuycXsBQEQww08BypO2abcXY/vm+6uZSOOV0r2ZxUkeAGqBw8U7ZxyVNEMWnDeo8ydt7PoeT7LlmdHldatFnXRV3ocPyok=
+	t=1765885489; cv=none; b=qfuFfiPzNaX2XMYJ40EbtNQ3KUG34lqwpD/96KHg0dEpAbntcrkqxwaIzuY+2+fsVTsbvCstt7gfIBsiKR1YiX8kY1odFarNsqMgixjbc3IeKfGmT0kosVxf7QmJYhxDp7oOlPFH+UL3EygzV2CqwAt/uT5+RTPuuBPQQidB9QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883882; c=relaxed/simple;
-	bh=QPM1m9IFcMR87qlZHf+/7iXZNne6hRDcvJHcdRZHGA0=;
+	s=arc-20240116; t=1765885489; c=relaxed/simple;
+	bh=42cP9kymUZ0RmzDZa3NkUekyRvZE05zKWq8/1uDb9Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ud1wzZiMLLGKEvuahF1jo+T7wXzfZ3VfJtp6Mfqn3HZAZ+afHOg4nNtyr+uqS3OfabHzpjHOs/HHuoTtS5aSOFrfHrAYla03tvKJbrObjtL7VXbm8GgWXdto+dwmkAfPVpFvBZFwyZcJJgXWFyJa/VaqhfJ+OkLR/+WLFSNPYZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvPAKI+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378BAC4CEF1;
-	Tue, 16 Dec 2025 11:18:01 +0000 (UTC)
+	 MIME-Version; b=mrYSLT/eYkosVBFt1tRaK4aeya14oe+drwIAD5AB4JdBXRvUn461lRehPQyBIfIJYPE14Byp36Sm+iza5SIrPyTtz6Ga5utkJL5D2cJOZ0c0QE0aLphd1Eoti4rPbs5Yb3vi6/chty311ssi9xJbd8eiIeUzXHBk7unciNWQuBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVWzF2+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3F1C4CEF1;
+	Tue, 16 Dec 2025 11:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883882;
-	bh=QPM1m9IFcMR87qlZHf+/7iXZNne6hRDcvJHcdRZHGA0=;
+	s=korg; t=1765885489;
+	bh=42cP9kymUZ0RmzDZa3NkUekyRvZE05zKWq8/1uDb9Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvPAKI+OyAPs+zKWcGz8ZiMOfv2byxizTm7UnAzISCCYYfd27JXDcGUbNVo5/uSwm
-	 bAXFTOhzY1079eOTFotl2Adl6733omfsxw+vf1xtbhdBpJA5HfzXkYxLb4BQsJe5Xl
-	 4KlHekiC/X6TZkAMvXgQnOtVz0pRt3GvcZ2+juD4=
+	b=bVWzF2+99Nna2e03ZwDV/1P0XFlXHUdI7pze8+vA49OFBCGdcG/C+6C8dILpK6H6Z
+	 OuPEoCBZHgkFLHTXDpCBGyoFPR8bL/sgVaxy00iktre0BeH7VSOi+DBZT2p/Tj2Grx
+	 C0VH+hGXEwL6b2toJGtL+BFAa/4uSpI8Fkil+e9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/354] wifi: ath10k: move recovery check logic into a new work
-Date: Tue, 16 Dec 2025 12:09:54 +0100
-Message-ID: <20251216111321.894956927@linuxfoundation.org>
+Subject: [PATCH 6.17 154/507] power: supply: max17040: Check iio_read_channel_processed() return code
+Date: Tue, 16 Dec 2025 12:09:55 +0100
+Message-ID: <20251216111351.104623594@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,160 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit f35a07a4842a88801d9182b1a76d178bfa616978 ]
+[ Upstream commit 2c68ac48c52ad146523f32b01d70009622bf81aa ]
 
-Currently, ath10k has a recovery check logic. It will wait for the
-last recovery to finish by wait_for_completion_timeout();
+Since iio_read_channel_processed() may fail, return its exit code on error.
 
-But in SDIO scenarios, the recovery function may be invoked from
-interrupt context, where long blocking waits are undesirable and can
-lead to system instability.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Additionally, Linux’s ordered workqueue processes one task at a time.
-If a previous recovery is still queued or executing, new triggers are
-ignored. This prevents accurate tracking of consecutive failures and
-delays transition to the WEDGED state.
-
-To address this, move the recovery check logic into a different
-workqueue.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Fixes: c256a94d1b1b ("wifi: ath10k: shutdown driver when hardware is unreliable")
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251014110757.155-1-kang.yang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 814755c48f8b ("power: max17040: get thermal data from adc if available")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251008133648.559286-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c | 20 +++++++++-----------
- drivers/net/wireless/ath/ath10k/core.h |  2 +-
- drivers/net/wireless/ath/ath10k/mac.c  |  2 +-
- 3 files changed, 11 insertions(+), 13 deletions(-)
+ drivers/power/supply/max17040_battery.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index d13acb9e70009..f9b51d98d20bb 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-@@ -2486,8 +2485,9 @@ static int ath10k_init_hw_params(struct ath10k *ar)
- 	return 0;
- }
- 
--static bool ath10k_core_needs_recovery(struct ath10k *ar)
-+static void ath10k_core_recovery_check_work(struct work_struct *work)
+diff --git a/drivers/power/supply/max17040_battery.c b/drivers/power/supply/max17040_battery.c
+index c1640bc6accd2..48453508688a4 100644
+--- a/drivers/power/supply/max17040_battery.c
++++ b/drivers/power/supply/max17040_battery.c
+@@ -388,6 +388,7 @@ static int max17040_get_property(struct power_supply *psy,
+ 			    union power_supply_propval *val)
  {
-+	struct ath10k *ar = container_of(work, struct ath10k, recovery_check_work);
- 	long time_left;
+ 	struct max17040_chip *chip = power_supply_get_drvdata(psy);
++	int ret;
  
- 	/* Sometimes the recovery will fail and then the next all recovery fail,
-@@ -2497,7 +2497,7 @@ static bool ath10k_core_needs_recovery(struct ath10k *ar)
- 		ath10k_err(ar, "consecutive fail %d times, will shutdown driver!",
- 			   atomic_read(&ar->fail_cont_count));
- 		ar->state = ATH10K_STATE_WEDGED;
--		return false;
-+		return;
- 	}
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_ONLINE:
+@@ -410,7 +411,10 @@ static int max17040_get_property(struct power_supply *psy,
+ 		if (!chip->channel_temp)
+ 			return -ENODATA;
  
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "total recovery count: %d", ++ar->recovery_count);
-@@ -2511,27 +2511,24 @@ static bool ath10k_core_needs_recovery(struct ath10k *ar)
- 							ATH10K_RECOVERY_TIMEOUT_HZ);
- 		if (time_left) {
- 			ath10k_warn(ar, "previous recovery succeeded, skip this!\n");
--			return false;
-+			return;
- 		}
+-		iio_read_channel_processed(chip->channel_temp, &val->intval);
++		ret = iio_read_channel_processed(chip->channel_temp, &val->intval);
++		if (ret)
++			return ret;
++
+ 		val->intval /= 100; /* Convert from milli- to deci-degree */
  
- 		/* Record the continuous recovery fail count when recovery failed. */
- 		atomic_inc(&ar->fail_cont_count);
- 
- 		/* Avoid having multiple recoveries at the same time. */
--		return false;
-+		return;
- 	}
- 
- 	atomic_inc(&ar->pending_recovery);
--
--	return true;
-+	queue_work(ar->workqueue, &ar->restart_work);
- }
- 
- void ath10k_core_start_recovery(struct ath10k *ar)
- {
--	if (!ath10k_core_needs_recovery(ar))
--		return;
--
--	queue_work(ar->workqueue, &ar->restart_work);
-+	/* Use workqueue_aux to avoid blocking recovery tracking */
-+	queue_work(ar->workqueue_aux, &ar->recovery_check_work);
- }
- EXPORT_SYMBOL(ath10k_core_start_recovery);
- 
-@@ -3727,6 +3724,7 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 
- 	INIT_WORK(&ar->register_work, ath10k_core_register_work);
- 	INIT_WORK(&ar->restart_work, ath10k_core_restart);
-+	INIT_WORK(&ar->recovery_check_work, ath10k_core_recovery_check_work);
- 	INIT_WORK(&ar->set_coverage_class_work,
- 		  ath10k_core_set_coverage_class_work);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index 85e16c945b5c2..4026cc433b851 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-@@ -1208,6 +1207,7 @@ struct ath10k {
- 
- 	struct work_struct register_work;
- 	struct work_struct restart_work;
-+	struct work_struct recovery_check_work;
- 	struct work_struct bundle_tx_work;
- 	struct work_struct tx_complete_work;
- 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 935923c290e1f..97e0a75237583 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-@@ -5426,6 +5425,7 @@ static void ath10k_stop(struct ieee80211_hw *hw, bool suspend)
- 	cancel_work_sync(&ar->set_coverage_class_work);
- 	cancel_delayed_work_sync(&ar->scan.timeout);
- 	cancel_work_sync(&ar->restart_work);
-+	cancel_work_sync(&ar->recovery_check_work);
- }
- 
- static int ath10k_config_ps(struct ath10k *ar)
+ 		break;
 -- 
 2.51.0
 
