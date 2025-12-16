@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB18CC2510
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC51CC48CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 005043077E54
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 328FA3008EE0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9369B337BA3;
-	Tue, 16 Dec 2025 11:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F0736D515;
+	Tue, 16 Dec 2025 12:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmZNAEWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zpaeb6ZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB0333F378;
-	Tue, 16 Dec 2025 11:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22C1376BC5;
+	Tue, 16 Dec 2025 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884612; cv=none; b=F1kDAMJvp9ZK+gvx/YEp5EaV7ouxSv/rNF3jLMajGzUsf0c4nTdtiLa4OP8zNmajnFEBN1hCiZ4jdmrS0ZhrVx7vrPCNgw2XDK5Ppw41zQdYm0oM7NRpUPy35G1EzGtS9Tw8AWurAuDM0M6Yq/kGVc6FDR03DN85fedTTVDYSL0=
+	t=1765888046; cv=none; b=VUSDvNTzZmEFsaoa0nfV2s0716xndp6Pe55vbPv15HiuDXqs/fnImWFG2Hn36tv2wEFRT6mf+XQVlw4zPcUZb3ObystrkU73D04wPBBhnRQfyW4BtmTgQXghymYh3uzNlnX/UC1C1D10drvekse6m6CWCgOKvGBz+1N7C44nTvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884612; c=relaxed/simple;
-	bh=h/bBiaVBjhVk94G/T0mBcj4Z17tSpRDv1WpqsSU7zv0=;
+	s=arc-20240116; t=1765888046; c=relaxed/simple;
+	bh=slCMW259RdwYcOSwG43n9QWEC14c/IkERMdnt4FWoW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnT/OBCDc0k267bqvD1FxxOxTbAot8bIhmnpoO8Hd/DVY08xx/SAwgujYOHzEX1YiJRzijEQ+zo25ZMp44V0MHKQPUsgxp/9idtatX5kL72tIW6sySC/WWeDdKBI7LU9CWlJ6jJmNU9DjT405XYz4yJL7au9cLWV9bmjyLBmKw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmZNAEWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9D1C4CEF1;
-	Tue, 16 Dec 2025 11:30:11 +0000 (UTC)
+	 MIME-Version; b=VVvSmDHtHtUc0pCcGHJvHYln6jQLgPqTWX0f6on3jatG+eutWvf6OrIJQP7amBebbDUopxP1sRPjUXJvtYfnDOX9IihCwjzebE6mInnOrVOoZ43inV/pqYn06jZjrCuiZArXiInMHvAiVLRd3EkcaxzbrSfHvgviuo4Kb5v3/QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zpaeb6ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1045AC4CEF1;
+	Tue, 16 Dec 2025 12:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884612;
-	bh=h/bBiaVBjhVk94G/T0mBcj4Z17tSpRDv1WpqsSU7zv0=;
+	s=korg; t=1765888045;
+	bh=slCMW259RdwYcOSwG43n9QWEC14c/IkERMdnt4FWoW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmZNAEWDG1T7XG5NlfmUet2FGaHCd1kDPhsl61g4e1dSZ7ZHr+Gg1Y+lNKyd5i4Pq
-	 wTwn1NJlxlYxc4xXOo42zHpd9bGygbrP1x3oQCJ8L9xoxbi6Ht3A/N/Xb+6A0tpSmJ
-	 x+YQIsVRv0rEkoA3WgnAtjmlKoU1XmcldpFgb8cg=
+	b=Zpaeb6ZTyIEX8MU9ag5FWo1VDbnXhPtx+pR9m/+qHXHRn17WdfYw2cAVH2u951X/E
+	 QGmkixk8JN6RDjhHRxi85pbcsQAVuGpicYf5oJak2rcvsg5C+AB5/GlucHy3OvqJql
+	 V3ULNLE/d0d7ABcCSMhY6Q9ujL62gOfsi0WlBteM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 214/354] RDMA/bnxt_re: Pass correct flag for dma mr creation
+Subject: [PATCH 6.18 414/614] um: Dont rename vmap to kernel_vmap
 Date: Tue, 16 Dec 2025 12:13:01 +0100
-Message-ID: <20251216111328.673139779@linuxfoundation.org>
+Message-ID: <20251216111416.371823467@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: David Gow <davidgow@google.com>
 
-[ Upstream commit a26c4c7cdb50247b8486f1caa1ea8ab5e5c37edf ]
+[ Upstream commit a74b6c0e53a6df8e8a096b50c06c4f872906368a ]
 
-DMA MR doesn't use the unified MR model. So the lkey passed
-on to the reg_mr command to FW should contain the correct
-lkey. Driver is incorrectly over writing the lkey with pdid
-and firmware commands fails due to this.
+In order to work around the existence of a vmap symbol in libpcap, the
+UML makefile unconditionally redefines vmap to kernel_vmap. However,
+this not only affects the actual vmap symbol, but also anything else
+named vmap, including a number of struct members in DRM.
 
-Avoid passing the wrong key for cases where the unified MR
-registration is not used.
+This would not be too much of a problem, since all uses are also
+updated, except we now have Rust DRM bindings, which expect the
+corresponding Rust structs to have 'vmap' names. Since the redefinition
+applies in bindgen, but not to Rust code, we end up with errors such as:
 
-Fixes: f786eebbbefa ("RDMA/bnxt_re: Avoid an extra hwrm per MR creation")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1763624215-10382-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
+  --> rust/kernel/drm/gem/mod.rs:210:9
+
+Since libpcap support was removed in commit 12b8e7e69aa7 ("um: Remove
+obsolete pcap driver"), remove the, now unnecessary, define as well.
+
+We also take this opportunity to update the comment.
+
+Signed-off-by: David Gow <davidgow@google.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://patch.msgid.link/20251122083213.3996586-1-davidgow@google.com
+Fixes: 12b8e7e69aa7 ("um: Remove obsolete pcap driver")
+[adjust commmit message a bit]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 +++++---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 6 +++---
- drivers/infiniband/hw/bnxt_re/qplib_sp.h | 2 +-
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ arch/um/Makefile | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index b222bf4f38e1c..c2abf2bb80264 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -541,7 +541,8 @@ static int bnxt_re_create_fence_mr(struct bnxt_re_pd *pd)
- 	mr->qplib_mr.va = (u64)(unsigned long)fence->va;
- 	mr->qplib_mr.total_size = BNXT_RE_FENCE_BYTES;
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL,
--			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE);
-+			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE,
-+			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
- 	if (rc) {
- 		ibdev_err(&rdev->ibdev, "Failed to register fence-MR\n");
- 		goto fail;
-@@ -3916,7 +3917,7 @@ struct ib_mr *bnxt_re_get_dma_mr(struct ib_pd *ib_pd, int mr_access_flags)
- 	mr->qplib_mr.hwq.level = PBL_LVL_MAX;
- 	mr->qplib_mr.total_size = -1; /* Infinte length */
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL, 0,
--			       PAGE_SIZE);
-+			       PAGE_SIZE, false);
- 	if (rc)
- 		goto fail_mr;
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 7be0143b5ba35..721b652ffb658 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
+ ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
+ KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
  
-@@ -4146,7 +4147,8 @@ static struct ib_mr *__bnxt_re_user_reg_mr(struct ib_pd *ib_pd, u64 length, u64
+-# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
+-# named - it's a common symbol in libpcap, so we get a binary which crashes.
+-#
+-# Same things for in6addr_loopback and mktime - found in libc. For these two we
+-# only get link-time error, luckily.
++# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
++#  anything from referencing
++# libc symbols with the same name, which can cause a linker error.
+ #
+ # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
+ # embedded copy of longjmp, same thing for setjmp.
+ #
+-# These apply to USER_CFLAGS to.
++# These apply to USER_CFLAGS too.
  
- 	umem_pgs = ib_umem_num_dma_blocks(umem, page_size);
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, umem,
--			       umem_pgs, page_size);
-+			       umem_pgs, page_size,
-+			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
- 	if (rc) {
- 		ibdev_err(&rdev->ibdev, "Failed to register user MR - rc = %d\n", rc);
- 		rc = -EIO;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 59093d78062d3..b09ac66e64466 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -612,7 +612,7 @@ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
- }
- 
- int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
--		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size)
-+		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr)
- {
- 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
- 	struct bnxt_qplib_hwq_attr hwq_attr = {};
-@@ -674,7 +674,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
- 	req.access = (mr->access_flags & 0xFFFF);
- 	req.va = cpu_to_le64(mr->va);
- 	req.key = cpu_to_le32(mr->lkey);
--	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags))
-+	if (unified_mr)
- 		req.key = cpu_to_le32(mr->pd->id);
- 	req.flags = cpu_to_le16(mr->flags);
- 	req.mr_size = cpu_to_le64(mr->total_size);
-@@ -685,7 +685,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
- 	if (rc)
- 		goto fail;
- 
--	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags)) {
-+	if (unified_mr) {
- 		mr->lkey = le32_to_cpu(resp.xid);
- 		mr->rkey = mr->lkey;
- 	}
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-index de959b3c28e01..fcfef5cbb38d4 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-@@ -338,7 +338,7 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
- int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
- 			 bool block);
- int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
--		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size);
-+		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr);
- int bnxt_qplib_free_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr);
- int bnxt_qplib_alloc_fast_reg_mr(struct bnxt_qplib_res *res,
- 				 struct bnxt_qplib_mrw *mr, int max);
+ KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
+-	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
++	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
+ 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
+ 	-Din6addr_loopback=kernel_in6addr_loopback \
+ 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
 -- 
 2.51.0
 
