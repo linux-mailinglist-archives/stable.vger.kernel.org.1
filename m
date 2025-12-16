@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-201143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F97CC148A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:21:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4796DCC155E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F2703039CD5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 07:21:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2608F303E3F2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 07:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162F031ED71;
-	Tue, 16 Dec 2025 07:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC82633D6D2;
+	Tue, 16 Dec 2025 07:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdcNRo1P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCb235NR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41ED158538;
-	Tue, 16 Dec 2025 07:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FEF1FC0ED;
+	Tue, 16 Dec 2025 07:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765869078; cv=none; b=prXWjQReQUvGMA2BD67U/No9uf5ELe16ANqe7EDRjim3JvbjA5uJcofdsi5uCJrgrThg1XtfMujF54zL37tHifkq3psFmj2FsoloLSPBY9RTzHDTMJPFoxneCNMRCTh5SWHwGbp0++oOOsL87QDQJgZyLy4Rvql3RtrZBMucrog=
+	t=1765869369; cv=none; b=JboorOXLFbAW43Bi+8vIgnXFNM32Rf4afzNDpVwPUNNxUQS43szOuju3UfjdPHYL8/3DJAJ66IYyxctiXmgKc8CLz9P/BvhxnZgK5uhHaBsQF8wpvXZM5b3z7R4WeMBepgoBF5bpqak0BTB9yN3iAMdHOebU2kETICHFDy65PDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765869078; c=relaxed/simple;
-	bh=fa0zgiC6/KfmKqs37/xhEKTiioKlQhOHMyFCK890XW4=;
+	s=arc-20240116; t=1765869369; c=relaxed/simple;
+	bh=9X0orjwNvC5F4gj3bdD/fVzaHId1POg+B+aH1bygVZQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R6eq6kNHRu4GkeTtVVgRmFODLA0rYEzwMU5fYHIYJBiAaJk70XdCy5IVnap2oZmZWSsdm4s2gBXxml2R5NHv9Am1r5oZO62MUzDODmYxgC2aAiG4/8/DZs1zlxCx2y6l1rDF+j5U17tLS3jc+y1PiPx1cEE+XoccjrnJKD8QnDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdcNRo1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CB3C4CEF1;
-	Tue, 16 Dec 2025 07:11:14 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=hjKteC56HEwwKfjdx4F9vnP7WZY+tkKQQtDI4QVliBeP7D+7BK3Sp4xH1GeSy4qOa+nYwoyiSRCaHxlKkggxb4YFh2DXYQMUGkmfBnhu23Flm9GIso7DObbxhkgiLUo4qr5HaWgpj++7x+zPtzqLerOIFHMcOw3IDMgUShCWTzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCb235NR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A66C4CEF1;
+	Tue, 16 Dec 2025 07:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765869076;
-	bh=fa0zgiC6/KfmKqs37/xhEKTiioKlQhOHMyFCK890XW4=;
+	s=k20201202; t=1765869368;
+	bh=9X0orjwNvC5F4gj3bdD/fVzaHId1POg+B+aH1bygVZQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KdcNRo1Pf5tXBBHEsPzhlOvkk6Iz1Pw4F0OZe8FqH9sSo0F4sCNZYZAkTUD5pTUTo
-	 0PVNWGz+ivbql3mtjebM0zEepuGU6I2luXKzIK4S8pJg7Np0CaAVm4KvOYiaIrvoDP
-	 CbGV+Hw5G2lfMXKxZx9HCGhWvpyvPNUF0H8/OW2eImrYy0e6DPVSlM4T9AMFGt5LSu
-	 ewlKETUCK20rfCA9uj/9vXvExaZD8QZoyVyFXbaUJehClQVYVIiJ3c1xU1K6NI5WLE
-	 2EAvvHrju7jouaP0Kl+ns7/nnU5sWgTjA4rT8iqGZ7RKR3vKbrt6GMLKp1bx7k2gPa
-	 nGPBGm4knedUw==
-Message-ID: <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
-Date: Tue, 16 Dec 2025 08:11:13 +0100
+	b=QCb235NRUOTLRjK1AztOH3hri/KL5ZVtBYXd/1f0Ko//fjy3y2htA+aanCdMtfS+x
+	 /NHnlOowY2ri/PjrebSGPsGmhDV3BpbFco5588w6SrVNQ9axyfWU55qFP6oNwbfwEp
+	 grCqbQBlfqgDv7+o7z8tO031yrf4pL/aBoUovP3rB9SmJAoaWUD27s4A+kLPHUk2bh
+	 nSZnPFBm/duNuIF9ACWotdBvQBBh2IweBau3Ge+2+EqNSO7t6ys5EPZ7QTFORKEhKg
+	 JesdteIJm/fqAKo51nQJLvGKs2rAeMoIoS14TG0v25476eZLBXUq92vnmBBxtRNTPK
+	 fdj3TEBmkUhwQ==
+Message-ID: <7eeb7209-bd73-45e1-a7b7-75b02e9cfde2@kernel.org>
+Date: Tue, 16 Dec 2025 08:16:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,14 +48,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in
- alarms_store
-To: Thorsten Blum <thorsten.blum@linux.dev>,
- David Laight <david.laight.linux@gmail.com>,
- Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251111204422.41993-2-thorsten.blum@linux.dev>
+Subject: Re: [PATCH 1/3] memory: mtk-smi: fix device leaks on common probe
+To: Johan Hovold <johan@kernel.org>, Yong Wu <yong.wu@mediatek.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
+References: <20251121164624.13685-1-johan@kernel.org>
+ <20251121164624.13685-2-johan@kernel.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,103 +101,29 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251111204422.41993-2-thorsten.blum@linux.dev>
+In-Reply-To: <20251121164624.13685-2-johan@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/11/2025 21:44, Thorsten Blum wrote:
-> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-> bytes and a NUL terminator is appended. However, the 'size' argument
-> does not account for this extra byte. The original code then allocated
-> 'size' bytes and used strcpy() to copy 'buf', which always writes one
-> byte past the allocated buffer since strcpy() copies until the NUL
-> terminator at index 'size'.
+On 21/11/2025 17:46, Johan Hovold wrote:
+> Make sure to drop the reference taken when looking up the SMI device
+> during common probe on late probe failure (e.g. probe deferral) and on
+> driver unbind.
 > 
-> Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-> without allocating any intermediate memory or string copying. This
-> removes the overflow while simplifying the code.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
-> Compile-tested only.
-> 
-> Changes in v4:
-> - Use simple_strtoll because kstrtoint also parses long long internally
-> - Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
-> - Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
->   while maintaining the same behavior and return values as before
-> - Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
-> 
-> Changes in v3:
-> - Add integer range check for 'temp' to match kstrtoint() behavior
-> - Explicitly cast 'temp' to int when calling int_to_short()
-> - Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
-> 
-> Changes in v2:
-> - Fix buffer overflow instead of truncating the copy using strscpy()
-> - Parse buffer directly using simple_strtol() as suggested by David
-> - Update patch subject and description
-> - Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
-> ---
->  drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
->  1 file changed, 21 insertions(+), 43 deletions(-)
-> 
-> diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
-> index 9ccedb3264fb..5707fa34e804 100644
-> --- a/drivers/w1/slaves/w1_therm.c
-> +++ b/drivers/w1/slaves/w1_therm.c
-> @@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
->  	struct w1_slave *sl = dev_to_w1_slave(device);
->  	struct therm_info info;
->  	u8 new_config_register[3];	/* array of data to be written */
-> -	int temp, ret;
-> -	char *token = NULL;
-> +	long long temp;
-> +	int ret = 0;
->  	s8 tl, th;	/* 1 byte per value + temp ring order */
-> -	char *p_args, *orig;
-> -
-> -	p_args = orig = kmalloc(size, GFP_KERNEL);
-> -	/* Safe string copys as buf is const */
-> -	if (!p_args) {
-> -		dev_warn(device,
-> -			"%s: error unable to allocate memory %d\n",
-> -			__func__, -ENOMEM);
-> -		return size;
-> -	}
-> -	strcpy(p_args, buf);
-> -
-> -	/* Split string using space char */
-> -	token = strsep(&p_args, " ");
-> -
-> -	if (!token)	{
-> -		dev_info(device,
-> -			"%s: error parsing args %d\n", __func__, -EINVAL);
-> -		goto free_m;
-> -	}
-> -
-> -	/* Convert 1st entry to int */
-> -	ret = kstrtoint (token, 10, &temp);
-> +	const char *p = buf;
-> +	char *endp;
-> +
-> +	temp = simple_strtoll(p, &endp, 10);
+> Fixes: 47404757702e ("memory: mtk-smi: Add device link for smi-sub-common")
+> Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
+> Cc: stable@vger.kernel.org	# 5.16: 038ae37c510f
+> Cc: Yong Wu <yong.wu@mediatek.com>
+> Cc: Miaoqian Lin <linmq006@gmail.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Why using this, instead of explicitly encouraged kstrtoll()?
+Thanks Johan.
 
-> +	if (p == endp || *endp != ' ')
-> +		ret = -EINVAL;
-> +	else if (temp < INT_MIN || temp > INT_MAX)
-> +		ret = -ERANGE;
->  	if (ret) {
->  		dev_info(device,
->  			"%s: error parsing args %d\n", __func__, ret);
-> -		goto free_m;
-> +		goto err;
-
-So this is just return size.
+Side note:
+Three weeks and no reviews from Mediatek developers (not necessarily SoC
+maintainers, I know your queue is long). So please remember Mediatek: in
+case you ever wonder why your patches are waiting on the list for very
+long, here is your answer.
 
 
 Best regards,
