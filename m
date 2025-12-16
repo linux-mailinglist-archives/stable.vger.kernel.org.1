@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CC4CC45D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F5FCC3805
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9948830073C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63F833077687
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A734BA24;
-	Tue, 16 Dec 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E05A34F49D;
+	Tue, 16 Dec 2025 12:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Khrxf5e+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGla1tgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5532C34B69B;
-	Tue, 16 Dec 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE9D34F250;
+	Tue, 16 Dec 2025 12:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885272; cv=none; b=gIsptLQoP5BGIP5+/gQwBz0BO2UHrRpviW3kw1yTYLXHUn94xbcNc8BJ9nX31mpD+T8l7cfzT88UgUP2P+0FpnNNP3PjfRNIcMsJxlzlWeb25YOLNejMTtcykyJ/tpFEydSdogyb8/RTr2VLsSKs8pCJPP3ot+dSzld1qC7sS9I=
+	t=1765887222; cv=none; b=gzNJG4v6hJziPriwuCfov1lgkEIaJ1zEF1+wqfhbAW0jG0h+5Linkz//bxQ1fT/EwG6pXFUyYlgs8qmXopC+c4I0ET0fQMGhNvyxpnxfxRMBu4fXHR+Y+WKebWKlF9ZFaRcAYVFTvCKHzSBXTGKq9A2wsq0KdvVWvmyYs+2DXZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885272; c=relaxed/simple;
-	bh=4ir7KOqc+TqjEw+zjYwXcGBt3x1SmJSZlA+wqvJ1s8k=;
+	s=arc-20240116; t=1765887222; c=relaxed/simple;
+	bh=BFg1+nRWeYzKjq81wm7C7Rg4TkA13rnPigBIGNCrmh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPzUn8SAIfme1yo+WdxWL9EKIBlM5unQblUWCtwkhPS/4SuUSOb6762dw0Imks1+cuixaUU+UVSLit4M0g9oBxbKsL0pqxhp/silJyDy9Qvna1SZJEt7gPMUg7OuuxRpqNjyKyLSsN2MCCXZZAj+rC4aKZiXwts71AOUJGSHU1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Khrxf5e+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE864C4CEF1;
-	Tue, 16 Dec 2025 11:41:11 +0000 (UTC)
+	 MIME-Version; b=k4sZKM1kmUAALOsqlA/mS40YJ1mwJyUPMz1BJ2kZ7eLC+X3RhuYXBpsCuSUZcliOCqIMzCI3Lpxst6hDIsRCktPqcUfUovAg3Tr7gnYkYeua+94jF9I68DDrYZDVFFNRIjmVjKeNDXpT3HeuVRy8KBSb2oYHp9KbSkJOQsh0B0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGla1tgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBDFC4CEF1;
+	Tue, 16 Dec 2025 12:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885272;
-	bh=4ir7KOqc+TqjEw+zjYwXcGBt3x1SmJSZlA+wqvJ1s8k=;
+	s=korg; t=1765887221;
+	bh=BFg1+nRWeYzKjq81wm7C7Rg4TkA13rnPigBIGNCrmh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Khrxf5e+2j78+xsaqQeoRb/rgKr6RTnOVRIZfP7Bz6zEXa/GRnUwPPlJJapZrK5lg
-	 JExBw58h3R4RlLp3odLJfOxvydiACfXk5ZA6AII/TjiiBb5dy4/jx58nfFfCzNSXkM
-	 4FNBmwIXgHFC4Y81gQ1IE+xEAs0PRbPS7VU7dp28=
+	b=CGla1tgw2T4TTL6NQgrdnyCCPKzeI9XYVTFuHg6Hd7B2f68rCwBx9ZKX8M9SPlEHW
+	 8PoZuhYYSTRvlYiwB/uD9zFfmoOipn7bRyRlEcvJwGxx+I9uZwIQ6exhefTc94PMul
+	 PujJXCBx7uAlw5lYiuUfOkRgrloJHYskVqnmP+cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 089/507] PCI: endpoint: pci-epf-test: Fix sleeping function being called from atomic context
+Subject: [PATCH 6.18 163/614] wifi: ath12k: enforce vdev limit in ath12k_mac_vdev_create()
 Date: Tue, 16 Dec 2025 12:08:50 +0100
-Message-ID: <20251216111348.763138680@linuxfoundation.org>
+Message-ID: <20251216111407.242056923@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-[ Upstream commit 25423cda145f9ed6ee4a72d9f2603ac2a4685e74 ]
+[ Upstream commit 448bf7b51426bcca54b5ac1ddd1045a36c9d1dea ]
 
-When Root Complex (RC) triggers a Doorbell interrupt to Endpoint (EP), it
-triggers the below warning in the EP:
+Currently, vdev limit check is performed only in
+ath12k_mac_assign_vif_to_vdev(). If the host has already created
+maximum number of vdevs for the radio (ar) and a scan request
+arrives for the same radio, ath12k_mac_initiate_hw_scan() attempts
+to create a vdev without checking the limit, causing firmware asserts.
 
- BUG: sleeping function called from invalid context at kernel/locking/mutex.c:271
- Call trace:
-  __might_resched+0x130/0x158
-  __might_sleep+0x70/0x88
-  mutex_lock+0x2c/0x80
-  pci_epc_get_msi+0x78/0xd8
-  pci_epf_test_raise_irq.isra.0+0x74/0x138
-  pci_epf_test_doorbell_handler+0x34/0x50
+Centralize the vdev limit guard by moving the check into
+ath12k_mac_vdev_create() so that all callers obey the limit.
+While doing this, update the condition from
+`num_created_vdevs > (TARGET_NUM_VDEVS(ab) - 1)` to
+`num_created_vdevs >= TARGET_NUM_VDEVS(ab)` for clarity and to
+eliminate unnecessary arithmetic.
 
-The BUG arises because the EP's pci_epf_test_doorbell_handler() which is
-running in the hard IRQ context is making an indirect call to
-pci_epc_get_msi(), which uses mutex inside.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-To fix the issue, convert the hard IRQ handler to a threaded IRQ handler to
-allow it to call functions that can sleep during bottom half execution.
-Also, register the threaded IRQ handler with IRQF_ONESHOT to keep the
-interrupt line disabled until the threaded IRQ handler completes execution.
-
-Fixes: eff0c286aa91 ("PCI: endpoint: pci-epf-test: Add doorbell test support")
-Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-[mani: reworded description a bit]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251014024109.42287-1-bhanuseshukumar@gmail.com
+Fixes: 0d6e6736ed9f ("wifi: ath12k: scan statemachine changes for single wiphy")
+Fixes: 4938ba733ee2 ("wifi: ath12k: modify remain on channel for single wiphy")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251026182254.1399650-2-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 31617772ad516..b05e8db575c35 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -730,8 +730,9 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
- 	if (bar < BAR_0)
- 		goto err_doorbell_cleanup;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 0cec6c47fca29..8f139505019c4 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9687,6 +9687,12 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
+ 	if (vif->type == NL80211_IFTYPE_MONITOR && ar->monitor_vdev_created)
+ 		return -EINVAL;
  
--	ret = request_irq(epf->db_msg[0].virq, pci_epf_test_doorbell_handler, 0,
--			  "pci-ep-test-doorbell", epf_test);
-+	ret = request_threaded_irq(epf->db_msg[0].virq, NULL,
-+				   pci_epf_test_doorbell_handler, IRQF_ONESHOT,
-+				   "pci-ep-test-doorbell", epf_test);
++	if (ar->num_created_vdevs >= TARGET_NUM_VDEVS(ab)) {
++		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
++			    TARGET_NUM_VDEVS(ab));
++		return -ENOSPC;
++	}
++
+ 	link_id = arvif->link_id;
+ 
+ 	if (link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
+@@ -10046,12 +10052,6 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
+ 	if (arvif->is_created)
+ 		goto flush;
+ 
+-	if (ar->num_created_vdevs > (TARGET_NUM_VDEVS(ab) - 1)) {
+-		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
+-			    TARGET_NUM_VDEVS(ab));
+-		goto unlock;
+-	}
+-
+ 	ret = ath12k_mac_vdev_create(ar, arvif);
  	if (ret) {
- 		dev_err(&epf->dev,
- 			"Failed to request doorbell IRQ: %d\n",
+ 		ath12k_warn(ab, "failed to create vdev %pM ret %d", vif->addr, ret);
 -- 
 2.51.0
 
