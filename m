@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2350BCC2695
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD50CC30A4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4C91312F6C0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 688CB3043812
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487F0343D7D;
-	Tue, 16 Dec 2025 11:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04728357720;
+	Tue, 16 Dec 2025 12:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foWxd5O4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grZ7rLrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DD93314B4;
-	Tue, 16 Dec 2025 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55483570B0;
+	Tue, 16 Dec 2025 12:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884959; cv=none; b=Y8aA/3Ph3svCant7Q7e/flIWdFvT6fzcANN5TXMNFFRKJjrdCuOIBYbRVVSGvgzEdtI0ASdVuKHiVDpzA6uxc6pTQN2f2d8W18pMrEIAl7dXDE/Fh5rr0K6qxQ/4EIi4oPtjzLUd7nF4NRhSgdC64dM5fgWT5hAD45ccA0HU2wA=
+	t=1765886565; cv=none; b=R9v0thWZg1yo8AQJiGJuJIqALtpgivIBLm6OWfM6n4CbbNW6tiufhflQOk8DMkahhaMgd+jM2ygfeTUEgDBd1FB4Zuvgypa7w9JkHUGQ6YN8hAEf9RrxAVMlTSfSQQdGcNLH7szs0H6hbOCCYDC9oknkVSOrOMcqoKmC+58utEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884959; c=relaxed/simple;
-	bh=esQ6pfHbpy16oo46aBf375dn+IKbuKc6GINBkEVdUJY=;
+	s=arc-20240116; t=1765886565; c=relaxed/simple;
+	bh=F0wRWCHv301nBoHLl02cfe8Luh0w86uHt0Qqjri88Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7GU5R/e5AGqs/CJQndEHbNAZmOPA8ke5sTNX2OagN2IG3DKgpuHSBCTRryFuYtAPAyjvrDLZB0JzaujJ6HLPHNAbtGuCbIb4aCx0ZkjjOGGu3ZmArk1sqpqo03VeUf4Ib6Rvgj2z9J6zG+WVLOJtPaEOit3wicmjj4O6jqk//E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foWxd5O4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D299C4CEF1;
-	Tue, 16 Dec 2025 11:35:58 +0000 (UTC)
+	 MIME-Version; b=aBsVg2bF/kALWt1qq8Xy3oSxbVZuQbYp6eNekDE5xuyyPP69IAbepkQH8nkk+4w9V1np18xrJA6N7CvVVgEi8XL35bsLB5ddPAp1yxUdZ9gUM5wbhSbTUizP5bKQeKHAIBMkdDxEgX+p5eQ3WDtxQnUJzf8loPV5CxiSXdpqDFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grZ7rLrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D92BC4CEF1;
+	Tue, 16 Dec 2025 12:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884958;
-	bh=esQ6pfHbpy16oo46aBf375dn+IKbuKc6GINBkEVdUJY=;
+	s=korg; t=1765886565;
+	bh=F0wRWCHv301nBoHLl02cfe8Luh0w86uHt0Qqjri88Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foWxd5O4NG31cWPaKLkPb+3VUtgZ+G0MZe9DQLTVaD9NNvY++N9dgcBmlu3FKfVte
-	 EerpbhGmfmwQyuT9FgnLKORIywGZByoLsH7eVFKk0ZluyP+B//hTOG5i3NMKHAPdLj
-	 y9WOy4mIp7oreyeY+3x2vT7I0z5BTRMuGbUb2f3Y=
+	b=grZ7rLrVtYAT8MiXn/RMSM/3DLvsdLJdiKDgpDi0NYO6eEq56AoNIvHWJTnLpTA6N
+	 TQhUItFlnxHRSVFmaZOVTQpKkYDgmqd4kploSg6YRLPw0Zku9UPhnvZl66aLrGaUUh
+	 THN+UAfS44DTUmyj/t1EnAYpzFCSHEqmFbkfsqXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Gyokhan Kochmarla <gyokhan@amazon.com>
-Subject: [PATCH 6.12 349/354] tcp_metrics: use dst_dev_net_rcu()
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 475/507] drm/amdkfd: Use huge page size to check split svm range alignment
 Date: Tue, 16 Dec 2025 12:15:16 +0100
-Message-ID: <20251216111333.552752806@linuxfoundation.org>
+Message-ID: <20251216111402.651664785@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-[ Upstream commit 50c127a69cd6285300931853b352a1918cfa180f ]
+[ Upstream commit bf2084a7b1d75d093b6a79df4c10142d49fbaa0e ]
 
-Replace three dst_dev() with a lockdep enabled helper.
+When split svm ranges that have been mapped using huge page should use huge
+page size(2MB) to check split range alignment, not prange->granularity that
+means migration granularity.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ef6b2d4b7e5 ("drm/amdkfd: remap unaligned svm ranges that have split")
+Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 448ee45353ef9fb1a34f5f26eb3f48923c6f0898)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 46 +++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -170,7 +170,7 @@ static struct tcp_metrics_block *tcpm_ne
- 	struct net *net;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index fab6e7721c803..2850356b018db 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1144,30 +1144,48 @@ static int
+ svm_range_split_tail(struct svm_range *prange, uint64_t new_last,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
+ {
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *tail = NULL;
+-	int r = svm_range_split(prange, prange->start, new_last, &tail);
++	int r;
  
- 	spin_lock_bh(&tcp_metrics_lock);
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
+-	if (!r) {
+-		list_add(&tail->list, insert_list);
+-		if (!IS_ALIGNED(new_last + 1, 1UL << prange->granularity))
+-			list_add(&tail->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, prange->start, new_last, &tail);
++
++	if (r)
++		return r;
++
++	list_add(&tail->list, insert_list);
++
++	if (huge_page_mapping && tail->start > start_align &&
++	    tail->start < last_align_down && (!IS_ALIGNED(tail->start, 512)))
++		list_add(&tail->update_list, remap_list);
++
++	return 0;
+ }
  
- 	/* While waiting for the spin-lock the cache might have been populated
- 	 * with this entry and so we have to check again.
-@@ -273,7 +273,7 @@ static struct tcp_metrics_block *__tcp_g
- 		return NULL;
- 	}
+ static int
+ svm_range_split_head(struct svm_range *prange, uint64_t new_start,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
+ {
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *head = NULL;
+-	int r = svm_range_split(prange, new_start, prange->last, &head);
++	int r;
  
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
+-	if (!r) {
+-		list_add(&head->list, insert_list);
+-		if (!IS_ALIGNED(new_start, 1UL << prange->granularity))
+-			list_add(&head->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, new_start, prange->last, &head);
++
++	if (r)
++		return r;
++
++	list_add(&head->list, insert_list);
++
++	if (huge_page_mapping && head->last + 1 > start_align &&
++	    head->last + 1 < last_align_down && (!IS_ALIGNED(head->last, 512)))
++		list_add(&head->update_list, remap_list);
++
++	return 0;
+ }
  
-@@ -318,7 +318,7 @@ static struct tcp_metrics_block *tcp_get
- 	else
- 		return NULL;
- 
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
+ static void
+-- 
+2.51.0
+
 
 
 
