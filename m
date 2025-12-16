@@ -1,106 +1,105 @@
-Return-Path: <stable+bounces-202246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D09CCC319A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABC7CC37F6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6B99305D019
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF08E3074D5B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283D5359711;
-	Tue, 16 Dec 2025 12:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A5C36A01D;
+	Tue, 16 Dec 2025 12:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/251G/j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlpuBszh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CF43451BD
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 12:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF3F36A018;
+	Tue, 16 Dec 2025 12:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887283; cv=none; b=eZriNoakJ1jRPP90towdb6CzvsL6WdaikCj5hlEFH1whkAN620ivz964YoTpmxnr/ZUlbs4qmZfgRSyaZe4vL9gKfXyp1kVhgZ8x5rN2sTrh4HJhdw38jkA9ryLlWe0G/t1wz+U0GQnzHHRaxRwzb3mQaQxoe0UWfIKl59AoHPg=
+	t=1765887396; cv=none; b=ll1GnqI3FYphkiGc47tvorXO9m/CeU03H+KsLSHfVVjJWIRkBsLBYmLDE+x/YMgbzNCK+St1jOQEXKhrb6Kogs3FaW+DxkbemRBXCSFCd2ogWCvCLhrOf96npvgVZ0zYnfhEKabQX7cWegmXPpiZ0YZiFWAh4ROrOGdE+Z09VUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887283; c=relaxed/simple;
-	bh=1HJbxnJYVzbX/uSMq3SUh8c0Pd9K4aOK664xTC8JKLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ag4TNkkIjuZ4PIMvjpcHREP/fLSspb59LAseVle0dZ4R+eZsoInJGhlbwyEf3OlKjAwONuFYlXzvrXW7PgZfJ2RQnytOjkd6d4O/CyjTbjhEsw/EsWSF71uMgJJvomrKZE2ix+D8ZM5JPYsLgwzi1IXT+AH/RYYE7EFF7R4sX38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/251G/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88554C4CEF1;
-	Tue, 16 Dec 2025 12:14:35 +0000 (UTC)
+	s=arc-20240116; t=1765887396; c=relaxed/simple;
+	bh=Zu5Gma5Zt2VzwDhbpUgcuuudvUUPpSU4LYW8vUhb1dY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DEfjmWrGFWIAiDm4hl/G52uMQlhf0TxE8mxeeNeqJFgmSdwzkfrvRuyOt0JKk0HvrabP9ibhEeKMItdlmPsP++4V3X2FTABCcH5iJknxaioLUHu5jV3xXyOXYPmYHY+Bs3emifuNPOkl8JzxFC0RsrbwCOrrm+wOt7eC0mB6qBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlpuBszh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88F4C4CEF1;
+	Tue, 16 Dec 2025 12:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765887282;
-	bh=1HJbxnJYVzbX/uSMq3SUh8c0Pd9K4aOK664xTC8JKLE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/251G/jCfGBK62/C5bYCen2ktaXRfTqS+ne9b8dA+DSLE5sPxtDLoSKsd2LT25n5
-	 ZAe3JjPX2dRuM1vXqGGKsolZiXgBTPwifLOzE0JbRAJMwNjBYljiXbd3MTvfbHmW0V
-	 ggi9HN6bm/qGPdTvoFui61VfYTy43pLXjjb/DpYCHKQVWcQjthti2iwwOplpiNN1MK
-	 /TYcVpVkImR7ty0aYxmGivcXAzFAUnCryMz7Y9uE09sLzDx9KgsfkotZ9CvqenCraM
-	 s6CxikR5wnAaoiTChTSwqA+YWjl8p70s3QW+QtbFNE0vf1DKLfK5zp5nS+oItvH242
-	 Z3y9KCrpPG/Dw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ALSA: wavefront: Clear substream pointers on close
-Date: Tue, 16 Dec 2025 07:14:27 -0500
-Message-ID: <20251216121427.2792618-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025121601-suffrage-senate-99ab@gregkh>
-References: <2025121601-suffrage-senate-99ab@gregkh>
+	s=k20201202; t=1765887396;
+	bh=Zu5Gma5Zt2VzwDhbpUgcuuudvUUPpSU4LYW8vUhb1dY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MlpuBszhXWPTG/ykRC8Uc0PaSiD7zcoA+ORsynBjv8yNzazr7lyj3C7YuSo+M0k2G
+	 dRIY/exJg6a2p+y5QGj01iNbkYabKEo6EFqS+dtZloArxeUATDKDtQN4kJyJTU5mSz
+	 NhrAr319HrNISIV2ieHE+gzBywcXPcHk76fi9ThhjSBT6uLDMRXxMuHSevncbpO8mJ
+	 r6f7wPzQic02XPHK79wUHyzthP7pB10Sipfb3QunKmJGPO+v4M3o6IdiAhNocgxH7n
+	 OYKgKsIerCxnR7LI1W3LK510pc4pJ2Re3/eC+56hK0W0aUmV98FSixoAig1C1vBRUu
+	 /d6DYrm/ildoQ==
+Date: Tue, 16 Dec 2025 17:46:32 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Ma Ke <make24@iscas.ac.cn>, peter.ujfalusi@gmail.com,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] dmaengine: ti-dma-crossbar: Fix error handling in
+ ti_am335x_xbar_route_allocate
+Message-ID: <aUFNoIzaGjAi_4SP@vaman>
+References: <20251215014249.11495-1-make24@iscas.ac.cn>
+ <c0cc4abd-4000-4487-9837-e55c442c4d0d@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c0cc4abd-4000-4487-9837-e55c442c4d0d@kernel.org>
 
-From: Junrui Luo <moonafterrain@outlook.com>
+On 15-12-25, 12:52, Krzysztof Kozlowski wrote:
+> On 15/12/2025 02:42, Ma Ke wrote:
+> > ti_am335x_xbar_route_allocate() calls of_find_device_by_node() which
+> > increments the reference count of the platform device, but fails to
+> > call put_device() to decrement the reference count before returning.
+> > This could cause a reference count leak each time the function is
+> > called, preventing the platform device from being properly cleaned up
+> > and leading to memory leakage.
+> > 
+> > Add proper put_device() calls in all exit paths to fix the reference
+> > count imbalance.
+> > 
+> > Found by code review.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > ---
+> >  drivers/dma/ti/dma-crossbar.c | 24 ++++++++++++++++++------
+> >  1 file changed, 18 insertions(+), 6 deletions(-)
+> > 
+> 
+> 
+> Just a note, author sends and resends same patches without addressing
+> feedback. At least one case was very dubious or just incorrect code, and
+> author just ignored it and sent it again to hide the previous
+> discussion, so I suspect LLM generated content.
+> 
+> I did not review the code here, but please carefully review all patches
+> from this author before applying and simply do not trust that this looks
+> like a fix.
 
-[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
+Right, I am very skeptical of random fixes coming in. Sometimes they
+just follow a boilerplate pattern and fix, not attempt seems to be made
+to check the environment and logic of fix..
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+> 
+> Best regards,
+> Krzysztof
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ No guard() in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/isa/wavefront/wavefront_midi.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/sound/isa/wavefront/wavefront_midi.c b/sound/isa/wavefront/wavefront_midi.c
-index a337a86f7a65f..049ff37382e7e 100644
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -291,6 +291,7 @@ static int snd_wavefront_midi_input_close(struct snd_rawmidi_substream *substrea
- 	        return -EIO;
- 
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
- 
-@@ -314,6 +315,7 @@ static int snd_wavefront_midi_output_close(struct snd_rawmidi_substream *substre
- 	        return -EIO;
- 
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
- 	return 0;
 -- 
-2.51.0
-
+~Vinod
 
