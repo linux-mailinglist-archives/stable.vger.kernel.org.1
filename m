@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F5CCC22E6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9ACCC2734
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E59443002149
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FB933020CE9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83896342177;
-	Tue, 16 Dec 2025 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E106D35502F;
+	Tue, 16 Dec 2025 11:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8yveVLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/t9rxOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF57341648;
-	Tue, 16 Dec 2025 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2E5355028;
+	Tue, 16 Dec 2025 11:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884333; cv=none; b=Sg4S4qU026RjgVVhKCzaw7+hIvkUn/HG5uzP1uYuRpNe8eofrN/hE6aQpCI5Wy56xBMx93S+w5h9RNDYOQRO6yZlQvt1VRdn1QeZfejy4ipRgXqf21ukC5mmHOsVgVdCZVK6Tl0+MMmFbXZxo1xLWBaIJhmOW4H8XJ0DsuKptUM=
+	t=1765885929; cv=none; b=aJAcYUTnHx53clvYd6kZiqSt3EjNLqRjuz8u1OJdRJyCY5sXOTRPkaNLcJmpsis1BJ4bJfiogbM+jnF6bVvAiJ25H8032nnW7/bAo7eceZvNOKHWJCDZ9/HbHVQiIB9J0P2ftqiMi/MUiT3s3RDOQ0pj/is7nFGCbz9iFF2QyDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884333; c=relaxed/simple;
-	bh=NwZU/tz6lH71gCHlN50XCms6u9QmIvonDhQu0wtfPNg=;
+	s=arc-20240116; t=1765885929; c=relaxed/simple;
+	bh=o3NAQwnDYzc4Z64kZS3CjdCU0j47iAW6ekWuqcOX69E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7coKXY3dx6DBpJ6ssAYbMwvHs8ZhcbYOH6rocE3yEPXoYAklpuZexK5W3zNLmLyzjLa4hBlYID2mcNmKOYtITazoIpvfucTrLm3ViyAjKBS/pxR3vwkOf6E/TObzYEjCLLGjloRuaRh979enWcTFRqOwOj2xY94yipsGw5nQ70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8yveVLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947F9C4CEF1;
-	Tue, 16 Dec 2025 11:25:32 +0000 (UTC)
+	 MIME-Version; b=ikaPWkjhvUnLSHy+8bbLOjaErqk05GYYEQSt3IBoArj+6G+q/UbD3+8ANHf2LqF3US6CMAxwZHR05MeM4qHNDyKzQUCA/gp6XxgddXJr/ZcBi/YmO7AAw1NSg0UEWvi2vJ2yhqKZt3Bj2L0vVVaePgoOzn4FI9m/iJFUiWpUG68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/t9rxOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCA3C4CEF1;
+	Tue, 16 Dec 2025 11:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884333;
-	bh=NwZU/tz6lH71gCHlN50XCms6u9QmIvonDhQu0wtfPNg=;
+	s=korg; t=1765885929;
+	bh=o3NAQwnDYzc4Z64kZS3CjdCU0j47iAW6ekWuqcOX69E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8yveVLwflw/yz0KorY6hYwqVQGsBEhm4+iNh63FsHP3ZpNp1xmFmiwmhBDjAd50J
-	 A5O1I3yXgmkcu3qbqIGG9LkmKiSziRBwZK0/wZkTSxofnd4xlN6qVwS9kb0QlnLZGd
-	 TQin81rNwTBozgR50FpLsrIrlyqTp3CbtrM5V2dQ=
+	b=L/t9rxOIopgw824+sqjirIRRHfj74Et8ysDCnDTp2O9R7KSj7zNIsY/cFbmPbTpAw
+	 YFQ4a0m9Gp7bBK8z+8e5MpiH6cEY4tiYo1TWeImJuQhHwu2LBO5vi6dO75CuHjFPqY
+	 WUYPMTispvj8TDwdfJmV9UR7ObmPcUGLUlm+UM4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/354] s390/fpu: Fix false-positive kmsan report in fpu_vstl()
+Subject: [PATCH 6.17 287/507] of/fdt: Fix incorrect use of dt_root_addr_cells in early_init_dt_check_kho()
 Date: Tue, 16 Dec 2025 12:12:08 +0100
-Message-ID: <20251216111326.746206595@linuxfoundation.org>
+Message-ID: <20251216111355.875120581@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,162 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit 14e4e4175b64dd9216b522f6ece8af6997d063b2 ]
+[ Upstream commit c85da64ce2c36bba469f6feede9ca768f0361741 ]
 
-A false-positive kmsan report is detected when running ping command.
+When reading the fdt_size value, the argument passed to dt_mem_next_cell()
+is dt_root_addr_cells, but it should be dt_root_size_cells.
 
-An inline assembly instruction 'vstl' can write varied amount of bytes
-depending on value of 'index' argument. If 'index' > 0, 'vstl' writes
-at least 2 bytes.
+The same issue occurs when reading the scratch_size value.
 
-clang generates kmsan write helper call depending on inline assembly
-constraints. Constraints are evaluated compile-time, but value of
-'index' argument is known only at runtime.
+Use a helper function to simplify the code and fix these issues.
 
-clang currently generates call to __msan_instrument_asm_store with 1 byte
-as size. Manually call kmsan function to indicate correct amount of bytes
-written and fix false-positive report.
-
-This change fixes following kmsan reports:
-
-[   36.563119] =====================================================
-[   36.563594] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   36.563852]  virtqueue_add+0x35c6/0x7c70
-[   36.564016]  virtqueue_add_outbuf+0xa0/0xb0
-[   36.564266]  start_xmit+0x288c/0x4a20
-[   36.564460]  dev_hard_start_xmit+0x302/0x900
-[   36.564649]  sch_direct_xmit+0x340/0xea0
-[   36.564894]  __dev_queue_xmit+0x2e94/0x59b0
-[   36.565058]  neigh_resolve_output+0x936/0xb40
-[   36.565278]  __neigh_update+0x2f66/0x3a60
-[   36.565499]  neigh_update+0x52/0x60
-[   36.565683]  arp_process+0x1588/0x2de0
-[   36.565916]  NF_HOOK+0x1da/0x240
-[   36.566087]  arp_rcv+0x3e4/0x6e0
-[   36.566306]  __netif_receive_skb_list_core+0x1374/0x15a0
-[   36.566527]  netif_receive_skb_list_internal+0x1116/0x17d0
-[   36.566710]  napi_complete_done+0x376/0x740
-[   36.566918]  virtnet_poll+0x1bae/0x2910
-[   36.567130]  __napi_poll+0xf4/0x830
-[   36.567294]  net_rx_action+0x97c/0x1ed0
-[   36.567556]  handle_softirqs+0x306/0xe10
-[   36.567731]  irq_exit_rcu+0x14c/0x2e0
-[   36.567910]  do_io_irq+0xd4/0x120
-[   36.568139]  io_int_handler+0xc2/0xe8
-[   36.568299]  arch_cpu_idle+0xb0/0xc0
-[   36.568540]  arch_cpu_idle+0x76/0xc0
-[   36.568726]  default_idle_call+0x40/0x70
-[   36.568953]  do_idle+0x1d6/0x390
-[   36.569486]  cpu_startup_entry+0x9a/0xb0
-[   36.569745]  rest_init+0x1ea/0x290
-[   36.570029]  start_kernel+0x95e/0xb90
-[   36.570348]  startup_continue+0x2e/0x40
-[   36.570703]
-[   36.570798] Uninit was created at:
-[   36.571002]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   36.571261]  kmalloc_reserve+0x12a/0x470
-[   36.571553]  __alloc_skb+0x310/0x860
-[   36.571844]  __ip_append_data+0x483e/0x6a30
-[   36.572170]  ip_append_data+0x11c/0x1e0
-[   36.572477]  raw_sendmsg+0x1c8c/0x2180
-[   36.572818]  inet_sendmsg+0xe6/0x190
-[   36.573142]  __sys_sendto+0x55e/0x8e0
-[   36.573392]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   36.573571]  __do_syscall+0x12e/0x240
-[   36.573823]  system_call+0x6e/0x90
-[   36.573976]
-[   36.574017] Byte 35 of 98 is uninitialized
-[   36.574082] Memory access of size 98 starts at 0000000007aa0012
-[   36.574218]
-[   36.574325] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   36.574541] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   36.574617] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   36.574755] =====================================================
-
-[   63.532541] =====================================================
-[   63.533639] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   63.533989]  virtqueue_add+0x35c6/0x7c70
-[   63.534940]  virtqueue_add_outbuf+0xa0/0xb0
-[   63.535861]  start_xmit+0x288c/0x4a20
-[   63.536708]  dev_hard_start_xmit+0x302/0x900
-[   63.537020]  sch_direct_xmit+0x340/0xea0
-[   63.537997]  __dev_queue_xmit+0x2e94/0x59b0
-[   63.538819]  neigh_resolve_output+0x936/0xb40
-[   63.539793]  ip_finish_output2+0x1ee2/0x2200
-[   63.540784]  __ip_finish_output+0x272/0x7a0
-[   63.541765]  ip_finish_output+0x4e/0x5e0
-[   63.542791]  ip_output+0x166/0x410
-[   63.543771]  ip_push_pending_frames+0x1a2/0x470
-[   63.544753]  raw_sendmsg+0x1f06/0x2180
-[   63.545033]  inet_sendmsg+0xe6/0x190
-[   63.546006]  __sys_sendto+0x55e/0x8e0
-[   63.546859]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.547730]  __do_syscall+0x12e/0x240
-[   63.548019]  system_call+0x6e/0x90
-[   63.548989]
-[   63.549779] Uninit was created at:
-[   63.550691]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   63.550975]  kmalloc_reserve+0x12a/0x470
-[   63.551969]  __alloc_skb+0x310/0x860
-[   63.552949]  __ip_append_data+0x483e/0x6a30
-[   63.553902]  ip_append_data+0x11c/0x1e0
-[   63.554912]  raw_sendmsg+0x1c8c/0x2180
-[   63.556719]  inet_sendmsg+0xe6/0x190
-[   63.557534]  __sys_sendto+0x55e/0x8e0
-[   63.557875]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.558869]  __do_syscall+0x12e/0x240
-[   63.559832]  system_call+0x6e/0x90
-[   63.560780]
-[   63.560972] Byte 35 of 98 is uninitialized
-[   63.561741] Memory access of size 98 starts at 0000000005704312
-[   63.561950]
-[   63.562824] CPU: 3 UID: 0 PID: 192 Comm: ping Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   63.563868] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   63.564751] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   63.564986] =====================================================
-
-Fixes: dcd3e1de9d17 ("s390/checksum: provide csum_partial_copy_nocheck()")
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 274cdcb1c004 ("arm64: add KHO support")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://patch.msgid.link/20251115134753.179931-5-yuntao.wang@linux.dev
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/fpu-insn.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/of/fdt.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
-index a4c9b4db62ff5..c74c6056087fe 100644
---- a/arch/s390/include/asm/fpu-insn.h
-+++ b/arch/s390/include/asm/fpu-insn.h
-@@ -12,6 +12,7 @@
- #ifndef __ASSEMBLY__
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 0c18bdefbbeea..de16785a48695 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -924,26 +924,18 @@ static void __init early_init_dt_check_kho(void)
+ {
+ 	unsigned long node = chosen_node_offset;
+ 	u64 fdt_start, fdt_size, scratch_start, scratch_size;
+-	const __be32 *p;
+-	int l;
  
- #include <linux/instrumented.h>
-+#include <linux/kmsan.h>
- #include <asm/asm-extable.h>
+ 	if (!IS_ENABLED(CONFIG_KEXEC_HANDOVER) || (long)node < 0)
+ 		return;
  
- asm(".include \"asm/fpu-insn-asm.h\"\n");
-@@ -377,6 +378,7 @@ static __always_inline void fpu_vst(u8 v1, const void *vxr)
- 		     : [vxr] "=Q" (*(__vector128 *)vxr)
- 		     : [v1] "I" (v1)
- 		     : "memory");
-+	kmsan_unpoison_memory(vxr, size);
+-	p = of_get_flat_dt_prop(node, "linux,kho-fdt", &l);
+-	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
++	if (!of_flat_dt_get_addr_size(node, "linux,kho-fdt",
++				      &fdt_start, &fdt_size))
+ 		return;
+ 
+-	fdt_start = dt_mem_next_cell(dt_root_addr_cells, &p);
+-	fdt_size = dt_mem_next_cell(dt_root_addr_cells, &p);
+-
+-	p = of_get_flat_dt_prop(node, "linux,kho-scratch", &l);
+-	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
++	if (!of_flat_dt_get_addr_size(node, "linux,kho-scratch",
++				      &scratch_start, &scratch_size))
+ 		return;
+ 
+-	scratch_start = dt_mem_next_cell(dt_root_addr_cells, &p);
+-	scratch_size = dt_mem_next_cell(dt_root_addr_cells, &p);
+-
+ 	kho_populate(fdt_start, fdt_size, scratch_start, scratch_size);
  }
  
- #endif /* CONFIG_CC_IS_CLANG */
-@@ -395,6 +397,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
- 		: [vxr] "=R" (*(u8 *)vxr)
- 		: [index] "d" (index), [v1] "I" (v1)
- 		: "memory", "1");
-+	kmsan_unpoison_memory(vxr, size);
- }
- 
- #else /* CONFIG_CC_IS_CLANG */
 -- 
 2.51.0
 
