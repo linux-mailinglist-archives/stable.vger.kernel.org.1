@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792B3CC227A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1915CCC29C6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D99FB307C6CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E327302EB35
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD2533E340;
-	Tue, 16 Dec 2025 11:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5017236D4FA;
+	Tue, 16 Dec 2025 12:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpNqwIXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJRF+UdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC88833DED4;
-	Tue, 16 Dec 2025 11:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A72636D4F8;
+	Tue, 16 Dec 2025 12:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883958; cv=none; b=CDnCvAxS/k5seg6CX/BnmSFXOIoEwtfQ6VdWPOKVbeYHmzaWYC4UndIXvb0yb31EfTkU3KK7d9EZMmfvfi1/SCksw5LEw+6+dASDv98y8Of5TY0qfIu17f6nEbsHQBNrIt2N3GAZf6fhpmY3+hBikVBmwnfEh4GnVUfipkXoyI0=
+	t=1765887498; cv=none; b=ZwGzBZ9m3JkqoADZkgf93y/NHA3dEbc8qSBibng88Ie24ZmlLkj0IS66eNaM7qD1Jjr5D7UMHI2s93sfDSLLmrun/0duYW6iIIgHv0sq3UX41ZtecfciuYFjh/1WHlpSZhJO/Cv1yW2atTEY2kY8P1DyQrWuSLu8vGGB+DQ5UAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883958; c=relaxed/simple;
-	bh=0bdH1qzDLnVZDnCP1sXuzx/kUBHo4nOzwtLy0qj1a58=;
+	s=arc-20240116; t=1765887498; c=relaxed/simple;
+	bh=NDxrnmDtiwquoOqqq801htBjphgoFayhj9MjfolWUzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZd8nDMw6aDJLy5CjIW667pyifgz5aWXBzPwhykk6zosKLh7gLmLhd2/qOrZWjrjMkKja4NaF91mFelFeMbc3HkxCPO1v7dv8ZALPgYFTJ7uCz98AZD1go38C41oyargRq+sDNgvzmAE47JobaODyLdsKMixsfVavKumf15z3L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpNqwIXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB960C4CEF1;
-	Tue, 16 Dec 2025 11:19:17 +0000 (UTC)
+	 MIME-Version; b=S6gzUut0cft21V232j4Gly1229hQ5gRg61d4wq3ZwlNdXgCcifoiD3HL9Yk79D8Xve1THtZzMvkSBRSNbFHtWA0bCsCYWvaaykItIxdCqG3jzz+APUpvB5/Prf8ZXT/AARccImgnY2vXcUhRiv7ZwKdJ6Cr348PLfdc59iMUp1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJRF+UdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA3EC4CEF1;
+	Tue, 16 Dec 2025 12:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883958;
-	bh=0bdH1qzDLnVZDnCP1sXuzx/kUBHo4nOzwtLy0qj1a58=;
+	s=korg; t=1765887497;
+	bh=NDxrnmDtiwquoOqqq801htBjphgoFayhj9MjfolWUzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpNqwIXisfiwYQcDjvUlrk793AGvgJXaViW0DuRxSJbXPWospTRD5JO5Cl7tc7raP
-	 xz9s+AIiqxjebiEpYXpQZNlp6u+PjhQwRBgIG529I6cBV8K/ZYp/c8G0RoDZPRnfXu
-	 StQISERQfm9DioagOVh7iWVzuC4qSkLxcp6FRd5E=
+	b=BJRF+UdGTb+9uE2x9I5aKZSuAWYdT7xSAklIgU7nnSkwwevWt4yULxxm+qtUKwKL2
+	 rNHJCx6egbRg8yy4KpPTupJtGiaWK79M5DZ7seL4y6RSUbvsYQBoVDv/12Yl/hXins
+	 i/f2UOCtiFajeiGYJgQWomfuEgY2GJkmDRCi3WKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yu Kuai <yukuai@kernel.org>,
-	chengkaitao <chengkaitao@kylinos.cn>,
-	Bart Van Assche <bvanassche@acm.org>,
+	David Wei <dw@davidwei.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/354] block/mq-deadline: Switch back to a single dispatch list
+Subject: [PATCH 6.18 249/614] net: export netdev_get_by_index_lock()
 Date: Tue, 16 Dec 2025 12:10:16 +0100
-Message-ID: <20251216111322.693839626@linuxfoundation.org>
+Message-ID: <20251216111410.397527855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,229 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit d60055cf52703a705b86fb25b9b7931ec7ee399c ]
+[ Upstream commit c07a491c1b735e0c27454ea5c27a446d43401b1e ]
 
-Commit c807ab520fc3 ("block/mq-deadline: Add I/O priority support")
-modified the behavior of request flag BLK_MQ_INSERT_AT_HEAD from
-dispatching a request before other requests into dispatching a request
-before other requests with the same I/O priority. This is not correct since
-BLK_MQ_INSERT_AT_HEAD is used when requeuing requests and also when a flush
-request is inserted.  Both types of requests should be dispatched as soon
-as possible. Hence, make the mq-deadline I/O scheduler again ignore the I/O
-priority for BLK_MQ_INSERT_AT_HEAD requests.
+Need to call netdev_get_by_index_lock() from io_uring/zcrx.c, but it is
+currently private to net. Export the function in linux/netdevice.h.
 
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Yu Kuai <yukuai@kernel.org>
-Reported-by: chengkaitao <chengkaitao@kylinos.cn>
-Closes: https://lore.kernel.org/linux-block/20251009155253.14611-1-pilgrimtao@gmail.com/
-Fixes: c807ab520fc3 ("block/mq-deadline: Add I/O priority support")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moalv <dlemoal@kernel.org>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: b6c5f9454ef3 ("io_uring/zcrx: call netdev_queue_get_dma_dev() under instance lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 107 +++++++++++++++++++-------------------------
- 1 file changed, 47 insertions(+), 60 deletions(-)
+ include/linux/netdevice.h | 1 +
+ net/core/dev.h            | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 690b51587301d..74fdc795526ef 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -71,7 +71,6 @@ struct io_stats_per_prio {
-  * present on both sort_list[] and fifo_list[].
-  */
- struct dd_per_prio {
--	struct list_head dispatch;
- 	struct rb_root sort_list[DD_DIR_COUNT];
- 	struct list_head fifo_list[DD_DIR_COUNT];
- 	/* Position of the most recently dispatched request. */
-@@ -84,6 +83,7 @@ struct deadline_data {
- 	 * run time data
- 	 */
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d1a687444b275..77c46a2823eca 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3401,6 +3401,7 @@ struct net_device *dev_get_by_index(struct net *net, int ifindex);
+ struct net_device *__dev_get_by_index(struct net *net, int ifindex);
+ struct net_device *netdev_get_by_index(struct net *net, int ifindex,
+ 				       netdevice_tracker *tracker, gfp_t gfp);
++struct net_device *netdev_get_by_index_lock(struct net *net, int ifindex);
+ struct net_device *netdev_get_by_name(struct net *net, const char *name,
+ 				      netdevice_tracker *tracker, gfp_t gfp);
+ struct net_device *netdev_get_by_flags_rcu(struct net *net, netdevice_tracker *tracker,
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 900880e8b5b4b..df8a90fe89f8f 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -29,7 +29,6 @@ struct napi_struct *
+ netdev_napi_by_id_lock(struct net *net, unsigned int napi_id);
+ struct net_device *dev_get_by_napi_id(unsigned int napi_id);
  
-+	struct list_head dispatch;
- 	struct dd_per_prio per_prio[DD_PRIO_COUNT];
- 
- 	/* Data direction of latest dispatched request. */
-@@ -336,16 +336,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- 
- 	lockdep_assert_held(&dd->lock);
- 
--	if (!list_empty(&per_prio->dispatch)) {
--		rq = list_first_entry(&per_prio->dispatch, struct request,
--				      queuelist);
--		if (started_after(dd, rq, latest_start))
--			return NULL;
--		list_del_init(&rq->queuelist);
--		data_dir = rq_data_dir(rq);
--		goto done;
--	}
--
- 	/*
- 	 * batches are currently reads XOR writes
- 	 */
-@@ -425,7 +415,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- 	 */
- 	dd->batching++;
- 	deadline_move_request(dd, per_prio, rq);
--done:
- 	return dd_start_request(dd, data_dir, rq);
- }
- 
-@@ -473,6 +462,14 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
- 	enum dd_prio prio;
- 
- 	spin_lock(&dd->lock);
-+
-+	if (!list_empty(&dd->dispatch)) {
-+		rq = list_first_entry(&dd->dispatch, struct request, queuelist);
-+		list_del_init(&rq->queuelist);
-+		dd_start_request(dd, rq_data_dir(rq), rq);
-+		goto unlock;
-+	}
-+
- 	rq = dd_dispatch_prio_aged_requests(dd, now);
- 	if (rq)
- 		goto unlock;
-@@ -577,10 +574,10 @@ static int dd_init_sched(struct request_queue *q, struct elevator_type *e)
- 
- 	eq->elevator_data = dd;
- 
-+	INIT_LIST_HEAD(&dd->dispatch);
- 	for (prio = 0; prio <= DD_PRIO_MAX; prio++) {
- 		struct dd_per_prio *per_prio = &dd->per_prio[prio];
- 
--		INIT_LIST_HEAD(&per_prio->dispatch);
- 		INIT_LIST_HEAD(&per_prio->fifo_list[DD_READ]);
- 		INIT_LIST_HEAD(&per_prio->fifo_list[DD_WRITE]);
- 		per_prio->sort_list[DD_READ] = RB_ROOT;
-@@ -687,7 +684,7 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
- 	trace_block_rq_insert(rq);
- 
- 	if (flags & BLK_MQ_INSERT_AT_HEAD) {
--		list_add(&rq->queuelist, &per_prio->dispatch);
-+		list_add(&rq->queuelist, &dd->dispatch);
- 		rq->fifo_time = jiffies;
- 	} else {
- 		struct list_head *insert_before;
-@@ -757,8 +754,7 @@ static void dd_finish_request(struct request *rq)
- 
- static bool dd_has_work_for_prio(struct dd_per_prio *per_prio)
- {
--	return !list_empty_careful(&per_prio->dispatch) ||
--		!list_empty_careful(&per_prio->fifo_list[DD_READ]) ||
-+	return !list_empty_careful(&per_prio->fifo_list[DD_READ]) ||
- 		!list_empty_careful(&per_prio->fifo_list[DD_WRITE]);
- }
- 
-@@ -767,6 +763,9 @@ static bool dd_has_work(struct blk_mq_hw_ctx *hctx)
- 	struct deadline_data *dd = hctx->queue->elevator->elevator_data;
- 	enum dd_prio prio;
- 
-+	if (!list_empty_careful(&dd->dispatch))
-+		return true;
-+
- 	for (prio = 0; prio <= DD_PRIO_MAX; prio++)
- 		if (dd_has_work_for_prio(&dd->per_prio[prio]))
- 			return true;
-@@ -975,49 +974,39 @@ static int dd_owned_by_driver_show(void *data, struct seq_file *m)
- 	return 0;
- }
- 
--#define DEADLINE_DISPATCH_ATTR(prio)					\
--static void *deadline_dispatch##prio##_start(struct seq_file *m,	\
--					     loff_t *pos)		\
--	__acquires(&dd->lock)						\
--{									\
--	struct request_queue *q = m->private;				\
--	struct deadline_data *dd = q->elevator->elevator_data;		\
--	struct dd_per_prio *per_prio = &dd->per_prio[prio];		\
--									\
--	spin_lock(&dd->lock);						\
--	return seq_list_start(&per_prio->dispatch, *pos);		\
--}									\
--									\
--static void *deadline_dispatch##prio##_next(struct seq_file *m,		\
--					    void *v, loff_t *pos)	\
--{									\
--	struct request_queue *q = m->private;				\
--	struct deadline_data *dd = q->elevator->elevator_data;		\
--	struct dd_per_prio *per_prio = &dd->per_prio[prio];		\
--									\
--	return seq_list_next(v, &per_prio->dispatch, pos);		\
--}									\
--									\
--static void deadline_dispatch##prio##_stop(struct seq_file *m, void *v)	\
--	__releases(&dd->lock)						\
--{									\
--	struct request_queue *q = m->private;				\
--	struct deadline_data *dd = q->elevator->elevator_data;		\
--									\
--	spin_unlock(&dd->lock);						\
--}									\
--									\
--static const struct seq_operations deadline_dispatch##prio##_seq_ops = { \
--	.start	= deadline_dispatch##prio##_start,			\
--	.next	= deadline_dispatch##prio##_next,			\
--	.stop	= deadline_dispatch##prio##_stop,			\
--	.show	= blk_mq_debugfs_rq_show,				\
-+static void *deadline_dispatch_start(struct seq_file *m, loff_t *pos)
-+	__acquires(&dd->lock)
-+{
-+	struct request_queue *q = m->private;
-+	struct deadline_data *dd = q->elevator->elevator_data;
-+
-+	spin_lock(&dd->lock);
-+	return seq_list_start(&dd->dispatch, *pos);
- }
- 
--DEADLINE_DISPATCH_ATTR(0);
--DEADLINE_DISPATCH_ATTR(1);
--DEADLINE_DISPATCH_ATTR(2);
--#undef DEADLINE_DISPATCH_ATTR
-+static void *deadline_dispatch_next(struct seq_file *m, void *v, loff_t *pos)
-+{
-+	struct request_queue *q = m->private;
-+	struct deadline_data *dd = q->elevator->elevator_data;
-+
-+	return seq_list_next(v, &dd->dispatch, pos);
-+}
-+
-+static void deadline_dispatch_stop(struct seq_file *m, void *v)
-+	__releases(&dd->lock)
-+{
-+	struct request_queue *q = m->private;
-+	struct deadline_data *dd = q->elevator->elevator_data;
-+
-+	spin_unlock(&dd->lock);
-+}
-+
-+static const struct seq_operations deadline_dispatch_seq_ops = {
-+	.start	= deadline_dispatch_start,
-+	.next	= deadline_dispatch_next,
-+	.stop	= deadline_dispatch_stop,
-+	.show	= blk_mq_debugfs_rq_show,
-+};
- 
- #define DEADLINE_QUEUE_DDIR_ATTRS(name)					\
- 	{#name "_fifo_list", 0400,					\
-@@ -1040,9 +1029,7 @@ static const struct blk_mq_debugfs_attr deadline_queue_debugfs_attrs[] = {
- 	{"batching", 0400, deadline_batching_show},
- 	{"starved", 0400, deadline_starved_show},
- 	{"async_depth", 0400, dd_async_depth_show},
--	{"dispatch0", 0400, .seq_ops = &deadline_dispatch0_seq_ops},
--	{"dispatch1", 0400, .seq_ops = &deadline_dispatch1_seq_ops},
--	{"dispatch2", 0400, .seq_ops = &deadline_dispatch2_seq_ops},
-+	{"dispatch", 0400, .seq_ops = &deadline_dispatch_seq_ops},
- 	{"owned_by_driver", 0400, dd_owned_by_driver_show},
- 	{"queued", 0400, dd_queued_show},
- 	{},
+-struct net_device *netdev_get_by_index_lock(struct net *net, int ifindex);
+ struct net_device *__netdev_put_lock(struct net_device *dev, struct net *net);
+ struct net_device *
+ netdev_xa_find_lock(struct net *net, struct net_device *dev,
 -- 
 2.51.0
 
