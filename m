@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-202308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264D6CC29BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60466CC21AE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92AAC3005D27
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 876C5302532C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E100836CE1D;
-	Tue, 16 Dec 2025 12:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC263258ED4;
+	Tue, 16 Dec 2025 11:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn20KzG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpi8ucZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA2D36CE16;
-	Tue, 16 Dec 2025 12:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CD126C02;
+	Tue, 16 Dec 2025 11:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887480; cv=none; b=S7cSO2upeAgMqPL677lYw2DyiEHNDO+L2wngEvQdFN8ECSbOHWuACAga+PTFfeKXtDrl0NblIrQqRf6AvKITUS0H5zG2iXGRUgEUFT86ty1dHNr2okNBtuyjlCwRETg2JFYGvpXFjgbTK3eG4v+ub3hov1HunfQgEwwOowsJcsE=
+	t=1765883823; cv=none; b=aMfsgZcUzDQB4UrtZXo2FNdf368rWxp3EI1sgr8Q3IjlNqmGLyQ5ZZCuvax8N2JGLl6eh/vbWBb23hUkW3lBQqAUosiRhaVmPXBcH2OMSz0RsP0bTHBHs7C/L04xNMEY0UuFNrboclkdZkXaV7tqw9FOZHIjuAF2fouj8KuCqD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887480; c=relaxed/simple;
-	bh=Vbie9B+TSlWfYbmYJkkq6ERcJGaRyaVWdCUli+GNXu0=;
+	s=arc-20240116; t=1765883823; c=relaxed/simple;
+	bh=banmhn5daweTRiDPFBZ4HsYJvHhgfTwgvzmaQjkVdzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDUSHDDW/ag6FHX3lPahgUjzHF5HrIXb5q3GaDrskr7dJU9b6qpbVpvAr1xEjp/Z8QwDfb5bpcfYK85FiZkxWa9fxlWgAd3jBsPIq6GIATVWLxGneBsmfHHdNEzugsIazjkXaHqKf3HhLhLuxShZ2b/1xgiW4qLLHuR0ESiXTGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn20KzG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E5C4CEF5;
-	Tue, 16 Dec 2025 12:17:59 +0000 (UTC)
+	 MIME-Version; b=RlxDIiQ6ZPJbiIycYlf0TmTtuAxXMRTBb0DH3e8rPX/SQSI54TOFub49r1ygYsRaa46VjGjAXerxQfNRJjEMsks0aU02YAd4tQdQlNpXVqZwJ57mLuKMYUXn7enhNuUmgtFrwlaNz6TNjXKEUjmoYS1VJDqkDBB8pwfdhQKSkQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpi8ucZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE585C4CEF1;
+	Tue, 16 Dec 2025 11:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887480;
-	bh=Vbie9B+TSlWfYbmYJkkq6ERcJGaRyaVWdCUli+GNXu0=;
+	s=korg; t=1765883822;
+	bh=banmhn5daweTRiDPFBZ4HsYJvHhgfTwgvzmaQjkVdzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hn20KzG8bpuU87bM+hpAfKoqr3dqX69V6At+ZFyRQcOcpMzM/yE3hN8IFsMaa0JwA
-	 zJLvVaL3dG3GNdGZU2nJNNuh6jOc0/KrtroK8Za6ofsliK7y3Efg4CVQ53WtNDAKYp
-	 LgshzvCwlsL1ni4Yrubvq84Cu8XBSaWFIZCzCjPk=
+	b=Vpi8ucZgVnxuKeYr1EDkcxhoh7/uMwTlPcjIE9/jQqegW1FHX2fvRQS0mx0SSnEWC
+	 v8OqPywqAIKVXktZuptcQIZQqlb8sqQheKFAxblMukyKB4famGhbgs+X+I2z0Y5WZn
+	 xE9wHu4HA3N6Wty+J/HfIbQ5jcE+lN6bpJ6xz2j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 210/614] x86/boot: Fix page table access in 5-level to 4-level paging transition
+Subject: [PATCH 6.12 010/354] accel/ivpu: Ensure rpm_runtime_put in case of engine reset/resume fail
 Date: Tue, 16 Dec 2025 12:09:37 +0100
-Message-ID: <20251216111408.983475019@linuxfoundation.org>
+Message-ID: <20251216111321.280551053@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
 
-[ Upstream commit eb2266312507d7b757859e2227aa5c4ba6280ebe ]
+[ Upstream commit 9f6c63285737b141ca25a619add80a96111b8b96 ]
 
-When transitioning from 5-level to 4-level paging, the existing code
-incorrectly accesses page table entries by directly dereferencing CR3 and
-applying PAGE_MASK. This approach has several issues:
+Previously, aborting work could return early after engine reset or resume
+failure, skipping the necessary runtime_put cleanup leaving the device
+with incorrect reference count breaking runtime power management state.
 
-- __native_read_cr3() returns the raw CR3 register value, which on x86_64
-  includes not just the physical address but also flags. Bits above the
-  physical address width of the system i.e. above __PHYSICAL_MASK_SHIFT) are
-  also not masked.
+Replace early returns with goto statements to ensure runtime_put is always
+executed.
 
-- The PGD entry is masked by PAGE_SIZE which doesn't take into account the
-  higher bits such as _PAGE_BIT_NOPTISHADOW.
-
-Replace this with proper accessor functions:
-
-- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
-  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
-  reserved and must be 0.
-
-- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
-  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
-  the max physical address are reserved and must be 0.
-
-Fixes: e9d0e6330eb8 ("x86/boot/compressed/64: Prepare new top-level page table for trampoline")
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/a482fd68-ce54-472d-8df1-33d6ac9f6bb5@intel.com
+Fixes: a47e36dc5d90 ("accel/ivpu: Trigger device recovery on engine reset/resume failure")
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://lore.kernel.org/r/20250916084809.850073-1-karol.wachowski@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/pgtable_64.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/accel/ivpu/ivpu_job.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index bdd26050dff77..0e89e197e1126 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -3,6 +3,7 @@
- #include <asm/bootparam.h>
- #include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
-+#include <asm/pgtable.h>
- #include <asm/processor.h>
- #include "../string.h"
- #include "efi.h"
-@@ -168,9 +169,10 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
- 		 */
--		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
-+		*trampoline_32bit = native_read_cr3_pa() | _PAGE_TABLE_NOENC;
- 	} else {
--		unsigned long src;
-+		u64 *new_cr3;
-+		pgd_t *pgdp;
+diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+index a0dca1c253b74..172502b71b9cf 100644
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -854,7 +854,7 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
  
- 		/*
- 		 * For 5- to 4-level paging transition, copy page table pointed
-@@ -180,8 +182,9 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * We cannot just point to the page table from trampoline as it
- 		 * may be above 4G.
- 		 */
--		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
--		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
-+		pgdp = (pgd_t *)native_read_cr3_pa();
-+		new_cr3 = (u64 *)(native_pgd_val(pgdp[0]) & PTE_PFN_MASK);
-+		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
- 	}
+ 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+ 		if (ivpu_jsm_reset_engine(vdev, 0))
+-			return;
++			goto runtime_put;
  
- 	toggle_la57(trampoline_32bit);
+ 	mutex_lock(&vdev->context_list_lock);
+ 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
+@@ -871,7 +871,7 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
+ 		goto runtime_put;
+ 
+ 	if (ivpu_jsm_hws_resume_engine(vdev, 0))
+-		return;
++		goto runtime_put;
+ 	/*
+ 	 * In hardware scheduling mode NPU already has stopped processing jobs
+ 	 * and won't send us any further notifications, thus we have to free job related resources
 -- 
 2.51.0
 
