@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D99ECC284E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF935CC23B5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3973308ABA1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA7B3064539
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3FE355035;
-	Tue, 16 Dec 2025 11:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989D2341ACA;
+	Tue, 16 Dec 2025 11:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkUlWWeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBzo+lMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5895B355029;
-	Tue, 16 Dec 2025 11:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D636341645;
+	Tue, 16 Dec 2025 11:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885962; cv=none; b=NqUzR90pvU0a1c2oBJCVIPk2ot7PDO6NSPOaNiL6MAJdMkhFIEJvUERZQgJpZsbeaRPC4HsOrhtKvUhBF9jBqThBjAtwkOh3zHKPHnXMaueqYzGo9IU9WZh16nmPH24KhFjRahamY4oOY2ln5PPkLxfqTUDb0ZdwJgxTSbwITPY=
+	t=1765884303; cv=none; b=ACX3N9wA5MPmjMoItd/Gfft47RpRGjdoOMM/GdqtHdJzY/4bTrlm8S8qD9iU45AXrYLjrJdx4r2sZEj4U8YlZRMJFhadkpis3fOewlsga0bfXIO/Equ7aqDdn5F39gDeTJg4eM/CDrQpzxiFb76clwTCT/C3YEg47TGsaZ0QhgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885962; c=relaxed/simple;
-	bh=cJkwRKPclK6XDy/PyBOQ26M5XiyTAQfQmOl6s08h7Cc=;
+	s=arc-20240116; t=1765884303; c=relaxed/simple;
+	bh=e0mwdu2FG0hidT9V+0TdPpF55iYWz6oupGKPwur8MO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgoy0QXeTwTl76Gz9yBm0G+RsjuiQQGk/uPpDHPiGrHmIYzSHhiahJysUbp+HgKcTckkNj4S4pnjAfzYpBBgjKDECWI8KKZkRabDvTDWtOXlT3PWn7B2nR6XGqZ38xb3Jd4zZFoWqFFlpY9BHpxRkTbP7X+RiXdQGH17qlj/NYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkUlWWeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777A4C4CEF1;
-	Tue, 16 Dec 2025 11:52:41 +0000 (UTC)
+	 MIME-Version; b=Zkyu3Ue7Ue5SWHga/I7sEmrCii5TrZahQ/7YTUoTdHgVorFIROCec0G/NUO3J+pPV6Lx7Bh/wS+uzB5YHXpPM04BrOJQp8fpK2ZbAsGIzyO1PHnwDq0FLGfDQozt14d6wJ3yf2t9LEoTLQULmTTTb66zwb+WwH6uOMFC5DY2tV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBzo+lMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94E6C4CEF1;
+	Tue, 16 Dec 2025 11:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885962;
-	bh=cJkwRKPclK6XDy/PyBOQ26M5XiyTAQfQmOl6s08h7Cc=;
+	s=korg; t=1765884303;
+	bh=e0mwdu2FG0hidT9V+0TdPpF55iYWz6oupGKPwur8MO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkUlWWeKSrNc+YAk/zpe9S5nPRmDZ5RxqxDWCG7dIAMPJJbQMkoOLalwiRotrHVtj
-	 /jq2NI6x57RSlxBFpuwfGFkptE9y/1gcwXps9sCIjWE3PMuS6b+LpxVgZov6UF2Bho
-	 K866nyo3jeF0eMqMg/k75HDYdyXk93IHxVxwRABw=
+	b=EBzo+lMjlZc1UYA5E7TB0AgPonecMo1Nl2/iQiTYSS6u8oUA/PlY5S5KZxTvn962+
+	 YhsU5TSpg9kpEaMxtosXcNkuDo7RkNhp0f+Cjizwqn0+HKKR14hnbrvCl+AHa4P7mw
+	 buO+Xki0ERIlfE1cZjjo/I43a6VIyepoiIr+zNUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 279/507] scsi: ufs: rockchip: Reset controller on PRE_CHANGE of hce enable notify
+Subject: [PATCH 6.12 153/354] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
 Date: Tue, 16 Dec 2025 12:12:00 +0100
-Message-ID: <20251216111355.589221067@linuxfoundation.org>
+Message-ID: <20251216111326.458163005@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b0ee72db9132bd19b1b80152b35e0cf6a6cbd9f2 ]
+[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
 
-This fixes the dme-reset failed when doing recovery. Because device
-reset is not enough, we could occasionally see the error below:
+The driver calls ioport_map() to map I/O ports in sim710_probe_common()
+but never calls ioport_unmap() to release the mapping. This causes
+resource leaks in both the error path when request_irq() fails and in
+the normal device removal path via sim710_device_remove().
 
-ufshcd-rockchip 2a2d0000.ufs: uic cmd 0x14 with arg3 0x0 completion timeout
-ufshcd-rockchip 2a2d0000.ufs: dme-reset: error code -110
-ufshcd-rockchip 2a2d0000.ufs: DME_RESET failed
-ufshcd-rockchip 2a2d0000.ufs: ufshcd_host_reset_and_restore: Host init failed -110
+Add ioport_unmap() calls in the out_release error path and in
+sim710_device_remove().
 
-Fix this by resetting the controller on PRE_CHANGE stage of hce enable
-notify.
-
-Fixes: d3cbe455d6eb ("scsi: ufs: rockchip: Initial support for UFS")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1763009575-237552-1-git-send-email-shawn.lin@rock-chips.com
+Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-rockchip.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/scsi/sim710.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/host/ufs-rockchip.c b/drivers/ufs/host/ufs-rockchip.c
-index 8754085dd0ccf..8cecb28cdce41 100644
---- a/drivers/ufs/host/ufs-rockchip.c
-+++ b/drivers/ufs/host/ufs-rockchip.c
-@@ -20,9 +20,17 @@
- #include "ufshcd-pltfrm.h"
- #include "ufs-rockchip.h"
+diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
+index e519df68d603d..70c75ab1453a1 100644
+--- a/drivers/scsi/sim710.c
++++ b/drivers/scsi/sim710.c
+@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
+  out_put_host:
+ 	scsi_host_put(host);
+  out_release:
++	ioport_unmap(hostdata->base);
+ 	release_region(base_addr, 64);
+  out_free:
+ 	kfree(hostdata);
+@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
  
-+static void ufs_rockchip_controller_reset(struct ufs_rockchip_host *host)
-+{
-+	reset_control_assert(host->rst);
-+	udelay(1);
-+	reset_control_deassert(host->rst);
-+}
-+
- static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
- 					 enum ufs_notify_change_status status)
- {
-+	struct ufs_rockchip_host *host = ufshcd_get_variant(hba);
- 	int err = 0;
- 
- 	if (status == POST_CHANGE) {
-@@ -37,6 +45,9 @@ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
- 		return ufshcd_vops_phy_initialization(hba);
- 	}
- 
-+	/* PRE_CHANGE */
-+	ufs_rockchip_controller_reset(host);
-+
- 	return 0;
- }
- 
-@@ -156,9 +167,7 @@ static int ufs_rockchip_common_init(struct ufs_hba *hba)
- 		return dev_err_probe(dev, PTR_ERR(host->rst),
- 				"failed to get reset control\n");
- 
--	reset_control_assert(host->rst);
--	udelay(1);
--	reset_control_deassert(host->rst);
-+	ufs_rockchip_controller_reset(host);
- 
- 	host->ref_out_clk = devm_clk_get_enabled(dev, "ref_out");
- 	if (IS_ERR(host->ref_out_clk))
-@@ -282,9 +291,7 @@ static int ufs_rockchip_runtime_resume(struct device *dev)
- 		return err;
- 	}
- 
--	reset_control_assert(host->rst);
--	udelay(1);
--	reset_control_deassert(host->rst);
-+	ufs_rockchip_controller_reset(host);
- 
- 	return ufshcd_runtime_resume(dev);
- }
+ 	scsi_remove_host(host);
+ 	NCR_700_release(host);
++	ioport_unmap(hostdata->base);
+ 	kfree(hostdata);
+ 	free_irq(host->irq, host);
+ 	release_region(host->base, 64);
 -- 
 2.51.0
 
