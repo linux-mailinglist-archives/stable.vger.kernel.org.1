@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C86CC492E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445D8CC2B74
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4A4C3052D6A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFB0B3174F62
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948F836D51C;
-	Tue, 16 Dec 2025 12:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DE834403C;
+	Tue, 16 Dec 2025 11:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm1ubgXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFH6fPF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3FE36D518;
-	Tue, 16 Dec 2025 12:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D286F344021;
+	Tue, 16 Dec 2025 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888032; cv=none; b=lFUqbFQnBzNLyoBeKlfGyW7+hws5L2jEroeC2RTW1rPvTFNgarUYzSlJSn9xfHPfQzeYyzbybcTv3wVYyfXngXHmwyYOXb2cnB8JWRbNLbkRp4bPlNB2e44qLZRX7s3d/+xAHt42bcszhH1oygDIPzcl3orh8Ozy/1WhwExHCGU=
+	t=1765886012; cv=none; b=JlPB6ga2O+fXQ7+7xwpJQAkatBCV4HML5GhyyGzsYB8JOwzePGl84BVfZwerY0cFciQ8P7FKJ879hqLkCuUOSgVDiL9gLH6pagkdaMnHrFsGJf8+YwRdP/I8+bnySaOHNhT8UI6TRM0inkULkE5RHhr+y3xAbMxq6kHlAIMkM4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888032; c=relaxed/simple;
-	bh=xVrJoLfAdElO4kuFJFm2Yg4NOV6/tV/n5njFFxl6NXA=;
+	s=arc-20240116; t=1765886012; c=relaxed/simple;
+	bh=ykld8oTPkWknV4s7iduGJo8G53YQ+q4BcA0tx6KsWXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzGzU5mFasBSUFCLcp4Fis0lOv873JNcJUoLQWDKK1vDQHxabdXAqc2lOgylLTSGrEetkKIMOJ0P2fNOfpBJqFaqg21SQnpJZo5hr9ozzDYb9AKqbS1Z7E//qMwelvCig942h04teDCO4SumU/Kmoc4RdhTLq6JzncyUTkFboYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm1ubgXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7B1C4CEF1;
-	Tue, 16 Dec 2025 12:27:11 +0000 (UTC)
+	 MIME-Version; b=LxlWo2A543hQiHwIEX2hQWcaypgZ5q7t8fqQ57nsk9f3PWHuLPOB7PfkpZXZavcj01Zzv4c0QvZDrZeV6/ADqqKbb3kjvnkVrhIJ1NH8JKiqwkVxDBch1o1jw4oR5w2k8CqTp6UPWPC4/PF3ijoFrj8pwgE2e4vdS/JulyeG57A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFH6fPF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DF6C4CEF1;
+	Tue, 16 Dec 2025 11:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888032;
-	bh=xVrJoLfAdElO4kuFJFm2Yg4NOV6/tV/n5njFFxl6NXA=;
+	s=korg; t=1765886012;
+	bh=ykld8oTPkWknV4s7iduGJo8G53YQ+q4BcA0tx6KsWXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rm1ubgXe6lq6z7f5ImT5ElVSsFgp7HHnx1pnhqxU+/BH+ocbi3e/zF6j/hiRE/wS0
-	 URGPa1/01veUh1GboKTF5bVW4FR68417fCB4JxM7oL5ZK1zfBBWsaBLzysdWbP2Qh9
-	 kdVOgKEcZ5mIfESgERTkcim6r8zx8CkyxDEJu00k=
+	b=LFH6fPF6KCLHsBkDCpbSnjeUoNQYSCdhWPegceg4lDriCVWlR6hHId6ywrUcOp7ar
+	 dh2SiSdoB7dD1wC1n2DB3Vjt0e18+o6b+MVmTjnR94aQOYFJpHdyVEqBs2+DOQiueh
+	 VHvtaoT9UtrDbs+0ddWXZDr9mU3oN0A9NF3QHUPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 384/614] wifi: mt76: mt7996: Remove unnecessary link_id checks in mt7996_tx
+Subject: [PATCH 6.17 310/507] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
 Date: Tue, 16 Dec 2025 12:12:31 +0100
-Message-ID: <20251216111415.282302208@linuxfoundation.org>
+Message-ID: <20251216111356.701020085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 084922069ceac4d594c06b76a80352139fd15f4d ]
+[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
 
-Remove unnecessary link_id checks in mt7996_tx routine since if the link
-identifier provided by mac80211 is unspecified the value will be
-overwritten at the beginning on the function.
+Currently, test_perf_branches_no_hw() relies on the busy loop within
+test_perf_branches_common() being slow enough to allow at least one
+perf event sample tick to occur before starting to tear down the
+backing perf event BPF program. With a relatively small fixed
+iteration count of 1,000,000, this is not guaranteed on modern fast
+CPUs, resulting in the test run to subsequently fail with the
+following:
 
-Fixes: f940c9b7aef6 ("wifi: mt76: mt7996: Set proper link destination address in mt7996_tx()")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250924-mt76_tx_unnecessary-check-v1-1-e595930a5662@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+bpf_testmod.ko is already unloaded.
+Loading bpf_testmod.ko...
+Successfully loaded bpf_testmod.ko.
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:PASS:output not valid 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_bad_sample:FAIL:output not valid no valid sample from prog
+Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
+Successfully unloaded bpf_testmod.ko.
+
+On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
+million increments of a volatile integer can take significantly less
+than 1 millisecond. If the spin loop and detachment of the perf event
+BPF program elapses before the first 1 ms sampling interval elapses,
+the perf event will never end up firing. Fix this by bumping the loop
+iteration counter a little within test_perf_branches_common(), along
+with ensuring adding another loop termination condition which is
+directly influenced by the backing perf event BPF program
+executing. Notably, a concious decision was made to not adjust the
+sample_freq value as that is just not a reliable way to go about
+fixing the problem. It effectively still leaves the race window open.
+
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
+ .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index b53ca702591c6..2b52d057287a1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1339,12 +1339,10 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index 06c7986131d96..0a7ef770c487c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
+ 	int pbe_size = sizeof(struct perf_branch_entry);
+ 	int duration = 0;
  
- 	if (mvif) {
--		struct mt76_vif_link *mlink = &mvif->deflink.mt76;
-+		struct mt76_vif_link *mlink;
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
+ 	int written_stack = skel->bss->written_stack_out;
+ 	int duration = 0;
  
--		if (link_id < IEEE80211_LINK_UNSPECIFIED)
--			mlink = rcu_dereference(mvif->mt76.link[link_id]);
--
--		if (mlink->wcid)
-+		mlink = rcu_dereference(mvif->mt76.link[link_id]);
-+		if (mlink && mlink->wcid)
- 			wcid = mlink->wcid;
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
+ 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
+ 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
+ 		goto out_destroy;
+-	/* spin the loop for a while (random high number) */
+-	for (i = 0; i < 1000000; ++i)
++
++	/* Spin the loop for a while by using a high iteration count, and by
++	 * checking whether the specific run count marker has been explicitly
++	 * incremented at least once by the backing perf_event BPF program.
++	 */
++	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
+ 		++j;
  
- 		if (mvif->mt76.roc_phy &&
-@@ -1352,7 +1350,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 			mphy = mvif->mt76.roc_phy;
- 			if (mphy->roc_link)
- 				wcid = mphy->roc_link->wcid;
--		} else {
-+		} else if (mlink) {
- 			mphy = mt76_vif_link_phy(mlink);
- 		}
- 	}
-@@ -1362,7 +1360,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 		goto unlock;
- 	}
+ 	test_perf_branches__detach(skel);
+diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+index a1ccc831c882f..05ac9410cd68c 100644
+--- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
++++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+@@ -8,6 +8,7 @@
+ #include <bpf/bpf_tracing.h>
  
--	if (msta && link_id < IEEE80211_LINK_UNSPECIFIED) {
-+	if (msta) {
- 		struct mt7996_sta_link *msta_link;
+ int valid = 0;
++int run_cnt = 0;
+ int required_size_out = 0;
+ int written_stack_out = 0;
+ int written_global_out = 0;
+@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
+ 	__u64 entries[4 * 3] = {0};
+ 	int required_size, written_stack, written_global;
  
- 		msta_link = rcu_dereference(msta->link[link_id]);
++	++run_cnt;
++
+ 	/* write to stack */
+ 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
+ 	/* ignore spurious events */
 -- 
 2.51.0
 
