@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-201753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787B0CC3857
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3D1CC2283
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D33CA3093F87
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6ABA03050591
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3757834FF50;
-	Tue, 16 Dec 2025 11:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4163358A8;
+	Tue, 16 Dec 2025 11:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQTlEnCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mijd0Awn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAE34FF4B;
-	Tue, 16 Dec 2025 11:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE11D2459D7;
+	Tue, 16 Dec 2025 11:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885675; cv=none; b=d8mjFfHikbRjOXnQudiQT/v/i/4MZh9XqDM4tNLanvqqaPeAUmZ10+rVvew/+fDBQ4m/3L4K/fUR6UKrCZV/8m8Toi3Vf76yLKUcp81fr4oohjIHsYNg/3J/HUUtnlon3YbzCu/9gYKouX6YWOWgiSP8mXfoBlFKAbuh0wWFQcU=
+	t=1765883965; cv=none; b=LNn5cS+6O9/hBWT8yj0Q5+pNCBcqVpi2b5u9W+4Fkyknox+DMaHdAEBcoQ8FKSxK67QC0gOwqVLRvj2QsQ1CZEbqLR3v8JDxulbxvKxZ+OF6X9CAbo7+OZd+giDIhpI3bsgzi6iIranv8cIw0o6UiaL/3edexVhwaGguihm/6Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885675; c=relaxed/simple;
-	bh=3T1jpHFvlSeXTRILvT7QTLcD7fTpRysRqhYIjUixr6c=;
+	s=arc-20240116; t=1765883965; c=relaxed/simple;
+	bh=Cyv2UlWQT255qyTQHiwNLh8cBfHfFJzCQ7sedmgSZGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehylsM005/iDcZocaSS1H1mg9d3uv8FEeWa0/mcVWEZGC+eSVcvokL3lnYdCV4FXOy8Le+HpcKlAhIGViwie6HXgP2nwyLXhBqAaMUVlqwl1yWtAGZAZfF21t8Wkvrj1w0yOay3WA43sVwZXY4erT7by//tR6xbM2xrOjG4OPa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQTlEnCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58091C4CEF1;
-	Tue, 16 Dec 2025 11:47:54 +0000 (UTC)
+	 MIME-Version; b=F9OfjOMMXkhr4LQRm1iEkBupsdhsO9K5sFve6yYzIbZnX1aB1MtGiCBx/BXJQKIrmmSVYPbE+bi35HfmOP6IzSgsEAk4NlNh/8/15sfO/zD9JxM1Taz8DsWJdttGn0LetQLwE7+GjUTEseMQPjCO3VrdHLNa5j6irq4CcMwHtsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mijd0Awn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E22C4CEF1;
+	Tue, 16 Dec 2025 11:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885674;
-	bh=3T1jpHFvlSeXTRILvT7QTLcD7fTpRysRqhYIjUixr6c=;
+	s=korg; t=1765883965;
+	bh=Cyv2UlWQT255qyTQHiwNLh8cBfHfFJzCQ7sedmgSZGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQTlEnCc/SVF5WM/XEqeMH9fwXF1W0lgYEYxauQP7xH17+DxFlKffEAr0pDaX5UEM
-	 eTcn/n7HSFVWPz7Cq96kU1uOSHkqmcXNvBEK3y1PV4WqO5V1hYwCM51Q/J9ZqDqClV
-	 iVU0cqNNhZA1XfTo2vzAEmjnA/qm+I9cmDCHqnGA=
+	b=Mijd0AwnlLv5KR32LPV680KWyan69m4FB/1qJHTzSGNggA1zFaEcWD1Iyu68R3Bw2
+	 c4inYzNrb6ZeZzZ6jX0Nj47ZdtoCFE+R+nagsIC+n7s/ciekjS77bQ05Yl5w4mC44Y
+	 KOExo0LA+Khdrm/A2rLoKwLrhlKefDJnq4tq860g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 177/507] x86/boot: Fix page table access in 5-level to 4-level paging transition
+Subject: [PATCH 6.12 051/354] arm64: dts: imx8mm-venice-gw72xx: remove unused sdhc1 pinctrl
 Date: Tue, 16 Dec 2025 12:10:18 +0100
-Message-ID: <20251216111351.928911587@linuxfoundation.org>
+Message-ID: <20251216111322.765911134@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit eb2266312507d7b757859e2227aa5c4ba6280ebe ]
+[ Upstream commit d949b8d12d6e8fa119bca10d3157cd42e810f6f7 ]
 
-When transitioning from 5-level to 4-level paging, the existing code
-incorrectly accesses page table entries by directly dereferencing CR3 and
-applying PAGE_MASK. This approach has several issues:
+The SDHC1 interface is not used on the imx8mm-venice-gw72xx. Remove the
+unused pinctrl_usdhc1 iomux node.
 
-- __native_read_cr3() returns the raw CR3 register value, which on x86_64
-  includes not just the physical address but also flags. Bits above the
-  physical address width of the system i.e. above __PHYSICAL_MASK_SHIFT) are
-  also not masked.
-
-- The PGD entry is masked by PAGE_SIZE which doesn't take into account the
-  higher bits such as _PAGE_BIT_NOPTISHADOW.
-
-Replace this with proper accessor functions:
-
-- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
-  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
-  reserved and must be 0.
-
-- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
-  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
-  the max physical address are reserved and must be 0.
-
-Fixes: e9d0e6330eb8 ("x86/boot/compressed/64: Prepare new top-level page table for trampoline")
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/a482fd68-ce54-472d-8df1-33d6ac9f6bb5@intel.com
+Fixes: 6f30b27c5ef5 ("arm64: dts: imx8mm: Add Gateworks i.MX 8M Mini Development Kits")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/pgtable_64.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ .../boot/dts/freescale/imx8mm-venice-gw72xx.dtsi      | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index bdd26050dff77..0e89e197e1126 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -3,6 +3,7 @@
- #include <asm/bootparam.h>
- #include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
-+#include <asm/pgtable.h>
- #include <asm/processor.h>
- #include "../string.h"
- #include "efi.h"
-@@ -168,9 +169,10 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
- 		 */
--		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
-+		*trampoline_32bit = native_read_cr3_pa() | _PAGE_TABLE_NOENC;
- 	} else {
--		unsigned long src;
-+		u64 *new_cr3;
-+		pgd_t *pgdp;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
+index 752caa38eb03b..266038fbbef97 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
+@@ -351,17 +351,6 @@ MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
+ 		>;
+ 	};
  
- 		/*
- 		 * For 5- to 4-level paging transition, copy page table pointed
-@@ -180,8 +182,9 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 		 * We cannot just point to the page table from trampoline as it
- 		 * may be above 4G.
- 		 */
--		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
--		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
-+		pgdp = (pgd_t *)native_read_cr3_pa();
-+		new_cr3 = (u64 *)(native_pgd_val(pgdp[0]) & PTE_PFN_MASK);
-+		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
- 	}
- 
- 	toggle_la57(trampoline_32bit);
+-	pinctrl_usdhc1: usdhc1grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
+-			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d0
+-			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d0
+-			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d0
+-			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d0
+-			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d0
+-		>;
+-	};
+-
+ 	pinctrl_usdhc2: usdhc2grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
 -- 
 2.51.0
 
