@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-202639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93316CC355B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:49:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1657DCC2A8C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89A753026BEA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D40730D3E29
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EB236402C;
-	Tue, 16 Dec 2025 12:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6973596EF;
+	Tue, 16 Dec 2025 12:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L70XO/CM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy4iJV2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FEC32D0E7;
-	Tue, 16 Dec 2025 12:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CAE3596F3;
+	Tue, 16 Dec 2025 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888557; cv=none; b=X1mQjsAXRqAV1kL/Mx+ZMqk1EYwyHpzryMtsP+wm85Z1JRjvd+JFWSW2hDPqJW2r6+95UEAxmX206ubTSCvehM1Plo7HZmIbKHvKbTBtjZO+1UNSkl70fkW210ogBUXe8iHxsQlbhD674cN0kQSwHOBr57Ck3vT6YYTWu71+AG0=
+	t=1765886684; cv=none; b=TVLEnzvK/WIKX4XQ4bXH77u7VnxtFeMhZDszHg+jbbktyIW0fBwB+nAGYDRoTlauZaXO3U1vwtpGyOw19LohM8CFQip5AfBpHNkbToBht59/84y27mu4gxh1WmkKtMkdSv78kdkagOMHabkKp66etxTyUEaJDLb6fWpJMl0sjuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888557; c=relaxed/simple;
-	bh=ILicYwjRGQN3MJPm+hTfaexBQ9tA+9j1HiUoNW8MpCY=;
+	s=arc-20240116; t=1765886684; c=relaxed/simple;
+	bh=s9LupDkbAUwTr3IR//EwvMGd0Ro/3n09NGKz/7ACza4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFqoKu22wvZPHDPI85jP81ZmcFbeufQl2SFafytfsEG+47v+GKuVJZdl8X761bRRIowhViM00u0bDRYBQNIMQ8n2TMi5HqG0wfVgF+XO2wBRbn5w9wAwGUGRFVwESJ2s1OrHAgftcfd84EXlLAmr3FZC3c1fnQq4j73dJrigRpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L70XO/CM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3955EC4CEF1;
-	Tue, 16 Dec 2025 12:35:54 +0000 (UTC)
+	 MIME-Version; b=hrAPt9f3dOD0ksLs8j4ZC5iG3pGjpjUT2l8TSZIvNgU6RQBXlyXkk0sYaLzkj2u+KQaVC9iMe8eg6eBqaYoMVTTVNE9+DIsaFioMFmPaYnNTtv43Iu5i/mAUgqgRKsBg6pA0j2T7gE09rts0RziEgaI+feoGlDnA57eYhaEKMvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy4iJV2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08769C4CEF1;
+	Tue, 16 Dec 2025 12:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888555;
-	bh=ILicYwjRGQN3MJPm+hTfaexBQ9tA+9j1HiUoNW8MpCY=;
+	s=korg; t=1765886683;
+	bh=s9LupDkbAUwTr3IR//EwvMGd0Ro/3n09NGKz/7ACza4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L70XO/CMWr4qY7KnHvMyHHCiVneKOxTrCzGWg5UX8tMZjZo5FtmSjK11+hSr1q36P
-	 Y1vMog4bs+WC1UUITFrXpNWtx7uBfSAmsNWfVZz44EquW0zAT0z5rw8qmDrSaruumx
-	 dXypXXrc2wugxd5M/UHfIatlt97o0nhgF8wSBxd8=
+	b=Gy4iJV2c47vbXtSU/Rq9T9CwB0i3dooRLTz4Y4kJICqe4cc0wPr1JWua0UrFTsrpY
+	 7lcPqIGV5x7kFzW3jen6/Yua2a/sTEhO0HI5yuzGO9IyoGlBcNfN3YS6NHSApIeVl1
+	 7nU+3qF+OA1xN4KbTaNWAjguDVlH6ZG53YdqyZC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 570/614] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+Subject: [PATCH 6.17 496/507] ocfs2: fix memory leak in ocfs2_merge_rec_left()
 Date: Tue, 16 Dec 2025 12:15:37 +0100
-Message-ID: <20251216111422.036129477@linuxfoundation.org>
+Message-ID: <20251216111403.408916819@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 ]
+[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
 
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
+In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
+move, thus allowing 'ocfs2_free_path()' to free it before return.
 
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
-
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned.
-This will cause the request as a whole to fail with -ENODATA.
-
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
-
-This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
-doing a read of a file that's significantly bigger than the size of the
-file (e.g. attempting to read 64KiB from a 16KiB file).
-
-Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
+Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/alloc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index dcc50a2bfa4b2..bfc9b1ea76fac 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1374,7 +1374,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 	} else {
- 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans == ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >= ictx->remote_i_size) {
- 			rdata->result = 0;
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 		} else if (rdata->got_bytes > 0) {
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 821cb7874685e..b23eb63dc838b 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -3654,7 +3654,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
+ 			 * So we use the new rightmost path.
+ 			 */
+ 			ocfs2_mv_path(right_path, left_path);
+-			left_path = NULL;
+ 		} else
+ 			ocfs2_complete_edge_insert(handle, left_path,
+ 						   right_path, subtree_index);
 -- 
 2.51.0
 
