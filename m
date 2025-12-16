@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90966CC2F63
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D113CCC2668
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B3F03063C00
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C856331103A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89BD33E37B;
-	Tue, 16 Dec 2025 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212F03431E4;
+	Tue, 16 Dec 2025 11:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSiEtcD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sznTRQNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49EE299924;
-	Tue, 16 Dec 2025 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C919A342CBD;
+	Tue, 16 Dec 2025 11:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886438; cv=none; b=ULqRIvhd+LA4E3EfEpFzU/u6+CZX94yfZsfrA6HOyn6rN1tv34aospAjJaA3CA0blJJFwwkos8iWImg3zx7E71IIXfwlcLipNdePMgGsVsWqJqQpxtXFHOcwbqHTe2wpYnGkC3dh9thrPUdXpm42ZVzeemEAND1KvtjJKprUWpU=
+	t=1765884831; cv=none; b=ZFIVPdSbJFsE6JPCXmFvYW/239cOIp27rNEWcQrDw9KroO1wpyXbQh0kIImFq4f/CL9HXw2bNCCoTwVuxalAN5Yq4ZFrbMQ1P07lJLmebCzCgRkO6KujaLFGcsMhUv4FRgDmhx2uTj/QWpPu0a3FAJSNaRVlxt07KI8TAymXmc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886438; c=relaxed/simple;
-	bh=jo1ONWgoRolVFVlXpD2yJ51T0eCyvHWJG+gyeHLOi2U=;
+	s=arc-20240116; t=1765884831; c=relaxed/simple;
+	bh=wxi7rLnlqV7CjoSR1VeKMqesOg09nAn/YbwTkutBTBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/dB4OZD98nfB9SNKqCM3V9xwXIu/HHN4nFzojMaeplx+7iNl/uxqxJDFnvliKoiiQxCB0bhpGBRYm1qjcwH9rtOyp6QeG39deIO9fzMmTStL2QxKAIoh+hegLRNoK4Qzd8sSzfzIp27QHLmggPiIi8fJZ+d9q9R2Oo7nU8vv7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSiEtcD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1E6C4CEF1;
-	Tue, 16 Dec 2025 12:00:37 +0000 (UTC)
+	 MIME-Version; b=qH5aJ8+NiFQRuS0PosqlxBTMy7yTjP6Edb9/uzk+5KDWzxnnr9ViJLj6pQyLL02c/t+k1uWhxIle1/LfF2LF0aA0tFIQv7d3Qc4Wy5kOMwj7ZzPWBbxxIzbTjysDJ+pkzxMvSiMPfr34OoDhN90xG7Efdaw9hxzZXAfrQW2UH8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sznTRQNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32179C4CEF1;
+	Tue, 16 Dec 2025 11:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886438;
-	bh=jo1ONWgoRolVFVlXpD2yJ51T0eCyvHWJG+gyeHLOi2U=;
+	s=korg; t=1765884831;
+	bh=wxi7rLnlqV7CjoSR1VeKMqesOg09nAn/YbwTkutBTBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSiEtcD9J6Ee6UfUeR6eFOLWQQdKC5CpEmfQtCYEfXg1v5aZ5JNGzgy61wrlwdggp
-	 t5UBmkGEaX/yvwGOq/pP9kEzlSCdO/udfNyEYhe9Rs3TicpXY/Cs5/8v/87KqqFh5Z
-	 jKZcngz3w/Fl6IM+0+anJSwCXMIVQX3Zt5vPQG/M=
+	b=sznTRQNHCGZOZWr6JFtFXHMkciFKytyPtsErrey967+0Rh0xsmBQYAPstEmRxBSnb
+	 20/SSoLR/dCgukNmN40n1Mr3+c3A3Qg8gNI99pUayTXXeadeWDhgpUEplDBxcwHfSv
+	 nXU4goo/emeoDbALnYklJDLTxJh54DzklV/dvqAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 437/507] rtc: amlogic-a4: fix double free caused by devm
+Subject: [PATCH 6.12 311/354] Revert "nfs: ignore SB_RDONLY when mounting nfs"
 Date: Tue, 16 Dec 2025 12:14:38 +0100
-Message-ID: <20251216111401.290197290@linuxfoundation.org>
+Message-ID: <20251216111332.178766528@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 384150d7a5b60c1086790a8ee07b0629f906cca2 ]
+[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
 
-The clock obtained via devm_clk_get_enabled() is automatically managed
-by devres and will be disabled and freed on driver detach. Manually
-calling clk_disable_unprepare() in error path and remove function
-causes double free.
+This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
 
-Remove the redundant clk_disable_unprepare() calls from the probe
-error path and aml_rtc_remove(), allowing the devm framework to
-automatically manage the clock lifecycle.
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
 
-Fixes: c89ac9182ee2 ("rtc: support for the Amlogic on-chip RTC")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Link: https://patch.msgid.link/20251021103559.1903-1-vulab@iscas.ac.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-amlogic-a4.c | 4 ----
- 1 file changed, 4 deletions(-)
+ fs/nfs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-amlogic-a4.c b/drivers/rtc/rtc-amlogic-a4.c
-index 09d78c2cc6918..c3cac29d96f07 100644
---- a/drivers/rtc/rtc-amlogic-a4.c
-+++ b/drivers/rtc/rtc-amlogic-a4.c
-@@ -390,7 +390,6 @@ static int aml_rtc_probe(struct platform_device *pdev)
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 456b423402814..63ee469d6c8f7 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -13,7 +13,7 @@
+ #include <linux/nfslocalio.h>
+ #include <linux/wait_bit.h>
  
- 	return 0;
- err_clk:
--	clk_disable_unprepare(rtc->sys_clk);
- 	device_init_wakeup(dev, false);
+-#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
++#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
  
- 	return ret;
-@@ -423,9 +422,6 @@ static SIMPLE_DEV_PM_OPS(aml_rtc_pm_ops,
- 
- static void aml_rtc_remove(struct platform_device *pdev)
- {
--	struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
--
--	clk_disable_unprepare(rtc->sys_clk);
- 	device_init_wakeup(&pdev->dev, false);
- }
+ extern const struct export_operations nfs_export_ops;
  
 -- 
 2.51.0
