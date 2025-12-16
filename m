@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A9CCC3161
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:11:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44702CC2BAB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61D4B312F38C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F34F6301E6FC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFC13612C1;
-	Tue, 16 Dec 2025 12:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC93357A2E;
+	Tue, 16 Dec 2025 12:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA5NCcAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oo+aSVuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB59A35F8D6;
-	Tue, 16 Dec 2025 12:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F28357A29;
+	Tue, 16 Dec 2025 12:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888509; cv=none; b=UBEh9rBtRdYiocAy01ogxcL1C80V+uf2fCeePa1tsjyPtZTWwhYcW0A8dgk7+V/w7dIJRJli/Bo1723WfTsisMJciQeJe0bfy6X54OQDtPIxTB4v6UPIE637k2uU1FFvY0jFnOucDLodazPV2FnoYM2Zo0eMFslFQerpffH2iz4=
+	t=1765886587; cv=none; b=UqsD+b1SYSXWihbIRT4u3lkVpXj1xDjJG5K5ygZww2ii6qxd49MoWP9/bUHLhP8d1NKgOUnqSi1uo/3lk2PNgd7oorQgqpQB+miLkm1WRVMvPIk/vVVzw6oq+4W/818ClfavFe0lgmes293fjHLc7ubHm5G23/7KWahsi7i9bvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888509; c=relaxed/simple;
-	bh=jcVEhGkXa3jcpK3W3zAVLP9Mq4+lIm3rPdW7SlURg7o=;
+	s=arc-20240116; t=1765886587; c=relaxed/simple;
+	bh=FXVh8cHOicl4Gik0NeMaSNhxQF+S6EhMn4RVN5HLJvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsaNfi0wnhZS6FFvu4oyVeNe7ShZne0o66Drn15A/VvYxaYpcNxIdf6Sd7+ecfwSuA39jmsDOsGpuPNcbVIPIP6EUT9bmmSMFxBSX6oXmYa14UteZd0VfqsJHvw0aS0yUumY/gn670r/K1u3p0WXXUFTFIcsfm8jSawTGomn2Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA5NCcAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68CAC4CEF1;
-	Tue, 16 Dec 2025 12:35:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R+qHNFqdw9TZJfnQsGpdRpchhU6xGYdlqn80rfEIrkw0PcUUFtR2V8Ir7Yi9EPPGOf0n7ryl1TmPhH6UKYSiZp8sRlKNSoNfzNLKt8Y1vTHqvx6dXLYO+hW+osWOJ25eNZtcDaxXIK78CbUzVkdeVjJuJCUgGDGQRZPbJYicR5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oo+aSVuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D4AC4CEF5;
+	Tue, 16 Dec 2025 12:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888509;
-	bh=jcVEhGkXa3jcpK3W3zAVLP9Mq4+lIm3rPdW7SlURg7o=;
+	s=korg; t=1765886586;
+	bh=FXVh8cHOicl4Gik0NeMaSNhxQF+S6EhMn4RVN5HLJvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hA5NCcAmlFp+90k4KXmG/iqHcO7WbmQrUTiUF7TX0Qv9rSrJdUuFBg7QWZ0UCuUqj
-	 en+31cWj2N4c5UNnLU9wbZ94kXVjSR8izmpB1oa6X9RQhZITC0dFIEo/5dioE7l5cK
-	 jGjlwawbGzIPH9OBILAmAKkcUVGIp+4x1lFq0nLI=
+	b=oo+aSVuc2DjN8O1dhmOrot4RoqwjHDxHUp6771fISKyw/sZBq7kGIb2YFyBLHZi6O
+	 BQIuHOjUf4UCUVt8LafpZJkicCOeMsRVfkAQEk32TJEp0YtTM+hIs193TAuB43QuTN
+	 O2SXHJjP3nx1VCtNlh/cK35hFB+nVfcsNFPqVfGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 554/614] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
+Subject: [PATCH 6.17 480/507] drm/xe/fbdev: use the same 64-byte stride alignment as i915
 Date: Tue, 16 Dec 2025 12:15:21 +0100
-Message-ID: <20251216111421.451515963@linuxfoundation.org>
+Message-ID: <20251216111402.832458513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 4a36b339a14ae6f2a366125e3d64f0c165193293 ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+For reasons unknown, xe uses XE_PAGE_SIZE alignment for
+stride. Presumably it's just a confusion between stride alignment and bo
+allocation size alignment. Switch to 64 byte alignment to, uh, align
+with i915.
 
-Add error checking for of_dma_configure() and return on failure.
+This will also be helpful in deduplicating and unifying the xe and i915
+framebuffer allocation.
 
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/aLqsC87Ol_zCXOkN@intel.com
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://lore.kernel.org/r/7f4972104de8b179d5724ae83892ee294d3f3fd3.1758184771.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Stable-dep-of: 460b31720369 ("drm/i915/fbdev: Hold runtime PM ref during fbdev BO creation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/display/intel_fbdev_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index e3a4fcc63a56d..efeb06ddabeb3 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -358,7 +358,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
+diff --git a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
+index fba9617a75a53..37a48c6f2d531 100644
+--- a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
++++ b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
+@@ -33,7 +33,7 @@ struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_fb_helper *helper,
+ 	mode_cmd.height = sizes->surface_height;
  
- 	i2s_priv = dev_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0)->dev);
+ 	mode_cmd.pitches[0] = ALIGN(mode_cmd.width *
+-				    DIV_ROUND_UP(sizes->surface_bpp, 8), XE_PAGE_SIZE);
++				    DIV_ROUND_UP(sizes->surface_bpp, 8), 64);
+ 	mode_cmd.pixel_format = drm_mode_legacy_fb_format(sizes->surface_bpp,
+ 							  sizes->surface_depth);
  
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
 -- 
 2.51.0
 
