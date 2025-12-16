@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D59CC23BE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88372CC283F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F3573064AF9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD90430D9857
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D39341645;
-	Tue, 16 Dec 2025 11:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C9338F2F;
+	Tue, 16 Dec 2025 11:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4PXsZQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+DLH1Y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C3313E13;
-	Tue, 16 Dec 2025 11:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210C52C0276;
+	Tue, 16 Dec 2025 11:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884306; cv=none; b=AEvrJSopAziuQVGkiI2HAef4zrVylN3QE56l8v0an27VGdEcSNTP/48bKHlSU8cwIDYbEGye5xcZUOSqh8Ar2qCOsIRKfXFoXvzwzauQnEfotigTEdRBrMtOB9yygclgfLFMFi2XDzZu9MYiKlsI5Be6fE++IuRgiDulioeknFc=
+	t=1765885999; cv=none; b=hFpdVXUBRsi7w9uzNd6M8abYqf06+cvInCsLTBsgXusMmvSS0aMeiOgnTCXY/KET4WpyRGaQLGAXlARCyluhpy6+uDeYIgr2FmDbNNs2VCO3t3fCrEqi937bwRE2TttF+t+atQsNeli1QO25fqqp0GJBheU6+HpSc89hTKjfYqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884306; c=relaxed/simple;
-	bh=p26RxpBDNsCtv64jBDw5tu+RX3oorAaYZN1W4iw+X24=;
+	s=arc-20240116; t=1765885999; c=relaxed/simple;
+	bh=4i0a4G56vDwpIFPztPhUrJo0eLqlwnrOwiTbFq12NbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx7WCAyb3EpUmVTl7MJJxlVBowy7S1/rRd/iWQmBXS5VuUjKLVXLnQBziNXbFeVPhokeW+1uGX/WhDlIep6zjhvg4dkPSQ29y4dEBREcAcsb0GhI6WXX6ScUHEmWRRLfgG8SiZW9OeDr5GdRwaJCJN9XHRj2StKKdykKFJdAN0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4PXsZQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3BAC4CEF1;
-	Tue, 16 Dec 2025 11:25:05 +0000 (UTC)
+	 MIME-Version; b=awDief1e3ozk87lTxS0GXOaLzbGsIsxlUjsxxPBVnmkiJv1xZH8Qj2+O9bk0R7iUYsI8sIvf8lk4jPb5EzLMn/IKhjTMF8rsdWHsa2v6jUIOezasrDHxrPh63AtP0noGOlwefMB9SSp4286XP+Xxx5jJxSqB3Sb7NQXidV9GwOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+DLH1Y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A148C4CEF5;
+	Tue, 16 Dec 2025 11:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884306;
-	bh=p26RxpBDNsCtv64jBDw5tu+RX3oorAaYZN1W4iw+X24=;
+	s=korg; t=1765885998;
+	bh=4i0a4G56vDwpIFPztPhUrJo0eLqlwnrOwiTbFq12NbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4PXsZQMQG29Mi2zRWnvR8D9Zk8/CWKhZ8EuF7DKTACb1ukMdymnDYOLG9206XQ/T
-	 HSYVetCgbgdiCls4UIFTiHVXb6/hVJ2PZ3TG4alKpF40vWvuxpK4oStKuYN/ABtZ1/
-	 U1CofIKwzfXZA8ZYdY3UxZnPBlOTRKpn4Q1tHTOE=
+	b=N+DLH1Y3dZxQQ17S5EdBaci+HWNByO9EXCgvmH9W494lIOfW9i8uDYuEMJcr4B8Ht
+	 LeoECvAmVm9XDOncwc7nlKAwwA1bttpRjSfa1LP3GM1ltY9ExyrpFoAdTLIIXL7/tl
+	 x7szr5sEBFy0tySAtfnTT3HWw2mk7dFKtfWTwe7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/354] leds: netxbig: Fix GPIO descriptor leak in error paths
+Subject: [PATCH 6.17 280/507] scsi: qla2xxx: Fix improper freeing of purex item
 Date: Tue, 16 Dec 2025 12:12:01 +0100
-Message-ID: <20251216111326.494431357@linuxfoundation.org>
+Message-ID: <20251216111355.625212092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
+[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
 
-The function netxbig_gpio_ext_get() acquires GPIO descriptors but
-fails to release them when errors occur mid-way through initialization.
-The cleanup callback registered by devm_add_action_or_reset() only
-runs on success, leaving acquired GPIOs leaked on error paths.
+In qla2xxx_process_purls_iocb(), an item is allocated via
+qla27xx_copy_multiple_pkt(), which internally calls
+qla24xx_alloc_purex_item().
 
-Add goto-based error handling to release all acquired GPIOs before
-returning errors.
+The qla24xx_alloc_purex_item() function may return a pre-allocated item
+from a per-adapter pool for small allocations, instead of dynamically
+allocating memory with kzalloc().
 
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Suggested-by: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
+kfree() to release the item. If the item was from the pre-allocated
+pool, calling kfree() on it is a bug that can lead to memory corruption.
+
+Fix this by using the correct deallocation function,
+qla24xx_free_purex_item(), which properly handles both dynamically
+allocated and pre-allocated items.
+
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index e95287416ef87..99df46f2d9f52 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 	if (!addr)
- 		return -ENOMEM;
- 
-+	gpio_ext->addr = addr;
-+	gpio_ext->num_addr = 0;
-+
- 	/*
- 	 * We cannot use devm_ managed resources with these GPIO descriptors
- 	 * since they are associated with the "GPIO extension device" which
-@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_set_code;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
- 		addr[i] = gpiod;
-+		gpio_ext->num_addr++;
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 316594aa40cc5..42eb65a62f1f3 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
+ 		a.reason = FCNVME_RJT_RC_LOGIC;
+ 		a.explanation = FCNVME_RJT_EXP_NONE;
+ 		xmt_reject = true;
+-		kfree(item);
++		qla24xx_free_purex_item(item);
+ 		goto out;
  	}
--	gpio_ext->addr = addr;
--	gpio_ext->num_addr = num_addr;
  
- 	ret = gpiod_count(gpio_ext_dev, "data");
- 	if (ret < 0) {
- 		dev_err(dev,
- 			"Failed to count GPIOs in DT property data-gpios\n");
--		return ret;
-+		goto err_free_addr;
- 	}
- 	num_data = ret;
- 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
--	if (!data)
--		return -ENOMEM;
-+	if (!data) {
-+		ret = -ENOMEM;
-+		goto err_free_addr;
-+	}
-+
-+	gpio_ext->data = data;
-+	gpio_ext->num_data = 0;
- 
- 	for (i = 0; i < num_data; i++) {
- 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_free_data;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
- 		data[i] = gpiod;
-+		gpio_ext->num_data++;
- 	}
--	gpio_ext->data = data;
--	gpio_ext->num_data = num_data;
- 
- 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(gpiod)) {
- 		dev_err(dev,
- 			"Failed to get GPIO from DT property enable-gpio\n");
--		return PTR_ERR(gpiod);
-+		goto err_free_data;
- 	}
- 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
- 	gpio_ext->enable = gpiod;
- 
- 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
-+
-+err_free_data:
-+	for (i = 0; i < gpio_ext->num_data; i++)
-+		gpiod_put(gpio_ext->data[i]);
-+err_set_code:
-+	ret = PTR_ERR(gpiod);
-+err_free_addr:
-+	for (i = 0; i < gpio_ext->num_addr; i++)
-+		gpiod_put(gpio_ext->addr[i]);
-+	return ret;
- }
- 
- static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
