@@ -1,194 +1,214 @@
-Return-Path: <stable+bounces-201154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AAACC1AD8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:00:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D20E3CC21E7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8198730053F6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:00:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA1B03006735
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A73054EB;
-	Tue, 16 Dec 2025 09:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BA83233EE;
+	Tue, 16 Dec 2025 11:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hailo.ai header.i=@hailo.ai header.b="erOcJPKG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ybbc1HkG"
 X-Original-To: stable@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021098.outbound.protection.outlook.com [52.101.65.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F087545948
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 09:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.98
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765875640; cv=fail; b=ATbE3qhzsS0dWhMiOlExve8yaFvq82i2IroPpdum5BG95ke/bDWzcOuqUIlDa3RUkORkAxm4Ir7I3r1WYW37tsYFj7SerHBGi3Vjg1Dacsv/t9xEKPiOGa5CGHYxpnuH6+3z7v92rGkyoUM9Zo8pJq8edNo1cnIieSwXU5OB1eA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765875640; c=relaxed/simple;
-	bh=3WKFi/sFuIlBJpPVNgzy4PKRxNHCliGvzrLpYbujQ40=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Jji4kVl4RXQ3TMJg4navTByUr3oMAxK+QL1j1bptM/HjJIUeh+3TSM/YHEV/i8PU3wcjvVGJ406O9gNkR9Shju4xXirCL2kWE09D6HE0XHKwdfI4i/gWJrNQrsZQ67U7oG/Q28tZARYTMh270fhovkI1VPux/FOwuN2MtYW7iKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hailo.ai; spf=pass smtp.mailfrom=hailo.ai; dkim=pass (1024-bit key) header.d=hailo.ai header.i=@hailo.ai header.b=erOcJPKG; arc=fail smtp.client-ip=52.101.65.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hailo.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hailo.ai
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J4CKhwoLBAoDF3RpnqvWablcwtJk9H7L792i/jplpcA/P9ehYzObclk4+S6Ah1luRdy96c9NoLd6pne2aKjBWLT4wbi4/jocn5qkn0+gyiukMH6bKEbh1kLZjDIHCGP+hb+egiU3ktvMukeirDQjz5Yic3d+mQa0SewYVZlHYs6eej/Q+DBM1QApTHvVwgpuZNayIXW55WDIljmIX6fWKgqOnaYPach3MLaTN3/iY2ETqI9aZg2dXpi35guxmoOOuBEw4GV9qnoZM0k9EtlUON2uUD1m8wxrPPEDLJ6Oe3Xq3ma7ZfceXbdviglGQA46ODyb4mfgjvQJRvDRdQnZ/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oDH13l0qgtckHXxKxJGRXtkCdrdrKhYfkT7PebVkwGg=;
- b=L5X6UMJu5HF+m08DGDD+GO0K0qApeEZn1ZaCYeuKzBIHiQijSPAFPfSHuJkXi7K3f8IMxgjKstT1KabXk+VArbSfUYQoINwq4Sggn58cuup2zUSPizzk4IAKyc4kvrOvhz6Lph4G3pE6jCR2hHsLscJLavir2aCRgyPdNEhwUu7KqYKuutxT8h1yatDR1ieTlIjTAkhj+9iez5P6tfXqbz1sDsm1/qd4wnHHxak6kZsyu6INKXWW5OKUNJFcoYqDNLqJIJbQfEB9V9Iqhdh5s6BMjD/leJ7bLKuOSZGMxG1/7dgtYySGyDZwSlqfidSnyZSPwcd0l5HhA5KK7+Iong==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hailo.ai; dmarc=pass action=none header.from=hailo.ai;
- dkim=pass header.d=hailo.ai; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hailo.ai; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oDH13l0qgtckHXxKxJGRXtkCdrdrKhYfkT7PebVkwGg=;
- b=erOcJPKGYpYjSu0O3DAW7hnC4591F+R9dMGchOr3BOjMqMVxu7Su+887FOKLvRI3DTSt9yrc6ARP0BIc9EqBNlNIkpA64bx9WzYpTUWnz4IVv3Kv1yrCysN/3h9gVbEtm+zNCL8x4RxdS6pOoxUXT4Yl18+fiosUBPTSqtNqrRg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=hailo.ai;
-Received: from DB9P194MB1356.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:29e::14)
- by GV1P194MB1954.EURP194.PROD.OUTLOOK.COM (2603:10a6:150:87::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Tue, 16 Dec
- 2025 09:00:32 +0000
-Received: from DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
- ([fe80::f805:511f:699c:7c1f]) by DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
- ([fe80::f805:511f:699c:7c1f%6]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 09:00:32 +0000
-From: Amitai Gottlieb <amitaig@hailo.ai>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sudeep.holla@arm.com,
-	amitaigottlieb@gmail.com,
-	Amitai Gottlieb <amitaig@hailo.ai>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: [PATCH] [STABLE ONLY] firmware: arm_scmi: Fix unused notifier-block in unregister
-Date: Tue, 16 Dec 2025 11:00:09 +0200
-Message-Id: <20251216090009.13435-1-amitaig@hailo.ai>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TL2P290CA0014.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::17) To DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
- (2603:10a6:10:29e::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716A733893E
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765883984; cv=none; b=COt3gJK/yF1x73ANV0SQaeLEHDDJNzW9HB2WT/QVYE3bTXt0s60oINy5A4NoQIndFVP1b05+UOJ6nmZSNIqeLIPgGtMqvxbcVDkIqdPNPm2znYOped60n55+5q4nh6YrI21nLtI5Fgey84bdK54bX8ALlLTY6a3xehSjjPRI5bI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765883984; c=relaxed/simple;
+	bh=5FpYV2hyThaP6gxo9Uz3Gaum8K2+2MpBuxtaKA8b8Tc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sMESwsy0xISF/kIb0X8j5DRsP1dXRJfEWR4GNh2LowyfAB2GxwF2h1NUBVmN4hx0KdpU1PFLgLDVGXoAttXV5NMBaCjZqF8UUvYOW/zHibq3Tu3ztc8+d+XB993ZAnfOW9hAlfL3A8ZHAtsIJ4RiXwTD2wuFx/YybjgWOI2+qW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ybbc1HkG; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-37b999d0c81so34862481fa.2
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 03:19:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765883980; x=1766488780; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dC+oh+upH5G4XaoqKb2c8YIUZVE9MRCLwR8vX6V5s8=;
+        b=Ybbc1HkGPXjuXiPyBxiqh2F0NB/5QqW5KgIxy7OXcxFfhPWC5iITt6jwEaGNZjiIdT
+         3IreExrdIjJcWZIcutSgb6mKrodWa1Ip3rLCG9gyth83vLHjNp9OIVmt8Lb/1652NM4m
+         +84Hj0bPeD6WJaf2K5TeiQl4moQ+qV5UyITfPNPRk1sqGwI8Xuagi6hqGUQ1iN38JdED
+         rRsaZuwJwNKDr5iuouRbILTGC4rjrpogp36+8k+bFWjo2cwBBpQWTRTJKugHDvzdoBIF
+         TzP02mvb4VI8Is4Gf8bwkEi8zyutAO5rJuqXXR0qeuGHeoz/jcXNzUdT9ZVV937LzAx+
+         7uJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765883980; x=1766488780;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3dC+oh+upH5G4XaoqKb2c8YIUZVE9MRCLwR8vX6V5s8=;
+        b=mDJEZvXoM3gW0T2UzdgeVR3jbtCuxHKAock103IMrWF86fgpm7lFKxhr6aD0GDIAdU
+         ThidVbegCKKHUW1QaV+i+9e0hwQcQ2BX0+Btt5CCNqLcEbrxKV5xavS/uyiippsk9+YJ
+         WAdwyR7CMAet/tgJc7cjiPfi3JZI5iIB6cdke3B7ssDgZHN5vZFmapHLlRZrJcv+g4hT
+         O834hLzNeZYKnSwlFxwcxU3+cnPpfw7QRoKTUGGbPAPXUgWaeSk52Uy0UPSvImGFrGUX
+         Rw3ne3a+RTWhm7NtOuWK3ZfKoKGQt3T8oA6ZsztbXY34OezxMsJqX07Z7uc3p4eS8JBA
+         FkgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRwvhSE2gdozVt96DXLDlvlGRHAJoLA1kUukA2ZYFJaxp87Pm/5qjic4sWB7bbGZUX3AkizlU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSx1I78Rb/bkRVjB6E4tBWDzweMiDc8GhTNpHS3xntP1nCiFr6
+	woEkT22of5iyowKEqcwhHQ2g0R1fmUsKB3zcu7c+5C5NIv+FXHc9UUtukF6UWQ==
+X-Gm-Gg: AY/fxX60MYVsVtpH0s2ZwkmxH7A0t3Or1aXzLPpRNIhe2FMIcc9bNYr8fKcNmYoDVXT
+	p0L0yBF2ss6OCfznEeRMfw4/5UD2tKjr43hi+InmNF5bthAeEYqtM3dcpiXNfmWnHz2rhTLul8s
+	lYhWM5gxbOycJGmGuhQrtcSKFNLtRZdaCI952C6cSPKmUL+LL/7Q/6sAYNEi3nBuaCnWnZmAUms
+	P8VA4HgN9EZ6DKMc2B5VH48KlpwmUkOj6VQj3gvjaXbc+w7YVpvwV7q2My9JBFSfGewe9p1nsTL
+	wJWVmHn/AyzqEzXTfyV9JUUvCMlMrzQuPl/fBjbHrLKz9jlv47+p1oxajuBqUtcsdXuaDg8teXN
+	DUzDOn3v91NoSkYhMTHcReAAiQgtYCvUMaMBC0IS0uGNPlQFzWyld1FnyQJqwj9dIpkfWZ3ar16
+	6bfu2ZndQRZTyCb2xAwCrBxySdwngTIVAwpfY1ccFbngt1ouI7fg25
+X-Google-Smtp-Source: AGHT+IEUQefTteAyd6IImKCfTuCbjbOTUUOkytdsSBdw7FpMzi30wrUOr1L+Fr4XI2IVzYyunRrh6Q==
+X-Received: by 2002:a05:6000:2083:b0:431:16d:63a3 with SMTP id ffacd0b85a97d-431016d695fmr5642674f8f.46.1765877291648;
+        Tue, 16 Dec 2025 01:28:11 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ff626b591sm22236958f8f.15.2025.12.16.01.28.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Dec 2025 01:28:11 -0800 (PST)
+Date: Tue, 16 Dec 2025 09:28:09 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, Huisong Li
+ <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in
+ alarms_store
+Message-ID: <20251216092809.2e9b153d@pumpkin>
+In-Reply-To: <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
+References: <20251111204422.41993-2-thorsten.blum@linux.dev>
+	<243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9P194MB1356:EE_|GV1P194MB1954:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b417185-e698-4963-d57d-08de3c81913c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?reTphkZLzlqiPZt/0rKjyH6bfEmG7vAVEe+ju8z8nin6sdOPdd7GudpFwG1g?=
- =?us-ascii?Q?yEwkHfuF0IMWkCR/PbvzT3Y7tpKO3i9IUAtuEwRl4htQzAe5Nr2B3NO3Lobo?=
- =?us-ascii?Q?AYc6tZymxwnMj1/uFkZKLh2tiHr944dk34geJF776qZKltf0LJMcRPoQ0Eye?=
- =?us-ascii?Q?9lGfFsZo/kWU9P4ywirPRazw0X2sMwSRFvG2u3QlERmljNau2Z1slB3/+FNT?=
- =?us-ascii?Q?zoR5fpONn5Zlspb9FZPMB/MvgYqFn5RrPWfRgzrez86CFn2A8CP3h27pNkKE?=
- =?us-ascii?Q?oOyd/45yVLUjgLCrdo1zJfrly3ua2MCO6zXX2KTuj/yrPS6KdfreaxmdKWEh?=
- =?us-ascii?Q?u8SUSqCIRsA4+hwbnTBrg9GP6g6l1TqrH0ptts6TICMLWIMwl9PkAru6jNVX?=
- =?us-ascii?Q?XVuVlY5lk0dh3vvo8m8Dj0IzHwaWWhL0vNkppcjk/NlFHr4veUe9Fdv6EWc/?=
- =?us-ascii?Q?zGq6WdCVTDrWn0jR/NA3ju1QGBAve0gM0K8LrBgLBF7KB+rO76St0yc7kIK1?=
- =?us-ascii?Q?oI9zg0R1FgXUW3aNPtaWthfK8EJXAFFTX43eKe/JSbqB7l3K+FGuuUkuRBRC?=
- =?us-ascii?Q?sJ5nl9ijBk5NUdRVxdhhdMJSQ+Ase6Fkxy7wFi3zgbSA4vRIoGQFbnipRRj1?=
- =?us-ascii?Q?ZbTwGLrn6yPbugqkKc0hTcuaIMeXCX+Q7uc+M/qMppRzPVhwYQc5oH7B7HHR?=
- =?us-ascii?Q?gI9M1xksVcTktHCspXQ9juEW2Cg7QmKpPr4lZds67mECU6MTpb7P2V+WKwnf?=
- =?us-ascii?Q?HSayl9istYwlavD23FcoQjg9W+Rv2iRGqZgER6o+DsxPWhp8lWAUDgk8N9KZ?=
- =?us-ascii?Q?uuQ1AjTqTYVxd5in0wBjsQlpvlbqPGUqH1XL7dr3yJz0/3XZ7kx6Q+v59tsU?=
- =?us-ascii?Q?UI3jnFXJFg45y1OMZZAOfI9qRZsEs8hPcrHFc61UR4iKzebXPNswNsnOr2Ya?=
- =?us-ascii?Q?eQZaZk488M4yTwHzNjzrIQhPFQy9Ou42s+97XqsmNTCrawlwtPrxZiJrs6p9?=
- =?us-ascii?Q?dwaGS/EDJGRWZ/F2EygVDv3XLqRcgL+ja9+lrpl2lynnKEHg4G5Y3QQfRZ8K?=
- =?us-ascii?Q?K6YR0RT2j5ifNm0Lypab21b5Tq24NsK3BYNRCKpq0O8uNrd0rTPJc3BMldax?=
- =?us-ascii?Q?m13FUaLdQKhzZvl6CD+Qc/d5S0PWBXTtBd0Z0f50DkTCsJfq3FPlD3yuQRRk?=
- =?us-ascii?Q?x61WjRSiglrbOuQR79ojOy41vzkJ3HbVa46UE0oEEKpI5EONrONqCeBIDAEd?=
- =?us-ascii?Q?tS/sPWgskTRVKuXdviCZsZpf1BKYN8kfCeKtC8HvSD6GioSyiRZExFA7hELw?=
- =?us-ascii?Q?iQFSzonaar0JxhNYaF6+rHMGC5QfFzddNqY6aee2MyTm85TXWs9Bs6urHc+V?=
- =?us-ascii?Q?JcVnAGTeiZaDqtUHqaKocEQ+DiJ76kdBPHciYHa93JzKNcoVMnRDjeoJQq6/?=
- =?us-ascii?Q?07jj89WNC4iuug09XfELOUSrln6hzS65e+TQCEBsUPNBBvl/Enwn3PaZHYSE?=
- =?us-ascii?Q?1yL6NkBufvtzFhM6pMyIef3zak4mOUwSITWj?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P194MB1356.EURP194.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/7kvc6puwxBN8qu8sDh7HaXcQfv+Z1LYFMt7q3SrMIOe2DFmUa4P4rgnfAcY?=
- =?us-ascii?Q?ZvabmLcILWnWdk9JmsNjJp1aX86U9LYfsuiqKB4+dU1CgNFlWPSRSb38Q3Wa?=
- =?us-ascii?Q?hXa/cPqCO+3SSIEn2lZMZGS2yEHBSvlI8MkBKzz/P5IKBAmMfsOYyU/y6hZb?=
- =?us-ascii?Q?EIF9hrGY5WVvgPouP6rp1qKfb2WI7VbOHpGNFI0dlEUCj1wN1zo8LSDW3mH6?=
- =?us-ascii?Q?gC/cuo5L65wzM5Kf9KR3WhzLdARLhM0xFJGDBTarQf/TJ08cMajrKNna5WBI?=
- =?us-ascii?Q?c/bv+bd6Rgzpu8ie/y6XRRldGLeMHlmX796oCfN/C60qrsQ/y1O9N2Fw+1kx?=
- =?us-ascii?Q?X58cXHQOk5RyMLadHwpIXs2DL703k9N8zjRAi3jIovTVbMJxB3ZVOziQFEUU?=
- =?us-ascii?Q?pqZ0fJAQbgbT/l+vDewEdm8MgYsuwF+4gS1GzsPlSoiaELctKoKn+9ggsl6O?=
- =?us-ascii?Q?stavsq2kut5yUmyfqWRc/0PdEfbhC+jIjqZ6ACh+8ZANJqMvvlAofIn4ZjIm?=
- =?us-ascii?Q?hyZn4bxbVqfw6g9I0gWcN3XRT8L9ZaH539hNL1u84tH6MaeSG88Co/mODzQe?=
- =?us-ascii?Q?M0AeLeAXvb5E6LUDZCw+HdZDDMl6q0gAYOdTGvx/3Y4Q7wY7LENO7bGHGItt?=
- =?us-ascii?Q?ZnB+9+3C99Tr+Gp47Hg7IZoRyCoOJaegu1+gKjkSuCOkUrrdv4w0NV/pewX0?=
- =?us-ascii?Q?ZtHUaNLz6rldK/PdMrDUEzETkOOAhexaJbj3FhVmn2deW551PKeTN/UeQQth?=
- =?us-ascii?Q?v9G9RJDr87wL/Bn9phK2i4V8xwQUjslDqvMWgpr56PnQij59rH6s9eVFBYnj?=
- =?us-ascii?Q?lH4jJe+EoY3nf3R5LwFO6VF/HLuuFmznMuCWij+4B6FeSmJBrGk7J/j543hQ?=
- =?us-ascii?Q?AvJVQsChJ+1r5vlzh3ItqVM778XTXxMR0DU2PmqwqUvkQg17tBclTgiUj3RS?=
- =?us-ascii?Q?zA0M3baIuJIjxenP2lJ5FMk2ZYvV2VZawIXEz5dt/3+M6hDjZMtp+x3/g9dq?=
- =?us-ascii?Q?jFMggVFT8MIsTHV1rbQLrf+lBUXeV0KXgpiYKOHKcAv+/+IVZ2u9ltpG9jtJ?=
- =?us-ascii?Q?VKzTkmLSeC++5lzJR0GTL3Ext2ox111KwTskl73/VsP1OsLs+87hRrhDxknk?=
- =?us-ascii?Q?3j8xst6Uu4xxJUpxN/sTwf/wAxauCfrbCuvlIAs7l339xBU9nOTwb6Uf0Ohc?=
- =?us-ascii?Q?RKmYkDZLSeJ9OK1QbPSCLEjcCJaI/8B1Ph/AUegKGzkramv/CX9UZVZiz3lF?=
- =?us-ascii?Q?7EUD/8ctNEzQ47Q8fr1nJUnt3AJFDLECH58VVJzJc5zrCofM9RqaK2PzYnmA?=
- =?us-ascii?Q?fuGoCDySEps7XGFWuJKRmoZ6aqafZiHKTUscMylzc+bTvlhDPBMA4PUoDUES?=
- =?us-ascii?Q?zMuJpXj/1viwF9BtDiQMZW1sT2ci165ob3xyBqyAkylsf5DDNMxhmueCr+qs?=
- =?us-ascii?Q?ITu0+d8BU/AbSJU4DATIrdRfJ0qqotWmHiFRnW/D0hKjNVc0DDhzh+OUO9DM?=
- =?us-ascii?Q?j4FjncgIlJwOZyMvssLmMDupouIEJ8DIFZGkJR0VI5S53B7hIrC5vC/wq/+S?=
- =?us-ascii?Q?c7+uFaN9XiWV98wg8WDDtksT9b+u1DqP2rUKPj3A?=
-X-OriginatorOrg: hailo.ai
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b417185-e698-4963-d57d-08de3c81913c
-X-MS-Exchange-CrossTenant-AuthSource: DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 09:00:31.9814
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6ae4a5f7-5467-4189-8f6a-f2928ed536de
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UzHdBuSb62/nOY3/2H44A59Fj44J4Cw7VpglxgdRvgsA6uwQCgx3UIGOQyq8DQSDCoCPT+x7CPCQCImYAY8wjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P194MB1954
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In function `scmi_devm_notifier_unregister` the notifier-block parameter
-was unused and therefore never passed to `devres_release`. This causes
-the function to always return -ENOENT and fail to unregister the
-notifier.
+On Tue, 16 Dec 2025 08:11:13 +0100
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-In drivers that rely on this function for cleanup this causes
-unexpected failures including kernel-panic.
+> On 11/11/2025 21:44, Thorsten Blum wrote:
+> > The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+> > bytes and a NUL terminator is appended. However, the 'size' argument
+> > does not account for this extra byte. The original code then allocated
+> > 'size' bytes and used strcpy() to copy 'buf', which always writes one
+> > byte past the allocated buffer since strcpy() copies until the NUL
+> > terminator at index 'size'.
+> > 
+> > Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+> > without allocating any intermediate memory or string copying. This
+> > removes the overflow while simplifying the code.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> > ---
+> > Compile-tested only.
+> > 
+> > Changes in v4:
+> > - Use simple_strtoll because kstrtoint also parses long long internally
+> > - Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
+> > - Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
+> >   while maintaining the same behavior and return values as before
+> > - Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
+> > 
+> > Changes in v3:
+> > - Add integer range check for 'temp' to match kstrtoint() behavior
+> > - Explicitly cast 'temp' to int when calling int_to_short()
+> > - Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
+> > 
+> > Changes in v2:
+> > - Fix buffer overflow instead of truncating the copy using strscpy()
+> > - Parse buffer directly using simple_strtol() as suggested by David
+> > - Update patch subject and description
+> > - Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
+> > ---
+> >  drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
+> >  1 file changed, 21 insertions(+), 43 deletions(-)
+> > 
+> > diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+> > index 9ccedb3264fb..5707fa34e804 100644
+> > --- a/drivers/w1/slaves/w1_therm.c
+> > +++ b/drivers/w1/slaves/w1_therm.c
+> > @@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
+> >  	struct w1_slave *sl = dev_to_w1_slave(device);
+> >  	struct therm_info info;
+> >  	u8 new_config_register[3];	/* array of data to be written */
+> > -	int temp, ret;
+> > -	char *token = NULL;
+> > +	long long temp;
+> > +	int ret = 0;
+> >  	s8 tl, th;	/* 1 byte per value + temp ring order */
+> > -	char *p_args, *orig;
+> > -
+> > -	p_args = orig = kmalloc(size, GFP_KERNEL);
+> > -	/* Safe string copys as buf is const */
+> > -	if (!p_args) {
+> > -		dev_warn(device,
+> > -			"%s: error unable to allocate memory %d\n",
+> > -			__func__, -ENOMEM);
+> > -		return size;
+> > -	}
+> > -	strcpy(p_args, buf);
+> > -
+> > -	/* Split string using space char */
+> > -	token = strsep(&p_args, " ");
+> > -
+> > -	if (!token)	{
+> > -		dev_info(device,
+> > -			"%s: error parsing args %d\n", __func__, -EINVAL);
+> > -		goto free_m;
+> > -	}
+> > -
+> > -	/* Convert 1st entry to int */
+> > -	ret = kstrtoint (token, 10, &temp);
+> > +	const char *p = buf;
+> > +	char *endp;
+> > +
+> > +	temp = simple_strtoll(p, &endp, 10);  
+> 
+> Why using this, instead of explicitly encouraged kstrtoll()?
 
-This is not needed upstream becaues the bug was fixed
-in a refactor by commit 264a2c520628 ("firmware: arm_scmi: Simplify
-scmi_devm_notifier_unregister").  It is needed for the 5.15, 6.1 and
-6.6 kernels.
+Because the code needs to look at the terminating character.
+The kstrtoxxx() family only support buffers that contain a single value.
+While they return an indication of 'overflow' they are useless for
+more general parameter parsing.
 
-Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
-Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Amitai Gottlieb <amitaig@hailo.ai>
----
+The simple_strtoxxx() could detect overflow and then set 'endp'
+to the digit that make the value too big - which should give an
+error provided the callers checks the separator.
 
- drivers/firmware/arm_scmi/notify.c | 1 +
- 1 file changed, 1 insertion(+)
+I don't know the full history of these functions...
 
-diff --git a/drivers/firmware/arm_scmi/notify.c b/drivers/firmware/arm_scmi/notify.c
-index 0efd20cd9d69..4782b115e6ec 100644
---- a/drivers/firmware/arm_scmi/notify.c
-+++ b/drivers/firmware/arm_scmi/notify.c
-@@ -1539,6 +1539,7 @@ static int scmi_devm_notifier_unregister(struct scmi_device *sdev,
- 	dres.handle = sdev->handle;
- 	dres.proto_id = proto_id;
- 	dres.evt_id = evt_id;
-+	dres.nb = nb;
- 	if (src_id) {
- 		dres.__src_id = *src_id;
- 		dres.src_id = &dres.__src_id;
--- 
-2.34.1
+	David
+
+
+> 
+> > +	if (p == endp || *endp != ' ')
+> > +		ret = -EINVAL;
+> > +	else if (temp < INT_MIN || temp > INT_MAX)
+> > +		ret = -ERANGE;
+> >  	if (ret) {
+> >  		dev_info(device,
+> >  			"%s: error parsing args %d\n", __func__, ret);
+> > -		goto free_m;
+> > +		goto err;  
+> 
+> So this is just return size.
+> 
+> 
+> Best regards,
+> Krzysztof
 
 
