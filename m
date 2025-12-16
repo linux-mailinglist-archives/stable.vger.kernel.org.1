@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74DDCC2AF2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EF6CC2926
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7D2C301FF30
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EBE63004466
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AFC34B186;
-	Tue, 16 Dec 2025 11:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6083659F8;
+	Tue, 16 Dec 2025 12:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qubmaVL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j26+uq9d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051FA34AB1F;
-	Tue, 16 Dec 2025 11:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08510328638;
+	Tue, 16 Dec 2025 12:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885219; cv=none; b=cdVAKniXmGahepisKryWKlPJeyb2pOqmoj+2w7gw5WGLmwX+o804reTQnqDsrRLJ/XQ7LsZxvxfzOIGoN5jonaGgHCrE4oTjPwabbZVUJ2/iXT1lM50LW4NyAAjqUriN1XKyzW7erHdrQg7rZ6cSMBYkKnnfOLHOJYE8DSL6alc=
+	t=1765887169; cv=none; b=SSNxLBYzQpekePlEa7LH7Zn0MeJCEumItK7MbNJ4JT5oH6yGUJVSIUogyUnzI8s13OOEk6GDkBHLjBNldGs4va4KcXJ/LbUAhswqAxYz/KsxB4H6IBRV2ci8KmbqfAylXL3ecRMz7/ipxU85k575cxljw0+XijWi1Dn0YsyGIH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885219; c=relaxed/simple;
-	bh=zYREsMsqpUuvuA6bPw+BZlHHBzZA0lOj5GgjYBGk18I=;
+	s=arc-20240116; t=1765887169; c=relaxed/simple;
+	bh=wk88wL49tii2eN4NM0b15s2OnkDM+9ezGZIqGKJ571M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8M6TXNAOIKgpoudmPY/hwiqdEw6bKHaGgri9UQkFUkMUrXlS0ZglHK6bfpD8gZRP7wA3G1cJ1UJMEwV2uhhDj68gu7Sf/AmpQH+LyZpyJWBynF6yNhzs/6GgCfG/hB9XNuv+miWBTluUMbMDBX8nbYghEWCp6xmaBUhhYd2Lt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qubmaVL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D76C4CEF1;
-	Tue, 16 Dec 2025 11:40:17 +0000 (UTC)
+	 MIME-Version; b=nz9FPgAS+wdFvc73ZNluxPVID/fh9J6duQF3c5jM3XoNElrz0EdlXxVeNdlvThsITGfxOLafkj87DbTpRuYI/NkeMkLRg0aN90+elz332sHM+0AFHbjWHHmgZPxDnwGf8pkfqp+ew3z+R4TG25KfsBqcJU6fLlsFgGCRles8RUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j26+uq9d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACEFC4CEF1;
+	Tue, 16 Dec 2025 12:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885218;
-	bh=zYREsMsqpUuvuA6bPw+BZlHHBzZA0lOj5GgjYBGk18I=;
+	s=korg; t=1765887168;
+	bh=wk88wL49tii2eN4NM0b15s2OnkDM+9ezGZIqGKJ571M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qubmaVL8igWuWNw0ePZS7rlwLIh9/IB81lfDdmOVVX7i8E1N5++QwXFjX+pjZPHQv
-	 GQheGZCKKPdJn0nkm9x4MxLOUE+5k1Jg3Z2XPkWOG9gyHKpcf++AlQKdZT8PZBFIQ8
-	 w6I2Kd7yjlEkSqMQzRksZBLhQ/G4M4TyNt91g5Z4=
+	b=j26+uq9dN2LOp9tlHx3WmNiO0/ffY3ShX1nhv7A9o8587F/P68IITqW1geV1BqlA1
+	 eSfVNShaHxZ0eIKGdromVe+fQBunUV/hRLGf0xhKaGIlWG09j7naTUPmX6cXahUgcN
+	 OBDG0hV4wIuOf5Pn6jRn+YaFmL8/9KkxlVadrO7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 074/507] clk: qcom: gcc-sm8750: Add a new frequency for sdcc2 clock
+Subject: [PATCH 6.18 148/614] clk: qcom: gcc-qcs615: Update the SDCC clock to use shared_floor_ops
 Date: Tue, 16 Dec 2025 12:08:35 +0100
-Message-ID: <20251216111348.223437640@linuxfoundation.org>
+Message-ID: <20251216111406.698490954@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Taniya Das <taniya.das@oss.qualcomm.com>
 
-[ Upstream commit 393f7834cd2b1eaf4a9eff2701e706e73e660dd7 ]
+[ Upstream commit 0820c9373369c83de5202871d02682d583a91a9c ]
 
-The SD card support requires a 37.5MHz clock; add it to the frequency
-list for the storage SW driver to be able to request for the frequency.
+Fix "gcc_sdcc2_apps_clk_src: rcg didn't update its configuration" during
+boot. This happens due to the floor_ops tries to update the rcg
+configuration even if the clock is not enabled.
+The shared_floor_ops ensures that the RCG is safely parked and the new
+parent configuration is cached in the parked_cfg when the clock is off.
 
-Fixes: 3267c774f3ff ("clk: qcom: Add support for GCC on SM8750")
+Ensure to use the ops for the other SDCC clock instances as well.
+
+Fixes: 39d6dcf67fe9 ("clk: qcom: gcc: Add support for QCS615 GCC clocks")
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250924-sm8750_gcc_sdcc2_frequency-v1-1-541fd321125f@oss.qualcomm.com
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251029-sdcc_rcg2_shared_ops-v3-1-ecf47d9601d1@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8750.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gcc-qcs615.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8750.c b/drivers/clk/qcom/gcc-sm8750.c
-index 8092dd6b37b56..def86b71a3da5 100644
---- a/drivers/clk/qcom/gcc-sm8750.c
-+++ b/drivers/clk/qcom/gcc-sm8750.c
-@@ -1012,6 +1012,7 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s7_clk_src = {
- static const struct freq_tbl ftbl_gcc_sdcc2_apps_clk_src[] = {
- 	F(400000, P_BI_TCXO, 12, 1, 4),
- 	F(25000000, P_GCC_GPLL0_OUT_EVEN, 12, 0, 0),
-+	F(37500000, P_GCC_GPLL0_OUT_EVEN, 8, 0, 0),
- 	F(50000000, P_GCC_GPLL0_OUT_EVEN, 6, 0, 0),
- 	F(100000000, P_GCC_GPLL0_OUT_EVEN, 3, 0, 0),
- 	F(202000000, P_GCC_GPLL9_OUT_MAIN, 4, 0, 0),
+diff --git a/drivers/clk/qcom/gcc-qcs615.c b/drivers/clk/qcom/gcc-qcs615.c
+index 9695446bc2a3c..5b3b8dd4f114b 100644
+--- a/drivers/clk/qcom/gcc-qcs615.c
++++ b/drivers/clk/qcom/gcc-qcs615.c
+@@ -784,7 +784,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
+ 		.name = "gcc_sdcc1_apps_clk_src",
+ 		.parent_data = gcc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_1),
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
+@@ -806,7 +806,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
+ 		.name = "gcc_sdcc1_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
+@@ -830,7 +830,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.name = "gcc_sdcc2_apps_clk_src",
+ 		.parent_data = gcc_parent_data_8,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
