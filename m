@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D03ACC29AB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13289CC3285
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4558C3195E03
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D19E3006D9F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB8C34FF6D;
-	Tue, 16 Dec 2025 11:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9163314AC;
+	Tue, 16 Dec 2025 12:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+U4boZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BhwBpLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCA4343200;
-	Tue, 16 Dec 2025 11:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4CF314A74;
+	Tue, 16 Dec 2025 12:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886173; cv=none; b=QkZbDUsGhMm9MAY520gz9m+DeFpRGymVk1ymDytEqmiCRjbR1mgIEzr2oQVxSnwn5gn8BWU4t9tGFirsyGPJGtp5LMoqr0fGO8LyY5SD8cX+6kFiPZRpMSd7+1lmgnSAijJcAWkyGCpBuWuuaEo2znJX92iB/DF3Y400YvwVhpA=
+	t=1765888104; cv=none; b=Zw6v54+Xaa40fTkaajzrgervul92ZzaTqqS8qwBn9O+AWNBzIAg/NoPy4WJJZRzqnylBy8VJ6yKhrk4J26hD+HcKxOLgKi4mH+CGpzoRgmlGtvWX34STEYDOjMQ0+Zc2BoFS7YV94iqhybW0S+QnNxbKmzW8opBBcMUnvFSr7D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886173; c=relaxed/simple;
-	bh=dD2juHI/iRRbheF8gNbK57bo5h3ILtUOU0VvAoZyzdM=;
+	s=arc-20240116; t=1765888104; c=relaxed/simple;
+	bh=xkcnf5IE1R+362j4q5qy3NywqS8VcXd593LXtOTfqDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcEqwY3C7JmbxlxlGZ1sWxvIwQ3LCJkD9brPiQU/MAGRtoFwIAhjk8oAvoXx7W1tUvURRT2Cr5unhxtxB2ixP3WK2vLoLKPRKRnsCl9GzoEMaGOxlWh0NBCBAVGnmYllC7sKcY2bYOyBxfUhy6o5OXZVpfZbINAMPkj/vkz/JTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+U4boZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57637C4CEF5;
-	Tue, 16 Dec 2025 11:56:12 +0000 (UTC)
+	 MIME-Version; b=Z7T3CrdglQuivxK9Qdxgei7/+o6nOyruo3Sr2qZaM9nDENPS3lQ3s9W9EyG/xETmeOgXXTWXo6dBQwKozlGjuIKbfuWQPlto13hsReESnM0WPlLNH44nEUaRKhlN66EvE5Xay0ETmu92B1VGhZV0DER7xRSK3ecWVbe9QnyOJUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BhwBpLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6CAC4CEF1;
+	Tue, 16 Dec 2025 12:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886172;
-	bh=dD2juHI/iRRbheF8gNbK57bo5h3ILtUOU0VvAoZyzdM=;
+	s=korg; t=1765888104;
+	bh=xkcnf5IE1R+362j4q5qy3NywqS8VcXd593LXtOTfqDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+U4boZP392OVFA+h9363ROxiliIhLIsrFHdq0G5jZ1tBgmOY6aEFbOUm8YW81YRg
-	 /Hk3JHy1i2fFnt1VY70ndhA0BAe7wXs0YC5oZ81uqmzNjRyYi/BrVL0oncOgqIkBav
-	 +y3dPRxdFU6VS9oj5fCWGz+7KT8L+eDUQi//WJjk=
+	b=0BhwBpLiJBaMHWK88yifpk86igBMRHKndranGhjsJH5Xe7I8GD8eWB27G1/WJKle1
+	 EraqutYS56b7/wm9lg68Nblx5Fcu8xi71NIYmEkoh0f+Y7ATpVONnz2xiO/Dt+sdDy
+	 Y1k4Qgl9gVF1YHZ271jyRoXBW2gehi0h/uuY+K48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 360/507] ASoC: nau8325: use simple i2c probe function
+Subject: [PATCH 6.18 434/614] clocksource/drivers/arm_arch_timer_mmio: Prevent driver unbind
 Date: Tue, 16 Dec 2025 12:13:21 +0100
-Message-ID: <20251216111358.499742803@linuxfoundation.org>
+Message-ID: <20251216111417.098130728@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit b4d072c98e47c562834f2a050ca98a1c709ef4f9 ]
+[ Upstream commit 6aa10f0e2ef9eba1955be6a9d0a8eaecf6bdb7ae ]
 
-The i2c probe functions here don't use the id information provided in
-their second argument, so the single-parameter i2c probe function
-("probe_new") can be used instead.
+Clockevents cannot be deregistered so suppress the bind attributes to
+prevent the driver from being unbound and releasing the underlying
+resources after registration.
 
-This avoids scanning the identifier tables during probes.
-
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20251126091759.2490019-2-perex@perex.cz
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: cd41d3420ef6 ("ASoC: nau8325: add missing build config")
+Fixes: 4891f01527bb ("clocksource/drivers/arm_arch_timer: Add standalone MMIO driver")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://patch.msgid.link/20251111153226.579-2-johan@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8325.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clocksource/arm_arch_timer_mmio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/nau8325.c b/sound/soc/codecs/nau8325.c
-index 2266f320a8f22..5b3115b0a7e58 100644
---- a/sound/soc/codecs/nau8325.c
-+++ b/sound/soc/codecs/nau8325.c
-@@ -829,8 +829,7 @@ static int nau8325_read_device_properties(struct device *dev,
- 	return 0;
- }
- 
--static int nau8325_i2c_probe(struct i2c_client *i2c,
--			     const struct i2c_device_id *id)
-+static int nau8325_i2c_probe(struct i2c_client *i2c)
- {
- 	struct device *dev = &i2c->dev;
- 	struct nau8325 *nau8325 = dev_get_platdata(dev);
+diff --git a/drivers/clocksource/arm_arch_timer_mmio.c b/drivers/clocksource/arm_arch_timer_mmio.c
+index ebe1987d651eb..d10362692fdd3 100644
+--- a/drivers/clocksource/arm_arch_timer_mmio.c
++++ b/drivers/clocksource/arm_arch_timer_mmio.c
+@@ -426,6 +426,7 @@ static struct platform_driver arch_timer_mmio_drv = {
+ 	.driver	= {
+ 		.name = "arch-timer-mmio",
+ 		.of_match_table	= arch_timer_mmio_of_table,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe	= arch_timer_mmio_probe,
+ };
+@@ -434,6 +435,7 @@ builtin_platform_driver(arch_timer_mmio_drv);
+ static struct platform_driver arch_timer_mmio_acpi_drv = {
+ 	.driver	= {
+ 		.name = "gtdt-arm-mmio-timer",
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe	= arch_timer_mmio_probe,
+ };
 -- 
 2.51.0
 
