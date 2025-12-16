@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD4ACC2502
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331A9CC2E9C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 726033027166
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A31B03005F3A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5773F343D82;
-	Tue, 16 Dec 2025 11:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD75235B15D;
+	Tue, 16 Dec 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW7TFWjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs1IVRmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FCE3314B4;
-	Tue, 16 Dec 2025 11:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328D34F473;
+	Tue, 16 Dec 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884943; cv=none; b=HaHajFM1d4JNgIck12L+n+cefUHH9vb5R/REWmFOTbhAihv1moC7r6covjieNCnXb7h7Gcaqm2+MrkPD29ErpIzWGFZvn8TQ+7kyzn00Rfp7gAt1J0Eb4zYxtAmBjzfN/BkSkFF3IglD2XegCb/bdcpcrEfRYE1dv/da3ltyK2U=
+	t=1765888472; cv=none; b=svleSfZ4MmtAXFOFQDsuuJMYn7Tsegfry7CgPxlv9CaFeulL1RDn7msoqRInPxtBJWufjFL988dz0Ew02WgAMyF5cy4Q+TCbpGyLTU211+u+wp0LD+jGAtfNTMP00iDo65kuBKpT8/ECwHU9ftfNuOO/CFhFcnFt9BGEzeuzypA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884943; c=relaxed/simple;
-	bh=ZKY+Pu22L6Nyxuad2oCnAeqQZDPQkKtJQlCspKdWdfw=;
+	s=arc-20240116; t=1765888472; c=relaxed/simple;
+	bh=aSAeYIxjMKgP2wBr+sXRzwREnsNuHz+JZaogqN56PlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rB5adYgE2YJB2Lm6J0x20j3GPMThVNewNfywuYVhuMz4DDUTZkAeAL/6To73A72RsAbI+whZ94wW7sQZyOkr0vDteoEt6eBSdsNOyIGnkvtoKDMjRDrKUcVDSdxFHsXZmuTcBgYxScmM/L8+ZUIBSRF6nud1MxVDt9SqRNpDkzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW7TFWjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E7C4CEF1;
-	Tue, 16 Dec 2025 11:35:41 +0000 (UTC)
+	 MIME-Version; b=M/6RIILZsKtT7ETVS9U/o/1dK6AsW/7gfwjqBB7n6zgi8p3wvQjzj2GGTA/dWjolvCFVMrF6jPi+pu1XhTzamahMze1BT9hAn7dWKBZixq4uqksbCiPvpfPboF6Qqdk55k7BXBhqtMoIYxDAZzfP0xDfAmoqcL5ckP5VA3YtWnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs1IVRmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DA0C4CEF5;
+	Tue, 16 Dec 2025 12:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884942;
-	bh=ZKY+Pu22L6Nyxuad2oCnAeqQZDPQkKtJQlCspKdWdfw=;
+	s=korg; t=1765888472;
+	bh=aSAeYIxjMKgP2wBr+sXRzwREnsNuHz+JZaogqN56PlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zW7TFWjUYmfoC9hdQDVmLyNFzPduABqu+oQ2+pyJSuRAJmMzvJZz49Knf4HuOUrqD
-	 8Lc7fga+XSzOw3VzrwJ77QZlpXOgvkhlnSgByqQJnjAOFm8NzBS7VtS3j/xrvLWMgL
-	 PuLGpjp4+qQRpYPS9+bUwkSuc+/FfjmfHP/6P9mI=
+	b=zs1IVRmWPCz/hUbsSPJCH7qnsiXvWVaNElCjEQdlikBHXLHMujZWYSVPqbzGKfcEP
+	 VxrC77PRqU3lQZ+O87/EkJY9wAsVOm+OVHdZOm16D2hBNvP4aG8DbeydGWmnPATgpn
+	 iSn8uyH+ykhGYG7NxVd3yy3O4hK4Ab3AiWb1aH5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 344/354] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
+Subject: [PATCH 6.18 544/614] NFS: Initialise verifiers for visible dentries in _nfs4_open_and_get_state
 Date: Tue, 16 Dec 2025 12:15:11 +0100
-Message-ID: <20251216111333.368185810@linuxfoundation.org>
+Message-ID: <20251216111421.089967739@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
+[ Upstream commit 0f900f11002ff52391fc2aa4a75e59f26ed1c242 ]
 
-If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
-it results in an out of bounds access.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in _nfs4_open_and_get_state().
 
-The code checks for invalid values, but doesn't set the error code.  Return
--EINVAL in that case, instead of returning success.
-
-Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: cf5b4059ba71 ("NFSv4: Fix races between open and dentry revalidation")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mchp-eic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
-index 5dcd94c000a26..8a5baa0987a4b 100644
---- a/drivers/irqchip/irq-mchp-eic.c
-+++ b/drivers/irqchip/irq-mchp-eic.c
-@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 93c6ce04332b8..6f4e14fb7b9b8 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3174,18 +3174,6 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
+ 	if (opendata->o_res.rflags & NFS4_OPEN_RESULT_PRESERVE_UNLINKED)
+ 		set_bit(NFS_INO_PRESERVE_UNLINKED, &NFS_I(state->inode)->flags);
  
- 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
- 	if (ret || hwirq >= MCHP_EIC_NIRQ)
--		return ret;
-+		return ret ?: -EINVAL;
+-	dentry = opendata->dentry;
+-	if (d_really_is_negative(dentry)) {
+-		struct dentry *alias;
+-		d_drop(dentry);
+-		alias = d_splice_alias(igrab(state->inode), dentry);
+-		/* d_splice_alias() can't fail here - it's a non-directory */
+-		if (alias) {
+-			dput(ctx->dentry);
+-			ctx->dentry = dentry = alias;
+-		}
+-	}
+-
+ 	switch(opendata->o_arg.claim) {
+ 	default:
+ 		break;
+@@ -3196,7 +3184,20 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
+ 			break;
+ 		if (opendata->o_res.delegation.type != 0)
+ 			dir_verifier = nfs_save_change_attribute(dir);
+-		nfs_set_verifier(dentry, dir_verifier);
++	}
++
++	dentry = opendata->dentry;
++	nfs_set_verifier(dentry, dir_verifier);
++	if (d_really_is_negative(dentry)) {
++		struct dentry *alias;
++		d_drop(dentry);
++		alias = d_splice_alias(igrab(state->inode), dentry);
++		/* d_splice_alias() can't fail here - it's a non-directory */
++		if (alias) {
++			dput(ctx->dentry);
++			nfs_set_verifier(alias, dir_verifier);
++			ctx->dentry = dentry = alias;
++		}
+ 	}
  
- 	switch (type) {
- 	case IRQ_TYPE_EDGE_RISING:
+ 	/* Parse layoutget results before we check for access */
 -- 
 2.51.0
 
