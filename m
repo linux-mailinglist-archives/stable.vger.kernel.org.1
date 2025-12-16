@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8681CC270D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195E4CC2E87
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D90F13022D0F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E941300D336
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD1C35502E;
-	Tue, 16 Dec 2025 11:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF1B3148B6;
+	Tue, 16 Dec 2025 12:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb3+DNfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vq3NKyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08704355029;
-	Tue, 16 Dec 2025 11:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E3D224AEF;
+	Tue, 16 Dec 2025 12:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885868; cv=none; b=fOb8tQHlQnyIinb3lL7i++0zIfVkMBYwCE21v2bOACbm6sxDwxrEs0ddEEHG4YedJKiSR1mITZTvI57ZbIRcFEXO4cgdnZVscCl13dCylrOJTCYz9ja+uis8wBF6EIVLOvjzQxhlEzVG6yF4lUpOIrvCpDPbMo3bhknocSbkoT4=
+	t=1765887802; cv=none; b=W5bqKlKPdPdfQAHjc6ROQHNHk3qSJYpMtbwQ0E5Qmx+4wWK5Av/ahEV7XGDtpddl6NJIv5z/vNDh3iNw7dGrm9L3lJvlU+yEjtuZvM8ZA7auqwO95AQSZ0ErreNXQp6a8Eb3ShnEZ8yfp6+FWZm2zpRsG1SKf7KuT1Hi8rLcE/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885868; c=relaxed/simple;
-	bh=QKQ4UD/gY2F6xet0xNCW8P5IciJ2rZoaHxTG2SqpW5s=;
+	s=arc-20240116; t=1765887802; c=relaxed/simple;
+	bh=LYFFM1VL+N10i0AJZ+q3fEtyZbduspwCxxpbKJXs1U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhEmw8zyF6hAIVBBphUwCX1bzNmTUAWSUcPZNYYXYwlLvRVxlaoxuLhWrmojQh3RJbLYJ0QBQ+Ns0nVPGJ/6OGHosNGcR8VJMQIyTejfsUoAnG7WQSJLd0fihMeEApkBUnMeO6vlK3xHTAGuJHaKscAleDLoXBOXn9MMWkp8au4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb3+DNfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF96C4CEF1;
-	Tue, 16 Dec 2025 11:51:03 +0000 (UTC)
+	 MIME-Version; b=D50y3JpLjwRw6coSE0u3zhWTkJheW4XmGNszvlemcCEkwIJD0+JG9Gf50vh5HuryyHIo3Dqyj+ikTgYQGtOBnmakGhnFWp5jkXWgd+yTQV3Xwu4Nd/pbzfEjMT+/8nsI/IqmK3qdCo9OJ7F5XOIoDRQE6YRVQEfQ9AIziTkp+TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vq3NKyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792B9C16AAE;
+	Tue, 16 Dec 2025 12:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885864;
-	bh=QKQ4UD/gY2F6xet0xNCW8P5IciJ2rZoaHxTG2SqpW5s=;
+	s=korg; t=1765887802;
+	bh=LYFFM1VL+N10i0AJZ+q3fEtyZbduspwCxxpbKJXs1U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hb3+DNfwor/xwLqXLRXSRJ6wpyJx3WgMQ1/UGofOAGV1YaTNpsp6hLQ19biugkndN
-	 Ki4n+LrDyj3IBnrA/5pdoLPqZgDINjlc2VHGYXQ5jCsA6t4QmPXO3Ka2FBvoKZd3Sz
-	 M2NukoeVeP+r7zrdSKhXz38ZfSVl0fYOW/7zdH/w=
+	b=1Vq3NKynQBiqjQJ5fepWlwwJRJkQpi8GbDxcjMFtSW5g8IU7Lr9uq9j1h6GzxBcnT
+	 rHtW+so+F7lyx7q7QofwAf6L5ve0C/v71cNrjtX+iIhFlZUNv7S754VifoUA408WYX
+	 e7CFKi3UUEfBJaJgFArhsshHHLBu3Zh1PMQRrV6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 267/507] powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+Subject: [PATCH 6.18 341/614] of/fdt: Fix the len check in early_init_dt_check_for_usable_mem_range()
 Date: Tue, 16 Dec 2025 12:11:48 +0100
-Message-ID: <20251216111355.158367022@linuxfoundation.org>
+Message-ID: <20251216111413.719343251@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit eae40a6da63faa9fb63ff61f8fa2b3b57da78a84 ]
+[ Upstream commit 463942de13cd30fad5dba709f708483eab7efc2c ]
 
-HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
-kernel hash page tables, nothing gets printed on powernv P9+. This patch
-utilizes the helpers added in the patch tagged as fixes, to convert new
-format to old format and dump the hptes. This fix is only needed for
-native_find() (powernv), since pseries continues to work fine with the
-old format.
+The len value is in bytes, while `dt_root_addr_cells + dt_root_size_cells`
+is in cells (4 bytes per cell). Modulo calculation between them is
+incorrect, the units must be converted first.
 
-Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/4c2bb9e5b3cfbc0dd80b61b67cdd3ccfc632684c.1761834163.git.ritesh.list@gmail.com
+Use helper functions to simplify the code and fix this issue.
+
+Fixes: fb319e77a0e7 ("of: fdt: Add memory for devices by DT property "linux,usable-memory-range"")
+Fixes: 2af2b50acf9b9c38 ("of: fdt: Add generic support for handling usable memory range property")
+Fixes: 8f579b1c4e347b23 ("arm64: limit memory regions based on DT property, usable-memory-range")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://patch.msgid.link/20251115134753.179931-4-yuntao.wang@linux.dev
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/of/fdt.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
-index a6baa6166d940..671d0dc00c6d0 100644
---- a/arch/powerpc/mm/ptdump/hashpagetable.c
-+++ b/arch/powerpc/mm/ptdump/hashpagetable.c
-@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 	vpn  = hpt_vpn(ea, vsid, ssize);
- 	hash = hpt_hash(vpn, shift, ssize);
- 	want_v = hpte_encode_avpn(vpn, psize, ssize);
-+	if (cpu_has_feature(CPU_FTR_ARCH_300))
-+		want_v = hpte_old_to_new_v(want_v);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index b45f60dccd7cf..ea37ba694bcd7 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -884,8 +884,9 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
+ void __init early_init_dt_check_for_usable_mem_range(void)
+ {
+ 	struct memblock_region rgn[MAX_USABLE_RANGES] = {0};
+-	const __be32 *prop, *endp;
++	const __be32 *prop;
+ 	int len, i;
++	u64 base, size;
+ 	unsigned long node = chosen_node_offset;
  
- 	/* to check in the secondary hash table, we invert the hash */
- 	if (!primary)
-@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 			/* HPTE matches */
- 			*v = be64_to_cpu(hptep->v);
- 			*r = be64_to_cpu(hptep->r);
-+			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+				*v = hpte_new_to_old_v(*v, *r);
-+				*r = hpte_new_to_old_r(*r);
-+			}
- 			return 0;
- 		}
- 		++hpte_group;
+ 	if ((long)node < 0)
+@@ -893,14 +894,17 @@ void __init early_init_dt_check_for_usable_mem_range(void)
+ 
+ 	pr_debug("Looking for usable-memory-range property... ");
+ 
+-	prop = of_get_flat_dt_prop(node, "linux,usable-memory-range", &len);
+-	if (!prop || (len % (dt_root_addr_cells + dt_root_size_cells)))
++	prop = of_flat_dt_get_addr_size_prop(node, "linux,usable-memory-range",
++					     &len);
++	if (!prop)
+ 		return;
+ 
+-	endp = prop + (len / sizeof(__be32));
+-	for (i = 0; i < MAX_USABLE_RANGES && prop < endp; i++) {
+-		rgn[i].base = dt_mem_next_cell(dt_root_addr_cells, &prop);
+-		rgn[i].size = dt_mem_next_cell(dt_root_size_cells, &prop);
++	len = min(len, MAX_USABLE_RANGES);
++
++	for (i = 0; i < len; i++) {
++		of_flat_dt_read_addr_size(prop, i, &base, &size);
++		rgn[i].base = base;
++		rgn[i].size = size;
+ 
+ 		pr_debug("cap_mem_regions[%d]: base=%pa, size=%pa\n",
+ 			 i, &rgn[i].base, &rgn[i].size);
 -- 
 2.51.0
 
