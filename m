@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-202337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C99CC2C2E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691D7CC3BF3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4094303797F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2210C311E3D1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542CC349B05;
-	Tue, 16 Dec 2025 12:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A290E34EF0C;
+	Tue, 16 Dec 2025 11:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImXrakAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACECMTmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11ABF3446D2;
-	Tue, 16 Dec 2025 12:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D60334EF09;
+	Tue, 16 Dec 2025 11:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887573; cv=none; b=RkN1r7KG7lY1QBLyI/vjtTYx7wK7b9pwZ8XY3v2HTBfR670sqrm+Gtj1KsXV1nlkTbcEM67nCOp0Oiz+eP7+5fAhvSl3Uqmz2nm30Aapl+NZXoO9YwC+K0nOo6B98uVNiQjgYzvx2/wBPD1642yJsftCZFnyZslGzvqfmlHWj+4=
+	t=1765885629; cv=none; b=KTh1XAAPPYNiV+IvSOBmj73jkSFjwaFfubxQXbPJNRXexSyB1teyzlfN6seYwDjLa/1j8J69fT1Drnk+/VoWsM+uDSP4NlS3+Z9BiVRYvKaNfQb0ds/zpFFDYVJDrFRG5N3eUfIkeEhWlqHz9obJbX3MPCzHVD3vFbM8KlNqDR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887573; c=relaxed/simple;
-	bh=xC4GDqx1D9ust1KYb94loYrjGF8bqtkdB0WHcsw/7p4=;
+	s=arc-20240116; t=1765885629; c=relaxed/simple;
+	bh=8lyOL5QuYiUyFSWSJ1tG7dER+B7S7/MjbqZBoOETf14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD90UiKvcEEx+bhZaxBKdGqAb7fho/MtpR9U2DFzkPdxfu5CvIm/fp4KhbNBSg+T7WwIEDUqjzgMH+Dw4FmtsDmRR2jB4m29y+sFeQ/0UeEwYfe9hXJSUWmRK8JnVUZuBlNa5aKJHu82aP7+8AVYubMZcNy2q9vvxaBoNhKLjfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImXrakAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CFAC4CEF1;
-	Tue, 16 Dec 2025 12:19:32 +0000 (UTC)
+	 MIME-Version; b=D6eXdwiTQjhA/0R3kOx/2TQEFo7FhWIDw8lLTrBWqcq2pUZ3JZ3yM13yGf2kGtV39UdbojdQsqVBmsIbOvw1Os+MZcRy2OdyGPhzLjK0n2oAgC3oM+OpFQprta87Lsb6tFdv+2zbYn/QcTYoApxb7rzMuKKlDBbggUv6Q2Zv1J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACECMTmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65BC4CEF1;
+	Tue, 16 Dec 2025 11:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887572;
-	bh=xC4GDqx1D9ust1KYb94loYrjGF8bqtkdB0WHcsw/7p4=;
+	s=korg; t=1765885629;
+	bh=8lyOL5QuYiUyFSWSJ1tG7dER+B7S7/MjbqZBoOETf14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImXrakAWxnJ65+DECFSn4MSA9I8MIvKavjIwoYdowRMgWo9gL46ViCWlLdfTXoTKX
-	 rFGn/E/YkRnSw+vQSNEljT5sK839xvCgmF6qUgQlY9sfloZlEeMS/5hDlRrdJtXX4/
-	 BbzXGkee2wvMPCCIIi0aKCyLuGt+KpkjXW7AKHJw=
+	b=ACECMTmBJNEsJm6OLPE+QED1PRxffD7CF+vDUApxWzue4AzMrbt/6G9SCv8tGIt3B
+	 MujcR1QtQ5IMak/TU5TBeTyKl6Xhf3ssyg9e1chtbkSE6QfJaVQPFVIkOCIPl77PEK
+	 juYVlsBqbjxg5T908OQ3MlevRH4fwXFV8GWPFFqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
-	Linu Cherian <linu.cherian@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Gromm <christian.gromm@microchip.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 270/614] arm64/mm: Allow __create_pgd_mapping() to propagate pgtable_alloc() errors
+Subject: [PATCH 6.17 196/507] staging: most: remove broken i2c driver
 Date: Tue, 16 Dec 2025 12:10:37 +0100
-Message-ID: <20251216111411.158468347@linuxfoundation.org>
+Message-ID: <20251216111352.610618832@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,480 +60,469 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit bfc184cb1ba7226b21ab26f0b220581895c5ac9e ]
+[ Upstream commit 495df2da6944477d282d5cc0c13174d06e25b310 ]
 
-arch_add_memory() is used to hotplug memory into a system but as a part
-of its implementation it calls __create_pgd_mapping(), which uses
-pgtable_alloc() in order to build intermediate page tables. As this path
-was initally only used during early boot pgtable_alloc() is designed to
-BUG_ON() on failure. However, in the event that memory hotplug is
-attempted when the system's memory is extremely tight and the allocation
-were to fail, it would lead to panicking the system, which is not
-desirable. Hence update __create_pgd_mapping and all it's callers to be
-non void and propagate -ENOMEM on allocation failure to allow system to
-fail gracefully.
+The MOST I2C driver has been completely broken for five years without
+anyone noticing so remove the driver from staging.
 
-But during early boot if there is an allocation failure, we want the
-system to panic, hence create a wrapper around __create_pgd_mapping()
-called early_create_pgd_mapping() which is designed to panic, if ret
-is non zero value. All the init calls are updated to use this wrapper
-rather than the modified __create_pgd_mapping() to restore
-functionality.
+Specifically, commit 723de0f9171e ("staging: most: remove device from
+interface structure") started requiring drivers to set the interface
+device pointer before registration, but the I2C driver was never updated
+which results in a NULL pointer dereference if anyone ever tries to
+probe it.
 
-Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-Signed-off-by: Linu Cherian <linu.cherian@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
+Cc: Christian Gromm <christian.gromm@microchip.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251029093442.29256-1-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 214 ++++++++++++++++++++++++++++----------------
- 1 file changed, 136 insertions(+), 78 deletions(-)
+ drivers/staging/most/Kconfig      |   2 -
+ drivers/staging/most/Makefile     |   1 -
+ drivers/staging/most/i2c/Kconfig  |  13 --
+ drivers/staging/most/i2c/Makefile |   4 -
+ drivers/staging/most/i2c/i2c.c    | 374 ------------------------------
+ 5 files changed, 394 deletions(-)
+ delete mode 100644 drivers/staging/most/i2c/Kconfig
+ delete mode 100644 drivers/staging/most/i2c/Makefile
+ delete mode 100644 drivers/staging/most/i2c/i2c.c
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 2ba01dc8ef822..aeb6fb25a951a 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -49,6 +49,8 @@
- #define NO_CONT_MAPPINGS	BIT(1)
- #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+diff --git a/drivers/staging/most/Kconfig b/drivers/staging/most/Kconfig
+index 6f420cbcdcfff..e89658df6f124 100644
+--- a/drivers/staging/most/Kconfig
++++ b/drivers/staging/most/Kconfig
+@@ -24,6 +24,4 @@ source "drivers/staging/most/video/Kconfig"
  
-+#define INVALID_PHYS_ADDR	(-1ULL)
-+
- DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
+ source "drivers/staging/most/dim2/Kconfig"
  
- u64 kimage_voffset __ro_after_init;
-@@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
- 	} while (ptep++, addr += PAGE_SIZE, addr != end);
- }
- 
--static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
--				unsigned long end, phys_addr_t phys,
--				pgprot_t prot,
--				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--				int flags)
-+static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
-+			       unsigned long end, phys_addr_t phys,
-+			       pgprot_t prot,
-+			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+			       int flags)
- {
- 	unsigned long next;
- 	pmd_t pmd = READ_ONCE(*pmdp);
-@@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 			pmdval |= PMD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pte_phys = pgtable_alloc(TABLE_PTE);
-+		if (pte_phys == INVALID_PHYS_ADDR)
-+			return -ENOMEM;
- 		ptep = pte_set_fixmap(pte_phys);
- 		init_clear_pgtable(ptep);
- 		ptep += pte_index(addr);
-@@ -244,11 +248,13 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 	 * walker.
- 	 */
- 	pte_clear_fixmap();
-+
-+	return 0;
- }
- 
--static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
--		     phys_addr_t phys, pgprot_t prot,
--		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
-+static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
-+		    phys_addr_t phys, pgprot_t prot,
-+		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
- {
- 	unsigned long next;
- 
-@@ -269,22 +275,29 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
- 						      READ_ONCE(pmd_val(*pmdp))));
- 		} else {
--			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
--					    pgtable_alloc, flags);
-+			int ret;
-+
-+			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
-+						  pgtable_alloc, flags);
-+			if (ret)
-+				return ret;
- 
- 			BUG_ON(pmd_val(old_pmd) != 0 &&
- 			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
- 		}
- 		phys += next - addr;
- 	} while (pmdp++, addr = next, addr != end);
-+
-+	return 0;
- }
- 
--static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
--				unsigned long end, phys_addr_t phys,
--				pgprot_t prot,
--				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--				int flags)
-+static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
-+			       unsigned long end, phys_addr_t phys,
-+			       pgprot_t prot,
-+			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+			       int flags)
- {
-+	int ret;
- 	unsigned long next;
- 	pud_t pud = READ_ONCE(*pudp);
- 	pmd_t *pmdp;
-@@ -301,6 +314,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 			pudval |= PUD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pmd_phys = pgtable_alloc(TABLE_PMD);
-+		if (pmd_phys == INVALID_PHYS_ADDR)
-+			return -ENOMEM;
- 		pmdp = pmd_set_fixmap(pmd_phys);
- 		init_clear_pgtable(pmdp);
- 		pmdp += pmd_index(addr);
-@@ -320,20 +335,26 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 		    (flags & NO_CONT_MAPPINGS) == 0)
- 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
- 
--		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-+		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-+		if (ret)
-+			goto out;
- 
- 		pmdp += pmd_index(next) - pmd_index(addr);
- 		phys += next - addr;
- 	} while (addr = next, addr != end);
- 
-+out:
- 	pmd_clear_fixmap();
-+
-+	return ret;
- }
- 
--static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
--			   phys_addr_t phys, pgprot_t prot,
--			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--			   int flags)
-+static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
-+			  phys_addr_t phys, pgprot_t prot,
-+			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+			  int flags)
- {
-+	int ret = 0;
- 	unsigned long next;
- 	p4d_t p4d = READ_ONCE(*p4dp);
- 	pud_t *pudp;
-@@ -346,6 +367,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 			p4dval |= P4D_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pud_phys = pgtable_alloc(TABLE_PUD);
-+		if (pud_phys == INVALID_PHYS_ADDR)
-+			return -ENOMEM;
- 		pudp = pud_set_fixmap(pud_phys);
- 		init_clear_pgtable(pudp);
- 		pudp += pud_index(addr);
-@@ -375,8 +398,10 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
- 						      READ_ONCE(pud_val(*pudp))));
- 		} else {
--			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
--					    pgtable_alloc, flags);
-+			ret = alloc_init_cont_pmd(pudp, addr, next, phys, prot,
-+						  pgtable_alloc, flags);
-+			if (ret)
-+				goto out;
- 
- 			BUG_ON(pud_val(old_pud) != 0 &&
- 			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
-@@ -384,14 +409,18 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 		phys += next - addr;
- 	} while (pudp++, addr = next, addr != end);
- 
-+out:
- 	pud_clear_fixmap();
-+
-+	return ret;
- }
- 
--static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
--			   phys_addr_t phys, pgprot_t prot,
--			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--			   int flags)
-+static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
-+			  phys_addr_t phys, pgprot_t prot,
-+			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+			  int flags)
- {
-+	int ret;
- 	unsigned long next;
- 	pgd_t pgd = READ_ONCE(*pgdp);
- 	p4d_t *p4dp;
-@@ -404,6 +433,8 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 			pgdval |= PGD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		p4d_phys = pgtable_alloc(TABLE_P4D);
-+		if (p4d_phys == INVALID_PHYS_ADDR)
-+			return -ENOMEM;
- 		p4dp = p4d_set_fixmap(p4d_phys);
- 		init_clear_pgtable(p4dp);
- 		p4dp += p4d_index(addr);
-@@ -418,8 +449,10 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 
- 		next = p4d_addr_end(addr, end);
- 
--		alloc_init_pud(p4dp, addr, next, phys, prot,
--			       pgtable_alloc, flags);
-+		ret = alloc_init_pud(p4dp, addr, next, phys, prot,
-+				     pgtable_alloc, flags);
-+		if (ret)
-+			goto out;
- 
- 		BUG_ON(p4d_val(old_p4d) != 0 &&
- 		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
-@@ -427,15 +460,19 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 		phys += next - addr;
- 	} while (p4dp++, addr = next, addr != end);
- 
-+out:
- 	p4d_clear_fixmap();
-+
-+	return ret;
- }
- 
--static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
--					unsigned long virt, phys_addr_t size,
--					pgprot_t prot,
--					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--					int flags)
-+static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
-+				       unsigned long virt, phys_addr_t size,
-+				       pgprot_t prot,
-+				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+				       int flags)
- {
-+	int ret;
- 	unsigned long addr, end, next;
- 	pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
- 
-@@ -444,7 +481,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
- 	 * within a page, we cannot map the region as the caller expects.
- 	 */
- 	if (WARN_ON((phys ^ virt) & ~PAGE_MASK))
--		return;
-+		return -EINVAL;
- 
- 	phys &= PAGE_MASK;
- 	addr = virt & PAGE_MASK;
-@@ -452,25 +489,45 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
- 
- 	do {
- 		next = pgd_addr_end(addr, end);
--		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
--			       flags);
-+		ret = alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
-+				     flags);
-+		if (ret)
-+			return ret;
- 		phys += next - addr;
- 	} while (pgdp++, addr = next, addr != end);
-+
-+	return 0;
- }
- 
--static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
--				 unsigned long virt, phys_addr_t size,
--				 pgprot_t prot,
--				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
--				 int flags)
-+static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
-+				unsigned long virt, phys_addr_t size,
-+				pgprot_t prot,
-+				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+				int flags)
- {
-+	int ret;
-+
- 	mutex_lock(&fixmap_lock);
--	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
--				    pgtable_alloc, flags);
-+	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
-+					  pgtable_alloc, flags);
- 	mutex_unlock(&fixmap_lock);
-+
-+	return ret;
- }
- 
--#define INVALID_PHYS_ADDR	(-1ULL)
-+static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
-+				     unsigned long virt, phys_addr_t size,
-+				     pgprot_t prot,
-+				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-+				     int flags)
-+{
-+	int ret;
-+
-+	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
-+				   flags);
-+	if (ret)
-+		panic("Failed to create page tables\n");
-+}
- 
- static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
- 				       enum pgtable_type pgtable_type)
-@@ -511,21 +568,13 @@ try_pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type, gfp_t gfp)
- static phys_addr_t __maybe_unused
- pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
- {
--	phys_addr_t pa;
+-source "drivers/staging/most/i2c/Kconfig"
 -
--	pa = __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
--	BUG_ON(pa == INVALID_PHYS_ADDR);
--	return pa;
-+	return __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
- }
- 
- static phys_addr_t
- pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
- {
--	phys_addr_t pa;
+ endif
+diff --git a/drivers/staging/most/Makefile b/drivers/staging/most/Makefile
+index 8b3fc5a7af514..e45084df7803a 100644
+--- a/drivers/staging/most/Makefile
++++ b/drivers/staging/most/Makefile
+@@ -3,4 +3,3 @@
+ obj-$(CONFIG_MOST_NET)	+= net/
+ obj-$(CONFIG_MOST_VIDEO)	+= video/
+ obj-$(CONFIG_MOST_DIM2)	+= dim2/
+-obj-$(CONFIG_MOST_I2C)	+= i2c/
+diff --git a/drivers/staging/most/i2c/Kconfig b/drivers/staging/most/i2c/Kconfig
+deleted file mode 100644
+index ff64283cbad18..0000000000000
+--- a/drivers/staging/most/i2c/Kconfig
++++ /dev/null
+@@ -1,13 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-#
+-# MOST I2C configuration
+-#
 -
--	pa = __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
--	BUG_ON(pa == INVALID_PHYS_ADDR);
--	return pa;
-+	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
- }
- 
- static void split_contpte(pte_t *ptep)
-@@ -935,8 +984,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 			&phys, virt);
- 		return;
- 	}
--	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--			     NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-+				 NO_CONT_MAPPINGS);
- }
- 
- void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-@@ -950,8 +999,8 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
- 	if (page_mappings_only)
- 		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
- 
--	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
--			     pgd_pgtable_alloc_special_mm, flags);
-+	early_create_pgd_mapping(mm->pgd, phys, virt, size, prot,
-+				 pgd_pgtable_alloc_special_mm, flags);
- }
- 
- static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
-@@ -963,8 +1012,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 		return;
- 	}
- 
--	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--			     NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-+				 NO_CONT_MAPPINGS);
- 
- 	/* flush the TLBs after updating live kernel mappings */
- 	flush_tlb_kernel_range(virt, virt + size);
-@@ -973,8 +1022,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
- 				  phys_addr_t end, pgprot_t prot, int flags)
- {
--	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
--			     prot, early_pgtable_alloc, flags);
-+	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
-+				 prot, early_pgtable_alloc, flags);
- }
- 
- void __init mark_linear_text_alias_ro(void)
-@@ -1207,6 +1256,8 @@ static int __init __kpti_install_ng_mappings(void *__unused)
- 	remap_fn = (void *)__pa_symbol(idmap_kpti_install_ng_mappings);
- 
- 	if (!cpu) {
-+		int ret;
-+
- 		alloc = __get_free_pages(GFP_ATOMIC | __GFP_ZERO, order);
- 		kpti_ng_temp_pgd = (pgd_t *)(alloc + (levels - 1) * PAGE_SIZE);
- 		kpti_ng_temp_alloc = kpti_ng_temp_pgd_pa = __pa(kpti_ng_temp_pgd);
-@@ -1227,9 +1278,11 @@ static int __init __kpti_install_ng_mappings(void *__unused)
- 		// covers the PTE[] page itself, the remaining entries are free
- 		// to be used as a ad-hoc fixmap.
- 		//
--		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
--					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
--					    kpti_ng_pgd_alloc, 0);
-+		ret = __create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
-+						  KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
-+						  kpti_ng_pgd_alloc, 0);
-+		if (ret)
-+			panic("Failed to create page tables\n");
- 	}
- 
- 	cpu_install_idmap();
-@@ -1282,9 +1335,9 @@ static int __init map_entry_trampoline(void)
- 
- 	/* Map only the text into the trampoline page table */
- 	memset(tramp_pg_dir, 0, PGD_SIZE);
--	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
--			     entry_tramp_text_size(), prot,
--			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
-+	early_create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
-+				 entry_tramp_text_size(), prot,
-+				 pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
- 
- 	/* Map both the text and data into the kernel page table */
- 	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
-@@ -1926,23 +1979,28 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	if (force_pte_mapping())
- 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
- 
--	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
--			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
--			     flags);
-+	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
-+				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
-+				   flags);
-+	if (ret)
-+		goto err;
- 
- 	memblock_clear_nomap(start, size);
- 
- 	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
- 			   params);
- 	if (ret)
--		__remove_pgd_mapping(swapper_pg_dir,
--				     __phys_to_virt(start), size);
--	else {
--		/* Address of hotplugged memory can be smaller */
--		max_pfn = max(max_pfn, PFN_UP(start + size));
--		max_low_pfn = max_pfn;
+-config MOST_I2C
+-	tristate "I2C"
+-	depends on I2C
+-	help
+-	  Say Y here if you want to connect via I2C to network transceiver.
+-
+-	  To compile this driver as a module, choose M here: the
+-	  module will be called most_i2c.
+diff --git a/drivers/staging/most/i2c/Makefile b/drivers/staging/most/i2c/Makefile
+deleted file mode 100644
+index 71099dd0f85b9..0000000000000
+--- a/drivers/staging/most/i2c/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_MOST_I2C) += most_i2c.o
+-
+-most_i2c-objs := i2c.o
+diff --git a/drivers/staging/most/i2c/i2c.c b/drivers/staging/most/i2c/i2c.c
+deleted file mode 100644
+index 184b2dd11fc34..0000000000000
+--- a/drivers/staging/most/i2c/i2c.c
++++ /dev/null
+@@ -1,374 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * i2c.c - Hardware Dependent Module for I2C Interface
+- *
+- * Copyright (C) 2013-2015, Microchip Technology Germany II GmbH & Co. KG
+- */
+-
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/slab.h>
+-#include <linux/i2c.h>
+-#include <linux/interrupt.h>
+-#include <linux/err.h>
+-#include <linux/most.h>
+-
+-enum { CH_RX, CH_TX, NUM_CHANNELS };
+-
+-#define MAX_BUFFERS_CONTROL 32
+-#define MAX_BUF_SIZE_CONTROL 256
+-
+-/**
+- * list_first_mbo - get the first mbo from a list
+- * @ptr:	the list head to take the mbo from.
+- */
+-#define list_first_mbo(ptr) \
+-	list_first_entry(ptr, struct mbo, list)
+-
+-static unsigned int polling_rate;
+-module_param(polling_rate, uint, 0644);
+-MODULE_PARM_DESC(polling_rate, "Polling rate [Hz]. Default = 0 (use IRQ)");
+-
+-struct hdm_i2c {
+-	struct most_interface most_iface;
+-	struct most_channel_capability capabilities[NUM_CHANNELS];
+-	struct i2c_client *client;
+-	struct rx {
+-		struct delayed_work dwork;
+-		struct list_head list;
+-		bool int_disabled;
+-		unsigned int delay;
+-	} rx;
+-	char name[64];
+-};
+-
+-static inline struct hdm_i2c *to_hdm(struct most_interface *iface)
+-{
+-	return container_of(iface, struct hdm_i2c, most_iface);
+-}
+-
+-static irqreturn_t most_irq_handler(int, void *);
+-static void pending_rx_work(struct work_struct *);
+-
+-/**
+- * configure_channel - called from MOST core to configure a channel
+- * @most_iface: interface the channel belongs to
+- * @ch_idx: channel to be configured
+- * @channel_config: structure that holds the configuration information
+- *
+- * Return 0 on success, negative on failure.
+- *
+- * Receives configuration information from MOST core and initialize the
+- * corresponding channel.
+- */
+-static int configure_channel(struct most_interface *most_iface,
+-			     int ch_idx,
+-			     struct most_channel_config *channel_config)
+-{
+-	int ret;
+-	struct hdm_i2c *dev = to_hdm(most_iface);
+-	unsigned int delay, pr;
+-
+-	BUG_ON(ch_idx < 0 || ch_idx >= NUM_CHANNELS);
+-
+-	if (channel_config->data_type != MOST_CH_CONTROL) {
+-		pr_err("bad data type for channel %d\n", ch_idx);
+-		return -EPERM;
 -	}
-+		goto err;
-+
-+	/* Address of hotplugged memory can be smaller */
-+	max_pfn = max(max_pfn, PFN_UP(start + size));
-+	max_low_pfn = max_pfn;
-+
-+	return 0;
- 
-+err:
-+	__remove_pgd_mapping(swapper_pg_dir,
-+			     __phys_to_virt(start), size);
- 	return ret;
- }
- 
+-
+-	if (channel_config->direction != dev->capabilities[ch_idx].direction) {
+-		pr_err("bad direction for channel %d\n", ch_idx);
+-		return -EPERM;
+-	}
+-
+-	if (channel_config->direction == MOST_CH_RX) {
+-		if (!polling_rate) {
+-			if (dev->client->irq <= 0) {
+-				pr_err("bad irq: %d\n", dev->client->irq);
+-				return -ENOENT;
+-			}
+-			dev->rx.int_disabled = false;
+-			ret = request_irq(dev->client->irq, most_irq_handler, 0,
+-					  dev->client->name, dev);
+-			if (ret) {
+-				pr_err("request_irq(%d) failed: %d\n",
+-				       dev->client->irq, ret);
+-				return ret;
+-			}
+-		} else {
+-			delay = msecs_to_jiffies(MSEC_PER_SEC / polling_rate);
+-			dev->rx.delay = delay ? delay : 1;
+-			pr = MSEC_PER_SEC / jiffies_to_msecs(dev->rx.delay);
+-			pr_info("polling rate is %u Hz\n", pr);
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+- * enqueue - called from MOST core to enqueue a buffer for data transfer
+- * @most_iface: intended interface
+- * @ch_idx: ID of the channel the buffer is intended for
+- * @mbo: pointer to the buffer object
+- *
+- * Return 0 on success, negative on failure.
+- *
+- * Transmit the data over I2C if it is a "write" request or push the buffer into
+- * list if it is an "read" request
+- */
+-static int enqueue(struct most_interface *most_iface,
+-		   int ch_idx, struct mbo *mbo)
+-{
+-	struct hdm_i2c *dev = to_hdm(most_iface);
+-	int ret;
+-
+-	BUG_ON(ch_idx < 0 || ch_idx >= NUM_CHANNELS);
+-
+-	if (ch_idx == CH_RX) {
+-		/* RX */
+-		if (!polling_rate)
+-			disable_irq(dev->client->irq);
+-		cancel_delayed_work_sync(&dev->rx.dwork);
+-		list_add_tail(&mbo->list, &dev->rx.list);
+-		if (dev->rx.int_disabled || polling_rate)
+-			pending_rx_work(&dev->rx.dwork.work);
+-		if (!polling_rate)
+-			enable_irq(dev->client->irq);
+-	} else {
+-		/* TX */
+-		ret = i2c_master_send(dev->client, mbo->virt_address,
+-				      mbo->buffer_length);
+-		if (ret <= 0) {
+-			mbo->processed_length = 0;
+-			mbo->status = MBO_E_INVAL;
+-		} else {
+-			mbo->processed_length = mbo->buffer_length;
+-			mbo->status = MBO_SUCCESS;
+-		}
+-		mbo->complete(mbo);
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+- * poison_channel - called from MOST core to poison buffers of a channel
+- * @most_iface: pointer to the interface the channel to be poisoned belongs to
+- * @ch_idx: corresponding channel ID
+- *
+- * Return 0 on success, negative on failure.
+- *
+- * If channel direction is RX, complete the buffers in list with
+- * status MBO_E_CLOSE
+- */
+-static int poison_channel(struct most_interface *most_iface,
+-			  int ch_idx)
+-{
+-	struct hdm_i2c *dev = to_hdm(most_iface);
+-	struct mbo *mbo;
+-
+-	BUG_ON(ch_idx < 0 || ch_idx >= NUM_CHANNELS);
+-
+-	if (ch_idx == CH_RX) {
+-		if (!polling_rate)
+-			free_irq(dev->client->irq, dev);
+-		cancel_delayed_work_sync(&dev->rx.dwork);
+-
+-		while (!list_empty(&dev->rx.list)) {
+-			mbo = list_first_mbo(&dev->rx.list);
+-			list_del(&mbo->list);
+-
+-			mbo->processed_length = 0;
+-			mbo->status = MBO_E_CLOSE;
+-			mbo->complete(mbo);
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-static void do_rx_work(struct hdm_i2c *dev)
+-{
+-	struct mbo *mbo;
+-	unsigned char msg[MAX_BUF_SIZE_CONTROL];
+-	int ret;
+-	u16 pml, data_size;
+-
+-	/* Read PML (2 bytes) */
+-	ret = i2c_master_recv(dev->client, msg, 2);
+-	if (ret <= 0) {
+-		pr_err("Failed to receive PML\n");
+-		return;
+-	}
+-
+-	pml = (msg[0] << 8) | msg[1];
+-	if (!pml)
+-		return;
+-
+-	data_size = pml + 2;
+-
+-	/* Read the whole message, including PML */
+-	ret = i2c_master_recv(dev->client, msg, data_size);
+-	if (ret <= 0) {
+-		pr_err("Failed to receive a Port Message\n");
+-		return;
+-	}
+-
+-	mbo = list_first_mbo(&dev->rx.list);
+-	list_del(&mbo->list);
+-
+-	mbo->processed_length = min(data_size, mbo->buffer_length);
+-	memcpy(mbo->virt_address, msg, mbo->processed_length);
+-	mbo->status = MBO_SUCCESS;
+-	mbo->complete(mbo);
+-}
+-
+-/**
+- * pending_rx_work - Read pending messages through I2C
+- * @work: definition of this work item
+- *
+- * Invoked by the Interrupt Service Routine, most_irq_handler()
+- */
+-static void pending_rx_work(struct work_struct *work)
+-{
+-	struct hdm_i2c *dev = container_of(work, struct hdm_i2c, rx.dwork.work);
+-
+-	if (list_empty(&dev->rx.list))
+-		return;
+-
+-	do_rx_work(dev);
+-
+-	if (polling_rate) {
+-		schedule_delayed_work(&dev->rx.dwork, dev->rx.delay);
+-	} else {
+-		dev->rx.int_disabled = false;
+-		enable_irq(dev->client->irq);
+-	}
+-}
+-
+-/*
+- * most_irq_handler - Interrupt Service Routine
+- * @irq: irq number
+- * @_dev: private data
+- *
+- * Schedules a delayed work
+- *
+- * By default the interrupt line behavior is Active Low. Once an interrupt is
+- * generated by the device, until driver clears the interrupt (by reading
+- * the PMP message), device keeps the interrupt line in low state. Since i2c
+- * read is done in work queue, the interrupt line must be disabled temporarily
+- * to avoid ISR being called repeatedly. Re-enable the interrupt in workqueue,
+- * after reading the message.
+- *
+- * Note: If we use the interrupt line in Falling edge mode, there is a
+- * possibility to miss interrupts when ISR is getting executed.
+- *
+- */
+-static irqreturn_t most_irq_handler(int irq, void *_dev)
+-{
+-	struct hdm_i2c *dev = _dev;
+-
+-	disable_irq_nosync(irq);
+-	dev->rx.int_disabled = true;
+-	schedule_delayed_work(&dev->rx.dwork, 0);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-/*
+- * i2c_probe - i2c probe handler
+- * @client: i2c client device structure
+- * @id: i2c client device id
+- *
+- * Return 0 on success, negative on failure.
+- *
+- * Register the i2c client device as a MOST interface
+- */
+-static int i2c_probe(struct i2c_client *client)
+-{
+-	struct hdm_i2c *dev;
+-	int ret, i;
+-
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (!dev)
+-		return -ENOMEM;
+-
+-	/* ID format: i2c-<bus>-<address> */
+-	snprintf(dev->name, sizeof(dev->name), "i2c-%d-%04x",
+-		 client->adapter->nr, client->addr);
+-
+-	for (i = 0; i < NUM_CHANNELS; i++) {
+-		dev->capabilities[i].data_type = MOST_CH_CONTROL;
+-		dev->capabilities[i].num_buffers_packet = MAX_BUFFERS_CONTROL;
+-		dev->capabilities[i].buffer_size_packet = MAX_BUF_SIZE_CONTROL;
+-	}
+-	dev->capabilities[CH_RX].direction = MOST_CH_RX;
+-	dev->capabilities[CH_RX].name_suffix = "rx";
+-	dev->capabilities[CH_TX].direction = MOST_CH_TX;
+-	dev->capabilities[CH_TX].name_suffix = "tx";
+-
+-	dev->most_iface.interface = ITYPE_I2C;
+-	dev->most_iface.description = dev->name;
+-	dev->most_iface.num_channels = NUM_CHANNELS;
+-	dev->most_iface.channel_vector = dev->capabilities;
+-	dev->most_iface.configure = configure_channel;
+-	dev->most_iface.enqueue = enqueue;
+-	dev->most_iface.poison_channel = poison_channel;
+-
+-	INIT_LIST_HEAD(&dev->rx.list);
+-
+-	INIT_DELAYED_WORK(&dev->rx.dwork, pending_rx_work);
+-
+-	dev->client = client;
+-	i2c_set_clientdata(client, dev);
+-
+-	ret = most_register_interface(&dev->most_iface);
+-	if (ret) {
+-		pr_err("Failed to register i2c as a MOST interface\n");
+-		kfree(dev);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-/*
+- * i2c_remove - i2c remove handler
+- * @client: i2c client device structure
+- *
+- * Return 0 on success.
+- *
+- * Unregister the i2c client device as a MOST interface
+- */
+-static void i2c_remove(struct i2c_client *client)
+-{
+-	struct hdm_i2c *dev = i2c_get_clientdata(client);
+-
+-	most_deregister_interface(&dev->most_iface);
+-	kfree(dev);
+-}
+-
+-static const struct i2c_device_id i2c_id[] = {
+-	{ "most_i2c" },
+-	{ } /* Terminating entry */
+-};
+-
+-MODULE_DEVICE_TABLE(i2c, i2c_id);
+-
+-static struct i2c_driver i2c_driver = {
+-	.driver = {
+-		.name = "hdm_i2c",
+-	},
+-	.probe = i2c_probe,
+-	.remove = i2c_remove,
+-	.id_table = i2c_id,
+-};
+-
+-module_i2c_driver(i2c_driver);
+-
+-MODULE_AUTHOR("Andrey Shvetsov <andrey.shvetsov@k2l.de>");
+-MODULE_DESCRIPTION("I2C Hardware Dependent Module");
+-MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
