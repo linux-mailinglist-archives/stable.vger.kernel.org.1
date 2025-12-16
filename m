@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7228FCC2E57
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C0ACC2304
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF71631F753B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9B1E301C658
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B103644AB;
-	Tue, 16 Dec 2025 12:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AA6341069;
+	Tue, 16 Dec 2025 11:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jGpOx8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNxmQcvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10C3644A7;
-	Tue, 16 Dec 2025 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1986342160;
+	Tue, 16 Dec 2025 11:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887793; cv=none; b=u1piXnltGmILaSEtFeTmt/bSKSJ14JdZwcXgyR9ueing8i0YCt1nA/U2rv5gsApFp3panJCyNlGZIU5JxRzaVG8S9Vltj1fHaW5zzAk/78U8+HLJLHtii2HdFc49U5+h7ZXXbMFvD+MLLjD0DpGRXnWIg0RGvj9z20/tX73XL5M=
+	t=1765884370; cv=none; b=oACeN1IohI0DiX9SrgSjYfuP7iaoasZKZFvHbeJ1Dvzy4YW5F8riPPLZcTvTQAG6MXH/i2V1ilcRUHHM8l7DoQSy7SS7Sd5lymeXMysnT43UX1zPjYM1/sZ3DGxi3sfBlL2PRFoJhIs6+3qNOyjs/9zFrvNUhyLiPiTl5WXWuNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887793; c=relaxed/simple;
-	bh=My+1MPUwfd+CuaoVtNvPj/iFkn1+EhYenVvh11yk1/A=;
+	s=arc-20240116; t=1765884370; c=relaxed/simple;
+	bh=9iKfnQApDnCqt/e96wmK52dd9KVtkD+MiQ2m+1fnJKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct8hMno0S2zArU349w/P5FxdHzBHm0BwLKteJcOeuC1nJniJZCN74WQUAh+cXxnjMUjpcLlK1docULMrf0B1syTAGvaDIhWR7De9axwGCPv07gkxyjTAEWlcSCFVOFyHOPYV38puFqEZHqU69Iy0jEAlZamSv/smUFxtNYEGqXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jGpOx8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6EBC4CEF5;
-	Tue, 16 Dec 2025 12:23:12 +0000 (UTC)
+	 MIME-Version; b=CMMr7avA6NcJjvV8hMnbunYuulhAJzQ2tkyzkZYlD1eIYNhFWhdbf4IzDNmpVoPz0fsqIWmDAIerA+36LJSUyxlDsT5Qz/YyTqnE1ANShBM7VZ+Rjx3G0g8bkM2bven+kDKsV9Fxj5vtrJJJ2B9axJMXXENpH+dlq8pr/Yauwl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNxmQcvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6945AC4CEF1;
+	Tue, 16 Dec 2025 11:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887792;
-	bh=My+1MPUwfd+CuaoVtNvPj/iFkn1+EhYenVvh11yk1/A=;
+	s=korg; t=1765884369;
+	bh=9iKfnQApDnCqt/e96wmK52dd9KVtkD+MiQ2m+1fnJKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jGpOx8aCtvG4c7f8Cjfq7E+PilRCvOjq7vsh5XOBnKtePyBJaoSAqWrP0jINUAr+
-	 3n8/xOF9E6y2WAtf4nJUSiXvGMgmA3ielJvV1GkncdrnUWyFk2lUAZXKxtVQzMaARQ
-	 JmEIlemhRqpuMRdBkNzelKEyQ8aU5eMLEVXsmaDs=
+	b=MNxmQcvRVFapB4KqOLq2r6YJgTETm95+F4xSIGR9e9Z7STbFtMAsOcVha1M0Skayw
+	 tVZFqapOIzGsVZRDbE/Cwcm0lghYgQVnxVxIU7Rr6zkThhKqOoOEYT6kL/doQ/apkS
+	 MXiRoJK1jbFPjWHrlTg+PbzNQsgMXako44qlGSLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 339/614] of/fdt: Consolidate duplicate code into helper functions
+Subject: [PATCH 6.12 139/354] cpufreq/amd-pstate: Call cppc_set_auto_sel() only for online CPUs
 Date: Tue, 16 Dec 2025 12:11:46 +0100
-Message-ID: <20251216111413.646520667@linuxfoundation.org>
+Message-ID: <20251216111325.954155102@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 8278cb72c60399f6dc6300c409879fb4c7291513 ]
+[ Upstream commit bb31fef0d03ed17d587b40e3458786be408fb9df ]
 
-Currently, there are many pieces of nearly identical code scattered across
-different places. Consolidate the duplicate code into helper functions to
-improve maintainability and reduce the likelihood of errors.
+amd_pstate_change_mode_without_dvr_change() calls cppc_set_auto_sel()
+for all the present CPUs.
 
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://patch.msgid.link/20251115134753.179931-2-yuntao.wang@linux.dev
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Stable-dep-of: bec5f6092bc1 ("of/fdt: Fix the len check in early_init_dt_check_for_elfcorehdr()")
+However, this callpath eventually calls cppc_set_reg_val() which
+accesses the per-cpu cpc_desc_ptr object. This object is initialized
+only for online CPUs via acpi_soft_cpu_online() -->
+__acpi_processor_start() --> acpi_cppc_processor_probe().
+
+Hence, restrict calling cppc_set_auto_sel() to only the online CPUs.
+
+Fixes: 3ca7bc818d8c ("cpufreq: amd-pstate: Add guided mode control support via sysfs")
+Suggested-by: Mario Limonciello (AMD) (kernel.org) <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c       | 41 +++++++++++++++++++++++++++++++++++++++++
- include/linux/of_fdt.h |  9 +++++++++
- 2 files changed, 50 insertions(+)
+ drivers/cpufreq/amd-pstate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 0edd639898a63..0c18bdefbbeea 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -625,6 +625,47 @@ const void *__init of_get_flat_dt_prop(unsigned long node, const char *name,
- 	return fdt_getprop(initial_boot_params, node, name, size);
- }
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 62dbc5701e993..c0e073b0425ec 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1221,7 +1221,7 @@ static int amd_pstate_change_mode_without_dvr_change(int mode)
+ 	if (cpu_feature_enabled(X86_FEATURE_CPPC) || cppc_state == AMD_PSTATE_ACTIVE)
+ 		return 0;
  
-+const __be32 *__init of_flat_dt_get_addr_size_prop(unsigned long node,
-+						   const char *name,
-+						   int *entries)
-+{
-+	const __be32 *prop;
-+	int len, elen = (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32);
-+
-+	prop = of_get_flat_dt_prop(node, name, &len);
-+	if (!prop || len % elen) {
-+		*entries = 0;
-+		return NULL;
-+	}
-+
-+	*entries = len / elen;
-+	return prop;
-+}
-+
-+bool __init of_flat_dt_get_addr_size(unsigned long node, const char *name,
-+				     u64 *addr, u64 *size)
-+{
-+	const __be32 *prop;
-+	int entries;
-+
-+	prop = of_flat_dt_get_addr_size_prop(node, name, &entries);
-+	if (!prop || entries != 1)
-+		return false;
-+
-+	of_flat_dt_read_addr_size(prop, 0, addr, size);
-+	return true;
-+}
-+
-+void __init of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
-+				      u64 *addr, u64 *size)
-+{
-+	int entry_cells = dt_root_addr_cells + dt_root_size_cells;
-+	prop += entry_cells * entry_index;
-+
-+	*addr = dt_mem_next_cell(dt_root_addr_cells, &prop);
-+	*size = dt_mem_next_cell(dt_root_size_cells, &prop);
-+}
-+
- /**
-  * of_fdt_is_compatible - Return true if given node from the given blob has
-  * compat in its compatible list
-diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index b8d6c0c208760..51dadbaa3d63a 100644
---- a/include/linux/of_fdt.h
-+++ b/include/linux/of_fdt.h
-@@ -55,6 +55,15 @@ extern int of_get_flat_dt_subnode_by_name(unsigned long node,
- 					  const char *uname);
- extern const void *of_get_flat_dt_prop(unsigned long node, const char *name,
- 				       int *size);
-+
-+extern const __be32 *of_flat_dt_get_addr_size_prop(unsigned long node,
-+						   const char *name,
-+						   int *entries);
-+extern bool of_flat_dt_get_addr_size(unsigned long node, const char *name,
-+				     u64 *addr, u64 *size);
-+extern void of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
-+				      u64 *addr, u64 *size);
-+
- extern int of_flat_dt_is_compatible(unsigned long node, const char *name);
- extern unsigned long of_get_flat_dt_root(void);
- extern uint32_t of_get_flat_dt_phandle(unsigned long node);
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		cppc_set_auto_sel(cpu, (cppc_state == AMD_PSTATE_PASSIVE) ? 0 : 1);
+ 	}
+ 
 -- 
 2.51.0
 
