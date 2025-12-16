@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F93CCC278B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:54:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E19CC3170
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A31323004465
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 120DD3056886
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9FA341AD7;
-	Tue, 16 Dec 2025 11:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA218366DC0;
+	Tue, 16 Dec 2025 12:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/N72tYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfKex+GY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E94342144;
-	Tue, 16 Dec 2025 11:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626A366DBA;
+	Tue, 16 Dec 2025 12:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885421; cv=none; b=MXQ/KfgEEqDLVOLq6e3TGW1jtVh9xlsLpI4SrPKSvRiaCNAjUr5rvgsW4w7pkpOUZThzGwCtOIZlzVEcSoJbL8mFuo+wyUZXBhXPEVZDNrpGrEJ5hgEqBhAI4S99Q+BbzdOdwh9pxtJsAuooXmJxNoDU5mFL84I/eBDtvZROI5c=
+	t=1765887371; cv=none; b=JrOUcb52njXBUAk3ayLOv128y5K/BlWX3YQX4sUFMI2uGiIzYz0UsrKEATiLEjXHGIdaGhXaUa75aM7oxDZI+eqaAFwu3+Jji01zyk9IHdAdN355Skw9uj2DS4BUgK+XKmMAZVg814qZRSjDlCqTGBu6TnMs11hKvTcPeXin4zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885421; c=relaxed/simple;
-	bh=skB71v2E+svvHDMslr5Rp1p4WZGOdugTO2ewGW4VJ2Q=;
+	s=arc-20240116; t=1765887371; c=relaxed/simple;
+	bh=oOK3erHLT7O0rArS53ybUWVCTYxoVxzAyY4AXcHhy0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro3mum5Cmjvrx6v271ODPptYnVxOGs8SbuqmJd7XIselO91r2PtcX+3/lcU+tobDmi4p/MwybTn6IuxeiO+BgJpMcReKg4Qiw8Lf4DFKQ4SIAxMmAwefCKeYerEYO1QExMnbnVoHDyatunkt8Y2fM5bO6CAgXgkp2d6WVgKTIUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/N72tYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC9CC4CEF1;
-	Tue, 16 Dec 2025 11:43:40 +0000 (UTC)
+	 MIME-Version; b=kXWKkHqSsqYHfwMo2XWcPktVmwk0dd8RiZQFxImgnDbvhKBsd1VRN2SZnCo49ZYCsWUd+NuHDevtYOWEr0JEGTC/luLzP2K3moi03dlUdO7Vg8wlIDg9vCHe7KRjJv6UNkPHi9RqbcXh8sHLnoY/ppUmvY9qknvvM8t6IZHhE+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfKex+GY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F82C4CEF5;
+	Tue, 16 Dec 2025 12:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885421;
-	bh=skB71v2E+svvHDMslr5Rp1p4WZGOdugTO2ewGW4VJ2Q=;
+	s=korg; t=1765887371;
+	bh=oOK3erHLT7O0rArS53ybUWVCTYxoVxzAyY4AXcHhy0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/N72tYkPB1yx6FCE6BK85NWE+NJkB8ms9cFdg/24I8SjWjXAStj/BTsi+kBVt95r
-	 /8fhSiZDflP8P5fhQAiE828aEVpE4QzbBwQCcIH5uZSI5A52yTlR4duBChLGK4iOtW
-	 a5ZZcYgcbzbK5xx/VtWrnixt/PGWatdVKDXw31Yg=
+	b=SfKex+GYZ5X4NPQWavso/cmpa+l8byMKez4I70ZCC7jHXIQa/giotm0HXhp4Ns0Az
+	 D5MIeszoWnHkVlipbk0O4B0WEVbBOiRRIPaSD8YECAC66GP10u6cyx53+QC30y8L8B
+	 gtQVHR3ObtokWd1upfAgmUT0V/bi3YoyV+ryvjhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 101/507] arm64: dts: qcom: sdm845-starqltechn: Fix i2c-gpio node name
-Date: Tue, 16 Dec 2025 12:09:02 +0100
-Message-ID: <20251216111349.198043312@linuxfoundation.org>
+Subject: [PATCH 6.18 176/614] timers/migration: Remove locking on group connection
+Date: Tue, 16 Dec 2025 12:09:03 +0100
+Message-ID: <20251216111407.748433896@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 6030fa06360b8b8d898b66ac156adaaf990b83cb ]
+[ Upstream commit fa9620355d4192200f15cb3d97c6eb9c02442249 ]
 
-Fix the following DT checker warning:
+Initializing the tmc's group, the group's number of children and the
+group's parent can all be done without locking because:
 
-$nodename:0: 'i2c21' does not match '^i2c(@.+|-[a-z0-9]+)?$'
+  1) Reading the group's parent and its group mask is done locklessly.
 
-Fixes: 3a4600448bef ("arm64: dts: qcom: sdm845-starqltechn: add display PMIC")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251015-topic-starltechn_i2c_gpio-v1-1-6d303184ee87@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  2) The connections prepared for a given CPU hierarchy are visible to the
+     target CPU once online, thanks to the CPU hotplug enforced memory
+     ordering.
+
+  3) In case of a newly created upper level, the new root and its
+     connections and initialization are made visible by the CPU which made
+     the connections. When that CPUs goes idle in the future, the new link
+     is published by tmigr_inactive_up() through the atomic RmW on
+     ->migr_state.
+
+  4) If CPUs were still walking up the active hierarchy, they could observe
+     the new root earlier. In this case the ordering is enforced by an
+     early initialization of the group mask and by barriers that maintain
+     address dependency as explained in:
+
+     b729cc1ec21a ("timers/migration: Fix another race between hotplug and idle entry/exit")
+     de3ced72a792 ("timers/migration: Enforce group initialization visibility to tree walkers")
+
+  5) Timers are propagated by a chain of group locking from the bottom to
+     the top. And while doing so, the tree also propagates groups links
+     and initialization. Therefore remote expiration, which also relies
+     on group locking, will observe those links and initialization while
+     holding the root lock before walking the tree remotely and update
+     remote timers. This is especially important for migrators in the
+     active hierarchy that may observe the new root early.
+
+Therefore the locking is unnecessary at initialization. If anything, it
+just brings confusion. Remove it.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251024132536.39841-3-frederic@kernel.org
+Stable-dep-of: 5eb579dfd46b ("timers/migration: Fix imbalanced NUMA trees")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/timer_migration.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 1807e65621ef8..1a17870dcf6d9 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -143,7 +143,7 @@ rmtfs_mem: rmtfs-mem@fde00000 {
- 		};
- 	};
+diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
+index 1e371f1fdc86c..5f8aef94ca0f7 100644
+--- a/kernel/time/timer_migration.c
++++ b/kernel/time/timer_migration.c
+@@ -1573,9 +1573,6 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
+ {
+ 	struct tmigr_walk data;
  
--	i2c21 {
-+	i2c-21 {
- 		compatible = "i2c-gpio";
- 		sda-gpios = <&tlmm 127 GPIO_ACTIVE_HIGH>;
- 		scl-gpios = <&tlmm 128 GPIO_ACTIVE_HIGH>;
+-	raw_spin_lock_irq(&child->lock);
+-	raw_spin_lock_nested(&parent->lock, SINGLE_DEPTH_NESTING);
+-
+ 	if (activate) {
+ 		/*
+ 		 * @child is the old top and @parent the new one. In this
+@@ -1596,9 +1593,6 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
+ 	 */
+ 	smp_store_release(&child->parent, parent);
+ 
+-	raw_spin_unlock(&parent->lock);
+-	raw_spin_unlock_irq(&child->lock);
+-
+ 	trace_tmigr_connect_child_parent(child);
+ 
+ 	if (!activate)
+@@ -1695,13 +1689,9 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
+ 		if (i == 0) {
+ 			struct tmigr_cpu *tmc = per_cpu_ptr(&tmigr_cpu, cpu);
+ 
+-			raw_spin_lock_irq(&group->lock);
+-
+ 			tmc->tmgroup = group;
+ 			tmc->groupmask = BIT(group->num_children++);
+ 
+-			raw_spin_unlock_irq(&group->lock);
+-
+ 			trace_tmigr_connect_cpu_parent(tmc);
+ 
+ 			/* There are no children that need to be connected */
 -- 
 2.51.0
 
