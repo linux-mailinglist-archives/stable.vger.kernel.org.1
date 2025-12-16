@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F3ACC2352
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDCECC2B56
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E6BD3037B8E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4058E317FEC2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E1342160;
-	Tue, 16 Dec 2025 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AAA34CFC5;
+	Tue, 16 Dec 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5vDViJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5e66LcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830232BF22;
-	Tue, 16 Dec 2025 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F57834CFB2;
+	Tue, 16 Dec 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884248; cv=none; b=nZjkK4ifiT0Ble4vVMwJMy6jZ2BeC3StdmlfWC9QRzmA3SdL/F4qXhh1HXMfADY49loDYjM8BnrRr3ppuu9O0zK4XSru6EOB3XIRHlNinmtqVX1Icbq4TBbDrQI4+TyDIwcR1KlpyE2BUbRdQ8zgv7vUHrcyCXUUjuFqDF7A4lU=
+	t=1765885737; cv=none; b=EjbW69PWF03URCam30meQCMcRDZ+XgMbaFEoAxcpLwohEb5UqUtGDh12vzRUlF1JneOPoFMBRshmvmx8rZmZR1pPrfHhMzbelhSMZriI7gUWid4EdlvygdDBCi+j5zIi4muQiFTbj9KWZrpuLy8d0Jj2NEyPGqtZA5fr9FsEWms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884248; c=relaxed/simple;
-	bh=REe75RiLyAjE5TkeXT6ojpsyMS34Ub1qubO2gy7GWA8=;
+	s=arc-20240116; t=1765885737; c=relaxed/simple;
+	bh=DNfLemlWEo3xSZCN9leyufMqBJ354rcsEEd0NRFoI7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV03s1/1UBOvReSGGR1YAbN7+DQer+vEzoSw7pyvGhQmXsDYOYLtRhRL5IiT8OuqrnhcqOBaEPX3lsZngtwCm2Y88jVpyrmX8xtABQdpLT2LGrd5AA85pu3cEVG/Bsz9xFhJfL2HNEH8B0QrELS36181GsTIQfkozDHcKidJppY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5vDViJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F17C4CEF1;
-	Tue, 16 Dec 2025 11:24:07 +0000 (UTC)
+	 MIME-Version; b=PpJUWAtBijSNRr3RiJ3Uw3F0Q+sWJQWPGEV29eKtyavqDjyIVE1Ym/TFldbcGdoJvjQDOiMwHT5bOeUkoWkgUoz956PM9Um5y77FSuWksydfoHU+ayk7vXAXR/DGgLcUVTxrcu353kPcEK2mYvayOLcqP3KCgRn9tos8c2RW1ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5e66LcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5077C4CEF1;
+	Tue, 16 Dec 2025 11:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884248;
-	bh=REe75RiLyAjE5TkeXT6ojpsyMS34Ub1qubO2gy7GWA8=;
+	s=korg; t=1765885737;
+	bh=DNfLemlWEo3xSZCN9leyufMqBJ354rcsEEd0NRFoI7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5vDViJOMhhVHHDuDXKAwYGkI7pUFfA80YQ+57k/ZXWzURrB2iLMvINktvemA1/Fj
-	 TpGGoVO7vwBMMz14MYrtYE5QqgoL6KRdxUqV5tu4AqZtAxJWEPLUWMjRyuYoxXgfJ7
-	 E88WBAUq2UQKj5DLcBMM3yD7Nzik6r5D2SQyQj20=
+	b=X5e66LcFU59GTHEDJ4ZBo6ZNLHO17vFWCN3F2s8MCIc47XGxmFp7oxhC0M+gJArYu
+	 lWPVqn8eg71ERm/c53ewdMBtlKABXYy8nddg7MeWa3UHjdYwxarcOKlab2NEuWNuTK
+	 5TTIH9rf9iCBwAVZkt0ALNogx/04RDKeYd0UXo0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/354] power: supply: rt5033_charger: Fix device node reference leaks
+Subject: [PATCH 6.17 229/507] accel/amdxdna: Clear mailbox interrupt register during channel creation
 Date: Tue, 16 Dec 2025 12:11:10 +0100
-Message-ID: <20251216111324.651691165@linuxfoundation.org>
+Message-ID: <20251216111353.799796435@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 6cdc4d488c2f3a61174bfba4e8cc4ac92c219258 ]
+[ Upstream commit 6ff9385c07aa311f01f87307e6256231be7d8675 ]
 
-The device node pointers `np_conn` and `np_edev`, obtained from
-of_parse_phandle() and of_get_parent() respectively, are not released.
-This results in a reference count leak.
+The mailbox interrupt register is not always cleared when a mailbox channel
+is created. This can leave stale interrupt states from previous operations.
 
-Add of_node_put() calls after the last use of these device nodes to
-properly release their references and fix the leaks.
+Fix this by explicitly clearing the interrupt register in the mailbox
+channel creation function.
 
-Fixes: 8242336dc8a8 ("power: supply: rt5033_charger: Add cable detection and USB OTG supply")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250929113234.1726-1-vulab@iscas.ac.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: b87f920b9344 ("accel/amdxdna: Support hardware mailbox")
+Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20251107181115.1293158-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt5033_charger.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/accel/amdxdna/amdxdna_mailbox.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/rt5033_charger.c b/drivers/power/supply/rt5033_charger.c
-index d19c7e80a92aa..c7d82a8065917 100644
---- a/drivers/power/supply/rt5033_charger.c
-+++ b/drivers/power/supply/rt5033_charger.c
-@@ -700,6 +700,8 @@ static int rt5033_charger_probe(struct platform_device *pdev)
- 	np_conn = of_parse_phandle(pdev->dev.of_node, "richtek,usb-connector", 0);
- 	np_edev = of_get_parent(np_conn);
- 	charger->edev = extcon_find_edev_by_node(np_edev);
-+	of_node_put(np_edev);
-+	of_node_put(np_conn);
- 	if (IS_ERR(charger->edev)) {
- 		dev_warn(charger->dev, "no extcon device found in device-tree\n");
- 		goto out;
+diff --git a/drivers/accel/amdxdna/amdxdna_mailbox.c b/drivers/accel/amdxdna/amdxdna_mailbox.c
+index da1ac89bb78f1..6634a4d5717ff 100644
+--- a/drivers/accel/amdxdna/amdxdna_mailbox.c
++++ b/drivers/accel/amdxdna/amdxdna_mailbox.c
+@@ -513,6 +513,7 @@ xdna_mailbox_create_channel(struct mailbox *mb,
+ 	}
+ 
+ 	mb_chann->bad_state = false;
++	mailbox_reg_write(mb_chann, mb_chann->iohub_int_addr, 0);
+ 
+ 	MB_DBG(mb_chann, "Mailbox channel created (irq: %d)", mb_chann->msix_irq);
+ 	return mb_chann;
 -- 
 2.51.0
 
