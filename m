@@ -1,151 +1,86 @@
-Return-Path: <stable+bounces-202697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474C4CC31A6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82585CC311C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00DD030BE0B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7918F3030B91
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFA63624C7;
-	Tue, 16 Dec 2025 12:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="um9TU7IT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498F03624D2;
+	Tue, 16 Dec 2025 13:01:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F1A3644DC
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 12:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8877235F8B1
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 13:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765889519; cv=none; b=gvLJoMNM1KmWhP9a9DlekqnCedyLWk+VjdeHa1cI79+akPvHrG/iK5b4hBCHqkvMOYWss2GkhRGyX60Y6RCxMCnZQ26GzubKykr5dP2FQdmDbqvhTH7NDWKDGNqzgye+hmdrl41gSqBeVXe3Fb0QzoaWQV3UjaY4oqYiReK4IhY=
+	t=1765890066; cv=none; b=IORCHBlsjCK08+Psd772uR9OPk4qRkquHQA95LLXSWfYuh/y0uHsRlvW1DptvFLXM+hDt52byWkHDTzB2C58j1jrx0eG2V9J+Lmks9HPBsTovByZfcDr+Xt3WMwROcWNSEKMDYSO8aXVWThFziRHGlZFdYzmhaK3bh54d1PLczQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765889519; c=relaxed/simple;
-	bh=nLGMKa8GAhOECGEH8Z5temkXugV9kUm9LAzLBglxrsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f56Quc3Uq7oWjQFulC63O7NAdHnhA68nLoMBcqZrAfH1FZuUEIiyYcg9lO/gduIqp2F81td/3AA7XB8zbJx5nO7WuaAPZEGsCb+gvghcjEUu4lykYcyGW6fU+nH4ubudgArKT+PS5azN3pqOcsfvGllY9kFmviydXKUoM+ioe4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=um9TU7IT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFACC4CEF5;
-	Tue, 16 Dec 2025 12:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765889519;
-	bh=nLGMKa8GAhOECGEH8Z5temkXugV9kUm9LAzLBglxrsA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=um9TU7ITAShTdHjRqEQUIT21NioxifFtpmoxqtmWMkZfqzxGoZh5QTQ/jcwVmCWvA
-	 7c7+D3DuwDzMPrc98bmb0OFMTxqhtyS+60I+WiP5hDcmjiBmQh2iBHgavwQGVJPd3n
-	 aeev7JArwHTp7GkqmtKNXxy3q3FclkKLzUUFuMJyXOup1fIFAb7jnI5kw9eyBB6AQ3
-	 z/59u9/t0NERZTU0P3Q2qe++Lgkx/7rGszlCG9D6fcLjmDXf9zof+8RYMdRTKt5kTn
-	 rbennJKuCoHluKstPQVnDhh1QA45X/LtMFTlzE8DyIApky7yLX4bhAJKbMQhxkSotQ
-	 OyDUHS+3kDrKA==
-Date: Tue, 16 Dec 2025 13:51:55 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	stable@vger.kernel.org, =?utf-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Chris Wilson <chris.p.wilson@linux.intel.com>, 
-	Andi Shyti <andi.shyti@linux.intel.com>, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, 
-	Krzysztof Karas <krzysztof.karas@intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH v4] drm/i915/gem: Zero-initialize the eb.vma array in
- i915_gem_do_execbuffer
-Message-ID: <rry4vms675np6isl4qgd6z7latqit4dintqptegjg6xduc4mvl@b2mtbzsu4yx3>
-References: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
+	s=arc-20240116; t=1765890066; c=relaxed/simple;
+	bh=9zDCwuDgNMG6h3AjyD9IHCEigC8m2xyf6MCl/gSe4qI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=jqbkKGKwlFrjpAS9qUuxzzR+xC8NEGXkMbdeFk1WPmFBOwJJvBIr9zLJ5pNRr6s3I7+KZvwvRtSQXmr5UEFfIIECShB4xOUIYv7UpndHYXZ2u7Oo+YQhtNA2qjMm9Ob2Yal/BKAAoQUFw9jzgkaGwGxhId585qdwMJtiVVWV63M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6579875eaa2so6941450eaf.3
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 05:01:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765890062; x=1766494862;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U2Taqr5vQd2sMyst2B/qYCYcDh6CGKRhPPKI/kFYv3I=;
+        b=Sn36m1SgLYGbvEk5T4+dYG11nFGsOWYecr5N6zJx33BuCHaTD3ctJ7pl5LoG2peO6o
+         QtWXPcYhyOMqW3rg2k7ERXJoWbMf5/BnbBrN2ETvGSuJWaCLXKexMK2A3qlVo+TLilbc
+         nj7y+EslpJ/zrmJl1OXvT/yzhu4oKQbaLipzXtWYPcBlakT3wlrHjBU6QKpNwVy/Ur4L
+         D0se0RpuwP/Lrdpz88Nt3c4ughB0ShDf4BIh9DtrjNRMihX+jckF6NG7ix1jQ7BUemMX
+         hJN8tlTr+6uPjWNZkdRXBYagcvXKy7wcTc+QqdRZjssYdvtqk2Lv9bx4u9fhFssUG22r
+         uHFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxr3Lb38szSYMALZPp/1Vi9CzQxTlizRd/sQae1uDHW6InZkqDFFblwyctKcpd/nEevjJ2zCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRopNIK0lJ63G53Aq46SOaxXEFvXVOyHeWO3eJrhja1yG09ewO
+	LBAEFfDJsKQ94Mttgj0wFDvjVPuzGpVNjyfAQQRWurHM9qJPzHnrO4LJJcS7sE40M2fHcdt9OXx
+	szsi30G+4iMgNltYnYhYV02vO6f9zE2evybHUfYYoOs6duX/oixtfKEqf6ss=
+X-Google-Smtp-Source: AGHT+IEs+SxaZ2dr/jxYk0Fhhe73/s0hs2dNum6MxBmZsjr+c7FOUWYjBbgPOWdQ6sPiny2jOF3nZuERhsGhERjngUif6XZ1eh+h
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
+X-Received: by 2002:a05:6820:1891:b0:65b:31e2:2e24 with SMTP id
+ 006d021491bc7-65b452c887bmr5278958eaf.81.1765890062497; Tue, 16 Dec 2025
+ 05:01:02 -0800 (PST)
+Date: Tue, 16 Dec 2025 05:01:02 -0800
+In-Reply-To: <20251216123945.391988-2-wangjinchao600@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6941580e.a70a0220.33cd7b.013d.GAE@google.com>
+Subject: Re: [syzbot] [ext4?] KASAN: out-of-bounds Read in ext4_xattr_set_entry
+From: syzbot <syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, wangjinchao600@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Krzysztof,
+Hello,
 
-...
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-> In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-> function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-> set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-> current one needs to be cleaned up by eb_release_vmas() at this point,
-> so the next one is set. If eb_add_vma() fails, neither the current nor
-> the next vma is nullified, which is a source of a NULL deref bug
+Reported-by: syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
+Tested-by: syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
 
-/nullified/set to NULL/
+Tested on:
 
-> described in [1].
+commit:         40fbbd64 Merge tag 'pull-fixes' of git://git.kernel.or..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=154c931a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=72e765d013fc99c
+dashboard link: https://syzkaller.appspot.com/bug?extid=f792df426ff0f5ceb8d1
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=118de184580000
 
-The [1] reference is out of the commit log :-)
-
-> When entering eb_lookup_vmas(), the vma pointers are set to the slab
-> poison value, instead of NULL. This doesn't matter for the actual
-> lookup, since it gets overwritten anyway, however the eb_release_vmas()
-> function only recognizes NULL as the stopping value, hence the pointers
-> are being nullified as they go in case of intermediate failure. This
-
-/nullified/set to NULL/
-
-> patch changes the approach to filling them all with NULL at the start
-> instead, rather than handling that manually during failure.
-
-...
-
->  static int eb_lock_vmas(struct i915_execbuffer *eb)
-> @@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
->  
->  	eb.exec = exec;
->  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
-> -	eb.vma[0].vma = NULL;
-> +	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
-
-/0x00/0/
-
-Should this be buffer_count + 1?
-
-> +
->  	eb.batch_pool = NULL;
->  
->  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-> @@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
->  	if (err)
->  		return err;
->  
-> -	/* Allocate extra slots for use by the command parser */
-> +	/*
-> +	 * Allocate extra slots for use by the command parser.
-> +	 *
-> +	 * Note that this allocation handles two different arrays (the
-> +	 * exec2_list array, and the eventual eb.vma array introduced in
-> +	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
-
-/execubuffer/execbuffer/
-
-> +	 * memory. Also note that the allocation intentionally doesn't fill the
-> +	 * area with zeros (because the exec2_list part doesn't need to be, as
-> +	 * it's immediately overwritten by user data a few lines below).
-
-No need to put this last sentence within brackets, it's just a
-continuation sentence.
-
-Except for the "+ 1" note, everything is trivial:
-
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-
-Given that this has failed in patchwork, can you please resend a
-v5 if there are no other comments from your side?
-
-Thanks,
-Andi
-
-> +	 * However, the eb.vma part is explicitly zeroed later in
-> +	 * i915_gem_do_execbuffer().
-> +	 */
->  	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
->  				    __GFP_NOWARN | GFP_KERNEL);
->  	if (exec2_list == NULL) {
-> -- 
-> 2.45.2
-> 
+Note: testing is done by a robot and is best-effort only.
 
