@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883C7CC3B48
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC5FCC3E9A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E35D230E0834
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7515630D3E24
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B112346E46;
-	Tue, 16 Dec 2025 11:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AA13446D2;
+	Tue, 16 Dec 2025 12:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eddGp4Pr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02/+Fxng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB2D3148B3;
-	Tue, 16 Dec 2025 11:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E948345732;
+	Tue, 16 Dec 2025 12:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885539; cv=none; b=llT/ukN4jNE1D3B52Xjrf4P8ztHWPaTB/mGHFU6bWYQ0u6vxhyvZMOApsCqOvko3b6LyqLbDzc1X/yzdQ8ULidpHl1E1XCmKj+Fs8DXVVgx4OsOYNLZfXKf7oa/JJq5qKAbeHRnNGApTK4XVHlvRf202ejFFvjbkXWZ3k+l2DbQ=
+	t=1765887586; cv=none; b=raxeeyO8J7Oi/Yrp/eghldwZAGMOUzGRUGnyp58v5f81XK3BFyM+NirmNjkAWCyfLuoCSnlAfpeR9oupKz4bcdD9YanS6mIlXt2mXXkKXhSzQZQlEi4SG2uOnOltXXYMw5TUkDdpoXujQ5fhkkDYQW2t+wdd4vJKwG7uiQC5wa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885539; c=relaxed/simple;
-	bh=xpglEzNQof+bReeL75Nv/IuaY2ckSVoRuLsMTie1I1A=;
+	s=arc-20240116; t=1765887586; c=relaxed/simple;
+	bh=EF/UC+FEQrVBKXJVbcLHi9Omcfj4c2kGYFM0lVv7q/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdLoZ0s1Yg7G5suohzAS44kSHJiAWdmUva9+jGB6UOGYBShBfSlT2ad69TVzUodaQrDle2G1Ul9eLfZSfE9ZpETcbFxIEpMXtMkrhu7ZrKkT+iEdHtPEvQLat2FO8a7FwEXPaAY3zqei07TJ/WJid0UpFFdNSWQMSIJTAYRG0po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eddGp4Pr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3A2C4CEF1;
-	Tue, 16 Dec 2025 11:45:38 +0000 (UTC)
+	 MIME-Version; b=QIe4fYYmZY13KcOZYwFcbS7tzZJwV53mJO6uALj3Zt8qsPSYe2JSSnYp7vqqrF/SY1wqDWFFJrJquDSVyMXkgkOGDA4fGaWfVsdoZGPL5GYGOri6OKf6q+sH0t4hYkU3tfRIVF/xpMdaBifk3Opi6o7vtb/UBvfkr7oOIZ+PNXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02/+Fxng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FDAC4CEF1;
+	Tue, 16 Dec 2025 12:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885539;
-	bh=xpglEzNQof+bReeL75Nv/IuaY2ckSVoRuLsMTie1I1A=;
+	s=korg; t=1765887585;
+	bh=EF/UC+FEQrVBKXJVbcLHi9Omcfj4c2kGYFM0lVv7q/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eddGp4Pr4vNXi5niafhibQFmMlYo923M7d7hJjyUrPc1OI8Gp+UTQM12oyOBlMs/m
-	 eOwHOUF1hZhr3e67ZxeGxA87bajFcM/GU0NYVup00T3jEd2tfCIYJtk3tXc1sOeDsU
-	 V0Gd29dy3Or5vrlzDCXMA7j1K9E6FiLsWEvRi2lY=
+	b=02/+Fxngn7ebNzsLtLukithFlZRQsQz7estJYp7TozzZwW+iDukVYLjfh9uTiU1MM
+	 6Z/uKxtR66B/vlHypfztIy/6w4GHZJek49pEwPESicECWrndcrJFcZVGPoIC496CjP
+	 CF2kbtYYBsMeJ8V7swmVG7vjo4ikk7BhAhMkAPAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Songtang Liu <liusongtang@bytedance.com>,
-	Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 168/507] iommu/amd: Fix potential out-of-bounds read in iommu_mmio_show
-Date: Tue, 16 Dec 2025 12:10:09 +0100
-Message-ID: <20251216111351.605312202@linuxfoundation.org>
+Subject: [PATCH 6.18 243/614] cpufreq/amd-pstate: Call cppc_set_auto_sel() only for online CPUs
+Date: Tue, 16 Dec 2025 12:10:10 +0100
+Message-ID: <20251216111410.170664363@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Songtang Liu <liusongtang@bytedance.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit a0c7005333f9a968abb058b1d77bbcd7fb7fd1e7 ]
+[ Upstream commit bb31fef0d03ed17d587b40e3458786be408fb9df ]
 
-In iommu_mmio_write(), it validates the user-provided offset with the
-check: `iommu->dbg_mmio_offset > iommu->mmio_phys_end - 4`.
-This assumes a 4-byte access. However, the corresponding
-show handler, iommu_mmio_show(), uses readq() to perform an 8-byte
-(64-bit) read.
+amd_pstate_change_mode_without_dvr_change() calls cppc_set_auto_sel()
+for all the present CPUs.
 
-If a user provides an offset equal to `mmio_phys_end - 4`, the check
-passes, and will lead to a 4-byte out-of-bounds read.
+However, this callpath eventually calls cppc_set_reg_val() which
+accesses the per-cpu cpc_desc_ptr object. This object is initialized
+only for online CPUs via acpi_soft_cpu_online() -->
+__acpi_processor_start() --> acpi_cppc_processor_probe().
 
-Fix this by adjusting the boundary check to use sizeof(u64), which
-corresponds to the size of the readq() operation.
+Hence, restrict calling cppc_set_auto_sel() to only the online CPUs.
 
-Fixes: 7a4ee419e8c1 ("iommu/amd: Add debugfs support to dump IOMMU MMIO registers")
-Signed-off-by: Songtang Liu <liusongtang@bytedance.com>
-Reviewed-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-Tested-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 3ca7bc818d8c ("cpufreq: amd-pstate: Add guided mode control support via sysfs")
+Suggested-by: Mario Limonciello (AMD) (kernel.org) <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/debugfs.c | 2 +-
+ drivers/cpufreq/amd-pstate.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/debugfs.c b/drivers/iommu/amd/debugfs.c
-index 10fa217a71199..20b04996441d6 100644
---- a/drivers/iommu/amd/debugfs.c
-+++ b/drivers/iommu/amd/debugfs.c
-@@ -37,7 +37,7 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index b44f0f7a5ba1c..602e4fa81d6c5 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1282,7 +1282,7 @@ static int amd_pstate_change_mode_without_dvr_change(int mode)
+ 	if (cpu_feature_enabled(X86_FEATURE_CPPC) || cppc_state == AMD_PSTATE_ACTIVE)
+ 		return 0;
  
--	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - 4) {
-+	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64)) {
- 		iommu->dbg_mmio_offset = -1;
- 		return  -EINVAL;
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		cppc_set_auto_sel(cpu, (cppc_state == AMD_PSTATE_PASSIVE) ? 0 : 1);
  	}
+ 
 -- 
 2.51.0
 
