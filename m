@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2AFCC36F6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:09:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64158CC3119
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B66030EB627
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:04:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E09AF300885B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ED43358D4;
-	Tue, 16 Dec 2025 11:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C00368297;
+	Tue, 16 Dec 2025 12:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBzyhi2d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3wdOkMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE3E31B10F;
-	Tue, 16 Dec 2025 11:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BA5368291;
+	Tue, 16 Dec 2025 12:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885411; cv=none; b=ajkVnBWfwH4BQHpyxL66l9zkiRKUhN3KUoBlLaT427rPzkVBFtGIJ1r9umHkilOeOHZopf0J4PWo0rHb/gounIunB7f0t/mZV06XKewMKoa9Da0LDgRfVYoRm5XxMmhdX097URGe5Ke+XL/aRWgpG7OUdIgB3BB+10dShyhCQGw=
+	t=1765887378; cv=none; b=E2zHMcGLeYU8pOYfobei1RlKueqMugbcYfMLj6JpzyDa8O7r4/Mx6JyDszXZz/blya8vYChtV6DqHHA99R1NvM84OGPaI7yt4LPNnIRLb73ILO11GL4gYDrrw3kN8Ef8KWjf+qXegO2Qbl2r6tBh8VQzIxjBC9RSue5X4mLFXHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885411; c=relaxed/simple;
-	bh=TWYOT0ycoJcV/cVyfxVf1IRK+zlXJKb6FWo+BlME4rM=;
+	s=arc-20240116; t=1765887378; c=relaxed/simple;
+	bh=Z8hZupS7JlbXHqJl5q/g9KkRKnuhY4q5PbLo9Gd8F1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgMqkanHx05TfsFcuUSoUJsk+nMS/IXjgBSZ4Gz6AfYeWEBFpugxWligYn8+LVQE3eqCc40ExKXo9afniTkVYmYQJC/PvQfOCvTGaZEzhvqy7Uy/lbrcEh2Dp/QQNBTTfJc8TUGUtISpRt2tIz9n4PkQK9J8rCSzmwrKek7llI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBzyhi2d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6C2C4CEF1;
-	Tue, 16 Dec 2025 11:43:30 +0000 (UTC)
+	 MIME-Version; b=BJ82FH5jzpRNwhkvdjJWJZtHYrhkBYozkcE93QuZ0k6+Y5B+abWrsq7fdvyce38S24aL95dF5Z05Pc8HinqrsQoBxFY06I0ZjLS6lVacBnmg6eOa+kwJX9s45yjV7xR8aq8RoIxQRQOQOeH7DTqv2ng0HNHcuzMOXE2AOeYn9Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3wdOkMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B47C4CEF1;
+	Tue, 16 Dec 2025 12:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885411;
-	bh=TWYOT0ycoJcV/cVyfxVf1IRK+zlXJKb6FWo+BlME4rM=;
+	s=korg; t=1765887377;
+	bh=Z8hZupS7JlbXHqJl5q/g9KkRKnuhY4q5PbLo9Gd8F1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBzyhi2djSkpn0K+2jC+CGMKaht1m5bY56NPW2O6GjQWHemizzmGl8aSfz6zo1TeK
-	 s6+xscZPK7peqXXcTXQtlZDxvis153FWL+6oWT9yEkdoFfgNL60nhSIwhGqk8oozWR
-	 w5gSWyTqXsJh1HwNjERUNC4+fSJMiGR8MlObKxGM=
+	b=O3wdOkMhuqs02PoxVIhhrh/+tllXQ/Xwl/FiY52b9ur96WFSoqL3EjboeuJrexbwt
+	 rstFvmFfulZFwwe6YL7UkuZwg0Q2mslftdE2qZd03ICyt5lSsAU274zvRaTYl1uLIN
+	 wxH1wghA4BvveY2ATs2WWNdYPM3SsywdL9iOhzgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Yegor Yefremov <yegorslists@googlemail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 130/507] accel/ivpu: Fix race condition when unbinding BOs
+Subject: [PATCH 6.18 204/614] ARM: dts: am335x-netcom-plus-2xx: add missing GPIO labels
 Date: Tue, 16 Dec 2025 12:09:31 +0100
-Message-ID: <20251216111350.240219218@linuxfoundation.org>
+Message-ID: <20251216111408.769185006@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-[ Upstream commit 00812636df370bedf4e44a0c81b86ea96bca8628 ]
+[ Upstream commit d0c4b1723c419a18cb434903c7754954ecb51d35 ]
 
-Fix 'Memory manager not clean during takedown' warning that occurs
-when ivpu_gem_bo_free() removes the BO from the BOs list before it
-gets unmapped. Then file_priv_unbind() triggers a warning in
-drm_mm_takedown() during context teardown.
+Fixes: 8e9d75fd2ec2 ("ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 2-port devices")
 
-Protect the unmapping sequence with bo_list_lock to ensure the BO is
-always fully unmapped when removed from the list. This ensures the BO
-is either fully unmapped at context teardown time or present on the
-list and unmapped by file_priv_unbind().
-
-Fixes: 48aea7f2a2ef ("accel/ivpu: Fix locking in ivpu_bo_remove_all_bos_from_context()")
-Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/20251029071451.184243-1-karol.wachowski@linux.intel.com
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Link: https://lore.kernel.org/r/20251007103851.3765678-1-yegorslists@googlemail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index a38e41f9c7123..fda0a18e6d639 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -314,7 +314,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
- 
- 	mutex_lock(&vdev->bo_list_lock);
- 	list_del(&bo->bo_list_node);
--	mutex_unlock(&vdev->bo_list_lock);
- 
- 	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
- 		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-@@ -325,6 +324,8 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
- 	ivpu_bo_unbind_locked(bo);
- 	ivpu_bo_unlock(bo);
- 
-+	mutex_unlock(&vdev->bo_list_lock);
-+
- 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
- 	drm_WARN_ON(&vdev->drm, bo->ctx);
- 
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+index f66d57bb685ee..f0519ab301416 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+@@ -222,10 +222,10 @@ &gpio3 {
+ 		"ModeA1",
+ 		"ModeA2",
+ 		"ModeA3",
+-		"NC",
+-		"NC",
+-		"NC",
+-		"NC",
++		"ModeB0",
++		"ModeB1",
++		"ModeB2",
++		"ModeB3",
+ 		"NC",
+ 		"NC",
+ 		"NC",
 -- 
 2.51.0
 
