@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A943BCC26CB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCB1CC2959
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFA7430690F1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75DFC302D4FF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560DC34D4C1;
-	Tue, 16 Dec 2025 11:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D640B35A930;
+	Tue, 16 Dec 2025 12:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dp74aSRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13E1IAzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA5634D3BE;
-	Tue, 16 Dec 2025 11:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BD8359FB9;
+	Tue, 16 Dec 2025 12:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885342; cv=none; b=Rc1gywVF4x2cbx3J16bh/GTjTupCPGHx+nT1baX3TAsdTGLKsGd08yiVGYMzNJoEwoGVOSP7pJC37OWvGNrWb/WRAD7zQAYlgfWPT8WsHcyNLnsmiAVTVYK/h+OVMpMAno4TMiMFrz4B3XnYAh0YwK3XiGqVp9KCDM2yo2XdKNo=
+	t=1765887288; cv=none; b=ascCgiJZ6xrFUaXMhDKQaiymHP9eYKP6Vac1Wp+8TK70j1w8DgbOwTMl5lvH6wexh88PDgQdVHcn0qpWWnwvCwuJleQIyA7d79M0jyrw6ZKaJlIoi7ECDGmPMMdFCUOcgn4ClTYSdofnUujMXVRbdv7WVDdgyNe3G3WeRgf7W5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885342; c=relaxed/simple;
-	bh=gsE9t0jzLKIKvmedJvte0Ys/c4im5FxBl5HHs9U6D2I=;
+	s=arc-20240116; t=1765887288; c=relaxed/simple;
+	bh=EZ5Tk8YQuijQK0KlbTrWdBD7hiooDmFTTMXApZoRt9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBd1WqwuLYSUkbXZKq4tZKQvawTkvNg2Q7sVS0sPITIihDJcYfbS2c8v6Z7iiGhlEC4quyEEFhjR4T8Slmvc4pc/1ZkVB6jTlRc4q/KkhncAHyecqqq7Je7lB2QIiSlnLdbMxLiK9M4zVvrNV3mnyQTVItjyHnauoVJK0BWIrQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dp74aSRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C109C4CEF1;
-	Tue, 16 Dec 2025 11:42:21 +0000 (UTC)
+	 MIME-Version; b=i62d3aretHulykD+IB4RrXk3fuxrK7qIx9RITCOlTtisH75zOLP5/7O1xq2i4B/4azLKYJ9ISZwk6tLbqREDsN5gv9xBReaznRdpyUPD2v525SGwF4NNrdzox4Yfp02kt0kYVZMJt0lDD63pOkkeLm6blFsiXij+N5M2RTYDRPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13E1IAzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4292C4CEF1;
+	Tue, 16 Dec 2025 12:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885341;
-	bh=gsE9t0jzLKIKvmedJvte0Ys/c4im5FxBl5HHs9U6D2I=;
+	s=korg; t=1765887288;
+	bh=EZ5Tk8YQuijQK0KlbTrWdBD7hiooDmFTTMXApZoRt9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dp74aSReQzL3f1NJTBQiGAC/JMa1dhe6Vp0phH7d7jUuJ1VfjBUw3Q7/GK6E9mGim
-	 4qi5DHFh661DFHu4silPsMEbAQteEIdQgWOqeHJvCz0lochuLGKY7YIdWmbVmb9slJ
-	 Bh0tcE2X7/l8BzMClZF8X9az6qaVKQi00OaPVnNg=
+	b=13E1IAzQDawVvinOpH9jS+NyPvG02AwETW5ZAcMLVJ5EwBdHkGLr3/PnzvXevVF5o
+	 4kIMqlGWlW4yU4ivFF9KCVCvZKqeCIDlkLtcQSfwLbzf2xA4JBFrXqIpczDPr1OgmG
+	 +txAjen7KYyYJw60o6ck/qAflIhOPuKIh0Ips+ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Val Packett <val@packett.cool>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 111/507] drm/amdgpu/userq: fix SDMA and compute validation
+Subject: [PATCH 6.18 185/614] power: supply: qcom_battmgr: support disabling charge control
 Date: Tue, 16 Dec 2025 12:09:12 +0100
-Message-ID: <20251216111349.557065655@linuxfoundation.org>
+Message-ID: <20251216111408.076117355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit a0559012a18a5a6ad87516e982892765a403b8ab ]
+[ Upstream commit 446fcf494691da4e685923e5fad02b163955fc0e ]
 
-The CSA and EOP buffers have different alignement requirements.
-Hardcode them for now as a bug fix.  A proper query will be added in
-a subsequent patch.
+Existing userspace (in particular, upower) disables charge control by
+setting the start threshold to 0 and the stop threshold to 100.
 
-v2: verify gfx shadow helper callback (Prike)
+Handle that by actually setting the enable bit to 0 when a start
+threshold of 0 was requested.
 
-Fixes: 9e46b8bb0539 ("drm/amdgpu: validate userq buffer virtual address and size")
-Reviewed-by: Prike Liang <Prike.Liang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: cc3e883a0625 ("power: supply: qcom_battmgr: Add charge control support")
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://patch.msgid.link/20251012233333.19144-4-val@packett.cool
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_userqueue.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/power/supply/qcom_battmgr.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-index 00dd5f37f4374..1cd1fdec9cc97 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-@@ -206,7 +206,6 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	struct amdgpu_mqd *mqd_hw_default = &adev->mqds[queue->queue_type];
- 	struct drm_amdgpu_userq_in *mqd_user = args_in;
- 	struct amdgpu_mqd_prop *userq_props;
--	struct amdgpu_gfx_shadow_info shadow_info;
- 	int r;
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index c8028606bba00..e6f01e0122e1c 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -257,6 +257,7 @@ struct qcom_battmgr_info {
+ 	unsigned int capacity_warning;
+ 	unsigned int cycle_count;
+ 	unsigned int charge_count;
++	bool charge_ctrl_enable;
+ 	unsigned int charge_ctrl_start;
+ 	unsigned int charge_ctrl_end;
+ 	char model_number[BATTMGR_STRING_LEN];
+@@ -659,13 +660,13 @@ static int qcom_battmgr_bat_get_property(struct power_supply *psy,
+ }
  
- 	/* Structure to initialize MQD for userqueue using generic MQD init function */
-@@ -232,8 +231,6 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	userq_props->doorbell_index = queue->doorbell_index;
- 	userq_props->fence_address = queue->fence_drv->gpu_addr;
+ static int qcom_battmgr_set_charge_control(struct qcom_battmgr *battmgr,
+-					   u32 target_soc, u32 delta_soc)
++					   bool enable, u32 target_soc, u32 delta_soc)
+ {
+ 	struct qcom_battmgr_charge_ctrl_request request = {
+ 		.hdr.owner = cpu_to_le32(PMIC_GLINK_OWNER_BATTMGR),
+ 		.hdr.type = cpu_to_le32(PMIC_GLINK_REQ_RESP),
+ 		.hdr.opcode = cpu_to_le32(BATTMGR_CHG_CTRL_LIMIT_EN),
+-		.enable = cpu_to_le32(1),
++		.enable = cpu_to_le32(enable),
+ 		.target_soc = cpu_to_le32(target_soc),
+ 		.delta_soc = cpu_to_le32(delta_soc),
+ 	};
+@@ -677,6 +678,7 @@ static int qcom_battmgr_set_charge_start_threshold(struct qcom_battmgr *battmgr,
+ {
+ 	u32 target_soc, delta_soc;
+ 	int ret;
++	bool enable = start_soc != 0;
  
--	if (adev->gfx.funcs->get_gfx_shadow_info)
--		adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
- 	if (queue->queue_type == AMDGPU_HW_IP_COMPUTE) {
- 		struct drm_amdgpu_userq_mqd_compute_gfx11 *compute_mqd;
+ 	start_soc = clamp(start_soc, CHARGE_CTRL_START_THR_MIN, CHARGE_CTRL_START_THR_MAX);
  
-@@ -251,7 +248,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		}
+@@ -696,9 +698,10 @@ static int qcom_battmgr_set_charge_start_threshold(struct qcom_battmgr *battmgr,
+ 	}
  
- 		r = amdgpu_userq_input_va_validate(queue, compute_mqd->eop_va,
--						   max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE));
-+						   2048);
- 		if (r)
- 			goto free_mqd;
+ 	mutex_lock(&battmgr->lock);
+-	ret = qcom_battmgr_set_charge_control(battmgr, target_soc, delta_soc);
++	ret = qcom_battmgr_set_charge_control(battmgr, enable, target_soc, delta_soc);
+ 	mutex_unlock(&battmgr->lock);
+ 	if (!ret) {
++		battmgr->info.charge_ctrl_enable = enable;
+ 		battmgr->info.charge_ctrl_start = start_soc;
+ 		battmgr->info.charge_ctrl_end = target_soc;
+ 	}
+@@ -710,6 +713,7 @@ static int qcom_battmgr_set_charge_end_threshold(struct qcom_battmgr *battmgr, i
+ {
+ 	u32 delta_soc = CHARGE_CTRL_DELTA_SOC;
+ 	int ret;
++	bool enable = battmgr->info.charge_ctrl_enable;
  
-@@ -264,6 +261,14 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		kfree(compute_mqd);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_GFX) {
- 		struct drm_amdgpu_userq_mqd_gfx11 *mqd_gfx_v11;
-+		struct amdgpu_gfx_shadow_info shadow_info;
-+
-+		if (adev->gfx.funcs->get_gfx_shadow_info) {
-+			adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
-+		} else {
-+			r = -EINVAL;
-+			goto free_mqd;
-+		}
+ 	end_soc = clamp(end_soc, CHARGE_CTRL_END_THR_MIN, CHARGE_CTRL_END_THR_MAX);
  
- 		if (mqd_user->mqd_size != sizeof(*mqd_gfx_v11) || !mqd_user->mqd) {
- 			DRM_ERROR("Invalid GFX MQD\n");
-@@ -287,6 +292,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 						   shadow_info.shadow_size);
- 		if (r)
- 			goto free_mqd;
-+		r = amdgpu_userq_input_va_validate(queue, mqd_gfx_v11->csa_va,
-+						   shadow_info.csa_size);
-+		if (r)
-+			goto free_mqd;
+@@ -717,7 +721,7 @@ static int qcom_battmgr_set_charge_end_threshold(struct qcom_battmgr *battmgr, i
+ 		delta_soc = end_soc - battmgr->info.charge_ctrl_start;
  
- 		kfree(mqd_gfx_v11);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
-@@ -305,7 +314,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			goto free_mqd;
- 		}
- 		r = amdgpu_userq_input_va_validate(queue, mqd_sdma_v11->csa_va,
--						   shadow_info.csa_size);
-+						   32);
- 		if (r)
- 			goto free_mqd;
- 
+ 	mutex_lock(&battmgr->lock);
+-	ret = qcom_battmgr_set_charge_control(battmgr, end_soc, delta_soc);
++	ret = qcom_battmgr_set_charge_control(battmgr, enable, end_soc, delta_soc);
+ 	mutex_unlock(&battmgr->lock);
+ 	if (!ret) {
+ 		battmgr->info.charge_ctrl_start = end_soc - delta_soc;
 -- 
 2.51.0
 
