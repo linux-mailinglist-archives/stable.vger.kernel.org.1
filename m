@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B20CC2812
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EDCCC257A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5BD730239F5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EEA330305BB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB303557FD;
-	Tue, 16 Dec 2025 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13555341AB0;
+	Tue, 16 Dec 2025 11:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRD6U/9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAVongjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75713557F6;
-	Tue, 16 Dec 2025 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCF334167A;
+	Tue, 16 Dec 2025 11:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886226; cv=none; b=NKGVETFLCDk6f/rCx29FljauFAJ+FWLQll6z5nh+MMNC2e4d/CrgR9ZmMSM1rWnVQLVcC9H26hk7SjBJGe1t0wJ+j299O9+RktwCoznTsU8qZ1qodAmLkLW+RxvL7ngBXmcaYVf/Z42HJuLxFwRfEnLI1VCK/Jarhj2qaStMtpE=
+	t=1765884730; cv=none; b=E/5+JQ7S853mhkVNHpHzuq7mZtS5NGMKLp7wCPidvU0wAt2TX0DFvBZPzaYQqp2WG0Uul4Z6mw5Hqv51UwwexmtfiJxbna+284ganl/+w+o0AuoOeGGLvVkz7Xw+xWgnQpsHZublf+S5c7dqmKwPWD00Qyj9ATBc0FycSWLsvHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886226; c=relaxed/simple;
-	bh=75tKB7lwYifiKkw2xa4WthiRsArGbgB2fP35whytsWA=;
+	s=arc-20240116; t=1765884730; c=relaxed/simple;
+	bh=5mUXdkQWhInDXdew5HwbOOniKc/9nbDGiKRSO/k1j+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GewXryInwfL/n6YWPE7lz5JKTeVCWGlkP5qofH+FqBcyQWBbMG/b+Kk1qJoFjA9p4fQsrp0mqGflqM5JnA9toBdW0akQyJHNxXYcZc5oQf0Jp3L6mrtA6ZrhwYw3qlv/WyqxKgYgbgUiRJ817VNKmyIJzDpqol1bnlzD8pkr1uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRD6U/9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18042C4CEF1;
-	Tue, 16 Dec 2025 11:57:05 +0000 (UTC)
+	 MIME-Version; b=G/eNloHq1yMBTzo966icrq2Vn6Cx9yVTZDHJzol9ZakPELrkalDvQdYwE8VLH7ZilWb2UtB13xv1K8dZoA1xPT4WfmRPT5bJXWTD04XZqk8QWcsvy0v87PIo0l4EiB/MJHNpVmKwJnH+c5xWuIC1QU4ZoRQEjoT2ZZ0z4miGeeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAVongjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8987C4CEF5;
+	Tue, 16 Dec 2025 11:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886226;
-	bh=75tKB7lwYifiKkw2xa4WthiRsArGbgB2fP35whytsWA=;
+	s=korg; t=1765884730;
+	bh=5mUXdkQWhInDXdew5HwbOOniKc/9nbDGiKRSO/k1j+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRD6U/9owx+7tLofsPQxaYol3q+qBVAbWJfAY7dfzePmwkpfyNVjqpv0+92DO0VNY
-	 bAqdxZKiQcu3mmT0th6A5Q43rChhlBhZDhUpcOsL0ucS9qOuO0hylW1+qqKfP9FKLb
-	 QsM6n3JkIHtL3t8KTERdu9ri8sV4rjOW46fYax6I=
+	b=HAVongjCG5v60v56+oP1yoBxhkob1/G1+l8SwskDG9YE2A4L2Q/Urgi64cOEk67ta
+	 7edEwuzBmKg/qLuuoS6sRQA1egzfT5PKquOUmEYLf1xJVlcFj42mkoxLqBtuPRm3hG
+	 4rFiMQwNR+MmwzvNl6C8QTP+Omaru9EAiYEle5bU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Gao <rabenda.cn@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 374/507] of: Skip devicetree kunit tests when RISCV+ACPI doesnt populate root node
+Subject: [PATCH 6.12 248/354] virtio: fix typo in virtio_device_ready() comment
 Date: Tue, 16 Dec 2025 12:13:35 +0100
-Message-ID: <20251216111359.009722206@linuxfoundation.org>
+Message-ID: <20251216111329.898331152@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 546dbb0223102813ffb5bbcb9443a47c3183f195 ]
+[ Upstream commit 361173f95ae4b726ebbbf0bd594274f5576c4abc ]
 
-Starting with commit 69a8b62a7aa1 ("riscv: acpi: avoid errors caused by
-probing DT devices when ACPI is used"), riscv images no longer populate
-devicetree if ACPI is enabled. This causes unit tests to fail which require
-the root node to be set.
+"coherenct" -> "coherent"
 
-  # Subtest: of_dtb
-  # module: of_test
-  1..2
-  # of_dtb_root_node_found_by_path: EXPECTATION FAILED at drivers/of/of_test.c:21
-  Expected np is not null, but is
-  # of_dtb_root_node_found_by_path: pass:0 fail:1 skip:0 total:1
-  not ok 1 of_dtb_root_node_found_by_path
-  # of_dtb_root_node_populates_of_root: EXPECTATION FAILED at drivers/of/of_test.c:31
-  Expected of_root is not null, but is
-  # of_dtb_root_node_populates_of_root: pass:0 fail:1 skip:0 total:1
-  not ok 2 of_dtb_root_node_populates_of_root
-
-Skip those tests for RISCV if the root node is not populated.
-
-Fixes: 69a8b62a7aa1 ("riscv: acpi: avoid errors caused by probing DT devices when ACPI is used")
-Cc: Han Gao <rabenda.cn@gmail.com>
-Cc: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Paul Walmsley <pjw@kernel.org>  # arch/riscv
-Link: https://patch.msgid.link/20251023160415.705294-1-linux@roeck-us.net
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
+Message-Id: <db286e9a65449347f6584e68c9960fd5ded2b4b0.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/of_kunit_helpers.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/of_kunit_helpers.c b/drivers/of/of_kunit_helpers.c
-index 7b3ed5a382aaa..f6ed1af8b62aa 100644
---- a/drivers/of/of_kunit_helpers.c
-+++ b/drivers/of/of_kunit_helpers.c
-@@ -18,8 +18,9 @@
-  */
- void of_root_kunit_skip(struct kunit *test)
- {
--	if (IS_ENABLED(CONFIG_ARM64) && IS_ENABLED(CONFIG_ACPI) && !of_root)
--		kunit_skip(test, "arm64+acpi doesn't populate a root node");
-+	if ((IS_ENABLED(CONFIG_ARM64) || IS_ENABLED(CONFIG_RISCV)) &&
-+	    IS_ENABLED(CONFIG_ACPI) && !of_root)
-+		kunit_skip(test, "arm64/riscv+acpi doesn't populate a root node");
- }
- EXPORT_SYMBOL_GPL(of_root_kunit_skip);
- 
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 169c7d367facb..165f71635cb99 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -290,7 +290,7 @@ void virtio_device_ready(struct virtio_device *dev)
+ 	 * specific set_status() method.
+ 	 *
+ 	 * A well behaved device will only notify a virtqueue after
+-	 * DRIVER_OK, this means the device should "see" the coherenct
++	 * DRIVER_OK, this means the device should "see" the coherent
+ 	 * memory write that set vq->broken as false which is done by
+ 	 * the driver when it sees DRIVER_OK, then the following
+ 	 * driver's vring_interrupt() will see vq->broken as false so
 -- 
 2.51.0
 
