@@ -1,191 +1,194 @@
-Return-Path: <stable+bounces-201153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D9FCC1A56
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AAACC1AD8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5ACB30145B3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:44:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8198730053F6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE5A314A8D;
-	Tue, 16 Dec 2025 08:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A73054EB;
+	Tue, 16 Dec 2025 09:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rOpZvIrj"
+	dkim=pass (1024-bit key) header.d=hailo.ai header.i=@hailo.ai header.b="erOcJPKG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021098.outbound.protection.outlook.com [52.101.65.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523231355E
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 08:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765874688; cv=none; b=LgqPt5/6Qz++Tgc5/GrSgkeKjPbBQzOkW39r+FRpjtDKP/9mWRHFoU5W4K8Id0+04Eoc0y1Upqdd4w7BYa5CSWVq5oeukbrQLs1otyieSFaxfvpSurdZAq9z4GAYmaMs4qoY5QnOCj0WBAItSwd8t3l3pNPphlCrXQinhU/mnDI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765874688; c=relaxed/simple;
-	bh=skcLtTAuwQc+z12XPRKCn++Kb3mOp6E2OLyrnzpi2Ag=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hgunuy70XTeSwt6TYdn6wmholjbZx3UVQtpSXbVP+pg6w+7N4THA7XEMgkESFzLBapfTHvnRuMwaYDlkLRmWTeMqHSQAWbM+N0QBySToWbgWM2B4wpX8Q+FDNngQ3mtYCMGoK5Us9WuuyOFnbc55m773TM2Ah/0tyvwa0nF8o4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rOpZvIrj; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c5d6193daso5328103a91.1
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 00:44:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765874683; x=1766479483; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iCS39mntlzMdxHlY1QanSj8RXtdylHJx128WPAJO81M=;
-        b=rOpZvIrjhJ0DM6lM4X155+IzypfRboMk5B0yQuDjh1+eDbwe5FHfCsHReX7uzgdzUf
-         tCy1eLdaKZR0xJJxbZ9JMY6O6+vJfiqdvF9Rc4JlnpYgLi0LmfsY6J6I8RwP4kpP7E0k
-         KrtI81/D5pR8L7yw7L9xWUVdY2bBOwNBn7bNmfPXInuWbECm3LaV8Utgp9nLK56zXy9H
-         EaGbAIC0uMPsL90OC14ysTKqwpi5keTRzgya0WL37NpkI32hceOphnZfY7+ASkF3bR2y
-         pNQC5Qv2EkF0L2ScY95JrwcwBt5U9KG2ABadq7BUATLj6ZLUrdVAImOTvSGC0S67Ts3m
-         d65g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765874683; x=1766479483;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iCS39mntlzMdxHlY1QanSj8RXtdylHJx128WPAJO81M=;
-        b=cT8v8bCgiL4c3FQSQQN95xXEtC/X6hxRSYV7/egp3B7fhLphJ/dWRBSh/QxWfpg+Ql
-         TlWkN4T06ksRTs0Xq2tKoiLuuE1ueQlJrS+0T8YGh9yibXCorLHBhH1NvrRY+BJal6rU
-         6H5dwUni4ncU2/R8DEOKm1qEJyIcN1osAzz+B3dV9ilQapE7RwlkTBdpPzHV0AZmm9AK
-         gbS2E25CvRnqXFJbfj5Znb64DsoadrgqLIhqCHXgBhGM5t6V70X5t7rm+e7uOyuyhpD5
-         kLSrTci9RUS9n+G0E8guSNc2XznkwvyF+nEuTT79TZ/Nh4alynPAxuXDAVVhAVknZi3l
-         hFdg==
-X-Forwarded-Encrypted: i=1; AJvYcCX95UWn/XEF83gN/krafMCDJalwBHcMQP7U8cO6GRKM0RoXUMPZlPBFLi9Mmsv8QpgpS5RDOo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzJv7R4tu2Lztlm8pHMpZ8jmB9cgc9ae+FB0lN9BPT/WUtsJad
-	ilvGuPqujMWy5cu6UoZ38AI1+vXf8Hwml4F3uTgBj2T66upQJFGfiC5z8hTvlrjxJpg7ZVxgKIb
-	0ZSsgawxSWJx7wRRuqRsNDCXRuQ==
-X-Google-Smtp-Source: AGHT+IGSm4OLT+l5V7HmKcb03rEzDHoOa+Zj3rolZDvGKSsZODc6QsE69LeAdJbnSqThLKGGMMi0vDSpwCDiw4xxZA==
-X-Received: from pgkb5.prod.google.com ([2002:a63:eb45:0:b0:bd9:a349:949c])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:999a:b0:366:14ac:e1e5 with SMTP id adf61e73a8af0-369b05bfa1amr13464711637.75.1765874682775;
- Tue, 16 Dec 2025 00:44:42 -0800 (PST)
-Date: Tue, 16 Dec 2025 08:44:35 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F087545948
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 09:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.98
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765875640; cv=fail; b=ATbE3qhzsS0dWhMiOlExve8yaFvq82i2IroPpdum5BG95ke/bDWzcOuqUIlDa3RUkORkAxm4Ir7I3r1WYW37tsYFj7SerHBGi3Vjg1Dacsv/t9xEKPiOGa5CGHYxpnuH6+3z7v92rGkyoUM9Zo8pJq8edNo1cnIieSwXU5OB1eA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765875640; c=relaxed/simple;
+	bh=3WKFi/sFuIlBJpPVNgzy4PKRxNHCliGvzrLpYbujQ40=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Jji4kVl4RXQ3TMJg4navTByUr3oMAxK+QL1j1bptM/HjJIUeh+3TSM/YHEV/i8PU3wcjvVGJ406O9gNkR9Shju4xXirCL2kWE09D6HE0XHKwdfI4i/gWJrNQrsZQ67U7oG/Q28tZARYTMh270fhovkI1VPux/FOwuN2MtYW7iKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hailo.ai; spf=pass smtp.mailfrom=hailo.ai; dkim=pass (1024-bit key) header.d=hailo.ai header.i=@hailo.ai header.b=erOcJPKG; arc=fail smtp.client-ip=52.101.65.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hailo.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hailo.ai
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J4CKhwoLBAoDF3RpnqvWablcwtJk9H7L792i/jplpcA/P9ehYzObclk4+S6Ah1luRdy96c9NoLd6pne2aKjBWLT4wbi4/jocn5qkn0+gyiukMH6bKEbh1kLZjDIHCGP+hb+egiU3ktvMukeirDQjz5Yic3d+mQa0SewYVZlHYs6eej/Q+DBM1QApTHvVwgpuZNayIXW55WDIljmIX6fWKgqOnaYPach3MLaTN3/iY2ETqI9aZg2dXpi35guxmoOOuBEw4GV9qnoZM0k9EtlUON2uUD1m8wxrPPEDLJ6Oe3Xq3ma7ZfceXbdviglGQA46ODyb4mfgjvQJRvDRdQnZ/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oDH13l0qgtckHXxKxJGRXtkCdrdrKhYfkT7PebVkwGg=;
+ b=L5X6UMJu5HF+m08DGDD+GO0K0qApeEZn1ZaCYeuKzBIHiQijSPAFPfSHuJkXi7K3f8IMxgjKstT1KabXk+VArbSfUYQoINwq4Sggn58cuup2zUSPizzk4IAKyc4kvrOvhz6Lph4G3pE6jCR2hHsLscJLavir2aCRgyPdNEhwUu7KqYKuutxT8h1yatDR1ieTlIjTAkhj+9iez5P6tfXqbz1sDsm1/qd4wnHHxak6kZsyu6INKXWW5OKUNJFcoYqDNLqJIJbQfEB9V9Iqhdh5s6BMjD/leJ7bLKuOSZGMxG1/7dgtYySGyDZwSlqfidSnyZSPwcd0l5HhA5KK7+Iong==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hailo.ai; dmarc=pass action=none header.from=hailo.ai;
+ dkim=pass header.d=hailo.ai; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hailo.ai; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oDH13l0qgtckHXxKxJGRXtkCdrdrKhYfkT7PebVkwGg=;
+ b=erOcJPKGYpYjSu0O3DAW7hnC4591F+R9dMGchOr3BOjMqMVxu7Su+887FOKLvRI3DTSt9yrc6ARP0BIc9EqBNlNIkpA64bx9WzYpTUWnz4IVv3Kv1yrCysN/3h9gVbEtm+zNCL8x4RxdS6pOoxUXT4Yl18+fiosUBPTSqtNqrRg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hailo.ai;
+Received: from DB9P194MB1356.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:29e::14)
+ by GV1P194MB1954.EURP194.PROD.OUTLOOK.COM (2603:10a6:150:87::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Tue, 16 Dec
+ 2025 09:00:32 +0000
+Received: from DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
+ ([fe80::f805:511f:699c:7c1f]) by DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
+ ([fe80::f805:511f:699c:7c1f%6]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 09:00:32 +0000
+From: Amitai Gottlieb <amitaig@hailo.ai>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sudeep.holla@arm.com,
+	amitaigottlieb@gmail.com,
+	Amitai Gottlieb <amitaig@hailo.ai>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Cristian Marussi <cristian.marussi@arm.com>
+Subject: [PATCH] [STABLE ONLY] firmware: arm_scmi: Fix unused notifier-block in unregister
+Date: Tue, 16 Dec 2025 11:00:09 +0200
+Message-Id: <20251216090009.13435-1-amitaig@hailo.ai>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TL2P290CA0014.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::17) To DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:10:29e::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
-Message-ID: <20251216084435.903880-1-joonwonkang@google.com>
-Subject: [PATCH 2/2 RESEND] mailbox: Make mbox_send_message() return error
- code when tx fails
-From: Joonwon Kang <joonwonkang@google.com>
-To: jassisinghbrar@gmail.com
-Cc: linux-kernel@vger.kernel.org, Joonwon Kang <joonwonkang@google.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9P194MB1356:EE_|GV1P194MB1954:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b417185-e698-4963-d57d-08de3c81913c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?reTphkZLzlqiPZt/0rKjyH6bfEmG7vAVEe+ju8z8nin6sdOPdd7GudpFwG1g?=
+ =?us-ascii?Q?yEwkHfuF0IMWkCR/PbvzT3Y7tpKO3i9IUAtuEwRl4htQzAe5Nr2B3NO3Lobo?=
+ =?us-ascii?Q?AYc6tZymxwnMj1/uFkZKLh2tiHr944dk34geJF776qZKltf0LJMcRPoQ0Eye?=
+ =?us-ascii?Q?9lGfFsZo/kWU9P4ywirPRazw0X2sMwSRFvG2u3QlERmljNau2Z1slB3/+FNT?=
+ =?us-ascii?Q?zoR5fpONn5Zlspb9FZPMB/MvgYqFn5RrPWfRgzrez86CFn2A8CP3h27pNkKE?=
+ =?us-ascii?Q?oOyd/45yVLUjgLCrdo1zJfrly3ua2MCO6zXX2KTuj/yrPS6KdfreaxmdKWEh?=
+ =?us-ascii?Q?u8SUSqCIRsA4+hwbnTBrg9GP6g6l1TqrH0ptts6TICMLWIMwl9PkAru6jNVX?=
+ =?us-ascii?Q?XVuVlY5lk0dh3vvo8m8Dj0IzHwaWWhL0vNkppcjk/NlFHr4veUe9Fdv6EWc/?=
+ =?us-ascii?Q?zGq6WdCVTDrWn0jR/NA3ju1QGBAve0gM0K8LrBgLBF7KB+rO76St0yc7kIK1?=
+ =?us-ascii?Q?oI9zg0R1FgXUW3aNPtaWthfK8EJXAFFTX43eKe/JSbqB7l3K+FGuuUkuRBRC?=
+ =?us-ascii?Q?sJ5nl9ijBk5NUdRVxdhhdMJSQ+Ase6Fkxy7wFi3zgbSA4vRIoGQFbnipRRj1?=
+ =?us-ascii?Q?ZbTwGLrn6yPbugqkKc0hTcuaIMeXCX+Q7uc+M/qMppRzPVhwYQc5oH7B7HHR?=
+ =?us-ascii?Q?gI9M1xksVcTktHCspXQ9juEW2Cg7QmKpPr4lZds67mECU6MTpb7P2V+WKwnf?=
+ =?us-ascii?Q?HSayl9istYwlavD23FcoQjg9W+Rv2iRGqZgER6o+DsxPWhp8lWAUDgk8N9KZ?=
+ =?us-ascii?Q?uuQ1AjTqTYVxd5in0wBjsQlpvlbqPGUqH1XL7dr3yJz0/3XZ7kx6Q+v59tsU?=
+ =?us-ascii?Q?UI3jnFXJFg45y1OMZZAOfI9qRZsEs8hPcrHFc61UR4iKzebXPNswNsnOr2Ya?=
+ =?us-ascii?Q?eQZaZk488M4yTwHzNjzrIQhPFQy9Ou42s+97XqsmNTCrawlwtPrxZiJrs6p9?=
+ =?us-ascii?Q?dwaGS/EDJGRWZ/F2EygVDv3XLqRcgL+ja9+lrpl2lynnKEHg4G5Y3QQfRZ8K?=
+ =?us-ascii?Q?K6YR0RT2j5ifNm0Lypab21b5Tq24NsK3BYNRCKpq0O8uNrd0rTPJc3BMldax?=
+ =?us-ascii?Q?m13FUaLdQKhzZvl6CD+Qc/d5S0PWBXTtBd0Z0f50DkTCsJfq3FPlD3yuQRRk?=
+ =?us-ascii?Q?x61WjRSiglrbOuQR79ojOy41vzkJ3HbVa46UE0oEEKpI5EONrONqCeBIDAEd?=
+ =?us-ascii?Q?tS/sPWgskTRVKuXdviCZsZpf1BKYN8kfCeKtC8HvSD6GioSyiRZExFA7hELw?=
+ =?us-ascii?Q?iQFSzonaar0JxhNYaF6+rHMGC5QfFzddNqY6aee2MyTm85TXWs9Bs6urHc+V?=
+ =?us-ascii?Q?JcVnAGTeiZaDqtUHqaKocEQ+DiJ76kdBPHciYHa93JzKNcoVMnRDjeoJQq6/?=
+ =?us-ascii?Q?07jj89WNC4iuug09XfELOUSrln6hzS65e+TQCEBsUPNBBvl/Enwn3PaZHYSE?=
+ =?us-ascii?Q?1yL6NkBufvtzFhM6pMyIef3zak4mOUwSITWj?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P194MB1356.EURP194.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/7kvc6puwxBN8qu8sDh7HaXcQfv+Z1LYFMt7q3SrMIOe2DFmUa4P4rgnfAcY?=
+ =?us-ascii?Q?ZvabmLcILWnWdk9JmsNjJp1aX86U9LYfsuiqKB4+dU1CgNFlWPSRSb38Q3Wa?=
+ =?us-ascii?Q?hXa/cPqCO+3SSIEn2lZMZGS2yEHBSvlI8MkBKzz/P5IKBAmMfsOYyU/y6hZb?=
+ =?us-ascii?Q?EIF9hrGY5WVvgPouP6rp1qKfb2WI7VbOHpGNFI0dlEUCj1wN1zo8LSDW3mH6?=
+ =?us-ascii?Q?gC/cuo5L65wzM5Kf9KR3WhzLdARLhM0xFJGDBTarQf/TJ08cMajrKNna5WBI?=
+ =?us-ascii?Q?c/bv+bd6Rgzpu8ie/y6XRRldGLeMHlmX796oCfN/C60qrsQ/y1O9N2Fw+1kx?=
+ =?us-ascii?Q?X58cXHQOk5RyMLadHwpIXs2DL703k9N8zjRAi3jIovTVbMJxB3ZVOziQFEUU?=
+ =?us-ascii?Q?pqZ0fJAQbgbT/l+vDewEdm8MgYsuwF+4gS1GzsPlSoiaELctKoKn+9ggsl6O?=
+ =?us-ascii?Q?stavsq2kut5yUmyfqWRc/0PdEfbhC+jIjqZ6ACh+8ZANJqMvvlAofIn4ZjIm?=
+ =?us-ascii?Q?hyZn4bxbVqfw6g9I0gWcN3XRT8L9ZaH539hNL1u84tH6MaeSG88Co/mODzQe?=
+ =?us-ascii?Q?M0AeLeAXvb5E6LUDZCw+HdZDDMl6q0gAYOdTGvx/3Y4Q7wY7LENO7bGHGItt?=
+ =?us-ascii?Q?ZnB+9+3C99Tr+Gp47Hg7IZoRyCoOJaegu1+gKjkSuCOkUrrdv4w0NV/pewX0?=
+ =?us-ascii?Q?ZtHUaNLz6rldK/PdMrDUEzETkOOAhexaJbj3FhVmn2deW551PKeTN/UeQQth?=
+ =?us-ascii?Q?v9G9RJDr87wL/Bn9phK2i4V8xwQUjslDqvMWgpr56PnQij59rH6s9eVFBYnj?=
+ =?us-ascii?Q?lH4jJe+EoY3nf3R5LwFO6VF/HLuuFmznMuCWij+4B6FeSmJBrGk7J/j543hQ?=
+ =?us-ascii?Q?AvJVQsChJ+1r5vlzh3ItqVM778XTXxMR0DU2PmqwqUvkQg17tBclTgiUj3RS?=
+ =?us-ascii?Q?zA0M3baIuJIjxenP2lJ5FMk2ZYvV2VZawIXEz5dt/3+M6hDjZMtp+x3/g9dq?=
+ =?us-ascii?Q?jFMggVFT8MIsTHV1rbQLrf+lBUXeV0KXgpiYKOHKcAv+/+IVZ2u9ltpG9jtJ?=
+ =?us-ascii?Q?VKzTkmLSeC++5lzJR0GTL3Ext2ox111KwTskl73/VsP1OsLs+87hRrhDxknk?=
+ =?us-ascii?Q?3j8xst6Uu4xxJUpxN/sTwf/wAxauCfrbCuvlIAs7l339xBU9nOTwb6Uf0Ohc?=
+ =?us-ascii?Q?RKmYkDZLSeJ9OK1QbPSCLEjcCJaI/8B1Ph/AUegKGzkramv/CX9UZVZiz3lF?=
+ =?us-ascii?Q?7EUD/8ctNEzQ47Q8fr1nJUnt3AJFDLECH58VVJzJc5zrCofM9RqaK2PzYnmA?=
+ =?us-ascii?Q?fuGoCDySEps7XGFWuJKRmoZ6aqafZiHKTUscMylzc+bTvlhDPBMA4PUoDUES?=
+ =?us-ascii?Q?zMuJpXj/1viwF9BtDiQMZW1sT2ci165ob3xyBqyAkylsf5DDNMxhmueCr+qs?=
+ =?us-ascii?Q?ITu0+d8BU/AbSJU4DATIrdRfJ0qqotWmHiFRnW/D0hKjNVc0DDhzh+OUO9DM?=
+ =?us-ascii?Q?j4FjncgIlJwOZyMvssLmMDupouIEJ8DIFZGkJR0VI5S53B7hIrC5vC/wq/+S?=
+ =?us-ascii?Q?c7+uFaN9XiWV98wg8WDDtksT9b+u1DqP2rUKPj3A?=
+X-OriginatorOrg: hailo.ai
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b417185-e698-4963-d57d-08de3c81913c
+X-MS-Exchange-CrossTenant-AuthSource: DB9P194MB1356.EURP194.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 09:00:31.9814
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6ae4a5f7-5467-4189-8f6a-f2928ed536de
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UzHdBuSb62/nOY3/2H44A59Fj44J4Cw7VpglxgdRvgsA6uwQCgx3UIGOQyq8DQSDCoCPT+x7CPCQCImYAY8wjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P194MB1954
 
-Previously, when the mailbox controller failed transmitting message, the
-error code was only passed to the client's tx done handler and not to
-mbox_send_message(). For this reason, the function could return a false
-success. This commit resolves the issue by introducing the tx status and
-checking it before mbox_send_message() returns.
+In function `scmi_devm_notifier_unregister` the notifier-block parameter
+was unused and therefore never passed to `devres_release`. This causes
+the function to always return -ENOENT and fail to unregister the
+notifier.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+In drivers that rely on this function for cleanup this causes
+unexpected failures including kernel-panic.
+
+This is not needed upstream becaues the bug was fixed
+in a refactor by commit 264a2c520628 ("firmware: arm_scmi: Simplify
+scmi_devm_notifier_unregister").  It is needed for the 5.15, 6.1 and
+6.6 kernels.
+
+Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
+Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Amitai Gottlieb <amitaig@hailo.ai>
 ---
- drivers/mailbox/mailbox.c          | 17 +++++++++++++----
- include/linux/mailbox_controller.h |  2 ++
- 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 0afe3ae3bfdc..05808ecff774 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -23,7 +23,8 @@
- static LIST_HEAD(mbox_cons);
- static DEFINE_MUTEX(con_mutex);
- 
--static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete)
-+static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete,
-+		       int *tx_status)
- {
- 	int idx;
- 
-@@ -36,6 +37,7 @@ static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx
- 	idx = chan->msg_free;
- 	chan->msg_data[idx].data = mssg;
- 	chan->msg_data[idx].tx_complete = tx_complete;
-+	chan->msg_data[idx].tx_status = tx_status;
- 	chan->msg_count++;
- 
- 	if (idx == MBOX_TX_QUEUE_LEN - 1)
-@@ -87,12 +89,14 @@ static void tx_tick(struct mbox_chan *chan, int r)
- 	int idx;
- 	void *mssg = NULL;
- 	struct completion *tx_complete = NULL;
-+	int *tx_status = NULL;
- 
- 	scoped_guard(spinlock_irqsave, &chan->lock) {
- 		idx = chan->active_req;
- 		if (idx >= 0) {
- 			mssg = chan->msg_data[idx].data;
- 			tx_complete = chan->msg_data[idx].tx_complete;
-+			tx_status = chan->msg_data[idx].tx_status;
- 			chan->active_req = -1;
- 		}
- 	}
-@@ -107,8 +111,10 @@ static void tx_tick(struct mbox_chan *chan, int r)
- 	if (chan->cl->tx_done)
- 		chan->cl->tx_done(chan->cl, mssg, r);
- 
--	if (r != -ETIME && chan->cl->tx_block)
-+	if (r != -ETIME && chan->cl->tx_block) {
-+		*tx_status = r;
- 		complete(tx_complete);
-+	}
- }
- 
- static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
-@@ -253,15 +259,16 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
- {
- 	int t;
- 	struct completion tx_complete;
-+	int tx_status = 0;
- 
- 	if (!chan || !chan->cl)
- 		return -EINVAL;
- 
- 	if (chan->cl->tx_block) {
- 		init_completion(&tx_complete);
--		t = add_to_rbuf(chan, mssg, &tx_complete);
-+		t = add_to_rbuf(chan, mssg, &tx_complete, &tx_status);
- 	} else {
--		t = add_to_rbuf(chan, mssg, NULL);
-+		t = add_to_rbuf(chan, mssg, NULL, NULL);
- 	}
- 
- 	if (t < 0) {
-@@ -284,6 +291,8 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
- 		if (ret == 0) {
- 			t = -ETIME;
- 			tx_tick(chan, t);
-+		} else if (tx_status < 0) {
-+			t = tx_status;
- 		}
- 	}
- 
-diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
-index 67e08a440f5f..6929774d3129 100644
---- a/include/linux/mailbox_controller.h
-+++ b/include/linux/mailbox_controller.h
-@@ -109,10 +109,12 @@ struct mbox_controller {
-  * struct mbox_message - Internal representation of a mailbox message
-  * @data:		Data packet
-  * @tx_complete:	Pointer to the transmission completion
-+ * @tx_status:		Pointer to the transmission status
-  */
- struct mbox_message {
- 	void *data;
- 	struct completion *tx_complete;
-+	int *tx_status;
- };
- 
- /**
+ drivers/firmware/arm_scmi/notify.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/firmware/arm_scmi/notify.c b/drivers/firmware/arm_scmi/notify.c
+index 0efd20cd9d69..4782b115e6ec 100644
+--- a/drivers/firmware/arm_scmi/notify.c
++++ b/drivers/firmware/arm_scmi/notify.c
+@@ -1539,6 +1539,7 @@ static int scmi_devm_notifier_unregister(struct scmi_device *sdev,
+ 	dres.handle = sdev->handle;
+ 	dres.proto_id = proto_id;
+ 	dres.evt_id = evt_id;
++	dres.nb = nb;
+ 	if (src_id) {
+ 		dres.__src_id = *src_id;
+ 		dres.src_id = &dres.__src_id;
 -- 
-2.52.0.239.gd5f0c6e74e-goog
+2.34.1
 
 
