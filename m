@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6F2CC241B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFD9CC2848
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A5333088B96
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F35F3085B3D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D6E32BF22;
-	Tue, 16 Dec 2025 11:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326AF35502E;
+	Tue, 16 Dec 2025 11:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaQEETLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5JDciNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BDE341645;
-	Tue, 16 Dec 2025 11:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312A355029;
+	Tue, 16 Dec 2025 11:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884363; cv=none; b=XvGInQPtEEDmOCdxgmBgr0Ak6aBByJ5x3NZ0gP+H21Q5K1RzhRMf04200G85JpA63dGbykHvOBazwpI6aTXXYfPiJw1jEllblMdUzxuRUcr/v/Fez7M+4eCMm06y8YKzi3aSlkVf4e9f0biRvatUydnSl1RX4gb4iRDtyNdB5vA=
+	t=1765885956; cv=none; b=ixD1YEuvS40H9gP3fhh6WjpVbWfT4oRVLT9Dp1ryAu2nHFeCb54p9MPoYoM4ee76nvreKlixLlXNOWDTHgxFi3QlxeY89ybt5GSqAf5ZbYneJSy3LVjJdO0qgHHni/GDQHNCc55HWir8HB8krlELCUcUyj154XQ7xDJxO/kYSu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884363; c=relaxed/simple;
-	bh=9iwLFKDfs53QKg2e2Qwi0XmdcNe0X+jZH5KxE6GWRB0=;
+	s=arc-20240116; t=1765885956; c=relaxed/simple;
+	bh=HADeURk57NdtpP5FR3NLnwJoCpXqPSLswSbc7dlI5Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLXdLKiliTMQqX1+w57Eo1XL+ACaR2AldhUPABOg0UcEkB8jOWuOSXskd3AYNt1btDZM5Ucsg52yJBWj4/4t21YrvcPK8ygJASMdjHukvpVIEETPwj3sMbU2lD7QKuKzSmGyICzDlcrg1r+TFx8FXm6i4k7ALY8kRY3aSPKqbuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaQEETLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF2C4CEF1;
-	Tue, 16 Dec 2025 11:26:02 +0000 (UTC)
+	 MIME-Version; b=tGlrtKbPopBt6bImd2UybZcDbEIwTMs5hA2DrcShqo3EamJm+SlrEO11EujLBy9Yb5ROgkyCxsORBI42WgSBFV8gs9liybXaJXSSGS/QsE2lFcE/h73wctv6epYVosVnGxiIWk8WgqB3A+GljOBLMilZI613N3xdk7UZXXObLsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5JDciNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A283C4CEF1;
+	Tue, 16 Dec 2025 11:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884363;
-	bh=9iwLFKDfs53QKg2e2Qwi0XmdcNe0X+jZH5KxE6GWRB0=;
+	s=korg; t=1765885955;
+	bh=HADeURk57NdtpP5FR3NLnwJoCpXqPSLswSbc7dlI5Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaQEETLfNSGn3CAvTiBO1/gnY2bzTt7rN0lNBh987v4OTjuUCGqyadMgU9fIicOC0
-	 Su1kNY5+keD7anKAwXHC8mgBN0FkIxnewV0P4StmW19lQXKZmDVEmGZ1lpYhuM9VmP
-	 9478Rvr9FBsXEF0Kywl/9Bkc24CVJt+myB334nh4=
+	b=T5JDciNx/UmbvcE14boeEYETYdxO+DPtKxa0rPeaoccwi7v9RHJR3tBnRLDFb7jgm
+	 x8y7i3j33BLRsPYt31LD+3Ws1Nj7I07NTe4067T925hqU0EnI0wftUAUklpw6JGQfp
+	 x1BMa1rHZ2wlU5ej75UeZHxRSnWmuA5f6da3Ghpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Algea Cao <algea.cao@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 169/354] tracefs: fix a leak in eventfs_create_events_dir()
+Subject: [PATCH 6.17 295/507] phy: rockchip: samsung-hdptx: Prevent Inter-Pair Skew from exceeding the limits
 Date: Tue, 16 Dec 2025 12:12:16 +0100
-Message-ID: <20251216111327.035784314@linuxfoundation.org>
+Message-ID: <20251216111356.163701134@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
+[ Upstream commit 51023cf6cc5db3423dea6620746d9087e336e024 ]
 
-If we have LOCKDOWN_TRACEFS, the function bails out - *after*
-having locked the parent directory and without bothering to
-undo that.  Just check it before tracefs_start_creating()...
+Fixup PHY deskew FIFO to prevent the phase of D2 lane going ahead of
+other lanes.  It's worth noting this might only happen when dealing with
+HDMI 2.0 rates.
 
-Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-3-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 8705c77a9e75a..93c231601c8e2 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -757,7 +757,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 						const struct eventfs_entry *entries,
- 						int size, void *data)
- {
--	struct dentry *dentry = tracefs_start_creating(name, parent);
-+	struct dentry *dentry;
- 	struct eventfs_root_inode *rei;
- 	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
-@@ -768,6 +768,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	if (security_locked_down(LOCKDOWN_TRACEFS))
- 		return NULL;
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 9751f7ad00f4f..5605610465bc8 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -668,13 +668,9 @@ static const struct reg_sequence rk_hdtpx_common_lane_init_seq[] = {
  
-+	dentry = tracefs_start_creating(name, parent);
- 	if (IS_ERR(dentry))
- 		return ERR_CAST(dentry);
+ static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
+ 	REG_SEQ0(LANE_REG(0312), 0x00),
+-	REG_SEQ0(LANE_REG(031e), 0x00),
+ 	REG_SEQ0(LANE_REG(0412), 0x00),
+-	REG_SEQ0(LANE_REG(041e), 0x00),
+ 	REG_SEQ0(LANE_REG(0512), 0x00),
+-	REG_SEQ0(LANE_REG(051e), 0x00),
+ 	REG_SEQ0(LANE_REG(0612), 0x00),
+-	REG_SEQ0(LANE_REG(061e), 0x08),
+ 	REG_SEQ0(LANE_REG(0303), 0x2f),
+ 	REG_SEQ0(LANE_REG(0403), 0x2f),
+ 	REG_SEQ0(LANE_REG(0503), 0x2f),
+@@ -687,6 +683,11 @@ static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
+ 	REG_SEQ0(LANE_REG(0406), 0x1c),
+ 	REG_SEQ0(LANE_REG(0506), 0x1c),
+ 	REG_SEQ0(LANE_REG(0606), 0x1c),
++	/* Keep Inter-Pair Skew in the limits */
++	REG_SEQ0(LANE_REG(031e), 0x02),
++	REG_SEQ0(LANE_REG(041e), 0x02),
++	REG_SEQ0(LANE_REG(051e), 0x02),
++	REG_SEQ0(LANE_REG(061e), 0x0a),
+ };
  
+ static struct tx_drv_ctrl tx_drv_ctrl_rbr[4][4] = {
 -- 
 2.51.0
 
