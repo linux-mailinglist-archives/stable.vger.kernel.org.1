@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-202016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C52FCC3087
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:02:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD4ACC2502
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A2EA302F693
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 726033027166
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB093570B4;
-	Tue, 16 Dec 2025 12:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5773F343D82;
+	Tue, 16 Dec 2025 11:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceSLbCIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW7TFWjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C1C3570C6;
-	Tue, 16 Dec 2025 12:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FCE3314B4;
+	Tue, 16 Dec 2025 11:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886550; cv=none; b=m3QM/gNYEeE5DGxJrP2AreYAf7pzoTMrQm6590bTh7rNjVEPXBdbU1W3C/8M2AOXJf8njZvHSZ8c62Ve4utlf4eFwmJhzXHJX/JgvQE7uZYXGldrX8iAd2aHNnfI7ideRHsyAbNGSw3lxSvPUqbAJEuGpsCFzgM/vHCKlGL7cHc=
+	t=1765884943; cv=none; b=HaHajFM1d4JNgIck12L+n+cefUHH9vb5R/REWmFOTbhAihv1moC7r6covjieNCnXb7h7Gcaqm2+MrkPD29ErpIzWGFZvn8TQ+7kyzn00Rfp7gAt1J0Eb4zYxtAmBjzfN/BkSkFF3IglD2XegCb/bdcpcrEfRYE1dv/da3ltyK2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886550; c=relaxed/simple;
-	bh=36VYshdriOcE46Tx1LMjxHl3F0RddSQCDoLFep7w098=;
+	s=arc-20240116; t=1765884943; c=relaxed/simple;
+	bh=ZKY+Pu22L6Nyxuad2oCnAeqQZDPQkKtJQlCspKdWdfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHpZzLBN2rk7/xYA2Rqy76Zigidw7zm43tsl4bGh3l3P9uIvkpFJS1PmLkk2r59TBr+yoTOaxvnURQTaffBM4MuHEYhBkykOG5+p1w1NdU6oGvR3x/cDglX+JtaiPJ0wrqjNyor8yxwQ5WZOLNldCQNU5fHy4qA3rOpCTk8WFf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceSLbCIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDD1C16AAE;
-	Tue, 16 Dec 2025 12:02:28 +0000 (UTC)
+	 MIME-Version; b=rB5adYgE2YJB2Lm6J0x20j3GPMThVNewNfywuYVhuMz4DDUTZkAeAL/6To73A72RsAbI+whZ94wW7sQZyOkr0vDteoEt6eBSdsNOyIGnkvtoKDMjRDrKUcVDSdxFHsXZmuTcBgYxScmM/L8+ZUIBSRF6nud1MxVDt9SqRNpDkzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW7TFWjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E7C4CEF1;
+	Tue, 16 Dec 2025 11:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886549;
-	bh=36VYshdriOcE46Tx1LMjxHl3F0RddSQCDoLFep7w098=;
+	s=korg; t=1765884942;
+	bh=ZKY+Pu22L6Nyxuad2oCnAeqQZDPQkKtJQlCspKdWdfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ceSLbCIMgneJamJSPsjqhGuXoygbFjYn1rvIFVHW+TJh9++ZGXt2hySmpW3//W+Pi
-	 XwaPjz4RCrPa0y040CHghPu31sMOdSjxSvT/kPLIIq3WqT0OEpHWSXMQ3oqNqq94D1
-	 x2Su7AFCRfcJVUlw6yvf35+gySqwg82g1yDt3EG8=
+	b=zW7TFWjUYmfoC9hdQDVmLyNFzPduABqu+oQ2+pyJSuRAJmMzvJZz49Knf4HuOUrqD
+	 8Lc7fga+XSzOw3VzrwJ77QZlpXOgvkhlnSgByqQJnjAOFm8NzBS7VtS3j/xrvLWMgL
+	 PuLGpjp4+qQRpYPS9+bUwkSuc+/FfjmfHP/6P9mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 470/507] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB2
+Subject: [PATCH 6.12 344/354] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
 Date: Tue, 16 Dec 2025 12:15:11 +0100
-Message-ID: <20251216111402.472265965@linuxfoundation.org>
+Message-ID: <20251216111333.368185810@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4ae4dde6f34a4124c65468ae4fa1f915fb40f900 ]
+[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
 
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
+If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
+it results in an out of bounds access.
 
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
+The code checks for invalid values, but doesn't set the error code.  Return
+-EINVAL in that case, instead of returning success.
 
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned.
-This will cause the request as a whole to fail with -ENODATA.
-
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
-
-Fixes: 1da29f2c39b6 ("netfs, cifs: Fix handling of short DIO read")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 2 +-
+ drivers/irqchip/irq-mchp-eic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index f925b2da76c1d..64fe2de662ff9 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4629,7 +4629,7 @@ smb2_readv_callback(struct mid_q_entry *mid)
- 	} else {
- 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans == ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >= ictx->remote_i_size) {
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 			rdata->result = 0;
- 		}
+diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
+index 5dcd94c000a26..8a5baa0987a4b 100644
+--- a/drivers/irqchip/irq-mchp-eic.c
++++ b/drivers/irqchip/irq-mchp-eic.c
+@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 
+ 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
+ 	if (ret || hwirq >= MCHP_EIC_NIRQ)
+-		return ret;
++		return ret ?: -EINVAL;
+ 
+ 	switch (type) {
+ 	case IRQ_TYPE_EDGE_RISING:
 -- 
 2.51.0
 
