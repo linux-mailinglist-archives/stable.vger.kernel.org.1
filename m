@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E41BCC3E70
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F448CC2559
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4795F302F6A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD0F3308DAEB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74EE34D904;
-	Tue, 16 Dec 2025 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163EA315D37;
+	Tue, 16 Dec 2025 11:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyOznSeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R91rUyKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D3C346A05;
-	Tue, 16 Dec 2025 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C592826A08F;
+	Tue, 16 Dec 2025 11:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886285; cv=none; b=Z4NDyr2MsoeMwbXHBiIHerOIKf1DJR0B2sUJJAOZnGD1QeNfAuLJrh3ypEypfophDP862uyPH3FMxmOq3lDuceHeJeOWHfOszXqK1TnCmss04oRvn0MogwNdBqqIZ5cm1SoauHAE5TXp7FYHBwL/DmkKtO9Yh6Y01KH7+8990KY=
+	t=1765884655; cv=none; b=VTXSExOobhPCpdic19/wB5jLExWnZ/FTx5OKXW7cwHdJNvt6PE6HAU4NGUuI5jx0nhYFwpxfPJX4Ih7hXrJe2X2QTXRm2XWUn144yqMmSGAIB+J/v+moq/c+3seIRsOIRhXn8dVXp5iZy7aSaZZzsRlE1FBNtCwcuVhtkDu0Kbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886285; c=relaxed/simple;
-	bh=pxKObb5aZpMTLOm4eylKjYs6ymxP99nw3o9V6CRcYoo=;
+	s=arc-20240116; t=1765884655; c=relaxed/simple;
+	bh=kNVwH7Ga64YJh9y+hcKqxfJyqz5iPHN0HaRf5iz/j3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJarndBfwTzNlsXYpltPv5GCcs+6R3Fk+yU4a43ze8qwB30XlEFao9Zm+qEACzsHNbHYn8MjioBZ/ThCGAiW1mEL0cJdgfxO9py+SH2VBzzqwGK7ttcLzhFUfm8519ItnNUbIWaLP93ANrfEzbBy4nBSkrEi6cQavRzliYlj+UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyOznSeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9124C4CEF1;
-	Tue, 16 Dec 2025 11:58:04 +0000 (UTC)
+	 MIME-Version; b=oPtzSoB4sFx5zWzqkwuCzFk9ipNhTYT0T2PfA7z5K+apXVYxFL3GSxiUthF9xJx0iIDz94sU0Rdlxc/LaRrIafpFWlJK9+OENX2PqZsuXFz0OJPI+QUQFFFmzzEVSMfbyMgmKkvwFzQb7u6WqYmnKmDAngyTH7BeWhxXvCABMYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R91rUyKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABBFC4CEF1;
+	Tue, 16 Dec 2025 11:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886285;
-	bh=pxKObb5aZpMTLOm4eylKjYs6ymxP99nw3o9V6CRcYoo=;
+	s=korg; t=1765884655;
+	bh=kNVwH7Ga64YJh9y+hcKqxfJyqz5iPHN0HaRf5iz/j3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AyOznSeLY9GdartdYM83Eqip/uUc5wmozbztiXJ3cdFQtj1ojvD4Fqs/bYnUou1wd
-	 uIscmKpeKk6m8ivlmaebdMxzcChnpbEL4gRRcY9P/Vf/TI8fM1buxL99IM/bor0s2+
-	 XAl63RV6DOHQfRXiCohIbQQ6gv3XhVyiqStxNTj0=
+	b=R91rUyKK7SBT7vIP4KqMoC2JlI6kPEH2B2w8YPME1O1jVHVnCOr0Hxb7SnSHjEraX
+	 XUipDY4eaB6Ic3lQhomJGEWxFdYiWbm+oV8L/44tarQn6DoM1Patiq2QadAQSuhbHO
+	 227H+/7sxsV8kwDyzny6aIPYw0P3aHyqX4FH8i4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 385/507] spi: airoha-snfi: en7523: workaround flash damaging if UART_TXD was short to GND
-Date: Tue, 16 Dec 2025 12:13:46 +0100
-Message-ID: <20251216111359.406845411@linuxfoundation.org>
+Subject: [PATCH 6.12 260/354] ARM: dts: samsung: exynos4412-midas: turn off SDIO WLAN chip during system suspend
+Date: Tue, 16 Dec 2025 12:13:47 +0100
+Message-ID: <20251216111330.337460636@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 061795b345aff371df8f71d54ae7c7dc8ae630d0 ]
+[ Upstream commit 2ff147fdfa99b8cbb8c2833e685fde7c42580ae6 ]
 
-Airoha EN7523 specific bug
---------------------------
-We found that some serial console may pull TX line to GROUND during board
-boot time. Airoha uses TX line as one of its bootstrap pins. On the EN7523
-SoC this may lead to booting in RESERVED boot mode.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-It was found that some flashes operates incorrectly in RESERVED mode.
-Micron and Skyhigh flashes are definitely affected by the issue,
-Winbond flashes are not affected.
-
-Details:
---------
-DMA reading of odd pages on affected flashes operates incorrectly. Page
-reading offset (start of the page) on hardware level is replaced by 0x10.
-Thus results in incorrect data reading. As result OS loading becomes
-impossible.
-
-Usage of UBI make things even worse. On attaching, UBI will detects
-corruptions (because of wrong reading of odd pages) and will try to
-recover. For recovering UBI will erase and write 'damaged' blocks with
-a valid information. This will destroy all UBI data.
-
-Non-DMA reading is OK.
-
-This patch detects booting in reserved mode, turn off DMA and print big
-fat warning.
-
-It's worth noting that the boot configuration is preserved across reboots.
-Therefore, to boot normally, you should do the following:
-- disconnect the serial console from the board,
-- power cycle the board.
-
-Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20251125234047.1101985-2-mikhail.kshevetskiy@iopsys.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f77cbb9a3e5d ("ARM: dts: exynos: Add bcm4334 device node to Trats2")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-5-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-airoha-snfi.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/samsung/exynos4412-midas.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index b78163eaed61d..20b5d469d519a 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -1030,6 +1030,11 @@ static const struct spi_controller_mem_ops airoha_snand_mem_ops = {
- 	.dirmap_write = airoha_snand_dirmap_write,
- };
+diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+index 3d5aace668dc5..977ecc838b0cb 100644
+--- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+@@ -1440,6 +1440,7 @@ &sdhci_3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
  
-+static const struct spi_controller_mem_ops airoha_snand_nodma_mem_ops = {
-+	.supports_op = airoha_snand_supports_op,
-+	.exec_op = airoha_snand_exec_op,
-+};
-+
- static int airoha_snand_setup(struct spi_device *spi)
- {
- 	struct airoha_snand_ctrl *as_ctrl;
-@@ -1104,7 +1109,9 @@ static int airoha_snand_probe(struct platform_device *pdev)
- 	struct airoha_snand_ctrl *as_ctrl;
- 	struct device *dev = &pdev->dev;
- 	struct spi_controller *ctrl;
-+	bool dma_enable = true;
- 	void __iomem *base;
-+	u32 sfc_strap;
- 	int err;
- 
- 	ctrl = devm_spi_alloc_host(dev, sizeof(*as_ctrl));
-@@ -1139,12 +1146,28 @@ static int airoha_snand_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(as_ctrl->spi_clk),
- 				     "unable to get spi clk\n");
- 
-+	if (device_is_compatible(dev, "airoha,en7523-snand")) {
-+		err = regmap_read(as_ctrl->regmap_ctrl,
-+				  REG_SPI_CTRL_SFC_STRAP, &sfc_strap);
-+		if (err)
-+			return err;
-+
-+		if (!(sfc_strap & 0x04)) {
-+			dma_enable = false;
-+			dev_warn(dev, "Detected booting in RESERVED mode (UART_TXD was short to GND).\n");
-+			dev_warn(dev, "This mode is known for incorrect DMA reading of some flashes.\n");
-+			dev_warn(dev, "Much slower PIO mode will be used to prevent flash data damage.\n");
-+			dev_warn(dev, "Unplug UART cable and power cycle board to get full performance.\n");
-+		}
-+	}
-+
- 	err = dma_set_mask(as_ctrl->dev, DMA_BIT_MASK(32));
- 	if (err)
- 		return err;
- 
- 	ctrl->num_chipselect = 2;
--	ctrl->mem_ops = &airoha_snand_mem_ops;
-+	ctrl->mem_ops = dma_enable ? &airoha_snand_mem_ops
-+				   : &airoha_snand_nodma_mem_ops;
- 	ctrl->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctrl->mode_bits = SPI_RX_DUAL;
- 	ctrl->setup = airoha_snand_setup;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
 -- 
 2.51.0
 
