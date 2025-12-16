@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6166DCC2284
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A876CCC2B65
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CD94230004E5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2576C31BBF75
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E719334214A;
-	Tue, 16 Dec 2025 11:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAA734BA49;
+	Tue, 16 Dec 2025 11:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAQHj16A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q32GM/vu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52ED341645;
-	Tue, 16 Dec 2025 11:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A893534B68F;
+	Tue, 16 Dec 2025 11:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884188; cv=none; b=cSXb31mG4b5V+he2KpAdqtGNVQUpA//n83YnZ4P+KSzP+xC51v9DAC72esJHjK+IVLsqmt5m8obV+7FGXfs93qC4Jzll25CFH1WC73WnLO8iVCwuz5hfs4IrY0zn2Ufr+OlF11cVLMzcOV8EURilgRDeWpWfEBUO87USVm3JKOM=
+	t=1765885730; cv=none; b=TvVA0mcfqE4C84FzDaiE7d9a/jOi/gpMK3YhzzHzYzlGbtqMnnCGvcAwOUfsrS0oSWscTnSpIgndEeAA9xXAvYu7Zt1v8IVvoP5QlCdI59X3M/ckr26El/MIjFjXAMucg0siQYuM9ffknfWbwcohwAaTqaqF6aKJTfPr2uK2oDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884188; c=relaxed/simple;
-	bh=OZtmaAWQtsXjBAq0hNNu4aC+eD/Ynv0ot1XbXH2YqiI=;
+	s=arc-20240116; t=1765885730; c=relaxed/simple;
+	bh=9pcNIg26ycquaPA15fMlnRPzB1UnkvJRXNQmIn4uyYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq1p10RGl2odPTCoTqSgGet8xV+6xaPkLpkLdYJAjwhVpIl3Mi3ErxIEw4e23p7xUJ+WznLqwp8VKufBu3Aj6LHXQcLa14ZH2t1+Tdq6ADHUI4J/A12NoPIUcYjv37OEPZzFNXUIrumRkB3ZeLURMIcxBmDHvOG5xc92IsdaRP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAQHj16A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBBAC4CEF1;
-	Tue, 16 Dec 2025 11:23:07 +0000 (UTC)
+	 MIME-Version; b=kW+sZ8ngwmroHBUsnczckNdYY259L8XEYP8iQYDjNjoITOnFhAGcXiYa6yrgOW4fcEd9e8kzs6eNnHfl0UPjjz9TBGb3Unte3CTxR3JUyKvaYOVQIePC0VbMPHHLdLgy21L2rnE0nGzo6jXPwwOH1Pk0Y75djGzKJmO8VFBdi6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q32GM/vu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1087BC4CEF1;
+	Tue, 16 Dec 2025 11:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884188;
-	bh=OZtmaAWQtsXjBAq0hNNu4aC+eD/Ynv0ot1XbXH2YqiI=;
+	s=korg; t=1765885730;
+	bh=9pcNIg26ycquaPA15fMlnRPzB1UnkvJRXNQmIn4uyYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAQHj16ASGtawlkGob47yUKGzDYfdamH/3Shz6prg8Bmxx6lOfReuFxe1scsuFFBW
-	 xGwHGljQoUvVHxgVGyUWThKURWutZJ58yPd4aIq+fg17lfuljUr/u4/BKoBnMV/ged
-	 f020suLbejI2KfSM09fNAEtMs100yav+XUMDRfms=
+	b=Q32GM/vu95wgIuN7j7tQ9HXsZFeF5Z3qREqIrTjGtpcdUZercD3GmVKDbr5g+7myf
+	 moC2HdT1WTpjsubVghrXm1zuQW4y7ItGm4Kmqc89pdbsDTrOZoU6jHEXg7AC8fFWHS
+	 L+6lJzkDZdnbMJ3bCL3iB7mha0r3HFScY4TrulmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/354] perf lock contention: Load kernel map before lookup
+Subject: [PATCH 6.17 227/507] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
 Date: Tue, 16 Dec 2025 12:11:08 +0100
-Message-ID: <20251216111324.579909575@linuxfoundation.org>
+Message-ID: <20251216111353.729314805@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 553d18c98a896094b99a01765b9698b204183d49 ]
+[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
 
-On some machines, it caused troubles when it tried to find kernel
-symbols.  I think it's because kernel modules and kallsyms are messed
-up during load and split.
+The driver calls ioport_map() to map I/O ports in sim710_probe_common()
+but never calls ioport_unmap() to release the mapping. This causes
+resource leaks in both the error path when request_irq() fails and in
+the normal device removal path via sim710_device_remove().
 
-Basically we want to make sure the kernel map is loaded and the code has
-it in the lock_contention_read().  But recently we added more lookups in
-the lock_contention_prepare() which is called before _read().
+Add ioport_unmap() calls in the out_release error path and in
+sim710_device_remove().
 
-Also the kernel map (kallsyms) may not be the first one in the group
-like on ARM.  Let's use machine__kernel_map() rather than just loading
-the first map.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 688d2e8de231c54e ("perf lock contention: Add -l/--lock-addr option")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf_lock_contention.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/sim710.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/bpf_lock_contention.c b/tools/perf/util/bpf_lock_contention.c
-index 41a1ad0878951..a286e15b16a4e 100644
---- a/tools/perf/util/bpf_lock_contention.c
-+++ b/tools/perf/util/bpf_lock_contention.c
-@@ -26,6 +26,9 @@ int lock_contention_prepare(struct lock_contention *con)
- 	struct evlist *evlist = con->evlist;
- 	struct target *target = con->target;
+diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
+index e519df68d603d..70c75ab1453a1 100644
+--- a/drivers/scsi/sim710.c
++++ b/drivers/scsi/sim710.c
+@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
+  out_put_host:
+ 	scsi_host_put(host);
+  out_release:
++	ioport_unmap(hostdata->base);
+ 	release_region(base_addr, 64);
+  out_free:
+ 	kfree(hostdata);
+@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
  
-+	/* make sure it loads the kernel map before lookup */
-+	map__load(machine__kernel_map(con->machine));
-+
- 	skel = lock_contention_bpf__open();
- 	if (!skel) {
- 		pr_err("Failed to open lock-contention BPF skeleton\n");
-@@ -443,9 +446,6 @@ int lock_contention_read(struct lock_contention *con)
- 		bpf_prog_test_run_opts(prog_fd, &opts);
- 	}
- 
--	/* make sure it loads the kernel map */
--	maps__load_first(machine->kmaps);
--
- 	prev_key = NULL;
- 	while (!bpf_map_get_next_key(fd, prev_key, &key)) {
- 		s64 ls_key;
+ 	scsi_remove_host(host);
+ 	NCR_700_release(host);
++	ioport_unmap(hostdata->base);
+ 	kfree(hostdata);
+ 	free_irq(host->irq, host);
+ 	release_region(host->base, 64);
 -- 
 2.51.0
 
