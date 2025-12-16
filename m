@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC504CC31F1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B4ECC3753
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 127E93047B47
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 448733023D70
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D1534B41C;
-	Tue, 16 Dec 2025 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD79B3502B7;
+	Tue, 16 Dec 2025 11:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8AIQVcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8f8oQM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A408D34B1BE;
-	Tue, 16 Dec 2025 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF73502A9;
+	Tue, 16 Dec 2025 11:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887628; cv=none; b=bztGlBrU80Rk4a9+5j9zhpKRnmizERr0WnoweTLdVcY/Q9mlN9sy8hlhFIDbl4wttWQKZrb/08wdM9zkiOHVTF3oxeaOpBMN9w6Jtvf2pN13Pwfe7cOe9diWoat/fgNhoE9u7tai1VRqZG6lSzTc1fl7GgTEZKpcgTBt+OE/qEY=
+	t=1765885691; cv=none; b=Y7rd4rNdCbYCZSyT5GZ5CM6S7oOlgctOoCHUsqlCsv/kaXobEs0EZUn3PU6FwU0Unfht3DLz7hSyaUKMSARx/BGcdolvbBV7Hv2azYTKQdtGshScFj6uJPK+qo4Cn2IHlh+oPebYzOYqFNofciPTDd+nyUmtTk94oPzDHHp0GqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887628; c=relaxed/simple;
-	bh=NWaFInxXgXVDH4n1Ouh/BRGieONpq2ruUMFnT2BxhYg=;
+	s=arc-20240116; t=1765885691; c=relaxed/simple;
+	bh=SjUUiiZ6gUhgkdU5JxfWsjXuhRH7vgWlYHldkXjINwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2WFzrd5vDDQeIUGgF2/Nx05i5u3+pa6wsvoRvTj9JYiEaB/Ti0/FEbJ8KPfmVaLg6XU6DZMrjZ/VNxpDuL9pmpF4ECQKplcfmA5KUJrq41t9BqlrOU+syVlS52cJpp7hkzaBa3x87o21nmQ83Pfr2uK5qGzWMC3d86Py9HeVPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8AIQVcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C432C4CEF1;
-	Tue, 16 Dec 2025 12:20:27 +0000 (UTC)
+	 MIME-Version; b=MXCUOUN+1+vN+1H/jA1LdEjkmG2qijq/8QXPAZvdPykMug/Q/kb4Pt0/Q9Su3COhOAgHklr4ea1mUy78DwPDvnPALOr47GMJ79QLscdEmn4yhT1ri6DbhoOZpqbJAePmXt2LJOfOUIueS9oaJu97umDKqP7c/3eD6KbcaNOCDYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8f8oQM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF9FC16AAE;
+	Tue, 16 Dec 2025 11:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887628;
-	bh=NWaFInxXgXVDH4n1Ouh/BRGieONpq2ruUMFnT2BxhYg=;
+	s=korg; t=1765885691;
+	bh=SjUUiiZ6gUhgkdU5JxfWsjXuhRH7vgWlYHldkXjINwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8AIQVcAyAs2yc68R22F40l73qSbapfXie4+23s9hHTCDcyIBEmVrLJPyqPe/ekmy
-	 gSxUU7zrH9mXZY5P+cT71l49ct467BD/frNfYv/496YK+NrPW3InRnjsnqCB0DVhbc
-	 wyhv0rsk1o3w1e1/R1TPFtN8lUMpYnC4owAGyg7I=
+	b=M8f8oQM34jrzdpE2qvUgD99OOykaBfZHOspUIZ+f1Ho2+66BGX0JxY2g3R2ZRHY0I
+	 rOhjCgI0TAnx450bzfR/7DVCUKGvFupvsvwwMnArfNXzC6QQ8wcS5OXSony12FXgjH
+	 e5/UMvpg1uZin04h9dM4GS5PNbFIJ1iB1BTXhOpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 290/614] kbuild: dont enable CC_CAN_LINK if the dummy program generates warnings
+Subject: [PATCH 6.17 216/507] coresight: etm4x: Add context synchronization before enabling trace
 Date: Tue, 16 Dec 2025 12:10:57 +0100
-Message-ID: <20251216111411.879366724@linuxfoundation.org>
+Message-ID: <20251216111353.333139126@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit d81d9d389b9b73acd68f300c8889c7fa1acd4977 ]
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-It is possible that the kernel toolchain generates warnings when used
-together with the system toolchain. This happens for example when the
-older kernel toolchain does not handle new versions of sframe debug
-information. While these warnings where ignored during the evaluation
-of CC_CAN_LINK, together with CONFIG_WERROR the actual userprog build
-will later fail.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Example warning:
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
 
-.../x86_64-linux/13.2.0/../../../../x86_64-linux/bin/ld:
-error in /lib/../lib64/crt1.o(.sframe); no .sframe will be created
-collect2: error: ld returned 1 exit status
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
 
-Make sure that the very simple example program does not generate
-warnings already to avoid breaking the userprog compilations.
+Improved the barrier comments to provide more accurate information.
 
-Fixes: ec4a3992bc0b ("kbuild: respect CONFIG_WERROR for linker and assembler")
-Fixes: 3f0ff4cc6ffb ("kbuild: respect CONFIG_WERROR for userprogs")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20251114-kbuild-userprogs-bits-v3-1-4dee0d74d439@linutronix.de
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/cc-can-link.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/cc-can-link.sh b/scripts/cc-can-link.sh
-index 6efcead319898..e67fd8d7b6841 100755
---- a/scripts/cc-can-link.sh
-+++ b/scripts/cc-can-link.sh
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 1fa6d123b8143..668665cd437ad 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -446,10 +446,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
  
--cat << "END" | $@ -x c - -o /dev/null >/dev/null 2>&1
-+cat << "END" | $@ -Werror -Wl,--fatal-warnings -x c - -o /dev/null >/dev/null 2>&1
- #include <stdio.h>
- int main(void)
- {
+ 	etm4x_allow_trace(drvdata);
++
++	/*
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+ 
+-	/* Synchronize the register updates for sysreg access */
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
+ 
+@@ -931,11 +945,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	 */
+ 	etm4x_prohibit_trace(drvdata);
+ 	/*
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
+ 	isb();
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
 -- 
 2.51.0
 
