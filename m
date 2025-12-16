@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B76CC460C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:45:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5BACC2D40
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 772F4302E58C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D634A314FA85
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5A234B19C;
-	Tue, 16 Dec 2025 11:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A958343D9D;
+	Tue, 16 Dec 2025 12:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSV8w7Fu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGTeNc20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF8A34B191;
-	Tue, 16 Dec 2025 11:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D522BD5A2;
+	Tue, 16 Dec 2025 12:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885229; cv=none; b=B3MKDVKsAOCOoRx8JZodLpR8Xwnbz9y77YVd3TmCG459uE46nNf8Zse42eYB/HPJWd8H9KLOrqKMqLl+LWKGA5wcOZ8/mZ0KsjOVE43pX/ih+hBDIMC9tiWKJmd29QQRfVGQvXyg++1xHncvk+RY0Wh3xnA0FyniVQmzd+uTYgs=
+	t=1765887182; cv=none; b=kOA9W6AUnFXSCk6lPQlj84SC9v4KQNzgRscPgDxdx+k6RpE4jm7IDIvo/dKkh9yhK7IBvwLAN50oCvbKGrTEJ4qPpDFYwrbvCrT6XKHWPaVVhvRJpsXPU6ZnZ0PiPzkr94fstNlVigCDtBEL0Vykv7VaRdv0X0rho+Kd5TacCZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885229; c=relaxed/simple;
-	bh=E6oIRX9V8E2EtBcnZ5vZ9vkjZ4n4OmgEj6S8ha84Q5o=;
+	s=arc-20240116; t=1765887182; c=relaxed/simple;
+	bh=4JdbDHcJRDtNTrd6rREW6Fw0SJaE3HCpM6QAo6Bxh18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSDkGFR7f03GcOn/mNunSjm2tgGce/vtKa0tLcmJzJND9TisNVrIh903TKANf1vgGKCvEK2fTjDdYWTkWafcGfsepPEomPfWJwTsbJEQaPubeqVHeA2dadxB3WLCKEsJEhLfu3sAeQawzzxdlMAjuyaFLTHmht1rDoBvrQl4gRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSV8w7Fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993EFC4CEF1;
-	Tue, 16 Dec 2025 11:40:28 +0000 (UTC)
+	 MIME-Version; b=sAR/Z6U6YHmQGreMqAp2RKgTqMuOA9kSi+F+vK3i8LrywaK0NB+mDCDYkU/XqiJ1Dfzp/d0MMfmJE5TGg2tUQLQo2z6/NwjPOa1ytTLOx7ElJ4XFSTZtea0czPuJY+RpguG4/9Z3xk9N3PtHZDXmpaulVEPkMggocPRWV5sG48w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGTeNc20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7EBC4CEF1;
+	Tue, 16 Dec 2025 12:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885229;
-	bh=E6oIRX9V8E2EtBcnZ5vZ9vkjZ4n4OmgEj6S8ha84Q5o=;
+	s=korg; t=1765887182;
+	bh=4JdbDHcJRDtNTrd6rREW6Fw0SJaE3HCpM6QAo6Bxh18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSV8w7FuKQ6uYYUvj4EtKUWqh62iGSLmjGX75f51zteOuBMFAA0gPBjN3Xa7xm6Ij
-	 yf8awN9BBrh8oOxsYqlcip8g5jVZUsPkTYE9TR3CGjV9Mg4yWooDFOXuj682Fi27Cv
-	 A2OrtjH88uOLUKfdpDpeMP9eqaz1cw7NZoFGNCRU=
+	b=cGTeNc20tZNh3SFKvQX3On4tgPWnw5HHS2RgMMrkAPKKlciXPWQ2wkdJMM5tcNRi7
+	 e5mzsGs9/24ROaBNHRfZMduGYwJpNZiPMNZqsl0IBJw9BZFFc3dTXnO5mgYE0e8rbA
+	 EA444jqSybN2P3qde01NH4OKVRqo7ANPoV9+SUTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 077/507] clk: qcom: camcc-sm7150: Fix PLL config of PLL2
+Subject: [PATCH 6.18 151/614] drm: nova: select NOVA_CORE
 Date: Tue, 16 Dec 2025 12:08:38 +0100
-Message-ID: <20251216111348.331624772@linuxfoundation.org>
+Message-ID: <20251216111406.805669045@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 415aad75c7e5cdb72e0672dc1159be1a99535ecd ]
+[ Upstream commit 97ad568cd6a58804129ba071f3258b5c4782fb0d ]
 
-The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
-parameters that are provided in the vendor driver. Instead the upstream
-configuration should provide the final user_ctl value that is written to
-the USER_CTL register.
+The nova-drm driver does not provide any value without nova-core being
+selected as well, hence select NOVA_CORE.
 
-Fix the config so that the PLL is configured correctly.
-
-Fixes: 9f0532da4226 ("clk: qcom: Add Camera Clock Controller driver for SM7150")
-Suggested-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251021-agera-pll-fixups-v1-2-8c1d8aff4afc@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cdeaeb9dd762 ("drm: nova-drm: add initial driver skeleton")
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Link: https://patch.msgid.link/20251028110058.340320-2-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm7150.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/nova/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/camcc-sm7150.c b/drivers/clk/qcom/camcc-sm7150.c
-index 4a3baf5d8e858..590548cac45bf 100644
---- a/drivers/clk/qcom/camcc-sm7150.c
-+++ b/drivers/clk/qcom/camcc-sm7150.c
-@@ -139,13 +139,9 @@ static struct clk_fixed_factor camcc_pll1_out_even = {
- /* 1920MHz configuration */
- static const struct alpha_pll_config camcc_pll2_config = {
- 	.l = 0x64,
--	.post_div_val = 0x3 << 8,
--	.post_div_mask = 0x3 << 8,
--	.early_output_mask = BIT(3),
--	.aux_output_mask = BIT(1),
--	.main_output_mask = BIT(0),
- 	.config_ctl_hi_val = 0x400003d6,
- 	.config_ctl_val = 0x20000954,
-+	.user_ctl_val = 0x0000030b,
- };
- 
- static struct clk_alpha_pll camcc_pll2 = {
+diff --git a/drivers/gpu/drm/nova/Kconfig b/drivers/gpu/drm/nova/Kconfig
+index cca6a3fea879b..bd1df08791911 100644
+--- a/drivers/gpu/drm/nova/Kconfig
++++ b/drivers/gpu/drm/nova/Kconfig
+@@ -4,6 +4,7 @@ config DRM_NOVA
+ 	depends on PCI
+ 	depends on RUST
+ 	select AUXILIARY_BUS
++	select NOVA_CORE
+ 	default n
+ 	help
+ 	  Choose this if you want to build the Nova DRM driver for Nvidia
 -- 
 2.51.0
 
