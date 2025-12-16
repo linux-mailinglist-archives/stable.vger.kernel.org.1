@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5474ACC325B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:20:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE40ACC26B3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5B0D300D336
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8EBC3056563
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAA135292F;
-	Tue, 16 Dec 2025 12:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1B834D3BD;
+	Tue, 16 Dec 2025 11:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmqRv+4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBFa5EaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6837C355042;
-	Tue, 16 Dec 2025 12:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5CC34D3BA;
+	Tue, 16 Dec 2025 11:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887272; cv=none; b=GErUv4U/2LIkMGwCcVlRy85dF+I1mM/lygv3E9TmUqLIlqSijczP86xt8103ZNMl5L2Q9qym6OiKWBHlxHeE2eQWgHesJTjij867w95i2dPwFjbY5c4eSXQHENf60vc8ZwX6dcYPsgwsd2vrYRz5vHojK1vWXix5l9TjbBLQG/w=
+	t=1765885325; cv=none; b=Yd4lGvi6AyZwjryyCKQ3JA5BumJ8UIqyfq3W5QBUk+5r4hBcjU/0vplo+nbSd1D9Y00JuiX83Lhl5AWLQ9hktZq20jgdVvtwSg9X4Sqon6K0FtL6cMFjLbiSFgjGr2nWryWIZj56Fj+qpNfXbGGv3+8MEMJ8pkkpgHa3heimVPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887272; c=relaxed/simple;
-	bh=pZf66ld3wWFYcdrBuenry/F/zj2AM6nzwXL1j7BdzTs=;
+	s=arc-20240116; t=1765885325; c=relaxed/simple;
+	bh=o8HvTvAQLHI8JH29givA4HbpScuBBQ8iLzuaCVgPUbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XStcpTZ3/rpOI1258z2uSqhHjYh/zKE39oSMNxrO6DUvNxK+dACK3J0a9p7pcjvWsypmA2evoRyes5aRoGQAHl7nbcAPPSWAS9dgXXG0P5KIYd3I634Mqpi2/OIU+kFf5z4b72XzxVvkJmzPdeF1eu/eaEYdFDi5XW8VxK5qVqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmqRv+4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64E5C4CEF1;
-	Tue, 16 Dec 2025 12:14:31 +0000 (UTC)
+	 MIME-Version; b=IMjiIdQnHfaQzbjRuYXBMmeGptk52NVDNAzXSOcQc5Dx5z97jHXjDOla1JSkxmInxSixFxnaqwr4AJu/MpQRjF8WFm6Z5Qj/QkmAg6DK6/HdjsM8hz6vBuopV273tafbGp6PiB4+HP1DGhiYhpHkbZErKEQNvQEx0vQDWNjMOY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBFa5EaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AB5C4CEF1;
+	Tue, 16 Dec 2025 11:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887272;
-	bh=pZf66ld3wWFYcdrBuenry/F/zj2AM6nzwXL1j7BdzTs=;
+	s=korg; t=1765885325;
+	bh=o8HvTvAQLHI8JH29givA4HbpScuBBQ8iLzuaCVgPUbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmqRv+4RKyXhyGC8KGkj2NMMLsK5ecZAn+Exg9QBe+ft6xwLpdAgGU6uC3KE3L8Kf
-	 3KcowEsOUDhqwpiUxmYAkXR5hSoRfzkOxLECOj8I+2uRWfAz78lb7v3Rs67wXWFhdN
-	 aVTMNfVq+sUSWBui5KZ5HrpLKFQD/mTVTl1C74Os=
+	b=xBFa5EaMINqfMFlETdavC5GaclmPACBATuYDG5+IgKiI90ZGq4DsXDI+YdDUnvDwd
+	 BDdO+FJH3I7K1+3X7aDgkcX/hFUfk0WV2rXFhOeEuJa8Rr3V1/17eRiEcBatS//6TG
+	 vZAGIiMm5bJ+4hU/E7yKEhhDEl4foyH/DG3KW698=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 180/614] power: supply: max17040: Check iio_read_channel_processed() return code
+Subject: [PATCH 6.17 106/507] arm64: dts: qcom: qcm2290: Fix camss register prop ordering
 Date: Tue, 16 Dec 2025 12:09:07 +0100
-Message-ID: <20251216111407.894704650@linuxfoundation.org>
+Message-ID: <20251216111349.377506569@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 2c68ac48c52ad146523f32b01d70009622bf81aa ]
+[ Upstream commit 67445dc8a8060309eeb7aebbc41fa0e58302fc09 ]
 
-Since iio_read_channel_processed() may fail, return its exit code on error.
+The qcm2290 CAMSS node has been applied from the V4 series, but a later
+version changed the order of the register property, fix it to prevent
+dtb check error.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 814755c48f8b ("power: max17040: get thermal data from adc if available")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251008133648.559286-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 2b3aef30dd9d ("arm64: dts: qcom: qcm2290: Add CAMSS node")
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250918155456.1158691-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max17040_battery.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/qcm2290.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/power/supply/max17040_battery.c b/drivers/power/supply/max17040_battery.c
-index c1640bc6accd2..48453508688a4 100644
---- a/drivers/power/supply/max17040_battery.c
-+++ b/drivers/power/supply/max17040_battery.c
-@@ -388,6 +388,7 @@ static int max17040_get_property(struct power_supply *psy,
- 			    union power_supply_propval *val)
- {
- 	struct max17040_chip *chip = power_supply_get_drvdata(psy);
-+	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+index 4613713124f77..7705ef6ebea12 100644
+--- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+@@ -1679,25 +1679,25 @@ cci_i2c1: i2c-bus@1 {
+ 			};
+ 		};
  
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_ONLINE:
-@@ -410,7 +411,10 @@ static int max17040_get_property(struct power_supply *psy,
- 		if (!chip->channel_temp)
- 			return -ENODATA;
+-		camss: camss@5c6e000 {
++		camss: camss@5c11000 {
+ 			compatible = "qcom,qcm2290-camss";
  
--		iio_read_channel_processed(chip->channel_temp, &val->intval);
-+		ret = iio_read_channel_processed(chip->channel_temp, &val->intval);
-+		if (ret)
-+			return ret;
-+
- 		val->intval /= 100; /* Convert from milli- to deci-degree */
+-			reg = <0x0 0x5c6e000 0x0 0x1000>,
++			reg = <0x0 0x5c11000 0x0 0x1000>,
++			      <0x0 0x5c6e000 0x0 0x1000>,
+ 			      <0x0 0x5c75000 0x0 0x1000>,
+ 			      <0x0 0x5c52000 0x0 0x1000>,
+ 			      <0x0 0x5c53000 0x0 0x1000>,
+ 			      <0x0 0x5c66000 0x0 0x400>,
+ 			      <0x0 0x5c68000 0x0 0x400>,
+-			      <0x0 0x5c11000 0x0 0x1000>,
+ 			      <0x0 0x5c6f000 0x0 0x4000>,
+ 			      <0x0 0x5c76000 0x0 0x4000>;
+-			reg-names = "csid0",
++			reg-names = "top",
++				    "csid0",
+ 				    "csid1",
+ 				    "csiphy0",
+ 				    "csiphy1",
+ 				    "csitpg0",
+ 				    "csitpg1",
+-				    "top",
+ 				    "vfe0",
+ 				    "vfe1";
  
- 		break;
 -- 
 2.51.0
 
