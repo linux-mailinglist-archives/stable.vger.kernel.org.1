@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6655CC2CB8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6024BCC4612
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9F5031527E5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14F7A30322B9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0453659ED;
-	Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1890B34B1AC;
+	Tue, 16 Dec 2025 11:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ4MaIlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8g4vicW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C20749C;
-	Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C715234B197;
+	Tue, 16 Dec 2025 11:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887185; cv=none; b=rg6/CSQwlcO5Wt9UYY2OrZHwm8NlyAtoVrsy6VEA++UXaT/8yHqT0Ajn9ip9rZQJmKZJ95txpPq0rpzGgWJkltZtN4Sc5WAqXP3nKGoIJMdV4AF0N60GX/pHOCzbpTbCZ8GHN99IeVF7KfesoaScpS8va2dZR02PqUjeyMr9ysE=
+	t=1765885235; cv=none; b=BSXFZ1BHIg34VN5kQkSULLPlkLAF5qmB3Cg0VPBDhjKlAIq60CFGMn4hFWHt0gwm/WpOpt0YdNjpeFDzqjY3+DoW4K4I9BWxXJGEOzguO5bWQYgUuNU5EEfHJcm4HNTij1Z1jv9MbiAJXVGDZ3Jd6EsYRuArLEEhocRU/hbO7/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887185; c=relaxed/simple;
-	bh=apt+mGEHvPBCCag+/kTv3DChvCf/i6wi1/4Kr3EBP8Y=;
+	s=arc-20240116; t=1765885235; c=relaxed/simple;
+	bh=W+y4C1srKr9Cq/KjFjV3P0FGiUiRkXCYhYazVkek7/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGe1HVvgmrrcADNAdpD+Er4/SEhC0wkzXNmYSxmRWZJnIANImpcFmO773BBlrWXuJUCQG3Jrxw56ap3b0eAdizMcmtai9ktCiSqHXG4bAy6kbZznqwFqDY5F1vDckSqyV0k01XOKx0oG7kVpqQ2mrLYyxonuPApEmwJ+OqPr2/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ4MaIlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1826C4CEF1;
-	Tue, 16 Dec 2025 12:13:04 +0000 (UTC)
+	 MIME-Version; b=rjgU6Iqc5vYoZp3e1Ubjy8clO/TU8XHuiJKbsdq/LJ3snMbVYz6bWnJ5jrDzUG/+uPrN0O+p2dojviAQOtusMgfvS0fHohRtXSFUD4uPypemMd9M94JNWNTmZC1Aoy4Y6haO4XXVVbrglBQI7X3FxvfrAgwzedwmRdgG6sMUMvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8g4vicW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2991FC16AAE;
+	Tue, 16 Dec 2025 11:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887185;
-	bh=apt+mGEHvPBCCag+/kTv3DChvCf/i6wi1/4Kr3EBP8Y=;
+	s=korg; t=1765885235;
+	bh=W+y4C1srKr9Cq/KjFjV3P0FGiUiRkXCYhYazVkek7/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZ4MaIljLqT+yxuo20zbjOYX4cuGOXi/Zaj3eF9FeN59L/pgw5+bkUkpkTpLx6MGJ
-	 VU2AbCzNbq9klqS6h2ePSdXz8A3oGagM6AH+9k6JnCGfMZInSdgwkafYWskFduWslS
-	 lsrLqxBJBn+lI4ree8CI4I8YQQxqyMWZX0LpEYmU=
+	b=H8g4vicWE7sD7XoRPihlsld3U/aNPO27wflAJgvNC0rSQysgX758EL7HtpgO+Bdkh
+	 Q96yXGvfRbkDUF2ofba+hOWHcCT6Qs7YoSlBvnaO18O6RdL9bREVFSQtCrvZMaQVyh
+	 SzMUojkymHwg+T+Mj8Q47pY6U1bfxs51U0GHn0pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 152/614] accel/ivpu: Fix race condition when unbinding BOs
-Date: Tue, 16 Dec 2025 12:08:39 +0100
-Message-ID: <20251216111406.841662090@linuxfoundation.org>
+Subject: [PATCH 6.17 079/507] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
+Date: Tue, 16 Dec 2025 12:08:40 +0100
+Message-ID: <20251216111348.404321946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 00812636df370bedf4e44a0c81b86ea96bca8628 ]
+[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
 
-Fix 'Memory manager not clean during takedown' warning that occurs
-when ivpu_gem_bo_free() removes the BO from the BOs list before it
-gets unmapped. Then file_priv_unbind() triggers a warning in
-drm_mm_takedown() during context teardown.
+Use check_add_overflow() to guard against potential integer overflows
+when adding the binary blob lengths and the size of an asymmetric_key_id
+structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
+possible buffer overflow when copying data from potentially malicious
+X.509 certificate fields that can be arbitrarily large, such as ASN.1
+INTEGER serial numbers, issuer names, etc.
 
-Protect the unmapping sequence with bo_list_lock to ensure the BO is
-always fully unmapped when removed from the list. This ensures the BO
-is either fully unmapped at context teardown time or present on the
-list and unmapped by file_priv_unbind().
-
-Fixes: 48aea7f2a2ef ("accel/ivpu: Fix locking in ivpu_bo_remove_all_bos_from_context()")
-Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/20251029071451.184243-1-karol.wachowski@linux.intel.com
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index a38e41f9c7123..fda0a18e6d639 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -314,7 +314,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
- 
- 	mutex_lock(&vdev->bo_list_lock);
- 	list_del(&bo->bo_list_node);
--	mutex_unlock(&vdev->bo_list_lock);
- 
- 	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
- 		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-@@ -325,6 +324,8 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
- 	ivpu_bo_unbind_locked(bo);
- 	ivpu_bo_unlock(bo);
- 
-+	mutex_unlock(&vdev->bo_list_lock);
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index ba2d9d1ea235a..348966ea2175c 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -141,12 +142,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
+ {
+ 	struct asymmetric_key_id *kid;
+-
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	size_t kid_sz;
++	size_t len;
 +
- 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
- 	drm_WARN_ON(&vdev->drm, bo->ctx);
- 
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(kid_sz, GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
 2.51.0
 
