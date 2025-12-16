@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54689CC2CD4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EECA5CC34EF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:44:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 429FD30231A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EB3B30D12A8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6983634E761;
-	Tue, 16 Dec 2025 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011D4352934;
+	Tue, 16 Dec 2025 11:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES2XsV+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+KCiMkM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2339734DB4B;
-	Tue, 16 Dec 2025 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D02352926;
+	Tue, 16 Dec 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887840; cv=none; b=XtH+Mwrvey+42Ro8jv0zSPB6OpHVE8cBSD6mRnHR6+HCjxagDPBKdwPD3+uAhBhFzZ6GRZnwUiXRZDZ1gN6BiPHnKFNMgqkEjz0g7yBqCOAHx2FKq9QaSecSHolw+jjHJIg86w7Jovun6xbUD+6GngDWIuhqK6UKmADLrrlqCIg=
+	t=1765885763; cv=none; b=CJAKW0JdiBnjIt3cT0DzEKWW+gPRrcJoRYtBBsCKMEKO3+GZ6yo38HcPGdrLe/FM46i/w99UiAeAdISLDi1hl7r14XtamOtotR06lmfhOaYSRE8BTu9VFKJz869IB9lqJvVtjqG5E9wxcDZpjkherik6vvPNP8Lzuezn2GUBnx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887840; c=relaxed/simple;
-	bh=sEIZgSgInW4ErWYpQfbHmZKvlmBmdoGEScBr4pw1QLU=;
+	s=arc-20240116; t=1765885763; c=relaxed/simple;
+	bh=GsVXgOcazjaJcff6x9/KM5NPGCiiEw/U2RiUFta+SdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhQZWSLqkt1VYqctXgLbW39XWfa95IBGusAaIC4uzqEgZJbHr2zbwZYkB+NnBz4OiE2u5gcpKiKoFaRSoXnhPrUC5y6vzuQGzIutWAZNL2znErErZOsNxIsZKeaORK8YeaKUMmnPnlyeAta9zgpgsasb5iU76TCEFCZu+Tv4juo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES2XsV+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB87C4CEF1;
-	Tue, 16 Dec 2025 12:23:59 +0000 (UTC)
+	 MIME-Version; b=VhPYZBSBneIIaJbkH3C+CknFV3IZVQ6422CoY3Fd6/Llj3ZrFakt2bF4/EoNXCTVGm13IPsNwYxzL9s7Wj3zIaJgdjwVDe3JwTibEJ4tyIG2uqMXuVaw6iI+ApsjOmTyW7V/xHRJZdO4A4UTcbA4j7SM2fnE3UBkY70sN4J75wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+KCiMkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AF8C4CEF1;
+	Tue, 16 Dec 2025 11:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887840;
-	bh=sEIZgSgInW4ErWYpQfbHmZKvlmBmdoGEScBr4pw1QLU=;
+	s=korg; t=1765885763;
+	bh=GsVXgOcazjaJcff6x9/KM5NPGCiiEw/U2RiUFta+SdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ES2XsV+jRofHv46rSWNLqRoXnlxvF7Caxgg4DoXKvdbnBdR/CZgo+8P7+gyi7azdd
-	 DZTFNTuR8GIrSgQE8lEtYeNHAjwDYHuW+eiIwdk8m98wk+gfXf6a3ActntLx9ipN85
-	 8hZq/DAo0lZFd3wdq+EA/jo85lMwZm6Cihw9Njc0=
+	b=x+KCiMkMZQXNO+OPXDfvEmL4+A7aGsyHchDxaN1X8u0RZnt80zahWRIHAKauhEzqd
+	 QYOcNd9RzvraKNnNFdXlt/mlE6mi+MMdOdUuyfClC6S1RX8+CeniX+y4bvSztGuDJR
+	 FE2oric6bAiHZ+EdcbqUXSGzzvqK4zgdfty6x8Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Bruel <christian.bruel@foss.st.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 310/614] PCI: stm32: Fix LTSSM EP race with start link
+Subject: [PATCH 6.17 236/507] crypto: iaa - Fix incorrect return value in save_iaa_wq()
 Date: Tue, 16 Dec 2025 12:11:17 +0100
-Message-ID: <20251216111412.600390521@linuxfoundation.org>
+Message-ID: <20251216111354.050170330@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Bruel <christian.bruel@foss.st.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit fa81d6099007728cae39c6f937d83903bbddab5e ]
+[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
 
-If the host has deasserted PERST# and started link training before the link
-is started on EP side, enabling LTSSM before the endpoint registers are
-initialized in the perst_irq handler results in probing incorrect values.
+The save_iaa_wq() function unconditionally returns 0, even when an error
+is encountered. This prevents the error code from being propagated to the
+caller.
 
-Thus, wait for the PERST# level-triggered interrupt to start link training
-at the end of initialization and cleanup the stm32_pcie_[start stop]_link
-functions.
+Fix this by returning the 'ret' variable, which holds the actual status
+of the operations within the function.
 
-Fixes: 151f3d29baf4 ("PCI: stm32-ep: Add PCIe Endpoint support for STM32MP25")
-Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
-[mani: added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: wrap line]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251114-perst_ep-v1-1-e7976317a890@foss.st.com
+Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-stm32-ep.c | 39 +++++-----------------
- 1 file changed, 8 insertions(+), 31 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-stm32-ep.c b/drivers/pci/controller/dwc/pcie-stm32-ep.c
-index 3400c7cd2d88a..faa6433a784f3 100644
---- a/drivers/pci/controller/dwc/pcie-stm32-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-stm32-ep.c
-@@ -37,36 +37,9 @@ static void stm32_pcie_ep_init(struct dw_pcie_ep *ep)
- 		dw_pcie_ep_reset_bar(pci, bar);
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 23f585219fb4b..d0058757b0000 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -805,7 +805,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 	if (!cpus_per_iaa)
+ 		cpus_per_iaa = 1;
+ out:
+-	return 0;
++	return ret;
  }
  
--static int stm32_pcie_enable_link(struct dw_pcie *pci)
--{
--	struct stm32_pcie *stm32_pcie = to_stm32_pcie(pci);
--
--	regmap_update_bits(stm32_pcie->regmap, SYSCFG_PCIECR,
--			   STM32MP25_PCIECR_LTSSM_EN,
--			   STM32MP25_PCIECR_LTSSM_EN);
--
--	return dw_pcie_wait_for_link(pci);
--}
--
--static void stm32_pcie_disable_link(struct dw_pcie *pci)
--{
--	struct stm32_pcie *stm32_pcie = to_stm32_pcie(pci);
--
--	regmap_update_bits(stm32_pcie->regmap, SYSCFG_PCIECR, STM32MP25_PCIECR_LTSSM_EN, 0);
--}
--
- static int stm32_pcie_start_link(struct dw_pcie *pci)
- {
- 	struct stm32_pcie *stm32_pcie = to_stm32_pcie(pci);
--	int ret;
--
--	dev_dbg(pci->dev, "Enable link\n");
--
--	ret = stm32_pcie_enable_link(pci);
--	if (ret) {
--		dev_err(pci->dev, "PCIe cannot establish link: %d\n", ret);
--		return ret;
--	}
- 
- 	enable_irq(stm32_pcie->perst_irq);
- 
-@@ -77,11 +50,7 @@ static void stm32_pcie_stop_link(struct dw_pcie *pci)
- {
- 	struct stm32_pcie *stm32_pcie = to_stm32_pcie(pci);
- 
--	dev_dbg(pci->dev, "Disable link\n");
--
- 	disable_irq(stm32_pcie->perst_irq);
--
--	stm32_pcie_disable_link(pci);
- }
- 
- static int stm32_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
-@@ -152,6 +121,9 @@ static void stm32_pcie_perst_assert(struct dw_pcie *pci)
- 
- 	dev_dbg(dev, "PERST asserted by host\n");
- 
-+	regmap_update_bits(stm32_pcie->regmap, SYSCFG_PCIECR,
-+			   STM32MP25_PCIECR_LTSSM_EN, 0);
-+
- 	pci_epc_deinit_notify(ep->epc);
- 
- 	stm32_pcie_disable_resources(stm32_pcie);
-@@ -192,6 +164,11 @@ static void stm32_pcie_perst_deassert(struct dw_pcie *pci)
- 
- 	pci_epc_init_notify(ep->epc);
- 
-+	/* Enable link training */
-+	regmap_update_bits(stm32_pcie->regmap, SYSCFG_PCIECR,
-+			   STM32MP25_PCIECR_LTSSM_EN,
-+			   STM32MP25_PCIECR_LTSSM_EN);
-+
- 	return;
- 
- err_disable_resources:
+ static void remove_iaa_wq(struct idxd_wq *wq)
 -- 
 2.51.0
 
