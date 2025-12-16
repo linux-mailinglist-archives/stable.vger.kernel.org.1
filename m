@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E53CC2379
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B67CC2944
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A55B73058E50
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78526301A702
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CF4341645;
-	Tue, 16 Dec 2025 11:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED26350D6D;
+	Tue, 16 Dec 2025 11:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmuiSRvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tTifjcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3485313E13;
-	Tue, 16 Dec 2025 11:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784B0350D65;
+	Tue, 16 Dec 2025 11:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884264; cv=none; b=qE4DHauyRavu47HK4mpazo/wlrLntVYWsGQayNuKyXx8201f6esq8g7bcv4KFuxTi49/AMCvjo18rjVTakIRiVZ+52TgoY6LktARdPzagK5H3seYLKzYnHOLMzwgsoyeZnw+ccm06BMEWs0wUriBOqhvFWpS9AIXQdTAfsWuu+k=
+	t=1765885753; cv=none; b=Th8MxuQzcIL/Pyjpa4CjT3Gg5x5LZd0b/GmtLrrrks8w03algFKIwQl5PUtOoiVRoDMKFnB+Ppi0LY7inFsCZ/kclRdQ1So55/1zJW09K+VS7eOWTjBOAzzMVu8lQBO19j3p9iTURqNedzvLGIU0VsHyXD2iXqvaGrbKZv7EAXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884264; c=relaxed/simple;
-	bh=ojWLpQ83jMabkdQLt3S63K598NmSZL1k2qJUDdE66dY=;
+	s=arc-20240116; t=1765885753; c=relaxed/simple;
+	bh=ry2mr99gsat+cWJBp5jTy6Mu+0gwTBBYYGkDb2LUX20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgLwc2Gh60q0kxaa2gDdtOAo0jYoPfdobg1Ib+qbLGf6ha1PCl9mvZmKvSvGuWm59XF9zj8rmhioljYoLyih+frjupmo6T3oQ4ExK7dwEU0zn2RLSfk1xEK0QbwotLQ2WiGaKtMX1Imq1Z2JhRNkwYhbtL4pIGM1z0DgOiYQyxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmuiSRvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE559C4CEF1;
-	Tue, 16 Dec 2025 11:24:23 +0000 (UTC)
+	 MIME-Version; b=TT+Bz8vzM0vJXVBD2qn/q++0NeGFKsrRtVfB2Z4LGMkcMDmJRqwGSsGY/k7Kaa3RPcQseEEnaqT3ThkTwfzr5AFZB1aNY1uk8Swn6qq9PSLV72R4eOGLVbWNhjDsn8BT1ODkkPz+olqBjbcyIixyUaFCOz6KJwaSEDWBq0SzIVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tTifjcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017DCC4CEF1;
+	Tue, 16 Dec 2025 11:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884264;
-	bh=ojWLpQ83jMabkdQLt3S63K598NmSZL1k2qJUDdE66dY=;
+	s=korg; t=1765885753;
+	bh=ry2mr99gsat+cWJBp5jTy6Mu+0gwTBBYYGkDb2LUX20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmuiSRvmnfWrKp4cJmpZ3nKSFoYTU3lzOcwTOEoTnf2oGswvLRtrrZbyQ4IZ3Z8QZ
-	 GGTnW2wx2VHlJr4pnuLBaWuP1sRtzhOLLRZOlqAS3N/5YhQ5/+nXl/nCMAwW+O51sB
-	 q6DfKaGT4F7SNqRQ/15DuBn6yw2LThNoEZmJRweM=
+	b=1tTifjcK5NrRLDoFXwblVPgY+1JYSNV7bDq77WfbaUDXkyP+gOh2/lSDmiPp4XuAF
+	 OrVTiVxmw2noDcdgBvvRJksEVjviriz29cqpdUz4KVeuU+tqNgsV/hwj4L2BEPAEG5
+	 n18KyiNGkQ4TMGKDKDf+GqbhP1S+tqefwpL2iSZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/354] power: supply: wm831x: Check wm831x_set_bits() return value
+Subject: [PATCH 6.17 234/507] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 5A
 Date: Tue, 16 Dec 2025 12:11:15 +0100
-Message-ID: <20251216111324.832571577@linuxfoundation.org>
+Message-ID: <20251216111353.978911066@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
+[ Upstream commit 3069ff1930aa71e125874c780ffaa6caeda5800a ]
 
-Since wm831x_set_bits() may return error, log failure and exit from
-wm831x_usb_limit_change() in such case.
+The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 5A is
+vcc_3v3_pmu, which is routed to vcc_3v3_s3 via a zero-ohm resistor. [1]
+Describe this supply.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[1] https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.4, p.19
 
-Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-3-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/wm831x_power.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
-index d56e499ac59fb..10f3ecf5af72f 100644
---- a/drivers/power/supply/wm831x_power.c
-+++ b/drivers/power/supply/wm831x_power.c
-@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 							 struct wm831x_power,
- 							 usb_notify);
- 	unsigned int i, best;
-+	int ret;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index 53df90b0eed16..6ed8b15e6cdfd 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -226,6 +226,7 @@ eeprom: eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		vcc-supply = <&vcc_3v3_pmu>;
+ 	};
+ };
  
- 	/* Find the highest supported limit */
- 	best = 0;
-@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 	dev_dbg(wm831x_power->wm831x->dev,
- 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+@@ -593,7 +594,7 @@ regulator-state-mem {
+ 				};
+ 			};
  
--	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
--		        WM831X_USB_ILIM_MASK, best);
-+	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
-+			      WM831X_USB_ILIM_MASK, best);
-+	if (ret < 0) {
-+		dev_err(wm831x_power->wm831x->dev,
-+			"Failed to set USB current limit: %d\n", ret);
-+		return ret;
-+	}
- 
- 	return 0;
- }
+-			vcc_3v3_s3: dcdc-reg8 {
++			vcc_3v3_pmu: vcc_3v3_s3: dcdc-reg8 {
+ 				regulator-name = "vcc_3v3_s3";
+ 				regulator-always-on;
+ 				regulator-boot-on;
 -- 
 2.51.0
 
