@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14668CC233A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58490CC279D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 094683011194
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 498EE302517B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CD3341AD6;
-	Tue, 16 Dec 2025 11:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E196D355027;
+	Tue, 16 Dec 2025 11:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmwLURFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHNGUvB/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348D32BF22;
-	Tue, 16 Dec 2025 11:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D41E355029;
+	Tue, 16 Dec 2025 11:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884242; cv=none; b=kOuNiQBdQgXKQu1bvlgJtbcqVm9KemwN05DF6JHVkWU1U4mS9ez0F0r3cF+ZiVrPAXas5e07y7GFxhr5+Sz0/D1/oTZYiRjYG8LxXmMplf+uGkXqpf+RpMg4jlR2upnq4DfgIn2jlWRbieFuR6jVCKJeX7HG5SxVd2V9TidyNFI=
+	t=1765885837; cv=none; b=YMIgjwiYAXK1Pl6eyeSZ1SmIuWfFTSu+J6v5TVb8z6qDZu0Jdw37viQLQ9t10AvxIVRTQ/2dbxLb0MF597YkDa3zr81k5YnwVbtjqwfb1HA6rEGQEad57RcFTMIAF1EUpOymzlIWN9cqHkaHqnTYYQCzNA+5zBvZZF4EPej3Mcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884242; c=relaxed/simple;
-	bh=vQCMLM88mqKwxJDXWeS0ryxOZy7iVh+5O6yiyrEIOGM=;
+	s=arc-20240116; t=1765885837; c=relaxed/simple;
+	bh=VmyFyjD9lrbuDlYD8A99+8O4b0FCNYalAEXOGWdnxV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nksP88aQmCAyNKkSecDptv5Fq3tGX8ruGCM88i/R5+oIVjqOWWxx1tfRIzV7NbJUaktAiIUMKfRZMFI8+bA7kaefhoB00h4tfdG2Obm1zUjVC45lSvMMZLvGrBkwMck+GJ+Gu8rW7PoaCjc1MxbMhKfUB8lxjwdBDl8JxCnSmLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmwLURFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F963C4CEF1;
-	Tue, 16 Dec 2025 11:24:01 +0000 (UTC)
+	 MIME-Version; b=CeiR5EJxZ3JVCOt0gqAS8zMqV8uiw3C+Eg+v7UNfXIu/tHtDbIClxEmFd7tiLcN6W+N/YR6pc1zLkFdvvLBfUgVy0/m3FVLdL9bWo9uVocvrrSMq3nH19lhFN2lgl59BYdYVUdvDe7wYMJKJpQVy/ui6r5xpTP98BdkKp3wW4H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHNGUvB/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB055C4CEF1;
+	Tue, 16 Dec 2025 11:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884242;
-	bh=vQCMLM88mqKwxJDXWeS0ryxOZy7iVh+5O6yiyrEIOGM=;
+	s=korg; t=1765885837;
+	bh=VmyFyjD9lrbuDlYD8A99+8O4b0FCNYalAEXOGWdnxV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EmwLURFxVFqVmi0YLUPxlSL4NMAWcCr24gR2YIse9Tq0vP9oKqAUyH1ea44Z5hvGz
-	 P0L2Hi2m7w5rmaoABVTzFvOvNugvztwdLv6TrTWOXViHnMC72OAGpTfQmtE5/wCZXZ
-	 Dp27bNEBZFuFQ1XjsOAoMUpSSNyrtcSfygxQeFJ0=
+	b=iHNGUvB/beVc1xn72g/j+qWc5tlUJMmtyouf5zKsUO/KxfjCKwFdZB/WbUEG4Jg4w
+	 /8fNuXVzqywCrqsdd6BwdrQ6+IPUEQipiU0OWA6iX2B4hIBZYfQugJ/DmAfcaj0g7W
+	 Zat33atM1LtTHlpNI4tby9nxJl/UFwJ2rxYNvyrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Huiwen He <hehuiwen@kylinos.cn>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/354] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
-Date: Tue, 16 Dec 2025 12:11:40 +0100
-Message-ID: <20251216111325.739156982@linuxfoundation.org>
+Subject: [PATCH 6.17 260/507] drm/msm: fix missing NULL check after kcalloc in crashstate_get_bos()
+Date: Tue, 16 Dec 2025 12:11:41 +0100
+Message-ID: <20251216111354.908699523@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
+[ Upstream commit 3065e6a4d3594b42dae6176b3e2c0c3563cf94b8 ]
 
-Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
-have region for DWC controllers as it has the Root Port and controller
-specific registers, while ELBI has optional registers.
+The crashstate_get_bos() function allocates memory for `state->bos`
+using kcalloc(), but the vmbind path does not check for allocation
+failure before dereferencing it in the following drm_gpuvm_for_each_va()
+loop. This could lead to a NULL pointer dereference if memory allocation
+fails.
 
-Hence, fix the binding. Though this is an ABI break, this change is needed
-to accurately describe the PCI memory map.
+Fix this by wrapping the drm_gpuvm_for_each_va() loop with a NULL check
+on state->bos, similar to the safety check in the non-vmbind path.
 
-Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
+Fixes: af9aa6f316b3d ("drm/msm: Crashdump support for sparse")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Patchwork: https://patchwork.freedesktop.org/patch/687556/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_gpu.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-index 79a21ba0f9fd6..c8258ef403283 100644
---- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-@@ -36,13 +36,13 @@ properties:
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index 8f933c1fe4bfa..d5f8df3110cef 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -287,16 +287,17 @@ static void crashstate_get_bos(struct msm_gpu_state *state, struct msm_gem_submi
  
-   reg:
-     items:
--      - description: External local bus interface registers
-+      - description: Data Bus Interface registers
-       - description: Meson designed configuration registers
-       - description: PCIe configuration space
+ 		state->bos = kcalloc(cnt, sizeof(struct msm_gpu_state_bo), GFP_KERNEL);
  
-   reg-names:
-     items:
--      - const: elbi
-+      - const: dbi
-       - const: cfg
-       - const: config
+-		drm_gpuvm_for_each_va (vma, submit->vm) {
+-			bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
++		if (state->bos)
++			drm_gpuvm_for_each_va(vma, submit->vm) {
++				bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
  
-@@ -113,7 +113,7 @@ examples:
-     pcie: pcie@f9800000 {
-         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
-         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
--        reg-names = "elbi", "cfg", "config";
-+        reg-names = "dbi", "cfg", "config";
-         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
-         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
-         clock-names = "pclk", "port", "general";
+-			/* Skip MAP_NULL/PRR VMAs: */
+-			if (!vma->gem.obj)
+-				continue;
++				/* Skip MAP_NULL/PRR VMAs: */
++				if (!vma->gem.obj)
++					continue;
+ 
+-			msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
+-						  dump, vma->gem.offset, vma->va.range);
+-		}
++				msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
++							  dump, vma->gem.offset, vma->va.range);
++			}
+ 
+ 		drm_exec_fini(&exec);
+ 	} else {
 -- 
 2.51.0
 
