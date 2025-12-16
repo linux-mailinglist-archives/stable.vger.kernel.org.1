@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0158CC2806
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5160FCC31C7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA1793081022
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DADF830BC05E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8B935503C;
-	Tue, 16 Dec 2025 11:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FAF350A25;
+	Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZeqtYME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZm/4V7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1235502D;
-	Tue, 16 Dec 2025 11:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ECB350A0F;
+	Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885943; cv=none; b=SVNpx126B/eu3NNXDKNDfZdYzO9PC4XMY8MBfcXXeeHOWwOUuZBXY9FPpL67eZ2oqzk3us9ij9BKwjsS65ALQ60c9n4twtzYem7jagUpimax5hVOtTlNkLl5Y1f1a4o+nUVcX7bIJEeA1kKj9JVJhwuR48B8Z1yU3wApCZBkfdk=
+	t=1765887875; cv=none; b=Y6Bb0KuNvnEbdm93RalaA38HGTWYKTq2v2iWXU8nzJzmHmssIPsooPyqePA24YeaQKNxCaTUJHkA0aE1PRcR6w8bgEk18JPUjEceLsNcnbgnHqYqhJ8pCgks53z5UfCVnJEmkHtFM5iUAT6FhIn6RSl+oqyIvWNKhw1rfDZsuP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885943; c=relaxed/simple;
-	bh=FJwYzxF4VITM+N826QmRESTMcK0rJQuODIkU4AgVegE=;
+	s=arc-20240116; t=1765887875; c=relaxed/simple;
+	bh=lorCw/3s+Bhp4e9mDRVcb0SIdZCs9U0QTPLlstgh39I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1Wgz7RKkAgSjZFh3fWhNLCGUNa8uyc08n1udSvJeILUsuZwaABg9hUF4AFkCT6tICGHWqD3a5b/bMn1nOvaIxwZuoBSSyU5I7uaGwssmmVuySs1fGDmdlRTcdnfc5JcDCRR89bBB09bRJTTnySWNRfq1bDaUFNnaADCftC66rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZeqtYME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1675FC4CEF1;
-	Tue, 16 Dec 2025 11:52:21 +0000 (UTC)
+	 MIME-Version; b=WbQdn44yRP9/G51JbhsYSOpILgLipI67MjmdaUssZuj02pSF2z5hqM05a+ZQ/kHBfbPGnaKzWTZYJx22DgCoePFtx63oO6ZiP0CPHsIWL3fPkWWC8K6aw4mJA/GFr15jzE1nvy10LTnCNRs5KeB/Kf/sbWVwMNTgmYLWSFFqeV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZm/4V7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13110C16AAE;
+	Tue, 16 Dec 2025 12:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885942;
-	bh=FJwYzxF4VITM+N826QmRESTMcK0rJQuODIkU4AgVegE=;
+	s=korg; t=1765887875;
+	bh=lorCw/3s+Bhp4e9mDRVcb0SIdZCs9U0QTPLlstgh39I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZeqtYMELgaTJF3ntkfY2jwDeUttS/UaBrHFinzF+MEI//DEZBEBtaQFpoHcXwyqY
-	 EVg9RAQ0ayCISC35b3Tc3UbjHapccNZU6SueggHzPKrWxx3PDmFANSRk+OWcxy4MzW
-	 2Vjfdiqo2U1CCKG2pCEh4N1X6N+04UJaeVkzu9Is=
+	b=oZm/4V7i+F8oYd1FV8liEASGazsgxjGk62pEf+WyLCsjy5n61jyyRVmRYv1R0XdT+
+	 IVmPJvstJZGBk+QjpHa4Ukppq2oaEUbipiZOazCE4JYwTnNAQTQEZyKeHWkrSpQNL/
+	 6tshevrHqtjsXuA0S5n+UfYjLndDxIyOj4cVz2hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 291/507] phy: rockchip: naneng-combphy: Fix PCIe L1ss support RK3562
+Subject: [PATCH 6.18 365/614] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
 Date: Tue, 16 Dec 2025 12:12:12 +0100
-Message-ID: <20251216111356.019073080@linuxfoundation.org>
+Message-ID: <20251216111414.584790667@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit be866e68966d20bcc4a73708093d577176f99c0c ]
+[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
 
-When PCIe link enters L1 PM substates, the PHY will turn off its
-PLL for power-saving. However, it turns off the PLL too fast which
-leads the PHY to be broken. According to the PHY document, we need
-to delay PLL turnoff time.
+The previous commit removed the PAGE_SIZE limit on transfer length of
+raw_io buffer in order to avoid any problems with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length. However
+this also removes the upperbound on user supplied length, allowing very
+large values to be passed to the allocator.
 
-Fixes: f13bff25161b ("phy: rockchip-naneng-combo: Support rk3562")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/1763459526-35004-2-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+syzbot on fuzzing the transfer length with very large value (1.81GB)
+results in kmalloc() to fall back to the page allocator, which triggers
+a kernel warning as the page allocator cannot handle allocations more
+than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+
+Since there is no limit imposed on the size of buffer for both control
+and non control transfers, cap the raw_io transfer length to
+KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
+prevent any warnings from the page allocator.
+
+Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index ce84166cd7725..6d69288693952 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -64,6 +64,10 @@
- #define RK3568_PHYREG18				0x44
- #define RK3568_PHYREG18_PLL_LOOP		0x32
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index b71680c58de6c..46f343ba48b3d 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
  
-+#define RK3568_PHYREG30				0x74
-+#define RK3568_PHYREG30_GATE_TX_PCK_SEL         BIT(7)
-+#define RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF BIT(7)
-+
- #define RK3568_PHYREG32				0x7C
- #define RK3568_PHYREG32_SSC_MASK		GENMASK(7, 4)
- #define RK3568_PHYREG32_SSC_DIR_MASK		GENMASK(5, 4)
-@@ -474,6 +478,10 @@ static int rk3562_combphy_cfg(struct rockchip_combphy_priv *priv)
- 	case REF_CLOCK_100MHz:
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_100m, true);
- 		if (priv->type == PHY_TYPE_PCIE) {
-+			/* Gate_tx_pck_sel length select for L1ss support */
-+			rockchip_combphy_updatel(priv, RK3568_PHYREG30_GATE_TX_PCK_SEL,
-+						 RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF,
-+						 RK3568_PHYREG30);
- 			/* PLL KVCO tuning fine */
- 			val = FIELD_PREP(RK3568_PHYREG33_PLL_KVCO_MASK,
- 					 RK3568_PHYREG33_PLL_KVCO_VALUE);
+ static DEFINE_IDA(driver_id_numbers);
+ #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
++#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
+ 
+ #define RAW_EVENT_QUEUE_SIZE	16
+ 
+@@ -667,6 +668,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > USB_RAW_IO_LENGTH_MAX)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 -- 
 2.51.0
 
