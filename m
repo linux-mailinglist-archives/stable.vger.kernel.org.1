@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91235CC4A01
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:18:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1CACC29CF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D72BD3016F90
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EEB13005F0B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4ED376BE1;
-	Tue, 16 Dec 2025 12:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F355341069;
+	Tue, 16 Dec 2025 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSDQ4l+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV5O6eaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F7C376BD7;
-	Tue, 16 Dec 2025 12:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C733A6F4;
+	Tue, 16 Dec 2025 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888072; cv=none; b=utY0VxUM/oEnTxn7go0Y+OLzVi8Qcc7FId+JaHtrM0YCWlMQLxPgbK2FwHWKnEA96swxK98E/8jSKnuMNOUqwuwecBZ1Jh+aZlZDz6QrnR08XCZl7De9FaSv7AHugze0+8x3JqKnoaS+Y8I4BNLlTnb/Ae/ZHfDHl8q0xGwy5PM=
+	t=1765886002; cv=none; b=tkLf1rGyFwkHYN5lZ2JaJWk3r8QbCbBgoSPA6c/262XQu1u3f8AlEzcRMcWIagSROk095kKKSdHBbSz7vlrON/9o51iV46irKfSrpAYd2UrAqH9vMrX02NAm6Dxd3ZRUfbgG0wyGO3ajTOLxALangPt1Yja+xubsnPO1+9rM1JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888072; c=relaxed/simple;
-	bh=fj3Ub7TqAL2NBqURLQnsYtlGdW+2/uwxUihztGEHd+E=;
+	s=arc-20240116; t=1765886002; c=relaxed/simple;
+	bh=SDAoNiBYHK1K6MzLIWjRoNFdGvNOSopBTRoQpP5z+3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9kdN93aZMAkbTUOJsfZo8x2CWMjK/tgZVMMKQ7ArTT9qY6TC/IEYkHCbL2LX61dv4KiteJ6DRAP9UX0QCfvm+1k2oPL1cldGmmgL7+H2GaPRW2pBZXp/0PD+B5WOtPy55the5bdF0x+Q5/R3j53VPNqkXFFTcKkP0n0qHXDv4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSDQ4l+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A859FC4CEF1;
-	Tue, 16 Dec 2025 12:27:51 +0000 (UTC)
+	 MIME-Version; b=czSU2Tyiq035nfR2QuVtTWvBOlSEZEtSN67v5m0aDeNHfmAkLnWucHIfuB2mDfNKpoXQkXI9PCi87pD2XNC8bgAfbPdaqmhf1+JBnHGSgN7wlQjiIFeOzMA+TRN0lUMY7DOvttRqFIHLx5FnDRWxm0rs0lGLCbDZxe1HBHvTNrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV5O6eaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8149CC4CEF1;
+	Tue, 16 Dec 2025 11:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888072;
-	bh=fj3Ub7TqAL2NBqURLQnsYtlGdW+2/uwxUihztGEHd+E=;
+	s=korg; t=1765886001;
+	bh=SDAoNiBYHK1K6MzLIWjRoNFdGvNOSopBTRoQpP5z+3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSDQ4l+nka5PfI9+HqgaYI4TEETYnu1EmL5MtmRj4XUUpV0469q9hQQ3U5c7jbhcL
-	 Q9PusXcmse9u1Bbe7ke6f6bZlZVH7nbSPY8InzP4jjMtSIZmLEfwuEM8dC6h85BvPC
-	 HKNb/jOpQJQC/H+BvkxM0yjbQ+DQ7Qqs0LZ7A11k=
+	b=VV5O6eaAjQIiYrvqHZE3+E03SjbdOzmcOc7ebsoGGXyLzd4L2K5bDpmp9XbuRaGtU
+	 R5DtGziWvAz7OEQvWHDOM7GT6Ggz1fiuqyrvgxL+zz93asJZs7Vq6UHsZeWYyPFSm0
+	 IoARerDVWUbuPpEkDlBebSYENaGw2UrUZnkUG4do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baojun Xu <baojun.xu@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 381/614] ASoC: tas2781: Correct the wrong chip ID for reset variable check
+Subject: [PATCH 6.17 307/507] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
 Date: Tue, 16 Dec 2025 12:12:28 +0100
-Message-ID: <20251216111415.165798074@linuxfoundation.org>
+Message-ID: <20251216111356.593425498@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit 34b78ddd78428e66a7f08f71763258723eae2306 ]
+[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
 
-The new variable of reset was added for TAS58XX on TAS5825 first.
-And TAS5802/5815... was added later, so this reset variable check
-should be changed to lowest chip of TAS58XX.
+The previous commit removed the PAGE_SIZE limit on transfer length of
+raw_io buffer in order to avoid any problems with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length. However
+this also removes the upperbound on user supplied length, allowing very
+large values to be passed to the allocator.
 
-Fixes: 53a3c6e22283 ("ASoC: tas2781: Support more newly-released amplifiers tas58xx in the driver")
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Link: https://patch.msgid.link/20251124031542.2793-1-baojun.xu@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+syzbot on fuzzing the transfer length with very large value (1.81GB)
+results in kmalloc() to fall back to the page allocator, which triggers
+a kernel warning as the page allocator cannot handle allocations more
+than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+
+Since there is no limit imposed on the size of buffer for both control
+and non control transfers, cap the raw_io transfer length to
+KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
+prevent any warnings from the page allocator.
+
+Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-comlib-i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/codecs/tas2781-comlib-i2c.c b/sound/soc/codecs/tas2781-comlib-i2c.c
-index b3fd7350143bd..e24d56a14cfda 100644
---- a/sound/soc/codecs/tas2781-comlib-i2c.c
-+++ b/sound/soc/codecs/tas2781-comlib-i2c.c
-@@ -320,7 +320,7 @@ void tasdevice_reset(struct tasdevice_priv *tas_dev)
- 		for (i = 0; i < tas_dev->ndev; i++) {
- 			ret = tasdevice_dev_write(tas_dev, i,
- 				TASDEVICE_REG_SWRESET,
--				tas_dev->chip_id >= TAS5825 ?
-+				tas_dev->chip_id >= TAS5802 ?
- 				TAS5825_REG_SWRESET_RESET :
- 				TASDEVICE_REG_SWRESET_RESET);
- 			if (ret < 0)
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index b71680c58de6c..46f343ba48b3d 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
+ 
+ static DEFINE_IDA(driver_id_numbers);
+ #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
++#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
+ 
+ #define RAW_EVENT_QUEUE_SIZE	16
+ 
+@@ -667,6 +668,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > USB_RAW_IO_LENGTH_MAX)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 -- 
 2.51.0
 
