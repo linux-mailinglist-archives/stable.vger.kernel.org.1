@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E15CC376E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:14:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F405CCC22D7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2841230080E8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D9B730671CD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2148134F47B;
-	Tue, 16 Dec 2025 11:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353CC340DB0;
+	Tue, 16 Dec 2025 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJEdDzGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDff1ygq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D1734F46C;
-	Tue, 16 Dec 2025 11:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47F733F378;
+	Tue, 16 Dec 2025 11:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885645; cv=none; b=qu1KM/+VQPNNxNiWUJfyC8qRZeF81j/5yr8Zm6EYPdlt7RJTHq/kybJz5iAD/+lwldn9jEaVS7YnQWQrNbHDx4tlmYBjC6AaPgNQLzzpIg2M/hWXcIG6pFvbB5qrBC0zJA+7QW/AvGFysEqU8ErOgy5oD7BglK9WL+ru2EQLP2w=
+	t=1765884037; cv=none; b=au6Y33RmSeE6mdN/k8pEDf0RDqLzbQ7micEyENu0/hGUY3zMTYmWcAEnmMJ6hDGfR0r+TBJDYtgqrSkjgZIuv+6Bi+YPid40wNinzeLxZL0ov1u2kNCF3IQZe2xYMu0+Z9iTO81+H54d9cFPlwjGt/TvwqsHVg1d7qI9iQFkJ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885645; c=relaxed/simple;
-	bh=9ksJJ6g4r6EqGcviOxmzF/3YXKnuWUmoeeqoIDKdFfE=;
+	s=arc-20240116; t=1765884037; c=relaxed/simple;
+	bh=stSdIohe07yS0CGdx9HahDRvrE5eZsZKj4wpLGiaO9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7JUm8UHwbErTG2D3Q+AKWitg4wd1Xwa3GhYQdjYL4S8TZCEF0H1DdLJefPcvkj6omoau6EKdGnUw71aMK+6rnk2bgyAVmh3ziKMhrhr3Q8bUTXn6NtU3ub4cH3R+nCkkMHlIQjtA/YqpfN2Pdu3BQl1IKkdrGflT9vhKbD492A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJEdDzGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47336C4CEF1;
-	Tue, 16 Dec 2025 11:47:25 +0000 (UTC)
+	 MIME-Version; b=CAbpwMs2yFVk9cR5yOjeZoMbdt107xM8SEeH3b1MQCS2QEbRkHnUS6e4BC+c3LnNEPCh0r5/MxOCml9PT6wLe5ysFaHcE9hW3tvbDdNao6HmBeo63SNqWsSCGswdRg113oJVMYuDtV/F7XVFc2kuXvpMYamjhTu8Edh4gnDE9EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDff1ygq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CBDC4CEF1;
+	Tue, 16 Dec 2025 11:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885645;
-	bh=9ksJJ6g4r6EqGcviOxmzF/3YXKnuWUmoeeqoIDKdFfE=;
+	s=korg; t=1765884036;
+	bh=stSdIohe07yS0CGdx9HahDRvrE5eZsZKj4wpLGiaO9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJEdDzGq0TVuviLCnE0su1Dfiyg9AYKsAXNqCV96Hjsbxef/jpuR99qdp5i7mbUZW
-	 icPBaBpYsDEp49t8FhL1MwXW5mZcxAGQ+t0W74b0C8EUCjvT8dpk0FGPulqygJqhrB
-	 lIoEOhA7IA0juQ305BkDGo3cWxVigyz51TMjqKzQ=
+	b=tDff1ygqbJWOUGAUAix1ii0CCkf9/AvB7CLHEn83E59OcfmgDZnRJpV6+qZ7UZU09
+	 2jiDbaJujRY8QdShdrwrM2g9+zg0oDknaSOcj/y1GsAle/MEpZXfQKLTPenDy6vJUS
+	 k4qHUiDfvqt1S+ikAcugN9RTg9qJMAFzRYltvDoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 200/507] ARM: dts: stm32: stm32mp157c-phycore: Fix STMPE811 touchscreen node properties
+Subject: [PATCH 6.12 074/354] arm64: dts: qcom: sdm845-oneplus: Correct gpio used for slider
 Date: Tue, 16 Dec 2025 12:10:41 +0100
-Message-ID: <20251216111352.754311042@linuxfoundation.org>
+Message-ID: <20251216111323.605377484@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit e40b061cd379f4897e705d17cf1b4572ad0f3963 ]
+[ Upstream commit d7ec7d34237498fab7a6afed8da4b7139b0e387c ]
 
-Move st,adc-freq, st,mod-12b, st,ref-sel, and st,sample-time properties
-from the touchscreen subnode to the parent touch@44 node. These properties
-are defined in the st,stmpe.yaml schema for the parent node, not the
-touchscreen subnode, resolving the validation error about unevaluated
-properties.
+The previous GPIO numbers were wrong. Update them to the correct
+ones and fix the label.
 
-Fixes: 27538a18a4fcc ("ARM: dts: stm32: add STM32MP1-based Phytec SoM")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250915224611.169980-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250927-slider-correct-v1-1-fb8cc7fdcedf@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi    | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-index bf0c32027baf7..370b2afbf15bf 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-@@ -185,13 +185,13 @@ touch@44 {
- 		interrupt-parent = <&gpioi>;
- 		vio-supply = <&v3v3>;
- 		vcc-supply = <&v3v3>;
-+		st,sample-time = <4>;
-+		st,mod-12b = <1>;
-+		st,ref-sel = <0>;
-+		st,adc-freq = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 46e25c53829ad..d0cbf9106a792 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -803,8 +803,8 @@ hall_sensor_default: hall-sensor-default-state {
+ 		bias-disable;
+ 	};
  
- 		touchscreen {
- 			compatible = "st,stmpe-ts";
--			st,sample-time = <4>;
--			st,mod-12b = <1>;
--			st,ref-sel = <0>;
--			st,adc-freq = <1>;
- 			st,ave-ctrl = <1>;
- 			st,touch-det-delay = <2>;
- 			st,settling = <2>;
+-	tri_state_key_default: tri-state-key-default-state {
+-		pins = "gpio40", "gpio42", "gpio26";
++	alert_slider_default: alert-slider-default-state {
++		pins = "gpio126", "gpio52", "gpio24";
+ 		function = "gpio";
+ 		drive-strength = <2>;
+ 		bias-disable;
 -- 
 2.51.0
 
