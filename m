@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5A5CC29A2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68ECDCC22A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 387BB3004A52
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58321305A3EF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8CC36C5B8;
-	Tue, 16 Dec 2025 12:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3169B3233EE;
+	Tue, 16 Dec 2025 11:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="090h0OVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV8lUPPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B35936C5A0;
-	Tue, 16 Dec 2025 12:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D853358A8;
+	Tue, 16 Dec 2025 11:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887455; cv=none; b=U/+MNxTep7HkWN8TmzuJZyogoYvjraWUQJ7uIBY5BQJUwMenxdE4+Fr43Wypma1fGOIjGGUhiCJ3VqB+6xlP4aaTRgfO16fCQ6T+HLxi+YLuNeLmuqmJ5np/7OA9GGP/EARQbxll78dGljafyxAskDXVlRWUD3XInunPG4pgnwo=
+	t=1765884015; cv=none; b=HmWf39Eqf1slOicS77aLfxHxhfuDRzxI+0GmWTYRqlCjmkJrhB1o0nwh1H7BL/4mT6HUhhCIYp3ev8750PtRcAoyssNb1fle8N4UaYyKIfYeatSunl0hIoAyJbMR1YGKfMorV25tihEEPnkS5gaYZEeEat7N82k00HvwPcFiadM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887455; c=relaxed/simple;
-	bh=qP15A7vM3GrNM917OU89QKEg6IIhHNW8XRzC51h70iI=;
+	s=arc-20240116; t=1765884015; c=relaxed/simple;
+	bh=U+46lR4LBPHA5uEgxk0y5ukYx/VgjemVyOk5W6Z6POU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hm2o5qVqX5jYq1XwSAgHCVowtgYAeMpYD+OO2JDhT0xLcVyujbivxc4xu25+5Hjn2D5nrF1A0h+qydWxYjAGvMwjTLEA22XHYja/8Jpa6IW5m0x9KntyKvp/WSq+JDUGBnFRq/sKJBipsjXFmO6dhSrQmtgU4eJJvu49cd3gt88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=090h0OVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AFCC4CEF1;
-	Tue, 16 Dec 2025 12:17:34 +0000 (UTC)
+	 MIME-Version; b=Riym9zh5Pilrx7kGr4JV0Pc1vEQtb60c8NUuQzc1DBzs5/4mnZ2CLu5LO4Vb4qaPJ3EYf2curKfhVJFKJyu86ChI9DwwXq4aFY3BrgGk6/BKt9jpzaTJa17D7OM9gE8c9KTWcpQCpbf0x6Tbw5lJKEPKQ6ArOyYIjUtX0CBV4LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV8lUPPh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8C2C4CEF1;
+	Tue, 16 Dec 2025 11:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887455;
-	bh=qP15A7vM3GrNM917OU89QKEg6IIhHNW8XRzC51h70iI=;
+	s=korg; t=1765884014;
+	bh=U+46lR4LBPHA5uEgxk0y5ukYx/VgjemVyOk5W6Z6POU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=090h0OVAuqYJHbO8Hou4v2TCLohgRDjwz5OPrqwsfN3BoK5f5vk1igZc2gQl7+3xd
-	 AKytnSqrxYEhITOUfsFlhmGm3mSQHtYzaAbWfPPGmrIHYwId7jt7liwmLled1xSK6I
-	 LmgbfLu5LbXJcc7g1Y4j/1DGRKfcAl6AnacFbrqQ=
+	b=nV8lUPPh9TvPjWZ3/BZvCEhHOt1hG8fydfCAXyBpA9hW9zQOkfgPyeKk4yP2rUptY
+	 /O61P7US5tF9GsehOCkW7LIAoCdmgu0d+6aZyBA3cNRIh/5A2aJutrTj0Sn+KeT936
+	 UYnCxoGX/zZpS9Nc9ROS0AHybLN7cSbYKInoyzTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 234/614] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
+Subject: [PATCH 6.12 034/354] irqchip/renesas-rzg2l: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:10:01 +0100
-Message-ID: <20251216111409.847583571@linuxfoundation.org>
+Message-ID: <20251216111322.149082177@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
+[ Upstream commit 5b338fbb2b5b21d61a9eaba14dcf43108de30258 ]
 
-Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
-have region for DWC controllers as it has the Root Port and controller
-specific registers, while ELBI has optional registers.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callbacks must not live in init.
 
-Hence, fix the binding. Though this is an ABI break, this change is needed
-to accurately describe the PCI memory map.
-
-Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
+Fixes: d011c022efe27579 ("irqchip/renesas-rzg2l: Add support for RZ/Five SoC")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-index 79a21ba0f9fd6..c8258ef403283 100644
---- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-@@ -36,13 +36,13 @@ properties:
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 99e27e01b0b19..d83dfc10ff49e 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -613,14 +613,12 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
+ 	return ret;
+ }
  
-   reg:
-     items:
--      - description: External local bus interface registers
-+      - description: Data Bus Interface registers
-       - description: Meson designed configuration registers
-       - description: PCIe configuration space
+-static int __init rzg2l_irqc_init(struct device_node *node,
+-				  struct device_node *parent)
++static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
+ {
+ 	return rzg2l_irqc_common_init(node, parent, &rzg2l_irqc_chip);
+ }
  
-   reg-names:
-     items:
--      - const: elbi
-+      - const: dbi
-       - const: cfg
-       - const: config
- 
-@@ -113,7 +113,7 @@ examples:
-     pcie: pcie@f9800000 {
-         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
-         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
--        reg-names = "elbi", "cfg", "config";
-+        reg-names = "dbi", "cfg", "config";
-         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
-         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
-         clock-names = "pclk", "port", "general";
+-static int __init rzfive_irqc_init(struct device_node *node,
+-				   struct device_node *parent)
++static int rzfive_irqc_init(struct device_node *node, struct device_node *parent)
+ {
+ 	return rzg2l_irqc_common_init(node, parent, &rzfive_irqc_chip);
+ }
 -- 
 2.51.0
 
