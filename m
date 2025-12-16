@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49071CC2238
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC98DCC2E10
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA94F30119D5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E4EE30C161E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE530341057;
-	Tue, 16 Dec 2025 11:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ABC358D38;
+	Tue, 16 Dec 2025 12:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsdaODZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLenhd8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981AA33E340;
-	Tue, 16 Dec 2025 11:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9061358D19;
+	Tue, 16 Dec 2025 12:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884069; cv=none; b=E502iuusp8LVr91wwgLlQ5ZAS7HF4hsdqb/oR+ss5Q8wgGJQowSWr7Y2b6k2P9rzbXe8TX08VviuRiPcDK07pFtLtaZ7VIY3htBJb1KRKuds9nWCVwcfUvPOO0eoWTxFMmqOD/2VuQg8Kxg631b0y065HekBMHrzOCFGKR+pPsM=
+	t=1765887717; cv=none; b=k2kSzdy9jhPrHP521Otv3E9s/UMGaThfWyxEHALpuV86S9vSTShlZIrJVGLpQ1KmThqOghIo7I5ojcvXd7KHcx23EqYTKFb2HvbRE6tCJ4U/pu0+7RR7dKT1fOxQJhUXVFfVKNtasuokgIgaCDP+ltDAUdG/xyn/QMe7jd8GROs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884069; c=relaxed/simple;
-	bh=gpPCPkCQdG1wYWZCjVhxvMBkYqd0hw5aUIdEThBJ9Lk=;
+	s=arc-20240116; t=1765887717; c=relaxed/simple;
+	bh=vAWrhOe+KGotFrkJ3TG30T2PHaGaHLogpzJsh8BWyME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8q9rofDyXAsFlbXPIVM0zZIBvXUcddSNh1ktBVMKWzmFxKJ9kzcZqfAxhQOUgnfhPlDiI9dZQ5+szaIzb34xnmjT0MBnesY1jsln+7KBgNU4FFEgJgkoOfF1CkcVTVj8I+dDkLt4pszsFVZj2X1eaO18SsNKg/7M39aTCgecaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsdaODZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE53DC4CEF1;
-	Tue, 16 Dec 2025 11:21:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SABPcUVdKb7Ve+xX/V8QWaOXpfdS6KAdbzdXN/eQyYwy4/KVHjmbHg623NC+dLXg/1vC8aFuDY8kldQtKDeGN6RwM/mkqMGbbBNBKVuxCb5nCssEaX49r5S84tsmFpibxgs1eVh0HRiXw5SSUt85RtmrFU8SCdo+qI3r2nLqrWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLenhd8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A3DC4CEF1;
+	Tue, 16 Dec 2025 12:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884069;
-	bh=gpPCPkCQdG1wYWZCjVhxvMBkYqd0hw5aUIdEThBJ9Lk=;
+	s=korg; t=1765887717;
+	bh=vAWrhOe+KGotFrkJ3TG30T2PHaGaHLogpzJsh8BWyME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsdaODZh4kLpgXmMep1feQQzAvKSJllQGuz1/9xyRKXXtk0fn6ZxGeCh7GiYyAmwY
-	 7PZcqkedeP6hK4kGEatwbAwx0SDUF5Uq63LGv09K5ereAj66aqj8MkA14fKL8DfEks
-	 kATt5uKLbx3jc3S3iHxCBUaaj9hZulmemdVYuzxA=
+	b=jLenhd8vK5S/e2ytbTyrAAsRjnUM6kKXFr8mhGfJLk6l1tanwQMeXuYunD2dQqHr+
+	 PH2N/FCu8c1mPaT4dITbKlKf5WuoNFxWb79AQDonxpQ4Npe7psRYnkk9CYlJ8LobMD
+	 akFKo34M10cP7RY0ZL+5wBU3faKi7LLIRGBnpwDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/354] mtd: nand: relax ECC parameter validation check
+Subject: [PATCH 6.18 283/614] pwm: Simplify printf to emit chip->npwm in $debugfs/pwm
 Date: Tue, 16 Dec 2025 12:10:50 +0100
-Message-ID: <20251216111323.931255103@linuxfoundation.org>
+Message-ID: <20251216111411.626957771@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,57 +58,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 050553c683f21eebd7d1020df9b2ec852e2a9e4e ]
+[ Upstream commit 3cf8e55894b51c14f8500cae5e68ed48b1b0f3fd ]
 
-Due to the custom handling and layouts of certain nand controllers this
-validity check will always fail for certain layouts. The check
-inherently depends on even chunk sizing and this is not always the
-case.
+Instead of caring to correctly pluralize "PWM device(s)" using
 
-Modify the check to only print a warning, instead of failing to
-init the attached NAND. This allows various 8 bit and 12 ECC strength
-layouts to be used.
+	(chip->npwm != 1) ? "s" : ""
 
-Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+or
+
+	str_plural(chip->npwm)
+
+just simplify the format to not need a plural-s.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250926165702.321514-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Stable-dep-of: 5f7ff902e7f3 ("pwm: Use %u to printf unsigned int pwm_chip::npwm and pwm_chip::id")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/pwm/core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 53e16d39af4bf..3e1844bfb8089 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6469,11 +6469,14 @@ static int nand_scan_tail(struct nand_chip *chip)
- 		ecc->steps = mtd->writesize / ecc->size;
- 	if (!base->ecc.ctx.nsteps)
- 		base->ecc.ctx.nsteps = ecc->steps;
--	if (ecc->steps * ecc->size != mtd->writesize) {
--		WARN(1, "Invalid ECC parameters\n");
--		ret = -EINVAL;
--		goto err_nand_manuf_cleanup;
--	}
-+
-+	/*
-+	 * Validity check: Warn if ECC parameters are not compatible with page size.
-+	 * Due to the custom handling of ECC blocks in certain controllers the check
-+	 * may result in an expected failure.
-+	 */
-+	if (ecc->steps * ecc->size != mtd->writesize)
-+		pr_warn("ECC parameters may be invalid in reference to underlying NAND chip\n");
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index ea2ccf42e8144..5b75f4a084967 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -2696,11 +2696,10 @@ static int pwm_seq_show(struct seq_file *s, void *v)
+ {
+ 	struct pwm_chip *chip = v;
  
- 	if (!ecc->total) {
- 		ecc->total = ecc->steps * ecc->bytes;
+-	seq_printf(s, "%s%d: %s/%s, %d PWM device%s\n",
++	seq_printf(s, "%s%d: %s/%s, npwm: %d\n",
+ 		   (char *)s->private, chip->id,
+ 		   pwmchip_parent(chip)->bus ? pwmchip_parent(chip)->bus->name : "no-bus",
+-		   dev_name(pwmchip_parent(chip)), chip->npwm,
+-		   (chip->npwm != 1) ? "s" : "");
++		   dev_name(pwmchip_parent(chip)), chip->npwm);
+ 
+ 	pwm_dbg_show(chip, s);
+ 
 -- 
 2.51.0
 
