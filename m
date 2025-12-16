@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A649CC3E61
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24413CC2262
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A13C2302105B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FF41304DEA5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E46136BCF7;
-	Tue, 16 Dec 2025 12:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0129C33B967;
+	Tue, 16 Dec 2025 11:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4f7X7y4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugfNH4pb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDB036BCEC;
-	Tue, 16 Dec 2025 12:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97903358A8;
+	Tue, 16 Dec 2025 11:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887439; cv=none; b=hlpQcRv7QE9AQLVC3U38r770gN50ml4AWJAxIOYvukr9Wk7F1OgoAT0qMUNdIEm8tOVLYL2KgDMbMIgp7fkro+WE/uWNM5CmOvbJdEGjldo3LJtOEghRyIoqgyQyYeBV+ceRwmfSiby/TjkMhDqSswQCpWq3Ux2zT852/Ly2Xmc=
+	t=1765883952; cv=none; b=TqSo9YGTQmEnfcpx0CtUCTFl4E11bH0Ipi2N3DQ7Za4qs6xjwpOrIiqkLaFzx4k6fp2ZoXCyCHroqmhy1j55U/4x+aqcP6oBkA/aKtDIc2yj77kYotXlEaCZAEQWhAPHmtIVWhqF4i3YZS1CvoG46/5IjhUKLjr9GpMunhhpqck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887439; c=relaxed/simple;
-	bh=OZzuleOfQx0e+HM7qm5csu/jf+YjrDuVzlLzOkvB6+4=;
+	s=arc-20240116; t=1765883952; c=relaxed/simple;
+	bh=Sdr39YP4efgF6Hp056dleLYk4j8kF666Dakq1bgxlAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxeWhtnhBvqOvhneR3fOEebK1zMW4Uqb4OGQIuVBb1ctx8OgV/3dVdKT/Mumc5gQ+1WWLTavXesue2HcpNUGlwtM8IQFwm/pAOe5SbTx0hDinzBMSQyZYuNC4Q/JRbhgTJPFEcQbkAl2/p4mC01Jf3CLd7vZloaOYbXBbTj0qhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4f7X7y4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800DFC16AAE;
-	Tue, 16 Dec 2025 12:17:18 +0000 (UTC)
+	 MIME-Version; b=R0oe4M/ulu5w4XV7dGml/5d11ZQ+j3IN4hKWSX1KKFKeAeYHVLxqXWzHBuISJU44Hxb0XEVWU934W9fD/EduXPiSMGUiAZ2oppmK55zsdBGutzramb2dY+jrsKELkvcdkpDsX3RsUOa1dRuytTD0msQNDSAmLyd51tTgsnIOA0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugfNH4pb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080B8C4CEF1;
+	Tue, 16 Dec 2025 11:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887439;
-	bh=OZzuleOfQx0e+HM7qm5csu/jf+YjrDuVzlLzOkvB6+4=;
+	s=korg; t=1765883952;
+	bh=Sdr39YP4efgF6Hp056dleLYk4j8kF666Dakq1bgxlAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4f7X7y4wtQL8f//z/xL/Lt4Lhbs1LSB72jROG5O+3M/OSlZVdCwTrwkAfO8Lu3SN
-	 aaf7dfKIJETYkoNY51Nbv1kMObMeGb308kAmaCx3yQINrtrMSK+sQSVrjwRLV/icv6
-	 6cuyoytNARRTDEoVQybdKxP3Ro2Y3Bb0bVVycS14=
+	b=ugfNH4pb5wKN06Pr8Q6dXEpR51TfWzVH6Oma7MOGJXDKIPALeDrc8HYgAQpdsZg6i
+	 GICtKBdeifwVS1zhvW9oVANj8VXOz4KJ8sLIcVjGKcSMBzrOhhO3wFk7rOZiDILOxf
+	 N9+LeSQeVNh3Jc/tzybPbIC97JiJd+I5mihh2Qc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 230/614] scsi: stex: Fix reboot_notifier leak in probe error path
+Subject: [PATCH 6.12 030/354] irqchip/irq-bcm7038-l1: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:09:57 +0100
-Message-ID: <20251216111409.703991487@linuxfoundation.org>
+Message-ID: <20251216111322.002747079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
+[ Upstream commit e9db5332caaf4789ae3bafe72f61ad8e6e0c2d81 ]
 
-In stex_probe(), register_reboot_notifier() is called at the beginning,
-but if any subsequent initialization step fails, the function returns
-without unregistering the notifier, resulting in a resource leak.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callback must not live in init.
 
-Add unregister_reboot_notifier() in the out_disable error path to ensure
-proper cleanup on all failure paths.
-
-Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c057c799e379 ("irqchip/irq-bcm7038-l1: Switch to IRQCHIP_PLATFORM_DRIVER")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/stex.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-bcm7038-l1.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
-index d8ad02c293205..e02f28e5a104e 100644
---- a/drivers/scsi/stex.c
-+++ b/drivers/scsi/stex.c
-@@ -1844,6 +1844,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- out_scsi_host_put:
- 	scsi_host_put(host);
- out_disable:
-+	unregister_reboot_notifier(&stex_notifier);
- 	pci_disable_device(pdev);
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index 36e71af054e97..bca43fa99c8f2 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -219,9 +219,8 @@ static int bcm7038_l1_set_affinity(struct irq_data *d,
+ }
+ #endif
  
- 	return err;
+-static int __init bcm7038_l1_init_one(struct device_node *dn,
+-				      unsigned int idx,
+-				      struct bcm7038_l1_chip *intc)
++static int bcm7038_l1_init_one(struct device_node *dn, unsigned int idx,
++			       struct bcm7038_l1_chip *intc)
+ {
+ 	struct resource res;
+ 	resource_size_t sz;
+@@ -395,8 +394,7 @@ static const struct irq_domain_ops bcm7038_l1_domain_ops = {
+ 	.map			= bcm7038_l1_map,
+ };
+ 
+-static int __init bcm7038_l1_of_init(struct device_node *dn,
+-			      struct device_node *parent)
++static int bcm7038_l1_of_init(struct device_node *dn, struct device_node *parent)
+ {
+ 	struct bcm7038_l1_chip *intc;
+ 	int idx, ret;
 -- 
 2.51.0
 
