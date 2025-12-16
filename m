@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0042ECC23FA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAECCCC27F4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56C3F3027A39
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 992463015D09
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303E433EB1A;
-	Tue, 16 Dec 2025 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0903502B3;
+	Tue, 16 Dec 2025 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9xbIoRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHB4ccIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D94315786;
-	Tue, 16 Dec 2025 11:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D7434F24E;
+	Tue, 16 Dec 2025 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884586; cv=none; b=NtkVV2TxYyh6hZEJpFdQuJMad0EgpdC29INeTrztAl5DZXqx6BgxBSfIoy4rCEUDtgYTRw/UUhJgalBEJjk2cCSpc2BMujto2upagkIddc2WGYFDReP6tIadAw73B2Hl5FPg/SDkAScmPbMsdQAeTQQmCutyq8OeMNA6DSZ3KSM=
+	t=1765886182; cv=none; b=NqrwHgq1UQsWzSsR80Jh7YjYpT01twvPXISxVKhqIvj2JKYJxQfl5oF0fNjXhfFAoKCTXFB4bCSue0kuzlqjERzqdOvQg2j1sj6EnEG/bun+ZD+e2o9TxPpErS2gdtM1OBCH74Q22iRO6yfz85gYdu+GKhPWmmm6GcYAoszYcfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884586; c=relaxed/simple;
-	bh=XZ8bpWJoJO+LyrLR2wlvrNDJhX3Nedk/hPyUpD8I7T0=;
+	s=arc-20240116; t=1765886182; c=relaxed/simple;
+	bh=KCZZIpj1cpievKEQ8SYALa+QNsqFRaMyZ5RiXT0k3Kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quAOqSukrRLyK5FcvNn0S0X2qRicz/Dkuf5SX5R8fBCYezVLIJWnP6dzwJ2OK7IbsdN9i2DkHwPa+NiYlpgxP38MoP9LAHmyQC4dl9bWCgEjedMo5EeYqYIB7nXyJAhc0kAhLKEekKcRYGK24JE1X0n5/YSJ7SrN/INSh1Feotk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9xbIoRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52542C4CEF5;
-	Tue, 16 Dec 2025 11:29:45 +0000 (UTC)
+	 MIME-Version; b=N3kXG2hxl6SP9DfU1ydCBOANRgnZP8fRcl2R8I72S0UrE5RLf8XTHXyDr5Yk3dmLzZk0bNDvUrvTqU3WEqrqVN1hxBV4vCcTD/inYkvleZS5E5rh24/zU06WvdoERSAmXanjGSUYX7xzoP1ci6t7kOGeYqSRLqTLD4h4O1Kc6Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHB4ccIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44634C4CEF1;
+	Tue, 16 Dec 2025 11:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884585;
-	bh=XZ8bpWJoJO+LyrLR2wlvrNDJhX3Nedk/hPyUpD8I7T0=;
+	s=korg; t=1765886182;
+	bh=KCZZIpj1cpievKEQ8SYALa+QNsqFRaMyZ5RiXT0k3Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9xbIoRKyJYdhzD3rnB1y24SmNq1x8Jx9NK7XH7QJ6EDHpt8hjrTNDHE4HK6lGP//
-	 Bo9ZbufZo1ed6SfvPXdAWaB4ehDzifC+mxCW6HeWlDRYzRnUOunpWrg5VFGZfo8MA+
-	 Re9mSYyUkLSi7654A/kfShObm6AOEaZFtnHRhYC4=
+	b=pHB4ccIs3t0DIrls/F0kHIJdyQCo+bB1tesF1nNGLV5cdWJzT8etJOH3OxW3A3dgH
+	 BPYi5vaolgPbfHcljB+7HzDcKqhXfGs7jy0b2wabTG7U9jXIBKt5bSJXRsIoX1gRM6
+	 Ih9GJaJFwBimNT8FjOr81JNN7Dk1xgXMU1HHHu8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shengjiu Wang <shengjiu.wang@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/354] ASoC: fsl_xcvr: clear the channel status control memory
+Subject: [PATCH 6.17 363/507] ASoC: fsl_xcvr: clear the channel status control memory
 Date: Tue, 16 Dec 2025 12:13:24 +0100
-Message-ID: <20251216111329.501673624@linuxfoundation.org>
+Message-ID: <20251216111358.609990491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 0a67987c316e8..656a4d619cdf1 100644
+index 5d804860f7d8c..58db4906a01d5 100644
 --- a/sound/soc/fsl/fsl_xcvr.c
 +++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -1237,7 +1237,7 @@ static irqreturn_t irq0_isr(int irq, void *devid)
+@@ -1421,7 +1421,7 @@ static irqreturn_t irq0_isr(int irq, void *devid)
  						bitrev32(val);
  				}
  				/* clear CS control register */
