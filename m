@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36A4CC2553
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83B2CC32E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:25:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 853513089000
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 661DF3093DB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56602327219;
-	Tue, 16 Dec 2025 11:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB712387B10;
+	Tue, 16 Dec 2025 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5DQo3bz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuHqpwGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BA726A08F;
-	Tue, 16 Dec 2025 11:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D71387B1D;
+	Tue, 16 Dec 2025 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884648; cv=none; b=M+Hgg16UKj+xw1AUeKkl/u73MUMAHg3bmyob5XVJK0luWZKXyCjhsoM57DlUJdQdu3GJGrRh29kL/j4YmLlPASwEUefT0wbYXqOwwzUtL0BcY3qUZ89FvIJdddsTQSkhvm+kOfP+BrZBcY0WvekBOiFNlUZcwjYfOX6NUFlSjJ4=
+	t=1765888295; cv=none; b=aAYkYgtoh06Vg+P0lEdpkOffBXC7+vjipUyTPFDAN8y1Z8RFEAwWmgpl8SBiP2ZgT5mFvBglb2mZRQnU0gr9sJ61SSZH5aktEUTPmDOtOh17GiT3LSaTteKqzve5vp99e1texPFzj8qGCUqGz8QV2biaMmth+yHXnYrDPtK/5zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884648; c=relaxed/simple;
-	bh=xdbWwxOCt6VEYahmOeOtBYH/PVHgZR4M8OetVfhoRcI=;
+	s=arc-20240116; t=1765888295; c=relaxed/simple;
+	bh=4HXEqFKUJZ3I48Gb13jz92hFfAr9rQugLrwtE94aqGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJDHVn4GJLAA0h7CynbinjJxL+tgSDxLpeUF3lME3N8smXW4Q8sMWyM3ZtcejgpQgwtfVTCzRjnQz1WDDk1a9dFx+fozc18W6BzZSFSN77eVRR9LDWUajJXr6Q4DAAxZuYPqJpI1hNYF2OIahCtzmOpAehsb/3ZfO0XsLTlFEx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5DQo3bz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732FCC4CEF1;
-	Tue, 16 Dec 2025 11:30:47 +0000 (UTC)
+	 MIME-Version; b=CRe/q8cnIxIjMsHpytn7Jtp8RN234OrpwRevYAyhZT8dwPu0aIvKCNH2kvc5fg2AMPbC2yaz9gNTiiRQoPfBlmdtirdqVtWRU2oMT6sniTFo3o6r28C4mZWqx/FO4YN9qFmMuyVizYm2g13JtK6rvnDHlt6hIK+PI8vsssJUGuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuHqpwGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF842C16AAE;
+	Tue, 16 Dec 2025 12:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884647;
-	bh=xdbWwxOCt6VEYahmOeOtBYH/PVHgZR4M8OetVfhoRcI=;
+	s=korg; t=1765888295;
+	bh=4HXEqFKUJZ3I48Gb13jz92hFfAr9rQugLrwtE94aqGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5DQo3bzMBeGiPWCl7Qf8DD/KgcNtzD66NTkPBaExKp9n9RIiqUkGdavviy48aNKG
-	 EYB1JtkrUueymuaLT0vVH+DCjzI9wN+AnxN4YJwck3jS4yNzdL3rAnoUWsoBggNKTg
-	 L1L+6W1VTPgX8QG4jUa/1S/y0VNrULDz9JnSEMfg=
+	b=GuHqpwGjY1x4noNX5maw5G7Js1HySOMtEJsFBJyiRXmY6VQJPUrNxMdKRtgxJ2kG/
+	 80dZArDQDx1RRSfmcoRymL/hgZiEXHdqstRnyt++M215dDhQ3LF+diqo5JS3d3rhqw
+	 XVZCxyAXnx50CzRkaXRWTZ8wl1ngyqQbB1MkMFI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/354] ARM: dts: samsung: exynos4210-i9100: turn off SDIO WLAN chip during system suspend
+Subject: [PATCH 6.18 458/614] virtio_vdpa: fix misleading return in void function
 Date: Tue, 16 Dec 2025 12:13:45 +0100
-Message-ID: <20251216111330.265321639@linuxfoundation.org>
+Message-ID: <20251216111417.963311889@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 863d69923bdb6f414d0a3f504f1dfaeacbc00b09 ]
+[ Upstream commit e40b6abe0b1247d43bc61942aa7534fca7209e44 ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+virtio_vdpa_set_status() is declared as returning void, but it used
+"return vdpa_set_status()" Since vdpa_set_status() also returns
+void, the return statement is unnecessary and misleading.
+Remove it.
 
-Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-3-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: c043b4a8cf3b ("virtio: introduce a vDPA based transport")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Message-Id: <20251001191653.1713923-1-alok.a.tiwari@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/virtio/virtio_vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-index 0d8495792a702..0394b948443b3 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-@@ -853,6 +853,7 @@ &sdhci_3 {
- 	#size-cells = <0>;
+diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+index f9a29045eca0d..0a801f67b5996 100644
+--- a/drivers/virtio/virtio_vdpa.c
++++ b/drivers/virtio/virtio_vdpa.c
+@@ -80,7 +80,7 @@ static void virtio_vdpa_set_status(struct virtio_device *vdev, u8 status)
+ {
+ 	struct vdpa_device *vdpa = vd_get_vdpa(vdev);
  
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 	mmc-pwrseq = <&wlan_pwrseq>;
- 	vmmc-supply = <&vtf_reg>;
+-	return vdpa_set_status(vdpa, status);
++	vdpa_set_status(vdpa, status);
+ }
+ 
+ static void virtio_vdpa_reset(struct virtio_device *vdev)
 -- 
 2.51.0
 
