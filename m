@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43FFCC2D5E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DFBCC26EF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C207C31D4A99
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47E08304C9F8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7D935CBDD;
-	Tue, 16 Dec 2025 12:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF7A34D4C1;
+	Tue, 16 Dec 2025 11:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5gO3ZvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ioh5vZfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB235CBCF;
-	Tue, 16 Dec 2025 12:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD5F34D3BD;
+	Tue, 16 Dec 2025 11:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887325; cv=none; b=NZlx8sF0Sgpdh6GMhKH4pgK0CbrkNJxwmwgzx9mWB68UGQ1K9jD7tc0AOwVmJtTUExQJBI6G7u341zHBzWZlISwHPJKG9W6CgckJGXz70huZKM5ugd927jxHxRpoYaVoPwL/bXBAm/01bKUWf1+lTyMLrSNW6gWMbu8h/7bh4jk=
+	t=1765885381; cv=none; b=sOhaB/zIMaeh8koEgt0akx7PcfFQfStkGTVE5SLPLgBWLD06NoM5VbvjSObzZn3WKZKAPiO5tPWyobkvNNsfIRVSzSOlPOO9V+S9x7wE8M+8LGKnQQT+CJ80U3oPTu9v2Jtwm6inRCMlUCSaJRyxxGiYNDe5+dFscRzj/A7cT2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887325; c=relaxed/simple;
-	bh=k1gm23oBa45U3/QtLmX+ThVse+3mnzUm9B/p1Eqhn2o=;
+	s=arc-20240116; t=1765885381; c=relaxed/simple;
+	bh=gfPaKI9UcrZpdHdoiMGr+FSPIBRzLxS2m7UyuOoswVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtyCc6G//YRzE4H0h2fCHEdLQBpz3J3Z2dtz8BIMyjwG6xsCG1o920+vmhL7ZuawzgfPrZT0s0tJ9l3sSk24FqvnRUaXD+klDUeuTHA4uBRBgb5jBkZanuszjhYLfCoKe4QqgI1ltIk3YqYB58GyPYuuSpIGPyFqDtFKFD7Izo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5gO3ZvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40739C4CEF1;
-	Tue, 16 Dec 2025 12:15:23 +0000 (UTC)
+	 MIME-Version; b=uCAShpQ/6jze8ql3gBFkJspcNoj5ZBvlxQQN0z3pX/a78kI1UogogFObLqV+ziol2RC6oUEfFHDO61MN3uMWXGQ8ZKqBuxrbnn7uFAHuFeaH+W7nANqfc6VWEPRV3JhOKS/1wHHXjEdGzVef7vfJ0k76I/ekxf65Gr6Vod6jQvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ioh5vZfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FA5C4CEF1;
+	Tue, 16 Dec 2025 11:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887324;
-	bh=k1gm23oBa45U3/QtLmX+ThVse+3mnzUm9B/p1Eqhn2o=;
+	s=korg; t=1765885380;
+	bh=gfPaKI9UcrZpdHdoiMGr+FSPIBRzLxS2m7UyuOoswVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5gO3ZvLHIKqjeBPL9kCmYQrdEzCfof2+YyRfI/wDA4LHm0Z2v+vj0aAyMLdCqQTa
-	 oCie8FrYaWJK+6lYH3xYcHGYzASgf7K8HXRvVTgvYmgNWwZQfs0NC8B0TP41zW3Di3
-	 Anmh3w3TsB62C53g7MlkKjt7POEyo1VoD1Y8xJBk=
+	b=Ioh5vZfYevHLZniy5ayyqC9uPUtR5o49k6VbSG+wofJTJua0kzYB39uEhzO8IoFai
+	 +p4TPSiQeiyZT5agoUGdnS5muO0pruSH+SpL2sQso+1eC3eyvKQCtWBYyJCI18NOOg
+	 d/sgqqCBf5B7nkPCBgq7yqIaKWV2+4TLacoytgd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Thomas Richard (TI.com)" <thomas.richard@bootlin.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Nishanth Menon <nm@ti.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 195/614] firmware: ti_sci: Set IO Isolation only if the firmware is capable
-Date: Tue, 16 Dec 2025 12:09:22 +0100
-Message-ID: <20251216111408.442328570@linuxfoundation.org>
+Subject: [PATCH 6.17 122/507] accel/ivpu: Remove skip of dma unmap for imported buffers
+Date: Tue, 16 Dec 2025 12:09:23 +0100
+Message-ID: <20251216111349.952689668@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
+From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
 
-[ Upstream commit 999e9bc953e321651d69556fdd5dfd178f96f128 ]
+[ Upstream commit c063c1bbee67391f12956d2ffdd5da00eb87ff79 ]
 
-Prevent calling ti_sci_cmd_set_io_isolation() on firmware
-that does not support the IO_ISOLATION capability. Add the
-MSG_FLAG_CAPS_IO_ISOLATION capability flag and check it before
-attempting to set IO isolation during suspend/resume operations.
+Rework of imported buffers introduced in the commit
+e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
+switched the logic of imported buffers by dma mapping/unmapping
+them just as the regular buffers.
 
-Without this check, systems with older firmware may experience
-undefined behavior or errors when entering/exiting suspend states.
+The commit didn't include removal of skipping dma unmap of imported
+buffers which results in them being mapped without unmapping.
 
-Fixes: ec24643bdd62 ("firmware: ti_sci: Add system suspend and resume call")
-Signed-off-by: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://patch.msgid.link/20251031-ti-sci-io-isolation-v2-1-60d826b65949@bootlin.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Link: https://patch.msgid.link/20251027150933.2384538-1-maciej.falkowski@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 21 +++++++++++++--------
- drivers/firmware/ti_sci.h |  2 ++
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ drivers/accel/ivpu/ivpu_gem.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 49fd2ae01055d..8d96a3c12b36a 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -3751,9 +3751,11 @@ static int __maybe_unused ti_sci_suspend_noirq(struct device *dev)
- 	struct ti_sci_info *info = dev_get_drvdata(dev);
- 	int ret = 0;
- 
--	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
--	if (ret)
--		return ret;
-+	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
-+		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	return 0;
- }
-@@ -3767,9 +3769,11 @@ static int __maybe_unused ti_sci_resume_noirq(struct device *dev)
- 	u8 pin;
- 	u8 mode;
- 
--	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
--	if (ret)
--		return ret;
-+	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
-+		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = ti_sci_msg_cmd_lpm_wake_reason(&info->handle, &source, &time, &pin, &mode);
- 	/* Do not fail to resume on error as the wake reason is not critical */
-@@ -3928,11 +3932,12 @@ static int ti_sci_probe(struct platform_device *pdev)
+diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+index 1fca969df19dc..a38e41f9c7123 100644
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -157,9 +157,6 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
+ 		bo->ctx = NULL;
  	}
  
- 	ti_sci_msg_cmd_query_fw_caps(&info->handle, &info->fw_caps);
--	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s\n",
-+	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s%s\n",
- 		info->fw_caps & MSG_FLAG_CAPS_GENERIC ? "Generic" : "",
- 		info->fw_caps & MSG_FLAG_CAPS_LPM_PARTIAL_IO ? " Partial-IO" : "",
- 		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : "",
--		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : ""
-+		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : "",
-+		info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION ? " IO-Isolation" : ""
- 	);
- 
- 	ti_sci_setup_ops(info);
-diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
-index 701c416b2e78f..7559cde17b6cc 100644
---- a/drivers/firmware/ti_sci.h
-+++ b/drivers/firmware/ti_sci.h
-@@ -149,6 +149,7 @@ struct ti_sci_msg_req_reboot {
-  *		MSG_FLAG_CAPS_LPM_PARTIAL_IO: Partial IO in LPM
-  *		MSG_FLAG_CAPS_LPM_DM_MANAGED: LPM can be managed by DM
-  *		MSG_FLAG_CAPS_LPM_ABORT: Abort entry to LPM
-+ *		MSG_FLAG_CAPS_IO_ISOLATION: IO Isolation support
-  *
-  * Response to a generic message with message type TI_SCI_MSG_QUERY_FW_CAPS
-  * providing currently available SOC/firmware capabilities. SoC that don't
-@@ -160,6 +161,7 @@ struct ti_sci_msg_resp_query_fw_caps {
- #define MSG_FLAG_CAPS_LPM_PARTIAL_IO	TI_SCI_MSG_FLAG(4)
- #define MSG_FLAG_CAPS_LPM_DM_MANAGED	TI_SCI_MSG_FLAG(5)
- #define MSG_FLAG_CAPS_LPM_ABORT		TI_SCI_MSG_FLAG(9)
-+#define MSG_FLAG_CAPS_IO_ISOLATION	TI_SCI_MSG_FLAG(7)
- #define MSG_MASK_CAPS_LPM		GENMASK_ULL(4, 1)
- 	u64 fw_caps;
- } __packed;
+-	if (drm_gem_is_imported(&bo->base.base))
+-		return;
+-
+ 	if (bo->base.sgt) {
+ 		if (bo->base.base.import_attach) {
+ 			dma_buf_unmap_attachment(bo->base.base.import_attach,
 -- 
 2.51.0
 
