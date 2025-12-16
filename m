@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5DFCC2466
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E83CC2A32
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C215304D0EC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48B9C3020C3D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE50343D80;
-	Tue, 16 Dec 2025 11:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E8C341ACC;
+	Tue, 16 Dec 2025 11:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmdsl/eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmDeFTqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4171A343D79;
-	Tue, 16 Dec 2025 11:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648E9313E13;
+	Tue, 16 Dec 2025 11:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884399; cv=none; b=Vjy7NHjGCE0s2Ac0FV2931OGk4F1Q8LSr6BAFL3PQnEVqXvUxkzMEjrAgf4hGQ+NIwMVzZ/crXWrswdu1uXTvpUKoUkWG8vHG6a0if3Gqf1negfLBiKoBleicdLVzhgDvqWvEYn8WP8j5wgmUTVUOjZs+6r2oV5gb+gi3c7NRoQ=
+	t=1765886005; cv=none; b=lVOK8mpWKz+5cfADTP0hj9yIm94hYjRQvokWAZ3rPDdehvYYgWSFJmSHYeJGHeMxEUilRKWjhcCOElqG+bz/Xa+vNFp2VCfRuA06jeyofNn9GCnaCCf19KfoBO4ISYBjuBkpQDsLU6dhwI0NmPOYu+C3M9Vh4iWj1iQTKtw7+xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884399; c=relaxed/simple;
-	bh=BTuuOQgMPhBDyHwtauAqeYN59CYeAOSX3EuP6WhvymA=;
+	s=arc-20240116; t=1765886005; c=relaxed/simple;
+	bh=o5v/k9Si1qP+57kUqBR0fQux2CTeMy/GsuSniVCryYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGLSTrDrg3d38qQ/yUajb2N7dvs+KfCBGYOXFkR+hbgRoj67srC5Env3y30Py6pWdx6wfjfp22Eh9dYpwrTJvMST1bOPvCq4Tq76U/jB41hKF9vBXEUyI1wH1MVlQV155t5U6b8MwP6coYrsg1BTvWNywuV8lzdOmDtIHEcwVVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmdsl/eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6E3C4CEF1;
-	Tue, 16 Dec 2025 11:26:38 +0000 (UTC)
+	 MIME-Version; b=Gr2Qf/yIeQICXPVdOeNP28Mb4slyMVOACZAF81oFoQhaVTqrZpveTGKc9ntcqXkp6xjQJo5lTg97EJBWXCwMZMPUIteH58ivi2r3kgsd0tIL4mujgmuniv0b0V5/6POOdOIj+q+E/FTCpvUkKjQHn9zzP4k9RHidn/DWVfL585U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmDeFTqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7275C4CEF1;
+	Tue, 16 Dec 2025 11:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884399;
-	bh=BTuuOQgMPhBDyHwtauAqeYN59CYeAOSX3EuP6WhvymA=;
+	s=korg; t=1765886005;
+	bh=o5v/k9Si1qP+57kUqBR0fQux2CTeMy/GsuSniVCryYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmdsl/eqTRLautOrxrj/HQCcRpHiJ/qMzjc0hLOjP8BdwhresxT6fYspaPoonYnBx
-	 p2BEaGr3KX9hhRlzk1NaeKikimup/OwjKfimXOvOnHU4vFc+D+j0OWRNzKXsmzjqgh
-	 yJA/lh69+c4MCl5trkOkNPCJqXIg3u6gIYT7tSyk=
+	b=XmDeFTqfFGwz4PVxLBngkc6RBeeIGxROLZDQp5U8WxI//EFHh1l64V5ZMX4sU5SFo
+	 E5ybKPwJUS6h28kWGI3WsXmNjU1rwydqPcX3Er8g5RMGajcKnyvz3cTXOGdbaRhUL9
+	 x6ghahfmZpcVEkd8fcE6MOW8QAOTKh7YwhXKW+Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/354] drm/msm/a6xx: Improve MX rail fallback in RPMH vote init
+Subject: [PATCH 6.17 308/507] regulator: pca9450: Fix error code in probe()
 Date: Tue, 16 Dec 2025 12:12:29 +0100
-Message-ID: <20251216111327.506498354@linuxfoundation.org>
+Message-ID: <20251216111356.629255644@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ca04ce7a2f22652fdf6489fa7e02e7d2c08698f4 ]
+[ Upstream commit 670500b41e543c5cb09eb9f7f0e4e26c5b5fdf7e ]
 
-Current logic assumes that the voltage corners in both MxG and MxA are
-always same. This is not true for recent targets. So, rework the rpmh init
-sequence to probe and calculate the votes with the respective rails, ie,
-GX rails should use MxG as secondary rail and Cx rail should use MxA as
-the secondary rail.
+Return "PTR_ERR(pca9450->sd_vsel_gpio)" instead of "ret".  The "ret"
+variable is success at this point.
 
-Fixes: d6225e0cd096 ("drm/msm/adreno: Add support for X185 GPU")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/689014/
-Message-ID: <20251118-kaana-gpu-support-v4-12-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 3ce6f4f943dd ("regulator: pca9450: Fix control register for LDO5")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aSBqnPoBrsNB1Ale@stanley.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/regulator/pca9450-regulator.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index e2ea50862a413..3e36cec3801ed 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1324,13 +1324,14 @@ static unsigned int a6xx_gmu_get_arc_level(struct device *dev,
- }
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 4be270f4d6c35..91b96dbab328b 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -1251,10 +1251,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	 * to this signal (if SION bit is set in IOMUX).
+ 	 */
+ 	pca9450->sd_vsel_gpio = gpiod_get_optional(&ldo5->dev, "sd-vsel", GPIOD_IN);
+-	if (IS_ERR(pca9450->sd_vsel_gpio)) {
+-		dev_err(&i2c->dev, "Failed to get SD_VSEL GPIO\n");
+-		return ret;
+-	}
++	if (IS_ERR(pca9450->sd_vsel_gpio))
++		return dev_err_probe(&i2c->dev, PTR_ERR(pca9450->sd_vsel_gpio),
++				     "Failed to get SD_VSEL GPIO\n");
  
- static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
--		unsigned long *freqs, int freqs_count, const char *id)
-+		unsigned long *freqs, int freqs_count,
-+		const char *pri_id, const char *sec_id)
- {
- 	int i, j;
- 	const u16 *pri, *sec;
- 	size_t pri_count, sec_count;
- 
--	pri = cmd_db_read_aux_data(id, &pri_count);
-+	pri = cmd_db_read_aux_data(pri_id, &pri_count);
- 	if (IS_ERR(pri))
- 		return PTR_ERR(pri);
- 	/*
-@@ -1341,13 +1342,7 @@ static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
- 	if (!pri_count)
- 		return -EINVAL;
- 
--	/*
--	 * Some targets have a separate gfx mxc rail. So try to read that first and then fall back
--	 * to regular mx rail if it is missing
--	 */
--	sec = cmd_db_read_aux_data("gmxc.lvl", &sec_count);
--	if (IS_ERR(sec) && sec != ERR_PTR(-EPROBE_DEFER))
--		sec = cmd_db_read_aux_data("mx.lvl", &sec_count);
-+	sec = cmd_db_read_aux_data(sec_id, &sec_count);
- 	if (IS_ERR(sec))
- 		return PTR_ERR(sec);
- 
-@@ -1412,15 +1407,24 @@ static int a6xx_gmu_rpmh_votes_init(struct a6xx_gmu *gmu)
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	struct msm_gpu *gpu = &adreno_gpu->base;
-+	const char *sec_id;
-+	const u16 *gmxc;
- 	int ret;
- 
-+	gmxc = cmd_db_read_aux_data("gmxc.lvl", NULL);
-+	if (gmxc == ERR_PTR(-EPROBE_DEFER))
-+		return -EPROBE_DEFER;
-+
-+	/* If GMxC is present, prefer that as secondary rail for GX votes */
-+	sec_id = IS_ERR_OR_NULL(gmxc) ? "mx.lvl" : "gmxc.lvl";
-+
- 	/* Build the GX votes */
- 	ret = a6xx_gmu_rpmh_arc_votes_init(&gpu->pdev->dev, gmu->gx_arc_votes,
--		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl");
-+		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl", sec_id);
- 
- 	/* Build the CX votes */
- 	ret |= a6xx_gmu_rpmh_arc_votes_init(gmu->dev, gmu->cx_arc_votes,
--		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl");
-+		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl", "mx.lvl");
- 
- 	return ret;
- }
+ 	pca9450->sd_vsel_fixed_low =
+ 		of_property_read_bool(ldo5->dev.of_node, "nxp,sd-vsel-fixed-low");
 -- 
 2.51.0
 
