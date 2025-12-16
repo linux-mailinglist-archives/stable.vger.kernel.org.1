@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46D0CC2637
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC7BCC3FE7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41C6930C9E5C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 10DC7306AC3A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAA5342169;
-	Tue, 16 Dec 2025 11:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC403563DC;
+	Tue, 16 Dec 2025 12:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrLutzD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jleOrCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ADB341AD7;
-	Tue, 16 Dec 2025 11:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0703563D0;
+	Tue, 16 Dec 2025 12:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884796; cv=none; b=j9ndqDCCE3dc9Oq7Ub8DtZ0jjGkVDqI6YEMMFwGK7+Oq2qzTNs+JEALer+wfRwo1ZX7QI3UVKqiCrXHxvfQgw6Fd1YJq6YXScKYyQrZPkJBOmGZh8xtLy6blkKcw4DaHSJsXx4KU1gJViunFeTSYF2W1YoUX3KPxwPlu57qKIdc=
+	t=1765886523; cv=none; b=nWRv3BhNcC2RSE7UtmVEaHGYePRMZscL4vJVBxgSQuXCxeVZHysXahCpZAZ0B8IcTAOg+aXOgsZ21+63bS8HIaf5AmCBBkHh4wcRNApxRvhTdxc7FdLj8hZAWw3WvPwQobUof/2aCQcCQOIrtuc///XDOE2PwStTPPEcfpd0UAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884796; c=relaxed/simple;
-	bh=LbH3yyFUdl2meuW0YEkkg+DprbsOJ8URSAAl+ZmHC7Q=;
+	s=arc-20240116; t=1765886523; c=relaxed/simple;
+	bh=neBI4C6mfhGo2YwbAD1VcK3dZXYeBcs9f3MQ9hjc6Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtbuKHLXUi8Sx+sJT7B/gYG645OTv4wNbX1DbjGd8XPW+LStoTDFw+npTMANIicC/6uUpfkHjG++KJtiDLIC98WM94MUZKbRQed/PvxGk3Xc3Sd+gsxgBHBMmPOvM7jr3ZxH3sefU+ZZ9dVz8sMJ9p3DlytBM3n47d3T5hGYbAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrLutzD+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED11BC4CEF1;
-	Tue, 16 Dec 2025 11:33:15 +0000 (UTC)
+	 MIME-Version; b=jJ5Tv2RIpaEnxNLBFQrG4shjEnZMJ0+RDbb36m6oAnFk5qGfweEW8zsO+4grO4i+R6tVShl5qeR9w52zFd22Vwf6OHxLHVCNWFUiMs07VUHbpu4FZLk+qHy6ZbsM2C3Jsd9UUwsndLf+V4K/+56FUuje3g0tVBlLPtkxoefoC7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jleOrCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC89C4CEF1;
+	Tue, 16 Dec 2025 12:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884796;
-	bh=LbH3yyFUdl2meuW0YEkkg+DprbsOJ8URSAAl+ZmHC7Q=;
+	s=korg; t=1765886522;
+	bh=neBI4C6mfhGo2YwbAD1VcK3dZXYeBcs9f3MQ9hjc6Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrLutzD+E2BhokVBd57pdJ/fo1bCBZgNR4b2m9VzSq9oeiBe/Pu03zofD4BibSeSF
-	 qM4d0Ms1oyV4XZITIWtpZR0yWd+JIrLbY09GvmU/0/LkhHT1p/9nZd+j6WYvIBv1uk
-	 s4CY+0gVJkou8uYTJPIWgerAMP1C18iksiZuDkbI=
+	b=0jleOrCzbNpqyhq2SNGM7ZSSCjj6xcuqF02mQhqQyRS7WilfvrBg3Z6nFxOuU01TU
+	 AwLkwUIlYq3vNw1SDmYYNEYRQPB9gSmfjzKy1/vIh/kBUf14c4xA7LCE0l5IGXejmD
+	 mDT2tsL5z5v2URr5NFaI+dTZFAFYgT6/TOFTfT5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/354] f2fs: maintain one time GC mode is enabled during whole zoned GC cycle
-Date: Tue, 16 Dec 2025 12:14:28 +0100
-Message-ID: <20251216111331.816743824@linuxfoundation.org>
+Subject: [PATCH 6.17 428/507] perf tools: Fix split kallsyms DSO counting
+Date: Tue, 16 Dec 2025 12:14:29 +0100
+Message-ID: <20251216111400.966961171@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit e462fc48ceb8224811c3224650afed05cb7f0872 ]
+[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
 
-The current version missed setting one time GC for normal zoned GC
-cycle. So, valid threshold control is not working. Need to fix it to
-prevent excessive GC for zoned devices.
+It's counted twice as it's increased after calling maps__insert().  I
+guess we want to increase it only after it's added properly.
 
-Fixes: e791d00bd06c ("f2fs: add valid block ratio not to do excessive GC for one time GC")
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tools/perf/util/symbol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 12737dfba5efb..2dda8f23c0b99 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -38,13 +38,14 @@ static int gc_thread_func(void *data)
- 	struct f2fs_gc_control gc_control = {
- 		.victim_segno = NULL_SEGNO,
- 		.should_migrate_blocks = false,
--		.err_gc_skipped = false };
-+		.err_gc_skipped = false,
-+		.one_time = false };
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 93c81c65b6c40..dfa8340eeaf8c 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -955,11 +955,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
+ 			if (dso__kernel(dso) == DSO_SPACE__KERNEL_GUEST)
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[guest.kernel].%d",
+-					kernel_range++);
++					kernel_range);
+ 			else
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[kernel].%d",
+-					kernel_range++);
++					kernel_range);
  
- 	wait_ms = gc_th->min_sleep_time;
- 
- 	set_freezable();
- 	do {
--		bool sync_mode, foreground = false;
-+		bool sync_mode, foreground = false, gc_boost = false;
- 
- 		wait_event_freezable_timeout(*wq,
- 				kthread_should_stop() ||
-@@ -52,8 +53,12 @@ static int gc_thread_func(void *data)
- 				gc_th->gc_wake,
- 				msecs_to_jiffies(wait_ms));
- 
--		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq))
-+		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq)) {
- 			foreground = true;
-+			gc_control.one_time = false;
-+		} else if (f2fs_sb_has_blkzoned(sbi)) {
-+			gc_control.one_time = true;
-+		}
- 
- 		/* give it a try one time */
- 		if (gc_th->gc_wake)
-@@ -81,8 +86,6 @@ static int gc_thread_func(void *data)
- 			continue;
- 		}
- 
--		gc_control.one_time = false;
--
- 		/*
- 		 * [GC triggering condition]
- 		 * 0. GC is not conducted currently.
-@@ -132,7 +135,7 @@ static int gc_thread_func(void *data)
- 		if (need_to_boost_gc(sbi)) {
- 			decrease_sleep_time(gc_th, &wait_ms);
- 			if (f2fs_sb_has_blkzoned(sbi))
--				gc_control.one_time = true;
-+				gc_boost = true;
- 		} else {
- 			increase_sleep_time(gc_th, &wait_ms);
- 		}
-@@ -141,7 +144,7 @@ static int gc_thread_func(void *data)
- 					FOREGROUND : BACKGROUND);
- 
- 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
--			(gc_control.one_time && gc_th->boost_gc_greedy);
-+			(gc_boost && gc_th->boost_gc_greedy);
- 
- 		/* foreground GC was been triggered via f2fs_balance_fs() */
- 		if (foreground)
+ 			ndso = dso__new(dso_name);
+ 			map__zput(curr_map);
 -- 
 2.51.0
 
