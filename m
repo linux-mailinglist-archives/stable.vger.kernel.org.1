@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-202621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60594CC2ED5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B61CC2643
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 399DA30316A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FE3B3024257
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5016D2DA74C;
-	Tue, 16 Dec 2025 12:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112BE261B9D;
+	Tue, 16 Dec 2025 11:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7HKxEGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/ykQNji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07646342529;
-	Tue, 16 Dec 2025 12:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FD7342C8E;
+	Tue, 16 Dec 2025 11:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888496; cv=none; b=dg8ZbN1y8B/CYLy/+AliaCSHsHAWYgeHe4eLh8KEf+tElqXopbL29W5rJmhoirzLjNyh24Vpdz5STRB+jxAKT//pr6oI+ITrjwb12qUyn3W/UMXacq16GIJLQwbQFZQskQTKCg7WKAj54HciLwxXn2y5bMhN75R2PPbFXKYnydw=
+	t=1765884984; cv=none; b=jntuHCLjHVgTHWcaT836ymcxjfskHi8yn/Vm0mPsj/pcdgdHvUt8L8Qrxnx4MaQTKcnH6wBvy7Fb9DE/+fQMs5rdqoTb0Tb/NLiPmjI1zYkkTmHlD9pLYIkRchSz/ZEpJd1Z49T8UNmt51n7tFOygBGElkX9vWyHTAutLr2wYh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888496; c=relaxed/simple;
-	bh=hgZe5myBtYq6Z+cmLD62mMHNTk+SqJym5p4G4b/lDhs=;
+	s=arc-20240116; t=1765884984; c=relaxed/simple;
+	bh=KGZ6Rb3HC+Gy5+XfUmfkdn1jfzwx5PAspoyJil7+js8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGBWJCImdMCy/nrl7FwFpQ2xdgjvuLGECA+5B5UhA37P4bMsEfCUkcBdEH8Gv/LbaB8JkEv6hBp8HOXcdUXVl/dsyb2sZHmeYfcUxBymM6miBxA45IJ4XYkWq8TacRDHlRIJ4Wvo33oDsEjfCkutjwXvyN0uaHc3bPSHRRN/Xw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7HKxEGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69424C16AAE;
-	Tue, 16 Dec 2025 12:34:55 +0000 (UTC)
+	 MIME-Version; b=ZUfj1wW5OBu983fEvSHPlWDHFX1IReRrawHbfXY8YegoP4Ng4QwMHT+dePYUgnkDYUqlXP7errDyqVZMceZxqzB6s0X7EGAc6xzKgbROWDNNjqg4jOmpNzQgj69pfs3TfSxNqS/jCovHfQwF8Nf0NWJNERYRdeqyT6p187p0GUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/ykQNji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFADC4CEF1;
+	Tue, 16 Dec 2025 11:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888495;
-	bh=hgZe5myBtYq6Z+cmLD62mMHNTk+SqJym5p4G4b/lDhs=;
+	s=korg; t=1765884984;
+	bh=KGZ6Rb3HC+Gy5+XfUmfkdn1jfzwx5PAspoyJil7+js8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7HKxEGNdxhHGQMVEj+vJ4sT04MsPFGRSutW+tDqG8RiOecWVYhEOOWfA8c0hD3T4
-	 HoEW0R6qsD8ORNJHsCdE3iCzO5A4XOWmqhho2EaBLPc1bKCwxlzEFBLlNI1BGw6GXr
-	 7uwy4uMVMYGIhgLATh2Z/wGBLkTN7XUjXmDZx6xA=
+	b=C/ykQNjiD1Q/nsQS0aCr3T9Eg+y4th8zTNXrmHe01GvTQFP0x417Bvu7QdLbOs1um
+	 9fNohTLJinHvUPoHNsmVdj8eCieo30q1cTg43OOPaWFot/yYEEH6UTjgXD6x0prQ3m
+	 UDWCgg5NsLLIpsSxI7xrLSRT3IMO8O0AKCvEuhRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 551/614] NFS: Fix inheritance of the block sizes when automounting
+	stable <stable@kernel.org>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH 6.12 351/354] usb: phy: Initialize struct usb_phy list_head
 Date: Tue, 16 Dec 2025 12:15:18 +0100
-Message-ID: <20251216111421.343529727@linuxfoundation.org>
+Message-ID: <20251216111333.625217690@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,183 +59,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit 2b092175f5e301cdaa935093edfef2be9defb6df ]
+commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
 
-Only inherit the block sizes that were actually specified as mount
-parameters for the parent mount.
+As part of the registration of a new 'struct usb_phy' with the USB PHY core
+via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
+usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
+order for the new instance x to be stored in phy_list, a static list
+kept internally by the core.
 
-Fixes: 62a55d088cd8 ("NFS: Additional refactoring for fs_context conversion")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+when executing either of the registration functions above it is possible
+that usb_add_extcon() fails, leading to either function returning before
+the call to list_add_tail(), leaving x->head uninitialized.
+
+Then, when a driver tries to undo the failed registration by calling
+usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
+list_del(&x->head) acting on an uninitialized variable, and thus a
+possible NULL pointer dereference.
+
+Fix this by initializing x->head before usb_add_extcon() has a
+chance to fail. Note that this was not needed before 7d21114dc6a2 since
+list_add_phy() was executed unconditionally and it guaranteed that x->head
+was initialized.
+
+Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c           | 21 +++++++++++++++++----
- fs/nfs/internal.h         |  1 -
- fs/nfs/namespace.c        |  5 ++++-
- fs/nfs/nfs4client.c       | 18 ++++++++++++++----
- fs/nfs/super.c            | 10 +++-------
- include/linux/nfs_fs_sb.h |  5 +++++
- 6 files changed, 43 insertions(+), 17 deletions(-)
+ drivers/usb/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 54699299d5b16..2aaea9c98c2cd 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -784,10 +784,18 @@ static int nfs_init_server(struct nfs_server *server,
- 		server->fattr_valid = NFS_ATTR_FATTR_V4;
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -672,6 +672,8 @@ int usb_add_phy(struct usb_phy *x, enum
+ 		return -EINVAL;
  	}
  
--	if (ctx->rsize)
-+	if (ctx->bsize) {
-+		server->bsize = ctx->bsize;
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
-+	}
-+	if (ctx->rsize) {
- 		server->rsize = nfs_io_size(ctx->rsize, clp->cl_proto);
--	if (ctx->wsize)
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
-+	}
-+	if (ctx->wsize) {
- 		server->wsize = nfs_io_size(ctx->wsize, clp->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
-+	}
- 
- 	server->acregmin = ctx->acregmin * HZ;
- 	server->acregmax = ctx->acregmax * HZ;
-@@ -977,8 +985,13 @@ EXPORT_SYMBOL_GPL(nfs_probe_server);
- void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *source)
- {
- 	target->flags = source->flags;
--	target->rsize = source->rsize;
--	target->wsize = source->wsize;
-+	target->automount_inherit = source->automount_inherit;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
-+		target->bsize = source->bsize;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_RSIZE)
-+		target->rsize = source->rsize;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_WSIZE)
-+		target->wsize = source->wsize;
- 	target->acregmin = source->acregmin;
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index ffd382aa31ac0..2e596244799f3 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -152,7 +152,6 @@ struct nfs_fs_context {
- 		struct super_block	*sb;
- 		struct dentry		*dentry;
- 		struct nfs_fattr	*fattr;
--		unsigned int		inherited_bsize;
- 	} clone_data;
- };
- 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index dca055676c4f3..9e4d94f41fc67 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -190,6 +190,10 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	ctx->nfs_mod		= client->cl_nfs_mod;
- 	get_nfs_version(ctx->nfs_mod);
- 
-+	/* Inherit block sizes if they were specified as mount parameters */
-+	if (server->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
-+		ctx->bsize = server->bsize;
++	INIT_LIST_HEAD(&x->head);
 +
- 	ret = client->rpc_ops->submount(fc, server);
- 	if (ret < 0) {
- 		mnt = ERR_PTR(ret);
-@@ -289,7 +293,6 @@ int nfs_do_submount(struct fs_context *fc)
- 		return -ENOMEM;
- 
- 	ctx->internal		= true;
--	ctx->clone_data.inherited_bsize = ctx->clone_data.sb->s_blocksize_bits;
- 
- 	p = nfs_devname(dentry, buffer, 4096);
- 	if (IS_ERR(p)) {
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 3a4baed993c96..4ff0e9dd1145e 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1174,10 +1174,20 @@ static int nfs4_init_server(struct nfs_server *server, struct fs_context *fc)
- 	if (error < 0)
- 		return error;
- 
--	if (ctx->rsize)
--		server->rsize = nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
--	if (ctx->wsize)
--		server->wsize = nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
-+	if (ctx->bsize) {
-+		server->bsize = ctx->bsize;
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
-+	}
-+	if (ctx->rsize) {
-+		server->rsize =
-+			nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
-+	}
-+	if (ctx->wsize) {
-+		server->wsize =
-+			nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
-+	}
- 
- 	server->acregmin = ctx->acregmin * HZ;
- 	server->acregmax = ctx->acregmax * HZ;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 66413133b43e3..57d372db03b93 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1091,8 +1091,9 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
- 	sb->s_blocksize = 0;
- 	sb->s_xattr = server->nfs_client->cl_nfs_mod->xattr;
- 	sb->s_op = server->nfs_client->cl_nfs_mod->sops;
--	if (ctx->bsize)
--		sb->s_blocksize = nfs_block_size(ctx->bsize, &sb->s_blocksize_bits);
-+	if (server->bsize)
-+		sb->s_blocksize =
-+			nfs_block_size(server->bsize, &sb->s_blocksize_bits);
- 
- 	switch (server->nfs_client->rpc_ops->version) {
- 	case 2:
-@@ -1338,13 +1339,8 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
+@@ -722,6 +724,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+ 		return -EINVAL;
  	}
  
- 	if (!s->s_root) {
--		unsigned bsize = ctx->clone_data.inherited_bsize;
- 		/* initial superblock/root creation */
- 		nfs_fill_super(s, ctx);
--		if (bsize) {
--			s->s_blocksize_bits = bsize;
--			s->s_blocksize = 1U << bsize;
--		}
- 		error = nfs_get_cache_cookie(s, ctx);
- 		if (error < 0)
- 			goto error_splat_super;
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index d30c0245031c0..30ac384e011a4 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -172,6 +172,11 @@ struct nfs_server {
- #define NFS_MOUNT_FORCE_RDIRPLUS	0x20000000
- #define NFS_MOUNT_NETUNREACH_FATAL	0x40000000
- 
-+	unsigned int		automount_inherit; /* Properties inherited by automount */
-+#define NFS_AUTOMOUNT_INHERIT_BSIZE	0x0001
-+#define NFS_AUTOMOUNT_INHERIT_RSIZE	0x0002
-+#define NFS_AUTOMOUNT_INHERIT_WSIZE	0x0004
++	INIT_LIST_HEAD(&x->head);
 +
- 	unsigned int		caps;		/* server capabilities */
- 	__u64			fattr_valid;	/* Valid attributes */
- 	unsigned int		rsize;		/* read size */
--- 
-2.51.0
-
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
 
 
 
