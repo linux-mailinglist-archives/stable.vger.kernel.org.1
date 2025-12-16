@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67609CC22B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6970CCC2A2F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB5DC3038B37
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA73C3026FA2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534F334216B;
-	Tue, 16 Dec 2025 11:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E6035295E;
+	Tue, 16 Dec 2025 11:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAIa8Tgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY3k09Il"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCC1341069;
-	Tue, 16 Dec 2025 11:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BBE35295A;
+	Tue, 16 Dec 2025 11:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884166; cv=none; b=oyTLUjFY+4DqRGIDsNryy7BHyqxJPzbmpmx7q3wvPzaUgwyQRoepoBCGjHhDfvFLYTAT9mDqnmv+xyNLKInaQy7ALExVIpcwCVq5z8K5XLFKl9WgB3VhbiQYWmjTp5dMi+tNgVwdIqrTpluvGyqe8mg+FuTpCoYWciCc4vofytU=
+	t=1765885770; cv=none; b=Ah4XTQdv2Jpsi/2gMUFbcQAZo+ppQrore55QBpmqM0+D3U+3XMpbykQ/BBRjIkHbkUwVoHS+g8LEJyNtnmAsgvDPCQoxMcKbhJcWCvGrxsoU6dzqqOxYRhoPS6F1IehxPN/ljQEUQgA0Ww0i0kSqD44Su4ChfemvQpuQpJabnwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884166; c=relaxed/simple;
-	bh=ZOSqU2k5HFR6g0izBl6glJqW+f0ZQy0NlAmj5JLwdE0=;
+	s=arc-20240116; t=1765885770; c=relaxed/simple;
+	bh=uyHaDDVNbp6ua8sgwA6qksAxPO9PnBkck9Tr3obqhCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxupJ7tIgJY7gAe9l3+9P3MGF03BukDZ9igRAQSstWhqQps7nAOsg+4/5C/fCzRlqtwZkqTGlC8QCQOZmeT6cb79qZPemrui9s7mvv7ajJMbDP1Am/M9kt4TvLqK1WiqfEXaOdMBPCWaBLL/Ehl9GkhR923TRtk6C2ADg6ELlF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAIa8Tgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A71C4CEF1;
-	Tue, 16 Dec 2025 11:22:45 +0000 (UTC)
+	 MIME-Version; b=MQ8I7IzkKdpNJcBENGCl9IAZLYfV49kK1eioQ4kgHcoIvxIkNFUh1ateqgDeVs0HcHy3B09KiRBRFOLPBmw6dOoAiCdY90vZVRnlRFnwJS1pNqikaekhrQFPZ02lT6WowolAxrb0Uv5Tm9Xf5LldX/4qA9TIT1gcaF3rY0H3iiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jY3k09Il; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F11C19422;
+	Tue, 16 Dec 2025 11:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884165;
-	bh=ZOSqU2k5HFR6g0izBl6glJqW+f0ZQy0NlAmj5JLwdE0=;
+	s=korg; t=1765885770;
+	bh=uyHaDDVNbp6ua8sgwA6qksAxPO9PnBkck9Tr3obqhCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAIa8Tgv+ieI4uoZRlhiOzDcvqf/bJRMGZiONxkuMYVlVOsEXbIv9dRcpNXDsovXI
-	 DU7h7+NnGccaJpRj3JPSvL0IsSDjdrXK+3AMjnZ1BFsbg9tEmURriC4pUNFBomG4O0
-	 fkcUkKdqnxeND/DpCtKYvXEGZhGdHAKiQM1ZBTK0=
+	b=jY3k09Ilvwb25s1rkh+Yv45SS6NK3f9OU8darL5H9GQtFLfiKEXdIAUrhenvadtSI
+	 GiBoTkQpa5pRU7/5Q4JxySu3/ONLjxNFff3zFgD7eCdUvnIQzp/TtG+BRgFNbMQGRT
+	 oJ2vT4qYwVmdj1Ffg+fedPwm4UeUeS4FUpLrcB/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/354] drm/panthor: Handle errors returned by drm_sched_entity_init()
+Subject: [PATCH 6.17 238/507] arm64: dts: qcom: qrb2210-rb1: Fix UART3 wakeup IRQ storm
 Date: Tue, 16 Dec 2025 12:11:19 +0100
-Message-ID: <20251216111324.980211465@linuxfoundation.org>
+Message-ID: <20251216111354.121346135@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit bb7939e332c64c4ef33974a0eae4f3841acfa8eb ]
+[ Upstream commit 9c92d36b0b1ea8b2a19dbe0416434f3491dbfaaf ]
 
-In practice it's not going to fail because we're passing the current
-sanity checks done by drm_sched_entity_init(), and that's the only
-reason it would return an error, but better safe than sorry.
+For BT use cases, pins are configured with pull-up state in sleep state
+to avoid noise. If IRQ type is configured as level high and the GPIO line
+is also in a high state, it causes continuous interrupt assertions leading
+to an IRQ storm when wakeup irq enables at system suspend/runtime suspend.
 
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patch.msgid.link/20251031160318.832427-1-boris.brezillon@collabora.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Switching to edge-triggered interrupt (IRQ_TYPE_EDGE_FALLING) resolves
+this by only triggering on state transitions (high-to-low) rather than
+maintaining sensitivity to the static level state, effectively preventing
+the continuous interrupt condition and eliminating the wakeup IRQ storm.
+
+Fixes: 9380e0a1d449 ("arm64: dts: qcom: qrb2210-rb1: add Bluetooth support")
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251110101043.2108414-2-praveen.talari@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 0bc5b69ec636b..875b9a78d34bc 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -3307,6 +3307,8 @@ group_create_queue(struct panthor_group *group,
- 
- 	drm_sched = &queue->scheduler;
- 	ret = drm_sched_entity_init(&queue->entity, 0, &drm_sched, 1, NULL);
-+	if (ret)
-+		goto err_free_queue;
- 
- 	return queue;
- 
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index b2e0fc5501c1e..af29c7ed7a685 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -648,7 +648,7 @@ key_volp_n: key-volp-n-state {
+ &uart3 {
+ 	/delete-property/ interrupts;
+ 	interrupts-extended = <&intc GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
+-			      <&tlmm 11 IRQ_TYPE_LEVEL_HIGH>;
++			      <&tlmm 11 IRQ_TYPE_EDGE_FALLING>;
+ 	pinctrl-0 = <&uart3_default>;
+ 	pinctrl-1 = <&uart3_sleep>;
+ 	pinctrl-names = "default", "sleep";
 -- 
 2.51.0
 
