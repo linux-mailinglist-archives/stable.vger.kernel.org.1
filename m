@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1CCCC2622
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2280DCC2D27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10AE93021F6D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 029B730DD63D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0055346A07;
-	Tue, 16 Dec 2025 11:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4CB35CB7D;
+	Tue, 16 Dec 2025 12:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZNoenmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmbuVjVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEB5346A05;
-	Tue, 16 Dec 2025 11:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D3E34253D;
+	Tue, 16 Dec 2025 12:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885084; cv=none; b=iESVMtW8bWGWK6uLumli+cAGBy9VU2UEqVL5wUMHmXS9tyb+FHvV6l2RpNopiWCmxJ2z2i5pyvbbK6DdGOCOJ3oauYDyeryGVVQFOv1fyNjEYKTcCwmY7AuAVc2DQyvIwyN9qR6CnyzBPsifwlNMSSt386xT0uFqq3dJXmflAXs=
+	t=1765887122; cv=none; b=moifEK90mTR8tFdF9BDgjxa2ypAdTLoUO6yJfmRPhWTMHEBsfK7CRsa61gtb9ga2m1KUwUEnJaslhKmUkhcvec///ou3ugzTordmbHWUFd/Q8WJFJyPlC0+RbnTFNe3bT8YKmdNX+Tu3QfKbsYBKtfzmDAOcvDwy9uc9pMqmR/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885084; c=relaxed/simple;
-	bh=uXP2Ife2trYHhahUO6yNVRsPaieTehWxNSyQkRjWlo0=;
+	s=arc-20240116; t=1765887122; c=relaxed/simple;
+	bh=FXC5K0JwnnDgWZHCgWQXuRu4v2Rpeso8V7dhnQrT5/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJBX04/F3uYHmgSxwm4Np7rRYtSvjXzeYgMJ8f97c3UK63+EkAvx9OyNGTSQ3c8dvJQj9m5UI8yWuf9O4RKQw/FLBJMPRcgbiq3booyKESEkE4AQcIjegV4Fp+OuPGp97t8DS1WZ1w8075d2AoOLrK4TtWvcXT5WEjWRHAqjSp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZNoenmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF3CC4CEF1;
-	Tue, 16 Dec 2025 11:38:03 +0000 (UTC)
+	 MIME-Version; b=o1rPws9p2+WoJ6x7g+6scFX/FYPBWDjYOXA8XNgS2vOCtOr/qjlKqDR4Z9mUKlAWTe1vz6ay0PCokLdxlNQRzeKpseKE47ZME1IaQhx75p0maVVIYN0tI2qv8IeP7rhoOxw6TsrLSV719Kbb46tbIcq8innTrgvdSTG2rYFJsCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmbuVjVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7950C4CEF1;
+	Tue, 16 Dec 2025 12:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885084;
-	bh=uXP2Ife2trYHhahUO6yNVRsPaieTehWxNSyQkRjWlo0=;
+	s=korg; t=1765887122;
+	bh=FXC5K0JwnnDgWZHCgWQXuRu4v2Rpeso8V7dhnQrT5/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZNoenmpEdlfyiPqvgurxBh+VRYKkrIrr22+ZlV8U9+cRIxLQTp+m9UOj+fw+mkVv
-	 bM8PdsicGuReboXHJ0wK1zKNRygtbERwobrBM4NIVHJeRAhR0dHUkgm45ORVfQM4nr
-	 H+Ve8DusPbyByAiN/i/6zVozj26mn3nO4e7Agnc0=
+	b=jmbuVjVfy+xTcQ/HYpsplPBLzh0VhLKcEUysh26XbTMgZbPQrj6qKny0/+Wp5VDXq
+	 kaHU1ZgP2JejFT0lntaQfMFF29An5EpVdmqlwP1IpiEsb2ykFHC/TbSjVQ889LDfFM
+	 lafUL4qTLQ/51f/vUse3oIAYI2NbqNx+SkfkSiZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 026/507] HID: logitech-hidpp: Do not assume FAP in hidpp_send_message_sync()
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 100/614] ice: ice_init_pf: destroy mutexes and xarrays on memory alloc failure
 Date: Tue, 16 Dec 2025 12:07:47 +0100
-Message-ID: <20251216111346.484127410@linuxfoundation.org>
+Message-ID: <20251216111404.946692977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit aba7963544d47d82cdf36602a6678a093af0299d ]
+[ Upstream commit 71430451f81bd6550e46d89b69103a111fc42982 ]
 
-Currently, hidpp_send_message_sync() retries sending the message when the
-device returns a busy error code, specifically HIDPP20_ERROR_BUSY, which
-has a different meaning under RAP. This ends up being a problem because
-this function is used for both FAP and RAP messages.
+Unroll actions of ice_init_pf() when it fails.
+ice_deinit_pf() happens to be perfect to call here.
 
-This issue is not noticeable on older receivers with unreachable devices
-since they return HIDPP_ERROR_RESOURCE_ERROR (0x09), which is not equal to
-HIDPP20_ERROR_BUSY (0x08).
-
-However, newer receivers return HIDPP_ERROR_UNKNOWN_DEVICE (0x08) which
-happens to equal to HIDPP20_ERROR_BUSY, causing unnecessary retries when
-the device is not actually busy.
-
-This is resolved by checking if the error response is FAP or RAP and
-picking the respective ERROR_BUSY code.
-
-Fixes: 60165ab774cb ("HID: logitech-hidpp: rework one more time the retries attempts")
-Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
-Tested-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 1390b8b3d2be ("ice: remove duplicate call to ice_deinit_hw() on error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 31 +++++++++--------------
+ 1 file changed, 12 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 5e763de4b94fd..a88f2e5f791c6 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -352,10 +352,15 @@ static int hidpp_send_message_sync(struct hidpp_device *hidpp,
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 13db83fb383e6..80349aed1f9d6 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3951,6 +3951,8 @@ u16 ice_get_avail_rxq_count(struct ice_pf *pf)
+  */
+ static void ice_deinit_pf(struct ice_pf *pf)
+ {
++	/* note that we unroll also on ice_init_pf() failure here */
++
+ 	mutex_destroy(&pf->lag_mutex);
+ 	mutex_destroy(&pf->adev_mutex);
+ 	mutex_destroy(&pf->sw_mutex);
+@@ -4055,25 +4057,6 @@ static int ice_init_pf(struct ice_pf *pf)
+ 	init_waitqueue_head(&pf->reset_wait_queue);
  
- 	do {
- 		ret = __do_hidpp_send_message_sync(hidpp, message, response);
--		if (ret != HIDPP20_ERROR_BUSY)
-+		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
-+		    ret != HIDPP_ERROR_BUSY)
-+			break;
-+		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-+		     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
-+		    ret != HIDPP20_ERROR_BUSY)
- 			break;
+ 	mutex_init(&pf->avail_q_mutex);
+-	pf->avail_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
+-	if (!pf->avail_txqs)
+-		return -ENOMEM;
+-
+-	pf->avail_rxqs = bitmap_zalloc(pf->max_pf_rxqs, GFP_KERNEL);
+-	if (!pf->avail_rxqs) {
+-		bitmap_free(pf->avail_txqs);
+-		pf->avail_txqs = NULL;
+-		return -ENOMEM;
+-	}
+-
+-	pf->txtime_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
+-	if (!pf->txtime_txqs) {
+-		bitmap_free(pf->avail_txqs);
+-		pf->avail_txqs = NULL;
+-		bitmap_free(pf->avail_rxqs);
+-		pf->avail_rxqs = NULL;
+-		return -ENOMEM;
+-	}
  
--		dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
-+		dbg_hid("%s:got busy hidpp error %02X, retrying\n", __func__, ret);
- 	} while (--max_retries);
+ 	mutex_init(&pf->vfs.table_lock);
+ 	hash_init(pf->vfs.table);
+@@ -4086,7 +4069,17 @@ static int ice_init_pf(struct ice_pf *pf)
+ 	xa_init(&pf->dyn_ports);
+ 	xa_init(&pf->sf_nums);
  
- 	mutex_unlock(&hidpp->send_mutex);
++	pf->avail_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
++	pf->avail_rxqs = bitmap_zalloc(pf->max_pf_rxqs, GFP_KERNEL);
++	pf->txtime_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
++	if (!pf->avail_txqs || !pf->avail_rxqs || !pf->txtime_txqs)
++		goto undo_init;
++
+ 	return 0;
++undo_init:
++	/* deinit handles half-initialized pf just fine */
++	ice_deinit_pf(pf);
++	return -ENOMEM;
+ }
+ 
+ /**
 -- 
 2.51.0
 
