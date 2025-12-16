@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA072CC461E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F06DCC3BF4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8F42304249B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CF653103C2B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D1634E774;
-	Tue, 16 Dec 2025 11:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D432346776;
+	Tue, 16 Dec 2025 12:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeMbpKrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXWm0a0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9FC34E76A;
-	Tue, 16 Dec 2025 11:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A069345CCE;
+	Tue, 16 Dec 2025 12:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885606; cv=none; b=W2s9/u4T+gUvD+p8cXzTWIbUthiKXAvHNuGbIyi5BZuyP3xd57xjQ1DQ6FkAkmWPRkvQQ5eUZmTZhtcCCEQMDKAq3dVn5CShaALcmi7Pu54Pt3Dl9fIM75cBF/5DdYbC/jlbhnCw8dNsS0GbIug+I2+tOIl7BeXdXwJUMn6fwv8=
+	t=1765887547; cv=none; b=YWTysIkYlApIGcPCGg48eR76mL3a/lHqcq3pOOcG1E7/b/EBEGJ7WWPiOMK99vDWKdp8b3kVirV5bmtP9bhMIh8Ce9vvptS+nzvmmJzg78XNfAiXzbf+wkKXiN1FbkxoQFLAiV1h1cPmI1N5ZFZozsmWOxawQi5PzvXMFSEGNpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885606; c=relaxed/simple;
-	bh=DywOI/VO29UZ0ppLlpYUYDu6qFWvyuNxp0TPJi2xOzA=;
+	s=arc-20240116; t=1765887547; c=relaxed/simple;
+	bh=OLbd0UZAu0T7czPYBayye8+w1Ftg7hdpbe8Y4m0mGGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzC2UKSrER0+/lE3tsVwnRsVB3GQ1Eu9to7NKFGwwTH/Fqkg3WTP0MwDuj75id+byRW3N4LJx0OzVk6auDNLIse8UKOr+UMz2dquClL62jz1KC2pHqXNum38gdzMqTjQTTApVz4Lpph8InpduC9D97SAPRh84YOaVmyehzFHgro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeMbpKrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67C4C4CEF1;
-	Tue, 16 Dec 2025 11:46:45 +0000 (UTC)
+	 MIME-Version; b=kOds8sKGuzwiLkNQRQJLL6jlkXyN3jKYRVkbdl0nbSQXON8iZhrY187Fgayyf43UJFsB3OutmrbuVF7IMdZ/l07CxkyIn/cDBAPyElRrlvllZMTDC3oSx5GQemPHxDYZlTm0leHDiNexJAs64nJ80i4FXk0ytTY+8PCTz4oJp2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXWm0a0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16B2C4CEF1;
+	Tue, 16 Dec 2025 12:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885606;
-	bh=DywOI/VO29UZ0ppLlpYUYDu6qFWvyuNxp0TPJi2xOzA=;
+	s=korg; t=1765887547;
+	bh=OLbd0UZAu0T7czPYBayye8+w1Ftg7hdpbe8Y4m0mGGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AeMbpKrYvc0zrNt4B3bt2a0b2BlkGyaZNv3nZs5PWYSr/Gdv0Hbdmz+cdk4fz2eTz
-	 0bSDjZPTBme4xe38xLl95DCe6qoT5RRh7QRMlEFeva/4f3CISliOT4/AqzELAbKhmH
-	 qZEyMRpD+E7rU8/HjETl/LXX7SMEJ9zGEkkpIADQ=
+	b=NXWm0a0g0WHk317hulUeB87/dskrt6zbaUNiCoKx/Cce5VlRTK4RMl420zgQYorKA
+	 6znh+TuH5XphfEwV6WcvcyL03oZ914ZKzJu5o2voL0inTbph4EV4pu7SgEkaAy7hU1
+	 s97MbxPw5GrEfsVTVCOC5cOP/LIlVTrFbPv2OKoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 189/507] regulator: core: disable supply if enabling main regulator fails
+Subject: [PATCH 6.18 263/614] lib/vsprintf: Check pointer before dereferencing in time_and_date()
 Date: Tue, 16 Dec 2025 12:10:30 +0100
-Message-ID: <20251216111352.359506713@linuxfoundation.org>
+Message-ID: <20251216111410.902271311@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
+[ Upstream commit 372a12bd5df0199aa234eaf8ef31ed7ecd61d40f ]
 
-For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
-may enable supply before enabling the main regulator, however if the
-latter fails, the function returns with an error but the supply remains
-enabled.
+The pointer may be invalid when gets to the printf(). In particular
+the time_and_date() dereferencing it in some cases without checking.
 
-When this happens, the regulator_register() function continues on the
-error path where it puts the supply regulator. Since enabling the supply
-is not balanced with a disable call, a warning similar to the following
-gets issued from _regulator_put():
+Move the check from rtc_str() to time_and_date() to cover all cases.
 
-    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
-    [    1.603908] Modules linked in:
-    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
-    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
-    [    1.603945] Workqueue: async async_run_entry_fn
-    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    [    1.603967] pc : _regulator_put+0x8c/0xa0
-    [    1.603976] lr : _regulator_put+0x7c/0xa0
-    ...
-    [    1.604140] Call trace:
-    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
-    [    1.604156]  regulator_register+0x2ec/0xbf0
-    [    1.604166]  devm_regulator_register+0x60/0xb0
-    [    1.604178]  rpm_reg_probe+0x120/0x208
-    [    1.604187]  platform_probe+0x64/0xa8
-    ...
-
-In order to avoid this, change the set_machine_constraints() function to
-disable the supply if enabling the main regulator fails.
-
-Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7daac5b2fdf8 ("lib/vsprintf: Print time64_t in human readable format")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://patch.msgid.link/20251110132118.4113976-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/vsprintf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 554d83c4af0c1..80d3e7dbe4bc3 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1618,6 +1618,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 	 * and we have control then make sure it is enabled.
- 	 */
- 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
-+		bool supply_enabled = false;
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index eb0cb11d0d126..a356965c1d734 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1928,9 +1928,6 @@ char *rtc_str(char *buf, char *end, const struct rtc_time *tm,
+ 	bool found = true;
+ 	int count = 2;
+ 
+-	if (check_pointer(&buf, end, tm, spec))
+-		return buf;
+-
+ 	switch (fmt[count]) {
+ 	case 'd':
+ 		have_t = false;
+@@ -1996,6 +1993,9 @@ static noinline_for_stack
+ char *time_and_date(char *buf, char *end, void *ptr, struct printf_spec spec,
+ 		    const char *fmt)
+ {
++	if (check_pointer(&buf, end, ptr, spec))
++		return buf;
 +
- 		/* If we want to enable this regulator, make sure that we know
- 		 * the supplying regulator.
- 		 */
-@@ -1637,11 +1639,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 				rdev->supply = NULL;
- 				return ret;
- 			}
-+			supply_enabled = true;
- 		}
- 
- 		ret = _regulator_do_enable(rdev);
- 		if (ret < 0 && ret != -EINVAL) {
- 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
-+			if (supply_enabled)
-+				regulator_disable(rdev->supply);
- 			return ret;
- 		}
- 
+ 	switch (fmt[1]) {
+ 	case 'R':
+ 		return rtc_str(buf, end, (const struct rtc_time *)ptr, spec, fmt);
 -- 
 2.51.0
 
