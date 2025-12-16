@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264D1CC43BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:21:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677D9CC25DD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77CF93095E5C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8219A30B0DBB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79829346E75;
-	Tue, 16 Dec 2025 11:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D79341071;
+	Tue, 16 Dec 2025 11:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTFT9SH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EETS0gas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A613446B1;
-	Tue, 16 Dec 2025 11:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A3233B966;
+	Tue, 16 Dec 2025 11:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886320; cv=none; b=BycG6h2mXCH53YfaR13yQrrvlDfVW0brdhZgJo/5El4cdP3kcOFXL9Eyf8gSg/5Yk/je/wH1WUhcVtDiogQwcrgt1ElVLlY0sYhGPeic9pIGo9t/k939Hf8JQE4mDlOywxZ/Y9Qh23Sorz2sGMtrUanZVNaFcrOrViZmzC8KMwo=
+	t=1765884720; cv=none; b=uopB2oF3VAgW2AAJPIosA6DX7HzlPNpJvK2jGHco8+WS0UVaQGauDR3oXnriYdsrEGKi3zkG48szyROHOWCgkVW0Wp/pjTLaGQqtvywoInadm8Y2IB8tRq1j59nTlW2MtUH1MJNO3fWltl4ByLuTOpOQLnzvnRxsj8FMxdpRHP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886320; c=relaxed/simple;
-	bh=JAY2M6y8kQ7Q3rkm4H1RcxrAq6ezwWTmjX+njYFWfYY=;
+	s=arc-20240116; t=1765884720; c=relaxed/simple;
+	bh=aI35feNjIjT/zOF1PWU/fn4W1bDmhw5vNFWxaK/SNvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5jmjmJ71oeL4eE0fEzX6oc8quknXBc0HP8Z1/Dx6VQ6PjefS7MrYdLoVA5bTvLVHI4OFZN+DVMlRZzhUaQrPrxYqnl1JS9+avM2Cxn5ym/wsjHUgKSxuAXT+wsaftcaBswyurswdfbhjLn9889gyicFgRnoIEorYP7GLlKHLvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTFT9SH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7858BC16AAE;
-	Tue, 16 Dec 2025 11:58:39 +0000 (UTC)
+	 MIME-Version; b=QgekrSEzIcHWs7dZuDSKls4wj1P2W4GWTqdinErq/ywXR6WPJS+xB845X7aKPyRC4eIcmy4JJ4WFglZxvl8G5+7pPoItiJ8ZlgxvqADH2VesjcffW7dgWkZR4eHgtf3SxHl+yU7AM6JjsTJACNUxxGHo+OxrCz9a3Mf/2fhbBQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EETS0gas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE92FC4CEF1;
+	Tue, 16 Dec 2025 11:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886319;
-	bh=JAY2M6y8kQ7Q3rkm4H1RcxrAq6ezwWTmjX+njYFWfYY=;
+	s=korg; t=1765884720;
+	bh=aI35feNjIjT/zOF1PWU/fn4W1bDmhw5vNFWxaK/SNvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTFT9SH39Snwn9LHh+T0S+3KzFlANSvb/Nma4UlH6wC/4804fifmet9NUPG+wuzm5
-	 bvddyBvu2wpwyoZWmDo+QJmpHQhFyrv2jpBbOgIepDneehGo7ZXY7iGSSDN7WBY7cW
-	 zw4L/u+HUnXvW7GQlFx0lE8dcdT1Z87W+C9+hYqk=
+	b=EETS0gasEj9M8fyJsMWpmEnp6NagkybQ//2hFGvnt25rmu/Vk8K90/RYmy8wnPTTU
+	 mTwuN7k8VjPRMeATgutjUVbkMEC5VAmptnrpn6oXwRgF8c81tfTzAdvyU78dkgufbg
+	 WT+L6ueAI8Ipapu0HCUHtGpUkca/V8YurWFtXQko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 403/507] mtd: lpddr_cmds: fix signed shifts in lpddr_cmds
+Subject: [PATCH 6.12 277/354] md/raid5: fix IO hang when array is broken with IO inflight
 Date: Tue, 16 Dec 2025 12:14:04 +0100
-Message-ID: <20251216111400.053507568@linuxfoundation.org>
+Message-ID: <20251216111330.951594646@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit c909fec69f84b39e63876c69b9df2c178c6b76ba ]
+[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
 
-There are several places where a value of type 'int' is shifted by
-lpddr->chipshift. lpddr->chipshift is derived from QINFO geometry and
-might reach 31 when QINFO reports a 2 GiB size - the maximum supported by
-LPDDR(1) compliant chips. This may cause unexpected sign-extensions when
-casting the integer value to the type of 'unsigned long'.
+Following test can cause IO hang:
 
-Use '1UL << lpddr->chipshift' and cast 'j' to unsigned long before
-shifting so the computation is performed at the destination width.
+mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
+sleep 5
+echo 1 > /sys/block/sda/device/delete
+echo 1 > /sys/block/sdb/device/delete
+echo 1 > /sys/block/sdc/device/delete
+echo 1 > /sys/block/sdd/device/delete
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
 
-Fixes: c68264711ca6 ("[MTD] LPDDR Command set driver")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Root cause:
+
+1) all disks removed, however all rdevs in the array is still in sync,
+IO will be issued normally.
+
+2) IO failure from sda, and set badblocks failed, sda will be faulty
+and MD_SB_CHANGING_PENDING will be set.
+
+3) error recovery try to recover this IO from other disks, IO will be
+issued to sdb, sdc, and sdd.
+
+4) IO failure from sdb, and set badblocks failed again, now array is
+broken and will become read-only.
+
+5) IO failure from sdc and sdd, however, stripe can't be handled anymore
+because MD_SB_CHANGING_PENDING is set:
+
+handle_stripe
+ handle_stripe
+ if (test_bit MD_SB_CHANGING_PENDING)
+  set_bit STRIPE_HANDLE
+  goto finish
+  // skip handling failed stripe
+
+release_stripe
+ if (test_bit STRIPE_HANDLE)
+  list_add_tail conf->hand_list
+
+6) later raid5d can't handle failed stripe as well:
+
+raid5d
+ md_check_recovery
+  md_update_sb
+   if (!md_is_rdwr())
+    // can't clear pending bit
+    return
+ if (test_bit MD_SB_CHANGING_PENDING)
+  break;
+  // can't handle failed stripe
+
+Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
+fix this problem by skip this checking for read-only array.
+
+Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
+Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/lpddr/lpddr_cmds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/raid5.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/lpddr/lpddr_cmds.c b/drivers/mtd/lpddr/lpddr_cmds.c
-index 14e36ae71958f..bd76479b90e4a 100644
---- a/drivers/mtd/lpddr/lpddr_cmds.c
-+++ b/drivers/mtd/lpddr/lpddr_cmds.c
-@@ -79,7 +79,7 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
- 		mutex_init(&shared[i].lock);
- 		for (j = 0; j < lpddr->qinfo->HWPartsNum; j++) {
- 			*chip = lpddr->chips[i];
--			chip->start += j << lpddr->chipshift;
-+			chip->start += (unsigned long)j << lpddr->chipshift;
- 			chip->oldstate = chip->state = FL_READY;
- 			chip->priv = &shared[i];
- 			/* those should be reset too since
-@@ -559,7 +559,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 			break;
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 4fae8ade24090..8e5ccca3b68b8 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -4947,7 +4947,8 @@ static void handle_stripe(struct stripe_head *sh)
+ 		goto finish;
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 		/* get the chip */
-@@ -575,7 +575,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 		len -= thislen;
- 
- 		ofs = 0;
--		last_end += 1 << lpddr->chipshift;
-+		last_end += 1UL << lpddr->chipshift;
- 		chipnum++;
- 		chip = &lpddr->chips[chipnum];
+ 	if (s.handle_bad_blocks ||
+-	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
++	    (md_is_rdwr(conf->mddev) &&
++	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
+ 		set_bit(STRIPE_HANDLE, &sh->state);
+ 		goto finish;
  	}
-@@ -601,7 +601,7 @@ static int lpddr_unpoint (struct mtd_info *mtd, loff_t adr, size_t len)
+@@ -6763,7 +6764,8 @@ static void raid5d(struct md_thread *thread)
+ 		int batch_size, released;
+ 		unsigned int offset;
+ 
+-		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++		if (md_is_rdwr(mddev) &&
++		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
  			break;
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
 -- 
 2.51.0
 
