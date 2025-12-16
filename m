@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FD2CC25C5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1B8CC4504
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E1CE3003846
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A640A3072AD3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4C934D3BE;
-	Tue, 16 Dec 2025 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBE13431E3;
+	Tue, 16 Dec 2025 12:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYZnc5RR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNdcwa4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC83C34D3BA;
-	Tue, 16 Dec 2025 11:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3BE3271F2;
+	Tue, 16 Dec 2025 12:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885329; cv=none; b=GNcki+dQ9TjGBPsCVv7wH4/rRAQsjfx4Pz08VhKxyuIlqEh3yvUoWxXpRW/kxLzUBhkFnOaslB9DDwUqEfGQ5uqzBUFvhETas1KDblndABpYbD0RM1F4Oe9qgkLY9lvZ4VdVkv0/w5ZOIAGhCa1HFgakzfn1MpDsNYD4pmHY7w8=
+	t=1765887279; cv=none; b=NCWtaueJFxeQJsHOYFm1DpPNS2pgpNJ4feUKtxGTYim0q3lsA8PFcSirS8RFKPbZ+9JFihtsvzwXaL775kn7Kh7gdfn1kzgYF8HH32Zl8UERe1gOWJeMs70Lcs7ly8CQyPPBi4mz2Y/T4AniOg2PMU/Usv7KlAubcAh/2JdzVWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885329; c=relaxed/simple;
-	bh=x0CfzFRzLWrRoXJOJpp5bFvR5SZNFhe7VFYn/Au5PMM=;
+	s=arc-20240116; t=1765887279; c=relaxed/simple;
+	bh=n+l/fY09RAauq6eaN/WHkmCLiJfjsgh3UZSES7ghFww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEyRURrzaC1f6mbuj7RCBUsrFoiZ/oqgJvLHHyghIIGxLiXRSDb/OK401kXxoxtj+x8H8TIzsv/+jBrYrZ1nPntnqIvungU7h7VxDtwBxXa6cgiaArzgYX8AdKIDsUQUx9DYTpuNHct4lVphGlaqldiRDRAe5h5F9x4+5KqaoE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYZnc5RR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075DCC4CEF1;
-	Tue, 16 Dec 2025 11:42:07 +0000 (UTC)
+	 MIME-Version; b=G5W/d20QTESLeOCpTkvd9/+8k2wnu42ixGAW9UjKFZy6Gw7fUjsu6xU3uAx7bXi/Kkyu30JaJB2S8v7W/Eyxgh7SOBbYux84E94QBgX0SwxSgVfN3OBNuqhFOkN3RBn30Sx/KOpZN1jo2nU+IPW2b1Nq2LC7lYmerG8MjxlzjLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNdcwa4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7747EC4CEF5;
+	Tue, 16 Dec 2025 12:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885328;
-	bh=x0CfzFRzLWrRoXJOJpp5bFvR5SZNFhe7VFYn/Au5PMM=;
+	s=korg; t=1765887278;
+	bh=n+l/fY09RAauq6eaN/WHkmCLiJfjsgh3UZSES7ghFww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYZnc5RRTb38N1V3S6/g6k9F/Frs9cJmlY7sxH4fHq7ixLh2ljH1b5KXFD9HfTvmS
-	 20NXlL0PTh94VwvDhmlDlKcK3yboNZi7tis5mMKpOHJjg10p8CYEwTh/3vKFoLciSH
-	 UEFPfUaenQcCXUD7cUnBEfQ/3ZRBWx2rXQNGhEbk=
+	b=KNdcwa4zIrzooBbax3LA2BkcZVRUMegA0DgQ7xbMSvqBTrSy897o8BaCVJEX47beo
+	 hHi+5H6lyx2j76R/hOUshNLBbsUanWF3M608lnE3ZDh0hU98Ah4Clj6VLhLhpxrkaE
+	 a8jfmfimzYbaBOdHAulVsrTZ5XJuFAU9CULNUX/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Yi <asatsuyu.liu@gmail.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 107/507] RDMA/rxe: Fix null deref on srq->rq.queue after resize failure
-Date: Tue, 16 Dec 2025 12:09:08 +0100
-Message-ID: <20251216111349.413125947@linuxfoundation.org>
+Subject: [PATCH 6.18 182/614] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Date: Tue, 16 Dec 2025 12:09:09 +0100
+Message-ID: <20251216111407.967470854@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 503a5e4690ae14c18570141bc0dcf7501a8419b0 ]
+[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
 
-A NULL pointer dereference can occur in rxe_srq_chk_attr() when
-ibv_modify_srq() is invoked twice in succession under certain error
-conditions. The first call may fail in rxe_queue_resize(), which leads
-rxe_srq_from_attr() to set srq->rq.queue = NULL. The second call then
-triggers a crash (null deref) when accessing
-srq->rq.queue->buf->index_mask.
+There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
+variable sel with an undefined value which is then used in regmap_field_write().
 
-Call Trace:
-<TASK>
-rxe_modify_srq+0x170/0x480 [rdma_rxe]
-? __pfx_rxe_modify_srq+0x10/0x10 [rdma_rxe]
-? uverbs_try_lock_object+0x4f/0xa0 [ib_uverbs]
-? rdma_lookup_get_uobject+0x1f0/0x380 [ib_uverbs]
-ib_uverbs_modify_srq+0x204/0x290 [ib_uverbs]
-? __pfx_ib_uverbs_modify_srq+0x10/0x10 [ib_uverbs]
-? tryinc_node_nr_active+0xe6/0x150
-? uverbs_fill_udata+0xed/0x4f0 [ib_uverbs]
-ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0x2c0/0x470 [ib_uverbs]
-? __pfx_ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0x10/0x10 [ib_uverbs]
-? uverbs_fill_udata+0xed/0x4f0 [ib_uverbs]
-ib_uverbs_run_method+0x55a/0x6e0 [ib_uverbs]
-? __pfx_ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0x10/0x10 [ib_uverbs]
-ib_uverbs_cmd_verbs+0x54d/0x800 [ib_uverbs]
-? __pfx_ib_uverbs_cmd_verbs+0x10/0x10 [ib_uverbs]
-? __pfx___raw_spin_lock_irqsave+0x10/0x10
-? __pfx_do_vfs_ioctl+0x10/0x10
-? ioctl_has_perm.constprop.0.isra.0+0x2c7/0x4c0
-? __pfx_ioctl_has_perm.constprop.0.isra.0+0x10/0x10
-ib_uverbs_ioctl+0x13e/0x220 [ib_uverbs]
-? __pfx_ib_uverbs_ioctl+0x10/0x10 [ib_uverbs]
-__x64_sys_ioctl+0x138/0x1c0
-do_syscall_64+0x82/0x250
-? fdget_pos+0x58/0x4c0
-? ksys_write+0xf3/0x1c0
-? __pfx_ksys_write+0x10/0x10
-? do_syscall_64+0xc8/0x250
-? __pfx_vm_mmap_pgoff+0x10/0x10
-? fget+0x173/0x230
-? fput+0x2a/0x80
-? ksys_mmap_pgoff+0x224/0x4c0
-? do_syscall_64+0xc8/0x250
-? do_user_addr_fault+0x37b/0xfe0
-? clear_bhb_loop+0x50/0xa0
-? clear_bhb_loop+0x50/0xa0
-? clear_bhb_loop+0x50/0xa0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Tested-by: Liu Yi <asatsuyu.liu@gmail.com>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20251027215203.1321-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/power/supply/rt9467-charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
-index 3661cb627d28a..2a234f26ac104 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -171,7 +171,7 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
- 				       udata, mi, &srq->rq.producer_lock,
- 				       &srq->rq.consumer_lock);
- 		if (err)
--			goto err_free;
-+			return err;
- 
- 		srq->rq.max_wr = attr->max_wr;
+diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
+index b4917514bd701..44c26fb37a775 100644
+--- a/drivers/power/supply/rt9467-charger.c
++++ b/drivers/power/supply/rt9467-charger.c
+@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
+ 	if (rsel == RT9467_RANGE_VMIVR) {
+ 		ret = linear_range_get_selector_high(range, value, &sel, &found);
+ 		if (ret)
+-			value = range->max_sel;
++			sel = range->max_sel;
+ 	} else {
+ 		linear_range_get_selector_within(range, value, &sel);
  	}
-@@ -180,11 +180,6 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		srq->limit = attr->srq_limit;
- 
- 	return 0;
--
--err_free:
--	rxe_queue_cleanup(q);
--	srq->rq.queue = NULL;
--	return err;
- }
- 
- void rxe_srq_cleanup(struct rxe_pool_elem *elem)
 -- 
 2.51.0
 
