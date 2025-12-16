@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF3CC43F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:23:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD353CC32C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60C4D303879F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C0E3078A4E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11221358D08;
-	Tue, 16 Dec 2025 12:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE7334BA2E;
+	Tue, 16 Dec 2025 12:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYZockUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcGowOEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD3358D03;
-	Tue, 16 Dec 2025 12:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E46341056;
+	Tue, 16 Dec 2025 12:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886639; cv=none; b=GGmnB9LDgzt0ZTRSuWU9/KqVgGxU5SYutnSAiKO9Jufi061Lq40B7Sk++RhdEtKSICm/WEiF4OO2Kq2bIcK+MAUKniBNqytNNR7lIpQuGIlR9UWt04jAbnNDby+oEg84Ya8+GlAK8BLQPVRpdV265ZE+Ulb35Tth3PdxfIbFC8s=
+	t=1765888448; cv=none; b=UhC2/+oH42VcS2dtBI0ifsWBROVavjeX4TMVFYxAzOiOOm7eiYaYjvv1onZpRKj48IDUC1Nq3s/QjwnjFAPUvHQCy0zQHm3p11iwjC98lyxT3t5YiyjCiv5eFW3XtXhz1qQaEMEpqVlssdnj5m9NmjQrK7fiqAUMrbTSD2HX9aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886639; c=relaxed/simple;
-	bh=1axajyM28XnPRYQLBVbhJFtDiSUc1GtgZrAy8z1yI4g=;
+	s=arc-20240116; t=1765888448; c=relaxed/simple;
+	bh=fkQQ+Q5CYVNtgN5vzHv+4z+qD9j+WblbsCe3Q0DYNoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyOp1RZovZjHTkQIZs1665gk9XmI5sCxsGZAyrJ2BPWthsE2uY3dhyvKyc/Kih7424KDXL4YTHx46iCeT1+l/tm6VlXCVNwo/N6hy8AMfAjBRhwGc6RKMeMUF6o3U2+PSe1fp0RGFUW5W/m9KbIwWuKbQqv6WO2ysumCPdl0iWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYZockUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DDEC4CEF1;
-	Tue, 16 Dec 2025 12:03:58 +0000 (UTC)
+	 MIME-Version; b=Gxlh0a/f7UBId/g23zaH5zZ0JYqjeMcDYcTxzI8WdECibrS+GJbJpDfDGBDyHDADilf12yTYT/Arm7YO9zQIP+yUbs7QyQFCCz8nwAAhwVeRw7bQ+SZYYQd3SbQyCzt0Q2p6OzhN/1FolYRssSCZViOV28GsVYs9rgBiIQXTAsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcGowOEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6644C4CEF5;
+	Tue, 16 Dec 2025 12:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886639;
-	bh=1axajyM28XnPRYQLBVbhJFtDiSUc1GtgZrAy8z1yI4g=;
+	s=korg; t=1765888448;
+	bh=fkQQ+Q5CYVNtgN5vzHv+4z+qD9j+WblbsCe3Q0DYNoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYZockUaMU0vznqFAaNIgBrNLRLCN4XXAHmLofLxWLCZxeZZZIqX+KnWtt+jts5zq
-	 zt49o6ssed6QLdfmRZn85kCsr6T+W0y4weNyhprXAG0eeOuvpbqtc4Z5mRrg+lpYE3
-	 aC2Ez1JhLpoYUZLfm2p1b8whjKo88LgVK27pxJ34=
+	b=wcGowOEE1Qy1fcrQKUsh/ZHVk7bwTNkds9GERUzFIziMF9gZfxlXolmp5ZPZG+c3k
+	 1ZjnqQJuL6YfPnjDFR4Xeio1yuW5yKIjEuu4b7wben5XlZp21UMC8uitmP7SdWnDu0
+	 Avt6Zpu/GEppgiwYwUyrum6oRRAUtmnyco2qwn6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Israel Rukshin <israelr@nvidia.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 463/507] nvme-auth: use kvfree() for memory allocated with kvcalloc()
-Date: Tue, 16 Dec 2025 12:15:04 +0100
-Message-ID: <20251216111402.220337361@linuxfoundation.org>
+Subject: [PATCH 6.18 538/614] rtc: amlogic-a4: fix double free caused by devm
+Date: Tue, 16 Dec 2025 12:15:05 +0100
+Message-ID: <20251216111420.872328238@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Israel Rukshin <israelr@nvidia.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit bb9f4cca7c031de6f0e85f7ba24abf0172829f85 ]
+[ Upstream commit 384150d7a5b60c1086790a8ee07b0629f906cca2 ]
 
-Memory allocated by kvcalloc() may come from vmalloc or kmalloc,
-so use kvfree() instead of kfree() for proper deallocation.
+The clock obtained via devm_clk_get_enabled() is automatically managed
+by devres and will be disabled and freed on driver detach. Manually
+calling clk_disable_unprepare() in error path and remove function
+causes double free.
 
-Fixes: aa36d711e945 ("nvme-auth: convert dhchap_auth_list to an array")
-Signed-off-by: Israel Rukshin <israelr@nvidia.com>
-Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Remove the redundant clk_disable_unprepare() calls from the probe
+error path and aml_rtc_remove(), allowing the devm framework to
+automatically manage the clock lifecycle.
+
+Fixes: c89ac9182ee2 ("rtc: support for the Amlogic on-chip RTC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Link: https://patch.msgid.link/20251021103559.1903-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-amlogic-a4.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
-index a01178caf15bb..8f3ccb317e4de 100644
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -1122,7 +1122,7 @@ void nvme_auth_free(struct nvme_ctrl *ctrl)
- 	if (ctrl->dhchap_ctxs) {
- 		for (i = 0; i < ctrl_max_dhchaps(ctrl); i++)
- 			nvme_auth_free_dhchap(&ctrl->dhchap_ctxs[i]);
--		kfree(ctrl->dhchap_ctxs);
-+		kvfree(ctrl->dhchap_ctxs);
- 	}
- 	if (ctrl->host_key) {
- 		nvme_auth_free_key(ctrl->host_key);
+diff --git a/drivers/rtc/rtc-amlogic-a4.c b/drivers/rtc/rtc-amlogic-a4.c
+index 1928b29c10454..a993d35e1d6b0 100644
+--- a/drivers/rtc/rtc-amlogic-a4.c
++++ b/drivers/rtc/rtc-amlogic-a4.c
+@@ -390,7 +390,6 @@ static int aml_rtc_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ err_clk:
+-	clk_disable_unprepare(rtc->sys_clk);
+ 	device_init_wakeup(dev, false);
+ 
+ 	return ret;
+@@ -423,9 +422,6 @@ static SIMPLE_DEV_PM_OPS(aml_rtc_pm_ops,
+ 
+ static void aml_rtc_remove(struct platform_device *pdev)
+ {
+-	struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
+-
+-	clk_disable_unprepare(rtc->sys_clk);
+ 	device_init_wakeup(&pdev->dev, false);
+ }
+ 
 -- 
 2.51.0
 
