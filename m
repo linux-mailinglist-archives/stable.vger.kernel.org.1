@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-202330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973C1CC2C0D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A17CC22CB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 367D230121B6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77BFD306452F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9221347BAF;
-	Tue, 16 Dec 2025 12:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEBB33D6F6;
+	Tue, 16 Dec 2025 11:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1hOoWy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z5RoPTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFB4346FB9;
-	Tue, 16 Dec 2025 12:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA53533B967;
+	Tue, 16 Dec 2025 11:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887550; cv=none; b=Bpmshk+251R+h2x7cH+fj2wDHEjJwuURUHFMFKhxfqV6gTVSAnXh3yWLFrfD4+z/K9tqask/4phSKk3MDrCmjkkqPEUx4gv4t+AqBvo+ANI2/sF9iqqzWDO2YVxNeCIPz02eF+J6z/bycSHopBiTuVMkcaitGHsM/7TjKdny7vg=
+	t=1765884030; cv=none; b=d1BS0VFV6xMzxHMb9cBtufRM/IEQDW3RcbcO4faS47HcIfX0ur2IZGcq6Rev7R8p7+SC9Pp+EBoZcvPUu4NfFlZkOABrDKyFdSpmSKTTXm67CPeEZGX8Zvk+yshR/wGhSbXhaDEZTV30Xx4WCDCa6P1o5//t8+OhUshJkldEuYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887550; c=relaxed/simple;
-	bh=PQ9bXSgyoEQofeNeTb3YI0MMcxlxE0xlYMA3LP2g93c=;
+	s=arc-20240116; t=1765884030; c=relaxed/simple;
+	bh=YF29EcrdtWsWqRzvzt91UEd0HI7R4pKN8CP54WIZVLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1QDo0e6anCbHb9aUeJEuXeEYAiLaGDFrZ1fmZw1lTnJiBSgZEnhjZYaRUwu6zorH4QnPIqAqkecJBBE/eR0not4nwg76VpZ/41YTHffn49q+tRCdInYiDNSsduvusKJTHkjs89MpV3DJGMmjCcdgaLKc+5cwWMcTswiev1HDqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1hOoWy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F46C4CEF1;
-	Tue, 16 Dec 2025 12:19:09 +0000 (UTC)
+	 MIME-Version; b=oM9OX9IHNvi7tLe2m4tA32YS73CyDgwjlgxRb0d94vVf8Jwb2Y83Uit2FkYpIXAntcB9otozun49lus9mk4EpQ0lyPgIGt+iDhPGffiWpPYipDCgKy+BLFMR6uYFt/XyQTVtnjHY9Zxu2hIv5HLsFqZyHkAYc1gNwXLC66++O6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z5RoPTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BB3C4CEF1;
+	Tue, 16 Dec 2025 11:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887550;
-	bh=PQ9bXSgyoEQofeNeTb3YI0MMcxlxE0xlYMA3LP2g93c=;
+	s=korg; t=1765884030;
+	bh=YF29EcrdtWsWqRzvzt91UEd0HI7R4pKN8CP54WIZVLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1hOoWy7dbjARM3ovxPDU8yxVBYxf6Kchb4oEtuD2FjyYygcgUmu+36aTK/kVpnV9
-	 gq3JVlT3Rqv4+ViF6h3K8JSItwv/JqwbpjOV5f/0kwE3O/aNRPcSooA1jE0SjchdB7
-	 wwpViC9FBQI0IN95eHkr24o5x0sDK+OpimPfeROs=
+	b=0z5RoPTIxA6M1bK6my+FnuZ5uOVrrbmn78qUAgjvjWppd67fTtwWA865QPW9PHxhg
+	 e+0jili/1hA98sNfQNkjzsHchTqfx+Qer2aa7grf4HsmUTfIZBNkNCpxVK4lsUTiVd
+	 DPelAPU7Nlq0+BItldSmk37umDXVIOePue/7DSi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 264/614] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
+Subject: [PATCH 6.12 064/354] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
 Date: Tue, 16 Dec 2025 12:10:31 +0100
-Message-ID: <20251216111410.938583975@linuxfoundation.org>
+Message-ID: <20251216111323.245862263@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
+[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
 
-In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
-to avoid crashing the whole kernel due to a filesystem corruption.
+Use check_add_overflow() to guard against potential integer overflows
+when adding the binary blob lengths and the size of an asymmetric_key_id
+structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
+possible buffer overflow when copying data from potentially malicious
+X.509 certificate fields that can be arbitrarily large, such as ASN.1
+INTEGER serial numbers, issuer names, etc.
 
-Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
-Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
-Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
-index 10923bf7c8b84..26e150c5f25eb 100644
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
- 
- 	rec = &el->l_recs[index];
- 
--	BUG_ON(ext_flags != rec->e_flags);
-+	if (ext_flags != rec->e_flags) {
-+		ret = ocfs2_error(inode->i_sb,
-+				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
-+				  (unsigned long long)ino, index, rec->e_flags, cpos);
-+		goto out;
-+	}
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 43af5fa510c09..7859b0692b42b 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -151,12 +152,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
+ {
+ 	struct asymmetric_key_id *kid;
+-
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	size_t kid_sz;
++	size_t len;
 +
- 	/*
- 	 * after moving/defraging to new location, the extent is not going
- 	 * to be refcounted anymore.
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(kid_sz, GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
 2.51.0
 
