@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151F5CC235B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8CBCC3B7B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E33FB304D54D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2174C30802C0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E7134214A;
-	Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCD6345CA2;
+	Tue, 16 Dec 2025 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saSFdHzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiIxVm1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431D0341069;
-	Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3863451BD;
+	Tue, 16 Dec 2025 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884179; cv=none; b=V0tqa54AoLbi9BVaYbNDiQx3gmtDtPf5W8RETJKSX5DPpdSP6t6dXIfQGceuxRBcTtIUA7tYg09Smi/LapYN8v6MuRu/rGHzhM0BAWt0lH5h3gTttlnHuBFbZ03XXmvH71LVmHQSZcRx5SIcM6Z9Rfcau9or4EzGPHm9CxhBvrg=
+	t=1765887826; cv=none; b=f8PReWXOK0gnwFnBX8A3JHn9xCoSxx1xEMgfZ+QCHztwuE/fE/AEdLUhXgIYBZWwz1ogY1oDXMdsUmOt/mlIa0nBKE3Sy2eKFsIEicg6ZPYXGlJR8aVZAdtchI0s/HUXyLQ/leA+AALY0kkkGS/zLY+MR/KtPICFb6kXH/hrsqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884179; c=relaxed/simple;
-	bh=LADstBapGfVhYUq9jB57Dh2JabwFJNWHrbPNR7S0/jw=;
+	s=arc-20240116; t=1765887826; c=relaxed/simple;
+	bh=VpMbV47YXIzi9pFcqkLn2K2b/X2qFCPo3xhY3sZbvqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jo+D84N82xVUXsVpYH8bYbN2u27EOjxV+D6We/5rQFj/xs7qgTSkdIoPQqoh+ZdTgkoCiVrDcBAMR5OlOxTHavRC1Ms/ZcCjx1DyLCJX7ktM6DRKrBsGAKvNeZaRRLQ89KpKIJBgvsuwQxJxZ/o0/BhCXFF9aml9gdoVxwq6AZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saSFdHzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3847C4CEF1;
-	Tue, 16 Dec 2025 11:22:58 +0000 (UTC)
+	 MIME-Version; b=HGXwNkii1Hjs1oChuPcetKUttklVG2x+1x1ZSitx2bklgVIww+cAaLpfgpZe2m4ZlHqfZlWux7rM5Ibr3HlWiUQBT9xE/Y8XMeKA1mihIHVDlxHmmM4YxZl7CyBZgSbXu2w5hSDpYL0Xg9iPBPLPW8vA/rB4fthw27+kCRkBJ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiIxVm1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A43C4CEF1;
+	Tue, 16 Dec 2025 12:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884179;
-	bh=LADstBapGfVhYUq9jB57Dh2JabwFJNWHrbPNR7S0/jw=;
+	s=korg; t=1765887826;
+	bh=VpMbV47YXIzi9pFcqkLn2K2b/X2qFCPo3xhY3sZbvqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saSFdHzXOuPlcH5jQh2b2qf6MzPd0EqDFTo9xwUeH2ENiTqSyaVEV8KJbIALwHFd6
-	 OX0PnDC+E7euqg2jCdVdRHsWdxHOVY86J7sIwLaR62OkhJG8uRaJv8t90287TMycFE
-	 rCWtVlHU6p8JpT0sl0qMGlsaKANA6osddFJirDYU=
+	b=LiIxVm1T2T0PVzU10UrfXEjnoodwiCrm/4SaQ5MsSh3bcICXO7ELNs+K6dnx87apJ
+	 zxyAeQYsVCGGhG4fxNuGrYiMekduuVkpOEutn80/PObsqHhT1YBelE1zGipeVxyMoK
+	 VSenf5SvoyqPJAPJw2DDYnNZZtR2dLFPY2wlQknA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/354] drm/panthor: Fix UAF on kernel BO VA nodes
+Subject: [PATCH 6.18 316/614] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
 Date: Tue, 16 Dec 2025 12:11:23 +0100
-Message-ID: <20251216111325.127016729@linuxfoundation.org>
+Message-ID: <20251216111412.814830184@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 98dd5143447af0ee33551776d8b2560c35d0bc4a ]
+[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
 
-If the MMU is down, panthor_vm_unmap_range() might return an error.
-We expect the page table to be updated still, and if the MMU is blocked,
-the rest of the GPU should be blocked too, so no risk of accessing
-physical memory returned to the system (which the current code doesn't
-cover for anyway).
+When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
+Addressing Mode during early boot. During this, we should ensure that
+memory region allocations for stress_hpt_struct should happen from
+within RMA region as otherwise the boot might get stuck while doing
+memset of this region.
 
-Proceed with the rest of the cleanup instead of bailing out and leaving
-the va_node inserted in the drm_mm, which leads to UAF when other
-adjacent nodes are removed from the drm_mm tree.
+History behind why do we have RMA region limitation is better explained
+in these 2 patches [1] & [2]. This patch ensures that memset to
+stress_hpt_struct during early boot does not cross ppc64_rma_size
+boundary.
 
-Reported-by: Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>
-Closes: https://gitlab.freedesktop.org/panfrost/linux/-/issues/57
-Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patch.msgid.link/20251031154818.821054-2-boris.brezillon@collabora.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
+[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
+
+Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_gem.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index be97d56bc011d..8387a075150bd 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -32,7 +32,6 @@ static void panthor_gem_free_object(struct drm_gem_object *obj)
- void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
- {
- 	struct panthor_vm *vm;
--	int ret;
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 3aee3af614af8..c99be1286d517 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1302,11 +1302,14 @@ static void __init htab_initialize(void)
+ 	unsigned long table;
+ 	unsigned long pteg_count;
+ 	unsigned long prot;
+-	phys_addr_t base = 0, size = 0, end;
++	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 	u64 i;
  
- 	if (IS_ERR_OR_NULL(bo))
- 		return;
-@@ -40,18 +39,11 @@ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
- 	vm = bo->vm;
- 	panthor_kernel_bo_vunmap(bo);
+ 	DBG(" -> htab_initialize()\n");
  
--	if (drm_WARN_ON(bo->obj->dev,
--			to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm)))
--		goto out_free_bo;
--
--	ret = panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
--	if (ret)
--		goto out_free_bo;
--
-+	drm_WARN_ON(bo->obj->dev,
-+		    to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm));
-+	panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
- 	panthor_vm_free_va(vm, &bo->va_node);
- 	drm_gem_object_put(bo->obj);
--
--out_free_bo:
- 	panthor_vm_put(vm);
- 	kfree(bo);
- }
++	if (firmware_has_feature(FW_FEATURE_LPAR))
++		limit = ppc64_rma_size;
++
+ 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
+ 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
+ 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
+@@ -1322,7 +1325,7 @@ static void __init htab_initialize(void)
+ 		// Too early to use nr_cpu_ids, so use NR_CPUS
+ 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
+ 						__alignof__(struct stress_hpt_struct),
+-						0, MEMBLOCK_ALLOC_ANYWHERE);
++						MEMBLOCK_LOW_LIMIT, limit);
+ 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
+ 		stress_hpt_struct = __va(tmp);
+ 
+@@ -1356,11 +1359,10 @@ static void __init htab_initialize(void)
+ 			mmu_hash_ops.hpte_clear_all();
+ #endif
+ 	} else {
+-		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 
+ 		table = memblock_phys_alloc_range(htab_size_bytes,
+ 						  htab_size_bytes,
+-						  0, limit);
++						  MEMBLOCK_LOW_LIMIT, limit);
+ 		if (!table)
+ 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
+ 			      &htab_size_bytes, &limit);
 -- 
 2.51.0
 
