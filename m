@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58490CC279D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C486CC2E4D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 498EE302517B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 486BD31F0638
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E196D355027;
-	Tue, 16 Dec 2025 11:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5084F36404F;
+	Tue, 16 Dec 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHNGUvB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quA8VfYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D41E355029;
-	Tue, 16 Dec 2025 11:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9A0364040;
+	Tue, 16 Dec 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885837; cv=none; b=YMIgjwiYAXK1Pl6eyeSZ1SmIuWfFTSu+J6v5TVb8z6qDZu0Jdw37viQLQ9t10AvxIVRTQ/2dbxLb0MF597YkDa3zr81k5YnwVbtjqwfb1HA6rEGQEad57RcFTMIAF1EUpOymzlIWN9cqHkaHqnTYYQCzNA+5zBvZZF4EPej3Mcw=
+	t=1765887777; cv=none; b=n2Rhx1O0MNzIP3InG0op0agTYxxLnZ9JFBZh8UXOCb3SqI41k8J9/flPyOMXvtn/sSUWWyrogzY3TXpVZt01esleaq1ZHQi4+z86FIG/OwbiXcstLdapBp9MpERzlZBFkQh73MzU5xeXvp+8qcC8LNHg4j0ApbC5ZcCBwMHPRu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885837; c=relaxed/simple;
-	bh=VmyFyjD9lrbuDlYD8A99+8O4b0FCNYalAEXOGWdnxV8=;
+	s=arc-20240116; t=1765887777; c=relaxed/simple;
+	bh=zI6KECveDQ0Jr7JV2vW+kg1NRn2Gu1fvFjM8OyoJOTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeiR5EJxZ3JVCOt0gqAS8zMqV8uiw3C+Eg+v7UNfXIu/tHtDbIClxEmFd7tiLcN6W+N/YR6pc1zLkFdvvLBfUgVy0/m3FVLdL9bWo9uVocvrrSMq3nH19lhFN2lgl59BYdYVUdvDe7wYMJKJpQVy/ui6r5xpTP98BdkKp3wW4H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHNGUvB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB055C4CEF1;
-	Tue, 16 Dec 2025 11:50:36 +0000 (UTC)
+	 MIME-Version; b=T/AqKJiSFfhkenO9kPuclieWg2zTDQdpV7mphDoqhjztpQFLpAvOHkEFhy2S0mu903SNEskXKPS1mMdTv98a6/OQh7c3Ld5XQ2kloFPrzUQAD6AGI2+Paurns1F4dCGhh3aO1dQGMp64Qh7+KTu99pi7J/le/P1EFYO0Xewq+Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quA8VfYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FA0C4CEF5;
+	Tue, 16 Dec 2025 12:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885837;
-	bh=VmyFyjD9lrbuDlYD8A99+8O4b0FCNYalAEXOGWdnxV8=;
+	s=korg; t=1765887776;
+	bh=zI6KECveDQ0Jr7JV2vW+kg1NRn2Gu1fvFjM8OyoJOTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHNGUvB/beVc1xn72g/j+qWc5tlUJMmtyouf5zKsUO/KxfjCKwFdZB/WbUEG4Jg4w
-	 /8fNuXVzqywCrqsdd6BwdrQ6+IPUEQipiU0OWA6iX2B4hIBZYfQugJ/DmAfcaj0g7W
-	 Zat33atM1LtTHlpNI4tby9nxJl/UFwJ2rxYNvyrk=
+	b=quA8VfYNZNpKJUmBMuwMHivs5P0t4dEMlawjwoig2vAaGHfn6cXvx2zVek9E6WCCS
+	 y0A44jjQw9lrCQAbtxt+Ik4bRYb6Pyhi7IZxV6x4LaZXZgScp5PlPH/P83Lm7Fq/MI
+	 Za/wVfIdeYKeKrmYXHboAT7M3/lN1tvQs+4T/wi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Chien Wong <m@xv97.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 260/507] drm/msm: fix missing NULL check after kcalloc in crashstate_get_bos()
+Subject: [PATCH 6.18 334/614] wifi: mac80211: fix CMAC functions not handling errors
 Date: Tue, 16 Dec 2025 12:11:41 +0100
-Message-ID: <20251216111354.908699523@linuxfoundation.org>
+Message-ID: <20251216111413.466660190@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huiwen He <hehuiwen@kylinos.cn>
+From: Chien Wong <m@xv97.com>
 
-[ Upstream commit 3065e6a4d3594b42dae6176b3e2c0c3563cf94b8 ]
+[ Upstream commit 353cda30d30e5dc7cacf8de5d2546724708ae3bb ]
 
-The crashstate_get_bos() function allocates memory for `state->bos`
-using kcalloc(), but the vmbind path does not check for allocation
-failure before dereferencing it in the following drm_gpuvm_for_each_va()
-loop. This could lead to a NULL pointer dereference if memory allocation
-fails.
+The called hash functions could fail thus we should check return values.
 
-Fix this by wrapping the drm_gpuvm_for_each_va() loop with a NULL check
-on state->bos, similar to the safety check in the non-vmbind path.
-
-Fixes: af9aa6f316b3d ("drm/msm: Crashdump support for sparse")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Patchwork: https://patchwork.freedesktop.org/patch/687556/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 26717828b75d ("mac80211: aes-cmac: switch to shash CMAC driver")
+Signed-off-by: Chien Wong <m@xv97.com>
+Link: https://patch.msgid.link/20251113140511.48658-2-m@xv97.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gpu.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/mac80211/aes_cmac.c | 63 +++++++++++++++++++++++++++++------------
+ net/mac80211/aes_cmac.h |  8 +++---
+ net/mac80211/wpa.c      | 20 +++++++------
+ 3 files changed, 61 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 8f933c1fe4bfa..d5f8df3110cef 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -287,16 +287,17 @@ static void crashstate_get_bos(struct msm_gpu_state *state, struct msm_gem_submi
+diff --git a/net/mac80211/aes_cmac.c b/net/mac80211/aes_cmac.c
+index 48c04f89de20a..65989c7dfc680 100644
+--- a/net/mac80211/aes_cmac.c
++++ b/net/mac80211/aes_cmac.c
+@@ -22,50 +22,77 @@
  
- 		state->bos = kcalloc(cnt, sizeof(struct msm_gpu_state_bo), GFP_KERNEL);
+ static const u8 zero[CMAC_TLEN_256];
  
--		drm_gpuvm_for_each_va (vma, submit->vm) {
--			bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
-+		if (state->bos)
-+			drm_gpuvm_for_each_va(vma, submit->vm) {
-+				bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
+-void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+-			const u8 *data, size_t data_len, u8 *mic)
++int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
++		       const u8 *data, size_t data_len, u8 *mic)
+ {
++	int err;
+ 	SHASH_DESC_ON_STACK(desc, tfm);
+ 	u8 out[AES_BLOCK_SIZE];
+ 	const __le16 *fc;
  
--			/* Skip MAP_NULL/PRR VMAs: */
--			if (!vma->gem.obj)
--				continue;
-+				/* Skip MAP_NULL/PRR VMAs: */
-+				if (!vma->gem.obj)
-+					continue;
+ 	desc->tfm = tfm;
  
--			msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
--						  dump, vma->gem.offset, vma->va.range);
--		}
-+				msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
-+							  dump, vma->gem.offset, vma->va.range);
-+			}
- 
- 		drm_exec_fini(&exec);
+-	crypto_shash_init(desc);
+-	crypto_shash_update(desc, aad, AAD_LEN);
++	err = crypto_shash_init(desc);
++	if (err)
++		return err;
++	err = crypto_shash_update(desc, aad, AAD_LEN);
++	if (err)
++		return err;
+ 	fc = (const __le16 *)aad;
+ 	if (ieee80211_is_beacon(*fc)) {
+ 		/* mask Timestamp field to zero */
+-		crypto_shash_update(desc, zero, 8);
+-		crypto_shash_update(desc, data + 8, data_len - 8 - CMAC_TLEN);
++		err = crypto_shash_update(desc, zero, 8);
++		if (err)
++			return err;
++		err = crypto_shash_update(desc, data + 8,
++					  data_len - 8 - CMAC_TLEN);
++		if (err)
++			return err;
  	} else {
+-		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
++		err = crypto_shash_update(desc, data,
++					  data_len - CMAC_TLEN);
++		if (err)
++			return err;
+ 	}
+-	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
+-
++	err = crypto_shash_finup(desc, zero, CMAC_TLEN, out);
++	if (err)
++		return err;
+ 	memcpy(mic, out, CMAC_TLEN);
++
++	return 0;
+ }
+ 
+-void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
+-			    const u8 *data, size_t data_len, u8 *mic)
++int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
++			   const u8 *data, size_t data_len, u8 *mic)
+ {
++	int err;
+ 	SHASH_DESC_ON_STACK(desc, tfm);
+ 	const __le16 *fc;
+ 
+ 	desc->tfm = tfm;
+ 
+-	crypto_shash_init(desc);
+-	crypto_shash_update(desc, aad, AAD_LEN);
++	err = crypto_shash_init(desc);
++	if (err)
++		return err;
++	err = crypto_shash_update(desc, aad, AAD_LEN);
++	if (err)
++		return err;
+ 	fc = (const __le16 *)aad;
+ 	if (ieee80211_is_beacon(*fc)) {
+ 		/* mask Timestamp field to zero */
+-		crypto_shash_update(desc, zero, 8);
+-		crypto_shash_update(desc, data + 8,
+-				    data_len - 8 - CMAC_TLEN_256);
++		err = crypto_shash_update(desc, zero, 8);
++		if (err)
++			return err;
++		err = crypto_shash_update(desc, data + 8,
++					  data_len - 8 - CMAC_TLEN_256);
++		if (err)
++			return err;
+ 	} else {
+-		crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
++		err = crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
++		if (err)
++			return err;
+ 	}
+-	crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
++	return crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
+ }
+ 
+ struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
+diff --git a/net/mac80211/aes_cmac.h b/net/mac80211/aes_cmac.h
+index 76817446fb838..f74150542142a 100644
+--- a/net/mac80211/aes_cmac.h
++++ b/net/mac80211/aes_cmac.h
+@@ -11,10 +11,10 @@
+ 
+ struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
+ 						  size_t key_len);
+-void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+-			const u8 *data, size_t data_len, u8 *mic);
+-void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
+-			    const u8 *data, size_t data_len, u8 *mic);
++int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
++		       const u8 *data, size_t data_len, u8 *mic);
++int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
++			   const u8 *data, size_t data_len, u8 *mic);
+ void ieee80211_aes_cmac_key_free(struct crypto_shash *tfm);
+ 
+ #endif /* AES_CMAC_H */
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index 40d5d9e484791..bb0fa505cdcae 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -869,8 +869,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
+ 	/*
+ 	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
+ 	 */
+-	ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+-			   skb->data + 24, skb->len - 24, mmie->mic);
++	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
++			       skb->data + 24, skb->len - 24, mmie->mic))
++		return TX_DROP;
+ 
+ 	return TX_CONTINUE;
+ }
+@@ -916,8 +917,9 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
+ 
+ 	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
+ 	 */
+-	ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
+-			       skb->data + 24, skb->len - 24, mmie->mic);
++	if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
++				   skb->data + 24, skb->len - 24, mmie->mic))
++		return TX_DROP;
+ 
+ 	return TX_CONTINUE;
+ }
+@@ -956,8 +958,9 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
+ 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
+ 		/* hardware didn't decrypt/verify MIC */
+ 		bip_aad(skb, aad);
+-		ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+-				   skb->data + 24, skb->len - 24, mic);
++		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
++				       skb->data + 24, skb->len - 24, mic))
++			return RX_DROP_U_DECRYPT_FAIL;
+ 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
+ 			key->u.aes_cmac.icverrors++;
+ 			return RX_DROP_U_MIC_FAIL;
+@@ -1006,8 +1009,9 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
+ 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
+ 		/* hardware didn't decrypt/verify MIC */
+ 		bip_aad(skb, aad);
+-		ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
+-				       skb->data + 24, skb->len - 24, mic);
++		if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
++					   skb->data + 24, skb->len - 24, mic))
++			return RX_DROP_U_DECRYPT_FAIL;
+ 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
+ 			key->u.aes_cmac.icverrors++;
+ 			return RX_DROP_U_MIC_FAIL;
 -- 
 2.51.0
 
