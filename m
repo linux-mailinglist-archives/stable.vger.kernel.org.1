@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F14BCC2F53
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6E9CC2547
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB0283051D2D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2B8630819CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6D0396569;
-	Tue, 16 Dec 2025 12:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF51314B91;
+	Tue, 16 Dec 2025 11:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeRU/v25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATR5LgE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A964F396565;
-	Tue, 16 Dec 2025 12:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D5E2BE7B2;
+	Tue, 16 Dec 2025 11:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888308; cv=none; b=jo38ZbsiyemM8bSI7OGXw72W1aank1qxynQRQ79iePGuiMQiFFDq5c4hkB7raz9OGZPipa4r3cx4ci5LGQn3D0Q4lG+yTntB9c2NpOiGH4OS3Yf8iGUgetD3qEdtdLTXpnlt6QXvzlc5JwQw7MaF8r84BOJZ+seuV7r1IYnVQUU=
+	t=1765884631; cv=none; b=Uj8Qy+bxafXjF/ba2zq0wj8dn9FkrtNYcsG+54IE1UJYkxzmJ8iQRSTeHrINLnTG7dPbXbA8F+Q8k9isdf4CSZfcBOgvO9vlfpCsf+xB+E9j8GW/dLA2fmA+D0NlkDD9oWGn/k2az1Vm/vxrV4/EsF/bz549JldGAM6XlQUGEaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888308; c=relaxed/simple;
-	bh=/CzQ25zWJp0/Y2dx0FNBWstvScWdPEmyeIdeYrxa3FY=;
+	s=arc-20240116; t=1765884631; c=relaxed/simple;
+	bh=wAQeFYIia22l5aaaH6mfNnE4ZZPsDN56IEYbR2Hu4fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUdqz2F6Vx0tv4DTehTwBEzgFC2aZlo9EGPgJQTF4948Ru/jhltX/sa1QN6zlEobAFlm3Y+/8Sc+KmgQNAEIVeGvo1YNIICoW1ifCA1DOufGr1Fs6TjYKKHnObks4WoGiUv3Uue7njPMBLJoR/Wh+7bXyW+JvxjXSQZw/d9kp14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeRU/v25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0A7C4CEF5;
-	Tue, 16 Dec 2025 12:31:47 +0000 (UTC)
+	 MIME-Version; b=YtLYJOXnXYjZjDbposXhPuYEHRZLh6xHNFhGhERq9jbThtmnOjt4uPADLd5sNDcYhiyQjS7LovqJ9a4NtCKWff44Kv8LHca7G2mM619Xh+bdRGNeQsahZiQGu4axR2EOJkJc+T3QPwHu4LqpORZrqrrebHYJ4H7oIxKphqidzKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATR5LgE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7EC4CEF1;
+	Tue, 16 Dec 2025 11:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888308;
-	bh=/CzQ25zWJp0/Y2dx0FNBWstvScWdPEmyeIdeYrxa3FY=;
+	s=korg; t=1765884631;
+	bh=wAQeFYIia22l5aaaH6mfNnE4ZZPsDN56IEYbR2Hu4fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeRU/v25hpWIJiSVMHZFmNEu1XBtVREKgc92pwU8hKJPq1lGOzXbGTyXkSXUg9iru
-	 6l/0djWK4JyLvvQB/NoRgG/LIDd5H+E+CDkUDQQjcdTprPyyyxmpS+cJ6nM08vl4qE
-	 1A17yiCSsSvXWd7JfnwdDkLOfVP7TRgjdZbqoWOc=
+	b=ATR5LgE6EfZdNpCtcP1TtVUA2HjxeDbdfRGGbe1Z1ZIrenDRTyzFHsP8XmBgLKlOz
+	 On/QahDfduRmph0aH1Yaqe4A2SXcuJJA2yVZdIqj/yL8mRAJLRzA7+Y7rE1QNR6ieH
+	 R/9ESG1o+t8uAN0lYZxEB6q1RRaqLH5+sfiE3ZN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mike Christie <michael.christie@oracle.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 452/614] ublk: prevent invalid access with DEBUG
-Date: Tue, 16 Dec 2025 12:13:39 +0100
-Message-ID: <20251216111417.744906353@linuxfoundation.org>
+Subject: [PATCH 6.12 253/354] vhost: Fix kthread worker cgroup failure handling
+Date: Tue, 16 Dec 2025 12:13:40 +0100
+Message-ID: <20251216111330.082780818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit c6a45ee7607de3a350008630f4369b1b5ac80884 ]
+[ Upstream commit f3f64c2eaffbc3169bbe1e5d1e897e6dacc839d1 ]
 
-ublk_ch_uring_cmd_local() may jump to the out label before
-initialising the io pointer. This will cause trouble if DEBUG is
-defined, because the pr_devel() call dereferences io. Clang reports:
+If we fail to attach to a cgroup we are leaking the id. This adds
+a new goto to free the id.
 
-drivers/block/ublk_drv.c:2403:6: error: variable 'io' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
- 2403 |         if (tag >= ub->dev_info.queue_depth)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/block/ublk_drv.c:2492:32: note: uninitialized use occurs here
- 2492 |                         __func__, cmd_op, tag, ret, io->flags);
-      |
-
-Fix this by initialising io to NULL and checking it before
-dereferencing it.
-
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 7d9896e9f6d0 ("vhost: Reintroduce kthread API and add mode selection")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20251101194358.13605-1-michael.christie@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vhost/vhost.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 0c74a41a67530..359564c40cb50 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -2367,7 +2367,7 @@ static int ublk_ch_uring_cmd_local(struct io_uring_cmd *cmd,
- 	u16 buf_idx = UBLK_INVALID_BUF_IDX;
- 	struct ublk_device *ub = cmd->file->private_data;
- 	struct ublk_queue *ubq;
--	struct ublk_io *io;
-+	struct ublk_io *io = NULL;
- 	u32 cmd_op = cmd->cmd_op;
- 	u16 q_id = READ_ONCE(ub_src->q_id);
- 	u16 tag = READ_ONCE(ub_src->tag);
-@@ -2488,7 +2488,7 @@ static int ublk_ch_uring_cmd_local(struct io_uring_cmd *cmd,
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 71604668e53f6..276dded52212c 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -798,11 +798,13 @@ static int vhost_kthread_worker_create(struct vhost_worker *worker,
  
-  out:
- 	pr_devel("%s: complete: cmd op %d, tag %d ret %x io_flags %x\n",
--			__func__, cmd_op, tag, ret, io->flags);
-+			__func__, cmd_op, tag, ret, io ? io->flags : 0);
+ 	ret = vhost_attach_task_to_cgroups(worker);
+ 	if (ret)
+-		goto stop_worker;
++		goto free_id;
+ 
+ 	worker->id = id;
+ 	return 0;
+ 
++free_id:
++	xa_erase(&dev->worker_xa, id);
+ stop_worker:
+ 	vhost_kthread_do_stop(worker);
  	return ret;
- }
- 
 -- 
 2.51.0
 
