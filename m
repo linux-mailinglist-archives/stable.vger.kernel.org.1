@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA82CC2D23
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C5ECC3AFA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3741D30F166F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2AF3430047C9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE67365A07;
-	Tue, 16 Dec 2025 12:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C038348894;
+	Tue, 16 Dec 2025 11:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV7VfFox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qc6/eHO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA85365A01;
-	Tue, 16 Dec 2025 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48809348883;
+	Tue, 16 Dec 2025 11:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887106; cv=none; b=JLE2kJ9tXl++VwSv49aCG5YjvmmN8SOH7QPYW6JHlLFuAciTPDyxbvCbVT7MXo8n8+lozFhSfn4jf/g/s2nxjEGAQ+zRcVqmw4ZIn7Vu4/2qoscQLt9l42KB8J5BVEuZl6rU6pK5PyFK6ZjVfsuCWrHlic4Tc0wKfJz9Xq1IG/I=
+	t=1765885151; cv=none; b=Nb+JA2hvH2BZjGNye8ByBHUHA5oYcy2GjLafEOImAL/7WHflepD5moh7eVex76VZ9I2p27iRDP7JgTeqH3Q+0SgyBx7/FJKGas8YG+d4Z6hxRQdIB80IRsU8FZnSjRzV6dI5ofuVMM2M/tXaALs9c9gqVYL/+myBUvAmNWlsn/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887106; c=relaxed/simple;
-	bh=tljLxp1Rgia3/yqsB2WB1ugpWNeH76GKqbBtvGBzrKo=;
+	s=arc-20240116; t=1765885151; c=relaxed/simple;
+	bh=yoY8iXwSQwUK+LUUy59RcRbDxOL+b5WRAHg5svxfBS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCQblhqfo60+fyn7gxtJ/li7JJg4T+O9ioUSvFFzn6I/IlxDCd19Pw+p5xKcEtSGiwkqBmNFo7Wu/Y3Y0RMS91x7OTVMDuOgbt0o4+ctn/tRuDWT6GwXtGOQeAesv7buwiXuMjoJfFf31vN4WjGOt/SK6iNZi2vu3/M5slfgXUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV7VfFox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06149C4CEF1;
-	Tue, 16 Dec 2025 12:11:45 +0000 (UTC)
+	 MIME-Version; b=swNK2eW7FA9D5D1x3Yeun7HqE19lcwa6Wq+lhekm02W5BQOL17cup9jbjJvlKw1kVK4QJHlkUUWXFJTWmhcN39o/O0sqo9QteFnFw8TqphBZ/3mLiV8v+k4gkMcEQdjNgnkKzKR8kKh7KFcH7PPfZpBtSzIkzcWO71G8ehKdQac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qc6/eHO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17D1C4CEF1;
+	Tue, 16 Dec 2025 11:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887106;
-	bh=tljLxp1Rgia3/yqsB2WB1ugpWNeH76GKqbBtvGBzrKo=;
+	s=korg; t=1765885151;
+	bh=yoY8iXwSQwUK+LUUy59RcRbDxOL+b5WRAHg5svxfBS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CV7VfFoxRk3XqwJNxy3u5j0weIepTSS4a4O2OAp3OVw/23ehMWdPFaXLfxEbz9ox3
-	 n463Li01zAltHI4hHQWjfMGVMtI3xD7GzxdRtVEiQLoKG0LO6kBaKvCO4+KGJvY94K
-	 Yr+s3u2q3bHiTlbE8ytpSfJnEfsk9Qb+8s/Pher0=
+	b=qc6/eHO2/xBX3vEIZx4+ZDn/CpimCuadlxjPztoPwvzjGMP84QZholrm8XpLltnGf
+	 CU6KIh+g5MAPmNNnewVs3JAXRORnfH2NLsCEcXVDjkpG5RYCJ3V18vlR26Jl1eaKq8
+	 QYFhTIt+r3GUCEOgDRQ5JNQ2qP92A6LtcB6vnQU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 127/614] phy: mscc: Fix PTP for VSC8574 and VSC8572
+Subject: [PATCH 6.17 053/507] inet: Avoid ehash lookup race in inet_ehash_insert()
 Date: Tue, 16 Dec 2025 12:08:14 +0100
-Message-ID: <20251216111405.937706043@linuxfoundation.org>
+Message-ID: <20251216111347.465427351@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit ea5df88aeca112aac69e6c32e3dd1433a113b0c9 ]
+[ Upstream commit 1532ed0d0753c83e72595f785f82b48c28bbe5dc ]
 
-The PTP initialization is two-step. First part are the function
-vsc8584_ptp_probe_once() and vsc8584_ptp_probe() at probe time which
-initialize the locks, queues, creates the PTP device. The second part is
-the function vsc8584_ptp_init() at config_init() time which initialize
-PTP in the HW.
+Since ehash lookups are lockless, if one CPU performs a lookup while
+another concurrently deletes and inserts (removing reqsk and inserting sk),
+the lookup may fail to find the socket, an RST may be sent.
 
-For VSC8574 and VSC8572, the PTP initialization is incomplete. It is
-missing the first part but it makes the second part. Meaning that the
-ptp_clock_register() is never called.
+The call trace map is drawn as follows:
+   CPU 0                           CPU 1
+   -----                           -----
+				inet_ehash_insert()
+                                spin_lock()
+                                sk_nulls_del_node_init_rcu(osk)
+__inet_lookup_established()
+	(lookup failed)
+                                __sk_nulls_add_node_rcu(sk, list)
+                                spin_unlock()
 
-There is no crash without the first part when enabling PTP but this is
-unexpected because some PHys have PTP functionality exposed by the
-driver and some don't even though they share the same PTP clock PTP.
+As both deletion and insertion operate on the same ehash chain, this patch
+introduces a new sk_nulls_replace_node_init_rcu() helper functions to
+implement atomic replacement.
 
-Fixes: 774626fa440e ("net: phy: mscc: Add PTP support for 2 more VSC PHYs")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20251023191350.190940-3-horatiu.vultur@microchip.com
+Fixes: 5e0724d027f0 ("tcp/dccp: fix hashdance race for passive sessions")
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251015020236.431822-3-xuanqiang.luo@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/sock.h         | 13 +++++++++++++
+ net/ipv4/inet_hashtables.c |  8 ++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index ef0ef1570d392..48d43f60b8ff8 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2625,7 +2625,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
- 	.remove		= &vsc85xx_remove,
--	.probe		= &vsc8574_probe,
-+	.probe		= &vsc8584_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
- 	.get_tunable	= &vsc85xx_get_tunable,
-@@ -2648,12 +2648,12 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_aneg    = &vsc85xx_config_aneg,
- 	.aneg_done	= &genphy_aneg_done,
- 	.read_status	= &vsc85xx_read_status,
--	.handle_interrupt = vsc85xx_handle_interrupt,
-+	.handle_interrupt = vsc8584_handle_interrupt,
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
- 	.remove		= &vsc85xx_remove,
--	.probe		= &vsc8574_probe,
-+	.probe		= &vsc8584_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
- 	.get_tunable	= &vsc85xx_get_tunable,
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 57c0df29ee964..5ab31eb69acb4 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -850,6 +850,19 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
+ 	return rc;
+ }
+ 
++static inline bool sk_nulls_replace_node_init_rcu(struct sock *old,
++						  struct sock *new)
++{
++	if (sk_hashed(old)) {
++		hlist_nulls_replace_init_rcu(&old->sk_nulls_node,
++					     &new->sk_nulls_node);
++		__sock_put(old);
++		return true;
++	}
++
++	return false;
++}
++
+ static inline void __sk_add_node(struct sock *sk, struct hlist_head *list)
+ {
+ 	hlist_add_head(&sk->sk_node, list);
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 4316c127f7896..ddeb5ee52d404 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -720,8 +720,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	spin_lock(lock);
+ 	if (osk) {
+ 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
+-		ret = sk_nulls_del_node_init_rcu(osk);
+-	} else if (found_dup_sk) {
++		ret = sk_nulls_replace_node_init_rcu(osk, sk);
++		goto unlock;
++	}
++
++	if (found_dup_sk) {
+ 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
+ 		if (*found_dup_sk)
+ 			ret = false;
+@@ -730,6 +733,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	if (ret)
+ 		__sk_nulls_add_node_rcu(sk, list);
+ 
++unlock:
+ 	spin_unlock(lock);
+ 
+ 	return ret;
 -- 
 2.51.0
 
