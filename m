@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F58CC276E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A649CC3E61
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 583823072195
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A13C2302105B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9423446D5;
-	Tue, 16 Dec 2025 11:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E46136BCF7;
+	Tue, 16 Dec 2025 12:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TguWhxPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4f7X7y4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD13446BB;
-	Tue, 16 Dec 2025 11:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDB036BCEC;
+	Tue, 16 Dec 2025 12:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885495; cv=none; b=sF4t1PGmsg2Q+4U/nmaxnhLxvR4RVsN4IZI5mHOJ5kqYY+7NeCQWqwNacTt0C/lfoX/I7IHfN4AlrHqsRzZb7KFMB/AHqk5v4SmWCAxWdfNecSJmnFEfyd7lnYeAntbdgIDY/C/tgul7oKk+OhmFcIZdXlRlVMclLYhb3Yq351U=
+	t=1765887439; cv=none; b=hlpQcRv7QE9AQLVC3U38r770gN50ml4AWJAxIOYvukr9Wk7F1OgoAT0qMUNdIEm8tOVLYL2KgDMbMIgp7fkro+WE/uWNM5CmOvbJdEGjldo3LJtOEghRyIoqgyQyYeBV+ceRwmfSiby/TjkMhDqSswQCpWq3Ux2zT852/Ly2Xmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885495; c=relaxed/simple;
-	bh=mNJ+LgjUL035u0tOaxNzwhGrBRYWB6LaSIHq36VM6WE=;
+	s=arc-20240116; t=1765887439; c=relaxed/simple;
+	bh=OZzuleOfQx0e+HM7qm5csu/jf+YjrDuVzlLzOkvB6+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPoAHtwU6JLxheRxnzXmGPxJr8RH72TYk/LCihNA/rm5xVDeQHUmehVpXvF5L79VpIJBWemJe7qGAHCqNF9XW/rySqio5omR6B5Yn5eZ9R+bIxjpddf7BpYZeGtHzx9EYvyhX9PmcdzGuJZ6FTMM0kMRBKj0FtRQJ33anD0pCy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TguWhxPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDAEC4CEF1;
-	Tue, 16 Dec 2025 11:44:55 +0000 (UTC)
+	 MIME-Version; b=LxeWhtnhBvqOvhneR3fOEebK1zMW4Uqb4OGQIuVBb1ctx8OgV/3dVdKT/Mumc5gQ+1WWLTavXesue2HcpNUGlwtM8IQFwm/pAOe5SbTx0hDinzBMSQyZYuNC4Q/JRbhgTJPFEcQbkAl2/p4mC01Jf3CLd7vZloaOYbXBbTj0qhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4f7X7y4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800DFC16AAE;
+	Tue, 16 Dec 2025 12:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885495;
-	bh=mNJ+LgjUL035u0tOaxNzwhGrBRYWB6LaSIHq36VM6WE=;
+	s=korg; t=1765887439;
+	bh=OZzuleOfQx0e+HM7qm5csu/jf+YjrDuVzlLzOkvB6+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TguWhxPFYPLcZI84NAjNf82UUYRjs6SqiFBcO/7d0lUBvp8Ogd73Mxy5dVHxYS/J3
-	 9HJLXzh7GJangC/nNr6EhS9W7A9J/HyiBVb9tDdeVkdkVjD6RtTai28ZZjf/IHev0l
-	 4jJrkFqBXSHie+GFflYHTvC2LDRPnZE3ax0KhHoo=
+	b=L4f7X7y4wtQL8f//z/xL/Lt4Lhbs1LSB72jROG5O+3M/OSlZVdCwTrwkAfO8Lu3SN
+	 aaf7dfKIJETYkoNY51Nbv1kMObMeGb308kAmaCx3yQINrtrMSK+sQSVrjwRLV/icv6
+	 6cuyoytNARRTDEoVQybdKxP3Ro2Y3Bb0bVVycS14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 156/507] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Subject: [PATCH 6.18 230/614] scsi: stex: Fix reboot_notifier leak in probe error path
 Date: Tue, 16 Dec 2025 12:09:57 +0100
-Message-ID: <20251216111351.176004868@linuxfoundation.org>
+Message-ID: <20251216111409.703991487@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
+[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
 
-There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
-variable sel with an undefined value which is then used in regmap_field_write().
+In stex_probe(), register_reboot_notifier() is called at the beginning,
+but if any subsequent initialization step fails, the function returns
+without unregistering the notifier, resulting in a resource leak.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add unregister_reboot_notifier() in the out_disable error path to ensure
+proper cleanup on all failure paths.
 
-Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9467-charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/stex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
-index 5f3efcac4a1bb..3beb8a763a923 100644
---- a/drivers/power/supply/rt9467-charger.c
-+++ b/drivers/power/supply/rt9467-charger.c
-@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
- 	if (rsel == RT9467_RANGE_VMIVR) {
- 		ret = linear_range_get_selector_high(range, value, &sel, &found);
- 		if (ret)
--			value = range->max_sel;
-+			sel = range->max_sel;
- 	} else {
- 		linear_range_get_selector_within(range, value, &sel);
- 	}
+diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
+index d8ad02c293205..e02f28e5a104e 100644
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -1844,6 +1844,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_scsi_host_put:
+ 	scsi_host_put(host);
+ out_disable:
++	unregister_reboot_notifier(&stex_notifier);
+ 	pci_disable_device(pdev);
+ 
+ 	return err;
 -- 
 2.51.0
 
