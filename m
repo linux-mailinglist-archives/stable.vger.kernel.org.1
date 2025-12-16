@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A216CC246C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E1CCC48FE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE31930DEE6F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DF85303A080
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969DD342CB1;
-	Tue, 16 Dec 2025 11:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0CA376BD0;
+	Tue, 16 Dec 2025 12:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1fUmj/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WA+eQv+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518A6342513;
-	Tue, 16 Dec 2025 11:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE636D512;
+	Tue, 16 Dec 2025 12:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884415; cv=none; b=IH1XV3TIfJQTxzDg58WInrO+B6UZhcys+7Hg1KIHlQTfvJDO01si5XyOmA4YTRYN25hiPuUVn+/N/l+YC746s2tBcHbOyMkH/N0T6FWHVycEOLHiwyIKUVH6xReET1j5yjrzp6cmvNnuIb6XHaqogbrpobunaMM803cI6mfh3Mk=
+	t=1765888059; cv=none; b=NSaW+EQjNNKc2/4aN9IgAe/IWSK65Gcc1bDeN2QrBmurBZYQwY92IYqhI1QWazr8uyxbA3xJkcYx1I7uHElCmsU7znqQ0CSmhawnRe6l/i39mi60V7pko0yJk9pYo9OPqh1ZEQVBzQ43e3H6r8l0vAWNSmTRXdYfHLYdD/4Aez8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884415; c=relaxed/simple;
-	bh=ajlVi+VFGd1DaQ1UOeuyuZNF73IsGYxrH4d8T8FlMVA=;
+	s=arc-20240116; t=1765888059; c=relaxed/simple;
+	bh=7f228i3z3npAQl2rlL81PYGnLl7PGCzeUtU+rfjEwwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+JDjJIZYGyh6I3hiYrkqHsvXBpxArBdA960jNYXrhkTiLzdSef+iIuTz8QvXKTScKrDr3YulsIsPAn2QQB9itYFLwpiH6IB0lJMrNXwDmPrPq/SjEfr1gdUJIQ0mbbsVTr5JhLybLwKB8JcCspm979kzeWAi1tsHZ0B8UTDMTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1fUmj/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CDCC4CEF1;
-	Tue, 16 Dec 2025 11:26:54 +0000 (UTC)
+	 MIME-Version; b=cM/rZEjR8b5hHQ4MVIZbuddBhq5sb5/uBVLxpr25EP58xhOnsfCrI0OJkCAOYkl6ZBhfRpKsJV2r7OdaVXXKs0nKsZIl/tQGYBZQuW9RxwEU5o3LaXutexOMJLKQtbfWrCBiMHwHH4DfxdNPc/du1pzx3sBcfgfCmk42G+zqQa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WA+eQv+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DD6C4CEF1;
+	Tue, 16 Dec 2025 12:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884415;
-	bh=ajlVi+VFGd1DaQ1UOeuyuZNF73IsGYxrH4d8T8FlMVA=;
+	s=korg; t=1765888058;
+	bh=7f228i3z3npAQl2rlL81PYGnLl7PGCzeUtU+rfjEwwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1fUmj/ZSRCBj72DnXROEJWe0xJoSALXrxQCNOApYB4lOAyidoymYYSNIrzvYfc8o
-	 XOQFIi6N6qCQZLDGsNibfTVCr4Z1yosOsg3HAV2OHB0WcUQsRcILZu5N8NuLCf8Qgu
-	 IYNwAtN/5aecqBr57ewPWEJbhbK70nzF2nKuCV4Y=
+	b=WA+eQv+F0flF4ZhZ4u59mZvcMs/DEVJGhHUnediHBrbNXOJ1SRfSw2a89/mufbXnC
+	 UghUnTZZD7glPLU/wx+9V42T99OOggQBUEvRbz9SHLg5+9K2wugm6B5eUzOZ3svt4I
+	 VLBvWaI/ctJb8Sodt6bY0j6iJpiarXig5hn3Prog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/354] scsi: qla2xxx: Fix improper freeing of purex item
+Subject: [PATCH 6.18 387/614] Revert "wifi: mt76: mt792x: improve monitor interface handling"
 Date: Tue, 16 Dec 2025 12:12:34 +0100
-Message-ID: <20251216111327.688582946@linuxfoundation.org>
+Message-ID: <20251216111415.390444593@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
+[ Upstream commit cdb2941a516cf06929293604e2e0f4c1d6f3541e ]
 
-In qla2xxx_process_purls_iocb(), an item is allocated via
-qla27xx_copy_multiple_pkt(), which internally calls
-qla24xx_alloc_purex_item().
+This reverts commit 55e95ce469d0c61041bae48b2ebb7fcbf6d1ba7f.
 
-The qla24xx_alloc_purex_item() function may return a pre-allocated item
-from a per-adapter pool for small allocations, instead of dynamically
-allocating memory with kzalloc().
+mt792x drivers don't seem to support multi-radio devices yet.  At least
+they don't mess with `struct wiphy_radio` at the moment.
 
-An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
-kfree() to release the item. If the item was from the pre-allocated
-pool, calling kfree() on it is a bug that can lead to memory corruption.
+Packet capturing on monitor interface doesn't work after the blamed patch:
 
-Fix this by using the correct deallocation function,
-qla24xx_free_purex_item(), which properly handles both dynamically
-allocated and pre-allocated items.
+  tcpdump -i wls6mon -n -vvv
 
-Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Revert the NO_VIRTUAL_MONITOR feature for now to resolve the issue.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 55e95ce469d0 ("wifi: mt76: mt792x: improve monitor interface handling")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20251027111843.38975-1-pchelkin@ispras.ru
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
-index 316594aa40cc5..42eb65a62f1f3 100644
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
- 		a.reason = FCNVME_RJT_RC_LOGIC;
- 		a.explanation = FCNVME_RJT_EXP_NONE;
- 		xmt_reject = true;
--		kfree(item);
-+		qla24xx_free_purex_item(item);
- 		goto out;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index c0e56541a9547..9cad572c34a38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -688,7 +688,6 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+-	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
  
 -- 
 2.51.0
