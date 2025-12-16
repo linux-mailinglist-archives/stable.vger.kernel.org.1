@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1AECC24DE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8227CCC276A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 503A930575A6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F13730CA0A7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B9231ED84;
-	Tue, 16 Dec 2025 11:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F8F3446D2;
+	Tue, 16 Dec 2025 11:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUoNUgOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtlu+0pK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB253233EE;
-	Tue, 16 Dec 2025 11:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E503446A6;
+	Tue, 16 Dec 2025 11:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883915; cv=none; b=DU3cBNwyusyyyIHpRMR3VDlL93MnQP91L7Ra+/c+wakrYRNZg7E9RlX5EOk2Slii3C8mfNqVPlAGBL8tj4y6HkxbqW8hQ1NKCJbfm8DFvyrcNBPsk2qA3uliUJx0s0Wl/7vL90j5QbFmQfKhHmVkdb5MojNOpQ4f27IhGx14rVQ=
+	t=1765885492; cv=none; b=FIpp4razXwzT8l0GcfQY3m7JhgzZxfbQNwx55/UhtAUW9GP1Q5xhk/xZI4A+hc3fbuBgDzXohMZGElKEoAq6ynvLzheJNQhvZS/Sa8yBFubFbAsIE6v8wBU/YyC26hGBdTO3ZC1Pnl8qJx7F9OWQqcwTWntBRNsiXL4QwvGkI+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883915; c=relaxed/simple;
-	bh=uqYbE6kHz7Yc5fJpnBNTA1Ve6LIiv06v+iYavGifreo=;
+	s=arc-20240116; t=1765885492; c=relaxed/simple;
+	bh=9hoO12CMJ7DxS133hgJ+emRMEkLok5YIZ6XDrWF5dsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMaHvuaexz1XKszOXTQYz5NYAAVcFpNp5jIJWjY+OpfqUH136flLGmQ5RAWEgi80AjXALV0ETwyiY6E5jITd8LNNUV/ZIOwL99bDxds+Qr8gss/iOeCK5spYrcn60r54/DgtRopt7cr6q1yXjcuYVG8LsxQx5oFwGY7AinD1fOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUoNUgOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB25DC4CEF1;
-	Tue, 16 Dec 2025 11:18:34 +0000 (UTC)
+	 MIME-Version; b=KC3ab95PyJo7PNP+4euqj2vGW3pUTqSBySRYMWB4ZL2fxf/Qr9mxeKxCVxq5J3qBDjw2xlSkFYtkoVo05/1GqZh81LYT9tTJ3IJVfPztU+8hh2LhOzJaa7mLnsbGqeRFJscaVdhDNuzNK5/5svfvpPdpw/sU0V/mHkZHIS9WbmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtlu+0pK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258ECC4CEF1;
+	Tue, 16 Dec 2025 11:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883915;
-	bh=uqYbE6kHz7Yc5fJpnBNTA1Ve6LIiv06v+iYavGifreo=;
+	s=korg; t=1765885492;
+	bh=9hoO12CMJ7DxS133hgJ+emRMEkLok5YIZ6XDrWF5dsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUoNUgOCdNCEJdvwkmHTwecc3dONzaZjnKpqzX84OdAQFIJdk8owVuXYbTba1Qran
-	 dqxFnxX+3tJV5dVbXAh1kC4GjVKC1V6+vDfq7rh2rC2UF6r7Ad3FQBdvrzHJ27KdE9
-	 +V73RO7PP0DHpnReNhoTAqzhM6TeSWRIKnHiIT+0=
+	b=vtlu+0pKv4R3SUIYST9oI5SrKJ+Be9KClTJdMLmDn0EG6Tv4fMfexNtwz2ihITX1Q
+	 203SxYcADEQIJ5wia0NK4eUEBJvT0fhycoRH83c7r6WJmd44LhOkfsWEG5+ZgDL0TQ
+	 r2wRVUf1dgLtklBlRZAeKNP+YGTOitvSUjmshMro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernand Sieber <sieberf@amazon.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/354] sched/fair: Forfeit vruntime on yield
+Subject: [PATCH 6.17 155/507] power: supply: rt9467: Return error on failure in rt9467_set_value_from_ranges()
 Date: Tue, 16 Dec 2025 12:09:56 +0100
-Message-ID: <20251216111321.966709786@linuxfoundation.org>
+Message-ID: <20251216111351.140208882@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernand Sieber <sieberf@amazon.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 79104becf42baeeb4a3f2b106f954b9fc7c10a3c ]
+[ Upstream commit 8b27fe2d8d2380118c343629175385ff587e2fe4 ]
 
-If a task yields, the scheduler may decide to pick it again. The task in
-turn may decide to yield immediately or shortly after, leading to a tight
-loop of yields.
+The return value of rt9467_set_value_from_ranges() when setting AICL VTH is
+not checked, even though it may fail.
 
-If there's another runnable task as this point, the deadline will be
-increased by the slice at each loop. This can cause the deadline to runaway
-pretty quickly, and subsequent elevated run delays later on as the task
-doesn't get picked again. The reason the scheduler can pick the same task
-again and again despite its deadline increasing is because it may be the
-only eligible task at that point.
+Log error and return from rt9467_run_aicl() on fail.
 
-Fix this by making the task forfeiting its remaining vruntime and pushing
-the deadline one slice ahead. This implements yield behavior more
-authentically.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-We limit the forfeiting to eligible tasks. This is because core scheduling
-prefers running ineligible tasks rather than force idling. As such, without
-the condition, we can end up on a yield loop which makes the vruntime
-increase rapidly, leading to anomalous run delays later down the line.
-
-Fixes: 147f3efaa24182 ("sched/fair: Implement an EEVDF-like scheduling  policy")
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250401123622.584018-1-sieberf@amazon.com
-Link: https://lore.kernel.org/r/20250911095113.203439-1-sieberf@amazon.com
-Link: https://lore.kernel.org/r/20250916140228.452231-1-sieberf@amazon.com
+Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009144725.562278-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/power/supply/rt9467-charger.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8bdcb5df0d461..bf35f6f0a9c4b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9151,7 +9151,19 @@ static void yield_task_fair(struct rq *rq)
- 	 */
- 	rq_clock_skip_update(rq);
- 
--	se->deadline += calc_delta_fair(se->slice, se);
-+	/*
-+	 * Forfeit the remaining vruntime, only if the entity is eligible. This
-+	 * condition is necessary because in core scheduling we prefer to run
-+	 * ineligible tasks rather than force idling. If this happens we may
-+	 * end up in a loop where the core scheduler picks the yielding task,
-+	 * which yields immediately again; without the condition the vruntime
-+	 * ends up quickly running away.
-+	 */
-+	if (entity_eligible(cfs_rq, se)) {
-+		se->vruntime = se->deadline;
-+		se->deadline += calc_delta_fair(se->slice, se);
-+		update_min_vruntime(cfs_rq);
+diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
+index e9aba9ad393c9..5f3efcac4a1bb 100644
+--- a/drivers/power/supply/rt9467-charger.c
++++ b/drivers/power/supply/rt9467-charger.c
+@@ -588,6 +588,10 @@ static int rt9467_run_aicl(struct rt9467_chg_data *data)
+ 	aicl_vth = mivr_vth + RT9467_AICLVTH_GAP_uV;
+ 	ret = rt9467_set_value_from_ranges(data, F_AICL_VTH,
+ 					   RT9467_RANGE_AICL_VTH, aicl_vth);
++	if (ret) {
++		dev_err(data->dev, "Failed to set AICL VTH\n");
++		return ret;
 +	}
- }
  
- static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
+ 	/* Trigger AICL function */
+ 	ret = regmap_field_write(data->rm_field[F_AICL_MEAS], 1);
 -- 
 2.51.0
 
