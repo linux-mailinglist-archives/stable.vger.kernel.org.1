@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E51CC2990
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D7FCC239B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28DEA30652ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3A69301E218
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8413D34F254;
-	Tue, 16 Dec 2025 11:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6099432860D;
+	Tue, 16 Dec 2025 11:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c00wTjaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB/91b++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403CA34E74D;
-	Tue, 16 Dec 2025 11:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C11A31B10B;
+	Tue, 16 Dec 2025 11:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886136; cv=none; b=STnxPISHwKYW+qlU8LWrf6pTao8gS0xXFUwyGcLC7DlVtKBuO/kuE0BaPmEJxcsWpsdeqONN+OdWMySs+SkGzabABSJyUT/1Cebscffn5TjKT1OT67J4Po8AhR50sBeVGtFMSAH4Jc9tDkI9xQ6qFbGaFS7l8ySy5xAO1/qLeg0=
+	t=1765884526; cv=none; b=ilQvN9zy8UUJ1YmEmbZvbWbdT+gAMpLv54oQN6crU+YoMSyy22ZscLNsNXO37tnjnOwJSy+QxflplsMSzo9gL9H2Va/L8Z0+iWPzjuJzd+9QPgNs6mUBSlvG8TwSRdtZx+CNdfd3nwy2dgRbNecJxp+8D6++N226bP+rsxO/yAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886136; c=relaxed/simple;
-	bh=yCQTXJbDMT6shHYGVJd9Ak5PP9eTZBnZl8rhHnBj0Wk=;
+	s=arc-20240116; t=1765884526; c=relaxed/simple;
+	bh=+ruGJgTGQuz6YjZzMrP1Por1v5XqtoRqVKgcBWeT4I4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVDTWhvLy2loiIetVOmkjTEf21gnkDekb9Jpr4Ehq8w64uNtneOTLPfZVfchcPCZipQRjaCbhcyAGMFQM7dl4/uUYSA54ymI52qvik0mNYveZX0ovucz5h/eNVEmd9A8heD048oUMIWwHzBkvwqoINDhesC3Iwl6rfUYbZoZbsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c00wTjaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF609C4CEF1;
-	Tue, 16 Dec 2025 11:55:35 +0000 (UTC)
+	 MIME-Version; b=Hf5C4O+ea14HDV/YrU1SGyxdylHyVHzX6xsROpP67a9sH4hz+d3mC8QIGRY2ysrMHZEtsaV1B+83dWVHhcJYktozKUDXiCqT7fs7Uph0lSR6cr2TzqTJAjb9JsYOgYVP8resw+7I+xOZOFyG/n+x8E8ODedt+24xAIskq+o6j5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB/91b++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAD6C4CEF1;
+	Tue, 16 Dec 2025 11:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886136;
-	bh=yCQTXJbDMT6shHYGVJd9Ak5PP9eTZBnZl8rhHnBj0Wk=;
+	s=korg; t=1765884526;
+	bh=+ruGJgTGQuz6YjZzMrP1Por1v5XqtoRqVKgcBWeT4I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c00wTjaKg6Dtty9tBCcWEi5bwfdyW/4wPe++W7+ri0+u0ykIxJRxtCk/KvJP27ei5
-	 JkhP/E2UcrQpfcTf9KZNO29aAhy6dmQfALwZZvPhoE+Mvhu3/X6zl11Tjw+nChLKZE
-	 crq+lGnNTM3JevCfHQ+ZCHthKQIXToHQM2PWIJg4=
+	b=rB/91b++UzRVpZAIejOLdzkSEkI2u+k0ThKkHxFwARpN7EzUXGtEk+rhw8ipzJQP9
+	 DSUcxwr0X4qhzDneJRwX7pkbnVN7KEQEd9ShGNI7xYsj8ViztXaSEv/qoxqo6qBN09
+	 836kOfNZ33er8oY5GqOvxPUMm6GXUQT1enyEaosc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jan Kara <jack@suse.cz>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 347/507] iomap: always run error completions in user context
+Subject: [PATCH 6.12 221/354] PCI: dwc: Fix wrong PORT_LOGIC_LTSSM_STATE_MASK definition
 Date: Tue, 16 Dec 2025 12:13:08 +0100
-Message-ID: <20251216111358.031523432@linuxfoundation.org>
+Message-ID: <20251216111328.925252384@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit ddb4873286e03e193c5a3bebb5fc6fa820e9ee3a ]
+[ Upstream commit bcc9a4a0bca3aee4303fa4a20302e57b24ac8f68 ]
 
-At least zonefs expects error completions to be able to sleep.  Because
-error completions aren't performance critical, just defer them to workqueue
-context unconditionally.
+As per DesignWare Cores PCI Express Controller Databook, section 5.50,
+SII: Debug Signals, cxpl_debug_info[63:0]:
 
-Fixes: 8dcc1a9d90c1 ("fs: New zonefs file system")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113170633.1453259-3-hch@lst.de
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+  [5:0] smlh_ltssm_state: LTSSM current state. Encoding is same as the
+  dedicated smlh_ltssm_state output.
+
+The mask should be 6 bits, from 0 to 5. Hence, fix the mask definition.
+
+Fixes: 23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/1763122140-203068-1-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/direct-io.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index 46aa85af13dc5..97c40e7df7215 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -179,7 +179,18 @@ static void iomap_dio_done(struct iomap_dio *dio)
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 347ab74ac35aa..0fad7751490f5 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -97,7 +97,7 @@
+ #define PORT_LANE_SKEW_INSERT_MASK	GENMASK(23, 0)
  
- 		WRITE_ONCE(dio->submit.waiter, NULL);
- 		blk_wake_io_task(waiter);
--	} else if (dio->flags & IOMAP_DIO_INLINE_COMP) {
-+		return;
-+	}
-+
-+	/*
-+	 * Always run error completions in user context.  These are not
-+	 * performance critical and some code relies on taking sleeping locks
-+	 * for error handling.
-+	 */
-+	if (dio->error)
-+		dio->flags &= ~IOMAP_DIO_INLINE_COMP;
-+
-+	if (dio->flags & IOMAP_DIO_INLINE_COMP) {
- 		WRITE_ONCE(iocb->private, NULL);
- 		iomap_dio_complete_work(&dio->aio.work);
- 	} else if (dio->flags & IOMAP_DIO_CALLER_COMP) {
+ #define PCIE_PORT_DEBUG0		0x728
+-#define PORT_LOGIC_LTSSM_STATE_MASK	0x1f
++#define PORT_LOGIC_LTSSM_STATE_MASK	0x3f
+ #define PORT_LOGIC_LTSSM_STATE_L0	0x11
+ #define PCIE_PORT_DEBUG1		0x72C
+ #define PCIE_PORT_DEBUG1_LINK_UP		BIT(4)
 -- 
 2.51.0
 
