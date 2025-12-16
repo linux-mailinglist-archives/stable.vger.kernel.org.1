@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9F1CC247B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 725BACC2980
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8BF30E67FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0353C31667F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B0E3431E9;
-	Tue, 16 Dec 2025 11:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292373451B3;
+	Tue, 16 Dec 2025 11:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO8O4oAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvImykkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB71343D90;
-	Tue, 16 Dec 2025 11:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888F3446D8;
+	Tue, 16 Dec 2025 11:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884421; cv=none; b=tZM1F+nc7ozRxwE/IsDbWGtjD+pOZ1jycpekfP3SG+gCf3WNeapS7kCqcSz0yuxKPFiZN5DDxeIzJ/8ieuimEG/0FHlqQJC5Z+lQQiV+AViq69aREaSmWLza6usoeGMY31shFi2sNjKzMcHMA9nHkK5ID4yzgG3JUNFirJ/7K/A=
+	t=1765886081; cv=none; b=HrPiPOOhElCkZKyZqcksxS8p2/ahNRDYcoyRhyg3BtNwrLiHdwYcvxm/vDQQoqK/Yp77L/Xp3iSTTduA1hNI9j1S4q2Tf1hPkXugWaxWS9ZRtAOuj8XN5ixlr5VmBRQI1NRgtfcH0OmMyAyVUaejWp//sk6ndixFrHP9oZZHbyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884421; c=relaxed/simple;
-	bh=WwTg/v1pBVpfwa2zgDBxlbMmNoJfnm2GuZVfOtRmNGw=;
+	s=arc-20240116; t=1765886081; c=relaxed/simple;
+	bh=R54kaWJBsOZJ9xTyz6iUyPqlyin4FjZO2ni22JLroSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvQeuO87WrkmRznDsENz5HuH49uURcPk5qFC9vxvIrspY0tCUm+18jvLiBAJNNhq8ZPzB+UoQqPHkA4L6FBg2L7nZifYFTb8VJi9gW3S1iH1947knq+yrXYmCZXydtrRUCxB3OYdBB8syI2tcCJG2psN6gGGWip9f/WJU4VIPtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO8O4oAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9B0C4CEF1;
-	Tue, 16 Dec 2025 11:27:00 +0000 (UTC)
+	 MIME-Version; b=CxrhDcQJGMIOqdarkAbfy5aBr3tya5VkJxVt0VmcFgnI5ZDSQgNe4+t5QMDiuegmERLKY18XPKxQfTGZMir08jc8dGiMtZ1FyC9/A66g1F3TU3P0N5jPhZTl1sjGftA3ANqoRLCFrmkzanzGHd3su1Wg9jh1JHlLXSY5aNtUoEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvImykkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4933EC4CEF1;
+	Tue, 16 Dec 2025 11:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884421;
-	bh=WwTg/v1pBVpfwa2zgDBxlbMmNoJfnm2GuZVfOtRmNGw=;
+	s=korg; t=1765886081;
+	bh=R54kaWJBsOZJ9xTyz6iUyPqlyin4FjZO2ni22JLroSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oO8O4oAX6U406acpKtpBWstGr/nMp1j1eSC18/SNtZafNpZOF4YGAw0yb/ITYfi3m
-	 EHuvU2BU3oCo1CDpun89DSbI8W2Ll5IzZYSHfmG0xp9WuqPSyRY/N/ILSAN/DhFepB
-	 6jEpzgN7LXg2AtAtgKgBQnMX9QkRQWB1b6BmxK0s=
+	b=SvImykkPNhFBXy2/71jk7350T2eEvbtmHl4+Au+bYYI9rHJ/oOUZXz2ZMYApMt85J
+	 XOt2O52nTYzGOOsmK+AWS49xTj8w8Jm8odqV31D3NpOfN11jaGdHUlv+T/y1JeMvMT
+	 f2hA+RB3RadqNyaFhooXjegFTvPOhlfkSpBVG/2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chien Wong <m@xv97.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/354] wifi: mac80211: fix CMAC functions not handling errors
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
+Subject: [PATCH 6.17 315/507] erofs: correct FSDAX detection
 Date: Tue, 16 Dec 2025 12:12:36 +0100
-Message-ID: <20251216111327.761410398@linuxfoundation.org>
+Message-ID: <20251216111356.879402831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,198 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chien Wong <m@xv97.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 353cda30d30e5dc7cacf8de5d2546724708ae3bb ]
+[ Upstream commit ebe4f3f6eb0c10f87c58e52a8912694c14fdeda6 ]
 
-The called hash functions could fail thus we should check return values.
+The detection of the primary device is skipped incorrectly
+if the multiple or flattened feature is enabled.
 
-Fixes: 26717828b75d ("mac80211: aes-cmac: switch to shash CMAC driver")
-Signed-off-by: Chien Wong <m@xv97.com>
-Link: https://patch.msgid.link/20251113140511.48658-2-m@xv97.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+It also fixes the FSDAX misdetection for non-block extra blobs.
+
+Fixes: c6993c4cb918 ("erofs: Fallback to normal access if DAX is not supported on extra device")
+Reported-and-tested-by: syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/691af9f6.a70a0220.3124cb.0097.GAE@google.com
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/aes_cmac.c | 63 +++++++++++++++++++++++++++++------------
- net/mac80211/aes_cmac.h |  8 +++---
- net/mac80211/wpa.c      | 20 +++++++------
- 3 files changed, 61 insertions(+), 30 deletions(-)
+ fs/erofs/super.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/net/mac80211/aes_cmac.c b/net/mac80211/aes_cmac.c
-index 48c04f89de20a..65989c7dfc680 100644
---- a/net/mac80211/aes_cmac.c
-+++ b/net/mac80211/aes_cmac.c
-@@ -22,50 +22,77 @@
- 
- static const u8 zero[CMAC_TLEN_256];
- 
--void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
--			const u8 *data, size_t data_len, u8 *mic)
-+int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
-+		       const u8 *data, size_t data_len, u8 *mic)
- {
-+	int err;
- 	SHASH_DESC_ON_STACK(desc, tfm);
- 	u8 out[AES_BLOCK_SIZE];
- 	const __le16 *fc;
- 
- 	desc->tfm = tfm;
- 
--	crypto_shash_init(desc);
--	crypto_shash_update(desc, aad, AAD_LEN);
-+	err = crypto_shash_init(desc);
-+	if (err)
-+		return err;
-+	err = crypto_shash_update(desc, aad, AAD_LEN);
-+	if (err)
-+		return err;
- 	fc = (const __le16 *)aad;
- 	if (ieee80211_is_beacon(*fc)) {
- 		/* mask Timestamp field to zero */
--		crypto_shash_update(desc, zero, 8);
--		crypto_shash_update(desc, data + 8, data_len - 8 - CMAC_TLEN);
-+		err = crypto_shash_update(desc, zero, 8);
-+		if (err)
-+			return err;
-+		err = crypto_shash_update(desc, data + 8,
-+					  data_len - 8 - CMAC_TLEN);
-+		if (err)
-+			return err;
- 	} else {
--		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
-+		err = crypto_shash_update(desc, data,
-+					  data_len - CMAC_TLEN);
-+		if (err)
-+			return err;
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index db13b40a78e07..edac533a389cb 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -174,15 +174,15 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
+ 		if (!erofs_is_fileio_mode(sbi)) {
+ 			dif->dax_dev = fs_dax_get_by_bdev(file_bdev(file),
+ 					&dif->dax_part_off, NULL, NULL);
+-			if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
+-				erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
+-					   dif->path);
+-				clear_opt(&sbi->opt, DAX_ALWAYS);
+-			}
+ 		} else if (!S_ISREG(file_inode(file)->i_mode)) {
+ 			fput(file);
+ 			return -EINVAL;
+ 		}
++		if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
++			erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
++				   dif->path);
++			clear_opt(&sbi->opt, DAX_ALWAYS);
++		}
+ 		dif->file = file;
  	}
--	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
--
-+	err = crypto_shash_finup(desc, zero, CMAC_TLEN, out);
-+	if (err)
-+		return err;
- 	memcpy(mic, out, CMAC_TLEN);
+ 
+@@ -215,13 +215,13 @@ static int erofs_scan_devices(struct super_block *sb,
+ 			  ondisk_extradevs, sbi->devs->extra_devices);
+ 		return -EINVAL;
+ 	}
+-	if (!ondisk_extradevs) {
+-		if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
+-			erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
+-			clear_opt(&sbi->opt, DAX_ALWAYS);
+-		}
+-		return 0;
 +
-+	return 0;
- }
- 
--void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
--			    const u8 *data, size_t data_len, u8 *mic)
-+int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
-+			   const u8 *data, size_t data_len, u8 *mic)
- {
-+	int err;
- 	SHASH_DESC_ON_STACK(desc, tfm);
- 	const __le16 *fc;
- 
- 	desc->tfm = tfm;
- 
--	crypto_shash_init(desc);
--	crypto_shash_update(desc, aad, AAD_LEN);
-+	err = crypto_shash_init(desc);
-+	if (err)
-+		return err;
-+	err = crypto_shash_update(desc, aad, AAD_LEN);
-+	if (err)
-+		return err;
- 	fc = (const __le16 *)aad;
- 	if (ieee80211_is_beacon(*fc)) {
- 		/* mask Timestamp field to zero */
--		crypto_shash_update(desc, zero, 8);
--		crypto_shash_update(desc, data + 8,
--				    data_len - 8 - CMAC_TLEN_256);
-+		err = crypto_shash_update(desc, zero, 8);
-+		if (err)
-+			return err;
-+		err = crypto_shash_update(desc, data + 8,
-+					  data_len - 8 - CMAC_TLEN_256);
-+		if (err)
-+			return err;
- 	} else {
--		crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
-+		err = crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
-+		if (err)
-+			return err;
++	if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
++		erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
++		clear_opt(&sbi->opt, DAX_ALWAYS);
  	}
--	crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
-+	return crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
- }
++	if (!ondisk_extradevs)
++		return 0;
  
- struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
-diff --git a/net/mac80211/aes_cmac.h b/net/mac80211/aes_cmac.h
-index 76817446fb838..f74150542142a 100644
---- a/net/mac80211/aes_cmac.h
-+++ b/net/mac80211/aes_cmac.h
-@@ -11,10 +11,10 @@
- 
- struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
- 						  size_t key_len);
--void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
--			const u8 *data, size_t data_len, u8 *mic);
--void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
--			    const u8 *data, size_t data_len, u8 *mic);
-+int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
-+		       const u8 *data, size_t data_len, u8 *mic);
-+int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
-+			   const u8 *data, size_t data_len, u8 *mic);
- void ieee80211_aes_cmac_key_free(struct crypto_shash *tfm);
- 
- #endif /* AES_CMAC_H */
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 293afa3f57c50..f909c48024698 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -872,8 +872,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 	/*
- 	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
- 	 */
--	ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			   skb->data + 24, skb->len - 24, mmie->mic);
-+	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
-+			       skb->data + 24, skb->len - 24, mmie->mic))
-+		return TX_DROP;
- 
- 	return TX_CONTINUE;
- }
-@@ -919,8 +920,9 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
- 
- 	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
- 	 */
--	ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic);
-+	if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
-+				   skb->data + 24, skb->len - 24, mmie->mic))
-+		return TX_DROP;
- 
- 	return TX_CONTINUE;
- }
-@@ -959,8 +961,9 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
- 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
--		ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				   skb->data + 24, skb->len - 24, mic);
-+		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
-+				       skb->data + 24, skb->len - 24, mic))
-+			return RX_DROP_U_DECRYPT_FAIL;
- 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
-@@ -1009,8 +1012,9 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
--		ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic);
-+		if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
-+					   skb->data + 24, skb->len - 24, mic))
-+			return RX_DROP_U_DECRYPT_FAIL;
- 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
+ 	if (!sbi->devs->extra_devices && !erofs_is_fscache_mode(sb))
+ 		sbi->devs->flatdev = true;
 -- 
 2.51.0
 
