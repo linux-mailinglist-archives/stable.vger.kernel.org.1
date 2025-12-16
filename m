@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42120CC4450
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:26:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03BFCC3116
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9339312BC51
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D7E83028C5C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9373334EF05;
-	Tue, 16 Dec 2025 11:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4C34887B;
+	Tue, 16 Dec 2025 12:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2DQ975G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9XkkfG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D034EEEE;
-	Tue, 16 Dec 2025 11:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F390D349B08;
+	Tue, 16 Dec 2025 12:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885626; cv=none; b=WgdgxDVs5Wx/e4KurSZhhgW5AQ0wK6hBQ+o46UWS99k+m83bDXmyQZcNPh6FbcW5zj4q70FGQSKdroBmWiWzk2hR9l/UwGOYLrzvVpi6ehs1Kq2CVIc8HzBrovwopsdcEr4rX8F4bY6reZDK3X1D4tZC01uJv0oHN045x3mQT30=
+	t=1765887570; cv=none; b=jU1L9Y1S1Stt6YmGK8X6QZYogqZ0RwI/bTEZY1xnt6R1JF/PKKOE1uN/yHgVENzqqnelL7X3V3dK/QoGUFRLXWPOzSo+Eipz4uvIS4FgjH8fxxhN797gjSuLtnSgTCu4GhK7zfQ46/CBb2zaafksKr/wam4LmBAz13Dn1/v17Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885626; c=relaxed/simple;
-	bh=7IPIlzPYMh6lmc5boU6X2He+9MsExdAqaCUXxU53Pmk=;
+	s=arc-20240116; t=1765887570; c=relaxed/simple;
+	bh=JpqbfaM57oSMP6UsEoy5HWp/an6UCnwirmS6+HnVQOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWsy5Mc3nvgapaL+g6DPn1aChXVjtytVs1YjfXSuFxp0W55fJj3B4/wm1ZTpDz74B7CLuRLBzHFRAjyutHhNUU59Mi6dreptP0XrxYrGupyM7oRO7DlgONyXWhZ29JUIbQ8xGrG0TU87MJweZ1ZOioo3kLA2K1vFiD568dICC9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2DQ975G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA52C4CEF1;
-	Tue, 16 Dec 2025 11:47:05 +0000 (UTC)
+	 MIME-Version; b=fRLqFUJaTuTT27BXK2GM5Tn3ptnI5M5pjqr/ioeUrTY16oJMuWtE2STic5JIF+kZv7ChDxlFy12+L5H9EjsC+jH4atkTYE58xbOGu/D0UXdNlTo2XTtt9Forg6c9GUMtZnM/ZL9H8ualBspJB4YrHEsINNfkkobIiMz4t8GHu4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9XkkfG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A96C16AAE;
+	Tue, 16 Dec 2025 12:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885626;
-	bh=7IPIlzPYMh6lmc5boU6X2He+9MsExdAqaCUXxU53Pmk=;
+	s=korg; t=1765887569;
+	bh=JpqbfaM57oSMP6UsEoy5HWp/an6UCnwirmS6+HnVQOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2DQ975Gz8ZkKNSLEYRb6BrWj6Io58zsod3XHHxk2CqOZ+DPgf5DTKuiLlvVoNYN4
-	 rTtrDmtEF1oKU+PKDZWy0lRo1Ltxl9pAvx2yrgCJ02hBR1omVLYaG8AiLXUhJMGA2r
-	 mjrcLg7+hoT+zbgoo6S5VFKZA7YR8L96YpV6JcDg=
+	b=a9XkkfG7NI2Nj5rPnpJXaARFNTMZnRIoaufGtge5LbxTjZyMYNMoXnRCpIqkyJDfd
+	 8ihu/6TfKH3Gff5UcctQ7LvDa7QcccoglcuiBXeluvjfEXnFStiKcKZINULc1u0rlm
+	 szZSyilIwvO8v3FASdP2xWGCm78nrnhFJGMskmeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Teel <scott.teel@microchip.com>,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Markus Elfring <Markus.Elfring@web.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 195/507] scsi: smartpqi: Fix device resources accessed after device removal
+Subject: [PATCH 6.18 269/614] leds: netxbig: Fix GPIO descriptor leak in error paths
 Date: Tue, 16 Dec 2025 12:10:36 +0100
-Message-ID: <20251216111352.574473947@linuxfoundation.org>
+Message-ID: <20251216111411.120086619@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike McGowen <mike.mcgowen@microchip.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b518e86d1a70a88f6592a7c396cf1b93493d1aab ]
+[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
 
-Correct possible race conditions during device removal.
+The function netxbig_gpio_ext_get() acquires GPIO descriptors but
+fails to release them when errors occur mid-way through initialization.
+The cleanup callback registered by devm_add_action_or_reset() only
+runs on success, leaving acquired GPIOs leaked on error paths.
 
-Previously, a scheduled work item to reset a LUN could still execute
-after the device was removed, leading to use-after-free and other
-resource access issues.
+Add goto-based error handling to release all acquired GPIOs before
+returning errors.
 
-This race condition occurs because the abort handler may schedule a LUN
-reset concurrently with device removal via sdev_destroy(), leading to
-use-after-free and improper access to freed resources.
-
-  - Check in the device reset handler if the device is still present in
-    the controller's SCSI device list before running; if not, the reset
-    is skipped.
-
-  - Cancel any pending TMF work that has not started in sdev_destroy().
-
-  - Ensure device freeing in sdev_destroy() is done while holding the
-    LUN reset mutex to avoid races with ongoing resets.
-
-Fixes: 2d80f4054f7f ("scsi: smartpqi: Update deleting a LUN via sysfs")
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Signed-off-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://patch.msgid.link/20251106163823.786828-3-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
+Suggested-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 125944941601e..9f4f6e74f3e38 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -6409,10 +6409,22 @@ static int pqi_device_reset(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev
+diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
+index e95287416ef87..99df46f2d9f52 100644
+--- a/drivers/leds/leds-netxbig.c
++++ b/drivers/leds/leds-netxbig.c
+@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 	if (!addr)
+ 		return -ENOMEM;
  
- static int pqi_device_reset_handler(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev *device, u8 lun, struct scsi_cmnd *scmd, u8 scsi_opcode)
- {
-+	unsigned long flags;
- 	int rc;
++	gpio_ext->addr = addr;
++	gpio_ext->num_addr = 0;
++
+ 	/*
+ 	 * We cannot use devm_ managed resources with these GPIO descriptors
+ 	 * since they are associated with the "GPIO extension device" which
+@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_set_code;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
+ 		addr[i] = gpiod;
++		gpio_ext->num_addr++;
+ 	}
+-	gpio_ext->addr = addr;
+-	gpio_ext->num_addr = num_addr;
  
- 	mutex_lock(&ctrl_info->lun_reset_mutex);
- 
-+	spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
-+	if (pqi_find_scsi_dev(ctrl_info, device->bus, device->target, device->lun) == NULL) {
-+		dev_warn(&ctrl_info->pci_dev->dev,
-+			"skipping reset of scsi %d:%d:%d:%u, device has been removed\n",
-+			ctrl_info->scsi_host->host_no, device->bus, device->target, device->lun);
-+		spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-+		mutex_unlock(&ctrl_info->lun_reset_mutex);
-+		return 0;
+ 	ret = gpiod_count(gpio_ext_dev, "data");
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed to count GPIOs in DT property data-gpios\n");
+-		return ret;
++		goto err_free_addr;
+ 	}
+ 	num_data = ret;
+ 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_free_addr;
 +	}
-+	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
 +
- 	dev_err(&ctrl_info->pci_dev->dev,
- 		"resetting scsi %d:%d:%d:%u SCSI cmd at %p due to cmd opcode 0x%02x\n",
- 		ctrl_info->scsi_host->host_no, device->bus, device->target, lun, scmd, scsi_opcode);
-@@ -6593,7 +6605,9 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
- {
- 	struct pqi_ctrl_info *ctrl_info;
- 	struct pqi_scsi_dev *device;
-+	struct pqi_tmf_work *tmf_work;
- 	int mutex_acquired;
-+	unsigned int lun;
- 	unsigned long flags;
++	gpio_ext->data = data;
++	gpio_ext->num_data = 0;
  
- 	ctrl_info = shost_to_hba(sdev->host);
-@@ -6620,8 +6634,13 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ 	for (i = 0; i < num_data; i++) {
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_free_data;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
+ 		data[i] = gpiod;
++		gpio_ext->num_data++;
+ 	}
+-	gpio_ext->data = data;
+-	gpio_ext->num_data = num_data;
  
- 	mutex_unlock(&ctrl_info->scan_mutex);
+ 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		dev_err(dev,
+ 			"Failed to get GPIO from DT property enable-gpio\n");
+-		return PTR_ERR(gpiod);
++		goto err_free_data;
+ 	}
+ 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
+ 	gpio_ext->enable = gpiod;
  
-+	for (lun = 0, tmf_work = device->tmf_work; lun < PQI_MAX_LUNS_PER_DEVICE; lun++, tmf_work++)
-+		cancel_work_sync(&tmf_work->work_struct);
+ 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
 +
-+	mutex_lock(&ctrl_info->lun_reset_mutex);
- 	pqi_dev_info(ctrl_info, "removed", device);
- 	pqi_free_device(device);
-+	mutex_unlock(&ctrl_info->lun_reset_mutex);
++err_free_data:
++	for (i = 0; i < gpio_ext->num_data; i++)
++		gpiod_put(gpio_ext->data[i]);
++err_set_code:
++	ret = PTR_ERR(gpiod);
++err_free_addr:
++	for (i = 0; i < gpio_ext->num_addr; i++)
++		gpiod_put(gpio_ext->addr[i]);
++	return ret;
  }
  
- static int pqi_getpciinfo_ioctl(struct pqi_ctrl_info *ctrl_info, void __user *arg)
+ static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
