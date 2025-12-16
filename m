@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-202040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B1ACC45D6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D5ACC307A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 73B383003132
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C190305FB76
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07903557F0;
-	Tue, 16 Dec 2025 12:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A17263F52;
+	Tue, 16 Dec 2025 12:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eptaNbOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3d7z8IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F10357A5F;
-	Tue, 16 Dec 2025 12:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A4359F9D;
+	Tue, 16 Dec 2025 12:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886626; cv=none; b=lPz9gef6dStj2nEPAAqyx+l85LMLq6ESazw0ewjhaJV9Z9++/65RFB7KteWdlNinKBonTeD87/RPce1cKEXXTmETWqj2tFQ6sSciNr60Aa2jOEgwGXbUbcyCebphOyFnsqSNku2g8raf3xwojoNyHGVaVrTLJEdLUZPyaP1zsjo=
+	t=1765886704; cv=none; b=CBo2SfKogGdITzgo9yA5XP+CjiAwZHzVd+ALEs50RGgfdvjUoh5iQwETOI2YsWshbLOjsi7OmXu8PhcLXg03dV/SlkJfQl1xSR/dNiOMey9gk1PlcKEjmQON9T+hMYOzbNfNT9jxTKRQsc32hO7op0OL4mCU6K1IuDFrSpu9QZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886626; c=relaxed/simple;
-	bh=zSnZg6DkODGvVWusaH8U4nEddqZfU7eTCMfYnFdw7Gg=;
+	s=arc-20240116; t=1765886704; c=relaxed/simple;
+	bh=gHQHSIRIuXx4IUX+aDkJm27DJE5yW7qTPfX2USZBRq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruPLqYhrEOsb4/B2KKhZBMgbUqeIx+PYi9Mi1s124yRmHGjY107qJaRdeWb6GRQAx46AEzzh25a5D4hel2UDCXquxx1qYbBvabmhoWaYxQTt4b8x91OGt/EzRpRLpMNXDaiFLSfdpkkCYwL2Hdy0Lf75y0XwTVBzGLDagw2o9iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eptaNbOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2671C4CEF1;
-	Tue, 16 Dec 2025 12:03:45 +0000 (UTC)
+	 MIME-Version; b=my3NZjbuUuD/xgPhcg242k6QUvySw2PmrCSPLEPxT8VqwAjFv+F06WmK6q/b4AibKsnjaaibUdLvYad8pLsPnzTZACfTAfJF0Juf4ktdUeLKcABTcuLUY+TZ+hI6MSmF6D1sS0X0qWzJjBHICCVT+HtmWxF9/Qs1EVlKJYcvwfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3d7z8IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4BCC4CEF5;
+	Tue, 16 Dec 2025 12:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886626;
-	bh=zSnZg6DkODGvVWusaH8U4nEddqZfU7eTCMfYnFdw7Gg=;
+	s=korg; t=1765886704;
+	bh=gHQHSIRIuXx4IUX+aDkJm27DJE5yW7qTPfX2USZBRq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eptaNbOPSBnBurxlG3d34uaW7iDEBdDKG91xOHQRQ4liWLkPKfW2jMhJz+AXDZ7aN
-	 JHsFxtCoXvJMsMSP8ftXhA3mljfwtfBAw7kjIZFm0OUkn+NGDwa9VHdVt+vdeOy6R5
-	 vpEn6FuYYPxt7DJik9kTNLFd/0PUb3ep8Ajp/XOs=
+	b=M3d7z8IHaP99r2ln/CvcvaJxhj6J+8a3+O8cPrlpiM/pJDCtEF18udDZFYYGK5OIu
+	 5k0jDR7ZU9TAgbO5/ZCmxtewTt1br8lVPSCYO/3yo18JtTDX5snvIh77DJ6P1WyCUq
+	 FNPYUIZdOwzWoBGIgkeUdBPq4VDFs6xJScpqoKJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 491/507] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-Date: Tue, 16 Dec 2025 12:15:32 +0100
-Message-ID: <20251216111403.228132379@linuxfoundation.org>
+Subject: [PATCH 6.17 492/507] scsi: imm: Fix use-after-free bug caused by unfinished delayed work
+Date: Tue, 16 Dec 2025 12:15:33 +0100
+Message-ID: <20251216111403.264133605@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -66,228 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
+[ Upstream commit ab58153ec64fa3fc9aea09ca09dc9322e0b54a7c ]
 
-Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-was defined simply as:
+The delayed work item 'imm_tq' is initialized in imm_attach() and
+scheduled via imm_queuecommand() for processing SCSI commands.  When the
+IMM parallel port SCSI host adapter is detached through imm_detach(),
+the imm_struct device instance is deallocated.
 
-Type at byte offset 4:
+However, the delayed work might still be pending or executing
+when imm_detach() is called, leading to use-after-free bugs
+when the work function imm_interrupt() accesses the already
+freed imm_struct memory.
 
-	- Cache error
-	- TLB Error
-	- Bus Error
-	- Micro-architectural Error
-	All other values are reserved
+The race condition can occur as follows:
 
-Yet, there was no information about how this would be encoded.
+CPU 0(detach thread)   | CPU 1
+                       | imm_queuecommand()
+                       |   imm_queuecommand_lck()
+imm_detach()           |     schedule_delayed_work()
+  kfree(dev) //FREE    | imm_interrupt()
+                       |   dev = container_of(...) //USE
+                           dev-> //USE
 
-Spec 2.9A errata corrected it by defining:
+Add disable_delayed_work_sync() in imm_detach() to guarantee proper
+cancellation of the delayed work item before imm_struct is deallocated.
 
-	- Bit 1 - Cache Error
-	- Bit 2 - TLB Error
-	- Bit 3 - Bus Error
-	- Bit 4 - Micro-architectural Error
-	All other values are reserved
-
-That actually aligns with the values already defined on older
-versions at N.2.4.1. Generic Processor Error Section.
-
-Spec 2.10 also preserve the same encoding as 2.9A.
-
-Adjust CPER and GHES handling code for both generic and ARM
-processors to properly handle UEFI 2.9A and 2.10 encoding.
-
-Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20251028100149.40721-1-duoming@zju.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c        | 16 +++++++----
- drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
- include/linux/cper.h            | 10 +++----
- 3 files changed, 39 insertions(+), 37 deletions(-)
+ drivers/scsi/imm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 7fca0ede9ecc0..307dc7f62e525 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -22,6 +22,7 @@
- #include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/timer.h>
-@@ -556,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -568,9 +570,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
--		const char *error_type = "unknown error";
- 
- 		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-@@ -584,12 +585,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 			continue;
- 		}
- 
--		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
--			error_type = cper_proc_error_type_strs[err_info->type];
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
- 
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
--				    "Unhandled processor error type: %s\n",
--				    error_type);
-+				    "Unhandled processor error type 0x%02x: %s%s\n",
-+				    err_info->type, error_type,
-+				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
- 		p += err_info->length;
- 	}
- 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 6ff781e47147c..76542a53e2027 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -93,15 +93,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
- 	bool time_out, access_mode;
- 
--	/* If the type is unknown, bail. */
--	if (type > CPER_ARM_MAX_TYPE)
--		return;
--
- 	/*
- 	 * Vendor type errors have error information values that are vendor
- 	 * specific.
- 	 */
--	if (type == CPER_ARM_VENDOR_ERROR)
-+	if (type & CPER_ARM_VENDOR_ERROR)
- 		return;
- 
- 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
-@@ -116,43 +112,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
- 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
- 			   & CPER_ARM_ERR_OPERATION_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%scache error, operation type: %s\n", pfx,
- 				       arm_cache_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_TLB_ERROR:
-+		}
-+		if (type & CPER_ARM_TLB_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sTLB error, operation type: %s\n", pfx,
- 				       arm_tlb_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_BUS_ERROR:
-+		}
-+		if (type & CPER_ARM_BUS_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sbus error, operation type: %s\n", pfx,
- 				       arm_bus_err_op_strs[op_type]);
- 			}
--			break;
- 		}
- 	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
- 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
- 			 & CPER_ARM_ERR_LEVEL_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR)
- 			printk("%scache level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_TLB_ERROR:
-+
-+		if (type & CPER_ARM_TLB_ERROR)
- 			printk("%sTLB level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_BUS_ERROR:
-+
-+		if (type & CPER_ARM_BUS_ERROR)
- 			printk("%saffinity level at which the bus error occurred: %d\n",
- 			       pfx, level);
--			break;
--		}
- 	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-@@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-+	char error_type[120];
- 
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
-@@ -289,9 +281,15 @@ void cper_print_proc_arm(const char *pfx,
- 				       newpfx);
- 		}
- 
--		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
--			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
--			cper_proc_error_type_strs[err_info->type] : "unknown");
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
-+
-+		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
-+		       error_type,
-+		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
-+
- 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
- 			printk("%serror_info: 0x%016llx\n", newpfx,
- 			       err_info->error_info);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 58f40477c824e..5b1236d8c65bb 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -297,11 +297,11 @@ enum {
- #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
- #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
- 
--#define CPER_ARM_CACHE_ERROR			0
--#define CPER_ARM_TLB_ERROR			1
--#define CPER_ARM_BUS_ERROR			2
--#define CPER_ARM_VENDOR_ERROR			3
--#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
-+#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
-+#define CPER_ARM_CACHE_ERROR			BIT(1)
-+#define CPER_ARM_TLB_ERROR			BIT(2)
-+#define CPER_ARM_BUS_ERROR			BIT(3)
-+#define CPER_ARM_VENDOR_ERROR			BIT(4)
- 
- #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
- #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
+diff --git a/drivers/scsi/imm.c b/drivers/scsi/imm.c
+index 0821cf994b986..8a099bc27e06c 100644
+--- a/drivers/scsi/imm.c
++++ b/drivers/scsi/imm.c
+@@ -1260,6 +1260,7 @@ static void imm_detach(struct parport *pb)
+ 	imm_struct *dev;
+ 	list_for_each_entry(dev, &imm_hosts, list) {
+ 		if (dev->dev->port == pb) {
++			disable_delayed_work_sync(&dev->imm_tq);
+ 			list_del_init(&dev->list);
+ 			scsi_remove_host(dev->host);
+ 			scsi_host_put(dev->host);
 -- 
 2.51.0
 
