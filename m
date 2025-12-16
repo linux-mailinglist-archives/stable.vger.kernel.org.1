@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06487CC4194
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:03:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B45CC400E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1523A31285C0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:54:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 305663047B69
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3512D39A10F;
-	Tue, 16 Dec 2025 12:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07205352FA3;
+	Tue, 16 Dec 2025 12:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5yeI5pf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV/XCYau"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D863839A123;
-	Tue, 16 Dec 2025 12:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FC352F9A;
+	Tue, 16 Dec 2025 12:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888387; cv=none; b=JALIUjoyXfvD7HHn5EgrlgwdDDFvCB/wEsKXzeOB8lQBYV0boGhN3ZZsmRRC1JY9PVNz4LAG74cMhSeY7rIMhZvXmeK21QpDkUKFnr+H/9VGz3h50t0vtzRXx+5aSVgrJhQHzcDAE1lIbAITNxiff3L1bNVVTg0wwEVH++Ld9zQ=
+	t=1765886468; cv=none; b=BQAwlWb5/R80lbm6wJwI6KtRGx2nOJE/hl/cym1f0d6E6tTauSzfnDyyUTJ5yzjkG4mZtAxOGhTT+DeZlFLPrmH/dM3q6nAl/JIpxcJlZpNmcsU1CTuI7DMFrpHoMuCs0ih0Jj8MUlCQVOkThDwp9o9gDKTFwT/PUZHVyPdxICM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888387; c=relaxed/simple;
-	bh=NYFpORJu7sJRI1gYAB24tk8sT9UeJhy93wdzVbrkuAc=;
+	s=arc-20240116; t=1765886468; c=relaxed/simple;
+	bh=2+LRic2uUhPVAuo928Bj32wWXf/ZmrX6uY4ShFFXP+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9XeG5m21jf09UPg6qU7AVMCAsnRVtQi4+B8qBJiqtDzZQ3Pk4DpTUKLVWrO6DqFFDjTOFl4im3GQw9zTYO01OnopDBIAJlD8b+pjUXhTecoOsgvGR+nksENLHl+IK+vw64wYjf16yCYBeTUvOBZkWXBVM96/cQTIE/VoUfKB1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5yeI5pf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49314C4CEF1;
-	Tue, 16 Dec 2025 12:33:06 +0000 (UTC)
+	 MIME-Version; b=ma7vcLGVaIOiiFIWLA/KCpeH4G6du7OV7KJV5yVHshSJikJfW/8tmFxcJUXJRgTnOnRt6bkmAII9owP5ZqNtslqz6VQYQQi7t2chcKQY+jsMfI7/EIeW9468+BmQofceuysr5wseSwgD+87Kum9tKnyuv6RfhAavpToSslTyysM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV/XCYau; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1691EC4CEF1;
+	Tue, 16 Dec 2025 12:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888387;
-	bh=NYFpORJu7sJRI1gYAB24tk8sT9UeJhy93wdzVbrkuAc=;
+	s=korg; t=1765886468;
+	bh=2+LRic2uUhPVAuo928Bj32wWXf/ZmrX6uY4ShFFXP+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5yeI5pf7ZcmkzbOzO8DMBLCfU6GTDITg4+MisvnbYukS5raIW3LgnVYlTAyLsN+O
-	 lTPH7I6JAFGPCCliJ66TP8BBI1Jiuxs7hnma4NF0R4lj+g0f8Fj5oceDHun9FLojLQ
-	 EH0YXVd0mAeT+B21KOEv5AI8Rw3wsBkjqBcmHNY8=
+	b=ZV/XCYauLjtnXtiNP+RI+O71aESDsL5ZcApicMcfevV902RjYq+w789bc083kMHvv
+	 Su7LbwbcDi6UsVi1EZH4DLcMrrn0LpoSgq9Iw36aUA3RYYusG4EFdngakPGguaqVTu
+	 TV3z0+c8W6j6sC5nPo1cuKzIqx11kMSgOWHUJj/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 518/614] net: dsa: b53: fix BCM5325/65 ARL entry multicast port masks
-Date: Tue, 16 Dec 2025 12:14:45 +0100
-Message-ID: <20251216111420.136636095@linuxfoundation.org>
+Subject: [PATCH 6.17 445/507] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
+Date: Tue, 16 Dec 2025 12:14:46 +0100
+Message-ID: <20251216111401.576941568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit 3b08863469aa6028ac7c3120966f4e2f6051cf6b ]
+[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
 
-We currently use the mask 0xf for writing and reading b53_entry::port,
-but this is only correct for unicast ARL entries. Multicast ARL entries
-use a bitmask, and 0xf is not enough space for ports > 3, which includes
-the CPU port.
+Fixes a crash when layout is null during this call stack:
 
-So extend the mask accordingly to also fit port 4 (bit 4) and MII (bit
-5). According to the datasheet the multicast port mask is [60:48],
-making it 12 bit wide, but bits 60-55 are reserved anyway, and collide
-with the priority field at [60:59], so I am not sure if this is valid.
-Therefore leave it at the actual used range, [53:48].
+write_inode
+    -> nfs4_write_inode
+        -> pnfs_layoutcommit_inode
 
-The ARL search result register differs a bit, and there the mask is only
-[52:48], so only spanning the user ports. The MII port bit is
-contained in the Search Result Extension register. So create a separate
-search result parse function that properly handles this.
+pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
+around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
+to reference a null layout.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-6-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c |  4 +++-
- drivers/net/dsa/b53/b53_priv.h   | 25 +++++++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  8 +++++++-
- 3 files changed, 31 insertions(+), 6 deletions(-)
+ fs/nfs/pnfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index db1ed8c9c536e..5544e8e9c6446 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2099,10 +2099,12 @@ static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
- 				   struct b53_arl_entry *ent)
- {
- 	u64 mac_vid;
-+	u8 ext;
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index a3135b5af7eec..7ce2e840217cf 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -464,6 +464,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 	struct pnfs_layout_segment *lseg, *next;
  
-+	b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_EXT_25, &ext);
- 	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
- 		   &mac_vid);
--	b53_arl_to_entry_25(ent, mac_vid);
-+	b53_arl_search_to_entry_25(ent, mac_vid, ext);
- }
- 
- static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index ae2c615c088ed..f4afbfcc345e6 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -348,8 +348,8 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
- 	ent->is_age = !!(mac_vid & ARLTBL_AGE_25);
- 	ent->is_static = !!(mac_vid & ARLTBL_STATIC_25);
- 	u64_to_ether_addr(mac_vid, ent->mac);
--	ent->port = (mac_vid >> ARLTBL_DATA_PORT_ID_S_25) &
--		     ARLTBL_DATA_PORT_ID_MASK_25;
-+	ent->port = (mac_vid & ARLTBL_DATA_PORT_ID_MASK_25) >>
-+		     ARLTBL_DATA_PORT_ID_S_25;
- 	if (is_unicast_ether_addr(ent->mac) && ent->port == B53_CPU_PORT)
- 		ent->port = B53_CPU_PORT_25;
- 	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
-@@ -388,8 +388,8 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
- 	if (is_unicast_ether_addr(ent->mac) && ent->port == B53_CPU_PORT_25)
- 		*mac_vid |= (u64)B53_CPU_PORT << ARLTBL_DATA_PORT_ID_S_25;
- 	else
--		*mac_vid |= (u64)(ent->port & ARLTBL_DATA_PORT_ID_MASK_25) <<
--				  ARLTBL_DATA_PORT_ID_S_25;
-+		*mac_vid |= ((u64)ent->port << ARLTBL_DATA_PORT_ID_S_25) &
-+			    ARLTBL_DATA_PORT_ID_MASK_25;
- 	*mac_vid |= (u64)(ent->vid & ARLTBL_VID_MASK_25) <<
- 			  ARLTBL_VID_S_65;
- 	if (ent->is_valid)
-@@ -414,6 +414,23 @@ static inline void b53_arl_from_entry_89(u64 *mac_vid, u32 *fwd_entry,
- 		*fwd_entry |= ARLTBL_AGE_89;
- }
- 
-+static inline void b53_arl_search_to_entry_25(struct b53_arl_entry *ent,
-+					      u64 mac_vid, u8 ext)
-+{
-+	memset(ent, 0, sizeof(*ent));
-+	ent->is_valid = !!(mac_vid & ARLTBL_VALID_25);
-+	ent->is_age = !!(mac_vid & ARLTBL_AGE_25);
-+	ent->is_static = !!(mac_vid & ARLTBL_STATIC_25);
-+	u64_to_ether_addr(mac_vid, ent->mac);
-+	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
-+	ent->port = (mac_vid & ARL_SRCH_RSLT_PORT_ID_MASK_25) >>
-+		    ARL_SRCH_RSLT_PORT_ID_S_25;
-+	if (is_multicast_ether_addr(ent->mac) && (ext & ARL_SRCH_RSLT_EXT_MC_MII))
-+		ent->port |= BIT(B53_CPU_PORT_25);
-+	else if (!is_multicast_ether_addr(ent->mac) && ent->port == B53_CPU_PORT)
-+		ent->port = B53_CPU_PORT_25;
-+}
-+
- static inline void b53_arl_search_to_entry_63xx(struct b53_arl_entry *ent,
- 						u64 mac_vid, u16 fwd_entry)
- {
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index fcedd5fb00337..e0379e70900b7 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -328,7 +328,7 @@
- #define   ARLTBL_VID_MASK_25		0xff
- #define   ARLTBL_VID_MASK		0xfff
- #define   ARLTBL_DATA_PORT_ID_S_25	48
--#define   ARLTBL_DATA_PORT_ID_MASK_25	0xf
-+#define   ARLTBL_DATA_PORT_ID_MASK_25	GENMASK_ULL(53, 48)
- #define   ARLTBL_VID_S_65		53
- #define   ARLTBL_AGE_25			BIT_ULL(61)
- #define   ARLTBL_STATIC_25		BIT_ULL(62)
-@@ -374,6 +374,12 @@
- 
- /* Single register search result on 5325/5365 */
- #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
-+#define   ARL_SRCH_RSLT_PORT_ID_S_25	48
-+#define   ARL_SRCH_RSLT_PORT_ID_MASK_25	GENMASK_ULL(52, 48)
-+
-+/* BCM5325/5365 Search result extend register (8 bit) */
-+#define B53_ARL_SRCH_RSLT_EXT_25	0x2c
-+#define   ARL_SRCH_RSLT_EXT_MC_MII	BIT(2)
- 
- /* ARL Search Data Result (32 bit) */
- #define B53_ARL_SRCH_RSTL_0		0x68
+ 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
++	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
+ 		pnfs_clear_lseg_state(lseg, lseg_list);
+ 	pnfs_clear_layoutreturn_info(lo);
 -- 
 2.51.0
 
