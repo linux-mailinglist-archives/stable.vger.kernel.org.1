@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC98DCC2E10
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D1DCC22EC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E4EE30C161E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E04E2308AEC1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ABC358D38;
-	Tue, 16 Dec 2025 12:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80233341078;
+	Tue, 16 Dec 2025 11:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLenhd8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3yjlk1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9061358D19;
-	Tue, 16 Dec 2025 12:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F3C33E340;
+	Tue, 16 Dec 2025 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887717; cv=none; b=k2kSzdy9jhPrHP521Otv3E9s/UMGaThfWyxEHALpuV86S9vSTShlZIrJVGLpQ1KmThqOghIo7I5ojcvXd7KHcx23EqYTKFb2HvbRE6tCJ4U/pu0+7RR7dKT1fOxQJhUXVFfVKNtasuokgIgaCDP+ltDAUdG/xyn/QMe7jd8GROs=
+	t=1765884073; cv=none; b=QFioUAIMmpeXvVmJ4jRpU3DLHTActCknRWCDo34TzEjQS5e8gA826H5c92bahZxXJVZEK6Wp2RU/cFQ0H5WaC3DF1NH7og/S4KPhsUgJKNTyaw//DK1qqPrJOuImAOtFoCIKUowKwnn9wnImbAu5jEMnwXMqg+NYQ8C2Kd1toTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887717; c=relaxed/simple;
-	bh=vAWrhOe+KGotFrkJ3TG30T2PHaGaHLogpzJsh8BWyME=;
+	s=arc-20240116; t=1765884073; c=relaxed/simple;
+	bh=Xnxj67nfQu8/lZ/oR0YFH5QkCbUSiRIDzHXigPJekgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SABPcUVdKb7Ve+xX/V8QWaOXpfdS6KAdbzdXN/eQyYwy4/KVHjmbHg623NC+dLXg/1vC8aFuDY8kldQtKDeGN6RwM/mkqMGbbBNBKVuxCb5nCssEaX49r5S84tsmFpibxgs1eVh0HRiXw5SSUt85RtmrFU8SCdo+qI3r2nLqrWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLenhd8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A3DC4CEF1;
-	Tue, 16 Dec 2025 12:21:56 +0000 (UTC)
+	 MIME-Version; b=fY6I+zC1OD8Casq4lpF7PxKh2rUBFyAQej1Y5OnDl70R0pNLnBo+UExoPjvUO3K4w42cfGbtchf8ZF/Uj35FJ06GsZspnWQzIWFAoofVd70Hw15HLnQ2L/sfOGF0MQeNEBcX1AOUC3OlgXvAlCRbQ6l8le+JD5YTV6tHgFcXTNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3yjlk1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673D0C19422;
+	Tue, 16 Dec 2025 11:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887717;
-	bh=vAWrhOe+KGotFrkJ3TG30T2PHaGaHLogpzJsh8BWyME=;
+	s=korg; t=1765884072;
+	bh=Xnxj67nfQu8/lZ/oR0YFH5QkCbUSiRIDzHXigPJekgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLenhd8vK5S/e2ytbTyrAAsRjnUM6kKXFr8mhGfJLk6l1tanwQMeXuYunD2dQqHr+
-	 PH2N/FCu8c1mPaT4dITbKlKf5WuoNFxWb79AQDonxpQ4Npe7psRYnkk9CYlJ8LobMD
-	 akFKo34M10cP7RY0ZL+5wBU3faKi7LLIRGBnpwDM=
+	b=H3yjlk1DGW2dyvcklr0J+70Ky+THul504GGlQfg2HbEK80DZA8zdGoJwRtSHRerz2
+	 Ta7TtDewufNW6giR28dEs5m+FAy8OVHuXpNSfiTrWmQqtXQRETDhVJTyzKIOJnWXED
+	 A1oPXIQQcsl8Ii+/QILwjNR8w/IkmgcLcGyjgS9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 283/614] pwm: Simplify printf to emit chip->npwm in $debugfs/pwm
-Date: Tue, 16 Dec 2025 12:10:50 +0100
-Message-ID: <20251216111411.626957771@linuxfoundation.org>
+Subject: [PATCH 6.12 084/354] mtd: rawnand: lpc32xx_slc: fix GPIO descriptor leak on probe error and remove
+Date: Tue, 16 Dec 2025 12:10:51 +0100
+Message-ID: <20251216111323.967009308@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,54 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 3cf8e55894b51c14f8500cae5e68ed48b1b0f3fd ]
+[ Upstream commit cdf44f1add4ec9ee80569d5a43e6e9bba0d74c7a ]
 
-Instead of caring to correctly pluralize "PWM device(s)" using
+The driver calls gpiod_get_optional() in the probe function but
+never calls gpiod_put() in the remove function or in the probe
+error path. This leads to a GPIO descriptor resource leak.
+The lpc32xx_mlc.c driver in the same directory handles this
+correctly by calling gpiod_put() on both paths.
 
-	(chip->npwm != 1) ? "s" : ""
+Add gpiod_put() in the remove function and in the probe error path
+to fix the resource leak.
 
-or
-
-	str_plural(chip->npwm)
-
-just simplify the format to not need a plural-s.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250926165702.321514-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Stable-dep-of: 5f7ff902e7f3 ("pwm: Use %u to printf unsigned int pwm_chip::npwm and pwm_chip::id")
+Fixes: 6b923db2867c ("mtd: rawnand: lpc32xx_slc: switch to using gpiod API")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/lpc32xx_slc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index ea2ccf42e8144..5b75f4a084967 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -2696,11 +2696,10 @@ static int pwm_seq_show(struct seq_file *s, void *v)
- {
- 	struct pwm_chip *chip = v;
+diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
+index ade971e4cc3b2..09d6c4f90d85a 100644
+--- a/drivers/mtd/nand/raw/lpc32xx_slc.c
++++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
+@@ -937,6 +937,7 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
+ 	dma_release_channel(host->dma_chan);
+ enable_wp:
+ 	lpc32xx_wp_enable(host);
++	gpiod_put(host->wp_gpio);
  
--	seq_printf(s, "%s%d: %s/%s, %d PWM device%s\n",
-+	seq_printf(s, "%s%d: %s/%s, npwm: %d\n",
- 		   (char *)s->private, chip->id,
- 		   pwmchip_parent(chip)->bus ? pwmchip_parent(chip)->bus->name : "no-bus",
--		   dev_name(pwmchip_parent(chip)), chip->npwm,
--		   (chip->npwm != 1) ? "s" : "");
-+		   dev_name(pwmchip_parent(chip)), chip->npwm);
+ 	return res;
+ }
+@@ -962,6 +963,7 @@ static void lpc32xx_nand_remove(struct platform_device *pdev)
+ 	writel(tmp, SLC_CTRL(host->io_base));
  
- 	pwm_dbg_show(chip, s);
+ 	lpc32xx_wp_enable(host);
++	gpiod_put(host->wp_gpio);
+ }
  
+ static int lpc32xx_nand_resume(struct platform_device *pdev)
 -- 
 2.51.0
 
