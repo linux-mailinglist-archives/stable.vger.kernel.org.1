@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EA4CC262B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A4DCC4654
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52C3430BEA6E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F9753099BCA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2330D341ACB;
-	Tue, 16 Dec 2025 11:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D4F3563CE;
+	Tue, 16 Dec 2025 12:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X66HTMw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG+5DKI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E5B341AB8;
-	Tue, 16 Dec 2025 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DE53563CB;
+	Tue, 16 Dec 2025 12:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884786; cv=none; b=RpbObwzOolfAyz92SqxrD93AaZpAsf7FDg8Kil2xnBliaOUedivx5tjUaq29lmBkLgY68jGJ+gFqpCesG0MLCmJUHSNg434NnS3nX4D9dDqfCY3uk3TUByOu3s0mZAuWL2KXyt5fQy4Vq1dE1I5d2fyifcoZjW4nV9byEy59Nn0=
+	t=1765886509; cv=none; b=TVhyDR19wZcw9T2/tnuwxEb8Cv7CT39aRLjsFQI/HY0yKx31vO+cK0EctRmj/WPrXlmCw1ImEXpCziSIsgQBOzdTBZzK8rmqZLDrs7y0up+ZkKHeBnmNjBsTAInso8vzdoCMoOTODChcL/kR06myaKw/kqgkU/2scczoqCQZ3Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884786; c=relaxed/simple;
-	bh=bY0wXpbjzTRYHVk9MRUi6GGskesI2nTZkVLwL5N/ibo=;
+	s=arc-20240116; t=1765886509; c=relaxed/simple;
+	bh=VuHo/aIp1BiwEDd6lmMSOUCKQ0WV/fXLC6C2V9YKzck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJPy8enKNx2jT9yUtpiqJS8ERkty/A9EMFHuB5xE6HKoozQfHfo5KV791MyNa28Pk/WL6RZbhyJh6u6c8Tg5y2HHLuBK2694HS3Ig2a51SKwvLmSGNzHP9bo/H0UVI1goXIQHo4X3iU9ErDhzt71Hij4jN2KfZ/fijveEVKBDGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X66HTMw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E93C4CEF1;
-	Tue, 16 Dec 2025 11:33:06 +0000 (UTC)
+	 MIME-Version; b=Fu6ZzPGUgrM8MYNT+lECRCT6qYIUGIGrnlIPpBHvgNRpe/GZqMQ73lduA2eIZEDqcu9EgDhOOE5ZEaSzXzGr2jUCzcowlL3/fDKhcKQlDW4qdG0HnU6tvAE/Kr/O6C9O2DFKTM/W4lr50XUo2WNnC8Z199mHVEZqa6Q5tkN8qPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG+5DKI6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698FAC4CEF1;
+	Tue, 16 Dec 2025 12:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884786;
-	bh=bY0wXpbjzTRYHVk9MRUi6GGskesI2nTZkVLwL5N/ibo=;
+	s=korg; t=1765886509;
+	bh=VuHo/aIp1BiwEDd6lmMSOUCKQ0WV/fXLC6C2V9YKzck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X66HTMw5/+KHEJp7SFQTuu9IRs69cqVzjuo4klW13ke/6y15H8jkKLXs/KU8ArJ+U
-	 G94ygBEEil0s1Mjru7K1mdjblxZa33enn/bNlySSD/FmUHTHlFD69APEsimt+TX0mL
-	 NTech4V5CdipAsXqyHx+rto1rryRX/tx1CDDFTWQ=
+	b=nG+5DKI6eQdbQHM8jk8jNJsznQt9tEhYrkmg9Tn83z03u8cXVGnA/3B5+Fg5u6WWg
+	 I3tIer/GjKlIPPm8IWUW5S+ORkRgIvh0ENV8ay+7utlypNP5nt6ShMikEwW7SS0MKm
+	 Awjbj1otzMBq2TE18WKKcHUZqWJwBe0R+KyMzy3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	wangzijie <wangzijie1@honor.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/354] f2fs: introduce reserved_pin_section sysfs entry
+Subject: [PATCH 6.17 424/507] net: dsa: xrs700x: reject unsupported HSR configurations
 Date: Tue, 16 Dec 2025 12:14:25 +0100
-Message-ID: <20251216111331.707828968@linuxfoundation.org>
+Message-ID: <20251216111400.822105957@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 59c1c89e9ba8cefff05aa982dd9e6719f25e8ec5 ]
+[ Upstream commit 30296ac7642652428396222e720718f2661e9425 ]
 
-This patch introduces /sys/fs/f2fs/<dev>/reserved_pin_section for tuning
-@needed parameter of has_not_enough_free_secs(), if we configure it w/
-zero, it can avoid f2fs_gc() as much as possible while fallocating on
-pinned file.
+As discussed here:
+https://lore.kernel.org/netdev/20240620090210.drop6jwh7e5qw556@skbuf/
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: wangzijie <wangzijie1@honor.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
+the fact is that the xrs700x.c driver only supports offloading
+HSR_PT_SLAVE_A and HSR_PT_SLAVE_B (which were the only port types at the
+time the offload was written, _for this driver_).
+
+Up until now, the API did not explicitly tell offloading drivers what
+port has what role. So xrs700x can get confused and think that it can
+support a configuration which it actually can't. There was a table in
+the attached link which gave an example:
+
+$ ip link add name hsr0 type hsr slave1 swp0 slave2 swp1 \
+	interlink swp2 supervision 45 version 1
+
+        HSR_PT_SLAVE_A    HSR_PT_SLAVE_B      HSR_PT_INTERLINK
+ ----------------------------------------------------------------
+ user
+ space        0                 1                   2
+ requests
+ ----------------------------------------------------------------
+ XRS700X
+ driver       1                 2                   -
+ understands
+
+The switch would act as if the ring ports were swp1 and swp2.
+
+Now that we have explicit hsr_get_port_type() API, let's use that to
+work around the unintended semantical changes of the offloading API
+brought by the introduction of interlink ports in HSR.
+
+Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+Cc: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20251130131657.65080-5-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 9 +++++++++
- fs/f2fs/f2fs.h                          | 3 +++
- fs/f2fs/file.c                          | 5 ++---
- fs/f2fs/super.c                         | 4 ++++
- fs/f2fs/sysfs.c                         | 9 +++++++++
- 5 files changed, 27 insertions(+), 3 deletions(-)
+ drivers/net/dsa/xrs700x/xrs700x.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index 87b32ca7f3a46..ade7da6352de6 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -858,3 +858,12 @@ Description:	This is a read-only entry to show the value of sb.s_encoding_flags,
- 		SB_ENC_STRICT_MODE_FL            0x00000001
- 		SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
- 		============================     ==========
-+
-+What:		/sys/fs/f2fs/<disk>/reserved_pin_section
-+Date:		June 2025
-+Contact:	"Chao Yu" <chao@kernel.org>
-+Description:	This threshold is used to control triggering garbage collection while
-+		fallocating on pinned file, so, it can guarantee there is enough free
-+		reserved section before preallocating on pinned file.
-+		By default, the value is ovp_sections, especially, for zoned ufs, the
-+		value is 1.
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 08bab3de5c50d..695f74875b8f1 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1702,6 +1702,9 @@ struct f2fs_sb_info {
- 	/* for skip statistic */
- 	unsigned long long skipped_gc_rwsem;		/* FG_GC only */
+diff --git a/drivers/net/dsa/xrs700x/xrs700x.c b/drivers/net/dsa/xrs700x/xrs700x.c
+index 4dbcc49a9e526..0a05f4156ef4d 100644
+--- a/drivers/net/dsa/xrs700x/xrs700x.c
++++ b/drivers/net/dsa/xrs700x/xrs700x.c
+@@ -566,6 +566,7 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
+ 	struct xrs700x *priv = ds->priv;
+ 	struct net_device *user;
+ 	int ret, i, hsr_pair[2];
++	enum hsr_port_type type;
+ 	enum hsr_version ver;
+ 	bool fwd = false;
  
-+	/* free sections reserved for pinned file */
-+	unsigned int reserved_pin_section;
-+
- 	/* threshold for gc trials on pinned files */
- 	unsigned short gc_pin_file_threshold;
- 	struct f2fs_rwsem pin_sem;
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index be32f672497d6..67053bf6ca3ec 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1850,9 +1850,8 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
- 			}
- 		}
- 
--		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
--			ZONED_PIN_SEC_REQUIRED_COUNT :
--			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
-+		if (has_not_enough_free_secs(sbi, 0,
-+				sbi->reserved_pin_section)) {
- 			f2fs_down_write(&sbi->gc_lock);
- 			stat_inc_gc_call_count(sbi, FOREGROUND);
- 			err = f2fs_gc(sbi, &gc_control);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index ee8352246ce47..ae72639544040 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4705,6 +4705,10 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	/* get segno of first zoned block device */
- 	sbi->first_seq_zone_segno = get_first_seq_zone_segno(sbi);
- 
-+	sbi->reserved_pin_section = f2fs_sb_has_blkzoned(sbi) ?
-+			ZONED_PIN_SEC_REQUIRED_COUNT :
-+			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi));
-+
- 	/* Read accumulated write IO statistics if exists */
- 	seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
- 	if (__exist_node_summaries(sbi))
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 309b73421dd92..624ce79f08fd2 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -847,6 +847,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
+@@ -589,6 +590,16 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
+ 		return -EOPNOTSUPP;
  	}
  
-+	if (!strcmp(a->attr.name, "reserved_pin_section")) {
-+		if (t > GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))
-+			return -EINVAL;
-+		*ui = (unsigned int)t;
-+		return count;
++	ret = hsr_get_port_type(hsr, dsa_to_port(ds, port)->user, &type);
++	if (ret)
++		return ret;
++
++	if (type != HSR_PT_SLAVE_A && type != HSR_PT_SLAVE_B) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Only HSR slave ports can be offloaded");
++		return -EOPNOTSUPP;
 +	}
 +
- 	*ui = (unsigned int)t;
- 
- 	return count;
-@@ -1153,6 +1160,7 @@ F2FS_SBI_GENERAL_RO_ATTR(unusable_blocks_per_sec);
- F2FS_SBI_GENERAL_RW_ATTR(blkzone_alloc_policy);
- #endif
- F2FS_SBI_GENERAL_RW_ATTR(carve_out);
-+F2FS_SBI_GENERAL_RW_ATTR(reserved_pin_section);
- 
- /* STAT_INFO ATTR */
- #ifdef CONFIG_F2FS_STAT_FS
-@@ -1343,6 +1351,7 @@ static struct attribute *f2fs_attrs[] = {
- 	ATTR_LIST(last_age_weight),
- 	ATTR_LIST(max_read_extent_count),
- 	ATTR_LIST(carve_out),
-+	ATTR_LIST(reserved_pin_section),
- 	NULL,
- };
- ATTRIBUTE_GROUPS(f2fs);
+ 	dsa_hsr_foreach_port(dp, ds, hsr) {
+ 		if (dp->index != port) {
+ 			partner = dp;
 -- 
 2.51.0
 
