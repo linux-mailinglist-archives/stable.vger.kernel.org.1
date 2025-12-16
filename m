@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8272BCC31B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D99ECC284E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80B92306502D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3973308ABA1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F8636BCD0;
-	Tue, 16 Dec 2025 12:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3FE355035;
+	Tue, 16 Dec 2025 11:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTDPg0pF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkUlWWeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5B936920B;
-	Tue, 16 Dec 2025 12:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5895B355029;
+	Tue, 16 Dec 2025 11:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887946; cv=none; b=fvu05aNgdOv3G5CSgbYpWdJhrVodQmaUVKT5DrrQ0A80GZw2PqkycdMCOCDWtLbcoIF+E7GfAxluDJFD8MGgTPjhtYP7q0zn9UUEqK7cFHIpP5+I9w35WEu0B6W2liBbBLWK+sUoMBvkLKDrXKHjaw7128sRbN+2fUBXR8dkhVw=
+	t=1765885962; cv=none; b=NqUzR90pvU0a1c2oBJCVIPk2ot7PDO6NSPOaNiL6MAJdMkhFIEJvUERZQgJpZsbeaRPC4HsOrhtKvUhBF9jBqThBjAtwkOh3zHKPHnXMaueqYzGo9IU9WZh16nmPH24KhFjRahamY4oOY2ln5PPkLxfqTUDb0ZdwJgxTSbwITPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887946; c=relaxed/simple;
-	bh=Dqe0cNhcvWvqus1o/ptEkUIf3ZE9vaw+O7R2sgvkoIM=;
+	s=arc-20240116; t=1765885962; c=relaxed/simple;
+	bh=cJkwRKPclK6XDy/PyBOQ26M5XiyTAQfQmOl6s08h7Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FqzwBys5YJaIgTkZebZtzGAG/MIoieUQq9yLhum3cM7+ztKd7D/qK4hgDc041obe5wCcK8Yg10VYd2+lUoOVt05Zf8m5q9e9HHU6rHesFurkFOcnP66oZdMn3kNai3CsZe/Z23Mjj0LFik3JyCvfS6zD2ZOBAflAonAI+9EZVwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTDPg0pF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB7C4CEF1;
-	Tue, 16 Dec 2025 12:25:45 +0000 (UTC)
+	 MIME-Version; b=fgoy0QXeTwTl76Gz9yBm0G+RsjuiQQGk/uPpDHPiGrHmIYzSHhiahJysUbp+HgKcTckkNj4S4pnjAfzYpBBgjKDECWI8KKZkRabDvTDWtOXlT3PWn7B2nR6XGqZ38xb3Jd4zZFoWqFFlpY9BHpxRkTbP7X+RiXdQGH17qlj/NYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkUlWWeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777A4C4CEF1;
+	Tue, 16 Dec 2025 11:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887946;
-	bh=Dqe0cNhcvWvqus1o/ptEkUIf3ZE9vaw+O7R2sgvkoIM=;
+	s=korg; t=1765885962;
+	bh=cJkwRKPclK6XDy/PyBOQ26M5XiyTAQfQmOl6s08h7Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTDPg0pFx57AbyyOzDCQLTp3sxUBmhqjKOsqCFWDkPiR8VHPD+M6WQNTlqkBMcQ3h
-	 n6LooTF7xSO1bhdc2orl9OJB4FjsAea7/koBjPT6FVjN/81wZbSGOXIgoBmGY8YiY9
-	 a/bWF9cR1INR7xlWzFCGuby/nXFWdUqIBBkBqOVE=
+	b=XkUlWWeKSrNc+YAk/zpe9S5nPRmDZ5RxqxDWCG7dIAMPJJbQMkoOLalwiRotrHVtj
+	 /jq2NI6x57RSlxBFpuwfGFkptE9y/1gcwXps9sCIjWE3PMuS6b+LpxVgZov6UF2Bho
+	 K866nyo3jeF0eMqMg/k75HDYdyXk93IHxVxwRABw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 353/614] net: phy: adin1100: Fix software power-down ready condition
+Subject: [PATCH 6.17 279/507] scsi: ufs: rockchip: Reset controller on PRE_CHANGE of hce enable notify
 Date: Tue, 16 Dec 2025 12:12:00 +0100
-Message-ID: <20251216111414.152378867@linuxfoundation.org>
+Message-ID: <20251216111355.589221067@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +58,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit bccaf1fe08f2c9f96f6bc38391d41e67f6bf38e3 ]
+[ Upstream commit b0ee72db9132bd19b1b80152b35e0cf6a6cbd9f2 ]
 
-Value CRSM_SFT_PD written to Software Power-Down Control Register
-(CRSM_SFT_PD_CNTRL) is 0x01 and therefor different to value
-CRSM_SFT_PD_RDY (0x02) read from System Status Register (CRSM_STAT) for
-confirmation powerdown has been reached.
+This fixes the dme-reset failed when doing recovery. Because device
+reset is not enough, we could occasionally see the error below:
 
-The condition could have only worked when disabling powerdown
-(both 0x00), but never when enabling it (0x01 != 0x02).
+ufshcd-rockchip 2a2d0000.ufs: uic cmd 0x14 with arg3 0x0 completion timeout
+ufshcd-rockchip 2a2d0000.ufs: dme-reset: error code -110
+ufshcd-rockchip 2a2d0000.ufs: DME_RESET failed
+ufshcd-rockchip 2a2d0000.ufs: ufshcd_host_reset_and_restore: Host init failed -110
 
-Result is a timeout, like so:
+Fix this by resetting the controller on PRE_CHANGE stage of hce enable
+notify.
 
-    $ ifdown eth0
-    macb f802c000.ethernet eth0: Link is Down
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-
-Fixes: 7eaf9132996a ("net: phy: adin1100: Add initial support for ADIN1100 industrial PHY")
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20251119124737.280939-2-ada@thorsis.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d3cbe455d6eb ("scsi: ufs: rockchip: Initial support for UFS")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/1763009575-237552-1-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/adin1100.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/host/ufs-rockchip.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
-index bd7a47a903aca..10b796c2daee7 100644
---- a/drivers/net/phy/adin1100.c
-+++ b/drivers/net/phy/adin1100.c
-@@ -201,7 +201,7 @@ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
- 		return ret;
+diff --git a/drivers/ufs/host/ufs-rockchip.c b/drivers/ufs/host/ufs-rockchip.c
+index 8754085dd0ccf..8cecb28cdce41 100644
+--- a/drivers/ufs/host/ufs-rockchip.c
++++ b/drivers/ufs/host/ufs-rockchip.c
+@@ -20,9 +20,17 @@
+ #include "ufshcd-pltfrm.h"
+ #include "ufs-rockchip.h"
  
- 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, ADIN_CRSM_STAT, ret,
--					 (ret & ADIN_CRSM_SFT_PD_RDY) == val,
-+					 !!(ret & ADIN_CRSM_SFT_PD_RDY) == en,
- 					 1000, 30000, true);
++static void ufs_rockchip_controller_reset(struct ufs_rockchip_host *host)
++{
++	reset_control_assert(host->rst);
++	udelay(1);
++	reset_control_deassert(host->rst);
++}
++
+ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
+ 					 enum ufs_notify_change_status status)
+ {
++	struct ufs_rockchip_host *host = ufshcd_get_variant(hba);
+ 	int err = 0;
+ 
+ 	if (status == POST_CHANGE) {
+@@ -37,6 +45,9 @@ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
+ 		return ufshcd_vops_phy_initialization(hba);
+ 	}
+ 
++	/* PRE_CHANGE */
++	ufs_rockchip_controller_reset(host);
++
+ 	return 0;
  }
  
+@@ -156,9 +167,7 @@ static int ufs_rockchip_common_init(struct ufs_hba *hba)
+ 		return dev_err_probe(dev, PTR_ERR(host->rst),
+ 				"failed to get reset control\n");
+ 
+-	reset_control_assert(host->rst);
+-	udelay(1);
+-	reset_control_deassert(host->rst);
++	ufs_rockchip_controller_reset(host);
+ 
+ 	host->ref_out_clk = devm_clk_get_enabled(dev, "ref_out");
+ 	if (IS_ERR(host->ref_out_clk))
+@@ -282,9 +291,7 @@ static int ufs_rockchip_runtime_resume(struct device *dev)
+ 		return err;
+ 	}
+ 
+-	reset_control_assert(host->rst);
+-	udelay(1);
+-	reset_control_deassert(host->rst);
++	ufs_rockchip_controller_reset(host);
+ 
+ 	return ufshcd_runtime_resume(dev);
+ }
 -- 
 2.51.0
 
