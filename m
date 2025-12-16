@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-201768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98946CC2DCD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE6BCC2265
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE19E317C8B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 637533004A40
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DF534BA53;
-	Tue, 16 Dec 2025 11:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F07342160;
+	Tue, 16 Dec 2025 11:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vhc8Yepw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXW9RrSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15EC34BA31;
-	Tue, 16 Dec 2025 11:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DBD34214A;
+	Tue, 16 Dec 2025 11:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885724; cv=none; b=OJu77Y3gXevz68vL7PykgxRBMhmLKgu/5yEPwRkAXb7m2rxns7h+EXoSjr2JQUcL+gsbkAdptVc6NCu0z4khra6GZpNPGjx4w5DjT0g7P+BPLG3E1GMhT3ad7ewnp+gTv1YjOKzZONs8BvMhp0XQtmohKeWCrKNg7TDwhKI45wM=
+	t=1765884153; cv=none; b=Km9DzRi0lAPIXyrCnqDgYzuIFC+PWOuIB7Zv9MzdCBa0bIN7I4Ns6I51mGVwojx8N72pYO4DrzSDFRFKtCnuKQ5enqu67R+PkeQL5QzNA3xuC4+863KuuM23l+qrDNvMarITDseRWRR77BLEQW5iNkT451Ysr7OBHyRmK+39wj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885724; c=relaxed/simple;
-	bh=/332zZLSIp4GYP1IGdkkxNEPxeKdxWxis/40wBM5KiY=;
+	s=arc-20240116; t=1765884153; c=relaxed/simple;
+	bh=bftyF8E5axRhUWGo5zLdz8g2khOjmYluUSaHcQO9QTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eU5B2QKYZ3VFoKJcRtOAbI7PE4CERvTsEqxG6cxjjE3Onrlye2gBcYdK4oqHYPTvnae/1OtveRgL8ECFaqpqc6nLd3GT6AH/14hdaEnRzfUKdb34iQRFigk62uf5JHPLo+pNsaQCkRlU3lpKeb42d9PBByfwEWSHUtrT1iJ6NfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vhc8Yepw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB8C4CEF1;
-	Tue, 16 Dec 2025 11:48:43 +0000 (UTC)
+	 MIME-Version; b=Bui4Sm12Rk0loxGnMKkwRKz7wZ9LnSY8K/b5KRfIyC/czkZjEovzIqrc+mvj7GpyD6jMDM1bjjAmh48oqghifCcjwHWkyybnx8S9eXhLuirOK3wIZbs0lnNtb0QR7wZ7npKVGj6+mM7ZWDGmFLqIW78WWFtWHVUtC4IgziSBjl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXW9RrSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6A6C4CEF1;
+	Tue, 16 Dec 2025 11:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885724;
-	bh=/332zZLSIp4GYP1IGdkkxNEPxeKdxWxis/40wBM5KiY=;
+	s=korg; t=1765884153;
+	bh=bftyF8E5axRhUWGo5zLdz8g2khOjmYluUSaHcQO9QTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vhc8Yepw6Te4U1gmR8NNCHaJsA0z+XXQePi+1khdKvomfMdHYqmXj7dR/trbX2kjs
-	 4jaTQ6dZ1GC/vvk+gOfuHmqqTrlsCM3LzgHKEQhftSFYFeptzy8fuHPkOuNx4Bu2Nj
-	 bWMRH/gmnI+JXS0k6Oda+KF0zVBYyZMGmLnS4vzY=
+	b=LXW9RrSE8R2pUHlkM9jt9ICuyBr2B98u5elgMTWdCSI7lEoFnaKOB9vyYLEOVc3xC
+	 3UMHqvmwZNBJ9X39iONbOqy+gFGJndfMcN+8JYAoInsmr/9d24TRGzhOX6Eu6bwkJX
+	 x4nmAP+b95J6N52JmmOCa58BNtZVk2NSfOXGYuGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 225/507] ocfs2: use correct endian in ocfs2_dinode_has_extents
-Date: Tue, 16 Dec 2025 12:11:06 +0100
-Message-ID: <20251216111353.656322793@linuxfoundation.org>
+Subject: [PATCH 6.12 100/354] drm/imagination: Fix reference to devm_platform_get_and_ioremap_resource()
+Date: Tue, 16 Dec 2025 12:11:07 +0100
+Message-ID: <20251216111324.543915701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit c9dff86eb78a4b6b02b1e407993c946ccaf9bfb4 ]
+[ Upstream commit f1aa93005d0d6fb3293ca9c3eb08d1d1557117bf ]
 
-Fields in ocfs2_dinode is little endian, covert to host endian when
-checking those contents.
+The call to devm_platform_ioremap_resource() was replaced by a call to
+devm_platform_get_and_ioremap_resource(), but the comment referring to
+the function's possible returned error codes was not updated.
 
-Link: https://lkml.kernel.org/r/20251025123218.3997866-1-joseph.qi@linux.alibaba.com
-Fixes: fdbb6cd96ed5 ("ocfs2: correct l_next_free_rec in online check")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 927f3e0253c11276 ("drm/imagination: Implement MIPS firmware processor and MMU support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patch.msgid.link/2266514318480d17f52c7e5e67578dae6827914e.1761745586.git.geert+renesas@glider.be
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/inode.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/imagination/pvr_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
-index 6c4f78f473fb4..d4ca824f9c82b 100644
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -201,13 +201,15 @@ struct inode *ocfs2_iget(struct ocfs2_super *osb, u64 blkno, unsigned flags,
- static int ocfs2_dinode_has_extents(struct ocfs2_dinode *di)
- {
- 	/* inodes flagged with other stuff in id2 */
--	if (di->i_flags & (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL |
--			   OCFS2_CHAIN_FL | OCFS2_DEALLOC_FL))
-+	if (le32_to_cpu(di->i_flags) &
-+	    (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL | OCFS2_CHAIN_FL |
-+	     OCFS2_DEALLOC_FL))
- 		return 0;
- 	/* i_flags doesn't indicate when id2 is a fast symlink */
--	if (S_ISLNK(di->i_mode) && di->i_size && di->i_clusters == 0)
-+	if (S_ISLNK(le16_to_cpu(di->i_mode)) && le64_to_cpu(di->i_size) &&
-+	    !le32_to_cpu(di->i_clusters))
- 		return 0;
--	if (di->i_dyn_features & OCFS2_INLINE_DATA_FL)
-+	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL)
- 		return 0;
- 
- 	return 1;
+diff --git a/drivers/gpu/drm/imagination/pvr_device.c b/drivers/gpu/drm/imagination/pvr_device.c
+index 1704c0268589b..6bccbde4945ba 100644
+--- a/drivers/gpu/drm/imagination/pvr_device.c
++++ b/drivers/gpu/drm/imagination/pvr_device.c
+@@ -46,7 +46,7 @@
+  *
+  * Return:
+  *  * 0 on success, or
+- *  * Any error returned by devm_platform_ioremap_resource().
++ *  * Any error returned by devm_platform_get_and_ioremap_resource().
+  */
+ static int
+ pvr_device_reg_init(struct pvr_device *pvr_dev)
 -- 
 2.51.0
 
