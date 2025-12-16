@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DFBCC26EF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3544CC2B31
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47E08304C9F8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E31831D54D3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF7A34D4C1;
-	Tue, 16 Dec 2025 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D05235E549;
+	Tue, 16 Dec 2025 12:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ioh5vZfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqOXm1B9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD5F34D3BD;
-	Tue, 16 Dec 2025 11:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1BF35E53F;
+	Tue, 16 Dec 2025 12:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885381; cv=none; b=sOhaB/zIMaeh8koEgt0akx7PcfFQfStkGTVE5SLPLgBWLD06NoM5VbvjSObzZn3WKZKAPiO5tPWyobkvNNsfIRVSzSOlPOO9V+S9x7wE8M+8LGKnQQT+CJ80U3oPTu9v2Jtwm6inRCMlUCSaJRyxxGiYNDe5+dFscRzj/A7cT2U=
+	t=1765887328; cv=none; b=iO1/+kFSAFtZs9FsmQPe27Yauzrd2ZLjvFaZtWzz+WitfrkUIu3e3iPRmOKOhLum4xTFuFF93Tyac80oRt18MNNa+E61MMbqx1b4LFeKT8Az91bhQ3uweapgNzmtRaZt+mr6dphvH3pJAP0VdSBadWWyLFcgfmaV54+i1ffYUQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885381; c=relaxed/simple;
-	bh=gfPaKI9UcrZpdHdoiMGr+FSPIBRzLxS2m7UyuOoswVM=;
+	s=arc-20240116; t=1765887328; c=relaxed/simple;
+	bh=QvG8sCUz37MjSQ7L/sB1qy3Py5jx103Dta3cGmOia0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCAShpQ/6jze8ql3gBFkJspcNoj5ZBvlxQQN0z3pX/a78kI1UogogFObLqV+ziol2RC6oUEfFHDO61MN3uMWXGQ8ZKqBuxrbnn7uFAHuFeaH+W7nANqfc6VWEPRV3JhOKS/1wHHXjEdGzVef7vfJ0k76I/ekxf65Gr6Vod6jQvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ioh5vZfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FA5C4CEF1;
-	Tue, 16 Dec 2025 11:43:00 +0000 (UTC)
+	 MIME-Version; b=Q9zK+b5Ng/awVtEKU6OvFQBOVVe7W5c8VxYdzM0ZCfSHmiLqapSzpwdqQkHS3yM9IcHbTVxCq/5j5vUN7nk+nawBj+UfcFa+MjTyGECR8DhTFCdjKUhdqeWQ3Y1JpPe5yZ+cXyCLPj2HAVzRNwXJg1FkPJ9SjuSUy5aC+txCsu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqOXm1B9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F54C4CEF1;
+	Tue, 16 Dec 2025 12:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885380;
-	bh=gfPaKI9UcrZpdHdoiMGr+FSPIBRzLxS2m7UyuOoswVM=;
+	s=korg; t=1765887328;
+	bh=QvG8sCUz37MjSQ7L/sB1qy3Py5jx103Dta3cGmOia0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ioh5vZfYevHLZniy5ayyqC9uPUtR5o49k6VbSG+wofJTJua0kzYB39uEhzO8IoFai
-	 +p4TPSiQeiyZT5agoUGdnS5muO0pruSH+SpL2sQso+1eC3eyvKQCtWBYyJCI18NOOg
-	 d/sgqqCBf5B7nkPCBgq7yqIaKWV2+4TLacoytgd8=
+	b=yqOXm1B9wMTfywJpYzC/cIvbuHF/lvBv/3xcZ8Dqv176m4MOfIwMygkGbPi7GBUJd
+	 cPztMatb1rjP3o+m/w3R7OJyoj5NJ+KstVjVxK7rsxyoD7U4DeH3OuZlDsp53wrkWw
+	 GnFd7EEUS1f9hcwUmT6YQFM3EniOeaGheWlcYipo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 122/507] accel/ivpu: Remove skip of dma unmap for imported buffers
+Subject: [PATCH 6.18 196/614] ns: add NS_COMMON_INIT()
 Date: Tue, 16 Dec 2025 12:09:23 +0100
-Message-ID: <20251216111349.952689668@linuxfoundation.org>
+Message-ID: <20251216111408.479312979@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit c063c1bbee67391f12956d2ffdd5da00eb87ff79 ]
+[ Upstream commit d915fe20e5cba4bd50e41e792a32dcddc7490e25 ]
 
-Rework of imported buffers introduced in the commit
-e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
-switched the logic of imported buffers by dma mapping/unmapping
-them just as the regular buffers.
+Add an initializer that can be used for the ns common initialization for
+static namespace such as most init namespaces.
 
-The commit didn't include removal of skipping dma unmap of imported
-buffers which results in them being mapped without unmapping.
-
-Fixes: e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Link: https://patch.msgid.link/20251027150933.2384538-1-maciej.falkowski@linux.intel.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/87ecqhy2y5.ffs@tglx
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 3dd50c58664e ("ns: initialize ns_list_node for initial namespaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 3 ---
- 1 file changed, 3 deletions(-)
+ include/linux/ns_common.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index 1fca969df19dc..a38e41f9c7123 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -157,9 +157,6 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
- 		bo->ctx = NULL;
- 	}
+diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+index f5b68b8abb543..3a72c3f81eca4 100644
+--- a/include/linux/ns_common.h
++++ b/include/linux/ns_common.h
+@@ -119,6 +119,16 @@ void __ns_common_free(struct ns_common *ns);
+ 		struct user_namespace *:   CLONE_NEWUSER,   \
+ 		struct uts_namespace *:    CLONE_NEWUTS)
  
--	if (drm_gem_is_imported(&bo->base.base))
--		return;
--
- 	if (bo->base.sgt) {
- 		if (bo->base.base.import_attach) {
- 			dma_buf_unmap_attachment(bo->base.base.import_attach,
++#define NS_COMMON_INIT(nsname, refs)							\
++{											\
++	.ns_type		= ns_common_type(&nsname),				\
++	.ns_id			= 0,							\
++	.inum			= ns_init_inum(&nsname),				\
++	.ops			= to_ns_operations(&nsname),				\
++	.stashed		= NULL,							\
++	.__ns_ref		= REFCOUNT_INIT(refs),					\
++}
++
+ #define ns_common_init(__ns)                     \
+ 	__ns_common_init(to_ns_common(__ns),     \
+ 			 ns_common_type(__ns),   \
 -- 
 2.51.0
 
