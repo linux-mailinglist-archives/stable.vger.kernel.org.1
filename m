@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2C7CC2971
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F164CC26D7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D00830011B7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:16:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 421C3307DA44
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E91035F8C1;
-	Tue, 16 Dec 2025 12:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF8134D4C2;
+	Tue, 16 Dec 2025 11:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACh4Hydn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19clTIML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD26F3659E7;
-	Tue, 16 Dec 2025 12:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E9F347FE1;
+	Tue, 16 Dec 2025 11:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887357; cv=none; b=BCr32UXcbpgV+b0ummOkFcjNfFiBETpIIwGpo04DBZPgbGPZ0GT1nLxhHqXLsWAQ3CZ6IIHAwZVrwENI1BzGFB1K7+rDqCdo8S9snW7JzhtoMT3apSosJj583GwiF7hSlsOza2c+D+4dzMfPaIId1ceI0Qek/T54RynsHdg9zHE=
+	t=1765885358; cv=none; b=Oyo3KIXl5Diwin6qWEGN93UnT2oy51dYurELbIggWgXB2wPYPYnTc9O640z/FxomJIB61parQYP0JhuQlyoZtD4QVyuvbchLzOTul6YpCgwRrB9vXTwfi/PU97+hV6b5KW6IDAhi/J6A9MWSKgqQ/98nGvJvgSNG33tQdmnDRTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887357; c=relaxed/simple;
-	bh=huNQSYlsb4MVcs7Cb51kgsMCNsWJ9hEQr4Z/IKKBX4U=;
+	s=arc-20240116; t=1765885358; c=relaxed/simple;
+	bh=RAFeLvM2FNMMC5sYh6CDpu7j/UL7S/fjjMrvAz5fK28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkyqaXlt4XS+2o87sbbG3sq/mW8SV+97tWdrRq/lbLayiB2ckt7ZoB2BsDRpsN0FZvPgMpwl7EzhtxNK75CmIbYf2KiOKrfH849tUvDAuueBrmSKifvyUOciofKCtUcIIcYbvI+O6Yue2WG5uXmuBxynBBLuFK/p5Hz+vJvdL2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACh4Hydn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20602C4CEF1;
-	Tue, 16 Dec 2025 12:15:56 +0000 (UTC)
+	 MIME-Version; b=X7cXciXNL1QAJBCpBPDHzJpLwMI7N7w0YEkzoUNpAlP6sKfY9YDGMHcycGKtJqxHOmipl8tPDkJ/tl7mPGEesqt8QItFxdHN8jA9Mx1FaLXGAW5yCEm42+9t9i+1Er66o8iS7P0gj9Uyc7hzObWOtU3AC46flEL7FdN+12kxhZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19clTIML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A594C4CEF5;
+	Tue, 16 Dec 2025 11:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887357;
-	bh=huNQSYlsb4MVcs7Cb51kgsMCNsWJ9hEQr4Z/IKKBX4U=;
+	s=korg; t=1765885357;
+	bh=RAFeLvM2FNMMC5sYh6CDpu7j/UL7S/fjjMrvAz5fK28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACh4HydnubQg2FDUE1x9DfnWZnFajMzXvLzhkVhwAIB1kFsmMiTHIfHy41TWC6Yj1
-	 tf4t/0nIGWmn8A/SJQzKxm77BNz2WYUV/ZKseelVDAe7560JOlk3+zV0RbL9y110Wh
-	 dnxhrCQrXs3vGVAY1Dx5xQ9MNQDrCs0dagdCHOuk=
+	b=19clTIMLDVrW5lEX7Q+Y3qZ2X3R6RF4o+gv2ZOOz3R5QwOoqFl5s0GdMWuZem962K
+	 RXA/HTQPukhP2aFC/FvDW23p9TYd/RhQcE4MIYB/NdeQHIfZzybJ834NIob6Yz8ogj
+	 c0jC2rH5UKr+zJNvB7SWvgqA4yrl8qn/w45rZ3U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 172/614] perf lock contention: Load kernel map before lookup
+Subject: [PATCH 6.17 098/507] arm64: dts: qcom: qcm6490-fairphone-fp5: Add supplies to simple-fb node
 Date: Tue, 16 Dec 2025 12:08:59 +0100
-Message-ID: <20251216111407.584493373@linuxfoundation.org>
+Message-ID: <20251216111349.090730204@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 553d18c98a896094b99a01765b9698b204183d49 ]
+[ Upstream commit 3d4142cac46b4dde4e60908c509c4cf107067114 ]
 
-On some machines, it caused troubles when it tried to find kernel
-symbols.  I think it's because kernel modules and kallsyms are messed
-up during load and split.
+Add the OLED power supplies to the simple-framebuffer node, so that
+the regulators don't get turned off while the simple-fb is being used.
 
-Basically we want to make sure the kernel map is loaded and the code has
-it in the lock_contention_read().  But recently we added more lookups in
-the lock_contention_prepare() which is called before _read().
-
-Also the kernel map (kallsyms) may not be the first one in the group
-like on ARM.  Let's use machine__kernel_map() rather than just loading
-the first map.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 688d2e8de231c54e ("perf lock contention: Add -l/--lock-addr option")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: c365a026155c ("arm64: dts: qcom: qcm6490-fairphone-fp5: Enable display")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250930-sc7280-dts-misc-v1-1-5a45923ef705@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf_lock_contention.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/bpf_lock_contention.c b/tools/perf/util/bpf_lock_contention.c
-index 60b81d586323f..7b5671f13c535 100644
---- a/tools/perf/util/bpf_lock_contention.c
-+++ b/tools/perf/util/bpf_lock_contention.c
-@@ -184,6 +184,9 @@ int lock_contention_prepare(struct lock_contention *con)
- 	struct evlist *evlist = con->evlist;
- 	struct target *target = con->target;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index e115b6a52b299..82494b41bd9ac 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -47,6 +47,8 @@ framebuffer0: framebuffer@a000000 {
+ 			stride = <(1224 * 4)>;
+ 			format = "a8r8g8b8";
+ 			clocks = <&gcc GCC_DISP_HF_AXI_CLK>;
++			vci-supply = <&vreg_oled_vci>;
++			dvdd-supply = <&vreg_oled_dvdd>;
+ 		};
+ 	};
  
-+	/* make sure it loads the kernel map before lookup */
-+	map__load(machine__kernel_map(con->machine));
-+
- 	skel = lock_contention_bpf__open();
- 	if (!skel) {
- 		pr_err("Failed to open lock-contention BPF skeleton\n");
-@@ -749,9 +752,6 @@ int lock_contention_read(struct lock_contention *con)
- 		bpf_prog_test_run_opts(prog_fd, &opts);
- 	}
- 
--	/* make sure it loads the kernel map */
--	maps__load_first(machine->kmaps);
--
- 	prev_key = NULL;
- 	while (!bpf_map_get_next_key(fd, prev_key, &key)) {
- 		s64 ls_key;
 -- 
 2.51.0
 
