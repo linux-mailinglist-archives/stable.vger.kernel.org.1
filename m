@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02680CC2821
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A80CC25F5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F79B302E7D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49F9330D0E1F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3898F355803;
-	Tue, 16 Dec 2025 11:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E385434107E;
+	Tue, 16 Dec 2025 11:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ya+Bsp23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Payccz9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84A23557E8;
-	Tue, 16 Dec 2025 11:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F64234029C;
+	Tue, 16 Dec 2025 11:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886237; cv=none; b=esuASA9L04t6eqwLdI1pPMG3bNs6o30w4VJDgDn4h6t7RSV4VLz9/YyjYrWFiVZy/8gkh+zm7sB8lXbfFwqzU9wpwrOkLtTTZfAVylhC02v1jnWYS70mZwx8Ax2WkwEm5AnryhA9oyd+UwR9P3YXMYJW2rgM8wCuCNdLUnDHKS0=
+	t=1765884740; cv=none; b=GHwHBsk9zN4pldnZ3XkDWHWdl/j611QXcp+FXZxW6fcC/7I7j6Lp+6ZEcTl+1EFjGOFR+av+kV1X2GFwcpGqVQahGsjraOsWBq1W10VUCt18TuSXoNZFklORiAViNFxFdklPc9E2wOJAdt4/0HTKYvRMkH1lsWBKOQbLEaE/sxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886237; c=relaxed/simple;
-	bh=zZJmAVKxlSgYLkQBtn36OYh/HRTC/aqIpXIGCMM7XV8=;
+	s=arc-20240116; t=1765884740; c=relaxed/simple;
+	bh=8vsJKrdCM2scu/GOnY8mQo6+JlILvrB83G1Az9LC8zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDD1k9YJx+SEztTXVK+hJUlcwmfTZ13X9IRNSZJaqGbLqFOx3EhWdSBezxGXTRHrwM7pfwZIiIszbbzXo/olzF8ubSornlLybhOrbHwJTqURXDjGUjKoTautkqJif0pGwIm4AvgNvF9PaQqBcEUZoFTnEiHMphvCKpK/FVwlKyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ya+Bsp23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5781BC4CEF1;
-	Tue, 16 Dec 2025 11:57:16 +0000 (UTC)
+	 MIME-Version; b=QyvdCYFeBwFjdv1sgoUv144dWOnixrB4mQJKgNWJllPlg72dOnrN2P/sQWoWgBVXyhus+bzSyUo7HNbg+VX46f68azSxvjqOQR7egFIz0/8GsMyNgVfiwvWvaMrSOCBGPyx9zVZiB/nDiu2L2n0PyPPRLuebge/Ofc3ITs3so0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Payccz9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E573C4CEF1;
+	Tue, 16 Dec 2025 11:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886236;
-	bh=zZJmAVKxlSgYLkQBtn36OYh/HRTC/aqIpXIGCMM7XV8=;
+	s=korg; t=1765884740;
+	bh=8vsJKrdCM2scu/GOnY8mQo6+JlILvrB83G1Az9LC8zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ya+Bsp23woZR5s2tmBA5MGEFVLhEiBK+7wI3DO7DxPIJ7jf45PdQ8w3FVfEFg1k0q
-	 rtaxJSnwQYMzzPyH0US3sXUfn+XazVZW7iS7PXboeSYdU1hKYz8rngMBlAl2DunaKG
-	 ftvNOUj2JWULXQZCXpW6FTDmBg256IwO6vEW/FDs=
+	b=Payccz9hMxsSwYkVyeEbNsi8/SEgp8Ym47B8+DhAwHI46TlPoUn8w+SBVexQu6Pc3
+	 N5XWYXtleqYZiVTh13jEU4rFyAfYvUE6C2VqCZzwBVLU07577vTd4K+jW5+K8q1xk9
+	 7lgoxaZpj1RXtl1eYwde0yW23LJDbEPfOiAdxkmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jason Wang <jasowang@redhat.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 377/507] virtio: fix whitespace in virtio_config_ops
+Subject: [PATCH 6.12 251/354] virtio: fix virtqueue_set_affinity() docs
 Date: Tue, 16 Dec 2025 12:13:38 +0100
-Message-ID: <20251216111359.118507575@linuxfoundation.org>
+Message-ID: <20251216111330.009278862@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,19 +60,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 7831791e77a1cd29528d4dc336ce14466aef5ba6 ]
+[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
 
-The finalize_features documentation uses a tab between words.
-Use space instead.
+Rewrite the comment for better grammar and clarity.
 
-Fixes: d16c0cd27331 ("docs: driver-api: virtio: virtio on Linux")
-Message-Id: <39d7685c82848dc6a876d175e33a1407f6ab3fc1.1763026134.git.mst@redhat.com>
+Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
+Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -81,18 +80,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 148dc5056002f..f8a00a780a44d 100644
+index 1255493b7f377..94b3adc7c2dbf 100644
 --- a/include/linux/virtio_config.h
 +++ b/include/linux/virtio_config.h
-@@ -86,7 +86,7 @@ struct virtqueue_info {
-  *	vdev: the virtio_device
-  *	This sends the driver feature bits to the device: it can change
-  *	the dev->feature bits if it wants.
-- *	Note that despite the name this	can be called any number of
-+ *	Note that despite the name this can be called any number of
-  *	times.
-  *	Returns 0 on success or error status
-  * @bus_name: return the bus name associated with the device (optional)
+@@ -312,7 +312,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
+  * @vq: the virtqueue
+  * @cpu_mask: the cpu mask
+  *
+- * Pay attention the function are best-effort: the affinity hint may not be set
++ * Note that this function is best-effort: the affinity hint may not be set
+  * due to config support, irq type and sharing.
+  *
+  */
 -- 
 2.51.0
 
