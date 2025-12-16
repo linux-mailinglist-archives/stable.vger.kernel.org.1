@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8D0CC32E8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:25:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CB1CC2FDA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1C413097482
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0581330A1CAB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB1132FA3A;
-	Tue, 16 Dec 2025 12:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CEB396DDB;
+	Tue, 16 Dec 2025 12:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXx7vERZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWzDoPfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345141991B6;
-	Tue, 16 Dec 2025 12:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD5387B37;
+	Tue, 16 Dec 2025 12:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886418; cv=none; b=XLuxrBCxn9Pb6iRRfD/UYpwBkRsMOupYcXtFdsDX4s6orDBCIh/QRST93d2A1z22xm/Bjhb80fRYjofFHF4NwQaRHQOdQd4SM09EgHcG13n+X1CQviCWxqflX6x1K/YmsZFPABQVdOecdy1z55Yq7iAb86nfdO8kmtHoSEsjCD4=
+	t=1765888341; cv=none; b=RlPvWkl7wkVwZEMsSEnWBiIHg0Rxm1Jr5azCvQ5HFa3LjDYquGVI2BGRpS3jnNecDF00lAerKhPuF63d0jeT/1Q96w1tp4KJFaDzUdPyiKYWQJiRBLNP5Qc1fV+Qm9zOxsUh+Nia7NG+frFB89OWk0cPkRISke2McqO3P/WHIQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886418; c=relaxed/simple;
-	bh=fA8N1K899rP9sNWnCCMieQO8OpJBxPrVG18d3oWkXhA=;
+	s=arc-20240116; t=1765888341; c=relaxed/simple;
+	bh=zu70LZ4wsmGi5C/ZhhAwD8l19j7CEG6jZTCjXww2GxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I59GgadIQli5dnqVTjdTBk8NUVzidKZDOMO1vLItaENOBsBtYoP1VGjRSf3wFbXQBk1Xma0JHaP7XAKoRltUegmdiwDbFbF6tVLMKon6Uq+nwx8Tw+3vPTF0gvnBPp/twY0W/pr73dBWiZ17rDXM2ieK19n7/gNqzqOu06rfji0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXx7vERZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8CEC4CEF1;
-	Tue, 16 Dec 2025 12:00:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vCIxOyjC9cGQnlUSsq05vDd0Hmj3jHcCAVW8grKIWEWK/z2I8BIspulTPflzI4RYptDuSRTS7ByyuZC90CakLDtW/95t0givLMjUDvQhiBsYiju0yUZk9U0GZcEyZtM3KKhidbPrhe/raSEUvGPgFjjzmeVZjWeNkPgo92PnYiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWzDoPfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93600C4CEF1;
+	Tue, 16 Dec 2025 12:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886417;
-	bh=fA8N1K899rP9sNWnCCMieQO8OpJBxPrVG18d3oWkXhA=;
+	s=korg; t=1765888341;
+	bh=zu70LZ4wsmGi5C/ZhhAwD8l19j7CEG6jZTCjXww2GxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXx7vERZVsMzCmtN/vpVRvJF6HyvWQlrhnXgFVsjDik3UwrKq5ppF4Dd7Lh0HLf05
-	 lkG3I0cMOn9JC1zXqNUfAYL1Op7R9NhITEo7iT7aHDUr2vqB6Czif9p5lMjt8+SvA+
-	 EYuP4vXyKHIQ5FxfLelesk5aGDGO7YNYhnqPZWtg=
+	b=JWzDoPfj/+4zh7jq1Io1syKg/7SVRr0blIEvb0qNO6cgC8wabkaKMF/Y/Df4AASRn
+	 bWAs8U6Z64BBXTQb47eUCV8RTc+h7Z6TXiAUtb7Ub/cFFRaGw8kOWqQGJXCiqSTycZ
+	 EuvPW7i+o0Abbj201/b6ROmpRWlhkLMejeswbQwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Helge Deller <deller@gmx.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 431/507] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
-Date: Tue, 16 Dec 2025 12:14:32 +0100
-Message-ID: <20251216111401.074463848@linuxfoundation.org>
+Subject: [PATCH 6.18 506/614] net: dsa: b53: fix VLAN_ID_IDX write size for BCM5325/65
+Date: Tue, 16 Dec 2025 12:14:33 +0100
+Message-ID: <20251216111419.703226490@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
+[ Upstream commit 6f268e275c74dae0536e0b61982a8db25bcf4f16 ]
 
-The page allocated for vmem using __get_free_pages() is not freed on the
-error paths after it. Fix that by adding a corresponding __free_pages()
-call to the error path.
+Since BCM5325 and BCM5365 only support up to 256 VLANs, the VLAN_ID_IDX
+register is only 8 bit wide, not 16 bit, so use an appropriate accessor.
 
-Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20251128080625.27181-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/ssd1307fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index aa6cc0a8151ac..83dd31fa1fab5 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -680,7 +680,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	if (!ssd1307fb_defio) {
- 		dev_err(dev, "Couldn't allocate deferred io.\n");
- 		ret = -ENOMEM;
--		goto fb_alloc_error;
-+		goto fb_defio_error;
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index eb767edc4c135..a09ed32dccc07 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1924,8 +1924,12 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
  
- 	ssd1307fb_defio->delay = HZ / refreshrate;
-@@ -757,6 +757,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 		regulator_disable(par->vbat_reg);
- reset_oled_error:
- 	fb_deferred_io_cleanup(info);
-+fb_defio_error:
-+	__free_pages(vmem, get_order(vmem_size));
- fb_alloc_error:
- 	framebuffer_release(info);
- 	return ret;
+ 	/* Perform a read for the given MAC and VID */
+ 	b53_write48(dev, B53_ARLIO_PAGE, B53_MAC_ADDR_IDX, mac);
+-	if (!is5325m(dev))
+-		b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++	if (!is5325m(dev)) {
++		if (is5325(dev) || is5365(dev))
++			b53_write8(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++		else
++			b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++	}
+ 
+ 	/* Issue a read operation for this MAC */
+ 	ret = b53_arl_rw_op(dev, 1);
 -- 
 2.51.0
 
