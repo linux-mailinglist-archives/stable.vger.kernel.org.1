@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994F2CC298C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C52CC4A07
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:18:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABC631872C4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B14F308F78B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451E934F24D;
-	Tue, 16 Dec 2025 11:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E263563DF;
+	Tue, 16 Dec 2025 12:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UntyU1gK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea6COSOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011F234E74D;
-	Tue, 16 Dec 2025 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FC234844D;
+	Tue, 16 Dec 2025 12:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886133; cv=none; b=l9DBayfiSiTiroHQ2YzJPQ5JjV/mAhSuUn2IeA/cosF7Re+6iufQhqGKwrIht9w093oS8GLBmdhQnNwwIGIZsXOWqAACVhXEmksNLnWVn+eEc+ial0VDRvHNBVLYCGsJzBZBnbKtx1vVqeb4ga/BEAA9BSv8Xtmn9AWbMXMqaBE=
+	t=1765888169; cv=none; b=Cmt5kk5hIwykJMn6M+8hymUJm7FU0i1f+0IMe4o2a75puDx4GA8Zue9jRT2ZiLVQz49v15E2EKw9nxowAvEDI01RSLDIFMtulDEp6F8xfA4qLj+djIwjisrHkBq9AVpzeZpt8Tscf4iIZO2eyU2RuPxuGCATq48RurJPD3y6dh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886133; c=relaxed/simple;
-	bh=m1SCMItgHMIjkMVkMfu42YBELuVMTbH+iWIaVF3sQB4=;
+	s=arc-20240116; t=1765888169; c=relaxed/simple;
+	bh=FX9GDEEEBVORWPSfRHxlh4atdYnYVAgmkK5MflrN2eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nep1LUGe/twNmTMhG+z4pSEhTUXOqx7GncS/lcyfbsuOyDqarKWW/YJyGjgNHZ6tYgkfM8gbQ1hm16inTXf9ngzccV089diaoZouPYKhDUJ7jpICeJKE/omwy5cfH1Qg+coEgx+KYYdIiMEdAGrcs0/cd5N3MLIjNV2PEuYUn6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UntyU1gK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B479C4CEF1;
-	Tue, 16 Dec 2025 11:55:32 +0000 (UTC)
+	 MIME-Version; b=Fq0lnJSB35jQ/EyGVuLEwsjmRaCcCVmYSRdwa9gyT8flBls79uulAXABkXAFmHQUtNcnOIzofFj3vpEjM3J6YRwHghRUVg+oq6Ob/FaKU99DWPO5wJnwTJqRFqUnhU+ni8xJ+WL1E51CdT7mjrFLR8fdPw8vm76Ibhi3uwYtFFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea6COSOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC36BC4CEF1;
+	Tue, 16 Dec 2025 12:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886132;
-	bh=m1SCMItgHMIjkMVkMfu42YBELuVMTbH+iWIaVF3sQB4=;
+	s=korg; t=1765888169;
+	bh=FX9GDEEEBVORWPSfRHxlh4atdYnYVAgmkK5MflrN2eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UntyU1gKI2uUIEWS2UdHmCveICAZ/MPLTGDFIrReCBaOZHE74AMHbDt/7hUXg/DsF
-	 cRFfjXaJDMsEC7cx+yxtAYed6GwnqjoVrCpXeVfc8b3xMIpVWuKkzLrhosuF2F3tEb
-	 UH89dLV9/MITt1YdM0rTRDiP9BPBEvTS5O1FSn/0=
+	b=ea6COSOjZMunqMfJ7qvjn3IP3XcBlqSEhGRfb3TJlVsOnQX8JkRX87fcFRdctjZTl
+	 UeYARdz1JCFiCROTq7X0On/iS4gsDsvU4OuxSYp+X/1pjfuRpcGal0kZAj2wNJXwgY
+	 YbdDG9YzE64t4qY/OWnk9+wFrB05AyFoA2ggNCis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 346/507] um: Dont rename vmap to kernel_vmap
+Subject: [PATCH 6.18 420/614] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
 Date: Tue, 16 Dec 2025 12:13:07 +0100
-Message-ID: <20251216111357.995309639@linuxfoundation.org>
+Message-ID: <20251216111416.588037678@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit a74b6c0e53a6df8e8a096b50c06c4f872906368a ]
+[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
 
-In order to work around the existence of a vmap symbol in libpcap, the
-UML makefile unconditionally redefines vmap to kernel_vmap. However,
-this not only affects the actual vmap symbol, but also anything else
-named vmap, including a number of struct members in DRM.
+Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
+matching groups. This is more than what is defined as maximum by the ARM
+SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
+Limit the SMR groups to 128") disabled use of the additional groups because
+they don't exhibit the same behavior as the architecture supported ones.
 
-This would not be too much of a problem, since all uses are also
-updated, except we now have Rust DRM bindings, which expect the
-corresponding Rust structs to have 'vmap' names. Since the redefinition
-applies in bindgen, but not to Rust code, we end up with errors such as:
+It seems like this is just another quirk of the hypervisor: When running
+bare-metal without the hypervisor, the additional groups appear to behave
+just like all others. The boot firmware uses some of the additional groups,
+so ignoring them in this situation leads to stream match conflicts whenever
+we allocate a new SMR group for the same SID.
 
-error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
-  --> rust/kernel/drm/gem/mod.rs:210:9
+The workaround exists primarily because the bypass quirk detection fails
+when using a S2CR register from the additional matching groups, so let's
+perform the test with the last reliable S2CR (127) and then limit the
+number of SMR groups only if we detect that we are running below the
+hypervisor (because of the bypass quirk).
 
-Since libpcap support was removed in commit 12b8e7e69aa7 ("um: Remove
-obsolete pcap driver"), remove the, now unnecessary, define as well.
-
-We also take this opportunity to update the comment.
-
-Signed-off-by: David Gow <davidgow@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://patch.msgid.link/20251122083213.3996586-1-davidgow@google.com
-Fixes: 12b8e7e69aa7 ("um: Remove obsolete pcap driver")
-[adjust commmit message a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 7be0143b5ba35..721b652ffb658 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
- ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
- KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 57c097e876130..c939d0856b719 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -431,17 +431,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
  
--# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
--# named - it's a common symbol in libpcap, so we get a binary which crashes.
--#
--# Same things for in6addr_loopback and mktime - found in libc. For these two we
--# only get link-time error, luckily.
-+# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
-+#  anything from referencing
-+# libc symbols with the same name, which can cause a linker error.
- #
- # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
- # embedded copy of longjmp, same thing for setjmp.
- #
--# These apply to USER_CFLAGS to.
-+# These apply to USER_CFLAGS too.
+ 	/*
+ 	 * Some platforms support more than the Arm SMMU architected maximum of
+-	 * 128 stream matching groups. For unknown reasons, the additional
+-	 * groups don't exhibit the same behavior as the architected registers,
+-	 * so limit the groups to 128 until the behavior is fixed for the other
+-	 * groups.
++	 * 128 stream matching groups. The additional registers appear to have
++	 * the same behavior as the architected registers in the hardware.
++	 * However, on some firmware versions, the hypervisor does not
++	 * correctly trap and emulate accesses to the additional registers,
++	 * resulting in unexpected behavior.
++	 *
++	 * If there are more than 128 groups, use the last reliable group to
++	 * detect if we need to apply the bypass quirk.
+ 	 */
+-	if (smmu->num_mapping_groups > 128) {
+-		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
+-		smmu->num_mapping_groups = 128;
+-	}
+-
+-	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++	if (smmu->num_mapping_groups > 128)
++		last_s2cr = ARM_SMMU_GR0_S2CR(127);
++	else
++		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
  
- KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
--	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
-+	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
- 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
- 	-Din6addr_loopback=kernel_in6addr_loopback \
- 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
+ 	/*
+ 	 * With some firmware versions writes to S2CR of type FAULT are
+@@ -464,6 +466,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 
+ 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
+ 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
++
++		if (smmu->num_mapping_groups > 128) {
++			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
++			smmu->num_mapping_groups = 128;
++		}
+ 	}
+ 
+ 	for (i = 0; i < smmu->num_mapping_groups; i++) {
 -- 
 2.51.0
 
