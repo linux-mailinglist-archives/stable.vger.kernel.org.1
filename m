@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A435ECC2D7C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C54BCC3B00
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFF793073FEF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 693F730D5869
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCE424E4C6;
-	Tue, 16 Dec 2025 12:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817A7346A1A;
+	Tue, 16 Dec 2025 11:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEuYl2lr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="padTnTcx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCE036CE03;
-	Tue, 16 Dec 2025 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E13277AF;
+	Tue, 16 Dec 2025 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887465; cv=none; b=m0rPVbwlwhPiD7mOmG1aUK9Q/06L8rK4cKsOdIKiZS7WSt1Ew7Na6AZeUq57XAM9/PsJE4f8YQCYTZIuzufluuae7evqR16aPUO5Bg4qwWC6dNR/RWP3HsQbyXMZ5zMaY1ZSuwbw/gWIt/qRx354iNySn0GSWaCoR4bCDl1dtp8=
+	t=1765885523; cv=none; b=TVEsgpB5nVevfMmodiyknGZNlJ7peXmSfOqkx9RkcVCUBHqJvqfGvS12gUMnKb5LZql21ohF7E4iGfEYXCIPNlVl869gEgpj4UXk0XR2mgFPBbHcGkZaH2cuCqu3YscW3fYv561G5t/7EaF3JqZE+Xc8tCtYWEb1WWgVbk1kufQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887465; c=relaxed/simple;
-	bh=6p0a1W9JORVob8v5k4A/0IImOTsK45I3NLOdgVVBPis=;
+	s=arc-20240116; t=1765885523; c=relaxed/simple;
+	bh=xTyFx4hsX+tCLlXGnyfJbceSgjh8t+VxC+V2/j/D3N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4Kw1/+iAPcLgZ9adRqYKhVvZ6dqmOOQywxQZVv1DrGEnMcRiFFuAnTjtMomtDr9Yx1GiX+byzQGY+qdnU/z2Vr/77BgBSmgjrrNjKFQwshMuzzXIfaCmOt1ZsYcpvuHWfLfUl7U7pJvHxoPJxj+PLYYhwfNvZefz9ndWXkYdiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEuYl2lr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D3FC4CEF1;
-	Tue, 16 Dec 2025 12:17:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uPoBuGc2o0S+vwXIQGQzUJ2vLkAckzEN5JAUP7QOJNBjOxG98MEyPNmsqSotbKeN7gzfhLkwfYFmVP8fFtioVYnEyU5qymHFbzjRz3q75sZLWsw67yBCAU8/6AaTCuGRqI/YlKnAjnSlUSgv8CvLzLSdXW74zy4syynlrgvsifI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=padTnTcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF3BC4CEF1;
+	Tue, 16 Dec 2025 11:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887464;
-	bh=6p0a1W9JORVob8v5k4A/0IImOTsK45I3NLOdgVVBPis=;
+	s=korg; t=1765885522;
+	bh=xTyFx4hsX+tCLlXGnyfJbceSgjh8t+VxC+V2/j/D3N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEuYl2lrFAXksTZWioB6FHDAYjSjdUdKpyAXV91ePXKrwPzFlWfJO4ieWuszEKE6w
-	 ryw/PRT2GP+JSQgJsXW3xYCKYPXeeexofR/gu93eHCMk+TuO/pfmApY4H8UWqUxXUH
-	 J5Xot65JOFtXIzLrYrhcGdzP/t8YBW4XXkC65jzY=
+	b=padTnTcxiB1yPMR3bMlWlf6NomgKLyUYzim4JZyt4jjuLooAQ4vEA+EXlfhDCgIhY
+	 jHeDyIL6vvzOPqskGuFWWAznzXeQdj6m7PSL4+T23vWQ9pcJrXYZ986CfOnpWL05NJ
+	 O7N3OBaY24rUhH/LsZMS8r6J6ApXkyFNtX3xAkEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carl Worth <carl@os.amperecomputing.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Jie Gan <jie.gan@oss.qualcomm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 237/614] coresight: tmc: add the handle of the event to the path
+Subject: [PATCH 6.17 163/507] drm/panthor: Fix group_free_queue() for partially initialized queues
 Date: Tue, 16 Dec 2025 12:10:04 +0100
-Message-ID: <20251216111409.954975230@linuxfoundation.org>
+Message-ID: <20251216111351.425200191@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carl Worth <carl@os.amperecomputing.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit aaa5abcc9d44d2c8484f779ab46d242d774cabcb ]
+[ Upstream commit 94a6d20feadbbe24e8a7b1c56394789ea5358fcc ]
 
-The handle is essential for retrieving the AUX_EVENT of each CPU and is
-required in perf mode. It has been added to the coresight_path so that
-dependent devices can access it from the path when needed.
+group_free_queue() can be called on a partially initialized queue
+object if something fails in group_create_queue(). Make sure we don't
+call drm_sched_entity_destroy() on an entity that hasn't been
+initialized.
 
-The existing bug can be reproduced with:
-perf record -e cs_etm//k -C 0-9 dd if=/dev/zero of=/dev/null
-
-Showing an oops as follows:
-Unable to handle kernel paging request at virtual address 000f6e84934ed19e
-
-Call trace:
- tmc_etr_get_buffer+0x30/0x80 [coresight_tmc] (P)
- catu_enable_hw+0xbc/0x3d0 [coresight_catu]
- catu_enable+0x70/0xe0 [coresight_catu]
- coresight_enable_path+0xb0/0x258 [coresight]
-
-Fixes: 080ee83cc361 ("Coresight: Change functions to accept the coresight_path")
-Signed-off-by: Carl Worth <carl@os.amperecomputing.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Co-developed-by: Jie Gan <jie.gan@oss.qualcomm.com>
-Signed-off-by: Jie Gan <jie.gan@oss.qualcomm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250925-fix_helper_data-v2-1-edd8a07c1646@oss.qualcomm.com
+Fixes: 7d9c3442b02a ("drm/panthor: Defer scheduler entitiy destruction to queue release")
+Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patch.msgid.link/20251031160318.832427-2-boris.brezillon@collabora.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm-perf.c |  1 +
- drivers/hwtracing/coresight/coresight-tmc-etr.c  |  3 ++-
- include/linux/coresight.h                        | 10 ++++++----
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
-index f677c08233ba1..5c256af6e54af 100644
---- a/drivers/hwtracing/coresight/coresight-etm-perf.c
-+++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
-@@ -520,6 +520,7 @@ static void etm_event_start(struct perf_event *event, int flags)
- 		goto out;
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index a0a31aa6c6bcf..552542f70cabd 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -886,7 +886,8 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
+ 	if (IS_ERR_OR_NULL(queue))
+ 		return;
  
- 	path = etm_event_cpu_path(event_data, cpu);
-+	path->handle = handle;
- 	/* We need a sink, no need to continue without one */
- 	sink = coresight_get_sink(path);
- 	if (WARN_ON_ONCE(!sink))
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-index 800be06598c1b..60b0e0a6da057 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-@@ -1334,7 +1334,8 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
- struct etr_buf *tmc_etr_get_buffer(struct coresight_device *csdev,
- 				   enum cs_mode mode, void *data)
- {
--	struct perf_output_handle *handle = data;
-+	struct coresight_path *path = data;
-+	struct perf_output_handle *handle = path->handle;
- 	struct etr_perf_buffer *etr_perf;
+-	drm_sched_entity_destroy(&queue->entity);
++	if (queue->entity.fence_context)
++		drm_sched_entity_destroy(&queue->entity);
  
- 	switch (mode) {
-diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-index 6de59ce8ef8ca..2626105e37191 100644
---- a/include/linux/coresight.h
-+++ b/include/linux/coresight.h
-@@ -332,12 +332,14 @@ static struct coresight_dev_list (var) = {				\
- 
- /**
-  * struct coresight_path - data needed by enable/disable path
-- * @path_list:              path from source to sink.
-- * @trace_id:          trace_id of the whole path.
-+ * @path_list:		path from source to sink.
-+ * @trace_id:		trace_id of the whole path.
-+ * @handle:		handle of the aux_event.
-  */
- struct coresight_path {
--	struct list_head	path_list;
--	u8			trace_id;
-+	struct list_head		path_list;
-+	u8				trace_id;
-+	struct perf_output_handle	*handle;
- };
- 
- enum cs_mode {
+ 	if (queue->scheduler.ops)
+ 		drm_sched_fini(&queue->scheduler);
 -- 
 2.51.0
 
