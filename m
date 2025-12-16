@@ -1,127 +1,98 @@
-Return-Path: <stable+bounces-202707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B29CC35AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74C9CC3AA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 093FE30A8090
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC97A300E82C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DF63A5C30;
-	Tue, 16 Dec 2025 13:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE78F34AAF8;
+	Tue, 16 Dec 2025 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="affPBMq4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjaqvgEE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7733AD49B;
-	Tue, 16 Dec 2025 13:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D52346E73;
+	Tue, 16 Dec 2025 14:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765892899; cv=none; b=IGzkcua+/BlaFfJ1WHUApqENG2tgd4HU+tv3+c49+dzJom5N95TD06w5tp4FYbXf7C79wqCveh6O9DQeZbVvkw1Rwfr2PYezBr1vQJn8VdbO879dY24Pz8Wg4cxL/n1G6JkMoP4qzkuwxn3zWJbytbLk5ZCEM8NUO5t/iGxAETQ=
+	t=1765895682; cv=none; b=S2YYI7VKP3P2Rc5mH0ZlLtmN9qUoZRKaI568oaEX3RLvbz592nTYW7WFaEx+2rhHvzp/9xiXkxmKhZ2p5X6T+3SUK/o6vuswJIXgxK8+RYV8Ka8S2whEfw/5xEOQsyxl480wFPFmRG+DGo2MWZPgNpWbMYc0a7hR78BvgmmAOeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765892899; c=relaxed/simple;
-	bh=MJJFPU5l/IkQvxNX9Lq0VP/ykfAP0Eh22OmWK6Qz+T4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mnHXhNrP+fbTVDKHKhr3UU2qqS3V2C8DOeJuLzHkeez1TFbxLydVCycyRuwAtKRwKFx5WLHPwi/SsutXJXS9fBnM5KxoRCvN3SnWNUo4rLcNkQC0IxpTp6YkEGKdtIAvZBtIR/l0HKdhNvDHbMgh3IcBWbES6mAOrHwpo46gNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=affPBMq4; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.156])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 19D8020233;
-	Tue, 16 Dec 2025 13:48:14 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay4.mymailcheap.com (Postfix) with ESMTPS id F16E920057;
-	Tue, 16 Dec 2025 13:48:05 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 53A3A40085;
-	Tue, 16 Dec 2025 13:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1765892885; bh=MJJFPU5l/IkQvxNX9Lq0VP/ykfAP0Eh22OmWK6Qz+T4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=affPBMq4Au3vfK2G3vwYTZGIYEBMc7oUU909vh6pNNIfosmNkmc76vuVkloSPOQx/
-	 vLjIwF9fnWYU6SSAIdLI2LhXxbzXdklgCY1NM/ptG6dSWDkI3f4nmRYvE8lBfPFxZd
-	 MQEULRgfxXMf01dNKiXAS8YQ/KAkW4TU26VtPJCo=
-Received: from [192.168.5.7] (unknown [111.40.58.141])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id E292743ADF;
-	Tue, 16 Dec 2025 13:47:57 +0000 (UTC)
-Message-ID: <84cb474d-c41e-40dd-9a75-704b9ebaaf45@aosc.io>
-Date: Tue, 16 Dec 2025 21:47:48 +0800
+	s=arc-20240116; t=1765895682; c=relaxed/simple;
+	bh=S6esN3wft2T5E6VFVjabpJYJD3uugA8OjhnQ5Fszg8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+sSzwtnNae5FyEIfwilOE5IcA8jZ53048HlJlOWIg71N9hgdMcnVPJeOV1gq0iWrtrvnGsFd7CAFauL1diz6XqbKqxloRI5NvfM+IqtTKyGqVOvW0zqKWi9022JDPihykXZN8p5OzjUnC4Foa2ULR7tAqlzhhA66zS6IYh0BeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjaqvgEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2243C4CEF1;
+	Tue, 16 Dec 2025 14:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765895682;
+	bh=S6esN3wft2T5E6VFVjabpJYJD3uugA8OjhnQ5Fszg8s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sjaqvgEEeY2Elte8EJHJvLjQXlkPMAhfG+Eqb843WcyWkiNi/bl4nt9YFsJF4Q9x1
+	 KE/IqNWYMUmaLcel8GCMuGCqbpA7ndsgJR12B6eI3QJ7uzdv8yTO/3n9/4gRGpDGnO
+	 RgSbTyHcTsqt/Z9/FG+WOA3f9YJDo7tLKdyS4KrsD8hJ1hdS+Hmx+AvJw4+fllV/tA
+	 EmXMtyQpqsQrRrABltaw6RaWxJW5ZTZutvP6VHar2R3RuWpmqnloQ//SW2n5YqnWRa
+	 CNj7spWONpmwQ9IleOKU9PikFj6kLq3BteDthcUCYJ5b8acRMx0m3GCWz/5m8kYN2g
+	 jC6D28fNqvZww==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id D468A1AC568D; Tue, 16 Dec 2025 23:34:38 +0900 (JST)
+Date: Tue, 16 Dec 2025 23:34:38 +0900
+From: Mark Brown <broonie@kernel.org>
+To: "Dutta, Anurag" <a-dutta@ti.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] spi: cadence-quadspi: Parse DT for flashes with the
+ rest of the DT parsing
+Message-ID: <aUFt_hLak5QNg4ai@sirena.co.uk>
+References: <20251204-spi-cadence-qspi-runtime-pm-imbalance-v2-1-10af9115d531@kernel.org>
+ <176580718260.161463.4539075429059025833.b4-ty@kernel.org>
+ <82ffe3bc-6789-43b5-a48c-a1f490a70c64@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] nvme-pci: add quirk for Wodposit WPBSNM8-256GTP to
- disable secondary temp thresholds
-To: Keith Busch <kbusch@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Wu Haotian <rigoligo03@gmail.com>,
- Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
- stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>
-References: <20251208132340.1317531-1-ilikara@aosc.io>
- <aUAqGO7GXRrTk4Vq@kbusch-mbp>
-From: Ilikara Zheng <ilikara@aosc.io>
-In-Reply-To: <aUAqGO7GXRrTk4Vq@kbusch-mbp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: 53A3A40085
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.46 / 10.00];
-	BAYES_HAM(-0.36)[76.71%];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,aosc.io,kernel.dk,lst.de,grimberg.me,lists.infradead.org];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="1R4mcgewwj78Qo1g"
+Content-Disposition: inline
+In-Reply-To: <82ffe3bc-6789-43b5-a48c-a1f490a70c64@ti.com>
+X-Cookie: Think big.  Pollute the Mississippi.
 
-Hi Keith,
 
-On 12/15/2025 11:32 PM, Keith Busch wrote:
-> I'm not finding vendor 1FA0 registered on the public pci-ids, nor in the
-> pcisig.com members list.
+--1R4mcgewwj78Qo1g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When I run command lspci -vvnnk, I got outputs below:
+On Tue, Dec 16, 2025 at 09:38:01AM +0530, Dutta, Anurag wrote:
 
-     01:00.0 Non-Volatile memory controller [0108]: Device [1fa0:2283] 
-(prog-if 02 [NVM Express])
-             Subsystem: Device [1fa0:2283]
-             Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
-ParErr- Stepping- SERR- FastB2B- DisINTx+
-             Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast 
- >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-             Latency: 0
-             Interrupt: pin A routed to IRQ 37
-             NUMA node: 0
-             Region 0: Memory at 40110000 (64-bit, non-prefetchable) 
-[size=16K]
-             Expansion ROM at 40000000 [disabled] [size=64K]
-             Capabilities: <access denied>
-             Kernel driver in use: nvme
+> I was under the impression that we are agreeing on this solution :
+> https://lore.kernel.org/all/20251212072312.2711806-1-a-dutta@ti.com/
 
- > I just want to make sure the identifier is officially registered.
+I think we should do both, there's no need to do so much of the init
+work if the DT setup is just broken so the device can never possibly
+instantiate.
 
-I have no idea why they didn't use their PCI Vendor ID, see 
-https://pcisig.com/membership/member-companies where they used a 
-different Vendor ID (0x2094).
+--1R4mcgewwj78Qo1g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlBbfoACgkQJNaLcl1U
+h9Ay0wf+J++UL9gR2qnh2NOoaQkn7QDp8fiEs6/A29kt6PM321Tr8MjDEgSJ/15h
+FA6c9xUhGW8SW4mQQ9A3t9nKqU5XHwMWWuhCCoDcw4JyStIyedJ3GlBbXdJ3CA9k
+Jy1q6GGzQ/fMTE+zLdooHFkBq9tFBRDKtucLpMd6vO9bCfzk++D5g8kqlKhCCs8k
+OStaTa+wcBUu342PanFXPxTDVMDxFg5IBAGZ0nMUyYhuMTpF+jWrAKoksktxyidy
+p9JridZfyOfiOQKTQi2VAKFVQz82ONuyuaYAxpF23M0URIfeqz8DRS22qWC17JUp
+nSKAfHhNFh+1Kl8a2s1PPPMFh+YD6Q==
+=NE0p
+-----END PGP SIGNATURE-----
+
+--1R4mcgewwj78Qo1g--
 
