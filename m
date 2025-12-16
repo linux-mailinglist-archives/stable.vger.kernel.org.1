@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-202280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFACCC31EE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E247CC21C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF8103093D2F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D79F3048D4E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFE0343D9B;
-	Tue, 16 Dec 2025 12:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2729525FA10;
+	Tue, 16 Dec 2025 11:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4gyslTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnIZyAQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C630F95D;
-	Tue, 16 Dec 2025 12:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB3126C02;
+	Tue, 16 Dec 2025 11:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887394; cv=none; b=tYsfG/jnZfQj4lqKDEONgXPYKgseB+T7knN3la3zPLrZNDCI4VT6lvS1TynM4CdwFA131SsaV4VmtI4V01EWYxJldGqcfeJJ2nUTEl9ymrkC/bYbFRDy11QpGGGJuF77d+t2GJbvJ3mq8ofHEJchjUtG6KBOzqp0byHdMD7phyQ=
+	t=1765883848; cv=none; b=ofNbm45szfO1B+IaahVttShqo558UmZei6Rc2cSeACvz7p1QrzIcIBCfzT0gq6gmwfmP0aAYlQNlumBQmudrUZHRE6VAB/X2+XAUDdU5M0fnPzaJnyeni8eo6SGet7iHb4hLUHG15/GzHfhLUoB9ANcXWsWF7XNE2Hprd/5e3f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887394; c=relaxed/simple;
-	bh=ol1qmJZaLi6vMKF++elfDgUjpPVIje4JcKgjZd+6jC0=;
+	s=arc-20240116; t=1765883848; c=relaxed/simple;
+	bh=7S0OUiJQ3jWgUjEMF4ppgnpMR6BWvTkn/sj2aAJIigY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1ex8y9RQIR1K6Oy5/apuhw0hSQeo0wbrXxkE1w5QPrT9uvTfD12TTHMLWRdSkIvTdSgx2Zxh0SYDG9UwZz0xs9+XabxXNpIQgbdb5dkBiW/G+vyi3KvtQORjB+lPd3ZOnDOu8hejhJMJ/c7Fa7/2sr5d+0fht06g0QSHt+zxic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4gyslTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E666DC4CEF1;
-	Tue, 16 Dec 2025 12:16:33 +0000 (UTC)
+	 MIME-Version; b=VOddxS8AKfLntwRNuJXrWk0OC6Mi9WknEQhBc/8bAImwPYEgdarIDo+X7vXLLeQBwC/nqWVrrsQMybawE3oN+4SRdNLbiqO+oXw8f+FjO5Cji2T/DVIfY2LjNfZ4WtXqqtIGP0FLXYrr60R2+T+R0bR+sEav14MDK9b4a6TyL2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnIZyAQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DFCC4CEF1;
+	Tue, 16 Dec 2025 11:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887394;
-	bh=ol1qmJZaLi6vMKF++elfDgUjpPVIje4JcKgjZd+6jC0=;
+	s=korg; t=1765883848;
+	bh=7S0OUiJQ3jWgUjEMF4ppgnpMR6BWvTkn/sj2aAJIigY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4gyslTlPapLjwPV4S2YPCldt/3Ikth+eOfXZ0dI3I4Re2kUdaE4a86fWuwFTdkmB
-	 BRg/2iHV2kbB4YhWQ6Bl2LACaiGFBiiNbKN14B3Qdg47w4uiQCJVqEcMuWWZWc6aoG
-	 EuRQ3IFN0PS7JDJ27oTEZ957QmFIxjUDiJBY/Yzg=
+	b=EnIZyAQ3TrHDgjyOBhE8rwpqxlh3xJPFYcSho2YE3/nLENZeGdUgVbyGGLfqtANEt
+	 +/dAyetDqEUwJ8MO+iiw58sycWF3wdhojTOiq5OC+GpYiQKowa+zOFl2MKhQKuDdYq
+	 5F4eW75jmNSD/kxjDU0OiqGMvwrM7mjZYNxS070I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 217/614] wifi: ath12k: Fix timeout error during beacon stats retrieval
-Date: Tue, 16 Dec 2025 12:09:44 +0100
-Message-ID: <20251216111409.237670828@linuxfoundation.org>
+Subject: [PATCH 6.12 018/354] clk: renesas: Use str_on_off() helper
+Date: Tue, 16 Dec 2025 12:09:45 +0100
+Message-ID: <20251216111321.568612451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +59,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 2977567b244f056d86658160659f06cd6c78ba3d ]
+[ Upstream commit aff664cc8cbc5c28e5aa57dc4201c34497f3c871 ]
 
-Currently, for beacon_stats, ath12k_mac_get_fw_stats() is called
-for each started BSS on the specified hardware.
-ath12k_mac_get_fw_stats() will wait for the fw_stats_done completion
-after fetching the requested data from firmware. For the beacon_stats,
-fw_stats_done completion will be set only when stats are received for
-all BSSes. However, for other stats like vdev_stats or pdev_stats, there
-is one request to the firmware for all enabled BSSes. Since beacon_stats
-is fetched individually for all BSSes enabled in that pdev, waiting for
-the completion event results in a timeout error when multiple BSSes are
-enabled.
+Use the str_on_off() helper instead of open-coding the same operation.
+Note that this does change the case of the flags, which doesn't matter
+much for debug messages.
 
-Avoid this by completing the fw_stats_done immediately after
-updating the requested BSS's beacon stats in the list. Subsequently,
-this list will be used to display the beacon stats for all enabled
-BSSes in the requested pdev.
-
-Additionally, remove 'num_bcn_recvd' from the ath12k_fw_stats struct
-as it is no longer needed.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Fixes: 9fe4669ae919 ("wifi: ath12k: Request beacon stats from firmware")
-Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251031-beacon_stats-v1-2-f52fce7b03ac@qti.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/622f8554dcb815c8fc73511a1a118c1724570fa9.1745840497.git.geert+renesas@glider.be
+Stable-dep-of: b91401af6c00 ("clk: renesas: cpg-mssr: Read back reset registers to assure values latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c |  2 --
- drivers/net/wireless/ath/ath12k/core.h |  1 -
- drivers/net/wireless/ath/ath12k/wmi.c  | 10 +---------
- 3 files changed, 1 insertion(+), 12 deletions(-)
+ drivers/clk/renesas/renesas-cpg-mssr.c | 3 ++-
+ drivers/clk/renesas/rzg2l-cpg.c        | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index a2137b363c2fe..cc352eef19399 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index ecb7e2024d589..22699a47e675c 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -27,6 +27,7 @@
+ #include <linux/psci.h>
+ #include <linux/reset-controller.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
  
-@@ -1250,7 +1249,6 @@ void ath12k_fw_stats_reset(struct ath12k *ar)
- 	spin_lock_bh(&ar->data_lock);
- 	ath12k_fw_stats_free(&ar->fw_stats);
- 	ar->fw_stats.num_vdev_recvd = 0;
--	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- }
+ #include <dt-bindings/clock/renesas-cpg-mssr.h>
  
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 3d1956966a485..d7688b383f62c 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -644,7 +644,6 @@ struct ath12k_fw_stats {
- 	struct list_head vdevs;
- 	struct list_head bcn;
- 	u32 num_vdev_recvd;
--	u32 num_bcn_recvd;
- };
+@@ -205,7 +206,7 @@ static int cpg_mstp_clock_endisable(struct clk_hw *hw, bool enable)
+ 	int error;
  
- struct ath12k_dbg_htt_stats {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e76275bd6916f..e647b842a6a1c 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -8418,18 +8418,10 @@ static void ath12k_wmi_fw_stats_process(struct ath12k *ar,
- 			ath12k_warn(ab, "empty beacon stats");
- 			return;
- 		}
--		/* Mark end until we reached the count of all started VDEVs
--		 * within the PDEV
--		 */
--		if (ar->num_started_vdevs)
--			is_end = ((++ar->fw_stats.num_bcn_recvd) ==
--				  ar->num_started_vdevs);
+ 	dev_dbg(dev, "MSTP %u%02u/%pC %s\n", reg, bit, hw->clk,
+-		enable ? "ON" : "OFF");
++		str_on_off(enable));
+ 	spin_lock_irqsave(&priv->rmw_lock, flags);
  
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
--
--		if (is_end)
--			complete(&ar->fw_stats_done);
-+		complete(&ar->fw_stats_done);
+ 	if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A) {
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index e2ecc9d36e051..e4f2d974f38a1 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -27,6 +27,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/reset-controller.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/units.h>
+ 
+ #include <dt-bindings/clock/renesas-cpg-mssr.h>
+@@ -1222,7 +1223,7 @@ static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
  	}
- }
  
+ 	dev_dbg(dev, "CLK_ON 0x%x/%pC %s\n", CLK_ON_R(reg), hw->clk,
+-		enable ? "ON" : "OFF");
++		str_on_off(enable));
+ 
+ 	value = bitmask << 16;
+ 	if (enable)
 -- 
 2.51.0
 
