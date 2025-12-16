@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3887ACC369F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:04:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DCBCC2A11
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E5F6300EACB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5AC43026228
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226C134D920;
-	Tue, 16 Dec 2025 12:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117B530DD13;
+	Tue, 16 Dec 2025 11:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA8hRf5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FV3F672c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF670345CAA;
-	Tue, 16 Dec 2025 12:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB2434B693;
+	Tue, 16 Dec 2025 11:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887663; cv=none; b=sThn/e4s5AmOa7g65Nw4QJSV15Hh9pOD7ACBr/EbDYEw+vV2px0EVqRwZfLZr/q7TE/Vm/Y/LgKwjXX+3RDtQbuLINZxqk6PIUdFXw//4zKcEkkT1GAHP3OTnJctboXnrvO9JW9zC86DYUyme3B2EFOcILf7z68JugEeGj863rU=
+	t=1765885727; cv=none; b=GEMkaN2pa2BwjXhv4WjGCrmcvdMgRMX5601dJHiIU9QpN+5XhA/+dlg6jXbsQPt+r/1VC170aINAsY6apVH4F4ACd0xZ7XOIvqad0uI8M6Nye1zSleL7CWlLuddh7MICRSMQ1TybXP0GUevCzoqAISOmTIJXtUOxPW0NxNCl5v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887663; c=relaxed/simple;
-	bh=DPFvvmMq7UrAuURi44czb9DfP0d64ZH6ZsoWj6IqYGc=;
+	s=arc-20240116; t=1765885727; c=relaxed/simple;
+	bh=ogoDaV5LJoyo9DsZGLYGrNJm7TTqvAhbJ43yaGkQycI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PuZBNSmf4Zc275kLGlRevYfwuyK8eo0fiZqS90S91iYadTPLxOQknUH2Qj4ExMuH686h3YM63OcPb2i/pzdUJUV3jCeMhe5eabz63YR7WnZeLJgUMd0I8WSyj5sknBm+CBS6NpHwAZ0OAbpz/Xr63tnO3FQ7KvKSKFAHyRjPyaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA8hRf5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F9BC4CEF1;
-	Tue, 16 Dec 2025 12:21:03 +0000 (UTC)
+	 MIME-Version; b=Mhy7iwmc/vY852+niHhMw0slEkT1MYAzQxY56J4cXSSAOsFWJsKragP7KhOqN1m9e47wIFpP/lDbIz3djF1WCcP+xjDAmyMDtHmfHf2FV1muCWOFPUAei4Jw7ay7D8lzBrY7N0cWBL6Jb/qHR+jpgr/pEGicfH++GyZIyNCbUdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FV3F672c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0173C4CEF1;
+	Tue, 16 Dec 2025 11:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887663;
-	bh=DPFvvmMq7UrAuURi44czb9DfP0d64ZH6ZsoWj6IqYGc=;
+	s=korg; t=1765885727;
+	bh=ogoDaV5LJoyo9DsZGLYGrNJm7TTqvAhbJ43yaGkQycI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA8hRf5F6djIq8ChGFMUd57HuTXBwgGM2S6jzKb9q7a3eDB1zD0oZYyr6DJwj3iVb
-	 Q+uNNcZnm0L7qMyKDPa2e/edOezBylhB8pLjehnRn/ET8Dpirhr1PrMxq18BZ18wmB
-	 0bOKPlhXLPtNBe4BeO/r8JjdGY2CuAU/Zs+sBhlY=
+	b=FV3F672cnuYnSYFDKTUQuCP+wcR5mfMAKiYBh5rubiT9t3sGUyrj0KZuSGa9Yz+yl
+	 1HFeNtg4rFNn/lp351XXkW1qsH+dudNfpny2s840k8A9MtIYKoweJCN02CErCVni/l
+	 Cz2zPecEAzxgLYDC8A82UbYF/XJn3y5tVUF1qmf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 300/614] iio: core: Clean up device correctly on iio_device_alloc() failure
+Subject: [PATCH 6.17 226/507] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
 Date: Tue, 16 Dec 2025 12:11:07 +0100
-Message-ID: <20251216111412.239275277@linuxfoundation.org>
+Message-ID: <20251216111353.693425090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b0e6871415b25f5e84a79621834e3d0c9d4627a6 ]
+[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
 
-Once we called device_initialize() we have to call put_device()
-on it. Refactor the code to make it in the right order.
+acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
+parent fwnode but returns without calling fwnode_handle_put() on it. This
+potentially leads to a fwnode refcount leak and prevents the parent node
+from being released properly.
 
-Fixes: fe6f45f6ba22 ("iio: core: check return value when calling dev_set_name()")
-Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Call fwnode_handle_put() on the parent fwnode before returning to prevent
+the leak from occurring.
+
+Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/property.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 93d6e5b101cf1..5d2f35cf18bc3 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1697,11 +1697,6 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 		ACCESS_PRIVATE(indio_dev, priv) = (char *)iio_dev_opaque +
- 			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index d74678f0ba4af..57bf9c973c4f7 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1693,6 +1693,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
+ 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
  
--	indio_dev->dev.parent = parent;
--	indio_dev->dev.type = &iio_device_type;
--	indio_dev->dev.bus = &iio_bus_type;
--	device_initialize(&indio_dev->dev);
--
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
- 
- 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
-@@ -1727,6 +1722,11 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	mutex_init(&iio_dev_opaque->mlock);
- 	mutex_init(&iio_dev_opaque->info_exist_lock);
- 
-+	indio_dev->dev.parent = parent;
-+	indio_dev->dev.type = &iio_device_type;
-+	indio_dev->dev.bus = &iio_bus_type;
-+	device_initialize(&indio_dev->dev);
-+
- 	return indio_dev;
++	fwnode_handle_put(port_fwnode);
+ 	return 0;
  }
- EXPORT_SYMBOL(iio_device_alloc);
+ 
 -- 
 2.51.0
 
