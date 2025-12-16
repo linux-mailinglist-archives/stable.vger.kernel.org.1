@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-202603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B508ECC4344
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C472ECC31A9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81D3A30275EE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0521B30B42B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5C634167B;
-	Tue, 16 Dec 2025 12:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3E03587A9;
+	Tue, 16 Dec 2025 12:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQ4+RUrZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrZO+7VH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1035B346791;
-	Tue, 16 Dec 2025 12:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865373587A4;
+	Tue, 16 Dec 2025 12:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888434; cv=none; b=E8tXaFj1djtjQB94VUrK/Y/LttaFqSL7kxc/hpvm7+uwqpQYBJI/mhmUXtPDWh0P6lvYFY8eB1ypxXUqVTw6HlUOYRCHQCmyVlVsLmVBqMkSyByMKhUmotrsXHBViDcALNw3jGf5hIworARGjOdB33oV2pqdNpRdgeU2gjPPbtI=
+	t=1765886629; cv=none; b=OhWGu0CymZmhChcYDUbIsY0SCTZRDimilCuOb3BDYAnCfkJ7mPbU1cJ1G6qGoeXRkJ7n9RNJHSVcQ+r8PnnlfPpC1fltje2cnonHVu4PF+Kd5ulQF7pdN04PPK8DsHseoSwrUj+Cxbs9o+RlRu8wPdjsUT/TGUavg0el7R/J0YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888434; c=relaxed/simple;
-	bh=D1wgWFI+ap8r2vXv2wkqzs194vQA1NRPchbZKQD5vLU=;
+	s=arc-20240116; t=1765886629; c=relaxed/simple;
+	bh=M7elHLJd/lwesp9JTCXLzUd1LELlzkQfjSHigsgy0CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foE3JnmkxudCq7WM4PjJo7EjQmYxC3Vl1ZOFTg7JA/B2L2F5wGbLuyMx4IzsM9jT15sXSdqC5VI7Jgok0bgiSyUdVhP72U0LgSTvjBSlThmoGC5aNn8ZzZCp+ayQpOAGqoCM+EKGembPRLGlq6j83Vz8i/DsxRxbgYAtXDbtP8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQ4+RUrZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710D4C4CEF1;
-	Tue, 16 Dec 2025 12:33:53 +0000 (UTC)
+	 MIME-Version; b=kjHzYnxn3A043+Y3+50R2fEHDKerDg1jdvebkkYZd9u1kjKK+n595cEmcFWDuZx3qidKJCpDVkCjbmLCDxh66OOdkpmPo01E/c7dmzkz+FAcD7gaCHF47ofX7YpF3jVqAey0mRrArfsxZBCVduSCXf4rVjWdJ338SWsOPW87Kzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrZO+7VH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9443C4CEF1;
+	Tue, 16 Dec 2025 12:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888433;
-	bh=D1wgWFI+ap8r2vXv2wkqzs194vQA1NRPchbZKQD5vLU=;
+	s=korg; t=1765886629;
+	bh=M7elHLJd/lwesp9JTCXLzUd1LELlzkQfjSHigsgy0CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQ4+RUrZmdRoZ0mPNy+FyQxSKLrd0x2n9lfITB10g1UquZniw41tN7Bh6LMAXs2ln
-	 bE4q66A8A1VNhhasIleyj2hGyYiwe1w/+J5bK6/zfmXHlzB4wBftFjgOhIOHH5CRnv
-	 L0BHH+/85ntqS+kj+nV164Ue/DUrSFHjFb2fF4M0=
+	b=WrZO+7VHpNKyQ57Lm5vqswQ4hGY+7+l6WC4323sJcjyWBxzwwgixOyq3+31jei3Zb
+	 Lk2WyWjH5tbrdoaX7xpowVWxtkpwNy2bWIOgUvZMydw2m33cGEIyzUbpcJkq2M6BqJ
+	 CdlRP0dU5RTnENVaViHCIv76dI3CaWeY/qitwtUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xupengbo <xupengbo@oppo.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Cong Zhang <cong.zhang@oss.qualcomm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 534/614] sched/fair: Fix unfairness caused by stalled tg_load_avg_contrib when the last task migrates out
+Subject: [PATCH 6.17 460/507] blk-mq: Abort suspend when wakeup events are pending
 Date: Tue, 16 Dec 2025 12:15:01 +0100
-Message-ID: <20251216111420.726282032@linuxfoundation.org>
+Message-ID: <20251216111402.112974071@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xupengbo <xupengbo@oppo.com>
+From: Cong Zhang <cong.zhang@oss.qualcomm.com>
 
-[ Upstream commit ca125231dd29fc0678dd3622e9cdea80a51dffe4 ]
+[ Upstream commit c196bf43d706592d8801a7513603765080e495fb ]
 
-When a task is migrated out, there is a probability that the tg->load_avg
-value will become abnormal. The reason is as follows:
+During system suspend, wakeup capable IRQs for block device can be
+delayed, which can cause blk_mq_hctx_notify_offline() to hang
+indefinitely while waiting for pending request to complete.
+Skip the request waiting loop and abort suspend when wakeup events are
+pending to prevent the deadlock.
 
-1. Due to the 1ms update period limitation in update_tg_load_avg(), there
-   is a possibility that the reduced load_avg is not updated to tg->load_avg
-   when a task migrates out.
-
-2. Even though __update_blocked_fair() traverses the leaf_cfs_rq_list and
-   calls update_tg_load_avg() for cfs_rqs that are not fully decayed, the key
-   function cfs_rq_is_decayed() does not check whether
-   cfs->tg_load_avg_contrib is null. Consequently, in some cases,
-   __update_blocked_fair() removes cfs_rqs whose avg.load_avg has not been
-   updated to tg->load_avg.
-
-Add a check of cfs_rq->tg_load_avg_contrib in cfs_rq_is_decayed(),
-which fixes the case (2.) mentioned above.
-
-Fixes: 1528c661c24b ("sched/fair: Ratelimit update to tg->load_avg")
-Signed-off-by: xupengbo <xupengbo@oppo.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Aaron Lu <ziqianlu@bytedance.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Aaron Lu <ziqianlu@bytedance.com>
-Link: https://patch.msgid.link/20250827022208.14487-1-xupengbo@oppo.com
+Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
+Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-mq.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2a4a1c6e25da0..71d3f4125b0e7 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4059,6 +4059,9 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
- 	if (child_cfs_rq_on_list(cfs_rq))
- 		return false;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 19f62b070ca9d..3e9f82c9a89d2 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -23,6 +23,7 @@
+ #include <linux/cache.h>
+ #include <linux/sched/topology.h>
+ #include <linux/sched/signal.h>
++#include <linux/suspend.h>
+ #include <linux/delay.h>
+ #include <linux/crash_dump.h>
+ #include <linux/prefetch.h>
+@@ -3721,6 +3722,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
+ 			struct blk_mq_hw_ctx, cpuhp_online);
++	int ret = 0;
  
-+	if (cfs_rq->tg_load_avg_contrib)
-+		return false;
-+
- 	return true;
+ 	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
+ 		return 0;
+@@ -3741,12 +3743,24 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ 	 * frozen and there are no requests.
+ 	 */
+ 	if (percpu_ref_tryget(&hctx->queue->q_usage_counter)) {
+-		while (blk_mq_hctx_has_requests(hctx))
++		while (blk_mq_hctx_has_requests(hctx)) {
++			/*
++			 * The wakeup capable IRQ handler of block device is
++			 * not called during suspend. Skip the loop by checking
++			 * pm_wakeup_pending to prevent the deadlock and improve
++			 * suspend latency.
++			 */
++			if (pm_wakeup_pending()) {
++				clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
++				ret = -EBUSY;
++				break;
++			}
+ 			msleep(5);
++		}
+ 		percpu_ref_put(&hctx->queue->q_usage_counter);
+ 	}
+ 
+-	return 0;
++	return ret;
  }
  
+ /*
 -- 
 2.51.0
 
