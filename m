@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D222CC2B25
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589E9CC23A6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3142A300804B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95B0330601AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DD73659ED;
-	Tue, 16 Dec 2025 12:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65107342160;
+	Tue, 16 Dec 2025 11:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4HIkQiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4X8YNbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753ED3659E1;
-	Tue, 16 Dec 2025 12:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22726313E13;
+	Tue, 16 Dec 2025 11:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887935; cv=none; b=NcIPvw4BWbwtAiM6ScvyaurrxRwzw1rUJfn2hTk9Mp+bbpe07cOrlP/UU2TaHc6velvzktpDFIEgweLb+LriFSVb8ra+df2t2pBFHmykagZoUfaKaZ8+qaX0mQhvAkg0qfSEvEVFchCE6Wrb+pmba9ms48Ndc8aN1+FvOhTAfh0=
+	t=1765884293; cv=none; b=kZRTSFjynKBiu+ji9iO/UmevD2zdFgi9AgjJdJMJY0wE1QV5epYUn26YKXlrOEl40mtxJ1p7sGRZXyLS2x/et2WJbZmC3FBQPB69MXhcJg6Ydvr1s1Da1e+2Zp63hYLL2++Kvnx9IGuQa1QRoGwZ/ZqePq9gw0FNBHg7AmcDIsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887935; c=relaxed/simple;
-	bh=8FOq1rLTvXTiQFyyM85f8eCfEES8HggyiU0898R3ZOo=;
+	s=arc-20240116; t=1765884293; c=relaxed/simple;
+	bh=N6r2JJNKMqaPWBpBB9FgHWg62B6XHZQEVNfbOLhBxbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RLJHBNqThkELWkE2Ch/cDy3/2n0GF6CzmhQO1gplN1Y3LNo9QQxfMdxcrDS33VdKfvR5hh4n9iuqucsaaUEc0cHzCOJhZRTAUV1daziCoWD+LWb28ATMh95CPDLWYmKv5/b5giGMSu8TDLd/Wf4rxKYMaFb4KP3HiLhrxDFsxz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4HIkQiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9892C4CEF1;
-	Tue, 16 Dec 2025 12:25:34 +0000 (UTC)
+	 MIME-Version; b=gDG10BXmQfZTqyO4IFDXTosm16cz3Hzn0nlBiVYPJYZVLTJ0uldrZnbe+LqNKh9yvFCkn2H6tYSMEwCLcOBhMy75o6uJRRS6BeGnv37Q43QHM71l37XKCONu37FJhE2MrAnjPjeGKiCwMUAnEXMVdOoIr6dEcR8ZKB81XInWM24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4X8YNbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8676BC4CEF1;
+	Tue, 16 Dec 2025 11:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887935;
-	bh=8FOq1rLTvXTiQFyyM85f8eCfEES8HggyiU0898R3ZOo=;
+	s=korg; t=1765884293;
+	bh=N6r2JJNKMqaPWBpBB9FgHWg62B6XHZQEVNfbOLhBxbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4HIkQiq75ko1zDGfnNqnST1Yg/3FaV5kjolU33L03rAVIeygMAshPblOym2X64D9
-	 DV3Taz6uqUil/Mxqet/tFHMq8B2rrh9VfbsuYFj+6n97/uJOl3646hQ3LMhsLnDaK0
-	 cyRT9SD+Mlp+dvgRPXqQVq+CHh7GtOPtStDxHR9g=
+	b=b4X8YNbnVn9ZXwSfteGtFi4ZSKp59xCmKRO0M4u7PM/eE2P/QppLuUEYEEq2alAxe
+	 Ef1VO67gRmeifbcVd5XccEInvuDqYNLn7+In8biWYR2abIUQSshAEEt62OFiIjhk+9
+	 yhIT6N2Uj7mRQMRq0Pjn4ga2sehkh7zpB/e3x4R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Algea Cao <algea.cao@rock-chips.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 350/614] phy: rockchip: samsung-hdptx: Prevent Inter-Pair Skew from exceeding the limits
+Subject: [PATCH 6.12 150/354] lib/vsprintf: Check pointer before dereferencing in time_and_date()
 Date: Tue, 16 Dec 2025 12:11:57 +0100
-Message-ID: <20251216111414.044530940@linuxfoundation.org>
+Message-ID: <20251216111326.350440062@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 51023cf6cc5db3423dea6620746d9087e336e024 ]
+[ Upstream commit 372a12bd5df0199aa234eaf8ef31ed7ecd61d40f ]
 
-Fixup PHY deskew FIFO to prevent the phase of D2 lane going ahead of
-other lanes.  It's worth noting this might only happen when dealing with
-HDMI 2.0 rates.
+The pointer may be invalid when gets to the printf(). In particular
+the time_and_date() dereferencing it in some cases without checking.
 
-Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
-Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-3-ecc642a59d94@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Move the check from rtc_str() to time_and_date() to cover all cases.
+
+Fixes: 7daac5b2fdf8 ("lib/vsprintf: Print time64_t in human readable format")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://patch.msgid.link/20251110132118.4113976-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ lib/vsprintf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 8ba9b53c2309b..29de2f7bdae8a 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -668,13 +668,9 @@ static const struct reg_sequence rk_hdtpx_common_lane_init_seq[] = {
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index a69e71a1ca55e..511c55d7b3abf 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1860,9 +1860,6 @@ char *rtc_str(char *buf, char *end, const struct rtc_time *tm,
+ 	bool found = true;
+ 	int count = 2;
  
- static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
- 	REG_SEQ0(LANE_REG(0312), 0x00),
--	REG_SEQ0(LANE_REG(031e), 0x00),
- 	REG_SEQ0(LANE_REG(0412), 0x00),
--	REG_SEQ0(LANE_REG(041e), 0x00),
- 	REG_SEQ0(LANE_REG(0512), 0x00),
--	REG_SEQ0(LANE_REG(051e), 0x00),
- 	REG_SEQ0(LANE_REG(0612), 0x00),
--	REG_SEQ0(LANE_REG(061e), 0x08),
- 	REG_SEQ0(LANE_REG(0303), 0x2f),
- 	REG_SEQ0(LANE_REG(0403), 0x2f),
- 	REG_SEQ0(LANE_REG(0503), 0x2f),
-@@ -687,6 +683,11 @@ static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
- 	REG_SEQ0(LANE_REG(0406), 0x1c),
- 	REG_SEQ0(LANE_REG(0506), 0x1c),
- 	REG_SEQ0(LANE_REG(0606), 0x1c),
-+	/* Keep Inter-Pair Skew in the limits */
-+	REG_SEQ0(LANE_REG(031e), 0x02),
-+	REG_SEQ0(LANE_REG(041e), 0x02),
-+	REG_SEQ0(LANE_REG(051e), 0x02),
-+	REG_SEQ0(LANE_REG(061e), 0x0a),
- };
- 
- static struct tx_drv_ctrl tx_drv_ctrl_rbr[4][4] = {
+-	if (check_pointer(&buf, end, tm, spec))
+-		return buf;
+-
+ 	switch (fmt[count]) {
+ 	case 'd':
+ 		have_t = false;
+@@ -1928,6 +1925,9 @@ static noinline_for_stack
+ char *time_and_date(char *buf, char *end, void *ptr, struct printf_spec spec,
+ 		    const char *fmt)
+ {
++	if (check_pointer(&buf, end, ptr, spec))
++		return buf;
++
+ 	switch (fmt[1]) {
+ 	case 'R':
+ 		return rtc_str(buf, end, (const struct rtc_time *)ptr, spec, fmt);
 -- 
 2.51.0
 
