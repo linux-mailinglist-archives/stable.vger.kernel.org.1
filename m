@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-201487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44C1CC249F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F789CC2EC6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9BC36300E0E6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0056E3036A70
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21EC34106D;
-	Tue, 16 Dec 2025 11:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B702396DAE;
+	Tue, 16 Dec 2025 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyS6T067"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4TmIdxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB6A33ADB9;
-	Tue, 16 Dec 2025 11:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3E9396DA2;
+	Tue, 16 Dec 2025 12:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884799; cv=none; b=ZtZ2dedL7r9mRxVpFUDK0wCFkKxy5S401O/j2q3fYECIHQddN7BQPKx3F6j9+aTUtXSRRWGbKN96//H2k200sTtvptmyqXhI0zfARi2Pt6TT7uhmcd3IOcNP1/ZxB/9oNpF02gJRcAuNZhgtezLh04zqaYKpYq+qgGuDmi4e0KM=
+	t=1765888329; cv=none; b=JW/0SENGyGAn/DMMgz1typA5u8lUskjrzcqSpWKB0bzGK2VlvqX+uGb+ceQEEtpDrwM7hvND1mPXgfgroDqpgr0lGcyxu8fuj0oIAc0OjpVLlF+nXVI4kCb6WZYaIKLWri6gQYcBFg1F9Qk4rT6iMmQIDmLGWtywl3OF5tTINIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884799; c=relaxed/simple;
-	bh=u071OTc6YZ1CJ3SjpvlRiTLbQjM1bO8FnypEaHOlchc=;
+	s=arc-20240116; t=1765888329; c=relaxed/simple;
+	bh=dXBn42TJKMltZ7Cyg0ByQ9bnDn2RqfQWhfxYaLfhUxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXxTABK6Eau3YDj43UOyHbhw/uaiVIBuhe1A2OmIm1Pe/KrzmTX6uWgj6qtAt/NxCq6ahPc00XbLiU+4BHxWDHBvZwrAeD3UMiSPPnNImUWe/DRsnUhIiWNCMeZex3VJYWQx5dJvxi/Jjq0nRV9/+39CfV0EI88DWCjGul9oLgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyS6T067; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56BCC4CEF5;
-	Tue, 16 Dec 2025 11:33:18 +0000 (UTC)
+	 MIME-Version; b=i3GJUcPdDX3ZgNfxRP1GjETfv5wZbn9mX72lWvKpvF291nqg2uUvsXVaxfzbePq/YmQRgK6rUAGdISr+VUGW9AUL6+ji8pxk1oPeZNm2wudWo7YpNIo680YhsyNRpFLveyLztqLYeaU78JB4wBXKohK0J1cuiPlEgQnfRWNJ2vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4TmIdxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BE4C4CEF1;
+	Tue, 16 Dec 2025 12:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884799;
-	bh=u071OTc6YZ1CJ3SjpvlRiTLbQjM1bO8FnypEaHOlchc=;
+	s=korg; t=1765888328;
+	bh=dXBn42TJKMltZ7Cyg0ByQ9bnDn2RqfQWhfxYaLfhUxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyS6T067tLVUo6EY99s3JqAZT7BwUCb4HO95NZglcnmHiYNF6YV6hkATCWku521wI
-	 2NOmhQjAq9F9YUDrD9hO6RBBh9rjzNkobaR5lQM9059zEBPkZ57oKC3NDR318u5R/p
-	 vWbPU0yOIZmL6Y4WTOq30PuzAjJb28WyFfO5otL4=
+	b=v4TmIdxDKF+osVw0stPyvcslKh1o9BeR2tqYP4/Hx/pZRwyuMHniFDk++ijJd8YVA
+	 GOsLzATWghbTXs8Wr+yCqvkJ0ax4Cn5tX2XhiT8YU2J4995/dF1A4HphcUKYX11mLD
+	 Md6IJFwNsi4F0WTEKl8s6eL9VdLYiQPp15dcbRDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aiden Lambert <alambert48@gatech.edu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 302/354] NFS: Avoid changing nlink when file removes and attribute updates race
+Subject: [PATCH 6.18 502/614] smb: smbdirect: introduce SMBDIRECT_CHECK_STATUS_{WARN,DISCONNECT}()
 Date: Tue, 16 Dec 2025 12:14:29 +0100
-Message-ID: <20251216111331.853895919@linuxfoundation.org>
+Message-ID: <20251216111419.557606240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +67,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit bd4928ec799b31c492eb63f9f4a0c1e0bb4bb3f7 ]
+[ Upstream commit 1adb2dab9727c5beaaf253f67bf4fc2c54ae70e7 ]
 
-If a file removal races with another operation that updates its
-attributes, then skip the change to nlink, and just mark the attributes
-as being stale.
+These will be used in various places in order to assert
+the current status mostly during the connect and negotiation
+phase. It will replace the WARN_ON_ONCE(sc->status != ...)
+calls, which are very useless in order to identify the
+problem that happened.
 
-Reported-by: Aiden Lambert <alambert48@gatech.edu>
-Fixes: 59a707b0d42e ("NFS: Ensure we revalidate the inode correctly after remove or rename")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+As a start client and server will need to define their own
+__SMBDIRECT_SOCKET_DISCONNECT(__sc) macro in order to use
+SMBDIRECT_CHECK_STATUS_DISCONNECT().
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 425c32750b48 ("smb: server: relax WARN_ON_ONCE(SMBDIRECT_SOCKET_*) checks in recv_done() and smb_direct_cm_handler()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/smb/common/smbdirect/smbdirect_socket.h | 38 ++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 048ce25ebfb70..01af2bb8a7216 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1903,13 +1903,15 @@ static int nfs_dentry_delete(const struct dentry *dentry)
+diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
+index 611986827a5e2..384b19177e1c3 100644
+--- a/fs/smb/common/smbdirect/smbdirect_socket.h
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -394,6 +394,44 @@ static __always_inline void smbdirect_socket_init(struct smbdirect_socket *sc)
+ 	init_waitqueue_head(&sc->mr_io.cleanup.wait_queue);
  }
  
- /* Ensure that we revalidate inode->i_nlink */
--static void nfs_drop_nlink(struct inode *inode)
-+static void nfs_drop_nlink(struct inode *inode, unsigned long gencount)
- {
-+	struct nfs_inode *nfsi = NFS_I(inode);
++#define __SMBDIRECT_CHECK_STATUS_FAILED(__sc, __expected_status, __error_cmd, __unexpected_cmd) ({ \
++	bool __failed = false; \
++	if (unlikely((__sc)->first_error)) { \
++		__failed = true; \
++		__error_cmd \
++	} else if (unlikely((__sc)->status != (__expected_status))) { \
++		__failed = true; \
++		__unexpected_cmd \
++	} \
++	__failed; \
++})
 +
- 	spin_lock(&inode->i_lock);
- 	/* drop the inode if we're reasonably sure this is the last link */
--	if (inode->i_nlink > 0)
-+	if (inode->i_nlink > 0 && gencount == nfsi->attr_gencount)
- 		drop_nlink(inode);
--	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
-+	nfsi->attr_gencount = nfs_inc_attr_generation_counter();
- 	nfs_set_cache_invalid(
- 		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
- 			       NFS_INO_INVALID_NLINK);
-@@ -1923,8 +1925,9 @@ static void nfs_drop_nlink(struct inode *inode)
- static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
- {
- 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
-+		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
- 		nfs_complete_unlink(dentry, inode);
--		nfs_drop_nlink(inode);
-+		nfs_drop_nlink(inode, gencount);
- 	}
- 	iput(inode);
- }
-@@ -2523,9 +2526,11 @@ static int nfs_safe_remove(struct dentry *dentry)
- 
- 	trace_nfs_remove_enter(dir, dentry);
- 	if (inode != NULL) {
-+		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
++#define __SMBDIRECT_CHECK_STATUS_WARN(__sc, __expected_status, __unexpected_cmd) \
++	__SMBDIRECT_CHECK_STATUS_FAILED(__sc, __expected_status, \
++	, \
++	{ \
++		const struct sockaddr_storage *__src = NULL; \
++		const struct sockaddr_storage *__dst = NULL; \
++		if ((__sc)->rdma.cm_id) { \
++			__src = &(__sc)->rdma.cm_id->route.addr.src_addr; \
++			__dst = &(__sc)->rdma.cm_id->route.addr.dst_addr; \
++		} \
++		WARN_ONCE(1, \
++			"expected[%s] != %s first_error=%1pe local=%pISpsfc remote=%pISpsfc\n", \
++			smbdirect_socket_status_string(__expected_status), \
++			smbdirect_socket_status_string((__sc)->status), \
++			SMBDIRECT_DEBUG_ERR_PTR((__sc)->first_error), \
++			__src, __dst); \
++		__unexpected_cmd \
++	})
 +
- 		error = NFS_PROTO(dir)->remove(dir, dentry);
- 		if (error == 0)
--			nfs_drop_nlink(inode);
-+			nfs_drop_nlink(inode, gencount);
- 	} else
- 		error = NFS_PROTO(dir)->remove(dir, dentry);
- 	if (error == -ENOENT)
-@@ -2725,6 +2730,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- {
- 	struct inode *old_inode = d_inode(old_dentry);
- 	struct inode *new_inode = d_inode(new_dentry);
-+	unsigned long new_gencount = 0;
- 	struct dentry *dentry = NULL;
- 	struct rpc_task *task;
- 	bool must_unblock = false;
-@@ -2777,6 +2783,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 		} else {
- 			block_revalidate(new_dentry);
- 			must_unblock = true;
-+			new_gencount = NFS_I(new_inode)->attr_gencount;
- 			spin_unlock(&new_dentry->d_lock);
- 		}
- 
-@@ -2816,7 +2823,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 			new_dir, new_dentry, error);
- 	if (!error) {
- 		if (new_inode != NULL)
--			nfs_drop_nlink(new_inode);
-+			nfs_drop_nlink(new_inode, new_gencount);
- 		/*
- 		 * The d_move() should be here instead of in an async RPC completion
- 		 * handler because we need the proper locks to move the dentry.  If
++#define SMBDIRECT_CHECK_STATUS_WARN(__sc, __expected_status) \
++	__SMBDIRECT_CHECK_STATUS_WARN(__sc, __expected_status, /* nothing */)
++
++#define SMBDIRECT_CHECK_STATUS_DISCONNECT(__sc, __expected_status) \
++	__SMBDIRECT_CHECK_STATUS_WARN(__sc, __expected_status, \
++		__SMBDIRECT_SOCKET_DISCONNECT(__sc);)
++
+ struct smbdirect_send_io {
+ 	struct smbdirect_socket *socket;
+ 	struct ib_cqe cqe;
 -- 
 2.51.0
 
