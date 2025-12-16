@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-202503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E501CC309B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF475CC289F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D120630410C3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFEAD3063F7B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9A135295B;
-	Tue, 16 Dec 2025 12:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C5E34EF07;
+	Tue, 16 Dec 2025 11:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkFoco+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgz2gbX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9624734F491;
-	Tue, 16 Dec 2025 12:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E3234EEFD;
+	Tue, 16 Dec 2025 11:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888111; cv=none; b=HsDf284jMSSTx//pQzFNHNZhqBeAKDjMXzqI9PNoqosPceeWt94gWwckzRNAqOpp5JG7sPboPueg0FnoI6/h6+vpna/lK/2N/tlYaDXvNO8sx5uuEsYVY/2ONZziydQp0+pVSEniXgr+MXQsyF/6rgp7o3NiFqn5G0RNRYkdCYo=
+	t=1765886126; cv=none; b=b5QSQzK6E59pNfVKSGHUw12l+70wfX3eufF28nmuqvw01Hk3h6pB7ZNu7bhKd7QF3ZnSA2arbNTzZJ9SQp0/6GruhEhpHAeeXwo/PFTbDtCbnBiS7ygp+P00UFjlw0basSclC/uWHToqKuHt7zTAKSgFnIVZjQ4JoixnJTqLYug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888111; c=relaxed/simple;
-	bh=7kpFJ+9KDX3isoMhQQQwoAFvaeNjFxy7oPpAouA8SFU=;
+	s=arc-20240116; t=1765886126; c=relaxed/simple;
+	bh=4+gdgvTFhGKxsztQxiaBmliI9R1tI5b0vdDpzHms3YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFLHF73LN1VSG6CJuBCob0fSIEO/O1orvftH8S1JrTlg6ugCjWxB8jmJ7ht9UflvTUIPtdWzae/5eIliQKLBJFwuO2TARNHJuufxzHpsmCTLeT49hmoY6OHv5RzYcTcTn3yFJWalt7/O5dh2BhhLJ6hYCzAgKVuzjWYU0KI/L2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkFoco+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB747C4CEF1;
-	Tue, 16 Dec 2025 12:28:30 +0000 (UTC)
+	 MIME-Version; b=CIDB7jSWpOX/DcT63fW69PIMQiv1UPtC1+q7JzbFgCf+wBalMB+Rfnh4CgeGGTg3A5SqQb3B7+urtDaaVI7hRsz4gxXQ62/ngQxYkv/NUtGRlK77aFx7lnki8HLjoApWsTFBlENYqe7ISfYkU93xwvy4UhJMD8FaTzjPEVIEbR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgz2gbX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C03C4CEF1;
+	Tue, 16 Dec 2025 11:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888111;
-	bh=7kpFJ+9KDX3isoMhQQQwoAFvaeNjFxy7oPpAouA8SFU=;
+	s=korg; t=1765886125;
+	bh=4+gdgvTFhGKxsztQxiaBmliI9R1tI5b0vdDpzHms3YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkFoco+VdxrbuhpfQbTFNV1OkqkVmdZJHtD9P8h7n4ibdyJUqwOlCVrugyxZqPk+f
-	 uPdQJlCN/wfLOWBxC7Dj4Ej+ReEB8yMid9tjKf5UZaHQMMBBy31ByMrRoVKnmrsrfK
-	 BUE5YSwNo0y3cjP2bZClosNpOeh/eljNaQO/bREE=
+	b=tgz2gbX5HamMuVF4mt4ZrtS09gJvl6YZOeagAfRy341jZt15aC9FDX8ATWyTmLfQQ
+	 FhvA0cS4aj/bVU79sgeU1e/vjfHJPEAwngIbtt/YOG0vmgTq3TVIA0/AowGSgrHDJv
+	 jc4DviMQlSO9bIh9sjpD3VDFdTZ+D7LRXLcaeL54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 418/614] backlight: led-bl: Add devlink to supplier LEDs
+Subject: [PATCH 6.17 344/507] PCI: dwc: Fix wrong PORT_LOGIC_LTSSM_STATE_MASK definition
 Date: Tue, 16 Dec 2025 12:13:05 +0100
-Message-ID: <20251216111416.516653023@linuxfoundation.org>
+Message-ID: <20251216111357.922348497@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
+[ Upstream commit bcc9a4a0bca3aee4303fa4a20302e57b24ac8f68 ]
 
-LED Backlight is a consumer of one or multiple LED class devices, but
-devlink is currently unable to create correct supplier-producer links when
-the supplier is a class device. It creates instead a link where the
-supplier is the parent of the expected device.
+As per DesignWare Cores PCI Express Controller Databook, section 5.50,
+SII: Debug Signals, cxpl_debug_info[63:0]:
 
-One consequence is that removal order is not correctly enforced.
+  [5:0] smlh_ltssm_state: LTSSM current state. Encoding is same as the
+  dedicated smlh_ltssm_state output.
 
-Issues happen for example with the following sections in a device tree
-overlay:
+The mask should be 6 bits, from 0 to 5. Hence, fix the mask definition.
 
-    // An LED driver chip
-    pca9632@62 {
-        compatible = "nxp,pca9632";
-        reg = <0x62>;
-
-	// ...
-
-        addon_led_pwm: led-pwm@3 {
-            reg = <3>;
-            label = "addon:led:pwm";
-        };
-    };
-
-    backlight-addon {
-        compatible = "led-backlight";
-        leds = <&addon_led_pwm>;
-        brightness-levels = <255>;
-        default-brightness-level = <255>;
-    };
-
-In this example, the devlink should be created between the backlight-addon
-(consumer) and the pca9632@62 (supplier). Instead it is created between the
-backlight-addon (consumer) and the parent of the pca9632@62, which is
-typically the I2C bus adapter.
-
-On removal of the above overlay, the LED driver can be removed before the
-backlight device, resulting in:
-
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-    ...
-    Call trace:
-     led_put+0xe0/0x140
-     devm_led_release+0x6c/0x98
-
-Another way to reproduce the bug without any device tree overlays is
-unbinding the LED class device (pca9632@62) before unbinding the consumer
-(backlight-addon):
-
-  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
-  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
-
-Fix by adding a devlink between the consuming led-backlight device and the
-supplying LED device, as other drivers and subsystems do as well.
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/1763122140-203068-1-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/led_bl.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index efc5e380669ae..f7ab9b3607313 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -210,6 +210,19 @@ static int led_bl_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->bl_dev);
- 	}
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index cc71a2d90cd48..509e08e58b692 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -95,7 +95,7 @@
+ #define PORT_LANE_SKEW_INSERT_MASK	GENMASK(23, 0)
  
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		struct device_link *link;
-+
-+		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!link) {
-+			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
-+				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
-+			backlight_device_unregister(priv->bl_dev);
-+			return -EINVAL;
-+		}
-+	}
-+
- 	for (i = 0; i < priv->nb_leds; i++) {
- 		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_disable(priv->leds[i]);
+ #define PCIE_PORT_DEBUG0		0x728
+-#define PORT_LOGIC_LTSSM_STATE_MASK	0x1f
++#define PORT_LOGIC_LTSSM_STATE_MASK	0x3f
+ #define PORT_LOGIC_LTSSM_STATE_L0	0x11
+ #define PCIE_PORT_DEBUG1		0x72C
+ #define PCIE_PORT_DEBUG1_LINK_UP		BIT(4)
 -- 
 2.51.0
 
