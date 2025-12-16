@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-202164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E413CC2CDD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549B4CC3B0C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0AD9305D387
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C35083007743
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDF13659E5;
-	Tue, 16 Dec 2025 12:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9754F349B0D;
+	Tue, 16 Dec 2025 11:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAh0YdpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFnO3Crk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD53364EBB;
-	Tue, 16 Dec 2025 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5321A34A3AC;
+	Tue, 16 Dec 2025 11:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887024; cv=none; b=gVH8SWpZm8DaR8M5YiXUPZIVpclWV+heWvzK2GSRyK3JcoWmFf18H30dymI4euQXXJM27So0lV5XlR7Lpvs/bLvy547uLfeHaEm8WLZRbECVBgm2UtIxsqo2fmtKIAQh0dAXAs7JGW6l6aB5ANPQA3W1M456r63AWUyyKCrUrdQ=
+	t=1765885185; cv=none; b=ALBaim0yMmlIpa+k5WrhaSr1gVKspPhN1SpGYNZ1tqX0jFKzbcI3MaBs3PJZtzqKH6fEg0zSJZFl+GIVqPYJVXl7J4j9ANv8qtBJXWVUv37EAmShUonHH5g5JZeRoek5r7aYhLhZWjwy/jATgqcLU+HUACjDANLYwPH49WyxLq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887024; c=relaxed/simple;
-	bh=GzvTFH3FB58w8S9/DCzkrC3EI9J98HidOONCQiRZNJo=;
+	s=arc-20240116; t=1765885185; c=relaxed/simple;
+	bh=aM6bFBwQIiF1LCEnxaaPiKib8E61dE41XWuJdLu44WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8w4xUIyvMuFkmPPjAj6GkfO5rZ+oe6glbWW3fLEEKLBipcwr2z3QmmnyKnR7gO1HIwYwqZyCB5Jqsctb6M+aUw9kEhV92TA8Amy/kIJ/7Nfar6Pa3/2/uc6pPciZosGKTRlK6Wx1YCvtJPgyozPULCoKOxrRq3F5yCxZ94VhqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAh0YdpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39465C4CEF1;
-	Tue, 16 Dec 2025 12:10:24 +0000 (UTC)
+	 MIME-Version; b=clby6ymheNP6jFRi6GK/9+v/7TIb/GWQZ2blI7XguQET3jzP/nP20BWdUaLtkElfAs6hbaAuSC8ze+FptG+Rk7J/p0uJTrz25Xtbb21AszxmUIxio75rRnVJ1/Dpuo0WNjZgq+LCIGUwczWeuVNUfMK99EZBp/9SLkwhSVRFCc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFnO3Crk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEB7C4CEF1;
+	Tue, 16 Dec 2025 11:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887024;
-	bh=GzvTFH3FB58w8S9/DCzkrC3EI9J98HidOONCQiRZNJo=;
+	s=korg; t=1765885184;
+	bh=aM6bFBwQIiF1LCEnxaaPiKib8E61dE41XWuJdLu44WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAh0YdpYijK8iO0ML8zqDjDqVHX18PzYtF3aef3K0cuIMTKTzKV596BAH06IKAgnm
-	 j5FlD16ov8z4JYyrgBDVcmu0oTKbX9n1fFUnyN8M4l140xMYAFYWUmFxgPBGmMoFGB
-	 /8QN/q2nRfhsvetZL60I0W6O/luwH27JTul/zZpw=
+	b=NFnO3Crkc0ytEJraabZYzIi2xSa+Z7CVyCznVQMI/AURxaGvzx5exrmbn/xBRjmmk
+	 k5FBT+7VAp+kXA65/Y0ahM7w6Ukny/WSJMFqHO+6QaFvj94NXWI/a+Ph7nf+jC1T+8
+	 han8CM2Th+cLVta+zsy1IqHFUFmX3ag1nt/9CHVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 105/614] ice: remove duplicate call to ice_deinit_hw() on error paths
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 031/507] perf parse-events: Fix legacy cache events if event is duplicated in a PMU
 Date: Tue, 16 Dec 2025 12:07:52 +0100
-Message-ID: <20251216111405.140281583@linuxfoundation.org>
+Message-ID: <20251216111346.665069555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1390b8b3d2bef9bfbb852fc735430798bfca36e7 ]
+[ Upstream commit b7b76f607a15f16031001687e733046b5f6f5d86 ]
 
-Current unwinding code on error paths of ice_devlink_reinit_up() and
-ice_probe() have manual call to ice_deinit_hw() (which is good, as there
-is also manual call to ice_hw_init() there), which is then duplicated
-(and was prior current series) in ice_deinit_dev().
+The term list when adding an event to a PMU is expected to have the
+event name for the alias lookup. Also, set found_supported so that
+-EINVAL isn't returned.
 
-Fix the above by removing ice_deinit_hw() from ice_deinit_dev().
-Add a (now missing) call in ice_remove().
+Fixes: 62593394f66a ("perf parse-events: Legacy cache names on all
+PMUs and lower priority")
 
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/intel-wired-lan/20250717-jk-ddp-safe-mode-issue-v1-1-e113b2baed79@intel.com/
-Fixes: 4d3f59bfa2cd ("ice: split ice_init_hw() out from ice_init_dev()")
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/parse-events.c | 28 +++++++++++++++++++++++++++-
+ tools/perf/util/parse-events.h |  3 ++-
+ tools/perf/util/parse-events.y |  2 +-
+ 3 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index f1ebdb7dbdc73..b0f8a96c13b47 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4784,7 +4784,6 @@ int ice_init_dev(struct ice_pf *pf)
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index 0026cff4d69e4..fbf287363d9e6 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -475,8 +475,10 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
  
- void ice_deinit_dev(struct ice_pf *pf)
+ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 			   struct parse_events_state *parse_state,
+-			   struct parse_events_terms *parsed_terms)
++			   struct parse_events_terms *parsed_terms,
++			   void *loc_)
  {
--	ice_deinit_hw(&pf->hw);
- 	ice_service_task_stop(pf);
++	YYLTYPE *loc = loc_;
+ 	struct perf_pmu *pmu = NULL;
+ 	bool found_supported = false;
+ 	const char *config_name = get_config_name(parsed_terms);
+@@ -497,12 +499,36 @@ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 			 * The PMU has the event so add as not a legacy cache
+ 			 * event.
+ 			 */
++			struct parse_events_terms temp_terms;
++			struct parse_events_term *term;
++			char *config = strdup(name);
++
++			if (!config)
++				goto out_err;
++
++			parse_events_terms__init(&temp_terms);
++			if (!parsed_terms)
++				parsed_terms = &temp_terms;
++
++			if (parse_events_term__num(&term,
++						    PARSE_EVENTS__TERM_TYPE_USER,
++						    config, /*num=*/1, /*novalue=*/true,
++						    loc, /*loc_val=*/NULL) < 0) {
++				zfree(&config);
++				goto out_err;
++			}
++			list_add(&term->list, &parsed_terms->terms);
++
+ 			ret = parse_events_add_pmu(parse_state, list, pmu,
+ 						   parsed_terms,
+ 						   first_wildcard_match,
+ 						   /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
++			list_del_init(&term->list);
++			parse_events_term__delete(term);
++			parse_events_terms__exit(&temp_terms);
+ 			if (ret)
+ 				goto out_err;
++			found_supported = true;
+ 			if (first_wildcard_match == NULL)
+ 				first_wildcard_match =
+ 					container_of(list->prev, struct evsel, core.node);
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 62dc7202e3bad..c498d896badfd 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -235,7 +235,8 @@ int parse_events_add_numeric(struct parse_events_state *parse_state,
+ 			     bool wildcard);
+ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 			   struct parse_events_state *parse_state,
+-			   struct parse_events_terms *parsed_terms);
++			   struct parse_events_terms *parsed_terms,
++			   void *loc);
+ int parse_events__decode_legacy_cache(const char *name, int pmu_type, __u64 *config);
+ int parse_events_add_breakpoint(struct parse_events_state *parse_state,
+ 				struct list_head *list,
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index a2361c0040d75..ced26c549c33a 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -353,7 +353,7 @@ PE_LEGACY_CACHE opt_event_config
+ 	if (!list)
+ 		YYNOMEM;
  
- 	/* Service task is already stopped, so call reset directly. */
-@@ -5466,6 +5465,7 @@ static void ice_remove(struct pci_dev *pdev)
- 	ice_set_wake(pf);
+-	err = parse_events_add_cache(list, &parse_state->idx, $1, parse_state, $2);
++	err = parse_events_add_cache(list, &parse_state->idx, $1, parse_state, $2, &@1);
  
- 	ice_adapter_put(pdev);
-+	ice_deinit_hw(&pf->hw);
- 
- 	ice_deinit_dev(pf);
- 	ice_aq_cancel_waiting_tasks(pf);
+ 	parse_events_terms__delete($2);
+ 	free($1);
 -- 
 2.51.0
 
