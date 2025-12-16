@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740D1CC26B0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F67CC2E63
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC2493063C1F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E6330ACB5D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B434D4C2;
-	Tue, 16 Dec 2025 11:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B401359702;
+	Tue, 16 Dec 2025 12:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuslF8iW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtIGzcgL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2FA34D3BB;
-	Tue, 16 Dec 2025 11:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3A35503A;
+	Tue, 16 Dec 2025 12:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885332; cv=none; b=m9Gx8SnReR9IF3DaMCWpxgHxfApbbdRnL2I7PFRQQxYRQPW70BTKmTJUAW4WKJw1/Yp5lefxMzdBW0QNkqTGc19ApjciNEHjnBTkReTDrCOl0v6/cNM4bSF2jXP4zhpj1MokJAd5eMduUUcl2dqc9pNEj9gwgjw1nb91SdOzbyw=
+	t=1765887282; cv=none; b=bRz6qQucsrgqXeid5khqrzjgQZTlrG/626//92L81ueHrCSncfGlOni1bxBFEasBiMQPNP0RXLlTyt3WP7jdX4IKSaUhT1k1PJNBE9b1qMczTVahL2QZ30FZ89yJX+vCLqWxgjtF46ERJG+S5xNLl1e9J3qx6PmCURi8Nlv/UZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885332; c=relaxed/simple;
-	bh=6OuTUaDVuq6lvOvaMnDftPuEvaAzdZP0bDW2E0lVaug=;
+	s=arc-20240116; t=1765887282; c=relaxed/simple;
+	bh=QnplSGF5q2bmvtRviEvPoMAakfxQRCRnuwZJ1oPpc/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vtdf0cGHivTkPv9Lo2CDhNb77/5sD0wrqdrmR9BXW/ZkoPUqFPgF5uUX4ZaaNTZyVHAm30eYXEwHc+ijtxusBK87Jv9GEuY9/5KImacj7vXJR46GJu1saweM3tJeuNgIFuiI8W4A6wCqVm7ab/5pDxIc6leE0uyDajieGIecQOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuslF8iW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC45C4CEF5;
-	Tue, 16 Dec 2025 11:42:10 +0000 (UTC)
+	 MIME-Version; b=kAuOzFAi64S63a+mDvr7Ou+3MlYsEzfm7in1bLPKzJz+yOJqHcCZV/glIRuxnDFeR+0iZTjE5VEtUQSFD8o5AR2/oj9gzZXbZRpUgdc9R/ZGHFnacgcNYqLEckoOZg/UwpUh9px9C3HPl3dUVFYDjOrPHSHsBxm1c+5yNeqPcbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtIGzcgL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B70C4CEF5;
+	Tue, 16 Dec 2025 12:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885331;
-	bh=6OuTUaDVuq6lvOvaMnDftPuEvaAzdZP0bDW2E0lVaug=;
+	s=korg; t=1765887282;
+	bh=QnplSGF5q2bmvtRviEvPoMAakfxQRCRnuwZJ1oPpc/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SuslF8iWnqd/JZn2Nt4UgX2cWeM8XKwiQmXhIrd+jPQ33hEXCPgbMPsI8eXGBr54H
-	 DnELE5395MjOwxOo9lL7iakmKmxBW1ZpoBAr0sycu4EpWcm1eLrp8vaIWij/ePiZ27
-	 808DTRZdOhPJbaLwta2q6PcIG5cJ3tsKPmsc7HMY=
+	b=KtIGzcgLtDR2U+BulBlYIqnHXoqZ9KC6Hr+YwH2vqAJngcvXLYfqg0aSkyADlU699
+	 OJDGYYS1oq6v7evd3Wc818GRn/dCg60vVW0VQgMx0Y72tzjv+103Zfv6XuSLEsJltn
+	 jMTxKTactole6Lc0ZxJQ6Pmd4Lrnd7p5JSnohZXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 108/507] ARM: dts: renesas: gose: Remove superfluous port property
-Date: Tue, 16 Dec 2025 12:09:09 +0100
-Message-ID: <20251216111349.449484759@linuxfoundation.org>
+Subject: [PATCH 6.18 183/614] power: supply: wm831x: Check wm831x_set_bits() return value
+Date: Tue, 16 Dec 2025 12:09:10 +0100
+Message-ID: <20251216111408.003968026@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 00df14f34615630f92f97c9d6790bd9d25c4242d ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-'bus-width' is defined for the corresponding vin input port already.
-No need to declare it in the output port again. Fixes:
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
-    arch/arm/boot/dts/renesas/r8a7793-gose.dtb: composite-in@20 (adi,adv7180cp): ports:port@3:endpoint: Unevaluated properties are not allowed ('bus-width' was unexpected)
-    from schema $id: http://devicetree.org/schemas/media/i2c/adi,adv7180.yaml#
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250929093616.17679-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/renesas/r8a7793-gose.dts | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r8a7793-gose.dts b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
-index 45b267ec26794..5c6928c941aca 100644
---- a/arch/arm/boot/dts/renesas/r8a7793-gose.dts
-+++ b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
-@@ -373,7 +373,6 @@ adv7180_in: endpoint {
- 				port@3 {
- 					reg = <3>;
- 					adv7180_out: endpoint {
--						bus-width = <8>;
- 						remote-endpoint = <&vin1ep>;
- 					};
- 				};
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index 6acdba7885ca5..78fa0573ef25c 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
+ 
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ 
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
