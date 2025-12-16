@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7150CC2394
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB279CC2AB3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6618D3032287
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC7623014105
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FEB342177;
-	Tue, 16 Dec 2025 11:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB11F36403D;
+	Tue, 16 Dec 2025 12:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqEdndJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4D4r6pR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856B313E13;
-	Tue, 16 Dec 2025 11:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AC8364024;
+	Tue, 16 Dec 2025 12:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884271; cv=none; b=Tt5Cc8fezz5vgFlIkPr8/Gfr/ZASLM8dIKDTg923o6gpstjohwreWu7WHv85kqyhhdamW+W8GG05Se80eoB3aBrXc1lO+Mlo4c8Wi7ItR+6JECOnm/2X2CN8WzU5d4XZcl7UMPjFTQDlhTdW16KIxcHdByNabJanShNygJWXxQA=
+	t=1765887783; cv=none; b=f3Dsygec85paa9ijzwAO1t/IaGeNZUJyk/hKp0bxoQnSzyhJijdtjemtjc+qHcr0gxxIgvOiIDpaRWvEMBJD8eg/1Q6j3I1N9BALZeqby8K/Y62YI7iAj0AbAstzepOHXYaGLpmFkA2qrYGhjZivjacQzhetMRl/FHCLpryvkT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884271; c=relaxed/simple;
-	bh=KuuqJi34dtXvCft24GJNUOrItS+NnItBgmDAw7V7lPg=;
+	s=arc-20240116; t=1765887783; c=relaxed/simple;
+	bh=RHVwxkYpkLjdEIOWTRzH8MQtpIotqrGoq+aeK/JRfJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwhIIo3Lo+8nFPXfdpDzMuC28jXOzGYT+TQyZtNRvGaEEIOtV2JRdTb5PLEZIrwor5A3GZ3/6nrloWAE8yZH3k7Z4hWTZVIeVhmlJlhsSnxSz1P/ymd6kIj7hhwXocQjOchKHbqIzhRifrP0xPCuLMpDMJxcfeThxLdHjvVF9Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqEdndJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18C2C4CEF1;
-	Tue, 16 Dec 2025 11:24:30 +0000 (UTC)
+	 MIME-Version; b=Uis7KNCWEiuVNdnMSB2AQcNNaQB2kJG+qOPK2UQMIie5Rf2TJxpCj2LInzmbSvuNT+A8H02NNEyJQUF2WAcJzMQmFQxk45ct+5Y4SMuAJxWWM4EjiEdxIVIfj3xcpT0EoV6MzJc8jC42XWuJRz7opLZ4dYhOBJlqJYFk6H3Fzhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4D4r6pR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC007C4CEF1;
+	Tue, 16 Dec 2025 12:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884271;
-	bh=KuuqJi34dtXvCft24GJNUOrItS+NnItBgmDAw7V7lPg=;
+	s=korg; t=1765887783;
+	bh=RHVwxkYpkLjdEIOWTRzH8MQtpIotqrGoq+aeK/JRfJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqEdndJQ+nEAzt13nHvrpSo71FQjd5iFhwgf+OEtFdarMxbq3utLmKAOrxqW6awXq
-	 kZF9IKkc4F7rL+LprSvN2LgDhPV2baKb6QfhcBVATSiU4Ea6C9NsLVSG41XBf8GPcv
-	 Y7gOtbwNIDdhEzBnj/vf1fQi9LffXg0gNkJCk6uY=
+	b=m4D4r6pRpHkHlRfdecdLh/H7XaLyFff7+BBZ8K6tts/z1hiSfKOBvi8yWqCNlwhkI
+	 0FDCVGx7NcSTkkOr/DVjEN0pxKMagSj4XiYs9vzMNxK+GlQ7tvyQWvqW5/zFp0azpM
+	 xsB0qxu9eLB7g8s1u/ay6OcfnG8yc6BlagwJmzhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Crystal Wood <crwood@redhat.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/354] ntfs3: init run lock for extend inode
+Subject: [PATCH 6.18 336/614] tools/rtla: Fix --on-threshold always triggering
 Date: Tue, 16 Dec 2025 12:11:43 +0100
-Message-ID: <20251216111325.846517128@linuxfoundation.org>
+Message-ID: <20251216111413.538618151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
+[ Upstream commit 417bd0d502f90a2e785e7299dae4f248b5ac0292 ]
 
-After setting the inode mode of $Extend to a regular file, executing the
-truncate system call will enter the do_truncate() routine, causing the
-run_lock uninitialized error reported by syzbot.
+Commit 8d933d5c89e8 ("rtla/timerlat: Add continue action") moved the
+code performing on-threshold actions (enabled through --on-threshold
+option) to inside the RTLA main loop.
 
-Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
-a regular file, the do_truncate() routine would not be entered.
+The condition in the loop does not check whether the threshold was
+actually exceeded or if stop tracing was requested by the user through
+SIGINT or duration. This leads to a bug where on-threshold actions are
+always performed, even when the threshold was not hit.
 
-Add the run_lock initialization when loading $Extend.
+(BPF mode is not affected, since it uses a different condition in the
+while loop.)
 
-syzbot reported:
-INFO: trying to register non-static key.
-Call Trace:
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
- register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
- __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
- ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
- ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
+Add a condition that checks for !stop_tracing before executing the
+actions. Also, fix incorrect brackets in hist_main_loop to match the
+semantics of top_main_loop.
 
-Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
-Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
-Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 8d933d5c89e8 ("rtla/timerlat: Add continue action")
+Fixes: 2f3172f9dd58 ("tools/rtla: Consolidate code between osnoise/timerlat and hist/top")
+Reviewed-by: Crystal Wood <crwood@redhat.com>
+Reviewed-by: Wander Lairson Costa <wander@redhat.com>
+Link: https://lore.kernel.org/r/20251007095341.186923-1-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/tracing/rtla/src/common.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 44fbd9156a30f..8a9c11083e6e6 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -472,6 +472,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
- 		mode = S_IFREG;
-+		init_rwsem(&ni->file.run_lock);
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
+index 2e6e3dac1897f..b197037fc58b3 100644
+--- a/tools/tracing/rtla/src/common.c
++++ b/tools/tracing/rtla/src/common.c
+@@ -268,6 +268,10 @@ int top_main_loop(struct osnoise_tool *tool)
+ 			tool->ops->print_stats(tool);
+ 
+ 		if (osnoise_trace_is_off(tool, record)) {
++			if (stop_tracing)
++				/* stop tracing requested, do not perform actions */
++				return 0;
++
+ 			actions_perform(&params->threshold_actions);
+ 
+ 			if (!params->threshold_actions.continue_flag)
+@@ -315,20 +319,22 @@ int hist_main_loop(struct osnoise_tool *tool)
+ 		}
+ 
+ 		if (osnoise_trace_is_off(tool, tool->record)) {
++			if (stop_tracing)
++				/* stop tracing requested, do not perform actions */
++				break;
++
+ 			actions_perform(&params->threshold_actions);
+ 
+-			if (!params->threshold_actions.continue_flag) {
++			if (!params->threshold_actions.continue_flag)
+ 				/* continue flag not set, break */
+ 				break;
+ 
+-				/* continue action reached, re-enable tracing */
+-				if (tool->record)
+-					trace_instance_start(&tool->record->trace);
+-				if (tool->aa)
+-					trace_instance_start(&tool->aa->trace);
+-				trace_instance_start(&tool->trace);
+-			}
+-			break;
++			/* continue action reached, re-enable tracing */
++			if (tool->record)
++				trace_instance_start(&tool->record->trace);
++			if (tool->aa)
++				trace_instance_start(&tool->aa->trace);
++			trace_instance_start(&tool->trace);
+ 		}
+ 
+ 		/* is there still any user-threads ? */
 -- 
 2.51.0
 
