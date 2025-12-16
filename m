@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072CDCC2E09
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27006CC21DE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52E83317A126
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03E7E3029FC4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A26A322B6B;
-	Tue, 16 Dec 2025 12:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA733B961;
+	Tue, 16 Dec 2025 11:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2esaRZaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JubuZG3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BFD221F0C;
-	Tue, 16 Dec 2025 12:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFBC2459D7;
+	Tue, 16 Dec 2025 11:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887507; cv=none; b=TrtAgaV9y2Q9dHpaQ1n/BrlU1ABEYGNmZCnWpClNh8efvgtokDvst8ObHl4MXdrWzhmMiK3iCSf3l2DHenu9dki6TIjp8mRxF1A8DTZ2j/oNJqLih/D4vm4HyAyL4ZmWjC1QbBMtjFDXNYwskBU7DHbyS0hXP9rb6DUL+6iXKug=
+	t=1765883969; cv=none; b=EmBn/VLDiOihQQ3YDySkxzsEfrpywLu1yy5dnDlCFeHECVAMZ2948MwgDYlJKOohV4cRMBXHxQwsK/9l/a6tUS2Zk3UzGUeOYoK2O/HVPLx6Xfu6/hLSjKwvU5aZRgCmeha5Pq48rP1juROhPYRKXQJjk+ULNaWp+6mANekrJbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887507; c=relaxed/simple;
-	bh=lNUYfNpxppwbY1X7EMA9kwoMQN6YUr5e2Qap9vRXmaQ=;
+	s=arc-20240116; t=1765883969; c=relaxed/simple;
+	bh=k7UqO9ZI0GcdJ6fzjxI1yzMXEZVkghOuSYeV1Wxm15w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jkj8wU7sy+JtQQY3gwVdMOuFs8DVuuCpeNsf/IGwKJbfMVQfxNluWvPNkte9pWbX24QUQPqsmluQCzixmF/+jKAE9ufxj2+xZjk4aDdxMyFQf7STkFvaXqKxsIwh4eY4CMmAzKRJ3Clsf2VZBW2bSACxe9m672MCXS8KzkFBXe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2esaRZaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA780C4CEF1;
-	Tue, 16 Dec 2025 12:18:26 +0000 (UTC)
+	 MIME-Version; b=N2m6dP/fxEOpmaCEZGUZ5XC607HicsYlwyl9DyY+r+vKOIkwk4qlzCwUR9ozmrGmu8Ku6RKetIZy5WHjB2fcxvZi+4dYE0ov0smB4caliXbfThVvV4U3fCyvO1xMdcskHQRjXUFjZaFLP5nYUdSeylbsjzcPIWxQMFiyHjuoOeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JubuZG3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54866C4CEF1;
+	Tue, 16 Dec 2025 11:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887507;
-	bh=lNUYfNpxppwbY1X7EMA9kwoMQN6YUr5e2Qap9vRXmaQ=;
+	s=korg; t=1765883968;
+	bh=k7UqO9ZI0GcdJ6fzjxI1yzMXEZVkghOuSYeV1Wxm15w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2esaRZaI1YKJnMkz9pbPDCvVTekOiUn/L/3F42+oy5M6PwXf3ufr1mMLZUB0zWZjN
-	 K8629RQfqkOu5GiugUH5Y978khmIKtF+7JMX7P3WnqpaLuvduu84WkZNjClpVwSS5i
-	 p9Iuia9AZm/bc2s5J79jouvzzw9c+QA/zmj6ZrMc=
+	b=JubuZG3SVTF4OX2nERSdGcut5Mvfhs0xv6POlLc7tSIgzkzxw80fngxudzHAB3Cmm
+	 swlqUiHG4YfgAqEgV36prfjW2GC4OYG/wSsomr4rNLErSIBU6Eh0aLd13g7XqMCgDR
+	 OxRrHRYbg9iy/owdicyXpYJKq3Bcp171SgLp4ZlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 252/614] coresight: Change device mode to atomic type
+Subject: [PATCH 6.12 052/354] arm64: dts: imx8mp-venice-gw702x: remove off-board uart
 Date: Tue, 16 Dec 2025 12:10:19 +0100
-Message-ID: <20251216111410.504537407@linuxfoundation.org>
+Message-ID: <20251216111322.803557535@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit 693d1eaca940f277af24c74873ef2313816ff444 ]
+[ Upstream commit effe98060f70eb96e142f656e750d6af275ceac3 ]
 
-The device mode is defined as local type. This type cannot promise
-SMP-safe access.
+UART1 and UART3 go to a connector for use on a baseboard and as such are
+defined in the baseboard device-trees. Remove them from the gw702x SOM
+device-tree.
 
-Change to atomic type and impose relax ordering, which ensures the
-SMP-safe synchronisation and the ordering between the mode setting and
-relevant operations.
-
-Fixes: 22fd532eaa0c ("coresight: etm3x: adding operation mode for etm_enable()")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-1-f55553b6c8b3@arm.com
+Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/coresight.h | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 28 -------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-index 2626105e37191..fafc9ec13f9f4 100644
---- a/include/linux/coresight.h
-+++ b/include/linux/coresight.h
-@@ -251,15 +251,11 @@ struct coresight_trace_id_map {
-  *		by @coresight_ops.
-  * @access:	Device i/o access abstraction for this device.
-  * @dev:	The device entity associated to this component.
-- * @mode:	This tracer's mode, i.e sysFS, Perf or disabled. This is
-- *		actually an 'enum cs_mode', but is stored in an atomic type.
-- *		This is always accessed through local_read() and local_set(),
-- *		but wherever it's done from within the Coresight device's lock,
-- *		a non-atomic read would also work. This is the main point of
-- *		synchronisation between code happening inside the sysfs mode's
-- *		coresight_mutex and outside when running in Perf mode. A compare
-- *		and exchange swap is done to atomically claim one mode or the
-- *		other.
-+ * @mode:	The device mode, i.e sysFS, Perf or disabled. This is actually
-+ *		an 'enum cs_mode' but stored in an atomic type. Access is always
-+ *		through atomic APIs, ensuring SMP-safe synchronisation between
-+ *		racing from sysFS and Perf mode. A compare-and-exchange
-+ *		operation is done to atomically claim one mode or the other.
-  * @refcnt:	keep track of what is in use. Only access this outside of the
-  *		device's spinlock when the coresight_mutex held and mode ==
-  *		CS_MODE_SYSFS. Otherwise it must be accessed from inside the
-@@ -288,7 +284,7 @@ struct coresight_device {
- 	const struct coresight_ops *ops;
- 	struct csdev_access access;
- 	struct device dev;
--	local_t	mode;
-+	atomic_t mode;
- 	int refcnt;
- 	bool orphan;
- 	/* sink specific fields */
-@@ -623,13 +619,14 @@ static inline bool coresight_is_percpu_sink(struct coresight_device *csdev)
- static inline bool coresight_take_mode(struct coresight_device *csdev,
- 				       enum cs_mode new_mode)
- {
--	return local_cmpxchg(&csdev->mode, CS_MODE_DISABLED, new_mode) ==
--	       CS_MODE_DISABLED;
-+	int curr = CS_MODE_DISABLED;
-+
-+	return atomic_try_cmpxchg_acquire(&csdev->mode, &curr, new_mode);
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index 45c7082c9df71..e8688695df780 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -393,13 +393,6 @@ &i2c3 {
+ 	status = "okay";
+ };
  
- static inline enum cs_mode coresight_get_mode(struct coresight_device *csdev)
- {
--	return local_read(&csdev->mode);
-+	return atomic_read_acquire(&csdev->mode);
- }
+-/* off-board header */
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1>;
+-	status = "okay";
+-};
+-
+ /* console */
+ &uart2 {
+ 	pinctrl-names = "default";
+@@ -407,13 +400,6 @@ &uart2 {
+ 	status = "okay";
+ };
  
- static inline void coresight_set_mode(struct coresight_device *csdev,
-@@ -645,7 +642,7 @@ static inline void coresight_set_mode(struct coresight_device *csdev,
- 	WARN(new_mode != CS_MODE_DISABLED && current_mode != CS_MODE_DISABLED &&
- 	     current_mode != new_mode, "Device already in use\n");
+-/* off-board header */
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+ /* off-board */
+ &usdhc1 {
+ 	pinctrl-names = "default";
+@@ -516,13 +502,6 @@ MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19	0x400001c2
+ 		>;
+ 	};
  
--	local_set(&csdev->mode, new_mode);
-+	atomic_set_release(&csdev->mode, new_mode);
- }
+-	pinctrl_uart1: uart1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
+@@ -530,13 +509,6 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
+ 		>;
+ 	};
  
- struct coresight_device *coresight_register(struct coresight_desc *desc);
+-	pinctrl_uart3: uart3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
 -- 
 2.51.0
 
