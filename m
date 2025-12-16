@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67024CC266B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E98BCC4393
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91BA83054818
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27F6730EA610
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E2343D67;
-	Tue, 16 Dec 2025 11:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9049B348884;
+	Tue, 16 Dec 2025 11:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKmn2qNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5wDAXM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB6A1DE4E1;
-	Tue, 16 Dec 2025 11:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE1A342507;
+	Tue, 16 Dec 2025 11:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884855; cv=none; b=iHQogaMWpFvQ9p03KoL++UsqJAzPaUKmfV+xvhm7EF3m/3AxMZG2aFWcZCJpVdJ1Dqr13dD04IL2/RhrvCjlRPR9XiZZyCa7c/BBX0iChRSmF1S7cVBp0Mm1E8zmKZTCFDSMq69tmsAxwXUnonEzF1hkaE1wqQCwq/jCnWDxOvM=
+	t=1765886355; cv=none; b=eddoG8bqRmI7C17i8eO6RQInkzmY3W2/qVn6u2m2EB/HuxL2iUdFEefzcUUrDRKNB7uoOV0CMyaDiyMAIQTjo/1PLIT/1dIe3NMTP8hkX1CJJlU0/7Elb1xOB+jenZv5jyaEIsil74/CHdvY7Qm4MbQFewMlhvNCcm1Jiaaf8I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884855; c=relaxed/simple;
-	bh=HpX/MM9moqfUpgf7R2dkUsAMF+zUAsD6X64K5WyPag4=;
+	s=arc-20240116; t=1765886355; c=relaxed/simple;
+	bh=BxWW/Dkc6HOkCUz5v4DI1vZU5ebORyqdNAozPAluvqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rpb8qOH7aC5FtICBm5P8BDte1sdEguBWg55bVfss8YIBxXcWC+xLBTnjcDNws0f/qcqPBOH/2zXitLYJCOIqOAoOKqPs4z6MRuxBNPI3PRCMkpVw+tDEiUKGfwE6CpZswtIYdgx4sIaqrdOGuuatabDZWJlj1+eQy3xZMJP/Ts8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKmn2qNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403E9C4CEF1;
-	Tue, 16 Dec 2025 11:34:14 +0000 (UTC)
+	 MIME-Version; b=DtA65cqE1HyJgbATVlRZfidQ5f1ZbNE+/6p8yAocWfL+ofF1WOtN/p+imDwf6Jsw8enfuIoLzf+XAIOaQBzy+/UyXqnKXAOo6IZWwYWggTW65eXP0fjnd6q94WTxrgENKNtkIUEHJopZMd5ZjErEV6fOrHmvCSu9dbQYfXO4PmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5wDAXM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD466C4CEF1;
+	Tue, 16 Dec 2025 11:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884855;
-	bh=HpX/MM9moqfUpgf7R2dkUsAMF+zUAsD6X64K5WyPag4=;
+	s=korg; t=1765886355;
+	bh=BxWW/Dkc6HOkCUz5v4DI1vZU5ebORyqdNAozPAluvqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKmn2qNJZ2zU27BFvtk4mVZ/IndIN1FQvUdbhOCM5ws1na1vb4k28xDf3O2HCGLYX
-	 dhSSZVJw4PykiACkZtxk0fTSGlTIl9XQLa3CMBG/dHsLLB3PkKSOC50jwqS6KRWIZa
-	 IhMupCKQEK8bcpqNYXtoDSuCCPHHNT6hxZeOKzRg=
+	b=j5wDAXM+mwC4EZhz+gW/eUUy9Pjr0GdaIh/Rp6zpcS94stbJmtuU6YK/lOoGpPfmC
+	 VE8lKW013k2f2ADIcScUA7fkG70BANVYXxWRZOWfItuyvGAG6h55AUOrBOkwkynbLr
+	 jmhDW17WNr4C+Y6WzsF+MDtvO25eSIU8fIEdotPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 286/354] perf tools: Fix split kallsyms DSO counting
+Subject: [PATCH 6.17 412/507] net: dsa: b53: move reading ARL entries into their own function
 Date: Tue, 16 Dec 2025 12:14:13 +0100
-Message-ID: <20251216111331.274275322@linuxfoundation.org>
+Message-ID: <20251216111400.388714929@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
+[ Upstream commit 4a291fe7226736a465ddb3fa93c21fcef7162ec7 ]
 
-It's counted twice as it's increased after calling maps__insert().  I
-guess we want to increase it only after it's added properly.
+Instead of duplicating the whole code iterating over all bins for
+BCM5325, factor out reading and parsing the entry into its own
+functions, and name it the modern one after the first chip with that ARL
+format, (BCM53)95.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-3-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 69 +++++++++++---------------------
+ 1 file changed, 23 insertions(+), 46 deletions(-)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index c60e38dc39db7..249de806f8e0d 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -938,11 +938,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
- 			if (dso__kernel(dso) == DSO_SPACE__KERNEL_GUEST)
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[guest.kernel].%d",
--					kernel_range++);
-+					kernel_range);
- 			else
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[kernel].%d",
--					kernel_range++);
-+					kernel_range);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 4d8de90fb4ab8..41dcd2d03230d 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1830,48 +1830,30 @@ static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
+ 	return b53_arl_op_wait(dev);
+ }
  
- 			ndso = dso__new(dso_name);
- 			map__zput(curr_map);
+-static int b53_arl_read(struct b53_device *dev, const u8 *mac,
+-			u16 vid, struct b53_arl_entry *ent, u8 *idx)
++static void b53_arl_read_entry_25(struct b53_device *dev,
++				  struct b53_arl_entry *ent, u8 idx)
+ {
+-	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
+-	unsigned int i;
+-	int ret;
+-
+-	ret = b53_arl_op_wait(dev);
+-	if (ret)
+-		return ret;
+-
+-	bitmap_zero(free_bins, dev->num_arl_bins);
+-
+-	/* Read the bins */
+-	for (i = 0; i < dev->num_arl_bins; i++) {
+-		u64 mac_vid;
+-		u32 fwd_entry;
++	u64 mac_vid;
+ 
+-		b53_read64(dev, B53_ARLIO_PAGE,
+-			   B53_ARLTBL_MAC_VID_ENTRY(i), &mac_vid);
+-		b53_read32(dev, B53_ARLIO_PAGE,
+-			   B53_ARLTBL_DATA_ENTRY(i), &fwd_entry);
+-		b53_arl_to_entry(ent, mac_vid, fwd_entry);
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
++		   &mac_vid);
++	b53_arl_to_entry_25(ent, mac_vid);
++}
+ 
+-		if (!ent->is_valid) {
+-			set_bit(i, free_bins);
+-			continue;
+-		}
+-		if (!ether_addr_equal(ent->mac, mac))
+-			continue;
+-		if (dev->vlan_enabled && ent->vid != vid)
+-			continue;
+-		*idx = i;
+-		return 0;
+-	}
++static void b53_arl_read_entry_95(struct b53_device *dev,
++				  struct b53_arl_entry *ent, u8 idx)
++{
++	u32 fwd_entry;
++	u64 mac_vid;
+ 
+-	*idx = find_first_bit(free_bins, dev->num_arl_bins);
+-	return *idx >= dev->num_arl_bins ? -ENOSPC : -ENOENT;
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
++		   &mac_vid);
++	b53_read32(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx), &fwd_entry);
++	b53_arl_to_entry(ent, mac_vid, fwd_entry);
+ }
+ 
+-static int b53_arl_read_25(struct b53_device *dev, const u8 *mac,
+-			   u16 vid, struct b53_arl_entry *ent, u8 *idx)
++static int b53_arl_read(struct b53_device *dev, const u8 *mac,
++			u16 vid, struct b53_arl_entry *ent, u8 *idx)
+ {
+ 	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
+ 	unsigned int i;
+@@ -1885,12 +1867,10 @@ static int b53_arl_read_25(struct b53_device *dev, const u8 *mac,
+ 
+ 	/* Read the bins */
+ 	for (i = 0; i < dev->num_arl_bins; i++) {
+-		u64 mac_vid;
+-
+-		b53_read64(dev, B53_ARLIO_PAGE,
+-			   B53_ARLTBL_MAC_VID_ENTRY(i), &mac_vid);
+-
+-		b53_arl_to_entry_25(ent, mac_vid);
++		if (is5325(dev) || is5365(dev))
++			b53_arl_read_entry_25(dev, ent, i);
++		else
++			b53_arl_read_entry_95(dev, ent, i);
+ 
+ 		if (!ent->is_valid) {
+ 			set_bit(i, free_bins);
+@@ -1934,10 +1914,7 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (is5325(dev) || is5365(dev))
+-		ret = b53_arl_read_25(dev, addr, vid, &ent, &idx);
+-	else
+-		ret = b53_arl_read(dev, addr, vid, &ent, &idx);
++	ret = b53_arl_read(dev, addr, vid, &ent, &idx);
+ 
+ 	/* If this is a read, just finish now */
+ 	if (op)
 -- 
 2.51.0
 
