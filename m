@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C519ACC354F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B1ACC45D6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 39C96300AD84
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73B383003132
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223B839B6D3;
-	Tue, 16 Dec 2025 12:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07903557F0;
+	Tue, 16 Dec 2025 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhQTX++I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eptaNbOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24E339B6CE;
-	Tue, 16 Dec 2025 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F10357A5F;
+	Tue, 16 Dec 2025 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888655; cv=none; b=Th9+ISHodrmx1GiLgHcUB9/5OYOwOqgBrtvvhaCjROWzb549rZp8j9ZYY2uQAl6ZO077/LIMhYbQlCN5EzELU3AnfXPiKy2QawWyUva98f/32Xp62arPtgVZCtCjZD2kXfDXeRyiZqwbhZ//7N3uRiWG0h3n64ZwwobYlkXyH3w=
+	t=1765886626; cv=none; b=lPz9gef6dStj2nEPAAqyx+l85LMLq6ESazw0ewjhaJV9Z9++/65RFB7KteWdlNinKBonTeD87/RPce1cKEXXTmETWqj2tFQ6sSciNr60Aa2jOEgwGXbUbcyCebphOyFnsqSNku2g8raf3xwojoNyHGVaVrTLJEdLUZPyaP1zsjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888655; c=relaxed/simple;
-	bh=G9BKLI9LT8kabUxiPhl0JQCI6bEDqkh4iF1LTfH+KUY=;
+	s=arc-20240116; t=1765886626; c=relaxed/simple;
+	bh=zSnZg6DkODGvVWusaH8U4nEddqZfU7eTCMfYnFdw7Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSXRYKWttYTLcdzD25JxRn44UJwghGOK8sLQMgfmCur5NxkvKLBKG91TJX7fP77Eiy0WfJF6qTs0+WObT6ui4RTrQOVNt1MYKwo7gOK0t7hhq2XqWKDziHNBOhepzni9Bp89Gyv8NbQ/rBn9UVx4qUx1L5YzRIBl85ekhsVpHEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhQTX++I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E7DC4CEF1;
-	Tue, 16 Dec 2025 12:37:35 +0000 (UTC)
+	 MIME-Version; b=ruPLqYhrEOsb4/B2KKhZBMgbUqeIx+PYi9Mi1s124yRmHGjY107qJaRdeWb6GRQAx46AEzzh25a5D4hel2UDCXquxx1qYbBvabmhoWaYxQTt4b8x91OGt/EzRpRLpMNXDaiFLSfdpkkCYwL2Hdy0Lf75y0XwTVBzGLDagw2o9iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eptaNbOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2671C4CEF1;
+	Tue, 16 Dec 2025 12:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888655;
-	bh=G9BKLI9LT8kabUxiPhl0JQCI6bEDqkh4iF1LTfH+KUY=;
+	s=korg; t=1765886626;
+	bh=zSnZg6DkODGvVWusaH8U4nEddqZfU7eTCMfYnFdw7Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EhQTX++I7ECf7EycJJmoskmXbTmPj9xzXb5/bTbA05yo8jh330pJoMKvlSqJHIpwK
-	 wo2dsV+1p5T4cdnxS331WrlyZNp+9/CPPYJIT+fYJQsoZwrWLnCftmN4TnzI6ykx83
-	 9I0h0OmF/c3ICsMG7/oYop4t7PvmL46mrTFs79GQ=
+	b=eptaNbOPSBnBurxlG3d34uaW7iDEBdDKG91xOHQRQ4liWLkPKfW2jMhJz+AXDZ7aN
+	 JHsFxtCoXvJMsMSP8ftXhA3mljfwtfBAw7kjIZFm0OUkn+NGDwa9VHdVt+vdeOy6R5
+	 vpEn6FuYYPxt7DJik9kTNLFd/0PUb3ep8Ajp/XOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 565/614] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
+Subject: [PATCH 6.17 491/507] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
 Date: Tue, 16 Dec 2025 12:15:32 +0100
-Message-ID: <20251216111421.855441475@linuxfoundation.org>
+Message-ID: <20251216111403.228132379@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
+[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
 
-The drm_property_create_signed_range() function doesn't return error
-pointers it returns NULL on error.  Fix the error checking to match.
+Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
+was defined simply as:
 
-Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Type at byte offset 4:
+
+	- Cache error
+	- TLB Error
+	- Bus Error
+	- Micro-architectural Error
+	All other values are reserved
+
+Yet, there was no information about how this would be encoded.
+
+Spec 2.9A errata corrected it by defining:
+
+	- Bit 1 - Cache Error
+	- Bit 2 - TLB Error
+	- Bit 3 - Bus Error
+	- Bit 4 - Micro-architectural Error
+	All other values are reserved
+
+That actually aligns with the values already defined on older
+versions at N.2.4.1. Generic Processor Error Section.
+
+Spec 2.10 also preserve the same encoding as 2.9A.
+
+Adjust CPER and GHES handling code for both generic and ARM
+processors to properly handle UEFI 2.9A and 2.10 encoding.
+
+Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/apei/ghes.c        | 16 +++++++----
+ drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
+ include/linux/cper.h            | 10 +++----
+ 3 files changed, 39 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-index a30493ed97157..4cadea997129d 100644
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -338,14 +338,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 7fca0ede9ecc0..307dc7f62e525 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -22,6 +22,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/init.h>
+ #include <linux/acpi.h>
++#include <linux/bitfield.h>
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+ #include <linux/timer.h>
+@@ -556,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+ 	int flags = sync ? MF_ACTION_REQUIRED : 0;
++	char error_type[120];
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+@@ -568,9 +570,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 	p = (char *)(err + 1);
+ 	for (i = 0; i < err->err_info_num; i++) {
+ 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+-		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
++		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
+ 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+-		const char *error_type = "unknown error";
  
- 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_x))
--		return PTR_ERR(prop_x);
-+	if (!prop_x)
-+		return -ENOMEM;
+ 		/*
+ 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
+@@ -584,12 +585,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 			continue;
+ 		}
  
- 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_y)) {
-+	if (!prop_y) {
- 		drm_property_destroy(plane->dev, prop_x);
--		return PTR_ERR(prop_y);
-+		return -ENOMEM;
+-		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
+-			error_type = cper_proc_error_type_strs[err_info->type];
++		cper_bits_to_str(error_type, sizeof(error_type),
++				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
++				 cper_proc_error_type_strs,
++				 ARRAY_SIZE(cper_proc_error_type_strs));
+ 
+ 		pr_warn_ratelimited(FW_WARN GHES_PFX
+-				    "Unhandled processor error type: %s\n",
+-				    error_type);
++				    "Unhandled processor error type 0x%02x: %s%s\n",
++				    err_info->type, error_type,
++				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
+ 		p += err_info->length;
  	}
  
- 	drm_object_attach_property(&plane->base, prop_x, 0);
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index 6ff781e47147c..76542a53e2027 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -93,15 +93,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+ 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
+ 	bool time_out, access_mode;
+ 
+-	/* If the type is unknown, bail. */
+-	if (type > CPER_ARM_MAX_TYPE)
+-		return;
+-
+ 	/*
+ 	 * Vendor type errors have error information values that are vendor
+ 	 * specific.
+ 	 */
+-	if (type == CPER_ARM_VENDOR_ERROR)
++	if (type & CPER_ARM_VENDOR_ERROR)
+ 		return;
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
+@@ -116,43 +112,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+ 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
+ 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
+ 			   & CPER_ARM_ERR_OPERATION_MASK);
+-		switch (type) {
+-		case CPER_ARM_CACHE_ERROR:
++		if (type & CPER_ARM_CACHE_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%scache error, operation type: %s\n", pfx,
+ 				       arm_cache_err_op_strs[op_type]);
+ 			}
+-			break;
+-		case CPER_ARM_TLB_ERROR:
++		}
++		if (type & CPER_ARM_TLB_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%sTLB error, operation type: %s\n", pfx,
+ 				       arm_tlb_err_op_strs[op_type]);
+ 			}
+-			break;
+-		case CPER_ARM_BUS_ERROR:
++		}
++		if (type & CPER_ARM_BUS_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%sbus error, operation type: %s\n", pfx,
+ 				       arm_bus_err_op_strs[op_type]);
+ 			}
+-			break;
+ 		}
+ 	}
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
+ 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
+ 			 & CPER_ARM_ERR_LEVEL_MASK);
+-		switch (type) {
+-		case CPER_ARM_CACHE_ERROR:
++		if (type & CPER_ARM_CACHE_ERROR)
+ 			printk("%scache level: %d\n", pfx, level);
+-			break;
+-		case CPER_ARM_TLB_ERROR:
++
++		if (type & CPER_ARM_TLB_ERROR)
+ 			printk("%sTLB level: %d\n", pfx, level);
+-			break;
+-		case CPER_ARM_BUS_ERROR:
++
++		if (type & CPER_ARM_BUS_ERROR)
+ 			printk("%saffinity level at which the bus error occurred: %d\n",
+ 			       pfx, level);
+-			break;
+-		}
+ 	}
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
+@@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+ 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
++	char error_type[120];
+ 
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+ 
+@@ -289,9 +281,15 @@ void cper_print_proc_arm(const char *pfx,
+ 				       newpfx);
+ 		}
+ 
+-		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
+-			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
+-			cper_proc_error_type_strs[err_info->type] : "unknown");
++		cper_bits_to_str(error_type, sizeof(error_type),
++				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
++				 cper_proc_error_type_strs,
++				 ARRAY_SIZE(cper_proc_error_type_strs));
++
++		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
++		       error_type,
++		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
++
+ 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
+ 			printk("%serror_info: 0x%016llx\n", newpfx,
+ 			       err_info->error_info);
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 58f40477c824e..5b1236d8c65bb 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -297,11 +297,11 @@ enum {
+ #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
+ #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
+ 
+-#define CPER_ARM_CACHE_ERROR			0
+-#define CPER_ARM_TLB_ERROR			1
+-#define CPER_ARM_BUS_ERROR			2
+-#define CPER_ARM_VENDOR_ERROR			3
+-#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
++#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
++#define CPER_ARM_CACHE_ERROR			BIT(1)
++#define CPER_ARM_TLB_ERROR			BIT(2)
++#define CPER_ARM_BUS_ERROR			BIT(3)
++#define CPER_ARM_VENDOR_ERROR			BIT(4)
+ 
+ #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
+ #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
 -- 
 2.51.0
 
