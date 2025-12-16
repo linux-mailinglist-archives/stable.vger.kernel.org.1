@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-202532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE5CCC3372
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:28:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC128CC2541
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C34D6306FF3D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2ECC7310907D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC25135C1A1;
-	Tue, 16 Dec 2025 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4CE340A4A;
+	Tue, 16 Dec 2025 11:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPtuhc8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvjKXrG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9708235BDBA;
-	Tue, 16 Dec 2025 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA09133BBC8;
+	Tue, 16 Dec 2025 11:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888204; cv=none; b=SGZ4hg5NXJ1ML2b34fx2B+BSFSoqrUb+R+ooue1TMjY43N/XlDJI5Sl2LO54iBYs+tyWV5isa+H8euOGQ1Vqw3K+teFeTDO6AH947AICKAlyNnuodevdklxZzR6GpD5ey4H9T0/jhBRe6U+3vsSXaj8aRV6RdooWyjABbOsY7hs=
+	t=1765884672; cv=none; b=BM6nUIxov2z7Gz5coScV7i/uRnd2Q+XlwkpdTruV9K0F0ZcKgSdkSiGeAVV3l8zYq3FiPmxURNC2Ixxmi6k+pev6I9xI7Syr3cJs4AVIYhqY9sRHIQfEcfVdawpTl2ZnUjp41B3ghRBiw68womFbp2JX0DylHI2+GyJU0sqOEgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888204; c=relaxed/simple;
-	bh=RfEo0Fnq4bWFzt+VFghsZ9ukPatCY38CE+sE4+UHxGw=;
+	s=arc-20240116; t=1765884672; c=relaxed/simple;
+	bh=IAm2lAeECfHCgj/Xu1f91g1Yx0kxOW4JQ+DCcsnRzRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwYlK4ufTHCs/kFsTkSQrhIxai6JOk9M7s+kj+LXOOdxhGwc9Pj5qsJMFRZ1Wqsya+8086LHOqJ6PcDz9PxKTeb84OYOJxJdXuzarEobW2y2lRtXoSCPMG+vb0OEBd+O7lkTetD6V+GUPkUi2pmcmXXLYMswgrCPsIDAYpNfDEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPtuhc8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00195C4CEF5;
-	Tue, 16 Dec 2025 12:30:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OXVvXesJVsak3VsoCe9S0X00tqIxbgNbEkNy7J58ugv1RVg4vB3nO1IuldEpqnhSFuPX+QAr0bL6sdaDwmTBEPpMjY0xOnFucbM5DfFym4LeL8U9mIPoV6k4UBXXuyKudnbJjoxrjrVm8Tws2aEdRSq90c9fhg573sNORa3tri0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvjKXrG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262DCC4CEF5;
+	Tue, 16 Dec 2025 11:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888204;
-	bh=RfEo0Fnq4bWFzt+VFghsZ9ukPatCY38CE+sE4+UHxGw=;
+	s=korg; t=1765884672;
+	bh=IAm2lAeECfHCgj/Xu1f91g1Yx0kxOW4JQ+DCcsnRzRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPtuhc8RBflaByQFtGFo5cLh6tGqJXVGhdL3ZI9VxjLWYyY6tCzG5GkpA1ppE5Jcl
-	 FVf85SPRFGOliLV0YaipYqOxB7G2uJGqvs7Z8EZ4voDPZEh69IqhtRJrKmi/6EhcUj
-	 xB7ebLcoI1ubbmVTQ2/q+Kde1cLmgRWFVFLbBH0U=
+	b=BvjKXrG5xabW5Db7FmnfHNBe3I5LL2ByOYpfH4iUqOFqLHUBIVKop+a16zxEUflJq
+	 3N/5SqUTjx7yhmjmsC+8pDyVmNATVworaYLvSjx7BU+aG5iylqcUNywMYsGt/gqOpN
+	 86GCLs7zjrAdnvC2Tuobzk36io4PgzE3txcS2Mew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ilias Stamatis <ilstam@amazon.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Huang, Ying" <huang.ying.caritas@gmail.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 464/614] virtio: standardize Returns documentation style
+Subject: [PATCH 6.12 264/354] Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"
 Date: Tue, 16 Dec 2025 12:13:51 +0100
-Message-ID: <20251216111418.181070398@linuxfoundation.org>
+Message-ID: <20251216111330.481433602@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,69 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Ilias Stamatis <ilstam@amazon.com>
 
-[ Upstream commit 5e88a5a97d113619b674ebfdd1d2065f2edd10eb ]
+[ Upstream commit 6fb3acdebf65a72df0a95f9fd2c901ff2bc9a3a2 ]
 
-Remove colons after "Returns" in virtio_map_ops function
-documentation - both to avoid triggering an htmldoc warning
-and for consistency with virtio_config_ops.
+Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+logic") removed an optimization introduced by commit 756398750e11
+("resource: avoid unnecessary lookups in find_next_iomem_res()").  That
+was not called out in the message of the first commit explicitly so it's
+not entirely clear whether removing the optimization happened
+inadvertently or not.
 
-This affects map_page, alloc, need_sync, and max_mapping_size.
+As the original commit message of the optimization explains there is no
+point considering the children of a subtree in find_next_iomem_res() if
+the top level range does not match.
 
-Fixes: bee8c7c24b73 ("virtio: introduce map ops in virtio core")
-Message-Id: <c262893fa21f4b1265147ef864574a9bd173348f.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reinstating the optimization results in performance improvements in
+systems where /proc/iomem is ~5k lines long.  Calling mmap() on /dev/mem
+in such platforms takes 700-1500μs without the optimisation and 10-50μs
+with the optimisation.
+
+Note that even though commit 97523a4edb7b removed the 'sibling_only'
+parameter from next_resource(), newer kernels have basically reinstated it
+under the name 'skip_children'.
+
+Link: https://lore.kernel.org/all/20251124165349.3377826-1-ilstam@amazon.com/T/#u
+Fixes: 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only logic")
+Signed-off-by: Ilias Stamatis <ilstam@amazon.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/resource.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 6660132258d40..e231147ff92db 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -150,7 +150,7 @@ struct virtio_config_ops {
-  *      size: the buffer size
-  *      dir: mapping direction
-  *      attrs: mapping attributes
-- *      Returns: the mapped address
-+ *      Returns the mapped address
-  * @unmap_page: unmap a buffer from the device
-  *      map: device specific mapping map
-  *      map_handle: the mapped address
-@@ -172,7 +172,7 @@ struct virtio_config_ops {
-  *      size: the size of the buffer
-  *      map_handle: the mapping address to sync
-  *      gfp: allocation flag (GFP_XXX)
-- *      Returns: virtual address of the allocated buffer
-+ *      Returns virtual address of the allocated buffer
-  * @free: free a coherent buffer mapping
-  *      map: metadata for performing mapping
-  *      size: the size of the buffer
-@@ -182,13 +182,13 @@ struct virtio_config_ops {
-  * @need_sync: if the buffer needs synchronization
-  *      map: metadata for performing mapping
-  *      map_handle: the mapped address
-- *      Returns: whether the buffer needs synchronization
-+ *      Returns whether the buffer needs synchronization
-  * @mapping_error: if the mapping address is error
-  *      map: metadata for performing mapping
-  *      map_handle: the mapped address
-  * @max_mapping_size: get the maximum buffer size that can be mapped
-  *      map: metadata for performing mapping
-- *      Returns: the maximum buffer size that can be mapped
-+ *      Returns the maximum buffer size that can be mapped
-  */
- struct virtio_map_ops {
- 	dma_addr_t (*map_page)(union virtio_map map, struct page *page,
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 03b6b8de58bfb..2182854dde68e 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -323,6 +323,8 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 			       unsigned long flags, unsigned long desc,
+ 			       struct resource *res)
+ {
++	/* Skip children until we find a top level range that matches */
++	bool skip_children = true;
+ 	struct resource *p;
+ 
+ 	if (!res)
+@@ -333,7 +335,7 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 
+ 	read_lock(&resource_lock);
+ 
+-	for_each_resource(&iomem_resource, p, false) {
++	for_each_resource(&iomem_resource, p, skip_children) {
+ 		/* If we passed the resource we are looking for, stop */
+ 		if (p->start > end) {
+ 			p = NULL;
+@@ -344,6 +346,12 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 		if (p->end < start)
+ 			continue;
+ 
++		/*
++		 * We found a top level range that matches what we are looking
++		 * for. Time to start checking children too.
++		 */
++		skip_children = false;
++
+ 		/* Found a match, break */
+ 		if (is_type_match(p, flags, desc))
+ 			break;
 -- 
 2.51.0
 
