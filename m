@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-201239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E19DCC2298
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C7FCC3795
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A500307E599
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75F6830335B4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C4633893E;
-	Tue, 16 Dec 2025 11:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6F1344028;
+	Tue, 16 Dec 2025 12:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdKrA/k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn7TNRvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042DB33B961;
-	Tue, 16 Dec 2025 11:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8EE749C;
+	Tue, 16 Dec 2025 12:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883985; cv=none; b=EySbCUuq1f07/v8yeMCka0hLlfNiLBGedbwUFbDtnKI/ES19kppQx5mHY0WtD5sO36CXO03I+1wV4v7jc9ElZAT/aY2RrNsVBhADguVNDrS4QsDHV6JXh3rKOWOwIaB2Zu0rNnWZT3QzH6CyvaABSdlSS61qqb90ZAhDuirUJMA=
+	t=1765887523; cv=none; b=mxVL43OzVwmHT7DbzWaXjL0SR78tTblcKO7QCjhuBR2vIKYmzTkJ+KQYTUotc1s/FzqAJMn40LlGwT1ucdfdlULh7thhn8iaVomkrqz4p3lJTdFYp5jnDFrhVniwi9wgoW3iPKeMLwon753Zs8e4KirZ7ya1tt38MXi4J0FtmCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883985; c=relaxed/simple;
-	bh=8oCc4W9wzhxBGG1VB9jfF2ZKxyR1FLs0MRtDAl0HybA=;
+	s=arc-20240116; t=1765887523; c=relaxed/simple;
+	bh=30q0YZ6t5IdP8GZAOjJ6wL0CHR7v2v49xZPMfd2uruc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn3DjwG/0o/OCKtRnZiRjOa58oGaY/YIV0pGqF86w6lVhSGnu/CRpzz2+YpU28yVmpg7YMwhRhR/kjOoGbkTcpI9WTyd2pFH3cySw7Dg3FQ24M3B+1sSzZ+RBKUw7jkN0oFoDwIhv6XMj/8X/Q3y9SETB/42JjfSfK0dW88vt4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdKrA/k8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECCFC4CEF1;
-	Tue, 16 Dec 2025 11:19:44 +0000 (UTC)
+	 MIME-Version; b=n0b6BfzD/ogID7sM/UwzcHlBY1tMgk6MJ12BDRi5r6c7h0ckUPchRpkEhMOYNUkrdJ0xO24LgHc473p4PtvqzwsnKYI8TggJTTfzzH6qXbYCBXKRRvssxOeVkHfXrPAgvzYnRXMmvR/as+M7ZtehbvrbGGCmMlZxpvT6vm1HrWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn7TNRvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4701CC4CEF1;
+	Tue, 16 Dec 2025 12:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883984;
-	bh=8oCc4W9wzhxBGG1VB9jfF2ZKxyR1FLs0MRtDAl0HybA=;
+	s=korg; t=1765887523;
+	bh=30q0YZ6t5IdP8GZAOjJ6wL0CHR7v2v49xZPMfd2uruc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdKrA/k85hN2k7MG4Fs/EUzatwEQzfCV0IjKIORMMATuQ4lBX1v2hQFeZaURlmH39
-	 jqZZpiq9FFgbo9NGhOXt4Biy0BbxUeBjJruzOXZIjkjITtQIBFexcAVb0EmG04XYHS
-	 iBGZfxF511/PsVEPlqN+5fX5R8v63fgzZWCba344=
+	b=bn7TNRvQe2+IIvOhxQcnsBrEl+9d4CZDX7mEFx4k1WVu1M4UNRrV0ix450ixZBzUL
+	 up4ojLixaR7p+Q/8Q9Eh9uACSUzmHpQv1NbJBeD+h0Ojipvh3Brg5hgj4TqzviyLo6
+	 T39Wim3zOlqLa1zVXTk70SwOt3UcoYkddB8CIJRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/354] uio: uio_fsl_elbc_gpcm:: Add null pointer check to uio_fsl_elbc_gpcm_probe
+Subject: [PATCH 6.18 257/614] coresight: etm4x: Properly control filter in CPU idle with FEAT_TRF
 Date: Tue, 16 Dec 2025 12:10:24 +0100
-Message-ID: <20251216111322.984537166@linuxfoundation.org>
+Message-ID: <20251216111410.684954431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit d48fb15e6ad142e0577428a8c5028136e10c7b3d ]
+[ Upstream commit 1fdc2cd347a7bc58acacb6144404ee892cea6c2e ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+If a CPU supports FEAT_TRF, as described in the section K5.5 "Context
+switching", Arm ARM (ARM DDI 0487 L.a), it defines a flow to prohibit
+program-flow trace, execute a TSB CSYNC instruction for flushing,
+followed by clearing TRCPRGCTLR.EN bit.
 
-Fixes: d57801c45f53e ("uio: uio_fsl_elbc_gpcm: use device-managed allocators")
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Link: https://patch.msgid.link/20251015064020.56589-1-liqiang01@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To restore the state, the reverse sequence is required.
+
+This differs from the procedure described in the section 3.4.1 "The
+procedure when powering down the PE" of ARM IHI0064H.b, which involves
+the OS Lock to prevent external debugger accesses and implicitly
+disables trace.
+
+To be compatible with different ETM versions, explicitly control trace
+unit using etm4_disable_trace_unit() and etm4_enable_trace_unit()
+during CPU idle to comply with FEAT_TRF.
+
+As a result, the save states for TRFCR_ELx and trcprgctlr are redundant,
+remove them.
+
+Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Tested-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-6-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_fsl_elbc_gpcm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 14 +++++++-------
+ drivers/hwtracing/coresight/coresight-etm4x.h      |  3 ---
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/uio/uio_fsl_elbc_gpcm.c b/drivers/uio/uio_fsl_elbc_gpcm.c
-index 496caff66e7ea..dcf08042e894b 100644
---- a/drivers/uio/uio_fsl_elbc_gpcm.c
-+++ b/drivers/uio/uio_fsl_elbc_gpcm.c
-@@ -384,6 +384,11 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 5e707d082537a..fdda924a2c711 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1858,9 +1858,11 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		goto out;
+ 	}
  
- 	/* set all UIO data */
- 	info->mem[0].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOFn", node);
-+	if (!info->mem[0].name) {
-+		ret = -ENODEV;
-+		goto out_err3;
-+	}
++	if (!drvdata->paused)
++		etm4_disable_trace_unit(drvdata);
 +
- 	info->mem[0].addr = res.start;
- 	info->mem[0].size = resource_size(&res);
- 	info->mem[0].memtype = UIO_MEM_PHYS;
-@@ -423,6 +428,8 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
- out_err2:
- 	if (priv->shutdown)
- 		priv->shutdown(info, true);
+ 	state = drvdata->save_state;
+ 
+-	state->trcprgctlr = etm4x_read32(csa, TRCPRGCTLR);
+ 	if (drvdata->nr_pe)
+ 		state->trcprocselr = etm4x_read32(csa, TRCPROCSELR);
+ 	state->trcconfigr = etm4x_read32(csa, TRCCONFIGR);
+@@ -1970,9 +1972,6 @@ static int etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ {
+ 	int ret = 0;
+ 
+-	/* Save the TRFCR irrespective of whether the ETM is ON */
+-	if (drvdata->trfcr)
+-		drvdata->save_trfcr = read_trfcr();
+ 	/*
+ 	 * Save and restore the ETM Trace registers only if
+ 	 * the ETM is active.
+@@ -1994,7 +1993,6 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ 	etm4_cs_unlock(drvdata, csa);
+ 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
+ 
+-	etm4x_relaxed_write32(csa, state->trcprgctlr, TRCPRGCTLR);
+ 	if (drvdata->nr_pe)
+ 		etm4x_relaxed_write32(csa, state->trcprocselr, TRCPROCSELR);
+ 	etm4x_relaxed_write32(csa, state->trcconfigr, TRCCONFIGR);
+@@ -2079,13 +2077,15 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ 
+ 	/* Unlock the OS lock to re-enable trace and external debug access */
+ 	etm4_os_unlock(drvdata);
 +
-+out_err3:
- 	iounmap(info->mem[0].internal_addr);
- 	return ret;
++	if (!drvdata->paused)
++		etm4_enable_trace_unit(drvdata);
++
+ 	etm4_cs_lock(drvdata, csa);
  }
+ 
+ static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ {
+-	if (drvdata->trfcr)
+-		write_trfcr(drvdata->save_trfcr);
+ 	if (drvdata->state_needs_restore)
+ 		__etm4_cpu_restore(drvdata);
+ }
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 13ec9ecef46f5..b8796b4271025 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -866,7 +866,6 @@ struct etmv4_config {
+  * struct etm4_save_state - state to be preserved when ETM is without power
+  */
+ struct etmv4_save_state {
+-	u32	trcprgctlr;
+ 	u32	trcprocselr;
+ 	u32	trcconfigr;
+ 	u32	trcauxctlr;
+@@ -980,7 +979,6 @@ struct etmv4_save_state {
+  *		at runtime, due to the additional setting of TRFCR_CX when
+  *		in EL2. Otherwise, 0.
+  * @config:	structure holding configuration parameters.
+- * @save_trfcr:	Saved TRFCR_EL1 register during a CPU PM event.
+  * @save_state:	State to be preserved across power loss
+  * @state_needs_restore: True when there is context to restore after PM exit
+  * @skip_power_up: Indicates if an implementation can skip powering up
+@@ -1037,7 +1035,6 @@ struct etmv4_drvdata {
+ 	bool				lpoverride;
+ 	u64				trfcr;
+ 	struct etmv4_config		config;
+-	u64				save_trfcr;
+ 	struct etmv4_save_state		*save_state;
+ 	bool				state_needs_restore;
+ 	bool				skip_power_up;
 -- 
 2.51.0
 
