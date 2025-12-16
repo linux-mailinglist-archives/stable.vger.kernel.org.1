@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8324ACC2244
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9733BCC36CF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF3B830004ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32A2A3066E8F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D631341AD7;
-	Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E1F34D391;
+	Tue, 16 Dec 2025 12:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Tbb8yQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izWBUURb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B76341645;
-	Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1D934573C;
+	Tue, 16 Dec 2025 12:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884114; cv=none; b=OWF08pzyt4CQy4ASYUMXugOUpd8l+cUoACN30Q7DlLs8SxjmU3/EnpVfJSOitZiqM1yOoF9BmqTa88TZj5o9wyk0o6uFKCcdygxwXmvtVSwRG9SDNvESV2mQUtQArXp3sWxkSVsLUAQnumGmzN5hJzXDaxOzDr/5wLpwkhMp56g=
+	t=1765887644; cv=none; b=hl/+9xyVZvFy5gEvan1M2yLx1FtOClbgWkFvpdukvjP6E/NgG6JniSBo20xGGLAM4hjqtmJLFVPda9RLjdIvPdwSvRKAAojR3e8u3Ji54cnyW9mCyF9LXUM4D8IZ/Xgd2cgRhe9W1iTxi1j/TtNZTCVYetv573CMY9yG4LxfzfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884114; c=relaxed/simple;
-	bh=WphDHT85EP62IXvxFq+5GOUjL8JVYB4bjuYPy8nZRJc=;
+	s=arc-20240116; t=1765887644; c=relaxed/simple;
+	bh=7NLrigfC+lAqjARZ288ruTUAQZhlCwRzL4HdvyACLz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO0GcHbJtOdqvxiEN/M/2ZMxJQ9XI2yptb85lxJG3aYAlKQFmij8ehnK0Esh57j4jG1wSZkZ8whd09gnyl/qpwy1LpDBd9bpvpVrOQ4FDUio7B9ZR/GCYf4OP1L888ryCdfHi3Todias9mQbbDZ9ExCUs3hkMMYmK4HkX6fnfc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Tbb8yQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E0FC19422;
-	Tue, 16 Dec 2025 11:21:53 +0000 (UTC)
+	 MIME-Version; b=IgXGIs8eoT8nVdA6W4JXlhIZvgOAFcKRSr1kc0dtIOAl0mIFliQhrLIAEWf/V9eIJhJqPqg3MVMxJWsVd94WyqHPnDBliNPOd1ozTSHWs4bGZ0GLPy6cuBDl6teKxQ38GjtOp7SvFgruh6tWh46E1GfBEiY1EPJrP+JTs2vyl7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izWBUURb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5364EC4CEF5;
+	Tue, 16 Dec 2025 12:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884114;
-	bh=WphDHT85EP62IXvxFq+5GOUjL8JVYB4bjuYPy8nZRJc=;
+	s=korg; t=1765887644;
+	bh=7NLrigfC+lAqjARZ288ruTUAQZhlCwRzL4HdvyACLz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Tbb8yQ9cNqhIqZPEJYOUgqbVKyPPhw7IYuwegnoFJ+8YB6GWJpoPyUjrGsX0aCxM
-	 OhL6fVg6lUob62SJNa/Ik//q0/GctkQQIk87i2qEiloDY7FhAOpiVjp6psQw7WNNWS
-	 efTBPYKrO83+9PmmXc5HxXWLaOQDZFWemWErdYDI=
+	b=izWBUURbbmtmM64mShZnSM39fXXU/1tTD8EjweXfaTvKU1flme4faGstCwC+wtRWT
+	 AWX0yg6DscmpEj4Jr60/YmNPeHXMvCdkSLo/vgGdP3wQ375ZeE0+tKnPIsNTYrudXn
+	 TZY/wLCnjOm7OJ++lxlRGSCDFWAf9MD/MvTYAKKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/354] i3c: fix refcount inconsistency in i3c_master_register
+Subject: [PATCH 6.18 294/614] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
 Date: Tue, 16 Dec 2025 12:11:01 +0100
-Message-ID: <20251216111324.327199934@linuxfoundation.org>
+Message-ID: <20251216111412.023471275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
+[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
 
-In `i3c_master_register`, a possible refcount inconsistency has been
-identified, causing possible resource leak.
+The bpf_skb_check_mtu helper needs to use skb->transport_header when
+the BPF_MTU_CHK_SEGS flag is used:
 
-Function `of_node_get` increases the refcount of `parent->of_node`. If
-function `i3c_bus_init` fails, the function returns immediately without
-a corresponding decrease, resulting in an inconsistent refcounter.
+	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
 
-Move call i3c_bus_init() after device_initialize() to let callback
-i3c_masterdev_release() release of_node.
+The transport_header is not always set. There is a WARN_ON_ONCE
+report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
+bpf_prog_test_run is used:
 
-Reported-by: Shuhao Fu <sfual@cse.ust.hk>
-Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
+ skb_gso_validate_network_len
+ bpf_skb_check_mtu
+ bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
+ bpf_test_run
+ bpf_prog_test_run_skb
+
+For a normal ingress skb (not test_run), skb_reset_transport_header
+is performed but there is plan to avoid setting it as described in
+commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
+
+This patch fixes the bpf helper by checking
+skb_transport_header_was_set(). The check is done just before
+skb->transport_header is used, to avoid breaking the existing bpf prog.
+The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
+
+Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/core/filter.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index c8e5c9291ea43..6eb779affaba8 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2809,10 +2809,6 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i2c);
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
- 
--	ret = i3c_bus_init(i3cbus, master->dev.of_node);
--	if (ret)
--		return ret;
--
- 	device_initialize(&master->dev);
- 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
- 
-@@ -2820,6 +2816,10 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
- 	master->dev.dma_parms = parent->dma_parms;
- 
-+	ret = i3c_bus_init(i3cbus, master->dev.of_node);
-+	if (ret)
-+		goto err_put_dev;
-+
- 	ret = of_populate_i3c_bus(master);
- 	if (ret)
- 		goto err_put_dev;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 1efec0d70d783..df6ce85e48dcd 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6429,9 +6429,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+ 	 */
+ 	if (skb_is_gso(skb)) {
+ 		ret = BPF_MTU_CHK_RET_SUCCESS;
+-		if (flags & BPF_MTU_CHK_SEGS &&
+-		    !skb_gso_validate_network_len(skb, mtu))
+-			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		if (flags & BPF_MTU_CHK_SEGS) {
++			if (!skb_transport_header_was_set(skb))
++				return -EINVAL;
++			if (!skb_gso_validate_network_len(skb, mtu))
++				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		}
+ 	}
+ out:
+ 	*mtu_len = mtu;
 -- 
 2.51.0
 
