@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D859BCC2B7A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:28:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518C8CC2A71
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B196313ED3E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C83C302C72B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA72362149;
-	Tue, 16 Dec 2025 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBA434575E;
+	Tue, 16 Dec 2025 11:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spbgSd0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV9wuaJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5C362141;
-	Tue, 16 Dec 2025 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6D4345758;
+	Tue, 16 Dec 2025 11:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886929; cv=none; b=QNWEu4huadGgHbwjjZjquX61A3A7GQVBDa65gGFcrfaA30d5PwHxiOKtTlkeDZEfKSYMd7SBUmREe17qdsR/AAxaoqQOG6aZNZY0PMqsSN+6PUYe4a1dO6Q9CKN/fFQP3UQ+KshTsw1hZ4f/9G1eUxD2+h3RTG5rYKaNuE2tZ64=
+	t=1765885038; cv=none; b=on6QMMf7hkZJa0uHiA60wLXRar03saXCI2bqXB+erkdOgcD66wqnLpamDeMQB/dH84XHW20jDzRSV02JmFKAzbMmH2TTIDwFSI+igDY/AA6COKDRFPuVh8UE1yFyaGkxMrKvKMRummcgYWEOjoL8y5o+SwI3Uy0icUJByS8aFic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886929; c=relaxed/simple;
-	bh=kCYMumJIq85k5Mg92uLC2gmGEEHPzjqVmnhHAS0j8K4=;
+	s=arc-20240116; t=1765885038; c=relaxed/simple;
+	bh=Y9AXI9U8w+7R8tRkjC7Y1qPlJCiHo6gj+XaUnuZxJLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KsFKaQGVLA6pxeL+l4oQAwJXth4NUZ0PSraY1io56OCSuRx8hm+zt7li6yvwWSdh6leNqsP02FNMH4OiSO98mT9WeEmZLSY6mL7HuIEAzXa9LhjenFAufmvGq1wyzdop7CvUyHackrRSAlr6M92QbG99I5s+nCS1dbz3qXe33EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spbgSd0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C908C4CEF1;
-	Tue, 16 Dec 2025 12:08:48 +0000 (UTC)
+	 MIME-Version; b=L0VcpvRjSvWr83rcrPdkoC41EI+2UzIt9PgrqmFxp+fR3xVCc5VmxlZdwpXqeMvysKoshvu7VF6tTaVa8UpnFyw3ukAMv57r8GmiIZtHhhO5LfJXpzq+wz7EoTjxwE7is6Ci6aOZm/CNX3U8zjQEWCnEnZz/+kFg4iCIPjZc/y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV9wuaJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE01C4CEF1;
+	Tue, 16 Dec 2025 11:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886929;
-	bh=kCYMumJIq85k5Mg92uLC2gmGEEHPzjqVmnhHAS0j8K4=;
+	s=korg; t=1765885037;
+	bh=Y9AXI9U8w+7R8tRkjC7Y1qPlJCiHo6gj+XaUnuZxJLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spbgSd0BkyC2xCCi44rYEMc7IU2tXz5k6Vw+HU9axIf9Rnbmmq3NmuQQ3Jw7FY/ob
-	 PgLCAqjVngIMraoyJ5lnZVEOTGj27lec+0FVHHJhVz6X3JpyO1RERdaEMx3oIB/y2P
-	 0jDbxf6MyhN4wCgPlZVRyE2WAqR7yAvpMbmq1BjE=
+	b=cV9wuaJs+2JI12PCAVRcY63srfWdtshZUSB1fQUqmmZwfyIFw32xNagbtrf+DUf/O
+	 q8LbuBjpzPKtDhDseqmaTMkhSTuTNZ2MEvkPkYGElo4v7wKpo6VUvXMZPRTzltmIob
+	 itjfFhNzKY7wX1U8s8zrLEcAlIwYABSeW0YeDsro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 076/614] PCI: rcar-gen2: Drop ARM dependency from PCI_RCAR_GEN2
+Subject: [PATCH 6.17 002/507] smack: fix bug: SMACK64TRANSMUTE set on non-directory
 Date: Tue, 16 Dec 2025 12:07:23 +0100
-Message-ID: <20251216111404.070521518@linuxfoundation.org>
+Message-ID: <20251216111345.618286637@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +58,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit d312742f686582e6457070bcfd24bee8acfdf213 ]
+[ Upstream commit 195da3ff244deff119c3f5244b464b2236ea1725 ]
 
-Since the reliance on ARM-specific struct pci_sys_data was removed, this
-driver can be compile-tested on other architectures.
+When a new file system object is created
+and the conditions for label transmutation are met,
+the SMACK64TRANSMUTE extended attribute is set
+on the object regardless of its type:
+file, pipe, socket, symlink, or directory.
 
-While at it, make the help text a bit more generic, as some members of
-the R-Car Gen2 family have a different number of internal PCI
-controllers.
+However,
+SMACK64TRANSMUTE may only be set on directories.
 
-Fixes: 4a957563fe0231e0 ("PCI: rcar-gen2: Convert to use modern host bridge probe functions")
-Suggested-by: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: add rcar-gen2 to subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/00f75d6732eacce93f04ffaeedc415d2db714cd6.1759480426.git.geert+renesas@glider.be
+This bug is a combined effect of the commits [1] and [2]
+which both transfer functionality
+from smack_d_instantiate() to smack_inode_init_security(),
+but only in part.
+
+Commit [1] set blank  SMACK64TRANSMUTE on improper object types.
+Commit [2] set "TRUE" SMACK64TRANSMUTE on improper object types.
+
+[1] 2023-06-10,
+Fixes: baed456a6a2f ("smack: Set the SMACK64TRANSMUTE xattr in smack_inode_init_security()")
+Link: https://lore.kernel.org/linux-security-module/20230610075738.3273764-3-roberto.sassu@huaweicloud.com/
+
+[2] 2023-11-16,
+Fixes: e63d86b8b764 ("smack: Initialize the in-memory inode in smack_inode_init_security()")
+Link: https://lore.kernel.org/linux-security-module/20231116090125.187209-5-roberto.sassu@huaweicloud.com/
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Stable-dep-of: 78fc6a94be25 ("smack: fix bug: invalid label of unix socket file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/Kconfig | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ security/smack/smack_lsm.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index 41748d083b933..0452151a7bccc 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -259,12 +259,11 @@ config PCIE_RCAR_EP
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 8629e58ea4fa1..d6f814aa15bae 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -1027,18 +1027,20 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 		if (!trans_cred)
+ 			issp->smk_inode = dsp;
  
- config PCI_RCAR_GEN2
- 	bool "Renesas R-Car Gen2 Internal PCI controller"
--	depends on ARCH_RENESAS || COMPILE_TEST
--	depends on ARM
-+	depends on (ARCH_RENESAS && ARM) || COMPILE_TEST
- 	help
- 	  Say Y here if you want internal PCI support on R-Car Gen2 SoC.
--	  There are 3 internal PCI controllers available with a single
--	  built-in EHCI/OHCI host controller present on each one.
-+	  Each internal PCI controller contains a single built-in EHCI/OHCI
-+	  host controller.
+-		issp->smk_flags |= SMK_INODE_TRANSMUTE;
+-		xattr_transmute = lsm_get_xattr_slot(xattrs,
+-						     xattr_count);
+-		if (xattr_transmute) {
+-			xattr_transmute->value = kmemdup(TRANS_TRUE,
+-							 TRANS_TRUE_SIZE,
+-							 GFP_NOFS);
+-			if (!xattr_transmute->value)
+-				return -ENOMEM;
+-
+-			xattr_transmute->value_len = TRANS_TRUE_SIZE;
+-			xattr_transmute->name = XATTR_SMACK_TRANSMUTE;
++		if (S_ISDIR(inode->i_mode)) {
++			issp->smk_flags |= SMK_INODE_TRANSMUTE;
++			xattr_transmute = lsm_get_xattr_slot(xattrs,
++							     xattr_count);
++			if (xattr_transmute) {
++				xattr_transmute->value = kmemdup(TRANS_TRUE,
++								 TRANS_TRUE_SIZE,
++								 GFP_NOFS);
++				if (!xattr_transmute->value)
++					return -ENOMEM;
++
++				xattr_transmute->value_len = TRANS_TRUE_SIZE;
++				xattr_transmute->name = XATTR_SMACK_TRANSMUTE;
++			}
+ 		}
+ 	}
  
- config PCIE_ROCKCHIP
- 	bool
 -- 
 2.51.0
 
