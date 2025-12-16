@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-201848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AD4CC282D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F850CC236D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B62930A0508
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0CCD8301D637
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB81355058;
-	Tue, 16 Dec 2025 11:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975633446C9;
+	Tue, 16 Dec 2025 11:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17Ukx8i7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyNKRqXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DE3355036;
-	Tue, 16 Dec 2025 11:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515C73446B7;
+	Tue, 16 Dec 2025 11:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885988; cv=none; b=fcki0pPPEjbaKkySbKzj+HZC9zW2TK0gC9haQQSrrR5l66Us3WDKuhoo7Lwl0NfIfWzMHko2aKcIeWXbMoc025nZGKIiIBG5SAxiz9wirWl2LIVuKTKtS4jOoCWRx9Hfyc4LZUkIQKuIBvvFMEbivRF+JukAIklvXUOgU+lA56o=
+	t=1765884496; cv=none; b=Y2zzDOkl8u5bzCrflkURDQKIYVW2TKY0qxzb01qGamRNXCbajxlq4RxGMs+2gvwXJRvzUoMm5uOZruGSSZDtoVEzPh+iQjbHh2GAqm8TqUhhEmc0xKU1iCLwgg4ugqEyq2G9sQrmLIV0SsHgqNAy9Sh8Cp1pJTWvsTaawA5YSGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885988; c=relaxed/simple;
-	bh=GLvo8a6QcxldPgjxXc7MyNCZRP+tkEBLrS1i8FhEdW0=;
+	s=arc-20240116; t=1765884496; c=relaxed/simple;
+	bh=szyaiws6VMZsANwSCe0W5uoa98B3MdwuE3puAjykkNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r505Xa9KsmimXBbd/Dl3RgvJAVz41cOFLm4kJ7iRCFg7GmMIa+0EVpJetSuP8EpohpzsyB4uAAWIRtTNULGIqi3XPsS+8EGiYlR8Pvj6PZo1AOFsi//YIFVdbVsDo6e1XD6pRnGaumK1qT88gmBKgjVBNo+0k5p75A/z/LIxiMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17Ukx8i7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53118C4CEF5;
-	Tue, 16 Dec 2025 11:53:08 +0000 (UTC)
+	 MIME-Version; b=jyJ4UCuiyF1AIWGex7tBXiWiQJYjzzR9rYr4ctwHizr/GEp2AtERcBHNWiguFKe/EPmrlgBdkXGek5VNUv2hgjpta+afoFVb1EZNxsh5DdVaF2WEs41BWbzIcMiEb/nhdeVCqTjF+TldhK3KOIjPnqCuApS5IAFQ2gR5Wm4u0CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyNKRqXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03C9C4CEF1;
+	Tue, 16 Dec 2025 11:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885988;
-	bh=GLvo8a6QcxldPgjxXc7MyNCZRP+tkEBLrS1i8FhEdW0=;
+	s=korg; t=1765884496;
+	bh=szyaiws6VMZsANwSCe0W5uoa98B3MdwuE3puAjykkNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17Ukx8i7mUp6n3V49dJ3OkSwU9hH895bgKIsB7JwAq2bANgilFRmFYwrNgMik69zw
-	 guWZCnOE0dzdTl2ZAFSsut3AsJNthcFqWYF1tk8YvznzI77NpHCHxYQiAnj3FZMk/l
-	 ZAxxNfr4jqgh4XhBNjVgXeX7TLPAWph0jkJaZPTU=
+	b=dyNKRqXJn6dS3PoG1jMJaK9xVpxbDaBM5WC1HNG444NEQM+wpbKxevCokULP3uP3K
+	 sgAoo39iveYYmYWR15k+ByfZK2qS3gLYfSXYFMPozqapnzEoZ6OgbSVyIjhqS9hkIG
+	 FcQUvNFOul+UX21aT4fkHfxgbTrX1A3EqRGHPVLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 304/507] usb: chaoskey: fix locking for O_NONBLOCK
+Subject: [PATCH 6.12 178/354] fs/ntfs3: Prevent memory leaks in add sub record
 Date: Tue, 16 Dec 2025 12:12:25 +0100
-Message-ID: <20251216111356.486574805@linuxfoundation.org>
+Message-ID: <20251216111327.361035369@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
+[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
 
-A failure to take a lock with O_NONBLOCK needs to result
-in -EAGAIN. Change it.
+If a rb node with the same ino already exists in the rb tree, the newly
+alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
+up, which leads to the memory leak issue reported by syzbot.
 
-Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The best option to avoid this issue is to put the newly alloced mft node
+when a rb node with the same ino already exists in the rb tree and return
+the rb node found in the rb tree to the parent layer.
+
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888110bef280 (size 128):
+  backtrace (crc 126a088f):
+    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
+    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
+
+BUG: memory leak
+unreferenced object 0xffff888109093400 (size 1024):
+  backtrace (crc 7197c55e):
+    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
+    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/ntfs3/frecord.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index 225863321dc47..45cff32656c6e 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -444,9 +444,19 @@ static ssize_t chaoskey_read(struct file *file,
- 			goto bail;
- 		mutex_unlock(&dev->rng_lock);
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index ec2be861db33d..5491169eaa16c 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -380,8 +380,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
  
--		result = mutex_lock_interruptible(&dev->lock);
--		if (result)
--			goto bail;
-+		if (file->f_flags & O_NONBLOCK) {
-+			result = mutex_trylock(&dev->lock);
-+			if (result == 0) {
-+				result = -EAGAIN;
-+				goto bail;
-+			} else {
-+				result = 0;
-+			}
-+		} else {
-+			result = mutex_lock_interruptible(&dev->lock);
-+			if (result)
-+				goto bail;
-+		}
- 		if (dev->valid == dev->used) {
- 			result = _chaoskey_fill(dev);
- 			if (result < 0) {
+ 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
+ 
+-	ni_add_mi(ni, m);
+-	*mi = m;
++	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
++	if (*mi != m)
++		mi_put(m);
++
+ 	return true;
+ }
+ 
 -- 
 2.51.0
 
