@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58052CC2DD9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED02CC2592
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90ED4318C0C3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 045A83036C93
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F144D3446BE;
-	Tue, 16 Dec 2025 11:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED95343D92;
+	Tue, 16 Dec 2025 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GX68OUb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCROORMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3B4342CA2;
-	Tue, 16 Dec 2025 11:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDDB343D88;
+	Tue, 16 Dec 2025 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886068; cv=none; b=oXbwx65RmBs7TcYFwUkrffgc6edo6UklauT8/tNMRIbRnRXHFF5AXyQwzMAc7eRQtCNUNgO+jyiMXAo9EirFePjzkBGeSCprg/wMr1v7LYGz5XVRBYX1aPW5kqvs2Hw0ptflpXgxESJ17UfUlNGK5P3D4q5TQzcJhs71lrtFYfA=
+	t=1765884473; cv=none; b=Cu0213N0pV+/josVF8GTxAHt4X691OG6rDj8tUwaa/niPjBfRoGntIbFgnpwS4mEQxQsEpWl7+EnXfZyMun1CdGB++L7wLR2yKkc9GN1TalwFHMZBUn36VsKetsZOHfAeWqyRUrmi9BD1NihXsJz3K/q6NYaeca55cK6dgPXsvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886068; c=relaxed/simple;
-	bh=OfbrotYvv7hSZJtVr2HazCaXvxjx+TsR7j43vWRKfZg=;
+	s=arc-20240116; t=1765884473; c=relaxed/simple;
+	bh=Q/rA4KPPnkqMuJ+t/1ud/J3pErHJcgt0jBHE+96cF3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgRmwhkd6DRt+PF6kiuLGbVx1UW2t5cxHfR6STt47kP+cEFmyob55ZRu8kvgeXjCYSfgJBC22iNCRMNFWvCDvlFIiUuHVHu/wm98zzymnR26T793zlu/cGkuAcAI+bvWuoxUtWkozyrvf2obmK0GyUmJNlNeRbzH7ZfS6cix8Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GX68OUb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AE1C4CEF1;
-	Tue, 16 Dec 2025 11:54:27 +0000 (UTC)
+	 MIME-Version; b=oXk6evGFnLmJudls0ptXzm5pF6GwoklXsGJEentffHKlXME1JGSmZBsTsn98NvkHPebvrl28PE7B2YS28oTkTdMgjedPCKv7sK5SbHZR6bXuXD0FSkZ9g5v6m5fg+C8nx47OXAreBqwa3b961T9I2+BLjfBj8E8XcyKFwo7hxck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCROORMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE71C4CEF1;
+	Tue, 16 Dec 2025 11:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886068;
-	bh=OfbrotYvv7hSZJtVr2HazCaXvxjx+TsR7j43vWRKfZg=;
+	s=korg; t=1765884473;
+	bh=Q/rA4KPPnkqMuJ+t/1ud/J3pErHJcgt0jBHE+96cF3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GX68OUb4tEhjs0SJVYKHmOeY+OIIq+V6lBbdYwKf/i5mNCw8mU/Ke5ueOWIuR6GaH
-	 T8U/dFIejMsEqINoBJQXbKbUhqgkrCVGsrBjA7moq2IPu2cEVBm2Vi7/iT76NnLQ84
-	 dTHWSvRvKvzhRyfYs5HMZMHejshIjBCoF0qFMm7g=
+	b=aCROORMUHMGbaPDKsWF6NUxYzBlca17dKh03UbeOgYpMf3CP553yDTzEnas9Ib09W
+	 sEiXdV8qhgx/Nq8gmLXfIkjWbi9iBmocSW5mQWMnKI9fFUxjw5t/Rk/b6FomesVhMa
+	 b76b/40BexFnr95xjDuuFWNbmjCZn/VL9+GYz8F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Minas Harutyunyan <hminas@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 329/507] wifi: mt76: mt7996: fix several fields in mt7996_mcu_bss_basic_tlv()
+Subject: [PATCH 6.12 203/354] usb: dwc2: disable platform lowlevel hw resources during shutdown
 Date: Tue, 16 Dec 2025 12:12:50 +0100
-Message-ID: <20251216111357.384242101@linuxfoundation.org>
+Message-ID: <20251216111328.274492945@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit bb705a606734e1ce0ff17a4f368a896757ba686d ]
+[ Upstream commit 7481a97c5f49f10c7490bb990d0e863f23b9bb71 ]
 
-Fix several fields in mt7996_mcu_bss_basic_tlv() that were not obtained
-from the correct link. Without this patch, the MLD station interface
-does not function properly.
+On some SoC platforms, in shutdown stage, most components' power is cut
+off, but there's still power supply to the so called always-on
+domain, so if the dwc2's regulator is from the always-on domain, we
+need to explicitly disable it to save power.
 
-Fixes: 34a41bfbcb71 ("wifi: mt76: mt7996: prepare mt7996_mcu_add_dev/bss_info for MLO support")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-5-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Disable platform lowlevel hw resources such as phy, clock and
+regulators etc. in device shutdown hook to reduce non-necessary power
+consumption when the platform enters shutdown stage.
+
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Minas Harutyunyan <hminas@synopsys.com>
+Link: https://lore.kernel.org/r/20250629094655.747-1-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b6ebcfdcac40 ("usb: dwc2: fix hang during shutdown if set as peripheral")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 21 ++++++++++---------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/usb/dwc2/platform.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index f337e3267c6f0..ff9b70292bfd0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1010,7 +1010,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	struct mt76_connac_bss_basic_tlv *bss;
- 	u32 type = CONNECTION_INFRA_AP;
- 	u16 sta_wlan_idx = wlan_idx;
--	struct ieee80211_sta *sta;
- 	struct tlv *tlv;
- 	int idx;
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index c1b7209b94836..79ce88b5f07d9 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -371,6 +371,9 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
  
-@@ -1021,14 +1020,18 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 		break;
- 	case NL80211_IFTYPE_STATION:
- 		if (enable) {
-+			struct ieee80211_sta *sta;
+ 	dwc2_disable_global_interrupts(hsotg);
+ 	synchronize_irq(hsotg->irq);
 +
- 			rcu_read_lock();
--			sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
--			/* TODO: enable BSS_INFO_UAPSD & BSS_INFO_PM */
-+			sta = ieee80211_find_sta(vif, link_conf->bssid);
- 			if (sta) {
--				struct mt76_wcid *wcid;
-+				struct mt7996_sta *msta = (void *)sta->drv_priv;
-+				struct mt7996_sta_link *msta_link;
-+				int link_id = link_conf->link_id;
++	if (hsotg->ll_hw_enabled)
++		dwc2_lowlevel_hw_disable(hsotg);
+ }
  
--				wcid = (struct mt76_wcid *)sta->drv_priv;
--				sta_wlan_idx = wcid->idx;
-+				msta_link = rcu_dereference(msta->link[link_id]);
-+				if (msta_link)
-+					sta_wlan_idx = msta_link->wcid.idx;
- 			}
- 			rcu_read_unlock();
- 		}
-@@ -1045,8 +1048,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_BASIC, sizeof(*bss));
- 
- 	bss = (struct mt76_connac_bss_basic_tlv *)tlv;
--	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
--	bss->dtim_period = link_conf->dtim_period;
- 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
- 	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
- 	bss->conn_type = cpu_to_le32(type);
-@@ -1066,10 +1067,10 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 
- 	memcpy(bss->bssid, link_conf->bssid, ETH_ALEN);
- 	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
--	bss->dtim_period = vif->bss_conf.dtim_period;
-+	bss->dtim_period = link_conf->dtim_period;
- 	bss->phymode = mt76_connac_get_phy_mode(phy, vif,
- 						chandef->chan->band, NULL);
--	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, &vif->bss_conf,
-+	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, link_conf,
- 							chandef->chan->band);
- 
- 	return 0;
+ /**
 -- 
 2.51.0
 
