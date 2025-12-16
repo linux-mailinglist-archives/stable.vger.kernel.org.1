@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0381CC34A7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49071CC2238
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DDA7307A217
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CA94F30119D5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEC1352FA7;
-	Tue, 16 Dec 2025 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE530341057;
+	Tue, 16 Dec 2025 11:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDhFgagi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsdaODZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AE352FA3;
-	Tue, 16 Dec 2025 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981AA33E340;
+	Tue, 16 Dec 2025 11:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885780; cv=none; b=gaeCth6OyqU1wBrXirVRsnnHt/+pf1R3bXCmpDi+LkOqdrXO+YWXnyyvDkD5gtyni6T17gP7VIOCfkattsw/CF8v9q/Ec1NmxO078MxiQrwUVsaEh7fMk9HAPz2Amuub8wpuAWLzhrtUCaqrVWBqwmZrfg6LmX7PcJBK3uoJ664=
+	t=1765884069; cv=none; b=E502iuusp8LVr91wwgLlQ5ZAS7HF4hsdqb/oR+ss5Q8wgGJQowSWr7Y2b6k2P9rzbXe8TX08VviuRiPcDK07pFtLtaZ7VIY3htBJb1KRKuds9nWCVwcfUvPOO0eoWTxFMmqOD/2VuQg8Kxg631b0y065HekBMHrzOCFGKR+pPsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885780; c=relaxed/simple;
-	bh=vK+OQ17Do4yNrqdgWpH5on0BztIj/m2OdmYCYl2914g=;
+	s=arc-20240116; t=1765884069; c=relaxed/simple;
+	bh=gpPCPkCQdG1wYWZCjVhxvMBkYqd0hw5aUIdEThBJ9Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSR5Uko7GIpMDHj5lGT0q+AOrSTbmIXhW83qTHG1d94jObuPbn1d4EFfZ33FU1jfDj2O2L7y9VLan0rH/HAL9TrEdT3rm/MuDANAt49LxVWxXqWcOH/7FkOXNl6etBXDsZxZrZot3a9ShTzfOMh5nC4fDVuCIjiJfMSvZY6CS4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDhFgagi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C20C4CEF5;
-	Tue, 16 Dec 2025 11:49:39 +0000 (UTC)
+	 MIME-Version; b=R8q9rofDyXAsFlbXPIVM0zZIBvXUcddSNh1ktBVMKWzmFxKJ9kzcZqfAxhQOUgnfhPlDiI9dZQ5+szaIzb34xnmjT0MBnesY1jsln+7KBgNU4FFEgJgkoOfF1CkcVTVj8I+dDkLt4pszsFVZj2X1eaO18SsNKg/7M39aTCgecaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsdaODZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE53DC4CEF1;
+	Tue, 16 Dec 2025 11:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885780;
-	bh=vK+OQ17Do4yNrqdgWpH5on0BztIj/m2OdmYCYl2914g=;
+	s=korg; t=1765884069;
+	bh=gpPCPkCQdG1wYWZCjVhxvMBkYqd0hw5aUIdEThBJ9Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDhFgagiuXvHG87EwhUO5t19CurvLgLi+BDgLgBfxPPvWKPqMWsGSvrDd18kixw0S
-	 YAISCw/4/APTgw7Uv+2ZSjhk8glSzIHeZljai8s3fG/0QoSu3ZU6NilKtCqARWjier
-	 i8uDeGTfEatj5sLtxZCGGuPobbENswMW6U+wWw3o=
+	b=RsdaODZh4kLpgXmMep1feQQzAvKSJllQGuz1/9xyRKXXtk0fn6ZxGeCh7GiYyAmwY
+	 7PZcqkedeP6hK4kGEatwbAwx0SDUF5Uq63LGv09K5ereAj66aqj8MkA14fKL8DfEks
+	 kATt5uKLbx3jc3S3iHxCBUaaj9hZulmemdVYuzxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 209/507] macintosh/mac_hid: fix race condition in mac_hid_toggle_emumouse
+Subject: [PATCH 6.12 083/354] mtd: nand: relax ECC parameter validation check
 Date: Tue, 16 Dec 2025 12:10:50 +0100
-Message-ID: <20251216111353.081066124@linuxfoundation.org>
+Message-ID: <20251216111323.931255103@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
 
-[ Upstream commit 1e4b207ffe54cf33a4b7a2912c4110f89c73bf3f ]
+[ Upstream commit 050553c683f21eebd7d1020df9b2ec852e2a9e4e ]
 
-The following warning appears when running syzkaller, and this issue also
-exists in the mainline code.
+Due to the custom handling and layouts of certain nand controllers this
+validity check will always fail for certain layouts. The check
+inherently depends on even chunk sizing and this is not always the
+case.
 
- ------------[ cut here ]------------
- list_add double add: new=ffffffffa57eee28, prev=ffffffffa57eee28, next=ffffffffa5e63100.
- WARNING: CPU: 0 PID: 1491 at lib/list_debug.c:35 __list_add_valid_or_report+0xf7/0x130
- Modules linked in:
- CPU: 0 PID: 1491 Comm: syz.1.28 Not tainted 6.6.0+ #3
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__list_add_valid_or_report+0xf7/0x130
- RSP: 0018:ff1100010dfb7b78 EFLAGS: 00010282
- RAX: 0000000000000000 RBX: ffffffffa57eee18 RCX: ffffffff97fc9817
- RDX: 0000000000040000 RSI: ffa0000002383000 RDI: 0000000000000001
- RBP: ffffffffa57eee28 R08: 0000000000000001 R09: ffe21c0021bf6f2c
- R10: 0000000000000001 R11: 6464615f7473696c R12: ffffffffa5e63100
- R13: ffffffffa57eee28 R14: ffffffffa57eee28 R15: ff1100010dfb7d48
- FS:  00007fb14398b640(0000) GS:ff11000119600000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 000000010d096005 CR4: 0000000000773ef0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 80000000
- Call Trace:
-  <TASK>
-  input_register_handler+0xb3/0x210
-  mac_hid_start_emulation+0x1c5/0x290
-  mac_hid_toggle_emumouse+0x20a/0x240
-  proc_sys_call_handler+0x4c2/0x6e0
-  new_sync_write+0x1b1/0x2d0
-  vfs_write+0x709/0x950
-  ksys_write+0x12a/0x250
-  do_syscall_64+0x5a/0x110
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+Modify the check to only print a warning, instead of failing to
+init the attached NAND. This allows various 8 bit and 12 ECC strength
+layouts to be used.
 
-The WARNING occurs when two processes concurrently write to the mac-hid
-emulation sysctl, causing a race condition in mac_hid_toggle_emumouse().
-Both processes read old_val=0, then both try to register the input handler,
-leading to a double list_add of the same handler.
-
-  CPU0                             CPU1
-  -------------------------        -------------------------
-  vfs_write() //write 1            vfs_write()  //write 1
-    proc_sys_write()                 proc_sys_write()
-      mac_hid_toggle_emumouse()          mac_hid_toggle_emumouse()
-        old_val = *valp // old_val=0
-                                           old_val = *valp // old_val=0
-                                           mutex_lock_killable()
-                                           proc_dointvec() // *valp=1
-                                           mac_hid_start_emulation()
-                                             input_register_handler()
-                                           mutex_unlock()
-        mutex_lock_killable()
-        proc_dointvec()
-        mac_hid_start_emulation()
-          input_register_handler() //Trigger Warning
-        mutex_unlock()
-
-Fix this by moving the old_val read inside the mutex lock region.
-
-Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250819091035.2263329-1-leo.lilong@huaweicloud.com
+Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
+Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/mac_hid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/nand_base.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
-index 369d72f59b3c1..06fd910b3fd1a 100644
---- a/drivers/macintosh/mac_hid.c
-+++ b/drivers/macintosh/mac_hid.c
-@@ -187,13 +187,14 @@ static int mac_hid_toggle_emumouse(const struct ctl_table *table, int write,
- 				   void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int *valp = table->data;
--	int old_val = *valp;
-+	int old_val;
- 	int rc;
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index 53e16d39af4bf..3e1844bfb8089 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -6469,11 +6469,14 @@ static int nand_scan_tail(struct nand_chip *chip)
+ 		ecc->steps = mtd->writesize / ecc->size;
+ 	if (!base->ecc.ctx.nsteps)
+ 		base->ecc.ctx.nsteps = ecc->steps;
+-	if (ecc->steps * ecc->size != mtd->writesize) {
+-		WARN(1, "Invalid ECC parameters\n");
+-		ret = -EINVAL;
+-		goto err_nand_manuf_cleanup;
+-	}
++
++	/*
++	 * Validity check: Warn if ECC parameters are not compatible with page size.
++	 * Due to the custom handling of ECC blocks in certain controllers the check
++	 * may result in an expected failure.
++	 */
++	if (ecc->steps * ecc->size != mtd->writesize)
++		pr_warn("ECC parameters may be invalid in reference to underlying NAND chip\n");
  
- 	rc = mutex_lock_killable(&mac_hid_emumouse_mutex);
- 	if (rc)
- 		return rc;
- 
-+	old_val = *valp;
- 	rc = proc_dointvec(table, write, buffer, lenp, ppos);
- 
- 	if (rc == 0 && write && *valp != old_val) {
+ 	if (!ecc->total) {
+ 		ecc->total = ecc->steps * ecc->bytes;
 -- 
 2.51.0
 
