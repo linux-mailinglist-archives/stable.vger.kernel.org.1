@@ -1,153 +1,145 @@
-Return-Path: <stable+bounces-202494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3485ECC32DF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:25:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFC6CC32BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E76B03044137
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8EF4830303AC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50340376BED;
-	Tue, 16 Dec 2025 12:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D825A3590DF;
+	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh3SghvL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91C376BE9
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 12:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0B3590CF;
+	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888085; cv=none; b=PE4xcd97H8uLbY+Nhj4OUFHtXvr7DB4PaNFM1n+ckWtxENmoJXJ3aeb0VAQ0JCI/z+u4OaEsjHnf+iwx6XXny7ru1hxhPGvZKGYe5g7y42ryQPTHnNdZ2Oli8TQqSukIYEKJnYa1ZnC8rJXtlSDxQryianjXR4jsIRlLCcRz6uU=
+	t=1765888159; cv=none; b=F/OaLWju4scVcrP2XQkjWHLIbVpI7Gd7blEEFWaBwu3JvymRj+JgbWILYEC910PQmMm8MjmFAX8EkVva9g5aTUHHeGWMstfm0pL+LSKzsXFm0EppZgR6wPvpATOEiiMKOTAVKNKsfoGvUWqXJjRivMwVZbkI+u3WIP3wMLqX8hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888085; c=relaxed/simple;
-	bh=7/SaTSWYp5yg+KSn7Qcx6RZNdrsteUYQJm9n61ul4RM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=bieHh5pzem3dbNO0m7pPiqma2IECWhAxbbngKFEXn2azudBtI7G/9eUpM9Jn5nenX3xnNbZVhHnKNKEtX0jBPqg3sZ8N/+51iASnNSnqs+w41OV3RRWseyIusqh9uyQ/qchnX5LZXZJ3AGm/Us2WO+ixiwGJ6wTADC9M2vgn1EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-65b37e173faso6429264eaf.0
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 04:28:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765888082; x=1766492882;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GqzSrTvkfjAQEGBMiElqZ89AGID7wD0Gp4+63xQ2pGo=;
-        b=SdATXOk+QuXQEYVybi0gfoN4luBYpVeMQkN5plJeOE5GYp6SRG5KU95qabB5A8u85T
-         cMomLtizKhUnZ3QLtpnfBc+DMOOCmrnHOVMpDvH37aHK5zZyjuJg5SrARfCzwg1mlhec
-         7gR53qn/7P2tgWCPAA2eivtMa3Uce3bR3uUG6IoHhMSjc6bqoJ9s9AhVozsg5s5ApTfo
-         rch2tvXyok02Bm2PsoEoDWteMyntmIBNKCzKO57LlPZwe/mIddJyrqMX28uQcT7XV+WN
-         sz53F01OulpbvGsbjBZNiMxYoRWmREZhyJ0Q8gFFWmQqDy9YMh2ZdQc8f5upBNioell3
-         zywA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtw1SQcbV8OWuyUQpiUy7CKUM7zK0ESLaBkTseWiTHP4EowxSzpGdCIRsxIvAKyohmFs58qJQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEEgjgy6opP4zRP7y88HTuH+gkq13mFZK/93Vc9/X9M5G6mjrK
-	JdzY9zKcApCH3gm6wl0DKJh8jjF6JRjOaVNp0YrOU9FJFhSC5DSPETrDFGLMv+B+fhykRFa3lCF
-	3H8CtC6R+GwMWSbZEp9whV2d23jjUp88J7TiLsLgunhza8EV0mPy4K8vCkKE=
-X-Google-Smtp-Source: AGHT+IGQFRVkWkjxTQOTQPBe77HYPZQr/nIzYDVLDCLQU7+B8QRGxO4U72ApY8cObLWtEOpRuS8JtyDkcqSkAQPUO6up/6GpxyUr
+	s=arc-20240116; t=1765888159; c=relaxed/simple;
+	bh=F8gszaYKbV5HBAp35rcM076dRwaoeGkXE5yARasU2g4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=G5jjtGA2e1u7xeOEm8UDV/k+6TYTD8Q2kdGu8Iriha+Xu+T4FsCReKvLBe0gVFZy/KMH2f6htn8LNpHQXMoBGg+ur2rMm0b0QA0XCbZjfZH2H5PEZw3CRHB7W+Sj+rr+Ora36KGlFq49ewy8GemBX7E3TEqK2E6HP3esSHiYyjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh3SghvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F760C4CEF1;
+	Tue, 16 Dec 2025 12:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765888159;
+	bh=F8gszaYKbV5HBAp35rcM076dRwaoeGkXE5yARasU2g4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Qh3SghvL1mqI8azw0usigfFwIY8XyF4eC5pT4vaoNJnGM+a1pPsLYECT4xH3p3Wpt
+	 LteN/WvdZkQG0o9yF+J4D4DiDIBI+49yJR9Asv4oj8Mu8TmfYpDKEJ0WBazGjt5Y9R
+	 ksBZKvHZkXkRGjzmHhrJaGBOIhacJxt6Ar8VqC9zy3DH+tWbieUg88lOpgWrYlPPzK
+	 94tm5toYvy4XfGe1OflwYkDyz1Ei2yPiPm171K0UQMQjsTVmTsHhdiNyqFAO4iDWbr
+	 oebAIY+GELTjZmWI6AU71LUea6giBvRK7tumGmMysvdScJTy65gfu+wQdhCsJhhr+d
+	 7E7WuAyZd5EPQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1885:b0:659:9a49:8f7e with SMTP id
- 006d021491bc7-65b45736579mr6905941eaf.67.1765888082301; Tue, 16 Dec 2025
- 04:28:02 -0800 (PST)
-Date: Tue, 16 Dec 2025 04:28:02 -0800
-In-Reply-To: <aUFLJriRifOpmubw@ndev>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69415052.a70a0220.33cd7b.013c.GAE@google.com>
-Subject: Re: [syzbot] [fs?] [mm?] kernel BUG in __filemap_add_folio
-From: syzbot <syzbot+4d3cc33ef7a77041efa6@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, wangjinchao600@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Dec 2025 13:29:14 +0100
+Message-Id: <DEZN3V4LT8XM.VQRQ1IXP4DDU@kernel.org>
+Subject: Re: [PATCH v1] rust: Add some DMA helpers for architectures without
+ CONFIG_HAS_DMA
+Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>,
+ <abdiel.janulgue@gmail.com>, <aliceryhl@google.com>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
+ <daniel.almeida@collabora.com>, <gary@garyguo.net>, <lossin@kernel.org>,
+ <robin.murphy@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <tmgross@umich.edu>, <stable@vger.kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251204160639.364936-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20251204160639.364936-1-fujita.tomonori@gmail.com>
 
-Hello,
+(Cc: stable@vger.kernel.org)
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-kernel BUG in __filemap_add_folio
+On Thu Dec 4, 2025 at 5:06 PM CET, FUJITA Tomonori wrote:
+> Add dma_set_mask(), dma_set_coherent_mask(), dma_map_sgtable(), and
+> dma_max_mapping_size() helpers to fix a build error when
+> CONFIG_HAS_DMA is not enabled.
+>
+> Note that when CONFIG_HAS_DMA is enabled, they are included in both
+> bindings_generated.rs and bindings_helpers_generated.rs. The former
+> takes precedence so behavior remains unchanged in that case.
+>
+> This fixes the following build error on UML:
+>
+> error[E0425]: cannot find function `dma_set_mask` in crate `bindings`
+>      --> /linux/rust/kernel/dma.rs:46:38
+>       |
+>    46 |         to_result(unsafe { bindings::dma_set_mask(self.as_ref().a=
+s_raw(), mask.value()) })
+>       |                                      ^^^^^^^^^^^^ help: a functio=
+n with a similar name exists: `xa_set_mark`
+>       |
+>      ::: /build/um/rust/bindings/bindings_generated.rs:24690:5
+>       |
+> 24690 |     pub fn xa_set_mark(arg1: *mut xarray, index: ffi::c_ulong, ar=
+g2: xa_mark_t);
+>       |     -------------------------------------------------------------=
+--------------- similarly named function `xa_set_mark` defined here
+>
+> error[E0425]: cannot find function `dma_set_coherent_mask` in crate `bind=
+ings`
+>      --> /linux/rust/kernel/dma.rs:63:38
+>       |
+>    63 |         to_result(unsafe { bindings::dma_set_coherent_mask(self.a=
+s_ref().as_raw(), mask.value()) })
+>       |                                      ^^^^^^^^^^^^^^^^^^^^^ help: =
+a function with a similar name exists: `dma_coherent_ok`
+>       |
+>      ::: /build/um/rust/bindings/bindings_generated.rs:52745:5
+>       |
+> 52745 |     pub fn dma_coherent_ok(dev: *mut device, phys: phys_addr_t, s=
+ize: usize) -> bool_;
+>       |     -------------------------------------------------------------=
+--------------------- similarly named function `dma_coherent_ok` defined he=
+re
+>
+> error[E0425]: cannot find function `dma_map_sgtable` in crate `bindings`
+>     --> /linux/rust/kernel/scatterlist.rs:212:23
+>      |
+>  212 |               bindings::dma_map_sgtable(dev.as_raw(), sgt.as_ptr()=
+, dir.into(), 0)
+>      |                         ^^^^^^^^^^^^^^^ help: a function with a si=
+milar name exists: `dma_unmap_sgtable`
+>      |
+>     ::: /build/um/rust/bindings/bindings_helpers_generated.rs:1351:5
+>      |
+> 1351 | /     pub fn dma_unmap_sgtable(
+> 1352 | |         dev: *mut device,
+> 1353 | |         sgt: *mut sg_table,
+> 1354 | |         dir: dma_data_direction,
+> 1355 | |         attrs: ffi::c_ulong,
+> 1356 | |     );
+>      | |______- similarly named function `dma_unmap_sgtable` defined here
+>
+> error[E0425]: cannot find function `dma_max_mapping_size` in crate `bindi=
+ngs`
+>    --> /linux/rust/kernel/scatterlist.rs:356:52
+>     |
+> 356 |         let max_segment =3D match unsafe { bindings::dma_max_mappin=
+g_size(dev.as_raw()) } {
+>     |                                                    ^^^^^^^^^^^^^^^^=
+^^^^ not found in `bindings`
+>
+> error: aborting due to 4 previous errors
+>
+> Fixes: 101d66828a4ee ("rust: dma: add DMA addressing capabilities")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1395 [inline]
- __free_frozen_pages+0x7df/0x1170 mm/page_alloc.c:2943
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0x79c/0x15f0 kernel/rcu/tree.c:2857
- handle_softirqs+0x219/0x950 kernel/softirq.c:622
- run_ksoftirqd kernel/softirq.c:1063 [inline]
- run_ksoftirqd+0x3a/0x60 kernel/softirq.c:1055
- smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-------------[ cut here ]------------
-kernel BUG at mm/filemap.c:858!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 6821 Comm: syz.1.76 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:__filemap_add_folio+0xf29/0x11b0 mm/filemap.c:858
-Code: 9b c6 ff 48 c7 c6 c0 e9 99 8b 4c 89 ef e8 0f 74 11 00 90 0f 0b e8 47 9b c6 ff 48 c7 c6 20 ea 99 8b 4c 89 ef e8 f8 73 11 00 90 <0f> 0b e8 30 9b c6 ff 90 0f 0b 90 e9 1c fc ff ff e8 22 9b c6 ff 48
-RSP: 0018:ffffc900033af840 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff8880737fc980 RSI: ffffffff81f7ebf8 RDI: ffff8880737fce04
-RBP: 0000000000112cc0 R08: 0000000000000001 R09: 0000000000000001
-R10: ffffffff908689d7 R11: 0000000000000000 R12: 0000000000000002
-R13: ffffea0001ce4980 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557770b500(0000) GS:ffff888124a48000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9aef15c000 CR3: 000000002ee4c000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- filemap_add_folio+0x19a/0x610 mm/filemap.c:966
- ra_alloc_folio mm/readahead.c:453 [inline]
- page_cache_ra_order+0x637/0xed0 mm/readahead.c:512
- do_sync_mmap_readahead mm/filemap.c:3400 [inline]
- filemap_fault+0x16ac/0x29d0 mm/filemap.c:3549
- __do_fault+0x10d/0x490 mm/memory.c:5320
- do_shared_fault mm/memory.c:5819 [inline]
- do_fault+0x302/0x1ad0 mm/memory.c:5893
- do_pte_missing mm/memory.c:4401 [inline]
- handle_pte_fault mm/memory.c:6273 [inline]
- __handle_mm_fault+0x1919/0x2bb0 mm/memory.c:6411
- handle_mm_fault+0x3fe/0xad0 mm/memory.c:6580
- do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x64/0xc0 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x7f8af1a55171
-Code: 48 8b 54 24 08 48 85 d2 74 17 8b 44 24 18 0f c8 89 c0 48 89 44 24 18 48 83 fa 01 0f 85 b3 01 00 00 48 8b 44 24 10 8b 54 24 18 <89> 10 e9 15 fd ff ff 48 8b 44 24 10 8b 10 48 8b 44 24 08 48 85 c0
-RSP: 002b:00007ffc7d678bf0 EFLAGS: 00010246
-RAX: 0000200000000980 RBX: 0000000000000004 RCX: 0000000000000000
-RDX: 0000000000004000 RSI: 0000000000000000 RDI: 000055557770b3c8
-RBP: 00007ffc7d678cf8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000002 R12: 00007f8af1dd5fac
-R13: 00007f8af1dd5fa0 R14: fffffffffffffffe R15: 00007ffc7d678d40
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__filemap_add_folio+0xf29/0x11b0 mm/filemap.c:858
-Code: 9b c6 ff 48 c7 c6 c0 e9 99 8b 4c 89 ef e8 0f 74 11 00 90 0f 0b e8 47 9b c6 ff 48 c7 c6 20 ea 99 8b 4c 89 ef e8 f8 73 11 00 90 <0f> 0b e8 30 9b c6 ff 90 0f 0b 90 e9 1c fc ff ff e8 22 9b c6 ff 48
-RSP: 0018:ffffc900033af840 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff8880737fc980 RSI: ffffffff81f7ebf8 RDI: ffff8880737fce04
-RBP: 0000000000112cc0 R08: 0000000000000001 R09: 0000000000000001
-R10: ffffffff908689d7 R11: 0000000000000000 R12: 0000000000000002
-R13: ffffea0001ce4980 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557770b500(0000) GS:ffff888124a48000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f772b5d7dac CR3: 000000002ee4c000 CR4: 00000000003526f0
+Applied to driver-core-linus, thanks!
 
-
-Tested on:
-
-commit:         40fbbd64 Merge tag 'pull-fixes' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10715dc2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=495547a782e37c4f
-dashboard link: https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Note: no patches were applied.
+    [ Use relative paths in the error splat; add 'dma' prefix. - Danilo ]
 
