@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F02CC24E7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E501CC309B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 794A7310113F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D120630410C3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFDD3233EE;
-	Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9A135295B;
+	Tue, 16 Dec 2025 12:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPNNnDdj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkFoco+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F1956B81;
-	Tue, 16 Dec 2025 11:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9624734F491;
+	Tue, 16 Dec 2025 12:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884516; cv=none; b=nACCJ4tZZxJJC6yal6orUYvOFJUCHsg8OF6sa+D53o+tI5PAJ5+PJ+ma6QcStYrnbqJghVn5VnDfucs8tQNgYyWJcXGInBURWmJfgt7ANfD6WAYa1cwQIQbLxbbAoZJaFLFdurg6jZ25kxCRziGdabaSykV4Tvv+aoIc8gE8/wE=
+	t=1765888111; cv=none; b=HsDf284jMSSTx//pQzFNHNZhqBeAKDjMXzqI9PNoqosPceeWt94gWwckzRNAqOpp5JG7sPboPueg0FnoI6/h6+vpna/lK/2N/tlYaDXvNO8sx5uuEsYVY/2ONZziydQp0+pVSEniXgr+MXQsyF/6rgp7o3NiFqn5G0RNRYkdCYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884516; c=relaxed/simple;
-	bh=IRmOuIRdJ6zf0874unu21phAc1YO6i28V1XJUDcuXPQ=;
+	s=arc-20240116; t=1765888111; c=relaxed/simple;
+	bh=7kpFJ+9KDX3isoMhQQQwoAFvaeNjFxy7oPpAouA8SFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hp0vyu3uzocaBb+gzEDpm/OLYWk8ALwi+vODB+Pw4PKT0OueNWOUJfzQGAHfMZGvBSOtZFMu4/YQD9DXTeU/Zhci5AprkEOUTEs2SBULhObSBfV3oHTlzU/GYq5LYbY93SZnCmiaM2kEkoKJODdhc3nAcJ9cCojFdXmmxLXOPpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPNNnDdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607E8C4CEF1;
-	Tue, 16 Dec 2025 11:28:35 +0000 (UTC)
+	 MIME-Version; b=DFLHF73LN1VSG6CJuBCob0fSIEO/O1orvftH8S1JrTlg6ugCjWxB8jmJ7ht9UflvTUIPtdWzae/5eIliQKLBJFwuO2TARNHJuufxzHpsmCTLeT49hmoY6OHv5RzYcTcTn3yFJWalt7/O5dh2BhhLJ6hYCzAgKVuzjWYU0KI/L2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkFoco+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB747C4CEF1;
+	Tue, 16 Dec 2025 12:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884515;
-	bh=IRmOuIRdJ6zf0874unu21phAc1YO6i28V1XJUDcuXPQ=;
+	s=korg; t=1765888111;
+	bh=7kpFJ+9KDX3isoMhQQQwoAFvaeNjFxy7oPpAouA8SFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPNNnDdjDc24aYK7XfreubElzanWr7bctEv3H4xRexvxiDyhd+SCYnzX7bzAmNKAY
-	 QX6Ym+QCl8iryUNvCOCn0oJFujmnHGfPaTVqC/ms4iGCT7Z+1t/DL2N2DP9PIbhBKn
-	 PiPVJKQZHXp1NEXqJv4FiUcCAizq4bAZCYVGlwkU=
+	b=wkFoco+VdxrbuhpfQbTFNV1OkqkVmdZJHtD9P8h7n4ibdyJUqwOlCVrugyxZqPk+f
+	 uPdQJlCN/wfLOWBxC7Dj4Ej+ReEB8yMid9tjKf5UZaHQMMBBy31ByMrRoVKnmrsrfK
+	 BUE5YSwNo0y3cjP2bZClosNpOeh/eljNaQO/bREE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianglei Nie <niejianglei2021@163.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/354] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
+Subject: [PATCH 6.18 418/614] backlight: led-bl: Add devlink to supplier LEDs
 Date: Tue, 16 Dec 2025 12:13:05 +0100
-Message-ID: <20251216111328.816979235@linuxfoundation.org>
+Message-ID: <20251216111416.516653023@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianglei Nie <niejianglei2021@163.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
+[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
 
-fbtft_probe_common() allocates a memory chunk for "info" with
-fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
-function returns without releasing the "info", which will lead to a
-memory leak.
+LED Backlight is a consumer of one or multiple LED class devices, but
+devlink is currently unable to create correct supplier-producer links when
+the supplier is a class device. It creates instead a link where the
+supplier is the parent of the expected device.
 
-Fix it by calling fbtft_framebuffer_release() when "display->buswidth
-== 0" is true.
+One consequence is that removal order is not correctly enforced.
 
-Fixes: c296d5f9957c ("staging: fbtft: core support")
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Issues happen for example with the following sections in a device tree
+overlay:
+
+    // An LED driver chip
+    pca9632@62 {
+        compatible = "nxp,pca9632";
+        reg = <0x62>;
+
+	// ...
+
+        addon_led_pwm: led-pwm@3 {
+            reg = <3>;
+            label = "addon:led:pwm";
+        };
+    };
+
+    backlight-addon {
+        compatible = "led-backlight";
+        leds = <&addon_led_pwm>;
+        brightness-levels = <255>;
+        default-brightness-level = <255>;
+    };
+
+In this example, the devlink should be created between the backlight-addon
+(consumer) and the pca9632@62 (supplier). Instead it is created between the
+backlight-addon (consumer) and the parent of the pca9632@62, which is
+typically the I2C bus adapter.
+
+On removal of the above overlay, the LED driver can be removed before the
+backlight device, resulting in:
+
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+    ...
+    Call trace:
+     led_put+0xe0/0x140
+     devm_led_release+0x6c/0x98
+
+Another way to reproduce the bug without any device tree overlays is
+unbinding the LED class device (pca9632@62) before unbinding the consumer
+(backlight-addon):
+
+  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
+  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
+
+Fix by adding a devlink between the consuming led-backlight device and the
+supplying LED device, as other drivers and subsystems do as well.
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/fbtft/fbtft-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/backlight/led_bl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 8fab5126765d4..69649c0ef8739 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -1170,8 +1170,8 @@ int fbtft_probe_common(struct fbtft_display *display,
- 	par->pdev = pdev;
- 
- 	if (display->buswidth == 0) {
--		dev_err(dev, "buswidth is not set\n");
--		return -EINVAL;
-+		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
-+		goto out_release;
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index efc5e380669ae..f7ab9b3607313 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -210,6 +210,19 @@ static int led_bl_probe(struct platform_device *pdev)
+ 		return PTR_ERR(priv->bl_dev);
  	}
  
- 	/* write register functions */
++	for (i = 0; i < priv->nb_leds; i++) {
++		struct device_link *link;
++
++		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
++				       DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!link) {
++			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
++				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
++			backlight_device_unregister(priv->bl_dev);
++			return -EINVAL;
++		}
++	}
++
+ 	for (i = 0; i < priv->nb_leds; i++) {
+ 		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_disable(priv->leds[i]);
 -- 
 2.51.0
 
