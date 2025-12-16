@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983B1CC32A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE9BCC2B6E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52C6C3064BF2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC08230B3FE9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5B037A3EC;
-	Tue, 16 Dec 2025 12:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADD5346E7F;
+	Tue, 16 Dec 2025 11:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/6eb9au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmuyBMow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1698637A3E8;
-	Tue, 16 Dec 2025 12:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD82346FA1;
+	Tue, 16 Dec 2025 11:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888254; cv=none; b=q0wrDGJhh9qCqgtG76bFQ8cIMb0zWXyIQPzKgQ+17sUjpNkxwYU4+RPxzfA08Kxo4FtKvyeyOHJ6r4ODinI5tgUJAhbBO7gNBY0KrjAFddujI7fCPxJEKzLwQ8uRnQDheiLkuiQ56JTkBdAJ1gYc3X4Lw+rB4rxS1rQGNfzc43E=
+	t=1765886330; cv=none; b=SukfLQHSxdCyo3houmIq0BJN7Y7Dwhgc5HjEOWHlkQ1pVR6/X3YII/acpXLhDzkqgW9/QAoBL++Yb31tkay90S4w0qrBKVVDN5SMualYFV9fkyQTxX66FpdkaPgZLSvsHN/aVkXHMRPhMOv2zPEAYJRScOHQTvwYiNyT+ssWAvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888254; c=relaxed/simple;
-	bh=EBGDKnYCF6rGP8JlU3NykiF6rq01NFVaWEtT1kRG4vM=;
+	s=arc-20240116; t=1765886330; c=relaxed/simple;
+	bh=QZXtGa+kXcYCPKL6rEpOUOFzWR8lUQa4d6d87TSUDkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhMlBeDDUk6hPuH1AI4clm5iFOxHntXRUyoWp/ICsNvi3pafqcJpJO/G9FpF6GqrBGYFgH4601u36+op5bv8coJq4J2vQurc6FpwMNzRI9C0qcXNYQyspoFXUFULsCs+Ywl+Jw2TpUiTwQRbRRFA3STfrl6d3UeB5eRJiYJrdQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/6eb9au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF2FC16AAE;
-	Tue, 16 Dec 2025 12:30:52 +0000 (UTC)
+	 MIME-Version; b=CbzSynCGDv9jTOLhXbUDX60ITYOMSqFbz3QCaTwEdFZtn0ThDzRXtpXZTQbtDv4WYXrmjBM44340NiLiWFiLqiPRhzCyAOVmteIAeWZmbo8eR1mzBkOJRQ6oksbPWrrDX/MUSuXpr+R/1rOX5+LDN9YCU1MB0WawYBF2dDmFyVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmuyBMow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFC5C4CEF1;
+	Tue, 16 Dec 2025 11:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888253;
-	bh=EBGDKnYCF6rGP8JlU3NykiF6rq01NFVaWEtT1kRG4vM=;
+	s=korg; t=1765886330;
+	bh=QZXtGa+kXcYCPKL6rEpOUOFzWR8lUQa4d6d87TSUDkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/6eb9aup3q9OfIJ3+ivDPBI0ZKaH/r+JBjfZAie5ay6scB1fWWgbZS+4UqvYL/b8
-	 XxcCoLRFsO0NGzh1iLdv6wKqU6iVDVGJe3kfrxSfbw8nJJpNwheuBzUbwuWh0EPM8L
-	 bU6O+H+JilZ90Hl3RSAonFIKri1fD7Fm5BxnDh+8=
+	b=wmuyBMoweN1qfK2cmBDvV8xxvA4nhTqx9h3r1OX5zzUv7ReAD2Rr94Jg3TmYqsVEq
+	 CrF+WgD6Z4WLj+4/vw1JRBdknzWurnjMT1ORHKCb+rXtqMaFIDm8O7aiUxcyEa/qw2
+	 3JEleWSAGBBS7DtcteU8sFQzWff+B5BFeo3OotXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sparkhuang <huangshaobo3@xiaomi.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ritesh Oedayrajsingh Varma <ritesh@superluminal.eu>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 478/614] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
-Date: Tue, 16 Dec 2025 12:14:05 +0100
-Message-ID: <20251216111418.689359692@linuxfoundation.org>
+Subject: [PATCH 6.17 405/507] rqspinlock: Use trylock fallback when per-CPU rqnode is busy
+Date: Tue, 16 Dec 2025 12:14:06 +0100
+Message-ID: <20251216111400.125823745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sparkhuang <huangshaobo3@xiaomi.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
+[ Upstream commit 81d5a6a438595e46be191d602e5c2d6d73992fdc ]
 
-regulator_supply_alias_list was accessed without any locking in
-regulator_supply_alias(), regulator_register_supply_alias(), and
-regulator_unregister_supply_alias(). Concurrent registration,
-unregistration and lookups can race, leading to:
+In addition to deferring to the trylock fallback in NMIs, only do so
+when an rqspinlock waiter is queued on the current CPU. This is detected
+by noticing a non-zero node index. This allows NMI waiters to join the
+waiter queue if it isn't interrupting an existing rqspinlock waiter, and
+increase the chances of fairly obtaining the lock, performing deadlock
+detection as the head, and not being starved while attempting the
+trylock.
 
-1 use-after-free if an alias entry is removed while being read,
-2 duplicate entries when two threads register the same alias,
-3 inconsistent alias mappings observed by consumers.
+The trylock path in particular is unlikely to succeed under contention,
+as it relies on the lock word becoming 0, which indicates no contention.
+This means that the most likely result for NMIs attempting a trylock is
+a timeout under contention if they don't hit an AA or ABBA case.
 
-Protect all traversals, insertions and deletions on
-regulator_supply_alias_list with the existing regulator_list_mutex.
+The core problem being addressed through the fixed commit was removing
+the dependency edge between an NMI queue waiter and the queue waiter it
+is interrupting. Whenever a circular dependency forms, and with no way
+to break it (as non-head waiters don't poll for deadlocks or timeouts),
+we would enter into a deadlock. A trylock either breaks such an edge by
+probing for deadlocks, and finally terminating the waiting loop using a
+timeout.
 
-Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+By excluding queueing on CPUs where the node index is non-zero for NMIs,
+this sort of dependency is broken. The CPU enters the trylock path for
+those cases, and falls back to deadlock checks and timeouts. However, in
+other case where it doesn't interrupt the CPU in the slow path while its
+queued on the lock, it can join the queue as a normal waiter, and avoid
+trylock associated starvation and subsequent timeouts.
+
+There are a few remaining cases here that matter: the NMI can still
+preempt the owner in its critical section, and if it queues as a
+non-head waiter, it can end up impeding the progress of the owner. While
+this won't deadlock, since the head waiter will eventually signal the
+NMI waiter to either stop (due to a timeout), it can still lead to long
+timeouts. These gaps will be addressed in subsequent commits.
+
+Note that while the node count detection approach is less conservative
+than simply deferring NMIs to trylock, it is going to return errors
+where attempts to lock B in NMI happen while waiters for lock A are in a
+lower context on the same CPU. However, this only occurs when the lower
+context is queued in the slow path, and the NMI attempt can proceed
+without failure in all other cases. To continue to prevent AA deadlocks
+(or ABBA in a similar NMI interrupting lower context pattern), we'd need
+a more fleshed out algorithm to unlink NMI waiters after they queue and
+detect such cases. However, all that complexity isn't appealing yet to
+reduce the failure rate in the small window inside the slow path.
+
+It is important to note that reentrancy in the slow path can also happen
+through trace_contention_{begin,end}, but in those cases, unlike an NMI,
+the forward progress of the head waiter (or the predecessor in general)
+is not being blocked.
+
+Fixes: 0d80e7f951be ("rqspinlock: Choose trylock fallback for NMI waiters")
+Reported-by: Ritesh Oedayrajsingh Varma <ritesh@superluminal.eu>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20251128232802.1031906-4-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ kernel/bpf/rqspinlock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index fc93612f4ec0c..b38b087eccfd7 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1947,6 +1947,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(*dev, *supply);
- 	if (map) {
- 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
-@@ -1955,6 +1956,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- 		*dev = map->alias_dev;
- 		*supply = map->alias_supply;
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- 
- static int regulator_match(struct device *dev, const void *data)
-@@ -2497,22 +2499,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
- 				    const char *alias_id)
- {
- 	struct regulator_supply_alias *map;
-+	struct regulator_supply_alias *new_map;
- 
--	map = regulator_find_supply_alias(dev, id);
--	if (map)
--		return -EEXIST;
--
--	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
--	if (!map)
-+	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
-+	if (!new_map)
- 		return -ENOMEM;
- 
--	map->src_dev = dev;
--	map->src_supply = id;
--	map->alias_dev = alias_dev;
--	map->alias_supply = alias_id;
--
--	list_add(&map->list, &regulator_supply_alias_list);
-+	mutex_lock(&regulator_list_mutex);
-+	map = regulator_find_supply_alias(dev, id);
-+	if (map) {
-+		mutex_unlock(&regulator_list_mutex);
-+		kfree(new_map);
-+		return -EEXIST;
-+	}
- 
-+	new_map->src_dev = dev;
-+	new_map->src_supply = id;
-+	new_map->alias_dev = alias_dev;
-+	new_map->alias_supply = alias_id;
-+	list_add(&new_map->list, &regulator_supply_alias_list);
-+	mutex_unlock(&regulator_list_mutex);
- 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
- 		id, dev_name(dev), alias_id, dev_name(alias_dev));
- 
-@@ -2532,11 +2538,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(dev, id);
- 	if (map) {
- 		list_del(&map->list);
- 		kfree(map);
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
- 
+diff --git a/kernel/bpf/rqspinlock.c b/kernel/bpf/rqspinlock.c
+index f4c534fa4e87b..3faf9cbd6c753 100644
+--- a/kernel/bpf/rqspinlock.c
++++ b/kernel/bpf/rqspinlock.c
+@@ -465,7 +465,7 @@ int __lockfunc resilient_queued_spin_lock_slowpath(rqspinlock_t *lock, u32 val)
+ 	 * any MCS node. This is not the most elegant solution, but is
+ 	 * simple enough.
+ 	 */
+-	if (unlikely(idx >= _Q_MAX_NODES || in_nmi())) {
++	if (unlikely(idx >= _Q_MAX_NODES || (in_nmi() && idx > 0))) {
+ 		lockevent_inc(lock_no_node);
+ 		RES_RESET_TIMEOUT(ts, RES_DEF_TIMEOUT);
+ 		while (!queued_spin_trylock(lock)) {
 -- 
 2.51.0
 
