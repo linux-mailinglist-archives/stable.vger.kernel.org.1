@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-202416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8CBCC3B7B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32914CC2B5C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2174C30802C0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C631430A7A38
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCD6345CA2;
-	Tue, 16 Dec 2025 12:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF03354AF3;
+	Tue, 16 Dec 2025 11:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiIxVm1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIdN6Dgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3863451BD;
-	Tue, 16 Dec 2025 12:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B535354AEF;
+	Tue, 16 Dec 2025 11:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887826; cv=none; b=f8PReWXOK0gnwFnBX8A3JHn9xCoSxx1xEMgfZ+QCHztwuE/fE/AEdLUhXgIYBZWwz1ogY1oDXMdsUmOt/mlIa0nBKE3Sy2eKFsIEicg6ZPYXGlJR8aVZAdtchI0s/HUXyLQ/leA+AALY0kkkGS/zLY+MR/KtPICFb6kXH/hrsqI=
+	t=1765885804; cv=none; b=iTvD795kNCSwq8VlWk5+VKX7hF4pYq8zBawfK3ueT7krMs89Y+8KcZB5NUpHd9U+Cm24QAt2nVIS+9MSeXkzldUv6/joMG8j4+mSJr9izLNjkDKQhJImLNPKIAGBsF3iYDyzu8V+KLRI0erqrlRtiY7QKrzYrTx7TXBgHkNlDEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887826; c=relaxed/simple;
-	bh=VpMbV47YXIzi9pFcqkLn2K2b/X2qFCPo3xhY3sZbvqc=;
+	s=arc-20240116; t=1765885804; c=relaxed/simple;
+	bh=+Uw0ajCvnhKfBtUidam7iNEJEzO/dt7W3kU/7Ej/1GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGXwNkii1Hjs1oChuPcetKUttklVG2x+1x1ZSitx2bklgVIww+cAaLpfgpZe2m4ZlHqfZlWux7rM5Ibr3HlWiUQBT9xE/Y8XMeKA1mihIHVDlxHmmM4YxZl7CyBZgSbXu2w5hSDpYL0Xg9iPBPLPW8vA/rB4fthw27+kCRkBJ9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiIxVm1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A43C4CEF1;
-	Tue, 16 Dec 2025 12:23:45 +0000 (UTC)
+	 MIME-Version; b=XOPbR0kqMkssDEhj6CNhEXg2dVZwPNnOeO25rM1UHiekFjpIRLkXYeHQhjkkTKeSZmC6b2F2pjFVcDjEF00LyYaOvFmRydT8vi/9J7sQEnq6o+xl3eR6jYezYgL47EfvlNaaOyU3emk0S2YYYk8v99VspX6AIKMryDNGcqKJ9j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIdN6Dgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E82C4CEF1;
+	Tue, 16 Dec 2025 11:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887826;
-	bh=VpMbV47YXIzi9pFcqkLn2K2b/X2qFCPo3xhY3sZbvqc=;
+	s=korg; t=1765885804;
+	bh=+Uw0ajCvnhKfBtUidam7iNEJEzO/dt7W3kU/7Ej/1GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiIxVm1T2T0PVzU10UrfXEjnoodwiCrm/4SaQ5MsSh3bcICXO7ELNs+K6dnx87apJ
-	 zxyAeQYsVCGGhG4fxNuGrYiMekduuVkpOEutn80/PObsqHhT1YBelE1zGipeVxyMoK
-	 VSenf5SvoyqPJAPJw2DDYnNZZtR2dLFPY2wlQknA=
+	b=DIdN6DgshjKUdN9uzvz0vAxjn5QL9U2FyinAdIOmHVoqip9+QPtwIE3ibJ9Cg0m9p
+	 ZE/B6vAAYOCMn5Z76q/KbL/ykCllBRBLH9ZnjzzBOSwTP+qofQD0ooE5HOGLt2lfbv
+	 xe3Tr0t+AKXxSzpIjJjNQvnkOjnlx7cKSnqvTBVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sahil Chandna <chandna.sahil@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 316/614] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
+Subject: [PATCH 6.17 242/507] bpf: Prevent nesting overflow in bpf_try_get_buffers
 Date: Tue, 16 Dec 2025 12:11:23 +0100
-Message-ID: <20251216111412.814830184@linuxfoundation.org>
+Message-ID: <20251216111354.265517663@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Sahil Chandna <chandna.sahil@gmail.com>
 
-[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
+[ Upstream commit c1da3df7191f1b4df9256bcd30d78f78201e1d17 ]
 
-When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
-Addressing Mode during early boot. During this, we should ensure that
-memory region allocations for stress_hpt_struct should happen from
-within RMA region as otherwise the boot might get stuck while doing
-memset of this region.
+bpf_try_get_buffers() returns one of multiple per-CPU buffers based on a
+per-CPU nesting counter. This mechanism expects that buffers are not
+endlessly acquired before being returned. migrate_disable() ensures that a
+task remains on the same CPU, but it does not prevent the task from being
+preempted by another task on that CPU.
 
-History behind why do we have RMA region limitation is better explained
-in these 2 patches [1] & [2]. This patch ensures that memset to
-stress_hpt_struct during early boot does not cross ppc64_rma_size
-boundary.
+Without disabled preemption, a task may be preempted while holding a
+buffer, allowing another task to run on same CPU and acquire an
+additional buffer. Several such preemptions can cause the per-CPU
+nest counter to exceed MAX_BPRINTF_NEST_LEVEL and trigger the warning in
+bpf_try_get_buffers(). Adding preempt_disable()/preempt_enable() around
+buffer acquisition and release prevents this task preemption and
+preserves the intended bounded nesting behavior.
 
-[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
-[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
-
-Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
+Reported-by: syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68f6a4c8.050a0220.1be48.0011.GAE@google.com/
+Fixes: 4223bf833c849 ("bpf: Remove preempt_disable in bpf_try_get_buffers")
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+Link: https://lore.kernel.org/r/20251114064922.11650-1-chandna.sahil@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/bpf/helpers.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 3aee3af614af8..c99be1286d517 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1302,11 +1302,14 @@ static void __init htab_initialize(void)
- 	unsigned long table;
- 	unsigned long pteg_count;
- 	unsigned long prot;
--	phys_addr_t base = 0, size = 0, end;
-+	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
- 	u64 i;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 3eb02ce0dba3b..722314912ba8f 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -774,9 +774,11 @@ int bpf_try_get_buffers(struct bpf_bprintf_buffers **bufs)
+ {
+ 	int nest_level;
  
- 	DBG(" -> htab_initialize()\n");
++	preempt_disable();
+ 	nest_level = this_cpu_inc_return(bpf_bprintf_nest_level);
+ 	if (WARN_ON_ONCE(nest_level > MAX_BPRINTF_NEST_LEVEL)) {
+ 		this_cpu_dec(bpf_bprintf_nest_level);
++		preempt_enable();
+ 		return -EBUSY;
+ 	}
+ 	*bufs = this_cpu_ptr(&bpf_bprintf_bufs[nest_level - 1]);
+@@ -789,6 +791,7 @@ void bpf_put_buffers(void)
+ 	if (WARN_ON_ONCE(this_cpu_read(bpf_bprintf_nest_level) == 0))
+ 		return;
+ 	this_cpu_dec(bpf_bprintf_nest_level);
++	preempt_enable();
+ }
  
-+	if (firmware_has_feature(FW_FEATURE_LPAR))
-+		limit = ppc64_rma_size;
-+
- 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
- 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
- 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
-@@ -1322,7 +1325,7 @@ static void __init htab_initialize(void)
- 		// Too early to use nr_cpu_ids, so use NR_CPUS
- 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
- 						__alignof__(struct stress_hpt_struct),
--						0, MEMBLOCK_ALLOC_ANYWHERE);
-+						MEMBLOCK_LOW_LIMIT, limit);
- 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
- 		stress_hpt_struct = __va(tmp);
- 
-@@ -1356,11 +1359,10 @@ static void __init htab_initialize(void)
- 			mmu_hash_ops.hpte_clear_all();
- #endif
- 	} else {
--		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
- 
- 		table = memblock_phys_alloc_range(htab_size_bytes,
- 						  htab_size_bytes,
--						  0, limit);
-+						  MEMBLOCK_LOW_LIMIT, limit);
- 		if (!table)
- 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
- 			      &htab_size_bytes, &limit);
+ void bpf_bprintf_cleanup(struct bpf_bprintf_data *data)
 -- 
 2.51.0
 
