@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC57CC2C28
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20177CC452E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25BFD305B7F3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E0A53094634
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C13659E4;
-	Tue, 16 Dec 2025 12:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3664E345CB9;
+	Tue, 16 Dec 2025 11:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9flkoB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh823s2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F4D35CB7D;
-	Tue, 16 Dec 2025 12:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5846345CAE;
+	Tue, 16 Dec 2025 11:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887021; cv=none; b=N2ThH4OtsUoHOA1G+B2Qv0DquswV62k0hWUScxKE2km0APHQAhKE02DVf1eiC85Vn9dLFS7g7VUzl6obrMmZmPvxV7jSVDCT77dZZcZsxFxUsMoqvDNcJuF94oGGVTjxXi6M/YgxgpbzVuIOUZcPyrl0ESgpyGpqD5HKEmRtM0o=
+	t=1765885048; cv=none; b=lxmrAY1WIOgGCW/IOZMdwoidSCJimFgtlghhM+iSixCdLgp6g+AkQzSoaUj+zT8ndDI+cr/LsSL1p9nwZMOFIaqKZX1/kZ5V/k3DFf+k8NGMagP0C1HCzNJXVQqMeyMqytkHO98VLgJTa/3CU80W756unIsxSk+1fSsKJKynYXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887021; c=relaxed/simple;
-	bh=M7iNPnfhtrj+xcer/j4jJ3bWmu3pxvIZgP+1iFYlaW0=;
+	s=arc-20240116; t=1765885048; c=relaxed/simple;
+	bh=tlMj65MGmBGLe5Ik614YawK9yHS+P7Vt+9RLlQuWMnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0aJv4st2D8qNbTY8bYYigAM1R0MePi/BF3r+DASzvYY36szc5+jIC3s6PpS+6MZSmQD3DcQ5i8uuQvxp0aPLCRbI8LsOrSHKGfCP8a0BVtt8L88O16wbsZnrRP5fOVH4JdlAbsPhIILOkvcCA3vBtxliqF9NwMFQPig8qVvxG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9flkoB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B297C4CEF1;
-	Tue, 16 Dec 2025 12:10:20 +0000 (UTC)
+	 MIME-Version; b=axVrkw0fCnOaYiBOqrAFI9bJD0GT+38652itsgPgVhbzodwiLKCSlumXyKI/VztmDfIbjX12lzbX7gYjHC2pWHQKY6iBEKsgGWRuq1YLiX0iLUXhWRNLSbt1xshAUg76Wg+dSLgZxBtQGwUJHfnTsqf7pnmf9Y39nXdTknQMl5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh823s2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66297C4CEF1;
+	Tue, 16 Dec 2025 11:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887021;
-	bh=M7iNPnfhtrj+xcer/j4jJ3bWmu3pxvIZgP+1iFYlaW0=;
+	s=korg; t=1765885047;
+	bh=tlMj65MGmBGLe5Ik614YawK9yHS+P7Vt+9RLlQuWMnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9flkoB5HpiazGsAuW5gFDwc6zOWNjTMYphH2L4WkfjuyquEN9SrfcY9/KfzMhGZa
-	 tdhXrLbmxEU9TIS7HbEtwYUMwus7olCgP79Ko6nv0WLvgEVU8fqDHPeREg8EpUf/JQ
-	 5rVvrjSbEiIBvtm8RUVsDay0epWM2uGRVz8pJ50c=
+	b=eh823s2QEWjuczN4o0GbKYNL5Ku2UjKDI+naMtPbMcWBB4/KkGCwoyVPPwa8Zs2SE
+	 np2wzuvWQqH2+WkZQCnoEaqAkAbM0RHv7J76cvb/DLsAT62p2vvit4ACxC5aMqlvLy
+	 c3zfq8kcCAQfmdybFpx53NzxXUXINUpi+C5K8/co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 096/614] wifi: ath12k: restore register window after global reset
+Subject: [PATCH 6.17 022/507] pinctrl: renesas: rzg2l: Fix PMC restore
 Date: Tue, 16 Dec 2025 12:07:43 +0100
-Message-ID: <20251216111404.798101371@linuxfoundation.org>
+Message-ID: <20251216111346.340181611@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit a41281f6518e485220d180a6031d302a736fc463 ]
+[ Upstream commit cea950101108b7bfffe26ec4007b8e263a4b56a8 ]
 
-Hardware target implements an address space larger than that PCI BAR can
-map. In order to be able to access the whole target address space, the
-BAR space is split into 4 segments, of which the last 3, called windows,
-can be dynamically mapped to the desired area. This is achieved by
-updating WINDOW_REG_ADDRESS register with appropriate window value.
-Currently each time when accessing a register that beyond WINDOW_START,
-host calculates the window value and caches it after window update,
-this way next time when accessing a register falling in the same window,
-host knows that the window is already good hence no additional update
-needed.
+PMC restore needs unlocking the register using the PWPR register.
 
-However this mechanism breaks after global reset is triggered in
-ath12k_pci_soc_global_reset(), because with global reset hardware resets
-WINDOW_REG_ADDRESS register hence the window is not properly mapped any
-more. Current host does nothing about this, as a result a subsequent
-register access may not work as expected if it falls in a window same as
-before.
-
-Although there is no obvious issue seen now, better to fix it to avoid
-future problem. The fix is done by restoring the window register after
-global reset.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017-ath12k-reset-window-cache-v1-1-29e0e751deed@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: ede014cd1ea6422d ("pinctrl: renesas: rzg2l: Add function pointer for PMC register write")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250921111557.103069-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index c729d5526c753..60b8f7361b7f6 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/module.h>
-@@ -218,6 +218,19 @@ static inline bool ath12k_pci_is_offset_within_mhi_region(u32 offset)
- 	return (offset >= PCI_MHIREGLEN_REG && offset <= PCI_MHI_REGION_END);
- }
- 
-+static void ath12k_pci_restore_window(struct ath12k_base *ab)
-+{
-+	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 289917a0e8725..9330d1bcf6b24 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -3008,7 +3008,11 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 		 * Now cache the registers or set them in the order suggested by
+ 		 * HW manual (section "Operation for GPIO Function").
+ 		 */
+-		RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
++		if (suspend)
++			RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
++		else
++			pctrl->data->pmc_writeb(pctrl, cache->pmc[port], PMC(off));
 +
-+	spin_lock_bh(&ab_pci->window_lock);
-+
-+	iowrite32(WINDOW_ENABLE_BIT | ab_pci->register_window,
-+		  ab->mem + WINDOW_REG_ADDRESS);
-+	ioread32(ab->mem + WINDOW_REG_ADDRESS);
-+
-+	spin_unlock_bh(&ab_pci->window_lock);
-+}
-+
- static void ath12k_pci_soc_global_reset(struct ath12k_base *ab)
- {
- 	u32 val, delay;
-@@ -242,6 +255,11 @@ static void ath12k_pci_soc_global_reset(struct ath12k_base *ab)
- 	val = ath12k_pci_read32(ab, PCIE_SOC_GLOBAL_RESET);
- 	if (val == 0xffffffff)
- 		ath12k_warn(ab, "link down error during global reset\n");
-+
-+	/* Restore window register as its content is cleared during
-+	 * hardware global reset, such that it aligns with host cache.
-+	 */
-+	ath12k_pci_restore_window(ab);
- }
- 
- static void ath12k_pci_clear_dbg_registers(struct ath12k_base *ab)
+ 		if (has_iolh) {
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + IOLH(off),
+ 						 cache->iolh[0][port]);
 -- 
 2.51.0
 
