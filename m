@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A82CC2EE1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F25CC24CF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EB71E3031D9B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E6C23019AE3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C853502B6;
-	Tue, 16 Dec 2025 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4179D3431E3;
+	Tue, 16 Dec 2025 11:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDBE1rlI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poMNdiRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDA934D4FE;
-	Tue, 16 Dec 2025 12:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1012342CB6;
+	Tue, 16 Dec 2025 11:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888546; cv=none; b=BKK64J5HwPcvyWom4ZxX5uUMJEZynAOsTNYUbfXQXeBeNoAfuDMVMS8yjOZHSwsHI/wrWKUyttF4CbcSmZ/ifDuFa76fOR4nK6280UTQmq/+DzaNvTdi2SxsMalHTpMFfttnWQW/pPQJxA4TCypdTnZsncTS7clv3D7F/wkG6yI=
+	t=1765884899; cv=none; b=NEuebBWdHRPdGDoq3936PMRZw4YYsmAzza/bnC8i8oxO/V2t0hpRtcS1wy4U+d++9aF3hUGEEAZPDjtI10oCdeFcac1wV1IjslnQnX8J7GFftmAysLzz4iFI71rzaytg+uE0n+hx3ql/GvXP4ZayMW2JqsYv2sHqdjRmO20wMC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888546; c=relaxed/simple;
-	bh=bns7aXdwv04oHOI6WR2ts9W7A1FvYGxWsKziiK/a2C8=;
+	s=arc-20240116; t=1765884899; c=relaxed/simple;
+	bh=E6bJcZVSG8MMYdsefiyM5n4kQFGdkmsBIOzKg/dN9Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNZIwTFH/wo+wMBapXBq7hDa56atJGQwrIhpOK9VzLCK2QgoS7WTClyUYprRE8aA6YdQb6VgNk/qfM23YUDMa97UcaAnXnknyREBVUzFbZtS4zr6CokhtdBkh8c1Dgod24h9TeMMleywKsWKiBMyOnOEty3GEJ8ZJHtPG0mrsvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDBE1rlI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308A8C4CEF1;
-	Tue, 16 Dec 2025 12:35:44 +0000 (UTC)
+	 MIME-Version; b=ece60ObAsAGSW+pC8ON52POn5CfzhDwG0RzqzOGPkz/ekcr6GCgSw3a5Ib3KrD2PAj/WTUo29UocWSLBbwXFKeca3wUdA0AUPFnUCNbLf4vwIrqDq63hylC3fGwmSNuvT/SjPbJz+xnyO0qk7fkK5qVsHl0iBv9+i4FOEsP9MrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poMNdiRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B7EC4CEF1;
+	Tue, 16 Dec 2025 11:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888545;
-	bh=bns7aXdwv04oHOI6WR2ts9W7A1FvYGxWsKziiK/a2C8=;
+	s=korg; t=1765884898;
+	bh=E6bJcZVSG8MMYdsefiyM5n4kQFGdkmsBIOzKg/dN9Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDBE1rlIdEPIEl1cA6Et0HfKL+0JtzG4bfhbnEFitk0+nKLjeGrCnCgBnoGQq1DFN
-	 Sdz4i81K1iQGkqB9m8DfJLHOdqIanqp+x7pefh8LD5/4JmunHUT3qQacJ/fuOUpjGq
-	 xmEb8e9zQZ4+G6m24MBY7B42xJ84hvWFq/6r4PvE=
+	b=poMNdiRg7Z+ZHnWNFYYAHguqYknZYqAlJc2g3ZHAi5GqUa1xmLN8JYuRlduEBfoag
+	 Lw2Vh1YpzmRIsBa6wIdqOmSc5zoC7oIEuiV5M5BtRiP1+ThcE2v5vZM+GVHokCZl7r
+	 w+dXwWsMpAzEyWZY4YqcdExcE/5OBnW5RvP59xBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Link Mauve <kernel@linkmauve.fr>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 533/614] 9p: fix cache/debug options printing in v9fs_show_options
+Subject: [PATCH 6.12 333/354] rtc: gamecube: Check the return value of ioremap()
 Date: Tue, 16 Dec 2025 12:15:00 +0100
-Message-ID: <20251216111420.690159387@linuxfoundation.org>
+Message-ID: <20251216111332.973118839@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit f0445613314f474c1a0ec6fa8a5cd153a618f1b6 ]
+[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
 
-commit 4eb3117888a92 changed the cache= option to accept either string
-shortcuts or bitfield values. It also changed /proc/mounts to emit the
-option as the hexadecimal numeric value rather than the shortcut string.
+The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
+and return NULL, which is dereferenced without checking, leading to a
+NULL pointer dereference.
 
-However, by printing "cache=%x" without the leading 0x, shortcuts such
-as "cache=loose" will emit "cache=f" and 'f' is not a string that is
-parseable by kstrtoint(), so remounting may fail if a remount with
-"cache=f" is attempted.
+Add a check for the return value of ioremap() and return -ENOMEM on
+failure.
 
-debug=%x has had the same problem since options have been displayed in
-c4fac9100456 ("9p: Implement show_options")
-
-Fix these by adding the 0x prefix to the hexadecimal value shown in
-/proc/mounts.
-
-Fixes: 4eb3117888a92 ("fs/9p: Rework cache modes and add new options to Documentation")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Message-ID: <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
-[Dominique: use %#x at Al Viro's suggestion, also handle debug]
-Tested-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Link Mauve <kernel@linkmauve.fr>
+Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/v9fs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-gamecube.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index a020a8f00a1ac..bde3ffb0e319a 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -101,7 +101,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
- 	struct v9fs_session_info *v9ses = root->d_sb->s_fs_info;
+diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
+index c828bc8e05b9c..045d5d45ab4b0 100644
+--- a/drivers/rtc/rtc-gamecube.c
++++ b/drivers/rtc/rtc-gamecube.c
+@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
+ 	}
  
- 	if (v9ses->debug)
--		seq_printf(m, ",debug=%x", v9ses->debug);
-+		seq_printf(m, ",debug=%#x", v9ses->debug);
- 	if (!uid_eq(v9ses->dfltuid, V9FS_DEFUID))
- 		seq_printf(m, ",dfltuid=%u",
- 			   from_kuid_munged(&init_user_ns, v9ses->dfltuid));
-@@ -117,7 +117,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
- 	if (v9ses->nodev)
- 		seq_puts(m, ",nodevmap");
- 	if (v9ses->cache)
--		seq_printf(m, ",cache=%x", v9ses->cache);
-+		seq_printf(m, ",cache=%#x", v9ses->cache);
- #ifdef CONFIG_9P_FSCACHE
- 	if (v9ses->cachetag && (v9ses->cache & CACHE_FSCACHE))
- 		seq_printf(m, ",cachetag=%s", v9ses->cachetag);
+ 	hw_srnprot = ioremap(res.start, resource_size(&res));
++	if (!hw_srnprot) {
++		pr_err("failed to ioremap hw_srnprot\n");
++		return -ENOMEM;
++	}
+ 	old = ioread32be(hw_srnprot);
+ 
+ 	/* TODO: figure out why we use this magic constant.  I obtained it by
 -- 
 2.51.0
 
