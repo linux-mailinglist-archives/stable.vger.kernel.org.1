@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0223CC2A0E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C565DCC3E24
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 940BF3033A8A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2A171302B171
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644AB349B12;
-	Tue, 16 Dec 2025 11:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1685D34D90F;
+	Tue, 16 Dec 2025 12:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhRFCuc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIuBgOcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD9F349AF9;
-	Tue, 16 Dec 2025 11:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36BB350A3C;
+	Tue, 16 Dec 2025 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885708; cv=none; b=rGIXL77Y+NssXGikufjhzFlUsBZvKH6Eq3H6hcf2wDD5hy24kuo/c5PAfvoGySrSPZejE4D2EAf1DgIUBoEk/EF2nOe2yqKKWep8JTzxhvSaUjuafzXwcVO70qdA9DjPH0Xv3kvF2Bl+NXdr4yy6PHkJjo0cIeyTKDOMS6s6A2g=
+	t=1765887647; cv=none; b=VPlfNKwYMIMhnST4QoVZJ223a5CyIWYK3vZXns8P8EN//PaQc0mVALssMUU8+Wjol0OwQg7vkB5sNP4744ULWEsirtBmiFOidUkcnxiF1Jp9AErFr+HPFHnIqDb2qWSdMxan9f3ibMPUU1xy0N5wEklIsx11r1B+cw0BhIMP3rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885708; c=relaxed/simple;
-	bh=MFur9xIgTa7q9USgHSAsjs6kLmAVOTE6oizcHhVYsfA=;
+	s=arc-20240116; t=1765887647; c=relaxed/simple;
+	bh=Vwlc8WMmQBF0GeqyGTxFNq1ErdR4ht8eT92ttr/9OlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIvZDsBQBsAOqtSfSzPuKyat++Ln+p9JggQR/nb9vr4MpA7XEJ9CzmeNTeiNktrIFLUevD6uBUH4joEeMrkxR4CQr+15pd8vT9H7CtWDJjEGFCqWMok+M6GbgeyXtsBGfF7dgQFOUTqwYd/5PlOYsWRCcGvlTpcWFf5XmNV7g7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhRFCuc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D80AC4CEF1;
-	Tue, 16 Dec 2025 11:48:27 +0000 (UTC)
+	 MIME-Version; b=b/mGCpkMOGh+1/86S50N0Z1mDarwTsjo2jdrfLKEATC22GG3I283KwOFqrn4ZdELgIyft2qWKb8I2I4No4fWeZ1PttlUV5tiOdPfglid59dlx3Cq4nj2cxYqtJ2voa1t2Bs1mtwS5L/i47E5A2CDOLk1TFxzQXNxZNSp/TBHlvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIuBgOcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B7BC19424;
+	Tue, 16 Dec 2025 12:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885707;
-	bh=MFur9xIgTa7q9USgHSAsjs6kLmAVOTE6oizcHhVYsfA=;
+	s=korg; t=1765887647;
+	bh=Vwlc8WMmQBF0GeqyGTxFNq1ErdR4ht8eT92ttr/9OlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OhRFCuc+Mg9Eh+w9PEDCbi/oAn/okQxsOh4wHD9z1aahlt+f71q561MUWHatRurfa
-	 LkkHF3JGoP6AeaFtI5miMm7y9P59uBEFxD9smMcV7XtbXX0Y8tPKKLUYN3gCpRDSeM
-	 kNlxTz1jlp1gLUBk4vmkYvbA81kqsGPcM29rehhM=
+	b=uIuBgOcFSM4pbkjZ+hSWZebMScpBOoEvLyhLTesjHvkAS4/tfkiclQa7I3dornMMp
+	 KeswvNmymAD+XG/IXNOcOgR6YEpSOeuxLJMpAJkokTSfrnFAa7j7mB/2TtvCphbviY
+	 yyQm4477kXswEsPDqFLroxNYdNW2jBYi7Sk851Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 221/507] clk: renesas: r9a09g077: Propagate rate changes to parent clocks
+Subject: [PATCH 6.18 295/614] mshv: Fix deposit memory in MSHV_ROOT_HVCALL
 Date: Tue, 16 Dec 2025 12:11:02 +0100
-Message-ID: <20251216111353.513265468@linuxfoundation.org>
+Message-ID: <20251216111412.058813244@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
 
-[ Upstream commit 145dfd70b9c70e5bc03494a7ce8fa3748ac01af3 ]
+[ Upstream commit 4cc1aa469cd6b714adc958547a4866247bfd60a9 ]
 
-Add the CLK_SET_RATE_PARENT flag to divider clock registration so that rate
-changes can propagate to parent clocks when needed. This allows the CPG
-divider clocks to request rate adjustments from their parent, ensuring
-correct frequency scaling and improved flexibility in clock rate selection.
+When the MSHV_ROOT_HVCALL ioctl is executing a hypercall, and gets
+HV_STATUS_INSUFFICIENT_MEMORY, it deposits memory and then returns
+-EAGAIN to userspace. The expectation is that the VMM will retry.
 
-Fixes: 065fe720eec6e ("clk: renesas: Add support for R9A09G077 SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251028165127.991351-2-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+However, some VMM code in the wild doesn't do this and simply fails.
+Rather than force the VMM to retry, change the ioctl to deposit
+memory on demand and immediately retry the hypercall as is done with
+all the other hypercall helper functions.
+
+In addition to making the ioctl easier to use, removing the need for
+multiple syscalls improves performance.
+
+There is a complication: unlike the other hypercall helper functions,
+in MSHV_ROOT_HVCALL the input is opaque to the kernel. This is
+problematic for rep hypercalls, because the next part of the input
+list can't be copied on each loop after depositing pages (this was
+the original reason for returning -EAGAIN in this case).
+
+Introduce hv_do_rep_hypercall_ex(), which adds a 'rep_start'
+parameter. This solves the issue, allowing the deposit loop in
+MSHV_ROOT_HVCALL to restart a rep hypercall after depositing pages
+partway through.
+
+Fixes: 621191d709b1 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
+Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a09g077-cpg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hv/mshv_root_main.c    | 58 ++++++++++++++++++----------------
+ include/asm-generic/mshyperv.h | 17 ++++++++--
+ 2 files changed, 44 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a09g077-cpg.c b/drivers/clk/renesas/r9a09g077-cpg.c
-index c920d6a9707f1..c8c28909ed9db 100644
---- a/drivers/clk/renesas/r9a09g077-cpg.c
-+++ b/drivers/clk/renesas/r9a09g077-cpg.c
-@@ -178,7 +178,7 @@ r9a09g077_cpg_div_clk_register(struct device *dev,
+diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
+index e3b2bd417c464..5156b8b0a39f4 100644
+--- a/drivers/hv/mshv_root_main.c
++++ b/drivers/hv/mshv_root_main.c
+@@ -159,6 +159,7 @@ static int mshv_ioctl_passthru_hvcall(struct mshv_partition *partition,
+ 	unsigned int pages_order;
+ 	void *input_pg = NULL;
+ 	void *output_pg = NULL;
++	u16 reps_completed;
  
- 	if (core->dtable)
- 		clk_hw = clk_hw_register_divider_table(dev, core->name,
--						       parent_name, 0,
-+						       parent_name, CLK_SET_RATE_PARENT,
- 						       addr,
- 						       GET_SHIFT(core->conf),
- 						       GET_WIDTH(core->conf),
-@@ -187,7 +187,7 @@ r9a09g077_cpg_div_clk_register(struct device *dev,
- 						       &pub->rmw_lock);
- 	else
- 		clk_hw = clk_hw_register_divider(dev, core->name,
--						 parent_name, 0,
-+						 parent_name, CLK_SET_RATE_PARENT,
- 						 addr,
- 						 GET_SHIFT(core->conf),
- 						 GET_WIDTH(core->conf),
+ 	if (copy_from_user(&args, user_args, sizeof(args)))
+ 		return -EFAULT;
+@@ -210,41 +211,42 @@ static int mshv_ioctl_passthru_hvcall(struct mshv_partition *partition,
+ 	 */
+ 	*(u64 *)input_pg = partition->pt_id;
+ 
+-	if (args.reps)
+-		status = hv_do_rep_hypercall(args.code, args.reps, 0,
+-					     input_pg, output_pg);
+-	else
+-		status = hv_do_hypercall(args.code, input_pg, output_pg);
+-
+-	if (hv_result(status) == HV_STATUS_CALL_PENDING) {
+-		if (is_async) {
+-			mshv_async_hvcall_handler(partition, &status);
+-		} else { /* Paranoia check. This shouldn't happen! */
+-			ret = -EBADFD;
+-			goto free_pages_out;
++	reps_completed = 0;
++	do {
++		if (args.reps) {
++			status = hv_do_rep_hypercall_ex(args.code, args.reps,
++							0, reps_completed,
++							input_pg, output_pg);
++			reps_completed = hv_repcomp(status);
++		} else {
++			status = hv_do_hypercall(args.code, input_pg, output_pg);
+ 		}
+-	}
+ 
+-	if (hv_result(status) == HV_STATUS_INSUFFICIENT_MEMORY) {
+-		ret = hv_call_deposit_pages(NUMA_NO_NODE, partition->pt_id, 1);
+-		if (!ret)
+-			ret = -EAGAIN;
+-	} else if (!hv_result_success(status)) {
+-		ret = hv_result_to_errno(status);
+-	}
++		if (hv_result(status) == HV_STATUS_CALL_PENDING) {
++			if (is_async) {
++				mshv_async_hvcall_handler(partition, &status);
++			} else { /* Paranoia check. This shouldn't happen! */
++				ret = -EBADFD;
++				goto free_pages_out;
++			}
++		}
++
++		if (hv_result_success(status))
++			break;
++
++		if (hv_result(status) != HV_STATUS_INSUFFICIENT_MEMORY)
++			ret = hv_result_to_errno(status);
++		else
++			ret = hv_call_deposit_pages(NUMA_NO_NODE,
++						    partition->pt_id, 1);
++	} while (!ret);
+ 
+-	/*
+-	 * Always return the status and output data regardless of result.
+-	 * The VMM may need it to determine how to proceed. E.g. the status may
+-	 * contain the number of reps completed if a rep hypercall partially
+-	 * succeeded.
+-	 */
+ 	args.status = hv_result(status);
+-	args.reps = args.reps ? hv_repcomp(status) : 0;
++	args.reps = reps_completed;
+ 	if (copy_to_user(user_args, &args, sizeof(args)))
+ 		ret = -EFAULT;
+ 
+-	if (output_pg &&
++	if (!ret && output_pg &&
+ 	    copy_to_user((void __user *)args.out_ptr, output_pg, args.out_sz))
+ 		ret = -EFAULT;
+ 
+diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+index 64ba6bc807d98..b89c7e3a20474 100644
+--- a/include/asm-generic/mshyperv.h
++++ b/include/asm-generic/mshyperv.h
+@@ -124,10 +124,12 @@ static inline unsigned int hv_repcomp(u64 status)
+ 
+ /*
+  * Rep hypercalls. Callers of this functions are supposed to ensure that
+- * rep_count and varhead_size comply with Hyper-V hypercall definition.
++ * rep_count, varhead_size, and rep_start comply with Hyper-V hypercall
++ * definition.
+  */
+-static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
+-				      void *input, void *output)
++static inline u64 hv_do_rep_hypercall_ex(u16 code, u16 rep_count,
++					 u16 varhead_size, u16 rep_start,
++					 void *input, void *output)
+ {
+ 	u64 control = code;
+ 	u64 status;
+@@ -135,6 +137,7 @@ static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
+ 
+ 	control |= (u64)varhead_size << HV_HYPERCALL_VARHEAD_OFFSET;
+ 	control |= (u64)rep_count << HV_HYPERCALL_REP_COMP_OFFSET;
++	control |= (u64)rep_start << HV_HYPERCALL_REP_START_OFFSET;
+ 
+ 	do {
+ 		status = hv_do_hypercall(control, input, output);
+@@ -152,6 +155,14 @@ static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
+ 	return status;
+ }
+ 
++/* For the typical case where rep_start is 0 */
++static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
++				      void *input, void *output)
++{
++	return hv_do_rep_hypercall_ex(code, rep_count, varhead_size, 0,
++				      input, output);
++}
++
+ /* Generate the guest OS identifier as described in the Hyper-V TLFS */
+ static inline u64 hv_generate_guest_id(u64 kernel_version)
+ {
 -- 
 2.51.0
 
