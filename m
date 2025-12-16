@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26B3CC4293
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:12:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A72CCC2845
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88CD3305B905
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:10:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8E830836CB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ED4350A36;
-	Tue, 16 Dec 2025 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387BA355031;
+	Tue, 16 Dec 2025 11:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pWi07zx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HQzvR3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2071E34E764;
-	Tue, 16 Dec 2025 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E535502A;
+	Tue, 16 Dec 2025 11:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887886; cv=none; b=FD2vDsfcejWyyoVm0jC8wzwqg76aUG+GXitydd9esvT8YlK+yRzY5dzLo212S801ArSTv1knN89yb3y84HmcQEHeIIjzb3p2RHAqDJhj73vMV3LRevFJEtBh1hTl0xydzv77BViIT/EkxMkiVqtZnB5wgEByLuexivZdPdn5uuo=
+	t=1765885949; cv=none; b=Yii5j6i1GvphEoBqZt4UiMT0/GAEZPp9NFpSxoBxl3dbXg/woYvAi2HOGP1pf1agYX1DNeyXlWQuCJAbmGa7tuKOZwIHGAMCZchcwP5kYUKWdavnqlr6ojnc/9dIoUx3A5E1ho4QEQoHxbkXiA821J2cvTVlfEmEpP627oF7Vfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887886; c=relaxed/simple;
-	bh=x1UEx538b8yCwjK2IXvw5GBDIz2UZ94M8/ToiHvw87I=;
+	s=arc-20240116; t=1765885949; c=relaxed/simple;
+	bh=o9odrf3Ck8H6SL83eqrRdKexLEWqdlBXh33YpXAvx5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kURGfZlL6q+VxcVcRuYRzNqZVMxzEDwLgjVeFJEB13PALR6I47E3UfnVSRTx97wmAxemWwoM7AtAaKZ9SCu3JUQRcwhEwhHM4XUSfAI/Od+icjadJxjl08YfwwnO7eCqU+96Cwd7SFRVGN/9RBwRNnJk3EcuB0gw9Bin31ojcEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pWi07zx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7D0C4CEF1;
-	Tue, 16 Dec 2025 12:24:45 +0000 (UTC)
+	 MIME-Version; b=Zpp3l7ktaQimjW5+cL4wEL4taUivYl+8SXUnWUozfYDqhguVjyPq0XcNRz5UkJ4kaL8SJG7W23qnlFZEV6mpiLAk6+374iqxjH3MddRWR57jfv6mUtjLArpCY3J5KMUqc70SxI1RmdyTtyJHR3SvLnQyfH+Nv6r7zlie/3F//Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HQzvR3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630FAC4CEF1;
+	Tue, 16 Dec 2025 11:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887885;
-	bh=x1UEx538b8yCwjK2IXvw5GBDIz2UZ94M8/ToiHvw87I=;
+	s=korg; t=1765885948;
+	bh=o9odrf3Ck8H6SL83eqrRdKexLEWqdlBXh33YpXAvx5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pWi07zx75355RAby1Z/DJLke3auS6qVTFxWNKTscyJoLB7hXT5fnkPadE5Dwm3Dc
-	 QtqC913UszG/lJCkzrrI5f7M0fkcwkV/dh4cfoz278Pz8cgbfopEPGsjFdb5N9IY5z
-	 0YnM0CgOp5T8T6nxdztC0w2uiNxNEuvGq/PRoS7w=
+	b=1HQzvR3zoWV7Ltki9AH4bYBimZWhEwzWjA/Irk+M81lJro8iEi58AAvx+NZcwmj2r
+	 ltKyFuxP//n4szn2/1Hzr+dN2TQoTD5RkjBGxjAwCUvlrcb5UZ9owJsLq2QqHAMZdz
+	 5m/CLezb9a0o+vAvQbSmgOoB5X0Ff1M9HtE30MH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 367/614] selftests/bpf: skip test_perf_branches_hw() on unsupported platforms
+Subject: [PATCH 6.17 293/507] phy: rockchip: samsung-hdptx: Fix reported clock rate in high bpc mode
 Date: Tue, 16 Dec 2025 12:12:14 +0100
-Message-ID: <20251216111414.656952856@linuxfoundation.org>
+Message-ID: <20251216111356.091422698@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 27746aaf1b20172f0859546c4a3e82eca459f680 ]
+[ Upstream commit 72126e9623e1696ea83c77ef6d0306a6263bdd6b ]
 
-Gracefully skip the test_perf_branches_hw subtest on platforms that
-do not support LBR or require specialized perf event attributes
-to enable branch sampling.
+When making use of the clock provider functionality, the output clock
+does normally match the TMDS character rate, which is what the PHY PLL
+gets configured to.
 
-For example, AMD's Milan (Zen 3) supports BRS rather than traditional
-LBR. This requires specific configurations (attr.type = PERF_TYPE_RAW,
-attr.config = RETIRED_TAKEN_BRANCH_INSTRUCTIONS) that differ from the
-generic setup used within this test. Notably, it also probably doesn't
-hold much value to special case perf event configurations for selected
-micro architectures.
+However, this is only applicable for default color depth of 8 bpc.  For
+higher depths, the output clock is further divided by the hardware
+according to the formula:
 
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251120142059.2836181-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+  output_clock_rate = tmds_char_rate * 8 / bpc
+
+Since the existence of the clock divider wasn't taken into account when
+support for high bpc has been introduced, make the necessary adjustments
+to report the correct clock rate.
+
+Fixes: 9d0ec51d7c22 ("phy: rockchip: samsung-hdptx: Add high color depth management")
+Reported-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-1-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/perf_branches.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index bc24f83339d64..06c7986131d96 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -116,11 +116,11 @@ static void test_perf_branches_hw(void)
- 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 79db57ee90d14..8adf6e84fc0b7 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -1038,7 +1038,8 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx)
+ 
+ 	ret = rk_hdptx_post_enable_pll(hdptx);
+ 	if (!ret)
+-		hdptx->hw_rate = hdptx->hdmi_cfg.tmds_char_rate;
++		hdptx->hw_rate = DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8,
++						       hdptx->hdmi_cfg.bpc);
+ 
+ 	return ret;
+ }
+@@ -1896,19 +1897,20 @@ static long rk_hdptx_phy_clk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	 * hence ensure rk_hdptx_phy_clk_set_rate() won't be invoked with
+ 	 * a different rate argument.
+ 	 */
+-	return hdptx->hdmi_cfg.tmds_char_rate;
++	return DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8, hdptx->hdmi_cfg.bpc);
+ }
+ 
+ static int rk_hdptx_phy_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 				     unsigned long parent_rate)
+ {
+ 	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
++	unsigned long long tmds_rate = DIV_ROUND_CLOSEST_ULL(rate * hdptx->hdmi_cfg.bpc, 8);
+ 
+ 	/* Revert any unlikely TMDS char rate change since round_rate() */
+-	if (hdptx->hdmi_cfg.tmds_char_rate != rate) {
+-		dev_warn(hdptx->dev, "Reverting unexpected rate change from %lu to %llu\n",
+-			 rate, hdptx->hdmi_cfg.tmds_char_rate);
+-		hdptx->hdmi_cfg.tmds_char_rate = rate;
++	if (hdptx->hdmi_cfg.tmds_char_rate != tmds_rate) {
++		dev_warn(hdptx->dev, "Reverting unexpected rate change from %llu to %llu\n",
++			 tmds_rate, hdptx->hdmi_cfg.tmds_char_rate);
++		hdptx->hdmi_cfg.tmds_char_rate = tmds_rate;
+ 	}
  
  	/*
--	 * Some setups don't support branch records (virtual machines, !x86),
--	 * so skip test in this case.
-+	 * Some setups don't support LBR (virtual machines, !x86, AMD Milan Zen
-+	 * 3 which only supports BRS), so skip test in this case.
- 	 */
- 	if (pfd < 0) {
--		if (errno == ENOENT || errno == EOPNOTSUPP) {
-+		if (errno == ENOENT || errno == EOPNOTSUPP || errno == EINVAL) {
- 			printf("%s:SKIP:no PERF_SAMPLE_BRANCH_STACK\n",
- 			       __func__);
- 			test__skip();
 -- 
 2.51.0
 
