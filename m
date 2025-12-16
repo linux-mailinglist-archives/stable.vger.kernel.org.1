@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F014CC3863
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E497CC3FD8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08C5E30576B0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DEF57303C03F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD0134214A;
-	Tue, 16 Dec 2025 12:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAA334B415;
+	Tue, 16 Dec 2025 11:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVGcCEQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1URZnAiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A04F325736;
-	Tue, 16 Dec 2025 12:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC80C34B43D;
+	Tue, 16 Dec 2025 11:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887204; cv=none; b=lkF9xSwuQAo+D4bY1fYxoFrf0Cx0gVXGpe+nRieTl1apZjrUkbwuTljZ3MJZdpPMBGtbULgxCoLnl1E/j7EaBQ4aKP92BiIqX8CuelZrZlieekSfuqQYtzQK/knHZF+LvcLiHG/AS+qMQzoi6pdK3dgyaC8KAfBv257IE3xL10s=
+	t=1765885255; cv=none; b=odKfJYkhUpOr5GQAtwLkJTp49ncXm9KPT403Kz3Ymuu7vF3FqVUfZUaebOZ55UO2o6Wzl/Vm/KvPHaiDeYKEJiTW9Bjz+uGLJh7p8BFx/v1ZAgiPzGbwQeVA+rsolEqj36iAiafCUQpwdYfRzpHuzAaWzQP1khBpBjXQxWccHvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887204; c=relaxed/simple;
-	bh=yDiQO3+he43LRnEhUR86t08/pL7K4xxIfy8ztTNKVtU=;
+	s=arc-20240116; t=1765885255; c=relaxed/simple;
+	bh=AfdsCDAHdYdpaDz6SVvQ8T7bYrCPHeRg9EJwdc2CLcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL5gS39nMTeGqedqbJmczy0gSvftG7/jUKAHu7CnkfetJMpTrelWgktiChW2KM9qDNN0qK0WQ2G7nQFOznfn1vwnvr2E5VCgqt6uybddwNjNrhAOwR5ItS+5LVhp66WT3t2gEymY4zGO3frkFBigJQGsAeItBDLEMVcm1go2K8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVGcCEQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E97C4CEF1;
-	Tue, 16 Dec 2025 12:13:23 +0000 (UTC)
+	 MIME-Version; b=djUi3i1ZfkpkyLmwXzngfY64NsBxXzx1O2yYjZhdnAkR/wS/a2s+sBvJYFHgsAOKg5sMssfma2kRcr68jLn5nCu22Ly8Tl6ReicQQhhCKR+iiuTZPEcytRe/tohEabvf0oGRKsn/D/E4PpXo0GAOOUFZZQBA+WSBANOZ6lVTxrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1URZnAiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDB1C16AAE;
+	Tue, 16 Dec 2025 11:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887204;
-	bh=yDiQO3+he43LRnEhUR86t08/pL7K4xxIfy8ztTNKVtU=;
+	s=korg; t=1765885255;
+	bh=AfdsCDAHdYdpaDz6SVvQ8T7bYrCPHeRg9EJwdc2CLcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVGcCEQRIFcY22Qps5Z+nFSjEC08QELmLLPE4kuRctMP4lb9xMk1E8bVGuz27dxoB
-	 ww+uekUjWZnyJtV0w0S02Bzr7hNjQExxJh6tVOm3KS3F6XI6jsNikUE6l/ZPGPcyIu
-	 4/wJDLSbDyRiCiOy9DW86lczhVBeVWiM8HuK+JOA=
+	b=1URZnAivHad0OzK1l0evd5zwojgmuduPU0u3B2Jt7wa6okL8/ihGNYgoA5HUhgbJK
+	 Y7SiSKajSsbWaV0JwzOZBPvmLHm86RVtusv38Z5VvgG97UO/Fwt1ILxrXEEQcP8c2P
+	 x0aK0GAleKLIIW0LLJOM5ntixB2C5by+RUa9YV6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 158/614] random: use offstack cpumask when necessary
+Subject: [PATCH 6.17 084/507] scsi: ufs: core: Move the ufshcd_enable_intr() declaration
 Date: Tue, 16 Dec 2025 12:08:45 +0100
-Message-ID: <20251216111407.060859596@linuxfoundation.org>
+Message-ID: <20251216111348.582779010@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 5d49f1a5bd358d24e5f88b23b46da833de1dbec8 ]
+[ Upstream commit b30006b5bec1dcba207bc42e7f7cd96a568acc27 ]
 
-The entropy generation function keeps a local cpu mask on the stack,
-which can trigger warnings in configurations with a large number of
-CPUs:
+ufshcd_enable_intr() is not exported and hence should not be declared in
+include/ufs/ufshcd.h.
 
-    drivers/char/random.c:1292:20: error: stack frame size (1288)
-    exceeds limit (1280) in 'try_to_generate_entropy' [-Werror,-Wframe-larger-than]
-
-Use the cpumask interface to dynamically allocate it in those
-configurations.
-
-Fixes: 1c21fe00eda7 ("random: spread out jitter callback to different CPUs")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Fixes: 253757797973 ("scsi: ufs: core: Change MCQ interrupt enable flow")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://patch.msgid.link/20251014200118.3390839-7-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/random.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/ufs/core/ufshcd-priv.h | 2 ++
+ include/ufs/ufshcd.h           | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index b8b24b6ed3fe4..4ba5f0c4c8b24 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -1296,6 +1296,7 @@ static void __cold try_to_generate_entropy(void)
- 	struct entropy_timer_state *stack = PTR_ALIGN((void *)stack_bytes, SMP_CACHE_BYTES);
- 	unsigned int i, num_different = 0;
- 	unsigned long last = random_get_entropy();
-+	cpumask_var_t timer_cpus;
- 	int cpu = -1;
+diff --git a/drivers/ufs/core/ufshcd-priv.h b/drivers/ufs/core/ufshcd-priv.h
+index d0a2c963a27d3..1f0d38aa37f92 100644
+--- a/drivers/ufs/core/ufshcd-priv.h
++++ b/drivers/ufs/core/ufshcd-priv.h
+@@ -6,6 +6,8 @@
+ #include <linux/pm_runtime.h>
+ #include <ufs/ufshcd.h>
  
- 	for (i = 0; i < NUM_TRIAL_SAMPLES - 1; ++i) {
-@@ -1310,13 +1311,15 @@ static void __cold try_to_generate_entropy(void)
- 
- 	atomic_set(&stack->samples, 0);
- 	timer_setup_on_stack(&stack->timer, entropy_timer, 0);
-+	if (!alloc_cpumask_var(&timer_cpus, GFP_KERNEL))
-+		goto out;
++void ufshcd_enable_intr(struct ufs_hba *hba, u32 intrs);
 +
- 	while (!crng_ready() && !signal_pending(current)) {
- 		/*
- 		 * Check !timer_pending() and then ensure that any previous callback has finished
- 		 * executing by checking timer_delete_sync_try(), before queueing the next one.
- 		 */
- 		if (!timer_pending(&stack->timer) && timer_delete_sync_try(&stack->timer) >= 0) {
--			struct cpumask timer_cpus;
- 			unsigned int num_cpus;
+ static inline bool ufshcd_is_user_access_allowed(struct ufs_hba *hba)
+ {
+ 	return !hba->shutting_down;
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index ace8b9c33f1f9..0303103e8cac1 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1328,7 +1328,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
  
- 			/*
-@@ -1326,19 +1329,19 @@ static void __cold try_to_generate_entropy(void)
- 			preempt_disable();
- 
- 			/* Only schedule callbacks on timer CPUs that are online. */
--			cpumask_and(&timer_cpus, housekeeping_cpumask(HK_TYPE_TIMER), cpu_online_mask);
--			num_cpus = cpumask_weight(&timer_cpus);
-+			cpumask_and(timer_cpus, housekeeping_cpumask(HK_TYPE_TIMER), cpu_online_mask);
-+			num_cpus = cpumask_weight(timer_cpus);
- 			/* In very bizarre case of misconfiguration, fallback to all online. */
- 			if (unlikely(num_cpus == 0)) {
--				timer_cpus = *cpu_online_mask;
--				num_cpus = cpumask_weight(&timer_cpus);
-+				*timer_cpus = *cpu_online_mask;
-+				num_cpus = cpumask_weight(timer_cpus);
- 			}
- 
- 			/* Basic CPU round-robin, which avoids the current CPU. */
- 			do {
--				cpu = cpumask_next(cpu, &timer_cpus);
-+				cpu = cpumask_next(cpu, timer_cpus);
- 				if (cpu >= nr_cpu_ids)
--					cpu = cpumask_first(&timer_cpus);
-+					cpu = cpumask_first(timer_cpus);
- 			} while (cpu == smp_processor_id() && num_cpus > 1);
- 
- 			/* Expiring the timer at `jiffies` means it's the next tick. */
-@@ -1354,6 +1357,8 @@ static void __cold try_to_generate_entropy(void)
- 	}
- 	mix_pool_bytes(&stack->entropy, sizeof(stack->entropy));
- 
-+	free_cpumask_var(timer_cpus);
-+out:
- 	timer_delete_sync(&stack->timer);
- 	timer_destroy_on_stack(&stack->timer);
- }
+ void ufshcd_enable_irq(struct ufs_hba *hba);
+ void ufshcd_disable_irq(struct ufs_hba *hba);
+-void ufshcd_enable_intr(struct ufs_hba *hba, u32 intrs);
+ int ufshcd_alloc_host(struct device *, struct ufs_hba **);
+ int ufshcd_hba_enable(struct ufs_hba *hba);
+ int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
 -- 
 2.51.0
 
