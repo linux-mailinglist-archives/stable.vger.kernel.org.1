@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-202429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE09CC3071
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B006CC27FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3B93257B98
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3F3E307C1B7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4064350A19;
-	Tue, 16 Dec 2025 12:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074E335503F;
+	Tue, 16 Dec 2025 11:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBTrchXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh/Sd28a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3663328E3;
-	Tue, 16 Dec 2025 12:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE3F35502A;
+	Tue, 16 Dec 2025 11:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887869; cv=none; b=HEsVQN5Jz08e1oiI1cOg5GEDNnPuA7cB/BnbO6FxFGC8lvkeOvUqn7WzRzOiQ3eFdZQU7orTQnJw2VZuMydmeh5TJZNAzKXQ4lUjlYsb8wZoBbgExC6JKKgYQ2w/H8Dq9Fpw+NXh8G0KRGo/8KjWheHqQW+kkOsf810OOlEmntE=
+	t=1765885936; cv=none; b=XpSx3oIQdqAhSRQvnQr8rYb19E8s4qRPq5E+4OTaYg+FDeIL1G063CpmNJlGVsPkzdOChSCtMxaDfOJv70/cRUOfSe2aL0UAfLGbmjJSWMgv7YscDLS+AFPNeIM2Yhb2tlOAb1BZi6GHwU9rnZ8KlVZ2ajopf6oNISwMDr6o38I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887869; c=relaxed/simple;
-	bh=zp5oPP1uVzVV0TfYzAPQ1aK6PjAVKnEzbeNOA9iVfZo=;
+	s=arc-20240116; t=1765885936; c=relaxed/simple;
+	bh=Y7WrB91ioEvTRjIDKyBFdShBWR/610zC6KjJT6tSQAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tLk5LbODellflzGULVuT/Z6HJWsSMTb5Hmi9PUHTlECjrrByh1dqtlCLlycFen/L7wkIIS7HWoU1CwLU1o0z5inHNE+wJjgv1VrV+QDko+b82D19U8CrVwnYGQhqnyOZoggUYouxSLDQcfNMidpwIOnZzXH1BV1gJAReAmdQNTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBTrchXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AB3C4CEF1;
-	Tue, 16 Dec 2025 12:24:28 +0000 (UTC)
+	 MIME-Version; b=oNqrX9OjBeJD7TG2dezzwPAu6gbrYQdb2aeMLxLYEWJZKCargxpfFgst3CbaDSYWRoCzn3FQeXrL64N6anWBJsLKCpJC+vOZ7So+hQ2ajlc7C6M1DdB2GCVpHz+FuLpniSx/s2osHnT+aZCfqebyoRXPGQISLFWojQdOxL5FZgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh/Sd28a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120A1C4CEF1;
+	Tue, 16 Dec 2025 11:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887869;
-	bh=zp5oPP1uVzVV0TfYzAPQ1aK6PjAVKnEzbeNOA9iVfZo=;
+	s=korg; t=1765885935;
+	bh=Y7WrB91ioEvTRjIDKyBFdShBWR/610zC6KjJT6tSQAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OBTrchXunWe4XqxM8R3XbOEcQ+j3BdWlD2Xkm8fztLw7mWzr3dMzydXpOoaWtcMeo
-	 mL8HxCXZVgzhosypiS0lM0fC9+YrgeUG/BX57d/3IBhwU5m5rsH5byFWTTMu45lEdR
-	 g6uqMS8qUFEtnttrDIR/IYDWfij7ELplODXUXk2I=
+	b=hh/Sd28aciUboqIGkebcSSSlAg4bXOYTvJfwwO6+DvXAmIYj1XKT0G+mVQ++9RQsP
+	 0YZAKLkbGF84axFPgyli/H3u1F9JeC+GAkobaQX22OSAZDutQPdy2bfCMBJNvPMUlb
+	 u0sY7XLbhyz0gFog9inw5QvtW8ALMSZXp3op2yAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 363/614] usb: dwc2: fix hang during shutdown if set as peripheral
+Subject: [PATCH 6.17 289/507] phy: renesas: rcar-gen3-usb2: Fix an error handling path in rcar_gen3_phy_usb2_probe()
 Date: Tue, 16 Dec 2025 12:12:10 +0100
-Message-ID: <20251216111414.512400319@linuxfoundation.org>
+Message-ID: <20251216111355.946528435@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
+[ Upstream commit 662bb179d3381c7c069e44bb177396bcaee31cc8 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+If an error occurs after the reset_control_deassert(),
+reset_control_assert() must be called, as already done in the remove
+function.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
+Use devm_add_action_or_reset() to add the missing call and simplify the
+.remove() function accordingly.
 
-But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
-level. This would result in hang during shutdown if dwc2 is configured
-as peripheral mode.
+While at it, drop struct rcar_gen3_chan::rstc as it is not used aymore.
 
-Fix this hang by only disable and sync irq when lowlevel hw is enabled.
+[claudiu.beznea: removed "struct reset_control *rstc = data;" from
+ rcar_gen3_reset_assert(), dropped struct rcar_gen3_chan::rstc]
 
-Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4eae16375357 ("phy: renesas: rcar-gen3-usb2: Add support to initialize the bus")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251023135810.1688415-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 3f83ecc9fc236..b07bdf16326a4 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -369,11 +369,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
- {
- 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
- 
--	dwc2_disable_global_interrupts(hsotg);
--	synchronize_irq(hsotg->irq);
--
--	if (hsotg->ll_hw_enabled)
-+	if (hsotg->ll_hw_enabled) {
-+		dwc2_disable_global_interrupts(hsotg);
-+		synchronize_irq(hsotg->irq);
- 		dwc2_lowlevel_hw_disable(hsotg);
-+	}
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 47beb94cd4244..dece07c944918 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -125,7 +125,6 @@ struct rcar_gen3_chan {
+ 	struct extcon_dev *extcon;
+ 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
+ 	struct regulator *vbus;
+-	struct reset_control *rstc;
+ 	struct work_struct work;
+ 	spinlock_t lock;	/* protects access to hardware and driver data structure. */
+ 	enum usb_dr_mode dr_mode;
+@@ -699,21 +698,31 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
+ 	return candidate;
  }
  
- /**
++static void rcar_gen3_reset_assert(void *data)
++{
++	reset_control_assert(data);
++}
++
+ static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
+ {
+ 	struct device *dev = channel->dev;
++	struct reset_control *rstc;
+ 	int ret;
+ 	u32 val;
+ 
+-	channel->rstc = devm_reset_control_array_get_shared(dev);
+-	if (IS_ERR(channel->rstc))
+-		return PTR_ERR(channel->rstc);
++	rstc = devm_reset_control_array_get_shared(dev);
++	if (IS_ERR(rstc))
++		return PTR_ERR(rstc);
+ 
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = reset_control_deassert(channel->rstc);
++	ret = reset_control_deassert(rstc);
++	if (ret)
++		goto rpm_put;
++
++	ret = devm_add_action_or_reset(dev, rcar_gen3_reset_assert, rstc);
+ 	if (ret)
+ 		goto rpm_put;
+ 
+@@ -860,7 +869,6 @@ static void rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
+ 	if (channel->is_otg_channel)
+ 		device_remove_file(&pdev->dev, &dev_attr_role);
+ 
+-	reset_control_assert(channel->rstc);
+ 	pm_runtime_disable(&pdev->dev);
+ };
+ 
 -- 
 2.51.0
 
