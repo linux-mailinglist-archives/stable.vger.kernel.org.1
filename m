@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-201950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49762CC4384
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4511ECC3339
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7605E3028C13
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:15:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6484308AEC1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07D6347BBB;
-	Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D884237D10E;
+	Tue, 16 Dec 2025 12:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba/6lGKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNJTYar8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E5347BA8;
-	Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0737D11D;
+	Tue, 16 Dec 2025 12:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886334; cv=none; b=HMrzE8wDQIbrCUW7lMytTuKL+yEqbgvZPyrFmS8DRwfiTBwJ0bvdAP9Cd2zStw0bJSqzBS3zhlofX8CzQPr6uiOBvqwOanTAv+Dh+yyh5htZlIGLFRR77xRjeUwSAkV8zSt7nayYWrFetnsv+HLMrXFkjd5MOAJ+Fr1IUMabwTY=
+	t=1765888260; cv=none; b=araXUF1OgLFUsy6Xae688Mqm50lpqRRLi1oEOThtoZz1mRjo8tuVw9dsSMQgp19grXLEmlVKq9aCEbT5b+eaVJZreviVUAOOTMXvW0MRk5f4mQcyFVhQEouZE5qbVBRcaOFd0kSHxm3xEOFWXUkfeN47nbsLNzyhrbRcjlKSGss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886334; c=relaxed/simple;
-	bh=XvAm+xWw/i0OmfoH1AQ09vrlqXlJ4LiaEiFTDwNNigE=;
+	s=arc-20240116; t=1765888260; c=relaxed/simple;
+	bh=NlN3XlhBcDTa6JopOHpn0npZDVLhv0CbHKQgeOino64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGKV03KvJ6eMsV09VID9Rhmjs16pROugEBPYJeoUZDa3+KQzUtnDoxe/Tn/BuIQYcvTFBH1xwAYdMEoVJWrCrGkM43G+vSpUuJcpEtZb95Yi89AHDP2SS5Bvio9wOjUkJV41FS6f8wM/ONaSjjIeOCG28xQiavAXG5VZsU+uq68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba/6lGKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A00C16AAE;
-	Tue, 16 Dec 2025 11:58:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bjeLYxFfTskHUuQ3rBL5t443XTi4ZhA0uQWa5ml2PFgJ4p+eMyVmVFVG28zxWXgpaSvH0RkavJ5LwcjmWVoOWTM8T/bC3FuBnUgwNSOH4qNdPu+p9xh+omIBb+e5eJYJ0IP9pB1aphuoOMW9sPYfb/EcIs8Fl3op/huH67sqSlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNJTYar8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4D7C4CEF1;
+	Tue, 16 Dec 2025 12:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886333;
-	bh=XvAm+xWw/i0OmfoH1AQ09vrlqXlJ4LiaEiFTDwNNigE=;
+	s=korg; t=1765888260;
+	bh=NlN3XlhBcDTa6JopOHpn0npZDVLhv0CbHKQgeOino64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ba/6lGKJPJqStt0GDfvh6AIzlekAG+gtxy/gMTub/QXxgyN5PzRUPh0m/8Xb8ZZPC
-	 VhxMp1LUebR4EKIemxK8nKNitxXl9WKp1O03dR4C5zlZrs4DWbt3pCUdjGX613IMa1
-	 hYIibRLynXVD/M5wIH00t18VzijhZ5VpaPDUq0e8=
+	b=BNJTYar8z4LzBbk6L7W8UYZp04FU7+wnnyDcuMWyGczPW2Mj6I1xcwN4ozUGqiqse
+	 WDYdxNMBXV3uq+Vr6xc6W1tGOl4XyRYQ8bUVUhlTUr/ZaRKoT5LS3MKFTfqfGs/Xbc
+	 UkFktyQity3O04Phup/4Y22QWKC2AXTv/wAqZDGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ilias Stamatis <ilstam@amazon.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Huang, Ying" <huang.ying.caritas@gmail.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 406/507] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
+Subject: [PATCH 6.18 480/614] Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"
 Date: Tue, 16 Dec 2025 12:14:07 +0100
-Message-ID: <20251216111400.161709991@linuxfoundation.org>
+Message-ID: <20251216111418.761789789@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,61 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+From: Ilias Stamatis <ilstam@amazon.com>
 
-[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
+[ Upstream commit 6fb3acdebf65a72df0a95f9fd2c901ff2bc9a3a2 ]
 
-The "qcom,halt-regs" consists of a phandle reference followed by the
-three offsets within syscon for halt registers. Thus, we need to
-request 4 integers from of_property_read_variable_u32_array(), with
-the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
+Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+logic") removed an optimization introduced by commit 756398750e11
+("resource: avoid unnecessary lookups in find_next_iomem_res()").  That
+was not called out in the message of the first commit explicitly so it's
+not entirely clear whether removing the optimization happened
+inadvertently or not.
 
-With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
--EOVERFLOW, causing .probe() to fail.
+As the original commit message of the optimization explains there is no
+point considering the children of a subtree in find_next_iomem_res() if
+the top level range does not match.
 
-Increase MAX_HALT_REG to 4, and update the indexes accordingly.
+Reinstating the optimization results in performance improvements in
+systems where /proc/iomem is ~5k lines long.  Calling mmap() on /dev/mem
+in such platforms takes 700-1500μs without the optimisation and 10-50μs
+with the optimisation.
 
-Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Note that even though commit 97523a4edb7b removed the 'sibling_only'
+parameter from next_resource(), newer kernels have basically reinstated it
+under the name 'skip_children'.
+
+Link: https://lore.kernel.org/all/20251124165349.3377826-1-ilstam@amazon.com/T/#u
+Fixes: 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only logic")
+Signed-off-by: Ilias Stamatis <ilstam@amazon.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/resource.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-index 93648734a2f25..74e9e642b5e74 100644
---- a/drivers/remoteproc/qcom_q6v5_wcss.c
-+++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-@@ -85,7 +85,7 @@
- #define TCSR_WCSS_CLK_MASK	0x1F
- #define TCSR_WCSS_CLK_ENABLE	0x14
+diff --git a/kernel/resource.c b/kernel/resource.c
+index b9fa2a4ce089c..e4e9bac12e6e1 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -341,6 +341,8 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 			       unsigned long flags, unsigned long desc,
+ 			       struct resource *res)
+ {
++	/* Skip children until we find a top level range that matches */
++	bool skip_children = true;
+ 	struct resource *p;
  
--#define MAX_HALT_REG		3
-+#define MAX_HALT_REG		4
- enum {
- 	WCSS_IPQ8074,
- 	WCSS_QCS404,
-@@ -864,9 +864,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
- 		return -EINVAL;
- 	}
+ 	if (!res)
+@@ -351,7 +353,7 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
  
--	wcss->halt_q6 = halt_reg[0];
--	wcss->halt_wcss = halt_reg[1];
--	wcss->halt_nc = halt_reg[2];
-+	wcss->halt_q6 = halt_reg[1];
-+	wcss->halt_wcss = halt_reg[2];
-+	wcss->halt_nc = halt_reg[3];
+ 	read_lock(&resource_lock);
  
- 	return 0;
- }
+-	for_each_resource(&iomem_resource, p, false) {
++	for_each_resource(&iomem_resource, p, skip_children) {
+ 		/* If we passed the resource we are looking for, stop */
+ 		if (p->start > end) {
+ 			p = NULL;
+@@ -362,6 +364,12 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 		if (p->end < start)
+ 			continue;
+ 
++		/*
++		 * We found a top level range that matches what we are looking
++		 * for. Time to start checking children too.
++		 */
++		skip_children = false;
++
+ 		/* Found a match, break */
+ 		if (is_type_match(p, flags, desc))
+ 			break;
 -- 
 2.51.0
 
