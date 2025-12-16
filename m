@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9A1CC21BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F635CC3BC3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4065C3040742
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B201E307017B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE2D2459D7;
-	Tue, 16 Dec 2025 11:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0F834105B;
+	Tue, 16 Dec 2025 11:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfKjIOXw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc8cEeJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582C925FA10;
-	Tue, 16 Dec 2025 11:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE86834252F;
+	Tue, 16 Dec 2025 11:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883841; cv=none; b=uPoQqwElpwXWhsZRcFxM3L8WnqCbB4afWHm1e5SezTHZpI+frd7WQ3lG2BkMCDAhcUrTbWJZUHE5mPILlGZ30tsWAQ/GhKyAzFwRFF58brciNpUzYWl9M/tlaT7PmTy7go5yq4lPZkZk/0znAcAtqyXZfEnStO+qVCPILGncRJg=
+	t=1765885445; cv=none; b=ZmPYnfYUzDxCWfhJDXCYFmSXPcIYkf6ysA9egnyEifub6bTnans3i1MjZzY316+lIkPNccL2aWfMV1O5TvYaDr9qMq9t73EnD0A/PMMXSFkAWrn2iyhYKTVYsyZ4VMnyd+lTxl9GkYvxNYi42EH3Nhi2kbOe9QJi15+0LPM6h9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883841; c=relaxed/simple;
-	bh=RpXgPCx9Npv0Q7TeqedZA7wK4rPkUYmcMYAUsbxE5BA=;
+	s=arc-20240116; t=1765885445; c=relaxed/simple;
+	bh=EidaZke1PlA2Tr98JpVW/9mYzer8LzEPsu4k6J0dlbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfMuV/BZ0BSJpwClzLgr7kOyZaEoAtwDcsbRabJLCOeyvpWSU/HHhoiH8Aj5tDwvOIuHYJI6ZjdQF467pIcgDuYpcSQoOR0F+0Gq3ThASVL8bpet8Lw+bAsS2ffARYNkBWCrIERaQM0dIgHnIS9QNQFSOyx5zwoZ5s3MKgkytjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfKjIOXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A078BC4CEF1;
-	Tue, 16 Dec 2025 11:17:20 +0000 (UTC)
+	 MIME-Version; b=GGdrQaAdwFoKVNopcTpmIlEo3gfsIlzF6I76DWD4Jw6NC2fse626fZwH1pI8vlhlYZaSRnQfs+4YKbihY2W3GzMTIPQDDF9XJ+NUJjzXu5TTVSh20+1GLS+yI4e+jq7Goofz0amagtmKVr686t0ugF2N05alSh1j6NYzyyuRkvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc8cEeJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3157EC4CEF1;
+	Tue, 16 Dec 2025 11:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883841;
-	bh=RpXgPCx9Npv0Q7TeqedZA7wK4rPkUYmcMYAUsbxE5BA=;
+	s=korg; t=1765885445;
+	bh=EidaZke1PlA2Tr98JpVW/9mYzer8LzEPsu4k6J0dlbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfKjIOXwwJOQlBzRro9V3Z4hHQoRniMnOu9X9UQeZGyzWTTLuGjZ8z4KqzeLhmt0w
-	 zYfITETMcWaVSB+i7kGUiPn7k7KMro+rEkg1LmKX8kDu6h1TS0ez497sZYb8bH00eQ
-	 VNmLpWawRmgYknbmIzUQJkIVF0v5kswZvAV7VqG8=
+	b=Jc8cEeJuFW8e3iR+Fx1QKpnh3hk8tcuMFOEPssdotVThLHyr1Ug8IsrlmcwhaH39z
+	 4zXkj4KahliQWCUpiuJwzgOkpbLWAmcW6lCN56swdLomifLjJsTjXjx/BBEMQuWuS6
+	 lEKqREMk7UXqsUAzEfBi8o+ZE2vxztbatvvkZBuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/354] pinctrl: renesas: rzg2l: Fix PMC restore
+Subject: [PATCH 6.17 142/507] arm64: dts: qcom: msm8996: add interconnect paths to USB2 controller
 Date: Tue, 16 Dec 2025 12:09:43 +0100
-Message-ID: <20251216111321.496467355@linuxfoundation.org>
+Message-ID: <20251216111350.672652799@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit cea950101108b7bfffe26ec4007b8e263a4b56a8 ]
+[ Upstream commit 242f7558e7bf54cb63c06506f7b0630dd67d45a4 ]
 
-PMC restore needs unlocking the register using the PWPR register.
+Add the missing interconnects to the USB2 host. The Fixes tag points to
+the commit which broke probing of the USB host on that platform.
 
-Fixes: ede014cd1ea6422d ("pinctrl: renesas: rzg2l: Add function pointer for PMC register write")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250921111557.103069-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 130733a10079 ("interconnect: qcom: msm8996: Promote to core_initcall")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Acked-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-2-a36a05d1f869@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 698ab8cc970a6..c6ef77472d9a1 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -2807,7 +2807,11 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
- 		 * Now cache the registers or set them in the order suggested by
- 		 * HW manual (section "Operation for GPIO Function").
- 		 */
--		RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
-+		if (suspend)
-+			RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
-+		else
-+			pctrl->data->pmc_writeb(pctrl, cache->pmc[port], PMC(off));
-+
- 		if (has_iolh) {
- 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + IOLH(off),
- 						 cache->iolh[0][port]);
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index f91605de49095..8575f4aff94c2 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3496,6 +3496,9 @@ usb2: usb@76f8800 {
+ 					  <&gcc GCC_USB20_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <60000000>;
+ 
++			interconnects = <&pnoc MASTER_USB_HS &bimc SLAVE_EBI_CH0>,
++					<&bimc MASTER_AMPSS_M0 &pnoc SLAVE_USB_HS>;
++			interconnect-names = "usb-ddr", "apps-usb";
+ 			power-domains = <&gcc USB30_GDSC>;
+ 			qcom,select-utmi-as-pipe-clk;
+ 			status = "disabled";
 -- 
 2.51.0
 
