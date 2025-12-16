@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22CACC233D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E37CC29CC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6D5DF3005F36
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A0973006D92
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF71A343D82;
-	Tue, 16 Dec 2025 11:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4632F344028;
+	Tue, 16 Dec 2025 11:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw26n1KK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaZtzmMS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C19D343D79;
-	Tue, 16 Dec 2025 11:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FDF343D8F;
+	Tue, 16 Dec 2025 11:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884402; cv=none; b=tHKLmGfKK4n3pBDRJNykaXmO5YeuV52jArnLlrZycDnEH07/hq1pB3LmHrxvUpbAa/zmRYKSvsiaMidkyxq69BAuFt/Jbgf0tAseukDXcf5Ju+aB8C8lMqRjcBXDVPMVWTuwsdHWsvdy6bNkNM++efnUrtsrhD3LpjH0XhozayU=
+	t=1765886009; cv=none; b=DHEDjCIDR8LAMbZWbcpfRowiNdDVq7ApytWkK78nhuaJ2QhZd9IiAFbbrsSAzyOiA/ME5t1M2OHjpEm6gNqsv7xjvXoPuIuhVJAuKUkcnaY4SGNV/06ruaPLoc4ubQ3nJIvojQn0WJw8zFO20W1F/rUtb+F3WYrhgDz8mtk/m50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884402; c=relaxed/simple;
-	bh=rKtC7eqXwPEa8+Yic44D3DJyho9L8ZKfZjEBTxzYuqE=;
+	s=arc-20240116; t=1765886009; c=relaxed/simple;
+	bh=p0+uQCoh4o/ICUKv/BlSCh19/IT38XnQe8npnKLAtMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmxIzsZXma/PB7kiMo9GBowj7U2jdiB+H42IiKgIpY5Cb1R6V0Ce0oAriM9FeNz9Ck+P0DIfZWWe6qWCuIJuXYLRvPSN90yyrW942Mi+JEOPxU9/OvMenM2/e/8pYfGochKOunIneboi94g9nPwdCS4v/pa4rzGnD76DeW6CZR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw26n1KK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0F1C4CEF5;
-	Tue, 16 Dec 2025 11:26:41 +0000 (UTC)
+	 MIME-Version; b=fAiA5t4zf3712ztw6PVtYWR3rU57YvuI4se+H3YNgG35Ftzq3FPsgMPfqgu1UhB2FvA1DQiPozb3Ehsf/j64X5NGFKfOkJikcqt9ojYHB7MYgLbCuYzPs6QBrJPuvh8LiHluCAWilzfs4B+pzL6vOnKB06TOraLwlFpIob/tU8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaZtzmMS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63458C4CEF1;
+	Tue, 16 Dec 2025 11:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884402;
-	bh=rKtC7eqXwPEa8+Yic44D3DJyho9L8ZKfZjEBTxzYuqE=;
+	s=korg; t=1765886008;
+	bh=p0+uQCoh4o/ICUKv/BlSCh19/IT38XnQe8npnKLAtMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vw26n1KKFGcXzznkpEr92IMd4Qr6M632E+QICnXlcd+Q75HPOziX9GLVIBvWeuG9l
-	 uFNYVQAYu97KZ9HZwAu0hmDVmeFBPX/VKojXzUXarxwjqL1c7iT4XKAEEgSW3kLE7e
-	 qPSwzSOZSML4qu+hdZcRSNATGByMyVAy7dnWWRtM=
+	b=uaZtzmMSJH4wAW7cb87DUspWJZ8yx8pgr4yHbr3RWL68lTBoqPImSCs8Ymc7+M+i1
+	 TUPfNeLZB86A4u8UznfOSzFFHRXWd3fVf8Va1XGFFvQZnHXCn8XK3qhpx++Wo28s1H
+	 oIXEHhaLb/Mtv1gudRkbDD8sN8jb62/rC+jJYd44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Garri Djavadyan <g.djavadyan@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/354] ipv6: clear RA flags when adding a static route
+Subject: [PATCH 6.17 309/507] selftests/bpf: skip test_perf_branches_hw() on unsupported platforms
 Date: Tue, 16 Dec 2025 12:12:30 +0100
-Message-ID: <20251216111327.542259250@linuxfoundation.org>
+Message-ID: <20251216111356.664881392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit f72514b3c5698e4b900b25345e09f9ed33123de6 ]
+[ Upstream commit 27746aaf1b20172f0859546c4a3e82eca459f680 ]
 
-When an IPv6 Router Advertisement (RA) is received for a prefix, the
-kernel creates the corresponding on-link route with flags RTF_ADDRCONF
-and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
+Gracefully skip the test_perf_branches_hw subtest on platforms that
+do not support LBR or require specialized perf event attributes
+to enable branch sampling.
 
-If later a user configures a static IPv6 address on the same prefix the
-kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
-and RTF_PREFIX_RT. When the next RA for that prefix is received, the
-kernel sees the route as RA-learned and wrongly configures back the
-lifetime. This is problematic because if the route expires, the static
-address won't have the corresponding on-link route.
+For example, AMD's Milan (Zen 3) supports BRS rather than traditional
+LBR. This requires specific configurations (attr.type = PERF_TYPE_RAW,
+attr.config = RETIRED_TAKEN_BRANCH_INSTRUCTIONS) that differ from the
+generic setup used within this test. Notably, it also probably doesn't
+hold much value to special case perf event configurations for selected
+micro architectures.
 
-This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
-the lifetime is configured when the next RA arrives. If the static
-address is deleted, the route becomes RA-learned again.
-
-Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
-Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
-Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20251115095939.6967-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251120142059.2836181-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/perf_branches.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index aa1046fbf28e5..ebfe2b9b11b7e 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1138,6 +1138,10 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 					fib6_set_expires(iter, rt->expires);
- 					fib6_add_gc_list(iter);
- 				}
-+				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
-+					iter->fib6_flags &= ~RTF_ADDRCONF;
-+					iter->fib6_flags &= ~RTF_PREFIX_RT;
-+				}
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index bc24f83339d64..06c7986131d96 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -116,11 +116,11 @@ static void test_perf_branches_hw(void)
+ 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
  
- 				if (rt->fib6_pmtu)
- 					fib6_metric_set(iter, RTAX_MTU,
+ 	/*
+-	 * Some setups don't support branch records (virtual machines, !x86),
+-	 * so skip test in this case.
++	 * Some setups don't support LBR (virtual machines, !x86, AMD Milan Zen
++	 * 3 which only supports BRS), so skip test in this case.
+ 	 */
+ 	if (pfd < 0) {
+-		if (errno == ENOENT || errno == EOPNOTSUPP) {
++		if (errno == ENOENT || errno == EOPNOTSUPP || errno == EINVAL) {
+ 			printf("%s:SKIP:no PERF_SAMPLE_BRANCH_STACK\n",
+ 			       __func__);
+ 			test__skip();
 -- 
 2.51.0
 
