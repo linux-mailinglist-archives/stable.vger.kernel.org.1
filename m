@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC11CC256E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B73CC3056
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A8EC3025159
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 177B832500A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9A3340D98;
-	Tue, 16 Dec 2025 11:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E586834BA56;
+	Tue, 16 Dec 2025 12:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLmUOFHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFuYLeS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241E9336ED2;
-	Tue, 16 Dec 2025 11:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912EE34C9AF;
+	Tue, 16 Dec 2025 12:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884680; cv=none; b=OKrkHW6g2jQJnub5I3Hsost+Vuz455PlkrWi+qViid542+AitfQvDZQz/7gS/Cc4RUQrU2ytbnuB0zakG27U3Or1+z7/e9FYaUYUZRzKBJp5hCtIx3/RQrKGTHi86JcicqdANejudojCynWTkAll/JpfF2xo3kL1eW7u5y9TkrY=
+	t=1765886404; cv=none; b=AAI8hlQpDxmP4gIiHZl1uCiDvf7KExJgLBJxHEzSmWKNpyE858wNcFN+9CMFXbaHWc1Mk24wMQ4NyZ41lamjIm8xgl5dWZFfUomTGgCN4+CUFTf/4QELJVX/psf4bPcH5jPol4SCInluDmZkvrmdc3vbgpARENnXo4xjqYWTUuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884680; c=relaxed/simple;
-	bh=4dTJy29sjSsFIeGIiULG29F2nhPpzsmmfE2mSXMUok8=;
+	s=arc-20240116; t=1765886404; c=relaxed/simple;
+	bh=V6L0m9jrGz0RJXsyF1gvGgaWr/9P5oIy9KA3cfBDJAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYSmZPlXnf/oWtwCLk3dPIEsHBfZHZiQ1prxpv7bKHQXwjIahfVuuxdzCKlqbvNZHJX1/e/IwH5EhvDmsE8Vk0ur35JwvxfUpp5UrkmW/LG4ua68JZalM+j9+jlWntfrT4tNUlBcsUThtxIuQ9QTKTC1HAAx0KIYRv+RXMx85fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLmUOFHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E8DC4CEF1;
-	Tue, 16 Dec 2025 11:31:18 +0000 (UTC)
+	 MIME-Version; b=mQoW/FuI86ayOjpAhQV1r12TgxzHvIW3eNRE+CUprDlf+WM2nXpqW7TGTny8qNw9h+0VRO90R5GwPujUp2AjT1BrYlMznLeiPfcmI3Vl8As86Wbt7A4rag045nvA+VfYL2PcrnyZ5HNKv9HzamXp5lBmDUsPiZd5aP3C8M7CZFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFuYLeS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B67C4CEF5;
+	Tue, 16 Dec 2025 12:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884679;
-	bh=4dTJy29sjSsFIeGIiULG29F2nhPpzsmmfE2mSXMUok8=;
+	s=korg; t=1765886404;
+	bh=V6L0m9jrGz0RJXsyF1gvGgaWr/9P5oIy9KA3cfBDJAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLmUOFHv0/5DqnjTLT6zfwcgL8kfT+0aIgLgbaloCIfIkBdr4wMzrexa4Kof7A6bh
-	 /pKBZBkxstFZpUzayMEuQWFohdcZLU/qyuyHQlRF4sXeZnZ84bsoHe3ekWbwrGQDTT
-	 j1uHVbIZb/bdOND6wyYVjlYMwIR6MChGxtaJPR0s=
+	b=zFuYLeS11uiydHeSRne0TLli2Yg1PhW+DJYhRrlpnSRoVFx1F8ySpN7iZd3S01xMt
+	 HVstS/NLUvjU2zGsdxRvo8nYzaq7lLcT8BLjA8LlgGV0K7sZM6DYXQk0YQcaLPzKAQ
+	 6PhlgYt3rI5E6DjdS5oID+QY7U8ZFzoJmmyLrEWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/354] netfilter: nf_conncount: rework API to use sk_buff directly
-Date: Tue, 16 Dec 2025 12:13:53 +0100
-Message-ID: <20251216111330.553563139@linuxfoundation.org>
+Subject: [PATCH 6.17 393/507] netfilter: nf_conncount: rework API to use sk_buff directly
+Date: Tue, 16 Dec 2025 12:13:54 +0100
+Message-ID: <20251216111359.691558764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
