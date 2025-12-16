@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-202015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F13ECC4630
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59CBCC2692
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4030E30451F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2BA3312CA27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F073563FD;
-	Tue, 16 Dec 2025 12:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2324E342CB1;
+	Tue, 16 Dec 2025 11:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yt044RUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tl/m0Xf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA333563EF;
-	Tue, 16 Dec 2025 12:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35483314B4;
+	Tue, 16 Dec 2025 11:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886546; cv=none; b=Jj/H6NF5H82O4vQr16CKFwx1rXaqr/kgiDHAIi0rn0ReTtVXSsggJYMrpwUIvj7JwzF293hUu4pJ84J+D6aPGZZaJa4XkIPi/XLC92zRxWrpQijHkGlPPZFN0U9dn5MTfnyqlQA1o0PY482hmF/ookyoUrjsrDq9VPg3WH51oqw=
+	t=1765884935; cv=none; b=HR2O8AiJGHu8+vUF+Y1bL8sanInQ8Da9zbx4LACt5Jj/xze7yOeFkP+Sf/34ErQN67wMtxWnFyRAcbMurgrpM5tNbZ40VzosokjphN5m/606UQW7kYafWqvxCazLOUoGDmM7TQ8TZIqLazR6rEyp6+CIw+i4ypJpA8bjhg+u79Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886546; c=relaxed/simple;
-	bh=YY41xyySWZ4cCWie3TjwOEGGBsdhXtJHUaYMj8hl8NU=;
+	s=arc-20240116; t=1765884935; c=relaxed/simple;
+	bh=wlp1adIMctO7MtwdVez3TTuqpOtMI20rqTTyCgDoMk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDJBaP75pgUXF9xWFmI7rxLEB2C3LKQF9K0l7Aj/PzawVAKX3W1IMlnVtR/n2cZuO2E1GMiURDCoTrYuv2tJ9l3OigMllpH/YG66Es/w58lSEgz+VZrXTgPO9Ed2nP4hO12q96267qOWzbdxpr6bW3z+LIlXbhlJG2AApEOwnTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yt044RUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E78C19422;
-	Tue, 16 Dec 2025 12:02:25 +0000 (UTC)
+	 MIME-Version; b=opUiJ/MJglF3WvQ9tc7+qBLgXC+86qwX8JmtrlVL8rpXoVIZlgzTgQ0JYgUWAEiTMH/kreJXDosqo1XG1XGjuiRlyb0LS1F9UH1ERHzaCySjBzGnhsoemFfT8qTu2S2wdOHbxKj1+LX/eBgDjECL0r//4tOg78MbuvOodqpvVzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tl/m0Xf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3706FC4CEF1;
+	Tue, 16 Dec 2025 11:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886545;
-	bh=YY41xyySWZ4cCWie3TjwOEGGBsdhXtJHUaYMj8hl8NU=;
+	s=korg; t=1765884935;
+	bh=wlp1adIMctO7MtwdVez3TTuqpOtMI20rqTTyCgDoMk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yt044RUWmAt+ig/+7wdfee92qPq6x/3ESXe7WXbXBaJd3cGasrJZAj0N/HB1Qc3Rp
-	 Yj9QT3URPkvoT64iT+8vTwLy5uzn6MkGU3oAFchaG2wy4oGk9VDu94SagExV8wz/Cv
-	 IEIYUkKEuszBL4kg4+ydo7E/WPBW3L1P96jnf8jI=
+	b=0tl/m0XfL/aKzEeH16tchgN48FIOwEHXfcmIC8NykdboRZcro9RE9eUzzgfFKTGd9
+	 d54t9/5tZcfVUeEQV6XnINHuOfuV60T0SgQNX1AtvQ+qgLLohITFDJBAWzrhGoRd+K
+	 ku8wNh4kpLIiTIJij42kF2B3FOZH5IDuFCnBggZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 469/507] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+Subject: [PATCH 6.12 343/354] scsi: imm: Fix use-after-free bug caused by unfinished delayed work
 Date: Tue, 16 Dec 2025 12:15:10 +0100
-Message-ID: <20251216111402.436037772@linuxfoundation.org>
+Message-ID: <20251216111333.331348853@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 ]
+[ Upstream commit ab58153ec64fa3fc9aea09ca09dc9322e0b54a7c ]
 
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
+The delayed work item 'imm_tq' is initialized in imm_attach() and
+scheduled via imm_queuecommand() for processing SCSI commands.  When the
+IMM parallel port SCSI host adapter is detached through imm_detach(),
+the imm_struct device instance is deallocated.
 
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
+However, the delayed work might still be pending or executing
+when imm_detach() is called, leading to use-after-free bugs
+when the work function imm_interrupt() accesses the already
+freed imm_struct memory.
 
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned.
-This will cause the request as a whole to fail with -ENODATA.
+The race condition can occur as follows:
 
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
+CPU 0(detach thread)   | CPU 1
+                       | imm_queuecommand()
+                       |   imm_queuecommand_lck()
+imm_detach()           |     schedule_delayed_work()
+  kfree(dev) //FREE    | imm_interrupt()
+                       |   dev = container_of(...) //USE
+                           dev-> //USE
 
-This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
-doing a read of a file that's significantly bigger than the size of the
-file (e.g. attempting to read 64KiB from a 16KiB file).
+Add disable_delayed_work_sync() in imm_detach() to guarantee proper
+cancellation of the delayed work item before imm_struct is deallocated.
 
-Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20251028100149.40721-1-duoming@zju.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/imm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index d20766f664c49..4368771aad167 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1364,7 +1364,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 	} else {
- 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans == ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >= ictx->remote_i_size) {
- 			rdata->result = 0;
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 		} else if (rdata->got_bytes > 0) {
+diff --git a/drivers/scsi/imm.c b/drivers/scsi/imm.c
+index 1d4c7310f1a63..d77490e2d7bc8 100644
+--- a/drivers/scsi/imm.c
++++ b/drivers/scsi/imm.c
+@@ -1261,6 +1261,7 @@ static void imm_detach(struct parport *pb)
+ 	imm_struct *dev;
+ 	list_for_each_entry(dev, &imm_hosts, list) {
+ 		if (dev->dev->port == pb) {
++			disable_delayed_work_sync(&dev->imm_tq);
+ 			list_del_init(&dev->list);
+ 			scsi_remove_host(dev->host);
+ 			scsi_host_put(dev->host);
 -- 
 2.51.0
 
