@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898F0CC3B78
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877B4CC37E4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 891BD311E3F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43B9F306E2A4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3EB34EEF8;
-	Tue, 16 Dec 2025 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F807339717;
+	Tue, 16 Dec 2025 12:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlxpFyyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4AgDzCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BA034EEEE;
-	Tue, 16 Dec 2025 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2DC2E9EB5;
+	Tue, 16 Dec 2025 12:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885619; cv=none; b=jWz9pgPE8SOCajlY6Bns3sYKGHaWh7PbBrsGTMS0aHTiiG6qCRiABfaR8jJ0QRystWsluFwIT8X0YFJokIfKeASMXEhHSr2Uoo1QV+6jS+5ZkPJa8JW5tz9+MS7r2MMxVAxV5bw2o8t4SJm88LiinWnQ2AY8C0baO8Wm+pHhMmQ=
+	t=1765887560; cv=none; b=a3T/l/82UX8FT66c/jeqmhNRrF2hOgT7dZwNgniGiHLFtpopM+YajJtV0aj+tKE6zoJhg9zQwFpDyw1fsKkza6RFbX8a9chJki9Bu7mAo1+Xfmy7peICGzDaDPgtYfBk2HvgNXEg4sZV0r9H/uiMiIPI2iK46xctvwEgufnRAck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885619; c=relaxed/simple;
-	bh=erxWw3UcrF6YVYCD5WARfWS5HF7oVXr+X3eC5fCyfcc=;
+	s=arc-20240116; t=1765887560; c=relaxed/simple;
+	bh=W4A+zh7DdNBqXZoFOYj/3jbv3m/rAVLXVmI+ZwHuHlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avR6qdavAUsypMOVvr4tsgQFxESzrBhY2raFLBwCaZcNoQtYCRUUx0YerzdEk8t3BV5skSjv5nGCR4yf+Il6GHyWlE4o5i225alKf28+blTAHOUaRs/TyH8C/eiVwYUNGkS64q0W4z9jPLpyQQbSAn4TWMzchoVG8dHu55JCExc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlxpFyyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1495C4CEF1;
-	Tue, 16 Dec 2025 11:46:58 +0000 (UTC)
+	 MIME-Version; b=r8YBq6Q9/JCnnhk9MGQvfed49cv4w4ieAx/Y0BlEHYtqufx0QNuCI0slrAr5gExeqBK7lrjw2VkGQxAyGoT5SwM0Ad0BIzcmbYuQBpukFxURlWYyZUE331QG+0tm7d4OQ5yTfzm+77+DuH0mRjefpgFmiP3MdWJkOv8Y1W4NWIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4AgDzCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6316C4CEF1;
+	Tue, 16 Dec 2025 12:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885619;
-	bh=erxWw3UcrF6YVYCD5WARfWS5HF7oVXr+X3eC5fCyfcc=;
+	s=korg; t=1765887560;
+	bh=W4A+zh7DdNBqXZoFOYj/3jbv3m/rAVLXVmI+ZwHuHlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlxpFyyTpFiYw8UI1Btx/IfIJMxJAZaNn0SB72sBOkD6JK+V9WMaI6Q2ZcNRA/7MC
-	 VEGo9svT927aBJt06APS6xRqe0tHcGAOt29/K2EHCIngIiKC9mn3LXxSGBiMnZZsZu
-	 9AtArL8l6JxgPanfBelpVU5bpZ2NF6SHl372tdec=
+	b=P4AgDzCmmUQlxVrR5m9MiZ/7KG9oIGIG2AwhOcsWjkrsfE309PziSwSPY2en4nsgf
+	 420Eky8FOm/o5SfzlDN24MJybqi6qhui+jr0c4Eq/mBpr3tSr0lGbDfHxvTpku1Aso
+	 sNjpiXpfLbuWm4zgnIF/+YFEK2wv5lgpeABpOlu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 193/507] nbd: defer config put in recv_work
+Subject: [PATCH 6.18 267/614] scsi: qla2xxx: Clear cmds after chip reset
 Date: Tue, 16 Dec 2025 12:10:34 +0100
-Message-ID: <20251216111352.503271752@linuxfoundation.org>
+Message-ID: <20251216111411.048361737@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 9517b82d8d422d426a988b213fdd45c6b417b86d ]
+[ Upstream commit d46c69a087aa3d1513f7a78f871b80251ea0c1ae ]
 
-There is one uaf issue in recv_work when running NBD_CLEAR_SOCK and
-NBD_CMD_RECONFIGURE:
-  nbd_genl_connect     // conf_ref=2 (connect and recv_work A)
-  nbd_open	       // conf_ref=3
-  recv_work A done     // conf_ref=2
-  NBD_CLEAR_SOCK       // conf_ref=1
-  nbd_genl_reconfigure // conf_ref=2 (trigger recv_work B)
-  close nbd	       // conf_ref=1
-  recv_work B
-    config_put         // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+Commit aefed3e5548f ("scsi: qla2xxx: target: Fix offline port handling
+and host reset handling") caused two problems:
 
-Or only running NBD_CLEAR_SOCK:
-  nbd_genl_connect   // conf_ref=2
-  nbd_open 	     // conf_ref=3
-  NBD_CLEAR_SOCK     // conf_ref=2
-  close nbd
-    nbd_release
-      config_put     // conf_ref=1
-  recv_work
-    config_put 	     // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+1. Commands sent to FW, after chip reset got stuck and never freed as FW
+   is not going to respond to them anymore.
 
-Commit 87aac3a80af5 ("nbd: call nbd_config_put() before notifying the
-waiter") moved nbd_config_put() to run before waking up the waiter in
-recv_work, in order to ensure that nbd_start_device_ioctl() would not
-be woken up while nbd->task_recv was still uncleared.
+2. BUG_ON(cmd->sg_mapped) in qlt_free_cmd().  Commit 26f9ce53817a
+   ("scsi: qla2xxx: Fix missed DMA unmap for aborted commands")
+   attempted to fix this, but introduced another bug under different
+   circumstances when two different CPUs were racing to call
+   qlt_unmap_sg() at the same time: BUG_ON(!valid_dma_direction(dir)) in
+   dma_unmap_sg_attrs().
 
-However, in nbd_start_device_ioctl(), after being woken up it explicitly
-calls flush_workqueue() to make sure all current works are finished.
-Therefore, there is no need to move the config put ahead of the wakeup.
+So revert "scsi: qla2xxx: Fix missed DMA unmap for aborted commands" and
+partially revert "scsi: qla2xxx: target: Fix offline port handling and
+host reset handling" at __qla2x00_abort_all_cmds.
 
-Move nbd_config_put() to the end of recv_work, so that the reference is
-held for the whole lifetime of the worker thread. This makes sure the
-config cannot be freed while recv_work is still running, even if clear
-+ reconfigure interleave.
-
-In addition, we don't need to worry about recv_work dropping the last
-nbd_put (which causes deadlock):
-
-path A (netlink with NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=1 (trigger recv_work)
-  open nbd // nbd_refs=2
-  NBD_CLEAR_SOCK
-  close nbd
-    nbd_release
-      nbd_disconnect_and_put
-        flush_workqueue // recv_work done
-      nbd_config_put
-        nbd_put // nbd_refs=1
-      nbd_put // nbd_refs=0
-        queue_work
-
-path B (netlink without NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=2 (trigger recv_work)
-  open nbd // nbd_refs=3
-  NBD_CLEAR_SOCK // conf_refs=2
-  close nbd
-    nbd_release
-      nbd_config_put // conf_refs=1
-      nbd_put // nbd_refs=2
-  recv_work done // conf_refs=0, nbd_refs=1
-  rmmod // nbd_refs=0
-
-Reported-by: syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6907edce.a70a0220.37351b.0014.GAE@google.com/T/
-Fixes: 87aac3a80af5 ("nbd: make the config put is called before the notifying the waiter")
-Depends-on: e2daec488c57 ("nbd: Fix hungtask when nbd_config_put")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: aefed3e5548f ("scsi: qla2xxx: target: Fix offline port handling and host reset handling")
+Fixes: 26f9ce53817a ("scsi: qla2xxx: Fix missed DMA unmap for aborted commands")
+Co-developed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/0e7e5d26-e7a0-42d1-8235-40eeb27f3e98@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_os.c     | 20 ++++++++++++++++++--
+ drivers/scsi/qla2xxx/qla_target.c |  5 +----
+ drivers/scsi/qla2xxx/qla_target.h |  1 +
+ 3 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index ad39ab95ea665..7a1e61cc47357 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1024,9 +1024,9 @@ static void recv_work(struct work_struct *work)
- 	nbd_mark_nsock_dead(nbd, nsock, 1);
- 	mutex_unlock(&nsock->tx_lock);
- 
--	nbd_config_put(nbd);
- 	atomic_dec(&config->recv_threads);
- 	wake_up(&config->recv_wq);
-+	nbd_config_put(nbd);
- 	kfree(args);
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 5ffd945866527..70a579cf9c3fd 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1881,10 +1881,26 @@ __qla2x00_abort_all_cmds(struct qla_qpair *qp, int res)
+ 					continue;
+ 				}
+ 				cmd = (struct qla_tgt_cmd *)sp;
+-				cmd->aborted = 1;
++
++				if (cmd->sg_mapped)
++					qlt_unmap_sg(vha, cmd);
++
++				if (cmd->state == QLA_TGT_STATE_NEED_DATA) {
++					cmd->aborted = 1;
++					cmd->write_data_transferred = 0;
++					cmd->state = QLA_TGT_STATE_DATA_IN;
++					ha->tgt.tgt_ops->handle_data(cmd);
++				} else {
++					ha->tgt.tgt_ops->free_cmd(cmd);
++				}
+ 				break;
+ 			case TYPE_TGT_TMCMD:
+-				/* Skip task management functions. */
++				/*
++				 * Currently, only ABTS response gets on the
++				 * outstanding_cmds[]
++				 */
++				ha->tgt.tgt_ops->free_mcmd(
++					(struct qla_tgt_mgmt_cmd *) sp);
+ 				break;
+ 			default:
+ 				break;
+diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
+index 1e81582085e38..4c6aff59fe3fb 100644
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -2443,7 +2443,7 @@ static int qlt_pci_map_calc_cnt(struct qla_tgt_prm *prm)
+ 	return -1;
  }
  
+-static void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd)
++void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd)
+ {
+ 	struct qla_hw_data *ha;
+ 	struct qla_qpair *qpair;
+@@ -3773,9 +3773,6 @@ int qlt_abort_cmd(struct qla_tgt_cmd *cmd)
+ 
+ 	spin_lock_irqsave(&cmd->cmd_lock, flags);
+ 	if (cmd->aborted) {
+-		if (cmd->sg_mapped)
+-			qlt_unmap_sg(vha, cmd);
+-
+ 		spin_unlock_irqrestore(&cmd->cmd_lock, flags);
+ 		/*
+ 		 * It's normal to see 2 calls in this path:
+diff --git a/drivers/scsi/qla2xxx/qla_target.h b/drivers/scsi/qla2xxx/qla_target.h
+index 15a59c125c532..c483966d0a847 100644
+--- a/drivers/scsi/qla2xxx/qla_target.h
++++ b/drivers/scsi/qla2xxx/qla_target.h
+@@ -1058,6 +1058,7 @@ extern int qlt_abort_cmd(struct qla_tgt_cmd *);
+ extern void qlt_xmit_tm_rsp(struct qla_tgt_mgmt_cmd *);
+ extern void qlt_free_mcmd(struct qla_tgt_mgmt_cmd *);
+ extern void qlt_free_cmd(struct qla_tgt_cmd *cmd);
++extern void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd);
+ extern void qlt_async_event(uint16_t, struct scsi_qla_host *, uint16_t *);
+ extern void qlt_enable_vha(struct scsi_qla_host *);
+ extern void qlt_vport_create(struct scsi_qla_host *, struct qla_hw_data *);
 -- 
 2.51.0
 
