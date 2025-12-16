@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D51CC2208
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B23CC2782
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04E8D302CD47
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0824930D844B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA2833B961;
-	Tue, 16 Dec 2025 11:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CF4345CC3;
+	Tue, 16 Dec 2025 11:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjSF0efl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYMFeZOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE90532862F;
-	Tue, 16 Dec 2025 11:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75938345CAF;
+	Tue, 16 Dec 2025 11:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884012; cv=none; b=XCqdp2AgLGmHrPWewfZEtMHflpivp+RHBpRvHy+CnnTbRsMpLcdafg30evlPCK+qbJikJCs0gB1Wdl2o75228mmNq1XnTqMFbnGpV6R38wAxXbtHXwEBr2M2kGbUQ8DqNFjITeqckrSSnQ/bCUfwwxXMWVJmmyoCaFWDv8auifo=
+	t=1765885509; cv=none; b=cG2DJO3NmEW4SxfP6dzFElyKAJGWC4Ao/8kb0B+ePuqUXGoyNQap61puGmWdxK6yQ7x6fr0N+VOX7uLM/09CGg0iiOmuyL912dfn1zvjs55xwNO4f9n+d+lDSo4FoxtKA0jGfDDQQqqwxzh6d8SvUFsR6ryqxKEibDUigJn1jlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884012; c=relaxed/simple;
-	bh=Sls7WTI28KgdVbJbsAR84khPW0HBzaVIKgBG+1RABpE=;
+	s=arc-20240116; t=1765885509; c=relaxed/simple;
+	bh=At0QGQ8rWzjbVBruSwx+HAH0x8HnYZFzon8DgTmRPIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZ5GDhRdtCm/k+VKtYqzVZeDTS+AGBgGFl/ejvK8jDOYhilmbKhc4OQbuuNwdwe/8wNC1xy7aBRKUB8UTK2I2TfYtoi/9CvDQRK0UTNz2bZSkX8svZSrxABCaPiL3Oc/jCCN9NRnLBnJUk83FsyiXi/f/fHX1Le3ujccfGBxYtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjSF0efl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF33C4CEF1;
-	Tue, 16 Dec 2025 11:20:11 +0000 (UTC)
+	 MIME-Version; b=QYEgeg/R65tnSC8RAMIrhnVNA8aeWOHqYXBRbFCUW4yt9ZVMDmPaeLnx3qv8+pj9RjYiZMBKaXlZIsv9f2YculiX1mYxXSIOrRy9Rn5tf1IsQHF3YTRwLV9NFCQ5DjC6rru5U7U/lHwNrq2bjcuN2L8PX2g6ufRhdeMiQZippos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYMFeZOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4B5C4CEF1;
+	Tue, 16 Dec 2025 11:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884011;
-	bh=Sls7WTI28KgdVbJbsAR84khPW0HBzaVIKgBG+1RABpE=;
+	s=korg; t=1765885509;
+	bh=At0QGQ8rWzjbVBruSwx+HAH0x8HnYZFzon8DgTmRPIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjSF0eflEoFWf2FJJlTVpuT+awZpYP4D34lZY4SwUCzm4SeZjovhHQrHDnhiVlisZ
-	 g0C4RoqubginO2OHC7FI7MPG/1DY85L9L5bJINStmtDFphQBA9Z0q/c9islrywHqMf
-	 WG7DceBGQg3wtiqAx+bHjFR8CFJjvpSU5oOoReGk=
+	b=QYMFeZOH/rsMaRu95lYa3HUaN71592CdqcMgKuk522IR+itBL4Xkh4mch8/KZ0Ct3
+	 wD9vMwrJKWx0I8/inOOOHVnAe3ylJi/RH0C65Hi81SGU6ZoKxR63gqz6G2nPLVArnd
+	 0QXs3V5h7/RKNpy0l+7q0FQdHv3hitkk14XVbehk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/354] irqchip/imx-mu-msi: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:10:00 +0100
-Message-ID: <20251216111322.112287899@linuxfoundation.org>
+Subject: [PATCH 6.17 160/507] scsi: target: Fix LUN/device R/W and total command stats
+Date: Tue, 16 Dec 2025 12:10:01 +0100
+Message-ID: <20251216111351.318636766@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 64acfd8e680ff8992c101fe19aadb112ce551072 ]
+[ Upstream commit 95aa2041c654161d1b5c1eca5379d67d91ef1cf2 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+In commit 9cf2317b795d ("scsi: target: Move I/O path stats to per CPU")
+I saw we sometimes use %u and also misread the spec. As a result I
+thought all the stats were supposed to be 32-bit only. However, for the
+majority of cases we support currently, the spec specifies u64 bit
+stats. This patch converts the stats changed in the commit above to u64.
 
-Fixes: 70afdab904d2 ("irqchip: Add IMX MU MSI controller driver")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 9cf2317b795d ("scsi: target: Move I/O path stats to per CPU")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://patch.msgid.link/20250917221338.14813-2-michael.christie@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-mu-msi.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/target/target_core_stat.c | 24 ++++++++++++------------
+ include/target/target_core_base.h | 12 ++++++------
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-index 4342a21de1eb0..b14b2e6db0b5c 100644
---- a/drivers/irqchip/irq-imx-mu-msi.c
-+++ b/drivers/irqchip/irq-imx-mu-msi.c
-@@ -295,9 +295,8 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
- 		  },
+diff --git a/drivers/target/target_core_stat.c b/drivers/target/target_core_stat.c
+index 6bdf2d8bd6942..4fdc307ea38bc 100644
+--- a/drivers/target/target_core_stat.c
++++ b/drivers/target/target_core_stat.c
+@@ -282,7 +282,7 @@ static ssize_t target_stat_lu_num_cmds_show(struct config_item *item,
+ 	struct se_device *dev = to_stat_lu_dev(item);
+ 	struct se_dev_io_stats *stats;
+ 	unsigned int cpu;
+-	u32 cmds = 0;
++	u64 cmds = 0;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		stats = per_cpu_ptr(dev->stats, cpu);
+@@ -290,7 +290,7 @@ static ssize_t target_stat_lu_num_cmds_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiLuNumCommands */
+-	return snprintf(page, PAGE_SIZE, "%u\n", cmds);
++	return snprintf(page, PAGE_SIZE, "%llu\n", cmds);
+ }
+ 
+ static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
+@@ -299,7 +299,7 @@ static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
+ 	struct se_device *dev = to_stat_lu_dev(item);
+ 	struct se_dev_io_stats *stats;
+ 	unsigned int cpu;
+-	u32 bytes = 0;
++	u64 bytes = 0;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		stats = per_cpu_ptr(dev->stats, cpu);
+@@ -307,7 +307,7 @@ static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiLuReadMegaBytes */
+-	return snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
++	return snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
+ }
+ 
+ static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
+@@ -316,7 +316,7 @@ static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
+ 	struct se_device *dev = to_stat_lu_dev(item);
+ 	struct se_dev_io_stats *stats;
+ 	unsigned int cpu;
+-	u32 bytes = 0;
++	u64 bytes = 0;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		stats = per_cpu_ptr(dev->stats, cpu);
+@@ -324,7 +324,7 @@ static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiLuWrittenMegaBytes */
+-	return snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
++	return snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
+ }
+ 
+ static ssize_t target_stat_lu_resets_show(struct config_item *item, char *page)
+@@ -1044,7 +1044,7 @@ static ssize_t target_stat_auth_num_cmds_show(struct config_item *item,
+ 	struct se_dev_entry *deve;
+ 	unsigned int cpu;
+ 	ssize_t ret;
+-	u32 cmds = 0;
++	u64 cmds = 0;
+ 
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
+@@ -1059,7 +1059,7 @@ static ssize_t target_stat_auth_num_cmds_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiAuthIntrOutCommands */
+-	ret = snprintf(page, PAGE_SIZE, "%u\n", cmds);
++	ret = snprintf(page, PAGE_SIZE, "%llu\n", cmds);
+ 	rcu_read_unlock();
+ 	return ret;
+ }
+@@ -1073,7 +1073,7 @@ static ssize_t target_stat_auth_read_mbytes_show(struct config_item *item,
+ 	struct se_dev_entry *deve;
+ 	unsigned int cpu;
+ 	ssize_t ret;
+-	u32 bytes = 0;
++	u64 bytes = 0;
+ 
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
+@@ -1088,7 +1088,7 @@ static ssize_t target_stat_auth_read_mbytes_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiAuthIntrReadMegaBytes */
+-	ret = snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
++	ret = snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
+ 	rcu_read_unlock();
+ 	return ret;
+ }
+@@ -1102,7 +1102,7 @@ static ssize_t target_stat_auth_write_mbytes_show(struct config_item *item,
+ 	struct se_dev_entry *deve;
+ 	unsigned int cpu;
+ 	ssize_t ret;
+-	u32 bytes = 0;
++	u64 bytes = 0;
+ 
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
+@@ -1117,7 +1117,7 @@ static ssize_t target_stat_auth_write_mbytes_show(struct config_item *item,
+ 	}
+ 
+ 	/* scsiAuthIntrWrittenMegaBytes */
+-	ret = snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
++	ret = snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
+ 	rcu_read_unlock();
+ 	return ret;
+ }
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index c4d9116904aa0..27e1f9d5f0c6c 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -671,9 +671,9 @@ struct se_lun_acl {
  };
  
--static int __init imx_mu_of_init(struct device_node *dn,
--				 struct device_node *parent,
--				 const struct imx_mu_dcfg *cfg)
-+static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
-+			  const struct imx_mu_dcfg *cfg)
- {
- 	struct platform_device *pdev = of_find_device_by_node(dn);
- 	struct device_link *pd_link_a;
-@@ -415,20 +414,17 @@ static const struct dev_pm_ops imx_mu_pm_ops = {
- 			   imx_mu_runtime_resume, NULL)
+ struct se_dev_entry_io_stats {
+-	u32			total_cmds;
+-	u32			read_bytes;
+-	u32			write_bytes;
++	u64			total_cmds;
++	u64			read_bytes;
++	u64			write_bytes;
  };
  
--static int __init imx_mu_imx7ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx7ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx7ulp);
- }
+ struct se_dev_entry {
+@@ -806,9 +806,9 @@ struct se_device_queue {
+ };
  
--static int __init imx_mu_imx6sx_of_init(struct device_node *dn,
--					struct device_node *parent)
-+static int imx_mu_imx6sx_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx6sx);
- }
+ struct se_dev_io_stats {
+-	u32			total_cmds;
+-	u32			read_bytes;
+-	u32			write_bytes;
++	u64			total_cmds;
++	u64			read_bytes;
++	u64			write_bytes;
+ };
  
--static int __init imx_mu_imx8ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx8ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx8ulp);
- }
+ struct se_device {
 -- 
 2.51.0
 
