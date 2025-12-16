@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-202017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF9ACC4672
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B65CC269E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F73C30C0802
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 885F4312DAAA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB46357714;
-	Tue, 16 Dec 2025 12:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029342135B8;
+	Tue, 16 Dec 2025 11:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AR7IpqG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+++pIr5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71DD3570D9;
-	Tue, 16 Dec 2025 12:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4B53314B4;
+	Tue, 16 Dec 2025 11:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886552; cv=none; b=m45YGMKmf10scLN90v163UBqzKGA4iafrlLfkRlZtwrL4MYdZys2UbA9i7QtsKafIrcYMK2aYmC3rgvFcjvvBqR8lBQvc2HXvRjuxTQokQJ3Xdf11zq5XLmFKbE61q7pMYmnVvCL91edP5gmImQLdpWPqKGXqWdToaXekM/DVjg=
+	t=1765884945; cv=none; b=XrbKrT01Kg3zBzFSnLmKhRm38Hy7GwdveflF/WgqYWTgjM2ubMB9bIKuoRhwGCz18R/kNOHxL1Bu8nWlaNdK7uKGO0MQQNKAzQ6UJVka/h5iyeKTYdeEWxNcidYI6GjTpLr10+StVVTn+CEc8aOfbKkMAz0vch9L2KBJRX+roiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886552; c=relaxed/simple;
-	bh=WuxkaZ5BcBBJwuvPAdGpj4CQeaiRPOT1zH3kEwwvOgY=;
+	s=arc-20240116; t=1765884945; c=relaxed/simple;
+	bh=v1bCXdX+msZZWEl+X5v5ObQyBYc/qu/c9N3969KJFQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LctJvkmcFeMsMZCjFMguusXzE1/7KkDq7uoTVQct1hTIqhdLc+pD46mTl12B3IsRJL9p0G9fKG9ANlbueQ6lYzuzeuhA5YdD7TX2n0bmEgb6chmubpWAh7n3Q9WRnRmUpCBAR6N7Yz8hjnKhxZONPZBiU/knShZsGuw6hGkSG84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AR7IpqG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1900FC4CEF1;
-	Tue, 16 Dec 2025 12:02:31 +0000 (UTC)
+	 MIME-Version; b=LrzYH35YqQ8J1wSq6BmHnCaIBaf5nyJnzt6vUtEIg/6gkr6aJb2iLPaV12QfyrNcM/jW8PD+M+7JmW4YHb0m9MhGHZwsiuzpT7s3LVo91AUyb7uEjHDrBpU0jEHjvlpRlNjLsFXi4RQuPP79kSv5pLuU0ageOpOzPDPYdNe0YxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+++pIr5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9D4C4CEF1;
+	Tue, 16 Dec 2025 11:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886552;
-	bh=WuxkaZ5BcBBJwuvPAdGpj4CQeaiRPOT1zH3kEwwvOgY=;
+	s=korg; t=1765884945;
+	bh=v1bCXdX+msZZWEl+X5v5ObQyBYc/qu/c9N3969KJFQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AR7IpqG5uS38zDo69Cs9oFQBPNLFSziOiKGfDReSy9qn3w03fRhdP9pKG8Zb08677
-	 gydJj1udzL0gYO8x0c+597VAgTBk1RnQCQEXqqxtHutBmPc2r8jdSSlVe5jvSM4L0k
-	 bk7KxT7MQqxjuwZdJdg6CXQ99bjykgo4Q5Gc5+wo=
+	b=H+++pIr5MV/PwuegDEos/GELQZ0gY3fgmIkYmIeTAmPapcBgXrn6304zS9H43dFZx
+	 Gcv2VPM+mwmcJSsosjdmFZL7QZXjM9d7Sm4dI5TvaxqfCeDPMWPkjDRXlFCyPrz60U
+	 3kZ4rImOcLVGmkdICOCpmoPb3X9sWPsEU15a7TNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathara Sasikumar <katharasasikumar007@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 471/507] docs: hwmon: fix link to g762 devicetree binding
+Subject: [PATCH 6.12 345/354] ocfs2: fix memory leak in ocfs2_merge_rec_left()
 Date: Tue, 16 Dec 2025 12:15:12 +0100
-Message-ID: <20251216111402.508253360@linuxfoundation.org>
+Message-ID: <20251216111333.404716560@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathara Sasikumar <katharasasikumar007@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 08bfcf4ff9d39228150a757803fc02dffce84ab0 ]
+[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
 
-The devicetree binding for g762 was converted to YAML to match vendor
-prefix conventions. Update the reference accordingly.
+In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
+move, thus allowing 'ocfs2_free_path()' to free it before return.
 
-Signed-off-by: Kathara Sasikumar <katharasasikumar007@gmail.com>
-Link: https://lore.kernel.org/r/20251205215835.783273-1-katharasasikumar007@gmail.com
-Fixes: 3d8e25372417 ("dt-bindings: hwmon: g762: Convert to yaml schema")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
+Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/g762.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/alloc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/hwmon/g762.rst b/Documentation/hwmon/g762.rst
-index 0371b3365c48c..f224552a2d3cc 100644
---- a/Documentation/hwmon/g762.rst
-+++ b/Documentation/hwmon/g762.rst
-@@ -17,7 +17,7 @@ done via a userland daemon like fancontrol.
- Note that those entries do not provide ways to setup the specific
- hardware characteristics of the system (reference clock, pulses per
- fan revolution, ...); Those can be modified via devicetree bindings
--documented in Documentation/devicetree/bindings/hwmon/g762.txt or
-+documented in Documentation/devicetree/bindings/hwmon/gmt,g762.yaml or
- using a specific platform_data structure in board initialization
- file (see include/linux/platform_data/g762.h).
- 
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 5d9388b44e5be..f8025433ce3bf 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -3654,7 +3654,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
+ 			 * So we use the new rightmost path.
+ 			 */
+ 			ocfs2_mv_path(right_path, left_path);
+-			left_path = NULL;
+ 		} else
+ 			ocfs2_complete_edge_insert(handle, left_path,
+ 						   right_path, subtree_index);
 -- 
 2.51.0
 
