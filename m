@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25056CC2B3A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B60C7CC36F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 205E03130E31
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5983130EB67B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D25435F8D7;
-	Tue, 16 Dec 2025 12:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ED1219A8E;
+	Tue, 16 Dec 2025 11:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iUo2ase"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqY8/QtZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521F35F8D4;
-	Tue, 16 Dec 2025 12:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1292BF000;
+	Tue, 16 Dec 2025 11:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887344; cv=none; b=st5j/sH2dpAVkCZbIZYLwLodsLYaqRkXmcPrr916helHo5+AsRzJpOLbnW92NUNKkdjfW9wqLvLfbGEjwTiZN6wnlFrNBL8UEZfNjUhEWEs098Emj99ftVlVJ/BXRD6M7Mbz4KPnNMjB3SieV4NqpNWsYwqnDWrxh83Yk4ET7hQ=
+	t=1765885401; cv=none; b=quHVcpYc++GzlhX5pskXOuTw6TVm1DXUtqGRVFRkQvHC7FptypopjfJzMowlM4yGp14nqH8/pC6nAMsrvuwDMSNPKY1UL3QMwpvliVChCN8kIaO4YHWq8hOTMqhkhtmQ8HyeVhDKvIt5FOQIkGEN8AEWmQF3UhmNs3KF5Qe9NG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887344; c=relaxed/simple;
-	bh=ogPPyU9qZrWfV9sKIJXlYzYTi5S0nXkdrNXZYaSHH94=;
+	s=arc-20240116; t=1765885401; c=relaxed/simple;
+	bh=PcSLF8yZ6G33L7YsLl17AIXVJ3+C7Mu5akv7DBc1q8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VvBnyfKHyipoLQ1gS2nktjTasToQCGYzheVB25AekqGT0g9yQ9r97geJjHemV7+CKVkWfaoZjNGtUKiAO+N+/zszO905QtgDO0BTufLdvhGaqmkhcDskHBaDljSrqCEzijFgzNaW8uX/wowTbp0yaJ0WQT13/Uk3h0XdKeb+h0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iUo2ase; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED6DC4CEF1;
-	Tue, 16 Dec 2025 12:15:43 +0000 (UTC)
+	 MIME-Version; b=eKoi+OzsrVXFDDC1aAr0/MqJcu/tvQ7uG9hd9FJ82DRLv1ZxBVX/whKmW78RZUY6gMZP3dOCpzVXOsG+1a0JKCpKTXmjA6iyKcbKadkFmnW9MEp5in+w88UGbBWRy8UuTlhHUGiQZXv8OGwMhoejoa1xvjEE8mcGv5q+zhuc9Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqY8/QtZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CF0C4CEF1;
+	Tue, 16 Dec 2025 11:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887343;
-	bh=ogPPyU9qZrWfV9sKIJXlYzYTi5S0nXkdrNXZYaSHH94=;
+	s=korg; t=1765885401;
+	bh=PcSLF8yZ6G33L7YsLl17AIXVJ3+C7Mu5akv7DBc1q8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iUo2asepqdown2SOLvWdN+bs9YL0bUZ69Sqc5X5vQjh6Pef+3cNX6CB/HnRaBWuB
-	 QKTC1vV1aR2tGzkPsN++rRmTizCQxYDit1X7niglJqmi87NvF6inqYW44kkppStU0R
-	 G78Bm58gLituKJOKYfDghhxBaNaJQN4kMrj5wmmM=
+	b=jqY8/QtZ18nClMg32eWa1fbw/IPjEDEf872WlRv7MbJEN7VV9GVO7g0hkSGlJAe1Q
+	 GzTaftAn3gl98JI6TNF11NO+NMP35pFAOuthMR0fIYhsBFIQwXBslPFJNFZ9pi2MiH
+	 ZSpnEAN8Ub1VXlBNqfuF9oTS4PcvduwStUa6e5bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 200/614] drm/xe: Enforce correct user fence signaling order using
-Date: Tue, 16 Dec 2025 12:09:27 +0100
-Message-ID: <20251216111408.624748288@linuxfoundation.org>
+Subject: [PATCH 6.17 127/507] soc: qcom: smem: fix hwspinlock resource leak in probe error paths
+Date: Tue, 16 Dec 2025 12:09:28 +0100
+Message-ID: <20251216111350.132452282@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,48 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit adda4e855ab6409a3edaa585293f1f2069ab7299 ]
+[ Upstream commit dc5db35073a19f6d3c30bea367b551c1a784ef8f ]
 
-Prevent application hangs caused by out-of-order fence signaling when
-user fences are attached. Use drm_syncobj (via dma-fence-chain) to
-guarantee that each user fence signals in order, regardless of the
-signaling order of the attached fences. Ensure user fence writebacks to
-user space occur in the correct sequence.
+The hwspinlock acquired via hwspin_lock_request_specific() is not
+released on several error paths. This results in resource leakage
+when probe fails.
 
-v7:
- - Skip drm_syncbj create of error (CI)
+Switch to devm_hwspin_lock_request_specific() to automatically
+handle cleanup on probe failure. Remove the manual hwspin_lock_free()
+in qcom_smem_remove() as devm handles it automatically.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20251031234050.3043507-2-matthew.brost@intel.com
+Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251029022733.255-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soc/qcom/smem.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index cb5f204c08ed6..a6efe4e8ab556 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -344,6 +344,9 @@ void xe_exec_queue_destroy(struct kref *ref)
- 	struct xe_exec_queue *q = container_of(ref, struct xe_exec_queue, refcount);
- 	struct xe_exec_queue *eq, *next;
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index c4c45f15dca4f..f1d1b5aa5e4db 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -1190,7 +1190,7 @@ static int qcom_smem_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, hwlock_id,
+ 				     "failed to retrieve hwlock\n");
  
-+	if (q->ufence_syncobj)
-+		drm_syncobj_put(q->ufence_syncobj);
-+
- 	if (q->ufence_syncobj)
- 		drm_syncobj_put(q->ufence_syncobj);
+-	smem->hwlock = hwspin_lock_request_specific(hwlock_id);
++	smem->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, hwlock_id);
+ 	if (!smem->hwlock)
+ 		return -ENXIO;
+ 
+@@ -1243,7 +1243,6 @@ static void qcom_smem_remove(struct platform_device *pdev)
+ {
+ 	platform_device_unregister(__smem->socinfo);
+ 
+-	hwspin_lock_free(__smem->hwlock);
+ 	__smem = NULL;
+ }
  
 -- 
 2.51.0
