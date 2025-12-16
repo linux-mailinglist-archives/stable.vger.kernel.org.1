@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA55CC2AF5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8681CC270D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37B8230146DB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D90F13022D0F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA93328639;
-	Tue, 16 Dec 2025 12:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD1C35502E;
+	Tue, 16 Dec 2025 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxjG73a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb3+DNfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C83644C3;
-	Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08704355029;
+	Tue, 16 Dec 2025 11:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887799; cv=none; b=I1cUUhAG9rMeSi3pAs1iaC6SbXi92hLC3v2j7U18nUqRyTc6eS/KAkleVdPgAZPDCeNce/2p2oXlMXsYh5YlWlVw0DtIK/mmiRoDrpc79X/9XCSGCabSD+/wJ5n+YJHr5HwVBvMe8PlKI5JQtyxyWdGLQvMWMr7d+A6ouiBMktI=
+	t=1765885868; cv=none; b=fOb8tQHlQnyIinb3lL7i++0zIfVkMBYwCE21v2bOACbm6sxDwxrEs0ddEEHG4YedJKiSR1mITZTvI57ZbIRcFEXO4cgdnZVscCl13dCylrOJTCYz9ja+uis8wBF6EIVLOvjzQxhlEzVG6yF4lUpOIrvCpDPbMo3bhknocSbkoT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887799; c=relaxed/simple;
-	bh=BSrf4JH46TCHVxPCVfuDx8Z45juhcCK2nSjV6XofSJ8=;
+	s=arc-20240116; t=1765885868; c=relaxed/simple;
+	bh=QKQ4UD/gY2F6xet0xNCW8P5IciJ2rZoaHxTG2SqpW5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKY6Qo0mc6tbx83cVshET/UhuZZhcxvQafUEwZOqVaLkq5G5eWF0dkThBk/9uueHuIsbLrloF1BgCdc+RFb03iG1adPbM2GNf00Io29K4be55Gnq3UA20cvhOFeaPKq4uYPPGWSYAdM3CdZKKnHaK2sMET7muuIWSABFcAH6WNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxjG73a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A5FC4CEF1;
-	Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
+	 MIME-Version; b=mhEmw8zyF6hAIVBBphUwCX1bzNmTUAWSUcPZNYYXYwlLvRVxlaoxuLhWrmojQh3RJbLYJ0QBQ+Ns0nVPGJ/6OGHosNGcR8VJMQIyTejfsUoAnG7WQSJLd0fihMeEApkBUnMeO6vlK3xHTAGuJHaKscAleDLoXBOXn9MMWkp8au4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb3+DNfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF96C4CEF1;
+	Tue, 16 Dec 2025 11:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887798;
-	bh=BSrf4JH46TCHVxPCVfuDx8Z45juhcCK2nSjV6XofSJ8=;
+	s=korg; t=1765885864;
+	bh=QKQ4UD/gY2F6xet0xNCW8P5IciJ2rZoaHxTG2SqpW5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxjG73a/c4RlGl8J0gTKop0p0uIgH5fUIRueZ+syL3T+X54Z5LyyXW8Cur8rNTe2X
-	 DVzPteN9JCkNR/vE6EV/smH39tabvGD94o+69YebwC0jjpQL14N+DsOFnhd8jxouOu
-	 hJSzBFcOjl89T7qy8T8sFouxSTwomR3nf9Rt6onY=
+	b=hb3+DNfwor/xwLqXLRXSRJ6wpyJx3WgMQ1/UGofOAGV1YaTNpsp6hLQ19biugkndN
+	 Ki4n+LrDyj3IBnrA/5pdoLPqZgDINjlc2VHGYXQ5jCsA6t4QmPXO3Ka2FBvoKZd3Sz
+	 M2NukoeVeP+r7zrdSKhXz38ZfSVl0fYOW/7zdH/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 340/614] of/fdt: Fix the len check in early_init_dt_check_for_elfcorehdr()
-Date: Tue, 16 Dec 2025 12:11:47 +0100
-Message-ID: <20251216111413.682796530@linuxfoundation.org>
+Subject: [PATCH 6.17 267/507] powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+Date: Tue, 16 Dec 2025 12:11:48 +0100
+Message-ID: <20251216111355.158367022@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit bec5f6092bc1328895992ff02b862ba34b45a0b7 ]
+[ Upstream commit eae40a6da63faa9fb63ff61f8fa2b3b57da78a84 ]
 
-The len value is in bytes, while `dt_root_addr_cells + dt_root_size_cells`
-is in cells (4 bytes per cell). Comparing them directly is incorrect.
+HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
+kernel hash page tables, nothing gets printed on powernv P9+. This patch
+utilizes the helpers added in the patch tagged as fixes, to convert new
+format to old format and dump the hptes. This fix is only needed for
+native_find() (powernv), since pseries continues to work fine with the
+old format.
 
-Use a helper function to simplify the code and address this issue.
-
-Fixes: f7e7ce93aac1 ("of: fdt: Add generic support for handling elf core headers property")
-Fixes: e62aaeac426ab1dd ("arm64: kdump: provide /proc/vmcore file")
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://patch.msgid.link/20251115134753.179931-3-yuntao.wang@linux.dev
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/4c2bb9e5b3cfbc0dd80b61b67cdd3ccfc632684c.1761834163.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 0c18bdefbbeea..b45f60dccd7cf 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -853,21 +853,15 @@ static void __init early_init_dt_check_for_initrd(unsigned long node)
-  */
- static void __init early_init_dt_check_for_elfcorehdr(unsigned long node)
- {
--	const __be32 *prop;
--	int len;
--
- 	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
- 		return;
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index a6baa6166d940..671d0dc00c6d0 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 	vpn  = hpt_vpn(ea, vsid, ssize);
+ 	hash = hpt_hash(vpn, shift, ssize);
+ 	want_v = hpte_encode_avpn(vpn, psize, ssize);
++	if (cpu_has_feature(CPU_FTR_ARCH_300))
++		want_v = hpte_old_to_new_v(want_v);
  
- 	pr_debug("Looking for elfcorehdr property... ");
- 
--	prop = of_get_flat_dt_prop(node, "linux,elfcorehdr", &len);
--	if (!prop || (len < (dt_root_addr_cells + dt_root_size_cells)))
-+	if (!of_flat_dt_get_addr_size(node, "linux,elfcorehdr",
-+				      &elfcorehdr_addr, &elfcorehdr_size))
- 		return;
- 
--	elfcorehdr_addr = dt_mem_next_cell(dt_root_addr_cells, &prop);
--	elfcorehdr_size = dt_mem_next_cell(dt_root_size_cells, &prop);
--
- 	pr_debug("elfcorehdr_start=0x%llx elfcorehdr_size=0x%llx\n",
- 		 elfcorehdr_addr, elfcorehdr_size);
- }
+ 	/* to check in the secondary hash table, we invert the hash */
+ 	if (!primary)
+@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 			/* HPTE matches */
+ 			*v = be64_to_cpu(hptep->v);
+ 			*r = be64_to_cpu(hptep->r);
++			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
++				*v = hpte_new_to_old_v(*v, *r);
++				*r = hpte_new_to_old_r(*r);
++			}
+ 			return 0;
+ 		}
+ 		++hpte_group;
 -- 
 2.51.0
 
