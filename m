@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-202513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2995FCC3B51
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD7BCC2571
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15A9B30E64C6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92A6430ABF92
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CDB3396E4;
-	Tue, 16 Dec 2025 12:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8330934106D;
+	Tue, 16 Dec 2025 11:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlpIVUqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDIxbmdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8749347FCF;
-	Tue, 16 Dec 2025 12:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F67A33B966;
+	Tue, 16 Dec 2025 11:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888143; cv=none; b=kuVgzeWCRrEM+Sn8UNw4zjGa2Aw4kjFxU4B7+3CYxURqom5fYrIqtGOOhWZymIyK4qMtQQC4EQBgmdoAezw+wUiIwfOsaKFPk67furvEMEoMTfjY7pLWRihxJ3+LJJe9F3Wmz9DFwkcLyTgkW+DhuUAllcu6ezVhhJH5jm09BlY=
+	t=1765884700; cv=none; b=jc6loBnvYAukFkz6LMRqg3YKfZs080plfZB80O618KbnuJK9ssXf78P6hYKKzYkW+4L92xFYiYdMONP80Bgb5fY1CGS9Ac4t4TTjRvomaa/Rj9d/psbFicMCzezhQOYSV4g5BsmPeVRvPoLG+OLEYffoyKzTAD/b4qyXFGNx+mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888143; c=relaxed/simple;
-	bh=VYKeUBzxdX8VhGRshfvOIiLgba4fGiC/G2PU/jTVsho=;
+	s=arc-20240116; t=1765884700; c=relaxed/simple;
+	bh=mtYwUI9g9Pu1xiWwRa/0k8vGhEAtRXq5tliwjWYmvDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hu8lrAI3uP1RgpJ79BBA1Zjyl3yUx+KnmGIuJ5DzKcEPKipmE6pqFa++LlnqMapXP8aCoJPvP4jKT1Fh0dJa9ua1b9X/++g7cKAg7UGS8JZ7RZ7jC5Dq+YjZAfYAYQut6NWXHDlms4HpfuTKR3rWXcB9DbBcQ1EaUK7aQ1nvjw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlpIVUqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35680C4CEF1;
-	Tue, 16 Dec 2025 12:29:03 +0000 (UTC)
+	 MIME-Version; b=MFfJp8hCQii1FiuZcPA2k2Dq1uaYNK9dEMsM1Cvrk182DZqdcRogByR4qwIjKIrWa+/zXt9U1THSM5oAgRj+ilImqMDe8kw+WJnq1qRqgxy+DoJL+G1NLeREdcik7GJNCUiiNJmyFEPtypsF0b1LQYFhaaikrcDQSdZdjgOruKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDIxbmdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77802C4CEF5;
+	Tue, 16 Dec 2025 11:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888143;
-	bh=VYKeUBzxdX8VhGRshfvOIiLgba4fGiC/G2PU/jTVsho=;
+	s=korg; t=1765884700;
+	bh=mtYwUI9g9Pu1xiWwRa/0k8vGhEAtRXq5tliwjWYmvDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlpIVUqdwpB6YhcI900OZqtl72GgN+bQ1JcpsEKuj60GfpWJHFPzsqc1XpXmU1xuN
-	 ebHmszOq7TgzOXKUnlDH+jBmbXYABab3OgB+y0PpniLCBGfzoE8nzey2E0M904kNVc
-	 mG+uOC+/lierM3rSMYt2zEvrhXOFIqoQWZXfWjXc=
+	b=tDIxbmdGq5yAwlFRVXtKkNe0CPErGBy50Y2gqhZUcpm9kMEIJvSMQ/DfKbggL3+aD
+	 1fuIdJsdJqxqqYiK8I3cEfowy38PB6LX5hSudveMWy/LTIwMua3Nh2rulLZkU+Qmlk
+	 5Tqgi0KeZpgz1MUZz/sdovZ48rmILOddCPriiFdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jeff Layton <jlayton@kernel.org>,
 	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 445/614] fs: lift the FMODE_NOCMTIME check into file_update_time_flags
+Subject: [PATCH 6.12 245/354] ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation
 Date: Tue, 16 Dec 2025 12:13:32 +0100
-Message-ID: <20251216111417.496408551@linuxfoundation.org>
+Message-ID: <20251216111329.789455687@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-[ Upstream commit 7f30e7a42371af4bba53f9a875a0d320cead9f4b ]
+[ Upstream commit d9ee3ff810f1cc0e253c9f2b17b668b973cb0e06 ]
 
-FMODE_NOCMTIME used to be just a hack for the legacy XFS handle-based
-"invisible I/O", but commit e5e9b24ab8fa ("nfsd: freeze c/mtime updates
-with outstanding WRITE_ATTRS delegation") started using it from
-generic callers.
+When the MB_CHECK_ASSERT macro is enabled, we found that the
+current validation logic in __mb_check_buddy has a gap in
+detecting certain invalid buddy states, particularly related
+to order-0 (bitmap) bits.
 
-I'm not sure other file systems are actually read for this in general,
-so the above commit should get a closer look, but for it to make any
-sense, file_update_time needs to respect the flag.
+The original logic consists of three steps:
+1. Validates higher-order buddies: if a higher-order bit is
+set, at most one of the two corresponding lower-order bits
+may be free; if a higher-order bit is clear, both lower-order
+bits must be allocated (and their bitmap bits must be 0).
+2. For any set bit in order-0, ensures all corresponding
+higher-order bits are not free.
+3. Verifies that all preallocated blocks (pa) in the group
+have pa_pstart within bounds and their bitmap bits marked as
+allocated.
 
-Lift the check from file_modified_flags to file_update_time so that
-users of file_update_time inherit the behavior and so that all the
-checks are done in one place.
+However, this approach fails to properly validate cases where
+order-0 bits are incorrectly cleared (0), allowing some invalid
+configurations to pass:
 
-Fixes: e5e9b24ab8fa ("nfsd: freeze c/mtime updates with outstanding WRITE_ATTRS delegation")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251120064859.2911749-3-hch@lst.de
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+               corrupt            integral
+
+order 3           1                  1
+order 2       1       1          1       1
+order 1     1   1   1   1      1   1   1   1
+order 0    0 0 1 1 1 1 1 1    1 1 1 1 1 1 1 1
+
+Here we get two adjacent free blocks at order-0 with inconsistent
+higher-order state, and the right one shows the correct scenario.
+
+The root cause is insufficient validation of order-0 zero bits.
+To fix this and improve completeness without significant performance
+cost, we refine the logic:
+
+1. Maintain the top-down higher-order validation, but we no longer
+check the cases where the higher-order bit is 0, as this case will
+be covered in step 2.
+2. Enhance order-0 checking by examining pairs of bits:
+   - If either bit in a pair is set (1), all corresponding
+     higher-order bits must not be free.
+   - If both bits are clear (0), then exactly one of the
+     corresponding higher-order bits must be free
+3. Keep the preallocation (pa) validation unchanged.
+
+This change closes the validation gap, ensuring illegal buddy states
+involving order-0 are correctly detected, while removing redundant
+checks and maintaining efficiency.
+
+Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Message-ID: <20251106060614.631382-3-sunyongjian@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 49 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 540f4a28c202d..2c55ec49b0239 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2332,6 +2332,8 @@ static int file_update_time_flags(struct file *file, unsigned int flags)
- 	/* First try to exhaust all avenues to not sync */
- 	if (IS_NOCMTIME(inode))
- 		return 0;
-+	if (unlikely(file->f_mode & FMODE_NOCMTIME))
-+		return 0;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 76331cdb4cb51..96bb2d2366d6e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -677,6 +677,24 @@ do {									\
+ 	}								\
+ } while (0)
  
- 	now = current_time(inode);
++/*
++ * Perform buddy integrity check with the following steps:
++ *
++ * 1. Top-down validation (from highest order down to order 1, excluding order-0 bitmap):
++ *    For each pair of adjacent orders, if a higher-order bit is set (indicating a free block),
++ *    at most one of the two corresponding lower-order bits may be clear (free).
++ *
++ * 2. Order-0 (bitmap) validation, performed on bit pairs:
++ *    - If either bit in a pair is set (1, allocated), then all corresponding higher-order bits
++ *      must not be free (0).
++ *    - If both bits in a pair are clear (0, free), then exactly one of the corresponding
++ *      higher-order bits must be free (0).
++ *
++ * 3. Preallocation (pa) list validation:
++ *    For each preallocated block (pa) in the group:
++ *    - Verify that pa_pstart falls within the bounds of this block group.
++ *    - Ensure the corresponding bit(s) in the order-0 bitmap are marked as allocated (1).
++ */
+ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				const char *function, int line)
+ {
+@@ -718,15 +736,6 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				continue;
+ 			}
  
-@@ -2403,8 +2405,6 @@ static int file_modified_flags(struct file *file, int flags)
- 	ret = file_remove_privs_flags(file, flags);
- 	if (ret)
- 		return ret;
--	if (unlikely(file->f_mode & FMODE_NOCMTIME))
--		return 0;
- 	return file_update_time_flags(file, flags);
- }
- 
+-			/* both bits in buddy2 must be 1 */
+-			MB_CHECK_ASSERT(mb_test_bit(i << 1, buddy2));
+-			MB_CHECK_ASSERT(mb_test_bit((i << 1) + 1, buddy2));
+-
+-			for (j = 0; j < (1 << order); j++) {
+-				k = (i * (1 << order)) + j;
+-				MB_CHECK_ASSERT(
+-					!mb_test_bit(k, e4b->bd_bitmap));
+-			}
+ 			count++;
+ 		}
+ 		MB_CHECK_ASSERT(e4b->bd_info->bb_counters[order] == count);
+@@ -742,15 +751,21 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				fragments++;
+ 				fstart = i;
+ 			}
+-			continue;
++		} else {
++			fstart = -1;
+ 		}
+-		fstart = -1;
+-		/* check used bits only */
+-		for (j = 0; j < e4b->bd_blkbits + 1; j++) {
+-			buddy2 = mb_find_buddy(e4b, j, &max2);
+-			k = i >> j;
+-			MB_CHECK_ASSERT(k < max2);
+-			MB_CHECK_ASSERT(mb_test_bit(k, buddy2));
++		if (!(i & 1)) {
++			int in_use, zero_bit_count = 0;
++
++			in_use = mb_test_bit(i, buddy) || mb_test_bit(i + 1, buddy);
++			for (j = 1; j < e4b->bd_blkbits + 2; j++) {
++				buddy2 = mb_find_buddy(e4b, j, &max2);
++				k = i >> j;
++				MB_CHECK_ASSERT(k < max2);
++				if (!mb_test_bit(k, buddy2))
++					zero_bit_count++;
++			}
++			MB_CHECK_ASSERT(zero_bit_count == !in_use);
+ 		}
+ 	}
+ 	MB_CHECK_ASSERT(!EXT4_MB_GRP_NEED_INIT(e4b->bd_info));
 -- 
 2.51.0
 
