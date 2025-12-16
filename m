@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CD0CC24B7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF9CCC436A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24FC33022D22
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 737383082D88
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520B8342C8E;
-	Tue, 16 Dec 2025 11:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B2D36215C;
+	Tue, 16 Dec 2025 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8ghUOYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0YiI/Fg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F891342505;
-	Tue, 16 Dec 2025 11:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50846362157;
+	Tue, 16 Dec 2025 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884869; cv=none; b=bDCmSMuzxCn7dmgbi2XE1vx29H90hu63ArT8YerK/F9MvdSIX22Q6hAPzDPmnbnYajFqma6QJ9eRQ+svzC1By6c0K0PtrFsnk/53fKKnBFVXJ4N5QWICaZoOS//RNFoQxdDfd/ZTUqBag6s4OJjhsi10aDtBgNuuR2LsdQN+8GA=
+	t=1765888549; cv=none; b=R5++lsYTRKQeqaf0QriHsLBKd5VM59b7v9CBKiV4ZEgv6/rOYkcnBlBcmMkSRmI7KE11XfE6di/je0tdPeyKBat3Gdck8aQ4/uzpYJJLru/YZ9Ox6IQ20/fAczed2VBypNyLsyi4HzzNqVKyZp8osrg0Qi8jmKpM7NYHo09PKf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884869; c=relaxed/simple;
-	bh=/KIKthTFQJ4ghJSUpYcj8gaGCef/Kj2Bpgzo0lURMbU=;
+	s=arc-20240116; t=1765888549; c=relaxed/simple;
+	bh=WS5Fa3jv2Tn+ZCkdGpfB7ZUTujDsBrylFQojmcJwHW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vA1XbMrKLqVT4puFA0l+8dM4/hmRPCaDK4riXmh+ul9ZzHg/C9BG68ySOK4UpDEhThcuSHhEzmHaojd+OmGkENbS6C2hQ7WGofvD8KuD5GrIzZ57i1MZ2SFUot1n8bcyXleK1yshzmCP1hmivOy7XY6oEDOnzfS0zy+WvyPowKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8ghUOYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88767C4CEF1;
-	Tue, 16 Dec 2025 11:34:28 +0000 (UTC)
+	 MIME-Version; b=tbFX7DZg03LuguwEHPqD4BK9RGWD6YBZf9ZaKUFRx+JQE/k1D8XAl5u246CHHtswSQ8q+GhyW3m1DFpPqc7Ij2+9GwNxxq9uTrOLcqREsqzaRo8g1FwIhGThRTiSqwrSv24o0Rj6fgWKRhWoldwpLSgw57p/9LGJTIPHd4JAV3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0YiI/Fg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBE1C4CEF1;
+	Tue, 16 Dec 2025 12:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884868;
-	bh=/KIKthTFQJ4ghJSUpYcj8gaGCef/Kj2Bpgzo0lURMbU=;
+	s=korg; t=1765888548;
+	bh=WS5Fa3jv2Tn+ZCkdGpfB7ZUTujDsBrylFQojmcJwHW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8ghUOYzTZnEtfcLco9P92ZApPnwUw6Fr+2l+jnAy15MzKFgcNJGuXacEU6QrAzE2
-	 Vo//z5L9D74a7mZjkauqV91/IPq663n/jjElQQ4H+ppQJ1qZxKomF5j/Ubk6MWdyW/
-	 ZM3AnWvNrzqGx2cX9fgpJTeWFbpsFMqU2Mo65JAc=
+	b=G0YiI/FgIxfNu1P83mzPH+eyp3k/PC6YuaabWuiG/BfSvLY7Pd8ft889Cm6C0rgzI
+	 5D9rLRb6Bu5jFq8DwgQh+VzWjxh5+d86Spex+PXyIGe1jGkzN/C2waIdyGO7I/mQ1z
+	 rWuIhKPvDbQ2SZnP6Px854nSuhmz3ba9Y/MLzW1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 324/354] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
+Subject: [PATCH 6.18 524/614] exfat: fix refcount leak in exfat_find
 Date: Tue, 16 Dec 2025 12:14:51 +0100
-Message-ID: <20251216111332.647567825@linuxfoundation.org>
+Message-ID: <20251216111420.361657242@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
+[ Upstream commit 9aee8de970f18c2aaaa348e3de86c38e2d956c1d ]
 
-The drm_property_create_signed_range() function doesn't return error
-pointers it returns NULL on error.  Fix the error checking to match.
+Fix refcount leaks in `exfat_find` related to `exfat_get_dentry_set`.
 
-Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Function `exfat_get_dentry_set` would increase the reference counter of
+`es->bh` on success. Therefore, `exfat_put_dentry_set` must be called
+after `exfat_get_dentry_set` to ensure refcount consistency. This patch
+relocate two checks to avoid possible leaks.
+
+Fixes: 82ebecdc74ff ("exfat: fix improper check of dentry.stream.valid_size")
+Fixes: 13940cef9549 ("exfat: add a check for invalid data size")
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/exfat/namei.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-index a28b22fdd7a41..4fcb5d486de67 100644
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -328,14 +328,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index 745dce29ddb53..dfe957493d49e 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -645,16 +645,6 @@ static int exfat_find(struct inode *dir, const struct qstr *qname,
+ 	info->valid_size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.size);
  
- 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_x))
--		return PTR_ERR(prop_x);
-+	if (!prop_x)
-+		return -ENOMEM;
+-	if (info->valid_size < 0) {
+-		exfat_fs_error(sb, "data valid size is invalid(%lld)", info->valid_size);
+-		return -EIO;
+-	}
+-
+-	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
+-		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
+-		return -EIO;
+-	}
+-
+ 	info->start_clu = le32_to_cpu(ep2->dentry.stream.start_clu);
+ 	if (!is_valid_cluster(sbi, info->start_clu) && info->size) {
+ 		exfat_warn(sb, "start_clu is invalid cluster(0x%x)",
+@@ -692,6 +682,16 @@ static int exfat_find(struct inode *dir, const struct qstr *qname,
+ 			     0);
+ 	exfat_put_dentry_set(&es, false);
  
- 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_y)) {
-+	if (!prop_y) {
- 		drm_property_destroy(plane->dev, prop_x);
--		return PTR_ERR(prop_y);
-+		return -ENOMEM;
- 	}
- 
- 	drm_object_attach_property(&plane->base, prop_x, 0);
++	if (info->valid_size < 0) {
++		exfat_fs_error(sb, "data valid size is invalid(%lld)", info->valid_size);
++		return -EIO;
++	}
++
++	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
++		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
++		return -EIO;
++	}
++
+ 	if (ei->start_clu == EXFAT_FREE_CLUSTER) {
+ 		exfat_fs_error(sb,
+ 			       "non-zero size file starts with zero cluster (size : %llu, p_dir : %u, entry : 0x%08x)",
 -- 
 2.51.0
 
