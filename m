@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30DECC2B2E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9BACC25E7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FAD9312A418
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEC20301FF34
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1183B35CBB2;
-	Tue, 16 Dec 2025 12:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6D34D4C2;
+	Tue, 16 Dec 2025 11:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCIOMwaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH5zGWzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B518935BDD4;
-	Tue, 16 Dec 2025 12:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD51A34D3B8;
+	Tue, 16 Dec 2025 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887322; cv=none; b=l+J8vCX3c2nFp79o+EwIPEmD81fWLw5uAUdzKwHdEUET+NLzQvmBXxCAhnPyfHwYrVqso2rT9BcMMg+x40vX0rboLailrVmJ6F3CR9YBTlFmLJnhXH2oSKN2zqH/nkmmGayV8SOmFp/CKbREWG0vsl5KU0y4VdiiwFleksu9HNU=
+	t=1765885377; cv=none; b=T4lpWmzPgunHWY3N09lxMXm+WvoLqbwHP2I+ooAgKHW2xTWmKZnx0YFux+lhga3WkM4iHgJQ5EcHf0E098XjK4X2JDMinFadG9qomc1AOeh9YNPD+m+k03cPgGtbe4duxyYeNjQyIpEk5tIAS3dHD1DwC+AqV9YPTKQ++5fwrw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887322; c=relaxed/simple;
-	bh=0P5TH3Ql91VnPvIg+V23ILPzGaz3FwnFkQHOKhJPYMs=;
+	s=arc-20240116; t=1765885377; c=relaxed/simple;
+	bh=va6neb/QgmqkcpvMi27UD9xBjZWyIP7THwi8HADA3uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqSzsoGlYGDY3AqCHcLBMZjalIW1Q5nbsfQu6KJYbk+cal53lg150T6o1m9xlT/onbLr53xbK8oJ10nEVvOHH7uW3KZ4y+CuG9UOi0cO52RZm1SPTJ+3n2TJa+FKKFbWDKJCKnXy1SB54IwPEmFeIIB0zzQw1NMAmQU2+CVI764=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCIOMwaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CBFC4CEF1;
-	Tue, 16 Dec 2025 12:15:20 +0000 (UTC)
+	 MIME-Version; b=X1DMvz9NHkl54Dx6PLGjlBYikM+ZENLeB6m3Za4sPBmsQUQ0krhxpuvQ0qOadodM1lOWawJUcuZW6H1iqLY3+3OuDWNYWnPCe3EWhWKslKcKynOtbP+oku3BeGodud6URko27pCnQsMolnYUDbpHsiClPJSBMqJJtQ9yCiuF6Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH5zGWzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A5EC4CEF1;
+	Tue, 16 Dec 2025 11:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887321;
-	bh=0P5TH3Ql91VnPvIg+V23ILPzGaz3FwnFkQHOKhJPYMs=;
+	s=korg; t=1765885377;
+	bh=va6neb/QgmqkcpvMi27UD9xBjZWyIP7THwi8HADA3uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCIOMwaU/I9kJ3SE/okQaPjNzoPECqVGKnnO3undpxKpcGPYFWSRm1yL0igtnL024
-	 dIlAGySj3sP5xVLeBBOKWfbhtnLFWq17Rs/QItIaoLBnDgqZzp0FGdYStZE0FKfiOi
-	 bD6mXtkLJHE0ckTAky79mCAZR5QBslb8a3Ioox5c=
+	b=UH5zGWzLvqZEcUp+j7xCtfHNPVukUveqE3TFkja0KMEY09nv1iFXQ8idaKKL6e2kL
+	 5hCeo2PRK/l2Kuk46cKdV538wiVh+4uZHaUu+yCZkVUo5l4gk/XmLYCBBCwH/GEa3M
+	 ufdvCvAqFBh3AAJyKgCMNrfwIFIbdU+tLaqrihwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 194/614] drm/panthor: Fix UAF on kernel BO VA nodes
-Date: Tue, 16 Dec 2025 12:09:21 +0100
-Message-ID: <20251216111408.400018272@linuxfoundation.org>
+Subject: [PATCH 6.17 121/507] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
+Date: Tue, 16 Dec 2025 12:09:22 +0100
+Message-ID: <20251216111349.916938371@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 98dd5143447af0ee33551776d8b2560c35d0bc4a ]
+[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
 
-If the MMU is down, panthor_vm_unmap_range() might return an error.
-We expect the page table to be updated still, and if the MMU is blocked,
-the rest of the GPU should be blocked too, so no risk of accessing
-physical memory returned to the system (which the current code doesn't
-cover for anyway).
+When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
+KASAN may report false-positive out-of-bounds access:
 
-Proceed with the rest of the cleanup instead of bailing out and leaving
-the va_node inserted in the drm_mm, which leads to UAF when other
-adjacent nodes are removed from the drm_mm tree.
+  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
+  Call Trace:
+    dump_stack_lvl
+    print_address_description.constprop.0
+    print_report
+    __show_regs
+    show_trace_log_lvl
+    sched_show_task
+    show_state_filter
+    sysrq_handle_showstate
+    __handle_sysrq
+    write_sysrq_trigger
+    proc_reg_write
+    vfs_write
+    ksys_write
+    do_syscall_64
+    entry_SYSCALL_64_after_hwframe
 
-Reported-by: Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>
-Closes: https://gitlab.freedesktop.org/panfrost/linux/-/issues/57
-Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patch.msgid.link/20251031154818.821054-2-boris.brezillon@collabora.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+The issue occurs as follows:
+
+  Task A (walk other tasks' stacks)           Task B (running)
+  1. echo t > /proc/sysrq-trigger
+  show_trace_log_lvl
+    regs = unwind_get_entry_regs()
+    show_regs_if_on_stack(regs)
+                                              2. The stack value pointed by
+                                                 `regs` keeps changing, and
+                                                 so are the tags in its
+                                                 KASAN shadow region.
+      __show_regs(regs)
+        regs->ax, regs->bx, ...
+          3. hit KASAN redzones, OOB
+
+When task A walks task B's stack without suspending it, the continuous changes
+in task B's stack (and corresponding KASAN shadow tags) may cause task A to
+hit KASAN redzones when accessing obsolete values on the stack, resulting in
+false positive reports.
+
+Simply stopping the task before unwinding is not a viable fix, as it would
+alter the state intended to inspect. This is especially true for diagnosing
+misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
+the root cause by changing the call stack.
+
+Therefore, fix this by disabling KASAN checks during asynchronous stack
+unwinding, which is identified when the unwinding task does not match the
+current task (task != current).
+
+  [ bp: Align arguments on function's opening brace. ]
+
+Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_gem.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index 3f43686f01958..14ed09d700f2f 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -86,7 +86,6 @@ static void panthor_gem_free_object(struct drm_gem_object *obj)
- void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 71ee20102a8af..b10684dedc589 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -181,8 +181,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+  * in false positive reports. Disable instrumentation to avoid those.
+  */
+ __no_kmsan_checks
+-static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+-			unsigned long *stack, const char *log_lvl)
++static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++				 unsigned long *stack, const char *log_lvl)
  {
- 	struct panthor_vm *vm;
--	int ret;
- 
- 	if (IS_ERR_OR_NULL(bo))
- 		return;
-@@ -94,18 +93,11 @@ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
- 	vm = bo->vm;
- 	panthor_kernel_bo_vunmap(bo);
- 
--	if (drm_WARN_ON(bo->obj->dev,
--			to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm)))
--		goto out_free_bo;
--
--	ret = panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
--	if (ret)
--		goto out_free_bo;
--
-+	drm_WARN_ON(bo->obj->dev,
-+		    to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm));
-+	panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
- 	panthor_vm_free_va(vm, &bo->va_node);
- 	drm_gem_object_put(bo->obj);
--
--out_free_bo:
- 	panthor_vm_put(vm);
- 	kfree(bo);
+ 	struct unwind_state state;
+ 	struct stack_info stack_info = {0};
+@@ -303,6 +303,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	}
  }
+ 
++static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++			       unsigned long *stack, const char *log_lvl)
++{
++	/*
++	 * Disable KASAN to avoid false positives during walking another
++	 * task's stacks, as values on these stacks may change concurrently
++	 * with task execution.
++	 */
++	bool disable_kasan = task && task != current;
++
++	if (disable_kasan)
++		kasan_disable_current();
++
++	__show_trace_log_lvl(task, regs, stack, log_lvl);
++
++	if (disable_kasan)
++		kasan_enable_current();
++}
++
+ void show_stack(struct task_struct *task, unsigned long *sp,
+ 		       const char *loglvl)
+ {
 -- 
 2.51.0
 
