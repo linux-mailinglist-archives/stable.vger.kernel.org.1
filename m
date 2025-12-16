@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58297CC359D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:52:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B20CC4684
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 362E7309B37C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94E0630CAD0A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DB72F0689;
-	Tue, 16 Dec 2025 12:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360063563E4;
+	Tue, 16 Dec 2025 12:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKZpF9NU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwL6vmHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A0532C936;
-	Tue, 16 Dec 2025 12:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FD43563C8;
+	Tue, 16 Dec 2025 12:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888539; cv=none; b=uNyjwPGBybvizv+3dScwrWBzoOslLJYA2P4NBQyD+OOV3Nov2bKrXoAIVkNUnxBqUpAnDRkRIAd/WZTeEVMtjoyPC+Q34i2d5W3+IaEkPf/7h5OpptNWltnjTX1LJzjgiplRmUD9Kb9K2oQtoxy3kZxoaREUFrHdFke8E3Thhow=
+	t=1765886532; cv=none; b=UfdxSAbMyDRjFKiMD3c2Yy4O35KmT9uk+h60rGeygIQ1f0e8o60V6/Ex08dCOWB4RcaLafUMxIy8TxNxcKR+Li21mHLOiUWi22xVuJz4nb7pjrFqXBJ/qFvTJyEJJChi/ocVvpJBYLq84cDAt8+VusWqOB+l4uZtZTrQezivNTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888539; c=relaxed/simple;
-	bh=ObKOp+VHz4kCn83+3E73rqlQB0eQgiqE84jGh9ximIU=;
+	s=arc-20240116; t=1765886532; c=relaxed/simple;
+	bh=Xzwx1xRbielLx4xU/2EbU9G+0Jw6z0rOp27b+VxeaAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyq9IiY/D0pwVncyaXGT7btbQvwd5CKo6/0xBgaP/qxRTUd8l37cyFKfQLcVyD/SP2x8f64EYmGzPPHk1fS8m3GTfVumAJDal9aDw/Hnc2f8e7eynrnEc8YqZvlGbeXzslmoVUx06uJ1sNrKZ0pQESCoOlyTdUjiF4kxAeSzmto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKZpF9NU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0E2C4CEF1;
-	Tue, 16 Dec 2025 12:35:38 +0000 (UTC)
+	 MIME-Version; b=kD90IWvH1ZaIEymLXhPeEuQKeumofVf1af+j+4F88wUd34d0Q8icEHtVw2m4706OJkhRsUw4G6xGGpSoXgwDVJbylywIYWsTJvO3N3JBI6PUh0YWpMBKClaLwNYqjZJqP7P2pI2liPwFtvGxOstGuopioWkn43UpgU+0CowHw3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwL6vmHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D529C4CEF1;
+	Tue, 16 Dec 2025 12:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888539;
-	bh=ObKOp+VHz4kCn83+3E73rqlQB0eQgiqE84jGh9ximIU=;
+	s=korg; t=1765886531;
+	bh=Xzwx1xRbielLx4xU/2EbU9G+0Jw6z0rOp27b+VxeaAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JKZpF9NURKOaxxQPacceb3clSctNbQLzuVToKn0xJcMkFQghtfalxn5e5+UdYDLvK
-	 bpM4lpda6TBiJ3FUPx06R+pl/mrlt21URzGgS8bkIWQFdxySConOVeUhXVQq6QFtRq
-	 xgIYxOIS3NtfAl/hKC8YyAtW+9idTCTnmcWvEHfw=
+	b=BwL6vmHXUVul/8msLrQxZS7yPTiJxQPnsY7XqdkK1zqRmjIVYMK2Tsc1C+jCvng4F
+	 gaarHdp90bBORP9ZWaCAnWu/FMIl5TyYy+WvB5cvT9sPbUMU1EY/Vcu0Qgji7si6fd
+	 NQ36J5ZR6OR/Wu/LNA3uyjCSmYKM98HHeCZpnyAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 531/614] perf stat: Allow no events to open if this is a "--null" run
+Subject: [PATCH 6.17 457/507] ASoC: ak4458: Disable regulator when error happens
 Date: Tue, 16 Dec 2025 12:14:58 +0100
-Message-ID: <20251216111420.617019945@linuxfoundation.org>
+Message-ID: <20251216111402.005467493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 6744c0b182c1f371135bc3f4e62b96ad884c9f89 ]
+[ Upstream commit ae585fabb9713a43e358cf606451386757225c95 ]
 
-It is intended that a "--null" run doesn't open any events.
+Disable regulator in runtime resume when error happens to balance
+the reference count of regulator.
 
-Fixes: 2cc7aa995ce9 ("perf stat: Refactor retry/skip/fatal error handling")
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7e3096e8f823 ("ASoC: ak4458: Add regulator support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251203100529.3841203-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/ak4458.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index f1c9d6c94fc50..b6533dcf5465b 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -856,7 +856,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
- 			goto err_out;
- 		}
- 	}
--	if (!has_supported_counters) {
-+	if (!has_supported_counters && !stat_config.null_run) {
- 		evsel__open_strerror(evlist__first(evsel_list), &target, open_err,
- 				     msg, sizeof(msg));
- 		ui__error("No supported events found.\n%s\n", msg);
+diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
+index 57cf601d3df35..a6c04dd3de3ed 100644
+--- a/sound/soc/codecs/ak4458.c
++++ b/sound/soc/codecs/ak4458.c
+@@ -671,7 +671,15 @@ static int ak4458_runtime_resume(struct device *dev)
+ 	regcache_cache_only(ak4458->regmap, false);
+ 	regcache_mark_dirty(ak4458->regmap);
+ 
+-	return regcache_sync(ak4458->regmap);
++	ret = regcache_sync(ak4458->regmap);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	regcache_cache_only(ak4458->regmap, true);
++	regulator_bulk_disable(ARRAY_SIZE(ak4458->supplies), ak4458->supplies);
++	return ret;
+ }
+ 
+ static const struct snd_soc_component_driver soc_codec_dev_ak4458 = {
 -- 
 2.51.0
 
