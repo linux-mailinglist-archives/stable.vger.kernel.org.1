@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61BDCC21AB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F29BCC2D61
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EEBF30145A5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44FD531D8761
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834B325FA10;
-	Tue, 16 Dec 2025 11:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D9C35FF55;
+	Tue, 16 Dec 2025 12:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdzDaRuB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNPzIq5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B82D207A38;
-	Tue, 16 Dec 2025 11:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C2F35FF4D;
+	Tue, 16 Dec 2025 12:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883819; cv=none; b=Iggn/eAQ/CTZZ41FxkOTd5RfN1pkJBp7ci+ZhUb4yLycDKKFpYQRcW0TPuK+Gb0P+uIt4XFOdFWvizCrE0PP0SKgNtALCGzfiHyprgL95fZypI+hAuEvhYVZ++vRRLfMwut0gTcUkV5GjMUnn/JbJXaCXT42mtCpmusteyEphD4=
+	t=1765887347; cv=none; b=KhnDU54sokCXX2xGhLMVMA0KwLD+3u7SpAjomMhOyYx4pH5IH1MSDVWCuXNW76RENe6CF+wBfqjKt4rLODL8d9kaM3VSxOQ9JHRhtNBbo5a8zIqZoxHJAKuQe/DZih6QrYtBI0+pzvWYtvfsNE+x8doUGcdoNHbDUm0M9IVg2RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883819; c=relaxed/simple;
-	bh=n4wEs1gRlM0L0bUOPU5EZ2mgYPWtQfPfD4YRVulAqdk=;
+	s=arc-20240116; t=1765887347; c=relaxed/simple;
+	bh=XE179lnjuQRl7oeXJw0VraoCH473v2owFc9WfaG6uRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPvtYjueTgNKaEY+/yOpUzh3gMTXajvuu6mkzi61WEcmF7XGlsQkunCmvLm4lpsT7wLpEfruo7IZxI1s4jLRVJ7guTiNFoZeq7FxC3H+dr3URCaSb39N5qQxVRFCfvDI/1yewVQbPBQ+Z0K71bU9JmqFC1FyvvaTql7vFSxBjzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdzDaRuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DDC4CEF1;
-	Tue, 16 Dec 2025 11:16:57 +0000 (UTC)
+	 MIME-Version; b=h0uKBapwYGaQMfQ/vorDaKijL6ulAwMfGf1q9MMUejnWxDexGWfD2AyeNAk29bf0vCEfr8rjBgWNvVjWF9Obu1wgedn+19E3PPev1lMuQETKn63lmJnGURZtDTWiOLM/E8HAFw5ztdi/SDig1xlfrmRsZjmnfC4FPGhRYvfHt/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNPzIq5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719B4C4CEF1;
+	Tue, 16 Dec 2025 12:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883818;
-	bh=n4wEs1gRlM0L0bUOPU5EZ2mgYPWtQfPfD4YRVulAqdk=;
+	s=korg; t=1765887346;
+	bh=XE179lnjuQRl7oeXJw0VraoCH473v2owFc9WfaG6uRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdzDaRuBDWxPGJlgaTjPTqSBboRoKM3FHZ9qqW/ZgUtW76r0qCIWKk5494aRu9EZw
-	 d/RcC7RmVoIPbPpsipVv2ae9GK+Djv77tvCMLxMe7emzxeZiLAarjaSsfUGM1IjL6W
-	 Xeit4KuLj4o+Y5ZdPAf7s2XZyhlbQUhZcTOwDiLQ=
+	b=VNPzIq5bOYpNFaKUQx9SwTX6osP265HM4qDXB0wqD0KurYFDPpfbZ0rIn6QHYuZIC
+	 0h2+LjHKxql+d8n5BHSu5OttG8DmY7EpW2M0OJIbGi0DYOIScYLsC7RiuqbQKOdgDL
+	 7wdFgk3r/VuVLnOmIMN6Iv1BXaWMCjtRNczq9a+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/354] smack: deduplicate "does access rule request transmutation"
+Subject: [PATCH 6.18 201/614] spi: tegra210-quad: Fix timeout handling
 Date: Tue, 16 Dec 2025 12:09:28 +0100
-Message-ID: <20251216111320.955809796@linuxfoundation.org>
+Message-ID: <20251216111408.661364329@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,147 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit 635a01da8385fc00a144ec24684100bd1aa9db11 ]
+[ Upstream commit b4e002d8a7cee3b1d70efad0e222567f92a73000 ]
 
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Stable-dep-of: 78fc6a94be25 ("smack: fix bug: invalid label of unix socket file")
+When the CPU that the QSPI interrupt handler runs on (typically CPU 0)
+is excessively busy, it can lead to rare cases of the IRQ thread not
+running before the transfer timeout is reached.
+
+While handling the timeouts, any pending transfers are cleaned up and
+the message that they correspond to is marked as failed, which leaves
+the curr_xfer field pointing at stale memory.
+
+To avoid this, clear curr_xfer to NULL upon timeout and check for this
+condition when the IRQ thread is finally run.
+
+While at it, also make sure to clear interrupts on failure so that new
+interrupts can be run.
+
+A better, more involved, fix would move the interrupt clearing into a
+hard IRQ handler. Ideally we would also want to signal that the IRQ
+thread no longer needs to be run after the timeout is hit to avoid the
+extra check for a valid transfer.
+
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20251028155703.4151791-2-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 57 +++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 9e13fd3920630..18e15585dce41 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -979,6 +979,24 @@ static int smack_inode_alloc_security(struct inode *inode)
- 	return 0;
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 3be7499db21ec..d9ca3d7b082f2 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1024,8 +1024,10 @@ static void tegra_qspi_handle_error(struct tegra_qspi *tqspi)
+ 	dev_err(tqspi->dev, "error in transfer, fifo status 0x%08x\n", tqspi->status_reg);
+ 	tegra_qspi_dump_regs(tqspi);
+ 	tegra_qspi_flush_fifos(tqspi, true);
+-	if (device_reset(tqspi->dev) < 0)
++	if (device_reset(tqspi->dev) < 0) {
+ 		dev_warn_once(tqspi->dev, "device reset failed\n");
++		tegra_qspi_mask_clear_irq(tqspi);
++	}
  }
  
-+/**
-+ * smk_rule_transmutes - does access rule for (subject,object) contain 't'?
-+ * @subject: a pointer to the subject's Smack label entry
-+ * @object: a pointer to the object's Smack label entry
-+ */
-+static bool
-+smk_rule_transmutes(struct smack_known *subject,
-+	      const struct smack_known *object)
-+{
-+	int may;
-+
-+	rcu_read_lock();
-+	may = smk_access_entry(subject->smk_known, object->smk_known,
-+			       &subject->smk_rules);
-+	rcu_read_unlock();
-+	return (may > 0) && (may & MAY_TRANSMUTE);
-+}
-+
- /**
-  * smack_inode_init_security - copy out the smack from an inode
-  * @inode: the newly created inode
-@@ -994,23 +1012,19 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 				     struct xattr *xattrs, int *xattr_count)
- {
- 	struct task_smack *tsp = smack_cred(current_cred());
--	struct inode_smack *issp = smack_inode(inode);
--	struct smack_known *skp = smk_of_task(tsp);
--	struct smack_known *isp = smk_of_inode(inode);
-+	struct inode_smack * const issp = smack_inode(inode);
- 	struct smack_known *dsp = smk_of_inode(dir);
- 	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
--	int may;
-+	bool trans_cred;
-+	bool trans_rule;
+ static void tegra_qspi_transfer_end(struct spi_device *spi)
+@@ -1176,9 +1178,11 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 				}
  
- 	/*
- 	 * If equal, transmuting already occurred in
- 	 * smack_dentry_create_files_as(). No need to check again.
- 	 */
--	if (tsp->smk_task != tsp->smk_transmuted) {
--		rcu_read_lock();
--		may = smk_access_entry(skp->smk_known, dsp->smk_known,
--				       &skp->smk_rules);
--		rcu_read_unlock();
--	}
-+	trans_cred = (tsp->smk_task == tsp->smk_transmuted);
-+	if (!trans_cred)
-+		trans_rule = smk_rule_transmutes(smk_of_task(tsp), dsp);
- 
- 	/*
- 	 * In addition to having smk_task equal to smk_transmuted,
-@@ -1018,9 +1032,7 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 	 * requests transmutation then by all means transmute.
- 	 * Mark the inode as changed.
- 	 */
--	if ((tsp->smk_task == tsp->smk_transmuted) ||
--	    (may > 0 && ((may & MAY_TRANSMUTE) != 0) &&
--	     smk_inode_transmutable(dir))) {
-+	if (trans_cred || (trans_rule && smk_inode_transmutable(dir))) {
- 		struct xattr *xattr_transmute;
- 
- 		/*
-@@ -1029,8 +1041,8 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 		 * inode label was already set correctly in
- 		 * smack_inode_alloc_security().
- 		 */
--		if (tsp->smk_task != tsp->smk_transmuted)
--			isp = issp->smk_inode = dsp;
-+		if (!trans_cred)
-+			issp->smk_inode = dsp;
- 
- 		issp->smk_flags |= SMK_INODE_TRANSMUTE;
- 		xattr_transmute = lsm_get_xattr_slot(xattrs,
-@@ -1050,11 +1062,13 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 	issp->smk_flags |= SMK_INODE_INSTANT;
- 
- 	if (xattr) {
--		xattr->value = kstrdup(isp->smk_known, GFP_NOFS);
-+		const char *inode_label = issp->smk_inode->smk_known;
-+
-+		xattr->value = kstrdup(inode_label, GFP_NOFS);
- 		if (!xattr->value)
- 			return -ENOMEM;
- 
--		xattr->value_len = strlen(isp->smk_known);
-+		xattr->value_len = strlen(inode_label);
- 		xattr->name = XATTR_SMACK_SUFFIX;
- 	}
- 
-@@ -4904,7 +4918,6 @@ static int smack_dentry_create_files_as(struct dentry *dentry, int mode,
- 	struct task_smack *otsp = smack_cred(old);
- 	struct task_smack *ntsp = smack_cred(new);
- 	struct inode_smack *isp;
--	int may;
- 
- 	/*
- 	 * Use the process credential unless all of
-@@ -4918,18 +4931,12 @@ static int smack_dentry_create_files_as(struct dentry *dentry, int mode,
- 	isp = smack_inode(d_inode(dentry->d_parent));
- 
- 	if (isp->smk_flags & SMK_INODE_TRANSMUTE) {
--		rcu_read_lock();
--		may = smk_access_entry(otsp->smk_task->smk_known,
--				       isp->smk_inode->smk_known,
--				       &otsp->smk_task->smk_rules);
--		rcu_read_unlock();
--
- 		/*
- 		 * If the directory is transmuting and the rule
- 		 * providing access is transmuting use the containing
- 		 * directory label instead of the process label.
- 		 */
--		if (may > 0 && (may & MAY_TRANSMUTE)) {
-+		if (smk_rule_transmutes(otsp->smk_task, isp->smk_inode)) {
- 			ntsp->smk_task = isp->smk_inode;
- 			ntsp->smk_transmuted = ntsp->smk_task;
+ 				/* Reset controller if timeout happens */
+-				if (device_reset(tqspi->dev) < 0)
++				if (device_reset(tqspi->dev) < 0) {
+ 					dev_warn_once(tqspi->dev,
+ 						      "device reset failed\n");
++					tegra_qspi_mask_clear_irq(tqspi);
++				}
+ 				ret = -EIO;
+ 				goto exit;
+ 			}
+@@ -1200,11 +1204,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
  		}
++		tqspi->curr_xfer = NULL;
+ 		transfer_phase++;
+ 	}
+ 	ret = 0;
+ 
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	msg->status = ret;
+ 
+ 	return ret;
+@@ -1290,6 +1296,8 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		msg->actual_length += xfer->len + dummy_bytes;
+ 
+ complete_xfer:
++		tqspi->curr_xfer = NULL;
++
+ 		if (ret < 0) {
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+@@ -1395,6 +1403,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ 	tegra_qspi_calculate_curr_xfer_param(tqspi, t);
+ 	tegra_qspi_start_cpu_based_transfer(tqspi, t);
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 	return IRQ_HANDLED;
+ }
+@@ -1480,6 +1489,15 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ {
+ 	struct tegra_qspi *tqspi = context_data;
+ 
++	/*
++	 * Occasionally the IRQ thread takes a long time to wake up (usually
++	 * when the CPU that it's running on is excessively busy) and we have
++	 * already reached the timeout before and cleaned up the timed out
++	 * transfer. Avoid any processing in that case and bail out early.
++	 */
++	if (!tqspi->curr_xfer)
++		return IRQ_NONE;
++
+ 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
+ 
+ 	if (tqspi->cur_direction & DATA_DIR_TX)
 -- 
 2.51.0
 
