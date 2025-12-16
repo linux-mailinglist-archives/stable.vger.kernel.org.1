@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8E4CC27A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246B5CC22D1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ED643028FE1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0A9A730327F1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ECD35502B;
-	Tue, 16 Dec 2025 11:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CA5341AD6;
+	Tue, 16 Dec 2025 11:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdIVui9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTtPYJ8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C875355027;
-	Tue, 16 Dec 2025 11:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2B4341069;
+	Tue, 16 Dec 2025 11:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885841; cv=none; b=VFxzL2MkT3kALupk4Pml0iGHY+iG+qGwhZW7DVmHaZYEeBYLlw335XtRzgWWPJ7/0u9XvScMwBi2o/YwgVhQvboQ0Yj0iA1+LcqmMxpOdyYM28ClPGByzkUeMXqfGHhlCgKekeHUkUe4lGaXwBB7U/Oj481H9gNd5Xe0u/VPoNY=
+	t=1765884182; cv=none; b=KUhKgrmaoJbo8FNQj7OOsZpfcwJvMyVVXu1n5433ZXfvov0bMyUjK/t6z9VwaGnsuhJLFPrAUopn5QZe5i1jgg4jLgt/5LBLiwd46R0sz6T2sAVAQpRWaP10dudDkUdOIqkbUBlMD5qRpqOojry7aANiFKJ7Cue3Pbetb4Q/IH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885841; c=relaxed/simple;
-	bh=xLS/X9pZ2E7XsezUXH1ora0aQiX/XAIGxpOJvIYeKAs=;
+	s=arc-20240116; t=1765884182; c=relaxed/simple;
+	bh=EwdsrJni4v4NPguOj283Yc+V85kDUYk1fNqV+TfWGzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgbPqcQpxtSakiU4KZ12r3joW+d8YUH5CBS+Aku6vEvtPJdDrvImmhDk5rcp4TrcIQ0Cx5yQU+DUzlymrlvnXF1fdvB4NTKf//wqt2IkNo9JeTqpjMTgO4wyjC+MolI+hc6nYt4r8QcgJcqIkWLW6bjlZyMToTAcadOcBDr/9dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdIVui9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40915C4CEF1;
-	Tue, 16 Dec 2025 11:50:39 +0000 (UTC)
+	 MIME-Version; b=nm8i57n//KNc+7z7XaPiW13UTtImLuTjphqfMu1qEb/h+9ZQQsqUomD1OiLdJptj0tddsWQpRXFbXTU1g4O22qvd7TBMXQygRVWz7M7HvsPIOLT2X+7FV2+5MsIR8A0HlOlMQUa+Dcnuqd/wvVB/3L23jFEGGdPDSyomi5j2pwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTtPYJ8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D002AC4CEF1;
+	Tue, 16 Dec 2025 11:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885840;
-	bh=xLS/X9pZ2E7XsezUXH1ora0aQiX/XAIGxpOJvIYeKAs=;
+	s=korg; t=1765884182;
+	bh=EwdsrJni4v4NPguOj283Yc+V85kDUYk1fNqV+TfWGzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdIVui9hShCaYCUDX7o0Av1foXrUd2eYG5EeRdBR8OlGZ1PXwK7rkFUAe5bnlMNKJ
-	 g9GoLMN8zTdj++nyqST70Vse0TL6vqOmiwhDHyjkFmNIl+7k1H/7pNEsTLiy61X2nE
-	 stQotSbPjw0IVL9TOZkWhHpqBZo1FSCzIxMCpZz4=
+	b=UTtPYJ8HLgLgjNfMHqTgz7ltdClwQ3Ewa+i85uDE4VauT2FBsexPoIlffBXaXk/WH
+	 lZQAg1gzd0qJpV8WvWBlWJwW2KzoDkucTwmCM5VcnGaXzBVjeeww92RqUXjcAo6tuh
+	 pdOm3zK5DEeRch/t/9zcsAgi9IG9u3oBX52Rz/ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 243/507] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
+Subject: [PATCH 6.12 117/354] spi: tegra210-quad: Fix timeout handling
 Date: Tue, 16 Dec 2025 12:11:24 +0100
-Message-ID: <20251216111354.301447838@linuxfoundation.org>
+Message-ID: <20251216111325.163037592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
+[ Upstream commit b4e002d8a7cee3b1d70efad0e222567f92a73000 ]
 
-The error that returned by ftrace_set_filter_ip() in register_fentry() is
-not handled properly. Just fix it.
+When the CPU that the QSPI interrupt handler runs on (typically CPU 0)
+is excessively busy, it can lead to rare cases of the IRQ thread not
+running before the transfer timeout is reached.
 
-Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+While handling the timeouts, any pending transfers are cleaned up and
+the message that they correspond to is marked as failed, which leaves
+the curr_xfer field pointing at stale memory.
+
+To avoid this, clear curr_xfer to NULL upon timeout and check for this
+condition when the IRQ thread is finally run.
+
+While at it, also make sure to clear interrupts on failure so that new
+interrupts can be run.
+
+A better, more involved, fix would move the interrupt clearing into a
+hard IRQ handler. Ideally we would also want to signal that the IRQ
+thread no longer needs to be run after the timeout is hit to avoid the
+extra check for a valid transfer.
+
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20251028155703.4151791-2-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/trampoline.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-tegra210-quad.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 0db5673812108..1ce8696f6f6d9 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -220,7 +220,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
- 	}
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 92348ebc60c78..39aa0f1485686 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -999,8 +999,10 @@ static void tegra_qspi_handle_error(struct tegra_qspi *tqspi)
+ 	dev_err(tqspi->dev, "error in transfer, fifo status 0x%08x\n", tqspi->status_reg);
+ 	tegra_qspi_dump_regs(tqspi);
+ 	tegra_qspi_flush_fifos(tqspi, true);
+-	if (device_reset(tqspi->dev) < 0)
++	if (device_reset(tqspi->dev) < 0) {
+ 		dev_warn_once(tqspi->dev, "device reset failed\n");
++		tegra_qspi_mask_clear_irq(tqspi);
++	}
+ }
  
- 	if (tr->func.ftrace_managed) {
--		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		if (ret)
-+			return ret;
- 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
- 	} else {
- 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
+ static void tegra_qspi_transfer_end(struct spi_device *spi)
+@@ -1145,9 +1147,11 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 				}
+ 
+ 				/* Reset controller if timeout happens */
+-				if (device_reset(tqspi->dev) < 0)
++				if (device_reset(tqspi->dev) < 0) {
+ 					dev_warn_once(tqspi->dev,
+ 						      "device reset failed\n");
++					tegra_qspi_mask_clear_irq(tqspi);
++				}
+ 				ret = -EIO;
+ 				goto exit;
+ 			}
+@@ -1169,11 +1173,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+ 		}
++		tqspi->curr_xfer = NULL;
+ 		transfer_phase++;
+ 	}
+ 	ret = 0;
+ 
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	msg->status = ret;
+ 
+ 	return ret;
+@@ -1257,6 +1263,8 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		msg->actual_length += xfer->len + dummy_bytes;
+ 
+ complete_xfer:
++		tqspi->curr_xfer = NULL;
++
+ 		if (ret < 0) {
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+@@ -1353,6 +1361,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ 	tegra_qspi_calculate_curr_xfer_param(tqspi, t);
+ 	tegra_qspi_start_cpu_based_transfer(tqspi, t);
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 	return IRQ_HANDLED;
+ }
+@@ -1436,6 +1445,15 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ {
+ 	struct tegra_qspi *tqspi = context_data;
+ 
++	/*
++	 * Occasionally the IRQ thread takes a long time to wake up (usually
++	 * when the CPU that it's running on is excessively busy) and we have
++	 * already reached the timeout before and cleaned up the timed out
++	 * transfer. Avoid any processing in that case and bail out early.
++	 */
++	if (!tqspi->curr_xfer)
++		return IRQ_NONE;
++
+ 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
+ 
+ 	if (tqspi->cur_direction & DATA_DIR_TX)
 -- 
 2.51.0
 
