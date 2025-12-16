@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E38DCC29ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E26ACC23D0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0900A300501E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED8130671D1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D0934404E;
-	Tue, 16 Dec 2025 11:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23510342505;
+	Tue, 16 Dec 2025 11:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhdY0P44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/pCYt2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E394A3128AC;
-	Tue, 16 Dec 2025 11:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50EC313E13;
+	Tue, 16 Dec 2025 11:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886023; cv=none; b=DWBBHwDt8wFbsF8q8yUqIuO5E3eLbQQ6Xbybeo/+7VceTxQiqDoIzZEkU5WMQMp04H3WCOO7OmTvHo/enaCKWN1lghwMtj4zjfRyZzMo1TOxkyAV9fbbIdTpMozE/umR4ei7VHd0j2iPwfLfy3r2JQqLAu7bh0iIGDfHpbQNeyE=
+	t=1765884312; cv=none; b=KBUxoDzLGZ/Sz7PxFNo6QFayiPm4GCddMB1pWiqGeIWsP6JmvigfZFjqSP4KwCAlq4CF06ooUQz+fYNOBntGIn5LfhQ3iWImkH4pUVOhUbbNsJdciTDZQkvIDNsvCOYvRDPPzR5/ybpYuqMK0AAVVUdjSiuPxV6KXo/wGqAqTMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886023; c=relaxed/simple;
-	bh=0x4BTTbYSqtQ4Ip6OfXlFWQBZ8m1J2MQVR1ns1Gmt2c=;
+	s=arc-20240116; t=1765884312; c=relaxed/simple;
+	bh=F5qI3hBsAH1fsmTg9isPD+Y9U+Ku46gSuSJ49oxeUHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVJ0u75lK0oa3JKNaDIZYwRGOLeZOUZsPhQWCxEqCtyKJdjzvh3AChRe3Xs7CC9Rxx+7qxs1/keAM8ibBATqlX3AfOQ/BNq3b/IVPbNoF9JqLd9SjLM7TPa1KCXGL9W5lRkwFEkdZ2s1a9wQFpakWWqGle6lJtTv9mO340FsxN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhdY0P44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC4CEF1;
-	Tue, 16 Dec 2025 11:53:42 +0000 (UTC)
+	 MIME-Version; b=DPP22akwhgPau3bM6+PKcjnmsLukqIoFvo35uyb53Gh51nTtgYxxQYMPT+pvk3lVQ4BoVuG1gYAJTK23gK4luh2vm7VsxOeXWiPqmLpcUx6MLHVm8lRem6olyygp7+i2i5MVBPMPRoTj3Q4J/szg1pzvAtlJSbKu5IAgG6CELuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/pCYt2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E85C4CEF1;
+	Tue, 16 Dec 2025 11:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886022;
-	bh=0x4BTTbYSqtQ4Ip6OfXlFWQBZ8m1J2MQVR1ns1Gmt2c=;
+	s=korg; t=1765884312;
+	bh=F5qI3hBsAH1fsmTg9isPD+Y9U+Ku46gSuSJ49oxeUHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhdY0P442q83ZCRVR1pOiAcK8Xrt3VfkioLmLoGNdJRS4OYaM6tlT4D4NCTotJB77
-	 nuQlHdUMt3exS2ytWfyBgrJTsI1w/ON9s/PULBWGnAM3mcW39ufy9zscBzcIacQpt0
-	 QSGhdmuZoH9U5VoVyl5pm/0tBavqH0EatzngKY1c=
+	b=P/pCYt2oXn92Nzbfxf0hrZdx2z3zvZuu1KoLG8YIfH+y5to01VA12t3rIg3olA6CG
+	 v2dyCmve9qiblm1P/hv7Kl7eTMigasq1hxxY7SaEctSKvQ2zyDjwGUMrzZGHfJ5Bj3
+	 YQDsOzuuQfSXhJDATMW5mJRbagF4vMoSjYYxjdM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 281/507] net: phy: realtek: create rtl8211f_config_rgmii_delay()
+Subject: [PATCH 6.12 155/354] bpf: Free special fields when update [lru_,]percpu_hash maps
 Date: Tue, 16 Dec 2025 12:12:02 +0100
-Message-ID: <20251216111355.660711211@linuxfoundation.org>
+Message-ID: <20251216111326.531120025@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 8e982441ba601d982dd0739972115d85ae01d99b ]
+[ Upstream commit 6af6e49a76c9af7d42eb923703e7648cb2bf401a ]
 
-The control flow in rtl8211f_config_init() has some pitfalls which were
-probably unintended. Specifically it has an early return:
+As [lru_,]percpu_hash maps support BPF_KPTR_{REF,PERCPU}, missing
+calls to 'bpf_obj_free_fields()' in 'pcpu_copy_value()' could cause the
+memory referenced by BPF_KPTR_{REF,PERCPU} fields to be held until the
+map gets freed.
 
-	switch (phydev->interface) {
-	...
-	default: /* the rest of the modes imply leaving delay as is. */
-		return 0;
-	}
+Fix this by calling 'bpf_obj_free_fields()' after
+'copy_map_value[,_long]()' in 'pcpu_copy_value()'.
 
-which exits the entire config_init() function. This means it also skips
-doing things such as disabling CLKOUT or disabling PHY-mode EEE.
-
-For the RTL8211FS, which uses PHY_INTERFACE_MODE_SGMII, this might be a
-problem. However, I don't know that it is, so there is no Fixes: tag.
-The issue was observed through code inspection.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251117234033.345679-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 65334e64a493 ("bpf: Support kptrs in percpu hashmap and percpu LRU hashmap")
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251105151407.12723-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek/realtek_main.c | 65 +++++++++++++++-----------
- 1 file changed, 39 insertions(+), 26 deletions(-)
+ kernel/bpf/hashtab.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 62ef87ecc5587..54a3faf5e6f57 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -516,22 +516,11 @@ static int rtl8211c_config_init(struct phy_device *phydev)
- 			    CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER);
- }
- 
--static int rtl8211f_config_init(struct phy_device *phydev)
-+static int rtl8211f_config_rgmii_delay(struct phy_device *phydev)
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 570e2f7231443..26883a997e717 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -961,15 +961,21 @@ static void free_htab_elem(struct bpf_htab *htab, struct htab_elem *l)
+ static void pcpu_copy_value(struct bpf_htab *htab, void __percpu *pptr,
+ 			    void *value, bool onallcpus)
  {
--	struct rtl821x_priv *priv = phydev->priv;
--	struct device *dev = &phydev->mdio.dev;
- 	u16 val_txdly, val_rxdly;
- 	int ret;
- 
--	ret = phy_modify_paged_changed(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
--				       RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF,
--				       priv->phycr1);
--	if (ret < 0) {
--		dev_err(dev, "aldps mode  configuration failed: %pe\n",
--			ERR_PTR(ret));
--		return ret;
--	}
--
- 	switch (phydev->interface) {
- 	case PHY_INTERFACE_MODE_RGMII:
- 		val_txdly = 0;
-@@ -561,34 +550,58 @@ static int rtl8211f_config_init(struct phy_device *phydev)
- 				       RTL8211F_TXCR, RTL8211F_TX_DELAY,
- 				       val_txdly);
- 	if (ret < 0) {
--		dev_err(dev, "Failed to update the TX delay register\n");
-+		phydev_err(phydev, "Failed to update the TX delay register: %pe\n",
-+			   ERR_PTR(ret));
- 		return ret;
- 	} else if (ret) {
--		dev_dbg(dev,
--			"%s 2ns TX delay (and changing the value from pin-strapping RXD1 or the bootloader)\n",
--			str_enable_disable(val_txdly));
-+		phydev_dbg(phydev,
-+			   "%s 2ns TX delay (and changing the value from pin-strapping RXD1 or the bootloader)\n",
-+			   str_enable_disable(val_txdly));
++	void *ptr;
++
+ 	if (!onallcpus) {
+ 		/* copy true value_size bytes */
+-		copy_map_value(&htab->map, this_cpu_ptr(pptr), value);
++		ptr = this_cpu_ptr(pptr);
++		copy_map_value(&htab->map, ptr, value);
++		bpf_obj_free_fields(htab->map.record, ptr);
  	} else {
--		dev_dbg(dev,
--			"2ns TX delay was already %s (by pin-strapping RXD1 or bootloader configuration)\n",
--			str_enabled_disabled(val_txdly));
-+		phydev_dbg(phydev,
-+			   "2ns TX delay was already %s (by pin-strapping RXD1 or bootloader configuration)\n",
-+			   str_enabled_disabled(val_txdly));
+ 		u32 size = round_up(htab->map.value_size, 8);
+ 		int off = 0, cpu;
+ 
+ 		for_each_possible_cpu(cpu) {
+-			copy_map_value_long(&htab->map, per_cpu_ptr(pptr, cpu), value + off);
++			ptr = per_cpu_ptr(pptr, cpu);
++			copy_map_value_long(&htab->map, ptr, value + off);
++			bpf_obj_free_fields(htab->map.record, ptr);
+ 			off += size;
+ 		}
  	}
- 
- 	ret = phy_modify_paged_changed(phydev, RTL8211F_RGMII_PAGE,
- 				       RTL8211F_RXCR, RTL8211F_RX_DELAY,
- 				       val_rxdly);
- 	if (ret < 0) {
--		dev_err(dev, "Failed to update the RX delay register\n");
-+		phydev_err(phydev, "Failed to update the RX delay register: %pe\n",
-+			   ERR_PTR(ret));
- 		return ret;
- 	} else if (ret) {
--		dev_dbg(dev,
--			"%s 2ns RX delay (and changing the value from pin-strapping RXD0 or the bootloader)\n",
--			str_enable_disable(val_rxdly));
-+		phydev_dbg(phydev,
-+			   "%s 2ns RX delay (and changing the value from pin-strapping RXD0 or the bootloader)\n",
-+			   str_enable_disable(val_rxdly));
- 	} else {
--		dev_dbg(dev,
--			"2ns RX delay was already %s (by pin-strapping RXD0 or bootloader configuration)\n",
--			str_enabled_disabled(val_rxdly));
-+		phydev_dbg(phydev,
-+			   "2ns RX delay was already %s (by pin-strapping RXD0 or bootloader configuration)\n",
-+			   str_enabled_disabled(val_rxdly));
- 	}
- 
-+	return 0;
-+}
-+
-+static int rtl8211f_config_init(struct phy_device *phydev)
-+{
-+	struct rtl821x_priv *priv = phydev->priv;
-+	struct device *dev = &phydev->mdio.dev;
-+	int ret;
-+
-+	ret = phy_modify_paged_changed(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
-+				       RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF,
-+				       priv->phycr1);
-+	if (ret < 0) {
-+		dev_err(dev, "aldps mode  configuration failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	ret = rtl8211f_config_rgmii_delay(phydev);
-+	if (ret)
-+		return ret;
-+
- 	if (!priv->has_phycr2)
- 		return 0;
- 
 -- 
 2.51.0
 
