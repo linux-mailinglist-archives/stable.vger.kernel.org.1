@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-201133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8320CC0B79
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:27:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E975CC0B85
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87609301B488
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:27:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5174C30194FC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B12F1FC9;
-	Tue, 16 Dec 2025 03:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132643FFD;
+	Tue, 16 Dec 2025 03:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IzWgVx1C"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ya/maR3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0A1EEE6;
-	Tue, 16 Dec 2025 03:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03EF1D90DD;
+	Tue, 16 Dec 2025 03:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765855622; cv=none; b=h/6UOLtmZWcX8D1RKqmQsdP/b85G9ngTekTRd5JaCnzHuseROJJTWhan6ZObcIbz9+vX7v/tRIez6daUCNWfWxOv/2kaF3/rPyCCO+jvBl5i9eg88coLPjW1xc1ldnMytKEtVGBQoawDNe2Sr1ehwslqpv+HQDZcOmpLszywego=
+	t=1765855823; cv=none; b=fiMK7jsf8AyaD05iVxG2ltsisIz9dkFaQom71OPXL+q9cWjzAO2p1daxrX6eB5asw4Id7XyW/qgAOnqRTlgv17AC86vwRm3UM5xe9CgJ7FqL1XZ6r+9HuiJMkPLDBXTVpr/qgFX30ZcV6sLN4d+MWbjhYj6EGtI0vV18yowWTYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765855622; c=relaxed/simple;
-	bh=Cry2wmAN4Cz9SSQ/+BLRd2os0ES9qjDa8veSNc/7MLI=;
-	h=Date:To:From:Subject:Message-Id; b=FBefLrJSGvUCmLwiNGO5+Vz78JlN0Ec5TALjX6l0RKDgEm4IULZ4LPVjWEJabpWt3M0CsnyVe6VbUsgUs2ERKJKlQxxs4Ad9MyYpD3Pg8hndAkGiegDlAGjCR8OknTxQYU+5sapKk7WTs8NNUyoFoprxuBtHKz4EuTmHcGPV7hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IzWgVx1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2479EC4CEF5;
-	Tue, 16 Dec 2025 03:27:01 +0000 (UTC)
+	s=arc-20240116; t=1765855823; c=relaxed/simple;
+	bh=ts4UgXQUSRB3DlY0oEK5TQ0Z3lJWVO3ZAGbqjy4/MbE=;
+	h=Date:To:From:Subject:Message-Id; b=LIRxqB/Yted+Y5UUFOGSfecDVwX1lFkjup3kH0DY2gXT10NLmPP8qrPcOJ8cHb6IwevUao11DOi1EZhuLlmPKNWHhbux5XA+ch2F6MbchjUpnIjlh+hWvVOhZhL1RdBV9a/x3yhVMXvmJpCqqM8dZGlIJoXWfMSrYQbSCuTAUnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ya/maR3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBDDC4CEF5;
+	Tue, 16 Dec 2025 03:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765855621;
-	bh=Cry2wmAN4Cz9SSQ/+BLRd2os0ES9qjDa8veSNc/7MLI=;
+	s=korg; t=1765855823;
+	bh=ts4UgXQUSRB3DlY0oEK5TQ0Z3lJWVO3ZAGbqjy4/MbE=;
 	h=Date:To:From:Subject:From;
-	b=IzWgVx1CkyYHAJe3k47wrVecZjwp9yebKYh4aTqzRhvwTiC2Hz7U8cDcZUX+N+QK5
-	 xODKC/3nWn9GpFlfQv3/H+JEs/gr7Zv9+IqD6z9zKNiNvPizpGbk1aEW/hMzg4KBTu
-	 V2N1TdynOaJ4CbMwkp+iOB66VxxhPTdUKiIz8Il0=
-Date: Mon, 15 Dec 2025 19:27:00 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,nathan@kernel.org,morbo@google.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,justinstitt@google.com,wakel@google.com,akpm@linux-foundation.org
+	b=ya/maR3V692N7ExXT9pmPp/qxHajrq+8m3BWfhWvAqmKUz+4EJsD3NG6xxCcnvxQV
+	 wmxlFvK4l4GMi+q1WYhklyDr4DFaZp/OPMKdxk6kRZzsWUvj7Bx/y/zeyxkBP6jMJs
+	 YdEsuFk5MQXl2sc3KfoCWtc3YgMNBIX058115PS4=
+Date: Mon, 15 Dec 2025 19:30:22 -0800
+To: mm-commits@vger.kernel.org,zhaochongxi2019@email.szu.edu.cn,stable@vger.kernel.org,kaushlendra.kumar@intel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251216032701.2479EC4CEF5@smtp.kernel.org>
+Subject: + tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251216033023.3EBDDC4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,12 +48,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: selftests/mm: fix thread state check in uffd-unit-tests
+     Subject: tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
+     tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -71,71 +71,45 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Wake Liu <wakel@google.com>
-Subject: selftests/mm: fix thread state check in uffd-unit-tests
-Date: Wed, 10 Dec 2025 17:14:08 +0800
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
+Date: Tue, 9 Dec 2025 10:15:52 +0530
 
-In the thread_state_get() function, the logic to find the thread's state
-character was using `sizeof(header) - 1` to calculate the offset from the
-"State:\t" string.
+The ternary operator in compare_ts() returns 1 when timestamps are equal,
+causing unstable sorting behavior. Replace with explicit three-way
+comparison that returns 0 for equal timestamps, ensuring stable qsort
+ordering and consistent output.
 
-The `header` variable is a `const char *` pointer.  `sizeof()` on a
-pointer returns the size of the pointer itself, not the length of the
-string literal it points to.  This makes the code's behavior dependent on
-the architecture's pointer size.
-
-This bug was identified on a 32-bit ARM build (`gsi_tv_arm`) for Android,
-running on an ARMv8-based device, compiled with Clang 19.0.1.
-
-On this 32-bit architecture, `sizeof(char *)` is 4.  The expression
-`sizeof(header) - 1` resulted in an incorrect offset of 3, causing the
-test to read the wrong character from `/proc/[tid]/status` and fail.
-
-On 64-bit architectures, `sizeof(char *)` is 8, so the expression
-coincidentally evaluates to 7, which matches the length of "State:\t". 
-This is why the bug likely remained hidden on 64-bit builds.
-
-To fix this and make the code portable and correct across all
-architectures, this patch replaces `sizeof(header) - 1` with
-`strlen(header)`.  The `strlen()` function correctly calculates the
-string's length, ensuring the correct offset is always used.
-
-Link: https://lkml.kernel.org/r/20251210091408.3781445-1-wakel@google.com
-Fixes: f60b6634cd88 ("mm/selftests: add a test to verify mmap_changing race with -EAGAIN")
-Signed-off-by: Wake Liu <wakel@google.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lkml.kernel.org/r/20251209044552.3396468-1-kaushlendra.kumar@intel.com
+Fixes: 8f9c447e2e2b ("tools/vm/page_owner_sort.c: support sorting pid and time")
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/uffd-unit-tests.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/mm/page_owner_sort.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-fix-thread-state-check-in-uffd-unit-tests
-+++ a/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -1317,7 +1317,7 @@ static thread_state thread_state_get(pid
- 		p = strstr(tmp, header);
- 		if (p) {
- 			/* For example, "State:\tD (disk sleep)" */
--			c = *(p + sizeof(header) - 1);
-+			c = *(p + strlen(header));
- 			return c == 'D' ?
- 			    THR_STATE_UNINTERRUPTIBLE : THR_STATE_UNKNOWN;
- 		}
+--- a/tools/mm/page_owner_sort.c~tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting
++++ a/tools/mm/page_owner_sort.c
+@@ -181,7 +181,11 @@ static int compare_ts(const void *p1, co
+ {
+ 	const struct block_list *l1 = p1, *l2 = p2;
+ 
+-	return l1->ts_nsec < l2->ts_nsec ? -1 : 1;
++	if (l1->ts_nsec < l2->ts_nsec)
++		return -1;
++	if (l1->ts_nsec > l2->ts_nsec)
++		return 1;
++	return 0;
+ }
+ 
+ static int compare_cull_condition(const void *p1, const void *p2)
 _
 
-Patches currently in -mm which might be from wakel@google.com are
+Patches currently in -mm which might be from kaushlendra.kumar@intel.com are
 
-selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
+tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
 
 
