@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-201166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FE3CC1FB2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9566ECC1FB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17954305036F
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1813305132D
 	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A13B2C190;
-	Tue, 16 Dec 2025 10:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6DD324B24;
+	Tue, 16 Dec 2025 10:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izl+cWOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHUgB7ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EC33B6C8
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 10:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F296D2BDC00
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 10:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765881146; cv=none; b=UG+PBM0LhjofQ45fEYpPDL3CgaHR4rDew3qLLMnD0ag7DLXKDVtN9as9yUCcPqu8QHMQyv4zCjoXfoRUdKSZO/zWLeVscnpO2CMT8ybYauubuwnGx4KX0R5soRrANkPw0SXGx9RdOTy2q3csU2+VQrqaLKZ2/06twjYJpZr71EQ=
+	t=1765881150; cv=none; b=LH/H7SnLnYZSuMBbgVUzEFYLQSn0+ujnuVie+YYY2CjU4KoHnFqsBr5mTstvgEIyILl3QNveBa5VI0wQhI0ypIhlL+bm741ajm8qe7GAN8nJpvYY8OHdblYi1IBq0/GV29u+kFYU9ymRPiNFabTpMGpTwyAMv+FaRw6uIBwPtg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765881146; c=relaxed/simple;
-	bh=P8HznIcnikjVI3YcZ66uJaQ6NctR0tDMh9FHK8doTzE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ukA41aIWUYUg8F56C+cPL0QJqi0GS/k60BTgwotdEdOHkH0e0B3Dc37ohGkcxjpie96MPGmT5lfrB4vXFRiBlt4I+j58yaZ4e5LdklWz3t2Mh1D9vVF4/iFqqCLGTLfkymv5EqmeiUjjmvzflMpgmptJVLgOalE1jARY8Q7W7HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izl+cWOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD183C4AF09;
-	Tue, 16 Dec 2025 10:32:24 +0000 (UTC)
+	s=arc-20240116; t=1765881150; c=relaxed/simple;
+	bh=F9bQ/UvrsIyuRktgqiX0GIGW+ZipeRxgKTt8GG3VcmU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EC+Q4erHnJQi1xkvR/6k1JtyiHoJ9vrPFJl+6+zXNOtMRHEwI2+9OQpTde9wryAHINSP1h8NQI6VhwsjdCbKIZznE67cyYWkhjN+ccu3EzAdf5jjolZmFy2/SG2BFm9wbWO8fByKh2vo4K0EyGhrwpLGeD9iRvKNV1PGT19zgDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHUgB7ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596FAC4CEF1;
+	Tue, 16 Dec 2025 10:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765881145;
-	bh=P8HznIcnikjVI3YcZ66uJaQ6NctR0tDMh9FHK8doTzE=;
+	s=korg; t=1765881149;
+	bh=F9bQ/UvrsIyuRktgqiX0GIGW+ZipeRxgKTt8GG3VcmU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=izl+cWOIjpE3deOvPltTf2Xlv534gugwGy0YGeRwlGug4ldZaEcWvj11PdJY8Yh6A
-	 uEdGoGpfvfU4Lby2UGvk3Yr7wVYGpVWgX4sXa0hnXWHIJOQ5Qyxw1HMr98pJOquT8n
-	 XQqvuiiCYTs4svOUzUF2krnwsVrLptWA6Us0VnIA=
-Subject: FAILED: patch "[PATCH] ALSA: wavefront: Clear substream pointers on close" failed to apply to 5.15-stable tree
-To: moonafterrain@outlook.com,danisjiang@gmail.com,tiwai@suse.de
+	b=gHUgB7agKWrdyX99emO0nlL9kfd5orghgaTr3q2MtnWirQLiUg2Y+bQMUta8HGANu
+	 +9E8ugsY9QwN+HxZvc0nBY3/5g5XPyU41sEPHo/+320JhvOWcHOc8GFzQmW1exOSay
+	 LWIZn9CgH1vr217ez4ssAvjgDh3H9NsGHejjAYvA=
+Subject: FAILED: patch "[PATCH] ALSA: wavefront: Fix integer overflow in sample size" failed to apply to 6.6-stable tree
+To: moonafterrain@outlook.com,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 16 Dec 2025 11:32:01 +0100
-Message-ID: <2025121601-unpopular-opulently-2ac5@gregkh>
+Date: Tue, 16 Dec 2025 11:32:15 +0100
+Message-ID: <2025121615-subplot-parachute-73bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x e11c5c13ce0ab2325d38fe63500be1dd88b81e38
+git cherry-pick -x 0c4a13ba88594fd4a27292853e736c6b4349823d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025121601-unpopular-opulently-2ac5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025121615-subplot-parachute-73bb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,42 +75,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e11c5c13ce0ab2325d38fe63500be1dd88b81e38 Mon Sep 17 00:00:00 2001
+From 0c4a13ba88594fd4a27292853e736c6b4349823d Mon Sep 17 00:00:00 2001
 From: Junrui Luo <moonafterrain@outlook.com>
-Date: Thu, 6 Nov 2025 10:24:57 +0800
-Subject: [PATCH] ALSA: wavefront: Clear substream pointers on close
+Date: Thu, 6 Nov 2025 10:49:46 +0800
+Subject: [PATCH] ALSA: wavefront: Fix integer overflow in sample size
+ validation
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+The wavefront_send_sample() function has an integer overflow issue
+when validating sample size. The header->size field is u32 but gets
+cast to int for comparison with dev->freemem
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fix by using unsigned comparison to avoid integer overflow.
+
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Link: https://patch.msgid.link/SYBPR01MB7881B47789D1B060CE8BF4C3AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 
-diff --git a/sound/isa/wavefront/wavefront_midi.c b/sound/isa/wavefront/wavefront_midi.c
-index 1250ecba659a..69d87c4cafae 100644
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -278,6 +278,7 @@ static int snd_wavefront_midi_input_close(struct snd_rawmidi_substream *substrea
- 	        return -EIO;
+diff --git a/sound/isa/wavefront/wavefront_synth.c b/sound/isa/wavefront/wavefront_synth.c
+index cd5c177943aa..0d78533e1cfd 100644
+--- a/sound/isa/wavefront/wavefront_synth.c
++++ b/sound/isa/wavefront/wavefront_synth.c
+@@ -950,9 +950,9 @@ wavefront_send_sample (snd_wavefront_t *dev,
+ 	if (header->size) {
+ 		dev->freemem = wavefront_freemem (dev);
  
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
- 
- 	return 0;
-@@ -300,6 +301,7 @@ static int snd_wavefront_midi_output_close(struct snd_rawmidi_substream *substre
- 	        return -EIO;
- 
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	return 0;
- }
+-		if (dev->freemem < (int)header->size) {
++		if (dev->freemem < 0 || dev->freemem < header->size) {
+ 			dev_err(dev->card->dev,
+-				"insufficient memory to load %d byte sample.\n",
++				"insufficient memory to load %u byte sample.\n",
+ 				header->size);
+ 			return -ENOMEM;
+ 		}
 
 
