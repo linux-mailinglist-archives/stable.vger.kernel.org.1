@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-202354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD45CC4522
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD39CC37EA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9CD6308A961
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:29:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 092F330BA703
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915633446D1;
-	Tue, 16 Dec 2025 12:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E5A35028C;
+	Tue, 16 Dec 2025 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0CwuseM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJOOcPv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA0825C80D;
-	Tue, 16 Dec 2025 12:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1525E350286;
+	Tue, 16 Dec 2025 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887625; cv=none; b=GuK8eEOg3wvj2IJh3LiT0uFu4C3ljp6Q95tfUw/ZzES1Sq/4YV7vJkFfTRjXKQ11GoJOjVDvOC3Gc+rBO9nV/eZs+1lafWGvViRMbocjwrJhRetFTjfCu0UBlnwwjHK8j6A7rY39gJm76dVa3cL14XembhXqecyiLFNejyhoaKw=
+	t=1765885688; cv=none; b=OroyfVMgPLniESrXInni0SZJvObMalCh1B/QWzhqdfzyLrOEk9AQAit8Z8fYFpUYzjdM3CBcqJ010ZOZb7h5Rl3XKU8ncCBxcbXaQD7EmKS0lsRq2tcX1ShmDmGrxAItrlFfc09gT62aLhWkQ1x9qfB+uuxCl0n+ojix2m2ZV1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887625; c=relaxed/simple;
-	bh=assF2pLgz5df4xs7IzpSSMqVsTgpjue3q4vgkHdSgVk=;
+	s=arc-20240116; t=1765885688; c=relaxed/simple;
+	bh=jnLddWrYZTPKFqQMSPG1YtjCgrz7ZUQ8+zN+ExkVDjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MHST/8s58Stq4ZShyxFBGmlq+6ojz6yPjQqZrSBn7iYBYFekW9QunS3FctSJ98P4pCehNLNip7LVwUId5JazqA54m3IeiET0fqdvPYOnrKgCJPwzSibSbBuIn5M9aI2I+bGQYmSTrLaOavqP9WGwakYm811TO5mUEyGdS2mXH4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0CwuseM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D06C4CEF5;
-	Tue, 16 Dec 2025 12:20:24 +0000 (UTC)
+	 MIME-Version; b=Q3f6NMOVnGiluaahWJQpfu4UgqvNrO2dppv0Mn9HFkdTkVwnzhYGF4ddlF8WO5c7sz2UxB09ooMnrvoWzc3++6Qm5UpUkQqFpWB0/xNfIy2TM3NLAevey73wxephuwQqkcCSyCmKp86ihaPnaKTaspKKTARRh4Q91jy2ZDZRIog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJOOcPv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD2FC4CEF1;
+	Tue, 16 Dec 2025 11:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887625;
-	bh=assF2pLgz5df4xs7IzpSSMqVsTgpjue3q4vgkHdSgVk=;
+	s=korg; t=1765885687;
+	bh=jnLddWrYZTPKFqQMSPG1YtjCgrz7ZUQ8+zN+ExkVDjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0CwuseMhl+lx2UjaplGWU1/SYJGB5wumzQthQsthC32hB2m4cE2V/ecNdv/rjopq
-	 rGZlr3k7A/hop077yUxyEgGySXjzWxwj1wF1PoBoTiu0rs3GI/9SNV1QbeSFkPmbxP
-	 aH4U8r1jkiRxWTalWXp3/mtytQDDwKPGHTkQT7Lk=
+	b=jJOOcPv/9Aazf9/pVJapBfe6cIHT1NwLcO35mU3VRT3IZQ0Aek5vTyJ+usZswg/td
+	 giIVbYWq1TxDgpO78yzlH0HLCFhJvV+6xrrOmmyquSAIPWbfU7pNZQIY/FLBtwoUgA
+	 ++IdV/YdJolkDJ/Dfckne8uUgbUUDyI5aPkhRnJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 289/614] PCI: Prevent resource tree corruption when BAR resize fails
+Subject: [PATCH 6.17 215/507] coresight: etm4x: Correct polling IDLE bit
 Date: Tue, 16 Dec 2025 12:10:56 +0100
-Message-ID: <20251216111411.841358743@linuxfoundation.org>
+Message-ID: <20251216111353.297291110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 91c4c89db41499eea1b29c56655f79c3bae66e93 ]
+[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
 
-pbus_reassign_bridge_resources() saves bridge windows into the saved
-list before attempting to adjust resource assignments to perform a BAR
-resize operation. If resource adjustments cannot be completed fully,
-rollback is attempted by restoring the resource from the saved list.
+Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
+the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
+instead of the IDLE bit.
 
-The rollback, however, does not check whether the resources it restores were
-assigned by the partial resize attempt. If restore changes addresses of the
-resource, it can result in corrupting the resource tree.
+This commit corrects the typo.
 
-An example of a corrupted resource tree with overlapping addresses:
-
-  6200000000000-6203fbfffffff : pciex@620c3c0000000
-    6200000000000-6203fbff0ffff : PCI Bus 0030:01
-      6200020000000-62000207fffff : 0030:01:00.0
-      6200000000000-6203fbff0ffff : PCI Bus 0030:02
-
-A resource that are assigned into the resource tree must remain
-unchanged. Thus, release such a resource before attempting to restore
-and claim it back.
-
-For simplicity, always do the release and claim back for the resource
-even in the cases where it is restored to the same address range.
-
-Note: this fix may "break" some cases where devices "worked" because
-the resource tree corruption allowed address space double counting to
-fit more resource than what can now be assigned without double
-counting. The upcoming changes to BAR resizing should address those
-scenarios (to the extent possible).
-
-Fixes: 8bb705e3e79d ("PCI: Add pci_resize_resource() for resizing BARs")
-Reported-by: Simon Richter <Simon.Richter@hogyros.de>
-Link: https://lore.kernel.org/linux-pci/67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de/
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
-Link: https://lore.kernel.org/linux-pci/874irqop6b.fsf@draig.linaro.org/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Alex Bennée <alex.bennee@linaro.org> # AVA, AMD GPU
-Link: https://patch.msgid.link/20251113162628.5946-2-ilpo.jarvinen@linux.intel.com
+Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 3645f392a9fd3..5ba878f15db35 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -2504,6 +2504,11 @@ int pbus_reassign_bridge_resources(struct pci_bus *bus, struct resource *res)
- 		bridge = dev_res->dev;
- 		i = pci_resource_num(bridge, res);
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index baf38142b317f..1fa6d123b8143 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1924,7 +1924,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
  
-+		if (res->parent) {
-+			release_child_resources(res);
-+			pci_release_resource(bridge, i);
-+		}
-+
- 		restore_dev_resource(dev_res);
- 
- 		pci_claim_resource(bridge, i);
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 		etm4_os_unlock(drvdata);
 -- 
 2.51.0
 
