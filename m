@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3ADCC37FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 797ABCC2556
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45B5A30C9226
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CF273103E4A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1B1387B24;
-	Tue, 16 Dec 2025 12:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8488B314B91;
+	Tue, 16 Dec 2025 11:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIopsrVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4dj5ijm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7037387B16;
-	Tue, 16 Dec 2025 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A91257AD1;
+	Tue, 16 Dec 2025 11:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888298; cv=none; b=YhzZxxkx3aaLOwlp+lRUZSfwU/p2pnO//Bmid1yTSsBAlTXTsX+36tu0bdf6hGa0Ze8tvJzB1496uS9aDad1Yza+S0UlxVnkOcnSG+L7nXD6c+KSns5wbZ5G1C79L3ZtGD32xGzAwc5ex2KOqvd3vbwFhLH5+5+XCOi/zhXuQN8=
+	t=1765884652; cv=none; b=ibf/UdYSuK5a+APStdyCe0YzhKqV6JUtlH/QYQln6yJ5ov2x33ZQo1w87EF7uGB1DbILAqSGMY9KaoGfIn0Hy8Yrh96lR8ryNCjgWgK01IErJJl+PI60AswuHleALSQoxv4294AxfuWp6vA6VrAVKiV3QHG+FgRS45lbnvJMAsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888298; c=relaxed/simple;
-	bh=GEhiyKGoqqWlRIoI+pCJ45291Ge7Z9l+ploTEfhZTfc=;
+	s=arc-20240116; t=1765884652; c=relaxed/simple;
+	bh=OjkZ7lQQRiQNcbMk90XR92nAgN8tqplGMs0A3GOQSWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E++ESMnao/WpqC+oR6s+LyLhg2p6/A1oyf/BNRJqtBrHjk7FnG95K20A/kkuxdYGOJD6NfHumCmuo3oQroCKopWe+/ipphDlpGsXjBkxO0C8OZ2x9XqAa225vyma3nQSZ0yUf8WbhuhliLNo9cMROaU7i72/WKqGX8K0NYXE/54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIopsrVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E9EC4CEF1;
-	Tue, 16 Dec 2025 12:31:37 +0000 (UTC)
+	 MIME-Version; b=EnBnDCVfZFmCiJoJbvV9ojwg/1XuOoERTKicJpCR3N4AVJ0zkwpc0Fq7FCVjP86TKslNGgi+XAZp17gE/0lkrXrUJ1lnBzOyZce64A7jbRytEqkGdKpRQ9XdjDvxGv6xYJF/6RoFseNJVPzUa2Fezg2UG+yf42tKs9M/kckKyng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4dj5ijm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BF6C4CEF1;
+	Tue, 16 Dec 2025 11:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888298;
-	bh=GEhiyKGoqqWlRIoI+pCJ45291Ge7Z9l+ploTEfhZTfc=;
+	s=korg; t=1765884651;
+	bh=OjkZ7lQQRiQNcbMk90XR92nAgN8tqplGMs0A3GOQSWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIopsrVIO7p0+utry7Mls94yElNpps0n1T+2Sh8lRfMBQp0bZ8ZQO1osU0jmwjOPH
-	 mYChgNQx7rfr1GhmqAddH2QwD9DePW0b4xqlM6mjduK9WiRyEw08znscxuK9D+nmf1
-	 hHV63kqVOOdvrws6VlV5JLGGJYtWqYl02UtwKdnc=
+	b=F4dj5ijmoymkPBdoBD5ZbVPncAXtqaaMbydoERnZYi0/ayvaqWJvhITn/Ge20sx99
+	 e4T04bDC/CGyCUOtsg0sSqb70ntfep7sS05fH+YNqrSZnoivYWE02kgFoOEo+z1ZhM
+	 i4V1qu2KfZsJsRG/2LeGlS1YJZbPSriltBgh/0H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kriish Sharma <kriish.sharma2006@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 459/614] virtio: fix kernel-doc for mapping/free_coherent functions
+Subject: [PATCH 6.12 259/354] ARM: dts: samsung: exynos4210-trats: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:13:46 +0100
-Message-ID: <20251216111418.000376505@linuxfoundation.org>
+Message-ID: <20251216111330.301480571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kriish Sharma <kriish.sharma2006@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit f8113000855a8cc2c6d8e19b97a390f1c082285d ]
+[ Upstream commit 97cc9c346b2c9cde075b9420fc172137d2427711 ]
 
-Documentation build reported:
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-  WARNING: ./drivers/virtio/virtio_ring.c:3174 function parameter 'vaddr' not described in 'virtqueue_map_free_coherent'
-  WARNING: ./drivers/virtio/virtio_ring.c:3308 expecting prototype for virtqueue_mapping_error(). Prototype was for virtqueue_map_mapping_error() instead
-
-The kernel-doc block for virtqueue_map_free_coherent() omitted the @vaddr parameter, and
-the kernel-doc header for virtqueue_map_mapping_error() used the wrong function name
-(virtqueue_mapping_error) instead of the actual function name.
-
-This change updates:
-
-  - the function name in the comment to virtqueue_map_mapping_error()
-  - adds the missing @vaddr description in the comment for virtqueue_map_free_coherent()
-
-Fixes: b41cb3bcf67f ("virtio: rename dma helpers")
-Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251110202920.2250244-1-kriish.sharma2006@gmail.com>
+Fixes: a19f6efc01df ("ARM: dts: exynos: Enable WLAN support for the Trats board")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-4-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4210-trats.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index 7b6205253b46b..ddab689596717 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -3166,6 +3166,7 @@ EXPORT_SYMBOL_GPL(virtqueue_map_alloc_coherent);
-  * @vdev: the virtio device we are talking to
-  * @map: metadata for performing mapping
-  * @size: the size of the buffer
-+ * @vaddr: the virtual address that needs to be freed
-  * @map_handle: the mapped address that needs to be freed
-  *
-  */
-@@ -3190,7 +3191,7 @@ EXPORT_SYMBOL_GPL(virtqueue_map_free_coherent);
-  * @dir: mapping direction
-  * @attrs: mapping attributes
-  *
-- * Returns mapped address. Caller should check that by virtqueue_mapping_error().
-+ * Returns mapped address. Caller should check that by virtqueue_map_mapping_error().
-  */
- dma_addr_t virtqueue_map_page_attrs(const struct virtqueue *_vq,
- 				    struct page *page,
-@@ -3249,7 +3250,7 @@ EXPORT_SYMBOL_GPL(virtqueue_unmap_page_attrs);
-  * The caller calls this to do dma mapping in advance. The DMA address can be
-  * passed to this _vq when it is in pre-mapped mode.
-  *
-- * return mapped address. Caller should check that by virtqueue_mapping_error().
-+ * return mapped address. Caller should check that by virtqueue_map_mapping_error().
-  */
- dma_addr_t virtqueue_map_single_attrs(const struct virtqueue *_vq, void *ptr,
- 				      size_t size,
-@@ -3299,7 +3300,7 @@ void virtqueue_unmap_single_attrs(const struct virtqueue *_vq,
- EXPORT_SYMBOL_GPL(virtqueue_unmap_single_attrs);
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-trats.dts b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+index 95e0e01b6ff6b..6bd902cb8f4ad 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-trats.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+@@ -518,6 +518,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
- /**
-- * virtqueue_mapping_error - check dma address
-+ * virtqueue_map_mapping_error - check dma address
-  * @_vq: the struct virtqueue we're talking about.
-  * @addr: DMA address
-  *
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&tflash_reg>;
 -- 
 2.51.0
 
