@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-201953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74672CC29D8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAB2CC32DC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 34338302ED98
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E03F2308F78D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FD9347FEA;
-	Tue, 16 Dec 2025 11:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84C037D121;
+	Tue, 16 Dec 2025 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc8P/RfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zllwCEFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FE534844C;
-	Tue, 16 Dec 2025 11:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94876382BF4;
+	Tue, 16 Dec 2025 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886345; cv=none; b=tJvbQJ6roa7Eq/eqEjCGl4stW8ImYvM/IyLBiOXFca9I3M8yJb4Wy/soI1ugkMQ1ha6OqWUw+CvZ4UeIU8WCUjxQ3G1wdpGyZqZAOQFT3SEinHCAH2zRf5hYg6Z+zHZG0P25Ne+JYs+FfCLpWZJ6w6nTNVa3UWS6arhjRA01kpw=
+	t=1765888275; cv=none; b=imDhmXeWEc2rVhI9o+/vn++sk2SruQsxjsiQl66TRSbmNlzWwReVbfcNJZjmIBcZev+vsQIs1jw3yOpv0917Kv2hWgb/JkjI8KKNu4ix5cbZYVCmbCJPhqAlJSW65Y2Fvc2Z1bHLj6GfJUmr6p+dty+Sk9AuUHBm4sS2alnGp6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886345; c=relaxed/simple;
-	bh=jUAiEzkrjiD3BNAm4S5toS2wLLstAQl8nnBq7iFP+DU=;
+	s=arc-20240116; t=1765888275; c=relaxed/simple;
+	bh=l8WeWWJoIm2QnKHWRsDhXi6U+pJNyP0o4K+EL0ZM9+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WvdWJTLK8buf0mNnJuO/dMOOcIiTuJ2h0ROuCKrdSW7Ka1ec47YT3V2QEhl44M/wp9GghzGdLOVheDh70QP3TY/EAUpM265BzNEbIrMNuJRoArsh2xAYzbM38sL+XUqwcZV3cNUDi2FEEKi71cEHxUd6WhFIsVVdZIKVw+xLLa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc8P/RfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F648C4CEF5;
-	Tue, 16 Dec 2025 11:59:04 +0000 (UTC)
+	 MIME-Version; b=tqFNXY2WeOIk3aEwhpRohRgO7Mdz0pPcHkImIAzxbYQdd3u69cy0s6EAnSedVXSvRvIRzuXAek4lu2wdc2m8XqcBPP/BnkzbgzOLsaB0FOEOdkK/NFmEIBlWh0STv9/Mq5DlzugcimEba2g3SKwl2q3SEtLYp609U9vaeqJFH0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zllwCEFE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19421C4CEF1;
+	Tue, 16 Dec 2025 12:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886344;
-	bh=jUAiEzkrjiD3BNAm4S5toS2wLLstAQl8nnBq7iFP+DU=;
+	s=korg; t=1765888275;
+	bh=l8WeWWJoIm2QnKHWRsDhXi6U+pJNyP0o4K+EL0ZM9+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bc8P/RfOeqUhRxyLHaRE1Lm71hkrykntUpuFk38tRLhHCAOVLt2z35Yf4mr8BcgsO
-	 6Fu6sGSqraVUw1lHJyR5J93XPeLBAZy4t16OV6p/W0fdknjVmZXQNsAWJOHRLEKKH6
-	 XdwB0mguv8vkD3sKZGRJviP8dT/U4JjmZ6BuZwCA=
+	b=zllwCEFECkGJSiUUI+3t+vnmrqmKvx04wccOSWfuVDE1JR6eKecWWVttsxjoE0dvG
+	 dxp5a0CR4FRrfA8043Eaus482Y6MHmi3YhlzQQaLvMKKcpuDm0tjuTIFwcVfu5o0vl
+	 glM7iMhkpRMNtdI7QDw9c1CDttCbkBDp2khtmleE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tim Hostetler <thostet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 409/507] net: dsa: b53: fix VLAN_ID_IDX write size for BCM5325/65
-Date: Tue, 16 Dec 2025 12:14:10 +0100
-Message-ID: <20251216111400.281046213@linuxfoundation.org>
+Subject: [PATCH 6.18 484/614] iavf: Implement settime64 with -EOPNOTSUPP
+Date: Tue, 16 Dec 2025 12:14:11 +0100
+Message-ID: <20251216111418.907847165@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 6f268e275c74dae0536e0b61982a8db25bcf4f16 ]
+[ Upstream commit 1e43ebcd5152b3e681a334cc6542fb21770c3a2e ]
 
-Since BCM5325 and BCM5365 only support up to 256 VLANs, the VLAN_ID_IDX
-register is only 8 bit wide, not 16 bit, so use an appropriate accessor.
+ptp_clock_settime() assumes every ptp_clock has implemented settime64().
+Stub it with -EOPNOTSUPP to prevent a NULL dereference.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-2-jonas.gorski@gmail.com
+The fix is similar to commit 329d050bbe63 ("gve: Implement settime64
+with -EOPNOTSUPP").
+
+Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP clock")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Tim Hostetler <thostet@google.com>
+Link: https://patch.msgid.link/20251126094850.2842557-1-mschmidt@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index eb767edc4c135..a09ed32dccc07 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1924,8 +1924,12 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+index b4d5eda2e84fc..9cbd8c1540318 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+@@ -252,6 +252,12 @@ static int iavf_ptp_gettimex64(struct ptp_clock_info *info,
+ 	return iavf_read_phc_indirect(adapter, ts, sts);
+ }
  
- 	/* Perform a read for the given MAC and VID */
- 	b53_write48(dev, B53_ARLIO_PAGE, B53_MAC_ADDR_IDX, mac);
--	if (!is5325m(dev))
--		b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+	if (!is5325m(dev)) {
-+		if (is5325(dev) || is5365(dev))
-+			b53_write8(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+		else
-+			b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+	}
++static int iavf_ptp_settime64(struct ptp_clock_info *info,
++			      const struct timespec64 *ts)
++{
++	return -EOPNOTSUPP;
++}
++
+ /**
+  * iavf_ptp_cache_phc_time - Cache PHC time for performing timestamp extension
+  * @adapter: private adapter structure
+@@ -320,6 +326,7 @@ static int iavf_ptp_register_clock(struct iavf_adapter *adapter)
+ 		 KBUILD_MODNAME, dev_name(dev));
+ 	ptp_info->owner = THIS_MODULE;
+ 	ptp_info->gettimex64 = iavf_ptp_gettimex64;
++	ptp_info->settime64 = iavf_ptp_settime64;
+ 	ptp_info->do_aux_work = iavf_ptp_do_aux_work;
  
- 	/* Issue a read operation for this MAC */
- 	ret = b53_arl_rw_op(dev, 1);
+ 	clock = ptp_clock_register(ptp_info, dev);
 -- 
 2.51.0
 
