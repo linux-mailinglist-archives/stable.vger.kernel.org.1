@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B320CC3FAE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:36:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F476CC292F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00EF330562E1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18BBF300500D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C4534B414;
-	Tue, 16 Dec 2025 11:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFE1365A15;
+	Tue, 16 Dec 2025 12:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFyAz2WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4v/fiIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B0E34B412;
-	Tue, 16 Dec 2025 11:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD21355802;
+	Tue, 16 Dec 2025 12:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885245; cv=none; b=Uoj0NfrMrpbCwGBGUUBoCdSjOuPLJkwhuS7kp52kxcjRSyHsQRmj85HkvwXu7x2OFxbEMEbB09ljjlBZdB92dUJOAtE9b63wfWN5Hy2GB455RnLWtijPqxuBoXzcaMYLlBZskXA9z3qjcz0pJjD4IE2a8bzpzg+CZf20N0fuEso=
+	t=1765887194; cv=none; b=JTn2m8y59Vg6Eygy7w9DEEbkLjKezQ3FkkNDf8HjdEREcTCLGpzyhy+0NxAs11liCu1e6bI9mmjgiE3CXZbsLVeUR0QuSokubA1G5a5e6At4IMW2rxYc/DkTbIfb+PbEzXQ+uq8vFMM44RrcEOqGOiSZAL9PUuQS7MSA202x6A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885245; c=relaxed/simple;
-	bh=YOEIRfhVX6hx2/bjRp7ovjdvm3BWrCMe1yVoKL1EAgg=;
+	s=arc-20240116; t=1765887194; c=relaxed/simple;
+	bh=zPH8ptpFMuDYG9Fo6aXeooUaLJY8ertEdDTNDuDAZu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzz4cMtr7oYis+i+WyCXpPT9rfxywyQkqbqDIVvz91xbJNxMACWlAJQ25M/DT5TiVrAr/iN8HkyzZ9WVOCJoo7vf2uwIRDDbVs7ecRs3FwcOj/lzco8Jx9xI12zbABq/S2Cyp7Q+eCMYKGoBUOGRwJKlcIT3CJmxb7BHF7hD8mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFyAz2WS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254D1C4CEF5;
-	Tue, 16 Dec 2025 11:40:44 +0000 (UTC)
+	 MIME-Version; b=Ciig8rUNrQcHYpvHXqlHSPd+hx/jAiWctgt/OfQVuuAuUZmnVPgu4tHWhm9sDMMrjaT4HfM1RQ0QITKXY6hyxZHPHqahaVPc409Qev+R9VSiYd58iSWL744ynvxbFU282i5C93Qzoli5td13ZNm9Vp6mDJU8l0Dw0+/GrJ2WWnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4v/fiIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43ABAC4CEF1;
+	Tue, 16 Dec 2025 12:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885245;
-	bh=YOEIRfhVX6hx2/bjRp7ovjdvm3BWrCMe1yVoKL1EAgg=;
+	s=korg; t=1765887194;
+	bh=zPH8ptpFMuDYG9Fo6aXeooUaLJY8ertEdDTNDuDAZu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFyAz2WS7CiX1t5/ur2bovsqU9Lg28ubxyn1wTpguy9qD7M43oWeNw58em+MxVJOt
-	 mRh+lh8lh+aYzuUj47biYBBhkoVP3UnRvjR0AJhc95BLnysdJlPZf7uQvdtpMx0/43
-	 zcxcknjC7vXQhTaA7sydJWhHypX/mWdgXehMPuZA=
+	b=x4v/fiIKgI4Wh1D0ZDUiYjzD0JWzicgkAM6D6i6SRZvitemquoU64aEH5IwFyQfbZ
+	 +AXZISWQx+a1I2r19q3gSez6dXqVS67WkhZY2/0aWDf+m1PiIXSVgL6R1U/6uOkzix
+	 9Ag4u3Z9Ywk25oodJJqKY2AKZvh6A+rGctEtjV30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 081/507] wifi: ath11k: fix VHT MCS assignment
+Subject: [PATCH 6.18 155/614] arm64: dts: ti: k3-j784s4: Fix I2C pinmux pull configuration
 Date: Tue, 16 Dec 2025 12:08:42 +0100
-Message-ID: <20251216111348.474778577@linuxfoundation.org>
+Message-ID: <20251216111406.951329182@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Aniket Limaye <a-limaye@ti.com>
 
-[ Upstream commit 47d0cd6bccb4604192633cc8d29511e85d811fc0 ]
+[ Upstream commit 671c852fc53d1b6f5eccdb03c1889a484c9d1996 ]
 
-While associating, firmware needs to know peer's receive capability to
-calculate its own VHT transmit MCS, currently host sends this information
-to firmware via mcs->rx_mcs_set field, this is wrong as firmware actually
-takes it from mcs->tx_mcs_set field. Till now there is no failure seen
-due to this, most likely because almost all peers are advertising the
-same capability for both transmit and receive. Swap the assignment to
-fix it.
+The I2C pins for some of the instances on J784S4/J742S2/AM69 are
+configured as PIN_INPUT_PULLUP while these pins are open-drain type and
+do not support internal pull-ups [0][1][2]. The pullup configuration
+bits in the corresponding padconfig registers are reserved and any
+writes to them have no effect and readback checks on those bits fail.
 
-Besides, rate control mask is meant to limit our own transmit MCS, hence
-need to go via mcs->tx_mcs_set field. With the aforementioned swapping
-done, change is needed as well to apply it to the peer's receive
-capability rather than transmit capability.
+Update the pinmux settings to use PIN_INPUT instead of PIN_INPUT_PULLUP
+to reflect the correct hardware behaviour.
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+[0]: https://www.ti.com/lit/gpn/tda4ah-q1 (J784S4 Datasheet: Table 5-1. Pin Attributes)
+[1]: https://www.ti.com/lit/gpn/tda4ape-q1 (J742S2 Datasheet: Table 5-1. Pin Attributes)
+[2]: https://www.ti.com/lit/gpn/am69a (AM69 Datasheet: Table 5-1. Pin Attributes)
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-1-da40825c1783@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: e20a06aca5c9 ("arm64: dts: ti: Add support for J784S4 EVM board")
+Fixes: 635fb18ba008 ("arch: arm64: dts: Add support for AM69 Starter Kit")
+Fixes: 0ec1a48d99dd ("arm64: dts: ti: k3-am69-sk: Add pinmux for RPi Header")
+Signed-off-by: Aniket Limaye <a-limaye@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://patch.msgid.link/20251022122638.234367-1-a-limaye@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c |  4 ++--
- drivers/net/wireless/ath/ath11k/wmi.c | 13 ++++++++-----
- drivers/net/wireless/ath/ath11k/wmi.h |  2 ++
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am69-sk.dts                   | 8 ++++----
+ arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 0e41b5a91d66d..49c639d73d58d 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2235,9 +2235,9 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
- 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
- 	arg->rx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.rx_highest);
- 	arg->rx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map);
-+	arg->rx_mcs_set = ath11k_peer_assoc_h_vht_limit(arg->rx_mcs_set, vht_mcs_mask);
- 	arg->tx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.tx_highest);
--	arg->tx_mcs_set = ath11k_peer_assoc_h_vht_limit(
--		__le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map), vht_mcs_mask);
-+	arg->tx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map);
+diff --git a/arch/arm64/boot/dts/ti/k3-am69-sk.dts b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
+index 5896e57b5b9ed..0e2d12cb051da 100644
+--- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
+@@ -236,8 +236,8 @@ J784S4_IOPAD(0x0d4, PIN_OUTPUT, 11) /* (AN38) SPI0_CLK.UART8_TXD */
  
- 	/* In IPQ8074 platform, VHT mcs rate 10 and 11 is enabled by default.
- 	 * VHT mcs rate 10 and 11 is not supported in 11ac standard.
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index e3b444333deed..649839d243293 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
-@@ -2061,10 +2061,13 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
- 	cmd->peer_bw_rxnss_override |= param->peer_bw_rxnss_override;
+ 	main_i2c0_pins_default: main-i2c0-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_IOPAD(0x0e0, PIN_INPUT_PULLUP, 0) /* (AN36) I2C0_SCL */
+-			J784S4_IOPAD(0x0e4, PIN_INPUT_PULLUP, 0) /* (AP37) I2C0_SDA */
++			J784S4_IOPAD(0x0e0, PIN_INPUT, 0) /* (AN36) I2C0_SCL */
++			J784S4_IOPAD(0x0e4, PIN_INPUT, 0) /* (AP37) I2C0_SDA */
+ 		>;
+ 	};
  
- 	if (param->vht_capable) {
--		mcs->rx_max_rate = param->rx_max_rate;
--		mcs->rx_mcs_set = param->rx_mcs_set;
--		mcs->tx_max_rate = param->tx_max_rate;
--		mcs->tx_mcs_set = param->tx_mcs_set;
-+		/* firmware interprets mcs->tx_mcs_set field as peer's
-+		 * RX capability
-+		 */
-+		mcs->tx_max_rate = param->rx_max_rate;
-+		mcs->tx_mcs_set = param->rx_mcs_set;
-+		mcs->rx_max_rate = param->tx_max_rate;
-+		mcs->rx_mcs_set = param->tx_mcs_set;
- 	}
+@@ -416,8 +416,8 @@ J784S4_WKUP_IOPAD(0x088, PIN_OUTPUT, 0) /* (J37) WKUP_GPIO0_12.MCU_UART0_TXD */
  
- 	/* HE Rates */
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 9fcffaa2f383c..6e9354297e71d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -4133,8 +4133,10 @@ struct wmi_rate_set {
- struct wmi_vht_rate_set {
- 	u32 tlv_header;
- 	u32 rx_max_rate;
-+	/* MCS at which the peer can transmit */
- 	u32 rx_mcs_set;
- 	u32 tx_max_rate;
-+	/* MCS at which the peer can receive */
- 	u32 tx_mcs_set;
- 	u32 tx_max_mcs_nss;
- } __packed;
+ 	mcu_i2c0_pins_default: mcu-i2c0-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_WKUP_IOPAD(0x0a0, PIN_INPUT_PULLUP, 0) /* (M35) MCU_I2C0_SCL */
+-			J784S4_WKUP_IOPAD(0x0a4, PIN_INPUT_PULLUP, 0) /* (G34) MCU_I2C0_SDA */
++			J784S4_WKUP_IOPAD(0x0a0, PIN_INPUT, 0) /* (M35) MCU_I2C0_SCL */
++			J784S4_WKUP_IOPAD(0x0a4, PIN_INPUT, 0) /* (G34) MCU_I2C0_SDA */
+ 		>;
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
+index 419c1a70e028d..2834f0a8bbee0 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
+@@ -270,8 +270,8 @@ J784S4_IOPAD(0x0d4, PIN_OUTPUT, 11) /* (AN38) SPI0_CLK.UART8_TXD */
+ 
+ 	main_i2c0_pins_default: main-i2c0-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_IOPAD(0x0e0, PIN_INPUT_PULLUP, 0) /* (AN36) I2C0_SCL */
+-			J784S4_IOPAD(0x0e4, PIN_INPUT_PULLUP, 0) /* (AP37) I2C0_SDA */
++			J784S4_IOPAD(0x0e0, PIN_INPUT, 0) /* (AN36) I2C0_SCL */
++			J784S4_IOPAD(0x0e4, PIN_INPUT, 0) /* (AP37) I2C0_SDA */
+ 		>;
+ 	};
+ 
 -- 
 2.51.0
 
