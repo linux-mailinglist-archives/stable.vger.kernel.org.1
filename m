@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD353CC32C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9144CC2932
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97C0E3078A4E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95AFA3023EB3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE7334BA2E;
-	Tue, 16 Dec 2025 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DCF3587C9;
+	Tue, 16 Dec 2025 12:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcGowOEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4qWlR1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E46341056;
-	Tue, 16 Dec 2025 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A883587CE;
+	Tue, 16 Dec 2025 12:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888448; cv=none; b=UhC2/+oH42VcS2dtBI0ifsWBROVavjeX4TMVFYxAzOiOOm7eiYaYjvv1onZpRKj48IDUC1Nq3s/QjwnjFAPUvHQCy0zQHm3p11iwjC98lyxT3t5YiyjCiv5eFW3XtXhz1qQaEMEpqVlssdnj5m9NmjQrK7fiqAUMrbTSD2HX9aY=
+	t=1765886643; cv=none; b=HvA+eOYn5VmEhnryNp1EHZubM2ynlx6TGY3+lS6fG0DkNYpfuNHbMsbD0gFCGmH4z95pcjQ63srrReLSOAqB0JXPOZM/FbWQPjawMBsB2Czk1iux0m+vCBjRcrtqqf+ZSiCcA8OtXy8D3xVcFK8v1BHsOWVJHFncOO1NYiFOQXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888448; c=relaxed/simple;
-	bh=fkQQ+Q5CYVNtgN5vzHv+4z+qD9j+WblbsCe3Q0DYNoM=;
+	s=arc-20240116; t=1765886643; c=relaxed/simple;
+	bh=Eek1ollwa8aqIeGtISGOZ5pxi+Bp1+kMvFDWa5trPlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gxlh0a/f7UBId/g23zaH5zZ0JYqjeMcDYcTxzI8WdECibrS+GJbJpDfDGBDyHDADilf12yTYT/Arm7YO9zQIP+yUbs7QyQFCCz8nwAAhwVeRw7bQ+SZYYQd3SbQyCzt0Q2p6OzhN/1FolYRssSCZViOV28GsVYs9rgBiIQXTAsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcGowOEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6644C4CEF5;
-	Tue, 16 Dec 2025 12:34:07 +0000 (UTC)
+	 MIME-Version; b=Mk6Z2Qq0vtR86GmsM6KDafc7ngOmueEna7vza7P4E0/hw1lC54K0Gk8PdGBjDdTFO0500iQlTLR5KW74yKP0pkoU7Il6lV0Ka9ONRqiV7oQNDGiNZ6TH2O92nvB72Kxfud/q7+/hiRGtbNP+cEgQt07mzBFRlw0fMMO1HRes41o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4qWlR1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA730C4CEF1;
+	Tue, 16 Dec 2025 12:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888448;
-	bh=fkQQ+Q5CYVNtgN5vzHv+4z+qD9j+WblbsCe3Q0DYNoM=;
+	s=korg; t=1765886643;
+	bh=Eek1ollwa8aqIeGtISGOZ5pxi+Bp1+kMvFDWa5trPlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcGowOEE1Qy1fcrQKUsh/ZHVk7bwTNkds9GERUzFIziMF9gZfxlXolmp5ZPZG+c3k
-	 1ZjnqQJuL6YfPnjDFR4Xeio1yuW5yKIjEuu4b7wben5XlZp21UMC8uitmP7SdWnDu0
-	 Avt6Zpu/GEppgiwYwUyrum6oRRAUtmnyco2qwn6A=
+	b=Q4qWlR1zN7wkq3tni0EMyJNCzZlAFwFEx33clFaXgbAaJuXsQEMDHZg1TXRCrtOB6
+	 mAWgyXfTnV4Jm8UD8NmUQxuUOWRrvgkyRXY04B96JjfH9Zj0dxfiPbBxpPcmUe4LXV
+	 m7I81HKDMGnCivVkseC0Ztrc5NaPgDoUmW9qLtMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 538/614] rtc: amlogic-a4: fix double free caused by devm
+Subject: [PATCH 6.17 464/507] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
 Date: Tue, 16 Dec 2025 12:15:05 +0100
-Message-ID: <20251216111420.872328238@linuxfoundation.org>
+Message-ID: <20251216111402.256383465@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 384150d7a5b60c1086790a8ee07b0629f906cca2 ]
+[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
 
-The clock obtained via devm_clk_get_enabled() is automatically managed
-by devres and will be disabled and freed on driver detach. Manually
-calling clk_disable_unprepare() in error path and remove function
-causes double free.
+The drm_property_create_signed_range() function doesn't return error
+pointers it returns NULL on error.  Fix the error checking to match.
 
-Remove the redundant clk_disable_unprepare() calls from the probe
-error path and aml_rtc_remove(), allowing the devm framework to
-automatically manage the clock lifecycle.
-
-Fixes: c89ac9182ee2 ("rtc: support for the Amlogic on-chip RTC")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Link: https://patch.msgid.link/20251021103559.1903-1-vulab@iscas.ac.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-amlogic-a4.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/drm_plane.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-amlogic-a4.c b/drivers/rtc/rtc-amlogic-a4.c
-index 1928b29c10454..a993d35e1d6b0 100644
---- a/drivers/rtc/rtc-amlogic-a4.c
-+++ b/drivers/rtc/rtc-amlogic-a4.c
-@@ -390,7 +390,6 @@ static int aml_rtc_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index a30493ed97157..4cadea997129d 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -338,14 +338,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
  
- 	return 0;
- err_clk:
--	clk_disable_unprepare(rtc->sys_clk);
- 	device_init_wakeup(dev, false);
+ 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_x))
+-		return PTR_ERR(prop_x);
++	if (!prop_x)
++		return -ENOMEM;
  
- 	return ret;
-@@ -423,9 +422,6 @@ static SIMPLE_DEV_PM_OPS(aml_rtc_pm_ops,
+ 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_y)) {
++	if (!prop_y) {
+ 		drm_property_destroy(plane->dev, prop_x);
+-		return PTR_ERR(prop_y);
++		return -ENOMEM;
+ 	}
  
- static void aml_rtc_remove(struct platform_device *pdev)
- {
--	struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
--
--	clk_disable_unprepare(rtc->sys_clk);
- 	device_init_wakeup(&pdev->dev, false);
- }
- 
+ 	drm_object_attach_property(&plane->base, prop_x, 0);
 -- 
 2.51.0
 
