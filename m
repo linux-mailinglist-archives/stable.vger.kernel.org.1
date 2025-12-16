@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-201493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68889CC265F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174E9CC3348
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5C4630E411F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45B4C309B5DF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55F834253C;
-	Tue, 16 Dec 2025 11:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213C837D105;
+	Tue, 16 Dec 2025 12:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03tBuzui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afzP6cRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7026D341AB8;
-	Tue, 16 Dec 2025 11:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DAA37D127;
+	Tue, 16 Dec 2025 12:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884818; cv=none; b=aYwoZALVFu7a4HWD51U46dSF0dM8B8nb5tAIfBGo7XGQq5qeVm6FuA5CqByfhJkApvydagoJzxxggaI/eXJMsfjEYZFOhN/KjRxw3g/BTiQgYVG/v8CbeWP3/vUnT0hwC0Fnax0kxKCK4oy09DCcBS6anX0KskmOz3mQfpQ/bK8=
+	t=1765888263; cv=none; b=ZfO7x/50PcXId/37iY1fngh25DAYqsc+Hl/bJLs6HzEsMFM3WqYPVKJQP3PKuIa2M8WgjSCXQ4QHFXVxtirUC8+mYShdq4rA8lnztPfFlOVitlsSPc7A4Qerxb+3e5ZGBMuMUjbZre4+bLlFsnlkDzIf5fdP32yDjnb3s4UEXkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884818; c=relaxed/simple;
-	bh=2GRhsr9DuX8B5sDlGSqaLDiz0LCNeQjo20+ujQVH4DY=;
+	s=arc-20240116; t=1765888263; c=relaxed/simple;
+	bh=+63wee75tyR4/ZB4Y7brvtuNgvDJa5GfGv1cUsN02zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ylnlk6EAdTEjW0ukg7gCiabAEcoJ9k8lPll/Zpcg4ko5ygk+6QrYtC1BlFZH/yXpQtxiBz4HyO1gCz0AbXm4U1jCMh+fS1BO4EIrgCU3SJ24TvDCxehFvrdnRWnvBGUmkPfUgB5lYWVBGgCix8xhH1/9AIrwieJ3CtyS3m5w018=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03tBuzui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AA8C4CEF1;
-	Tue, 16 Dec 2025 11:33:37 +0000 (UTC)
+	 MIME-Version; b=RkSn4ZnF8977bgVJ3Tz2Cp/xHNj3sChkl7VjJkfqrBe16idHmeih0BUy/y9OCCHJggrJrB8gzpOjHGxoHO2IAVuA8/DWjMszYEcdo9KV2XBFRSueBcxvlxLA4yocjwGV0yvk9YsFbv0qDV9lZZ3ql6Mqm362G0k9PSa6YGhQPcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afzP6cRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF2C4CEF1;
+	Tue, 16 Dec 2025 12:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884818;
-	bh=2GRhsr9DuX8B5sDlGSqaLDiz0LCNeQjo20+ujQVH4DY=;
+	s=korg; t=1765888263;
+	bh=+63wee75tyR4/ZB4Y7brvtuNgvDJa5GfGv1cUsN02zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03tBuzuisjNEOKz+bsDaDS8iDD64VwaxOO6y4v0a76IREokoXGnpX64ICygPLZQke
-	 x+rvz7ZtDhBCL9qkRFcT3bGh3KVRj1l4gi0zXNH/9fKHUQAStQxvApUhmm9kDqISg5
-	 BEMrsSNetUyqhTcJPWqUUZdDJ1eeaBjqL4vEiSJY=
+	b=afzP6cRw+onQQp+7H7UnFy2GIn5nAbaoscE3RanppUvj7yyGs6b1gmBDSVSApgVYb
+	 uMLU+IfZf+D0cGJPreXvU61YP/or1Tnp1PrOdo6tIL3L9w4pMOz0bWjcA1FRqS/DKX
+	 ivAdLcJVT9fCeTIAvdtAjGb8nDkGb7znmgEJWFRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/354] net: hsr: Create and export hsr_get_port_ndev()
+Subject: [PATCH 6.18 481/614] netfilter: flowtable: check for maximum number of encapsulations in bridge vlan
 Date: Tue, 16 Dec 2025 12:14:08 +0100
-Message-ID: <20251216111331.095041207@linuxfoundation.org>
+Message-ID: <20251216111418.798838946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,122 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9c10dd8eed74de9e8adeb820939f8745cd566d4a ]
+[ Upstream commit 634f3853cc98d73bdec8918010ee29b06981583e ]
 
-Create an API to get the net_device to the slave port of HSR device. The
-API will take hsr net_device and enum hsr_port_type for which we want the
-net_device as arguments.
+Add a sanity check to skip path discovery if the maximum number of
+encapsulation is reached. While at it, check for underflow too.
 
-This API can be used by client drivers who support HSR and want to get
-the net_devcie of slave ports from the hsr device. Export this API for
-the same.
-
-This API needs the enum hsr_port_type to be accessible by the drivers using
-hsr. Move the enum hsr_port_type from net/hsr/hsr_main.h to
-include/linux/if_hsr.h for the same.
-
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
+Fixes: 26267bf9bb57 ("netfilter: flowtable: bridge vlan hardware offload and switchdev")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_hsr.h | 17 +++++++++++++++++
- net/hsr/hsr_device.c   | 13 +++++++++++++
- net/hsr/hsr_main.h     |  9 ---------
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ net/netfilter/nft_flow_offload.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index 0404f5bf4f30f..d7941fd880329 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -13,6 +13,15 @@ enum hsr_version {
- 	PRP_V1,
- };
- 
-+enum hsr_port_type {
-+	HSR_PT_NONE = 0,	/* Must be 0, used by framereg */
-+	HSR_PT_SLAVE_A,
-+	HSR_PT_SLAVE_B,
-+	HSR_PT_INTERLINK,
-+	HSR_PT_MASTER,
-+	HSR_PT_PORTS,	/* This must be the last item in the enum */
-+};
-+
- /* HSR Tag.
-  * As defined in IEC-62439-3:2010, the HSR tag is really { ethertype = 0x88FB,
-  * path, LSDU_size, sequence Nr }. But we let eth_header() create { h_dest,
-@@ -32,6 +41,8 @@ struct hsr_tag {
- #if IS_ENABLED(CONFIG_HSR)
- extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
-+struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+				     enum hsr_port_type pt);
- #else
- static inline bool is_hsr_master(struct net_device *dev)
- {
-@@ -42,6 +53,12 @@ static inline int hsr_get_version(struct net_device *dev,
- {
- 	return -EINVAL;
- }
-+
-+static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+						   enum hsr_port_type pt)
-+{
-+	return ERR_PTR(-EINVAL);
-+}
- #endif /* CONFIG_HSR */
- 
- #endif /*_LINUX_IF_HSR_H_*/
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index ae368cdcbd936..c568d91764235 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -676,6 +676,19 @@ bool is_hsr_master(struct net_device *dev)
- }
- EXPORT_SYMBOL(is_hsr_master);
- 
-+struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+				     enum hsr_port_type pt)
-+{
-+	struct hsr_priv *hsr = netdev_priv(ndev);
-+	struct hsr_port *port;
-+
-+	hsr_for_each_port(hsr, port)
-+		if (port->type == pt)
-+			return port->dev;
-+	return NULL;
-+}
-+EXPORT_SYMBOL(hsr_get_port_ndev);
-+
- /* Default multicast address for HSR Supervision frames */
- static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
- 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 37beb40763dba..677371bc36ea7 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -121,15 +121,6 @@ struct hsrv1_ethhdr_sp {
- 	struct hsr_sup_tag	hsr_sup;
- } __packed;
- 
--enum hsr_port_type {
--	HSR_PT_NONE = 0,	/* Must be 0, used by framereg */
--	HSR_PT_SLAVE_A,
--	HSR_PT_SLAVE_B,
--	HSR_PT_INTERLINK,
--	HSR_PT_MASTER,
--	HSR_PT_PORTS,	/* This must be the last item in the enum */
--};
--
- /* PRP Redunancy Control Trailor (RCT).
-  * As defined in IEC-62439-4:2012, the PRP RCT is really { sequence Nr,
-  * Lan indentifier (LanId), LSDU_size and PRP_suffix = 0x88FB }.
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index 14dd1c0698c3c..e95e5f59a3d6a 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -141,12 +141,19 @@ static void nft_dev_path_info(const struct net_device_path_stack *stack,
+ 				info->ingress_vlans |= BIT(info->num_encaps - 1);
+ 				break;
+ 			case DEV_PATH_BR_VLAN_TAG:
++				if (info->num_encaps >= NF_FLOW_TABLE_ENCAP_MAX) {
++					info->indev = NULL;
++					break;
++				}
+ 				info->encap[info->num_encaps].id = path->bridge.vlan_id;
+ 				info->encap[info->num_encaps].proto = path->bridge.vlan_proto;
+ 				info->num_encaps++;
+ 				break;
+ 			case DEV_PATH_BR_VLAN_UNTAG:
+-				info->num_encaps--;
++				if (WARN_ON_ONCE(info->num_encaps-- == 0)) {
++					info->indev = NULL;
++					break;
++				}
+ 				break;
+ 			case DEV_PATH_BR_VLAN_KEEP:
+ 				break;
 -- 
 2.51.0
 
