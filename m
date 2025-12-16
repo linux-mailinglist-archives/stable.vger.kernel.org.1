@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-201831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5605FCC27FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE09CC3071
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08B1C307D36D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3B93257B98
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23D4355034;
-	Tue, 16 Dec 2025 11:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4064350A19;
+	Tue, 16 Dec 2025 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzhahL1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBTrchXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D94D35502A;
-	Tue, 16 Dec 2025 11:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3663328E3;
+	Tue, 16 Dec 2025 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885932; cv=none; b=JdSvdF1J4J8vyEnNr7GWCzGDw3/I2gOoy8g2UN7TkZgqhl46V94F+8PZB3Oco7vXTiLOD1niYqmtvWuch4nYUTt8Sog/IeYtvjR5MR6M/3vRrIzhTHLcFnke6gzghOaDYtQboR9jQPDlIxjOzsl59nslA9mtewp+UxU5FwQZzBg=
+	t=1765887869; cv=none; b=HEsVQN5Jz08e1oiI1cOg5GEDNnPuA7cB/BnbO6FxFGC8lvkeOvUqn7WzRzOiQ3eFdZQU7orTQnJw2VZuMydmeh5TJZNAzKXQ4lUjlYsb8wZoBbgExC6JKKgYQ2w/H8Dq9Fpw+NXh8G0KRGo/8KjWheHqQW+kkOsf810OOlEmntE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885932; c=relaxed/simple;
-	bh=A0k3qKXZhMV4LhBNueyRYdk1eCw/AP2SRjLGgP4Vo+I=;
+	s=arc-20240116; t=1765887869; c=relaxed/simple;
+	bh=zp5oPP1uVzVV0TfYzAPQ1aK6PjAVKnEzbeNOA9iVfZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJQib717X6rgyaTJUX9e2o0SYBCH6HcbgAb+5MtZuvfGCoGNhzpeMW0KB+9goW1a8HgfGHb81rOsJ3uECNdJ5DS87zMjMH3SFp2Y2pbbusO+4V9Q6nttFJARwlN8DBqZ+1g9u8+F2F41Vz9d3e2NhtKJDXDm6Qj1XkA27Nd6e/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzhahL1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B2EC4CEF1;
-	Tue, 16 Dec 2025 11:52:11 +0000 (UTC)
+	 MIME-Version; b=tLk5LbODellflzGULVuT/Z6HJWsSMTb5Hmi9PUHTlECjrrByh1dqtlCLlycFen/L7wkIIS7HWoU1CwLU1o0z5inHNE+wJjgv1VrV+QDko+b82D19U8CrVwnYGQhqnyOZoggUYouxSLDQcfNMidpwIOnZzXH1BV1gJAReAmdQNTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBTrchXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AB3C4CEF1;
+	Tue, 16 Dec 2025 12:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885932;
-	bh=A0k3qKXZhMV4LhBNueyRYdk1eCw/AP2SRjLGgP4Vo+I=;
+	s=korg; t=1765887869;
+	bh=zp5oPP1uVzVV0TfYzAPQ1aK6PjAVKnEzbeNOA9iVfZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzhahL1D5RK5u/1SQTRGM4FONVnh98oTEYkXbrOntx4VLnfBS+qjCckyZHEuq5kvH
-	 gfxh4bTfCGD0KCXdGx5+rRfzprbcWvNx4j/bbTAmzrjgXcxX+J8ID2Rf8/+fIcisn2
-	 P44DFW53P/Ejjo7L8u3IksRfoAjSy3GPJC9w8Dcs=
+	b=OBTrchXunWe4XqxM8R3XbOEcQ+j3BdWlD2Xkm8fztLw7mWzr3dMzydXpOoaWtcMeo
+	 mL8HxCXZVgzhosypiS0lM0fC9+YrgeUG/BX57d/3IBhwU5m5rsH5byFWTTMu45lEdR
+	 g6uqMS8qUFEtnttrDIR/IYDWfij7ELplODXUXk2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 288/507] leds: rgb: leds-qcom-lpg: Dont enable TRILED when configuring PWM
-Date: Tue, 16 Dec 2025 12:12:09 +0100
-Message-ID: <20251216111355.910339281@linuxfoundation.org>
+Subject: [PATCH 6.18 363/614] usb: dwc2: fix hang during shutdown if set as peripheral
+Date: Tue, 16 Dec 2025 12:12:10 +0100
+Message-ID: <20251216111414.512400319@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 072cd5f458d76b9e15d89ebdaea8b5cb1312eeef ]
+[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
 
-The PWM signal from the LPG channel can be routed to PMIC GPIOs with
-proper GPIO configuration, and it is not necessary to enable the
-TRILED channel in that case. This also applies to the LPG channels
-that mapped to TRILED channels. Additionally, enabling the TRILED
-channel unnecessarily would cause a voltage increase in its power
-supply. Hence remove it.
+dwc2 on most platforms needs phy controller, clock and power supply.
+All of them must be enabled/activated to properly operate. If dwc2
+is configured as peripheral mode, then all the above three hardware
+resources are disabled at the end of the probe:
 
-Fixes: 24e2d05d1b68 ("leds: Add driver for Qualcomm LPG")
-Signed-off-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://patch.msgid.link/20251119-lpg_triled_fix-v3-2-84b6dbdc774a@oss.qualcomm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+	/* Gadget code manages lowlevel hw on its own */
+	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc2_lowlevel_hw_disable(hsotg);
+
+But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
+level. This would result in hang during shutdown if dwc2 is configured
+as peripheral mode.
+
+Fix this hang by only disable and sync irq when lowlevel hw is enabled.
+
+Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/dwc2/platform.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 4f2a178e3d265..e197f548cddb0 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (c) 2017-2022 Linaro Ltd
-  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #include <linux/bits.h>
- #include <linux/bitfield.h>
-@@ -1247,8 +1247,6 @@ static int lpg_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 3f83ecc9fc236..b07bdf16326a4 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -369,11 +369,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
+ {
+ 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
  
- 	lpg_apply(chan);
- 
--	triled_set(lpg, chan->triled_mask, chan->enabled ? chan->triled_mask : 0);
+-	dwc2_disable_global_interrupts(hsotg);
+-	synchronize_irq(hsotg->irq);
 -
- out_unlock:
- 	mutex_unlock(&lpg->lock);
+-	if (hsotg->ll_hw_enabled)
++	if (hsotg->ll_hw_enabled) {
++		dwc2_disable_global_interrupts(hsotg);
++		synchronize_irq(hsotg->irq);
+ 		dwc2_lowlevel_hw_disable(hsotg);
++	}
+ }
  
+ /**
 -- 
 2.51.0
 
