@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4969ECC2DC4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BADCC3065
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8532031B6A40
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F9DE3254A69
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C40342CB1;
-	Tue, 16 Dec 2025 11:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92B0354AFC;
+	Tue, 16 Dec 2025 12:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoRvuMzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odeg8Ydv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF2E342CB2;
-	Tue, 16 Dec 2025 11:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B96354AF2;
+	Tue, 16 Dec 2025 12:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884978; cv=none; b=m5xAphnJMjRhCWMdYYZ4EVIZGm4BfZzAgsFuqigOaV/qNMdvLXBDqHfNLkPc2drLBVmeWf4JKzWR97gAm/hf6e7CfuN2L9k4LDS4EG6mb0w25uNVLYYY+fpa3KjgM4BAJTsbEjZ3SZI7GB2C2t3Zx/GrvWmG5qpyw2dtxfvMKsc=
+	t=1765886481; cv=none; b=gj0u7ffpo69B/RoGRYabSNXOWaKrI1OU+3UI/4EGdq8xeqXnx28cogyxJYiAo4OhVLptSaZalkd6IwBx/wycItoSis1JIkrrePWAVlDdv5D2aLWZX00DddRfc9vw/VEV4LKygG8GrJPy2mvZFPuxD2A7QdIGHRPKZ4u30WrwfFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884978; c=relaxed/simple;
-	bh=j1H1P8JMwnbc9zL2mPswzspQNFrAGEh8PAEugZoQEDE=;
+	s=arc-20240116; t=1765886481; c=relaxed/simple;
+	bh=fSaJUnC6iB6Gg0fwxu5jNbAYscbUPwQSFbVT2vG7r5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2L8OpHzvBoGEDn7FiQ3lGsJHKO4m9nJEjg11PTBUTlqGFiXrRb1kc4Rsl09f9iLsBkAkg6TMboWYVZM+Sfk2n6vNQJtIlvRmNcdbcV5fyifNztfiTOwojVgEkTYCGBUvpOdNoEHJjgZStGIRvOxn/+2mAbxJy9lsCkNOOQDr60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoRvuMzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8368C4CEF1;
-	Tue, 16 Dec 2025 11:36:17 +0000 (UTC)
+	 MIME-Version; b=W9HFfg210RHxbiaxpDFLOkHG49RL/zSwL2FGa/5KIGj6O9dpM/+XZ12Kfui2GtJ2W67TE+lxNKekBHeetvSinj1anq8higeWnN4zxGVGZpVGqRMV7e2tcP1X3awWZUCOg9BYwGsa41QDz3qozDztz+ffaLxaXVh0TYwDl6H0Yak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odeg8Ydv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13136C4CEF1;
+	Tue, 16 Dec 2025 12:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884978;
-	bh=j1H1P8JMwnbc9zL2mPswzspQNFrAGEh8PAEugZoQEDE=;
+	s=korg; t=1765886481;
+	bh=fSaJUnC6iB6Gg0fwxu5jNbAYscbUPwQSFbVT2vG7r5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SoRvuMzodqKYXq2ZlDmoeKQgKT8mNg5vfY4FuFJiHZHZN0+zDdEMyjShL9FzKs/05
-	 YdEi/bWXVEBQgGptAPTyO94In28MDuPZ5FYwiW/QqX9ps+JOGThBLTKcR9TIUE66Yd
-	 jLjBCGqoljJIDctxUEMl7pH6PFgs4+DWlG4a255E=
+	b=odeg8YdvrZ7WS5nu2BaZyLAvMyE1JXmFNFUfUkS3fjnQ3LxblbbY1vbnXqt4kNCAr
+	 awb4jrxyLglNK1t8wbLtpHj1iFOJG1hESh86fUNH5qVnH2ZA+XWtr/6v/K+eaYHwWW
+	 7ygmptD9mI04afuyhVAZV8YIpUEdyyEop++k/3bU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Israel Rukshin <israelr@nvidia.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 323/354] nvme-auth: use kvfree() for memory allocated with kvcalloc()
+Subject: [PATCH 6.17 449/507] Revert "nfs: clear SB_RDONLY before getting superblock"
 Date: Tue, 16 Dec 2025 12:14:50 +0100
-Message-ID: <20251216111332.612250615@linuxfoundation.org>
+Message-ID: <20251216111401.719548748@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Israel Rukshin <israelr@nvidia.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit bb9f4cca7c031de6f0e85f7ba24abf0172829f85 ]
+[ Upstream commit d216b698d44e33417ad4cc796cb04ccddbb8c0ee ]
 
-Memory allocated by kvcalloc() may come from vmalloc or kmalloc,
-so use kvfree() instead of kfree() for proper deallocation.
+This reverts commit 8cd9b785943c57a136536250da80ba1eb6f8eb18.
 
-Fixes: aa36d711e945 ("nvme-auth: convert dhchap_auth_list to an array")
-Signed-off-by: Israel Rukshin <israelr@nvidia.com>
-Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
+
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 8cd9b785943c ("nfs: clear SB_RDONLY before getting superblock")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/super.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
-index 5ea0e21709da3..c2fb22bf6846e 100644
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -994,7 +994,7 @@ void nvme_auth_free(struct nvme_ctrl *ctrl)
- 	if (ctrl->dhchap_ctxs) {
- 		for (i = 0; i < ctrl_max_dhchaps(ctrl); i++)
- 			nvme_auth_free_dhchap(&ctrl->dhchap_ctxs[i]);
--		kfree(ctrl->dhchap_ctxs);
-+		kvfree(ctrl->dhchap_ctxs);
- 	}
- 	if (ctrl->host_key) {
- 		nvme_auth_free_key(ctrl->host_key);
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 527000f5d150c..9b9464e70a7f0 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1308,17 +1308,8 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (IS_ERR(server))
+ 		return PTR_ERR(server);
+ 
+-	/*
+-	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
+-	 * superblock among each filesystem that mounts sub-directories
+-	 * belonging to a single exported root path.
+-	 * To prevent interference between different filesystems, the
+-	 * SB_RDONLY flag should be removed from the superblock.
+-	 */
+ 	if (server->flags & NFS_MOUNT_UNSHARED)
+ 		compare_super = NULL;
+-	else
+-		fc->sb_flags &= ~SB_RDONLY;
+ 
+ 	/* -o noac implies -o sync */
+ 	if (server->flags & NFS_MOUNT_NOAC)
 -- 
 2.51.0
 
