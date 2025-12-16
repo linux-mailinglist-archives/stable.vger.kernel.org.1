@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-202222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418E6CC2E60
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE2BCC37C9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C950431F981A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEB1C3038F24
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE3C34DB52;
-	Tue, 16 Dec 2025 12:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341A334EEE6;
+	Tue, 16 Dec 2025 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSwvqu9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdPRU2Ty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2734E750;
-	Tue, 16 Dec 2025 12:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA3934EEF0;
+	Tue, 16 Dec 2025 12:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887211; cv=none; b=Pt3JWXXxvLdJariX6Zh7Mfd3jWUsTboFl56d7ZnUvYnddTxtYHGiqw4C0u7IgjAMJTXiCarWf/y5qpuJ3ZUe6JDAXBgHPuxcX+9S8bGdOEh2ZzdpsTxJY9Fkk+8eIdArvpFDWoxPFxn/zqWb1tnYQTFRSqtMD0i1bWpgZkA/HE4=
+	t=1765887217; cv=none; b=LOLIwIudhnbbULcs4pwp+hh/pC7in2qIzMwlX4ecUZbxIlMobqykyD4ZMEVhtkm3OS88Tk56eckX24HDlHWxHFsVpA908kjS+K0k9yoiVOMQOx4ts0ZozP+uuM1J1/2agbUvqPjC5/LyJek1qUahObmtz+qSL06uawMm6xac15k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887211; c=relaxed/simple;
-	bh=OK+M5LYWpSppujutDjK/iTZD9+T3B33uCotgEple5a4=;
+	s=arc-20240116; t=1765887217; c=relaxed/simple;
+	bh=ovHzXjeThtM0UpMuapJLnqnvcs/eXLsS9D3wS3DYiuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAwpbfz4haNgSQ4EQTeJ9IODB7MZ7tIIxAvNAhEzhDhddGF1+729pb04N21LetyPjTBlniQ5ZNqW5l2EEajmBWW2c6oRvD8LjDtnmVRT3T7/CXZNJL37iqX8LYg7wJwdKytXnJIP7trwOYgdXuQYfbF/32gpjbtl3UFOPliWlqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSwvqu9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804F0C4CEF5;
-	Tue, 16 Dec 2025 12:13:30 +0000 (UTC)
+	 MIME-Version; b=QresP7sq+Br+tmbJ/mlvQgRTND8P1FTSXr53y3kVio44BHVxzUdZARldzjvrTxuY+KD1g0NcskxAzSjc66cSK095SGEsaorx6VdkCxEh0HUQcJyuzrZFXU4OvQIHi2jwZNGxniUsK4wDyeed/EvOx7mawaWiwu01wlVALWxsoTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdPRU2Ty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE34BC4CEF1;
+	Tue, 16 Dec 2025 12:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887210;
-	bh=OK+M5LYWpSppujutDjK/iTZD9+T3B33uCotgEple5a4=;
+	s=korg; t=1765887216;
+	bh=ovHzXjeThtM0UpMuapJLnqnvcs/eXLsS9D3wS3DYiuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSwvqu9Lnal2DTHsBpjYKAcbgivua+18c5rNZhZE3ntQ+HOAjjYZesm9COG4B6XKu
-	 YQMPAZycDwdfPDvrtCjfCRnJNXd9dp6gml5R7zOO+BvFwNzBQUONkRa8LFVkg4c6is
-	 KKcS6BUXW0imuZB5iiM/6XTCPIrCr7pVdzim/H6I=
+	b=QdPRU2Tygc8W4UivH/EKJcIH+182qscwX1FKd2R5XPCC9wGTzr56kQzdvWIOzC6h7
+	 2iv+qmMHdWx04ikku7yASsizJKk8jemft8rAoRWmcJEomApfJ/wtf5UxAJbnKGiHjH
+	 EbZmBXg4O06uVWSozKlcnFu3cj4+37aVAJxzGSc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
 	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 160/614] wifi: ath12k: fix potential memory leak in ath12k_wow_arp_ns_offload()
-Date: Tue, 16 Dec 2025 12:08:47 +0100
-Message-ID: <20251216111407.134254497@linuxfoundation.org>
+Subject: [PATCH 6.18 161/614] wifi: ath12k: fix reusing m3 memory
+Date: Tue, 16 Dec 2025 12:08:48 +0100
+Message-ID: <20251216111407.169555946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,36 +65,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit be5febd51c478bc8e24ad3480435f2754a403b14 ]
+[ Upstream commit 00575bb44b2c2aa53d0a768de2b80c9c1af0174d ]
 
-When the call to ath12k_wmi_arp_ns_offload() fails, the temporary memory
-allocation for offload is not freed before returning. Fix that by
-freeing offload in the error path.
+During firmware recovery or suspend/resume, m3 memory could be reused if
+the size of the new m3 binary is equal to or less than that of the
+existing memory. There will be issues for the latter case, since
+m3_mem->size will be updated with a smaller value and this value is
+eventually used in the free path, where the original total size should be
+used instead.
 
-Fixes: 1666108c74c4 ("wifi: ath12k: support ARP and NS offload")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251028170457.134608-1-nihaal@cse.iitm.ac.in
+To fix it, add a new member in m3_mem_region structure to track the original
+memory size and use it in free path.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+
+Fixes: 05090ae82f44 ("wifi: ath12k: check M3 buffer size as well whey trying to reuse it")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251029-ath12k-fix-m3-reuse-v1-1-69225bacfc5d@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wow.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++----
+ drivers/net/wireless/ath/ath12k/qmi.h |  5 ++++-
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index dce9bd0bcaefb..e8481626f1940 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -758,6 +758,7 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set arp ns offload vdev %i: enable %d, ret %d\n",
- 				    arvif->vdev_id, enable, ret);
-+			kfree(offload);
- 			return ret;
- 		}
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 36325e62aa242..8de9aee2498ec 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
+ #include <linux/elf.h>
+@@ -3114,9 +3114,10 @@ static void ath12k_qmi_m3_free(struct ath12k_base *ab)
+ 	if (!m3_mem->vaddr)
+ 		return;
+ 
+-	dma_free_coherent(ab->dev, m3_mem->size,
++	dma_free_coherent(ab->dev, m3_mem->total_size,
+ 			  m3_mem->vaddr, m3_mem->paddr);
+ 	m3_mem->vaddr = NULL;
++	m3_mem->total_size = 0;
+ 	m3_mem->size = 0;
+ }
+ 
+@@ -3152,7 +3153,7 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
+ 
+ 	/* In recovery/resume cases, M3 buffer is not freed, try to reuse that */
+ 	if (m3_mem->vaddr) {
+-		if (m3_mem->size >= m3_len)
++		if (m3_mem->total_size >= m3_len)
+ 			goto skip_m3_alloc;
+ 
+ 		/* Old buffer is too small, free and reallocate */
+@@ -3164,11 +3165,13 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
+ 					   GFP_KERNEL);
+ 	if (!m3_mem->vaddr) {
+ 		ath12k_err(ab, "failed to allocate memory for M3 with size %zu\n",
+-			   fw->size);
++			   m3_len);
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
+ 
++	m3_mem->total_size = m3_len;
++
+ skip_m3_alloc:
+ 	memcpy(m3_mem->vaddr, m3_data, m3_len);
+ 	m3_mem->size = m3_len;
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
+index 4767d9a2e309e..7a88268aa1e9e 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.h
++++ b/drivers/net/wireless/ath/ath12k/qmi.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
+ #ifndef ATH12K_QMI_H
+@@ -120,6 +120,9 @@ struct target_info {
+ };
+ 
+ struct m3_mem_region {
++	/* total memory allocated */
++	u32 total_size;
++	/* actual memory being used */
+ 	u32 size;
+ 	dma_addr_t paddr;
+ 	void *vaddr;
 -- 
 2.51.0
 
