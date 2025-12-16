@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9646ACC25C8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25636CC355E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4443230F1966
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 238E93015112
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD182343D7B;
-	Tue, 16 Dec 2025 11:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E80A1B3925;
+	Tue, 16 Dec 2025 12:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6NBnsT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVpDL5pD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F60E342C9E;
-	Tue, 16 Dec 2025 11:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A99032C936;
+	Tue, 16 Dec 2025 12:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884889; cv=none; b=nCz7GbzfUzTFuclt9VjGaIjSxGzVtfDsFKFOauKFuS94MYipU9au3UxXI4apqdkNlV5vPI/nUA8aCU8Vq1r/BfCEULgKYY20R8taicrGUkG7lu9Tboupab6qYyU87s8kKOo6fdFV66byDYcCelrfONw0k5fmmO1PXAAufhl8ojU=
+	t=1765888536; cv=none; b=grTxnyrKDbaITVZ0EWH3caFSsBgVhmcvQ0Hn7184W+wnxexTjHHeebEkW/gz/xfEMtnYjnh5eaz3IJC9zLtmdHiMnES2ENebdwvK61gWQzc+xG+eRmP1VxFdhpYnBNqmidU229xgZ6wx46yvnTtNk5JqLb3FWiAvvRbGY0AwVFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884889; c=relaxed/simple;
-	bh=dU0p12wom2untaYCBQU9Vl5v+Ehq0ORSluDC35VG0RI=;
+	s=arc-20240116; t=1765888536; c=relaxed/simple;
+	bh=o6d8raLnGjOW/uskW2hvnmQ+5Jobg2wMO35nW0YFK2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdg0pMJ38kslRZyM/UOGGwgbet8eL9aI70zXffux6JqLA2Ire4CUKGhjF4s+zIM/Fj+VajduxJjPZZcrQYvoc1FSDZBkes5WCmyofDs6vffdbsYB63ykZHqQuZOYrX6Fmp6DbhmGISjSmTjTZyuDTyPTRJaHD2HXL5PCZF4xSxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6NBnsT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD912C4CEF1;
-	Tue, 16 Dec 2025 11:34:48 +0000 (UTC)
+	 MIME-Version; b=nAo7YaQMCRfr7nZMUnzpUPr5jwzB9ElG4beCuALDEAhRsuXoXh07yCMkPqqOjN3MQ2YB7w79k7Rr7tiePzrTJktHBu5N2jwuJMwzzHMk/0JYzLwmMbBMpJGplm+dYYlY1LUpZzmQ542FdI9YjV/Skm1RpX9vRcyicy+oBLsZDiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVpDL5pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D69C4CEF1;
+	Tue, 16 Dec 2025 12:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884889;
-	bh=dU0p12wom2untaYCBQU9Vl5v+Ehq0ORSluDC35VG0RI=;
+	s=korg; t=1765888535;
+	bh=o6d8raLnGjOW/uskW2hvnmQ+5Jobg2wMO35nW0YFK2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6NBnsT4uwtXEAeqpif0EkTjKeyyISmFZ3oB0Y7GV94EZM8OVlghaJaa01uMjFOL+
-	 AAwOmySJGfalcv/s/HmUgK5flKp/o6N3iOmTzdcr817gDN7qyErhYfwoa3vWDJCBhU
-	 9rei4alSSurc3GNNRlXi/4AJP/KaFrXGdHPmiaxg=
+	b=CVpDL5pDJS09U9jAmNB5eM5nfxtuFOeSdjEoHaoTVMXxk4nNdKgx+QyRa0n5wjaTH
+	 +0K4pLydytmE5ii9ciUsFhweo0YTpGlYWAemaQMRjv2JI67MWtB1GS6Mv/MPlocZhT
+	 UBrR/u/RXmJaSt6eKFlqAh47e1WXk47lDUpT/j9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/354] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
+Subject: [PATCH 6.18 530/614] pinctrl: single: Fix incorrect type for error return variable
 Date: Tue, 16 Dec 2025 12:14:57 +0100
-Message-ID: <20251216111332.865528424@linuxfoundation.org>
+Message-ID: <20251216111420.580998589@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
+[ Upstream commit 61d1bb53547d42c6bdaec9da4496beb3a1a05264 ]
 
-atomic_pool_expand iteratively tries the allocation while decrementing
-the page order. There is no need to issue a warning if an attempted
-allocation fails.
+pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
+but assign it the return values of pcs_get_function() that may return
+negative error codes. This causes negative error codes to be
+converted to large positive values.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
-[mszyprow: fixed typo]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
+Change ret from unsigned int to int in both functions.
+
+Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index ee45dee33d491..26392badc36b0 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -93,7 +93,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 			page = dma_alloc_from_contiguous(NULL, 1 << order,
- 							 order, false);
- 		if (!page)
--			page = alloc_pages(gfp, order);
-+			page = alloc_pages(gfp | __GFP_NOWARN, order);
- 	} while (!page && order-- > 0);
- 	if (!page)
- 		goto out;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 6d580aa282ec9..998f23d6c3179 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -485,7 +485,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
+ 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
+ 	struct pcs_function *func;
+ 	enum pin_config_param param;
+-	unsigned offset = 0, data = 0, i, j, ret;
++	unsigned offset = 0, data = 0, i, j;
++	int ret;
+ 
+ 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (ret)
+@@ -549,9 +550,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ {
+ 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
+ 	struct pcs_function *func;
+-	unsigned offset = 0, shift = 0, i, data, ret;
++	unsigned offset = 0, shift = 0, i, data;
+ 	u32 arg;
+-	int j;
++	int j, ret;
+ 	enum pin_config_param param;
+ 
+ 	ret = pcs_get_function(pctldev, pin, &func);
 -- 
 2.51.0
 
