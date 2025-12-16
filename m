@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C385CC2241
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13844CC3BCC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B0BC30164D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D79E3078A32
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B04341ADD;
-	Tue, 16 Dec 2025 11:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9100834EEF4;
+	Tue, 16 Dec 2025 11:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ8ppx9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3alAx0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3583341AD6;
-	Tue, 16 Dec 2025 11:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B25834EEF1;
+	Tue, 16 Dec 2025 11:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884108; cv=none; b=g4CEgYYAYsutGx/+vW7CIf3d7SCLFAkuJ2CdfeGY9c4zu+ykYnMKVClP8qetCxy0ZeyylYSd3aaL/hjCKByd+PghCXFUoZJlK7BYqPgO0heF9zLBVYpeBAhsMY4MC40iZ9cRKNBdAomgkoVQxVatoI0fmHSLlJgOvCmkKpCPMNQ=
+	t=1765885616; cv=none; b=oILNp9gKjpmIZZmx2oRUBvwhN55keHNmifnS+zgiwIqYsuH7irvvRfNqPiwwg2NtK6aO9YTvtct/4DMEaLuTfOHmkJqv0lio+B8wQ4kOQn6lK6YWabVD94C+IZVBs13NUIl/El4U+5QgGUtuqpBLUeg7bjD5vcch/68ypCHEoBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884108; c=relaxed/simple;
-	bh=mGwJ3hudlrKSqQqL9biwPMdZG9A4wbYelk3gsUlIvgs=;
+	s=arc-20240116; t=1765885616; c=relaxed/simple;
+	bh=JlhFRIPA1BiOhAsDEjGSpu8pgBpCz7S2/gz3ciVeEsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEDTgeF623BMqAk56DZRHLzxMMDF+9vVqU1sitSsZ/bojw6PS8Q8I/Vy/k93A7rVpfR99MYqliOIIASTFdoEUC5L1WgoRZMUuGteghFTldge0pNxFBJDFuLMFpZP+9c/4ezKw1AlgBIUyCDHLiD+NhUXOeHLEDJH0i07BHaowhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ8ppx9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD3C16AAE;
-	Tue, 16 Dec 2025 11:21:46 +0000 (UTC)
+	 MIME-Version; b=RvHUmpxTZSEG296QuXqF/7GdZCLSirHk8xCWPla4BusSXMf17X/RCJn3lKlpRHvtDRqGiCxGbNDnn1UABgyiJO8Br56XFRVbF7RqFLojXoFQAE2UPr3mtl2qsWQnldemxnQZnVYFJMEz4x0lJNQzFdhRG+HO7Ri0WadY+qsg1b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3alAx0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DEDC4CEF1;
+	Tue, 16 Dec 2025 11:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884107;
-	bh=mGwJ3hudlrKSqQqL9biwPMdZG9A4wbYelk3gsUlIvgs=;
+	s=korg; t=1765885616;
+	bh=JlhFRIPA1BiOhAsDEjGSpu8pgBpCz7S2/gz3ciVeEsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQ8ppx9PtzRs/d4BisnW1lAdDrcvahcmClLnWIu0IZKCvQWx29YJAc4xOgO0PIubf
-	 Ezj846ETqb2iVsBlVIE6+dkIfhA8FkAvR2qMMJ5gAwvvLJ5MvtHAdSs64ipGxfuJAr
-	 h9EA3KP5CYfxRy6+tP/ApL1mlchaBd7LeMAKHRT8=
+	b=g3alAx0UVkJAx/i/7SDgKO1TLBWuygHcbYXlyvr5Bun3LF47iI8kENpBHocomWpM6
+	 AVuIQVQMpUJxoYkbXQ1fzusukPhDozPUOBQLgqwI/rYYxL4T/BENGFxmGV4Aarv2VI
+	 kdhyQ2FGDjAycfadsE9ULoZzlPRsfTJPeptvMP1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Xiao Ni <xni@redhat.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/354] wifi: ath11k: fix VHT MCS assignment
+Subject: [PATCH 6.17 192/507] md: avoid repeated calls to del_gendisk
 Date: Tue, 16 Dec 2025 12:10:33 +0100
-Message-ID: <20251216111323.318489556@linuxfoundation.org>
+Message-ID: <20251216111352.467532936@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit 47d0cd6bccb4604192633cc8d29511e85d811fc0 ]
+[ Upstream commit 90e3bb44c0a86e245d8e5c6520206fa113acb1ee ]
 
-While associating, firmware needs to know peer's receive capability to
-calculate its own VHT transmit MCS, currently host sends this information
-to firmware via mcs->rx_mcs_set field, this is wrong as firmware actually
-takes it from mcs->tx_mcs_set field. Till now there is no failure seen
-due to this, most likely because almost all peers are advertising the
-same capability for both transmit and receive. Swap the assignment to
-fix it.
+There is a uaf problem which is found by case 23rdev-lifetime:
 
-Besides, rate control mask is meant to limit our own transmit MCS, hence
-need to go via mcs->tx_mcs_set field. With the aforementioned swapping
-done, change is needed as well to apply it to the peer's receive
-capability rather than transmit capability.
+Oops: general protection fault, probably for non-canonical address 0xdead000000000122
+RIP: 0010:bdi_unregister+0x4b/0x170
+Call Trace:
+ <TASK>
+ __del_gendisk+0x356/0x3e0
+ mddev_unlock+0x351/0x360
+ rdev_attr_store+0x217/0x280
+ kernfs_fop_write_iter+0x14a/0x210
+ vfs_write+0x29e/0x550
+ ksys_write+0x74/0xf0
+ do_syscall_64+0xbb/0x380
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff5250a177e
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+The sequence is:
+1. rdev remove path gets reconfig_mutex
+2. rdev remove path release reconfig_mutex in mddev_unlock
+3. md stop calls do_md_stop and sets MD_DELETED
+4. rdev remove path calls del_gendisk because MD_DELETED is set
+5. md stop path release reconfig_mutex and calls del_gendisk again
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-1-da40825c1783@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+So there is a race condition we should resolve. This patch adds a
+flag MD_DO_DELETE to avoid the race condition.
+
+Link: https://lore.kernel.org/linux-raid/20251029063419.21700-1-xni@redhat.com
+Fixes: 9e59d609763f ("md: call del_gendisk in control path")
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Suggested-by: Yu Kuai <yukuai@fnnas.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c |  4 ++--
- drivers/net/wireless/ath/ath11k/wmi.c | 13 ++++++++-----
- drivers/net/wireless/ath/ath11k/wmi.h |  2 ++
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/md/md.c | 3 ++-
+ drivers/md/md.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 419c9497800af..9521fcb2c11ce 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2225,9 +2225,9 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
- 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
- 	arg->rx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.rx_highest);
- 	arg->rx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map);
-+	arg->rx_mcs_set = ath11k_peer_assoc_h_vht_limit(arg->rx_mcs_set, vht_mcs_mask);
- 	arg->tx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.tx_highest);
--	arg->tx_mcs_set = ath11k_peer_assoc_h_vht_limit(
--		__le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map), vht_mcs_mask);
-+	arg->tx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map);
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 436aab6c5d3de..209ca3eade260 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -887,7 +887,8 @@ void mddev_unlock(struct mddev *mddev)
+ 		 * do_md_stop. dm raid only uses md_stop to stop. So dm raid
+ 		 * doesn't need to check MD_DELETED when getting reconfig lock
+ 		 */
+-		if (test_bit(MD_DELETED, &mddev->flags)) {
++		if (test_bit(MD_DELETED, &mddev->flags) &&
++		    !test_and_set_bit(MD_DO_DELETE, &mddev->flags)) {
+ 			kobject_del(&mddev->kobj);
+ 			del_gendisk(mddev->gendisk);
+ 		}
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index c989cc9f6216b..0a1a227f106b0 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -353,6 +353,7 @@ enum mddev_flags {
+ 	MD_HAS_MULTIPLE_PPLS,
+ 	MD_NOT_READY,
+ 	MD_BROKEN,
++	MD_DO_DELETE,
+ 	MD_DELETED,
+ };
  
- 	/* In IPQ8074 platform, VHT mcs rate 10 and 11 is enabled by default.
- 	 * VHT mcs rate 10 and 11 is not suppoerted in 11ac standard.
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index bfca9d3639810..6f1fd7d661a89 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
-@@ -2061,10 +2061,13 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
- 	cmd->peer_bw_rxnss_override |= param->peer_bw_rxnss_override;
- 
- 	if (param->vht_capable) {
--		mcs->rx_max_rate = param->rx_max_rate;
--		mcs->rx_mcs_set = param->rx_mcs_set;
--		mcs->tx_max_rate = param->tx_max_rate;
--		mcs->tx_mcs_set = param->tx_mcs_set;
-+		/* firmware interprets mcs->tx_mcs_set field as peer's
-+		 * RX capability
-+		 */
-+		mcs->tx_max_rate = param->rx_max_rate;
-+		mcs->tx_mcs_set = param->rx_mcs_set;
-+		mcs->rx_max_rate = param->tx_max_rate;
-+		mcs->rx_mcs_set = param->tx_mcs_set;
- 	}
- 
- 	/* HE Rates */
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 9fcffaa2f383c..6e9354297e71d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -4133,8 +4133,10 @@ struct wmi_rate_set {
- struct wmi_vht_rate_set {
- 	u32 tlv_header;
- 	u32 rx_max_rate;
-+	/* MCS at which the peer can transmit */
- 	u32 rx_mcs_set;
- 	u32 tx_max_rate;
-+	/* MCS at which the peer can receive */
- 	u32 tx_mcs_set;
- 	u32 tx_max_mcs_nss;
- } __packed;
 -- 
 2.51.0
 
