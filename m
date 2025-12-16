@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-201851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88372CC283F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:01:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E38DCC29ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD90430D9857
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0900A300501E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C9338F2F;
-	Tue, 16 Dec 2025 11:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D0934404E;
+	Tue, 16 Dec 2025 11:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+DLH1Y3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhdY0P44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210C52C0276;
-	Tue, 16 Dec 2025 11:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E394A3128AC;
+	Tue, 16 Dec 2025 11:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885999; cv=none; b=hFpdVXUBRsi7w9uzNd6M8abYqf06+cvInCsLTBsgXusMmvSS0aMeiOgnTCXY/KET4WpyRGaQLGAXlARCyluhpy6+uDeYIgr2FmDbNNs2VCO3t3fCrEqi937bwRE2TttF+t+atQsNeli1QO25fqqp0GJBheU6+HpSc89hTKjfYqI=
+	t=1765886023; cv=none; b=DWBBHwDt8wFbsF8q8yUqIuO5E3eLbQQ6Xbybeo/+7VceTxQiqDoIzZEkU5WMQMp04H3WCOO7OmTvHo/enaCKWN1lghwMtj4zjfRyZzMo1TOxkyAV9fbbIdTpMozE/umR4ei7VHd0j2iPwfLfy3r2JQqLAu7bh0iIGDfHpbQNeyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885999; c=relaxed/simple;
-	bh=4i0a4G56vDwpIFPztPhUrJo0eLqlwnrOwiTbFq12NbE=;
+	s=arc-20240116; t=1765886023; c=relaxed/simple;
+	bh=0x4BTTbYSqtQ4Ip6OfXlFWQBZ8m1J2MQVR1ns1Gmt2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awDief1e3ozk87lTxS0GXOaLzbGsIsxlUjsxxPBVnmkiJv1xZH8Qj2+O9bk0R7iUYsI8sIvf8lk4jPb5EzLMn/IKhjTMF8rsdWHsa2v6jUIOezasrDHxrPh63AtP0noGOlwefMB9SSp4286XP+Xxx5jJxSqB3Sb7NQXidV9GwOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+DLH1Y3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A148C4CEF5;
-	Tue, 16 Dec 2025 11:53:18 +0000 (UTC)
+	 MIME-Version; b=oVJ0u75lK0oa3JKNaDIZYwRGOLeZOUZsPhQWCxEqCtyKJdjzvh3AChRe3Xs7CC9Rxx+7qxs1/keAM8ibBATqlX3AfOQ/BNq3b/IVPbNoF9JqLd9SjLM7TPa1KCXGL9W5lRkwFEkdZ2s1a9wQFpakWWqGle6lJtTv9mO340FsxN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhdY0P44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC4CEF1;
+	Tue, 16 Dec 2025 11:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885998;
-	bh=4i0a4G56vDwpIFPztPhUrJo0eLqlwnrOwiTbFq12NbE=;
+	s=korg; t=1765886022;
+	bh=0x4BTTbYSqtQ4Ip6OfXlFWQBZ8m1J2MQVR1ns1Gmt2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+DLH1Y3dZxQQ17S5EdBaci+HWNByO9EXCgvmH9W494lIOfW9i8uDYuEMJcr4B8Ht
-	 LeoECvAmVm9XDOncwc7nlKAwwA1bttpRjSfa1LP3GM1ltY9ExyrpFoAdTLIIXL7/tl
-	 x7szr5sEBFy0tySAtfnTT3HWw2mk7dFKtfWTwe7k=
+	b=qhdY0P442q83ZCRVR1pOiAcK8Xrt3VfkioLmLoGNdJRS4OYaM6tlT4D4NCTotJB77
+	 nuQlHdUMt3exS2ytWfyBgrJTsI1w/ON9s/PULBWGnAM3mcW39ufy9zscBzcIacQpt0
+	 QSGhdmuZoH9U5VoVyl5pm/0tBavqH0EatzngKY1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 280/507] scsi: qla2xxx: Fix improper freeing of purex item
-Date: Tue, 16 Dec 2025 12:12:01 +0100
-Message-ID: <20251216111355.625212092@linuxfoundation.org>
+Subject: [PATCH 6.17 281/507] net: phy: realtek: create rtl8211f_config_rgmii_delay()
+Date: Tue, 16 Dec 2025 12:12:02 +0100
+Message-ID: <20251216111355.660711211@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -65,48 +65,135 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
+[ Upstream commit 8e982441ba601d982dd0739972115d85ae01d99b ]
 
-In qla2xxx_process_purls_iocb(), an item is allocated via
-qla27xx_copy_multiple_pkt(), which internally calls
-qla24xx_alloc_purex_item().
+The control flow in rtl8211f_config_init() has some pitfalls which were
+probably unintended. Specifically it has an early return:
 
-The qla24xx_alloc_purex_item() function may return a pre-allocated item
-from a per-adapter pool for small allocations, instead of dynamically
-allocating memory with kzalloc().
+	switch (phydev->interface) {
+	...
+	default: /* the rest of the modes imply leaving delay as is. */
+		return 0;
+	}
 
-An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
-kfree() to release the item. If the item was from the pre-allocated
-pool, calling kfree() on it is a bug that can lead to memory corruption.
+which exits the entire config_init() function. This means it also skips
+doing things such as disabling CLKOUT or disabling PHY-mode EEE.
 
-Fix this by using the correct deallocation function,
-qla24xx_free_purex_item(), which properly handles both dynamically
-allocated and pre-allocated items.
+For the RTL8211FS, which uses PHY_INTERFACE_MODE_SGMII, this might be a
+problem. However, I don't know that it is, so there is no Fixes: tag.
+The issue was observed through code inspection.
 
-Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251117234033.345679-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/realtek/realtek_main.c | 65 +++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
-index 316594aa40cc5..42eb65a62f1f3 100644
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
- 		a.reason = FCNVME_RJT_RC_LOGIC;
- 		a.explanation = FCNVME_RJT_EXP_NONE;
- 		xmt_reject = true;
--		kfree(item);
-+		qla24xx_free_purex_item(item);
- 		goto out;
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 62ef87ecc5587..54a3faf5e6f57 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -516,22 +516,11 @@ static int rtl8211c_config_init(struct phy_device *phydev)
+ 			    CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER);
+ }
+ 
+-static int rtl8211f_config_init(struct phy_device *phydev)
++static int rtl8211f_config_rgmii_delay(struct phy_device *phydev)
+ {
+-	struct rtl821x_priv *priv = phydev->priv;
+-	struct device *dev = &phydev->mdio.dev;
+ 	u16 val_txdly, val_rxdly;
+ 	int ret;
+ 
+-	ret = phy_modify_paged_changed(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
+-				       RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF,
+-				       priv->phycr1);
+-	if (ret < 0) {
+-		dev_err(dev, "aldps mode  configuration failed: %pe\n",
+-			ERR_PTR(ret));
+-		return ret;
+-	}
+-
+ 	switch (phydev->interface) {
+ 	case PHY_INTERFACE_MODE_RGMII:
+ 		val_txdly = 0;
+@@ -561,34 +550,58 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 				       RTL8211F_TXCR, RTL8211F_TX_DELAY,
+ 				       val_txdly);
+ 	if (ret < 0) {
+-		dev_err(dev, "Failed to update the TX delay register\n");
++		phydev_err(phydev, "Failed to update the TX delay register: %pe\n",
++			   ERR_PTR(ret));
+ 		return ret;
+ 	} else if (ret) {
+-		dev_dbg(dev,
+-			"%s 2ns TX delay (and changing the value from pin-strapping RXD1 or the bootloader)\n",
+-			str_enable_disable(val_txdly));
++		phydev_dbg(phydev,
++			   "%s 2ns TX delay (and changing the value from pin-strapping RXD1 or the bootloader)\n",
++			   str_enable_disable(val_txdly));
+ 	} else {
+-		dev_dbg(dev,
+-			"2ns TX delay was already %s (by pin-strapping RXD1 or bootloader configuration)\n",
+-			str_enabled_disabled(val_txdly));
++		phydev_dbg(phydev,
++			   "2ns TX delay was already %s (by pin-strapping RXD1 or bootloader configuration)\n",
++			   str_enabled_disabled(val_txdly));
  	}
+ 
+ 	ret = phy_modify_paged_changed(phydev, RTL8211F_RGMII_PAGE,
+ 				       RTL8211F_RXCR, RTL8211F_RX_DELAY,
+ 				       val_rxdly);
+ 	if (ret < 0) {
+-		dev_err(dev, "Failed to update the RX delay register\n");
++		phydev_err(phydev, "Failed to update the RX delay register: %pe\n",
++			   ERR_PTR(ret));
+ 		return ret;
+ 	} else if (ret) {
+-		dev_dbg(dev,
+-			"%s 2ns RX delay (and changing the value from pin-strapping RXD0 or the bootloader)\n",
+-			str_enable_disable(val_rxdly));
++		phydev_dbg(phydev,
++			   "%s 2ns RX delay (and changing the value from pin-strapping RXD0 or the bootloader)\n",
++			   str_enable_disable(val_rxdly));
+ 	} else {
+-		dev_dbg(dev,
+-			"2ns RX delay was already %s (by pin-strapping RXD0 or bootloader configuration)\n",
+-			str_enabled_disabled(val_rxdly));
++		phydev_dbg(phydev,
++			   "2ns RX delay was already %s (by pin-strapping RXD0 or bootloader configuration)\n",
++			   str_enabled_disabled(val_rxdly));
+ 	}
+ 
++	return 0;
++}
++
++static int rtl8211f_config_init(struct phy_device *phydev)
++{
++	struct rtl821x_priv *priv = phydev->priv;
++	struct device *dev = &phydev->mdio.dev;
++	int ret;
++
++	ret = phy_modify_paged_changed(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
++				       RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF,
++				       priv->phycr1);
++	if (ret < 0) {
++		dev_err(dev, "aldps mode  configuration failed: %pe\n",
++			ERR_PTR(ret));
++		return ret;
++	}
++
++	ret = rtl8211f_config_rgmii_delay(phydev);
++	if (ret)
++		return ret;
++
+ 	if (!priv->has_phycr2)
+ 		return 0;
  
 -- 
 2.51.0
