@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-201547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7025BCC250E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A9CCC3161
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:11:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 093BE30252AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61D4B312F38C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59C23446AB;
-	Tue, 16 Dec 2025 11:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFC13612C1;
+	Tue, 16 Dec 2025 12:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5MNNZCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA5NCcAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A042A29B200;
-	Tue, 16 Dec 2025 11:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB59A35F8D6;
+	Tue, 16 Dec 2025 12:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884995; cv=none; b=T0yrpLRXslaX7IYJtTFQub46MG1GL9/FAvJ/uOhowpBpqJNhuMOTCXbI3/LfQYOaeAac+KwjrDwCcK2eTx23z96pjp9KXeN+Qd+KA+R2uKBHt8c8S5uk6c+11358HlC6pBhGijzzUH6QtCliUGvtRfoD9rcZwe0UJJEXZahLE8o=
+	t=1765888509; cv=none; b=UBEh9rBtRdYiocAy01ogxcL1C80V+uf2fCeePa1tsjyPtZTWwhYcW0A8dgk7+V/w7dIJRJli/Bo1723WfTsisMJciQeJe0bfy6X54OQDtPIxTB4v6UPIE637k2uU1FFvY0jFnOucDLodazPV2FnoYM2Zo0eMFslFQerpffH2iz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884995; c=relaxed/simple;
-	bh=PM87CcBqoNwqbuoBelAjD0R0OEpE5p7ewtTKuD7NeGc=;
+	s=arc-20240116; t=1765888509; c=relaxed/simple;
+	bh=jcVEhGkXa3jcpK3W3zAVLP9Mq4+lIm3rPdW7SlURg7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9eoj9kF3x4CNi8eMCx5D+HDOPA/qudox7B9AaoJ7yb/jtRNs52DDlwy4Gi15fsEpZBcn+BO8JZFhPfysKkP2O4O53xw2jcmpW24vCEvOS9i7wtXuo4DQa0YGLhnj5SDekX6b+fbX51bd5m2KLnzCdXJh/Rs+61TMM25PthRCis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5MNNZCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059CDC4CEF1;
-	Tue, 16 Dec 2025 11:36:34 +0000 (UTC)
+	 MIME-Version; b=lsaNfi0wnhZS6FFvu4oyVeNe7ShZne0o66Drn15A/VvYxaYpcNxIdf6Sd7+ecfwSuA39jmsDOsGpuPNcbVIPIP6EUT9bmmSMFxBSX6oXmYa14UteZd0VfqsJHvw0aS0yUumY/gn670r/K1u3p0WXXUFTFIcsfm8jSawTGomn2Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA5NCcAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68CAC4CEF1;
+	Tue, 16 Dec 2025 12:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884995;
-	bh=PM87CcBqoNwqbuoBelAjD0R0OEpE5p7ewtTKuD7NeGc=;
+	s=korg; t=1765888509;
+	bh=jcVEhGkXa3jcpK3W3zAVLP9Mq4+lIm3rPdW7SlURg7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5MNNZCJ8FnZ33t4AFRju/UouZBU3VB+edyf7YBt9+13nZhVJv5BGP416mIvsDAOa
-	 W4QHteJzS6tJbhyeYXiTc9ZzRRxlkIImKU07dGr6lSB5qB+4vivvHgU48a71tqgwva
-	 jvB9lgQVj+vbb/Ehx7qY0Yfv67OzRy59dDg2pi2Y=
+	b=hA5NCcAmlFp+90k4KXmG/iqHcO7WbmQrUTiUF7TX0Qv9rSrJdUuFBg7QWZ0UCuUqj
+	 en+31cWj2N4c5UNnLU9wbZ94kXVjSR8izmpB1oa6X9RQhZITC0dFIEo/5dioE7l5cK
+	 jGjlwawbGzIPH9OBILAmAKkcUVGIp+4x1lFq0nLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 354/354] ALSA: wavefront: Fix integer overflow in sample size validation
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 554/614] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
 Date: Tue, 16 Dec 2025 12:15:21 +0100
-Message-ID: <20251216111333.735361777@linuxfoundation.org>
+Message-ID: <20251216111421.451515963@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 0c4a13ba88594fd4a27292853e736c6b4349823d upstream.
+[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
 
-The wavefront_send_sample() function has an integer overflow issue
-when validating sample size. The header->size field is u32 but gets
-cast to int for comparison with dev->freemem
+bcm63xx_soc_pcm_new() does not check the return value of
+of_dma_configure(), which may fail with -EPROBE_DEFER or
+other errors, allowing PCM setup to continue with incomplete
+DMA configuration.
 
-Fix by using unsigned comparison to avoid integer overflow.
+Add error checking for of_dma_configure() and return on failure.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881B47789D1B060CE8BF4C3AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/wavefront/wavefront_synth.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/isa/wavefront/wavefront_synth.c
-+++ b/sound/isa/wavefront/wavefront_synth.c
-@@ -950,9 +950,9 @@ wavefront_send_sample (snd_wavefront_t *
- 	if (header->size) {
- 		dev->freemem = wavefront_freemem (dev);
+diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+index e3a4fcc63a56d..efeb06ddabeb3 100644
+--- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
++++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+@@ -358,7 +358,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
  
--		if (dev->freemem < (int)header->size) {
-+		if (dev->freemem < 0 || dev->freemem < header->size) {
- 			dev_err(dev->card->dev,
--				"insufficient memory to load %d byte sample.\n",
-+				"insufficient memory to load %u byte sample.\n",
- 				header->size);
- 			return -ENOMEM;
- 		}
+ 	i2s_priv = dev_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0)->dev);
+ 
+-	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
++	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
++	if (ret)
++		return ret;
+ 
+ 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
