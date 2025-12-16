@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D7FCC239B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B0DCC3B87
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A3A69301E218
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C48A630E5535
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6099432860D;
-	Tue, 16 Dec 2025 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F53A3563C5;
+	Tue, 16 Dec 2025 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB/91b++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HM8v/hgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C11A31B10B;
-	Tue, 16 Dec 2025 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC8934844D;
+	Tue, 16 Dec 2025 12:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884526; cv=none; b=ilQvN9zy8UUJ1YmEmbZvbWbdT+gAMpLv54oQN6crU+YoMSyy22ZscLNsNXO37tnjnOwJSy+QxflplsMSzo9gL9H2Va/L8Z0+iWPzjuJzd+9QPgNs6mUBSlvG8TwSRdtZx+CNdfd3nwy2dgRbNecJxp+8D6++N226bP+rsxO/yAs=
+	t=1765888174; cv=none; b=BBT5y5dcgZJSusYwvaizyRIIXVGxrJ1fG9wwpFr1e383K2T2l9b/llt/CBR+XILj/dMA0eGcKkrWoSZqd2+z94xix35NziexKa/JHX03V1Cg9lbkr46cI4gz96fzYYgQU42orexsoVd/PNqCJQer1XGhuxSB719m5xpvW6Z2fbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884526; c=relaxed/simple;
-	bh=+ruGJgTGQuz6YjZzMrP1Por1v5XqtoRqVKgcBWeT4I4=;
+	s=arc-20240116; t=1765888174; c=relaxed/simple;
+	bh=gI6ECz17m1Bv9NDDmlad6FxkPHh3dnqsP7fZH1MHCW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hf5C4O+ea14HDV/YrU1SGyxdylHyVHzX6xsROpP67a9sH4hz+d3mC8QIGRY2ysrMHZEtsaV1B+83dWVHhcJYktozKUDXiCqT7fs7Uph0lSR6cr2TzqTJAjb9JsYOgYVP8resw+7I+xOZOFyG/n+x8E8ODedt+24xAIskq+o6j5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB/91b++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAD6C4CEF1;
-	Tue, 16 Dec 2025 11:28:45 +0000 (UTC)
+	 MIME-Version; b=DC9I0jyhsQqtCINtjcTwBjCqonXif6CfTYe5ml66uSOjfadmsyYrehsmYbObaxUJfAEg90IewAptxN0cjX11Deo1IYRgv+3nIrKA7Gkooq8wX92gWCgsfvOV8VgwvMBuZuNYH0rwnVlt2i90oZFygXFz+S9nCXjpe5mmGe4Kd9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HM8v/hgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77111C4CEF1;
+	Tue, 16 Dec 2025 12:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884526;
-	bh=+ruGJgTGQuz6YjZzMrP1Por1v5XqtoRqVKgcBWeT4I4=;
+	s=korg; t=1765888173;
+	bh=gI6ECz17m1Bv9NDDmlad6FxkPHh3dnqsP7fZH1MHCW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rB/91b++UzRVpZAIejOLdzkSEkI2u+k0ThKkHxFwARpN7EzUXGtEk+rhw8ipzJQP9
-	 DSUcxwr0X4qhzDneJRwX7pkbnVN7KEQEd9ShGNI7xYsj8ViztXaSEv/qoxqo6qBN09
-	 836kOfNZ33er8oY5GqOvxPUMm6GXUQT1enyEaosc=
+	b=HM8v/hgxhsyZArpcIYhXwfG3to3iZEuNIrFe2iSCgTCEs9svnRtoTCmbhA04idG/2
+	 ZZ7OHqq2USHk8uqkqx6HWOQE1Sa96l6ogS7MOV8G1Hv4lgOeGY7SdX8iH6/ipd/pZk
+	 PGCMGpI+UkW9PONd99JYcx+w3sd2fZNVr5Ygn9Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 221/354] PCI: dwc: Fix wrong PORT_LOGIC_LTSSM_STATE_MASK definition
+Subject: [PATCH 6.18 421/614] RDMA/irdma: Fix data race in irdma_sc_ccq_arm
 Date: Tue, 16 Dec 2025 12:13:08 +0100
-Message-ID: <20251216111328.925252384@linuxfoundation.org>
+Message-ID: <20251216111416.623692046@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
 
-[ Upstream commit bcc9a4a0bca3aee4303fa4a20302e57b24ac8f68 ]
+[ Upstream commit a521928164433de44fed5aaf5f49aeb3f1fb96f5 ]
 
-As per DesignWare Cores PCI Express Controller Databook, section 5.50,
-SII: Debug Signals, cxpl_debug_info[63:0]:
+Adds a lock around irdma_sc_ccq_arm body to prevent inter-thread data race.
+Fixes data race in irdma_sc_ccq_arm() reported by KCSAN:
 
-  [5:0] smlh_ltssm_state: LTSSM current state. Encoding is same as the
-  dedicated smlh_ltssm_state output.
+BUG: KCSAN: data-race in irdma_sc_ccq_arm [irdma] / irdma_sc_ccq_arm [irdma]
 
-The mask should be 6 bits, from 0 to 5. Hence, fix the mask definition.
+read to 0xffff9d51b4034220 of 8 bytes by task 255 on cpu 11:
+ irdma_sc_ccq_arm+0x36/0xd0 [irdma]
+ irdma_cqp_ce_handler+0x300/0x310 [irdma]
+ cqp_compl_worker+0x2a/0x40 [irdma]
+ process_one_work+0x402/0x7e0
+ worker_thread+0xb3/0x6d0
+ kthread+0x178/0x1a0
+ ret_from_fork+0x2c/0x50
 
-Fixes: 23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/1763122140-203068-1-git-send-email-shawn.lin@rock-chips.com
+write to 0xffff9d51b4034220 of 8 bytes by task 89 on cpu 3:
+ irdma_sc_ccq_arm+0x7e/0xd0 [irdma]
+ irdma_cqp_ce_handler+0x300/0x310 [irdma]
+ irdma_wait_event+0xd4/0x3e0 [irdma]
+ irdma_handle_cqp_op+0xa5/0x220 [irdma]
+ irdma_hw_flush_wqes+0xb1/0x300 [irdma]
+ irdma_flush_wqes+0x22e/0x3a0 [irdma]
+ irdma_cm_disconn_true+0x4c7/0x5d0 [irdma]
+ irdma_disconnect_worker+0x35/0x50 [irdma]
+ process_one_work+0x402/0x7e0
+ worker_thread+0xb3/0x6d0
+ kthread+0x178/0x1a0
+ ret_from_fork+0x2c/0x50
+
+value changed: 0x0000000000024000 -> 0x0000000000034000
+
+Fixes: 3f49d6842569 ("RDMA/irdma: Implement HW Admin Queue OPs")
+Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20251125025350.180-2-tatyana.e.nikolova@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/ctrl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 347ab74ac35aa..0fad7751490f5 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -97,7 +97,7 @@
- #define PORT_LANE_SKEW_INSERT_MASK	GENMASK(23, 0)
+diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
+index 4ef1c29032f77..991ce4890bfb2 100644
+--- a/drivers/infiniband/hw/irdma/ctrl.c
++++ b/drivers/infiniband/hw/irdma/ctrl.c
+@@ -3950,11 +3950,13 @@ int irdma_sc_cqp_destroy(struct irdma_sc_cqp *cqp)
+  */
+ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
+ {
++	unsigned long flags;
+ 	u64 temp_val;
+ 	u16 sw_cq_sel;
+ 	u8 arm_next_se;
+ 	u8 arm_seq_num;
  
- #define PCIE_PORT_DEBUG0		0x728
--#define PORT_LOGIC_LTSSM_STATE_MASK	0x1f
-+#define PORT_LOGIC_LTSSM_STATE_MASK	0x3f
- #define PORT_LOGIC_LTSSM_STATE_L0	0x11
- #define PCIE_PORT_DEBUG1		0x72C
- #define PCIE_PORT_DEBUG1_LINK_UP		BIT(4)
++	spin_lock_irqsave(&ccq->dev->cqp_lock, flags);
+ 	get_64bit_val(ccq->cq_uk.shadow_area, 32, &temp_val);
+ 	sw_cq_sel = (u16)FIELD_GET(IRDMA_CQ_DBSA_SW_CQ_SELECT, temp_val);
+ 	arm_next_se = (u8)FIELD_GET(IRDMA_CQ_DBSA_ARM_NEXT_SE, temp_val);
+@@ -3965,6 +3967,7 @@ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
+ 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT_SE, arm_next_se) |
+ 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT, 1);
+ 	set_64bit_val(ccq->cq_uk.shadow_area, 32, temp_val);
++	spin_unlock_irqrestore(&ccq->dev->cqp_lock, flags);
+ 
+ 	dma_wmb(); /* make sure shadow area is updated before arming */
+ 
 -- 
 2.51.0
 
