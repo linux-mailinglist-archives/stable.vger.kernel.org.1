@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05053CC2418
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E592CCC2809
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54C7930852D8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB7EE30842B4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EC9342160;
-	Tue, 16 Dec 2025 11:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A76B355033;
+	Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FNflvrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAj6QzN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9448C32BF22;
-	Tue, 16 Dec 2025 11:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58835355029;
+	Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884359; cv=none; b=jpyG6qqjiZGd7FhI9flzkbQzn18inJlAFsqi6tCKyLHwIOCcLK0COcI3tzFyqLvGy6Z3IQ/Fwaj6UoobRyxX71setYRAU5L0soJfy8mpnoNClJkL/NxgmmcSFhdbCPG3goHWEyEmRkX9HxxdK70bLvvoLZmCjwwZSGSgNYu8pyw=
+	t=1765885952; cv=none; b=WExqObFxGqnZ4Y9BEX7WSE8kgiObUQFSS3OcnvYmo7QAg4hfPG8kKKLvwak06nJm8Va+iDJ/utRBWlX+XfokFrFXNHKsNtsPOh/JbOuFJtOUuKSanLxA8cfue8i0RLd+KFy8jlTpGoVi63UD9XShygShlK0TyqJpn++BVwY91bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884359; c=relaxed/simple;
-	bh=TO2Pbgrx3vIWYr5u9aowCGB+9F/f5s5baN5jtmpChOQ=;
+	s=arc-20240116; t=1765885952; c=relaxed/simple;
+	bh=iT8OnL2vG91fWzoBOOO7o9MdVHKHmQKdBlof5MSSOZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NV9N5ba+RR7hxlJb5G/myDT8u1iAFDi3w9mwupP2XpOqAeQyz1xoOwrW0qdM6nFe73d1CrBfeAEn+Pemc40vPeCf4/OivKcwbdwfxQO5K4etxtwSrLTLrjf1aOZDk527IUc9fdyfZtwo0afmF//UyVZOPn2zqgZw+AJe1FPoUns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FNflvrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2E0C4CEF1;
-	Tue, 16 Dec 2025 11:25:58 +0000 (UTC)
+	 MIME-Version; b=AhpUCDdK2VJOba6l94k0A0I4QmoIRt9JeFmYrclIvq47/9Q57k194KjRUN3KhhLakzebjwrXrb27+tEVdryq8Z2MPvUwx+AaVxEj8bSENmBexvoRXK7U3Q5dM26Sv0KbipzUG8+RioYozIXevMk+x3XMhE32dWvNQgBwthac+Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAj6QzN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2187C4CEF1;
+	Tue, 16 Dec 2025 11:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884359;
-	bh=TO2Pbgrx3vIWYr5u9aowCGB+9F/f5s5baN5jtmpChOQ=;
+	s=korg; t=1765885952;
+	bh=iT8OnL2vG91fWzoBOOO7o9MdVHKHmQKdBlof5MSSOZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1FNflvrc4otC062WKYB/ZDd3GrGf8xxhvzMtC9J0DylbXo09gPLSi3BHiy6qurFvs
-	 oJZTQeSORUl0cfAm1trpyHcz2URaVxbDpkb5TAp7ImlsRJMPi++/ayvPx1ikySwVeZ
-	 Z3ya+BnFIfSdcJddCf0mxyx0UXM21jZptmqDc4i8=
+	b=dAj6QzN408LstAy/pET13ED+y7uaXHmiOqgoP3zWpo6DiN9ExmtfWRgD75tdIlnKk
+	 JcJwawVcJypnp2wTbPsvz0uYNujtu6PsTaseH6GjOXI968rF8ooeuQoCJn2zrnbZS/
+	 quhSj5Br1EjHeJFBu5Y1sKMvidZYbki0I7HWv9O4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Algea Cao <algea.cao@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/354] watchdog: starfive: Fix resource leak in probe error path
+Subject: [PATCH 6.17 294/507] phy: rockchip: samsung-hdptx: Reduce ROPLL loop bandwidth
 Date: Tue, 16 Dec 2025 12:12:15 +0100
-Message-ID: <20251216111326.999877929@linuxfoundation.org>
+Message-ID: <20251216111356.127313213@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 5bcc5786a0cfa9249ccbe539833040a6285d0de3 ]
+[ Upstream commit 8daaced9f5eeb4a2c8ca08b0a8286b6a498a8387 ]
 
-If pm_runtime_put_sync() fails after watchdog_register_device()
-succeeds, the probe function jumps to err_exit without
-unregistering the watchdog device. This leaves the watchdog
-registered in the subsystem while the driver fails to load,
-resulting in a resource leak.
+Due to its relatively low frequency, a noise stemming from the 24MHz PLL
+reference clock may traverse the low-pass loop filter of ROPLL, which
+could potentially generate some HDMI flash artifacts.
 
-Add a new error label err_unregister_wdt to properly unregister
-the watchdog device.
+Reduce ROPLL loop bandwidth in an attempt to mitigate the problem.
 
-Fixes: 8bc22a2f1bf0 ("watchdog: starfive: Check pm_runtime_enabled() before decrementing usage counter")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-2-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/starfive-wdt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
-index 19a2620d3d389..763b11b6f402c 100644
---- a/drivers/watchdog/starfive-wdt.c
-+++ b/drivers/watchdog/starfive-wdt.c
-@@ -500,12 +500,14 @@ static int starfive_wdt_probe(struct platform_device *pdev)
- 		if (pm_runtime_enabled(&pdev->dev)) {
- 			ret = pm_runtime_put_sync(&pdev->dev);
- 			if (ret)
--				goto err_exit;
-+				goto err_unregister_wdt;
- 		}
- 	}
- 
- 	return 0;
- 
-+err_unregister_wdt:
-+	watchdog_unregister_device(&wdt->wdd);
- err_exit:
- 	starfive_wdt_disable_clock(wdt);
- 	pm_runtime_disable(&pdev->dev);
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 8adf6e84fc0b7..9751f7ad00f4f 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -500,9 +500,7 @@ static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0043), 0x00),
+ 	REG_SEQ0(CMN_REG(0044), 0x46),
+ 	REG_SEQ0(CMN_REG(0045), 0x24),
+-	REG_SEQ0(CMN_REG(0046), 0xff),
+ 	REG_SEQ0(CMN_REG(0047), 0x00),
+-	REG_SEQ0(CMN_REG(0048), 0x44),
+ 	REG_SEQ0(CMN_REG(0049), 0xfa),
+ 	REG_SEQ0(CMN_REG(004a), 0x08),
+ 	REG_SEQ0(CMN_REG(004b), 0x00),
+@@ -575,6 +573,8 @@ static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0034), 0x00),
+ 	REG_SEQ0(CMN_REG(003d), 0x40),
+ 	REG_SEQ0(CMN_REG(0042), 0x78),
++	REG_SEQ0(CMN_REG(0046), 0xdd),
++	REG_SEQ0(CMN_REG(0048), 0x11),
+ 	REG_SEQ0(CMN_REG(004e), 0x34),
+ 	REG_SEQ0(CMN_REG(005c), 0x25),
+ 	REG_SEQ0(CMN_REG(005e), 0x4f),
 -- 
 2.51.0
 
