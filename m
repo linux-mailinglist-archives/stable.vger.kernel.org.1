@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F164CC26D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB78CC320A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:17:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 421C3307DA44
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C532303EB99
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF8134D4C2;
-	Tue, 16 Dec 2025 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD39365A0A;
+	Tue, 16 Dec 2025 12:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19clTIML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/Jji7Gz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E9F347FE1;
-	Tue, 16 Dec 2025 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CDB35FF5D;
+	Tue, 16 Dec 2025 12:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885358; cv=none; b=Oyo3KIXl5Diwin6qWEGN93UnT2oy51dYurELbIggWgXB2wPYPYnTc9O640z/FxomJIB61parQYP0JhuQlyoZtD4QVyuvbchLzOTul6YpCgwRrB9vXTwfi/PU97+hV6b5KW6IDAhi/J6A9MWSKgqQ/98nGvJvgSNG33tQdmnDRTM=
+	t=1765887361; cv=none; b=EN2mHcw5qF4I0a1IKmctaFn/udMvBeBGvYMj/E70KLV8busF7H4r/tO47pDHM7fBXBYtawsPEiYnLoVpfTCkE5Shxz4+qlcAiAlTJNinr5QYGrfzgjWGdushe+ksg2gcbsCXJeyjWX/uY2Wz2NZ4IZdyYxM7yFsGgcm+uPeq0DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885358; c=relaxed/simple;
-	bh=RAFeLvM2FNMMC5sYh6CDpu7j/UL7S/fjjMrvAz5fK28=;
+	s=arc-20240116; t=1765887361; c=relaxed/simple;
+	bh=cWOupyvQP4C/W1HzxsTMRzyqORU0xfkl8b9awPmv3jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7cXciXNL1QAJBCpBPDHzJpLwMI7N7w0YEkzoUNpAlP6sKfY9YDGMHcycGKtJqxHOmipl8tPDkJ/tl7mPGEesqt8QItFxdHN8jA9Mx1FaLXGAW5yCEm42+9t9i+1Er66o8iS7P0gj9Uyc7hzObWOtU3AC46flEL7FdN+12kxhZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19clTIML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A594C4CEF5;
-	Tue, 16 Dec 2025 11:42:37 +0000 (UTC)
+	 MIME-Version; b=Ki7X+VarSpZmEnLqiJYOLouNiKnLhwK85kVDebm3pYjqhLzVUhhQ+0iEwqwf5rK8LBqpUb5/QZfv+Cd5rIjUa/HLEvR3BvrRaQflmS0AkawzzUjXt5k/NKywpZXsQCmG3ajHZnylGckpSq1TgA7s+KlE92UvcPxB3KLqXPk1eqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/Jji7Gz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2782C4CEF1;
+	Tue, 16 Dec 2025 12:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885357;
-	bh=RAFeLvM2FNMMC5sYh6CDpu7j/UL7S/fjjMrvAz5fK28=;
+	s=korg; t=1765887361;
+	bh=cWOupyvQP4C/W1HzxsTMRzyqORU0xfkl8b9awPmv3jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19clTIMLDVrW5lEX7Q+Y3qZ2X3R6RF4o+gv2ZOOz3R5QwOoqFl5s0GdMWuZem962K
-	 RXA/HTQPukhP2aFC/FvDW23p9TYd/RhQcE4MIYB/NdeQHIfZzybJ834NIob6Yz8ogj
-	 c0jC2rH5UKr+zJNvB7SWvgqA4yrl8qn/w45rZ3U4=
+	b=R/Jji7GzRy++7rRRKN5179qxTzCIXxTI1EdF6OyrFQSstYiHXFeOnb30gXleDdNL5
+	 EOKUft/EVT55ywraOa12yZJamgKfUSZ1xE3cL3QKz5Jh0CBSOsShkiHRUCmm1DovoR
+	 CUWreNm2bz/80QElzTnkfr/PnBLR3cZMEoIVZZVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 098/507] arm64: dts: qcom: qcm6490-fairphone-fp5: Add supplies to simple-fb node
-Date: Tue, 16 Dec 2025 12:08:59 +0100
-Message-ID: <20251216111349.090730204@linuxfoundation.org>
+Subject: [PATCH 6.18 173/614] perf record: skip synthesize event when open evsel failed
+Date: Tue, 16 Dec 2025 12:09:00 +0100
+Message-ID: <20251216111407.623905533@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 3d4142cac46b4dde4e60908c509c4cf107067114 ]
+[ Upstream commit 163e5f2b96632b7fb2eaa965562aca0dbdf9f996 ]
 
-Add the OLED power supplies to the simple-framebuffer node, so that
-the regulators don't get turned off while the simple-fb is being used.
+When using perf record with the `--overwrite` option, a segmentation fault
+occurs if an event fails to open. For example:
 
-Fixes: c365a026155c ("arm64: dts: qcom: qcm6490-fairphone-fp5: Enable display")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250930-sc7280-dts-misc-v1-1-5a45923ef705@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  perf record -e cycles-ct -F 1000 -a --overwrite
+  Error:
+  cycles-ct:H: PMU Hardware doesn't support sampling/overflow-interrupts. Try 'perf stat'
+  perf: Segmentation fault
+      #0 0x6466b6 in dump_stack debug.c:366
+      #1 0x646729 in sighandler_dump_stack debug.c:378
+      #2 0x453fd1 in sigsegv_handler builtin-record.c:722
+      #3 0x7f8454e65090 in __restore_rt libc-2.32.so[54090]
+      #4 0x6c5671 in __perf_event__synthesize_id_index synthetic-events.c:1862
+      #5 0x6c5ac0 in perf_event__synthesize_id_index synthetic-events.c:1943
+      #6 0x458090 in record__synthesize builtin-record.c:2075
+      #7 0x45a85a in __cmd_record builtin-record.c:2888
+      #8 0x45deb6 in cmd_record builtin-record.c:4374
+      #9 0x4e5e33 in run_builtin perf.c:349
+      #10 0x4e60bf in handle_internal_command perf.c:401
+      #11 0x4e6215 in run_argv perf.c:448
+      #12 0x4e653a in main perf.c:555
+      #13 0x7f8454e4fa72 in __libc_start_main libc-2.32.so[3ea72]
+      #14 0x43a3ee in _start ??:0
+
+The --overwrite option implies --tail-synthesize, which collects non-sample
+events reflecting the system status when recording finishes. However, when
+evsel opening fails (e.g., unsupported event 'cycles-ct'), session->evlist
+is not initialized and remains NULL. The code unconditionally calls
+record__synthesize() in the error path, which iterates through the NULL
+evlist pointer and causes a segfault.
+
+To fix it, move the record__synthesize() call inside the error check block, so
+it's only called when there was no error during recording, ensuring that evlist
+is properly initialized.
+
+Fixes: 4ea648aec019 ("perf record: Add --tail-synthesize option")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/builtin-record.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index e115b6a52b299..82494b41bd9ac 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -47,6 +47,8 @@ framebuffer0: framebuffer@a000000 {
- 			stride = <(1224 * 4)>;
- 			format = "a8r8g8b8";
- 			clocks = <&gcc GCC_DISP_HF_AXI_CLK>;
-+			vci-supply = <&vreg_oled_vci>;
-+			dvdd-supply = <&vreg_oled_dvdd>;
- 		};
- 	};
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index d76f01956e33b..b1fb87016d5aa 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -2883,11 +2883,11 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
+ 		rec->bytes_written += off_cpu_write(rec->session);
  
+ 	record__read_lost_samples(rec);
+-	record__synthesize(rec, true);
+ 	/* this will be recalculated during process_buildids() */
+ 	rec->samples = 0;
+ 
+ 	if (!err) {
++		record__synthesize(rec, true);
+ 		if (!rec->timestamp_filename) {
+ 			record__finish_output(rec);
+ 		} else {
 -- 
 2.51.0
 
