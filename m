@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEC4CC2D8B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBBECC3BCF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D49A306C177
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A610430F2BD2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BBA36CDEA;
-	Tue, 16 Dec 2025 12:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C95345730;
+	Tue, 16 Dec 2025 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jee9M8H2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eG7xtWL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2087B36CDE3;
-	Tue, 16 Dec 2025 12:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331D6346A0E;
+	Tue, 16 Dec 2025 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887462; cv=none; b=eQrW0/N5Va76Kf0kjl3YU6gGBD9mRMGXroeU1Blph8VcNRHKWB64/golrM68TrwpJV0KeVdi0yWjZ9ovwIesZLHYWDYDg8Aez4dJXbN2xYUrQiiDtGr0Qmd+IXe/uQmZO9vmc1M9WMM0h8KCPCKj9sXNNdIpExP06CebXayb6a8=
+	t=1765885519; cv=none; b=TXFjrvreoFobfGuyjzivFNsomw3nFd1OMHogLLXjI6Q7rgj0R03s2dYaJdIg04gO0TATM7uMYdFVIYBYW3dJqrJ6yFW4zeeZ7cuO1beFtrDC3GBHyeHAx6amPv1JhGpK80ReJ7wyWyBqAHJ/RUQ9lx+h1EJGndsIg1x9DbKUem8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887462; c=relaxed/simple;
-	bh=PuB4G7ltf4tGGJSbgHLbjj3WtAph3mdDuY757hes2Es=;
+	s=arc-20240116; t=1765885519; c=relaxed/simple;
+	bh=MgJXTCulLSRHFl57aifwLRltDMmR69EDnzv9Dm8KrJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssfr8nRx4JkyZ6i18I5DUoVxp1tOUU8iICrgF229OCY0zkgvA8IngGKhrNR1ue7L/fiLJIfsKtZyi2R1EB+boWBCUXTJdWEljE2u0Tzu+Tu46n6EpIBH+6qnP1fYRT6BoiQOD87mBbKUfxngiup+nlFjrJZW1jGXLKBwkHOdHUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jee9M8H2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BA4C4CEF1;
-	Tue, 16 Dec 2025 12:17:41 +0000 (UTC)
+	 MIME-Version; b=mCPTpo6KHIdQvMv8JiQGKsPyB8mOKnWrMKqOe6xgZCuMK0Fy9SEVjAfEFFS7H5hcUYihwif3aJGirVgabJzipcT2vc6kfJ9W2H+sO6gEs7XzzZKbZJw/VaaK07uCyyalKASusD/6W7SiQ+VyVvZqEFXWrNhjL+XTKloEPSj0zSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eG7xtWL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D95C4CEF1;
+	Tue, 16 Dec 2025 11:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887461;
-	bh=PuB4G7ltf4tGGJSbgHLbjj3WtAph3mdDuY757hes2Es=;
+	s=korg; t=1765885519;
+	bh=MgJXTCulLSRHFl57aifwLRltDMmR69EDnzv9Dm8KrJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jee9M8H262rrtMxgv2XJ+qNwLoddnCdLPkQZiNblTboZV682HFs4roo5+7II/3qpq
-	 VzyFo5utYvX8XtZ14Br+gEm5IZ9rUyACskBlvmyYCkQ7kD4/jUypWsNopQ493yffdO
-	 VpHIfGKxBfgs2dRwWXFALags9GlAhmZVEZE9+Lcc=
+	b=eG7xtWL6psMXT96Bgsfqa5qNO0PpkOdWx7i92cZQBhQN2/nu1uIc07A3GO2PxXut1
+	 BzlnH8QI9ySBci4JVYVDxehucSo3SyIIg+4/WYw7Ux00agee5uaV9rwvGDbbe9D2fY
+	 s8l0BnKb01GAiFT9ilboU8jUvNB2ffUTjozAVRRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 236/614] ARM: dts: stm32: stm32mp157c-phycore: Fix STMPE811 touchscreen node properties
+Subject: [PATCH 6.17 162/507] drm/panthor: Handle errors returned by drm_sched_entity_init()
 Date: Tue, 16 Dec 2025 12:10:03 +0100
-Message-ID: <20251216111409.919205914@linuxfoundation.org>
+Message-ID: <20251216111351.389670323@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit e40b061cd379f4897e705d17cf1b4572ad0f3963 ]
+[ Upstream commit bb7939e332c64c4ef33974a0eae4f3841acfa8eb ]
 
-Move st,adc-freq, st,mod-12b, st,ref-sel, and st,sample-time properties
-from the touchscreen subnode to the parent touch@44 node. These properties
-are defined in the st,stmpe.yaml schema for the parent node, not the
-touchscreen subnode, resolving the validation error about unevaluated
-properties.
+In practice it's not going to fail because we're passing the current
+sanity checks done by drm_sched_entity_init(), and that's the only
+reason it would return an error, but better safe than sorry.
 
-Fixes: 27538a18a4fcc ("ARM: dts: stm32: add STM32MP1-based Phytec SoM")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250915224611.169980-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patch.msgid.link/20251031160318.832427-1-boris.brezillon@collabora.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi    | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-index bf0c32027baf7..370b2afbf15bf 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-@@ -185,13 +185,13 @@ touch@44 {
- 		interrupt-parent = <&gpioi>;
- 		vio-supply = <&v3v3>;
- 		vcc-supply = <&v3v3>;
-+		st,sample-time = <4>;
-+		st,mod-12b = <1>;
-+		st,ref-sel = <0>;
-+		st,adc-freq = <1>;
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index df76653e649a3..a0a31aa6c6bcf 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -3380,6 +3380,8 @@ group_create_queue(struct panthor_group *group,
  
- 		touchscreen {
- 			compatible = "st,stmpe-ts";
--			st,sample-time = <4>;
--			st,mod-12b = <1>;
--			st,ref-sel = <0>;
--			st,adc-freq = <1>;
- 			st,ave-ctrl = <1>;
- 			st,touch-det-delay = <2>;
- 			st,settling = <2>;
+ 	drm_sched = &queue->scheduler;
+ 	ret = drm_sched_entity_init(&queue->entity, 0, &drm_sched, 1, NULL);
++	if (ret)
++		goto err_free_queue;
+ 
+ 	return queue;
+ 
 -- 
 2.51.0
 
