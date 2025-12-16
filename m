@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA9CC27BB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1E5CC2397
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0C06305A820
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE7BF305D422
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818E135502D;
-	Tue, 16 Dec 2025 11:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD24B341645;
+	Tue, 16 Dec 2025 11:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQX7w5Zy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvmliTME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE76355026;
-	Tue, 16 Dec 2025 11:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A008313E13;
+	Tue, 16 Dec 2025 11:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885892; cv=none; b=oE28vJ1rZ1Aja3f4Moc1rLOq7Nran4J7PaNInnY+HWsukbp6Xy16oT/yaG5kXMVixZIClLCxpIe3w3L5QatEV+lOXxoYYkEwCkhPklz8uy1vXt4kIw7t2COBvHsxJQwxHMdxZW4ytBBxmCNhhqnaXc1e19A9ppoQ2l8IZlbgnRk=
+	t=1765884286; cv=none; b=l05JlW/NUM9himtDCT9em+b1DoCyufWtJO5Xdea0+EKPprLxN2FfuD7uJ+kscMr1GO/7emUjnruj0aYf5rZjFz6X42PmRZXjdItIBOWxamgYkuxWLMhQj4xsmse+Etqigpd/iS+Olx2OJrMrTQHE20REO2iShtF+oeq/ihq9EDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885892; c=relaxed/simple;
-	bh=hpIBVDQMi2/bVOZ6Tta2ZX4nivgOzY/gybPQg0lyeN0=;
+	s=arc-20240116; t=1765884286; c=relaxed/simple;
+	bh=/L/86DuubljrsqzS+FXaHZlLUpEvbDIr2w/pLksfhCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCaZV+YDjmaqGY8X0VmofsOjONWImap7eiZxZUJTXF/z/gzGOiRiCIMVcI/LmvsMA37Me1aeXB/3CLYGnHZOl2mvPEOcJro8pCtilx9UlxHuZzqaSdF1FzbspOPebu9+seo5JoQofWVCUMOK+rtjgkA3k7OSmmm7NIuiSPZ34WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQX7w5Zy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8479C4CEF1;
-	Tue, 16 Dec 2025 11:51:31 +0000 (UTC)
+	 MIME-Version; b=lbhwr2upNCEtIFf/9YxZqrV0TjgEPXU5wrzwQKjGOeQujeMCYxZl+hj4cuSOaGhQsYUX2+atQ9wEK5gNTP3eVql+1JEcaWHtbsPKfTwXNvT8iyKvUl4xIabvbVuP6C0coLjKftR51Qhbylgt2Ppzp5fXUAomu5FfDTQYbp7E/m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvmliTME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA7EC4CEF1;
+	Tue, 16 Dec 2025 11:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885892;
-	bh=hpIBVDQMi2/bVOZ6Tta2ZX4nivgOzY/gybPQg0lyeN0=;
+	s=korg; t=1765884286;
+	bh=/L/86DuubljrsqzS+FXaHZlLUpEvbDIr2w/pLksfhCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQX7w5ZyzsMYQ2QQn796HRWXu0+s4yl2CBpjx940SXCdSxCax0TbiJhbLYPl/cCLU
-	 rlqV7mZ/L48JOXGKeDYzWqDKTxP1tEXOQyLHtiHEqr0Ji4HMzD8Kdk1KsvwctnyDnp
-	 rO7lP4sEzy/n7jAxMkE2Qs6/01kXzGWGc6bzFyKY=
+	b=vvmliTMEV2+VQG5ebGnxeBnbtN90IJbgsBSmqSEgn7LIRQ5rPqK2GulAZ8Q5IdQc5
+	 Dh368UmN5Yo5fAg85eFyHfTmReeEHwbvazqO95tphjDNvxTq5HtPfPCUgVbCg2NNSM
+	 HmcBYDeSY+5X7kyjtqG6vRCmes71CTfBiN/F7bcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 274/507] drm/msm/a6xx: Improve MX rail fallback in RPMH vote init
+Subject: [PATCH 6.12 148/354] coresight: etm4x: Add context synchronization before enabling trace
 Date: Tue, 16 Dec 2025 12:11:55 +0100
-Message-ID: <20251216111355.410370445@linuxfoundation.org>
+Message-ID: <20251216111326.278275095@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit ca04ce7a2f22652fdf6489fa7e02e7d2c08698f4 ]
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-Current logic assumes that the voltage corners in both MxG and MxA are
-always same. This is not true for recent targets. So, rework the rpmh init
-sequence to probe and calculate the votes with the respective rails, ie,
-GX rails should use MxG as secondary rail and Cx rail should use MxA as
-the secondary rail.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Fixes: d6225e0cd096 ("drm/msm/adreno: Add support for X185 GPU")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/689014/
-Message-ID: <20251118-kaana-gpu-support-v4-12-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
+
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+
+Improved the barrier comments to provide more accurate information.
+
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index bc7e111c46f96..4f6e68c86b586 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1459,13 +1459,14 @@ static unsigned int a6xx_gmu_get_arc_level(struct device *dev,
- }
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 853a170439608..730ba893bf4cd 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -436,10 +436,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
  
- static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
--		unsigned long *freqs, int freqs_count, const char *id)
-+		unsigned long *freqs, int freqs_count,
-+		const char *pri_id, const char *sec_id)
- {
- 	int i, j;
- 	const u16 *pri, *sec;
- 	size_t pri_count, sec_count;
+ 	etm4x_allow_trace(drvdata);
++
++	/*
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
  
--	pri = cmd_db_read_aux_data(id, &pri_count);
-+	pri = cmd_db_read_aux_data(pri_id, &pri_count);
- 	if (IS_ERR(pri))
- 		return PTR_ERR(pri);
+-	/* Synchronize the register updates for sysreg access */
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
+ 
+@@ -919,11 +933,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	 */
+ 	etm4x_prohibit_trace(drvdata);
  	/*
-@@ -1476,13 +1477,7 @@ static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
- 	if (!pri_count)
- 		return -EINVAL;
- 
--	/*
--	 * Some targets have a separate gfx mxc rail. So try to read that first and then fall back
--	 * to regular mx rail if it is missing
--	 */
--	sec = cmd_db_read_aux_data("gmxc.lvl", &sec_count);
--	if (IS_ERR(sec) && sec != ERR_PTR(-EPROBE_DEFER))
--		sec = cmd_db_read_aux_data("mx.lvl", &sec_count);
-+	sec = cmd_db_read_aux_data(sec_id, &sec_count);
- 	if (IS_ERR(sec))
- 		return PTR_ERR(sec);
- 
-@@ -1550,15 +1545,24 @@ static int a6xx_gmu_rpmh_votes_init(struct a6xx_gmu *gmu)
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	const struct a6xx_info *info = adreno_gpu->info->a6xx;
- 	struct msm_gpu *gpu = &adreno_gpu->base;
-+	const char *sec_id;
-+	const u16 *gmxc;
- 	int ret;
- 
-+	gmxc = cmd_db_read_aux_data("gmxc.lvl", NULL);
-+	if (gmxc == ERR_PTR(-EPROBE_DEFER))
-+		return -EPROBE_DEFER;
-+
-+	/* If GMxC is present, prefer that as secondary rail for GX votes */
-+	sec_id = IS_ERR_OR_NULL(gmxc) ? "mx.lvl" : "gmxc.lvl";
-+
- 	/* Build the GX votes */
- 	ret = a6xx_gmu_rpmh_arc_votes_init(&gpu->pdev->dev, gmu->gx_arc_votes,
--		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl");
-+		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl", sec_id);
- 
- 	/* Build the CX votes */
- 	ret |= a6xx_gmu_rpmh_arc_votes_init(gmu->dev, gmu->cx_arc_votes,
--		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl");
-+		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl", "mx.lvl");
- 
- 	/* Build the interconnect votes */
- 	if (info->bcms && gmu->nr_gpu_bws > 1)
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
+ 	isb();
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
 -- 
 2.51.0
 
