@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0174ECC225D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEE6CC3EA6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EE408303105C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A643D30D48FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884F6341670;
-	Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3BB345CAB;
+	Tue, 16 Dec 2025 12:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGIgVBKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cGw59Oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41836341069;
-	Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C873A346E4A;
+	Tue, 16 Dec 2025 12:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884127; cv=none; b=SfgAc8fer/PvqNu6a+2pLesQaXB+VFATq9qkndvtpbYx5rOsaTCvMO7qI2ML9YulwRGxUdUU2f2BlkSCNZP4uAypo45RWDlL/t9BcU+CFpGWqOythKFv/LPOVThLTDjtAfgZLGl5XAdJ1xY+9xXqwqXmhnclH6LVlNC038moD1c=
+	t=1765887660; cv=none; b=AXUqqRD1QPWCON5+h/7cyp9fZpad6KUdaNSt4i6kD9bawr5sz5EcIZHDRWysbDP7q91dy2rSXvsHpDKmJb+GBd0/LJCZ0jVHZsnPTuZFnZy7eWsX6EZs1CKIjMHKJ5qAE1HIFSYpHyRSthyLX0uDTOsqFaxg/g3Q9Pw3lZTs5P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884127; c=relaxed/simple;
-	bh=IT/z3bc3Z9z4S4KLm082v3ab4J/LVhn/L2DphjBDZRQ=;
+	s=arc-20240116; t=1765887660; c=relaxed/simple;
+	bh=qMHe1Dl4WHDMxkTd7B9rgVIZMZx5kshdxN6p7MvzfS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXVPobNhYKVmq9OWdSPyVqTdNjW4ywba3l0S8ej+ifq5siCsJU0XGZ9a+McHN0ujGI875qG3vmMS/yzUzXO7KVriKqRiunoBNKAVskEihouDYfC0E35dkQpC+3CS/K/pQWAY9v0XhwIgN7MKe2GngcuaLjvXK2+b1/5jFdpkynQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGIgVBKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD32C4CEF1;
-	Tue, 16 Dec 2025 11:22:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Emk9Ggc3DIDHxzO0269BRPguKJYi2ZkXiy+kQ7ArfJiM9FQ4k3hJRjzuwH5VJqcMvY0wEtMMufK9BZRFXLYS4oYFGlmmVyhUdC/V4JuEVmy36iMSLLT6bhCGLSP/NvJsF+Uoc8/QBjnbGo+aHR6MTmsRzQpzuwY8sxGLMH0UVAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cGw59Oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D4BC4CEF1;
+	Tue, 16 Dec 2025 12:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884127;
-	bh=IT/z3bc3Z9z4S4KLm082v3ab4J/LVhn/L2DphjBDZRQ=;
+	s=korg; t=1765887660;
+	bh=qMHe1Dl4WHDMxkTd7B9rgVIZMZx5kshdxN6p7MvzfS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGIgVBKp05wXmF10DT2Bzcej7sQD3hv0UaQMRyBM3ZFSUttSHNxk3a01WdNkrmFHK
-	 gXJfAzOpbEu9XY08y03L+wWlzuJDLqNfsP+j5wMwmzk73Nltp479kMWEX37EgXgU0d
-	 7lCWO6ZDQ14ZmdgBFPjicYrP5s3qcyLC1vHREzcM=
+	b=0cGw59OypLF5Dq1VzIK5389eQAlPeJ5PQmidrSZKQ/PAbToGLpo6jm+aqsW4ESn3R
+	 OK0IJPMPt6w7kgvynhWfNMEGY/qTk8GhjMddk1Ike80+L6ZSDiK12TbJ69ZvfPhxCT
+	 3+B7kZ1iS33CJSLzsg/P4tFYwGzVpu+BXrUXLVs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/354] arm64: dts: qcom: msm8996: add interconnect paths to USB2 controller
-Date: Tue, 16 Dec 2025 12:11:05 +0100
-Message-ID: <20251216111324.471946454@linuxfoundation.org>
+Subject: [PATCH 6.18 299/614] iio: core: add missing mutex_destroy in iio_dev_release()
+Date: Tue, 16 Dec 2025 12:11:06 +0100
+Message-ID: <20251216111412.203350711@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 242f7558e7bf54cb63c06506f7b0630dd67d45a4 ]
+[ Upstream commit f5d203467a31798191365efeb16cd619d2c8f23a ]
 
-Add the missing interconnects to the USB2 host. The Fixes tag points to
-the commit which broke probing of the USB host on that platform.
+Add missing mutex_destroy() call in iio_dev_release() to properly
+clean up the mutex initialized in iio_device_alloc(). Ensure proper
+resource cleanup and follows kernel practices.
 
-Fixes: 130733a10079 ("interconnect: qcom: msm8996: Promote to core_initcall")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Acked-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-2-a36a05d1f869@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Found by code review.
+
+While at it, create a lockdep key before mutex initialisation.
+This will help with converting it to the better API in the future.
+
+Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/industrialio-core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 0a8884145865d..932994f65b250 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3449,6 +3449,9 @@ usb2: usb@76f8800 {
- 					  <&gcc GCC_USB20_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <60000000>;
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 88c3d585a1bd0..93d6e5b101cf1 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1654,6 +1654,9 @@ static void iio_dev_release(struct device *device)
  
-+			interconnects = <&pnoc MASTER_USB_HS &bimc SLAVE_EBI_CH0>,
-+					<&bimc MASTER_AMPSS_M0 &pnoc SLAVE_USB_HS>;
-+			interconnect-names = "usb-ddr", "apps-usb";
- 			power-domains = <&gcc USB30_GDSC>;
- 			qcom,select-utmi-as-pipe-clk;
- 			status = "disabled";
+ 	iio_device_detach_buffers(indio_dev);
+ 
++	mutex_destroy(&iio_dev_opaque->info_exist_lock);
++	mutex_destroy(&iio_dev_opaque->mlock);
++
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+ 
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1698,8 +1701,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	indio_dev->dev.type = &iio_device_type;
+ 	indio_dev->dev.bus = &iio_bus_type;
+ 	device_initialize(&indio_dev->dev);
+-	mutex_init(&iio_dev_opaque->mlock);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 
+ 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
+@@ -1722,6 +1724,9 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+ 	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 
++	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	return indio_dev;
+ }
+ EXPORT_SYMBOL(iio_device_alloc);
 -- 
 2.51.0
 
