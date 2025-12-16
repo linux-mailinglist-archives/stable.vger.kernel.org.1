@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BC1CC3A9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:40:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710F8CC23EE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 741743006DBE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02987306AE1A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA0734F27A;
-	Tue, 16 Dec 2025 12:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5D34214A;
+	Tue, 16 Dec 2025 11:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7oejQvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVgamN9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3C34EF0A;
-	Tue, 16 Dec 2025 12:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F3341645;
+	Tue, 16 Dec 2025 11:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887856; cv=none; b=fcojpHdrdRyPbeKi8xS5p88vpc1t3JMJLnvL4E9hM+rgqXyD9q25Ne+iHO13klI39rgpWUCqeQJr9sluM4T5pmZxI6O38POqKZftrt7TRaN0gfIXDZCNYUpYvTcsBF2N1Cq5W0j8Rm9Sbz6OPuJ6XRe9s2XLOSKHr7C22FjLJ90=
+	t=1765884329; cv=none; b=osgxBZNSy9VFK2ptfJPuTb92/oDIEmfKWhCogQ9L7EUPFyQdyfVqOouZHthUXHqSBG2CRugPuDbAEgt60Gx4qiEAzUTBIAArpyyNbljqteU8uYiOz3jLwuyKPTDujtkkIICT9Td4LRJH9BCLAD+RO1Aj3X+hVjFPH/E/fC/NLPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887856; c=relaxed/simple;
-	bh=hhHL0gmhMsZFwfb25yZ/LK9RQhmbswptqTsORV1ZK30=;
+	s=arc-20240116; t=1765884329; c=relaxed/simple;
+	bh=8WWcHjrhqb12owofp7MEgb9c7rHIc4zCYYwDwlF0boA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gaVmu9ejqSwo9/kI3hfZXLyUwiDx8tOMWg8u3QJXRWTssYNgXP7yhoRxYhhbI9K3ppDq7Uo7z22h0Q5XglAClrif3SvYnSwR6loLyHTakCLe8pXaCTThVG+y2x88K25Rim7lbQLSENbfwgCOt5OD/o6x2t0rHkdRGU6s0KMq6kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7oejQvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9F7C4CEF5;
-	Tue, 16 Dec 2025 12:24:15 +0000 (UTC)
+	 MIME-Version; b=YXJdzVl1zYpod3R3e/wzyin7HpEdh6/AbKLOPdCSJpbb6Sml/P40cv7A04T1mVhUlh9JamPZAzvO6KyBZWGFlv9uj7oCY+4+RAgEgdMwEDJEXckGe59OqiXY++hUBgjo5pFpe6MlTlqj8HdonpgUv3+1zyGHQzRB/5ZPme/SNj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVgamN9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09DEC4CEF1;
+	Tue, 16 Dec 2025 11:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887856;
-	bh=hhHL0gmhMsZFwfb25yZ/LK9RQhmbswptqTsORV1ZK30=;
+	s=korg; t=1765884329;
+	bh=8WWcHjrhqb12owofp7MEgb9c7rHIc4zCYYwDwlF0boA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7oejQvUsJylr8FW8uM9uaoVRyokOV5nv9cxgGDgMVEnT0NY41F689+55LNCkiALy
-	 CGGZQ+WOwrSIJfG6yttxRfkJPWo66NR/0cjsb7SL9lfcuaXw+rz9gbP7A4jypUWBpr
-	 3ikb1Ke6SHwotNr+5U3q0UlKVZkRBjsq9xmH6SvU=
+	b=xVgamN9SKRwbIe2dx+G9arF6sU8VcBZtoZSBbOUvHpV44Ty8fb2OXcZmmPdP6tztT
+	 glswqGQ2GqRgLqyHJpaXi9/wMj2EXRNa+6UHZxlBWeMMIv/5OBpRQGCb3fhJkw8hD2
+	 /HB5mKh1BjRTjcasSvIq0hMbCNirwT07x14W6VOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 359/614] rtla/tests: Fix osnoise test calling timerlat
-Date: Tue, 16 Dec 2025 12:12:06 +0100
-Message-ID: <20251216111414.368830136@linuxfoundation.org>
+Subject: [PATCH 6.12 160/354] crypto: iaa - Fix incorrect return value in save_iaa_wq()
+Date: Tue, 16 Dec 2025 12:12:07 +0100
+Message-ID: <20251216111326.710805957@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 34c170ae5c3036ef879567a37409a2859e327342 ]
+[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
 
-osnoise test "top stop at failed action" is calling timerlat instead of
-osnoise by mistake.
+The save_iaa_wq() function unconditionally returns 0, even when an error
+is encountered. This prevents the error code from being propagated to the
+caller.
 
-Fix it so that it calls the correct RTLA subcommand.
+Fix this by returning the 'ret' variable, which holds the actual status
+of the operations within the function.
 
-Fixes: 05b7e10687c6 ("tools/rtla: Add remaining support for osnoise actions")
-Reviewed-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20251007095341.186923-3-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/tests/osnoise.t | 2 +-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/tracing/rtla/tests/osnoise.t b/tools/tracing/rtla/tests/osnoise.t
-index 08196443fef16..3963346089207 100644
---- a/tools/tracing/rtla/tests/osnoise.t
-+++ b/tools/tracing/rtla/tests/osnoise.t
-@@ -37,7 +37,7 @@ check "multiple actions" \
- check "hist stop at failed action" \
- 	"osnoise hist -S 2 --on-threshold shell,command='echo -n 1; false' --on-threshold shell,command='echo -n 2'" 2 "^1# RTLA osnoise histogram$"
- check "top stop at failed action" \
--	"timerlat top -T 2 --on-threshold shell,command='echo -n abc; false' --on-threshold shell,command='echo -n defgh'" 2 "^abc" "defgh"
-+	"osnoise top -S 2 --on-threshold shell,command='echo -n abc; false' --on-threshold shell,command='echo -n defgh'" 2 "^abc" "defgh"
- check "hist with continue" \
- 	"osnoise hist -S 2 -d 5s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
- check "top with continue" \
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index df2728cccf8b3..e9391cf2c397c 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -807,7 +807,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 	if (!cpus_per_iaa)
+ 		cpus_per_iaa = 1;
+ out:
+-	return 0;
++	return ret;
+ }
+ 
+ static void remove_iaa_wq(struct idxd_wq *wq)
 -- 
 2.51.0
 
