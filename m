@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6370CC3131
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:09:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75270CC38FC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DAD6303C035
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A59743092F08
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D68346774;
-	Tue, 16 Dec 2025 12:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAED34B67F;
+	Tue, 16 Dec 2025 11:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fyrp1bMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtG2d45p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0375C35965;
-	Tue, 16 Dec 2025 12:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B5534B434;
+	Tue, 16 Dec 2025 11:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887208; cv=none; b=cSJiD+kUvu/B5bF1sfudpNik6gK7STPnWeq1/PNKBnDgH3qBXLG57HZgDjYE5HiAz6cPQyBD4YqxktVAwUUUdwTJICRQ3VwpK+3xDNwRj8Qc2umrKiWl8l8IOPEc3Dei/e4XoTb9VEkn2w/xdgY9Z4CdGwPdKg0s83gdDDHrSnE=
+	t=1765885262; cv=none; b=G8fX+LOTYlE96bjC9HUZl9iXhWNOrhYTm1fre4dl0i//2rBeqFuQZmgfsICfqjou9mRyEKj6jB+DPNUITe3oNu7Zgvh61/cI9WDm3JW5tLTj468oGFZm9Zgq6NcZtrdQqmVt7oXdPVwRe3++OLg3ABw0ZwTy88bNXOXdaAKbIso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887208; c=relaxed/simple;
-	bh=UzzlsXLRbk41nNzXr/W6yVGbmeYUu1LRUCdaiZvoJU4=;
+	s=arc-20240116; t=1765885262; c=relaxed/simple;
+	bh=mAX2t1LpXlYXBWxvdOE2MCz4qpD5/4WIRSk4INdNXCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9CJnQfxTYO/t17Qpy5CYpnkkBeqq3qA2DJJzUI71+Pu60R0YI6O/punDh9zzx430gYF8ZCpkvE7/jMURXBRi+WhnUIzCw6qFGSgho+yM+OvwiZxH+HbNdkjKgZFvjRTF4DF8VhIOw9vxTVdoICGpPZE3Y9Y8QqoIUr+W18fbmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fyrp1bMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67956C4CEF1;
-	Tue, 16 Dec 2025 12:13:27 +0000 (UTC)
+	 MIME-Version; b=L5Q8aoO/U08XGD9wDiHwtbcj/Iyw9bXMVbjGgsq6drDboZTdMivzkIBl2Kwuyb1LJZmoePsaUY86sXa75hHSvBzLj+fhaxyFHuvzSFLG//spL6EI3a9qr+EwI+0zauk0+yc0Pe3npuh+7e64rIMGS5ByeYLkstXrmJcMW9p4LPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtG2d45p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165B4C4CEF1;
+	Tue, 16 Dec 2025 11:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887207;
-	bh=UzzlsXLRbk41nNzXr/W6yVGbmeYUu1LRUCdaiZvoJU4=;
+	s=korg; t=1765885262;
+	bh=mAX2t1LpXlYXBWxvdOE2MCz4qpD5/4WIRSk4INdNXCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fyrp1bMBF5plvHOGH/X83yB5YFCoIvujt4RlPGosSwW3Zmk8bu1CCyfNCaldxdZhJ
-	 4tCNBRoued1wVJB2wItYQfuMVWhuEoZJS35aBKrvv6BQ7iyhkpdsPF4ndZZ1IEIcus
-	 Jjup7EK/ekKaOFz8csDVnV61snqenH6Tsfcaq1xc=
+	b=OtG2d45p5dQd4OJR5zmvuUS/dbO428fhThaxgiw24E7i5S27m1gVaWga1hR6GZ9+Q
+	 ZOU0Vzp2daYFvjO+bjLsuBbm1dw1nDcVOwlESz0k2iuZ895yNzS+/YocinSznBQaMr
+	 aFoQnyi24fECNrkDcUe+FD6fMKagyzj7zACdRrRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Andrej Tkalcec <andrej.tkalcec@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 159/614] docs: kdoc: fix duplicate section warning message
-Date: Tue, 16 Dec 2025 12:08:46 +0100
-Message-ID: <20251216111407.097805254@linuxfoundation.org>
+Subject: [PATCH 6.17 086/507] tools/power turbostat: Regression fix Uncore MHz printed in hex
+Date: Tue, 16 Dec 2025 12:08:47 +0100
+Message-ID: <20251216111348.654695240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,109 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit e5e7ca66a7fc6b8073c30a048e1157b88d427980 ]
+[ Upstream commit 92664f2e6ab2228a3330734fc72dabeaf8a49ee1 ]
 
-The python version of the kernel-doc parser emits some strange warnings
-with just a line number in certain cases:
+A patch to allow specifying FORMAT_AVERAGE to added counters...
+broke the internally added counter for Cluster Uncore MHz -- printing it in HEX.
 
-$ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
-Warning: 174
-Warning: 184
-Warning: 190
-Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
-Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
-Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
-Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
-
-I eventually tracked this down to the lone call of emit_msg() in the
-KernelEntry class, which looks like:
-
-  self.emit_msg(self.new_start_line, f"duplicate section name '{name}'\n")
-
-This looks like all the other emit_msg calls. Unfortunately, the definition
-within the KernelEntry class takes only a message parameter and not a line
-number. The intended message is passed as the warning!
-
-Pass the filename to the KernelEntry class, and use this to build the log
-message in the same way as the KernelDoc class does.
-
-To avoid future errors, mark the warning parameter for both emit_msg
-definitions as a keyword-only argument. This will prevent accidentally
-passing a string as the warning parameter in the future.
-
-Also fix the call in dump_section to avoid an unnecessary additional
-newline.
-
-Fixes: e3b42e94cf10 ("scripts/lib/kdoc/kdoc_parser.py: move kernel entry to a class")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <20251030-jk-fix-kernel-doc-duplicate-return-warning-v2-1-ec4b5c662881@intel.com>
+Fixes: dcd1c379b0f1 ("tools/power turbostat: add format "average" for external attributes")
+Reported-by: Andrej Tkalcec <andrej.tkalcec@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/lib/kdoc/kdoc_parser.py | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/lib/kdoc/kdoc_parser.py b/scripts/lib/kdoc/kdoc_parser.py
-index 2376f180b1fa9..ccbc1fe4b7ccd 100644
---- a/scripts/lib/kdoc/kdoc_parser.py
-+++ b/scripts/lib/kdoc/kdoc_parser.py
-@@ -274,6 +274,8 @@ class KernelEntry:
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 931bad99277fe..405b13b690ba5 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -3285,13 +3285,13 @@ int format_counters(PER_THREAD_PARAMS)
  
-         self.leading_space = None
+ 	/* Added counters */
+ 	for (i = 0, mp = sys.tp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)t->counter[i]);
+ 			else
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), t->counter[i]);
+-		} else if (mp->format == FORMAT_DELTA) {
++		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
+ 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
+ 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), t->counter[i]);
+ 			else
+@@ -3382,13 +3382,13 @@ int format_counters(PER_THREAD_PARAMS)
+ 		outp += sprintf(outp, "%s%lld", (printed++ ? delim : ""), c->core_throt_cnt);
  
-+        self.fname = fname
-+
-         # State flags
-         self.brcount = 0
-         self.declaration_start_line = ln + 1
-@@ -288,9 +290,11 @@ class KernelEntry:
-         return '\n'.join(self._contents) + '\n'
+ 	for (i = 0, mp = sys.cp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)c->counter[i]);
+ 			else
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), c->counter[i]);
+-		} else if (mp->format == FORMAT_DELTA) {
++		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
+ 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
+ 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), c->counter[i]);
+ 			else
+@@ -3581,7 +3581,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), p->uncore_mhz);
  
-     # TODO: rename to emit_message after removal of kernel-doc.pl
--    def emit_msg(self, log_msg, warning=True):
-+    def emit_msg(self, ln, msg, *, warning=True):
-         """Emit a message"""
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
++		if (mp->format == FORMAT_RAW) {
+ 			if (mp->width == 32)
+ 				outp +=
+ 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)p->counter[i]);
+@@ -3758,7 +3758,7 @@ int delta_package(struct pkg_data *new, struct pkg_data *old)
+ 	    new->rapl_dram_perf_status.raw_value - old->rapl_dram_perf_status.raw_value;
  
-+        log_msg = f"{self.fname}:{ln} {msg}"
-+
-         if not warning:
-             self.config.log.info(log_msg)
-             return
-@@ -336,7 +340,7 @@ class KernelEntry:
-                 # Only warn on user-specified duplicate section names
-                 if name != SECTION_DEFAULT:
-                     self.emit_msg(self.new_start_line,
--                                  f"duplicate section name '{name}'\n")
-+                                  f"duplicate section name '{name}'")
-                 # Treat as a new paragraph - add a blank line
-                 self.sections[name] += '\n' + contents
-             else:
-@@ -387,15 +391,15 @@ class KernelDoc:
-             self.emit_msg(0,
-                           'Python 3.7 or later is required for correct results')
- 
--    def emit_msg(self, ln, msg, warning=True):
-+    def emit_msg(self, ln, msg, *, warning=True):
-         """Emit a message"""
- 
--        log_msg = f"{self.fname}:{ln} {msg}"
--
-         if self.entry:
--            self.entry.emit_msg(log_msg, warning)
-+            self.entry.emit_msg(ln, msg, warning=warning)
-             return
- 
-+        log_msg = f"{self.fname}:{ln} {msg}"
-+
-         if warning:
-             self.config.log.warning(log_msg)
-         else:
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE)
++		if (mp->format == FORMAT_RAW)
+ 			old->counter[i] = new->counter[i];
+ 		else if (mp->format == FORMAT_AVERAGE)
+ 			old->counter[i] = new->counter[i];
 -- 
 2.51.0
 
