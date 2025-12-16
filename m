@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF58BCC332D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6F2CC241B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1793088B9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A5333088B96
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB90350D4C;
-	Tue, 16 Dec 2025 12:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D6E32BF22;
+	Tue, 16 Dec 2025 11:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWBKVOHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaQEETLf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5878E350A39;
-	Tue, 16 Dec 2025 12:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BDE341645;
+	Tue, 16 Dec 2025 11:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887892; cv=none; b=LLKrmolRRobZV1Z/9fJE2FjssgRiMWTQCAX5A03x7rFLIAhUqx/GMxaklh4OFCggTnQ06KYRGiuV/fopSx3vSfC7ck7xD7zjyfQlHptvxW3vgl0zfwxT3GKBnQ45PeYpgmaI3vJ9a6iipSa5FXBnIn3lZpIuQ5JBnyjnVY1cEiI=
+	t=1765884363; cv=none; b=XvGInQPtEEDmOCdxgmBgr0Ak6aBByJ5x3NZ0gP+H21Q5K1RzhRMf04200G85JpA63dGbykHvOBazwpI6aTXXYfPiJw1jEllblMdUzxuRUcr/v/Fez7M+4eCMm06y8YKzi3aSlkVf4e9f0biRvatUydnSl1RX4gb4iRDtyNdB5vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887892; c=relaxed/simple;
-	bh=D3d0PUvB0fPjUkvS6T8IRpKasY0+RA/p2QKAZggWjdo=;
+	s=arc-20240116; t=1765884363; c=relaxed/simple;
+	bh=9iwLFKDfs53QKg2e2Qwi0XmdcNe0X+jZH5KxE6GWRB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWpIIokLGEotgC8LgPd9v+3/hMmP3HKmWpOJ2VckwcnHBSOoHxs+ceGfC96GsSVZndg7YjlqQZkniwz5lipTvzX8eANr0zECdds2Y/2mhE+1cB/iLqkArFt+T25brFatvsuSWO7X+6Ze9wywD1usGMUYJWraATqpkxpemuZws70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWBKVOHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C90C4CEF1;
-	Tue, 16 Dec 2025 12:24:51 +0000 (UTC)
+	 MIME-Version; b=GLXdLKiliTMQqX1+w57Eo1XL+ACaR2AldhUPABOg0UcEkB8jOWuOSXskd3AYNt1btDZM5Ucsg52yJBWj4/4t21YrvcPK8ygJASMdjHukvpVIEETPwj3sMbU2lD7QKuKzSmGyICzDlcrg1r+TFx8FXm6i4k7ALY8kRY3aSPKqbuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaQEETLf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF2C4CEF1;
+	Tue, 16 Dec 2025 11:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887892;
-	bh=D3d0PUvB0fPjUkvS6T8IRpKasY0+RA/p2QKAZggWjdo=;
+	s=korg; t=1765884363;
+	bh=9iwLFKDfs53QKg2e2Qwi0XmdcNe0X+jZH5KxE6GWRB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EWBKVOHHe58O+zVks3ki8cR03kReAqCED9SFLiFDH7mr1uoXAFwKV2xGa1k9ixn79
-	 FKxBxSJmgCiAW40jGe/PVZIQr6h+UljoXHaSeX/hVhw/3a0Kew4hUcIjpFDf+POoHd
-	 pKeNqhgEiE3u8QFAQEycApsx6tiw5l3cBWTK4gWo=
+	b=YaQEETLfNSGn3CAvTiBO1/gnY2bzTt7rN0lNBh987v4OTjuUCGqyadMgU9fIicOC0
+	 Su1kNY5+keD7anKAwXHC8mgBN0FkIxnewV0P4StmW19lQXKZmDVEmGZ1lpYhuM9VmP
+	 9478Rvr9FBsXEF0Kywl/9Bkc24CVJt+myB334nh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xing Guo <higuoxing@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 369/614] selftests/bpf: Update test_tag to use sha256
+Subject: [PATCH 6.12 169/354] tracefs: fix a leak in eventfs_create_events_dir()
 Date: Tue, 16 Dec 2025 12:12:16 +0100
-Message-ID: <20251216111414.729533193@linuxfoundation.org>
+Message-ID: <20251216111327.035784314@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xing Guo <higuoxing@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit b7f7d76d6e354a5acc711da37cb2829ccf40558f ]
+[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
 
-commit 603b44162325 ("bpf: Update the bpf_prog_calc_tag to use SHA256")
-changed digest of prog_tag to SHA256 but forgot to update tests
-correspondingly. Fix it.
+If we have LOCKDOWN_TRACEFS, the function bails out - *after*
+having locked the parent directory and without bothering to
+undo that.  Just check it before tracefs_start_creating()...
 
-Fixes: 603b44162325 ("bpf: Update the bpf_prog_calc_tag to use SHA256")
-Signed-off-by: Xing Guo <higuoxing@gmail.com>
-Link: https://lore.kernel.org/r/20251121061458.3145167-1-higuoxing@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_tag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_tag.c b/tools/testing/selftests/bpf/test_tag.c
-index 5546b05a04866..f1300047c1e0a 100644
---- a/tools/testing/selftests/bpf/test_tag.c
-+++ b/tools/testing/selftests/bpf/test_tag.c
-@@ -116,7 +116,7 @@ static void tag_from_alg(int insns, uint8_t *tag, uint32_t len)
- 	static const struct sockaddr_alg alg = {
- 		.salg_family	= AF_ALG,
- 		.salg_type	= "hash",
--		.salg_name	= "sha1",
-+		.salg_name	= "sha256",
- 	};
- 	int fd_base, fd_alg, ret;
- 	ssize_t size;
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 8705c77a9e75a..93c231601c8e2 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -757,7 +757,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 						const struct eventfs_entry *entries,
+ 						int size, void *data)
+ {
+-	struct dentry *dentry = tracefs_start_creating(name, parent);
++	struct dentry *dentry;
+ 	struct eventfs_root_inode *rei;
+ 	struct eventfs_inode *ei;
+ 	struct tracefs_inode *ti;
+@@ -768,6 +768,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 	if (security_locked_down(LOCKDOWN_TRACEFS))
+ 		return NULL;
+ 
++	dentry = tracefs_start_creating(name, parent);
+ 	if (IS_ERR(dentry))
+ 		return ERR_CAST(dentry);
+ 
 -- 
 2.51.0
 
