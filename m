@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3D4CC2BAE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 204B0CC229B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B55B30C6B05
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DD693003111
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1685362138;
-	Tue, 16 Dec 2025 12:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6676342160;
+	Tue, 16 Dec 2025 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIyk1VEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUqO+2Sy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9C63624B9;
-	Tue, 16 Dec 2025 12:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED0534167A;
+	Tue, 16 Dec 2025 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887742; cv=none; b=Y0O0kZYHQCqkoFTdKVd8Wc+9BCKnFVVHCro4mBqH5LKenriSq7sKbREhTwtHdRw/rPJTlvNB4G/n8Y+53ANd/N7LDCjN80VG3nL8NC6TlSnJ3+ipdLK7bjsW8YgsINB8ZUJPnUEh1oilKXUltaJ5gZULFi3e2CS16yyrq3/XTNc=
+	t=1765884211; cv=none; b=rtY8A9Xk0SWPCHPBdK/Spjw3FEfZASp8Z4Ef4TyOyuAE5zqp448pSeRSxPhyMYGShpEhwBRLwz3VDg1LCDgaSHrmTtdEdc64JMMmAfsRDs+VdcjkRn8YRs8iKCF26a1fQsQ/udyWJa0HHyVAA5KuU/WNBtyKClltmVE3L9Ocxlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887742; c=relaxed/simple;
-	bh=dIGA4r49VQgJ9RsZfhp+xkzOD2iC0DRChb2iIAuCseo=;
+	s=arc-20240116; t=1765884211; c=relaxed/simple;
+	bh=NRwXkqof4V/NVpyBlsz6c69V0a9F240r7IHP/TIjtFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/fmVEN0G4P8RR46dptC//lV8Scvo1mhAulY6zzyTN9K1M48kv7IEIVpFD+izYUzF1PS3Z4IAHyZt52seMplUFz4ZduO2k7mW3XY0xMa5mu6MxeH9646BNb6x5fR4KTtHlGaMGTJjaWeAqlayTpTKaIopqNXLCrH3VCOJrTasP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIyk1VEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C611CC4CEF1;
-	Tue, 16 Dec 2025 12:22:21 +0000 (UTC)
+	 MIME-Version; b=FoLIHmwx/JTSqz10rU2bLfIpzLuDkoNKHSCqQeuYEWEffs+ZqFcyxNI82lBa6E3R8IBYxXzpklCHwa7q2CsdClY18kxru2OWBaptaISUyBJwiN1NsEzqaDwAONoU7oY6AjL/KvNIA/40vZqDhmnVieIAfTDLFy1shVmFAlxj3aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUqO+2Sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D766AC4CEF1;
+	Tue, 16 Dec 2025 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887742;
-	bh=dIGA4r49VQgJ9RsZfhp+xkzOD2iC0DRChb2iIAuCseo=;
+	s=korg; t=1765884211;
+	bh=NRwXkqof4V/NVpyBlsz6c69V0a9F240r7IHP/TIjtFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIyk1VEpXu87cgwwOiXVUOYv3aZJnjdedR2jgcni0OO4YyR5thZMUdumAVwpNKl3c
-	 h6fGJd4p4AyqDQsc00wDuI1YDExbqWSoZMT9g+9WNLO/LrMaSbEIR2qirUXnG5RqE9
-	 g6I6rjWDBaw6zAUycy0gd1fsI+O3SYdor9oUzhB8=
+	b=CUqO+2SyK1DAntDiKIELGQVx9ScGan44F+ljHm9xlhd/WUCHlQtQ+6Tm63BlHop4Q
+	 Bp8TC6cjY7AY5n5JSueqxB2F5VEU2F37B233VWX2PLO3xwluJaKciSIsXestzxeruh
+	 DnBLHXeZPYA+8EP1OtrYazqfUrP644Grj7Nf7ra0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 324/614] drm/msm/a6xx: Improve MX rail fallback in RPMH vote init
-Date: Tue, 16 Dec 2025 12:11:31 +0100
-Message-ID: <20251216111413.103315422@linuxfoundation.org>
+Subject: [PATCH 6.12 125/354] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Date: Tue, 16 Dec 2025 12:11:32 +0100
+Message-ID: <20251216111325.451373140@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit ca04ce7a2f22652fdf6489fa7e02e7d2c08698f4 ]
+[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
 
-Current logic assumes that the voltage corners in both MxG and MxA are
-always same. This is not true for recent targets. So, rework the rpmh init
-sequence to probe and calculate the votes with the respective rails, ie,
-GX rails should use MxG as secondary rail and Cx rail should use MxA as
-the secondary rail.
+When da9055_device_init() fails after regmap_add_irq_chip()
+succeeds but mfd_add_devices() fails, the error handling path
+only calls mfd_remove_devices() but forgets to call
+regmap_del_irq_chip(). This results in a resource leak.
 
-Fixes: d6225e0cd096 ("drm/msm/adreno: Add support for X185 GPU")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/689014/
-Message-ID: <20251118-kaana-gpu-support-v4-12-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fix this by adding regmap_del_irq_chip() to the error path so
+that resources are released properly.
+
+Fixes: 2896434cf272 ("mfd: DA9055 core driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/mfd/da9055-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 605bb55de8d52..21a3f9b0ab4c2 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1492,13 +1492,14 @@ static unsigned int a6xx_gmu_get_arc_level(struct device *dev,
+diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
+index 1f727ef60d638..8c989b74f924e 100644
+--- a/drivers/mfd/da9055-core.c
++++ b/drivers/mfd/da9055-core.c
+@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
+ 
+ err:
+ 	mfd_remove_devices(da9055->dev);
++	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
+ 	return ret;
  }
  
- static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
--		unsigned long *freqs, int freqs_count, const char *id)
-+		unsigned long *freqs, int freqs_count,
-+		const char *pri_id, const char *sec_id)
- {
- 	int i, j;
- 	const u16 *pri, *sec;
- 	size_t pri_count, sec_count;
- 
--	pri = cmd_db_read_aux_data(id, &pri_count);
-+	pri = cmd_db_read_aux_data(pri_id, &pri_count);
- 	if (IS_ERR(pri))
- 		return PTR_ERR(pri);
- 	/*
-@@ -1509,13 +1510,7 @@ static int a6xx_gmu_rpmh_arc_votes_init(struct device *dev, u32 *votes,
- 	if (!pri_count)
- 		return -EINVAL;
- 
--	/*
--	 * Some targets have a separate gfx mxc rail. So try to read that first and then fall back
--	 * to regular mx rail if it is missing
--	 */
--	sec = cmd_db_read_aux_data("gmxc.lvl", &sec_count);
--	if (IS_ERR(sec) && sec != ERR_PTR(-EPROBE_DEFER))
--		sec = cmd_db_read_aux_data("mx.lvl", &sec_count);
-+	sec = cmd_db_read_aux_data(sec_id, &sec_count);
- 	if (IS_ERR(sec))
- 		return PTR_ERR(sec);
- 
-@@ -1583,15 +1578,24 @@ static int a6xx_gmu_rpmh_votes_init(struct a6xx_gmu *gmu)
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	const struct a6xx_info *info = adreno_gpu->info->a6xx;
- 	struct msm_gpu *gpu = &adreno_gpu->base;
-+	const char *sec_id;
-+	const u16 *gmxc;
- 	int ret;
- 
-+	gmxc = cmd_db_read_aux_data("gmxc.lvl", NULL);
-+	if (gmxc == ERR_PTR(-EPROBE_DEFER))
-+		return -EPROBE_DEFER;
-+
-+	/* If GMxC is present, prefer that as secondary rail for GX votes */
-+	sec_id = IS_ERR_OR_NULL(gmxc) ? "mx.lvl" : "gmxc.lvl";
-+
- 	/* Build the GX votes */
- 	ret = a6xx_gmu_rpmh_arc_votes_init(&gpu->pdev->dev, gmu->gx_arc_votes,
--		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl");
-+		gmu->gpu_freqs, gmu->nr_gpu_freqs, "gfx.lvl", sec_id);
- 
- 	/* Build the CX votes */
- 	ret |= a6xx_gmu_rpmh_arc_votes_init(gmu->dev, gmu->cx_arc_votes,
--		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl");
-+		gmu->gmu_freqs, gmu->nr_gmu_freqs, "cx.lvl", "mx.lvl");
- 
- 	/* Build the interconnect votes */
- 	if (info->bcms && gmu->nr_gpu_bws > 1)
 -- 
 2.51.0
 
