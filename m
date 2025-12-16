@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E22CC3182
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 751FECC2A7D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19C1A313C478
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D255301D9D9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B7A36D4E7;
-	Tue, 16 Dec 2025 12:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BC83451AF;
+	Tue, 16 Dec 2025 11:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YluuPNcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eri1zfc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A1539FD9;
-	Tue, 16 Dec 2025 12:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1823A3451BF;
+	Tue, 16 Dec 2025 11:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888019; cv=none; b=UWLmiIIzpdP2ekK/ie5R2iyYzLs2X6BaazfiAqIUl7+IvEhMW7E7hQpg26uguUa2HVA3lLW5at2oJ2oyKBsQcmk+AR3lH5kR/wrCrARx4JHvL7ModRJYL90nks0uP0MUGKUFbkUmsvmbdknNwrCN0NxeaH5eLf3I7rjqofmBQSw=
+	t=1765886085; cv=none; b=GsImNayLVYQl6cRCyB6+5Mvsn+bznEZZgxHiuo9XUySTjBbyX79NFuJNLJ4CcgLbMREvRmG8f+H+J73zzi4Kq7mTIHgF9PiYYtg2UBxWAe1Tvsbms/niFrkPCsYN1oyoqFmK93f4IUHmkOcHaMLmbdzFnryMhElnLpJckY8nLpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888019; c=relaxed/simple;
-	bh=4DXXR/PNw87izYd8qOGh3YbVMvqx4hZA2YYuxzdGWjU=;
+	s=arc-20240116; t=1765886085; c=relaxed/simple;
+	bh=l1S1Vpfuw40NMHSkHrEc48IDY6KIYSjc8uUu6Q1HgIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/fx+cWfv2GKvGjvtpcEmgGQXsLVvxjO6y05NxaaQn+1yEPQAPvEYeFShE+V3nSgk7hgPI5rT89igy2fj7ACFfsSIePNqJpq7nvIkByF0YvLcoLMXgLjTf3gPj8g6ks9PztpovbVV4jEWM4RHdjaTEUhzCyRUyCxTwPOXT+NRso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YluuPNcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9959C4CEF1;
-	Tue, 16 Dec 2025 12:26:58 +0000 (UTC)
+	 MIME-Version; b=be3QwmdsZkQLVi01dMwwqqHt8i28Nx2P3w+Iy+qkjaUYcWRz6XUnZ6FNp1UtnXs6F865Pslcxk1T7uI5Zx7rv4HGuYp0H3caxoOoR+S56cf6hhQMweDmc7V+9mE+quFmhWHcuxa3X2dsbyN4mra71aUb23lSs45b8gCJM1KtaDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eri1zfc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8458DC4CEF1;
+	Tue, 16 Dec 2025 11:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888019;
-	bh=4DXXR/PNw87izYd8qOGh3YbVMvqx4hZA2YYuxzdGWjU=;
+	s=korg; t=1765886084;
+	bh=l1S1Vpfuw40NMHSkHrEc48IDY6KIYSjc8uUu6Q1HgIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YluuPNcsET4DU5JvT4Gf+ddElWhIx6U46TtYk18LW4sKASXq2dxM4+HJ7MywJro2j
-	 QbThOciUbdqAsnHYqxiviB6mIBxcYotNUV5iP2xcI8zWI0j0y8QFscAOszwiC4/DkW
-	 FpQZvAEbiSzxTIyjs8OkWJnrGQ2UNVPXeA7K3W1I=
+	b=eri1zfc7a0v7g9yERtp8JKCkB/tj6OGTm3ze2RO8P56tXH3uoBd3s5zVnb9rZLT57
+	 6yd1J6JkzIFe5iDFm7iH4Puvrh/Dao8qtZGD04Y86xRKUPdG8b9yyL37+0ACpN0kOu
+	 yKoFL68M8Hlur+0wPqp9xHgIoCOItfkpCRcRhw+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 407/614] selftests/bpf: Allow selftests to build with older xxd
+Subject: [PATCH 6.17 333/507] wifi: mt76: mt7996: fix using wrong phy to start in mt7996_mac_restart()
 Date: Tue, 16 Dec 2025 12:12:54 +0100
-Message-ID: <20251216111416.119802360@linuxfoundation.org>
+Message-ID: <20251216111357.529128454@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit ad93ba02678eda5fc8e259cf4b52997e6fa570cf ]
+[ Upstream commit f1e9f369ae42ee433836b24467e645192d046a51 ]
 
-Currently selftests require xxd with the "-n <name>" option
-which allows the user to specify a name not derived from
-the input object path.  Instead of relying on this newer
-feature, older xxd can be used if we link our desired name
-("test_progs_verification_cert") to the input object.
+Pass the correct mt7996_phy to mt7996_run().
 
-Many distros ship xxd in vim-common package and do not have
-the latest xxd with -n support.
-
-Fixes: b720903e2b14d ("selftests/bpf: Enable signature verification for some lskel tests")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/r/20251120084754.640405-3-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 0a5df0ec47f7 ("wifi: mt76: mt7996: remove redundant per-phy mac80211 calls during restart")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251106064203.1000505-11-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/.gitignore | 1 +
- tools/testing/selftests/bpf/Makefile   | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/.gitignore b/tools/testing/selftests/bpf/.gitignore
-index be1ee7ba7ce03..ca557e5668fd8 100644
---- a/tools/testing/selftests/bpf/.gitignore
-+++ b/tools/testing/selftests/bpf/.gitignore
-@@ -23,6 +23,7 @@ test_tcpnotify_user
- test_libbpf
- xdping
- test_cpp
-+test_progs_verification_cert
- *.d
- *.subskel.h
- *.skel.h
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index f00587d4ede68..e59b2bbf8d920 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -721,7 +721,8 @@ $(VERIFICATION_CERT) $(PRIVATE_KEY): $(VERIFY_SIG_SETUP)
- 	$(Q)$(VERIFY_SIG_SETUP) genkey $(BUILD_DIR)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 30e2ef1404b90..b0092794f37c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1894,7 +1894,7 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 		if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+ 			continue;
  
- $(VERIFY_SIG_HDR): $(VERIFICATION_CERT)
--	$(Q)xxd -i -n test_progs_verification_cert $< > $@
-+	$(Q)ln -fs $< test_progs_verification_cert && \
-+	xxd -i test_progs_verification_cert > $@
- 
- # Define test_progs test runner.
- TRUNNER_TESTS_DIR := prog_tests
-@@ -893,7 +894,8 @@ EXTRA_CLEAN := $(SCRATCH_DIR) $(HOST_SCRATCH_DIR)			\
- 	$(addprefix $(OUTPUT)/,*.o *.d *.skel.h *.lskel.h *.subskel.h	\
- 			       no_alu32 cpuv4 bpf_gcc			\
- 			       liburandom_read.so)			\
--	$(OUTPUT)/FEATURE-DUMP.selftests
-+	$(OUTPUT)/FEATURE-DUMP.selftests				\
-+	test_progs_verification_cert
- 
- .PHONY: docs docs-clean
- 
+-		ret = mt7996_run(&dev->phy);
++		ret = mt7996_run(phy);
+ 		if (ret)
+ 			goto out;
+ 	}
 -- 
 2.51.0
 
