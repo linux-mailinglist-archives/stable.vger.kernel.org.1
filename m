@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2758DCC2E50
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C174DCC23B0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57BE831F1EA9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6DC113031243
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6449364059;
-	Tue, 16 Dec 2025 12:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B368342CB6;
+	Tue, 16 Dec 2025 11:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPBhiSHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a5aNHfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FAC364036;
-	Tue, 16 Dec 2025 12:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D5D342CB1;
+	Tue, 16 Dec 2025 11:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887780; cv=none; b=mi80oqTEILpEjF/Jie9fDX4L7ufVLIGgWREtWJwieECJ/iyzA9iWAiWePf21u0rcPn6fKe2AhY7KSAqf4WYFVbWGjpU1HkdjZHlkHmrGWFNAtIjxX384kfGKIH1ey8VBC9hO8uEmhp/kkCxK0VT6ZgubpkUy5QXxSRENPwgU/fI=
+	t=1765884389; cv=none; b=WhOtsDxOlHGOLdAe/ETdUFXntXZ8pP9ChPNgoqThGyaDSh0rlwH6FRT9Ke+S9ClKDyZ3XHER5UdFBHHGjn13NM/KSs8AI5HsdYqZN1/dAX6EA+lOLUIpkvk+spqqX9lDl5hdIV7wNDnRszD2Kqs/upRaY0Kvl4xAWXbC6e2t0fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887780; c=relaxed/simple;
-	bh=irMPozeV6/ocbQUHh1/Vz3ILUoON3zHoylHzzHTs9GI=;
+	s=arc-20240116; t=1765884389; c=relaxed/simple;
+	bh=lhcNmKgTU3BHxfsR7PcGc2GPRqUBQ8sPdlXDvLaNUbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czBbIi9m+35mrOjvHutjqZa8XRFTxRT0zj5yM9pfs9KcTBIX1L3KrxCxL0YIhR5aCIy8z8Hu7YgVtCQ5yzh98YvII71dmxBVnt0dWPFe/bDq/MaqH0pLwC9mJ1jHya1s4sGezwjd9E3wOnp4jgIA/zcsgkdbDWq5XcQr8LwO6aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPBhiSHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2B2C4CEF1;
-	Tue, 16 Dec 2025 12:22:59 +0000 (UTC)
+	 MIME-Version; b=RTdn8FgM95G69KqA8hCJA3RsNbmLGaICWo7VQxNMo8znTYJrBQqK34KEygOjxgM2lIm+DK7llPWcACyrBkUWuoQz537HkUapd0/L4mfRukVut3QrtLo1NQfmPk+kszR5UBG5PnCEP+RfotC51kADEdpBCGOnNLLLpn2p2u4Mwys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a5aNHfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6755DC4CEF1;
+	Tue, 16 Dec 2025 11:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887780;
-	bh=irMPozeV6/ocbQUHh1/Vz3ILUoON3zHoylHzzHTs9GI=;
+	s=korg; t=1765884388;
+	bh=lhcNmKgTU3BHxfsR7PcGc2GPRqUBQ8sPdlXDvLaNUbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPBhiSHbOjUad8+CZHbCi1kAPsXHV5EHpvOHT/nMROyHSL8dl+++OKf3BqbaWp48L
-	 gFrts/mJwvy4sApWPtzeSrqynENSz55zXDyUPGOcFa8XBaI3+tEhhT6/73K2mggvi/
-	 9P5TCZR6k/YvcTp6ouG2u01ITcEtE3JN0649Baas=
+	b=1a5aNHfedCGnsx4qV/5Bwz1AumV1TI2aOLMLqtR32vWrqcvjrANdV9M/DFIpKLx8X
+	 ODiIPp+EC9zIs9hBPGFIpPeGVN0MmvgA4OShU7STJUQ90B3bdRs807evDpET9qNlLw
+	 ot+X0xi+fibDTFCiZ2xWpwFZ4FlnWbvGXRkiYvto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 335/614] tools/rtla: Fix unassigned nr_cpus
+Subject: [PATCH 6.12 135/354] ARM: dts: stm32: stm32mp157c-phycore: Fix STMPE811 touchscreen node properties
 Date: Tue, 16 Dec 2025 12:11:42 +0100
-Message-ID: <20251216111413.502577065@linuxfoundation.org>
+Message-ID: <20251216111325.810582364@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Costa Shulyupin <costa.shul@redhat.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit b4275b23010df719ec6508ddbc84951dcd24adce ]
+[ Upstream commit e40b061cd379f4897e705d17cf1b4572ad0f3963 ]
 
-In recently introduced timerlat_free(),
-the variable 'nr_cpus' is not assigned.
+Move st,adc-freq, st,mod-12b, st,ref-sel, and st,sample-time properties
+from the touchscreen subnode to the parent touch@44 node. These properties
+are defined in the st,stmpe.yaml schema for the parent node, not the
+touchscreen subnode, resolving the validation error about unevaluated
+properties.
 
-Assign it with sysconf(_SC_NPROCESSORS_CONF) as done elsewhere.
-Remove the culprit: -Wno-maybe-uninitialized. The rest of the
-code is clean.
-
-Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Fixes: 2f3172f9dd58 ("tools/rtla: Consolidate code between osnoise/timerlat and hist/top")
-Link: https://lore.kernel.org/r/20251002170846.437888-1-costa.shul@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 27538a18a4fcc ("ARM: dts: stm32: add STM32MP1-based Phytec SoM")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/r/20250915224611.169980-1-jihed.chaibi.dev@gmail.com
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/Makefile.rtla  | 2 +-
- tools/tracing/rtla/src/timerlat.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ .../boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi    | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/tracing/rtla/Makefile.rtla b/tools/tracing/rtla/Makefile.rtla
-index 08c1b40883d3a..1743d91829d46 100644
---- a/tools/tracing/rtla/Makefile.rtla
-+++ b/tools/tracing/rtla/Makefile.rtla
-@@ -18,7 +18,7 @@ export CC AR STRIP PKG_CONFIG LD_SO_CONF_PATH LDCONFIG
- FOPTS		:= -flto=auto -ffat-lto-objects -fexceptions -fstack-protector-strong	\
- 		-fasynchronous-unwind-tables -fstack-clash-protection
- WOPTS		:= -O -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2		\
--		-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
-+		-Wp,-D_GLIBCXX_ASSERTIONS
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
+index bf0c32027baf7..370b2afbf15bf 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
+@@ -185,13 +185,13 @@ touch@44 {
+ 		interrupt-parent = <&gpioi>;
+ 		vio-supply = <&v3v3>;
+ 		vcc-supply = <&v3v3>;
++		st,sample-time = <4>;
++		st,mod-12b = <1>;
++		st,ref-sel = <0>;
++		st,adc-freq = <1>;
  
- ifeq ($(CC),clang)
-   FOPTS		:= $(filter-out -flto=auto -ffat-lto-objects, $(FOPTS))
-diff --git a/tools/tracing/rtla/src/timerlat.c b/tools/tracing/rtla/src/timerlat.c
-index b692128741279..11ad447a8dd78 100644
---- a/tools/tracing/rtla/src/timerlat.c
-+++ b/tools/tracing/rtla/src/timerlat.c
-@@ -215,7 +215,8 @@ void timerlat_analyze(struct osnoise_tool *tool, bool stopped)
- void timerlat_free(struct osnoise_tool *tool)
- {
- 	struct timerlat_params *params = to_timerlat_params(tool->params);
--	int nr_cpus, i;
-+	int nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
-+	int i;
- 
- 	timerlat_aa_destroy();
- 	if (dma_latency_fd >= 0)
+ 		touchscreen {
+ 			compatible = "st,stmpe-ts";
+-			st,sample-time = <4>;
+-			st,mod-12b = <1>;
+-			st,ref-sel = <0>;
+-			st,adc-freq = <1>;
+ 			st,ave-ctrl = <1>;
+ 			st,touch-det-delay = <2>;
+ 			st,settling = <2>;
 -- 
 2.51.0
 
