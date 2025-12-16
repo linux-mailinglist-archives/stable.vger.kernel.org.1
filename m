@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-201348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE00FCC2409
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0E3CC32D6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E18D2307E897
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D369307E8B6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B533E341AD6;
-	Tue, 16 Dec 2025 11:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A45734FF7F;
+	Tue, 16 Dec 2025 12:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPL4Aogu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Spyub1iB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B29341645;
-	Tue, 16 Dec 2025 11:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463ED3328E3;
+	Tue, 16 Dec 2025 12:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884343; cv=none; b=r0hAwV0b47V43JAfgkqFLMUbODXqGsH7XR/QzwEP8WTN/xXMO0NACQc0hdGMw3WBXefcV2UaWNzo5Z/KYPXhaz1YCw0Aiyi2Cou5IGQ0TS6e9e9viZH+FaWOvkOfyTnQDo+AhWsZVSpG+aGL1TrVBwuSFXNy3TULDNiLuJniTTM=
+	t=1765887872; cv=none; b=HcMwxYgXw4NgCIpdsqDduBrxcgPjckwl6YZ0/8Ogh/QrWcHOW2EvYZETdWQQmozSyUsrI43V7H3mmd01dVrdpdD8I62yLRqwygXqxRIjfbxlDXD7BfBnFt6K6UyCDHxL+14nIVK/2+aIOLLMiQIl4J27suw7nEbTjlKQ1/ULEno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884343; c=relaxed/simple;
-	bh=qWKT4iT2+dzKoOS9pP1E9Kr9TpwmGsmA3Ty+rADnBd0=;
+	s=arc-20240116; t=1765887872; c=relaxed/simple;
+	bh=xUR3HsXHNH7jW/7uz6jKKyxzCRDvhHv47RFcHqoYshw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hE3tNZGyhQp7raarJYeZKuGMAox4xh5MR+0FYBHlvLWi+YYWZdEiCpAqwmaz8vUeqdgwwe06OzfmFKO+r6VHcOk/yFFehBDtVJKCqxUHiieLkNPYStugg1a0kE4yQyFfg+NPqz4XYd4XtYxhRskBblsqjNMGuq9O58DRN/PaaYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPL4Aogu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8C9C4CEF1;
-	Tue, 16 Dec 2025 11:25:42 +0000 (UTC)
+	 MIME-Version; b=XyEqU6fgrOoSFGyobM23XREWwpRQG8QyGTU/FhmitIJoG0by6b0fil7tJ7WwKltFGE01CcZ4CMYxG83T8q1MGrG6kKRWqksZeQeFd2WHbx//UN89J2y7ocKCWGkynDIZJLI7NbntPmSTevIkfVINewnvw8L9umuFMcjpdRkpZUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Spyub1iB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20FCC4CEF1;
+	Tue, 16 Dec 2025 12:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884343;
-	bh=qWKT4iT2+dzKoOS9pP1E9Kr9TpwmGsmA3Ty+rADnBd0=;
+	s=korg; t=1765887872;
+	bh=xUR3HsXHNH7jW/7uz6jKKyxzCRDvhHv47RFcHqoYshw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPL4AoguVthL+wKeelUBNrnYnbq9cXl5wVpj1WHZJe0UbWx6tQgLN5Ma3ouI/vO4K
-	 oqmJcFyCvFiqf8BH1Bsvu+2UaZip5vWvEVRsSQJWhDixurKFzVir451TiCGjbf/mRB
-	 KNP3IaevtFw1+Sp559ietfxeQ5M6EkK4inoUsCnc=
+	b=Spyub1iBhSgrJt3o/tg7gQVeUw4/py5AT9g646g1dkUkbJoZss0xEujGvLE+V+gI0
+	 LjIZod6F5w/m6zjIt3PlbqOgfIz61tENW5/2QCpLlDABj0nQLa0krwzvUg2rfVGqL0
+	 p/kU3zhkiC/W0kGU3q10ltPL4OFXLGZGjgIkE9VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/354] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
+Subject: [PATCH 6.18 364/614] usb: dwc2: fix hang during suspend if set as peripheral
 Date: Tue, 16 Dec 2025 12:12:11 +0100
-Message-ID: <20251216111326.855517166@linuxfoundation.org>
+Message-ID: <20251216111414.549115690@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
+[ Upstream commit 2b94b054ac4974ad2f89f7f7461840c851933adb ]
 
-The error that returned by ftrace_set_filter_ip() in register_fentry() is
-not handled properly. Just fix it.
+dwc2 on most platforms needs phy controller, clock and power supply.
+All of them must be enabled/activated to properly operate. If dwc2
+is configured as peripheral mode, then all the above three hardware
+resources are disabled at the end of the probe:
 
-Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+	/* Gadget code manages lowlevel hw on its own */
+	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc2_lowlevel_hw_disable(hsotg);
+
+But the dwc2_suspend() tries to read the dwc2's reg to check whether
+is_device_mode or not, this would result in hang during suspend if dwc2
+is configured as peripheral mode.
+
+Fix this hang by bypassing suspend/resume if lowlevel hw isn't
+enabled.
+
+Fixes: 09a75e857790 ("usb: dwc2: refactor common low-level hw code to platform.c")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20251104002503.17158-3-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/trampoline.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/dwc2/platform.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index fabc8d2fc80e6..dbe7754b4f4e1 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -220,7 +220,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
- 	}
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index b07bdf16326a4..ef0d730770347 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -649,9 +649,13 @@ static int dwc2_driver_probe(struct platform_device *dev)
+ static int __maybe_unused dwc2_suspend(struct device *dev)
+ {
+ 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
+-	bool is_device_mode = dwc2_is_device_mode(dwc2);
++	bool is_device_mode;
+ 	int ret = 0;
  
- 	if (tr->func.ftrace_managed) {
--		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		if (ret)
-+			return ret;
- 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
- 	} else {
- 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
++	if (!dwc2->ll_hw_enabled)
++		return 0;
++
++	is_device_mode = dwc2_is_device_mode(dwc2);
+ 	if (is_device_mode)
+ 		dwc2_hsotg_suspend(dwc2);
+ 
+@@ -728,6 +732,9 @@ static int __maybe_unused dwc2_resume(struct device *dev)
+ 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
+ 	int ret = 0;
+ 
++	if (!dwc2->ll_hw_enabled)
++		return 0;
++
+ 	if (dwc2->phy_off_for_suspend && dwc2->ll_hw_enabled) {
+ 		ret = __dwc2_lowlevel_hw_enable(dwc2);
+ 		if (ret)
 -- 
 2.51.0
 
