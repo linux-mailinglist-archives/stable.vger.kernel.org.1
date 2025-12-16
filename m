@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-201559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585E6CC2750
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA919CC2A47
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3944530BBFF0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3019B30253E5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34E9345753;
-	Tue, 16 Dec 2025 11:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10A5364EB9;
+	Tue, 16 Dec 2025 12:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/TAHhae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7KH2N01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9C1345730;
-	Tue, 16 Dec 2025 11:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96114364EA6;
+	Tue, 16 Dec 2025 12:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885034; cv=none; b=cE9o4V9xRNXoErSUnXqFU1IVzNvzdUSCzUa1KYjOWPmka8nt1EEznr7PYb/OC8ByV1hJtCSjJzLfn7EaBGuxnbCk8lZ6wDYma2dQfaKwFbGn64juIq5xCrzxU9J/xvkvujXpTFPjv7rSPbf/6xMKYq3W+QxIx2WaWBOYTKGFPWQ=
+	t=1765886995; cv=none; b=ryrSJQRDBMUeN2h4DA/Tp964k/1aVkD89rL+FqNOctZLNSV/lBF0pfQnQhWz1sTXXbeZAHwJ5KGl8QeViEquoL06WyEzhOLOB2xOBRjObBcQUshAvT2KIqQbtOnSaUu+tPg/Jq0b/apSbC6Mzg8LpNuVGpvGLOJuV4MezQMlGFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885034; c=relaxed/simple;
-	bh=nJNGQe8DdGlhJoFVCJTnlSuZY61Rmjg8V3ilLv7Y0Xo=;
+	s=arc-20240116; t=1765886995; c=relaxed/simple;
+	bh=caozGmUmnXLZIITP3r5OngM1WtAKq5PBYfSpMqn841w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUiSKeyX72E7HDt+ok0l4kb+Zgt3u1k6vxNOwJbUQxBy0knBdfy7ri3mPrDLFDATt07tAUZ24hbyVusDtpk5g78Q5lipegsdilshCwBgVN58N8e9gspwvkvE0Z0jGlIhlWeG969Yb65+o0bAwbiX0/AQUz1+QB7CPffiptXc5p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/TAHhae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D72DC4CEF1;
-	Tue, 16 Dec 2025 11:37:13 +0000 (UTC)
+	 MIME-Version; b=BX1o+m3B2NSFmd4MMjM3kb9j6zmGCJp2Ef/ub5feY3DiG6UT5Kip8ykptrIaVVDe4ySeqbCe65bTXyzXr7eD/YH+e6xXlJ/BtMHfP0dmSPzButHorcz8WFP8ynhwv4m1I7ChZS+pAPGNBTGe/aDVygllS0/CNhUS/NOKoDibSUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7KH2N01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BF5C4CEF1;
+	Tue, 16 Dec 2025 12:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885034;
-	bh=nJNGQe8DdGlhJoFVCJTnlSuZY61Rmjg8V3ilLv7Y0Xo=;
+	s=korg; t=1765886995;
+	bh=caozGmUmnXLZIITP3r5OngM1WtAKq5PBYfSpMqn841w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/TAHhaeJ9d2rdLcgOhmIXhpGF8zjP11WS2Lqt/x8ZmpNAyyWqm0gEMg4f1zLX+ot
-	 4MFxDduOSjTC3HokjtYh1RtjEi9U4Yh+eT5VTllZGWEsG78dzU1kanWoaI5nLidZ5C
-	 uygPsGMZ0RlPQkJmrdIq7r+LTrOWHEijIgyGVk7s=
+	b=J7KH2N01AwFChzunvMhmT78NeexRiVdKdGQRDSRIi0pB/bn2beQ9p31yW6rTqQPUA
+	 eppBZ10bpZfapVoC9ReBwry42gD7S1dPhgAWEL9v5g4VSL2KVKjpVjoKnH5f03Tqq6
+	 5LHhYAjOVxcNAdOQlYEzm7wVQ56kx/TJj2PuYCsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 019/507] USB: Fix descriptor count when handling invalid MBIM extended descriptor
-Date: Tue, 16 Dec 2025 12:07:40 +0100
-Message-ID: <20251216111346.232537515@linuxfoundation.org>
+Subject: [PATCH 6.18 094/614] s390/ap: Dont leak debug feature files if AP instructions are not available
+Date: Tue, 16 Dec 2025 12:07:41 +0100
+Message-ID: <20251216111404.726727817@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 5570ad1423ee60f6e972dadb63fb2e5f90a54cbe ]
+[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
 
-In cdc_parse_cdc_header(), the check for the USB_CDC_MBIM_EXTENDED_TYPE
-descriptor was using 'break' upon detecting an invalid length.
+If no AP instructions are available the AP bus module leaks registered
+debug feature files. Change function call order to fix this.
 
-This was incorrect because 'break' only exits the switch statement,
-causing the code to fall through to cnt++, thus incorrectly
-incrementing the count of parsed descriptors for a descriptor that was
-actually invalid and being discarded.
-
-This patch changes 'break' to 'goto next_desc;' to ensure that the
-logic skips the counter increment and correctly proceeds to the next
-descriptor in the buffer. This maintains an accurate count of only
-the successfully parsed descriptors.
-
-Fixes: e4c6fb7794982 ("usbnet: move the CDC parser into USB core")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20250928185611.764589-1-eeodqql09@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/message.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/crypto/ap_bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index d2b2787be4092..6138468c67c47 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -2431,7 +2431,7 @@ int cdc_parse_cdc_header(struct usb_cdc_parsed_header *hdr,
- 			break;
- 		case USB_CDC_MBIM_EXTENDED_TYPE:
- 			if (elength < sizeof(struct usb_cdc_mbim_extended_desc))
--				break;
-+				goto next_desc;
- 			hdr->usb_cdc_mbim_extended_desc =
- 				(struct usb_cdc_mbim_extended_desc *)buffer;
- 			break;
+diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
+index 65f1a127cc3f6..dfd5d0f61a70d 100644
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -2484,15 +2484,15 @@ static int __init ap_module_init(void)
+ {
+ 	int rc;
+ 
+-	rc = ap_debug_init();
+-	if (rc)
+-		return rc;
+-
+ 	if (!ap_instructions_available()) {
+ 		pr_warn("The hardware system does not support AP instructions\n");
+ 		return -ENODEV;
+ 	}
+ 
++	rc = ap_debug_init();
++	if (rc)
++		return rc;
++
+ 	/* init ap_queue hashtable */
+ 	hash_init(ap_queues);
+ 
 -- 
 2.51.0
 
