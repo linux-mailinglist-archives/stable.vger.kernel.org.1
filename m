@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-202018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773BBCC3708
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:10:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E53CC2503
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDD06303D9FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DF4530252B4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711135771B;
-	Tue, 16 Dec 2025 12:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8ED344034;
+	Tue, 16 Dec 2025 11:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr0i56SR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1W7VQYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5813570B0;
-	Tue, 16 Dec 2025 12:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE31A342C8E;
+	Tue, 16 Dec 2025 11:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886556; cv=none; b=lxf4KuNO0aumnuFNDhOYUoT+uHcxJ5z3Vrsn+QdS26mBieh3uDJn1+B5aEM5n7LmBhEC4wMKAlRUptFz47Rdcu49qqMDQDH9l/vxuaIfZMPFo6O4JIAK+86qbiZT8gNwxjAWVQgzncrhqGnaEn/pry1wJIQwOiFNOZRqOWnZizk=
+	t=1765884949; cv=none; b=u0jfkVXP1A7YZvOgjKQIZjswUn1ilNHwsmfGgCRamYAgAqIJACVshez0IoljS1Qinyd83OeFqnoIYtf1hUMcg7uW1GHge22om6On4AaYwRNymYkZ1MBxgKbDfL7dE2U794JHRlcTMEt5mNAQKq7s6bJ2VwH6m5WreQq/s1FSZA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886556; c=relaxed/simple;
-	bh=Cb6GkD7mCr5uzxCdhRbY/ZxliOkGzjumHmw9ii9xzAI=;
+	s=arc-20240116; t=1765884949; c=relaxed/simple;
+	bh=G7j/5B2pldejXk7DTXy3vdiWGJDmFBWotjc7kfKEa2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BY59gG9MWeXdmLGcbrzBvw6ke4K/1061SIRntnyNlyfOq9ZAhqd9i7FWl7BhQ7HrluVKHmLnUKWofXk3EW7BE7xLD9VVXV4qmQ38AYCNRTDiZjrO+/KSa+j2LNI89Iuvhnsmg+9f2UxbSTYgxaM/3g9a6CO6XXxB6jaHDS6KcoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr0i56SR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D6DC4CEF1;
-	Tue, 16 Dec 2025 12:02:35 +0000 (UTC)
+	 MIME-Version; b=THlFXNuN/5IlfvAXPutIQ5n4vhudGqYFgh1mrrLGOOudJJJyT/R0Cfzsj1yOuAsVtEKJI7dzc0OLFQXTOkHSOxhIUruo3/ZKWoLlagtHZs5OaFruQgar+UA7b0S3QmhaDHHENIq1F4IN+MmzdSKk+6DKHKEkgwMWrCM7QuBmL9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1W7VQYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6103CC4CEF1;
+	Tue, 16 Dec 2025 11:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886555;
-	bh=Cb6GkD7mCr5uzxCdhRbY/ZxliOkGzjumHmw9ii9xzAI=;
+	s=korg; t=1765884948;
+	bh=G7j/5B2pldejXk7DTXy3vdiWGJDmFBWotjc7kfKEa2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vr0i56SRnqoCBRyevJ25WLEmaUSIOcU7t7XAGCxULxAWr1svWHgWMOOjqwC4MT3PU
-	 1Lrztc4pBkVPyPVpJjG93jfXQOHE0TD7FQtofab+RxIsWoFdbC60Jr6sYi2WkO7yGv
-	 5yLoO0NUWO4hvdPQzp4HB/pfh1iIZbZVdw4m6xJE=
+	b=w1W7VQYCF2wz3h5E/xXEgDHwNmyxhAXLDqdlhXP759w8ZXuppfPPQO82u1QfZ1l2n
+	 Ux0L7JdjM5hOvupIrRBLwxKlXSzUqC6qwLd6/9w05O2btuLWCp6a7xWedtU9svL2tc
+	 PHz8MZLhyc1X/LOv7gx2nayhgGgn2czbgw/jRE34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Michael Opdenacker <michael.opdenacker@rootcommit.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 472/507] i2c: spacemit: fix detect issue
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 346/354] [PATCH 6.12] LoongArch: Add machine_kexec_mask_interrupts() implementation
 Date: Tue, 16 Dec 2025 12:15:13 +0100
-Message-ID: <20251216111402.543925448@linuxfoundation.org>
+Message-ID: <20251216111333.441496428@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +57,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 25faa5364638b86ec0d0edb4486daa9d40a0be8f ]
+Commit 863a320dc6fd7c855f47da4b ("LoongArch: Mask all interrupts during
+kexec/kdump") is backported to LTS branches, but they lack a generic
+machine_kexec_mask_interrupts() implementation, so add an arch-specific
+one.
 
-This commit addresses two issues causing i2c detect to fail.
-
-The identified issues are:
-
-1. Incorrect error handling for BED (Bus Error No ACK/NAK):
-   Before this commit, Both ALD (Arbitration Loss Detected) and
-   BED returned -EAGAIN.
-2. Missing interrupt status clear after initialization in xfer():
-   On the K1 SoC, simply fixing the first issue changed the error
-   from -EAGAIN to -ETIMEOUT. Through tracing, it was determined that
-   this is likely due to MSD (Master Stop Detected) latency issues.
-
-   That means the MSD bit in the ISR may still be set on the next transfer.
-   As a result, the controller won't work — we can see from the scope that
-   it doesn't issue any signal.
-   (This only occurs during rapid consecutive I2C transfers.
-   That explains why the issue only shows up with i2cdetect.)
-
-With these two fixes, i2c device detection now functions correctly on the K1 SoC.
-
-Fixes: 5ea558473fa31 ("i2c: spacemit: add support for SpacemiT K1 SoC")
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Signed-off-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
-Tested-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251113-fix-k1-detect-failure-v2-1-b02a9a74f65a@linux.spacemit.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-k1.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/loongarch/kernel/machine_kexec.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-k1.c b/drivers/i2c/busses/i2c-k1.c
-index 6b918770e612e..d42c03ef5db59 100644
---- a/drivers/i2c/busses/i2c-k1.c
-+++ b/drivers/i2c/busses/i2c-k1.c
-@@ -158,11 +158,16 @@ static int spacemit_i2c_handle_err(struct spacemit_i2c_dev *i2c)
- {
- 	dev_dbg(i2c->dev, "i2c error status: 0x%08x\n", i2c->status);
- 
--	if (i2c->status & (SPACEMIT_SR_BED | SPACEMIT_SR_ALD)) {
-+	/* Arbitration Loss Detected */
-+	if (i2c->status & SPACEMIT_SR_ALD) {
- 		spacemit_i2c_reset(i2c);
- 		return -EAGAIN;
- 	}
- 
-+	/* Bus Error No ACK/NAK */
-+	if (i2c->status & SPACEMIT_SR_BED)
-+		spacemit_i2c_reset(i2c);
-+
- 	return i2c->status & SPACEMIT_SR_ACKNAK ? -ENXIO : -EIO;
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -136,6 +136,28 @@ void kexec_reboot(void)
+ 	BUG();
  }
  
-@@ -224,6 +229,12 @@ static void spacemit_i2c_check_bus_release(struct spacemit_i2c_dev *i2c)
- 	}
- }
- 
-+static inline void
-+spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
++static void machine_kexec_mask_interrupts(void)
 +{
-+	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
-+}
++	unsigned int i;
++	struct irq_desc *desc;
 +
- static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
- {
- 	u32 val;
-@@ -267,12 +278,8 @@ static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
- 	val = readl(i2c->base + SPACEMIT_IRCR);
- 	val |= SPACEMIT_RCR_SDA_GLITCH_NOFIX;
- 	writel(val, i2c->base + SPACEMIT_IRCR);
--}
++	for_each_irq_desc(i, desc) {
++		struct irq_chip *chip;
++
++		chip = irq_desc_get_chip(desc);
++		if (!chip)
++			continue;
++
++		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
++			chip->irq_eoi(&desc->irq_data);
++
++		if (chip->irq_mask)
++			chip->irq_mask(&desc->irq_data);
++
++		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
++			chip->irq_disable(&desc->irq_data);
++	}
++}
  
--static inline void
--spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
--{
--	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
-+	spacemit_i2c_clear_int_status(i2c, SPACEMIT_I2C_INT_STATUS_MASK);
- }
- 
- static void spacemit_i2c_start(struct spacemit_i2c_dev *i2c)
--- 
-2.51.0
-
+ #ifdef CONFIG_SMP
+ static void kexec_shutdown_secondary(void *regs)
 
 
 
