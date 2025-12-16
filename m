@@ -1,283 +1,228 @@
-Return-Path: <stable+bounces-201120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A19DCC05C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 01:42:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32C6CC072F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 02:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF6253007968
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 00:42:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E848B3013EA0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 01:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F61212562;
-	Tue, 16 Dec 2025 00:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1DF2652BD;
+	Tue, 16 Dec 2025 01:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ae7dpIg4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j8QMP/Qs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78CC1EF36E
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 00:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765845750; cv=fail; b=GEwXeHt/eAXawwbauZ1ITEwSzYkAzhg0YdTnegKbqR4ANu9zWKLrPC/rER7rGHaMJYqyjB71eKyaqDpSYh2fe00vXONZ3X7qjRR69eW1yxx+d+XsX7wHtzOVoAuvqbLaPf3lZnWrkcvFjsJQVoESgjvlVzHI3kwG+KH+zuy+yiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765845750; c=relaxed/simple;
-	bh=6bBJB+ZQdp8TwvyEUDe+9+3OuwgXMOpBP140EHClJVM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WJrh4iBdMKRPPzuNpVn7ZPPMZkTFGfwo0kWHkEzbL/9wZzy8SLO6nso22E+rH7EWFEOJnIq54kcZpBcqJ6jMH3MsC/vnyPYfNTYgbDMHkhqscc27oVAB3+QTUnGJman7aK2iefJ87nl1u3LzvAqU9W3fOI+Ukhi9ZxfhayN95Fw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ae7dpIg4; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0A8230BD5;
+	Tue, 16 Dec 2025 01:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765848310; cv=none; b=tMYRmXs60Fk2KJ0TcjcHheZz+Rm6gEF4lhlZJ5Z4X/nMb5AItYm+PQRnHXzCnKCDXhodSwzdfsAozAOLKN1Yr12svaCceb3pJNPCwWXpg52C1jKWEJTIQvwznCnBgK2dgBfXWYGM5oR6dDJB6SkgpHE+ZWuaJwe2s5Ji3XmwBmU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765848310; c=relaxed/simple;
+	bh=YtGr61kLMc7I/r5jzFhPwfhjvXqfyibTp/a8r47rJpE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rWx/lsW86MSOrj0VgGysT1ogt1fyUAopoXMiB6z63/zZMzoGheXLQkmdWdX7b5mJ+rbB7VrXyAHO4ktQ0SGZ7VI8/jLclUj71EUZclMGX+nz+ux5jPH71bv8R65qIUmJuwPkL8p2aRrpZCznfCioGEea9XkHpAOF6P+Ri/7upmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j8QMP/Qs; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765845749; x=1797381749;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=6bBJB+ZQdp8TwvyEUDe+9+3OuwgXMOpBP140EHClJVM=;
-  b=Ae7dpIg4U4MUFR/vofRBmjd6iRkXXL/XNJ2YDSDPiqaYeVDa38Eaa+hc
-   sOSL0Frd0zpgu2nyKbHP06VcYhdzod1VFzsjqa4426jQRig9AzIl7xs+K
-   12MmCoh/2wEleZCuEsZ5rwNXGrzfG/xck7J4B9USWqwJUqK1puvnicFJY
-   zBnG0y6KYjHW6owLz9S9AgdcUwr6EsI8ARC5tD7Lm7tH2Me/r7+WmXBzV
-   p3ob4nrddUUe1Pb2031Lx85aPmr1uJ2EwMTqfI8c+Ss5CTf8eP9mugGr/
-   o9DqfN3EW4Di5TYp2L/JDNbiLXywAlUKvdNj3xeETVqi+jcIp3HWDRuhP
+  t=1765848309; x=1797384309;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YtGr61kLMc7I/r5jzFhPwfhjvXqfyibTp/a8r47rJpE=;
+  b=j8QMP/Qs8BgdOhVJYZAQITGllH5BnJn5kqt1l3sIHFQNpBQCuOfhrlaF
+   1DqzgX+nkbCoI7NmtxzU37aDwHd+tO5k+Ok00SuRhoNBYcKhVfP0GVubP
+   A+550TE/NNnv910/3QO4xlUzFKmuartuWLKxgLkSiUPyCS2T/kqyQnaxD
+   rR/U+yOoPj9RVlnIgQtcMwob5wC3j8itLfNw/WLyy8E92FhH5B8JhMYri
+   aVjBf3MbNwLDp8JVHbyv2UAopACjHHg49Ilk9jx1Xg6HON3d9hG2gWCgj
+   eWLFlZJ+K23CQBn6XD0U0Dv+0+1cGXDP+r/HRiRtPOAKVadmD+nmdYALL
    Q==;
-X-CSE-ConnectionGUID: eiobMe+pTwKR8w6DWPjA9g==
-X-CSE-MsgGUID: npNNCXwER+Cp5Hvvx01Euw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="85169906"
+X-CSE-ConnectionGUID: 0MBV2hF2QnSlRQozY7xfrg==
+X-CSE-MsgGUID: 3AJz+gnvSTawLv7MXwyigQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="93236195"
 X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
-   d="scan'208";a="85169906"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 16:42:29 -0800
-X-CSE-ConnectionGUID: P0fWilj4QYWX/4HipITL+Q==
-X-CSE-MsgGUID: WhJiitN4RR6K7pb673soxA==
+   d="scan'208";a="93236195"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 17:25:08 -0800
+X-CSE-ConnectionGUID: MDfM8vCFSBu17lxTzlRlQA==
+X-CSE-MsgGUID: tBfVXPSpR1yqgWO1DbeG8w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
-   d="scan'208";a="198682760"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 16:42:28 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 15 Dec 2025 16:42:27 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Mon, 15 Dec 2025 16:42:27 -0800
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.19) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 15 Dec 2025 16:42:27 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k0JeMuvT6JpMx3XC6S9MaF+ct274kGRdfvr8wc1CnywCPfGxgJq78ZpyILMFVAEeNwJ2JYSoPQyzQNw/WNKsVRinbOfkJ6F4otKm6AXNbm3CSUozyYx7+it/Xpg3kvyRCAJf95XleB5uTKVpEvP4b4MEOqbJ8oHPxeWQcHWZKcMGR3TIkC4+9aG73Bmr/9tuyl6Jbh1YPtz28qqrE6xE/KfoTd7sGBuTnaCRNLTyFH0qMkkZgdYK7cvL9cVqKzpjY2x7V3k6JGzKJxjxK8jRLiv6EtMS7X3XJVTy8oEjCKZCiecwx3fYzTmopZZKNRu2IXWIotA1kmVoofIj5kMl5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ItdUIWkb3+mzM7Gq6xNbpyMWsh+bk4U9uz2OEyjCC2E=;
- b=vRamiATlqm75ZmaR7VVU9qR2fyW3xaJlE8rEeSPfy10OtQe2mX6xuYz+lrBcj9xtorwqLT0svATd1g4oN+8h4cVq22zfEI/KVk7b26VxrI90oZwQul6eOZTyvT0PZiw0WWnrSPWqhtFOK8h52Csvz+qAy6dcwnOgIOypLUCGkOXpw4zh7EpUxa1id/5CVah06zf9scvkUwrqGPShUfAl8SLRZykR3ikI5ZJKCzUOAjzpq1jHYos7hCohvRDBWBD/VA6aWFDbJuHpTtzqdU6HI983fBtDQ3BQcVCLp5jKC7MeSPE+slnnu4Z91jAuGaV5iyA2EGM0qrkzHhswJekBeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by PH0PR11MB7523.namprd11.prod.outlook.com (2603:10b6:510:280::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 00:42:25 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::7b65:81e6:c6c4:449e]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::7b65:81e6:c6c4:449e%4]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 00:42:25 +0000
-Date: Mon, 15 Dec 2025 16:42:22 -0800
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Jia Yao <jia.yao@intel.com>
-CC: <intel-gfx@lists.freedesktop.org>, Alex Zuo <alex.zuo@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>, Xin Wang <x.wang@intel.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/i915/dg2: Update workaround 22013059131
-Message-ID: <20251216004222.GH4164497@mdroper-desk1.amr.corp.intel.com>
-References: <20251216000221.3496541-1-jia.yao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251216000221.3496541-1-jia.yao@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0368.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::13) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+   d="scan'208";a="202791968"
+Received: from spr.sh.intel.com ([10.112.229.196])
+  by fmviesa004.fm.intel.com with ESMTP; 15 Dec 2025 17:25:04 -0800
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Eranian Stephane <eranian@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Dapeng Mi <dapeng1.mi@intel.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Falcon Thomas <thomas.falcon@intel.com>,
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86/intel: Add missing branch counters constraint apply
+Date: Tue, 16 Dec 2025 09:21:13 +0800
+Message-Id: <20251216012113.1417511-1-dapeng1.mi@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|PH0PR11MB7523:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff58ec71-841f-42ef-816f-08de3c3bfb4f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?tS/GFO3gIkX7gC3z8+Wy6M1ZNCwh3umhmAC72WEjRJT/rwWufsu6yxmESrnR?=
- =?us-ascii?Q?En4ZjMZZ4wNzyoI9AHa9uvqcXtJ0uOKGo/NfhcUpjDT6UTB3KazxOs8Wxo0d?=
- =?us-ascii?Q?rVvOmN/72dNErFVrzaD7xEyZsSvoMxh0UqDnHp3JimdlHjFdEnCsOsQsIlbD?=
- =?us-ascii?Q?2YvARqUOMLOi2ML3s34LmVimSwayI5VzQ4uZI55GKNMX5ayccZ5slkjaZ0A+?=
- =?us-ascii?Q?ZgNvNZd4z90f3cEb4/Glwjiba/zYaSEVMqHALSBR9wvDfdR7mkO5UTlDXCOA?=
- =?us-ascii?Q?O8qDnf7/QHag52kTCJp5BEhO7+RuTZWSxHVNklgzg3zm3rsBScXsBVOBqM5H?=
- =?us-ascii?Q?jo1Of63zVOobiZXjrKqp+uyPBR1uvZmpb9rWQ8RsjmgQUs9x2yc7fb0WQgfH?=
- =?us-ascii?Q?N7/ANvrMlZCVOOSToX8nlONvXD4+8iq2nrbA4CYZwLIZPMz/VgJtX5etAvF8?=
- =?us-ascii?Q?vW+MnTajJRb52GD4Ri+nuHz2pjlZL7tXiFNZ4c8EtWW+LJ1cwnBgQGEu++5u?=
- =?us-ascii?Q?65OYuS+5ix3QNq9tVORBrGoKi6qk9kOG0ohzSsRWXYpJTEFLbx7beyFLX+56?=
- =?us-ascii?Q?erJeBgCisY0cgn1xEmV1RB4FRRt31uKiUMGnVaQjGmkxJThqNTmaeZvBTmuP?=
- =?us-ascii?Q?+DFOELH1EEuB6J8m1xs3c3UltD2RarHRK8Ek11dlT58lIFFiq2JQIdbSmtWf?=
- =?us-ascii?Q?HUj4r6VW4odzDIL6Br/5CNtnfBRk0SvPvWAT8lxKdjgOBdKp5iVi7ep/PCJi?=
- =?us-ascii?Q?DsCwJxRbNFNKoIUZJBWE9rBy5Rxsaxg9wf/QbFgkp9wYdQwb1h1sYQ3vMzw6?=
- =?us-ascii?Q?vWawPaCM0S7TzrOvY8K6/tZKmzv9Bo1z7CFcXGgCoMy9+GjqA31gx5k+x9z+?=
- =?us-ascii?Q?xVJ/ZUR7DyLWad+wZ5U7QZDQJS87s1CiFDdG+gc/GKQU6z1h8biSmPYdozvG?=
- =?us-ascii?Q?6oFoH1QxxNiQOxGxQJNW83vYjo1TDDBT0YgqKL9YIonGuTUcbEdjzOq9TK6L?=
- =?us-ascii?Q?Yvaxpp60lxwiibL1NP30O4mwxQMr+dW2dmktKqTdsEkd9MBB4bIqgEpIaF8h?=
- =?us-ascii?Q?uGXtHSKRNuCOUETbqpZY4OtWEUC93Jy5B5VkZPNV8PuReIcJMjj0idaV1r9p?=
- =?us-ascii?Q?fvvXtMnKv/mVbps7SxOprC5PgDU6SNXIbo5eFdkTUzSbTk3EdFEMBnu5E/83?=
- =?us-ascii?Q?UMqyVM3yeytR66mGMNv0P0gK/EcQ9993IF5cJf9iO3Ka5c4KinCOjwTldB7p?=
- =?us-ascii?Q?QjilCW7sbO0vQW2ItaFtW8IoreofMK4UQ0t0IrfJPJVcmuGk5EoF6wdDQua9?=
- =?us-ascii?Q?JE+EUdeRJwpHTqxWINZAwqZSvZdM/3HB7U+eioSaqi1kzekYD8f9oUHC6L24?=
- =?us-ascii?Q?SHmESqNLZTtG1EwRkZLnPsFOR6Z1SYn5aU1D+Hj8Xh5zT9dCm8ulAEMGdEpR?=
- =?us-ascii?Q?JFOitEur40Sg0lsv3XEsfRGIlEbJvuKL?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Bg0NktTpGu6OCsT+5eVAAqgZCXzP4mnpo34GgTchV4eBW7PjMUmXpIPXw5SA?=
- =?us-ascii?Q?ZIGH1JhSGhe6w1GpORCU59yKHnLOhKI3Ml7+8jvsibKM4vCqyuJoYwlgmvDC?=
- =?us-ascii?Q?7ms8wFcWfCQo+iwwQSeCjpWXXkIbYV0BQPjst7/cTLxhtGWInc4JLAPhK5tj?=
- =?us-ascii?Q?UpctK8t+vuVwB4glwyYcRbClhuhq+hRYOX5q4IY3HJ3krHh8Ulv1MakwrOi5?=
- =?us-ascii?Q?ORj949hXXi/45M5Aana6aw29gxE1Djwsn3ow0Zl38Ld0tRKC24OLtIkgihfi?=
- =?us-ascii?Q?t6Db9HVQKv5vOtDfeAYVYA3HCBetCbB/2gA+bjsgBkHWdtJJX1yFWK4AMa6a?=
- =?us-ascii?Q?hurgv2sirFGwbu//roDRS9WREzPs3mrE+M5onbo56rNua+s5vb5tru+sXTRG?=
- =?us-ascii?Q?GTnDyFv3rKppdtf32D/omESiDsl1ZGO90vbRSrkSsLpMtPvMBiDWGpb06W7e?=
- =?us-ascii?Q?GcWb2OJbCUo7fAPOsLtKJjUT8yNByUsd+wooBL1keJXuRkegijO+/5L0SJOq?=
- =?us-ascii?Q?5ZZaUGfoCq73hHoewtC4w3hpx99OJfjg1WvllF2N04ffaGlT5cev/PBoGBcL?=
- =?us-ascii?Q?NPpWIS4jYycl08XrZ6EB5bL5o5NkuLwddHcbVMnA0MD94DKoDC2uLiVO7O/p?=
- =?us-ascii?Q?p3jF+ykOQUiaC2a/IaWM3Pz+mmMNesYa3r3s0hElJa2F7/+tdjMtvPnw3lrb?=
- =?us-ascii?Q?V5N92e4urra67WfvaiugCJ/sN7qWFa6rp+pF1xtpQBSHkl6+gvBvXrbRqiZC?=
- =?us-ascii?Q?3ffgHXFiLOi2wQEywOwnpm7yMECfKPt84SYrrNv6GbTuugaDIt92dQSM118h?=
- =?us-ascii?Q?DL4DfvB/LON14hO3qaclO+chIwmhZotmd/xm20NS9HDmhN70xrKdwg5oTv76?=
- =?us-ascii?Q?cD/cDP9VuXW/9hh8DSOLxZVF4H1u75N3Nct0WT47k6UB1YCYivGR46KAttDy?=
- =?us-ascii?Q?BEWlI/AIHT5lt+tVo3rq55CQS1iCodZNHBhHN/unIXcClm4qjDBxkrs2T6Yd?=
- =?us-ascii?Q?u45U/fn32Xckqg0WDgiFNKB40DKzSWZTIsJtJyj1O8I0EbunX4GkuwR6T9gQ?=
- =?us-ascii?Q?Mid6bDLK7KEVmaVeJ1K+11nYDe0gjF4gY/7Vi8hy71sh6hqnsPP6YdvmaL7T?=
- =?us-ascii?Q?jpUmNXvlL3UF4dp5DBXCD9RKoyeNud6PnWcK+AEuBJzCoum1vmA1pwOe4vtF?=
- =?us-ascii?Q?ZvRIQCLwDMeB7ketcfChB1QlarcVlV6nkQNoTGH8X+/gtkikOK8EDlskUhuu?=
- =?us-ascii?Q?caVlsI2KXhKkt3OdPNWbzvSS/ABnWPFGEF4+O13Hai7ASSgxve+SjT/cq+hX?=
- =?us-ascii?Q?LlR6Ho/I1eK0TnkXxi3W3vAtnYQwxeduSryDsOaQ7PYH8muJfMOL8pElcOJH?=
- =?us-ascii?Q?uVhlJFXSMZaG0QtErFEukW/5/XGw8FAgxr8akVvt+2x11yPD3sv8tWNRzhZU?=
- =?us-ascii?Q?Mip+2BqUTvEUOJRu3GVPfMWT+k9ocEMaUMlpUqn0NUQnzy1rtIvs+IWfpemn?=
- =?us-ascii?Q?eKaZS9dnGmRKllShjCqdHXDHwMFWCuesRWkgeHvlHyHbZJm2aQ6ahjhuEwH7?=
- =?us-ascii?Q?LNvzrVxfOogfvMY439Uzw4yZ74QIVdi68WLs6+9dxIVJH3paXqQmjU6ccKhN?=
- =?us-ascii?Q?zw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff58ec71-841f-42ef-816f-08de3c3bfb4f
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 00:42:25.1557
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SwJTQN4/5cLaf0u5InLv1ar2iEpP7Nn9LODdXw9xJVvSff01qN2vVDkPHKjp3QVlHzcEgXgr8ggXn5Opkc44glr9cf6iWzsBpggXTdbJjWY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7523
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 16, 2025 at 12:02:21AM +0000, Jia Yao wrote:
-> Previous fix enabled LSC chicken bit FORCE_1_SUB_MESSAGE_PER_FRAGMENT.
-> This caused side effects on 128EU SKUs. Updated solution limits SLM
-> allocation to 96KB which is done at UMD to avoid these issues and
-> ensure stable behavior.
+When running the command:
+'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+a "shift-out-of-bounds" warning is reported on CWF.
 
-I don't think we can make a change like this, at least not without more
-supporting information proving that it's safe and won't cause any
-regressions.  The workaround documentation effectively says "Either the
-KMD needs to do XXX or the UMD needs to do YYY."  The lines being
-removed below are the "XXX" in this case, but we run the risk of causing
-a regression if someone is using an old build of the userspace driver,
-but upgrades to a new kernel that has removed this code --- they could
-be left without coverage of this workaround from either the KMD or the
-UMD.
+[ 5231.981423][   C17] UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+[ 5231.981428][   C17] shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+[ 5231.981436][   C17] CPU: 17 UID: 0 PID: 211871 Comm: sleep Tainted: G S      W           6.18.0-2025-12-09-intel-next-48166-g6cf574943ba3 #1 PREEMPT(none)
+[ 5231.981445][   C17] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[ 5231.981447][   C17] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.IPC.3544.P98.2508260307 08/26/2025
+[ 5231.981449][   C17] Call Trace:
+[ 5231.981453][   C17]  <NMI>
+[ 5231.981455][   C17]  dump_stack_lvl+0x4b/0x70
+[ 5231.981463][   C17]  ubsan_epilogue+0x5/0x2b
+[ 5231.981468][   C17]  __ubsan_handle_shift_out_of_bounds.cold+0x61/0xe6
+[ 5231.981472][   C17]  ? __entry_text_end+0x158b/0x102259
+[ 5231.981475][   C17]  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+[ 5231.981480][   C17]  ? __task_pid_nr_ns+0x134/0x2a0
+[ 5231.981483][   C17]  ? __pfx_intel_pmu_lbr_counters_reorder.isra.0+0x10/0x10
+[ 5231.981486][   C17]  ? __pfx_perf_output_sample+0x10/0x10
+[ 5231.981489][   C17]  ? arch_perf_update_userpage+0x293/0x310
+[ 5231.981491][   C17]  ? __pfx_arch_perf_update_userpage+0x10/0x10
+[ 5231.981494][   C17]  ? local_clock_noinstr+0xd/0x100
+[ 5231.981498][   C17]  ? calc_timer_values+0x2cb/0x860
+[ 5231.981501][   C17]  ? perf_event_update_userpage+0x399/0x5b0
+[ 5231.981505][   C17]  ? __pfx_perf_event_update_userpage+0x10/0x10
+[ 5231.981508][   C17]  ? local_clock_noinstr+0xd/0x100
+[ 5231.981511][   C17]  ? __perf_event_account_interrupt+0x11c/0x540
+[ 5231.981514][   C17]  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+[ 5231.981518][   C17]  setup_arch_pebs_sample_data+0x114b/0x2400
+[ 5231.981522][   C17]  ? __pfx_x86_perf_event_set_period+0x10/0x10
+[ 5231.981526][   C17]  intel_pmu_drain_arch_pebs+0x64d/0xcc0
+[ 5231.981530][   C17]  ? __pfx_intel_pmu_drain_arch_pebs+0x10/0x10
+[ 5231.981534][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+[ 5231.981541][   C17]  ? intel_pmu_drain_bts_buffer+0xbf/0x6e0
+[ 5231.981545][   C17]  ? __pfx_intel_pmu_drain_bts_buffer+0x10/0x10
+[ 5231.981550][   C17]  handle_pmi_common+0x5c5/0xcb0
+[ 5231.981553][   C17]  ? __pfx_handle_pmi_common+0x10/0x10
+[ 5231.981556][   C17]  ? intel_idle+0x64/0xb0
+[ 5231.981560][   C17]  ? intel_bts_interrupt+0xe5/0x4c0
+[ 5231.981562][   C17]  ? __pfx_intel_bts_interrupt+0x10/0x10
+[ 5231.981565][   C17]  ? intel_pmu_lbr_filter+0x27f/0x910
+[ 5231.981568][   C17]  intel_pmu_handle_irq+0x2ed/0x600
+[ 5231.981571][   C17]  perf_event_nmi_handler+0x219/0x280
+[ 5231.981575][   C17]  ? __pfx_perf_event_nmi_handler+0x10/0x10
+[ 5231.981579][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+[ 5231.981582][   C17]  nmi_handle.part.0+0x11b/0x3a0
+[ 5231.981585][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+[ 5231.981588][   C17]  default_do_nmi+0x6b/0x180
+[ 5231.981591][   C17]  fred_exc_nmi+0x3e/0x80
+[ 5231.981594][   C17]  asm_fred_entrypoint_kernel+0x41/0x60
+[ 5231.981596][   C17] RIP: 0010:unwind_next_frame+0x11c5/0x1df0
+......
 
-I think there are a couple options here:
+The warning occurs because the second "instructions:p" event, which
+involves branch counters sampling, is incorrectly programmed to fixed
+counter 0 instead of the general-purpose (GP) counters 0-3 that support
+branch counters sampling. Currently only GP counters 0~3 support branch
+counters sampling on CWF, any event involving branch counters sampling
+should be programed on GP counters 0~3. Since the counter index of fixed
+counter 0 is 32, it leads to the "src" value in below code is right
+shifted 64 bits and trigger the "shift-out-of-bounds" warning.
 
- - If all of the UMDs (Mesa and compute) have been limiting SLM
-   allocation to 96KB since the very beginning of their DG2-G11 support
-   (i.e., it's never been possible to build a UMD driver that runs on
-   DG2-G11 and _doesn't_ do that), then it's safe to remove the KMD
-   handling below since we're guarnateed to always be covered by the
-   UMD, no matter how old the UMD build is.  To take this option, we
-   need to prove via git history for those UMD drivers that this is
-   always the cause.
+cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
 
- - If there's a real problem with the workaround as documented today
-   and it turns out that the programming we're doing in the KMD never
-   had any benefit, then we can remove the KMD code.  To take this
-   option, we'd need formal clarification on that from the hardware
-   teams, including an official update by them to the text of the
-   workaround in the WA DB so that we're sure that removing it can only
-   improve the situation, never harm it.
+The root cause is the loss of the branch counters constraint for the
+last event in the branch counters sampling event group. This results in
+the second "instructions:p" event being programmed on fixed counter 0
+incorrectly instead of the appropriate GP counters 0~3.
 
- - If this workaround had been updating a per-context register, then 
-   if there had been a way for the KMD to detect that the UMD already
-   set this 96KB limit (either automatically, or via some kind of
-   "opt-in" flag in the uapi), then it could have been okay to
-   conditionally skip applying this code when that case is detected, and
-   only apply the workaround in cases where it was not detected.
-   However in this case it appears we're programming a system-wide
-   register (not a per-context register) so the setting here will affect
-   every process on the system, including those that haven't started
-   running yet.  Even if we detect one UMD that's applying the 96K
-   limit, there may be other UMDs or other versions of the same UMD also
-   on the system (e.g., in a container) that won't apply the limit.
-   That means we don't know the behavior of future processes that
-   haven't started yet, and we can't take this option for this
-   workaround.
+To address this, we apply the missing branch counters constraint for
+the last event in the group. Additionally, we introduce a new function,
+`intel_set_branch_counter_constr()`, to apply the branch counters
+constraint and avoid code duplication.
 
- - The final option is to just leave things as is.  Even if the UMD
-   limit performs better than the KMD workaround implementation, the "no
-   regressions even with old userspace" rule takes precedence, so we
-   can't justify risking a regression for some users just to boost
-   performance for other users.
+Cc: stable@vger.kernel.org
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+---
+ arch/x86/events/intel/core.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index aad89c9d9514..7c6a0001c8e4 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4364,6 +4364,19 @@ static inline void intel_pmu_set_acr_caused_constr(struct perf_event *event,
+ 		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
+ }
+ 
++static inline int intel_set_branch_counter_constr(struct perf_event *event,
++						  int *num)
++{
++	if (branch_sample_call_stack(event))
++		return -EINVAL;
++	if (branch_sample_counters(event)) {
++		(*num)++;
++		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
++	}
++
++	return 0;
++}
++
+ static int intel_pmu_hw_config(struct perf_event *event)
+ {
+ 	int ret = x86_pmu_hw_config(event);
+@@ -4434,21 +4447,18 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 		 * group, which requires the extra space to store the counters.
+ 		 */
+ 		leader = event->group_leader;
+-		if (branch_sample_call_stack(leader))
++		if (intel_set_branch_counter_constr(leader, &num))
+ 			return -EINVAL;
+-		if (branch_sample_counters(leader)) {
+-			num++;
+-			leader->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-		}
+ 		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
+ 
+ 		for_each_sibling_event(sibling, leader) {
+-			if (branch_sample_call_stack(sibling))
++			if (intel_set_branch_counter_constr(sibling, &num))
++				return -EINVAL;
++		}
++
++		if (event != leader) {
++			if (intel_set_branch_counter_constr(event, &num))
+ 				return -EINVAL;
+-			if (branch_sample_counters(sibling)) {
+-				num++;
+-				sibling->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-			}
+ 		}
+ 
+ 		if (num > fls(x86_pmu.lbr_counters))
 
-Matt
-
-> 
-> Bspec: 54833
-> Fixes: 645cc0b9d972 ("drm/i915/dg2: Add initial gt/ctx/engine workarounds")
-> Signed-off-by: Jia Yao <jia.yao@intel.com>
-> Cc: Alex Zuo <alex.zuo@intel.com>
-> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-> Cc: Xin Wang  <x.wang@intel.com>
-> Cc: stable@vger.kernel.org
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> ---
->  drivers/gpu/drm/i915/gt/intel_workarounds.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> index ece88c612e27..abb47c65f43a 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> @@ -2866,10 +2866,6 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
->  				     MAXREQS_PER_BANK,
->  				     REG_FIELD_PREP(MAXREQS_PER_BANK, 2));
->  
-> -		/* Wa_22013059131:dg2 */
-> -		wa_mcr_write_or(wal, LSC_CHICKEN_BIT_0,
-> -				FORCE_1_SUB_MESSAGE_PER_FRAGMENT);
-> -
->  		/*
->  		 * Wa_22012654132
->  		 *
-> -- 
-> 2.34.1
-> 
-
+base-commit: 9929dffce5ed7e2988e0274f4db98035508b16d9
 -- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+2.34.1
+
 
