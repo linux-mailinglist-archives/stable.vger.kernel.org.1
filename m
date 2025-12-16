@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B67CC2944
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139E2CC3E7F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78526301A702
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F5C730CACB4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED26350D6D;
-	Tue, 16 Dec 2025 11:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE5B352955;
+	Tue, 16 Dec 2025 12:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tTifjcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBjL8ZL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784B0350D65;
-	Tue, 16 Dec 2025 11:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E6B2C0276;
+	Tue, 16 Dec 2025 12:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885753; cv=none; b=Th8MxuQzcIL/Pyjpa4CjT3Gg5x5LZd0b/GmtLrrrks8w03algFKIwQl5PUtOoiVRoDMKFnB+Ppi0LY7inFsCZ/kclRdQ1So55/1zJW09K+VS7eOWTjBOAzzMVu8lQBO19j3p9iTURqNedzvLGIU0VsHyXD2iXqvaGrbKZv7EAXk=
+	t=1765887693; cv=none; b=K5wiujL9HcmjlsKbQ5jFde0viFRVwTfakObicVK2df9LQeXiMmKnCH7L8+v/1pWmpmsWfjRdU0jsDV1TzaQXaINaGc3YqQ9Hvsfsjowy2wdMEJ+tXLm092QnAAnMzAf4K1nJ4QRChAI0KKM0cE6Usz4zY+DKAeOrDxe+1nvT/jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885753; c=relaxed/simple;
-	bh=ry2mr99gsat+cWJBp5jTy6Mu+0gwTBBYYGkDb2LUX20=;
+	s=arc-20240116; t=1765887693; c=relaxed/simple;
+	bh=7EB1C25MCv9fI3qx4eWvw9UBAs96xJRF63I3Hv0Lbfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TT+Bz8vzM0vJXVBD2qn/q++0NeGFKsrRtVfB2Z4LGMkcMDmJRqwGSsGY/k7Kaa3RPcQseEEnaqT3ThkTwfzr5AFZB1aNY1uk8Swn6qq9PSLV72R4eOGLVbWNhjDsn8BT1ODkkPz+olqBjbcyIixyUaFCOz6KJwaSEDWBq0SzIVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tTifjcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017DCC4CEF1;
-	Tue, 16 Dec 2025 11:49:12 +0000 (UTC)
+	 MIME-Version; b=EsLfU4K9eKEgqco7QcEJEUi3pxHJt6LOFKEcnWTyszQWZ9dDvarU8Sfj4Bm/73BN/RYwFpqy7+bA9PS23jXxCdCP+2AqpQdrVaSGdd3Svsuc2mwvM0nzeF3Ds4ePuzHupv7TKSLZ1pnP321IhyAfNvDVxR9mm7RBswtzhip5ok8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBjL8ZL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E0DC4CEF5;
+	Tue, 16 Dec 2025 12:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885753;
-	bh=ry2mr99gsat+cWJBp5jTy6Mu+0gwTBBYYGkDb2LUX20=;
+	s=korg; t=1765887693;
+	bh=7EB1C25MCv9fI3qx4eWvw9UBAs96xJRF63I3Hv0Lbfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tTifjcK5NrRLDoFXwblVPgY+1JYSNV7bDq77WfbaUDXkyP+gOh2/lSDmiPp4XuAF
-	 OrVTiVxmw2noDcdgBvvRJksEVjviriz29cqpdUz4KVeuU+tqNgsV/hwj4L2BEPAEG5
-	 n18KyiNGkQ4TMGKDKDf+GqbhP1S+tqefwpL2iSZ8=
+	b=FBjL8ZL2aC/ORUDBaKDJMUpPBeOAclf0/V/qKvO11yAaMW/vsHjmS9WF0Qy6Ah/rr
+	 98KTEWGqIh0LUWSyBg0o/Ufb275ugMSpTEJAeT2kg4sJCdsITj4MzK1z7xWOntLIf1
+	 TJ+yDwLO+nndzj7ca1KGpWBuXCGFOgp720h0HpNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Huiwen He <hehuiwen@kylinos.cn>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 234/507] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 5A
+Subject: [PATCH 6.18 308/614] drm/msm: fix missing NULL check after kcalloc in crashstate_get_bos()
 Date: Tue, 16 Dec 2025 12:11:15 +0100
-Message-ID: <20251216111353.978911066@linuxfoundation.org>
+Message-ID: <20251216111412.527738206@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-[ Upstream commit 3069ff1930aa71e125874c780ffaa6caeda5800a ]
+[ Upstream commit 3065e6a4d3594b42dae6176b3e2c0c3563cf94b8 ]
 
-The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 5A is
-vcc_3v3_pmu, which is routed to vcc_3v3_s3 via a zero-ohm resistor. [1]
-Describe this supply.
+The crashstate_get_bos() function allocates memory for `state->bos`
+using kcalloc(), but the vmbind path does not check for allocation
+failure before dereferencing it in the following drm_gpuvm_for_each_va()
+loop. This could lead to a NULL pointer dereference if memory allocation
+fails.
 
-[1] https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.4, p.19
+Fix this by wrapping the drm_gpuvm_for_each_va() loop with a NULL check
+on state->bos, similar to the safety check in the non-vmbind path.
 
-Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://patch.msgid.link/20251112035133.28753-3-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: af9aa6f316b3d ("drm/msm: Crashdump support for sparse")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Patchwork: https://patchwork.freedesktop.org/patch/687556/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_gpu.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 53df90b0eed16..6ed8b15e6cdfd 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -226,6 +226,7 @@ eeprom: eeprom@50 {
- 		compatible = "belling,bl24c16a", "atmel,24c16";
- 		reg = <0x50>;
- 		pagesize = <16>;
-+		vcc-supply = <&vcc_3v3_pmu>;
- 	};
- };
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index e23f70fbc8cb2..dd0605fe1243d 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -287,16 +287,17 @@ static void crashstate_get_bos(struct msm_gpu_state *state, struct msm_gem_submi
  
-@@ -593,7 +594,7 @@ regulator-state-mem {
- 				};
- 			};
+ 		state->bos = kcalloc(cnt, sizeof(struct msm_gpu_state_bo), GFP_KERNEL);
  
--			vcc_3v3_s3: dcdc-reg8 {
-+			vcc_3v3_pmu: vcc_3v3_s3: dcdc-reg8 {
- 				regulator-name = "vcc_3v3_s3";
- 				regulator-always-on;
- 				regulator-boot-on;
+-		drm_gpuvm_for_each_va (vma, submit->vm) {
+-			bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
++		if (state->bos)
++			drm_gpuvm_for_each_va(vma, submit->vm) {
++				bool dump = rd_full || (vma->flags & MSM_VMA_DUMP);
+ 
+-			/* Skip MAP_NULL/PRR VMAs: */
+-			if (!vma->gem.obj)
+-				continue;
++				/* Skip MAP_NULL/PRR VMAs: */
++				if (!vma->gem.obj)
++					continue;
+ 
+-			msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
+-						  dump, vma->gem.offset, vma->va.range);
+-		}
++				msm_gpu_crashstate_get_bo(state, vma->gem.obj, vma->va.addr,
++							  dump, vma->gem.offset, vma->va.range);
++			}
+ 
+ 		drm_exec_fini(&exec);
+ 	} else {
 -- 
 2.51.0
 
