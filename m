@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-202432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4DFCC3BE7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C592FCC2EA8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03DBB310C8BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDC2C31B60A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955EB350299;
-	Tue, 16 Dec 2025 12:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62D43644D3;
+	Tue, 16 Dec 2025 12:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/3pC6s8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch0wk3VF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F88B34AAF4;
-	Tue, 16 Dec 2025 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2202A36404E;
+	Tue, 16 Dec 2025 12:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887879; cv=none; b=ETluIi1zq4Hu5LFGe4ZndZZmBk2jJHPPsR6Z8qSYP9OfrnsfldFDt/K2ymHA1mtuUaNsZoBY6PBc9botPkTcglcGCtulpYPVcp0SgnkCSV24j9h45R+YnTP0f66w5bKR/PsfeGN/iPfPdfCWAkfmFTOVe782dVE/7bCj+3BNP8U=
+	t=1765887916; cv=none; b=rAUeKwiofKUJP6K1soN/Jhcbfe+7Hfj4RlxQva6KPL0JfXZB9Qs0rtOSCFCzQjr14MwH4tVdENVdF3NDDdh3+pFgaso36brxmVpLtAHBOfmAG+KGfrTGU4TPZb4kOme7ar6PNvRquxmQXi0eGAh8M25swAqdXmjmajMZIXsAYUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887879; c=relaxed/simple;
-	bh=cSnjclsOVAKcijX+3MfY8aSScdRP0uuYhPFd7frt1+w=;
+	s=arc-20240116; t=1765887916; c=relaxed/simple;
+	bh=cgR7hawmkhRVDYeen3hZcZZLiKZ3makGR5cfzAxXUzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRPOH0CxEPtKsTq8faWe/0sikJuAshETZsP1tCXl5pPi0dJ7wWx1oz4kSKgpefrkenkFVSplNInPc5xM1VsP9xbwG3mNQurk73EzWNOh7gV8ZA8aPc/IY/yD/7BgkBw0y7CxgtLZYnVA/dO0t53EWjreou/cV88bxeo3wZXt1Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/3pC6s8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AED3C4CEF1;
-	Tue, 16 Dec 2025 12:24:38 +0000 (UTC)
+	 MIME-Version; b=CX8zoRIb2J4wJIvoyDs/abvW8AFOuibXcv9aIQ7mSCh6lhAv18ap0JPW4YooqYatVu0PsjrhP7aB2ZxtSxa/oQ8X6J0Ez/0GUT6asbGKNTLC3dpqdbWd5jazuykVwUdTQlcB275l0usni5OBfWmGYSWOBp0KDUnsljwy2avhuZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch0wk3VF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B41AC4CEF1;
+	Tue, 16 Dec 2025 12:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887878;
-	bh=cSnjclsOVAKcijX+3MfY8aSScdRP0uuYhPFd7frt1+w=;
+	s=korg; t=1765887915;
+	bh=cgR7hawmkhRVDYeen3hZcZZLiKZ3makGR5cfzAxXUzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/3pC6s8/Qlw/XU3h2ODT1JrzP7PaI4rxY2CHn2vaNvKz1F+hj1w5RiB4+B/4s9LC
-	 t1P98fVnQ/tzFySMmf5hBMtdLl29NSnD4fiWSrgm4Pgoa7XG4kjK1MtZdYET1QRCaP
-	 HWcucadIzlr2aI2SJMBCON4RNyuBPjbVfMRj4qLQ=
+	b=Ch0wk3VFQpXejar30Odg+H1qsR/mS6rjAXEdOLZMilt2u9J6YptcO5TqPPW9ZzP5L
+	 lBOwuKWn774ZEYszaUd1MRkWtE+tBmQMVrIqIHiJj8gOUodRZHRY/cfUBYRmmRdSSG
+	 AyYWajdi6w8VHt7TCm3iYSYhq6Pm5Sit98PP5ETg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
+	Algea Cao <algea.cao@rock-chips.com>,
 	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 348/614] phy: rockchip: samsung-hdptx: Fix reported clock rate in high bpc mode
-Date: Tue, 16 Dec 2025 12:11:55 +0100
-Message-ID: <20251216111413.971569397@linuxfoundation.org>
+Subject: [PATCH 6.18 349/614] phy: rockchip: samsung-hdptx: Reduce ROPLL loop bandwidth
+Date: Tue, 16 Dec 2025 12:11:56 +0100
+Message-ID: <20251216111414.007680971@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -68,73 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 72126e9623e1696ea83c77ef6d0306a6263bdd6b ]
+[ Upstream commit 8daaced9f5eeb4a2c8ca08b0a8286b6a498a8387 ]
 
-When making use of the clock provider functionality, the output clock
-does normally match the TMDS character rate, which is what the PHY PLL
-gets configured to.
+Due to its relatively low frequency, a noise stemming from the 24MHz PLL
+reference clock may traverse the low-pass loop filter of ROPLL, which
+could potentially generate some HDMI flash artifacts.
 
-However, this is only applicable for default color depth of 8 bpc.  For
-higher depths, the output clock is further divided by the hardware
-according to the formula:
+Reduce ROPLL loop bandwidth in an attempt to mitigate the problem.
 
-  output_clock_rate = tmds_char_rate * 8 / bpc
-
-Since the existence of the clock divider wasn't taken into account when
-support for high bpc has been introduced, make the necessary adjustments
-to report the correct clock rate.
-
-Fixes: 9d0ec51d7c22 ("phy: rockchip: samsung-hdptx: Add high color depth management")
-Reported-by: Andy Yan <andy.yan@rock-chips.com>
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-1-ecc642a59d94@collabora.com
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-2-ecc642a59d94@collabora.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 01bbf668e05ef..aee03e8655f66 100644
+index aee03e8655f66..8ba9b53c2309b 100644
 --- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
 +++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -1037,7 +1037,8 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx)
- 
- 	ret = rk_hdptx_post_enable_pll(hdptx);
- 	if (!ret)
--		hdptx->hw_rate = hdptx->hdmi_cfg.tmds_char_rate;
-+		hdptx->hw_rate = DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8,
-+						       hdptx->hdmi_cfg.bpc);
- 
- 	return ret;
- }
-@@ -1895,19 +1896,20 @@ static long rk_hdptx_phy_clk_round_rate(struct clk_hw *hw, unsigned long rate,
- 	 * hence ensure rk_hdptx_phy_clk_set_rate() won't be invoked with
- 	 * a different rate argument.
- 	 */
--	return hdptx->hdmi_cfg.tmds_char_rate;
-+	return DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8, hdptx->hdmi_cfg.bpc);
- }
- 
- static int rk_hdptx_phy_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 				     unsigned long parent_rate)
- {
- 	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
-+	unsigned long long tmds_rate = DIV_ROUND_CLOSEST_ULL(rate * hdptx->hdmi_cfg.bpc, 8);
- 
- 	/* Revert any unlikely TMDS char rate change since round_rate() */
--	if (hdptx->hdmi_cfg.tmds_char_rate != rate) {
--		dev_warn(hdptx->dev, "Reverting unexpected rate change from %lu to %llu\n",
--			 rate, hdptx->hdmi_cfg.tmds_char_rate);
--		hdptx->hdmi_cfg.tmds_char_rate = rate;
-+	if (hdptx->hdmi_cfg.tmds_char_rate != tmds_rate) {
-+		dev_warn(hdptx->dev, "Reverting unexpected rate change from %llu to %llu\n",
-+			 tmds_rate, hdptx->hdmi_cfg.tmds_char_rate);
-+		hdptx->hdmi_cfg.tmds_char_rate = tmds_rate;
- 	}
- 
- 	/*
+@@ -500,9 +500,7 @@ static const struct reg_sequence rk_hdtpx_common_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0043), 0x00),
+ 	REG_SEQ0(CMN_REG(0044), 0x46),
+ 	REG_SEQ0(CMN_REG(0045), 0x24),
+-	REG_SEQ0(CMN_REG(0046), 0xff),
+ 	REG_SEQ0(CMN_REG(0047), 0x00),
+-	REG_SEQ0(CMN_REG(0048), 0x44),
+ 	REG_SEQ0(CMN_REG(0049), 0xfa),
+ 	REG_SEQ0(CMN_REG(004a), 0x08),
+ 	REG_SEQ0(CMN_REG(004b), 0x00),
+@@ -575,6 +573,8 @@ static const struct reg_sequence rk_hdtpx_tmds_cmn_init_seq[] = {
+ 	REG_SEQ0(CMN_REG(0034), 0x00),
+ 	REG_SEQ0(CMN_REG(003d), 0x40),
+ 	REG_SEQ0(CMN_REG(0042), 0x78),
++	REG_SEQ0(CMN_REG(0046), 0xdd),
++	REG_SEQ0(CMN_REG(0048), 0x11),
+ 	REG_SEQ0(CMN_REG(004e), 0x34),
+ 	REG_SEQ0(CMN_REG(005c), 0x25),
+ 	REG_SEQ0(CMN_REG(005e), 0x4f),
 -- 
 2.51.0
 
