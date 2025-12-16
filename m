@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70F5CC251D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30C2CC27D3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FFA13074CF4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C84B3029B68
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F93733FE30;
-	Tue, 16 Dec 2025 11:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AE234D4C2;
+	Tue, 16 Dec 2025 11:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et30PmnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEzByTqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146CA33A6F4;
-	Tue, 16 Dec 2025 11:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354CF347FD0;
+	Tue, 16 Dec 2025 11:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884606; cv=none; b=pWCyzQMu6hlabbfgsGvJaDbb65gR+RK788d591u5clM2T+pFQNJwc7s7nIaxkeqd6GIL8fqpvYJ2p7gAoO9ORfteA992rD6qnVC3v8WRw+ZKvihCMS0tXi3liIbsEvW2xe8Am+sFnhPu0+y/ruQZ1pFaVdqkzO/BLtZPQP0gK6Q=
+	t=1765886102; cv=none; b=RqQF6UYqUNZsqbiudyGqdWaY0FZQnOiTA5/2fPJ40DZjjry2uI2QKcCmT2krqSxcuGs3aB41en6mIQWXDvidv2U5T7N2qIq4uYVCP4gD/sGTA20+jshH7yta9Qm06MXLcxATsjjtO0bkFc5YybaWGWIPFE8LofJIs+tMI7XCTuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884606; c=relaxed/simple;
-	bh=3AEi0I6YbQDhJlpkkNVn0R4G5tcVffMXSXrqGbB8X+8=;
+	s=arc-20240116; t=1765886102; c=relaxed/simple;
+	bh=eHQEWqLf61PCfFmTMMmKjDbFnvkKtfaKLAMYoBrvqos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0jGlyhNBbDS5CdZWxbuBC9VbFO81qSrgIRKd3RwErN/VURKGwwy9Yj9pJWtM8QWJcs/hSed72b6ladcvnoPWAnPT7BJNm9bKBAeOU+VnnDX30lFECGa3q0b4uxFDNpphkeLma/1ljh6yxlbUkLd1rS0eXBYvQKfodvX4qVY4AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et30PmnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A3FC4CEF1;
-	Tue, 16 Dec 2025 11:30:05 +0000 (UTC)
+	 MIME-Version; b=AeJwR5eAz4BeKdb5RX6ZkZHSxmA/wsqEZC9578Xgwh7sCha5H8b3AqxdlZHCMB4H3netCvIaFLwVlHbxuigQ0FuhCBMQ9JdPaRokADpkopdfCUZ29YF7EJpsoe8GL+ITBLJz/qwEhcwOmmm8uqbdZ4ClDEeivYxXoocUOaTMOSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEzByTqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54D4C4CEF1;
+	Tue, 16 Dec 2025 11:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884606;
-	bh=3AEi0I6YbQDhJlpkkNVn0R4G5tcVffMXSXrqGbB8X+8=;
+	s=korg; t=1765886102;
+	bh=eHQEWqLf61PCfFmTMMmKjDbFnvkKtfaKLAMYoBrvqos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et30PmnS6gnMvCr9hJReXI9bVSl+gsfkQPvZuYaSVtB26S7/SodZnEBlnIjVl7P+g
-	 5Vjs2g5m4klHLUs+eU494+enT1YedF03qV7+bldvf+YuCBc9dpxCGwsMA4u6rXTgC1
-	 A46lCtKLpqPR0Ti7ZEWeQe+naHH0IDpuEGYKLOqE=
+	b=LEzByTqngCEeNRXMe/xWx8kTxW5ecdiiVagHO5NE5qexURlPuN4UCcjoNQ2mfcgsu
+	 2BojhdxgL4Stq65au4yqVaYld1J7qNQEmR6siyDrxYS+2g78vhFYPiSG/4Cfve/gi3
+	 LqL+aW6SZxPr3woxmTpUUb7lH/CdudzvS5CcWtz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 212/354] erofs: limit the level of fs stacking for file-backed mounts
+Subject: [PATCH 6.17 338/507] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
 Date: Tue, 16 Dec 2025 12:12:59 +0100
-Message-ID: <20251216111328.601337869@linuxfoundation.org>
+Message-ID: <20251216111357.708032586@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
 
-[ Upstream commit d53cd891f0e4311889349fff3a784dc552f814b9 ]
+[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
 
-Otherwise, it could cause potential kernel stack overflow (e.g., EROFS
-mounting itself).
+Fix this warning that was generated from "make htmldocs":
 
-Reviewed-by: Sheng Yong <shengyong1@xiaomi.com>
-Fixes: fb176750266a ("erofs: add file-backed mount support")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
+not described in 'stratix10_svc'
+
+Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/firmware/stratix10-svc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index 5fcdab6145176..027fd567a4d9f 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -636,6 +636,22 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	sbi->blkszbits = PAGE_SHIFT;
- 	if (!sb->s_bdev) {
-+		/*
-+		 * (File-backed mounts) EROFS claims it's safe to nest other
-+		 * fs contexts (including its own) due to self-controlled RO
-+		 * accesses/contexts and no side-effect changes that need to
-+		 * context save & restore so it can reuse the current thread
-+		 * context.  However, it still needs to bump `s_stack_depth` to
-+		 * avoid kernel stack overflow from nested filesystems.
-+		 */
-+		if (erofs_is_fileio_mode(sbi)) {
-+			sb->s_stack_depth =
-+				file_inode(sbi->dif0.file)->i_sb->s_stack_depth + 1;
-+			if (sb->s_stack_depth > FILESYSTEM_MAX_STACK_DEPTH) {
-+				erofs_err(sb, "maximum fs stacking depth exceeded");
-+				return -ENOTBLK;
-+			}
-+		}
- 		sb->s_blocksize = PAGE_SIZE;
- 		sb->s_blocksize_bits = PAGE_SHIFT;
- 
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 00f58e27f6de5..deee0e7be34bd 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
+ /**
+  * struct stratix10_svc - svc private data
+  * @stratix10_svc_rsu: pointer to stratix10 RSU device
++ * @intel_svc_fcs: pointer to the FCS device
+  */
+ struct stratix10_svc {
+ 	struct platform_device *stratix10_svc_rsu;
 -- 
 2.51.0
 
