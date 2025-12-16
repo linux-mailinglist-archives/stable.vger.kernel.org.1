@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD94ECC2824
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CAECC336F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A58DF302EDB5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CD77306FD7B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FA4355809;
-	Tue, 16 Dec 2025 11:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D430533D6F2;
+	Tue, 16 Dec 2025 12:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHj7ETT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+fumBLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5666355805;
-	Tue, 16 Dec 2025 11:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8412D8782;
+	Tue, 16 Dec 2025 12:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886239; cv=none; b=S+ZGOAG447Ixn4lR4Xziwhm5eg3+oi6HMuwNxGQCvr3427kXjrFV1d5zJ3/vHfztXd3wedzKCE1Wn0US7p1HAHUBtpoYZkM/EkGzjbrCGbolQPO/nq0fHl0UDKUVM9rNiRPVle9i2BIlg6AEC3/eZeIMueQNUyKMApNkT2ZVMts=
+	t=1765888187; cv=none; b=RNHbRVpTqu+wmQrEtsFg88MgzaIPsouVwQ85s+b86uuf2wTLoufCiXIAgxerTjNGq2xj0ZlrSL395lue+5fiFLpEnIC82cPcwO/iT5OK9Yd32Qlc8JU/ipH9WR9FlmRTF3OIClqHcU3SLGhhGiNxsCR60CrzBNfUoEQihNtJVbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886239; c=relaxed/simple;
-	bh=7ApV+VoahW9oQNLpv9TysniJ+eOPILeCRuM8BqL4ngM=;
+	s=arc-20240116; t=1765888187; c=relaxed/simple;
+	bh=h123Np+glL2TSPZq6oTHxM2FiYI7j13lY0P5ZTNz3so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/aF9dMHyJ5/HPDRRwg8/V32p3IBLpNQ8l7izfGCVWOiPZ9BH84Ad5qa85fCfzWwwYqWze8FBz9YgTYxM4wh3ACRvQGSsUjNtCvCaO3Q42EJce+r1OEM/Zm7BnKg6s6kXGjJszN1O0+TxPfpv7BoJP4jI9a3RfPh/jUDDf/UXek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHj7ETT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64447C4CEF1;
-	Tue, 16 Dec 2025 11:57:19 +0000 (UTC)
+	 MIME-Version; b=pZngl4jrLQTTTpEFKeCVNDri2TKTRN6QWCgIsunP8Ks7zQJHvfwrbKj3PzsC/oXQWHyWf3mJNHgbwSO1cES/+7xskr3kBQ3hZiOvdkYNw5PYwHjgKITKPWmy/fdzrThV3X/p9uIqvSoCazbaqWhSrVOjSG6/CS9daXilH0/O2WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+fumBLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9AAC4CEF1;
+	Tue, 16 Dec 2025 12:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886239;
-	bh=7ApV+VoahW9oQNLpv9TysniJ+eOPILeCRuM8BqL4ngM=;
+	s=korg; t=1765888187;
+	bh=h123Np+glL2TSPZq6oTHxM2FiYI7j13lY0P5ZTNz3so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHj7ETT+wFGof6GBxvyRWUmtIFKgvVfSctmtdrCnLFAWvc8cjzsuzlj/ZG6ECJJoM
-	 p5fa7G6M+ymhbfV3u7HKD9HVl9A4InlSiqWdm4JhRU7qo2zUyG+tb8NKv4hnZzWhsR
-	 jYqLjpt4m0LVyP+YFEW00N15KWSG9pcmtU0rVQus=
+	b=L+fumBLDlnAC23Ivjpm2+OaUR6O0K8/LA8VJWlFze+caCm1vT0UnjeqmhktJZbG4m
+	 4OM75xD+uSmnKrtHlIY4fR0Z5CkUeOhwx8Z7SNi6zNjstcTVXZLppgjtEhsKbu/dth
+	 A3XyHH736mppYPPiU0ho9yWeYljzV4L+WXC8X3w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Anil Samal <anil.samal@intel.com>,
+	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 351/507] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
+Subject: [PATCH 6.18 425/614] RDMA/irdma: Add missing mutex destroy
 Date: Tue, 16 Dec 2025 12:13:12 +0100
-Message-ID: <20251216111358.174977476@linuxfoundation.org>
+Message-ID: <20251216111416.771477079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Anil Samal <anil.samal@intel.com>
 
-[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
+[ Upstream commit 35bd787babd1f5a42641d0b1513edbed5d4e1624 ]
 
-Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
-matching groups. This is more than what is defined as maximum by the ARM
-SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
-Limit the SMR groups to 128") disabled use of the additional groups because
-they don't exhibit the same behavior as the architecture supported ones.
+Add missing destroy of ah_tbl_lock and vchnl_mutex.
 
-It seems like this is just another quirk of the hypervisor: When running
-bare-metal without the hypervisor, the additional groups appear to behave
-just like all others. The boot firmware uses some of the additional groups,
-so ignoring them in this situation leads to stream match conflicts whenever
-we allocate a new SMR group for the same SID.
-
-The workaround exists primarily because the bypass quirk detection fails
-when using a S2CR register from the additional matching groups, so let's
-perform the test with the last reliable S2CR (127) and then limit the
-number of SMR groups only if we detect that we are running below the
-hypervisor (because of the bypass quirk).
-
-Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: d5edd33364a5 ("RDMA/irdma: RDMA/irdma: Add GEN3 core driver support")
+Signed-off-by: Anil Samal <anil.samal@intel.com>
+Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20251125025350.180-6-tatyana.e.nikolova@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/infiniband/hw/irdma/icrdma_if.c  | 4 +++-
+ drivers/infiniband/hw/irdma/ig3rdma_if.c | 4 ++++
+ drivers/infiniband/hw/irdma/verbs.c      | 4 +++-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 57c097e876130..c939d0856b719 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -431,17 +431,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+diff --git a/drivers/infiniband/hw/irdma/icrdma_if.c b/drivers/infiniband/hw/irdma/icrdma_if.c
+index 5d3fd118e4f81..b49fd9cf24765 100644
+--- a/drivers/infiniband/hw/irdma/icrdma_if.c
++++ b/drivers/infiniband/hw/irdma/icrdma_if.c
+@@ -302,7 +302,8 @@ static int icrdma_probe(struct auxiliary_device *aux_dev, const struct auxiliary
+ err_ctrl_init:
+ 	icrdma_deinit_interrupts(rf, cdev_info);
+ err_init_interrupts:
+-	kfree(iwdev->rf);
++	mutex_destroy(&rf->ah_tbl_lock);
++	kfree(rf);
+ 	ib_dealloc_device(&iwdev->ibdev);
  
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
--	 * 128 stream matching groups. For unknown reasons, the additional
--	 * groups don't exhibit the same behavior as the architected registers,
--	 * so limit the groups to 128 until the behavior is fixed for the other
--	 * groups.
-+	 * 128 stream matching groups. The additional registers appear to have
-+	 * the same behavior as the architected registers in the hardware.
-+	 * However, on some firmware versions, the hypervisor does not
-+	 * correctly trap and emulate accesses to the additional registers,
-+	 * resulting in unexpected behavior.
-+	 *
-+	 * If there are more than 128 groups, use the last reliable group to
-+	 * detect if we need to apply the bypass quirk.
- 	 */
--	if (smmu->num_mapping_groups > 128) {
--		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
--		smmu->num_mapping_groups = 128;
--	}
--
--	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+	if (smmu->num_mapping_groups > 128)
-+		last_s2cr = ARM_SMMU_GR0_S2CR(127);
-+	else
-+		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
+ 	return err;
+@@ -319,6 +320,7 @@ static void icrdma_remove(struct auxiliary_device *aux_dev)
+ 	ice_rdma_update_vsi_filter(cdev_info, iwdev->vsi_num, false);
+ 	irdma_ib_unregister_device(iwdev);
+ 	icrdma_deinit_interrupts(iwdev->rf, cdev_info);
++	mutex_destroy(&iwdev->rf->ah_tbl_lock);
  
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
-@@ -464,6 +466,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 	kfree(iwdev->rf);
  
- 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
- 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
-+
-+		if (smmu->num_mapping_groups > 128) {
-+			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+			smmu->num_mapping_groups = 128;
-+		}
+diff --git a/drivers/infiniband/hw/irdma/ig3rdma_if.c b/drivers/infiniband/hw/irdma/ig3rdma_if.c
+index 1bb42eb298ba6..e1d6670d9396e 100644
+--- a/drivers/infiniband/hw/irdma/ig3rdma_if.c
++++ b/drivers/infiniband/hw/irdma/ig3rdma_if.c
+@@ -55,6 +55,7 @@ static int ig3rdma_vchnl_init(struct irdma_pci_f *rf,
+ 	ret = irdma_sc_vchnl_init(&rf->sc_dev, &virt_info);
+ 	if (ret) {
+ 		destroy_workqueue(rf->vchnl_wq);
++		mutex_destroy(&rf->sc_dev.vchnl_mutex);
+ 		return ret;
  	}
  
- 	for (i = 0; i < smmu->num_mapping_groups; i++) {
+@@ -124,7 +125,9 @@ static void ig3rdma_decfg_rf(struct irdma_pci_f *rf)
+ {
+ 	struct irdma_hw *hw = &rf->hw;
+ 
++	mutex_destroy(&rf->ah_tbl_lock);
+ 	destroy_workqueue(rf->vchnl_wq);
++	mutex_destroy(&rf->sc_dev.vchnl_mutex);
+ 	kfree(hw->io_regs);
+ 	iounmap(hw->rdma_reg.addr);
+ }
+@@ -149,6 +152,7 @@ static int ig3rdma_cfg_rf(struct irdma_pci_f *rf,
+ 	err = ig3rdma_cfg_regions(&rf->hw, cdev_info);
+ 	if (err) {
+ 		destroy_workqueue(rf->vchnl_wq);
++		mutex_destroy(&rf->sc_dev.vchnl_mutex);
+ 		return err;
+ 	}
+ 
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index c883c9ea5a831..c884f2ce282f9 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -5500,7 +5500,9 @@ void irdma_ib_dealloc_device(struct ib_device *ibdev)
+ 	irdma_rt_deinit_hw(iwdev);
+ 	if (!iwdev->is_vport) {
+ 		irdma_ctrl_deinit_hw(iwdev->rf);
+-		if (iwdev->rf->vchnl_wq)
++		if (iwdev->rf->vchnl_wq) {
+ 			destroy_workqueue(iwdev->rf->vchnl_wq);
++			mutex_destroy(&iwdev->rf->sc_dev.vchnl_mutex);
++		}
+ 	}
+ }
 -- 
 2.51.0
 
