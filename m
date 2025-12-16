@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE371CC2D01
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 390F4CC3501
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F05930C8AC4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB4430D7025
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F993659E4;
-	Tue, 16 Dec 2025 12:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613D6348452;
+	Tue, 16 Dec 2025 11:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAhUNIVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHpGOLhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EE31A7F5;
-	Tue, 16 Dec 2025 12:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1A347FEE;
+	Tue, 16 Dec 2025 11:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887076; cv=none; b=Ta+292+GnmOyqGCuOyxYLaGfP0S8jlWY00Un/VuM72ZfSn40Z+/y+tEiVrDf3hZ7YAqv0mkh9pwsY2a65naVN/EPwNGqx86+rsXQA7m4VoZTOKAav2KshuhdIaRkWDEuey2Z+2VDPB/W9I3SxwxPSEUv0uDlz5EX/IczSkPlb4Q=
+	t=1765885125; cv=none; b=blT8d8jXUIfUME6FnzHXkgnhe25tJXmg4+DPBi4KXr+yv9wxlI3PvNO/ECnzSCfF2RvmkA85Lq5SPi0T6XIJnhTS9QXc2UmZ6M2dZwGxJ3+0W9YcbMPoRbH1M/qF5mdc/mt/5yjK3hcQmFmafsqhzbP4f5NBxNr3sTn2/RAxd/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887076; c=relaxed/simple;
-	bh=bNhNA8CjNY6+2EQmLoo+vb0cRl8yW0iiqQbbVBkXHlg=;
+	s=arc-20240116; t=1765885125; c=relaxed/simple;
+	bh=eigKj6dMQiES1hjzsZBoB9mViFoaCkNpB2Y+HDwQmqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ed/Pc4joStJig/f4a5n/FhkSjagMo3yf+hKeWGeVqbZMnIHB+nincvpLG5QTfAKEjSdii+nzpGQIIiCOOvjeUdAIGmQ0drbYO9kPjEkkW/FcX0WOXwHC33TGBE+H0FiJWxThf0xqRA70rLLILDAurdM5w7zU60Z+pezysBdxt7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAhUNIVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257E7C4CEF1;
-	Tue, 16 Dec 2025 12:11:15 +0000 (UTC)
+	 MIME-Version; b=UDI2cmS5Cvyr4tZLoHhQvfFOGiMhoR3ZC5pBCy7k8hzEEWdAn/+O2j9NR51RfBjp3wfL4Iz9XWqOE4k7uRhSlTUEq9aImCqrlWNZgbEM8l6HKD535RO5TQrhYdPzBpOam5R0fQY3Rd0U87uW/+cf0LtWfaPtkw9Sg416zoe1tkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHpGOLhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892C9C4CEF1;
+	Tue, 16 Dec 2025 11:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887076;
-	bh=bNhNA8CjNY6+2EQmLoo+vb0cRl8yW0iiqQbbVBkXHlg=;
+	s=korg; t=1765885125;
+	bh=eigKj6dMQiES1hjzsZBoB9mViFoaCkNpB2Y+HDwQmqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAhUNIVHFUitNS8Kj0xB0jbsRNSynX6CQaSmZ3CKR/m5lypcPrIGik+nm9DLFz1Ut
-	 ViXJkDS5cqABVRTLoa0IWOI9Xhboy2rCGBnh7BUMpKmE0dRQE+CmrOZP3+AUJ6qhlh
-	 3LhFTVMUJKtq5MvmtbfWzqhEpuO70oOn82xMv3wY=
+	b=rHpGOLhdUBytIs/qWkKNb44RnovW1EnCZhTFcY3BMuetyo94I2GLGK42y0A+QJlCt
+	 2V0LIIDfhk8qTxFEh6Lkuyt42YJDciPc9jCZcLLRR8F+tYSl1bcb7dpx48g1IwNXC8
+	 ZFSedpDeAblN1MzPTy3+bqVJPhdemVADk0XHqQo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Changhuang Liang <changhuang.liang@starfivetech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 119/614] arm64: dts: qcom: sm8750-mtp: move PCIe GPIOs to pcieport0 node
+Subject: [PATCH 6.17 045/507] irqchip/starfive-jh8100: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:08:06 +0100
-Message-ID: <20251216111405.648304193@linuxfoundation.org>
+Message-ID: <20251216111347.176272704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cc8056a16472d186140d1a66ed5648cee41f4379 ]
+[ Upstream commit f798bdb9aa81c425184f92e3d0b44d3b53d10da7 ]
 
-Relocate the wake-gpios and perst-gpios properties from the pcie0
-controller node to the pcieport0 node. These GPIOs are associated with
-the PCIe root port and should reside under the pcieport0 node.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callback must not live in init.
 
-Also rename perst-gpios to reset-gpios to match the expected property name
-in the PCIe port node.
-
-Fixes: 141714e163bb ("arm64: dts: qcom: sm8750-mtp: Add WiFi and Bluetooth")
-Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20251008-sm8750-v1-1-daeadfcae980@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e4e535036173 ("irqchip: Add StarFive external interrupt controller")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8750-mtp.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-starfive-jh8100-intc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8750-mtp.dts b/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
-index 3bbb53b7c71f3..45b5f75815670 100644
---- a/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
-@@ -960,9 +960,6 @@ &pon_resin {
- };
+diff --git a/drivers/irqchip/irq-starfive-jh8100-intc.c b/drivers/irqchip/irq-starfive-jh8100-intc.c
+index 2460798ec158b..117f2c651ebd0 100644
+--- a/drivers/irqchip/irq-starfive-jh8100-intc.c
++++ b/drivers/irqchip/irq-starfive-jh8100-intc.c
+@@ -114,8 +114,7 @@ static void starfive_intc_irq_handler(struct irq_desc *desc)
+ 	chained_irq_exit(chip, desc);
+ }
  
- &pcie0 {
--	wake-gpios = <&tlmm 104 GPIO_ACTIVE_HIGH>;
--	perst-gpios = <&tlmm 102 GPIO_ACTIVE_LOW>;
--
- 	pinctrl-0 = <&pcie0_default_state>;
- 	pinctrl-names = "default";
- 
-@@ -977,6 +974,9 @@ &pcie0_phy {
- };
- 
- &pcieport0 {
-+	wake-gpios = <&tlmm 104 GPIO_ACTIVE_HIGH>;
-+	reset-gpios = <&tlmm 102 GPIO_ACTIVE_LOW>;
-+
- 	wifi@0 {
- 		compatible = "pci17cb,1107";
- 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+-static int __init starfive_intc_init(struct device_node *intc,
+-				     struct device_node *parent)
++static int starfive_intc_init(struct device_node *intc, struct device_node *parent)
+ {
+ 	struct starfive_irq_chip *irqc;
+ 	struct reset_control *rst;
 -- 
 2.51.0
 
