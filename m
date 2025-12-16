@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD96CC2857
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:03:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9675CC2B0A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B053E3095E51
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EF3B030210F7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F687355031;
-	Tue, 16 Dec 2025 11:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45C8363C61;
+	Tue, 16 Dec 2025 12:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3AE6A6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8bRKIZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39406355029;
-	Tue, 16 Dec 2025 11:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551033644A2;
+	Tue, 16 Dec 2025 12:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885978; cv=none; b=aGn9T7lt+lZqQdReJgfu80EgE6HgyQpIefc1x565zC7M/PCaY5IGobqn5RjC8/0Sx0naCVSHIyekqld9GBtlctHkkSPfDlqjASN4sAzsiXe3ZhIvweP+7JRx5GxPvJe/MHyJbs1cehwoC75mPSsmHykb0FrbvHLXNlBSMlbZsNo=
+	t=1765887912; cv=none; b=XgwwVXox2CZ578M3Q9o+9fUnQUDzR/1FS1+sA+uWCvONOnNHsVgLI5SszZOxQ51f0vlaLYYrQxlGdZ9di3HAiQXT+u7VBVU6e4q6Ztc4xpZ2SU1vikAlHw2SfDAZcaCJp6rL567Y0pQf6jIT5fi0UJ4JVf96G3RRFpAVG/WJLBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885978; c=relaxed/simple;
-	bh=bbqT/UKsQvu9VEK+yJC1048hMM9mGihVRJLCUAEKr4c=;
+	s=arc-20240116; t=1765887912; c=relaxed/simple;
+	bh=stAIuhkqMuovDW3Ssl0rZR6N7wxnyflu0TdxyCyetBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhXvr7CC9dy0t+wJlz/KhBehhXlMzevf4U8ipfjVxS+EL1hCBChmJcn1OcCmU8OWOFLyXnHb2D0M5vYle3kufLxnEjITrddTVlCmfyRkdvKW8FQ/1bXVi2sc7jN4p4I9PtPq5QRtAic1hClO2+wRCd1sLcn4SuKVkbi1pLXsdX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3AE6A6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A716CC4CEF1;
-	Tue, 16 Dec 2025 11:52:57 +0000 (UTC)
+	 MIME-Version; b=RsW7jEjzwnIs/Qvt/QpiHsMW6lFjtR6QwFe6Ad2ck7jcJzifqnDJy3g33GZ4AdzgqmacQfMKRAknbfLc1M11ZwGhLoJJLsqsQG/cNjjvG8fFClD8wHMUDvfL/kZHGBUXL10Exs6+NQPu40kdrwNOldcC/SedUc01nz+o03MFNl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8bRKIZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0484C4CEF5;
+	Tue, 16 Dec 2025 12:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885978;
-	bh=bbqT/UKsQvu9VEK+yJC1048hMM9mGihVRJLCUAEKr4c=;
+	s=korg; t=1765887912;
+	bh=stAIuhkqMuovDW3Ssl0rZR6N7wxnyflu0TdxyCyetBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3AE6A6GifDjmMAIpGivSEm433e8xHBviojwmD8AJKfns9dvO4HPsNk/wr/wHCy4q
-	 DquacYUIIhlxZH2YNdzFaYJX4rMnP4nikGPNbAheDGtXAKu91vUTLMS3Sw1lcTPDVZ
-	 7aCCNar9DcBagRGarY0tsf1KWhr6lgScHBY0MnMA=
+	b=D8bRKIZSIq5GTJKp0A8pi8q8ZAgsNY4pGjJKnyy4nfVNY3vu1LC+fAX+VA8Fgd/4I
+	 nZZUL3U8LNfEcP+SiD4fcMk9WMRPtUc+IYELCMc34I/nbyuLXLjn/DoRzkrWbv9UY6
+	 sEF1FV1ksPKPnNZu2UVr+yQpHovqQ9uQQdwj4QBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 301/507] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
+Subject: [PATCH 6.18 375/614] erofs: correct FSDAX detection
 Date: Tue, 16 Dec 2025 12:12:22 +0100
-Message-ID: <20251216111356.378307943@linuxfoundation.org>
+Message-ID: <20251216111414.948573232@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
+[ Upstream commit ebe4f3f6eb0c10f87c58e52a8912694c14fdeda6 ]
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+The detection of the primary device is skipped incorrectly
+if the multiple or flattened feature is enabled.
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
+It also fixes the FSDAX misdetection for non-block extra blobs.
 
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
-
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
+Fixes: c6993c4cb918 ("erofs: Fallback to normal access if DAX is not supported on extra device")
+Reported-and-tested-by: syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/691af9f6.a70a0220.3124cb.0097.GAE@google.com
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ fs/erofs/super.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 0c5c66401daa6..7aa2da0cd63cc 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
- 
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
- 
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index f3f8d8c066e4e..cd8ff98c29384 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -174,15 +174,15 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
+ 		if (!erofs_is_fileio_mode(sbi)) {
+ 			dif->dax_dev = fs_dax_get_by_bdev(file_bdev(file),
+ 					&dif->dax_part_off, NULL, NULL);
+-			if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
+-				erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
+-					   dif->path);
+-				clear_opt(&sbi->opt, DAX_ALWAYS);
+-			}
+ 		} else if (!S_ISREG(file_inode(file)->i_mode)) {
+ 			fput(file);
+ 			return -EINVAL;
+ 		}
++		if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
++			erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
++				   dif->path);
++			clear_opt(&sbi->opt, DAX_ALWAYS);
++		}
+ 		dif->file = file;
  	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
  
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
+@@ -215,13 +215,13 @@ static int erofs_scan_devices(struct super_block *sb,
+ 			  ondisk_extradevs, sbi->devs->extra_devices);
+ 		return -EINVAL;
+ 	}
+-	if (!ondisk_extradevs) {
+-		if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
+-			erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
+-			clear_opt(&sbi->opt, DAX_ALWAYS);
+-		}
+-		return 0;
++
++	if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
++		erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
++		clear_opt(&sbi->opt, DAX_ALWAYS);
+ 	}
++	if (!ondisk_extradevs)
++		return 0;
+ 
+ 	if (!sbi->devs->extra_devices && !erofs_is_fscache_mode(sb))
+ 		sbi->devs->flatdev = true;
 -- 
 2.51.0
 
