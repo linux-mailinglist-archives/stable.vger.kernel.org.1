@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-202691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85485CC39EC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:35:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829FECC2F83
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D30930A24B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:30:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B1FFA303D92D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD1346A15;
-	Tue, 16 Dec 2025 12:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E828F39BEA6;
+	Tue, 16 Dec 2025 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC+4adjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO2miDy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F8343D8F;
-	Tue, 16 Dec 2025 12:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67BB39BEA4;
+	Tue, 16 Dec 2025 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888732; cv=none; b=sdF3VOIcP+RezfZQ8Pf9pZsl8Qnbq7IlaKnjhOTduH/ftO9xftel/nDRMmYwOCC1g2N0PQG1KQ6Qty2+xeX88WEDPUCm/GgW6Ls+AhVakOsTrQCjj4qAYo+pW6EP48dNvImr35VKk0SJHOPMelkcr0BHHMT5Twogs2gXiKK2Fgw=
+	t=1765888678; cv=none; b=sA1vvv6TInLgkjDOIEOhNHaOM7zWfpHUcU3RmkhXzBxxrTWeW5G1uf5Lwj6pmHitIiwpb2CgXH2kIxQQaLlKATiQAnx9n7l35AiTchG1qglinhQVDkKYFQJMsP5pM8hp4lnPy1xEIvktvDtnfnkaHijpjm2xq8e2r4x+ZTWipmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888732; c=relaxed/simple;
-	bh=84cMPjpYZqXR8RAyacawY0rrTMqjEEjICIbM70Sgqkc=;
+	s=arc-20240116; t=1765888678; c=relaxed/simple;
+	bh=N2xx641WKZjLHRmGEYp/9XFjHkFLWQOWS7ypOUuMmfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBuahAkosPYsRIGvypzI6/14fOg643R4q/wCcDg8v9WldLmd7yMDJZqav6q3AH+3cdvVdhE1FXFpcAVwgJkKABJjNS15DO+NURWd8OLiAhAvNjqYwQhNPDKDJullXomgfg5EOPj2xHT4jUBOll6jy8ynwvTdW10I2bKOEY/ze/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC+4adjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D523C4CEF1;
-	Tue, 16 Dec 2025 12:38:52 +0000 (UTC)
+	 MIME-Version; b=A6B7HK37MKCQNkgO+eNVVBEoKid+0EUQwspEekv7u8u6ZfDGxtRazKG56ahmEKIYO4OaramxEtT0hi888wurxlW0+9p94GxPpxDi5sNYaf31qiM5ZCIrf+FJXgY1s8yHgOppgbPZXh0eehAwsh17Q02TMRhccink3EEvZ2OTRyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO2miDy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEC2C4CEF1;
+	Tue, 16 Dec 2025 12:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888732;
-	bh=84cMPjpYZqXR8RAyacawY0rrTMqjEEjICIbM70Sgqkc=;
+	s=korg; t=1765888678;
+	bh=N2xx641WKZjLHRmGEYp/9XFjHkFLWQOWS7ypOUuMmfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nC+4adjNITYB6tHUYpfApkYxJ1ZjC2f8vDCdDlx2sGpjjw9CyLxjl4sKDgQdAzPlu
-	 4t/wJeseQOgzMJUgGzN5TifhsW1HU4nmuzgwxJRzmUB2UVKfZfAHX+VeZRlrhHO8cG
-	 tddLA6RgvzRHs0MHmQN22TK01Y1K9/5BT8ezCZTs=
+	b=uO2miDy3zDij9QESLpRylq4wlDDovP3WpNWPkBxKXUhejtOUib/qMT72rxWD4MHPw
+	 6Kn/kvALh52KUe5/32+3ntwe1iIADhUbnb4tBNN/NDEKxw4CFDbtiLIT0pNa14yyv1
+	 kyb8cU7zVEHhC9kPLnbAJnLPceUY4I/r0uIe+X1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH 6.18 605/614] usb: typec: ucsi: fix probe failure in gaokun_ucsi_probe()
-Date: Tue, 16 Dec 2025 12:16:12 +0100
-Message-ID: <20251216111423.314968202@linuxfoundation.org>
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH 6.18 606/614] usb: phy: Initialize struct usb_phy list_head
+Date: Tue, 16 Dec 2025 12:16:13 +0100
+Message-ID: <20251216111423.350503151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,42 +63,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-commit 6b120ef99fbcba9e413783561f8cc160719db589 upstream.
+commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
 
-The gaokun_ucsi_probe() uses ucsi_create() to allocate a UCSI instance.
-The ucsi_create() validates whether ops->poll_cci is defined, and if not,
-it directly returns -EINVAL. However, the gaokun_ucsi_ops structure does
-not define the poll_cci, causing ucsi_create() always fail with -EINVAL.
-This issue can be observed in the kernel log with the following error:
+As part of the registration of a new 'struct usb_phy' with the USB PHY core
+via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
+usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
+order for the new instance x to be stored in phy_list, a static list
+kept internally by the core.
 
-ucsi_huawei_gaokun.ucsi huawei_gaokun_ec.ucsi.0: probe with driver
-ucsi_huawei_gaokun.ucsi failed with error -22
+After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+when executing either of the registration functions above it is possible
+that usb_add_extcon() fails, leading to either function returning before
+the call to list_add_tail(), leaving x->head uninitialized.
 
-Fix the issue by adding the missing poll_cci callback to gaokun_ucsi_ops.
+Then, when a driver tries to undo the failed registration by calling
+usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
+list_del(&x->head) acting on an uninitialized variable, and thus a
+possible NULL pointer dereference.
 
-Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+Fix this by initializing x->head before usb_add_extcon() has a
+chance to fail. Note that this was not needed before 7d21114dc6a2 since
+list_add_phy() was executed unconditionally and it guaranteed that x->head
+was initialized.
+
+Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Pengyu Luo <mitltlatltl@gmail.com>
-Link: https://patch.msgid.link/4d077d6439d728be68646bb8c8678436a3a0885e.1764065838.git.duoming@zju.edu.cn
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-+++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-@@ -196,6 +196,7 @@ static void gaokun_ucsi_connector_status
- const struct ucsi_operations gaokun_ucsi_ops = {
- 	.read_version = gaokun_ucsi_read_version,
- 	.read_cci = gaokun_ucsi_read_cci,
-+	.poll_cci = gaokun_ucsi_read_cci,
- 	.read_message_in = gaokun_ucsi_read_message_in,
- 	.sync_control = ucsi_sync_control_common,
- 	.async_control = gaokun_ucsi_async_control,
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum
+ 		return -EINVAL;
+ 	}
+ 
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
+@@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+ 		return -EINVAL;
+ 	}
+ 
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
 
 
 
