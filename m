@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E768BCC303E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126CFCC290E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2404B316526F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5679630223CA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD25C347FE3;
-	Tue, 16 Dec 2025 11:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBFC328638;
+	Tue, 16 Dec 2025 12:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltq8bQoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6xRAdiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E83341666;
-	Tue, 16 Dec 2025 11:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6DC3659E5;
+	Tue, 16 Dec 2025 12:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885114; cv=none; b=mHzAHrBociM2rdiH9c2izHUVo8QbgDWy+gcMEZalL6XhjkI2FtA1mw2/WZkojSk178G1F3eEHq6SRzc8gy1Fv8RUQkzGqZ6aHsj2w1AQ/M2UBqIBe4XOGpmnE1JApLRM9Txt9rHF7MNyAqR/f4Qg++D6tohR3BdcKam1jma0vKA=
+	t=1765887073; cv=none; b=FMzDd2vYdzNxOAsBs9NNY/uSJTCfP6jBlsfJX7yDfGIlqdkgxDTTrXo+nZMdqs5D55MjJi8zIp1lZktxV1rEep8zlzuuQEx+p3viaHggLIc16BmsIVKJkZrB8D4fVDfnIlb0zw9xM0Mniz5p3FPaH8YTeBiiVOBLWfQ9ecgtuMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885114; c=relaxed/simple;
-	bh=Oc7aCkeo5YKagqTarL5C3axZuhCwEKMeHO9j0tupZk8=;
+	s=arc-20240116; t=1765887073; c=relaxed/simple;
+	bh=X2Rp/aknV+weuF4FuvRRvlnnKJwwHOmO+N3ucfa+YZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2J2oqpMOGL2JJM7G+y9L/cnOd6lIWut07NETumtvnswUMvue88tO0k1Z38Lgm9ybSHBN+QrhVDPJS7V3HJ3+W3Kws1curR5aU55x8mVYGw9VS2ZzgWRNGAdv9ygRccjBgp/SpD0kia3+vr0qWubPxUcW4IC8WWQR57NFhrcyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltq8bQoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C4AC19422;
-	Tue, 16 Dec 2025 11:38:33 +0000 (UTC)
+	 MIME-Version; b=WS+mlW5kqPh2yvlvB0Ra0eQkCnQ5zSoaZE6y5ii6wHbrvxvctjx0N4l2VN58DvEA65FWIwgpeQpsyFD4hQcy4GlpmuySmOa6kOSRkNyn/93qIdevZlsMzv5AQjfYFjGYvzCdIQYRBbeb9tSoGPqUB1nod9SU0JBa9y+eMAaForw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6xRAdiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52674C4CEF1;
+	Tue, 16 Dec 2025 12:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885114;
-	bh=Oc7aCkeo5YKagqTarL5C3axZuhCwEKMeHO9j0tupZk8=;
+	s=korg; t=1765887072;
+	bh=X2Rp/aknV+weuF4FuvRRvlnnKJwwHOmO+N3ucfa+YZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltq8bQoRkJy0zTywhBNbuThij/aaw7/wkgvcqdiATtoPYF7G8AvriX3LyIqXfAGya
-	 vT9XCMEDj+/Pf7jJ0Wo03XIqP/r88RddCvI1e16jrb8uJt5x4gqG6DtdPnaEYXHrDj
-	 OHcxZUWccNAnqWiqkZMNiHxDGuYNVGaINu1V3KCg=
+	b=G6xRAdizZhnH0QlQroWArGcvkaxAFLlXludA1UPrfiQv0OzzbhG/agTxVyQAD1Ook
+	 Ut/ebuBR75lMJi09cpc6mZX4/jKQfsVCKGFxMWOrjc5Q9cSMEzS2d9FpVwUyv0FAnr
+	 qdDdAJSlvhm+fbTCTSv8QoW2ezL1aMbtraPbmAG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 043/507] irqchip/imx-mu-msi: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:08:04 +0100
-Message-ID: <20251216111347.103509711@linuxfoundation.org>
+Subject: [PATCH 6.18 118/614] arm64: dts: qcom: sm8650: set ufs as dma coherent
+Date: Tue, 16 Dec 2025 12:08:05 +0100
+Message-ID: <20251216111405.612887894@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 64acfd8e680ff8992c101fe19aadb112ce551072 ]
+[ Upstream commit c2703c90161b45bca5b65f362adbae02ed71fcc1 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+The UFS device is ovbiously dma coherent like the other IOMMU devices
+like usb, mmc, ... let's fix this by adding the flag.
 
-Fixes: 70afdab904d2 ("irqchip: Add IMX MU MSI controller driver")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+To be sure an extensive test has been performed to be sure it's
+safe, as downstream uses this flag for UFS as well.
+
+As an experiment, I checked how the dma-coherent could impact
+the UFS bandwidth, and it happens the max bandwidth on cached
+write is slighly highter (up to 10%) while using less cpu time
+since cache sync/flush is skipped.
+
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251007-topic-sm8650-upstream-ufs-dma-coherent-v1-1-f3cfeaee04ce@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-mu-msi.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-index d2a4e8a61a42b..41df168aa7da2 100644
---- a/drivers/irqchip/irq-imx-mu-msi.c
-+++ b/drivers/irqchip/irq-imx-mu-msi.c
-@@ -296,9 +296,8 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
- 		  },
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index ebf1971b1bfbe..3b03c13539386 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -3988,6 +3988,8 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
  
--static int __init imx_mu_of_init(struct device_node *dn,
--				 struct device_node *parent,
--				 const struct imx_mu_dcfg *cfg)
-+static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
-+			  const struct imx_mu_dcfg *cfg)
- {
- 	struct platform_device *pdev = of_find_device_by_node(dn);
- 	struct device_link *pd_link_a;
-@@ -416,20 +415,17 @@ static const struct dev_pm_ops imx_mu_pm_ops = {
- 			   imx_mu_runtime_resume, NULL)
- };
+ 			iommus = <&apps_smmu 0x60 0>;
  
--static int __init imx_mu_imx7ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx7ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx7ulp);
- }
++			dma-coherent;
++
+ 			lanes-per-direction = <2>;
+ 			qcom,ice = <&ice>;
  
--static int __init imx_mu_imx6sx_of_init(struct device_node *dn,
--					struct device_node *parent)
-+static int imx_mu_imx6sx_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx6sx);
- }
- 
--static int __init imx_mu_imx8ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx8ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx8ulp);
- }
 -- 
 2.51.0
 
