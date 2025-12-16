@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEF5CC2C85
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F981CC24D2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68BFE302C470
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3F7EF30184A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F058397D0C;
-	Tue, 16 Dec 2025 12:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E766342CA1;
+	Tue, 16 Dec 2025 11:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZYgmMa2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsRdj1Lk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD5A1DF75B;
-	Tue, 16 Dec 2025 12:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4D034106D;
+	Tue, 16 Dec 2025 11:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888374; cv=none; b=aGkQfMdDsO2ezd5xe6ZccVD4jjFPIj1tHWN9tbQnxWi1DlTiZF9IIXsp84qf/R+zguup5g4uoX+aaFn4ka4unEavxxdvUpl2hmqzLaYfcsNoHfHXt8MwOn08hH8sOKLXX8sx6zNU18yp3q9mhNt4ErwuUZjBv8BSoDWNq9PhVzo=
+	t=1765884902; cv=none; b=jm/s6eqAj7DlBH8ttNvez6PF3Hpy+PwqzOtA9WuTgn70eUOKpj6OXKaS5SbtiAJL1lYsS174osb7TYuFXTlww8g4AN+FvNGcz+JKxipWW0Qq1Bi1b1CD9lwpFSp1iWm2Np08RAYOoljgjWEvV2PsWDzhduV4BmcDtwZ0SoSe0J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888374; c=relaxed/simple;
-	bh=onme7fhlEm9XHEV8Emd0QOkfHjinO+Ue0p33cQjUD+s=;
+	s=arc-20240116; t=1765884902; c=relaxed/simple;
+	bh=hlXrOqk8dI2jUMV7CrY5HMkCZsxnjE4fm3HI+C4bMrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xqk55GDLvB0de3rh0d9WwUSrtVsnxdPZzOFN1hYgWvpJl284uHh6PUSz0fhBGKsjHywoqn7WB0zlBrdt11eqtKnBX3u5G1COFOU5THoKoFVm2pQvoSAQ51BVIC95914JBSQDNQlfq1VFeLXYpIEYh9Gq9ScXdVB/uS5NdwczYnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZYgmMa2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3540C4CEF1;
-	Tue, 16 Dec 2025 12:32:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FgBPTJXq3aVhjH89jn1reoJRyOpe5YBL77pIXv/UNOE83cTnydQVBHILtkFEbGiPNXbB5QI/oLDBMCimU1PSlW7soI6UGEp1eMs7nPygIVLej863G7BycDrLrCTaBDRWzY0ahp1DXgAYNi7NbnlN0Q/sbxQfFxgYa6Qz2L3pvrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsRdj1Lk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CE8C4CEF1;
+	Tue, 16 Dec 2025 11:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888374;
-	bh=onme7fhlEm9XHEV8Emd0QOkfHjinO+Ue0p33cQjUD+s=;
+	s=korg; t=1765884902;
+	bh=hlXrOqk8dI2jUMV7CrY5HMkCZsxnjE4fm3HI+C4bMrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZYgmMa2CY6OZzUERbzGWOGRdvJjr3A85m14P0HrZKTGEJ63jTJdi77+XAe+ZtFt4
-	 IMh9+udlnriJ1sOQ4W9QGeDyR+Tvv/YWqyPwSe2vivuOPIZSwGB+QowPrL/YHN46je
-	 KFzwIFgiTcVnX7fiQSDosNytRh51ArWeWmdH6r2c=
+	b=FsRdj1LkoBp1srvr8VWPzY8C/Pm33WaIOCuN3jnRjH+IQ4vQQQjhBmKhhS2bGGGsF
+	 t9NEEZUuYkzCWmOHpClhRsjHF3S+tv2xEHMGkYcCW64H1rtgfXIhC/Zw7wO+EMIyUl
+	 E4sqrSX2ohPB16N+b685bmiwsEN7WyJo7yjav4qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anton Khirnov <anton@khirnov.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 515/614] net: dsa: b53: use same ARL search result offset for BCM5325/65
-Date: Tue, 16 Dec 2025 12:14:42 +0100
-Message-ID: <20251216111420.028193382@linuxfoundation.org>
+Subject: [PATCH 6.12 316/354] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Date: Tue, 16 Dec 2025 12:14:43 +0100
+Message-ID: <20251216111332.359305385@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Anton Khirnov <anton@khirnov.net>
 
-[ Upstream commit 8e46aacea4264bcb8d4265fb07577afff58ae78d ]
+[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
 
-BCM5365's search result is at the same offset as BCM5325's search
-result, and they (mostly) share the same format, so switch BCM5365 to
-BCM5325's arl ops.
+kbd_led_set() can sleep, and so may not be used as the brightness_set()
+callback.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-4-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Otherwise using this led with a trigger leads to system hangs
+accompanied by:
+BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
+CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
+Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
+Call Trace:
+ <TASK>
+ [...]
+ schedule_timeout+0xbd/0x100
+ __down_common+0x175/0x290
+ down_timeout+0x67/0x70
+ acpi_os_wait_semaphore+0x57/0x90
+ [...]
+ asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
+ led_trigger_event+0x3f/0x60
+ [...]
+
+Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
+Signed-off-by: Anton Khirnov <anton@khirnov.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Denis Benato <benato.denis96@gmail.com>
+Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +-----------------
- drivers/net/dsa/b53/b53_regs.h   |  4 +---
- 2 files changed, 2 insertions(+), 20 deletions(-)
+ drivers/platform/x86/asus-wmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index dedbd53412871..68e9162087ab4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2093,16 +2093,6 @@ static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
- 	b53_arl_to_entry_25(ent, mac_vid);
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 9d79c5ea8b495..92ce975d900d0 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -1577,14 +1577,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
+ 	kbd_led_update(asus);
  }
  
--static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
--				   struct b53_arl_entry *ent)
--{
--	u64 mac_vid;
--
--	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
--		   &mac_vid);
--	b53_arl_to_entry_25(ent, mac_vid);
--}
--
- static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
- 				   struct b53_arl_entry *ent)
+-static void kbd_led_set(struct led_classdev *led_cdev,
+-			enum led_brightness value)
++static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
  {
-@@ -2699,12 +2689,6 @@ static const struct b53_arl_ops b53_arl_ops_25 = {
- 	.arl_search_read = b53_arl_search_read_25,
- };
+ 	/* Prevent disabling keyboard backlight on module unregister */
+ 	if (led_cdev->flags & LED_UNREGISTERING)
+-		return;
++		return 0;
  
--static const struct b53_arl_ops b53_arl_ops_65 = {
--	.arl_read_entry = b53_arl_read_entry_25,
--	.arl_write_entry = b53_arl_write_entry_25,
--	.arl_search_read = b53_arl_search_read_65,
--};
--
- static const struct b53_arl_ops b53_arl_ops_89 = {
- 	.arl_read_entry = b53_arl_read_entry_89,
- 	.arl_write_entry = b53_arl_write_entry_89,
-@@ -2761,7 +2745,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.arl_buckets = 1024,
- 		.imp_port = 5,
- 		.duplex_reg = B53_DUPLEX_STAT_FE,
--		.arl_ops = &b53_arl_ops_65,
-+		.arl_ops = &b53_arl_ops_25,
- 	},
- 	{
- 		.chip_id = BCM5389_DEVICE_ID,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index d9026cf865549..f2a3696d122fa 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -370,10 +370,8 @@
- #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
- #define B53_ARL_SRCH_RSLT_MACVID_89	0x33
+ 	do_kbd_led_set(led_cdev, value);
++	return 0;
+ }
  
--/* Single register search result on 5325 */
-+/* Single register search result on 5325/5365 */
- #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
--/* Single register search result on 5365 */
--#define B53_ARL_SRCH_RSTL_0_MACVID_65	0x30
+ static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
+@@ -1760,7 +1760,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
+ 		asus->kbd_led_wk = led_val;
+ 		asus->kbd_led.name = "asus::kbd_backlight";
+ 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
+-		asus->kbd_led.brightness_set = kbd_led_set;
++		asus->kbd_led.brightness_set_blocking = kbd_led_set;
+ 		asus->kbd_led.brightness_get = kbd_led_get;
+ 		asus->kbd_led.max_brightness = 3;
  
- /* ARL Search Data Result (32 bit) */
- #define B53_ARL_SRCH_RSTL_0		0x68
 -- 
 2.51.0
 
