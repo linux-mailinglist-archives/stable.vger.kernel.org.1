@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-201481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3368BCC2580
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37F5CC4014
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43B6030C5C4D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E80A30D0F07
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2BB341674;
-	Tue, 16 Dec 2025 11:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA13355040;
+	Tue, 16 Dec 2025 12:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM7XIfno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLzLEOnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52E340DB7;
-	Tue, 16 Dec 2025 11:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EDE35503A;
+	Tue, 16 Dec 2025 12:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884780; cv=none; b=WhzQHfFuud/khxiqPQZcWcwGavfeH9tTQ4EYg+xS6tM/BAMGIQ2oa0pedUe1p55HclXPpeTuJGoOQEAIZJ2Z5wxR1FP1qmJgdzWEoRJig4H0eFNO0YoWQBB//d3JHRZ2JPx9eoLZarIwXB72P4OoeeBMO+vZz0qRqVgwifR58yg=
+	t=1765886485; cv=none; b=gAyiv/jqk9Zdejou5zuuTOaertGBYOVXm+pcVZ7m1oTcpiOhcLhhmUhsLPegNQftfCcHn/fYub2jxXmqXBfOT/VhEwtkRMTMil2wpg71BMjwgpNnCf8eG2mh2IqqrKbGB100rMVZITAJ/W+KnmX2ixlFcVVoZyKDLbwZ3RvfIO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884780; c=relaxed/simple;
-	bh=YuAoCR/eSOhn8IVUYeVCzQ3hHLaU1Rj3XRpQje7f9BI=;
+	s=arc-20240116; t=1765886485; c=relaxed/simple;
+	bh=kCphZUm9xIvQe/D+L6BD979Jo9SR/HymK1I3JQnqlR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Usy9zvyuElyg5wlDH1iidwV58+os1CRnMg/SuEA4aJPGEdl+7VU5lwVVPRCGt1GRDhhudmEMPieasThYvCejLRxud+P7QaW+sXSRo125JtUifgLQyzOY998XAqPMSbOZPj63rWoec10DgrQbJ4Mv1Y7JJ6mufcAxpenqU2blXdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM7XIfno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA054C4CEF1;
-	Tue, 16 Dec 2025 11:32:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OcshElCg9zTENx06Ul+rSMqtPHQDuFFDzCZE+PtapYSDXq6JfW2Fh9fsLkU/I/eP2Iurk3zY8clpYXJr+AC+U7eCOdDaDEMg0ZV45ElwZc6qrFvpf5c+hNxi0SrByApvnJhyYKf54YQwjYZatkUAGiQ6GFGzvTybXOtYjO2yoXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLzLEOnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBB5C4CEF1;
+	Tue, 16 Dec 2025 12:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884780;
-	bh=YuAoCR/eSOhn8IVUYeVCzQ3hHLaU1Rj3XRpQje7f9BI=;
+	s=korg; t=1765886485;
+	bh=kCphZUm9xIvQe/D+L6BD979Jo9SR/HymK1I3JQnqlR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM7XIfnoYR9/lTwIAG3l4Sl6IMTygxkWnXDz4e2GSXgynlqZpMHwvcUAL+zk6loQ9
-	 u74Ja08eNJFaGSQAVWVxipLUhBQ4OrCT//k3yOmAKYh1vjjuAKDaRBCUofECZOrhkl
-	 gMDG06FygWXmS93cM3tBA20xtELHjiSz+1wrqXVE=
+	b=jLzLEOnqNz4u7E1xn8crvnyVI1EzDjCSZYpRbQ2PnpfX+UUuqhsZwck57yO218CVT
+	 I6g0pxlByOkGvwdaGmtjMjvM4oWR+Vm2d7NpxmqI1UcoBsz5oNz6W1skR9vOysreyN
+	 bbhuVJDdF48okruuSIS6LKdSzhkoi35/fdx9+hbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lukasz Majewski <lukma@denx.de>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 297/354] f2fs: sysfs: add encoding_flags entry
+Subject: [PATCH 6.17 423/507] net: hsr: create an API to get hsr port type
 Date: Tue, 16 Dec 2025 12:14:24 +0100
-Message-ID: <20251216111331.671360478@linuxfoundation.org>
+Message-ID: <20251216111400.786558949@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,104 +62,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
 
-[ Upstream commit 3fea0641b06ff4e53d95d07a96764d8951d4ced6 ]
+[ Upstream commit a0244e76213980f3b9bb5d40b0b6705fcf24230d ]
 
-This patch adds a new sysfs entry /sys/fs/f2fs/<disk>/encoding_flags,
-it is a read-only entry to show the value of sb.s_encoding_flags, the
-value is hexadecimal.
+Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1 ("net:
+hsr: Provide RedBox support (HSR-SAN)"), we see that different port
+types require different settings for hardware offload, which was not the
+case before when we only had HSR_PT_SLAVE_A and HSR_PT_SLAVE_B. But
+there is currently no way to know which port is which type, so create
+the hsr_get_port_type() API function and export it.
 
-============================     ==========
-Flag_Name                        Flag_Value
-============================     ==========
-SB_ENC_STRICT_MODE_FL            0x00000001
-SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
-============================     ==========
+When hsr_get_port_type() is called from the device driver, the port can
+must be found in the HSR port list. An important use case is for this
+function to work from offloading drivers' NETDEV_CHANGEUPPER handler,
+which is triggered by hsr_portdev_setup() -> netdev_master_upper_dev_link().
+Therefore, we need to move the addition of the hsr_port to the HSR port
+list prior to calling hsr_portdev_setup(). This makes the error
+restoration path also more similar to hsr_del_port(), where
+kfree_rcu(port) is already used.
 
-case#1
-mkfs.f2fs -f -O casefold -C utf8:strict /dev/vda
-mount /dev/vda /mnt/f2fs
-cat /sys/fs/f2fs/vda/encoding_flags
-1
-
-case#2
-mkfs.f2fs -f -O casefold -C utf8 /dev/vda
-fsck.f2fs --nolinear-lookup=1 /dev/vda
-mount /dev/vda /mnt/f2fs
-cat /sys/fs/f2fs/vda/encoding_flags
-2
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
+Link: https://patch.msgid.link/20251130131657.65080-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 13 +++++++++++++
- fs/f2fs/sysfs.c                         |  9 +++++++++
- 2 files changed, 22 insertions(+)
+ include/linux/if_hsr.h |  9 +++++++++
+ net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
+ net/hsr/hsr_slave.c    |  7 ++++---
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index c7ebda8c677e5..87b32ca7f3a46 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -845,3 +845,16 @@ Description:	For several zoned storage devices, vendors will provide extra space
- 		reserved_blocks. However, it is not enough, since this extra space should
- 		not be shown to users. So, with this new sysfs node, we can hide the space
- 		by substracting reserved_blocks from total bytes.
+diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
+index d7941fd880329..f4cf2dd36d193 100644
+--- a/include/linux/if_hsr.h
++++ b/include/linux/if_hsr.h
+@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
+ extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
+ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ 				     enum hsr_port_type pt);
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type);
+ #else
+ static inline bool is_hsr_master(struct net_device *dev)
+ {
+@@ -59,6 +61,13 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
 +
-+What:		/sys/fs/f2fs/<disk>/encoding_flags
-+Date:		April 2025
-+Contact:	"Chao Yu" <chao@kernel.org>
-+Description:	This is a read-only entry to show the value of sb.s_encoding_flags, the
-+		value is hexadecimal.
++static inline int hsr_get_port_type(struct net_device *hsr_dev,
++				    struct net_device *dev,
++				    enum hsr_port_type *type)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_HSR */
+ 
+ #endif /*_LINUX_IF_HSR_H_*/
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 492cbc78ab75a..d1bfc49b5f017 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -690,6 +690,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ }
+ EXPORT_SYMBOL(hsr_get_port_ndev);
+ 
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type)
++{
++	struct hsr_priv *hsr = netdev_priv(hsr_dev);
++	struct hsr_port *port;
 +
-+		============================     ==========
-+		Flag_Name                        Flag_Value
-+		============================     ==========
-+		SB_ENC_STRICT_MODE_FL            0x00000001
-+		SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
-+		============================     ==========
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 9b4768b1efac5..309b73421dd92 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -274,6 +274,13 @@ static ssize_t encoding_show(struct f2fs_attr *a,
- 	return sysfs_emit(buf, "(none)\n");
++	rcu_read_lock();
++	hsr_for_each_port(hsr, port) {
++		if (port->dev == dev) {
++			*type = port->type;
++			rcu_read_unlock();
++			return 0;
++		}
++	}
++	rcu_read_unlock();
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL(hsr_get_port_type);
++
+ /* Default multicast address for HSR Supervision frames */
+ static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
+ 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index 102eccf5ead73..82c0bc69c9b34 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -204,14 +204,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	port->type = type;
+ 	ether_addr_copy(port->original_macaddress, dev->dev_addr);
+ 
++	list_add_tail_rcu(&port->port_list, &hsr->ports);
++
+ 	if (type != HSR_PT_MASTER) {
+ 		res = hsr_portdev_setup(hsr, dev, port, extack);
+ 		if (res)
+ 			goto fail_dev_setup;
+ 	}
+ 
+-	list_add_tail_rcu(&port->port_list, &hsr->ports);
+-
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	netdev_update_features(master->dev);
+ 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+@@ -219,7 +219,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	return 0;
+ 
+ fail_dev_setup:
+-	kfree(port);
++	list_del_rcu(&port->port_list);
++	kfree_rcu(port, rcu);
+ 	return res;
  }
  
-+static ssize_t encoding_flags_show(struct f2fs_attr *a,
-+		struct f2fs_sb_info *sbi, char *buf)
-+{
-+	return sysfs_emit(buf, "%x\n",
-+		le16_to_cpu(F2FS_RAW_SUPER(sbi)->s_encoding_flags));
-+}
-+
- static ssize_t mounted_time_sec_show(struct f2fs_attr *a,
- 		struct f2fs_sb_info *sbi, char *buf)
- {
-@@ -1181,6 +1188,7 @@ F2FS_GENERAL_RO_ATTR(features);
- F2FS_GENERAL_RO_ATTR(current_reserved_blocks);
- F2FS_GENERAL_RO_ATTR(unusable);
- F2FS_GENERAL_RO_ATTR(encoding);
-+F2FS_GENERAL_RO_ATTR(encoding_flags);
- F2FS_GENERAL_RO_ATTR(mounted_time_sec);
- F2FS_GENERAL_RO_ATTR(main_blkaddr);
- F2FS_GENERAL_RO_ATTR(pending_discard);
-@@ -1293,6 +1301,7 @@ static struct attribute *f2fs_attrs[] = {
- 	ATTR_LIST(reserved_blocks),
- 	ATTR_LIST(current_reserved_blocks),
- 	ATTR_LIST(encoding),
-+	ATTR_LIST(encoding_flags),
- 	ATTR_LIST(mounted_time_sec),
- #ifdef CONFIG_F2FS_STAT_FS
- 	ATTR_LIST(cp_foreground_calls),
 -- 
 2.51.0
 
