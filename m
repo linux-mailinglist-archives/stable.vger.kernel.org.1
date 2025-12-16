@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EF1CC24B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217A4CC2F70
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE1C73021F61
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 956D53073931
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF86342509;
-	Tue, 16 Dec 2025 11:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C8734FF6D;
+	Tue, 16 Dec 2025 12:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5InvQup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh7mYSpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7A4342506;
-	Tue, 16 Dec 2025 11:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540834F492;
+	Tue, 16 Dec 2025 12:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884866; cv=none; b=UiO38vj8NrmDgYAImp3iNie82dJ1g88s6CsToiO6lbBwGTT2782kmwZ4ntAB9eCOdtc1TWHoRHBD7zF1vQQW7/4gnS6qPRDumjETUVD9c4fJohL6bsfj7kUo1DXggbLtwUckzmAUNlfHLbC2b9YnT0NvKap1jO6szcvVlH27dNA=
+	t=1765886454; cv=none; b=JSLsPzQ0Yd8NiXVmPjRrtT7ZMkWrGP0mnnoACg3XLMTKADiXygrQN14/x6+0Tzujl6lxToXcOxLEQC7m7dH2Podz5OPJjNTzNX7+2rllQZqEziwO+Hfs2tw9zG87O3KoBC5csvRytZjs6e1MPFSKBHVQ8y3YXKLgC/PLliXROMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884866; c=relaxed/simple;
-	bh=0zD8wkWbcnmyGTTC1ttsn64tgn+s5VKsFfG/WrGcTek=;
+	s=arc-20240116; t=1765886454; c=relaxed/simple;
+	bh=8IxCQz8zQ8CnTV8YnP2rhdODZua9GNPnah0ycVLe/IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATFvKMUuCvARzMYQ6brNU1Y47cQB4MkoKduYi9Vfmsw3rQp0TCFeeUJidTiRD6mLj5oMTyJQZJrau8fo/5B3jMfBL9EgG44vgiLktemRTaA+HIZIorzMJa0KQJyr1FBCOMbbIyBL2IF1PwEuv7b5tr2OMxkHXYSUf7MmyXS1HjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5InvQup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4C0C4CEF1;
-	Tue, 16 Dec 2025 11:34:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cdgCa0xA1JVtpymCJ8bJlXo7lmWWvxQGGSYU20z1QuVCv1agBMI5Stl3+IFfxV+PWmfIEqz/GI1Bd7uxvTc6dtZmiviXYYtwEDHWHeL+i2pC+ScwK85JvvFSDq25rl/xdAYzCqOKBQPgJOudZz6K7ssQScymTEVwqWCqurn4H14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh7mYSpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354CEC4CEF1;
+	Tue, 16 Dec 2025 12:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884865;
-	bh=0zD8wkWbcnmyGTTC1ttsn64tgn+s5VKsFfG/WrGcTek=;
+	s=korg; t=1765886454;
+	bh=8IxCQz8zQ8CnTV8YnP2rhdODZua9GNPnah0ycVLe/IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5InvQup9zNchImatmv0ch9dykDTFrxJEL0fbHb/C4aDhMtDjF6+obCfmk3GXVQOY
-	 ya7pF5V4rhSfDsRdoxmEHIBs9s+MQzKHjmVFHw7ALRln4mH9hyAwhICEMuP61H4qNY
-	 /YA7r+fxdBuj5Z+5tfrlD4x5rwm1Ed4WglTxFzF0=
+	b=xh7mYSpeUZUSz48mhiC4VkOuKKbK2R+KxsFOyKXfwpBn19+i91mZI2yXNBlB659Z3
+	 kkokcMwtrg4sVAm4N2/++PDjln0DPLDMUcaxi9qtVuXMxElibHLZAxO/CRmNlPbUsI
+	 hqbm9+WRSgUxbvU/PYlBIOGOoLBKYPpSZ86XqHFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
 	Armin Wolf <W_Armin@gmx.de>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/354] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
+Subject: [PATCH 6.17 441/507] fs/nls: Fix utf16 to utf8 conversion
 Date: Tue, 16 Dec 2025 12:14:42 +0100
-Message-ID: <20251216111332.323465799@linuxfoundation.org>
+Message-ID: <20251216111401.434084810@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
+[ Upstream commit 25524b6190295577e4918c689644451365e6466d ]
 
-After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
-the return values of utf8_to_utf32() and utf32_to_utf8() are
-inconsistent when encountering an error: utf8_to_utf32() returns -1,
-while utf32_to_utf8() returns errno codes. Fix this inconsistency
-by modifying utf8_to_utf32() to return errno codes as well.
+Currently the function responsible for converting between utf16 and
+utf8 strings will ignore any characters that cannot be converted. This
+however also includes multi-byte characters that do not fit into the
+provided string buffer.
 
-Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+This can cause problems if such a multi-byte character is followed by
+a single-byte character. In such a case the multi-byte character might
+be ignored when the provided string buffer is too small, but the
+single-byte character might fit and is thus still copied into the
+resulting string.
+
+Fix this by stop filling the provided string buffer once a character
+does not fit. In order to be able to do this extend utf32_to_utf8()
+to return useful errno codes instead of -1.
+
+Fixes: 74675a58507e ("NLS: update handling of Unicode")
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
+Link: https://patch.msgid.link/20251111131125.3379-2-W_Armin@gmx.de
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/nls/nls_base.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index d434c4463a8f7..a5c3a9f1b8dc5 100644
+index 18d597e49a194..d434c4463a8f7 100644
 --- a/fs/nls/nls_base.c
 +++ b/fs/nls/nls_base.c
-@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
- 			l &= t->lmask;
- 			if (l < t->lval || l > UNICODE_MAX ||
- 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
--				return -1;
-+				return -EILSEQ;
-+
- 			*pu = (unicode_t) l;
+@@ -94,7 +94,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
+ 
+ 	l = u;
+ 	if (l > UNICODE_MAX || (l & SURROGATE_MASK) == SURROGATE_PAIR)
+-		return -1;
++		return -EILSEQ;
+ 
+ 	nc = 0;
+ 	for (t = utf8_table; t->cmask && maxout; t++, maxout--) {
+@@ -110,7 +110,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
  			return nc;
  		}
- 		if (inlen <= nc)
--			return -1;
-+			return -EOVERFLOW;
-+
- 		s++;
- 		c = (*s ^ 0x80) & 0xFF;
- 		if (c & 0xC0)
--			return -1;
-+			return -EILSEQ;
-+
- 		l = (l << 6) | c;
  	}
 -	return -1;
-+	return -EILSEQ;
++	return -EOVERFLOW;
  }
- EXPORT_SYMBOL(utf8_to_utf32);
+ EXPORT_SYMBOL(utf32_to_utf8);
  
+@@ -217,8 +217,16 @@ int utf16s_to_utf8s(const wchar_t *pwcs, int inlen, enum utf16_endian endian,
+ 				inlen--;
+ 			}
+ 			size = utf32_to_utf8(u, op, maxout);
+-			if (size == -1) {
+-				/* Ignore character and move on */
++			if (size < 0) {
++				if (size == -EILSEQ) {
++					/* Ignore character and move on */
++					continue;
++				}
++				/*
++				 * Stop filling the buffer with data once a character
++				 * does not fit anymore.
++				 */
++				break;
+ 			} else {
+ 				op += size;
+ 				maxout -= size;
 -- 
 2.51.0
 
