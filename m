@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-201758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B4ECC3753
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06D2CC231D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 448733023D70
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 905FA3015A9E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD79B3502B7;
-	Tue, 16 Dec 2025 11:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145B534167A;
+	Tue, 16 Dec 2025 11:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8f8oQM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2Qv1fJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF73502A9;
-	Tue, 16 Dec 2025 11:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DE0341645;
+	Tue, 16 Dec 2025 11:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885691; cv=none; b=Y7rd4rNdCbYCZSyT5GZ5CM6S7oOlgctOoCHUsqlCsv/kaXobEs0EZUn3PU6FwU0Unfht3DLz7hSyaUKMSARx/BGcdolvbBV7Hv2azYTKQdtGshScFj6uJPK+qo4Cn2IHlh+oPebYzOYqFNofciPTDd+nyUmtTk94oPzDHHp0GqE=
+	t=1765884097; cv=none; b=XPCOAT9x2SwncHVW1+Qf2z0w/iNteCh141H0puyFXPNgFnxeVic4Sp19xC0gHEf77mfTFBRZ8X3K7iq2TyNVJ69MhxQf703c9XkZJjP6+3amLV7fZTsxuk9uLWMTnGdMrYh1G95par3SYJh2NcYAW92NM8zYcVqidWT8eo9DJCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885691; c=relaxed/simple;
-	bh=SjUUiiZ6gUhgkdU5JxfWsjXuhRH7vgWlYHldkXjINwg=;
+	s=arc-20240116; t=1765884097; c=relaxed/simple;
+	bh=V6XIIg9CfQLocA2UFlGb+rnvEZVf2YSY1cbRcmo9YYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXCUOUN+1+vN+1H/jA1LdEjkmG2qijq/8QXPAZvdPykMug/Q/kb4Pt0/Q9Su3COhOAgHklr4ea1mUy78DwPDvnPALOr47GMJ79QLscdEmn4yhT1ri6DbhoOZpqbJAePmXt2LJOfOUIueS9oaJu97umDKqP7c/3eD6KbcaNOCDYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8f8oQM3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF9FC16AAE;
-	Tue, 16 Dec 2025 11:48:10 +0000 (UTC)
+	 MIME-Version; b=XPtilgobIMKc1W8fGXp9C1VYlapvvYsMn3LWaoF9I0bA8FglCE4b+P4VMcXGHWf1AP5waWPqg3XEPmtjCRT23phz5Gxq2bLcvr/IEvggE15veKkD4kgX5sN3edzes2v+KzWBtSR9StS/7InihhXf2arNfPv7QemwSo3CW4adodE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2Qv1fJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CDFC4CEF5;
+	Tue, 16 Dec 2025 11:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885691;
-	bh=SjUUiiZ6gUhgkdU5JxfWsjXuhRH7vgWlYHldkXjINwg=;
+	s=korg; t=1765884097;
+	bh=V6XIIg9CfQLocA2UFlGb+rnvEZVf2YSY1cbRcmo9YYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8f8oQM34jrzdpE2qvUgD99OOykaBfZHOspUIZ+f1Ho2+66BGX0JxY2g3R2ZRHY0I
-	 rOhjCgI0TAnx450bzfR/7DVCUKGvFupvsvwwMnArfNXzC6QQ8wcS5OXSony12FXgjH
-	 e5/UMvpg1uZin04h9dM4GS5PNbFIJ1iB1BTXhOpE=
+	b=n2Qv1fJLSjQaWXDRXZttKiMAP9PoC2tCHo1Kz967wDZ5eXAteMS4HYXoP8UKQ0xOg
+	 QZbbGWkRlvgc3kFEBmotM5uduolQc/eQOQtBe+W7nbrDZF9YRKopzkSqbc8Qi851uI
+	 cLNAogHCctk/pVehr+bwGHkNdLD4yUhkuCQh7ZfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	Yeoreun Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 216/507] coresight: etm4x: Add context synchronization before enabling trace
+Subject: [PATCH 6.12 090/354] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
 Date: Tue, 16 Dec 2025 12:10:57 +0100
-Message-ID: <20251216111353.333139126@linuxfoundation.org>
+Message-ID: <20251216111324.184352811@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
+[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
 
-According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
-Context synchronization event is required before enabling the trace
-unit.
+When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
+KASAN may report false-positive out-of-bounds access:
 
-An ISB is added to meet this requirement, particularly for guarding the
-operations in the flow:
+  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
+  Call Trace:
+    dump_stack_lvl
+    print_address_description.constprop.0
+    print_report
+    __show_regs
+    show_trace_log_lvl
+    sched_show_task
+    show_state_filter
+    sysrq_handle_showstate
+    __handle_sysrq
+    write_sysrq_trigger
+    proc_reg_write
+    vfs_write
+    ksys_write
+    do_syscall_64
+    entry_SYSCALL_64_after_hwframe
 
-  etm4x_allow_trace()
-   `> kvm_tracing_set_el1_configuration()
-	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+The issue occurs as follows:
 
-Improved the barrier comments to provide more accurate information.
+  Task A (walk other tasks' stacks)           Task B (running)
+  1. echo t > /proc/sysrq-trigger
+  show_trace_log_lvl
+    regs = unwind_get_entry_regs()
+    show_regs_if_on_stack(regs)
+                                              2. The stack value pointed by
+                                                 `regs` keeps changing, and
+                                                 so are the tags in its
+                                                 KASAN shadow region.
+      __show_regs(regs)
+        regs->ax, regs->bx, ...
+          3. hit KASAN redzones, OOB
 
-Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
+When task A walks task B's stack without suspending it, the continuous changes
+in task B's stack (and corresponding KASAN shadow tags) may cause task A to
+hit KASAN redzones when accessing obsolete values on the stack, resulting in
+false positive reports.
+
+Simply stopping the task before unwinding is not a viable fix, as it would
+alter the state intended to inspect. This is especially true for diagnosing
+misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
+the root cause by changing the call stack.
+
+Therefore, fix this by disabling KASAN checks during asynchronous stack
+unwinding, which is identified when the unwinding task does not match the
+current task (task != current).
+
+  [ bp: Align arguments on function's opening brace. ]
+
+Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 1fa6d123b8143..668665cd437ad 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -446,10 +446,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index b2b118a8c09be..5f011e99f0f09 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -183,8 +183,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+  * in false positive reports. Disable instrumentation to avoid those.
+  */
+ __no_kmsan_checks
+-static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+-			unsigned long *stack, const char *log_lvl)
++static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++				 unsigned long *stack, const char *log_lvl)
+ {
+ 	struct unwind_state state;
+ 	struct stack_info stack_info = {0};
+@@ -305,6 +305,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	}
+ }
  
- 	etm4x_allow_trace(drvdata);
++static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++			       unsigned long *stack, const char *log_lvl)
++{
++	/*
++	 * Disable KASAN to avoid false positives during walking another
++	 * task's stacks, as values on these stacks may change concurrently
++	 * with task execution.
++	 */
++	bool disable_kasan = task && task != current;
 +
-+	/*
-+	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee the trace unit
-+	 * will observe the new values of the System registers.
-+	 */
-+	if (!csa->io_mem)
-+		isb();
++	if (disable_kasan)
++		kasan_disable_current();
 +
- 	/* Enable the trace unit */
- 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
- 
--	/* Synchronize the register updates for sysreg access */
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using system
-+	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-+	 * self-hosted trace analyzer must perform a Context synchronization
-+	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-+	 */
- 	if (!csa->io_mem)
- 		isb();
- 
-@@ -931,11 +945,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
- 	 */
- 	etm4x_prohibit_trace(drvdata);
- 	/*
--	 * Make sure everything completes before disabling, as recommended
--	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
--	 * SSTATUS") of ARM IHI 0064D
-+	 * Prevent being speculative at the point of disabling the trace unit,
-+	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
-+	 * Register, SSTATUS") of ARM IHI 0064D
- 	 */
- 	dsb(sy);
-+	/*
-+	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee no new
-+	 * program-flow trace is generated.
-+	 */
- 	isb();
- 	/* Trace synchronization barrier, is a nop if not supported */
- 	tsb_csync();
++	__show_trace_log_lvl(task, regs, stack, log_lvl);
++
++	if (disable_kasan)
++		kasan_enable_current();
++}
++
+ void show_stack(struct task_struct *task, unsigned long *sp,
+ 		       const char *loglvl)
+ {
 -- 
 2.51.0
 
