@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E25BCC2878
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:05:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9646ACC25C8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 278EA30335B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4443230F1966
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614023596EE;
-	Tue, 16 Dec 2025 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD182343D7B;
+	Tue, 16 Dec 2025 11:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVj/TS6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6NBnsT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7B23596EA;
-	Tue, 16 Dec 2025 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F60E342C9E;
+	Tue, 16 Dec 2025 11:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886650; cv=none; b=mk32zBv9QH2Ia0U4RP9/w4xLqtKekUmWmB7pd+xFpUxRzzjkQ4pCEyS6we0zlI5ZiKG1c4XH3a5s0cpeI+af7GDTTDHTZVgOfEDJGfVlQMa8bH4b+cp1juod6T1iLylDAkNPFadjoOTNtm21AbgvIs16I5+noQEAkVtEGvc/S6E=
+	t=1765884889; cv=none; b=nCz7GbzfUzTFuclt9VjGaIjSxGzVtfDsFKFOauKFuS94MYipU9au3UxXI4apqdkNlV5vPI/nUA8aCU8Vq1r/BfCEULgKYY20R8taicrGUkG7lu9Tboupab6qYyU87s8kKOo6fdFV66byDYcCelrfONw0k5fmmO1PXAAufhl8ojU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886650; c=relaxed/simple;
-	bh=N1WGvSNvC2lLoaoE85ZBECTcZjA8SJaIatstdNckKF8=;
+	s=arc-20240116; t=1765884889; c=relaxed/simple;
+	bh=dU0p12wom2untaYCBQU9Vl5v+Ehq0ORSluDC35VG0RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZxSgMo8YpAMmlupcxuyGLct5oPIROQZM4drnjoBjAs4IiAmyvaTBt1XfC6hFzeP+CcDAIqkrgprCAvEnJUgEMxC2d2/6C5t5+X+ltACAd9lTQpng22Y0CAbZcShUrozrJIXeMCFVXSTPNc6qhRPnLi4AYJc4vWmUX7N3/dQJ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVj/TS6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D00C4CEF5;
-	Tue, 16 Dec 2025 12:04:09 +0000 (UTC)
+	 MIME-Version; b=rdg0pMJ38kslRZyM/UOGGwgbet8eL9aI70zXffux6JqLA2Ire4CUKGhjF4s+zIM/Fj+VajduxJjPZZcrQYvoc1FSDZBkes5WCmyofDs6vffdbsYB63ykZHqQuZOYrX6Fmp6DbhmGISjSmTjTZyuDTyPTRJaHD2HXL5PCZF4xSxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6NBnsT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD912C4CEF1;
+	Tue, 16 Dec 2025 11:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886650;
-	bh=N1WGvSNvC2lLoaoE85ZBECTcZjA8SJaIatstdNckKF8=;
+	s=korg; t=1765884889;
+	bh=dU0p12wom2untaYCBQU9Vl5v+Ehq0ORSluDC35VG0RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVj/TS6AFoDbpAn0dT1fyP08VyWcuo/deOESRpGUTtD9XSG7dNrkXKDU4+BU1mGcO
-	 Z/VX+LkRGz6Yg4ytj34s9dqc2iNQaBMMXD93h1sbaNh/iIDzPAXNRAZQ0HXpVLjL+d
-	 YqcIOxq2xdwWIE7AU7OQjb9jkpRsK3azhMiYAK5o=
+	b=T6NBnsT4uwtXEAeqpif0EkTjKeyyISmFZ3oB0Y7GV94EZM8OVlghaJaa01uMjFOL+
+	 AAwOmySJGfalcv/s/HmUgK5flKp/o6N3iOmTzdcr817gDN7qyErhYfwoa3vWDJCBhU
+	 9rei4alSSurc3GNNRlXi/4AJP/KaFrXGdHPmiaxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>,
-	Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 456/507] ASoC: amd: acp: Audio is not resuming after s0ix
+Subject: [PATCH 6.12 330/354] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
 Date: Tue, 16 Dec 2025 12:14:57 +0100
-Message-ID: <20251216111401.969167240@linuxfoundation.org>
+Message-ID: <20251216111332.865528424@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit 3ee257aba1d56c3f0f1028669a8ad0f1a477f05b ]
+[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
 
-Audio fails to resume after system exits suspend mode
-due to accessing incorrect ring buffer address during
-resume. This patch resolves issue by selecting correct
-address based on the ACP version.
+atomic_pool_expand iteratively tries the allocation while decrementing
+the page order. There is no need to issue a warning if an attempted
+allocation fails.
 
-Fixes: f6f7d25b11033 ("ASoC: amd: acp: Add pte configuration for ACP7.0 platform")
-Signed-off-by: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
-Signed-off-by: Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20251203064650.2554625-1-raghavendraprasad.mallela@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
+[mszyprow: fixed typo]
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-common.c | 30 +++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ kernel/dma/pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-common.c b/sound/soc/amd/acp/acp-legacy-common.c
-index 3078f459e0050..4e477c48d4bdd 100644
---- a/sound/soc/amd/acp/acp-legacy-common.c
-+++ b/sound/soc/amd/acp/acp-legacy-common.c
-@@ -219,7 +219,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					SP_PB_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_I2S_TX_FIFOADDR(chip);
- 			reg_fifo_size = ACP_I2S_TX_FIFOSIZE(chip);
--			phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_SP_TX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_I2S_TX_RINGBUFADDR(chip));
- 		} else {
- 			reg_dma_size = ACP_I2S_RX_DMA_SIZE(chip);
-@@ -227,7 +230,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					SP_CAPT_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_I2S_RX_FIFOADDR(chip);
- 			reg_fifo_size = ACP_I2S_RX_FIFOSIZE(chip);
--			phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_SP_RX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_I2S_RX_RINGBUFADDR(chip));
- 		}
- 		break;
-@@ -238,7 +244,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					BT_PB_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_BT_TX_FIFOADDR(chip);
- 			reg_fifo_size = ACP_BT_TX_FIFOSIZE(chip);
--			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_BT_TX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_BT_TX_RINGBUFADDR(chip));
- 		} else {
- 			reg_dma_size = ACP_BT_RX_DMA_SIZE(chip);
-@@ -246,7 +255,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					BT_CAPT_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_BT_RX_FIFOADDR(chip);
- 			reg_fifo_size = ACP_BT_RX_FIFOSIZE(chip);
--			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_BT_RX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_BT_RX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_BT_RX_RINGBUFADDR(chip));
- 		}
- 		break;
-@@ -257,7 +269,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					HS_PB_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_HS_TX_FIFOADDR;
- 			reg_fifo_size = ACP_HS_TX_FIFOSIZE;
--			phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_HS_TX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_HS_TX_RINGBUFADDR);
- 		} else {
- 			reg_dma_size = ACP_HS_RX_DMA_SIZE;
-@@ -265,7 +280,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
- 					HS_CAPT_FIFO_ADDR_OFFSET;
- 			reg_fifo_addr = ACP_HS_RX_FIFOADDR;
- 			reg_fifo_size = ACP_HS_RX_FIFOSIZE;
--			phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
-+			if (chip->acp_rev >= ACP70_PCI_ID)
-+				phy_addr = ACP7x_I2S_HS_RX_MEM_WINDOW_START;
-+			else
-+				phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
- 			writel(phy_addr, chip->base + ACP_HS_RX_RINGBUFADDR);
- 		}
- 		break;
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index ee45dee33d491..26392badc36b0 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -93,7 +93,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+ 			page = dma_alloc_from_contiguous(NULL, 1 << order,
+ 							 order, false);
+ 		if (!page)
+-			page = alloc_pages(gfp, order);
++			page = alloc_pages(gfp | __GFP_NOWARN, order);
+ 	} while (!page && order-- > 0);
+ 	if (!page)
+ 		goto out;
 -- 
 2.51.0
 
