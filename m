@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E619ECC42F4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A50CC23AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ACDAA304357A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D14083027A04
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088203559F9;
-	Tue, 16 Dec 2025 11:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BADF3233EE;
+	Tue, 16 Dec 2025 11:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRY5IYkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGmesfmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C473559D2;
-	Tue, 16 Dec 2025 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD07F2E54AA;
+	Tue, 16 Dec 2025 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886262; cv=none; b=FgCMlm/ahZsY8CCGHhIUHahtpoPN524MZJOqW/aCv2EzGq37igRTeo33q1LbG0ICqHQ8D4dMkU4ll4W3VPY3jjbQQM8amoTl30B+FJLyu9M/HnA0Q7mu0zhMFibx2c2gD70mFZhUPYvgxUzSGsm/Jjrq0dCrIMoZgy+S6xTySkw=
+	t=1765884542; cv=none; b=mPh3ZpzJsiFcJjxBjoX7fEUx47G+d33hctDuhHDNRT5v94z2tnwZgsAj5+uJfiyP+vONhM+eyXXCPtxW4DJhyFkJiPqOS4wQA14DVdBKfJxozRckhajuTlU5Qk6omAZbApx0q+O3A63Ic6jRJ9Rh2DaEGwVoISdqOWM/rWptZvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886262; c=relaxed/simple;
-	bh=8uUCmA15disx6Osw3Bsm/Wc0Qb8D6m54xDYPqEWmyuo=;
+	s=arc-20240116; t=1765884542; c=relaxed/simple;
+	bh=F6U/dEBl+2NTD6z2zLukw4CTjyrj9Kno1LORl4/mDv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXpQUnNfoYr+lKFWbJ4zjDxUFuj/H4D/zhFifhKNOa2RtJd6Hs3hFPqZkVSl2H2etNmYjFNx1ehB3/GZFEWJHpV3cfqItFVPtFjctnFWDp2nlsrQVFR8KS3ychaiKfbP1f03iq7Py/wRm2GaK7vo/DryhDAQENEjMEZr/jSHR+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRY5IYkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F109C4CEF1;
-	Tue, 16 Dec 2025 11:57:41 +0000 (UTC)
+	 MIME-Version; b=V9X98FXuNOSNHaIEeOXNoZOC3J7zETux/rgsVOIgzo1q7R3wrFZZCYFLxX9Wj1fqgfnWCV/Vu+pM3A6QWnhwXNNeKjvPtKl/fIs0Vc819JNpJNka1S+GAvB9+aQ+jutpRkoB+Vm+kWvBEk3+ncpVF6LPxnp3rm/cvYnNiIzlqjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGmesfmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62843C4CEF1;
+	Tue, 16 Dec 2025 11:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886262;
-	bh=8uUCmA15disx6Osw3Bsm/Wc0Qb8D6m54xDYPqEWmyuo=;
+	s=korg; t=1765884541;
+	bh=F6U/dEBl+2NTD6z2zLukw4CTjyrj9Kno1LORl4/mDv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRY5IYknwR+SCGQDnnKuqAGfex2BhSnBz4IzuyYq2P9R989qJ2XS9A4YRvGamNc1J
-	 NxxhKBA1lmK3moQgO+crfpZJ2BXmEGeVaPM+RXYxYN0y+4H1Oaq3OCKBU110sn8PHJ
-	 BeeeIeq9vpr1T6miXXv6RiHJgYlGZyZpv7JjjwOg=
+	b=WGmesfmPPPLZJstLro+t1BmyoCG/RNQwNwv4HaabrlguqwYmz5O1mmfj70QUtmD3H
+	 QTrCgD9o1A6/Khz8lfjKvZevr5YvNKq/hpPF+ThFFfX6bFHFPax0FpsU4N32D0ehRQ
+	 CIXtI6R8X6GwLt/awkdgyuy+gQYSbN0xKFjYmQU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ria Thomas <ria.thomas@morsemicro.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 352/507] RDMA/irdma: Fix data race in irdma_sc_ccq_arm
+Subject: [PATCH 6.12 226/354] wifi: ieee80211: correct FILS status codes
 Date: Tue, 16 Dec 2025 12:13:13 +0100
-Message-ID: <20251216111358.210982370@linuxfoundation.org>
+Message-ID: <20251216111329.105160524@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Ria Thomas <ria.thomas@morsemicro.com>
 
-[ Upstream commit a521928164433de44fed5aaf5f49aeb3f1fb96f5 ]
+[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
 
-Adds a lock around irdma_sc_ccq_arm body to prevent inter-thread data race.
-Fixes data race in irdma_sc_ccq_arm() reported by KCSAN:
+The FILS status codes are set to 108/109, but the IEEE 802.11-2020
+spec defines them as 112/113. Update the enum so it matches the
+specification and keeps the kernel consistent with standard values.
 
-BUG: KCSAN: data-race in irdma_sc_ccq_arm [irdma] / irdma_sc_ccq_arm [irdma]
-
-read to 0xffff9d51b4034220 of 8 bytes by task 255 on cpu 11:
- irdma_sc_ccq_arm+0x36/0xd0 [irdma]
- irdma_cqp_ce_handler+0x300/0x310 [irdma]
- cqp_compl_worker+0x2a/0x40 [irdma]
- process_one_work+0x402/0x7e0
- worker_thread+0xb3/0x6d0
- kthread+0x178/0x1a0
- ret_from_fork+0x2c/0x50
-
-write to 0xffff9d51b4034220 of 8 bytes by task 89 on cpu 3:
- irdma_sc_ccq_arm+0x7e/0xd0 [irdma]
- irdma_cqp_ce_handler+0x300/0x310 [irdma]
- irdma_wait_event+0xd4/0x3e0 [irdma]
- irdma_handle_cqp_op+0xa5/0x220 [irdma]
- irdma_hw_flush_wqes+0xb1/0x300 [irdma]
- irdma_flush_wqes+0x22e/0x3a0 [irdma]
- irdma_cm_disconn_true+0x4c7/0x5d0 [irdma]
- irdma_disconnect_worker+0x35/0x50 [irdma]
- process_one_work+0x402/0x7e0
- worker_thread+0xb3/0x6d0
- kthread+0x178/0x1a0
- ret_from_fork+0x2c/0x50
-
-value changed: 0x0000000000024000 -> 0x0000000000034000
-
-Fixes: 3f49d6842569 ("RDMA/irdma: Implement HW Admin Queue OPs")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-2-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
+Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
+Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index 99a7f1a6c0b58..30a162f68b06b 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -3316,11 +3316,13 @@ int irdma_sc_cqp_destroy(struct irdma_sc_cqp *cqp)
-  */
- void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
- {
-+	unsigned long flags;
- 	u64 temp_val;
- 	u16 sw_cq_sel;
- 	u8 arm_next_se;
- 	u8 arm_seq_num;
- 
-+	spin_lock_irqsave(&ccq->dev->cqp_lock, flags);
- 	get_64bit_val(ccq->cq_uk.shadow_area, 32, &temp_val);
- 	sw_cq_sel = (u16)FIELD_GET(IRDMA_CQ_DBSA_SW_CQ_SELECT, temp_val);
- 	arm_next_se = (u8)FIELD_GET(IRDMA_CQ_DBSA_ARM_NEXT_SE, temp_val);
-@@ -3331,6 +3333,7 @@ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
- 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT_SE, arm_next_se) |
- 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT, 1);
- 	set_64bit_val(ccq->cq_uk.shadow_area, 32, temp_val);
-+	spin_unlock_irqrestore(&ccq->dev->cqp_lock, flags);
- 
- 	dma_wmb(); /* make sure shadow area is updated before arming */
- 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 7ecdde54e1edd..abb069aa5fa54 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3528,8 +3528,8 @@ enum ieee80211_statuscode {
+ 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
+ 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
+ 	/* 802.11ai */
+-	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
+-	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
++	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
++	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
+ 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
+ 	WLAN_STATUS_SAE_PK = 127,
+ 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
 -- 
 2.51.0
 
