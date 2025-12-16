@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF329CC264C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:45:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6376ECC437E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35AFC3002E90
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E83593022B42
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCD3446DE;
-	Tue, 16 Dec 2025 11:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7533536C580;
+	Tue, 16 Dec 2025 12:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI5fL5ag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evV2Jef2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BF73446C4;
-	Tue, 16 Dec 2025 11:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330D736C0DD;
+	Tue, 16 Dec 2025 12:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885499; cv=none; b=cA/imEH9sLtQbCHzRbMHfdPRQFFTn1mviznp7PLJC6OIGDqCfyJpvgFMW7ETQ/59LblWhF815WG3x4hcUzuvDdFJPlvR/03tv0NLf3EeOBPsbfotP4U8RXv+cmrmE2MKZhsB3IP9HquRFrVolUn3Ub+Y2pAtjky7NTdpyle084A=
+	t=1765887442; cv=none; b=K6jOev3PoWJ4E51XTldAEi9CGUkY1vGxtdGQ5mXalelHdbdRMfyGXARoaR0T6xfuaZzRhN+mzuOH7ibjn4mGm0htskl2l4JBPuUxr/zygOH4LCVs878y9Buvmj4Xrci/KStnS1RpzmPbSqCUG9CyOGY4PoSMo7HABGbTxnrG7DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885499; c=relaxed/simple;
-	bh=WLVv8oXSqKz5C48l6C6cm8K7MzWkbBws/37/y+Mnr+8=;
+	s=arc-20240116; t=1765887442; c=relaxed/simple;
+	bh=YKGCKGHBNcNE7iKN+cxfxo7+zrhIASws6+7Nksx/Co4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGz5nSEif9IjfsSTr3d3ZzcTNmQ+fznA7Wv+zBeuNzAZfqeY6R0KGDeycJLTag7nwgRXYfoUtBQn2ght1s4lvC0pI/dtbw0VVH1tpDHsqERVgnl8pAv6u0jnfb9gpbEuFtmWR873H5eSOAksgI2Lc8DcEAZpOcoLVIQ2umrSr2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI5fL5ag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C94C4CEF1;
-	Tue, 16 Dec 2025 11:44:58 +0000 (UTC)
+	 MIME-Version; b=MqDQz6LQ8Vz7xfszj5W1TGiyev73KCZjrQ2bUVeCItBvCbuLv5SiaVvgD0ZE67Qt4P4aVZaw2NdXaqJPSNY3/nNs9CIqO0NE1XSp7fF/4Ge9ZjF+soyk5wFqyrBwu0LeM78A0sIdB2XEhCcbaTGmxqPj7vwnX7vpIyzJnBRK5Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evV2Jef2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19FCC4CEF5;
+	Tue, 16 Dec 2025 12:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885499;
-	bh=WLVv8oXSqKz5C48l6C6cm8K7MzWkbBws/37/y+Mnr+8=;
+	s=korg; t=1765887442;
+	bh=YKGCKGHBNcNE7iKN+cxfxo7+zrhIASws6+7Nksx/Co4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI5fL5agV4y7Mok4eXBzi31TjbgmKO1FZVlDco4v1Zg1+oxDrtcupvOgMSEpOLBAC
-	 NXjsgMZWow+bptF31cFSxMsh2ZMVtg4ixwsVJfK1NBGBCocc06qTujrSoQQt8oXqfH
-	 gNI8fNAcbDCFJMD3pRM5y79BW28Uya3DFAAHe2SA=
+	b=evV2Jef2enLAvoG5J047kxtaebFiT+B5Fny3tfVXKH08NvCcTUwzTTnjq1QRV/zXM
+	 om5Id24dTPbUes0F6XIH+zQgaYS9+fUkOWd6elE8W9vG70jWBV+nljRcAtCbu6+qz5
+	 /H5Ozu482ubXTSXgeV4L7mQveT0b2AeJCfxGNGXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 157/507] power: supply: wm831x: Check wm831x_set_bits() return value
+Subject: [PATCH 6.18 231/614] scsi: smartpqi: Fix device resources accessed after device removal
 Date: Tue, 16 Dec 2025 12:09:58 +0100
-Message-ID: <20251216111351.211236688@linuxfoundation.org>
+Message-ID: <20251216111409.740476469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Mike McGowen <mike.mcgowen@microchip.com>
 
-[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
+[ Upstream commit b518e86d1a70a88f6592a7c396cf1b93493d1aab ]
 
-Since wm831x_set_bits() may return error, log failure and exit from
-wm831x_usb_limit_change() in such case.
+Correct possible race conditions during device removal.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Previously, a scheduled work item to reset a LUN could still execute
+after the device was removed, leading to use-after-free and other
+resource access issues.
 
-Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+This race condition occurs because the abort handler may schedule a LUN
+reset concurrently with device removal via sdev_destroy(), leading to
+use-after-free and improper access to freed resources.
+
+  - Check in the device reset handler if the device is still present in
+    the controller's SCSI device list before running; if not, the reset
+    is skipped.
+
+  - Cancel any pending TMF work that has not started in sdev_destroy().
+
+  - Ensure device freeing in sdev_destroy() is done while holding the
+    LUN reset mutex to avoid races with ongoing resets.
+
+Fixes: 2d80f4054f7f ("scsi: smartpqi: Update deleting a LUN via sysfs")
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Signed-off-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://patch.msgid.link/20251106163823.786828-3-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/wm831x_power.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
-index 6acdba7885ca5..78fa0573ef25c 100644
---- a/drivers/power/supply/wm831x_power.c
-+++ b/drivers/power/supply/wm831x_power.c
-@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 							 struct wm831x_power,
- 							 usb_notify);
- 	unsigned int i, best;
-+	int ret;
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 03c97e60d36f6..fdc856845a05d 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -6410,10 +6410,22 @@ static int pqi_device_reset(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev
  
- 	/* Find the highest supported limit */
- 	best = 0;
-@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 	dev_dbg(wm831x_power->wm831x->dev,
- 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ static int pqi_device_reset_handler(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev *device, u8 lun, struct scsi_cmnd *scmd, u8 scsi_opcode)
+ {
++	unsigned long flags;
+ 	int rc;
  
--	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
--		        WM831X_USB_ILIM_MASK, best);
-+	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
-+			      WM831X_USB_ILIM_MASK, best);
-+	if (ret < 0) {
-+		dev_err(wm831x_power->wm831x->dev,
-+			"Failed to set USB current limit: %d\n", ret);
-+		return ret;
+ 	mutex_lock(&ctrl_info->lun_reset_mutex);
+ 
++	spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
++	if (pqi_find_scsi_dev(ctrl_info, device->bus, device->target, device->lun) == NULL) {
++		dev_warn(&ctrl_info->pci_dev->dev,
++			"skipping reset of scsi %d:%d:%d:%u, device has been removed\n",
++			ctrl_info->scsi_host->host_no, device->bus, device->target, device->lun);
++		spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
++		mutex_unlock(&ctrl_info->lun_reset_mutex);
++		return 0;
 +	}
++	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
++
+ 	dev_err(&ctrl_info->pci_dev->dev,
+ 		"resetting scsi %d:%d:%d:%u SCSI cmd at %p due to cmd opcode 0x%02x\n",
+ 		ctrl_info->scsi_host->host_no, device->bus, device->target, lun, scmd, scsi_opcode);
+@@ -6594,7 +6606,9 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ {
+ 	struct pqi_ctrl_info *ctrl_info;
+ 	struct pqi_scsi_dev *device;
++	struct pqi_tmf_work *tmf_work;
+ 	int mutex_acquired;
++	unsigned int lun;
+ 	unsigned long flags;
  
- 	return 0;
+ 	ctrl_info = shost_to_hba(sdev->host);
+@@ -6621,8 +6635,13 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ 
+ 	mutex_unlock(&ctrl_info->scan_mutex);
+ 
++	for (lun = 0, tmf_work = device->tmf_work; lun < PQI_MAX_LUNS_PER_DEVICE; lun++, tmf_work++)
++		cancel_work_sync(&tmf_work->work_struct);
++
++	mutex_lock(&ctrl_info->lun_reset_mutex);
+ 	pqi_dev_info(ctrl_info, "removed", device);
+ 	pqi_free_device(device);
++	mutex_unlock(&ctrl_info->lun_reset_mutex);
  }
+ 
+ static int pqi_getpciinfo_ioctl(struct pqi_ctrl_info *ctrl_info, void __user *arg)
 -- 
 2.51.0
 
