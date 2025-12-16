@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5D9CC27A3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7150CC2394
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6D0430305AF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6618D3032287
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DCB35502B;
-	Tue, 16 Dec 2025 11:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FEB342177;
+	Tue, 16 Dec 2025 11:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDFjwqfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqEdndJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AF9355027;
-	Tue, 16 Dec 2025 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856B313E13;
+	Tue, 16 Dec 2025 11:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885847; cv=none; b=r5Ksykd0DSDMwwQw+ItGT0hxPV72Qrl/gv2grSHpcBmQk+hYFxKeJtLy/UtA91WADsJDwimJa43Qj5WKIAWOpPrXDZThKcpzEOpx9mn+BKzXUbgb8fB+ElMI2poK9sqNvDIc2I0BiIjjmD10DALFOpJERw24nPDv93MtbBnMYSY=
+	t=1765884271; cv=none; b=Tt5Cc8fezz5vgFlIkPr8/Gfr/ZASLM8dIKDTg923o6gpstjohwreWu7WHv85kqyhhdamW+W8GG05Se80eoB3aBrXc1lO+Mlo4c8Wi7ItR+6JECOnm/2X2CN8WzU5d4XZcl7UMPjFTQDlhTdW16KIxcHdByNabJanShNygJWXxQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885847; c=relaxed/simple;
-	bh=iNzDm+LT419HreyIbpWoliAa4MqZmoUk66EaWJu4Z38=;
+	s=arc-20240116; t=1765884271; c=relaxed/simple;
+	bh=KuuqJi34dtXvCft24GJNUOrItS+NnItBgmDAw7V7lPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNsTktNKn57w4IuI3Y5od/0giFlIzgvL/p2MFXaxWuByKLphiKljM0U1Y4BBuOrii/U45AJ2566AE1P88O7+VzKVeu+rRtJ/6PTsm502uvLwCCxIBzF59gZZfFDc0uwYhs4aBoCFqIB9d3D0YYB0eOkqRAY2YvbLMEakhHx6YzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDFjwqfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A056C4CEF1;
-	Tue, 16 Dec 2025 11:50:46 +0000 (UTC)
+	 MIME-Version; b=FwhIIo3Lo+8nFPXfdpDzMuC28jXOzGYT+TQyZtNRvGaEEIOtV2JRdTb5PLEZIrwor5A3GZ3/6nrloWAE8yZH3k7Z4hWTZVIeVhmlJlhsSnxSz1P/ymd6kIj7hhwXocQjOchKHbqIzhRifrP0xPCuLMpDMJxcfeThxLdHjvVF9Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqEdndJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18C2C4CEF1;
+	Tue, 16 Dec 2025 11:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885847;
-	bh=iNzDm+LT419HreyIbpWoliAa4MqZmoUk66EaWJu4Z38=;
+	s=korg; t=1765884271;
+	bh=KuuqJi34dtXvCft24GJNUOrItS+NnItBgmDAw7V7lPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDFjwqfCbSNeI5yye11QrcuMDILLzKrE1y6Tx6wo2NuWbUswsINOL7iEPXIMEJPPu
-	 3jat+kqd6Y86Ggug8+9xbua2jB3F7rIky+CoXc+DDFKqr5BK6FsliEmlH8d/bq2hT8
-	 Mczx0Dk9sdU6qUtgQyk93JjW2se3034H8y5VXFtU=
+	b=mqEdndJQ+nEAzt13nHvrpSo71FQjd5iFhwgf+OEtFdarMxbq3utLmKAOrxqW6awXq
+	 kZF9IKkc4F7rL+LprSvN2LgDhPV2baKb6QfhcBVATSiU4Ea6C9NsLVSG41XBf8GPcv
+	 Y7gOtbwNIDdhEzBnj/vf1fQi9LffXg0gNkJCk6uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 262/507] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
+Subject: [PATCH 6.12 136/354] ntfs3: init run lock for extend inode
 Date: Tue, 16 Dec 2025 12:11:43 +0100
-Message-ID: <20251216111354.979363361@linuxfoundation.org>
+Message-ID: <20251216111325.846517128@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
+[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
 
-In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
-allocations in a loop. When an allocation fails, the previously
-successful allocations are not freed on exit.
+After setting the inode mode of $Extend to a regular file, executing the
+truncate system call will enter the do_truncate() routine, causing the
+run_lock uninitialized error reported by syzbot.
 
-Fix that by jumping to err_free_rings label on error, which calls
-rtl8180_free_rx_ring() to free the allocations. Remove the free of
-rx_ring in rtl8180_init_rx_ring() error path, and set the freed
-priv->rx_buf entry to null, to avoid double free.
+Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
+a regular file, the do_truncate() routine would not be entered.
 
-Fixes: f653211197f3 ("Add rtl8180 wireless driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
+Add the run_lock initialization when loading $Extend.
+
+syzbot reported:
+INFO: trying to register non-static key.
+Call Trace:
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
+ register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
+ __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
+ ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
+ ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
+ ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
+
+Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
+Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
+Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index 2905baea62390..070c0431c4821 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 
- 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
-+			priv->rx_buf[i] = NULL;
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
- 
- 	ret = rtl8180_init_rx_ring(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_rings;
- 
- 	for (i = 0; i < (dev->queues + 1); i++)
- 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 44fbd9156a30f..8a9c11083e6e6 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -472,6 +472,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 		/* Records in $Extend are not a files or general directories. */
+ 		inode->i_op = &ntfs_file_inode_operations;
+ 		mode = S_IFREG;
++		init_rwsem(&ni->file.run_lock);
+ 	} else {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
 2.51.0
 
