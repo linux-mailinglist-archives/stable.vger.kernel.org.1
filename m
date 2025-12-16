@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60466CC21AE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCBCCC2F47
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876C5302532C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9A04303C827
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC263258ED4;
-	Tue, 16 Dec 2025 11:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C834D3B8;
+	Tue, 16 Dec 2025 11:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpi8ucZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKT0m+wJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CD126C02;
-	Tue, 16 Dec 2025 11:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676E346E51;
+	Tue, 16 Dec 2025 11:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883823; cv=none; b=aMfsgZcUzDQB4UrtZXo2FNdf368rWxp3EI1sgr8Q3IjlNqmGLyQ5ZZCuvax8N2JGLl6eh/vbWBb23hUkW3lBQqAUosiRhaVmPXBcH2OMSz0RsP0bTHBHs7C/L04xNMEY0UuFNrboclkdZkXaV7tqw9FOZHIjuAF2fouj8KuCqD8=
+	t=1765885546; cv=none; b=Ig3Kds9ndvW6NytjDQAwlyxQ4+Pt8EgF81OTAeNvgeU/aHZDBOKOFGqH1Frn8egPnQEqY+Mof4rVZScuDiwq3EX/rZLyx2ZQz5Ij/WMVSQPqZs9XY2c6JamAbfG12RJw9muWiAtTWC4kxl9n4KeNELAWABdstoMP+BB5Wwdcbpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883823; c=relaxed/simple;
-	bh=banmhn5daweTRiDPFBZ4HsYJvHhgfTwgvzmaQjkVdzw=;
+	s=arc-20240116; t=1765885546; c=relaxed/simple;
+	bh=TCYNtepyOjaT7l576oFP9Q9oVaGwI40rnJbSQnPHCOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlxDIiQ6ZPJbiIycYlf0TmTtuAxXMRTBb0DH3e8rPX/SQSI54TOFub49r1ygYsRaa46VjGjAXerxQfNRJjEMsks0aU02YAd4tQdQlNpXVqZwJ57mLuKMYUXn7enhNuUmgtFrwlaNz6TNjXKEUjmoYS1VJDqkDBB8pwfdhQKSkQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpi8ucZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE585C4CEF1;
-	Tue, 16 Dec 2025 11:17:01 +0000 (UTC)
+	 MIME-Version; b=ANkrtWbGw38O521MNh88H/acrHDmCLYMG3dS1PEZkuZGeSf+ZGNyJXv4kenRBmhqHOh8RuzDh5Sa247NUgvv7R84rquiMF4I2hLNMvK3BbgG3C4Ke99xvh6mViW/h2T0fsAwgWJyHeRoXhB3iNOCB3FS8kitTtqh4GzP27qxj0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKT0m+wJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD6BC4CEF1;
+	Tue, 16 Dec 2025 11:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883822;
-	bh=banmhn5daweTRiDPFBZ4HsYJvHhgfTwgvzmaQjkVdzw=;
+	s=korg; t=1765885546;
+	bh=TCYNtepyOjaT7l576oFP9Q9oVaGwI40rnJbSQnPHCOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vpi8ucZgVnxuKeYr1EDkcxhoh7/uMwTlPcjIE9/jQqegW1FHX2fvRQS0mx0SSnEWC
-	 v8OqPywqAIKVXktZuptcQIZQqlb8sqQheKFAxblMukyKB4famGhbgs+X+I2z0Y5WZn
-	 xE9wHu4HA3N6Wty+J/HfIbQ5jcE+lN6bpJ6xz2j4=
+	b=DKT0m+wJ6J7sN9pfX20wjBpG44xj8VT/wx2xfmCv0pUPpVBNi/XaOChrOopxazjdP
+	 DgkkjNrLWYq31dbOQpVr72iX1ViRY2gjEQohmm9/DYD3WniwCWABDkGOceFx+b6cwn
+	 BdXV9/qJBEiyPcvlLtZBOfaMIMWnqcjndwBTqQuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/354] accel/ivpu: Ensure rpm_runtime_put in case of engine reset/resume fail
-Date: Tue, 16 Dec 2025 12:09:37 +0100
-Message-ID: <20251216111321.280551053@linuxfoundation.org>
+Subject: [PATCH 6.17 137/507] wifi: ath12k: fix potential memory leak in ath12k_wow_arp_ns_offload()
+Date: Tue, 16 Dec 2025 12:09:38 +0100
+Message-ID: <20251216111350.492518047@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 9f6c63285737b141ca25a619add80a96111b8b96 ]
+[ Upstream commit be5febd51c478bc8e24ad3480435f2754a403b14 ]
 
-Previously, aborting work could return early after engine reset or resume
-failure, skipping the necessary runtime_put cleanup leaving the device
-with incorrect reference count breaking runtime power management state.
+When the call to ath12k_wmi_arp_ns_offload() fails, the temporary memory
+allocation for offload is not freed before returning. Fix that by
+freeing offload in the error path.
 
-Replace early returns with goto statements to ensure runtime_put is always
-executed.
-
-Fixes: a47e36dc5d90 ("accel/ivpu: Trigger device recovery on engine reset/resume failure")
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://lore.kernel.org/r/20250916084809.850073-1-karol.wachowski@linux.intel.com
+Fixes: 1666108c74c4 ("wifi: ath12k: support ARP and NS offload")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251028170457.134608-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_job.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/wow.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
-index a0dca1c253b74..172502b71b9cf 100644
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -854,7 +854,7 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 
- 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
- 		if (ivpu_jsm_reset_engine(vdev, 0))
--			return;
-+			goto runtime_put;
- 
- 	mutex_lock(&vdev->context_list_lock);
- 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
-@@ -871,7 +871,7 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 		goto runtime_put;
- 
- 	if (ivpu_jsm_hws_resume_engine(vdev, 0))
--		return;
-+		goto runtime_put;
- 	/*
- 	 * In hardware scheduling mode NPU already has stopped processing jobs
- 	 * and won't send us any further notifications, thus we have to free job related resources
+diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+index dce9bd0bcaefb..e8481626f1940 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
++++ b/drivers/net/wireless/ath/ath12k/wow.c
+@@ -758,6 +758,7 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
+ 		if (ret) {
+ 			ath12k_warn(ar->ab, "failed to set arp ns offload vdev %i: enable %d, ret %d\n",
+ 				    arvif->vdev_id, enable, ret);
++			kfree(offload);
+ 			return ret;
+ 		}
+ 	}
 -- 
 2.51.0
 
