@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F91ECC279A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9802CC2AA2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44E9C3022199
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56329300500D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24D035502A;
-	Tue, 16 Dec 2025 11:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928C036402B;
+	Tue, 16 Dec 2025 12:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vmj2mSIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VXPvoCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E131355026;
-	Tue, 16 Dec 2025 11:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2AE364024;
+	Tue, 16 Dec 2025 12:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885834; cv=none; b=LxU1VyGoeNYWs+3OqSU/YAD4vhkwY4Oyx/ZEiqFVgCcNqXYjOXG4FEASLCr7n3M6DSI++amo/wfFp+WZXX66AwYyxDwz1C5zPvsL3xYB0xr03CgGV2sg0cUwjCkWB2fxTA7aUJMMkJjuXB9MdOMseLkoUNl1AN4tQZnyD4tJttU=
+	t=1765887773; cv=none; b=uuXQkl9Tiyny/N0Dod7coAtcsDs0JtBl6PzPyUAPcchXMMLPuiOHlnNlZ2WJnb4GG3mMeh08jMQVMmEp4yninJ1y1NTrmNie6sAAmFj4VirwK8vlUr/0BjBs/bHzks375pWpzcD/k2vMr5bAGrBQNLznHSdHASP74dlPwcUiCjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885834; c=relaxed/simple;
-	bh=M9vL8820d+naSEvLxwZOjOeHcr1S//+zWn1JbysWRSk=;
+	s=arc-20240116; t=1765887773; c=relaxed/simple;
+	bh=IIaopEyVgrn+WDlDqya3yReZYxxeK+taWKULYtK91FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bN0t3jMWDyZXCzM8NA5tTRlwGIFflLfbdiGCUmpmIokkPb0UiA/7jYCoJ2L3TNKMYlRHz6kv4nkSHI+GyhS7bSxuulUR8kzhQXFHjU3gYBT9ays+s2XgxCiwR4iheC0kDuppZ7Sii9nxrkeciOp9H69593EuY/xTV4kjoOZQxJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vmj2mSIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD730C4CEF1;
-	Tue, 16 Dec 2025 11:50:33 +0000 (UTC)
+	 MIME-Version; b=RVec373wMZZyYs5cQ/SSmL7t93+DeR/JClMnDYjrd34AOSCUFjdyLgNNIRjZ92vihbh/kqIO5moqVpYAB1DzWAOq8LhJspUFcN4S0QGKhNmV8whWCutjogAZby6M57ePsnxpS1g96mi8yFrXstt/JvukjFLnkXJtFV5HzAfSgC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VXPvoCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED42C4CEF1;
+	Tue, 16 Dec 2025 12:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885834;
-	bh=M9vL8820d+naSEvLxwZOjOeHcr1S//+zWn1JbysWRSk=;
+	s=korg; t=1765887772;
+	bh=IIaopEyVgrn+WDlDqya3yReZYxxeK+taWKULYtK91FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vmj2mSIlEkUMrMstJELe3ohhaSV028SzqPmhYLkRO8h2pj3RkEc+YGdd9LRPVHaVk
-	 7nxY05tdJHlitnaj8WdCh+otJ70MDV1L8BQyspqQ2tpTo2VP5OXDUodoPcKIadl1TO
-	 W+gNu82HK7I4WfaEUXSfe6wNoGm7HWUtU8l1sh8A=
+	b=2VXPvoCsC1A5qti4OiOyMhm6fiKC/9m6tZUz0f9nlfMeBevkJ1BHd0CZKvxjbCNur
+	 KOpxniGV+Eal9CNvKdjO23TOmkSbuAWzD+xkOT9lR/+G3+4LvKl/fhHYAaPbahVDBA
+	 Sev48spY94XR4pf0siG8+6emu+q/SJ3IbYcyYqZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Aashish Sharma <aashish@aashishsharma.net>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 259/507] drm/msm: Fix NULL pointer dereference in crashstate_get_vm_logs()
+Subject: [PATCH 6.18 333/614] iommu/vt-d: Fix unused invalidation hint in qi_desc_iotlb
 Date: Tue, 16 Dec 2025 12:11:40 +0100
-Message-ID: <20251216111354.872612549@linuxfoundation.org>
+Message-ID: <20251216111413.430254967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huiwen He <hehuiwen@kylinos.cn>
+From: Aashish Sharma <aashish@aashishsharma.net>
 
-[ Upstream commit 3099e0247e3217e1b39c1c61766e06ec3d13835f ]
+[ Upstream commit 6b38a108eeb3936b21643191db535a35dd7c890b ]
 
-crashstate_get_vm_logs() did not check the return value of
-kmalloc_array(). In low-memory situations, kmalloc_array() may return
-NULL, leading to a NULL pointer dereference when the function later
-accesses state->vm_logs.
+Invalidation hint (ih) in the function 'qi_desc_iotlb' is initialized
+to zero and never used. It is embedded in the 0th bit of the 'addr'
+parameter. Get the correct 'ih' value from there.
 
-Fix this by checking the return value of kmalloc_array() and setting
-state->nr_vm_logs to 0 if allocation fails.
-
-Fixes: 9edc52967cc7 ("drm/msm: Add VM logging for VM_BIND updates")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Patchwork: https://patchwork.freedesktop.org/patch/687555/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: f701c9f36bcb ("iommu/vt-d: Factor out invalidation descriptor composition")
+Signed-off-by: Aashish Sharma <aashish@aashishsharma.net>
+Link: https://lore.kernel.org/r/20251009010903.1323979-1-aashish@aashishsharma.net
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iommu/intel/iommu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 26c5ce897cbbd..8f933c1fe4bfa 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -348,6 +348,10 @@ static void crashstate_get_vm_logs(struct msm_gpu_state *state, struct msm_gem_v
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index 3056583d7f56b..dcc5466d35f93 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -1097,7 +1097,7 @@ static inline void qi_desc_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
+ 				 struct qi_desc *desc)
+ {
+ 	u8 dw = 0, dr = 0;
+-	int ih = 0;
++	int ih = addr & 1;
  
- 	state->vm_logs = kmalloc_array(
- 		state->nr_vm_logs, sizeof(vm->log[0]), GFP_KERNEL);
-+	if (!state->vm_logs) {
-+		state->nr_vm_logs = 0;
-+	}
-+
- 	for (int i = 0; i < state->nr_vm_logs; i++) {
- 		int idx = (i + first) & vm_log_mask;
- 
+ 	if (cap_write_drain(iommu->cap))
+ 		dw = 1;
 -- 
 2.51.0
 
