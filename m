@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBF9CC2DA9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C8DCC3E6D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6356731A8B91
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66ABA3015AA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8F034D38A;
-	Tue, 16 Dec 2025 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA043352941;
+	Tue, 16 Dec 2025 12:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUjGpOeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVCaAEyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7A334CFC5;
-	Tue, 16 Dec 2025 11:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5E434F241;
+	Tue, 16 Dec 2025 12:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885733; cv=none; b=XyBr3RdXPCSrL+xICEWFwSHEUTb5sjLunuKW9dGtSxyVn/ta3Esl5s2tG1aNgGgzJB6c6nNEDpM9FkEBukjvGz/hbUj7lBq7j5YPsTFsqqa5Y/numvoozoFFAR/TWdtOYDNYXi9AEIKyAgjrZF4pVF6cnWevHwjNqJ6iLKJkn5g=
+	t=1765887673; cv=none; b=hUbVMeBOWNTbQ2ahsJi32+nBMG55TtZxGbCrw1HfparjWIk0fwCfAfQGv+GxQ+UieWzpUaxCtL4ejfxmdM8LQ8h23ei9ps/wsmCXNIaTEJxpWi+camuc7aIHsKrLAisoeRoqa5luWaySJBnIlaAMPiBdWyTASCs8NCpH2lU1zE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885733; c=relaxed/simple;
-	bh=0lQLKlH1extjS4bm+35XIjWmAywoLNqdDON39ElBRbc=;
+	s=arc-20240116; t=1765887673; c=relaxed/simple;
+	bh=0lt8nPQVfpRCEVP2VCLXC9zrrptl78NycX7ZCWXFXlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJaXLMuLLLagDqtwDDeMXM18G7s21nQDkH944HxDj9zpYWngKuPiIaNFGo8OwqNHiKSKDtPZZ4AeTABJk/TQM1bIFxHGlQuFx9TXcSxh80zT9rvXa3sPVKsrw+viwKmsMwMZx5Hy47dKHohYXpdgzpFOz4JzRw1BYPaeIH8X39g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUjGpOeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E974C4CEF1;
-	Tue, 16 Dec 2025 11:48:53 +0000 (UTC)
+	 MIME-Version; b=sgYdrlORmaEg/n3HwSv/xET7u4AzMivO85mlJeDy2F++DkuNlZ5eFM8bcmMN+AuV12YosieGdKGX7CGs5DnDgg8RKpA3disTt446pJTu9OXSDYCh6p1F0ABi163l1oT9G8uX2w43Cl2tGBptjTpyCXvCxM4LaThHpEN/kBVeg4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVCaAEyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFB2C4CEF1;
+	Tue, 16 Dec 2025 12:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885733;
-	bh=0lQLKlH1extjS4bm+35XIjWmAywoLNqdDON39ElBRbc=;
+	s=korg; t=1765887672;
+	bh=0lt8nPQVfpRCEVP2VCLXC9zrrptl78NycX7ZCWXFXlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUjGpOeu1dGZVet0LlR/EIvRX81R8O9AQk6vXa//+vx7h90xhfqVIy7+GtLmWzE9y
-	 WFdB7cPQ60LqIDsGeeweIS/1crIajk8aTUMK069dK4Ge54v20lInPPHExirX8hd8Vp
-	 zlnvK4hiNvmC2TCyJbIr7ApBXK/lB05na8+ldth8=
+	b=GVCaAEyE2dM608Jf+x9Dxy2YEKmGocPDqv5Uj6AHrE8bgZ/je5dUfsGnTQZl0lssz
+	 uxUoChmWahLWCfc/Ip4Xipg9ldueJJsAgfcwio7jhiLuwVh6q6dPAY9ImoHFvk780e
+	 lJ0N0L9H2CqjxTaIf8yZ4SEiPVkaEwBRFhjG4H1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 228/507] leds: netxbig: Fix GPIO descriptor leak in error paths
-Date: Tue, 16 Dec 2025 12:11:09 +0100
-Message-ID: <20251216111353.764800564@linuxfoundation.org>
+Subject: [PATCH 6.18 303/614] NFSD/blocklayout: Fix minlength check in proc_layoutget
+Date: Tue, 16 Dec 2025 12:11:10 +0100
+Message-ID: <20251216111412.347028804@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
+[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
 
-The function netxbig_gpio_ext_get() acquires GPIO descriptors but
-fails to release them when errors occur mid-way through initialization.
-The cleanup callback registered by devm_add_action_or_reset() only
-runs on success, leaving acquired GPIOs leaked on error paths.
+The extent returned by the file system may have a smaller offset than
+the segment offset requested by the client. In this case, the minimum
+segment length must be checked against the requested range. Otherwise,
+the client may not be able to continue the read/write operation.
 
-Add goto-based error handling to release all acquired GPIOs before
-returning errors.
-
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Suggested-by: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ fs/nfsd/blocklayout.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index e95287416ef87..99df46f2d9f52 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 	if (!addr)
- 		return -ENOMEM;
- 
-+	gpio_ext->addr = addr;
-+	gpio_ext->num_addr = 0;
-+
- 	/*
- 	 * We cannot use devm_ managed resources with these GPIO descriptors
- 	 * since they are associated with the "GPIO extension device" which
-@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_set_code;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
- 		addr[i] = gpiod;
-+		gpio_ext->num_addr++;
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index fde5539cf6a69..425648565ab2d 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct svc_rqst *rqstp, struct inode *inode,
+ {
+ 	struct nfsd4_layout_seg *seg = &args->lg_seg;
+ 	struct super_block *sb = inode->i_sb;
++	u64 length;
+ 	u32 block_size = i_blocksize(inode);
+ 	struct pnfs_block_extent *bex;
+ 	struct iomap iomap;
+@@ -56,7 +57,8 @@ nfsd4_block_proc_layoutget(struct svc_rqst *rqstp, struct inode *inode,
+ 		goto out_error;
  	}
--	gpio_ext->addr = addr;
--	gpio_ext->num_addr = num_addr;
  
- 	ret = gpiod_count(gpio_ext_dev, "data");
- 	if (ret < 0) {
- 		dev_err(dev,
- 			"Failed to count GPIOs in DT property data-gpios\n");
--		return ret;
-+		goto err_free_addr;
+-	if (iomap.length < args->lg_minlength) {
++	length = iomap.offset + iomap.length - seg->offset;
++	if (length < args->lg_minlength) {
+ 		dprintk("pnfsd: extent smaller than minlength\n");
+ 		goto out_layoutunavailable;
  	}
- 	num_data = ret;
- 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
--	if (!data)
--		return -ENOMEM;
-+	if (!data) {
-+		ret = -ENOMEM;
-+		goto err_free_addr;
-+	}
-+
-+	gpio_ext->data = data;
-+	gpio_ext->num_data = 0;
- 
- 	for (i = 0; i < num_data; i++) {
- 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_free_data;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
- 		data[i] = gpiod;
-+		gpio_ext->num_data++;
- 	}
--	gpio_ext->data = data;
--	gpio_ext->num_data = num_data;
- 
- 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(gpiod)) {
- 		dev_err(dev,
- 			"Failed to get GPIO from DT property enable-gpio\n");
--		return PTR_ERR(gpiod);
-+		goto err_free_data;
- 	}
- 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
- 	gpio_ext->enable = gpiod;
- 
- 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
-+
-+err_free_data:
-+	for (i = 0; i < gpio_ext->num_data; i++)
-+		gpiod_put(gpio_ext->data[i]);
-+err_set_code:
-+	ret = PTR_ERR(gpiod);
-+err_free_addr:
-+	for (i = 0; i < gpio_ext->num_addr; i++)
-+		gpiod_put(gpio_ext->addr[i]);
-+	return ret;
- }
- 
- static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
