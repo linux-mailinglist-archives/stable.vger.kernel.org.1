@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6625DCC29D2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AD9CC25A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D557302622F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32F81311228F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C7347FCF;
-	Tue, 16 Dec 2025 11:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CF342CB1;
+	Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMdwXbF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElOouqUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC302D2483;
-	Tue, 16 Dec 2025 11:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D5C342C8E;
+	Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886341; cv=none; b=Y84Vlow4JG85Q78pvCQlZmuhbR5C+vHZE8cTxSgXpGfY0jCWFJ2NCMtzoMEZauBr9P8+glJ6GBNZHfcab/vqlX7JdOJQg5a7Yvwy7iDzLcmO3Xj6jVwXt1bzl3mR0e1ujJwG9LSSiftbQUZIr2FPdXdmBYsMNw//VrZU74+LmnM=
+	t=1765884845; cv=none; b=R7B9HvlEFQ5yeoIQyn07sTZ8o9avUardyuID7LjfLxC2ogic9dTjJHA+mcWYCZ9YTq4jHhObBDUKFMp/Rv4zr6uaGo9JIoyudfAiEjFos53+WIUFxNqnyZ0uq9CgQ019OfI+DIOobZHn/oveIaUoteCPZZn0k+VNZf1D/Y1USJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886341; c=relaxed/simple;
-	bh=uvpniry1LWCXolcrA62CURqXemUjO8OXfszET5OnZIw=;
+	s=arc-20240116; t=1765884845; c=relaxed/simple;
+	bh=05Z5NdcpsOgarlo/3/v7DA6Nd2C0gOEH7uPw/kyHLUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUoK4atF2qUuoqgAFB+PXxoGiVxZ2QH2Von0i8Lx0l5tfjNm/yZ0RIp40ghJyebjmlO2WnassZOqmGvlBjOFz98o+EX1XAjqKR33MuEg6DGeivDQugz+g4VnJVU5pBczHMaXVOAhZ60Eq9j9QAV6Q6+0Zawi4ofYUj5QgGZbNZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMdwXbF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36DBC4CEF1;
-	Tue, 16 Dec 2025 11:59:00 +0000 (UTC)
+	 MIME-Version; b=mS2qJFFsCCIuCQVowOR+gNPpGQZ5jqsrTWpPc6XhdcfSQaIeHcYFi8p/Gbj+IhjYEpRXctaaMtUIWzyVj7WadfVNTfokapqTMBVyDJ7khaFUIAureWOON05GHUDwfcRJQw4OfnKojTh8nffNBHYmD04X69PQ7CeR13jsqKUQnos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElOouqUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C938AC4CEF1;
+	Tue, 16 Dec 2025 11:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886341;
-	bh=uvpniry1LWCXolcrA62CURqXemUjO8OXfszET5OnZIw=;
+	s=korg; t=1765884845;
+	bh=05Z5NdcpsOgarlo/3/v7DA6Nd2C0gOEH7uPw/kyHLUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMdwXbF120nU8rrkkADKZ5M4npZwuB6e6d7FE0IbpI90CxSIjO+TKaGR1+EZjeCqm
-	 GNeneaieJWalC/ZXmqhnMHjDMAdfdizTw7woFBlOy36xVN10HImiVVEYobopbHVl8j
-	 qJxi25pqUMz9uWCQc365uwclbJfpSuToGF2JWYMI=
+	b=ElOouqUlQfHzqoqN4/EjgPY+E0iTwuvivYxHU1wf2Wr91qxZ2sDFejxxyLC5zpmKI
+	 KsfcmY93naU/bLxZNNQrAfIRHvQQnKqlf2hshdvvtxdrLXM3yiHKo8H6ajf2KJ23lT
+	 mm3Evd/fOqyFEHI3MkBOON8LrVv7hVa4dTySNPrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 408/507] clk: keystone: fix compile testing
-Date: Tue, 16 Dec 2025 12:14:09 +0100
-Message-ID: <20251216111400.245304875@linuxfoundation.org>
+Subject: [PATCH 6.12 283/354] net: dsa: xrs700x: reject unsupported HSR configurations
+Date: Tue, 16 Dec 2025 12:14:10 +0100
+Message-ID: <20251216111331.166738557@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit b276445e98fe28609688fb85b89a81b803910e63 ]
+[ Upstream commit 30296ac7642652428396222e720718f2661e9425 ]
 
-Some keystone clock drivers can be selected when COMPILE_TEST is
-enabled but since commit b745c0794e2f ("clk: keystone: Add sci-clk
-driver support") they are never actually built.
+As discussed here:
+https://lore.kernel.org/netdev/20240620090210.drop6jwh7e5qw556@skbuf/
 
-Enable compile testing by allowing the build system to process the
-keystone drivers.
+the fact is that the xrs700x.c driver only supports offloading
+HSR_PT_SLAVE_A and HSR_PT_SLAVE_B (which were the only port types at the
+time the offload was written, _for this driver_).
 
-Fixes: b745c0794e2f ("clk: keystone: Add sci-clk driver support")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Up until now, the API did not explicitly tell offloading drivers what
+port has what role. So xrs700x can get confused and think that it can
+support a configuration which it actually can't. There was a table in
+the attached link which gave an example:
+
+$ ip link add name hsr0 type hsr slave1 swp0 slave2 swp1 \
+	interlink swp2 supervision 45 version 1
+
+        HSR_PT_SLAVE_A    HSR_PT_SLAVE_B      HSR_PT_INTERLINK
+ ----------------------------------------------------------------
+ user
+ space        0                 1                   2
+ requests
+ ----------------------------------------------------------------
+ XRS700X
+ driver       1                 2                   -
+ understands
+
+The switch would act as if the ring ports were swp1 and swp2.
+
+Now that we have explicit hsr_get_port_type() API, let's use that to
+work around the unintended semantical changes of the offloading API
+brought by the introduction of interlink ports in HSR.
+
+Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+Cc: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20251130131657.65080-5-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/dsa/xrs700x/xrs700x.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 18ed29cfdc113..12b4688131f11 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -124,8 +124,7 @@ obj-$(CONFIG_ARCH_HISI)			+= hisilicon/
- obj-y					+= imgtec/
- obj-y					+= imx/
- obj-y					+= ingenic/
--obj-$(CONFIG_ARCH_K3)			+= keystone/
--obj-$(CONFIG_ARCH_KEYSTONE)		+= keystone/
-+obj-y					+= keystone/
- obj-y					+= mediatek/
- obj-$(CONFIG_ARCH_MESON)		+= meson/
- obj-y					+= microchip/
+diff --git a/drivers/net/dsa/xrs700x/xrs700x.c b/drivers/net/dsa/xrs700x/xrs700x.c
+index de3b768f2ff9c..7e9a2ba6bfd95 100644
+--- a/drivers/net/dsa/xrs700x/xrs700x.c
++++ b/drivers/net/dsa/xrs700x/xrs700x.c
+@@ -568,6 +568,7 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
+ 	struct xrs700x *priv = ds->priv;
+ 	struct net_device *user;
+ 	int ret, i, hsr_pair[2];
++	enum hsr_port_type type;
+ 	enum hsr_version ver;
+ 	bool fwd = false;
+ 
+@@ -591,6 +592,16 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	ret = hsr_get_port_type(hsr, dsa_to_port(ds, port)->user, &type);
++	if (ret)
++		return ret;
++
++	if (type != HSR_PT_SLAVE_A && type != HSR_PT_SLAVE_B) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Only HSR slave ports can be offloaded");
++		return -EOPNOTSUPP;
++	}
++
+ 	dsa_hsr_foreach_port(dp, ds, hsr) {
+ 		if (dp->index != port) {
+ 			partner = dp;
 -- 
 2.51.0
 
