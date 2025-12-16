@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E66FCC232E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AF0CC374A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FAC33044685
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DFCB3031B16
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F3F56B81;
-	Tue, 16 Dec 2025 11:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E5234F261;
+	Tue, 16 Dec 2025 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVV8LW2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGmC8vcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D7D341645;
-	Tue, 16 Dec 2025 11:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D286F34F253;
+	Tue, 16 Dec 2025 11:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884143; cv=none; b=it6WJtPydR49Q6dttDlcR3IPLOlr0rh+cn3m+sOYLz5yAQHwmWpgvGiaFvUNorjABZGNjbjUmVFS1N/GTBmOMqokuOMkr8cjDyEchJV3pcDa47rYWq/50LjisBM9Mz9CTpD+a5sybPr/lwLINPwW/ijljqzokavcAabSFttVKoM=
+	t=1765885632; cv=none; b=biSxqdi0qxO/HpUsvvKg7JTcUG9ZOYRpMPhP05UKh9A6toIQadxS7O+2bLQrvVs91FEA17BfOI4FzpEtOO5PjK6HZ8+EYYgH9jTz2C8OSvf+GxvyUEcrAJ8rSR43YNdfNvHxWlX1i6KiQd3QeRu8gOlX4ojsGwGhldmc4TmC/nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884143; c=relaxed/simple;
-	bh=QYpNl031yafH8MYfpRP6e7+UqXaZFVkPhCSdeb0BEuE=;
+	s=arc-20240116; t=1765885632; c=relaxed/simple;
+	bh=J3Llavay47I6AuWNYYOY8P7OoMXZavBA9bGT74STa4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jodPd7UPZgUd7TainjOot7MNH9BFDP0UAy+AxfRe1lXr5jfVP2DVxTpkweFzZMiYiC0H3P629q55NEiDk85N6T+AbMr7D8hTFA5ft9pAQ1iPfL1rl0KfmvFZjYj9rO14T6rWM2Z2lJ4fgfWFtT/eIrOZdb0OqZj0oXMHknJ3wNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVV8LW2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1196CC4CEF1;
-	Tue, 16 Dec 2025 11:22:22 +0000 (UTC)
+	 MIME-Version; b=h/sudMdM8WkDB0cJvMxNRVwwvRcTd6SuA24MQagK6N5EyVK8jBgqEeFrkJX6bIu79gHFfrPx3DiRbDvl6QumAxX5xy8IeGJrdTWFTmi4lhS3js/KORmpU6b+rGr3ddNyW0/xvJrQeaZhrA9hCxPzILiUeym3K12lSLuUQFQBVZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGmC8vcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F6C4CEF5;
+	Tue, 16 Dec 2025 11:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884143;
-	bh=QYpNl031yafH8MYfpRP6e7+UqXaZFVkPhCSdeb0BEuE=;
+	s=korg; t=1765885632;
+	bh=J3Llavay47I6AuWNYYOY8P7OoMXZavBA9bGT74STa4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVV8LW2eOZn9E2p9zEu56x8XQEvr2ZeB+xCuQsv71/OV9MleCdJwzYXAOLYj3e0FQ
-	 ynCYOZ573RSxYIjU7kF+9aT29MNXLT1jOHze3eMVr4G9BaiA5dA6TRvk9GV895ZKxM
-	 m6uK37q32jbEFQQrQTPRtjED+pTBO5hp2Ez/HgKI=
+	b=pGmC8vcnccBoT3zc94uXex5xtIjinE2MsOxRlECcgkMiN7ymwiu5eu22QwUdS2dMr
+	 elBdz1wCzy7sHcdE257SJSw2z+O8yJbYTWFPqgF+LHrFAJbeTYWISwhvCgNFvvuTl+
+	 9YFj0bsxpjRHfNrNe1E5eZBTKWvYUPVs3DnRrDys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/354] firmware: imx: scu-irq: fix OF node leak in
+Subject: [PATCH 6.17 197/507] iio: imu: bmi270: fix dev_err_probe error msg
 Date: Tue, 16 Dec 2025 12:10:38 +0100
-Message-ID: <20251216111323.497385802@linuxfoundation.org>
+Message-ID: <20251216111352.646073930@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
+[ Upstream commit 02f86101e430cce9a99a044b483c4ed5b91bb3b8 ]
 
-imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
-but does not release the OF node reference. Add a of_node_put() call
-to release the reference.
+The bmi270 can be connected to I2C or a SPI interface. If it is a SPI,
+during probe, if devm_regmap_init() fails, it should print the "spi"
+term rather "i2c".
 
-Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 92cc50a00574 ("iio: imu: bmi270: Add spi driver for bmi270 imu")
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu-irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/imu/bmi270/bmi270_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
-index 6125cccc9ba79..f2b902e95b738 100644
---- a/drivers/firmware/imx/imx-scu-irq.c
-+++ b/drivers/firmware/imx/imx-scu-irq.c
-@@ -226,8 +226,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
+index 19dd7734f9d07..80c9fa1d685ab 100644
+--- a/drivers/iio/imu/bmi270/bmi270_spi.c
++++ b/drivers/iio/imu/bmi270/bmi270_spi.c
+@@ -60,7 +60,7 @@ static int bmi270_spi_probe(struct spi_device *spi)
+ 				  &bmi270_spi_regmap_config);
+ 	if (IS_ERR(regmap))
+ 		return dev_err_probe(dev, PTR_ERR(regmap),
+-				     "Failed to init i2c regmap");
++				     "Failed to init spi regmap\n");
  
- 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", 0, &spec))
-+				       "#mbox-cells", 0, &spec)) {
- 		i = of_alias_get_id(spec.np, "mu");
-+		of_node_put(spec.np);
-+	}
- 
- 	/* use mu1 as general mu irq channel if failed */
- 	if (i < 0)
+ 	return bmi270_core_probe(dev, regmap, chip_info);
+ }
 -- 
 2.51.0
 
