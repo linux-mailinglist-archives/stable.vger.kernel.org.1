@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650DACC2B9B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C785CC2701
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CD0F30E9DFB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B14333093DB2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A15B3644CE;
-	Tue, 16 Dec 2025 12:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9C3451DA;
+	Tue, 16 Dec 2025 11:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+qs92pr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYO1s/tP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E73644CB;
-	Tue, 16 Dec 2025 12:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5413451CF;
+	Tue, 16 Dec 2025 11:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886969; cv=none; b=CZfYQ+PtE6UF0Sjsd6CYufuynsiZElhf/HmhOfBAnENvmh1IF94wfaOB/MQqX/A/0s5jXocN4iqPVG29d7pMC3YtbTHeQgLOoRUZls7z8Cs34cKeMgjepvtCthDUy/SzqZcDJ0TazUjgk8ZKQyGjuaLE93hY5pzW0fpdTsMqOZE=
+	t=1765885018; cv=none; b=pYpIKli9uYupkvQC0f86Y+a/GcKjdZDW5vxvirNobMfECf1K//qO7hD3cYjppjzTts9KwR5a7l9ilrfmdlAJr6YYodZa9HU25hS60sKXAEGWsumw7L/RwBMd95B11JMUwBNmAgJuwCDs/2K1491zY3jYE08iKs3c1G6LZ0Alx2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886969; c=relaxed/simple;
-	bh=emF6TvkpEjSebWXPiPI2renPbVvaY3lmjFT0gLdK5R0=;
+	s=arc-20240116; t=1765885018; c=relaxed/simple;
+	bh=0KGgH2kZLZxr1yZkSf1mPDwlAwKZRAaXEGtP1FHF5E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHMcIy1W/jIlBW1V+dBAjjZcN0LYrEH9rZ7N6vFDynPkWyqdToh+WUL0vxgvHnzh/xKk1e08BMrbSFPhCbBmUgwucllwW9vQKo5deu1h3tnP2SiRemoJn/YL99P3AfOCzsRD8ejDEOLyv5ZVOhW3J+iSrfo02XKEWfdE1lWhn80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+qs92pr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3FBC4CEF1;
-	Tue, 16 Dec 2025 12:09:28 +0000 (UTC)
+	 MIME-Version; b=qVRtJEGCVKk2o1iM2lvz92d10pnSfDqEGs98zIpKpzq/tQgv0RU+JGQBnK/V7OIaj/+3ofvm8Go56VJJ5F110yQzPzG0lOf+bJpVBpUsHdk3Icxw52xcaDuzuweAEi6rcT3NNq8Ds+T1LYMCWdvuJbtfgUlNZYYvXSMEAOfk1vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYO1s/tP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D371EC4CEF5;
+	Tue, 16 Dec 2025 11:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886969;
-	bh=emF6TvkpEjSebWXPiPI2renPbVvaY3lmjFT0gLdK5R0=;
+	s=korg; t=1765885018;
+	bh=0KGgH2kZLZxr1yZkSf1mPDwlAwKZRAaXEGtP1FHF5E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+qs92pr5Ni294UPYHkDtmIwtBq8hHbaCGt8c699zfXSxtiDC9xgFOAt6N9nmuBHc
-	 DQeAZnMx7mEGT+rUWlcHO3m7TFZ6TsKGzlmU6zuiEs7c79mdWYHNm+TwlVh+J0nww8
-	 Ut0o/09xN0vrpW1vOp/Q65v3BKsJmPI+6yxptOcI=
+	b=BYO1s/tPIFgiYoo7LNRzUwKW8QiIMXtFDZOkBXliEyih9Atz3EPoYolA3f8YPXBFB
+	 6FCGCGSnTucd0T2zEPMRA+LX0iX0Ik8Wk3isAxhmFZt3KQV+nJsn9eZzQoUsbsUB5a
+	 jS9YYFq3MF2pVQKOEgo7SfqT4zQMOfi8DyLpR2P8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/614] soc: qcom: gsbi: fix double disable caused by devm
-Date: Tue, 16 Dec 2025 12:07:34 +0100
-Message-ID: <20251216111404.474716962@linuxfoundation.org>
+Subject: [PATCH 6.17 014/507] accel/ivpu: Make function parameter names consistent
+Date: Tue, 16 Dec 2025 12:07:35 +0100
+Message-ID: <20251216111346.051714079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit 2286e18e3937c69cc103308a8c1d4898d8a7b04f ]
+[ Upstream commit cf87f93847dea607e8a35983cb006ef8493f8065 ]
 
-In the commit referenced by the Fixes tag, devm_clk_get_enabled() was
-introduced to replace devm_clk_get() and clk_prepare_enable(). While
-the clk_disable_unprepare() call in the error path was correctly
-removed, the one in the remove function was overlooked, leading to a
-double disable issue.
+Make ivpu_hw_btrs_dct_set_status() and ivpu_fw_boot_params_setup()
+declaration and definition parameter names consistent.
 
-Remove the redundant clk_disable_unprepare() call from gsbi_remove()
-to fix this issue. Since all resources are now managed by devres
-and will be automatically released, the remove function serves no purpose
-and can be deleted entirely.
-
-Fixes: 489d7a8cc286 ("soc: qcom: use devm_clk_get_enabled() in gsbi_probe()")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/stable/20251020160215.523-1-vulab%40iscas.ac.cn
-Link: https://lore.kernel.org/r/20251020160215.523-1-vulab@iscas.ac.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250808111014.328607-1-jacek.lawrynowicz@linux.intel.com
+Stable-dep-of: aa1c2b073ad2 ("accel/ivpu: Fix DCT active percent format")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom_gsbi.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/accel/ivpu/ivpu_fw.h      | 2 +-
+ drivers/accel/ivpu/ivpu_hw_btrs.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom_gsbi.c b/drivers/soc/qcom/qcom_gsbi.c
-index 8f1158e0c6313..a25d1de592f06 100644
---- a/drivers/soc/qcom/qcom_gsbi.c
-+++ b/drivers/soc/qcom/qcom_gsbi.c
-@@ -212,13 +212,6 @@ static int gsbi_probe(struct platform_device *pdev)
- 	return of_platform_populate(node, NULL, NULL, &pdev->dev);
- }
+diff --git a/drivers/accel/ivpu/ivpu_fw.h b/drivers/accel/ivpu/ivpu_fw.h
+index 9a3935be1c057..7081913fb0dde 100644
+--- a/drivers/accel/ivpu/ivpu_fw.h
++++ b/drivers/accel/ivpu/ivpu_fw.h
+@@ -45,7 +45,7 @@ struct ivpu_fw_info {
+ int ivpu_fw_init(struct ivpu_device *vdev);
+ void ivpu_fw_fini(struct ivpu_device *vdev);
+ void ivpu_fw_load(struct ivpu_device *vdev);
+-void ivpu_fw_boot_params_setup(struct ivpu_device *vdev, struct vpu_boot_params *bp);
++void ivpu_fw_boot_params_setup(struct ivpu_device *vdev, struct vpu_boot_params *boot_params);
  
--static void gsbi_remove(struct platform_device *pdev)
--{
--	struct gsbi_info *gsbi = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(gsbi->hclk);
--}
--
- static const struct of_device_id gsbi_dt_match[] = {
- 	{ .compatible = "qcom,gsbi-v1.0.0", },
- 	{ },
-@@ -232,7 +225,6 @@ static struct platform_driver gsbi_driver = {
- 		.of_match_table	= gsbi_dt_match,
- 	},
- 	.probe = gsbi_probe,
--	.remove = gsbi_remove,
- };
- 
- module_platform_driver(gsbi_driver);
+ static inline bool ivpu_fw_is_cold_boot(struct ivpu_device *vdev)
+ {
+diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
+index d2d82651976d1..032c384ac3d4d 100644
+--- a/drivers/accel/ivpu/ivpu_hw_btrs.h
++++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
+@@ -36,7 +36,7 @@ u32 ivpu_hw_btrs_dpu_freq_get(struct ivpu_device *vdev);
+ bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
+ bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
+ int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
+-void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 dct_percent);
++void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent);
+ u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
+ u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
+ u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
 -- 
 2.51.0
 
