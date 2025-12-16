@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F3DCC21B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07AECC3B01
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 238023033DCE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0628B3078A31
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E03126C02;
-	Tue, 16 Dec 2025 11:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEB134D4C8;
+	Tue, 16 Dec 2025 11:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwLnhYU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy15ZxQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B10C25FA10;
-	Tue, 16 Dec 2025 11:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9AD346E51;
+	Tue, 16 Dec 2025 11:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883832; cv=none; b=eJL2dn2uq6wOUdPfkhQba+K2hNrmIe6U2kBiBZ1N4XZjmdequf+Z43dvnp+D4Mmxfzm/TV038IEnaldImmlZ0QNqkvZY/cVsJThNWAtYdmB8PGSWPA3FPsohibUGCOJX34WAyjOqj066S9P+gaN4bAPWgs/eCq4BuuelZdnuthA=
+	t=1765885553; cv=none; b=PmeKRZWZ2xLEUJU8Xd/WA6g7oVy6uIChevCv+jnm3nSRkH0ycVP8SvpM6iTVwmoTtZDgUw/HsBcpGtIIUO8rSIGdwbxEPpp/OUqAzdkp+sUjq766hIhRjjjpvlk81gJ+8sKoyK+1w19X7w08rXljMNyA3fmnQzabWo9OkRC6/QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883832; c=relaxed/simple;
-	bh=kpvE5zpDj9hW3YI+YCOdJlhw4RE1N7I1BUhvdhJR2WQ=;
+	s=arc-20240116; t=1765885553; c=relaxed/simple;
+	bh=FQ3B3C6JXd5bl4UL4qRcwkf7yrJGLCdbyJ0dj7dfOWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmAGljEk4IUoWrYXY0ASCf3UD5TN/9aPotgL3K3Hy8ElvnoY90U+UBRYn8kwWw+QlzxLcOxlbcg0s8OEG4pAHf9jFo9j2A3q95DjbWaGbidAmi14djOA724tT+2FlyZQYYCfzrKQB8E+H2iQ2Mafu0uU4w6L3l9ZXbcHtMC/YLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwLnhYU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3ABC4CEF1;
-	Tue, 16 Dec 2025 11:17:11 +0000 (UTC)
+	 MIME-Version; b=dqJhpjUc7n7L0veTxC0Omt7M//s0Hs+9KLdLGWjdvmvJaJQQh5c3YvCXt7gyG1depkOdNfiNzTS4GcatsaW31RI1gNkH5tcvmbJhRyMQgvkDNL6HkP8WwWzoHaoPj1BbhWeqUQednpK0CWD1kmnrV5SpYddT7ZvDXR8eCnyM8mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy15ZxQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0521C4CEF1;
+	Tue, 16 Dec 2025 11:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883832;
-	bh=kpvE5zpDj9hW3YI+YCOdJlhw4RE1N7I1BUhvdhJR2WQ=;
+	s=korg; t=1765885553;
+	bh=FQ3B3C6JXd5bl4UL4qRcwkf7yrJGLCdbyJ0dj7dfOWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwLnhYU5kvbkDcLwXD6UbG5nDt809ZGCgtPh452B2p9UTnByGau6J6nDzkJ59o18f
-	 mchUbQgORE2CuN/ySOwXkUomQAU8FURMwBaG3j4g7Fa1L53qe6eyEjgONvkiDUSA3J
-	 mf1wXwrtOtoDMw9taD+yue6ov9O7KSnuqJiAjCns=
+	b=Oy15ZxQS63Uy8moFkLAameI1A1QvfQ91fJSytKoUzfRe1cAPijNs+7Nh4skqi1UGA
+	 sosFGuBKXGqOujeF+ODUnaqtmFbYQLQ+oWfI7QlCdDa428D3IJBpAl3FtNwKe35F+e
+	 Nek7urk9dMK+punCilFYpYTfz8vYFUvUBquhu1tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	a-development <a-development@posteo.de>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/354] accel/ivpu: Fix DCT active percent format
+Subject: [PATCH 6.17 139/507] wifi: ath12k: fix error handling in creating hardware group
 Date: Tue, 16 Dec 2025 12:09:40 +0100
-Message-ID: <20251216111321.388175056@linuxfoundation.org>
+Message-ID: <20251216111350.564599316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit aa1c2b073ad23847dd2e7bdc7d30009f34ed7f59 ]
+[ Upstream commit 088a099690e4c0d291db505013317ab5dd58b4d5 ]
 
-The pcode MAILBOX STATUS register PARAM2 field expects DCT active
-percent in U1.7 value format. Convert percentage value to this
-format before writing to the register.
+In ath12k_core_init() when ath12k_core_hw_group_create() fails,
+ath12k_core_hw_group_destroy() is called where for each device below
+path would get executed
 
-Fixes: a19bffb10c46 ("accel/ivpu: Implement DCT handling")
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://lore.kernel.org/r/20251001104322.1249896-1-karol.wachowski@linux.intel.com
+	ath12k_core_soc_destroy()
+		ath12k_qmi_deinit_service()
+			qmi_handle_release()
+
+This results in kernel crash in case one of the device fails at
+qmi_handle_init() when creating hardware group:
+
+ath12k_pci 0000:10:00.0: failed to initialize qmi handle
+ath12k_pci 0000:10:00.0: failed to initialize qmi :-517
+ath12k_pci 0000:10:00.0: failed to create soc core: -517
+ath12k_pci 0000:10:00.0: unable to create hw group
+BUG: unable to handle page fault for address: ffffffffffffffb7
+RIP: 0010:qmi_handle_release
+Call Trace:
+ <TASK>
+ ath12k_qmi_deinit_service
+ ath12k_core_hw_group_destroy
+ ath12k_core_init
+ ath12k_pci_probe
+
+The detailed reason is, when qmi_handle_init() fails for a device
+ab->qmi.handle is not correctly initialized. Then
+ath12k_core_hw_group_create() returns failure, since error handing
+is done for all device, eventually qmi_handle_release() is called for the
+issue device and finally kernel crashes due to the uninitialized
+ab->qmi.handle.
+
+Fix this by moving error handling to ath12k_core_hw_group_create(), this
+way the issue device can be skipped.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 6f245ea0ec6c ("wifi: ath12k: introduce device group abstraction")
+Link: https://lore.kernel.org/ath12k/fabc97122016d1a66a53ddedd965d134@posteo.net
+Reported-by: a-development <a-development@posteo.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220518
+Tested-by: a-development <a-development@posteo.de>
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251030-fix-hw-group-create-err-handling-v1-1-0659e4d15fb9@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_hw_btrs.c | 2 +-
- drivers/accel/ivpu/ivpu_hw_btrs.h | 2 +-
- drivers/accel/ivpu/ivpu_pm.c      | 9 +++++++--
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.c b/drivers/accel/ivpu/ivpu_hw_btrs.c
-index 2d88357b9a3a4..4af1b164d85a7 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.c
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.c
-@@ -759,7 +759,7 @@ int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable)
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 5d494c5cdc0da..a2137b363c2fe 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -2106,14 +2106,27 @@ static int ath12k_core_hw_group_create(struct ath12k_hw_group *ag)
+ 		ret = ath12k_core_soc_create(ab);
+ 		if (ret) {
+ 			mutex_unlock(&ab->core_lock);
+-			ath12k_err(ab, "failed to create soc core: %d\n", ret);
+-			return ret;
++			ath12k_err(ab, "failed to create soc %d core: %d\n", i, ret);
++			goto destroy;
+ 		}
+ 
+ 		mutex_unlock(&ab->core_lock);
  	}
- }
  
--void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent)
-+void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent)
- {
- 	u32 val = 0;
- 	u32 cmd = enable ? DCT_ENABLE : DCT_DISABLE;
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
-index 7650f15b7ffa4..ac0cf50f004ff 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.h
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
-@@ -35,7 +35,7 @@ u32 ivpu_hw_btrs_dpu_max_freq_get(struct ivpu_device *vdev);
- bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
- bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
- int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
--void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent);
-+void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent);
- u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index ad02b71c73bbf..bd8adba5ba70c 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -466,6 +466,11 @@ void ivpu_pm_dct_irq_thread_handler(struct ivpu_device *vdev)
- 	else
- 		ret = ivpu_pm_dct_disable(vdev);
- 
--	if (!ret)
--		ivpu_hw_btrs_dct_set_status(vdev, enable, vdev->pm->dct_active_percent);
-+	if (!ret) {
-+		/* Convert percent to U1.7 format */
-+		u8 val = DIV_ROUND_CLOSEST(vdev->pm->dct_active_percent * 128, 100);
+ 	return 0;
 +
-+		ivpu_hw_btrs_dct_set_status(vdev, enable, val);
++destroy:
++	for (i--; i >= 0; i--) {
++		ab = ag->ab[i];
++		if (!ab)
++			continue;
++
++		mutex_lock(&ab->core_lock);
++		ath12k_core_soc_destroy(ab);
++		mutex_unlock(&ab->core_lock);
 +	}
 +
++	return ret;
  }
+ 
+ void ath12k_core_hw_group_set_mlo_capable(struct ath12k_hw_group *ag)
+@@ -2188,7 +2201,7 @@ int ath12k_core_init(struct ath12k_base *ab)
+ 		if (ret) {
+ 			mutex_unlock(&ag->mutex);
+ 			ath12k_warn(ab, "unable to create hw group\n");
+-			goto err_destroy_hw_group;
++			goto err_unassign_hw_group;
+ 		}
+ 	}
+ 
+@@ -2196,8 +2209,7 @@ int ath12k_core_init(struct ath12k_base *ab)
+ 
+ 	return 0;
+ 
+-err_destroy_hw_group:
+-	ath12k_core_hw_group_destroy(ab->ag);
++err_unassign_hw_group:
+ 	ath12k_core_hw_group_unassign(ab);
+ err_unregister_notifier:
+ 	ath12k_core_panic_notifier_unregister(ab);
 -- 
 2.51.0
 
