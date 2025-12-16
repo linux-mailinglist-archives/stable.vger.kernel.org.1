@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C6DCC2D82
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6166DCC2284
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B310301D076
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD94230004E5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654535292E;
-	Tue, 16 Dec 2025 12:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E719334214A;
+	Tue, 16 Dec 2025 11:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQ2dvVem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAQHj16A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEC034DB64;
-	Tue, 16 Dec 2025 12:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52ED341645;
+	Tue, 16 Dec 2025 11:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887666; cv=none; b=s2Nxc9iHF2yIpd0NJNS1rRwIIiGLhtd5yXweS8ate/nqLlnuzkq7DNRi40J0BkNHVrx1bn0LCaQvvfXsXeoeZaQvbfB/yPDJ+tGcInxIt20nQap6jQMOy5Atzp/YOOzaDgv+V/a2t30bDGNZLFiUSByL8b5E8JQ0aqPeVO4mkMw=
+	t=1765884188; cv=none; b=cSXb31mG4b5V+he2KpAdqtGNVQUpA//n83YnZ4P+KSzP+xC51v9DAC72esJHjK+IVLsqmt5m8obV+7FGXfs93qC4Jzll25CFH1WC73WnLO8iVCwuz5hfs4IrY0zn2Ufr+OlF11cVLMzcOV8EURilgRDeWpWfEBUO87USVm3JKOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887666; c=relaxed/simple;
-	bh=lqAMOTDTY4d8wx1GCP8OhMWBZheYsSAXg8mG6X9sXoc=;
+	s=arc-20240116; t=1765884188; c=relaxed/simple;
+	bh=OZtmaAWQtsXjBAq0hNNu4aC+eD/Ynv0ot1XbXH2YqiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxuDcMoirIkP8jVbJ0xa1uTQaQECb45ySGGYV7XFtm7LZcsosXaSsbH1TwyX1YlTcHYZhyUwzZA2qiP62e5PYzhx4fIrJ2SBxbCnfZX1fxwhN3DQx16jlX6lCNvyA8HEEl+n2IAR8sCse40GkDYO8yofdqNH/8oZbf4nI8EgNq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQ2dvVem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27949C4CEF1;
-	Tue, 16 Dec 2025 12:21:05 +0000 (UTC)
+	 MIME-Version; b=aq1p10RGl2odPTCoTqSgGet8xV+6xaPkLpkLdYJAjwhVpIl3Mi3ErxIEw4e23p7xUJ+WznLqwp8VKufBu3Aj6LHXQcLa14ZH2t1+Tdq6ADHUI4J/A12NoPIUcYjv37OEPZzFNXUIrumRkB3ZeLURMIcxBmDHvOG5xc92IsdaRP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAQHj16A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBBAC4CEF1;
+	Tue, 16 Dec 2025 11:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887666;
-	bh=lqAMOTDTY4d8wx1GCP8OhMWBZheYsSAXg8mG6X9sXoc=;
+	s=korg; t=1765884188;
+	bh=OZtmaAWQtsXjBAq0hNNu4aC+eD/Ynv0ot1XbXH2YqiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQ2dvVemiZ5amkXSAndR4yOCvm4l6VR2x7DZtlpTSqL5XfjiW8bj6+4sb2bOjye0T
-	 v5MFlT5ttc5fnXUu/6a5VjWFUki/g+mL1reEgTFeKWIa6hZA6ClMTUUHuHYDP/ti34
-	 sC0RLorewlsCBfZI9mXzFvOAdij3g/fW5rTF0E7A=
+	b=VAQHj16ASGtawlkGob47yUKGzDYfdamH/3Shz6prg8Bmxx6lOfReuFxe1scsuFFBW
+	 xGwHGljQoUvVHxgVGyUWThKURWutZJ58yPd4aIq+fg17lfuljUr/u4/BKoBnMV/ged
+	 f020suLbejI2KfSM09fNAEtMs100yav+XUMDRfms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 301/614] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+Subject: [PATCH 6.12 101/354] perf lock contention: Load kernel map before lookup
 Date: Tue, 16 Dec 2025 12:11:08 +0100
-Message-ID: <20251216111412.275760078@linuxfoundation.org>
+Message-ID: <20251216111324.579909575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit c460192aae197df1b4db1dca493c35ad529f1b64 ]
+[ Upstream commit 553d18c98a896094b99a01765b9698b204183d49 ]
 
-fuse_ctl_remove_conn() used to decrement the link count of root
-manually; that got subsumed by simple_recursive_removal(), but
-in case when subdirectory creation has failed the latter won't
-get called.
+On some machines, it caused troubles when it tried to find kernel
+symbols.  I think it's because kernel modules and kallsyms are messed
+up during load and split.
 
-Just move the modification of parent's link count into
-fuse_ctl_add_dentry() to keep the things simple.  Allows to
-get rid of the nlink argument as well...
+Basically we want to make sure the kernel map is loaded and the code has
+it in the lock_contention_read().  But recently we added more lookups in
+the lock_contention_prepare() which is called before _read().
 
-Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Also the kernel map (kallsyms) may not be the first one in the group
+like on ARM.  Let's use machine__kernel_map() rather than just loading
+the first map.
+
+Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 688d2e8de231c54e ("perf lock contention: Add -l/--lock-addr option")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/control.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ tools/perf/util/bpf_lock_contention.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fuse/control.c b/fs/fuse/control.c
-index bb407705603c2..5247df896c5d0 100644
---- a/fs/fuse/control.c
-+++ b/fs/fuse/control.c
-@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
+diff --git a/tools/perf/util/bpf_lock_contention.c b/tools/perf/util/bpf_lock_contention.c
+index 41a1ad0878951..a286e15b16a4e 100644
+--- a/tools/perf/util/bpf_lock_contention.c
++++ b/tools/perf/util/bpf_lock_contention.c
+@@ -26,6 +26,9 @@ int lock_contention_prepare(struct lock_contention *con)
+ 	struct evlist *evlist = con->evlist;
+ 	struct target *target = con->target;
  
- static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 					  struct fuse_conn *fc,
--					  const char *name,
--					  int mode, int nlink,
-+					  const char *name, int mode,
- 					  const struct inode_operations *iop,
- 					  const struct file_operations *fop)
- {
-@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 	if (iop)
- 		inode->i_op = iop;
- 	inode->i_fop = fop;
--	set_nlink(inode, nlink);
-+	if (S_ISDIR(mode)) {
-+		inc_nlink(d_inode(parent));
-+		inc_nlink(inode);
-+	}
- 	inode->i_private = fc;
- 	d_add(dentry, inode);
++	/* make sure it loads the kernel map before lookup */
++	map__load(machine__kernel_map(con->machine));
++
+ 	skel = lock_contention_bpf__open();
+ 	if (!skel) {
+ 		pr_err("Failed to open lock-contention BPF skeleton\n");
+@@ -443,9 +446,6 @@ int lock_contention_read(struct lock_contention *con)
+ 		bpf_prog_test_run_opts(prog_fd, &opts);
+ 	}
  
-@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
- 		return 0;
- 
- 	parent = fuse_control_sb->s_root;
--	inc_nlink(d_inode(parent));
- 	sprintf(name, "%u", fc->dev);
--	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
-+	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
- 				     &simple_dir_inode_operations,
- 				     &simple_dir_operations);
- 	if (!parent)
- 		goto err;
- 
--	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
-+	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
- 				 NULL, &fuse_ctl_waiting_ops) ||
--	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
-+	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
- 				 NULL, &fuse_ctl_abort_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
--				 1, NULL, &fuse_conn_max_background_ops) ||
-+				 NULL, &fuse_conn_max_background_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
--				 S_IFREG | 0600, 1, NULL,
-+				 S_IFREG | 0600, NULL,
- 				 &fuse_conn_congestion_threshold_ops))
- 		goto err;
- 
+-	/* make sure it loads the kernel map */
+-	maps__load_first(machine->kmaps);
+-
+ 	prev_key = NULL;
+ 	while (!bpf_map_get_next_key(fd, prev_key, &key)) {
+ 		s64 ls_key;
 -- 
 2.51.0
 
