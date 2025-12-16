@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E3ECC23D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C83CC32CC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D85B030269BD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8466A304229A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E1F33F378;
-	Tue, 16 Dec 2025 11:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BF834B1A9;
+	Tue, 16 Dec 2025 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNDeG/gH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTUSMu8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEB9315786;
-	Tue, 16 Dec 2025 11:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0253242B4;
+	Tue, 16 Dec 2025 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884559; cv=none; b=rJ/IRqIyZREIevc71aqIxwaGgAutafSbNcZ+IYdwrGeH575ABksdXWfnG/7eUfGa3I/4ACF/kvgdhLrvJCtjYa8Shm+TDrllV/IyYNTOd94oOJ3U0A+HE5efscAstr4MEajTtz6Yb3l3/MEAQK55PJeO0S222vIal6Lu4WXyCrg=
+	t=1765888091; cv=none; b=l46kdPUj8PJLYFjFdNMNX9xALmeIQUoTiDOeyUpj1axYZZOOHuWHUoYDkIyLyqDuoKR25+kYvzieTMzKU7YZg9TwK29fkkemZDSlpjr1QsAwN0XsaS7eRTADFr9Q51hmR/v8V/vLpfadnqdbqCvt4nPkc+CK/ry2NWxqdH1hXso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884559; c=relaxed/simple;
-	bh=/MGKrzlRsXFOmRuMu4EnaA4y+2KSZIwUKfvjfJZMfNs=;
+	s=arc-20240116; t=1765888091; c=relaxed/simple;
+	bh=yYuc6CzmWMIXj2BTccJRA1dLdGGMljKG1ycna85TZ80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrzFQO2f+HhOd2363g+pqCQpbECJaJ7RbydhZKyxovXjbBibmtcvD2ULETRQgzdsjZP6XZXMg3UUKzTYTh2ZdHU6s005U7lvxGnoNROa3JX6YTvWMm4qOODVPYYJ6ldiBLqKNbj0weMuH2Ka7DXXVEDEXVIW8EKWm6J/cYXQMlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNDeG/gH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A596C4CEF1;
-	Tue, 16 Dec 2025 11:29:18 +0000 (UTC)
+	 MIME-Version; b=BKRHI2lLPK6iGg7gj4zKMHWKWPD0FNacSiwMbmBJQeD47eFV3ZK9oqRa3MdUzSbjSJGGSfzwCOSgQ6UKwSW47Gh23fg0EEVY1gOe0tZsEnuNrdKyb1Yrwqe2dd/BcGJeU/IMpcmi79slmXAhcf6SXmwGcveYbRvTvs/p0djCZa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTUSMu8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1715C4CEF1;
+	Tue, 16 Dec 2025 12:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884558;
-	bh=/MGKrzlRsXFOmRuMu4EnaA4y+2KSZIwUKfvjfJZMfNs=;
+	s=korg; t=1765888091;
+	bh=yYuc6CzmWMIXj2BTccJRA1dLdGGMljKG1ycna85TZ80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNDeG/gHbFyPjEQ79EoIOq2riRrOClrhM94Bw+N24fJRo8EI6n6SsOcGFE6hPdONs
-	 XplvUTUx3q1GOzN+M6gbGtpjnQ6OTeP7+mlLX2vMIS7NaMi28m+BH5Nv5ecpQixf6L
-	 fNW1peXMopWKNpaZPuJU3+88IGVfGSWeOD6GHGpg=
+	b=QTUSMu8K4FEvgRPj6yzMThhkWKnbiM/gH8d0PM3j/9IDrtQ0/M6sY9vsTA0FsP9Nb
+	 uK0iMH3H2Jbz0ipMdLppA4nNUzWAL+ErXU6Ekx/1tz7amY4Ce3WjX0brwHo//90ue+
+	 J+VewCLbqxwO6Lng4/vos0prkv493MAadAfdmqmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Guillaume La Roque <glaroque@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/354] RDMA/irdma: Fix data race in irdma_sc_ccq_arm
+Subject: [PATCH 6.18 430/614] arm64: dts: amlogic: meson-g12b: Fix L2 cache reference for S922X CPUs
 Date: Tue, 16 Dec 2025 12:13:17 +0100
-Message-ID: <20251216111329.250616620@linuxfoundation.org>
+Message-ID: <20251216111416.954466664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Guillaume La Roque <glaroque@baylibre.com>
 
-[ Upstream commit a521928164433de44fed5aaf5f49aeb3f1fb96f5 ]
+[ Upstream commit a7ab6f946683e065fa22db1cc2f2748d4584178a ]
 
-Adds a lock around irdma_sc_ccq_arm body to prevent inter-thread data race.
-Fixes data race in irdma_sc_ccq_arm() reported by KCSAN:
+The original addition of cache information for the Amlogic S922X SoC
+used the wrong next-level cache node for CPU cores 100 and 101,
+incorrectly referencing `l2_cache_l`. These cores actually belong to
+the big cluster and should reference `l2_cache_b`. Update the device
+tree accordingly.
 
-BUG: KCSAN: data-race in irdma_sc_ccq_arm [irdma] / irdma_sc_ccq_arm [irdma]
-
-read to 0xffff9d51b4034220 of 8 bytes by task 255 on cpu 11:
- irdma_sc_ccq_arm+0x36/0xd0 [irdma]
- irdma_cqp_ce_handler+0x300/0x310 [irdma]
- cqp_compl_worker+0x2a/0x40 [irdma]
- process_one_work+0x402/0x7e0
- worker_thread+0xb3/0x6d0
- kthread+0x178/0x1a0
- ret_from_fork+0x2c/0x50
-
-write to 0xffff9d51b4034220 of 8 bytes by task 89 on cpu 3:
- irdma_sc_ccq_arm+0x7e/0xd0 [irdma]
- irdma_cqp_ce_handler+0x300/0x310 [irdma]
- irdma_wait_event+0xd4/0x3e0 [irdma]
- irdma_handle_cqp_op+0xa5/0x220 [irdma]
- irdma_hw_flush_wqes+0xb1/0x300 [irdma]
- irdma_flush_wqes+0x22e/0x3a0 [irdma]
- irdma_cm_disconn_true+0x4c7/0x5d0 [irdma]
- irdma_disconnect_worker+0x35/0x50 [irdma]
- process_one_work+0x402/0x7e0
- worker_thread+0xb3/0x6d0
- kthread+0x178/0x1a0
- ret_from_fork+0x2c/0x50
-
-value changed: 0x0000000000024000 -> 0x0000000000034000
-
-Fixes: 3f49d6842569 ("RDMA/irdma: Implement HW Admin Queue OPs")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-2-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: e7f85e6c155a ("arm64: dts: amlogic: Add cache information to the Amlogic S922X SoC")
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251123-fixkhadas-v1-1-045348f0a4c2@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/amlogic/meson-g12b.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index 6aed6169c07d7..de1bd2b57414a 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -3316,11 +3316,13 @@ int irdma_sc_cqp_destroy(struct irdma_sc_cqp *cqp)
-  */
- void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
- {
-+	unsigned long flags;
- 	u64 temp_val;
- 	u16 sw_cq_sel;
- 	u8 arm_next_se;
- 	u8 arm_seq_num;
+diff --git a/arch/arm64/boot/dts/amlogic/meson-g12b.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12b.dtsi
+index f04efa8282561..23358d94844c9 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-g12b.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-g12b.dtsi
+@@ -87,7 +87,7 @@ cpu100: cpu@100 {
+ 			i-cache-line-size = <32>;
+ 			i-cache-size = <0x8000>;
+ 			i-cache-sets = <32>;
+-			next-level-cache = <&l2_cache_l>;
++			next-level-cache = <&l2_cache_b>;
+ 			#cooling-cells = <2>;
+ 		};
  
-+	spin_lock_irqsave(&ccq->dev->cqp_lock, flags);
- 	get_64bit_val(ccq->cq_uk.shadow_area, 32, &temp_val);
- 	sw_cq_sel = (u16)FIELD_GET(IRDMA_CQ_DBSA_SW_CQ_SELECT, temp_val);
- 	arm_next_se = (u8)FIELD_GET(IRDMA_CQ_DBSA_ARM_NEXT_SE, temp_val);
-@@ -3331,6 +3333,7 @@ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
- 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT_SE, arm_next_se) |
- 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT, 1);
- 	set_64bit_val(ccq->cq_uk.shadow_area, 32, temp_val);
-+	spin_unlock_irqrestore(&ccq->dev->cqp_lock, flags);
- 
- 	dma_wmb(); /* make sure shadow area is updated before arming */
+@@ -103,7 +103,7 @@ cpu101: cpu@101 {
+ 			i-cache-line-size = <32>;
+ 			i-cache-size = <0x8000>;
+ 			i-cache-sets = <32>;
+-			next-level-cache = <&l2_cache_l>;
++			next-level-cache = <&l2_cache_b>;
+ 			#cooling-cells = <2>;
+ 		};
  
 -- 
 2.51.0
