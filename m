@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6495DCC226B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC05CC3BF0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:51:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD09430316AF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A6E631157F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391C7341648;
-	Tue, 16 Dec 2025 11:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A7E34EF00;
+	Tue, 16 Dec 2025 11:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBKAB9Zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSngTtNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67356B81;
-	Tue, 16 Dec 2025 11:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7A34EEFB;
+	Tue, 16 Dec 2025 11:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884131; cv=none; b=eQGg5Lfih/y9L4hxVXoz62fQi186FEXbnkGvYG0mxAJ5hl0V7OWyGkeVJe+4lY8Lb9WaasphHitEvKH8U3oBlBNM9REm3hUKwFYXJy3aDMFNIhWzw+viI4xX5QyURec/3mh9sC2iUaFyQiiZRtIpti/2moys0tzLfUYJ7Rr0O6k=
+	t=1765885622; cv=none; b=VUo4FCYZfk0GZKP/35hcxBdMYi/5mRi64W+TZ2kc+Vnfak5n1kRtrLYqG4Erzq00/pbOVteH0P4GRYqTQNCmOrKTPW6g1CqETWY6ttfZKC3Yu07XDxSZwuR1JbZG2mmLFpz0nf/IUWYpnzIdkJBsJgl+prKumF/oIW8c+FqyHb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884131; c=relaxed/simple;
-	bh=OPQ9gSipo5fKfETWiCnyx8iJen4NkgilBHasUw4ipks=;
+	s=arc-20240116; t=1765885622; c=relaxed/simple;
+	bh=BIOfW6657/bLTsVSnjv5HS1iRtwJEegSEsEXH9jRFgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdLc4k0AC2MrovET2pKKO34iF3PfzLxdebt1BZA57OxFuZwCZEflH793U8MLE6V12APELLL1MaN5UIqHq+B0HRuOMaiVLnRN42y0NBLwaFZ3R4Sh5VEtSxQzhisk68bEf3n1z/DgzmAkUkl6KrOCbPSW8pEDvbJFyDmsZKL3cig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBKAB9Zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB5DC4CEF1;
-	Tue, 16 Dec 2025 11:22:09 +0000 (UTC)
+	 MIME-Version; b=lp9/CnZSYHde/Q2sLhh8GgxF0eN78Pfe4ZT5Mdde2sThiBchphN1FtpTB9XQRnH0XkPyqSkTQKPX8IBYW44hcSMjpY0cL7fQhq59XiDvH7ZGC4javKyWuFdfT2QbrhllSq8J5D5ihUrBcHKOwreqC7/3twPIhLMmgkhwGRWH4cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSngTtNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FD3C4CEF5;
+	Tue, 16 Dec 2025 11:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884130;
-	bh=OPQ9gSipo5fKfETWiCnyx8iJen4NkgilBHasUw4ipks=;
+	s=korg; t=1765885622;
+	bh=BIOfW6657/bLTsVSnjv5HS1iRtwJEegSEsEXH9jRFgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBKAB9ZkSNfElGxzzlD295gwxzzdRpYq1lqexVOCpFTNXBcJ4C0CixYcZVCNvnIXC
-	 7hOlckNqm+X14bdvU+0Ta8EiTel5IT+yynirxwVwGlChvy/T8uffriuURjAzBl/2Mc
-	 jII0uY1thGlhXfkOrPNYj+ct2GM0QA06EszRdkxM=
+	b=RSngTtNSVaz/xeXCYlOrmQEP7HncqNfAxAjJqzuhWL9oJ6tKTWH8JPtMK9TYTG9E7
+	 mTJKKZu9nsVzfgsVLLRTrzya0yEoYIljWIfYLUwSAA79DkdSC7yOExsc6JgEBQ1pAk
+	 EBhUvkbtApr1TJwQeJYLkvN4L8WJxJ+ChFUGz3lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/354] wifi: ath11k: fix peer HE MCS assignment
-Date: Tue, 16 Dec 2025 12:10:34 +0100
-Message-ID: <20251216111323.353468277@linuxfoundation.org>
+Subject: [PATCH 6.17 194/507] scsi: stex: Fix reboot_notifier leak in probe error path
+Date: Tue, 16 Dec 2025 12:10:35 +0100
+Message-ID: <20251216111352.538924139@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4a013ca2d490c73c40588d62712ffaa432046a04 ]
+[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
 
-In ath11k_wmi_send_peer_assoc_cmd(), peer's transmit MCS is sent to
-firmware as receive MCS while peer's receive MCS sent as transmit MCS,
-which goes against firmwire's definition.
+In stex_probe(), register_reboot_notifier() is called at the beginning,
+but if any subsequent initialization step fails, the function returns
+without unregistering the notifier, resulting in a resource leak.
 
-While connecting to a misbehaved AP that advertises 0xffff (meaning not
-supported) for 160 MHz transmit MCS map, firmware crashes due to 0xffff
-is assigned to he_mcs->rx_mcs_set field.
+Add unregister_reboot_notifier() in the out_disable error path to ensure
+proper cleanup on all failure paths.
 
-	Ext Tag: HE Capabilities
-	    [...]
-	    Supported HE-MCS and NSS Set
-		[...]
-	        Rx and Tx MCS Maps 160 MHz
-		    [...]
-	            Tx HE-MCS Map 160 MHz: 0xffff
-
-Swap the assignment to fix this issue.
-
-As the HE rate control mask is meant to limit our own transmit MCS, it
-needs to go via he_mcs->rx_mcs_set field. With the aforementioned swapping
-done, change is needed as well to apply it to the peer's receive MCS.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Fixes: 61fe43e7216d ("ath11k: add support for setting fixed HE rate/gi/ltf")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-2-da40825c1783@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
- drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/scsi/stex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9521fcb2c11ce..dd5690a4996f3 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2512,10 +2512,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 			he_tx_mcs = v;
- 		}
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
+diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
+index 63ed7f9aaa937..34a557297feff 100644
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -1844,6 +1844,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_scsi_host_put:
+ 	scsi_host_put(host);
+ out_disable:
++	unregister_reboot_notifier(&stex_notifier);
+ 	pci_disable_device(pdev);
  
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
--		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		arg->peer_he_mcs_count++;
-@@ -2525,10 +2525,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 
- 	default:
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
--		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		arg->peer_he_mcs_count++;
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 6f1fd7d661a89..3b41bc5b125f4 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2091,8 +2091,11 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
- 				     FIELD_PREP(WMI_TLV_LEN,
- 						sizeof(*he_mcs) - TLV_HDR_SIZE);
- 
--		he_mcs->rx_mcs_set = param->peer_he_tx_mcs_set[i];
--		he_mcs->tx_mcs_set = param->peer_he_rx_mcs_set[i];
-+		/* firmware interprets mcs->rx_mcs_set field as peer's
-+		 * RX capability
-+		 */
-+		he_mcs->rx_mcs_set = param->peer_he_rx_mcs_set[i];
-+		he_mcs->tx_mcs_set = param->peer_he_tx_mcs_set[i];
- 		ptr += sizeof(*he_mcs);
- 	}
- 
+ 	return err;
 -- 
 2.51.0
 
