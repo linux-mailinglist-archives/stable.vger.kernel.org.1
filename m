@@ -1,98 +1,82 @@
-Return-Path: <stable+bounces-202718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCA1CC47C3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D0ECC4844
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E370D300CB99
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:52:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A2CA30C12A0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A61320A1F;
-	Tue, 16 Dec 2025 16:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C7D1DE3DF;
+	Tue, 16 Dec 2025 16:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="BhJHwkLH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQJcmnep"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210A5254849
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 16:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C1E2882C5;
+	Tue, 16 Dec 2025 16:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765903935; cv=none; b=elsekq5zQ5BmyhzUw+owRugYB84ZUyNSV/T1+uiQKGpxchIDw7QdLwJ6cf6oXJUgFIx+8p7L3dOP6FSsZGb1lau5JQmBt1xsw9CvAOCT5HCOjP/TXiYFwS3TVMmm6N9hmSyONae7Ddnh64po9COOrdbAfSFabsVCKwoKpH7IXVA=
+	t=1765904183; cv=none; b=obEFzbqSWtTskpQc/EO6vH2KBBWX30ih14xUEvpV9CaENvY2vdks74n5rSCbROyK20Jst0H7NhQItOZe5pGcWGihS18jVds22zsY5QthOhGM53dJ+ShacQELcZ7ftazPvfLgWqfr8TG4WgcJD6B8vYMVbQaS+JrWhl7o2lROj50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765903935; c=relaxed/simple;
-	bh=FwjdDS1Sox44VxEqtfgWxa7v8a0DK1bpiJ12VqO95CM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rh7uqIcdSugSUW8tvDTsXp5ZH+97AqAooiKWdXyYSIDtzDBcWA4Nn2YwAf3QEBTtN4yzuLdDg0sbcUIMmsxBv8XMIsZZSzHJC31IvxTZRvTb+kCkLW5ZNTL8M0DhEja03aIbM3h+q51OeBI4088iJJyVhjpNGZ3/sUtYbm/+ef8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=BhJHwkLH; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f2676bb21so53230955ad.0
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 08:52:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1765903931; x=1766508731; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=044jJ5OZga77MHiu5HO2sauTgRDM/5MaBSigPsMPKDw=;
-        b=BhJHwkLHOhlFS6Dx98J1u43Lzd/re3cOlPZjziy0FzyR4uvnUt1YKI6NtmGLXcQMoQ
-         d4eljM4iYMVBHlk8BsoOtO3uDTIyQQ7aByRctEDVvPULdYHSQ7EODXrTIRnbeMIIiM3P
-         qpRqyyBkqUmwCyq7bxpPuNBBivMKPV5Zv199klsKNGFpyREFxt/7h3rJcYXI6BycHrTq
-         IskzEDNXPKSE6Bunxxf2hguGU+yXaGUD8A52b0DJXYApAvy6u0ok9HrB4iDIQ0Fy7nVm
-         +KGhaTcnabxQnjblYc7TRLeI4PYcfJT7hT4fQhyp074sFxbSvDahkP6UfxBX8AaeHjZy
-         XuJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765903931; x=1766508731;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=044jJ5OZga77MHiu5HO2sauTgRDM/5MaBSigPsMPKDw=;
-        b=nUBO5mYMz1RdPRIlTdxfjs9zyx79mLG6MZiJJAbA+6hfRduQYtEhtV+SudEIAxy4Rz
-         8mZiq2QPTgM+3ammr3nmhwiaqr2iQCwEFRDxVPdEYOlSkHcOP6yxPSId+7jbN7xK8JJp
-         5Ek5BLFxHx/0tvs6gJuG7wvgHTTiZnby76nnrNOYtca1mCWhzGAvq4fkfkg71fBl7o86
-         X7C/TPV1px0KvW7FZP/5DJ8kApuGHBui7MhWFBU/2QAdkw0VJIq8nxWJ8eMgo24+lC8l
-         aLlvaKDlg2T/gbqtC23eusedNV5ZKq3eRIw3LdugOpZx5MHRVVDv5HaWbkoPJVna2mqZ
-         lM+Q==
-X-Gm-Message-State: AOJu0YwSj48Aa4rjFb7irHBu7pUqBBlWvG7q7Ivi4d+eztYgg2+bp5eI
-	LNFyGnofEnmrXyEoMAgakQl9IYq1e7hR4+dExXwYZXGjc509o+7GdZM1+T8e+0YEVA==
-X-Gm-Gg: AY/fxX6q0+IVYnXoNjRt4LKtMNLrn7Sugwr12zDBxkzkxqmyniSS+c0kQQKM6+4DQg+
-	LuaZZl8T7vvQDbOxTsyy1Orp9m0r5APpYq+xTQtY5JhsL0T/NIUklnkeOm4e14yKvhfCfbd46JP
-	EVPGDs0Z4GIfvi1AM+Hocwm9+8Dsh4xDJxHc6NsziJWGTW8/v6bs5PlgYLFEM/8PgDa5vFd+Zhb
-	9krlFSeggJnbOZmXAG62ktrScHCzDdU+54gd+PYhRfn5D4Gl+lh/pfAQ7+nYchyAGLCsRTHHrdF
-	DHZgogwW1AtcqAEPQrZGwlIQ0Cf6qPF82ohHva32Np4Dix+/2y7I+Pvv5A7jPp2kNUBhRefSlr8
-	+ME7nQBul20bmPGnHlbag9M3PIKf9wkRULZ5Kv+Y6GtXner43dBp0zIChBlISfHw7M9HYzEYojg
-	ze8n3FGPiym0FbAcIAm1trOHaqk4StwEqN
-X-Google-Smtp-Source: AGHT+IEpWCbeLGHpAd3C/0Y1ZbY5B1k0NJpI5pCZS9qiA4FHSv0ZUXZnpihKTE1T/asTYZyHKQFkMQ==
-X-Received: by 2002:a05:701a:ca88:b0:119:e569:f620 with SMTP id a92af1059eb24-11f34bfac4cmr12209335c88.25.1765903930546;
-        Tue, 16 Dec 2025 08:52:10 -0800 (PST)
-Received: from gmail.com (ip72-200-102-19.tc.ph.cox.net. [72.200.102.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f392500cdsm37342761c88.7.2025.12.16.08.52.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 08:52:10 -0800 (PST)
-Date: Tue, 16 Dec 2025 09:52:08 -0700
-From: Will Rosenberg <whrosenb@asu.edu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Oliver Rosenberg <olrose55@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.18 447/614] kernfs: fix memory leak of kernfs_iattrs in
- __kernfs_new_node
-Message-ID: <aUGOOLGP84wGy6cM@gmail.com>
-References: <20251216111401.280873349@linuxfoundation.org>
- <20251216111417.567991274@linuxfoundation.org>
+	s=arc-20240116; t=1765904183; c=relaxed/simple;
+	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UDUbuoSrtmNOof/5CMZuCYI3JrSAFJPU+s9qk24fy2va2p1o7GeRha+bEPHJJ2fitBDIyqH6xvaUsU2ETJdUthlK+24JpWIzTodHRG+D+z0JfEpFhCjxB9zhHxxSEiLMUbrICygvGL7ba22/wkq19xfKTBZNDZPJnbntzl3HkpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQJcmnep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BD0C4CEF1;
+	Tue, 16 Dec 2025 16:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765904183;
+	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=tQJcmnep3X5OaTr7M8sl6sAneglR3sSnvztHM/lNU2JFpXSUR+VnRAysvJvxidnbW
+	 hGKH807FiJvuUhcRjyNeIIsZMjrnw+x+agK/YzR8ndjQ5kEFjqQePQ3sW4PaBc9pJd
+	 RAV6s/I9rgpSAd0/K1/tdTX6jdPH4Cj4bSQRSqmxpKZ8AJLnd3pQ26tiVuW/d/tP9S
+	 6tO7ZHHwJda28Lo4ItYxU5ryznvIlh1DB0RyK1nLE7c8vITsg1xqawZ6mbriuva3xL
+	 9/U/Eu+W6lTUg4ky064k5q4nvMSLo0tmshUkjxBsDYTGFBq20mWL5zqk1VNwPAf+zW
+	 GEhJ9zLFVWiLA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Frank.Li@nxp.com, Zhen Ni <zhen.ni@easystack.cn>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20251014090522.827726-1-zhen.ni@easystack.cn>
+References: <20251014090522.827726-1-zhen.ni@easystack.cn>
+Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
+ alloc_chan_resources failure
+Message-Id: <176590418161.422798.10654079302568628725.b4-ty@kernel.org>
+Date: Tue, 16 Dec 2025 22:26:21 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216111417.567991274@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Tue, Dec 16, 2025 at 12:13:34PM +0100, Greg Kroah-Hartman wrote:
-> 6.18-stable review patch.  If anyone has any objections, please let me know.
 
-Please see https://lkml.org/lkml/2025/12/16/1248.
+On Tue, 14 Oct 2025 17:05:22 +0800, Zhen Ni wrote:
+> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+> the error paths only free IRQs and destroy the TCD pool, but forget to
+> call clk_disable_unprepare(). This causes the channel clock to remain
+> enabled, leaking power and resources.
+> 
+> Fix it by disabling the channel clock in the error unwind path.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
+      commit: b18cd8b210417f90537d914ffb96e390c85a7379
+
+Best regards,
+-- 
+~Vinod
+
+
 
