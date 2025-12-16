@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-201523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE958CC24ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF3CC43F0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D540030223F5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60C4D303879F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C21E34321F;
-	Tue, 16 Dec 2025 11:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11221358D08;
+	Tue, 16 Dec 2025 12:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYP63Dlw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYZockUa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FFB3314B4;
-	Tue, 16 Dec 2025 11:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD3358D03;
+	Tue, 16 Dec 2025 12:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884916; cv=none; b=dM4IPBYi/M96pZuc1BvO/E9aiVO9YagJWWvHjNlIlQCw0pmkDZf65lZveOxNQGB/5mLj3wgENE2qv3tp4Xgae1XhqlBQFq4EARbFYwMeZ2GsZbIhGDrRjP+fepCwSKUzjsTIUeVFECFKPqTedTKhYY2IjEUyB8Xsv3VBoqz7XLM=
+	t=1765886639; cv=none; b=GGmnB9LDgzt0ZTRSuWU9/KqVgGxU5SYutnSAiKO9Jufi061Lq40B7Sk++RhdEtKSICm/WEiF4OO2Kq2bIcK+MAUKniBNqytNNR7lIpQuGIlR9UWt04jAbnNDby+oEg84Ya8+GlAK8BLQPVRpdV265ZE+Ulb35Tth3PdxfIbFC8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884916; c=relaxed/simple;
-	bh=lZZdmZmW+77EILlD8BqNZCBfMvcuSHpMg5xgz6Dk/qU=;
+	s=arc-20240116; t=1765886639; c=relaxed/simple;
+	bh=1axajyM28XnPRYQLBVbhJFtDiSUc1GtgZrAy8z1yI4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGNz3dsOO14+/ZIWnu8XOsP8nC9to74P6BoDyws5y/v1JdgjVnt/9h6zzAt23jlhdBs5oP0ARpMHv8iwz8vU14PupZ6njSLJkpzsJVP0Fr2+qhTgNertjr90HoGWtdc1FN7lDmEmdnx5li8y9NwfDDndrjOEs6k56sfofv8vxy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYP63Dlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57696C4CEF1;
-	Tue, 16 Dec 2025 11:35:15 +0000 (UTC)
+	 MIME-Version; b=eyOp1RZovZjHTkQIZs1665gk9XmI5sCxsGZAyrJ2BPWthsE2uY3dhyvKyc/Kih7424KDXL4YTHx46iCeT1+l/tm6VlXCVNwo/N6hy8AMfAjBRhwGc6RKMeMUF6o3U2+PSe1fp0RGFUW5W/m9KbIwWuKbQqv6WO2ysumCPdl0iWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYZockUa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DDEC4CEF1;
+	Tue, 16 Dec 2025 12:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884915;
-	bh=lZZdmZmW+77EILlD8BqNZCBfMvcuSHpMg5xgz6Dk/qU=;
+	s=korg; t=1765886639;
+	bh=1axajyM28XnPRYQLBVbhJFtDiSUc1GtgZrAy8z1yI4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYP63Dlw3SvQ87sE5KDyIKgdL2rIyhLymcVRWnYntmsvhZaWiBypovYilUXUWD5m1
-	 toZM9Fk2GPMeM+eLqcq4V4kVnFQ2gH/cUZASIyveyotHtY44Ci4eDExZDslq2zEbNR
-	 HOS71Cxb+ySfs6qRldBJyqDoPb9NYhRJkYjopwOU=
+	b=FYZockUaMU0vznqFAaNIgBrNLRLCN4XXAHmLofLxWLCZxeZZZIqX+KnWtt+jts5zq
+	 zt49o6ssed6QLdfmRZn85kCsr6T+W0y4weNyhprXAG0eeOuvpbqtc4Z5mRrg+lpYE3
+	 aC2Ez1JhLpoYUZLfm2p1b8whjKo88LgVK27pxJ34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Israel Rukshin <israelr@nvidia.com>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
 	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 337/354] block: return unsigned int from queue_dma_alignment
+Subject: [PATCH 6.17 463/507] nvme-auth: use kvfree() for memory allocated with kvcalloc()
 Date: Tue, 16 Dec 2025 12:15:04 +0100
-Message-ID: <20251216111333.117339143@linuxfoundation.org>
+Message-ID: <20251216111402.220337361@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Israel Rukshin <israelr@nvidia.com>
 
-[ Upstream commit ed5db174cf39374215934f21b04639a7a1513023 ]
+[ Upstream commit bb9f4cca7c031de6f0e85f7ba24abf0172829f85 ]
 
-The underlying limit is defined as an unsigned int, so return that from
-queue_dma_alignment as well.
+Memory allocated by kvcalloc() may come from vmalloc or kmalloc,
+so use kvfree() instead of kfree() for proper deallocation.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20241119160932.1327864-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 2c38ec934ddf ("block: fix cached zone reports on devices with native zone append")
+Fixes: aa36d711e945 ("nvme-auth: convert dhchap_auth_list to an array")
+Signed-off-by: Israel Rukshin <israelr@nvidia.com>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
+ drivers/nvme/host/auth.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index cd9c97f6f9484..11d0a1b8daa2c 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1450,7 +1450,7 @@ static inline bool bdev_is_zone_start(struct block_device *bdev,
- int blk_zone_issue_zeroout(struct block_device *bdev, sector_t sector,
- 			   sector_t nr_sects, gfp_t gfp_mask);
- 
--static inline int queue_dma_alignment(const struct request_queue *q)
-+static inline unsigned int queue_dma_alignment(const struct request_queue *q)
- {
- 	return q->limits.dma_alignment;
- }
+diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
+index a01178caf15bb..8f3ccb317e4de 100644
+--- a/drivers/nvme/host/auth.c
++++ b/drivers/nvme/host/auth.c
+@@ -1122,7 +1122,7 @@ void nvme_auth_free(struct nvme_ctrl *ctrl)
+ 	if (ctrl->dhchap_ctxs) {
+ 		for (i = 0; i < ctrl_max_dhchaps(ctrl); i++)
+ 			nvme_auth_free_dhchap(&ctrl->dhchap_ctxs[i]);
+-		kfree(ctrl->dhchap_ctxs);
++		kvfree(ctrl->dhchap_ctxs);
+ 	}
+ 	if (ctrl->host_key) {
+ 		nvme_auth_free_key(ctrl->host_key);
 -- 
 2.51.0
 
