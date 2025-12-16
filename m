@@ -1,251 +1,381 @@
-Return-Path: <stable+bounces-202727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238AACC4D9B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:23:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AE6CC4E64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 862C03031E72
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:23:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8294730CBDB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69BE33DED2;
-	Tue, 16 Dec 2025 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582DB330B3C;
+	Tue, 16 Dec 2025 18:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=j.neuschaefer@gmx.net header.b="Uv3k/uM4"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ez5dB8qa"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazolkn19012086.outbound.protection.outlook.com [52.103.20.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F385B339B52;
-	Tue, 16 Dec 2025 18:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765908853; cv=none; b=bNiCzT8NBeXYY3nGxAtU5X1PcybTNNUXZCmOnHQLYo2lQHGKIvS/Ja+7Sdu9gInLJBqyoUtqguGNZf4NBVa7nnOfhFEZ6YS0LbPDvr6JcMckVd8Xga6sNmqPGsAiVOCZmIRPE+LPI8krRuM8UpQk96/2ZL+AsxI9KHzLC5On1UU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765908853; c=relaxed/simple;
-	bh=b9AhQQflDubLSEkJ9VYXZBfb/K2hrR04XJ51g2a5Xbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A0uOXaXCaM4cV+AR3ddpAEpQLozP4PxC8qEWhlfQWiBv5L1DrtuNH6ZXCp8CbRdR5LUVJwNjV4i2Kgvlc5QDs73wNMZG5Sv/OlxXcf9rVlc2Q9prLgKcM8+KO13GNYPxwLC/8myWiCUS1BOhk4toJN4XSSsYoILHUlWnSmpeGHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=j.neuschaefer@gmx.net header.b=Uv3k/uM4; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1765908837; x=1766513637; i=j.neuschaefer@gmx.net;
-	bh=L8FQ2rgVLCdkD/oF0eHdo9FUsYW9diG97aFUGJ99iGw=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Uv3k/uM42oIPhA/ZvpsLkiDMSos0h+YodmndgiX00sDnjeSmatTVNcmN8cOc1Pob
-	 5w8k35zIaCjmyImzopDNfOdTzl4Q+Cez891p1HrnqdWdvCf8UUsYDJWfuwH9MfeP1
-	 oQaB8G1OGjx7Agg8AfGJjufj9KySKghgkZHQgwHxLefMqCfTh7PxfUztsJ/8xjXGF
-	 ygCw9DNzHRteol4H7LF1iSzWwy1yDtdTytXRThC2lbPJxsEupcy1sDE0xaBjqDEoD
-	 wigarnoODsqMOifxgVI6Ddl0d7Cl9WawjqQ6IqBz208kYiOY7Y6iJnFnXqJSbPwH5
-	 XtBCJ3/gxDFAeISqBg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from probook ([89.1.209.246]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIdeR-1vjaBE0Yyb-0070dz; Tue, 16
- Dec 2025 19:13:57 +0100
-Date: Tue, 16 Dec 2025 19:13:56 +0100
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu,
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com,
-	j.neuschaefer@gmx.net, carnil@debian.org,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-ID: <aUGhZM5pl8JKBGvR@probook>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EDF279907
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 18:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.20.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765909726; cv=fail; b=E5lbc535qkcrsjiREmLjReplQ+AEMrC7Q2fRPsecEQe0SV4WKWNZdHM4J6l2k0Twx7DXulhR2/rkYkw/LvTYXqc1aSSS9KZHpqZ5jfNZcFk7MdF7+PLPNGiZf/7H/z1LapF58BLmFdeEoY7rOF4FdCbCJfwnQyyF5zqkRJBzQ7M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765909726; c=relaxed/simple;
+	bh=VETSTSshpBVpgQ/wu9Sl2M0XExJ1CEMyU8x1CT0rTvk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=E7JJcyAC5hA+mBNRb3Ph44mduDw+Yt/usfQgE3T1zBXWRFDuHgZDq86S3WLm+6z+p8hNFrDEqjn+y3lrc1EVcRpoDu59PMPlgLaGqXpgLWhL2aK3YDH+4beg1uBZqljlLZvpV2dl88G0v04HjP1vqA74fbvHRy3/bdblCbmqapQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ez5dB8qa; arc=fail smtp.client-ip=52.103.20.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VEWKY0bYCaahS0iF+FJt9p6Hcu1gZXb5KG5RtIyQPf7a54W2wBEo/bkz6w9pnNlDEEhMs91MhGZ3GL9sRDsLLDmgjIiNEwiZh2EJ+wV600nYhDR0qq6m9RAGht+i3ZaKWB60cPOcY/2bfpxfFRpG3RAgQgyQ2nDaPbUM/RNnBAYfrlI874ShpW8J4ffcqIW6XZiZoGEmIcQ/IMAQM1vEw7D/VLhpPH2P8vFt/BdUGYTNM2BsuuyvY7O8RFwmMPBQTE4tWm/0NCrnvr+Gf9KA4hbZMtnb5hvmoazXnFRKfY6sOpo2dCUaDJmrrsDek9gMfOp/YUXW3IvpSgIqGWqkNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=glrFbcAhaIeSUkMv36FMYtKt6dPZr//y60zB+9RR3UU=;
+ b=GFKPiKeDRF5ba5E/Lfq+MqkA28PB9KQBm6z6rsZVTXHRON8nEFLZGPKGwA1CVuUa150Jt7lJyYH3K01RLlZaPkX5/HtFg3WuN8XF9WMZo14PjMBmcHrOrB/gr8zRMeEtpT4DownWOEguGt+CnKh/56DmMIZT+fBdSPX6/YYEe2w2TGj5qAKEaotZAPRSppxXhLva2xMLhU6e8+hW4Evv7TZw48HvqHvnosxEZlEgJboaSDdERauXC3cbAUvEygqZHIgYXsNbWfaPnwdYwkQ8/EX/pBxUCNWlJUSAPI4Cw3gGZo0TBex4xPNA1BlHbIOUBZkI/GXzdquDvROQTxtqAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=glrFbcAhaIeSUkMv36FMYtKt6dPZr//y60zB+9RR3UU=;
+ b=ez5dB8qahPOnnDuo47spzU2qnU4FiunZ34BJJ5cMlKbX1Mm35oYfGXcZGj1Rn9qw+g6aO09EjrQ14uBIpRMqfoSgylH5gZDKCzPvBsyKqZ8kRgdzzssHpCk0J8a1oS4XO5voZUo7VU/oBT2qSIGRE64eWAjpqWg6hl7jmhzmaInKXjmG5vfWEgXpCpehfEM+KlJsQHwMfhTx24L2q5VpXVlvlYe1P+mdSAngNbsSeMzy9ZJinFp4FWa+3wLOsVLxpjLdBg62eqGXaqrR06gFuJRm0KWxDJ8B0ym7aUfnIbLJVjSg1Lh+5cl8ueD2Hm3AAfEfKCy9/bcAAgCaDmdbBw==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by SA2PR02MB7548.namprd02.prod.outlook.com (2603:10b6:806:14a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
+ 2025 18:28:40 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%3]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 18:28:40 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>
+CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, Roman Kisel
+	<romank@linux.microsoft.com>, Alok Tiwari <alok.a.tiwari@oracle.com>, Sasha
+ Levin <sashal@kernel.org>
+Subject: RE: [PATCH 6.17 247/507] Drivers: hv: VMBus protocol version 6.0
+Thread-Topic: [PATCH 6.17 247/507] Drivers: hv: VMBus protocol version 6.0
+Thread-Index: AQHcboJfcRXshjpiKEmemavNMK7Qp7UklcJw
+Date: Tue, 16 Dec 2025 18:28:40 +0000
+Message-ID:
+ <SN6PR02MB4157943A3FE6E7BADC7DF1F2D4AAA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20251216111345.522190956@linuxfoundation.org>
+ <20251216111354.443732020@linuxfoundation.org>
+In-Reply-To: <20251216111354.443732020@linuxfoundation.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SA2PR02MB7548:EE_
+x-ms-office365-filtering-correlation-id: b48e7317-6828-4a9d-8cae-08de3cd0ef84
+x-ms-exchange-slblob-mailprops:
+ AZnQBsB9XmqhcEBlXno9HJGOoZcx42eNuEN8y5bVn1aBWdDU3BxVulh0n3mdAO6RQqLgkJOyQgtUKiIgo8mi95N4E8onBkG2aPFxrGCK99oV8HOjkJEfKJC0rJw0adlknpj6K7Q893NWAO9ughdx/eT8cOq2DVLg9p0WtXRKujM1zUhyRlEjlI+pBjYeVtvQnmRv0Qpf5aKvImeu4DUEzBa4913+iIs8313XRfLJSpap/KUPb8U/B9IRddpjrCVg3Nspl3ViopvFHVt58tS9J4jU+ULlT+EDZt+9Syyv4qPeVVXqRnNsYJWm1H8TCEkHMMSI02ejYZobPKNpmczrFgyB4k2rG/Kz4ehfH1dwu7zirjXxLOLuHGv8kazhZwt9qGuMJZvsUWiYCRM9ax8bo2bIqhGPqTYuYZXlX2EoMgzIWMHeRHurt0TksRAXOvDRuq+XQmPWXhQZNKZ5Cl4g5VsBidfR+Us80Bl8c6xA/VpRqdkDwHgxkQuB5+5lAP/nLcVnxdqlcXNNnfnBdFjNjJ2emhNrHlfbmE8zNtqDsdTAx24ZnPs8AXnnocfGdLHYDom5aDKsvs5m0mMfZ2yTeLwSOsjIMOvPz7yFraUuO8Q5A5faKJYtUdu6mhXJy/3NpMjyeKqnA6/gfXhgj8nUsSXGSKX8aXDvdMycs5giGTrHFskKF409Lo/sVYSrx6QDd1DhfjouaFUm/UgoefznYYaS6IJPcSFJP1Fpoh1AKtbCrXJdbdq9qy9QahQKrXZJguqnEPKy/5Y=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8062599012|31061999003|461199028|12121999013|41001999006|8060799015|15080799012|19110799012|13091999003|440099028|3412199025|40105399003|52005399003|12091999003|102099032|56899033;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?3qYfiVfErrH9nJ8AyLBqXZi0AmRGouOfy5LiXX/mBXQD8195QayFKULDE7z6?=
+ =?us-ascii?Q?PqF33F/Tc7k28rr9CXAT4S4rCURtrBbn3Ow+15u8pK9GMJI7aPew2vLZxQmW?=
+ =?us-ascii?Q?kVIPNyKZJg8bCb6kHpuZploB9ZdryD8QFJ8TfxlpdvXodleQn0DOif5pnpC4?=
+ =?us-ascii?Q?op9oBXleTl13pRRjEcOGKXzkAFt38bcDgrVLi4kfJrqPIm8QbLrA6DnrcMLK?=
+ =?us-ascii?Q?MzDVMsF70FUD6qtyoHnkNUinnTlR4fJkw7AOx1BMZZA6YOyIhmgcntxO6vht?=
+ =?us-ascii?Q?+HN0wfaTpFB7DekgpAnDta+yAyJeHwcJVRowPii/DtZNViN8c67hPxmQdhCI?=
+ =?us-ascii?Q?TKp6deCLn4cugPYKm9q3QF2VOEqHhVTFyyhSZM42S/8rREye8+ZN7q69Djsb?=
+ =?us-ascii?Q?skfrJY4rg0AiamVLUqBESUsAQnnqvuxqGEWokan3+gqTIENAFeVqx1Qk9zQO?=
+ =?us-ascii?Q?eiFChjv9pQwESBJHR0EelJcHvdv8GzEOtE/LbIxBX6gFXgc4N/Cd8AAAVK/0?=
+ =?us-ascii?Q?hC5UAcI5MOa4QSSL6CX2cbqgsyS2RPoJknx2qabxqwIW+6he0AvJFX0IScLb?=
+ =?us-ascii?Q?WyVnBKH2sEV5Q4/54vKA2+dbyrfX1yNy2igyQcybcbsLbIt2ng7zpzwCDchM?=
+ =?us-ascii?Q?p3qwqHmw5DugM1rzaRLT48dU/2YU9rbvx8En0h5wBigd+ZSZKsfyrs21Nim6?=
+ =?us-ascii?Q?JdkyrJkazTpmymA0NYjxc6n4jvy7y+0rUbrG/0BzZUthxkbyReOABgVd/fE9?=
+ =?us-ascii?Q?riwzFjmkqNI6fwZU63uYcA82y6hP/9dNCPqO6Nkk4jrd8mOGDnM/awLw6GLw?=
+ =?us-ascii?Q?a6tlWxl3TraSp0nDnY6hCxFRfQK/13IIxLGIh19jF4xjmrmhwEgZ0CE/cbVR?=
+ =?us-ascii?Q?gKYySyyxe6qAu4SSgjYYHhmPA1Fk4qA+I5aWIKX/94EMut1td56iusYmgJks?=
+ =?us-ascii?Q?vBqnr9D+h5Ld1tUuGcak2xqn5L1klqqhlmC94PdeWpf+MJ+0lpEc10fawZTw?=
+ =?us-ascii?Q?rhKz1vXBByrOog8gGjmui4ySHc58RUb3XfqTruqoAXakabYwQfsmZXBJK4j9?=
+ =?us-ascii?Q?1EXiNvBNgSyzQt68nc+UsFKWRkmRkL+jy6E764CrJUplcLQr2VfqX6tK8D1o?=
+ =?us-ascii?Q?rtYJffmFv1pwkdV9ykMaxNpEwFM1J2VjZj2dE1zEkPG2ZpOHRnrb97mOMY9v?=
+ =?us-ascii?Q?h1xtwD45OGgvwPFCzfYAPH7IDYLQajD5n+SXU7GXHGe41WJXUCGBDBvwdsPZ?=
+ =?us-ascii?Q?4Ksjh7GU7dWY6uPa14UQM79IrAfzhziDTQ8SfytZZ4fzlIGIf9iCQ1h+zvWj?=
+ =?us-ascii?Q?l5+2lgRH9utmiy2/Isywwc33?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?EPqk/4CwwVQpn9OcTRRigEmGD7S9bSXaSCAGxrFBRW5VlKX7elktp4EYsGEF?=
+ =?us-ascii?Q?4L92hK/spJdf6yCO9dH7CVwFK3BqrpHv+yT6Np4L7NOQsvVmpHJqxv/dL+Vv?=
+ =?us-ascii?Q?a4A5p15tTkyurJOvo7Q4uRWbSZu+CjcxB4GB34ogVM6GRfaOIQhlw/flYjIC?=
+ =?us-ascii?Q?kJME33CQRh05iNyHIYgZfXBqnimgPtzfrpj7BAuSfuazO994JEdIrvHrn382?=
+ =?us-ascii?Q?JqFmlNtEfDGFCdQgaTh8YDcyeSxH3TmTXu0oMWxF2goB6/DZ0AN3FPi3FJdT?=
+ =?us-ascii?Q?iJTLv9wSFajBvzjiP/E5YLTnNIMqGUGArW4LopsTccucSjdeeGYtPfLZnZJP?=
+ =?us-ascii?Q?kokV4B/CBv27mlZE1Ycfmi7tBYME8TD2ylSlpLeFJmsQNqdhr6lcWBgrPODl?=
+ =?us-ascii?Q?A/ShIIlZnPF0VdORvUn/GAGD3ym7Hmcz0mmoIVhS2ZjOoHKOr8y+My7FYyCx?=
+ =?us-ascii?Q?qAapn7BKtf7bs8bcbq5Zq1rIBoe9JKHRRkIsfay5FYkX1MpJht/6Nlvzu1g/?=
+ =?us-ascii?Q?dXxm2jN/97In7d46+0XLWedcpF2zz3GbcQb4g0RM7sd3kZoM0QXpAfYu38AJ?=
+ =?us-ascii?Q?0EOnhksG6+0PgnmLQSo6AkpbcjJyV4ECHOKKxIZctlcoZVLs8I5ULOyj98gB?=
+ =?us-ascii?Q?36BM5dtqw9jveEgjvd3cwm524U7I8usAzdkjtdKEvI+Ez7663629yHx5zRig?=
+ =?us-ascii?Q?xK4eJVoGmAV3rLCiCXayFj7QsscV/fuzS3VonJD2wvk5lBTvFBPkTo7ueBCF?=
+ =?us-ascii?Q?9+tYN6rNUChl0tIf+X554d1C7tUDBF0/V89CVWWvUZVHGeQGS7SoAFCGD7QF?=
+ =?us-ascii?Q?IUDcAkpn6fsYHgAvC9tyjFiq85N5JdqrVHn+1/OmGnOQLMA/K0baz3rGXbga?=
+ =?us-ascii?Q?uVdWCQ3ZCz7esF9M6Nah1mYjUPK9/A8WBPshg6g1PscyU/3clgV3cpac756d?=
+ =?us-ascii?Q?Qw1MkBYKke7fJfcj2i/DCVTGefMx+lOlGct8JecMWPefaAJXcCBZ3yChUSnV?=
+ =?us-ascii?Q?jkTp2wbzziD9neCuZXBHNW5mhzBbbIjlkJ2kUYRf7f9eYCZUQKkjgMPzF6KI?=
+ =?us-ascii?Q?kUSu96gFfvllIWY/oh3eoGjgf/C5nj+cjq5rzvWjsyQAtme4VOhYTy7kIYXa?=
+ =?us-ascii?Q?rMWXVfNbOnLOSw5byfMXGX5Z/TdHmUqxR/EQXWsFLhGpX0QPU4BnFgYpYPZV?=
+ =?us-ascii?Q?4GuVkeblWyEHBOg3hHSPzUvThTAc1NShcfsQF7MhXaLRr2/XIE8D+VHjSuw?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
-X-Provags-ID: V03:K1:2CwlOGn9Hl+M3/cVdNFnPEX6oSIqboEhfldkkQoVU/NHkdValS5
- m7OW2RgwykwP8c5uHHAfFrsqJ8uWwqKrVxoKo/A9ykHJ5Uc46MJzBw0L2GuRMJjqVMAFoRx
- /+1xiQXhpPQmIduaoaHFDhp0e2Ii9rAvHAIFGdJo0bJrLqj3aZmyeBpzcvCrLL3JewntUXO
- Yfzeu7f3FANVFg2foqpog==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:DjCyqchm0cc=;GX5yp3ip5mQdvDrNweDnQU0+V1F
- JaPEv9P7IOKnpmWWrW+khaYMhDm0ton6AbpC+qcwML0JIAYQXHrNDXNr46/5Gwygavc1P2Gth
- Gs00THYLLA5inssmE4D/f1iSebjNaeRHQlbGFmoqs5Sa0VvifLvEgP89khse5JQ1XffuTdwhe
- 2mV25wNdIYUMMvUDdH1iIGWHaBhg3M3M20U0oohK7z24ZtAR34ERDgKLDlo+Vu0el8Uf6GnkE
- 1bSzYAYSQEs0cBny/VtNr6GB2d3bYyqD8Lv2STq14zbMA0gkkp4ZKY6GdqOgdPMDyG/ykkjxj
- fYrrJ9b+LfQFxKEMpWEsgS4BeMFPRgEbPjPjQaS4tppvYL7boWhk0NzoBy4KOcPxqaqJcW/IK
- kaHIVVr9B6Dj6FsiR0GvDe2oiAszDJNi0Oqp0s2bh6XuEHdPmxJBvO8pcB4+AL+NzOymqRf8o
- IUeaugLsL6YB0n3FGS9NFDF5kNTPCFmLlAe9Q5MeBEZ+OfbRBCRWC56DvY3t0tf1E6+BN8GFd
- yrNzmqGxD7/+grngnoSP0D8kZ9hk70nC+gsVL6iX8U5hSqr2L5nlsBu06NqFXn8VPirI4HX5L
- QfWJRJy3k5VpTxG0g9iH+ejD1k9eUTnO7QKLGkbL/nVs0ydNhul52eCB2w+8rywI38MAkyoHg
- Htqx4N1z5KCCfc4LpVT0PmaqWpAUTXwVu2epA3MGb/2IXDi2u6a9D8FbcV9S6cJsyDm4A8HFL
- fv1DfNuv2magJYvrb9DdfObXboQl+OW6vOskpQE5W9imtg9fPCPU2FF+ipjewNy5Ak0ruS3KR
- Uh6bND1vbJtqHw9pyb9UpRYpk2S/1kmqWIH22GWPkEwTB7joNrmNRnO9TjOOQnYPnsA1KCx+C
- Rnait8ILa5iA36djrxQNA8dYAakoqcHMY1PE2N1n53tLZyvPVg+T8ny6W+9gtAtgIX0FVwET7
- GDEWgQahSfCWJ4mLWE5UZjTIm/EuNx9b5iUXZwyCWf4fbYlpG5hoG5o2EoDcXoC7Gxh/QBerV
- giGyToL0pFhWKJRIWr4LP8uaRYXjRvh/BEl8GMDUX7rbMRnqSUa+b00nvkBL4v3hkTIfI9nJJ
- Yvte8Mzo0AvIvYLOsc5P2fLMgjzLoTUaiTZLFujZrMldAw9oV4X5g7j1heRE83V+oC3fxNp4O
- uHd5FMbzMKsQEmPET8iO8V3Wk8JTs83nC9b6AtTLJU8rOqhYia0jaLnqGaOPOUbyGYJoorXhs
- eDsfB6A9QxNSx2kxiImuf9KgIK1498bsMzvSstfAuGGwY0Xdn2jRo4Dr6xz4pZKH2uj8c7T0N
- SpERz4eEcRwEZRpbGKLTUjIRU2mk+KZ4XLgqw17LWFmnioq4HenAWEUishpeVSBusYTzp8hxJ
- 2YZJhaaOpE8LZs15zCnem79S/1/titJlOCwEWYu8vV8uYzc7MmlWaBXQeAbd2EchSmQQhQRDy
- Y/LbuMrDwghBnx+oft1UVO+jwg6kjN5auzeXasfL1utRybDcBjPSHBUGwaXtjeWe1KXna8+CN
- hsClDN7MHmVEwSa2LhYtuIP29bT+wjfRfHiW0/p+5SllSLKgYrJ+jiRkmt5LjNQktO3MN0/Lp
- WdnLaH9xvklpP0QfyiUc31lWM5j2KDpKtck8ghPkLCMAW2+C3iDw5Ew72ZqtpJ6Fz15K9MZ9V
- ZGpwy84DTtP0GxXaxyXx9bpFp+n4uDMCjUVl+YVUy76gx+JNE3BwpyzVldIfrT2hFe0CVicCY
- gFY0/NMlaP6XwOkoTHFsnfVtmWS2JqJn1om8k87TzTL28k0oziLAUm9VMbnZz8iR9hkHVwQdg
- MgMURTSN8DItGihzepdg4CTdDbsHTUGYl5M/naoTRiPjrYdLxrNNIA76AeieFtUffc/pQXf2L
- QI5XgmMiU3HzDsygy3RZcDXuIZfDZn7/pMhTv9SnJsoUaY/3LT1bfBFnau7CekYzxS1uHeDPq
- CM7swr06aoXSaw+t3f2frEzftXG9MQ8XreQI7qJO/WgelNC3HACogMZhkE8C6hGkT25adejUe
- pBnnBvJaoNHjCC0vzSDFw7fx/39FX9gOjZ5/YRPxrd/xbtjdIN0S3qAujp0W3WkmZvthOxQZ7
- 7MFxNyro9mus97PigEtoZmbUf66p0UgmzsX4V01qU+UGrFB3gHBQa5E834YjaTACHc2gNJl1C
- x6fspmm8YCo2+vdbvFFis4ZVuU0CGiLiy0lFa4mBwTLF/o6w/NkID+f5u8ILESbCw4JT9R/zV
- KGeBMpX0GpFTb+hM6LEeSpCzE28NKS8hVG4F11/t+r/JTx5Mk2+nb/dDqj4EMZO67dgr8TCoW
- cCwRyaLEnYAdUzihid9AKbwJRapmKmV7Ss5PalgS/8MBLZvjzq2Loxxze1jHj4brZvFs/9WLF
- OXjAA+44vOFtx3HjryHTWpdRlWW5rbm8CB+8N45Ho29s90+AHamqOBgCuws7i8OxcmGjQumRB
- HHHxYJooETRh9aXSeofTY/mmh4V5o87H4YbBjG00FRlazgb/ssP4ubCPWxvL0ML4oX545kueD
- 8T/lfT3soI8x9n1pp1N+jhSJsgv/ei0wE1Lf5aVKe834pd+NCOzjiMeI+ZSIeeRAdQB6q7Dxw
- a8lvz4x0qqQLGZoNj6H6wD63y0+6v/izYl2CAiZWz3nZRNvc6Lq33C+405iInfQKrTdTQ24x8
- 6TdIXeAUtKk0NEIxm1HKLDvqGjiqYrwnz5qdYZPWdH7yXT+qxmBdPaRuiXOgSBTXdPnTGgY5M
- 01lp8NwlsEomMx4o0wxvQ87666bGUXmyG9Dyj2uVrYJjiEAEJvMpQqfun2MEs2v00iWl0+m75
- 88xGZtthKIy7DRrFiEr6dyuU+8r8UF0XhMUYZQ2rfwafHN+IlvJfDWRMpAUq4kA6WdE1uFpn3
- wMtDN0iKDaGphlCPu7ZLKD7wTurE1NChRhFIyPn9jGBTP/l/wRy1Jlazr7SS7v/YHdrHWDbgh
- /ICsM1cV34+IgxHBjJdk6MXKvub1/peaaYlVeQlQYWqGugoxHJQd00s4z3vDN2jKFUphXMETC
- +0K+lMaRBwr1CnzdTwk6dXffMnyyGgkueCnxPNajNoMIf6pIjP4hekhj+EsSQizr4K6JQJ+dP
- ais6ftMsAAfvsKP+3Yr5pdh+rcGJIjyyBQz9IHcf24ixyPidK0s/84VygZMZrvLqLlgsbVzcy
- dsk2O18OzrAvRK6gRaJPceIPCcERTcVoO+2L8sOkB6ClOMNj9xTlUwj8h9MOepONPrm+G739H
- GRjyn6zeBrpY0CzEhcvubz3rnE+4WS7UNiKy4F7WBg4cQ8Ek/ophR/l/rI1CkqGznYNVMI4Yk
- o9VL913dlfKKjwULebhA457cNpLPoU19dwh4qs1m/idbvV6M0r9131pIT/6CuClCHX25I4ZES
- sOmksRK71FI0kIR/TQbKsRhWl73Z8YmATX5HNdu2+w9erBZfbZlJhYm/kWAjdq5RrxRu8cY0q
- +ybL/ZqzzFGlhqcjr81+riYEfuD2sDqfjHXxMhmk2Tu5tiYj+7G0VOCuzzda9watCfSwsci9p
- /mhe0f3dtaa1H118zPgjKus+fXeB8TDhrgDFs4HNk0dCSByrfSN0q32IkJ3QO5sepZDuMq3Xg
- Wj30E9EjpkJRD3atPdM2J2pPbcvdPd0bRehaenYkcu+N3EkGB3vBiYC56/se4gp/X2QtXrqg1
- oWI+ngXf5tgSN9RDAZV9+eiGTRrm6kxHtCCEfzIGOtS9WyrClZYezXKtu7gufDPL9bAZCcgr0
- ck+PRFsaARcTH3Ue+DfMi+4LXZXJnwwlHX17sN+MTq6woitKfNv0OP09RajxFkzPCttBH21VC
- PlY/jil5DGr7NarSxkTZ4+o13vxbxeZVD+HOWiNp2GUv2PYUEHImMyQ7M41wErB5YRm6QfSUa
- O1vBRyH7+t+obRRwCoYyq0mI/Q5J/eetVVMHDsdoa09/tq5cou5Vt0wnSuVyxf7Gi9urGIcgu
- JPwDKI/AjC5rxNxWquugidNn15FN84OdJ5rXrNPfznlYZ3itbGdEi9iBd84VBruHDs8iCJgbv
- grfPdWpceP2P0pEPsc1v3KRdfSn3C9MhJV0CgV1dPyhDIhQuC5ioYoNFGw2pNO1jZYcXOU/yI
- oMWk+jLUx24e/ZjfuIWGYfqiLRg9rgl2RQU2oRknvbvqWwo5zpIwrXE6hGZm1tEqdoPbJbvEX
- 20UH9gh5Hyx6V6fGt5vtHnalz8mHFOqwV725Cgvf92StGXNS4mBIXRzM/HtXDYgIty3b6yPTm
- UNNvXnxyh36tXAOwKGEKW37iwoWYiKH4xuyTG1x8fkT8O6haWJvN5EnbkN4fAlDhrJym9w2I6
- M+virN20jRbrNNyqtl6KCkxn45c+ls6VacJR7RcFM5hAOOWEISTODCiNd6v39Lzalm8gzgZ1J
- tZluIweqCr9jwVvlrYkOkGLHtmLsbJ3izhNfDzPSzxL2b1+HCVv+aDsth1MWMV/xcB3CMOnE6
- IInbG2MeuCKoo2xAQ/8i+vuA7QQtreo/Llh7KGpEXsLTHxI+Q6efoSgudlAmO5V+nx/9qyaWS
- 94/LB5hJaWVPZrTyhn0TKh/QxhUw8V1IVysPK9GokC5o9pyKBSYHBpxd2bWCyeOrxwrtXPsw1
- oMXesj0NokmAWpC/6vc8DzHbdKW+xcjDPhAWbRTu0GoryfIBw2dsypzwHbvkShHTbp3yCAkZj
- ta+FY9TdD4XhmIHbQMbQCYuJhkM9bRKZGJQBcd9fQAo+s3bfMzIowUv/793QifNZgUm1ueNqm
- pHj4KRkZdeiaYUf/dL4iZA+RYTVF/Yhys0C3q4BtuLbus6+YujdNFvCijCzEA65rLFW3TmYfJ
- BdpkJK2tP3uL2PaxXqpvMyHUoCrDwb2vSnmLYqjyfiNWCpXWhmC8xqX1kgI6Kxs+ovjyWGKwT
- fNUpsPnFCi3Y3CYUFQchdhFWNN6xePEmJ9oKnHQ7ozzfPhsQvFKoks4dl+ZW81r9YISyoSLJC
- mLlaL02rC27+VKBxTmZmD4v6vyYhR3n+OXthWuqnYVyO3HKbcBBwGweQPQs+WWJaKMHRhRt1d
- T6UUCRco6enpLBn8xyHjNE60UQKKp2tkJ1hDo/f9c0oD3m+rGLNnlTOvLFpOQeGOc9YqlaSbd
- ln8NfnxbfXMsf2VyAUCDeOFdpbs/0bwe1Hp7ikP9Oz3PgxaqqknPpinhZl+FFtfgZ0OK0Kybb
- R+3gjpnPXSqDRdu3bROcb8X7E15kPU0tejQY9eXLwjo7fI5TUjSb0WRrXoUfE+AUmpyntKCs=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: b48e7317-6828-4a9d-8cae-08de3cd0ef84
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Dec 2025 18:28:40.2446
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR02MB7548
 
-On Sun, Dec 14, 2025 at 07:00:43PM -0800, Joanne Koong wrote:
-> Skip waiting on writeback for inodes that belong to mappings that do not
-> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> mapping flag).
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org> Sent: Tuesday, Decemb=
+er 16, 2025 3:11 AM
 >=20
-> This restores fuse back to prior behavior where syncs are no-ops. This
-> is needed because otherwise, if a system is running a faulty fuse
-> server that does not reply to issued write requests, this will cause
-> wait_sb_inodes() to wait forever.
+> 6.17-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+
+I don't think this patch should be backported to any stable versions. It's =
+part
+of a large-ish patch set that implements a new feature.
+
+Wei Liu -- is there anything going on behind the scenes that would suggest =
+otherwise?
+
+Michael
+
 >=20
-> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal=
- rb tree")
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-
-I can confirm that this patch fixes the issue I reported.
-(Tested by applying it on top of v6.19-rc1)
-
-Tested-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-
-Thank you very much!
-
-
+> ------------------
+>=20
+> From: Roman Kisel <romank@linux.microsoft.com>
+>=20
+> [ Upstream commit 6802d8af47d1dccd9a74a1f708fb9129244ef843 ]
+>=20
+> The confidential VMBus is supported starting from the protocol
+> version 6.0 onwards.
+>=20
+> Provide the required definitions. No functional changes.
+>=20
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> Signed-off-by: Wei Liu <wei.liu@kernel.org>
+> Stable-dep-of: 510164539f16 ("Drivers: hv: Free msginfo when the buffer f=
+ails to
+> decrypt")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  fs/fs-writeback.c       |  3 ++-
->  fs/fuse/file.c          |  4 +++-
->  include/linux/pagemap.h | 11 +++++++++++
->  3 files changed, 16 insertions(+), 2 deletions(-)
+>  drivers/hv/hyperv_vmbus.h   |  2 ++
+>  drivers/hv/vmbus_drv.c      | 12 +++++++
+>  include/hyperv/hvgdk_mini.h |  1 +
+>  include/linux/hyperv.h      | 69 +++++++++++++++++++++++++++----------
+>  4 files changed, 65 insertions(+), 19 deletions(-)
 >=20
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 6800886c4d10..ab2e279ed3c2 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
->  		 * do not have the mapping lock. Skip it here, wb completion
->  		 * will remove it.
->  		 */
-> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> +		    mapping_no_data_integrity(mapping))
->  			continue;
-> =20
->  		spin_unlock_irq(&sb->s_inode_wblist_lock);
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index 01bc894e9c2b..3b2a171e652f 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, un=
-signed int flags)
-> =20
->  	inode->i_fop =3D &fuse_file_operations;
->  	inode->i_data.a_ops =3D &fuse_file_aops;
-> -	if (fc->writeback_cache)
-> +	if (fc->writeback_cache) {
->  		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-> +		mapping_set_no_data_integrity(&inode->i_data);
-> +	}
-> =20
->  	INIT_LIST_HEAD(&fi->write_files);
->  	INIT_LIST_HEAD(&fi->queued_writes);
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 31a848485ad9..ec442af3f886 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -210,6 +210,7 @@ enum mapping_flags {
->  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
->  	AS_KERNEL_FILE =3D 10,	/* mapping for a fake kernel file that shouldn'=
-t
->  				   account usage to user cgroups */
-> +	AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
->  	/* Bits 16-25 are used for FOLIO_ORDER */
->  	AS_FOLIO_ORDER_BITS =3D 5,
->  	AS_FOLIO_ORDER_MIN =3D 16,
-> @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_o=
-n_reclaim(const struct addres
->  	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags)=
-;
->  }
-> =20
-> +static inline void mapping_set_no_data_integrity(struct address_space *=
-mapping)
+> diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+> index 0b450e53161e5..4a01797d48513 100644
+> --- a/drivers/hv/hyperv_vmbus.h
+> +++ b/drivers/hv/hyperv_vmbus.h
+> @@ -333,6 +333,8 @@ extern const struct vmbus_channel_message_table_entry
+>=20
+>  /* General vmbus interface */
+>=20
+> +bool vmbus_is_confidential(void);
+> +
+>  struct hv_device *vmbus_device_create(const guid_t *type,
+>  				      const guid_t *instance,
+>  				      struct vmbus_channel *channel);
+> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+> index 2ed5a1e89d694..c2f913b9aad58 100644
+> --- a/drivers/hv/vmbus_drv.c
+> +++ b/drivers/hv/vmbus_drv.c
+> @@ -56,6 +56,18 @@ static long __percpu *vmbus_evt;
+>  int vmbus_irq;
+>  int vmbus_interrupt;
+>=20
+> +/*
+> + * If the Confidential VMBus is used, the data on the "wire" is not
+> + * visible to either the host or the hypervisor.
+> + */
+> +static bool is_confidential;
+> +
+> +bool vmbus_is_confidential(void)
 > +{
-> +	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> +	return is_confidential;
+> +}
+> +EXPORT_SYMBOL_GPL(vmbus_is_confidential);
+> +
+>  /*
+>   * The panic notifier below is responsible solely for unloading the
+>   * vmbus connection, which is necessary in a panic event.
+> diff --git a/include/hyperv/hvgdk_mini.h b/include/hyperv/hvgdk_mini.h
+> index 1be7f6a023046..981a687bdc7eb 100644
+> --- a/include/hyperv/hvgdk_mini.h
+> +++ b/include/hyperv/hvgdk_mini.h
+> @@ -260,6 +260,7 @@ union hv_hypervisor_version_info {
+>  #define HYPERV_CPUID_VIRT_STACK_PROPERTIES	 0x40000082
+>  /* Support for the extended IOAPIC RTE format */
+>  #define HYPERV_VS_PROPERTIES_EAX_EXTENDED_IOAPIC_RTE	 BIT(2)
+> +#define HYPERV_VS_PROPERTIES_EAX_CONFIDENTIAL_VMBUS_AVAILABLE	 BIT(3)
+>=20
+>  #define HYPERV_HYPERVISOR_PRESENT_BIT		 0x80000000
+>  #define HYPERV_CPUID_MIN			 0x40000005
+> diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+> index a59c5c3e95fb8..a1820fabbfc0c 100644
+> --- a/include/linux/hyperv.h
+> +++ b/include/linux/hyperv.h
+> @@ -265,16 +265,18 @@ static inline u32 hv_get_avail_to_write_percent(
+>   * Linux kernel.
+>   */
+>=20
+> -#define VERSION_WS2008  ((0 << 16) | (13))
+> -#define VERSION_WIN7    ((1 << 16) | (1))
+> -#define VERSION_WIN8    ((2 << 16) | (4))
+> -#define VERSION_WIN8_1    ((3 << 16) | (0))
+> -#define VERSION_WIN10 ((4 << 16) | (0))
+> -#define VERSION_WIN10_V4_1 ((4 << 16) | (1))
+> -#define VERSION_WIN10_V5 ((5 << 16) | (0))
+> -#define VERSION_WIN10_V5_1 ((5 << 16) | (1))
+> -#define VERSION_WIN10_V5_2 ((5 << 16) | (2))
+> -#define VERSION_WIN10_V5_3 ((5 << 16) | (3))
+> +#define VMBUS_MAKE_VERSION(MAJ, MIN)	((((u32)MAJ) << 16) | (MIN))
+> +#define VERSION_WS2008
+> 	VMBUS_MAKE_VERSION(0, 13)
+> +#define VERSION_WIN7
+> 	VMBUS_MAKE_VERSION(1, 1)
+> +#define VERSION_WIN8
+> 	VMBUS_MAKE_VERSION(2, 4)
+> +#define VERSION_WIN8_1
+> 	VMBUS_MAKE_VERSION(3, 0)
+> +#define VERSION_WIN10
+> 	VMBUS_MAKE_VERSION(4, 0)
+> +#define VERSION_WIN10_V4_1
+> 	VMBUS_MAKE_VERSION(4, 1)
+> +#define VERSION_WIN10_V5				VMBUS_MAKE_VERSION(5, 0)
+> +#define VERSION_WIN10_V5_1
+> 	VMBUS_MAKE_VERSION(5, 1)
+> +#define VERSION_WIN10_V5_2
+> 	VMBUS_MAKE_VERSION(5, 2)
+> +#define VERSION_WIN10_V5_3
+> 	VMBUS_MAKE_VERSION(5, 3)
+> +#define VERSION_WIN10_V6_0
+> 	VMBUS_MAKE_VERSION(6, 0)
+>=20
+>  /* Make maximum size of pipe payload of 16K */
+>  #define MAX_PIPE_DATA_PAYLOAD		(sizeof(u8) * 16384)
+> @@ -335,14 +337,22 @@ struct vmbus_channel_offer {
+>  } __packed;
+>=20
+>  /* Server Flags */
+> -#define VMBUS_CHANNEL_ENUMERATE_DEVICE_INTERFACE	1
+> -#define VMBUS_CHANNEL_SERVER_SUPPORTS_TRANSFER_PAGES	2
+> -#define VMBUS_CHANNEL_SERVER_SUPPORTS_GPADLS		4
+> -#define VMBUS_CHANNEL_NAMED_PIPE_MODE			0x10
+> -#define VMBUS_CHANNEL_LOOPBACK_OFFER			0x100
+> -#define VMBUS_CHANNEL_PARENT_OFFER			0x200
+> -#define VMBUS_CHANNEL_REQUEST_MONITORED_NOTIFICATION	0x400
+> -#define VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER		0x2000
+> +#define VMBUS_CHANNEL_ENUMERATE_DEVICE_INTERFACE		0x0001
+> +/*
+> + * This flag indicates that the channel is offered by the paravisor, and=
+ must
+> + * use encrypted memory for the channel ring buffer.
+> + */
+> +#define VMBUS_CHANNEL_CONFIDENTIAL_RING_BUFFER			0x0002
+> +/*
+> + * This flag indicates that the channel is offered by the paravisor, and=
+ must
+> + * use encrypted memory for GPA direct packets and additional GPADLs.
+> + */
+> +#define VMBUS_CHANNEL_CONFIDENTIAL_EXTERNAL_MEMORY		0x0004
+> +#define VMBUS_CHANNEL_NAMED_PIPE_MODE
+> 	0x0010
+> +#define VMBUS_CHANNEL_LOOPBACK_OFFER
+> 	0x0100
+> +#define VMBUS_CHANNEL_PARENT_OFFER
+> 	0x0200
+> +#define VMBUS_CHANNEL_REQUEST_MONITORED_NOTIFICATION	0x0400
+> +#define VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER				0x2000
+>=20
+>  struct vmpacket_descriptor {
+>  	u16 type;
+> @@ -621,6 +631,12 @@ struct vmbus_channel_relid_released {
+>  	u32 child_relid;
+>  } __packed;
+>=20
+> +/*
+> + * Used by the paravisor only, means that the encrypted ring buffers and
+> + * the encrypted external memory are supported
+> + */
+> +#define VMBUS_FEATURE_FLAG_CONFIDENTIAL_CHANNELS	0x10
+> +
+>  struct vmbus_channel_initiate_contact {
+>  	struct vmbus_channel_message_header header;
+>  	u32 vmbus_version_requested;
+> @@ -630,7 +646,8 @@ struct vmbus_channel_initiate_contact {
+>  		struct {
+>  			u8	msg_sint;
+>  			u8	msg_vtl;
+> -			u8	reserved[6];
+> +			u8	reserved[2];
+> +			u32 feature_flags; /* VMBus version 6.0 */
+>  		};
+>  	};
+>  	u64 monitor_page1;
+> @@ -1008,6 +1025,10 @@ struct vmbus_channel {
+>=20
+>  	/* boolean to control visibility of sysfs for ring buffer */
+>  	bool ring_sysfs_visible;
+> +	/* The ring buffer is encrypted */
+> +	bool co_ring_buffer;
+> +	/* The external memory is encrypted */
+> +	bool co_external_memory;
+>  };
+>=20
+>  #define lock_requestor(channel, flags)					\
+> @@ -1032,6 +1053,16 @@ u64 vmbus_request_addr_match(struct vmbus_channel
+> *channel, u64 trans_id,
+>  			     u64 rqst_addr);
+>  u64 vmbus_request_addr(struct vmbus_channel *channel, u64 trans_id);
+>=20
+> +static inline bool is_co_ring_buffer(const struct vmbus_channel_offer_ch=
+annel *o)
+> +{
+> +	return !!(o->offer.chn_flags &
+> VMBUS_CHANNEL_CONFIDENTIAL_RING_BUFFER);
 > +}
 > +
-> +static inline bool mapping_no_data_integrity(const struct address_space=
- *mapping)
+> +static inline bool is_co_external_memory(const struct vmbus_channel_offe=
+r_channel
+> *o)
 > +{
-> +	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> +	return !!(o->offer.chn_flags &
+> VMBUS_CHANNEL_CONFIDENTIAL_EXTERNAL_MEMORY);
 > +}
 > +
->  static inline gfp_t mapping_gfp_mask(const struct address_space *mappin=
-g)
+>  static inline bool is_hvsock_offer(const struct vmbus_channel_offer_chan=
+nel *o)
 >  {
->  	return mapping->gfp_mask;
-> --=20
-> 2.47.3
+>  	return !!(o->offer.chn_flags & VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER);
+> --
+> 2.51.0
 >=20
+>=20
+
 
