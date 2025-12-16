@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97142CC2463
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4BCCC2851
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0B00302717B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92E87308E499
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4702343204;
-	Tue, 16 Dec 2025 11:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F2F355037;
+	Tue, 16 Dec 2025 11:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBPuM6bB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjOIuNQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7052134251D;
-	Tue, 16 Dec 2025 11:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7F3355029;
+	Tue, 16 Dec 2025 11:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884392; cv=none; b=R+aoSIbgjA6PypFGvOPW+hoQYXUoZM/EzDbxQEGVpG8I14OgdJUZuin1lVtDzCYs+vZwpCayTWL4OqMkBB7mnG6UrT/L1kXzTo7SE0szhqNIePb4Xo7bwy9xvPhd4kN9LBdofYjdrpOKi6kU+VXRbXoChwUWf7FSzIU4ICbYgvE=
+	t=1765885968; cv=none; b=s7pWlJmCvALKtUbdatVE78wceq3/Kt1sZ401WfSIMI8Nf2h0wGAvGyepqvosMZlrM0idSDJInEJiBvH8UWuZ+NcsYnHrD2LmsjvrPXiMbKl2EbZCmNDoBhy0SpXUdhBeLfT8+8eAWEcJdFu4T7d1YY9kSTRW5xybzh8tWDR4x0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884392; c=relaxed/simple;
-	bh=PDH60vx+Sp36RQ27USId3ZTjx6m4edFBrVQ/Yf4kVm0=;
+	s=arc-20240116; t=1765885968; c=relaxed/simple;
+	bh=j61JN4bg2v4rwWEUChzl+wu8Pi0QYIcn6+TEPVYVuak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JErPu2+0rsvV4PcvvTqY+ma3m9CmYNN43+18OpX52r1lTZZEbKxOHayOPRiAet/T1CfTUhVjgYE+kZWKxtTRTceu6XzWTZJwcOPlmCqZpioPKCdgqCMOfwchn2/Lro5k4kIbuaIVOv0o0T7grHvavPN7AT6l7MEtif2OYxTudFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBPuM6bB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB75CC19422;
-	Tue, 16 Dec 2025 11:26:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sy/FQi288bCmIhzX9LDM/L4Ve9oIve41jWZh8WiXN07EVZCmbaBYBjvCH5c2uGVKfZ9VQN6+xUeDn1Z/r0Ao82qFHB1yWFeqaU2v3VUlEC4hfhDdJglgoydbN4gci91XvzA5esk4zCuGXQA1rsqnnddQt/TiTUm1T7IO9t3SO7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjOIuNQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9404DC4CEF1;
+	Tue, 16 Dec 2025 11:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884392;
-	bh=PDH60vx+Sp36RQ27USId3ZTjx6m4edFBrVQ/Yf4kVm0=;
+	s=korg; t=1765885968;
+	bh=j61JN4bg2v4rwWEUChzl+wu8Pi0QYIcn6+TEPVYVuak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBPuM6bB1HLuYUq7cn6LrQ/BJTS/QMV1YGOeaOQ2zIWPVhH1L/Or+tTq0R0/9nw9L
-	 Ekxo7IksPORelRs5c1bnQHjEuGbTCKA5aEpY334np9V2ZLmr1zEEHT7Fo1IZ4Lz6e8
-	 cIT5bZvORb68TIxBrbd5Y86GQ6+qsI7P+VAnzU+o=
+	b=wjOIuNQFqyJHv71bhS8K1MtEiqTPb72sxDrh5vMb0+bhCDKFm9C//bpopo28VILEs
+	 z4YFn+TE6vcgse3knlRV9ehqNH9VdhQHYldNZ8SAOmnGKrb4yVNKVMvkj/z67YwubF
+	 GQKRWo3EAMsC4q5101eOJfWVxUzAF0tCgkYr6fKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Alexander Dahl <ada@thorsis.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/354] drm/msm/a2xx: stop over-complaining about the legacy firmware
+Subject: [PATCH 6.17 298/507] net: phy: adin1100: Fix software power-down ready condition
 Date: Tue, 16 Dec 2025 12:12:19 +0100
-Message-ID: <20251216111327.145634011@linuxfoundation.org>
+Message-ID: <20251216111356.270840765@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,46 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Alexander Dahl <ada@thorsis.com>
 
-[ Upstream commit a3a22373fce576560757f5616eb48dbf85891d9c ]
+[ Upstream commit bccaf1fe08f2c9f96f6bc38391d41e67f6bf38e3 ]
 
-If the rootfs have a legacy A200 firmware, currently the driver will
-complain each time the hw is reinited (which can happen a lot). E.g.
-with GL testsuite the hw is reinited after each test, spamming the
-console.
+Value CRSM_SFT_PD written to Software Power-Down Control Register
+(CRSM_SFT_PD_CNTRL) is 0x01 and therefor different to value
+CRSM_SFT_PD_RDY (0x02) read from System Status Register (CRSM_STAT) for
+confirmation powerdown has been reached.
 
-Make sure that the message is printed only once: when we detect the
-firmware that doesn't support protection.
+The condition could have only worked when disabling powerdown
+(both 0x00), but never when enabling it (0x01 != 0x02).
 
-Fixes: 302295070d3c ("drm/msm/a2xx: support loading legacy (iMX) firmware")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688098/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Result is a timeout, like so:
+
+    $ ifdown eth0
+    macb f802c000.ethernet eth0: Link is Down
+    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
+    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
+
+Fixes: 7eaf9132996a ("net: phy: adin1100: Add initial support for ADIN1100 industrial PHY")
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20251119124737.280939-2-ada@thorsis.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 2 +-
+ drivers/net/phy/adin1100.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-index 0dc255ddf5ceb..2e25af3462ab6 100644
---- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
-@@ -234,7 +234,7 @@ static int a2xx_hw_init(struct msm_gpu *gpu)
- 	 * word (0x20xxxx for A200, 0x220xxx for A220, 0x225xxx for A225).
- 	 * Older firmware files, which lack protection support, have 0 instead.
- 	 */
--	if (ptr[1] == 0) {
-+	if (ptr[1] == 0 && !a2xx_gpu->protection_disabled) {
- 		dev_warn(gpu->dev->dev,
- 			 "Legacy firmware detected, disabling protection support\n");
- 		a2xx_gpu->protection_disabled = true;
+diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
+index bd7a47a903aca..10b796c2daee7 100644
+--- a/drivers/net/phy/adin1100.c
++++ b/drivers/net/phy/adin1100.c
+@@ -201,7 +201,7 @@ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
+ 		return ret;
+ 
+ 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, ADIN_CRSM_STAT, ret,
+-					 (ret & ADIN_CRSM_SFT_PD_RDY) == val,
++					 !!(ret & ADIN_CRSM_SFT_PD_RDY) == en,
+ 					 1000, 30000, true);
+ }
+ 
 -- 
 2.51.0
 
