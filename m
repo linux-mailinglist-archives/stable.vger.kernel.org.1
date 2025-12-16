@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DF8CC2D10
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00374CC34AA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44DB430E1FBE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 936A6305873F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1EA364EBB;
-	Tue, 16 Dec 2025 12:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6408C34847A;
+	Tue, 16 Dec 2025 11:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PllEeBtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJRDzi/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2843734C13D;
-	Tue, 16 Dec 2025 12:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2A934846D;
+	Tue, 16 Dec 2025 11:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887087; cv=none; b=bhX4v5+xTA9j4z/11ipT6nEHUVxPTOa0rHdTKf72HDBZKZGc30r0AQS7ZzdthE2TWjCjBHzCHimssWK1oC8fcZP76Lq5nyvR5TpfeOHFT95OeR+Qtb2TvTpY327Npp3HGPtYuvLt7kTbg5GbhgjKdCTbM0JFe0XNTT9GqSbXDO0=
+	t=1765885135; cv=none; b=c62bjAQcJeFata7wTfSbmVe0XSPM87dibPnOuo9TA6y+ChDEVUz/ngBh95wVcMRT5ieXf0hiOUg8sCCGjmTxypwLCTZQfvu5mVwl58ka5S8EENs4bZZ6YGGNZn+gzVT/C0r9HuL6n5DSwc4NM9yulM6hM8K9NmdajtTRXvEiskg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887087; c=relaxed/simple;
-	bh=xeh3o3HL5iVkBL0FPXBOvNBoLh4Mx8PSZ4Antlgrwog=;
+	s=arc-20240116; t=1765885135; c=relaxed/simple;
+	bh=PXRP0gHfcJH+LZKYbbfL6zObz0yTMlBKj/Qw1WzU5Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2mNydTtRPwNWQPX2Qn0fL9/vfeHlTPLVg1dpZ9qW3fxjkkug/ns/Oj3YlU2OOtCvBYG0tudue8okTCTPZ4i1Jmvg2MXxXzPQ0bf8JeW3w25jimOPdjtLqUeYcjHoWkMC7gQkaeMbCAlBlBfGHK+3ltSvMxb62jpH53AoaC0um0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PllEeBtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BDB4C4CEF1;
-	Tue, 16 Dec 2025 12:11:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UKClo2GVtKCCQ2tNBX6EbQaRi4IDyfuDU6Rpm4TEprGVp4o4Rtqsg9Hu6VR12Z0pzcENRY3buWWg1GuHlqIX8tBxCEs5tqEZmR+n4VX/O0JDpGD5IngAVLxioezXXSNxVSkb8r0EH3UFL753Tf16APL+/768gMtyrInhLwcv9e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJRDzi/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C29C4CEF1;
+	Tue, 16 Dec 2025 11:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887087;
-	bh=xeh3o3HL5iVkBL0FPXBOvNBoLh4Mx8PSZ4Antlgrwog=;
+	s=korg; t=1765885135;
+	bh=PXRP0gHfcJH+LZKYbbfL6zObz0yTMlBKj/Qw1WzU5Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PllEeBtVMUmhl6QymIzRjXT6LdPbC3SDVN10QlhZZ+0DYlljHXBGGsWLC2xilUezM
-	 8sDICGdhD9AEIH+QGb9SPcyiDhNrx6Uf9E+24sfltxhNIKimVjIp5qeY3cazTbyP4J
-	 D7p7CgYq2qKuM1O8cQ4svDveW6EqKYIyT52ltsFk=
+	b=aJRDzi/wjrOxR4dOkjyUOw0wSuh/ryFqUdaYrC9GL9lHeqS28dw21zmirVn8454z8
+	 tmovmSoeZcQkX3TDv4uGPJLQm8Wemz+JUT4icIHC8yppsP2LiJ/xVIMdn1LNx9Iw8y
+	 Pog2fjmV/Q5bkiT74gcfveRyz1cb5JnZsfITiKlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Val Packett <val@packett.cool>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/614] arm64: dts: qcom: x1-dell-thena: remove dp data-lanes
+Subject: [PATCH 6.17 048/507] ntfs3: fix uninit memory after failed mi_read in mi_format_new
 Date: Tue, 16 Dec 2025 12:08:09 +0100
-Message-ID: <20251216111405.755688403@linuxfoundation.org>
+Message-ID: <20251216111347.284487705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit 147d5eefab8f0e17e9951fb5e0c4c77bada34558 ]
+[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
 
-The commit 458de584248a ("arm64: dts: qcom: x1e80100: move dp0/1/2
-data-lanes to SoC dtsi") has landed before this file was added, so
-the data-lanes lines here remained.
+Fix a KMSAN un-init bug found by syzkaller.
 
-Remove them to enable 4-lane DP on the X1E Dell Inspiron/Latitude.
+ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
+uptodate. We do not bring the buffer uptodate before setting it as
+uptodate. If the buffer were to not be uptodate, it could mean adding a
+buffer with un-init data to the mi record. Attempting to load that record
+will trigger KMSAN.
 
-Fixes: e7733b42111c ("arm64: dts: qcom: Add support for Dell Inspiron 7441 / Latitude 7455")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251012224909.14988-1-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Avoid this by setting the buffer as uptodate, if it’s not already, by
+overwriting it.
+
+Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
+Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ fs/ntfs3/fsntfs.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-index 9df66295660c3..847b678f040c0 100644
---- a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-@@ -1023,7 +1023,6 @@ &mdss_dp0 {
- };
- 
- &mdss_dp0_out {
--	data-lanes = <0 1>;
- 	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
- };
- 
-@@ -1032,7 +1031,6 @@ &mdss_dp1 {
- };
- 
- &mdss_dp1_out {
--	data-lanes = <0 1>;
- 	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
- };
- 
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index c7a2f191254da..5ae910e9ecbda 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1349,7 +1349,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
+ 				}
+ 				if (buffer_locked(bh))
+ 					__wait_on_buffer(bh);
+-				set_buffer_uptodate(bh);
++
++				lock_buffer(bh);
++				if (!buffer_uptodate(bh))
++				{
++					memset(bh->b_data, 0, blocksize);
++					set_buffer_uptodate(bh);
++				}
++				unlock_buffer(bh);
+ 			} else {
+ 				bh = ntfs_bread(sb, block);
+ 				if (!bh) {
 -- 
 2.51.0
 
