@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC3ECC351F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE371CC2D01
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98F8430E360F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F05930C8AC4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95936347FEB;
-	Tue, 16 Dec 2025 11:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F993659E4;
+	Tue, 16 Dec 2025 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7Lx/sEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAhUNIVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0C341666;
-	Tue, 16 Dec 2025 11:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EE31A7F5;
+	Tue, 16 Dec 2025 12:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885118; cv=none; b=JNjBE5opxpmc1qDyaSOwp+m5niK4jep8d+ec8T5VjdN2AUhiTzZGmjrWq0Ut9jKInSkxjVAEQ59EgWck+usIC5BIEsTQyGXjh7cPIbUSq4HB0UbFMQWx1uN9oUgKSfOWcmGOTUh1M8HyKXUn+YdY+IOZSjQ5pO2fMEIzMWUZ6/g=
+	t=1765887076; cv=none; b=Ta+292+GnmOyqGCuOyxYLaGfP0S8jlWY00Un/VuM72ZfSn40Z+/y+tEiVrDf3hZ7YAqv0mkh9pwsY2a65naVN/EPwNGqx86+rsXQA7m4VoZTOKAav2KshuhdIaRkWDEuey2Z+2VDPB/W9I3SxwxPSEUv0uDlz5EX/IczSkPlb4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885118; c=relaxed/simple;
-	bh=2J3U9z8zxwwxL1eTCTTIlC8WHBqPP3yLM43Mv8BLUV4=;
+	s=arc-20240116; t=1765887076; c=relaxed/simple;
+	bh=bNhNA8CjNY6+2EQmLoo+vb0cRl8yW0iiqQbbVBkXHlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWisTUoQn/NJNywmi726dnPP+Eu7Qfrm9xjOFWRAwppeSKbYUAKiB0Q8Cxh+2eNqoaOUMwDMQvhba7sGVPdNQtpjAsPuCx8LJfCA/be9zxHIn0o+m6RMx244Z8V9cM6vBv8kZz1w4pc4bmCypYfFe4IZrDlaHNDVPKlX97oICr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7Lx/sEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A87C4CEF1;
-	Tue, 16 Dec 2025 11:38:37 +0000 (UTC)
+	 MIME-Version; b=ed/Pc4joStJig/f4a5n/FhkSjagMo3yf+hKeWGeVqbZMnIHB+nincvpLG5QTfAKEjSdii+nzpGQIIiCOOvjeUdAIGmQ0drbYO9kPjEkkW/FcX0WOXwHC33TGBE+H0FiJWxThf0xqRA70rLLILDAurdM5w7zU60Z+pezysBdxt7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAhUNIVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257E7C4CEF1;
+	Tue, 16 Dec 2025 12:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885118;
-	bh=2J3U9z8zxwwxL1eTCTTIlC8WHBqPP3yLM43Mv8BLUV4=;
+	s=korg; t=1765887076;
+	bh=bNhNA8CjNY6+2EQmLoo+vb0cRl8yW0iiqQbbVBkXHlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7Lx/sEKBBO249Q+rrsexftuPo+wuXKy6AKJAC8+/Cz44pdVGTA22T2/y7uVOPIqD
-	 r3zM6UveUzYwg+MYzJ92Yp2acnfMRcrPW0ic0TE++EPIcOhD6OdbORrNe852C9iffL
-	 rcajGa+r6DqCUtZHYClkCHRqVRdBFSPKdmDbg8TM=
+	b=oAhUNIVHFUitNS8Kj0xB0jbsRNSynX6CQaSmZ3CKR/m5lypcPrIGik+nm9DLFz1Ut
+	 ViXJkDS5cqABVRTLoa0IWOI9Xhboy2rCGBnh7BUMpKmE0dRQE+CmrOZP3+AUJ6qhlh
+	 3LhFTVMUJKtq5MvmtbfWzqhEpuO70oOn82xMv3wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 044/507] irqchip/renesas-rzg2l: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:08:05 +0100
-Message-ID: <20251216111347.140511938@linuxfoundation.org>
+Subject: [PATCH 6.18 119/614] arm64: dts: qcom: sm8750-mtp: move PCIe GPIOs to pcieport0 node
+Date: Tue, 16 Dec 2025 12:08:06 +0100
+Message-ID: <20251216111405.648304193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
-[ Upstream commit 5b338fbb2b5b21d61a9eaba14dcf43108de30258 ]
+[ Upstream commit cc8056a16472d186140d1a66ed5648cee41f4379 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+Relocate the wake-gpios and perst-gpios properties from the pcie0
+controller node to the pcieport0 node. These GPIOs are associated with
+the PCIe root port and should reside under the pcieport0 node.
 
-Fixes: d011c022efe27579 ("irqchip/renesas-rzg2l: Add support for RZ/Five SoC")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Also rename perst-gpios to reset-gpios to match the expected property name
+in the PCIe port node.
+
+Fixes: 141714e163bb ("arm64: dts: qcom: sm8750-mtp: Add WiFi and Bluetooth")
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20251008-sm8750-v1-1-daeadfcae980@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8750-mtp.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 360d88687e4f5..32fec9aa37c49 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -597,14 +597,12 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8750-mtp.dts b/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
+index 3bbb53b7c71f3..45b5f75815670 100644
+--- a/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/sm8750-mtp.dts
+@@ -960,9 +960,6 @@ &pon_resin {
+ };
  
--static int __init rzg2l_irqc_init(struct device_node *node,
--				  struct device_node *parent)
-+static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- {
- 	return rzg2l_irqc_common_init(node, parent, &rzg2l_irqc_chip);
- }
+ &pcie0 {
+-	wake-gpios = <&tlmm 104 GPIO_ACTIVE_HIGH>;
+-	perst-gpios = <&tlmm 102 GPIO_ACTIVE_LOW>;
+-
+ 	pinctrl-0 = <&pcie0_default_state>;
+ 	pinctrl-names = "default";
  
--static int __init rzfive_irqc_init(struct device_node *node,
--				   struct device_node *parent)
-+static int rzfive_irqc_init(struct device_node *node, struct device_node *parent)
- {
- 	return rzg2l_irqc_common_init(node, parent, &rzfive_irqc_chip);
- }
+@@ -977,6 +974,9 @@ &pcie0_phy {
+ };
+ 
+ &pcieport0 {
++	wake-gpios = <&tlmm 104 GPIO_ACTIVE_HIGH>;
++	reset-gpios = <&tlmm 102 GPIO_ACTIVE_LOW>;
++
+ 	wifi@0 {
+ 		compatible = "pci17cb,1107";
+ 		reg = <0x10000 0x0 0x0 0x0 0x0>;
 -- 
 2.51.0
 
