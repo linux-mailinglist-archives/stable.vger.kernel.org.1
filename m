@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-202278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434A0CC37D8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:17:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A4DCC21A2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28524306B178
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33F94302DA61
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB6F36A002;
-	Tue, 16 Dec 2025 12:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7883026E714;
+	Tue, 16 Dec 2025 11:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axw7/jnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQpUyMVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B30D343D9B;
-	Tue, 16 Dec 2025 12:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC7207A38;
+	Tue, 16 Dec 2025 11:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887387; cv=none; b=JHuGhy+bHA1OV55vmxDk0njKGTPi6uvUHYDBbmG3y1KrNdkRGduOqNVtxCMnsNTu8xrrCXgdxC2OQLfOP8J2UBazlykYi+VlireTCAQgdGAtKJOXW1O/W2/IDfI6r6LrNedOjIuQvh5794Vu16mfQ9eYkbbe+Shkh2enKsexuks=
+	t=1765883838; cv=none; b=PrUMgTYQU7zXsT0XjUNi1Xy5oJmQe9DbRVnMCwEvbZBl3bLYEuvySCpURwCs6b6jSThZLaPFQjlQKPN6KV7xafjYqClqkCqHvWsyqqXNV/hizJtJx0+f58TYfIvOuJUFYVdFK9Z2cL0Ya0o8Q8YkOVQcQE7GgY1LsOFO3W74qBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887387; c=relaxed/simple;
-	bh=pW+b8Mp74PCgbvJvm/3SzhrcpNCKNCRCa0XL7bPbqS4=;
+	s=arc-20240116; t=1765883838; c=relaxed/simple;
+	bh=eENj4YH4TfazXipiooW8jb7+5p5nZCXlH4gA6QWgiXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENaBwOfbJ2I6bT38t7Z68FXiFSRJxkv9POtHPJKuogm4W8TIE8Xz99eokkd7bE/tfNXhAVGg3tDIyIXY9/mE5+7dCeWwFAR65yTHa2suDHq45Yk/+DvyYcZyjIm59q2RxZw8VUlcM4CJ+KYqg/KDgK+oY0Vgg4vwA+Wm+rceazA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axw7/jnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE02EC4CEF1;
-	Tue, 16 Dec 2025 12:16:26 +0000 (UTC)
+	 MIME-Version; b=KcchfAS+NgTYjKZ8Ou+aCos7cYHqi7rFmKDfCNLMqRBHVP4fVorEx/qYeS3HFu5BbhBbu4gRNr6DmInqA0f45pG7mwpNfAjSoMCOXRmGFpT4ETukv9ty6LT0fWEbgwIo0nBvVy3x0hfhtxTRi5QiSGu9W8tfJKNO9tms3lYYw6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQpUyMVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7462EC4CEF5;
+	Tue, 16 Dec 2025 11:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887387;
-	bh=pW+b8Mp74PCgbvJvm/3SzhrcpNCKNCRCa0XL7bPbqS4=;
+	s=korg; t=1765883837;
+	bh=eENj4YH4TfazXipiooW8jb7+5p5nZCXlH4gA6QWgiXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Axw7/jnvuuDIxIYRXaTjPDquwZ8Pl4Ut1wNaLZX01LJJepWaSj763S1LVuasUywob
-	 vC6Z8zIgqEzrVjTLypLWg55wdSc96CUXaOMXvQtze+4MHToybh8B9C4nnYPeIur9TD
-	 yX56WWvnmXKUXtwlIfrZHudze5Imgx9W1ItoH4GY=
+	b=hQpUyMVWf2t6Rmb80of59R65V4jr19Ebrt1I/+q7dGqqeWZWjzPZgsmseHCmOk37w
+	 KY7qOyTKY3V5rkYv82p+iBrrmTbSxE+ijSwu7bevVJSkJ9xEyc4l5v92sVLec+NrlN
+	 XfM0iHb4UVK1V6iPCxv+6S98M++WOJ2Oi1Sc89z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyou Li <tianyou.li@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Seungjin Bae <eeodqql09@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 215/614] perf annotate: Fix build with NO_SLANG=1
+Subject: [PATCH 6.12 015/354] USB: Fix descriptor count when handling invalid MBIM extended descriptor
 Date: Tue, 16 Dec 2025 12:09:42 +0100
-Message-ID: <20251216111409.165603959@linuxfoundation.org>
+Message-ID: <20251216111321.460368042@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 0e6c07a3c30cdc4509fc5e7dc490d4cc6e5c241a ]
+[ Upstream commit 5570ad1423ee60f6e972dadb63fb2e5f90a54cbe ]
 
-The recent change for perf c2c annotate broke build without slang
-support like below.
+In cdc_parse_cdc_header(), the check for the USB_CDC_MBIM_EXTENDED_TYPE
+descriptor was using 'break' upon detecting an invalid length.
 
-  builtin-annotate.c: In function 'hists__find_annotations':
-  builtin-annotate.c:522:73: error: 'NO_ADDR' undeclared (first use in this function); did you mean 'NR_ADDR'?
-    522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
-        |                                                                         ^~~~~~~
-        |                                                                         NR_ADDR
-  builtin-annotate.c:522:73: note: each undeclared identifier is reported only once for each function it appears in
+This was incorrect because 'break' only exits the switch statement,
+causing the code to fall through to cnt++, thus incorrectly
+incrementing the count of parsed descriptors for a descriptor that was
+actually invalid and being discarded.
 
-  builtin-annotate.c:522:31: error: too many arguments to function 'hist_entry__tui_annotate'
-    522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
-        |                               ^~~~~~~~~~~~~~~~~~~~~~~~
-  In file included from util/sort.h:6,
-                   from builtin-annotate.c:28:
-  util/hist.h:756:19: note: declared here
-    756 | static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
-        |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+This patch changes 'break' to 'goto next_desc;' to ensure that the
+logic skips the counter increment and correctly proceeds to the next
+descriptor in the buffer. This maintains an accurate count of only
+the successfully parsed descriptors.
 
-And I noticed that it missed to update the other side of #ifdef
-HAVE_SLANG_SUPPORT.  Let's fix it.
-
-Cc: Tianyou Li <tianyou.li@intel.com>
-Fixes: cd3466cd2639783d ("perf c2c: Add annotation support to perf c2c report")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: e4c6fb7794982 ("usbnet: move the CDC parser into USB core")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20250928185611.764589-1-eeodqql09@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/core/message.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-index c64005278687c..a4f244a046866 100644
---- a/tools/perf/util/hist.h
-+++ b/tools/perf/util/hist.h
-@@ -709,6 +709,8 @@ struct block_hist {
- 	struct hist_entry	he;
- };
- 
-+#define NO_ADDR 0
-+
- #ifdef HAVE_SLANG_SUPPORT
- #include "../ui/keysyms.h"
- void attr_to_script(char *buf, struct perf_event_attr *attr);
-@@ -746,14 +748,16 @@ int evlist__tui_browse_hists(struct evlist *evlist __maybe_unused,
- static inline int __hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
- 					     struct map_symbol *ms __maybe_unused,
- 					     struct evsel *evsel __maybe_unused,
--					     struct hist_browser_timer *hbt __maybe_unused)
-+					     struct hist_browser_timer *hbt __maybe_unused,
-+					     u64 al_addr __maybe_unused)
- {
- 	return 0;
- }
- 
- static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
- 					   struct evsel *evsel __maybe_unused,
--					   struct hist_browser_timer *hbt __maybe_unused)
-+					   struct hist_browser_timer *hbt __maybe_unused,
-+					   u64 al_addr __maybe_unused)
- {
- 	return 0;
- }
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index d2b2787be4092..6138468c67c47 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -2431,7 +2431,7 @@ int cdc_parse_cdc_header(struct usb_cdc_parsed_header *hdr,
+ 			break;
+ 		case USB_CDC_MBIM_EXTENDED_TYPE:
+ 			if (elength < sizeof(struct usb_cdc_mbim_extended_desc))
+-				break;
++				goto next_desc;
+ 			hdr->usb_cdc_mbim_extended_desc =
+ 				(struct usb_cdc_mbim_extended_desc *)buffer;
+ 			break;
 -- 
 2.51.0
 
