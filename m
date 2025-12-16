@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3550CC3B4B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E803CC37BF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 517AB300E82C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F97C305F127
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71D934DCFE;
-	Tue, 16 Dec 2025 11:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEFA3446C8;
+	Tue, 16 Dec 2025 12:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ntnk1gy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvPHHQQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F6C34DCF3;
-	Tue, 16 Dec 2025 11:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAEE343D82;
+	Tue, 16 Dec 2025 12:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885596; cv=none; b=Pwb9hU2CXHJQ/jeCkozxHvTkxZX13P1GZBrGS6IzKvDgIRlRAhycIsh2Q+bY7LoANW9xPgfgn3KTRASXqKyxLfu684tvvLXL5QdvUV/bNGhSNvv+aSiUtPaNDklsQpisJch9SgoEY8Mg30K+f3MPceNtwmKzl4ImeiOcchyfBOc=
+	t=1765887544; cv=none; b=KkewZGNk+HmUlZszEMhP0ps9KMGbol503hqa6I01r1eQH6IAZt0s7+e9krugjpTHWGfIF7QgPodrF8gWmhJV2ayhy+SfuzkjAHIwF8P5O6hvuyrWw+26NqByo46URFK6aPd5npqgXgJHyzxdknQxjORabA2rpQeVSsV30yX5KoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885596; c=relaxed/simple;
-	bh=zczvj2aeGMXl07t7+ZLVmmg69cW3nFqn9D3MryXPhbY=;
+	s=arc-20240116; t=1765887544; c=relaxed/simple;
+	bh=+ZI+rocPhApA55lmXD4xw6VhdgRkHu+w9xu3dM+n5oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVvqlVkjFDFV1Z53GCSA72PWGn7IwZyCJtg/z7M98KxDAZaVTsrLCokRCUADcMzqOIGMDXlTx5zPm2cJbMZq2cuxTlqtP6f163cfCQ8bFw79RkF0rI8olqmEM1WSSlCr7QjQaH7p+D1o52QsOeCJLOvYbDNmXSwCIMmEHgOs4zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ntnk1gy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA30C4CEF1;
-	Tue, 16 Dec 2025 11:46:35 +0000 (UTC)
+	 MIME-Version; b=l9Zm73dEQ4wn+JzEgZo+gj0SlsU6lc0g6579cp0mHyqH+7Vvc18wH+pyIEbjzacucv4PcnVfgnMTORy0mjNLbsSR3/PXor8Xqv2FhwamCQC8Y+hNF+P0UMB1xNLelty8oG28eDAONCbdTgYmjitxNXfVzzJHpMmm6/bzZsGEu0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvPHHQQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB51C4CEF1;
+	Tue, 16 Dec 2025 12:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885596;
-	bh=zczvj2aeGMXl07t7+ZLVmmg69cW3nFqn9D3MryXPhbY=;
+	s=korg; t=1765887543;
+	bh=+ZI+rocPhApA55lmXD4xw6VhdgRkHu+w9xu3dM+n5oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ntnk1gy3f4iAangp+z8dZT6Jz0ghlhG59QibiJx/K9I1aCHah4v7211DzKDVWiJgy
-	 B2HZ1kKhmpKRxa/wXTSCoig7Tgt3jNhrMrvNpWriOTKw7QwMnmb8gYTiKxvUj4YbK6
-	 cd+luFHOMr5jKuSXothWI8Xv/R2ZD47Ho2PTEd4s=
+	b=KvPHHQQRexIWULvUswiFADTPsryom/fVLl7IqjUzf8YrcUwDykK0KHggN38YVDD3Q
+	 1/Flq8q8HMc1AgfhcjnWgnXEKp65hDzyxg2FrxVA8xeg//U046vkIXnvppODQOxfWl
+	 drUvgG+BZIp5iyw5BQstvtdBXnhz8dsY/Fy6lpmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 187/507] perf/x86: Fix NULL event access and potential PEBS record loss
-Date: Tue, 16 Dec 2025 12:10:28 +0100
-Message-ID: <20251216111352.287888571@linuxfoundation.org>
+Subject: [PATCH 6.18 262/614] clk: renesas: r9a06g032: Fix memory leak in error path
+Date: Tue, 16 Dec 2025 12:10:29 +0100
+Message-ID: <20251216111410.865398013@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 7e772a93eb61cb6265bdd1c5bde17d0f2718b452 ]
+[ Upstream commit f8def051bbcf8677f64701e9699bf6d11e2780cd ]
 
-When intel_pmu_drain_pebs_icl() is called to drain PEBS records, the
-perf_event_overflow() could be called to process the last PEBS record.
+The current code uses of_iomap() to map registers but never calls
+iounmap() on any error path after the mapping. This causes a memory
+leak when probe fails after successful ioremap, for example when
+of_clk_add_provider() or r9a06g032_add_clk_domain() fails.
 
-While perf_event_overflow() could trigger the interrupt throttle and
-stop all events of the group, like what the below call-chain shows.
+Replace of_iomap() with devm_of_iomap() to automatically unmap the
+region on probe failure. Update the error check accordingly to use
+IS_ERR() and PTR_ERR() since devm_of_iomap() returns ERR_PTR on error.
 
-perf_event_overflow()
-  -> __perf_event_overflow()
-    ->__perf_event_account_interrupt()
-      -> perf_event_throttle_group()
-        -> perf_event_throttle()
-          -> event->pmu->stop()
-            -> x86_pmu_stop()
-
-The side effect of stopping the events is that all corresponding event
-pointers in cpuc->events[] array are cleared to NULL.
-
-Assume there are two PEBS events (event a and event b) in a group. When
-intel_pmu_drain_pebs_icl() calls perf_event_overflow() to process the
-last PEBS record of PEBS event a, interrupt throttle is triggered and
-all pointers of event a and event b are cleared to NULL. Then
-intel_pmu_drain_pebs_icl() tries to process the last PEBS record of
-event b and encounters NULL pointer access.
-
-To avoid this issue, move cpuc->events[] clearing from x86_pmu_stop()
-to x86_pmu_del(). It's safe since cpuc->active_mask or
-cpuc->pebs_enabled is always checked before access the event pointer
-from cpuc->events[].
-
-Closes: https://lore.kernel.org/oe-lkp/202507042103.a15d2923-lkp@intel.com
-Fixes: 9734e25fbf5a ("perf: Fix the throttle logic for a group")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251029102136.61364-3-dapeng1.mi@linux.intel.com
+Fixes: 4c3d88526eba ("clk: renesas: Renesas R9A06G032 clock driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251030061603.1954-1-vulab@iscas.ac.cn
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/renesas/r9a06g032-clocks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 38f7102e2dacc..dc77e11f23657 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1344,6 +1344,7 @@ static void x86_pmu_enable(struct pmu *pmu)
- 				hwc->state |= PERF_HES_ARCH;
+diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
+index dcda19318b2a9..0f5c91b5dfa99 100644
+--- a/drivers/clk/renesas/r9a06g032-clocks.c
++++ b/drivers/clk/renesas/r9a06g032-clocks.c
+@@ -1333,9 +1333,9 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mclk))
+ 		return PTR_ERR(mclk);
  
- 			x86_pmu_stop(event, PERF_EF_UPDATE);
-+			cpuc->events[hwc->idx] = NULL;
- 		}
+-	clocks->reg = of_iomap(np, 0);
+-	if (WARN_ON(!clocks->reg))
+-		return -ENOMEM;
++	clocks->reg = devm_of_iomap(dev, np, 0, NULL);
++	if (IS_ERR(clocks->reg))
++		return PTR_ERR(clocks->reg);
  
- 		/*
-@@ -1365,6 +1366,7 @@ static void x86_pmu_enable(struct pmu *pmu)
- 			 * if cpuc->enabled = 0, then no wrmsr as
- 			 * per x86_pmu_enable_event()
- 			 */
-+			cpuc->events[hwc->idx] = event;
- 			x86_pmu_start(event, PERF_EF_RELOAD);
- 		}
- 		cpuc->n_added = 0;
-@@ -1531,7 +1533,6 @@ static void x86_pmu_start(struct perf_event *event, int flags)
+ 	r9a06g032_init_h2mode(clocks);
  
- 	event->hw.state = 0;
- 
--	cpuc->events[idx] = event;
- 	__set_bit(idx, cpuc->active_mask);
- 	static_call(x86_pmu_enable)(event);
- 	perf_event_update_userpage(event);
-@@ -1610,7 +1611,6 @@ void x86_pmu_stop(struct perf_event *event, int flags)
- 	if (test_bit(hwc->idx, cpuc->active_mask)) {
- 		static_call(x86_pmu_disable)(event);
- 		__clear_bit(hwc->idx, cpuc->active_mask);
--		cpuc->events[hwc->idx] = NULL;
- 		WARN_ON_ONCE(hwc->state & PERF_HES_STOPPED);
- 		hwc->state |= PERF_HES_STOPPED;
- 	}
-@@ -1648,6 +1648,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
- 	 * Not a TXN, therefore cleanup properly.
- 	 */
- 	x86_pmu_stop(event, PERF_EF_UPDATE);
-+	cpuc->events[event->hw.idx] = NULL;
- 
- 	for (i = 0; i < cpuc->n_events; i++) {
- 		if (event == cpuc->event_list[i])
 -- 
 2.51.0
 
