@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F451CC27A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7228FCC2E57
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B707C303F4CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF71631F753B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6B835502B;
-	Tue, 16 Dec 2025 11:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B103644AB;
+	Tue, 16 Dec 2025 12:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNQaRIfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jGpOx8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAB6355027;
-	Tue, 16 Dec 2025 11:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10C3644A7;
+	Tue, 16 Dec 2025 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885857; cv=none; b=IH9Nqs1LOO04EErgkhs9OaoO/yWI1AzMGuQbsVSZ260NRRWDlAj12Rhc57THk1I4aIcnX8A/8HWFBmlOe2YYDjLIOM1UY7mwYQWjXqTZllAF/FCA3m9Jvon74+/iYWUArVIIIVwAt4TL2gs2lq7n80J/+MrVyXaf5H5vL81swlw=
+	t=1765887793; cv=none; b=u1piXnltGmILaSEtFeTmt/bSKSJ14JdZwcXgyR9ueing8i0YCt1nA/U2rv5gsApFp3panJCyNlGZIU5JxRzaVG8S9Vltj1fHaW5zzAk/78U8+HLJLHtii2HdFc49U5+h7ZXXbMFvD+MLLjD0DpGRXnWIg0RGvj9z20/tX73XL5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885857; c=relaxed/simple;
-	bh=gKWoj3uEXmJ7mOMfeNNK+ohfvh9s/8lt2Ew78UdVbZk=;
+	s=arc-20240116; t=1765887793; c=relaxed/simple;
+	bh=My+1MPUwfd+CuaoVtNvPj/iFkn1+EhYenVvh11yk1/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULP79HnnvoxjRnveP0EU9e74a+auDB0+LnIJSt8+QhFh2ur89l3KiVXvIHYH39RGPa2JA1bKi5E9Fgl++9ALxKovqopXXjZd3yU/8xnloyBUZ1W2s18DuASnjTT68E/nFTCuN8nqHC2T6sCSjNpwGigYAj+Gos+BTTOrmI0txRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNQaRIfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0365AC4CEF1;
-	Tue, 16 Dec 2025 11:50:56 +0000 (UTC)
+	 MIME-Version; b=ct8hMno0S2zArU349w/P5FxdHzBHm0BwLKteJcOeuC1nJniJZCN74WQUAh+cXxnjMUjpcLlK1docULMrf0B1syTAGvaDIhWR7De9axwGCPv07gkxyjTAEWlcSCFVOFyHOPYV38puFqEZHqU69Iy0jEAlZamSv/smUFxtNYEGqXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jGpOx8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6EBC4CEF5;
+	Tue, 16 Dec 2025 12:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885857;
-	bh=gKWoj3uEXmJ7mOMfeNNK+ohfvh9s/8lt2Ew78UdVbZk=;
+	s=korg; t=1765887792;
+	bh=My+1MPUwfd+CuaoVtNvPj/iFkn1+EhYenVvh11yk1/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNQaRIfuUITF5h4bGZJh1U3lfi0K4hY45gAHI506bvuA7VtcQpFQKepwaOKWN6f1q
-	 swtq8yl5tButysNKmaXPX25w5jRCAB4pXNSr7x6ObowEaax/i4Z0W7AcJi7K3YQYBZ
-	 MEt/a1iKTk4fWd8eX0mOjptEfIm53oBNtvKFr5EA=
+	b=0jGpOx8aCtvG4c7f8Cjfq7E+PilRCvOjq7vsh5XOBnKtePyBJaoSAqWrP0jINUAr+
+	 3n8/xOF9E6y2WAtf4nJUSiXvGMgmA3ielJvV1GkncdrnUWyFk2lUAZXKxtVQzMaARQ
+	 JmEIlemhRqpuMRdBkNzelKEyQ8aU5eMLEVXsmaDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 265/507] bpf: Fix invalid prog->stats access when update_effective_progs fails
+Subject: [PATCH 6.18 339/614] of/fdt: Consolidate duplicate code into helper functions
 Date: Tue, 16 Dec 2025 12:11:46 +0100
-Message-ID: <20251216111355.086960569@linuxfoundation.org>
+Message-ID: <20251216111413.646520667@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +60,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit 7dc211c1159d991db609bdf4b0fb9033c04adcbc ]
+[ Upstream commit 8278cb72c60399f6dc6300c409879fb4c7291513 ]
 
-Syzkaller triggers an invalid memory access issue following fault
-injection in update_effective_progs. The issue can be described as
-follows:
+Currently, there are many pieces of nearly identical code scattered across
+different places. Consolidate the duplicate code into helper functions to
+improve maintainability and reduce the likelihood of errors.
 
-__cgroup_bpf_detach
-  update_effective_progs
-    compute_effective_progs
-      bpf_prog_array_alloc <-- fault inject
-  purge_effective_progs
-    /* change to dummy_bpf_prog */
-    array->items[index] = &dummy_bpf_prog.prog
-
----softirq start---
-__do_softirq
-  ...
-    __cgroup_bpf_run_filter_skb
-      __bpf_prog_run_save_cb
-        bpf_prog_run
-          stats = this_cpu_ptr(prog->stats)
-          /* invalid memory access */
-          flags = u64_stats_update_begin_irqsave(&stats->syncp)
----softirq end---
-
-  static_branch_dec(&cgroup_bpf_enabled_key[atype])
-
-The reason is that fault injection caused update_effective_progs to fail
-and then changed the original prog into dummy_bpf_prog.prog in
-purge_effective_progs. Then a softirq came, and accessing the members of
-dummy_bpf_prog.prog in the softirq triggers invalid mem access.
-
-To fix it, skip updating stats when stats is NULL.
-
-Fixes: 492ecee892c2 ("bpf: enable program stats")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Link: https://lore.kernel.org/r/20251115102343.2200727-1-pulehui@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://patch.msgid.link/20251115134753.179931-2-yuntao.wang@linux.dev
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Stable-dep-of: bec5f6092bc1 ("of/fdt: Fix the len check in early_init_dt_check_for_elfcorehdr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 12 +++++++-----
- kernel/bpf/syscall.c   |  3 +++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/of/fdt.c       | 41 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/of_fdt.h |  9 +++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 152f2fc7b65a3..70e2f5051676b 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -709,11 +709,13 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 0edd639898a63..0c18bdefbbeea 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -625,6 +625,47 @@ const void *__init of_get_flat_dt_prop(unsigned long node, const char *name,
+ 	return fdt_getprop(initial_boot_params, node, name, size);
+ }
  
- 		duration = sched_clock() - start;
--		stats = this_cpu_ptr(prog->stats);
--		flags = u64_stats_update_begin_irqsave(&stats->syncp);
--		u64_stats_inc(&stats->cnt);
--		u64_stats_add(&stats->nsecs, duration);
--		u64_stats_update_end_irqrestore(&stats->syncp, flags);
-+		if (likely(prog->stats)) {
-+			stats = this_cpu_ptr(prog->stats);
-+			flags = u64_stats_update_begin_irqsave(&stats->syncp);
-+			u64_stats_inc(&stats->cnt);
-+			u64_stats_add(&stats->nsecs, duration);
-+			u64_stats_update_end_irqrestore(&stats->syncp, flags);
-+		}
- 	} else {
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
- 	}
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 0fbfa8532c392..c7b4f597a2936 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2406,6 +2406,9 @@ void notrace bpf_prog_inc_misses_counter(struct bpf_prog *prog)
- 	struct bpf_prog_stats *stats;
- 	unsigned int flags;
- 
-+	if (unlikely(!prog->stats))
-+		return;
++const __be32 *__init of_flat_dt_get_addr_size_prop(unsigned long node,
++						   const char *name,
++						   int *entries)
++{
++	const __be32 *prop;
++	int len, elen = (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32);
 +
- 	stats = this_cpu_ptr(prog->stats);
- 	flags = u64_stats_update_begin_irqsave(&stats->syncp);
- 	u64_stats_inc(&stats->misses);
++	prop = of_get_flat_dt_prop(node, name, &len);
++	if (!prop || len % elen) {
++		*entries = 0;
++		return NULL;
++	}
++
++	*entries = len / elen;
++	return prop;
++}
++
++bool __init of_flat_dt_get_addr_size(unsigned long node, const char *name,
++				     u64 *addr, u64 *size)
++{
++	const __be32 *prop;
++	int entries;
++
++	prop = of_flat_dt_get_addr_size_prop(node, name, &entries);
++	if (!prop || entries != 1)
++		return false;
++
++	of_flat_dt_read_addr_size(prop, 0, addr, size);
++	return true;
++}
++
++void __init of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
++				      u64 *addr, u64 *size)
++{
++	int entry_cells = dt_root_addr_cells + dt_root_size_cells;
++	prop += entry_cells * entry_index;
++
++	*addr = dt_mem_next_cell(dt_root_addr_cells, &prop);
++	*size = dt_mem_next_cell(dt_root_size_cells, &prop);
++}
++
+ /**
+  * of_fdt_is_compatible - Return true if given node from the given blob has
+  * compat in its compatible list
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index b8d6c0c208760..51dadbaa3d63a 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -55,6 +55,15 @@ extern int of_get_flat_dt_subnode_by_name(unsigned long node,
+ 					  const char *uname);
+ extern const void *of_get_flat_dt_prop(unsigned long node, const char *name,
+ 				       int *size);
++
++extern const __be32 *of_flat_dt_get_addr_size_prop(unsigned long node,
++						   const char *name,
++						   int *entries);
++extern bool of_flat_dt_get_addr_size(unsigned long node, const char *name,
++				     u64 *addr, u64 *size);
++extern void of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
++				      u64 *addr, u64 *size);
++
+ extern int of_flat_dt_is_compatible(unsigned long node, const char *name);
+ extern unsigned long of_get_flat_dt_root(void);
+ extern uint32_t of_get_flat_dt_phandle(unsigned long node);
 -- 
 2.51.0
 
