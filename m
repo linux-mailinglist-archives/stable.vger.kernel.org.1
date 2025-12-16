@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-202454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED95CC301D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4558CC23D9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E30933033591
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D746230688E1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429AC36C5B1;
-	Tue, 16 Dec 2025 12:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478E341645;
+	Tue, 16 Dec 2025 11:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bqqs1B89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bBYMgi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3EC28314B;
-	Tue, 16 Dec 2025 12:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C7C313E13;
+	Tue, 16 Dec 2025 11:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887953; cv=none; b=B5ftQgdDCxUmODZiLnAxeAc5LCNRkAEzeeVnlQxmmxNJyo+j4TmeghJhHTmbPljl5PPsnPB5avP94UI1hhNTp4JbX5f9Fa9ZH9ibNgcRheO5tV0TpaEX92quGC5R3qQpgIsITQVhjtNc5HQ8lZjtqPvqE6oJlCTH9fmIsfgwPuE=
+	t=1765884316; cv=none; b=gn6YrFT1Rv6deAXD8i+9h+Nb3igSZ4FpI1c4Ir6x5hjFw8BVDuaxrTxR1YO162ooQLiO4wh/XemzYLWyG+fxigYryzXe0ZBZVre8ugaruZ0G45da8XPbRPb26WzQhYFFZFDsT4kjfMHy3VCjoRBa0GWwsWMpRyZ0W5pHlLGc7iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887953; c=relaxed/simple;
-	bh=8TunygGGhgSDxUWNuieu7JzgID/5NHlfWUnMbRyUssA=;
+	s=arc-20240116; t=1765884316; c=relaxed/simple;
+	bh=wr0oJk0GriS2Uzy5rBPEBk5AmOTEEu05cElB42kWu/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kv2xdiGY9FBna8TCBdBNbFL0UaL3Qbdn6i24HfAqlNWx5NJdKP+mlWCpv1blsFPkYRVlYJwu27oCFyshOH6A0+Rb5b6BuvOeY9tvA2ckKQiG/YU8zQTeGDhX8MOu/KGXWmQ0m+kRQ8Zk8Q6isK3siYTZ3rN/PdcXZb9qLaGIdPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bqqs1B89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A59C4CEF1;
-	Tue, 16 Dec 2025 12:25:51 +0000 (UTC)
+	 MIME-Version; b=EFpC6F1JG6yZNauQ5jQu6g+oN3eWb+AEiYipxzMkInNh9e0moeCmS80l8qBUqBpX95BpO+SQZp4efij+qzvePTYSxQmisNdeZHmy94M006tRBllswwVzJrMHOyWr79SVAFO28gB4voTrbtBflLLpMGvz3808s6unFjN7sQ9v9f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bBYMgi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953CDC4CEF5;
+	Tue, 16 Dec 2025 11:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887952;
-	bh=8TunygGGhgSDxUWNuieu7JzgID/5NHlfWUnMbRyUssA=;
+	s=korg; t=1765884316;
+	bh=wr0oJk0GriS2Uzy5rBPEBk5AmOTEEu05cElB42kWu/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bqqs1B89sciiXjEPRbPKiXj0hDMOmrgWayREgYO/6J9WQ3jrlT00rMq6WKiCdoa0p
-	 z/H3O3R5ibdQqYwYfXtVu8VmmR+OBix7eVdlMSBSI0MicVKiBr4KjmkTsaOQh/+l18
-	 xAQRkfLK5o0+NBeiIjIzTaxaOFdW8gsI2RPg/AyI=
+	b=0bBYMgi5eobIgTQxbPf2yRqtgu6stlGpyTGwCrXia7I+ZEcP4qA7V7/lfajtnsvPp
+	 qmIZ0/gmAqkSL5oWzKLXTbM9/mw36+ytj2JqJeyNdk9Mh+6zza5EdMdM5jkujx3Efp
+	 M2JERlzxqgi9SQGe7xTLxMLHQmM6cNq807XgnwR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanko Kaneti <yaneti@declera.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Alex Elder <elder@riscstar.com>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Yixun Lan <dlan@gentoo.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 355/614] clk: spacemit: Set clk_hw_onecell_data::num before using flex array
-Date: Tue, 16 Dec 2025 12:12:02 +0100
-Message-ID: <20251216111414.223898451@linuxfoundation.org>
+Subject: [PATCH 6.12 156/354] PCI: keystone: Exit ks_pcie_probe() for invalid mode
+Date: Tue, 16 Dec 2025 12:12:03 +0100
+Message-ID: <20251216111326.567238238@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Mirabile <cmirabil@redhat.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 23b2d2fb136959fd0a8e309c70be83d9b8841c7e ]
+[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
 
-When booting with KASAN enabled the following splat is
-encountered during probe of the k1 clock driver:
+Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
+When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
+the PCIe Controller is configured accordingly. However, when the mode is
+neither of them, an error message is displayed, but the driver probe
+succeeds. Since this "invalid" mode is not associated with a functional
+PCIe Controller, the probe should fail.
 
-UBSAN: array-index-out-of-bounds in drivers/clk/spacemit/ccu-k1.c:1044:16
-index 0 is out of range for type 'clk_hw *[*]'
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc5+ #1 PREEMPT(lazy)
-Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2022.10spacemit 10/01/2022
-Call Trace:
-[<ffffffff8002b628>] dump_backtrace+0x28/0x38
-[<ffffffff800027d2>] show_stack+0x3a/0x50
-[<ffffffff800220c2>] dump_stack_lvl+0x5a/0x80
-[<ffffffff80022100>] dump_stack+0x18/0x20
-[<ffffffff800164b8>] ubsan_epilogue+0x10/0x48
-[<ffffffff8099034e>] __ubsan_handle_out_of_bounds+0xa6/0xa8
-[<ffffffff80acbfa6>] k1_ccu_probe+0x37e/0x420
-[<ffffffff80b79e6e>] platform_probe+0x56/0x98
-[<ffffffff80b76a7e>] really_probe+0x9e/0x350
-[<ffffffff80b76db0>] __driver_probe_device+0x80/0x138
-[<ffffffff80b76f52>] driver_probe_device+0x3a/0xd0
-[<ffffffff80b771c4>] __driver_attach+0xac/0x1b8
-[<ffffffff80b742fc>] bus_for_each_dev+0x6c/0xc8
-[<ffffffff80b76296>] driver_attach+0x26/0x38
-[<ffffffff80b759ae>] bus_add_driver+0x13e/0x268
-[<ffffffff80b7836a>] driver_register+0x52/0x100
-[<ffffffff80b79a78>] __platform_driver_register+0x28/0x38
-[<ffffffff814585da>] k1_ccu_driver_init+0x22/0x38
-[<ffffffff80023a8a>] do_one_initcall+0x62/0x2a0
-[<ffffffff81401c60>] do_initcalls+0x170/0x1a8
-[<ffffffff81401e7a>] kernel_init_freeable+0x16a/0x1e0
-[<ffffffff811f7534>] kernel_init+0x2c/0x180
-[<ffffffff80025f56>] ret_from_fork_kernel+0x16/0x1d8
-[<ffffffff81205336>] ret_from_fork_kernel_asm+0x16/0x18
----[ end trace ]---
+Fix the behavior by exiting "ks_pcie_probe()" with the return value of
+"-EINVAL" in addition to displaying the existing error message when the
+mode is invalid.
 
-This is bogus and is simply a result of KASAN consulting the
-`.num` member of the struct for bounds information (as it should
-due to `__counted_by`) and finding 0 set by kzalloc() because it
-has not been initialized before the loop that fills in the array.
-The easy fix is to just move the line that sets `num` to before
-the loop that fills the array so that KASAN has the information
-it needs to accurately conclude that the access is valid.
-
-Fixes: 1b72c59db0add ("clk: spacemit: Add clock support for SpacemiT K1 SoC")
-Tested-by: Yanko Kaneti <yaneti@declera.com>
-Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
-Reviewed-by: Alex Elder <elder@riscstar.com>
-Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Reviewed-by: Yixun Lan <dlan@gentoo.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/spacemit/ccu-k1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/spacemit/ccu-k1.c b/drivers/clk/spacemit/ccu-k1.c
-index f5a9fe6ba1859..4761bc1e3b6e6 100644
---- a/drivers/clk/spacemit/ccu-k1.c
-+++ b/drivers/clk/spacemit/ccu-k1.c
-@@ -1018,6 +1018,8 @@ static int spacemit_ccu_register(struct device *dev,
- 	if (!clk_data)
- 		return -ENOMEM;
- 
-+	clk_data->num = data->num;
-+
- 	for (i = 0; i < data->num; i++) {
- 		struct clk_hw *hw = data->hws[i];
- 		struct ccu_common *common;
-@@ -1044,8 +1046,6 @@ static int spacemit_ccu_register(struct device *dev,
- 		clk_data->hws[i] = hw;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 4f75d13fe1dee..1c34ea8e7c61e 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1339,6 +1339,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
+ 		break;
+ 	default:
+ 		dev_err(dev, "INVALID device type %d\n", mode);
++		ret = -EINVAL;
++		goto err_get_sync;
  	}
  
--	clk_data->num = data->num;
--
- 	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get, clk_data);
- 	if (ret)
- 		dev_err(dev, "failed to add clock hardware provider (%d)\n", ret);
+ 	ks_pcie_enable_error_irq(ks_pcie);
 -- 
 2.51.0
 
