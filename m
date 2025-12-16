@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D76CC27E2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03936CC3023
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 182453004465
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A1003048F52
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3334F497;
-	Tue, 16 Dec 2025 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC6636CE08;
+	Tue, 16 Dec 2025 12:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8hA7IMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9eRg1Gq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0609534F475;
-	Tue, 16 Dec 2025 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4934C36CDF6;
+	Tue, 16 Dec 2025 12:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886143; cv=none; b=bvYchDDkT8nK90sxtefsbYTk7fWTbzMKKaXKtehdrwANRpcONWdE3jzVYaP8gegGy4gjLzEP+s8RcW8CRJykfNjrbZYLzB9xZdpWcaYrO8kxPxiQoiv1uccIb3z4xFhXgEGs4tUKeRupfN4oeIz40cBGdNxj76OZcHGbrXHAP5o=
+	t=1765887966; cv=none; b=Hr3IiagABUJJzN4038ubIkR0MQzU+s0jyEbcgBBm14Lwhugipz9vf+0b4wQi9sSJ5LRxmLMs5E6TbncCh0uMBG/mymHsfzDSDH7bbQtQ6mIvdCNNrrauh9G4OWpJNKOdLWKNGc0iig6vnXmB1q9V8SFdBoP+R9E/LfAbpfAaXiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886143; c=relaxed/simple;
-	bh=g20gjEDE2FvGAZ+rIHThvKmwpjHqmJCcDrBaTYCc9mY=;
+	s=arc-20240116; t=1765887966; c=relaxed/simple;
+	bh=3LtFJQqWcuB4fFyO7lI2aDTxdjPK5SbFaRBgx39hYpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rouju/+SgYMmW8hpA0FFiDScdtZ0P4X17t7KtGXCSKNVXLVSrSXCSQs3cVNy4m1Fygo0dvN8GXNaKOgS7mlmbDJaHLGpVJWLn3WNq9/wu4SA0v+pwtigcsgC9Mk0PjVvZh1w16oYBG1DsdsIZGMQ5gv/0gH40sZfxELkcvzFq1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8hA7IMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3975FC4CEF1;
-	Tue, 16 Dec 2025 11:55:42 +0000 (UTC)
+	 MIME-Version; b=FQyLBSbTUoh88dvQtsvW/+5edzRPNyCIN7JEmdd7BuDnrlKQ7aDzVfYnFypy+cpzmRDy2unr0KZGH5ZkbgefJA8FShaFPnCkEF/X0do74FyCeZe//8FiW2Ze/N1MoAK+FG07R/sPIsghGjxfM9vin/e1YOh+OA+5DBypD3A91wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9eRg1Gq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCFCC4CEF1;
+	Tue, 16 Dec 2025 12:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886142;
-	bh=g20gjEDE2FvGAZ+rIHThvKmwpjHqmJCcDrBaTYCc9mY=;
+	s=korg; t=1765887965;
+	bh=3LtFJQqWcuB4fFyO7lI2aDTxdjPK5SbFaRBgx39hYpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8hA7IMygdF/NBPaK/AOj+qmokQM3fmA8RdKD8IAaNxauu/xggrZ9/FSkMZS9VBMi
-	 ODOh+/HaNiizsyuqaV0G1J0kSt95woVcXyPMexXZfPsBndNCjSDsC5yJSwZzMAGlSi
-	 syP0wJbQ/9YVUENQxvWILP2qkr+5MXsYlomMZzyM=
+	b=S9eRg1GqHD8G9f4rICM6wjljnOvaWsf4yEY4wAwlL7CiNMyBvUpR1JTRcB91jhYId
+	 OmZBcviQM8asts5k+RT5AL9YEr9fpxC4xGHrYqXcm93sLBHrLfIsYj7Dm3bHMXyBEm
+	 33rm+tJjLrpbdk4k3ATRcNhO5Vv+x5rBLWS4pQ5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 318/507] RDMA/bnxt_re: Pass correct flag for dma mr creation
+Subject: [PATCH 6.18 392/614] wifi: mt76: mt7996: set link_valid field when initializing wcid
 Date: Tue, 16 Dec 2025 12:12:39 +0100
-Message-ID: <20251216111356.989610558@linuxfoundation.org>
+Message-ID: <20251216111415.578003494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit a26c4c7cdb50247b8486f1caa1ea8ab5e5c37edf ]
+[ Upstream commit 7eaea3a8ba1e9bb58f87e3030f6ce18537e57e1f ]
 
-DMA MR doesn't use the unified MR model. So the lkey passed
-on to the reg_mr command to FW should contain the correct
-lkey. Driver is incorrectly over writing the lkey with pdid
-and firmware commands fails due to this.
+This ensures the upper layer uses the correct link ID during packet
+processing.
 
-Avoid passing the wrong key for cases where the unified MR
-registration is not used.
-
-Fixes: f786eebbbefa ("RDMA/bnxt_re: Avoid an extra hwrm per MR creation")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1763624215-10382-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: dd82a9e02c05 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251106064203.1000505-7-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 +++++---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 6 +++---
- drivers/infiniband/hw/bnxt_re/qplib_sp.h | 2 +-
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 12fee23de81e7..ba87606263cfb 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -599,7 +599,8 @@ static int bnxt_re_create_fence_mr(struct bnxt_re_pd *pd)
- 	mr->qplib_mr.va = (u64)(unsigned long)fence->va;
- 	mr->qplib_mr.total_size = BNXT_RE_FENCE_BYTES;
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL,
--			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE);
-+			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE,
-+			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
- 	if (rc) {
- 		ibdev_err(&rdev->ibdev, "Failed to register fence-MR\n");
- 		goto fail;
-@@ -3972,7 +3973,7 @@ struct ib_mr *bnxt_re_get_dma_mr(struct ib_pd *ib_pd, int mr_access_flags)
- 	mr->qplib_mr.hwq.level = PBL_LVL_MAX;
- 	mr->qplib_mr.total_size = -1; /* Infinte length */
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL, 0,
--			       PAGE_SIZE);
-+			       PAGE_SIZE, false);
- 	if (rc)
- 		goto fail_mr;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index aa46ea707b406..4e73854589558 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -343,6 +343,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	INIT_LIST_HEAD(&msta_link->rc_list);
+ 	msta_link->wcid.idx = idx;
+ 	msta_link->wcid.link_id = link_conf->link_id;
++	msta_link->wcid.link_valid = ieee80211_vif_is_mld(vif);
+ 	msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	mt76_wcid_init(&msta_link->wcid, band_idx);
  
-@@ -4202,7 +4203,8 @@ static struct ib_mr *__bnxt_re_user_reg_mr(struct ib_pd *ib_pd, u64 length, u64
+@@ -984,6 +985,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
+ 	msta_link->wcid.sta = 1;
+ 	msta_link->wcid.idx = idx;
+ 	msta_link->wcid.link_id = link_id;
++	msta_link->wcid.link_valid = !!sta->valid_links;
+ 	msta_link->wcid.def_wcid = &msta->deflink.wcid;
  
- 	umem_pgs = ib_umem_num_dma_blocks(umem, page_size);
- 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, umem,
--			       umem_pgs, page_size);
-+			       umem_pgs, page_size,
-+			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
- 	if (rc) {
- 		ibdev_err(&rdev->ibdev, "Failed to register user MR - rc = %d\n", rc);
- 		rc = -EIO;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index f40b7d1692b06..6d1d55c8423d0 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -615,7 +615,7 @@ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
- }
- 
- int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
--		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size)
-+		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr)
- {
- 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
- 	struct bnxt_qplib_hwq_attr hwq_attr = {};
-@@ -677,7 +677,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
- 	req.access = (mr->access_flags & BNXT_QPLIB_MR_ACCESS_MASK);
- 	req.va = cpu_to_le64(mr->va);
- 	req.key = cpu_to_le32(mr->lkey);
--	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags))
-+	if (unified_mr)
- 		req.key = cpu_to_le32(mr->pd->id);
- 	req.flags = cpu_to_le16(mr->flags);
- 	req.mr_size = cpu_to_le64(mr->total_size);
-@@ -688,7 +688,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
- 	if (rc)
- 		goto fail;
- 
--	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags)) {
-+	if (unified_mr) {
- 		mr->lkey = le32_to_cpu(resp.xid);
- 		mr->rkey = mr->lkey;
- 	}
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-index 09faf4a1e849c..4e080108b1f24 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-@@ -340,7 +340,7 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
- int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
- 			 bool block);
- int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
--		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size);
-+		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr);
- int bnxt_qplib_free_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr);
- int bnxt_qplib_alloc_fast_reg_mr(struct bnxt_qplib_res *res,
- 				 struct bnxt_qplib_mrw *mr, int max);
+ 	ewma_avg_signal_init(&msta_link->avg_ack_signal);
 -- 
 2.51.0
 
