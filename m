@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B20CC4684
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6E0CC267A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94E0630CAD0A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50F113059BCE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360063563E4;
-	Tue, 16 Dec 2025 12:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8F6343D77;
+	Tue, 16 Dec 2025 11:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwL6vmHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MICYtmXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FD43563C8;
-	Tue, 16 Dec 2025 12:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA89336EF4;
+	Tue, 16 Dec 2025 11:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886532; cv=none; b=UfdxSAbMyDRjFKiMD3c2Yy4O35KmT9uk+h60rGeygIQ1f0e8o60V6/Ex08dCOWB4RcaLafUMxIy8TxNxcKR+Li21mHLOiUWi22xVuJz4nb7pjrFqXBJ/qFvTJyEJJChi/ocVvpJBYLq84cDAt8+VusWqOB+l4uZtZTrQezivNTQ=
+	t=1765884893; cv=none; b=Dsahh9cK8wlLiIKv5BssDnRBcLhzBiH6Vf5oWkJlFvxtCgz5DZJKHgq152PUmz6n4I1d4CmSZF6GBGF58nGscncd1Vbv2NwNapEm+ezzarDJU83F/EnidyVV7wSjl6FnywcGRKa+kfmrc7x31aRww77g4I1Wr2d/rmsRw6veocE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886532; c=relaxed/simple;
-	bh=Xzwx1xRbielLx4xU/2EbU9G+0Jw6z0rOp27b+VxeaAI=;
+	s=arc-20240116; t=1765884893; c=relaxed/simple;
+	bh=k1HwSdtL1mFGQw0h9zYUcHoWwkICCdL6pNlGf4lfHwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kD90IWvH1ZaIEymLXhPeEuQKeumofVf1af+j+4F88wUd34d0Q8icEHtVw2m4706OJkhRsUw4G6xGGpSoXgwDVJbylywIYWsTJvO3N3JBI6PUh0YWpMBKClaLwNYqjZJqP7P2pI2liPwFtvGxOstGuopioWkn43UpgU+0CowHw3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwL6vmHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D529C4CEF1;
-	Tue, 16 Dec 2025 12:02:11 +0000 (UTC)
+	 MIME-Version; b=rdorRu6OFx6jzNn6e4HUvcSlR+QEYL2jduowDvUt5BbgpzLw4SSWNWF9uL4wCL04c06lAOG6x6h+U0KYPvuySvd9o7Wy0voBzR6IU2imNCULLFCz71zpFAxZwXtXzzXMi0Y85aa1Iuh14FDombnlUI7vfvmhum/aghX8jwbMiiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MICYtmXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016CDC4CEF1;
+	Tue, 16 Dec 2025 11:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886531;
-	bh=Xzwx1xRbielLx4xU/2EbU9G+0Jw6z0rOp27b+VxeaAI=;
+	s=korg; t=1765884892;
+	bh=k1HwSdtL1mFGQw0h9zYUcHoWwkICCdL6pNlGf4lfHwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwL6vmHXUVul/8msLrQxZS7yPTiJxQPnsY7XqdkK1zqRmjIVYMK2Tsc1C+jCvng4F
-	 gaarHdp90bBORP9ZWaCAnWu/FMIl5TyYy+WvB5cvT9sPbUMU1EY/Vcu0Qgji7si6fd
-	 NQ36J5ZR6OR/Wu/LNA3uyjCSmYKM98HHeCZpnyAI=
+	b=MICYtmXMOc35tkD8a5fE/2AVPv7cByFdawlByZwCIpRd9g4Fcjz76GYmEsttfAMGu
+	 h8PEJUlUwRhvkvCBGTeCnPuyn/mXS+/PTAP+wMOryAXclyQI0tneZjej2X5sdjJ/MM
+	 PTkZgFcS/m0Hj7qtYPau01Zg0CqPlKkmm0ZrI2wE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andres J Rosa <andyrosa@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 457/507] ASoC: ak4458: Disable regulator when error happens
+Subject: [PATCH 6.12 331/354] ALSA: uapi: Fix typo in asound.h comment
 Date: Tue, 16 Dec 2025 12:14:58 +0100
-Message-ID: <20251216111402.005467493@linuxfoundation.org>
+Message-ID: <20251216111332.901887625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Andres J Rosa <andyrosa@gmail.com>
 
-[ Upstream commit ae585fabb9713a43e358cf606451386757225c95 ]
+[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
 
-Fixes: 7e3096e8f823 ("ASoC: ak4458: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
+Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
+Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak4458.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/uapi/sound/asound.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
-index 57cf601d3df35..a6c04dd3de3ed 100644
---- a/sound/soc/codecs/ak4458.c
-+++ b/sound/soc/codecs/ak4458.c
-@@ -671,7 +671,15 @@ static int ak4458_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak4458->regmap, false);
- 	regcache_mark_dirty(ak4458->regmap);
+diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
+index 4cd513215bcd8..f35e5b0561399 100644
+--- a/include/uapi/sound/asound.h
++++ b/include/uapi/sound/asound.h
+@@ -60,7 +60,7 @@ struct snd_cea_861_aud_if {
+ 	unsigned char db2_sf_ss; /* sample frequency and size */
+ 	unsigned char db3; /* not used, all zeros */
+ 	unsigned char db4_ca; /* channel allocation code */
+-	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
++	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
+ };
  
--	return regcache_sync(ak4458->regmap);
-+	ret = regcache_sync(ak4458->regmap);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	regcache_cache_only(ak4458->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak4458->supplies), ak4458->supplies);
-+	return ret;
- }
- 
- static const struct snd_soc_component_driver soc_codec_dev_ak4458 = {
+ /****************************************************************************
 -- 
 2.51.0
 
