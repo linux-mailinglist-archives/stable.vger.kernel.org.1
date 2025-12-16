@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3B2CC27AF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F2ECC244E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 715FB304FEB9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C26D30B7FBF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06AC355026;
-	Tue, 16 Dec 2025 11:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AF6342529;
+	Tue, 16 Dec 2025 11:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJuAox3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSKKvX6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBAB35502D;
-	Tue, 16 Dec 2025 11:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DBE342526;
+	Tue, 16 Dec 2025 11:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885875; cv=none; b=GPY/0HBXRq8rKFfia5bG46iQGitEwl2GPDUtPd5KO9K3+9TUbZ4DSHk0sIoQvx+5ouIa7GuFkT9CdABGYq23oGE/rpg0FbOT8kClf9XvuvQQzT6e6Zrt3NKIlglkjy+5lL8vEcCt2AfHJQoSH/cb5BQX+hPgtfRTI2kaTphgeZs=
+	t=1765884385; cv=none; b=JMDEKMkM56chILil4aYoJ3qPgMHBp8AjuWhdeR3BMQNqB3sCXES53hzsy9c4HzEP3Z8pL5w4pRNW9CW2DSsB4K+ZOFAYAHA1DQJpgatuX9YuUPGToZ89NWPqF7wPS92IvVletihKOm+cy9Yfcm4Rr8kNpjcoc7bK/6ZwLwkpqow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885875; c=relaxed/simple;
-	bh=uADJGnFwm4U1ILEpgzR+7E7mdLRp6OA0BWPFfh7ZlQw=;
+	s=arc-20240116; t=1765884385; c=relaxed/simple;
+	bh=zVjDF2gWWXusloLV1kTdu0bSnNXEBirHExkdyTIFbnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqid6g7li2VM7EhpDUTT/BOdl0+Z3Mh40SR2s5t/cMb2j23AlgIXduYNO4c9ZUUS/zLwOIt2yy2nW1kUJfFinSN1Cn2JbqqGi4oBL295SPX0bBCP5AO/6guuXnv+IqeOWah4P9v8zguCv4qyTzPn03W9UmYp6/wKpNDdt0ZtHl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJuAox3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17CCC4CEF1;
-	Tue, 16 Dec 2025 11:51:14 +0000 (UTC)
+	 MIME-Version; b=u5o00fWWFbZlISJVZwLTslE6zZT4m1Ax389b9LqksbsEvb5lcqMMj1tfqa4aIQDCyylcCNnrdnsLfK9j3rE/0CbMfhIGgaxxwjegHaC+VqJxCRJqD7pcy0xcfFE4soCH+EoIiENwnYdX7Ky0I6jui0fhOusS5uwbE44IqiQhqdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSKKvX6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B4BC4CEF5;
+	Tue, 16 Dec 2025 11:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885875;
-	bh=uADJGnFwm4U1ILEpgzR+7E7mdLRp6OA0BWPFfh7ZlQw=;
+	s=korg; t=1765884385;
+	bh=zVjDF2gWWXusloLV1kTdu0bSnNXEBirHExkdyTIFbnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJuAox3Gdhnoz4pKHDV9XlKTYqUpUUprO2uZenHvxdbW9/lGGfnuFVdSIn+70mT74
-	 MIorKCqHgSPbza5WR84IKzMurEue1gZCtMu72dlxYURF5iw0v0xN01xeZ1sJ+oSsD6
-	 znqbdB9N2jFTorrEe2WTElv/FzlPtJhEvu2H5xBM=
+	b=bSKKvX6D3eQwysONO3D0+v/ersXKQPF7MWuJ8LD7W+e4fQo/V8ddbiOazHUW07i9A
+	 1UD95TFuBueDGCVzmqTS6KQvXzsp2eet7NpT8vynKSXrXkTNltZAKNXVfiqDqsCRi/
+	 MwmnRjleToSk/W/lei7py4KXArb4HFh2sZ1pH9mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 270/507] fs/ntfs3: Prevent memory leaks in add sub record
+Subject: [PATCH 6.12 144/354] nbd: defer config unlock in nbd_genl_connect
 Date: Tue, 16 Dec 2025 12:11:51 +0100
-Message-ID: <20251216111355.267606897@linuxfoundation.org>
+Message-ID: <20251216111326.133454326@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
+[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
 
-If a rb node with the same ino already exists in the rb tree, the newly
-alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
-up, which leads to the memory leak issue reported by syzbot.
+There is one use-after-free warning when running NBD_CMD_CONNECT and
+NBD_CLEAR_SOCK:
 
-The best option to avoid this issue is to put the newly alloced mft node
-when a rb node with the same ino already exists in the rb tree and return
-the rb node found in the rb tree to the parent layer.
+nbd_genl_connect
+  nbd_alloc_and_init_config // config_refs=1
+  nbd_start_device // config_refs=2
+  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
+  recv_work done // config_refs=2
+						NBD_CLEAR_SOCK // config_refs=1
+						close nbd // config_refs=0
+  refcount_inc -> uaf
 
-syzbot reported:
-BUG: memory leak
-unreferenced object 0xffff888110bef280 (size 128):
-  backtrace (crc 126a088f):
-    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
-    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
+ nbd_genl_connect+0x16d0/0x1ab0
+ genl_family_rcv_msg_doit+0x1f3/0x310
+ genl_rcv_msg+0x44a/0x790
 
-BUG: memory leak
-unreferenced object 0xffff888109093400 (size 1024):
-  backtrace (crc 7197c55e):
-    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
-    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
+The issue can be easily reproduced by adding a small delay before
+refcount_inc(&nbd->config_refs) in nbd_genl_connect():
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+        mutex_unlock(&nbd->config_lock);
+        if (!ret) {
+                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
++               printk("before sleep\n");
++               mdelay(5 * 1000);
++               printk("after sleep\n");
+                refcount_inc(&nbd->config_refs);
+                nbd_connect_reply(info, nbd->index);
+        }
+
+Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index a557e3ec0d4c4..e5a005d216f31 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -325,8 +325,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index e6b756c475cde..958bd115a3417 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2169,12 +2169,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
  
- 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
- 
--	ni_add_mi(ni, m);
--	*mi = m;
-+	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
-+	if (*mi != m)
-+		mi_put(m);
+ 	ret = nbd_start_device(nbd);
+ out:
+-	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
+ 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
+ 		refcount_inc(&nbd->config_refs);
+ 		nbd_connect_reply(info, nbd->index);
+ 	}
++	mutex_unlock(&nbd->config_lock);
 +
- 	return true;
- }
- 
+ 	nbd_config_put(nbd);
+ 	if (put_dev)
+ 		nbd_put(nbd);
 -- 
 2.51.0
 
