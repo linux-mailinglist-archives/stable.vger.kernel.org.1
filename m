@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D439CC2E0C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C93DCC2227
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86AAC3092C97
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3294530101C8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA604355033;
-	Tue, 16 Dec 2025 12:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BA0341057;
+	Tue, 16 Dec 2025 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jBM5QgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChTQkL3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49F735505A;
-	Tue, 16 Dec 2025 12:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1687F2459D7;
+	Tue, 16 Dec 2025 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887707; cv=none; b=mfPdRY/KaoIhWafUDMuR9fleZwUF0r1XugYQecu4NCpINe32fAvck3nfqTy9q659uhuOeG5AdrB53JtonoxCEZ65Nxg2o/EO25NsvbsZa2hCeQURofHluKU9t1DiC1Ooyei5DVpQ5aGhevrt0tKeK76dSrJbWdjp+7lv6gNul2Y=
+	t=1765884056; cv=none; b=NTCFtpP/UF60kTufiWQoXt+ebHV/m0AR/g4DIYsdFY+UusaelgQl/6lzY/V1HPLTJD/+X4Vmp80mdiv+V9SUO/Bfn0S5NmL3iNp+4m4Y1UN+UbyujlqLQO4RHdTJ/WHqU9eYQuUbZoVlO/qwZ2HNkgat6086md2XpV9Ca/csECA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887707; c=relaxed/simple;
-	bh=WJL80oa9Sos26e96UI3OALJZqtHjlWatO1D3kkMq6DU=;
+	s=arc-20240116; t=1765884056; c=relaxed/simple;
+	bh=D/yNskerJnjcVFNGKyz59wu/UcnJEG2HKWLSRCuVymc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGIa/WO1ytCp+OMhFul/AhjMUE/kt+PeMwiguhmh8yjxDGlvqVTWyUK6lV5hg+2O2ceAWMfi+Mq6CXHv5BVgF9ZNQb5YncAT2yN5PGu1fx9jkY/PO9LXb7KZqZfbzMLvsxyBeQGjGfUHuUd3KaNc9oeSFSi4fxA7R+HOvh2Od0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jBM5QgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21774C4CEF1;
-	Tue, 16 Dec 2025 12:21:46 +0000 (UTC)
+	 MIME-Version; b=f+Zeb3p9BOxQc75qCGrKPrlYQhVsAsg6896sRl3+fKW2p/92qOwrxOsvdozAJm0qsvPwr3xM7O1RlpqCX1B6paTtueRlE7HjKT0wqSZr63ZGFhPZ2exNS43oW+KawMFFFXc0om8v7BXcKnyOyUyCEDihY0FDyRV5vkG4Iih52lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChTQkL3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A5DC4CEF1;
+	Tue, 16 Dec 2025 11:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887707;
-	bh=WJL80oa9Sos26e96UI3OALJZqtHjlWatO1D3kkMq6DU=;
+	s=korg; t=1765884056;
+	bh=D/yNskerJnjcVFNGKyz59wu/UcnJEG2HKWLSRCuVymc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jBM5QgZJ+mqhX4o5h1rc1nxT73tt2KtyDsV8o257/lSo/wgdePCepnTcdAzwMprJ
-	 deXgVaheg669N2LBRG3eGAErwmWXoIPheGIfxdmKv+khz/apjyqjhM7bufo7mZNhew
-	 dVVpabbrwJsGQsW/ryukqrNyY9YPX5u5xidd2PlE=
+	b=ChTQkL3ZTYk+qBaJV2yMvYIwWjIQRuKqiHpvlB/3PBgNPidLQc0bwADU8W1ZBP3vY
+	 e192fEjQ3LCCWaxOsPk1CY9D3EMCrbLgCSLLg690A+wKtXRkQeoHsjQlvX1XBw5+Aj
+	 la8OJ3iSmOgEYj7+MSu3ChwV0IYzekaMXEUwYjns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 280/614] perf vendor metrics s390: Avoid has_event(INSTRUCTIONS)
+Subject: [PATCH 6.12 080/354] ARM: dts: renesas: gose: Remove superfluous port property
 Date: Tue, 16 Dec 2025 12:10:47 +0100
-Message-ID: <20251216111411.519418812@linuxfoundation.org>
+Message-ID: <20251216111323.822788736@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit c1932fb85af8e51ac9f6bd9947145b06c716106e ]
+[ Upstream commit 00df14f34615630f92f97c9d6790bd9d25c4242d ]
 
-The instructions event is now provided in json meaning the has_event
-test always succeeds. Switch to using non-legacy event names in the
-affected metrics.
+'bus-width' is defined for the corresponding vin input port already.
+No need to declare it in the output port again. Fixes:
 
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-perf-users/3e80f453-f015-4f4f-93d3-8df6bb6b3c95@linux.ibm.com/
-Fixes: 0012e0fa221b ("perf jevents: Add legacy-hardware and legacy-cache json")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Thomas Richter <tmricht@linux.ibm.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+    arch/arm/boot/dts/renesas/r8a7793-gose.dtb: composite-in@20 (adi,adv7180cp): ports:port@3:endpoint: Unevaluated properties are not allowed ('bus-width' was unexpected)
+    from schema $id: http://devicetree.org/schemas/media/i2c/adi,adv7180.yaml#
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250929093616.17679-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/s390/cf_z16/transaction.json | 8 ++++----
- tools/perf/pmu-events/arch/s390/cf_z17/transaction.json | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/renesas/r8a7793-gose.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-index 3ab1d3a6638c4..57b785307a85f 100644
---- a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-+++ b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
-@@ -7,17 +7,17 @@
-   {
-     "BriefDescription": "Cycles per Instruction",
-     "MetricName": "cpi",
--    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(CPU_CYCLES) else 0"
-   },
-   {
-     "BriefDescription": "Problem State Instruction Ratio",
-     "MetricName": "prbstate",
--    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(PROBLEM_STATE_INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Level One Miss per 100 Instructions",
-     "MetricName": "l1mp",
--    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(L1I_DIR_WRITES) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 2 cache",
-@@ -52,7 +52,7 @@
-   {
-     "BriefDescription": "Estimated Instruction Complexity CPI infinite Level 1",
-     "MetricName": "est_cpi",
--    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(CPU_CYCLES) else 0"
-   },
-   {
-     "BriefDescription": "Estimated Sourcing Cycles per Level 1 Miss",
-diff --git a/tools/perf/pmu-events/arch/s390/cf_z17/transaction.json b/tools/perf/pmu-events/arch/s390/cf_z17/transaction.json
-index 74df533c8b6fa..7ded6a5a76c0f 100644
---- a/tools/perf/pmu-events/arch/s390/cf_z17/transaction.json
-+++ b/tools/perf/pmu-events/arch/s390/cf_z17/transaction.json
-@@ -7,17 +7,17 @@
-   {
-     "BriefDescription": "Cycles per Instruction",
-     "MetricName": "cpi",
--    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(CPU_CYCLES) else 0"
-   },
-   {
-     "BriefDescription": "Problem State Instruction Ratio",
-     "MetricName": "prbstate",
--    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(PROBLEM_STATE_INSTRUCTIONS) else 0"
-   },
-   {
-     "BriefDescription": "Level One Miss per 100 Instructions",
-     "MetricName": "l1mp",
--    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(L1I_DIR_WRITES) else 0"
-   },
-   {
-     "BriefDescription": "Percentage sourced from Level 2 cache",
-@@ -52,7 +52,7 @@
-   {
-     "BriefDescription": "Estimated Instruction Complexity CPI infinite Level 1",
-     "MetricName": "est_cpi",
--    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(INSTRUCTIONS) else 0"
-+    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(L1C_TLB2_MISSES) else 0"
-   },
-   {
-     "BriefDescription": "Estimated Sourcing Cycles per Level 1 Miss",
+diff --git a/arch/arm/boot/dts/renesas/r8a7793-gose.dts b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
+index 1ea6c757893bc..1a4e44c3c5af6 100644
+--- a/arch/arm/boot/dts/renesas/r8a7793-gose.dts
++++ b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
+@@ -373,7 +373,6 @@ adv7180_in: endpoint {
+ 				port@3 {
+ 					reg = <3>;
+ 					adv7180_out: endpoint {
+-						bus-width = <8>;
+ 						remote-endpoint = <&vin1ep>;
+ 					};
+ 				};
 -- 
 2.51.0
 
