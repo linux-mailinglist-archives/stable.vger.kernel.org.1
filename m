@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77631CC2253
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CF2CC2B89
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 218DF3030B98
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 866D7310938B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F83341670;
-	Tue, 16 Dec 2025 11:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973C934B19A;
+	Tue, 16 Dec 2025 11:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk/rwvre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1DDISU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84DB56B81;
-	Tue, 16 Dec 2025 11:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5179734AB1D;
+	Tue, 16 Dec 2025 11:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884121; cv=none; b=BtXQ0u4gAK3b1b86K/CzrBCBco5QimdK11oxrkMXohwksIhU5/HRpS0AjCqV4GUfzgOAhmwF5/zp2p9+5YVeNUG1yTh4rhzABxw1gL54YHadqu68rlRVM58MlPRZsQWdH0hNP7NireNbei5pIsIJ5Vb7vSIzQUoawRlC+wyWMrA=
+	t=1765885711; cv=none; b=Alb4E8zV07JPybH0zoaR0TbMdV5OOm9ewd0G8Ze9ZCyn0DSxxVoOaFFKGM9UKNWoWkx5NovCzdj5YPBGzp1YJY+iaNvp5agpZTRqrqsCeozyccm5wNNlVjii7i4e8rOwcE07DTt9Wg6r3/KTGZ16C9NUWlYGnzbUQhE/N0qpk0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884121; c=relaxed/simple;
-	bh=NVKJ6yFHgREF8SjknM1/MCQiGTbjmYkcUd69jnD2qVs=;
+	s=arc-20240116; t=1765885711; c=relaxed/simple;
+	bh=gvHpRLTdsZvSFo3ZuLuvlyB2bYvhKzAqLqP9+QABCAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjllwQzKUHSvk7xJ3mOXbXZSHW4YzdoyRafEWxr/QNiLc6znIoVsg8LtgZ7iBuU7EhtTjGOkRMlVfELEfQYOjcJU78HD03EesaJtASgablHwRQwXLXUuvIqOyZcfiec6zFrCb9O5+Q6FhVVlduL4x/GhLg2Za6J5IcuPN5WHups=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk/rwvre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693D2C4CEF1;
-	Tue, 16 Dec 2025 11:22:00 +0000 (UTC)
+	 MIME-Version; b=LcX84zTub7oqLQ3pyLuqqcHpb38PALd0AKm2QGXkjwMFvtiLo22Zn9tuJdLPrqjJ24TzbvPkrwQq/XjXXT5NHmOaVkne3LEMSFRGVPXV/GH7ZzHl0aSVnsmsQ1WDDTb+LXn/fVFo4EHXvj/Ia177VWsG+yGZYpxPJ3tVQfG9AWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1DDISU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC497C4CEF1;
+	Tue, 16 Dec 2025 11:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884120;
-	bh=NVKJ6yFHgREF8SjknM1/MCQiGTbjmYkcUd69jnD2qVs=;
+	s=korg; t=1765885711;
+	bh=gvHpRLTdsZvSFo3ZuLuvlyB2bYvhKzAqLqP9+QABCAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lk/rwvreWOzbj+qoMj6oE+g7GKng6H4MjffkejpNZs1Jh55mxUlMbeP6SbyKR9YGH
-	 /vsNczkEr0t5zz9EoMOCRS9E/MjYpzkHqNCfv5xnntyasc9HldwYl2go5Yoiq4IOEP
-	 hy/XhwcL8N9g/7vnayvC3G5ezaPDmQKT1FJfFQ+A=
+	b=Y1DDISU0f+QAxHWZY1j7oygWCyUctwzLB+DvGxWKl+ZgZ8GPckerGFnJbOpKm7r2r
+	 cXSqnuRZnNlMi1TcVtuwpKTYSlyP/e86CTo2UkxckbqBMQnGOGuFNG0j+awPcwq5KJ
+	 mkIFoTGHI8fWt3iHitlO3KMz1lUq8SwqXT8TMA5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/354] wifi: ath12k: fix potential memory leak in ath12k_wow_arp_ns_offload()
+Subject: [PATCH 6.17 222/507] clk: renesas: r9a06g032: Fix memory leak in error path
 Date: Tue, 16 Dec 2025 12:11:03 +0100
-Message-ID: <20251216111324.399114192@linuxfoundation.org>
+Message-ID: <20251216111353.549072223@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit be5febd51c478bc8e24ad3480435f2754a403b14 ]
+[ Upstream commit f8def051bbcf8677f64701e9699bf6d11e2780cd ]
 
-When the call to ath12k_wmi_arp_ns_offload() fails, the temporary memory
-allocation for offload is not freed before returning. Fix that by
-freeing offload in the error path.
+The current code uses of_iomap() to map registers but never calls
+iounmap() on any error path after the mapping. This causes a memory
+leak when probe fails after successful ioremap, for example when
+of_clk_add_provider() or r9a06g032_add_clk_domain() fails.
 
-Fixes: 1666108c74c4 ("wifi: ath12k: support ARP and NS offload")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251028170457.134608-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Replace of_iomap() with devm_of_iomap() to automatically unmap the
+region on probe failure. Update the error check accordingly to use
+IS_ERR() and PTR_ERR() since devm_of_iomap() returns ERR_PTR on error.
+
+Fixes: 4c3d88526eba ("clk: renesas: Renesas R9A06G032 clock driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251030061603.1954-1-vulab@iscas.ac.cn
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wow.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/renesas/r9a06g032-clocks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index 3624180b25b97..d9f310a12be96 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -755,6 +755,7 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set arp ns offload vdev %i: enable %d, ret %d\n",
- 				    arvif->vdev_id, enable, ret);
-+			kfree(offload);
- 			return ret;
- 		}
- 	}
+diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
+index dcda19318b2a9..0f5c91b5dfa99 100644
+--- a/drivers/clk/renesas/r9a06g032-clocks.c
++++ b/drivers/clk/renesas/r9a06g032-clocks.c
+@@ -1333,9 +1333,9 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mclk))
+ 		return PTR_ERR(mclk);
+ 
+-	clocks->reg = of_iomap(np, 0);
+-	if (WARN_ON(!clocks->reg))
+-		return -ENOMEM;
++	clocks->reg = devm_of_iomap(dev, np, 0, NULL);
++	if (IS_ERR(clocks->reg))
++		return PTR_ERR(clocks->reg);
+ 
+ 	r9a06g032_init_h2mode(clocks);
+ 
 -- 
 2.51.0
 
