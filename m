@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486E3CC35C7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:54:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57938CC30AD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A05A30319A5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01FC83046BA4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F995363C6A;
-	Tue, 16 Dec 2025 12:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BC5359708;
+	Tue, 16 Dec 2025 12:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Plb8cDTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcYlO6i8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC43624A6;
-	Tue, 16 Dec 2025 12:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A693596F6;
+	Tue, 16 Dec 2025 12:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888565; cv=none; b=sKZYFThO7GpKRO0RwUuXodVOg7ANI31Nea/PBUFW3witbmj9ONbLNBLXT8auKqdxYscEt2RrFCXIHiNOGe49EHq1KXcFwydD978nxKvLpmhm3NNPLQj0wW1/OXe2qyZHugdzyVhN1QxEJkp5rZ/JwqulUNgCMY5I9JKAunzAEbY=
+	t=1765886693; cv=none; b=c9D7X1nBHdMmoyrGLLdzMiIk9n6aNGAuZZjHMCnG/6LvNqaAWhTGaXWz5tYDC6R1aI7XYeFgycSZWVJkg6FuYnj8nFnL7rzMd4vsLIe9kiqvXsftCl5Q1/xzvlvqbhX48DgNWBTdPGddAXELAzq0YDNNfr4ZssZF3SKRcGITyxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888565; c=relaxed/simple;
-	bh=4SbF9E32jpDRh8Duu9GZ5foQtITz8oX8m4xvgDTT6m8=;
+	s=arc-20240116; t=1765886693; c=relaxed/simple;
+	bh=KPrSPBbVcicVVOYT9OeTO0sxqc/OeKEVaGoL9/mzrhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eURnXpcOZrvjYoM9Sw6pz8Lv8N5GlgceHRXlM3CrmbTZOOmFhFUAAKJ7C/6JAzvyr73W1dvaeNsmFdCWVrft54B69bKXhMqrVaMKiS1Ku+iOXFQVU9MMlgel4B7PSm6BJ5/s0OakyBk1D/XBXfo99qYJwx9GW45comKBz8OHAUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Plb8cDTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39674C4CEF1;
-	Tue, 16 Dec 2025 12:36:05 +0000 (UTC)
+	 MIME-Version; b=Rco6B5Z9jhPtQjl/hHWI6aHnTwVB/5w8YsBdY2PGgfST4wCjqPwVvpYRAFp9LZSBtcHNyW0E0E5p5GHlDvwOvmfrZ0Tf92XykrmZl6BQXCP9y5GyMXVz2P04rmR46jFaRHpsdVXDFOXzQh+WaeoIaWqx6QIyyj+6eeIK8pxIy5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcYlO6i8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF28C4CEF1;
+	Tue, 16 Dec 2025 12:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888565;
-	bh=4SbF9E32jpDRh8Duu9GZ5foQtITz8oX8m4xvgDTT6m8=;
+	s=korg; t=1765886693;
+	bh=KPrSPBbVcicVVOYT9OeTO0sxqc/OeKEVaGoL9/mzrhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Plb8cDTBjm9IH0U3AY1+MFtuPulyR331qE28+WEu/ulILknhfOeDxSqrISfyFDnYx
-	 wfs/e2tWUafXZE8ykt/H7+wOytSJc4rDWq0hDCDOh3+HZWjQwTDfcrOdMS0F+5xIJD
-	 wdefidnK8bH3D+aeThVw0pmlhoJJlZ7zk3ImAFIk=
+	b=YcYlO6i87w5/CmA9C3H7WsR5EsesodVJS2BlUQ9opJKo4VLtXOdHcKo7cW+2XKplZ
+	 1tDh1EFAbzTJG/rBLCw8i9evatPuE9JDkzDCo3eYsdt28cVgoqpK96MHcret6lC8xS
+	 2F7iJho4+y+dyEb8nPuaM5dvj5vPagP2A+8Oh3eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 573/614] nfs/localio: remove 61 byte hole from needless ____cacheline_aligned
+	stable <stable@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>
+Subject: [PATCH 6.17 499/507] usb: typec: ucsi: fix probe failure in gaokun_ucsi_probe()
 Date: Tue, 16 Dec 2025 12:15:40 +0100
-Message-ID: <20251216111422.145451834@linuxfoundation.org>
+Message-ID: <20251216111403.517483210@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 0b873de2c02f9cc655bef6bee0eb9e404126ed6c ]
+commit 6b120ef99fbcba9e413783561f8cc160719db589 upstream.
 
-struct nfs_local_kiocb used ____cacheline_aligned on its iters[] array
-and as the structure evolved it caused a 61 byte hole to form.  Fix
-this by removing ____cacheline_aligned and reordering iters[] before
-iter_is_dio_aligned[].
+The gaokun_ucsi_probe() uses ucsi_create() to allocate a UCSI instance.
+The ucsi_create() validates whether ops->poll_cci is defined, and if not,
+it directly returns -EINVAL. However, the gaokun_ucsi_ops structure does
+not define the poll_cci, causing ucsi_create() always fail with -EINVAL.
+This issue can be observed in the kernel log with the following error:
 
-Fixes: 6a218b9c3183 ("nfs/localio: do not issue misaligned DIO out-of-order")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ucsi_huawei_gaokun.ucsi huawei_gaokun_ec.ucsi.0: probe with driver
+ucsi_huawei_gaokun.ucsi failed with error -22
+
+Fix the issue by adding the missing poll_cci callback to gaokun_ucsi_ops.
+
+Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Pengyu Luo <mitltlatltl@gmail.com>
+Link: https://patch.msgid.link/4d077d6439d728be68646bb8c8678436a3a0885e.1764065838.git.duoming@zju.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/localio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 512d9c5ff608a..b98bb292fef0c 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -43,8 +43,8 @@ struct nfs_local_kiocb {
- 	size_t                  end_len;
- 	short int		end_iter_index;
- 	atomic_t		n_iters;
-+	struct iov_iter		iters[NFSLOCAL_MAX_IOS];
- 	bool			iter_is_dio_aligned[NFSLOCAL_MAX_IOS];
--	struct iov_iter		iters[NFSLOCAL_MAX_IOS] ____cacheline_aligned;
- 	/* End mostly DIO-specific members */
- };
- 
+diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+index 7b5222081bbb..8401ab414bd9 100644
+--- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
++++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+@@ -196,6 +196,7 @@ static void gaokun_ucsi_connector_status(struct ucsi_connector *con)
+ const struct ucsi_operations gaokun_ucsi_ops = {
+ 	.read_version = gaokun_ucsi_read_version,
+ 	.read_cci = gaokun_ucsi_read_cci,
++	.poll_cci = gaokun_ucsi_read_cci,
+ 	.read_message_in = gaokun_ucsi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = gaokun_ucsi_async_control,
 -- 
-2.51.0
+2.52.0
 
 
 
