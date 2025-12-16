@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C9ECC2860
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 934DACC2231
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DC0D30A6611
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79E67306C70C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AC6344030;
-	Tue, 16 Dec 2025 11:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D332630E0C0;
+	Tue, 16 Dec 2025 11:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8jjfzqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+/OF1/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E0A344028;
-	Tue, 16 Dec 2025 11:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE192459D7;
+	Tue, 16 Dec 2025 11:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885479; cv=none; b=BfCdi3nTmJz6TkUGf4fd7cDdXhSU2IC9N241JqzCBaFxSjgBIlBtxsfHMi5J3YA0F84y8Y5lGELIhEpHrAAzVZJUIRztxhrwtn5srEK1ECu8aXmj4HK1j0696JKMeb+aLPGXRVC9ROoOIBj7EljMr5/ehz2P3lYvqxGWVEFBM4U=
+	t=1765883903; cv=none; b=UAD4LYzOcqXGbgc7b5AkPhRbk+R8VRMEFTVjARZqG7tT0Gj0Zvix6ukSrFmbg8KAajlmLyI0RNWSwalqo4F7T4d6la40CE84e/h+VXbhjEHXsqtv4HsQIwkDk08gbD5yCuilwpy19jWKOXkmMadsGrfIrkduniH9e2dxK5ImaQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885479; c=relaxed/simple;
-	bh=K8q4yIDQ6jxTzT5hOnaA6qktIO9qkyLSd1EgY1+Xrn8=;
+	s=arc-20240116; t=1765883903; c=relaxed/simple;
+	bh=walC798u8t73ZlOBW1Od45heY4+NKLndeLIc0wDH6e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HY1FmqozLLWpQ5kXa/tGEKhNCbcdizBl03iW4xoaGMD2wjqmklYiWdguVtkj+Zml4NAlNs7OkrY02WuRzmfg5GlADlPlNvrS2b0V3v2Q6CX4Vzjy1E6Gma1YOntKIuoOa4dmo50MTvcTlVCaiTx2LMma1/EkBOco6TSUjs5/RZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8jjfzqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6694C4CEF1;
-	Tue, 16 Dec 2025 11:44:38 +0000 (UTC)
+	 MIME-Version; b=YRiUzR/QM7BhzC8cYkRlDuVby3qxjLgo1HeD8hsCVBRQcmRC9Et3Lxb0KmFYcfYcVQV4mXqXvNy2ZvQDf8FxjaT6cKYxSgwPyr320nryVYPkd3Bz6CuvJ61Rv+I0qAIaoArDjGawwmGX7oCAHBqiv4mZhaud4A2j0+CZmwTBzug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+/OF1/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E50BC4CEF1;
+	Tue, 16 Dec 2025 11:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885479;
-	bh=K8q4yIDQ6jxTzT5hOnaA6qktIO9qkyLSd1EgY1+Xrn8=;
+	s=korg; t=1765883903;
+	bh=walC798u8t73ZlOBW1Od45heY4+NKLndeLIc0wDH6e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8jjfzqoiZyS9jSK8oRGa1T29Q/u1EMyETbU4gFowfw6ho5vn8VxaI84s7ig4zBzn
-	 gu74xD3FHMfutPUcB/KHTsEHiuEn624M2W0KSDatbm6oLbETJaNNG8Bg/7bIT8aqPt
-	 se+W9X/UJ61cTN0UtOVvG1sxlUYn2STnVBTJ0WfM=
+	b=j+/OF1/7usCEDsVtmsv6RaaIq3vWWw4ZlmY+b/ziDXsXwc8fKlw991T4qxORm/WEN
+	 HuB37S/PHTfP5qCy4SgmQAxw3eh3OFpjfU2Vp1bO+acyzrsnHodgtqITEgLt7VtDrI
+	 6vqDR8a5QvhwsvHQUZW6fcEooXIylabxA4GfGwks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Mainak Sen <msen@nvidia.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 134/507] i3c: master: svc: Prevent incomplete IBI transaction
+Subject: [PATCH 6.12 008/354] gpu: host1x: Fix race in syncpt alloc/free
 Date: Tue, 16 Dec 2025 12:09:35 +0100
-Message-ID: <20251216111350.384836181@linuxfoundation.org>
+Message-ID: <20251216111321.209171481@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Mainak Sen <msen@nvidia.com>
 
-[ Upstream commit 3a36273e5a07dda0ccec193800f3b78c3c0380af ]
+[ Upstream commit c7d393267c497502fa737607f435f05dfe6e3d9b ]
 
-If no free IBI slot is available, svc_i3c_master_handle_ibi returns
-immediately. This causes the STOP condition to be missed because the
-EmitStop request is sent when the transfer is not complete. To resolve
-this, svc_i3c_master_handle_ibi must wait for the transfer to complete
-before returning.
+Fix race condition between host1x_syncpt_alloc()
+and host1x_syncpt_put() by using kref_put_mutex()
+instead of kref_put() + manual mutex locking.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20251027034715.708243-1-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This ensures no thread can acquire the
+syncpt_mutex after the refcount drops to zero
+but before syncpt_release acquires it.
+This prevents races where syncpoints could
+be allocated while still being cleaned up
+from a previous release.
+
+Remove explicit mutex locking in syncpt_release
+as kref_put_mutex() handles this atomically.
+
+Signed-off-by: Mainak Sen <msen@nvidia.com>
+Fixes: f5ba33fb9690 ("gpu: host1x: Reserve VBLANK syncpoints at initialization")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250707-host1x-syncpt-race-fix-v1-1-28b0776e70bc@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/gpu/host1x/syncpt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 9641e66a4e5f2..e70a64f2a32fa 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -406,21 +406,27 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
- 	int ret, val;
- 	u8 *buf;
+diff --git a/drivers/gpu/host1x/syncpt.c b/drivers/gpu/host1x/syncpt.c
+index f63d14a57a1d9..acc7d82e0585e 100644
+--- a/drivers/gpu/host1x/syncpt.c
++++ b/drivers/gpu/host1x/syncpt.c
+@@ -345,8 +345,6 @@ static void syncpt_release(struct kref *ref)
  
--	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
--	if (!slot)
--		return -ENOSPC;
--
--	slot->len = 0;
--	buf = slot->data;
--
-+	/*
-+	 * Wait for transfer to complete before returning. Otherwise, the EmitStop
-+	 * request might be sent when the transfer is not complete.
-+	 */
- 	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
- 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
--		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
- 		return ret;
- 	}
+ 	sp->locked = false;
  
-+	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
-+	if (!slot) {
-+		dev_dbg(master->dev, "No free ibi slot, drop the data\n");
-+		writel(SVC_I3C_MDATACTRL_FLUSHRB, master->regs + SVC_I3C_MDATACTRL);
-+		return -ENOSPC;
-+	}
-+
-+	slot->len = 0;
-+	buf = slot->data;
-+
- 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+-	mutex_lock(&sp->host->syncpt_mutex);
+-
+ 	host1x_syncpt_base_free(sp->base);
+ 	kfree(sp->name);
+ 	sp->base = NULL;
+@@ -369,7 +367,7 @@ void host1x_syncpt_put(struct host1x_syncpt *sp)
+ 	if (!sp)
+ 		return;
+ 
+-	kref_put(&sp->ref, syncpt_release);
++	kref_put_mutex(&sp->ref, syncpt_release, &sp->host->syncpt_mutex);
+ }
+ EXPORT_SYMBOL(host1x_syncpt_put);
+ 
 -- 
 2.51.0
 
