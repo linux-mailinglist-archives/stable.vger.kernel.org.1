@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C755BCC3DFD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77ADCC2311
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D8E22302C44A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 373DA30996E9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B99A34A3D6;
-	Tue, 16 Dec 2025 12:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551F3341ACC;
+	Tue, 16 Dec 2025 11:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAxUgtgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m31PkCTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9C3346E7B;
-	Tue, 16 Dec 2025 12:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103D533DEE1;
+	Tue, 16 Dec 2025 11:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887622; cv=none; b=HLHe1vKRh8kDK68L7hs8AhJU9WRsiUbQt71bGAkd57WHlTo1jN+zc+zeKrxlmuHQsj8Mhd7JJFJh06BKcsDF6aab+Q7yCGi87IJ2qWmDNBJh/p/Mon+Iyg+p+0zMXyEyOJrakWnsskGJ0lb4vHEdK7F5ftOcQo67LkVVFSBcVHI=
+	t=1765884086; cv=none; b=bP3gG40c7kqUy8PPdEoOjQxkbQJI91AvRExGP6MCwGd91/zyU1HnQbYLqGy7LAsdbBet44Csllej5z9hXUtLj0KQo/hW1LsOvkE/r6CgkdxcDZkFVVwXrpBYIKPIclDFxIvi7lY2heYInNqwaZBmeQw1Wp+za09y0E7UcnF9By8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887622; c=relaxed/simple;
-	bh=xno/SCRKm25WvnYPB8P7lLm3ZDqKHezviUzmYXSPojs=;
+	s=arc-20240116; t=1765884086; c=relaxed/simple;
+	bh=4nJb3bN+mwbQHxK+kx9csPgU/Z1wEqa1EMsUqcPwzGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzd6KrQnpeHu2cQNwXunnASAS+1fjiMwCVnFeVoVByZ2TfScoTfpg6QYvd70Zb5ZNOFWgUGvHv38wFSKjE/W6n2NF28IkQddWQch6pT9nq9XgiI32L61p1p5Cl63aXBDrjR3bOQNOKWMy8n0b/4uCJh2+JTcXBrZsqDjVmIgjik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAxUgtgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E7BC4CEF5;
-	Tue, 16 Dec 2025 12:20:21 +0000 (UTC)
+	 MIME-Version; b=eGaXUBXbqV/s+wbfLx9Or9/OZn3+IcpGtY4s7X4lfdq24Uu+VCL9IYzQDpzOC83ebIgpDGsRduVw/aryYcJa39znXBxnllK+u4NJ8b+VZIh6c97IgqCbdc4qZYpAq/oHebmxb7TQY/g37IREPT2IDFhPXclFAn2NFNG0RaiAX/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m31PkCTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F62C2BC86;
+	Tue, 16 Dec 2025 11:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887622;
-	bh=xno/SCRKm25WvnYPB8P7lLm3ZDqKHezviUzmYXSPojs=;
+	s=korg; t=1765884085;
+	bh=4nJb3bN+mwbQHxK+kx9csPgU/Z1wEqa1EMsUqcPwzGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAxUgtgfZKNAor6Y78KqOQUiyCPQ1NBloePfJINAMjU7tm68Q2dD0gErH1aF1/pj5
-	 do6bBjZqBM9vZRAw87o/3kawLd46O3T2UFHnGQDuyO7ReZgclAMMR8KOa3V0raUQFf
-	 /I7ggyktJfiUMjHn0OS/+dAzDnVKRrJSMD+V1TK0=
+	b=m31PkCTDKCgW2B1ukqF+/08Uy1lywL1uwemUKEDDcxAodGiq2HcXMHvJCkXrmQLD8
+	 vAcS136LRIcw3jU9FcZVWFHw9da+4O1NcA5Briqe9zHVAVImbQy/7LYha2nwAa3Y+a
+	 +ssVAD9tBG/SyEaE3+Gp1+HRnhwEHghpYv8VplzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 288/614] soc/tegra: fuse: speedo-tegra210: Update speedo IDs
+Subject: [PATCH 6.12 088/354] perf/x86/intel/cstate: Remove PC3 support from LunarLake
 Date: Tue, 16 Dec 2025 12:10:55 +0100
-Message-ID: <20251216111411.805389798@linuxfoundation.org>
+Message-ID: <20251216111324.111646388@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit ce27c9c2129679551c4e5fe71c1c5d42fff399c2 ]
+[ Upstream commit 4ba45f041abe60337fdeeb68553b9ee1217d544e ]
 
-Existing code only sets CPU and GPU speedo IDs 0 and 1. The CPU DVFS
-code supports 11 IDs and nouveau supports 5. This aligns with what the
-downstream vendor kernel supports. Align SKUs with the downstream list.
+LunarLake doesn't support Package C3. Remove the PC3 residency counter
+support from LunarLake.
 
-The Tegra210 CVB tables were added in the first referenced fixes commit.
-Since then, all Tegra210 SoCs have tried to scale to 1.9 GHz, when the
-supported devkits are only supposed to scale to 1.5 or 1.7 GHZ.
-Overclocking should not be the default state.
-
-Fixes: 2b2dbc2f94e5 ("clk: tegra: dfll: add CVB tables for Tegra210")
-Fixes: 579db6e5d9b8 ("arm64: tegra: Enable DFLL support on Jetson Nano")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 26579860fbd5 ("perf/x86/intel/cstate: Add Lunarlake support")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://patch.msgid.link/20251023223754.1743928-3-zide.chen@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/fuse/speedo-tegra210.c | 62 ++++++++++++++++--------
- 1 file changed, 43 insertions(+), 19 deletions(-)
+ arch/x86/events/intel/cstate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/tegra/fuse/speedo-tegra210.c b/drivers/soc/tegra/fuse/speedo-tegra210.c
-index 695d0b7f9a8ab..a8cc363297723 100644
---- a/drivers/soc/tegra/fuse/speedo-tegra210.c
-+++ b/drivers/soc/tegra/fuse/speedo-tegra210.c
-@@ -65,27 +65,51 @@ static void __init rev_sku_to_speedo_ids(struct tegra_sku_info *sku_info,
- 	sku_info->gpu_speedo_id = 0;
- 	*threshold = THRESHOLD_INDEX_0;
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index ae4ec16156bb0..aee2dfc108408 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -70,7 +70,7 @@
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
+  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
+- *						ADL,RPL,MTL,ARL,LNL
++ *						ADL,RPL,MTL,ARL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
+  *			       perf code: 0x02
+@@ -521,7 +521,6 @@ static const struct cstate_model lnl_cstates __initconst = {
+ 				  BIT(PERF_CSTATE_CORE_C7_RES),
  
--	switch (sku) {
--	case 0x00: /* Engineering SKU */
--	case 0x01: /* Engineering SKU */
--	case 0x07:
--	case 0x17:
--	case 0x27:
--		if (speedo_rev >= 2)
-+	if (sku_info->revision >= TEGRA_REVISION_A02) {
-+		switch (sku) {
-+		case 0x00: /* Engineering SKU */
-+		case 0x01: /* Engineering SKU */
-+		case 0x13:
-+			sku_info->cpu_speedo_id = 5;
-+			sku_info->gpu_speedo_id = 2;
-+			break;
-+
-+		case 0x07:
-+		case 0x17:
-+		case 0x1F:
-+			sku_info->cpu_speedo_id = 7;
-+			sku_info->gpu_speedo_id = 2;
-+			break;
-+
-+		case 0x27:
-+			sku_info->cpu_speedo_id = 1;
-+			sku_info->gpu_speedo_id = 2;
-+			break;
-+
-+		case 0x83:
-+			sku_info->cpu_speedo_id = 3;
-+			sku_info->gpu_speedo_id = 3;
-+			break;
-+
-+		case 0x87:
-+			sku_info->cpu_speedo_id = 2;
- 			sku_info->gpu_speedo_id = 1;
--		break;
--
--	case 0x13:
--		if (speedo_rev >= 2)
--			sku_info->gpu_speedo_id = 1;
--
--		sku_info->cpu_speedo_id = 1;
--		break;
--
--	default:
-+			break;
-+
-+		case 0x8F:
-+			sku_info->cpu_speedo_id = 9;
-+			sku_info->gpu_speedo_id = 2;
-+			break;
-+
-+		default:
-+			pr_err("Tegra210: unknown revision 2 or newer SKU %#04x\n", sku);
-+			/* Using the default for the error case */
-+			break;
-+		}
-+	} else if (sku == 0x00 || sku == 0x01 || sku == 0x07 || sku == 0x13 || sku == 0x17) {
-+		sku_info->gpu_speedo_id = 1;
-+	} else {
- 		pr_err("Tegra210: unknown SKU %#04x\n", sku);
--		/* Using the default for the error case */
--		break;
- 	}
- }
- 
+ 	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
+-				  BIT(PERF_CSTATE_PKG_C3_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C6_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C10_RES),
+ };
 -- 
 2.51.0
 
