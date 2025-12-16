@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E4CC3237
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:19:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5922CC2BA1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F29FA3030CA8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A07503021447
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D2F34A79D;
-	Tue, 16 Dec 2025 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495BF355805;
+	Tue, 16 Dec 2025 12:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggkdF2Fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlLDfcsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D2334167B;
-	Tue, 16 Dec 2025 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057243557FF;
+	Tue, 16 Dec 2025 12:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888430; cv=none; b=kck/S8p6tT+Nfh+psbhqdgOV0Op+NOtuEvQVsOQ2pEWv8i+ecLgIJM2nuIyKJyW+bExhACFxnTVsyZQgjPASkW8FOpKaTcebx97E1jUbECpbDuAxnsBAUxRaaQ4D++uDiTog0dwtcWdAYun+8Ut3m52jzWuCEfMsNpZ+aqIKc+M=
+	t=1765886492; cv=none; b=e6XsUT4UPC0Fep/mw9GFmpilSZl7HxnTOaeZdte0V7RJiqQiG+zXXq3B3QhVAmxsYtZdI+5asqps1eWvjzHt1ByZ9IonbbQ8HjUfrvDMKoNJo1RrkWmjG+5qT1BwULWEupeY+FktnxOf0GNc3JvsaN3opDJjzk6C3fjCU0VHd3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888430; c=relaxed/simple;
-	bh=JpBgv/w2jiHxZLqQ/EIwgwyGFkHyu4q35xsUVTjwyOk=;
+	s=arc-20240116; t=1765886492; c=relaxed/simple;
+	bh=0c+rr4V6ZpS6S51KfYiShk6WLrQDY0pJHdRytmBbzL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKhN8kWibRbg2ZcGSK7BiC6IDP71XtELMMJj+olWlWAC4ABsxCHoBB8a38TH+Z6aKZIXaMFaFzH8S5dQFcUpooFELGrBn9o6HAINTIifbiAWwKvs7xb93AnjzGGWcjdv9DuqBEroXW4qCu8mINDkG0cOxfmufA95yEfLOZtsMjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggkdF2Fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0125CC4CEF1;
-	Tue, 16 Dec 2025 12:33:49 +0000 (UTC)
+	 MIME-Version; b=rqlxhzGBhPfn3R28U5Xrd1ws9joFY9wvCgtcMg0+yGQI5rlCoSnNdkWS18rp0epekUOA8N0lPdiLyy4hhl7KDJ/vXuFeBb7OrTbaaccimRmEPAHa6f9ZXMIBgSaOWcvwx9hO6t+cu0tpLB92fbl2NYlKR/xs1q5uks097F5T/Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlLDfcsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A686C4CEF1;
+	Tue, 16 Dec 2025 12:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888430;
-	bh=JpBgv/w2jiHxZLqQ/EIwgwyGFkHyu4q35xsUVTjwyOk=;
+	s=korg; t=1765886491;
+	bh=0c+rr4V6ZpS6S51KfYiShk6WLrQDY0pJHdRytmBbzL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ggkdF2Fwvu1j++4ehtgrSKu1G+H+XRgPeZpD6gCb/w5/k9HSvBTFpfS82UHKZiNp8
-	 qlixBoE88CwE0tsFUQG4dTXkE2QBiTLrnuF/4cC1hf/pEcB3oo3GizcYpJ2j8t+tg6
-	 OccE+pO2y5wqed2nGaTLou4tWKjosiJtLXSE0BEs=
+	b=NlLDfcsBYVu1BKEeCmZEW5fUnD29IANAy3kgM9+u8vEljMjGYbV5czcGmq7S/Asug
+	 XbbfuPTql3g0QcsuefgL/hum7mcF7CWpLGU99TfQhagUeS9yDXaGkKmhk5P3aHvdUO
+	 WEQQinJMqEbPUZDEzN8ByHwi/gfrb6Gvmt2zJFCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 525/614] exfat: fix divide-by-zero in exfat_allocate_bitmap
+Subject: [PATCH 6.17 451/507] NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags
 Date: Tue, 16 Dec 2025 12:14:52 +0100
-Message-ID: <20251216111420.397652317@linuxfoundation.org>
+Message-ID: <20251216111401.790518165@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit d70a5804c563b5e34825353ba9927509df709651 ]
+[ Upstream commit 8675c69816e4276b979ff475ee5fac4688f80125 ]
 
-The variable max_ra_count can be 0 in exfat_allocate_bitmap(),
-which causes a divide-by-zero error in the subsequent modulo operation
-(i % max_ra_count), leading to a system crash.
-When max_ra_count is 0, it means that readahead is not used. This patch
-load the bitmap without readahead.
+When a filesystem is being automounted, it needs to preserve the
+user-set superblock mount options, such as the "ro" flag.
 
-Fixes: 9fd688678dd8 ("exfat: optimize allocation bitmap loading time")
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
+Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/balloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/namespace.c | 6 ++++++
+ fs/nfs/super.c     | 4 ----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/exfat/balloc.c b/fs/exfat/balloc.c
-index 2d2d510f2372c..0b6466b3490a0 100644
---- a/fs/exfat/balloc.c
-+++ b/fs/exfat/balloc.c
-@@ -106,7 +106,7 @@ static int exfat_allocate_bitmap(struct super_block *sb,
- 		(PAGE_SHIFT - sb->s_blocksize_bits);
- 	for (i = 0; i < sbi->map_sectors; i++) {
- 		/* Trigger the next readahead in advance. */
--		if (0 == (i % max_ra_count)) {
-+		if (max_ra_count && 0 == (i % max_ra_count)) {
- 			blk_start_plug(&plug);
- 			for (j = i; j < min(max_ra_count, sbi->map_sectors - i) + i; j++)
- 				sb_breadahead(sb, sector + j);
+diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
+index 7f1ec9c67ff21..c74e45a895000 100644
+--- a/fs/nfs/namespace.c
++++ b/fs/nfs/namespace.c
+@@ -149,6 +149,7 @@ struct vfsmount *nfs_d_automount(struct path *path)
+ 	struct vfsmount *mnt = ERR_PTR(-ENOMEM);
+ 	struct nfs_server *server = NFS_SB(path->dentry->d_sb);
+ 	struct nfs_client *client = server->nfs_client;
++	unsigned long s_flags = path->dentry->d_sb->s_flags;
+ 	int timeout = READ_ONCE(nfs_mountpoint_expiry_timeout);
+ 	int ret;
+ 
+@@ -174,6 +175,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
+ 		fc->net_ns = get_net(client->cl_net);
+ 	}
+ 
++	/* Inherit the flags covered by NFS_SB_MASK */
++	fc->sb_flags_mask |= NFS_SB_MASK;
++	fc->sb_flags &= ~NFS_SB_MASK;
++	fc->sb_flags |= s_flags & NFS_SB_MASK;
++
+ 	/* for submounts we want the same server; referrals will reassign */
+ 	memcpy(&ctx->nfs_server._address, &client->cl_addr, client->cl_addrlen);
+ 	ctx->nfs_server.addrlen	= client->cl_addrlen;
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 9b9464e70a7f0..66413133b43e3 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1315,10 +1315,6 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (server->flags & NFS_MOUNT_NOAC)
+ 		fc->sb_flags |= SB_SYNCHRONOUS;
+ 
+-	if (ctx->clone_data.sb)
+-		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
+-			fc->sb_flags |= SB_SYNCHRONOUS;
+-
+ 	/* Get a superblock - note that we may end up sharing one that already exists */
+ 	fc->s_fs_info = server;
+ 	s = sget_fc(fc, compare_super, nfs_set_super);
 -- 
 2.51.0
 
