@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-201387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31287CC248D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3512CC2FEF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:58:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9101030253DF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B4A43030958
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFA5343D71;
-	Tue, 16 Dec 2025 11:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C53436CE19;
+	Tue, 16 Dec 2025 12:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juWw19Wl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f97Di9Ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461AE3431E3;
-	Tue, 16 Dec 2025 11:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1805136CE10;
+	Tue, 16 Dec 2025 12:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884470; cv=none; b=WNpUaTzaC+NMmoQ8l2+xZG8nlhJw9q7dYO8J/KoX/TpnSVSya2jrcG6LJiMfv7yPqEym69xLx/fsxjDmhQIT7hHmpUlCDG+ubgv9a5WXmXq8GoYRmhk8Dzo/KSVeKcIy1/tvHVtWn83CWyTBc6lTd3NFgcud4pNZC16SDJ81qCU=
+	t=1765888003; cv=none; b=rhWwejOgy/Y2HaNlMUje5IqA4UXNeko857j6Eec8jyaUSp4MKYF2SGcHiuf8I4QZ6tC72v9rnFWP3WjIDDfcwNOGrqvO4QKCJqjsLEFhsNSHH0Tg8meladXsfnF0CEXqYOsaA17QyuuKYY9n+Y76F63obozT1GBmNLVheGs4m6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884470; c=relaxed/simple;
-	bh=H+Vqmm7LJCqR+VPhv8z6BbvM2t0VflUqaICQnc1i24E=;
+	s=arc-20240116; t=1765888003; c=relaxed/simple;
+	bh=GJuVW/slRD/+uEJ+F0e7Oe1OPr7zLom5uYiw0aEWs18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBO4aHbp1tbVR676wFkx8YnZTxfg9TsIvjsantISM6JZ6CAs71Ds43lO0BfpI0bivML/UN+T3gZ/C31fex91b75zYgcZcrb/vPv3Bxs3BJv+m8mmicw81+UrFYkUnrjUpaAcm0m3SxG8PGw9kogrb4oGpMQfmhwmp+Qt2o5lXws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juWw19Wl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5BDC4CEF1;
-	Tue, 16 Dec 2025 11:27:49 +0000 (UTC)
+	 MIME-Version; b=eu+nuj3VkFKfzww6Va/5uW3X3mqEPhaXnR5ZJaOMQ+MS7w2hpNJ7uDtRZuYw6wsFkMGzcmjsiVCvylnhMZcbl/DhU8Y1AhS0f0H0o1mw6gt17Aab3Gy8REZV7yt/90wKZZaewJncK4fRExwgrbhqAi979spZLWan+l9OZcAosm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f97Di9Ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B30FC4CEF1;
+	Tue, 16 Dec 2025 12:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884470;
-	bh=H+Vqmm7LJCqR+VPhv8z6BbvM2t0VflUqaICQnc1i24E=;
+	s=korg; t=1765888003;
+	bh=GJuVW/slRD/+uEJ+F0e7Oe1OPr7zLom5uYiw0aEWs18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juWw19Wlyvc8EIN68lCGL9v0FXCGQYOBhhsZKN9qG6v6lod2v+Cqj42iV/jvPLs2m
-	 3n+Vb8b8um8w6AW/cPBudXBHPEQbs4arhEVLaZT3Jvpfipqq72ZsFllqqYt6+Dwe9O
-	 C7iXk3PNbjJ1s7rQeP1sjMtALbE5yWxc7pjdkPnI=
+	b=f97Di9OxuCN44Z20wSI/3FZ0QNnrB5OSrKvakG39dreXsIfrIjXTjLxEBz8GCxspQ
+	 rMEJthCZpj2g3mzD6c4QBAZAseY5/mvSTfEjWQOyPeiXtAOgmAZjmE9TTC7BFM0mTC
+	 YKL89FWs27DE+6Pqvo4MpX/40LeYj7YyHISPptS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/354] usb: chaoskey: fix locking for O_NONBLOCK
+Subject: [PATCH 6.18 402/614] mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
 Date: Tue, 16 Dec 2025 12:12:49 +0100
-Message-ID: <20251216111328.237398500@linuxfoundation.org>
+Message-ID: <20251216111415.941069655@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
+[ Upstream commit 53d1548612670aa8b5d89745116cc33d9d172863 ]
 
-A failure to take a lock with O_NONBLOCK needs to result
-in -EAGAIN. Change it.
+In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
+subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
+returns an error without freeing sskb, leading to a memory leak.
 
-Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by calling dev_kfree_skb() on sskb in the error handling path
+to ensure it is properly released.
+
+Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index 225863321dc47..45cff32656c6e 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -444,9 +444,19 @@ static ssize_t chaoskey_read(struct file *file,
- 			goto bail;
- 		mutex_unlock(&dev->rng_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 4064e193d4dec..08ee2e861c4e2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -874,8 +874,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+ 						  &wskb);
+-	if (IS_ERR(wtbl_hdr))
++	if (IS_ERR(wtbl_hdr)) {
++		dev_kfree_skb(sskb);
+ 		return PTR_ERR(wtbl_hdr);
++	}
  
--		result = mutex_lock_interruptible(&dev->lock);
--		if (result)
--			goto bail;
-+		if (file->f_flags & O_NONBLOCK) {
-+			result = mutex_trylock(&dev->lock);
-+			if (result == 0) {
-+				result = -EAGAIN;
-+				goto bail;
-+			} else {
-+				result = 0;
-+			}
-+		} else {
-+			result = mutex_lock_interruptible(&dev->lock);
-+			if (result)
-+				goto bail;
-+		}
- 		if (dev->valid == dev->used) {
- 			result = _chaoskey_fill(dev);
- 			if (result < 0) {
+ 	if (enable) {
+ 		mt76_connac_mcu_wtbl_generic_tlv(&dev->mt76, wskb, vif, sta,
 -- 
 2.51.0
 
