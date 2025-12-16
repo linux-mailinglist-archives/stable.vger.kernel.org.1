@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934DACC2231
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B92ACC2D91
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79E67306C70C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2F71318B63F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D332630E0C0;
-	Tue, 16 Dec 2025 11:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774E536CE11;
+	Tue, 16 Dec 2025 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+/OF1/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPHtB4bd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE192459D7;
-	Tue, 16 Dec 2025 11:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3233E36CE03;
+	Tue, 16 Dec 2025 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883903; cv=none; b=UAD4LYzOcqXGbgc7b5AkPhRbk+R8VRMEFTVjARZqG7tT0Gj0Zvix6ukSrFmbg8KAajlmLyI0RNWSwalqo4F7T4d6la40CE84e/h+VXbhjEHXsqtv4HsQIwkDk08gbD5yCuilwpy19jWKOXkmMadsGrfIrkduniH9e2dxK5ImaQI=
+	t=1765887477; cv=none; b=GORwi5kSec4cksVoi4J41Ui4Ln3ex/BvjHlbxJXYgKh+Q7dgarK0naWi8abLHyHcNcpTPn1H2NbD81IbT0ELOMRCQ+g85D1a80WWXQjijV4ExDJUVbT+H4x1xgIW7OQR4g+Fxg5goa9HGidZ9bqt/N8rMkFqCaTGQIT5HXKbMxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883903; c=relaxed/simple;
-	bh=walC798u8t73ZlOBW1Od45heY4+NKLndeLIc0wDH6e0=;
+	s=arc-20240116; t=1765887477; c=relaxed/simple;
+	bh=U8G3rveA/QpVMuECVKc3o6nVFDRrkVpkvN5EKCwoH+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRiUzR/QM7BhzC8cYkRlDuVby3qxjLgo1HeD8hsCVBRQcmRC9Et3Lxb0KmFYcfYcVQV4mXqXvNy2ZvQDf8FxjaT6cKYxSgwPyr320nryVYPkd3Bz6CuvJ61Rv+I0qAIaoArDjGawwmGX7oCAHBqiv4mZhaud4A2j0+CZmwTBzug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+/OF1/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E50BC4CEF1;
-	Tue, 16 Dec 2025 11:18:22 +0000 (UTC)
+	 MIME-Version; b=Eh2HwkIz1TDrWQdzz75geeW1eQT2z+rZBVyKJ3br3RZ+rAo6CYcUYn46c/H7klUPrKyU3F3J8Ly4Zdl8qjSykkTN/ZRlnSembMMgYIPiItKT6ZQJxuV4YPj0WGOMgIUqKSOZ14S8bHopSP34eiDGWWBZLAI9eUwYbLZvaL4BaBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPHtB4bd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B36C4CEF1;
+	Tue, 16 Dec 2025 12:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883903;
-	bh=walC798u8t73ZlOBW1Od45heY4+NKLndeLIc0wDH6e0=;
+	s=korg; t=1765887477;
+	bh=U8G3rveA/QpVMuECVKc3o6nVFDRrkVpkvN5EKCwoH+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+/OF1/7usCEDsVtmsv6RaaIq3vWWw4ZlmY+b/ziDXsXwc8fKlw991T4qxORm/WEN
-	 HuB37S/PHTfP5qCy4SgmQAxw3eh3OFpjfU2Vp1bO+acyzrsnHodgtqITEgLt7VtDrI
-	 6vqDR8a5QvhwsvHQUZW6fcEooXIylabxA4GfGwks=
+	b=rPHtB4bdHVe+M53A+APU6K4u1PvsFAD3LlHctajl9RZwv8p6VR/H708ocUcSgUE0x
+	 yUZ2g50sG40v2dDb7AeaUH6Xd+Ah/HGF+BOxbdf1jzSZbNWG83JHtlJwOj6DMNn8Gk
+	 GDsqoJkQfKkeTJypejglOIzCn1qWjNGWr5S5XrM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mainak Sen <msen@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/354] gpu: host1x: Fix race in syncpt alloc/free
-Date: Tue, 16 Dec 2025 12:09:35 +0100
-Message-ID: <20251216111321.209171481@linuxfoundation.org>
+Subject: [PATCH 6.18 209/614] coresight: ETR: Fix ETR buffer use-after-free issue
+Date: Tue, 16 Dec 2025 12:09:36 +0100
+Message-ID: <20251216111408.947237575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mainak Sen <msen@nvidia.com>
+From: Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>
 
-[ Upstream commit c7d393267c497502fa737607f435f05dfe6e3d9b ]
+[ Upstream commit 35501ac3c7d40a7bb9568c2f89d6b56beaf9bed3 ]
 
-Fix race condition between host1x_syncpt_alloc()
-and host1x_syncpt_put() by using kref_put_mutex()
-instead of kref_put() + manual mutex locking.
+When ETR is enabled as CS_MODE_SYSFS, if the buffer size is changed
+and enabled again, currently sysfs_buf will point to the newly
+allocated memory(buf_new) and free the old memory(buf_old). But the
+etr_buf that is being used by the ETR remains pointed to buf_old, not
+updated to buf_new. In this case, it will result in a memory
+use-after-free issue.
 
-This ensures no thread can acquire the
-syncpt_mutex after the refcount drops to zero
-but before syncpt_release acquires it.
-This prevents races where syncpoints could
-be allocated while still being cleaned up
-from a previous release.
+Fix this by checking ETR's mode before updating and releasing buf_old,
+if the mode is CS_MODE_SYSFS, then skip updating and releasing it.
 
-Remove explicit mutex locking in syncpt_release
-as kref_put_mutex() handles this atomically.
-
-Signed-off-by: Mainak Sen <msen@nvidia.com>
-Fixes: f5ba33fb9690 ("gpu: host1x: Reserve VBLANK syncpoints at initialization")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250707-host1x-syncpt-race-fix-v1-1-28b0776e70bc@nvidia.com
+Fixes: bd2767ec3df2 ("coresight: Fix run time warnings while reusing ETR buffer")
+Signed-off-by: Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20251021-fix_etr_issue-v3-1-99a2d066fee2@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/host1x/syncpt.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/hwtracing/coresight/coresight-tmc-etr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/host1x/syncpt.c b/drivers/gpu/host1x/syncpt.c
-index f63d14a57a1d9..acc7d82e0585e 100644
---- a/drivers/gpu/host1x/syncpt.c
-+++ b/drivers/gpu/host1x/syncpt.c
-@@ -345,8 +345,6 @@ static void syncpt_release(struct kref *ref)
- 
- 	sp->locked = false;
- 
--	mutex_lock(&sp->host->syncpt_mutex);
--
- 	host1x_syncpt_base_free(sp->base);
- 	kfree(sp->name);
- 	sp->base = NULL;
-@@ -369,7 +367,7 @@ void host1x_syncpt_put(struct host1x_syncpt *sp)
- 	if (!sp)
- 		return;
- 
--	kref_put(&sp->ref, syncpt_release);
-+	kref_put_mutex(&sp->ref, syncpt_release, &sp->host->syncpt_mutex);
- }
- EXPORT_SYMBOL(host1x_syncpt_put);
- 
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+index b07fcdb3fe1a8..800be06598c1b 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -1250,6 +1250,13 @@ static struct etr_buf *tmc_etr_get_sysfs_buffer(struct coresight_device *csdev)
+ 	 * with the lock released.
+ 	 */
+ 	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
++
++	/*
++	 * If the ETR is already enabled, continue with the existing buffer.
++	 */
++	if (coresight_get_mode(csdev) == CS_MODE_SYSFS)
++		goto out;
++
+ 	sysfs_buf = READ_ONCE(drvdata->sysfs_buf);
+ 	if (!sysfs_buf || (sysfs_buf->size != drvdata->size)) {
+ 		raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
 -- 
 2.51.0
 
