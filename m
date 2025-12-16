@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80B8CC3098
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CD6CC25E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5BC730407AD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 286A230DF9FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA508347BCB;
-	Tue, 16 Dec 2025 12:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA14341678;
+	Tue, 16 Dec 2025 11:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yw9g/vmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f69NrTk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5765344059;
-	Tue, 16 Dec 2025 12:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66192341062;
+	Tue, 16 Dec 2025 11:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888152; cv=none; b=IuP2+SJvsiUJA0Yn74Het2PNRM/tWmO79l2Hck0JgNI1i7PlVm+CtSyHwHevrKmXY3h0VUCXry2rWdxR+kZQSbMRTPZPc7c52U/2qmSFBeAuCBtBI/tCJm3mydVkT9xAWkJZ7e6xUz54jR3LUbMmat+aJN+hwG+T7MuHSFKqvNw=
+	t=1765884730; cv=none; b=qaBzBX31kqZ9m9TK3kqn/kThJ0W8KVaoXkxLvicCufNhPGpKl+BUkzdZySUzAWoQHwS/O/gvbOlAlq5mSyJLMTArFiDzsROlgWt1ILl1wjIvWQ9IRczO3pSC2SSJbv06Ge08EeueuCmoIn8U67VnvDDfVTi2Radd7XIkZWsX6hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888152; c=relaxed/simple;
-	bh=PfYao538m0sTLRlApZYSz+WQpZO4g/NfaajT3Q9uiOo=;
+	s=arc-20240116; t=1765884730; c=relaxed/simple;
+	bh=/gFRX1XMUN+q9oAp4u3Am1TTDLrzCJ6YKP2f/Ec0SVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8sG+yqYymACCwutwz52dLwDDZ6R+yxug3kAtUXU2hqLS8JT+Ru4XIrDksIUJmsjhdwNAeRCqHHZOuHyQIBtW3BzIgKGm/QhfWVQOB4YgtqOlz+bGZ/L9o/QBIbOizav1JpX7Fli2OIjY+45RP0vS8ETaigAEE8VGNZPjGXEeuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yw9g/vmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48D1C4CEF1;
-	Tue, 16 Dec 2025 12:29:11 +0000 (UTC)
+	 MIME-Version; b=QruWfRfm4jGJAlWaD0y48Q2U/xgmFAzqhR/C51BpLkptQPszlP61lWWoCLymLvc5RO+Y3hh/gE0MPC1WrC3Jt8UQkHdVweYKhFc5cMny2S0x7fY+khEfP/qVFv4D+h2m3W7PFdwtIs21nJt7qVE05rqs/KhSETraN0NMn1Rydxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f69NrTk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1B7C4CEF1;
+	Tue, 16 Dec 2025 11:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888152;
-	bh=PfYao538m0sTLRlApZYSz+WQpZO4g/NfaajT3Q9uiOo=;
+	s=korg; t=1765884726;
+	bh=/gFRX1XMUN+q9oAp4u3Am1TTDLrzCJ6YKP2f/Ec0SVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yw9g/vmzT8P1ijb7FJdcXGc+tohm3jO91muH4IasQByyR+0lu3C736Lku/BfrZnH1
-	 y938TTuH5jnTrb9sSYRYvS8pH49W4FPkk9sGOfnNLOGWppD4ZGix8PclW6bIz1TZM/
-	 ItMRM5AwL9GI25Tlc6HD0XYGgCwrlsDx9w/K0eAA=
+	b=f69NrTk5mTp8bxHG/8OtQpU1i8apbcSiIy+54D79nNRX3lp4kM5vAYR6epQAohAh8
+	 C9mjdy4YmyjFCtpNrHjpEtIfO4X43PDEt8WfOD05NG8Heftra1pqsXVU3723bzYp9g
+	 RCdl6P3JaAadebT2ERZlckAY7d6WC6Bbm6RsnLaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Rosenberg <olrose55@gmail.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 447/614] kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node
+Subject: [PATCH 6.12 247/354] virtio_vdpa: fix misleading return in void function
 Date: Tue, 16 Dec 2025 12:13:34 +0100
-Message-ID: <20251216111417.567991274@linuxfoundation.org>
+Message-ID: <20251216111329.862519316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 382b1e8f30f779af8d6d33268e53df7de579ef3c ]
+[ Upstream commit e40b6abe0b1247d43bc61942aa7534fca7209e44 ]
 
-There exists a memory leak of kernfs_iattrs contained as an element
-of kernfs_node allocated in __kernfs_new_node(). __kernfs_setattr()
-allocates kernfs_iattrs as a sub-object, and the LSM security check
-incorrectly errors out and does not free the kernfs_iattrs sub-object.
+virtio_vdpa_set_status() is declared as returning void, but it used
+"return vdpa_set_status()" Since vdpa_set_status() also returns
+void, the return statement is unnecessary and misleading.
+Remove it.
 
-Make an additional error out case that properly frees kernfs_iattrs if
-security_kernfs_init_security() fails.
-
-Fixes: e19dfdc83b60 ("kernfs: initialize security of newly created nodes")
-Co-developed-by: Oliver Rosenberg <olrose55@gmail.com>
-Signed-off-by: Oliver Rosenberg <olrose55@gmail.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Link: https://patch.msgid.link/20251125151332.2010687-1-whrosenb@asu.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c043b4a8cf3b ("virtio: introduce a vDPA based transport")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Message-Id: <20251001191653.1713923-1-alok.a.tiwari@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/dir.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index a670ba3e565e0..5c0efd6b239f6 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -675,11 +675,14 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
- 	if (parent) {
- 		ret = security_kernfs_init_security(parent, kn);
- 		if (ret)
--			goto err_out3;
-+			goto err_out4;
- 	}
+diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+index 7364bd53e38dd..bf62712bdbee8 100644
+--- a/drivers/virtio/virtio_vdpa.c
++++ b/drivers/virtio/virtio_vdpa.c
+@@ -93,7 +93,7 @@ static void virtio_vdpa_set_status(struct virtio_device *vdev, u8 status)
+ {
+ 	struct vdpa_device *vdpa = vd_get_vdpa(vdev);
  
- 	return kn;
+-	return vdpa_set_status(vdpa, status);
++	vdpa_set_status(vdpa, status);
+ }
  
-+ err_out4:
-+	simple_xattrs_free(&kn->iattr->xattrs, NULL);
-+	kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
-  err_out3:
- 	spin_lock(&root->kernfs_idr_lock);
- 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
+ static void virtio_vdpa_reset(struct virtio_device *vdev)
 -- 
 2.51.0
 
