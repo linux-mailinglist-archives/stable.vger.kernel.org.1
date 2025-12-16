@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15C9CC2BDD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:30:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2492CC2538
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C82A83028C51
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35F3F30A539C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243DE368284;
-	Tue, 16 Dec 2025 12:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38496340DBF;
+	Tue, 16 Dec 2025 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W40xR6ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eViwcXkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EB136827E;
-	Tue, 16 Dec 2025 12:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D889A341072;
+	Tue, 16 Dec 2025 11:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888223; cv=none; b=dzvVIIOdpdsJez1SLymapCH8xXzb8mSUabrqRUE8Mp2hxbpP9jNXN1Qb7PjOBcopi8jAIeRci2Z6rJhSqDcEo9GW+t8u1jqz855CX/PXop3Rrm/1jga3URZ8EeJsOK1RdR2HAbnZS6grmEsRLfdriBHxTx2vAuQoXLi4oPT8X/o=
+	t=1765884696; cv=none; b=RRWeF2yHLMusrZguDcbo+Z+uCIyb+GA2A90TY5eVVI2qvIZfzsTr0B2J3bdZyEVgDl62YpvSd/OKC7jUkpjZWvXpWP1vHMkcW2z/n10vww+uXM3MsW3+xBIVQWiAfgqg5JS8M32eQK6JaWHboYqrUAsIpYcxB3C7J2cm7+mOJDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888223; c=relaxed/simple;
-	bh=kp6BsISeTYRkSDVa+z+/CWlHq9Nwpm/+xuGtsVaj7aE=;
+	s=arc-20240116; t=1765884696; c=relaxed/simple;
+	bh=o+MEhb58ZPpTypoagwSxpsSsDy54cKYrs/bz3f6Syaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiS5z6pkHqFTNJZwDD343NPbykFvnv9q61zeLWJ1tRffxj5s1IuDZFmJKcc4+YHx4tPHs/CzQfkVFK7x8hfQbwOED+OtxLL1zCHGWoEahbfPK9p6cUH+jwts6TA/Sld7P/iQlKPlUM7Ai+2CyAHKFuou5lrEEMUmLweVDr4SfhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W40xR6ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54909C4CEF1;
-	Tue, 16 Dec 2025 12:30:23 +0000 (UTC)
+	 MIME-Version; b=Ums02T/VGwnWp1tQeTHNliMAhKyknMGPFyVGVvnBIxfu8qTSp3SprP7XIfO3xb6LD864ce0SioW1UwANtS9ycbsCEQibDco8rTmRVljaMFqXhm7EqGdeXCYBgHc9qgBrjk9pRnxiFxPteonRu7Hg2GvPOVvZghsNjlD/UN83eAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eViwcXkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE624C4CEF1;
+	Tue, 16 Dec 2025 11:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888223;
-	bh=kp6BsISeTYRkSDVa+z+/CWlHq9Nwpm/+xuGtsVaj7aE=;
+	s=korg; t=1765884696;
+	bh=o+MEhb58ZPpTypoagwSxpsSsDy54cKYrs/bz3f6Syaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W40xR6wwS9/I16h5AgBr3cKRGdqHkbYxdMT0e8gMDZAazqtiiXTUpPQfr+ysRzZF1
-	 J90NL35C4z20T9eInLohYQNunmL33KzBmygRFZQVzsK9/Z1cVptSTi8OOujBRvYkiq
-	 anF5KLs0hgjzfM6/XE6NnY+o4ux9uOyg/rAshz+Y=
+	b=eViwcXkSH2cL7Zj0ykpiD4bbPjjYN9vj8THS6rXlczwKBIrAVyKbtXNm9plvv1/dj
+	 tuhkDT1f2cDoB5hPr/5wb+xx16Evc1kKpDBZwv8FJ1zbmVZjNNtNBVZkmuYq4cIkog
+	 MISXg0iJMNBLGTldpoLfUePtKR75zsVJCJp+sXp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alex Williamson <alex.williamson@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 470/614] virtio: clean up features qword/dword terms
-Date: Tue, 16 Dec 2025 12:13:57 +0100
-Message-ID: <20251216111418.399777200@linuxfoundation.org>
+Subject: [PATCH 6.12 271/354] vfio/pci: Use RCU for error/request triggers to avoid circular locking
+Date: Tue, 16 Dec 2025 12:13:58 +0100
+Message-ID: <20251216111330.734462522@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,378 +61,306 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Alex Williamson <alex.williamson@nvidia.com>
 
-[ Upstream commit 9513f25056b22100ddffe24898c587873b0d022c ]
+[ Upstream commit 98693e0897f754e3f51ce6626ed5f785f625ba2b ]
 
-virtio pci uses word to mean "16 bits". mmio uses it to mean
-"32 bits".
+Thanks to a device generating an ACS violation during bus reset,
+lockdep reported the following circular locking issue:
 
-To avoid confusion, let's avoid the term in core virtio
-altogether. Just say U64 to mean "64 bit".
+CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
+CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
+CPU2: AER: holds pci_bus_sem, acquires igate
 
-Fixes: e7d4c1c5a546 ("virtio: introduce extended features")
-Cc: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-ID: <ad53b7b6be87fc524f45abaeca0bb05fb3633397.1764225384.git.mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+This results in a potential 3-way deadlock.
+
+Remove the pci_bus_sem->igate leg of the triangle by using RCU
+to peek at the eventfd rather than locking it with igate.
+
+Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20251124223623.2770706-1-alex@shazbot.org
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c                    | 12 +++++------
- drivers/virtio/virtio.c                | 12 +++++------
- drivers/virtio/virtio_debug.c          | 10 ++++-----
- drivers/virtio/virtio_pci_modern_dev.c |  6 +++---
- include/linux/virtio.h                 |  2 +-
- include/linux/virtio_config.h          |  2 +-
- include/linux/virtio_features.h        | 29 +++++++++++++-------------
- include/linux/virtio_pci_modern.h      |  8 +++----
- 8 files changed, 41 insertions(+), 40 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
+ drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
+ drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
+ include/linux/vfio_pci_core.h     | 10 ++++-
+ 4 files changed, 93 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 8f7f50acb6d63..1e77c0482b849 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -69,7 +69,7 @@ MODULE_PARM_DESC(experimental_zcopytx, "Enable Zero Copy TX;"
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 595503fa9ca89..c7ea0b23924af 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -42,6 +42,40 @@ static bool nointxmask;
+ static bool disable_vga;
+ static bool disable_idle_d3;
  
- #define VHOST_DMA_IS_DONE(len) ((__force u32)(len) >= (__force u32)VHOST_DMA_DONE_LEN)
++static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
++{
++	struct vfio_pci_eventfd *eventfd =
++		container_of(rcu, struct vfio_pci_eventfd, rcu);
++
++	eventfd_ctx_put(eventfd->ctx);
++	kfree(eventfd);
++}
++
++int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
++				    struct vfio_pci_eventfd __rcu **peventfd,
++				    struct eventfd_ctx *ctx)
++{
++	struct vfio_pci_eventfd *new = NULL;
++	struct vfio_pci_eventfd *old;
++
++	lockdep_assert_held(&vdev->igate);
++
++	if (ctx) {
++		new = kzalloc(sizeof(*new), GFP_KERNEL_ACCOUNT);
++		if (!new)
++			return -ENOMEM;
++
++		new->ctx = ctx;
++	}
++
++	old = rcu_replace_pointer(*peventfd, new,
++				  lockdep_is_held(&vdev->igate));
++	if (old)
++		call_rcu(&old->rcu, vfio_pci_eventfd_rcu_free);
++
++	return 0;
++}
++
+ /* List of PF's that vfio_pci_core_sriov_configure() has been called on */
+ static DEFINE_MUTEX(vfio_pci_sriov_pfs_mutex);
+ static LIST_HEAD(vfio_pci_sriov_pfs);
+@@ -697,14 +731,8 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+ 	vfio_pci_core_disable(vdev);
  
--static const u64 vhost_net_features[VIRTIO_FEATURES_DWORDS] = {
-+static const u64 vhost_net_features[VIRTIO_FEATURES_U64S] = {
- 	VHOST_FEATURES |
- 	(1ULL << VHOST_NET_F_VIRTIO_NET_HDR) |
- 	(1ULL << VIRTIO_NET_F_MRG_RXBUF) |
-@@ -1731,7 +1731,7 @@ static long vhost_net_set_owner(struct vhost_net *n)
- static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 			    unsigned long arg)
+ 	mutex_lock(&vdev->igate);
+-	if (vdev->err_trigger) {
+-		eventfd_ctx_put(vdev->err_trigger);
+-		vdev->err_trigger = NULL;
+-	}
+-	if (vdev->req_trigger) {
+-		eventfd_ctx_put(vdev->req_trigger);
+-		vdev->req_trigger = NULL;
+-	}
++	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
++	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
+ 	mutex_unlock(&vdev->igate);
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_close_device);
+@@ -1807,21 +1835,21 @@ void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count)
+ 	struct vfio_pci_core_device *vdev =
+ 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+ 	struct pci_dev *pdev = vdev->pdev;
++	struct vfio_pci_eventfd *eventfd;
+ 
+-	mutex_lock(&vdev->igate);
+-
+-	if (vdev->req_trigger) {
++	rcu_read_lock();
++	eventfd = rcu_dereference(vdev->req_trigger);
++	if (eventfd) {
+ 		if (!(count % 10))
+ 			pci_notice_ratelimited(pdev,
+ 				"Relaying device request to user (#%u)\n",
+ 				count);
+-		eventfd_signal(vdev->req_trigger);
++		eventfd_signal(eventfd->ctx);
+ 	} else if (count == 0) {
+ 		pci_warn(pdev,
+ 			"No device request channel registered, blocked until released by user\n");
+ 	}
+-
+-	mutex_unlock(&vdev->igate);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_request);
+ 
+@@ -2228,13 +2256,13 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
+ 						pci_channel_state_t state)
  {
--	u64 all_features[VIRTIO_FEATURES_DWORDS];
-+	u64 all_features[VIRTIO_FEATURES_U64S];
- 	struct vhost_net *n = f->private_data;
- 	void __user *argp = (void __user *)arg;
- 	u64 __user *featurep = argp;
-@@ -1763,7 +1763,7 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
+ 	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
++	struct vfio_pci_eventfd *eventfd;
  
- 		/* Copy the net features, up to the user-provided buffer size */
- 		argp += sizeof(u64);
--		copied = min(count, VIRTIO_FEATURES_DWORDS);
-+		copied = min(count, (u64)VIRTIO_FEATURES_U64S);
- 		if (copy_to_user(argp, vhost_net_features,
- 				 copied * sizeof(u64)))
- 			return -EFAULT;
-@@ -1778,13 +1778,13 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
+-	mutex_lock(&vdev->igate);
+-
+-	if (vdev->err_trigger)
+-		eventfd_signal(vdev->err_trigger);
+-
+-	mutex_unlock(&vdev->igate);
++	rcu_read_lock();
++	eventfd = rcu_dereference(vdev->err_trigger);
++	if (eventfd)
++		eventfd_signal(eventfd->ctx);
++	rcu_read_unlock();
  
- 		virtio_features_zero(all_features);
- 		argp += sizeof(u64);
--		copied = min(count, VIRTIO_FEATURES_DWORDS);
-+		copied = min(count, (u64)VIRTIO_FEATURES_U64S);
- 		if (copy_from_user(all_features, argp, copied * sizeof(u64)))
- 			return -EFAULT;
+ 	return PCI_ERS_RESULT_CAN_RECOVER;
+ }
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index b2cf1af7fb0c7..ed86747749e53 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -735,21 +735,27 @@ static int vfio_pci_set_msi_trigger(struct vfio_pci_core_device *vdev,
+ 	return 0;
+ }
  
- 		/*
- 		 * Any feature specified by user-space above
--		 * VIRTIO_FEATURES_MAX is not supported by definition.
-+		 * VIRTIO_FEATURES_BITS is not supported by definition.
- 		 */
- 		for (i = copied; i < count; ++i) {
- 			if (copy_from_user(&features, featurep + 1 + i,
-@@ -1794,7 +1794,7 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 				return -EOPNOTSUPP;
+-static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
++static int vfio_pci_set_ctx_trigger_single(struct vfio_pci_core_device *vdev,
++					   struct vfio_pci_eventfd __rcu **peventfd,
+ 					   unsigned int count, uint32_t flags,
+ 					   void *data)
+ {
+ 	/* DATA_NONE/DATA_BOOL enables loopback testing */
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		if (*ctx) {
+-			if (count) {
+-				eventfd_signal(*ctx);
+-			} else {
+-				eventfd_ctx_put(*ctx);
+-				*ctx = NULL;
+-			}
++		struct vfio_pci_eventfd *eventfd;
++
++		eventfd = rcu_dereference_protected(*peventfd,
++						lockdep_is_held(&vdev->igate));
++
++		if (!eventfd)
++			return -EINVAL;
++
++		if (count) {
++			eventfd_signal(eventfd->ctx);
+ 			return 0;
  		}
++
++		return vfio_pci_eventfd_replace_locked(vdev, peventfd, NULL);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t trigger;
  
--		for (i = 0; i < VIRTIO_FEATURES_DWORDS; i++)
-+		for (i = 0; i < VIRTIO_FEATURES_U64S; i++)
- 			if (all_features[i] & ~vhost_net_features[i])
- 				return -EOPNOTSUPP;
+@@ -757,8 +763,15 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
+ 			return -EINVAL;
  
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index a09eb4d62f82d..5bdc6b82b30b4 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -53,7 +53,7 @@ static ssize_t features_show(struct device *_d,
+ 		trigger = *(uint8_t *)data;
+-		if (trigger && *ctx)
+-			eventfd_signal(*ctx);
++
++		if (trigger) {
++			struct vfio_pci_eventfd *eventfd =
++					rcu_dereference_protected(*peventfd,
++					lockdep_is_held(&vdev->igate));
++
++			if (eventfd)
++				eventfd_signal(eventfd->ctx);
++		}
  
- 	/* We actually represent this as a bitstring, as it could be
- 	 * arbitrary length in future. */
--	for (i = 0; i < VIRTIO_FEATURES_MAX; i++)
-+	for (i = 0; i < VIRTIO_FEATURES_BITS; i++)
- 		len += sysfs_emit_at(buf, len, "%c",
- 			       __virtio_test_bit(dev, i) ? '1' : '0');
- 	len += sysfs_emit_at(buf, len, "\n");
-@@ -272,8 +272,8 @@ static int virtio_dev_probe(struct device *_d)
- 	int err, i;
- 	struct virtio_device *dev = dev_to_virtio(_d);
- 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
--	u64 device_features[VIRTIO_FEATURES_DWORDS];
--	u64 driver_features[VIRTIO_FEATURES_DWORDS];
-+	u64 device_features[VIRTIO_FEATURES_U64S];
-+	u64 driver_features[VIRTIO_FEATURES_U64S];
- 	u64 driver_features_legacy;
+ 		return 0;
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+@@ -769,22 +782,23 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
  
- 	/* We have a driver! */
-@@ -286,7 +286,7 @@ static int virtio_dev_probe(struct device *_d)
- 	virtio_features_zero(driver_features);
- 	for (i = 0; i < drv->feature_table_size; i++) {
- 		unsigned int f = drv->feature_table[i];
--		if (!WARN_ON_ONCE(f >= VIRTIO_FEATURES_MAX))
-+		if (!WARN_ON_ONCE(f >= VIRTIO_FEATURES_BITS))
- 			virtio_features_set_bit(driver_features, f);
+ 		fd = *(int32_t *)data;
+ 		if (fd == -1) {
+-			if (*ctx)
+-				eventfd_ctx_put(*ctx);
+-			*ctx = NULL;
++			return vfio_pci_eventfd_replace_locked(vdev,
++							       peventfd, NULL);
+ 		} else if (fd >= 0) {
+ 			struct eventfd_ctx *efdctx;
++			int ret;
+ 
+ 			efdctx = eventfd_ctx_fdget(fd);
+ 			if (IS_ERR(efdctx))
+ 				return PTR_ERR(efdctx);
+ 
+-			if (*ctx)
+-				eventfd_ctx_put(*ctx);
++			ret = vfio_pci_eventfd_replace_locked(vdev,
++							      peventfd, efdctx);
++			if (ret)
++				eventfd_ctx_put(efdctx);
+ 
+-			*ctx = efdctx;
++			return ret;
+ 		}
+-		return 0;
  	}
  
-@@ -303,7 +303,7 @@ static int virtio_dev_probe(struct device *_d)
- 	}
- 
- 	if (virtio_features_test_bit(device_features, VIRTIO_F_VERSION_1)) {
--		for (i = 0; i < VIRTIO_FEATURES_DWORDS; ++i)
-+		for (i = 0; i < VIRTIO_FEATURES_U64S; ++i)
- 			dev->features_array[i] = driver_features[i] &
- 						 device_features[i];
- 	} else {
-@@ -325,7 +325,7 @@ static int virtio_dev_probe(struct device *_d)
- 		goto err;
- 
- 	if (drv->validate) {
--		u64 features[VIRTIO_FEATURES_DWORDS];
-+		u64 features[VIRTIO_FEATURES_U64S];
- 
- 		virtio_features_copy(features, dev->features_array);
- 		err = drv->validate(dev);
-diff --git a/drivers/virtio/virtio_debug.c b/drivers/virtio/virtio_debug.c
-index d58713ddf2e58..ccf1955a1183a 100644
---- a/drivers/virtio/virtio_debug.c
-+++ b/drivers/virtio/virtio_debug.c
-@@ -8,12 +8,12 @@ static struct dentry *virtio_debugfs_dir;
- 
- static int virtio_debug_device_features_show(struct seq_file *s, void *data)
- {
--	u64 device_features[VIRTIO_FEATURES_DWORDS];
-+	u64 device_features[VIRTIO_FEATURES_U64S];
- 	struct virtio_device *dev = s->private;
- 	unsigned int i;
- 
- 	virtio_get_features(dev, device_features);
--	for (i = 0; i < VIRTIO_FEATURES_MAX; i++) {
-+	for (i = 0; i < VIRTIO_FEATURES_BITS; i++) {
- 		if (virtio_features_test_bit(device_features, i))
- 			seq_printf(s, "%u\n", i);
- 	}
-@@ -26,7 +26,7 @@ static int virtio_debug_filter_features_show(struct seq_file *s, void *data)
- 	struct virtio_device *dev = s->private;
- 	unsigned int i;
- 
--	for (i = 0; i < VIRTIO_FEATURES_MAX; i++) {
-+	for (i = 0; i < VIRTIO_FEATURES_BITS; i++) {
- 		if (virtio_features_test_bit(dev->debugfs_filter_features, i))
- 			seq_printf(s, "%u\n", i);
- 	}
-@@ -50,7 +50,7 @@ static int virtio_debug_filter_feature_add(void *data, u64 val)
- {
- 	struct virtio_device *dev = data;
- 
--	if (val >= VIRTIO_FEATURES_MAX)
-+	if (val >= VIRTIO_FEATURES_BITS)
+ 	return -EINVAL;
+@@ -797,7 +811,7 @@ static int vfio_pci_set_err_trigger(struct vfio_pci_core_device *vdev,
+ 	if (index != VFIO_PCI_ERR_IRQ_INDEX || start != 0 || count > 1)
  		return -EINVAL;
  
- 	virtio_features_set_bit(dev->debugfs_filter_features, val);
-@@ -64,7 +64,7 @@ static int virtio_debug_filter_feature_del(void *data, u64 val)
- {
- 	struct virtio_device *dev = data;
+-	return vfio_pci_set_ctx_trigger_single(&vdev->err_trigger,
++	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->err_trigger,
+ 					       count, flags, data);
+ }
  
--	if (val >= VIRTIO_FEATURES_MAX)
-+	if (val >= VIRTIO_FEATURES_BITS)
+@@ -808,7 +822,7 @@ static int vfio_pci_set_req_trigger(struct vfio_pci_core_device *vdev,
+ 	if (index != VFIO_PCI_REQ_IRQ_INDEX || start != 0 || count > 1)
  		return -EINVAL;
  
- 	virtio_features_clear_bit(dev->debugfs_filter_features, val);
-diff --git a/drivers/virtio/virtio_pci_modern_dev.c b/drivers/virtio/virtio_pci_modern_dev.c
-index 9e503b7a58d81..413a8c3534638 100644
---- a/drivers/virtio/virtio_pci_modern_dev.c
-+++ b/drivers/virtio/virtio_pci_modern_dev.c
-@@ -401,7 +401,7 @@ void vp_modern_get_extended_features(struct virtio_pci_modern_device *mdev,
- 	int i;
+-	return vfio_pci_set_ctx_trigger_single(&vdev->req_trigger,
++	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->req_trigger,
+ 					       count, flags, data);
+ }
  
- 	virtio_features_zero(features);
--	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
-+	for (i = 0; i < VIRTIO_FEATURES_BITS / 32; i++) {
- 		u64 cur;
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 5e4fa69aee16c..cf5e42fca27e7 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -26,6 +26,10 @@ struct vfio_pci_ioeventfd {
+ bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
+ void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
  
- 		vp_iowrite32(i, &cfg->device_feature_select);
-@@ -427,7 +427,7 @@ vp_modern_get_driver_extended_features(struct virtio_pci_modern_device *mdev,
- 	int i;
- 
- 	virtio_features_zero(features);
--	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
-+	for (i = 0; i < VIRTIO_FEATURES_BITS / 32; i++) {
- 		u64 cur;
- 
- 		vp_iowrite32(i, &cfg->guest_feature_select);
-@@ -448,7 +448,7 @@ void vp_modern_set_extended_features(struct virtio_pci_modern_device *mdev,
- 	struct virtio_pci_common_cfg __iomem *cfg = mdev->common;
- 	int i;
- 
--	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
-+	for (i = 0; i < VIRTIO_FEATURES_BITS / 32; i++) {
- 		u32 cur = features[i >> 1] >> (32 * (i & 1));
- 
- 		vp_iowrite32(i, &cfg->guest_feature_select);
-diff --git a/include/linux/virtio.h b/include/linux/virtio.h
-index 96c66126c0741..132a474e59140 100644
---- a/include/linux/virtio.h
-+++ b/include/linux/virtio.h
-@@ -177,7 +177,7 @@ struct virtio_device {
- 	union virtio_map vmap;
- #ifdef CONFIG_VIRTIO_DEBUG
- 	struct dentry *debugfs_dir;
--	u64 debugfs_filter_features[VIRTIO_FEATURES_DWORDS];
-+	u64 debugfs_filter_features[VIRTIO_FEATURES_U64S];
- #endif
- };
- 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index a1af2676bbe6a..69f84ea85d71a 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -80,7 +80,7 @@ struct virtqueue_info {
-  *	Returns the first 64 feature bits.
-  * @get_extended_features:
-  *      vdev: the virtio_device
-- *      Returns the first VIRTIO_FEATURES_MAX feature bits (all we currently
-+ *      Returns the first VIRTIO_FEATURES_BITS feature bits (all we currently
-  *      need).
-  * @finalize_features: confirm what device features we'll be using.
-  *	vdev: the virtio_device
-diff --git a/include/linux/virtio_features.h b/include/linux/virtio_features.h
-index f748f2f87de8d..ea2ad8717882e 100644
---- a/include/linux/virtio_features.h
-+++ b/include/linux/virtio_features.h
-@@ -4,15 +4,16 @@
- 
- #include <linux/bits.h>
- 
--#define VIRTIO_FEATURES_DWORDS	2
--#define VIRTIO_FEATURES_MAX	(VIRTIO_FEATURES_DWORDS * 64)
--#define VIRTIO_FEATURES_WORDS	(VIRTIO_FEATURES_DWORDS * 2)
-+#define VIRTIO_FEATURES_U64S	2
-+#define VIRTIO_FEATURES_BITS	(VIRTIO_FEATURES_U64S * 64)
++int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
++				    struct vfio_pci_eventfd __rcu **peventfd,
++				    struct eventfd_ctx *ctx);
 +
- #define VIRTIO_BIT(b)		BIT_ULL((b) & 0x3f)
--#define VIRTIO_DWORD(b)		((b) >> 6)
-+#define VIRTIO_U64(b)		((b) >> 6)
+ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
+ 			    unsigned index, unsigned start, unsigned count,
+ 			    void *data);
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index fbb472dd99b36..99da27c032d70 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -12,6 +12,7 @@
+ #include <linux/pci.h>
+ #include <linux/vfio.h>
+ #include <linux/irqbypass.h>
++#include <linux/rcupdate.h>
+ #include <linux/types.h>
+ #include <linux/uuid.h>
+ #include <linux/notifier.h>
+@@ -27,6 +28,11 @@
+ struct vfio_pci_core_device;
+ struct vfio_pci_region;
+ 
++struct vfio_pci_eventfd {
++	struct eventfd_ctx	*ctx;
++	struct rcu_head		rcu;
++};
 +
- #define VIRTIO_DECLARE_FEATURES(name)			\
- 	union {						\
- 		u64 name;				\
--		u64 name##_array[VIRTIO_FEATURES_DWORDS];\
-+		u64 name##_array[VIRTIO_FEATURES_U64S];\
- 	}
- 
- static inline bool virtio_features_chk_bit(unsigned int bit)
-@@ -22,9 +23,9 @@ static inline bool virtio_features_chk_bit(unsigned int bit)
- 		 * Don't care returning the correct value: the build
- 		 * will fail before any bad features access
- 		 */
--		BUILD_BUG_ON(bit >= VIRTIO_FEATURES_MAX);
-+		BUILD_BUG_ON(bit >= VIRTIO_FEATURES_BITS);
- 	} else {
--		if (WARN_ON_ONCE(bit >= VIRTIO_FEATURES_MAX))
-+		if (WARN_ON_ONCE(bit >= VIRTIO_FEATURES_BITS))
- 			return false;
- 	}
- 	return true;
-@@ -34,26 +35,26 @@ static inline bool virtio_features_test_bit(const u64 *features,
- 					    unsigned int bit)
- {
- 	return virtio_features_chk_bit(bit) &&
--	       !!(features[VIRTIO_DWORD(bit)] & VIRTIO_BIT(bit));
-+	       !!(features[VIRTIO_U64(bit)] & VIRTIO_BIT(bit));
- }
- 
- static inline void virtio_features_set_bit(u64 *features,
- 					   unsigned int bit)
- {
- 	if (virtio_features_chk_bit(bit))
--		features[VIRTIO_DWORD(bit)] |= VIRTIO_BIT(bit);
-+		features[VIRTIO_U64(bit)] |= VIRTIO_BIT(bit);
- }
- 
- static inline void virtio_features_clear_bit(u64 *features,
- 					     unsigned int bit)
- {
- 	if (virtio_features_chk_bit(bit))
--		features[VIRTIO_DWORD(bit)] &= ~VIRTIO_BIT(bit);
-+		features[VIRTIO_U64(bit)] &= ~VIRTIO_BIT(bit);
- }
- 
- static inline void virtio_features_zero(u64 *features)
- {
--	memset(features, 0, sizeof(features[0]) * VIRTIO_FEATURES_DWORDS);
-+	memset(features, 0, sizeof(features[0]) * VIRTIO_FEATURES_U64S);
- }
- 
- static inline void virtio_features_from_u64(u64 *features, u64 from)
-@@ -66,7 +67,7 @@ static inline bool virtio_features_equal(const u64 *f1, const u64 *f2)
- {
- 	int i;
- 
--	for (i = 0; i < VIRTIO_FEATURES_DWORDS; ++i)
-+	for (i = 0; i < VIRTIO_FEATURES_U64S; ++i)
- 		if (f1[i] != f2[i])
- 			return false;
- 	return true;
-@@ -74,14 +75,14 @@ static inline bool virtio_features_equal(const u64 *f1, const u64 *f2)
- 
- static inline void virtio_features_copy(u64 *to, const u64 *from)
- {
--	memcpy(to, from, sizeof(to[0]) * VIRTIO_FEATURES_DWORDS);
-+	memcpy(to, from, sizeof(to[0]) * VIRTIO_FEATURES_U64S);
- }
- 
- static inline void virtio_features_andnot(u64 *to, const u64 *f1, const u64 *f2)
- {
- 	int i;
- 
--	for (i = 0; i < VIRTIO_FEATURES_DWORDS; i++)
-+	for (i = 0; i < VIRTIO_FEATURES_U64S; i++)
- 		to[i] = f1[i] & ~f2[i];
- }
- 
-diff --git a/include/linux/virtio_pci_modern.h b/include/linux/virtio_pci_modern.h
-index 48bc12d1045bd..9a3f2fc53bd65 100644
---- a/include/linux/virtio_pci_modern.h
-+++ b/include/linux/virtio_pci_modern.h
-@@ -107,7 +107,7 @@ void vp_modern_set_extended_features(struct virtio_pci_modern_device *mdev,
- static inline u64
- vp_modern_get_features(struct virtio_pci_modern_device *mdev)
- {
--	u64 features_array[VIRTIO_FEATURES_DWORDS];
-+	u64 features_array[VIRTIO_FEATURES_U64S];
- 
- 	vp_modern_get_extended_features(mdev, features_array);
- 	return features_array[0];
-@@ -116,11 +116,11 @@ vp_modern_get_features(struct virtio_pci_modern_device *mdev)
- static inline u64
- vp_modern_get_driver_features(struct virtio_pci_modern_device *mdev)
- {
--	u64 features_array[VIRTIO_FEATURES_DWORDS];
-+	u64 features_array[VIRTIO_FEATURES_U64S];
- 	int i;
- 
- 	vp_modern_get_driver_extended_features(mdev, features_array);
--	for (i = 1; i < VIRTIO_FEATURES_DWORDS; ++i)
-+	for (i = 1; i < VIRTIO_FEATURES_U64S; ++i)
- 		WARN_ON_ONCE(features_array[i]);
- 	return features_array[0];
- }
-@@ -128,7 +128,7 @@ vp_modern_get_driver_features(struct virtio_pci_modern_device *mdev)
- static inline void
- vp_modern_set_features(struct virtio_pci_modern_device *mdev, u64 features)
- {
--	u64 features_array[VIRTIO_FEATURES_DWORDS];
-+	u64 features_array[VIRTIO_FEATURES_U64S];
- 
- 	virtio_features_from_u64(features_array, features);
- 	vp_modern_set_extended_features(mdev, features_array);
+ struct vfio_pci_regops {
+ 	ssize_t (*rw)(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		      size_t count, loff_t *ppos, bool iswrite);
+@@ -83,8 +89,8 @@ struct vfio_pci_core_device {
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
+ 	int			ioeventfds_nr;
+-	struct eventfd_ctx	*err_trigger;
+-	struct eventfd_ctx	*req_trigger;
++	struct vfio_pci_eventfd __rcu *err_trigger;
++	struct vfio_pci_eventfd __rcu *req_trigger;
+ 	struct eventfd_ctx	*pm_wake_eventfd_ctx;
+ 	struct list_head	dummy_resources_list;
+ 	struct mutex		ioeventfds_lock;
 -- 
 2.51.0
 
