@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E61CC2AD4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBEFDCC310D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BED1030D35D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C74F3006DA5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55970366556;
-	Tue, 16 Dec 2025 12:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC84D34B42B;
+	Tue, 16 Dec 2025 11:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTRvtja/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guS2ISUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2EC36654F;
-	Tue, 16 Dec 2025 12:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BB434B415;
+	Tue, 16 Dec 2025 11:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887198; cv=none; b=JGBDiMHJsoS+iPeSCnYh+MIqNq4NJUgEgSu2iy0Q0u6tGcqfDFbDb1hvWkrfXBHFlNleopNHoET6drjsvXBaGXHpbs+5LtgcNswkooT62TloHzMOmMdY6Lh/CZunAAQT1t2Vy1wjsgmVMW2QiCNI7sfs0Zyh32LUE0HSwkFeM14=
+	t=1765885249; cv=none; b=oX/j+KLThPCiLBAGNpTNwHZ8GzwippsKhid5jVsBladstNhPdkE1PfZNpfBhW157+kuQgNUOhqebQJrXA4ToNjBnENDKazyiVwCFZ94HDRlp7LoQYs9ZtWuN/TQp8az/jcaMKjkPjS3WV48wMapzZBkTb+7zeFuTi++y8V0SHCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887198; c=relaxed/simple;
-	bh=gfB2eDQDuTIicMB/plVSz9aPsJUe/X5XpS+fm2K3g7Q=;
+	s=arc-20240116; t=1765885249; c=relaxed/simple;
+	bh=dx+dUFcrfjU4Wgo7oDJ3gSjEqQbchf7cYHB//8hg6gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9hYSWZS8SG8E2LiFJYixBj4Yr2r12KJEOk2qp8IgBeb/A+RLZg3eFMMKjxtDsbjnxY7hZKE6OqRECaYIxSTFGzl8Yips3js9R5iGRamvciCn66Qq1YoJJ1K2Btbn8B0r744uRfAGXh6XtyBZ6bYQDFsk/vBVleCfeSFfwr1auo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTRvtja/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82471C4CEF1;
-	Tue, 16 Dec 2025 12:13:17 +0000 (UTC)
+	 MIME-Version; b=g3rjFADKLwCK3Dq7xbMQ3mSD9cbZh8Q136NyKduRfJ2vBJ1tcFWbdZZxmRoJ/dx/0uFHjCact0Ck5dK+Vf8Q72vXEJQa/Ib6rk5UFn/8hUYKyMTGC4r2f4H8jVA3OYdjFLe82TADhcSYFeUxV1+ILKS5RyYZPtZ6B/pWoNSwx9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guS2ISUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD14C4CEF5;
+	Tue, 16 Dec 2025 11:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887197;
-	bh=gfB2eDQDuTIicMB/plVSz9aPsJUe/X5XpS+fm2K3g7Q=;
+	s=korg; t=1765885249;
+	bh=dx+dUFcrfjU4Wgo7oDJ3gSjEqQbchf7cYHB//8hg6gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTRvtja/eEqW480+gnZcrngCBP62rRv2Dv4SHB4r4f+sU+W9sByWiFPGpSyWHiUsG
-	 jV9Cqw4dJXPwGtqVGyiyTwfI0rBdfYLpvRbacxYSOcMVPRuggOabsc99a7ezA6Wh+j
-	 0EvOrZXdlpfrFkSRsU4iOrvYyrznWW1ZT9IPZPD8=
+	b=guS2ISUG4pnq/MU1hsmj/Bdx72bE8hOtOG9NqkK9GbYruyKVy5RuOMptZAtr631Wc
+	 H67qPZrMFziOIu4ko6DwxIhdzctw6qJN7FI1/RA4O7fkHkz6XUjFOaHKEVVWM8PTd3
+	 SXdDI6D5+ar4lF4D18slcjVi4lTFNndYxzGue78E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 156/614] i3c: fix refcount inconsistency in i3c_master_register
+Subject: [PATCH 6.17 082/507] wifi: ath11k: fix peer HE MCS assignment
 Date: Tue, 16 Dec 2025 12:08:43 +0100
-Message-ID: <20251216111406.987060890@linuxfoundation.org>
+Message-ID: <20251216111348.511140218@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
+[ Upstream commit 4a013ca2d490c73c40588d62712ffaa432046a04 ]
 
-In `i3c_master_register`, a possible refcount inconsistency has been
-identified, causing possible resource leak.
+In ath11k_wmi_send_peer_assoc_cmd(), peer's transmit MCS is sent to
+firmware as receive MCS while peer's receive MCS sent as transmit MCS,
+which goes against firmwire's definition.
 
-Function `of_node_get` increases the refcount of `parent->of_node`. If
-function `i3c_bus_init` fails, the function returns immediately without
-a corresponding decrease, resulting in an inconsistent refcounter.
+While connecting to a misbehaved AP that advertises 0xffff (meaning not
+supported) for 160 MHz transmit MCS map, firmware crashes due to 0xffff
+is assigned to he_mcs->rx_mcs_set field.
 
-Move call i3c_bus_init() after device_initialize() to let callback
-i3c_masterdev_release() release of_node.
+	Ext Tag: HE Capabilities
+	    [...]
+	    Supported HE-MCS and NSS Set
+		[...]
+	        Rx and Tx MCS Maps 160 MHz
+		    [...]
+	            Tx HE-MCS Map 160 MHz: 0xffff
 
-Reported-by: Shuhao Fu <sfual@cse.ust.hk>
-Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Swap the assignment to fix this issue.
+
+As the HE rate control mask is meant to limit our own transmit MCS, it
+needs to go via he_mcs->rx_mcs_set field. With the aforementioned swapping
+done, change is needed as well to apply it to the peer's receive MCS.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Fixes: 61fe43e7216d ("ath11k: add support for setting fixed HE rate/gi/ltf")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-2-da40825c1783@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index d946db75df706..66513a27e6e77 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2883,10 +2883,6 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i2c);
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 49c639d73d58d..f142c17aa9aa7 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2522,10 +2522,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 			he_tx_mcs = v;
+ 		}
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
++		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
  
--	ret = i3c_bus_init(i3cbus, master->dev.of_node);
--	if (ret)
--		return ret;
--
- 	device_initialize(&master->dev);
- 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
+-		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
  
-@@ -2894,6 +2890,10 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
- 	master->dev.dma_parms = parent->dma_parms;
+ 		arg->peer_he_mcs_count++;
+@@ -2535,10 +2535,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
  
-+	ret = i3c_bus_init(i3cbus, master->dev.of_node);
-+	if (ret)
-+		goto err_put_dev;
-+
- 	ret = of_populate_i3c_bus(master);
- 	if (ret)
- 		goto err_put_dev;
+ 	default:
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
++		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+ 
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
+-		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+ 
+ 		arg->peer_he_mcs_count++;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 649839d243293..110035dae8a61 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -2091,8 +2091,11 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
+ 				     FIELD_PREP(WMI_TLV_LEN,
+ 						sizeof(*he_mcs) - TLV_HDR_SIZE);
+ 
+-		he_mcs->rx_mcs_set = param->peer_he_tx_mcs_set[i];
+-		he_mcs->tx_mcs_set = param->peer_he_rx_mcs_set[i];
++		/* firmware interprets mcs->rx_mcs_set field as peer's
++		 * RX capability
++		 */
++		he_mcs->rx_mcs_set = param->peer_he_rx_mcs_set[i];
++		he_mcs->tx_mcs_set = param->peer_he_tx_mcs_set[i];
+ 		ptr += sizeof(*he_mcs);
+ 	}
+ 
 -- 
 2.51.0
 
