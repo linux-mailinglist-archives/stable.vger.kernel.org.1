@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10F7CC37E7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E66FCC232E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7FA3D306E32F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FAC33044685
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B8B3446B1;
-	Tue, 16 Dec 2025 12:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F3F56B81;
+	Tue, 16 Dec 2025 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIW6bKEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVV8LW2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A173446D1;
-	Tue, 16 Dec 2025 12:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D7D341645;
+	Tue, 16 Dec 2025 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887576; cv=none; b=n+mvx8++M1W25mVksznUy+8aWKy8LCq1lR47OmdfaxbRqEW6h9IQXuJqyZS2vjfRxeN0WPLE9dedEbfWKPcuAUzkV4HXJBOK61AWjUUDQqQwqChwhbmvaHvz45Pnhnv4rap2Xa4cUAOM2tc5ar/VFKtjBYrQ8rezXVJq5jRgX6s=
+	t=1765884143; cv=none; b=it6WJtPydR49Q6dttDlcR3IPLOlr0rh+cn3m+sOYLz5yAQHwmWpgvGiaFvUNorjABZGNjbjUmVFS1N/GTBmOMqokuOMkr8cjDyEchJV3pcDa47rYWq/50LjisBM9Mz9CTpD+a5sybPr/lwLINPwW/ijljqzokavcAabSFttVKoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887576; c=relaxed/simple;
-	bh=qJGu0YMvNSbupV8QJ0nc+8rQelXbZJFcMpoQ4JTWcrw=;
+	s=arc-20240116; t=1765884143; c=relaxed/simple;
+	bh=QYpNl031yafH8MYfpRP6e7+UqXaZFVkPhCSdeb0BEuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRvt3g4LzP7vMQ64zFcVStjch1l3QPO8pn9YDQkMEVezXNBkveCrlQjg36Ram70Mn0xGft796xxHMpoBpmi7+M1bHlRav4xYqAdPVRkLWPkQm1NNNiD+pIDvNHcK4Lb0YKHBYskP57k9OqHgfLfNYoJHXrLN2nujcs77gY6Ugw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIW6bKEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D7BC4CEF1;
-	Tue, 16 Dec 2025 12:19:35 +0000 (UTC)
+	 MIME-Version; b=jodPd7UPZgUd7TainjOot7MNH9BFDP0UAy+AxfRe1lXr5jfVP2DVxTpkweFzZMiYiC0H3P629q55NEiDk85N6T+AbMr7D8hTFA5ft9pAQ1iPfL1rl0KfmvFZjYj9rO14T6rWM2Z2lJ4fgfWFtT/eIrOZdb0OqZj0oXMHknJ3wNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVV8LW2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1196CC4CEF1;
+	Tue, 16 Dec 2025 11:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887576;
-	bh=qJGu0YMvNSbupV8QJ0nc+8rQelXbZJFcMpoQ4JTWcrw=;
+	s=korg; t=1765884143;
+	bh=QYpNl031yafH8MYfpRP6e7+UqXaZFVkPhCSdeb0BEuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIW6bKEcu3oyV10XD4CdPzigjzGltuEzcVeUOrso+KoTbiafZoDbajiLN2rxwhvIX
-	 BNQOUrRD+IQHMk1Fbd+aat+c/J8ImObnVBHHSyHzMnCVyecqAyLbhvVaXQokH0I/uu
-	 Y4drXX1g3xBFWZs7TVxd/6UOf9rKtSnH2HvkEsFg=
+	b=oVV8LW2eOZn9E2p9zEu56x8XQEvr2ZeB+xCuQsv71/OV9MleCdJwzYXAOLYj3e0FQ
+	 ynCYOZ573RSxYIjU7kF+9aT29MNXLT1jOHze3eMVr4G9BaiA5dA6TRvk9GV895ZKxM
+	 m6uK37q32jbEFQQrQTPRtjED+pTBO5hp2Ez/HgKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 271/614] accel/amdxdna: Clear mailbox interrupt register during channel creation
+Subject: [PATCH 6.12 071/354] firmware: imx: scu-irq: fix OF node leak in
 Date: Tue, 16 Dec 2025 12:10:38 +0100
-Message-ID: <20251216111411.194227164@linuxfoundation.org>
+Message-ID: <20251216111323.497385802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 6ff9385c07aa311f01f87307e6256231be7d8675 ]
+[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
 
-The mailbox interrupt register is not always cleared when a mailbox channel
-is created. This can leave stale interrupt states from previous operations.
+imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
+but does not release the OF node reference. Add a of_node_put() call
+to release the reference.
 
-Fix this by explicitly clearing the interrupt register in the mailbox
-channel creation function.
-
-Fixes: b87f920b9344 ("accel/amdxdna: Support hardware mailbox")
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251107181115.1293158-1-lizhi.hou@amd.com
+Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/amdxdna_mailbox.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/imx/imx-scu-irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_mailbox.c b/drivers/accel/amdxdna/amdxdna_mailbox.c
-index da1ac89bb78f1..6634a4d5717ff 100644
---- a/drivers/accel/amdxdna/amdxdna_mailbox.c
-+++ b/drivers/accel/amdxdna/amdxdna_mailbox.c
-@@ -513,6 +513,7 @@ xdna_mailbox_create_channel(struct mailbox *mb,
- 	}
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index 6125cccc9ba79..f2b902e95b738 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -226,8 +226,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
  
- 	mb_chann->bad_state = false;
-+	mailbox_reg_write(mb_chann, mb_chann->iohub_int_addr, 0);
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", 0, &spec))
++				       "#mbox-cells", 0, &spec)) {
+ 		i = of_alias_get_id(spec.np, "mu");
++		of_node_put(spec.np);
++	}
  
- 	MB_DBG(mb_chann, "Mailbox channel created (irq: %d)", mb_chann->msix_irq);
- 	return mb_chann;
+ 	/* use mu1 as general mu irq channel if failed */
+ 	if (i < 0)
 -- 
 2.51.0
 
