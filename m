@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2952FCC31DF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6D2CC3472
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0E583083628
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B73BF3030CA5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD28349AF9;
-	Tue, 16 Dec 2025 12:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0198F352FB5;
+	Tue, 16 Dec 2025 11:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CruFwiyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1tBsEUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA907346E7F;
-	Tue, 16 Dec 2025 12:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CAE352FB1;
+	Tue, 16 Dec 2025 11:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887610; cv=none; b=aGBCFTPqJROSlu3YQK6KHI9tgrVdKDd9sd7dMfI5TCH77AT4EWMM+bpSOxQ43eSJHp4Jdmm+yR8RAkmZrGKH21/X1wzKXCa1Zc3kr9bccWKAPVRzJ1Z5CqISElXsH8Hpi2jgsqHRi7dl9eSR+tOKVmvgO1XiZ8vrN6bkCwtQxeQ=
+	t=1765885783; cv=none; b=HJi80VI7PkWhyVJow3EBB7mqBSf0pfOFTNdfIZOQlPXqpErSLn2xHC7YTJ/CvgSQ13n3IW2xX18rvdb4DOoxFsD7xRTmPDEgyliRQ/wZQ5qyxDZt+WgRZkahBmbYFZC6kCkYY/LnwscNvhuwqOvTUgXq1mPBH+mqZw5BhQBcvDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887610; c=relaxed/simple;
-	bh=8eaf4JWgK2/w/eFqWsZar14kuEN92mwLH2ZP7bGTvaU=;
+	s=arc-20240116; t=1765885783; c=relaxed/simple;
+	bh=ZpQTLbKNNU8tWCWXeG+VyFctLnuNUsUgZYW23CER9jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lM1eYYqu/njI5WF3j+xFiUaaMkS1yGeGkTlEEC8a5Tdr0T1lNlKt7S5aQ+0DJuBjmWY4ykS4yTZf2lHBce2kABDcB51yNej3XczwSvLz6KlDNUeZhOfKN4HiLaldreMbCLtUaEQ/aZCFSM9KMwvDjK2lXBauVzjpoqak6z7NqqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CruFwiyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3752DC4CEF1;
-	Tue, 16 Dec 2025 12:20:10 +0000 (UTC)
+	 MIME-Version; b=qaiPy0HEHharagPQJr7ZXt3KSeDUMPEG/Pf7GmkJF2DaAjWUno7EscX9Wi8WZt5+GeKywtxN+ehbfHu3yhoBe8F9+8zjzGhQQsDNefpQ1gIjEhJhf6fr37ZhdVn6nQJI+qeZKZayMrJOLxeFxuKd/B1O6kx3kGCYXnj8l0dWF1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1tBsEUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADF5C4CEF1;
+	Tue, 16 Dec 2025 11:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887610;
-	bh=8eaf4JWgK2/w/eFqWsZar14kuEN92mwLH2ZP7bGTvaU=;
+	s=korg; t=1765885783;
+	bh=ZpQTLbKNNU8tWCWXeG+VyFctLnuNUsUgZYW23CER9jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CruFwiyHxwJm5D9dTfdqaz9us6ynM7MXPG4hliwmRAbbdpGNatVpLi90jRtb2Uxxa
-	 Ou0DaNcncv9oJ9CA/CqeF8rJnuXZvKL4yRUfRxd8tSu9yKC3yzCkeM3oNXtpyt+G05
-	 UwsNl5zypL7tyZn5OmCBCuYwFhwCtUqnvsKaFbos=
+	b=j1tBsEUEoJvnDnxZp2yLBNDhJNMxAYAGRfMOkG6AVNgZqJylJ7WS4GH/NXx0U0dTz
+	 a375Gokd6L8iC6/i/T3TPVpgzxVyhWoGbaUPDBEFJjQ8af+WpYpWW7jYOH1IJ8v0iN
+	 lpYsBWAV/pzzGYq3XhXv476zoocHcoDhbBISkyq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 284/614] pwm: Use %u to printf unsigned int pwm_chip::npwm and pwm_chip::id
+Subject: [PATCH 6.17 210/507] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
 Date: Tue, 16 Dec 2025 12:10:51 +0100
-Message-ID: <20251216111411.662279761@linuxfoundation.org>
+Message-ID: <20251216111353.116451683@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 5f7ff902e7f324c10f2b64c5ba2e5e2d0bc4e07e ]
+[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
 
-%u is the right conversion specifier to emit an unsigned int value.
+In one of the error paths, the memory allocated for skb_rx is not freed.
+Fix that by freeing it before returning.
 
-Fixes: 62099abf67a2 ("pwm: Add debugfs interface")
-Fixes: 0360a4873372 ("pwm: Mention PWM chip ID in /sys/kernel/debug/pwm")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20251006133525.2457171-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 5b75f4a084967..7dd1cf2ba4025 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -2696,7 +2696,7 @@ static int pwm_seq_show(struct seq_file *s, void *v)
- {
- 	struct pwm_chip *chip = v;
+diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
+index 3b4ded2ac801c..37232ee220375 100644
+--- a/drivers/net/wireless/st/cw1200/bh.c
++++ b/drivers/net/wireless/st/cw1200/bh.c
+@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
  
--	seq_printf(s, "%s%d: %s/%s, npwm: %d\n",
-+	seq_printf(s, "%s%u: %s/%s, npwm: %u\n",
- 		   (char *)s->private, chip->id,
- 		   pwmchip_parent(chip)->bus ? pwmchip_parent(chip)->bus->name : "no-bus",
- 		   dev_name(pwmchip_parent(chip)), chip->npwm);
+ 	if (wsm_id & 0x0400) {
+ 		int rc = wsm_release_tx_buffer(priv, 1);
+-		if (WARN_ON(rc < 0))
++		if (WARN_ON(rc < 0)) {
++			dev_kfree_skb(skb_rx);
+ 			return rc;
+-		else if (rc > 0)
++		} else if (rc > 0) {
+ 			*tx = 1;
++		}
+ 	}
+ 
+ 	/* cw1200_wsm_rx takes care on SKB livetime */
 -- 
 2.51.0
 
