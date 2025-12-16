@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D9CCC2935
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86679CC4A0A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40CAB3026997
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7BDD3086355
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0B234DCEE;
-	Tue, 16 Dec 2025 11:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374F8376BE3;
+	Tue, 16 Dec 2025 12:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPrCxZ+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSN2v9/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1328A34DCD7;
-	Tue, 16 Dec 2025 11:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3751376BDD;
+	Tue, 16 Dec 2025 12:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886119; cv=none; b=MBqZM+h8eTuOpeYi/NWDjXYW5/QF9JGwMFJc67fL3+XWPkQNVXf/YVDWJWUek2s9gPzuN3H3q7UfkW+MSMH3QSqq+VE0wdHItcXhTRlS3+XV8b2Yqfg26fC3VLbIGRe1tYr40t5E7lbAmAm0YUERFLI69I7wLUcJHOu7s5hm13I=
+	t=1765888069; cv=none; b=rZ6rHD5qB0xNZTGdcZtSUIMtUy7kkiWkpkdF2XkCDinOG5ZC4ugs6TtajyVTSLHnI83aGAIEEkiPQDiCd0DtZPC3OYlbX4AzN9KJovVXHCyuqdp96Nm5kkK+nY1Q50iCuAgcR5FOOQtqo0X+WK5U8dkBDPP56GP5L0PtBDlJVDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886119; c=relaxed/simple;
-	bh=OuvUZQTS/bMlIwFhm89sbC6GJvd2lRG3C92522WFzGk=;
+	s=arc-20240116; t=1765888069; c=relaxed/simple;
+	bh=aW/QI9BHT/aQPopGr6c+3EltXseIbcPNV6WJ1kuAHBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9EmQD1io5r2JJaojHVaaY5GK6GwVrmBEYIDP3KU8XsXLXYP2B0nsAn2g97RDgYfyZ7ST1eyPYhGqSXMS/J+u61piAb4cHJwJ3JE23TPvaDK1JTRUI4EHjHYxhYEK7GDU0v/w14SZ+HjqWNLnxPtjE6e7wMLKw1SHzajAiypYcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPrCxZ+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777A5C4CEF1;
-	Tue, 16 Dec 2025 11:55:18 +0000 (UTC)
+	 MIME-Version; b=e2jrgzWiEh0VqzMvIiKJEkYPY0Yv4VOBQihlhWgL9ZqcBxLN32qUpkgVfpDOHddhMtF94xb0DpVYLNkBRCZC+WU4+9wEzv53s/AMh7U35pbtMLSrNMh3QgvYi0fxxKi1uSr2SlB167ZIp9OiWKYFq2UXmVJnXnnz1OsUEXrAAwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSN2v9/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6684AC4CEF1;
+	Tue, 16 Dec 2025 12:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886119;
-	bh=OuvUZQTS/bMlIwFhm89sbC6GJvd2lRG3C92522WFzGk=;
+	s=korg; t=1765888068;
+	bh=aW/QI9BHT/aQPopGr6c+3EltXseIbcPNV6WJ1kuAHBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPrCxZ+0XJinSdhXNW/w+6f9QaZskyVGI4R62mcOHilRI3mCqv5bLJITF47oJ68tv
-	 doBKCzlVCqZQJ79t9D54EQJVHcVgZJub3IIUuMaGe+0QBY6pVq7NuaIhV6plbsvz6h
-	 UKncB5Q4bDanFIiPzH8JIDlL8QrKcR7IZPLdE6Hw=
+	b=jSN2v9/wKzVFpRXw5LjmKmo30AARec2Hg/fEMve2KBN1TNUSRkAuXCl2PzjkGQB7S
+	 AqAZRxQsnrFWHI6wIOjQ01puD96C+4zOpzvrzzv2B6knr++tlA1Q33hxHXI7qHIRmU
+	 Pb6A0/qcG/8jAvN3uiyQlzGdUVoQB2JXXPwrqXVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 316/507] erofs: limit the level of fs stacking for file-backed mounts
+Subject: [PATCH 6.18 390/614] wifi: mt76: mt7996: fix several fields in mt7996_mcu_bss_basic_tlv()
 Date: Tue, 16 Dec 2025 12:12:37 +0100
-Message-ID: <20251216111356.915709973@linuxfoundation.org>
+Message-ID: <20251216111415.502628858@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit d53cd891f0e4311889349fff3a784dc552f814b9 ]
+[ Upstream commit bb705a606734e1ce0ff17a4f368a896757ba686d ]
 
-Otherwise, it could cause potential kernel stack overflow (e.g., EROFS
-mounting itself).
+Fix several fields in mt7996_mcu_bss_basic_tlv() that were not obtained
+from the correct link. Without this patch, the MLD station interface
+does not function properly.
 
-Reviewed-by: Sheng Yong <shengyong1@xiaomi.com>
-Fixes: fb176750266a ("erofs: add file-backed mount support")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: 34a41bfbcb71 ("wifi: mt76: mt7996: prepare mt7996_mcu_add_dev/bss_info for MLO support")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251106064203.1000505-5-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index edac533a389cb..32336e7c1d9b6 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -632,6 +632,22 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 9af3c48707ab7..21be88e76c655 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1034,7 +1034,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	struct mt76_connac_bss_basic_tlv *bss;
+ 	u32 type = CONNECTION_INFRA_AP;
+ 	u16 sta_wlan_idx = wlan_idx;
+-	struct ieee80211_sta *sta;
+ 	struct tlv *tlv;
+ 	int idx;
  
- 	sbi->blkszbits = PAGE_SHIFT;
- 	if (!sb->s_bdev) {
-+		/*
-+		 * (File-backed mounts) EROFS claims it's safe to nest other
-+		 * fs contexts (including its own) due to self-controlled RO
-+		 * accesses/contexts and no side-effect changes that need to
-+		 * context save & restore so it can reuse the current thread
-+		 * context.  However, it still needs to bump `s_stack_depth` to
-+		 * avoid kernel stack overflow from nested filesystems.
-+		 */
-+		if (erofs_is_fileio_mode(sbi)) {
-+			sb->s_stack_depth =
-+				file_inode(sbi->dif0.file)->i_sb->s_stack_depth + 1;
-+			if (sb->s_stack_depth > FILESYSTEM_MAX_STACK_DEPTH) {
-+				erofs_err(sb, "maximum fs stacking depth exceeded");
-+				return -ENOTBLK;
-+			}
-+		}
- 		sb->s_blocksize = PAGE_SIZE;
- 		sb->s_blocksize_bits = PAGE_SHIFT;
+@@ -1045,14 +1044,18 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+ 		if (enable) {
++			struct ieee80211_sta *sta;
++
+ 			rcu_read_lock();
+-			sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+-			/* TODO: enable BSS_INFO_UAPSD & BSS_INFO_PM */
++			sta = ieee80211_find_sta(vif, link_conf->bssid);
+ 			if (sta) {
+-				struct mt76_wcid *wcid;
++				struct mt7996_sta *msta = (void *)sta->drv_priv;
++				struct mt7996_sta_link *msta_link;
++				int link_id = link_conf->link_id;
  
+-				wcid = (struct mt76_wcid *)sta->drv_priv;
+-				sta_wlan_idx = wcid->idx;
++				msta_link = rcu_dereference(msta->link[link_id]);
++				if (msta_link)
++					sta_wlan_idx = msta_link->wcid.idx;
+ 			}
+ 			rcu_read_unlock();
+ 		}
+@@ -1069,8 +1072,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_BASIC, sizeof(*bss));
+ 
+ 	bss = (struct mt76_connac_bss_basic_tlv *)tlv;
+-	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
+-	bss->dtim_period = link_conf->dtim_period;
+ 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
+ 	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
+ 	bss->conn_type = cpu_to_le32(type);
+@@ -1090,10 +1091,10 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 
+ 	memcpy(bss->bssid, link_conf->bssid, ETH_ALEN);
+ 	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
+-	bss->dtim_period = vif->bss_conf.dtim_period;
++	bss->dtim_period = link_conf->dtim_period;
+ 	bss->phymode = mt76_connac_get_phy_mode(phy, vif,
+ 						chandef->chan->band, NULL);
+-	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, &vif->bss_conf,
++	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, link_conf,
+ 							chandef->chan->band);
+ 
+ 	return 0;
 -- 
 2.51.0
 
