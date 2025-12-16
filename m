@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-202320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D47CC2F9B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:54:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D572CC2292
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D573315A300
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A993A304EB5F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B430A34253D;
-	Tue, 16 Dec 2025 12:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7823D3396F3;
+	Tue, 16 Dec 2025 11:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTxrY/gC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s94pXcmd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D76933A00F;
-	Tue, 16 Dec 2025 12:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA943233EE;
+	Tue, 16 Dec 2025 11:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887520; cv=none; b=YwxotNeH4gZ4r8UNizP4j76/BIQ3ztvxKOFH3QveKTX6MsBkHWpqdzkDo3fJW61Gv7DZXhnklhJ4eLSyfTQQK+4hf1SWuAvM07UjFuF7aWfPyTlFDJZmAoQqUBNrRjubycQFaAEvN2ybv2TSA4Ma4+wPLUYa7O7eOPzrfSBwphg=
+	t=1765883982; cv=none; b=gZrXwnu7NT+gni67sNY3Ls/lWfOv0PiqbIufXa5RyuHKQPILL4Gd2oIqo05siodfcqrKK+e3EucRf+1S+2Jybu+veiIEGLF3XTnYESWL1wu74BMJtwMBAuoc/zfafJb6I2NUcS7HRvd7Mx4qblp15ErIIN34vPNCylY5up4LVmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887520; c=relaxed/simple;
-	bh=cgvGWMorD5UoWkPBNwQrZDPuYmK3Au6mbL5D69b/BKI=;
+	s=arc-20240116; t=1765883982; c=relaxed/simple;
+	bh=SaPs8BsPlIsJ6bBiYLb3Dix3cdHTeaVcyvLSKocgUJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T88Shn2qtlQDJk63LEXCMfIFrfVEIehFd/pWH2q4EBAj3pMyQzHi4AqhuU0Kkn3MUYZadsma1LLrzXdqCUkRntQJQzHmJpEW/ygJx7ZIeWQ5EQnkM8Ed7zLp+BvDtEiButLVZ3IB+cXsPNMkHc5QYCiYO5tMQjE9tL2fS3wpVCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTxrY/gC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABB5C4CEF1;
-	Tue, 16 Dec 2025 12:18:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QFbmpHdjgwg3HPcXOiWbvw2n6qpCOLta9ov2wOA8nwmmQSXeovxxU2z7DTQhbv8XG4eBt3hCFD9x6PzDxnd6nt+bN1/OAACfG/OrujXaO/zMOIcLNv3IqmSqt4oNfv0SWkzycurSqbhhHzKXKkEW1mctKJqA9M50YbjGnZORECo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s94pXcmd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C99C4CEF1;
+	Tue, 16 Dec 2025 11:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887520;
-	bh=cgvGWMorD5UoWkPBNwQrZDPuYmK3Au6mbL5D69b/BKI=;
+	s=korg; t=1765883982;
+	bh=SaPs8BsPlIsJ6bBiYLb3Dix3cdHTeaVcyvLSKocgUJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTxrY/gCLRNB7n2b64ijUmAkFTwZjmNhNXrq6V8N9Sfb/A9Qvhr/eYryWer3HqAsz
-	 H8PJJgmqxF8QUWXWaHk9UIrar3L/NZhZy1iANv1GtrX5D4IDIx4uy59f6D1QcPiowk
-	 3CEbbdIuoC5DKGuHDBS8PX3D1QFMNdBTzRXcB7qs=
+	b=s94pXcmdaN/Jfb4li7HDnrYm0+JLaq/weSYCpLbUTPpZ51kzF8hMSbGwiRgbeIlhD
+	 vsh3nZrzCQhxFNjjX6dRk9CayrfLtIN2kI9EwQYS/9HtE6C/zbETusxtTSXiQ/k/CK
+	 t/XAsnLnJDZiJnZX1afn+AnxpdUXW8TjQ0wh8ZX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	Yeoreun Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 256/614] coresight: etm4x: Add context synchronization before enabling trace
+Subject: [PATCH 6.12 056/354] PCI: rcar-gen2: Drop ARM dependency from PCI_RCAR_GEN2
 Date: Tue, 16 Dec 2025 12:10:23 +0100
-Message-ID: <20251216111410.649185513@linuxfoundation.org>
+Message-ID: <20251216111322.948245084@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
+[ Upstream commit d312742f686582e6457070bcfd24bee8acfdf213 ]
 
-According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
-Context synchronization event is required before enabling the trace
-unit.
+Since the reliance on ARM-specific struct pci_sys_data was removed, this
+driver can be compile-tested on other architectures.
 
-An ISB is added to meet this requirement, particularly for guarding the
-operations in the flow:
+While at it, make the help text a bit more generic, as some members of
+the R-Car Gen2 family have a different number of internal PCI
+controllers.
 
-  etm4x_allow_trace()
-   `> kvm_tracing_set_el1_configuration()
-	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
-
-Improved the barrier comments to provide more accurate information.
-
-Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
+Fixes: 4a957563fe0231e0 ("PCI: rcar-gen2: Convert to use modern host bridge probe functions")
+Suggested-by: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: add rcar-gen2 to subject]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/00f75d6732eacce93f04ffaeedc415d2db714cd6.1759480426.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/pci/controller/Kconfig | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index c562f82985192..5e707d082537a 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -446,10 +446,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
+diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
+index 9800b76810540..481acb03af80d 100644
+--- a/drivers/pci/controller/Kconfig
++++ b/drivers/pci/controller/Kconfig
+@@ -249,12 +249,11 @@ config PCIE_RCAR_EP
  
- 	etm4x_allow_trace(drvdata);
-+
-+	/*
-+	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee the trace unit
-+	 * will observe the new values of the System registers.
-+	 */
-+	if (!csa->io_mem)
-+		isb();
-+
- 	/* Enable the trace unit */
- 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+ config PCI_RCAR_GEN2
+ 	bool "Renesas R-Car Gen2 Internal PCI controller"
+-	depends on ARCH_RENESAS || COMPILE_TEST
+-	depends on ARM
++	depends on (ARCH_RENESAS && ARM) || COMPILE_TEST
+ 	help
+ 	  Say Y here if you want internal PCI support on R-Car Gen2 SoC.
+-	  There are 3 internal PCI controllers available with a single
+-	  built-in EHCI/OHCI host controller present on each one.
++	  Each internal PCI controller contains a single built-in EHCI/OHCI
++	  host controller.
  
--	/* Synchronize the register updates for sysreg access */
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using system
-+	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-+	 * self-hosted trace analyzer must perform a Context synchronization
-+	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-+	 */
- 	if (!csa->io_mem)
- 		isb();
- 
-@@ -931,11 +945,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
- 	 */
- 	etm4x_prohibit_trace(drvdata);
- 	/*
--	 * Make sure everything completes before disabling, as recommended
--	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
--	 * SSTATUS") of ARM IHI 0064D
-+	 * Prevent being speculative at the point of disabling the trace unit,
-+	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
-+	 * Register, SSTATUS") of ARM IHI 0064D
- 	 */
- 	dsb(sy);
-+	/*
-+	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee no new
-+	 * program-flow trace is generated.
-+	 */
- 	isb();
- 	/* Trace synchronization barrier, is a nop if not supported */
- 	tsb_csync();
+ config PCIE_ROCKCHIP
+ 	bool
 -- 
 2.51.0
 
