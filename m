@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E5FCC27B8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03098CC238B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B71E3004B96
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 905D5305AE50
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BBE35502B;
-	Tue, 16 Dec 2025 11:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BC034214A;
+	Tue, 16 Dec 2025 11:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzjbCnAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/B11Dzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03207355026;
-	Tue, 16 Dec 2025 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E97C32BF22;
+	Tue, 16 Dec 2025 11:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885889; cv=none; b=jkRzHJ2AJk2aWkNfnmdVa9+C8ZSkVoHws6V2vb3HnF8DaFTTayoQnipXYKkuV31r1PanRQEXLoKQSVUIUmGd3K6k3Pk2eNCqat5cHr/b1CPkXfP/l3OR04Wjmq6xWtWE6wcXEXVJXnmAW1c7Esk/cOwfnJ4jz5rj2F0qCj/TL1c=
+	t=1765884283; cv=none; b=pKLbH+6TzGSKCdJ91/LpR3y4gcBaOxa/tWajsM+I8x0HLNAYALayK6pxquPr5UAapyYEg+KHUXjbqv3jwSnPwhTgV7tuvY/B/tzc5nUDo9olcALFgtcTm/6VZKqaGZ7pdN+zYVGZPfslC5mM811B1/Sqx2eP/1uQnAhLss6XPR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885889; c=relaxed/simple;
-	bh=qywL7X4re66m47s5aoqhFSEwehv4B49cRPEDd5okgAM=;
+	s=arc-20240116; t=1765884283; c=relaxed/simple;
+	bh=dGIdtyvNWK8nXJKHlj4EqnLCJGPc2JJzxJfWUt7u2vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mu2Bw6qqrHmxkkhzZ4dYCrNoibQ3XIXjHjenfWJgf7IfyUGV7Ns0M8uQtR/w83mZnqY5cwlcdvealUWOpISfX1i45cXxbHvonBWffkIAonP1Ybjo4OW6vdHLafJJrh22lJv8vnQ+708o/W1cBIGgwHHrxd3xlnUnIQKq32bjVds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzjbCnAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED0DC4CEF1;
-	Tue, 16 Dec 2025 11:51:28 +0000 (UTC)
+	 MIME-Version; b=VwOhYwqYyUbhiwb+ZYsP8RBZK3Jljqg8Cvl5DOllYkhjKzgaGVX5NSl03SvI8QeJ3N49VWAxpW93i/51MyJv8XbFz6NjDtvGH0ekrrX2iBJ1Smw5DCGTo7fFWYRFAjC6Ri1pC2kOBPLj1G1JkmfyLfXI1WIi8OJO0NW87hKyE6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/B11Dzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911A4C4CEF1;
+	Tue, 16 Dec 2025 11:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885888;
-	bh=qywL7X4re66m47s5aoqhFSEwehv4B49cRPEDd5okgAM=;
+	s=korg; t=1765884283;
+	bh=dGIdtyvNWK8nXJKHlj4EqnLCJGPc2JJzxJfWUt7u2vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzjbCnAaYdk4t9kZbZqr3Mzy8OxL1D2aGwzLK6EGBIl+M5ZMNk9+tNy48k+P2dUT4
-	 8pLHxVSY1wTDyLfARp6dgMeejjIyf3uhu5K95Hw+dFaP33F/yNCD39+Sjkkb93Zvm5
-	 WTx5xO2vCYgFUT06Esvd75zSdmAc/AaqawMWzgSc=
+	b=I/B11DzgflQ54LZ6EvvZJ4bogiXOJ6p1XwnA8I4wL5vnN6m5Ca0SjET6ocAexKpFL
+	 W84Un/XRDNnPoYtBccYVlozc88it2v/Pc0D6zis5WADCpo8VJisXhNCnx+ujnXe6Rj
+	 gPPdnYx3i96+yjZJf5FOoMpXHT2GwwRjCr4kS6A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 273/507] drm/msm/a6xx: Fix the gemnoc workaround
+Subject: [PATCH 6.12 147/354] coresight: etm4x: Extract the trace unit controlling
 Date: Tue, 16 Dec 2025 12:11:54 +0100
-Message-ID: <20251216111355.374037753@linuxfoundation.org>
+Message-ID: <20251216111326.241525116@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit ff7a6de043fce21ea5891311746b16121b385c59 ]
+[ Upstream commit 40f682ae5086366d51e29e66eb8a344501245d0d ]
 
-Correct the register offset and enable this workaround for all A7x
-and newer GPUs to match the recommendation. Also, downstream does this
-w/a after moving the fence to allow mode. So do the same.
+The trace unit is controlled in the ETM hardware enabling and disabling.
+The sequential changes for support AUX pause and resume will reuse the
+same operations.
 
-Fixes: dbfbb376b50c ("drm/msm/a6xx: Add A621 support")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688997/
-Message-ID: <20251118-kaana-gpu-support-v4-3-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Extract the operations in the etm4_{enable|disable}_trace_unit()
+functions.  A minor improvement in etm4_enable_trace_unit() is for
+returning the timeout error to callers.
+
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250401180708.385396-2-leo.yan@arm.com
+Stable-dep-of: 64eb04ae5452 ("coresight: etm4x: Add context synchronization before enabling trace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 103 +++++++++++-------
+ 1 file changed, 62 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index ee82489025c3c..bc7e111c46f96 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -471,8 +471,9 @@ static void a6xx_gemnoc_workaround(struct a6xx_gmu *gmu)
- 	 * in the power down sequence not being fully executed. That in turn can
- 	 * prevent CX_GDSC from collapsing. Assert Qactive to avoid this.
- 	 */
--	if (adreno_is_a621(adreno_gpu) || adreno_is_7c3(adreno_gpu))
--		gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, BIT(0));
-+	if (adreno_is_a7xx(adreno_gpu) || (adreno_is_a621(adreno_gpu) ||
-+				adreno_is_7c3(adreno_gpu)))
-+		gmu_write(gmu, REG_A6XX_GPU_GMU_CX_GMU_CX_FALNEXT_INTF, BIT(0));
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 9164e134814ae..853a170439608 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -422,6 +422,44 @@ static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
+ 	return coresight_timeout(csa, TRCSTATR, pos, val);
  }
  
- /* Let the GMU know that we are about to go into slumber */
-@@ -508,10 +509,9 @@ static int a6xx_gmu_notify_slumber(struct a6xx_gmu *gmu)
++static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
++{
++	struct coresight_device *csdev = drvdata->csdev;
++	struct device *etm_dev = &csdev->dev;
++	struct csdev_access *csa = &csdev->access;
++
++	/*
++	 * ETE mandates that the TRCRSR is written to before
++	 * enabling it.
++	 */
++	if (etm4x_is_ete(drvdata))
++		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
++
++	etm4x_allow_trace(drvdata);
++	/* Enable the trace unit */
++	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
++
++	/* Synchronize the register updates for sysreg access */
++	if (!csa->io_mem)
++		isb();
++
++	/* wait for TRCSTATR.IDLE to go back down to '0' */
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0)) {
++		dev_err(etm_dev,
++			"timeout while waiting for Idle Trace Status\n");
++		return -ETIME;
++	}
++
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using the
++	 * memory-mapped interface") of ARM IHI 0064D
++	 */
++	dsb(sy);
++	isb();
++
++	return 0;
++}
++
+ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ {
+ 	int i, rc;
+@@ -531,33 +569,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, trcpdcr | TRCPDCR_PU, TRCPDCR);
  	}
  
- out:
--	a6xx_gemnoc_workaround(gmu);
+-	/*
+-	 * ETE mandates that the TRCRSR is written to before
+-	 * enabling it.
+-	 */
+-	if (etm4x_is_ete(drvdata))
+-		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
 -
- 	/* Put fence into allow mode */
- 	gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
-+	a6xx_gemnoc_workaround(gmu);
+-	etm4x_allow_trace(drvdata);
+-	/* Enable the trace unit */
+-	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+-
+-	/* Synchronize the register updates for sysreg access */
+-	if (!csa->io_mem)
+-		isb();
+-
+-	/* wait for TRCSTATR.IDLE to go back down to '0' */
+-	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
+-		dev_err(etm_dev,
+-			"timeout while waiting for Idle Trace Status\n");
+-
+-	/*
+-	 * As recommended by section 4.3.7 ("Synchronization when using the
+-	 * memory-mapped interface") of ARM IHI 0064D
+-	 */
+-	dsb(sy);
+-	isb();
+-
++	rc = etm4_enable_trace_unit(drvdata);
+ done:
+ 	etm4_cs_lock(drvdata, csa);
+ 
+@@ -889,25 +901,12 @@ static int etm4_enable(struct coresight_device *csdev, struct perf_event *event,
  	return ret;
  }
  
+-static void etm4_disable_hw(void *info)
++static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ {
+ 	u32 control;
+-	struct etmv4_drvdata *drvdata = info;
+-	struct etmv4_config *config = &drvdata->config;
+ 	struct coresight_device *csdev = drvdata->csdev;
+ 	struct device *etm_dev = &csdev->dev;
+ 	struct csdev_access *csa = &csdev->access;
+-	int i;
+-
+-	etm4_cs_unlock(drvdata, csa);
+-	etm4_disable_arch_specific(drvdata);
+-
+-	if (!drvdata->skip_power_up) {
+-		/* power can be removed from the trace unit now */
+-		control = etm4x_relaxed_read32(csa, TRCPDCR);
+-		control &= ~TRCPDCR_PU;
+-		etm4x_relaxed_write32(csa, control, TRCPDCR);
+-	}
+ 
+ 	control = etm4x_relaxed_read32(csa, TRCPRGCTLR);
+ 
+@@ -948,6 +947,28 @@ static void etm4_disable_hw(void *info)
+ 	 * of ARM IHI 0064H.b.
+ 	 */
+ 	isb();
++}
++
++static void etm4_disable_hw(void *info)
++{
++	u32 control;
++	struct etmv4_drvdata *drvdata = info;
++	struct etmv4_config *config = &drvdata->config;
++	struct coresight_device *csdev = drvdata->csdev;
++	struct csdev_access *csa = &csdev->access;
++	int i;
++
++	etm4_cs_unlock(drvdata, csa);
++	etm4_disable_arch_specific(drvdata);
++
++	if (!drvdata->skip_power_up) {
++		/* power can be removed from the trace unit now */
++		control = etm4x_relaxed_read32(csa, TRCPDCR);
++		control &= ~TRCPDCR_PU;
++		etm4x_relaxed_write32(csa, control, TRCPDCR);
++	}
++
++	etm4_disable_trace_unit(drvdata);
+ 
+ 	/* read the status of the single shot comparators */
+ 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
 -- 
 2.51.0
 
