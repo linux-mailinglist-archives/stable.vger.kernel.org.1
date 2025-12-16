@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE8FCC24C0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8BDCC2F71
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5A41302168F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EFEE325885D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBCF34321F;
-	Tue, 16 Dec 2025 11:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C7D3559EF;
+	Tue, 16 Dec 2025 12:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDLribe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDX+GgLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7957234253B;
-	Tue, 16 Dec 2025 11:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D374F355812;
+	Tue, 16 Dec 2025 12:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884879; cv=none; b=tjG+QtiD9pYHJcNzpRxKKXrzd6g+n4qq5/3Peg5+D6lm1+VfzGZWpqnPR3eqgej8og9/Hi9jOwVHimUqe/HP9pLFYSFvptg6tO2rhylJ4EOVRBb3S/VHaCaIUZ99ACOO8YXz40u9BqQfyTqbLeKNPvrAivPQfl4cX6j2hINfetg=
+	t=1765886498; cv=none; b=dUYvSij8yax/o3rWbGi08x18WVC1FwaZ3iY28KjL/knAd6F3s5alZr2AVBAaMmdXpJUd6ghMr6aGCENBpp9jf8QEvMog9azFVJXHuVEvThpzrXRTQEvYRF6dnIwHJdOh8aNYJ+VzEZyd+yk058dNsx5vXDrAzl8iyb1g8EYlNfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884879; c=relaxed/simple;
-	bh=14SMYHbR1enNPsOpkAYXzdGq5j3o+8wBcIueWZZE5V4=;
+	s=arc-20240116; t=1765886498; c=relaxed/simple;
+	bh=fpk2++iwsmHx35Gt2V1eLYpgwB3FWPw4odQ06ZDo9ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSlvWZXOZgiodA9Y4Vo+EfvENCaei+IeR8WbE3MjamgFK+ptFaoEvgbhD/mlENYUTYc5nqBWz9FhkLiNs1vRcn4EEM9x3xcmJh2JB7Gi+ijIowcIBy4uAe1UTbTro0COVbvhoXh4QgLx0qHIihgiIQCSoqKuuXAQrQyYaLXJem0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDLribe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E23C4CEF1;
-	Tue, 16 Dec 2025 11:34:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZecH66khjY0Xtqszt7a7bpkbbpdAFFa5UE1QoJCx3cg7nnWRLmlx5e7p0WdUGclZZjoZsVbP+M9xlMfwOZ3IwhoB+BHNR5LfmoZW5Kjt+TJJ7wZVfYj+D5kKoDmoPhcr5dTjBLbl6jbbygaP7gWHXpIuoo4zayQVpQm8SnL3uhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDX+GgLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430D1C4CEF1;
+	Tue, 16 Dec 2025 12:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884879;
-	bh=14SMYHbR1enNPsOpkAYXzdGq5j3o+8wBcIueWZZE5V4=;
+	s=korg; t=1765886498;
+	bh=fpk2++iwsmHx35Gt2V1eLYpgwB3FWPw4odQ06ZDo9ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDLribe0AnZLJZnggoJh7vTACfB4df6FUREDrYSSz/1v22rxqggw9YlRD0p8l73VL
-	 WIFTL/wHGZOnzbYtuVlStYRp0VQfb0XZ/AHrKI50XivCMAXN9Q9CSCaqn4vCbT+CRf
-	 ypNMpDG8Gi1N093HOhAT9sFzpLFW29PSAOzkUbho=
+	b=qDX+GgLIj4+BDuuIt/GFzeuKNZ8fVa/o6mB/RKexGI0k2yn2rSfUeu8MRLG2ciNEK
+	 FoR04TCuG1AEK0aEkSozFe6cfQqGC5yQsidMwlpq9/baXHP98M/Ffefr/L4EQVUQbW
+	 NyB8XDZ05Trh16J6dQ9RUAsHuWiBk4llTQ+v0x+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhur Kumar <madhurkumar004@gmail.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/354] drm/nouveau: refactor deprecated strcpy
+Subject: [PATCH 6.17 453/507] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
 Date: Tue, 16 Dec 2025 12:14:54 +0100
-Message-ID: <20251216111332.756552169@linuxfoundation.org>
+Message-ID: <20251216111401.861746041@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhur Kumar <madhurkumar004@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 2bdc2c0e12fac56e41ec05fb771ead986ea6dac0 ]
+[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
 
-strcpy() has been deprecated because it performs no bounds checking on the
-destination buffer, which can lead to buffer overflows. Use the safer
-strscpy() instead.
+After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
+the return values of utf8_to_utf32() and utf32_to_utf8() are
+inconsistent when encountering an error: utf8_to_utf32() returns -1,
+while utf32_to_utf8() returns errno codes. Fix this inconsistency
+by modifying utf8_to_utf32() to return errno codes as well.
 
-Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Fixes: 15a996bbb697 ("drm/nouveau: assign fence_chan->name correctly")
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251204120822.17502-1-madhurkumar004@gmail.com
+Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nls/nls_base.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c b/drivers/gpu/drm/nouveau/nouveau_fence.c
-index edddfc036c6d1..65b7974defa10 100644
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -197,11 +197,11 @@ nouveau_fence_context_new(struct nouveau_channel *chan, struct nouveau_fence_cha
- 	fctx->context = drm->runl[chan->runlist].context_base + chan->chid;
+diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
+index d434c4463a8f7..a5c3a9f1b8dc5 100644
+--- a/fs/nls/nls_base.c
++++ b/fs/nls/nls_base.c
+@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
+ 			l &= t->lmask;
+ 			if (l < t->lval || l > UNICODE_MAX ||
+ 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
+-				return -1;
++				return -EILSEQ;
++
+ 			*pu = (unicode_t) l;
+ 			return nc;
+ 		}
+ 		if (inlen <= nc)
+-			return -1;
++			return -EOVERFLOW;
++
+ 		s++;
+ 		c = (*s ^ 0x80) & 0xFF;
+ 		if (c & 0xC0)
+-			return -1;
++			return -EILSEQ;
++
+ 		l = (l << 6) | c;
+ 	}
+-	return -1;
++	return -EILSEQ;
+ }
+ EXPORT_SYMBOL(utf8_to_utf32);
  
- 	if (chan == drm->cechan)
--		strcpy(fctx->name, "copy engine channel");
-+		strscpy(fctx->name, "copy engine channel");
- 	else if (chan == drm->channel)
--		strcpy(fctx->name, "generic kernel channel");
-+		strscpy(fctx->name, "generic kernel channel");
- 	else
--		strcpy(fctx->name, cli->name);
-+		strscpy(fctx->name, cli->name);
- 
- 	kref_init(&fctx->fence_ref);
- 	if (!priv->uevent)
 -- 
 2.51.0
 
