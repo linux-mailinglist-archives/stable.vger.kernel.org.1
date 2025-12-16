@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7744CCC230D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C755BCC3DFD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96AD3309798D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D8E22302C44A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87F8341AC7;
-	Tue, 16 Dec 2025 11:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B99A34A3D6;
+	Tue, 16 Dec 2025 12:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9p1b72N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAxUgtgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B7D33DEE1;
-	Tue, 16 Dec 2025 11:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9C3346E7B;
+	Tue, 16 Dec 2025 12:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884082; cv=none; b=MF1Nuhaei85/2bTmBXAZSn3mQCgiKIOyqK3B4JnfMnPpcXjh5R5tamuR+yqCjiu4q+G8cLQeffot3ZnLe94ZA3KqChfGYEvg7ww2r5OtMA8fbbpgpCMpBil1UahRpXYc1WdjaTvVgdAEKmPCxyd7A5WhC3ItUCqzQ8BnrPkQWUE=
+	t=1765887622; cv=none; b=HLHe1vKRh8kDK68L7hs8AhJU9WRsiUbQt71bGAkd57WHlTo1jN+zc+zeKrxlmuHQsj8Mhd7JJFJh06BKcsDF6aab+Q7yCGi87IJ2qWmDNBJh/p/Mon+Iyg+p+0zMXyEyOJrakWnsskGJ0lb4vHEdK7F5ftOcQo67LkVVFSBcVHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884082; c=relaxed/simple;
-	bh=TJyO+OLAiOghV76ABAHA9XlkxXT95XBmc5DnkGW9ZXQ=;
+	s=arc-20240116; t=1765887622; c=relaxed/simple;
+	bh=xno/SCRKm25WvnYPB8P7lLm3ZDqKHezviUzmYXSPojs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfHUSzAne3lQ3173TQ01I773a+wnGaySX+esXp168SVbKBRGftSZ1wKTOMtoipWgff0X9fincK34gs/q1D2iknJuncvvsLvrO2LI/AyxUyg0LzQHpK06wNqSgmwepbnGiPUn2YY+MpwAgVJWa98aE+okL+422FIRZ/g3/XviDvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9p1b72N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026F4C4CEF1;
-	Tue, 16 Dec 2025 11:21:21 +0000 (UTC)
+	 MIME-Version; b=kzd6KrQnpeHu2cQNwXunnASAS+1fjiMwCVnFeVoVByZ2TfScoTfpg6QYvd70Zb5ZNOFWgUGvHv38wFSKjE/W6n2NF28IkQddWQch6pT9nq9XgiI32L61p1p5Cl63aXBDrjR3bOQNOKWMy8n0b/4uCJh2+JTcXBrZsqDjVmIgjik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAxUgtgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E7BC4CEF5;
+	Tue, 16 Dec 2025 12:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884082;
-	bh=TJyO+OLAiOghV76ABAHA9XlkxXT95XBmc5DnkGW9ZXQ=;
+	s=korg; t=1765887622;
+	bh=xno/SCRKm25WvnYPB8P7lLm3ZDqKHezviUzmYXSPojs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9p1b72Ns4tQX4/beplGo0bREoCbDlQQI0LFVFKHF8zh5d+NHAyRmbCdGNrt1tyik
-	 RT3ky/HJIS4Ho4JkYehvZaJYDabgfcuemDW36zwXESERUg5ldSdLIJ1mg/Ta2CtcHm
-	 86PEZUhK0Zb67xBOX5atiH7lN2n2HRo8J6I6CsDo=
+	b=QAxUgtgfZKNAor6Y78KqOQUiyCPQ1NBloePfJINAMjU7tm68Q2dD0gErH1aF1/pj5
+	 do6bBjZqBM9vZRAw87o/3kawLd46O3T2UFHnGQDuyO7ReZgclAMMR8KOa3V0raUQFf
+	 /I7ggyktJfiUMjHn0OS/+dAzDnVKRrJSMD+V1TK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Song Liu <song@kernel.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/354] bpf: Fix stackmap overflow check in __bpf_get_stackid()
-Date: Tue, 16 Dec 2025 12:10:54 +0100
-Message-ID: <20251216111324.075288958@linuxfoundation.org>
+Subject: [PATCH 6.18 288/614] soc/tegra: fuse: speedo-tegra210: Update speedo IDs
+Date: Tue, 16 Dec 2025 12:10:55 +0100
+Message-ID: <20251216111411.805389798@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 23f852daa4bab4d579110e034e4d513f7d490846 ]
+[ Upstream commit ce27c9c2129679551c4e5fe71c1c5d42fff399c2 ]
 
-Syzkaller reported a KASAN slab-out-of-bounds write in __bpf_get_stackid()
-when copying stack trace data. The issue occurs when the perf trace
- contains more stack entries than the stack map bucket can hold,
- leading to an out-of-bounds write in the bucket's data array.
+Existing code only sets CPU and GPU speedo IDs 0 and 1. The CPU DVFS
+code supports 11 IDs and nouveau supports 5. This aligns with what the
+downstream vendor kernel supports. Align SKUs with the downstream list.
 
-Fixes: ee2a098851bf ("bpf: Adjust BPF stack helper functions to accommodate skip > 0")
-Reported-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/bpf/20251025192941.1500-1-contact@arnaud-lcm.com
+The Tegra210 CVB tables were added in the first referenced fixes commit.
+Since then, all Tegra210 SoCs have tried to scale to 1.9 GHz, when the
+supported devkits are only supposed to scale to 1.5 or 1.7 GHZ.
+Overclocking should not be the default state.
 
-Closes: https://syzkaller.appspot.com/bug?extid=c9b724fbb41cf2538b7b
+Fixes: 2b2dbc2f94e5 ("clk: tegra: dfll: add CVB tables for Tegra210")
+Fixes: 579db6e5d9b8 ("arm64: tegra: Enable DFLL support on Jetson Nano")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/stackmap.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/soc/tegra/fuse/speedo-tegra210.c | 62 ++++++++++++++++--------
+ 1 file changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index d6027bac61c35..4abb01f281fe4 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -251,8 +251,8 @@ static long __bpf_get_stackid(struct bpf_map *map,
- {
- 	struct bpf_stack_map *smap = container_of(map, struct bpf_stack_map, map);
- 	struct stack_map_bucket *bucket, *new_bucket, *old_bucket;
-+	u32 hash, id, trace_nr, trace_len, i, max_depth;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
--	u32 hash, id, trace_nr, trace_len, i;
- 	bool user = flags & BPF_F_USER_STACK;
- 	u64 *ips;
- 	bool hash_matches;
-@@ -261,7 +261,8 @@ static long __bpf_get_stackid(struct bpf_map *map,
- 		/* skipping more than usable stack trace */
- 		return -EFAULT;
+diff --git a/drivers/soc/tegra/fuse/speedo-tegra210.c b/drivers/soc/tegra/fuse/speedo-tegra210.c
+index 695d0b7f9a8ab..a8cc363297723 100644
+--- a/drivers/soc/tegra/fuse/speedo-tegra210.c
++++ b/drivers/soc/tegra/fuse/speedo-tegra210.c
+@@ -65,27 +65,51 @@ static void __init rev_sku_to_speedo_ids(struct tegra_sku_info *sku_info,
+ 	sku_info->gpu_speedo_id = 0;
+ 	*threshold = THRESHOLD_INDEX_0;
  
--	trace_nr = trace->nr - skip;
-+	max_depth = stack_map_calculate_max_depth(map->value_size, stack_map_data_size(map), flags);
-+	trace_nr = min_t(u32, trace->nr - skip, max_depth - skip);
- 	trace_len = trace_nr * sizeof(u64);
- 	ips = trace->ip + skip;
- 	hash = jhash2((u32 *)ips, trace_len / sizeof(u32), 0);
-@@ -390,15 +391,11 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
- 		return -EFAULT;
- 
- 	nr_kernel = count_kernel_ip(trace);
-+	__u64 nr = trace->nr; /* save original */
- 
- 	if (kernel) {
--		__u64 nr = trace->nr;
+-	switch (sku) {
+-	case 0x00: /* Engineering SKU */
+-	case 0x01: /* Engineering SKU */
+-	case 0x07:
+-	case 0x17:
+-	case 0x27:
+-		if (speedo_rev >= 2)
++	if (sku_info->revision >= TEGRA_REVISION_A02) {
++		switch (sku) {
++		case 0x00: /* Engineering SKU */
++		case 0x01: /* Engineering SKU */
++		case 0x13:
++			sku_info->cpu_speedo_id = 5;
++			sku_info->gpu_speedo_id = 2;
++			break;
++
++		case 0x07:
++		case 0x17:
++		case 0x1F:
++			sku_info->cpu_speedo_id = 7;
++			sku_info->gpu_speedo_id = 2;
++			break;
++
++		case 0x27:
++			sku_info->cpu_speedo_id = 1;
++			sku_info->gpu_speedo_id = 2;
++			break;
++
++		case 0x83:
++			sku_info->cpu_speedo_id = 3;
++			sku_info->gpu_speedo_id = 3;
++			break;
++
++		case 0x87:
++			sku_info->cpu_speedo_id = 2;
+ 			sku_info->gpu_speedo_id = 1;
+-		break;
 -
- 		trace->nr = nr_kernel;
- 		ret = __bpf_get_stackid(map, trace, flags);
+-	case 0x13:
+-		if (speedo_rev >= 2)
+-			sku_info->gpu_speedo_id = 1;
 -
--		/* restore nr */
--		trace->nr = nr;
- 	} else { /* user */
- 		u64 skip = flags & BPF_F_SKIP_FIELD_MASK;
- 
-@@ -409,6 +406,10 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
- 		flags = (flags & ~BPF_F_SKIP_FIELD_MASK) | skip;
- 		ret = __bpf_get_stackid(map, trace, flags);
+-		sku_info->cpu_speedo_id = 1;
+-		break;
+-
+-	default:
++			break;
++
++		case 0x8F:
++			sku_info->cpu_speedo_id = 9;
++			sku_info->gpu_speedo_id = 2;
++			break;
++
++		default:
++			pr_err("Tegra210: unknown revision 2 or newer SKU %#04x\n", sku);
++			/* Using the default for the error case */
++			break;
++		}
++	} else if (sku == 0x00 || sku == 0x01 || sku == 0x07 || sku == 0x13 || sku == 0x17) {
++		sku_info->gpu_speedo_id = 1;
++	} else {
+ 		pr_err("Tegra210: unknown SKU %#04x\n", sku);
+-		/* Using the default for the error case */
+-		break;
  	}
-+
-+	/* restore nr */
-+	trace->nr = nr;
-+
- 	return ret;
  }
  
 -- 
