@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-201979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0504DCC2F26
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16207CC2C3E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F29E323BAFC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3538A302E7D3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DE233A6EF;
-	Tue, 16 Dec 2025 12:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DC0397D09;
+	Tue, 16 Dec 2025 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv0eLGPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frvz05h/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5F62DAFB0;
-	Tue, 16 Dec 2025 12:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D27397D06;
+	Tue, 16 Dec 2025 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886425; cv=none; b=FPn1cWjT4sbpI5KgjKxWlgSvgFujA2nXTwTJhZ3Oln5rUOPGCqcinRoovjyslKY9re5uAXHBfpQN8tzGq1LnsPIpMaTbJjj+k76DPOA8LjL6YKpn/CrV7ckXzXxZQBIV34cet53pIDnVHemlBwAOfS+OoeNaEfRzraAFou4u5RY=
+	t=1765888344; cv=none; b=o/yOguOzNO0C7ZaEqcFU51m8F9AtQ5MkorGlclWcdfFxPMT3/T3dm6khhtLJafxLDj1Wm2sgqCK4CkGXShZ50U4nmVMuz578hjo/fxs6U8iz0eI+FuDhxLntcPkRytrJOrigmot49+frm/RjPQa4fG0Fiq8VnhzfDbv1fsg7kZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886425; c=relaxed/simple;
-	bh=tmliHKG+Atnpj1IfhKH/DnJUEk9m5F71Zs/wt0uiZGA=;
+	s=arc-20240116; t=1765888344; c=relaxed/simple;
+	bh=5CXCpobsb0CPotwCt/Ty9MwBVPiSJCy3PT2aIpVb1WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9KVFa72B/jvGVaaz5fiV+AjLxfc+EvNuXOGsIau0X/E/ujbANJMMl1SIb6PgFInyhXLkHMrI1GArNIbTtOdfSxSmHqXWwM8z/gEqPiaHeIMcIVDjEji3WIarxkmoaFQNZdaFUjlvRNE0QBkXDLHQPcvMu5mJoAwt8SiDDTOgtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv0eLGPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEA1C4CEF1;
-	Tue, 16 Dec 2025 12:00:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HsvP/ciwbTa5cQPSBGZMK7aG2NAYUpVCrJra6cDG1gUFptn/BBrtpVSjBTqO3Ui+D11kyzlsquSID+h9xVgSEZAUslvVdv6LxOpkMgXAbx972SNlz9gsLOUcEizj4/rpGo1yLtMRvEa4alHL4uWYYU4DdKxtlQbtMzKyqPkNg4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frvz05h/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D157FC4CEF1;
+	Tue, 16 Dec 2025 12:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886424;
-	bh=tmliHKG+Atnpj1IfhKH/DnJUEk9m5F71Zs/wt0uiZGA=;
+	s=korg; t=1765888344;
+	bh=5CXCpobsb0CPotwCt/Ty9MwBVPiSJCy3PT2aIpVb1WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zv0eLGPjNfTeGpCedaf2cqt5fr511Khf4T6Y5DUZVuT8UO44suoHIb7skZq5LXLLN
-	 N/8TwKl4BSa27qTgn2+FdhWNQwPs3wtt47BG2svwAkT/OCG8tf8qQqC2zyISyHsZYg
-	 V0BkjrC2J2lVNcTvsDies0svqYJdxGdi3nrASObo=
+	b=frvz05h/n0JOX3Xk4rmAinQS3aV+nUNiLFyGikRNWwH3XWODmN1q2LSh7xFS5PL3V
+	 TXRw6oaSJ867s12rEVPZchDdubDEoXjWM03hqQxpzwQ1NHYTxPd6kgD3cI0C2RQFys
+	 vJMpmjOHie5NAv+YAkLor9Fd/uCS3dcaH92NmV0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xupengbo <xupengbo@oppo.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 433/507] sched/fair: Fix unfairness caused by stalled tg_load_avg_contrib when the last task migrates out
+Subject: [PATCH 6.18 507/614] net: dsa: b53: fix extracting VID from entry for BCM5325/65
 Date: Tue, 16 Dec 2025 12:14:34 +0100
-Message-ID: <20251216111401.145992602@linuxfoundation.org>
+Message-ID: <20251216111419.740192939@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xupengbo <xupengbo@oppo.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit ca125231dd29fc0678dd3622e9cdea80a51dffe4 ]
+[ Upstream commit 9316012dd01952f75e37035360138ccc786ef727 ]
 
-When a task is migrated out, there is a probability that the tg->load_avg
-value will become abnormal. The reason is as follows:
+BCM5325/65's Entry register uses the highest three bits for
+VALID/STATIC/AGE, so shifting by 53 only will add these to
+b53_arl_entry::vid.
 
-1. Due to the 1ms update period limitation in update_tg_load_avg(), there
-   is a possibility that the reduced load_avg is not updated to tg->load_avg
-   when a task migrates out.
+So make sure to mask the vid value as well, to not get invalid VIDs.
 
-2. Even though __update_blocked_fair() traverses the leaf_cfs_rq_list and
-   calls update_tg_load_avg() for cfs_rqs that are not fully decayed, the key
-   function cfs_rq_is_decayed() does not check whether
-   cfs->tg_load_avg_contrib is null. Consequently, in some cases,
-   __update_blocked_fair() removes cfs_rqs whose avg.load_avg has not been
-   updated to tg->load_avg.
-
-Add a check of cfs_rq->tg_load_avg_contrib in cfs_rq_is_decayed(),
-which fixes the case (2.) mentioned above.
-
-Fixes: 1528c661c24b ("sched/fair: Ratelimit update to tg->load_avg")
-Signed-off-by: xupengbo <xupengbo@oppo.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Aaron Lu <ziqianlu@bytedance.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Aaron Lu <ziqianlu@bytedance.com>
-Link: https://patch.msgid.link/20250827022208.14487-1-xupengbo@oppo.com
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20251128080625.27181-3-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/b53/b53_priv.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 35b98cad06515..434df3fb6c443 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4062,6 +4062,9 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
- 	if (child_cfs_rq_on_list(cfs_rq))
- 		return false;
- 
-+	if (cfs_rq->tg_load_avg_contrib)
-+		return false;
-+
- 	return true;
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index 458775f951643..2f44b3b6a0d9f 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -338,7 +338,7 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
+ 	ent->is_age = !!(mac_vid & ARLTBL_AGE_25);
+ 	ent->is_static = !!(mac_vid & ARLTBL_STATIC_25);
+ 	u64_to_ether_addr(mac_vid, ent->mac);
+-	ent->vid = mac_vid >> ARLTBL_VID_S_65;
++	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
  }
  
+ static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
 -- 
 2.51.0
 
