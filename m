@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D528CC2B01
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E487CC280F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A7DD30231A6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55757308CFA7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6F0358D2F;
-	Tue, 16 Dec 2025 12:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD11535502D;
+	Tue, 16 Dec 2025 11:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6lezpMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9bPsiwQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058A1358D2E;
-	Tue, 16 Dec 2025 12:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A22D355029;
+	Tue, 16 Dec 2025 11:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887899; cv=none; b=qyFLHHQtAE0DK9Mndn9f0Mr1udTPcT7S0IQ4mnxIODw26bwTqLwTMZc/7eQ8UqluFVRzq/9m8L4UWMoXG4Aou/DhColT3i0gw4QtT1s0g0IO7/3YD2/ZjuanuJVJnVxi2wurko8tYYvwPK/HnrenFzuKwo/J8D8qSG01+SOhbPI=
+	t=1765885965; cv=none; b=WcT8vzPC8M8eo6iFILROGb4z/gtiTbWESRLw1wwxFE09TCRsQUCvnuJZL2y8RvbxzV2lPVbsn3SDrIXAWCKZahNpJB8U0ERmdPd1JI0hUJ5kS+KNw8QRUd+fZG4rSO32p11u7Od2/WZVryqF7cYmk9+dIX6Uiz/Dd9mrIhNYLRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887899; c=relaxed/simple;
-	bh=zDjAOryLjJGEpMvpBjOatdvCOEzzwm81QuJX7gCPGtk=;
+	s=arc-20240116; t=1765885965; c=relaxed/simple;
+	bh=ChMDFcXmvF0Jl2CrPKnAlgCg99M8ZxBpp2CFh6x7cMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7ekZiHgMvDpuVxvB9YInd/nIYpQDAjM/uEpFQGtjpFtFmDP34/po1JbefLzUGg7JfmrA5/qzGoV95akr7CEh/vN4ha6IP2N2/DGNAuEJ5T2cbzD+lHDQAfzHz97HJztFuXO2YJPlxuRbkXpWIFyyo+KEg9LA46i1Em0wK7RbgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6lezpMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6847EC4CEF1;
-	Tue, 16 Dec 2025 12:24:58 +0000 (UTC)
+	 MIME-Version; b=HgQrRD3yw2bOmq8Q/R2R6vTaMWM9feF11++vDbRlp0p4pEa39GE7Rp/9DX89dfN+gRMe2rXIaHYZPu6KVTt1Ax/C3hXi66smYE7ngLPWOXP+p5cdPytvmsztEq5Bpu2nT9QZdxhwJOsUjDEcT9yoVHkHPLg6sQFcT8Ki01Vhfe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9bPsiwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D97C4CEF1;
+	Tue, 16 Dec 2025 11:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887898;
-	bh=zDjAOryLjJGEpMvpBjOatdvCOEzzwm81QuJX7gCPGtk=;
+	s=korg; t=1765885965;
+	bh=ChMDFcXmvF0Jl2CrPKnAlgCg99M8ZxBpp2CFh6x7cMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6lezpMJuIIaNlHEcc6hctq1rCbEobwZNwQgnUi+u+N1YmnsFIRNsnr3W+NEPCMGb
-	 arRUtx3Tim8xwctcdpy2zWCjldfOwVZRuRXeCCeLn9G0zbFkUmXhKY2OAnufKwIxlv
-	 qKvgqqUcduJgKWkB/vtl7u6LGX6ordwzMrzcECeM=
+	b=f9bPsiwQuML+gxiNS5KHcSVpgDDQzBU+xC8fmdmbbh1yE5zxbgPCBhsGUQxKBeKL8
+	 L5OGhwaBy4aB9n3ynRfEEwsAHboNIP2MoW5I3TkNNujq4XFdGhvDqUj3t3wM7ca30G
+	 2TgA4EG3MQGkeS2pWiFJgF5ZB39DvOEsYf0ewrPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 371/614] crypto: starfive - Correctly handle return of sg_nents_for_len
+Subject: [PATCH 6.17 297/507] selftests/bpf: Use ASSERT_STRNEQ to factor in long slab cache names
 Date: Tue, 16 Dec 2025 12:12:18 +0100
-Message-ID: <20251216111414.803296000@linuxfoundation.org>
+Message-ID: <20251216111356.235070218@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit e9eb52037a529fbb307c290e9951a62dd728b03d ]
+[ Upstream commit d088da904223e8f5e19c6d156cf372d5baec1a7c ]
 
-The return value of sg_nents_for_len was assigned to an unsigned long
-in starfive_hash_digest, causing negative error codes to be converted
-to large positive integers.
+subtest_kmem_cache_iter_check_slabinfo() fundamentally compares slab
+cache names parsed out from /proc/slabinfo against those stored within
+struct kmem_cache_result. The current problem is that the slab cache
+name within struct kmem_cache_result is stored within a bounded
+fixed-length array (sized to SLAB_NAME_MAX(32)), whereas the name
+parsed out from /proc/slabinfo is not. Meaning, using ASSERT_STREQ()
+can certainly lead to test failures, particularly when dealing with
+slab cache names that are longer than SLAB_NAME_MAX(32)
+bytes. Notably, kmem_cache_create() allows callers to create slab
+caches with somewhat arbitrarily sized names via its __name identifier
+argument, so exceeding the SLAB_NAME_MAX(32) limit that is in place
+now can certainly happen.
 
-Add error checking for sg_nents_for_len and return immediately on
-failure to prevent potential buffer overflows.
+Make subtest_kmem_cache_iter_check_slabinfo() more reliable by only
+checking up to sizeof(struct kmem_cache_result.name) - 1 using
+ASSERT_STRNEQ().
 
-Fixes: 7883d1b28a2b ("crypto: starfive - Add hash and HMAC support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a496d0cdc84d ("selftests/bpf: Add a test for kmem_cache_iter")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://patch.msgid.link/20251118073734.4188710-1-mattbobrowski@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-hash.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-hash.c b/drivers/crypto/starfive/jh7110-hash.c
-index e6839c7bfb73a..54b7af4a7aee8 100644
---- a/drivers/crypto/starfive/jh7110-hash.c
-+++ b/drivers/crypto/starfive/jh7110-hash.c
-@@ -325,6 +325,7 @@ static int starfive_hash_digest(struct ahash_request *req)
- 	struct starfive_cryp_ctx *ctx = crypto_ahash_ctx(tfm);
- 	struct starfive_cryp_request_ctx *rctx = ahash_request_ctx(req);
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
-+	int sg_len;
+diff --git a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+index 1de14b111931a..6e35e13c20220 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+@@ -57,7 +57,8 @@ static void subtest_kmem_cache_iter_check_slabinfo(struct kmem_cache_iter *skel)
+ 		if (!ASSERT_OK(ret, "kmem_cache_lookup"))
+ 			break;
  
- 	memset(rctx, 0, sizeof(struct starfive_cryp_request_ctx));
+-		ASSERT_STREQ(r.name, name, "kmem_cache_name");
++		ASSERT_STRNEQ(r.name, name, sizeof(r.name) - 1,
++			      "kmem_cache_name");
+ 		ASSERT_EQ(r.obj_size, objsize, "kmem_cache_objsize");
  
-@@ -333,7 +334,10 @@ static int starfive_hash_digest(struct ahash_request *req)
- 	rctx->in_sg = req->src;
- 	rctx->blksize = crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
- 	rctx->digsize = crypto_ahash_digestsize(tfm);
--	rctx->in_sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
-+	sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
-+	if (sg_len < 0)
-+		return sg_len;
-+	rctx->in_sg_len = sg_len;
- 	ctx->rctx = rctx;
- 
- 	return crypto_transfer_hash_request_to_engine(cryp->engine, req);
+ 		seen++;
 -- 
 2.51.0
 
