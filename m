@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-202588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2D6CC3010
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDF9CC335A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE043232656
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BED0B30AD9E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2849E39A121;
-	Tue, 16 Dec 2025 12:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D24D34B1A3;
+	Tue, 16 Dec 2025 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUY/EWPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBd82h4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D898639A11E;
-	Tue, 16 Dec 2025 12:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C415C34AAEA;
+	Tue, 16 Dec 2025 11:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888384; cv=none; b=cW9FpYg4X4U4WYshtK5iH0M5FdQ03ptQNTsGT+rJlMfYqHTfW6nx1Xr7WpwAGkB5VEy/j/EVGDyZjF0Ox2Hwus6UL1IohNsUDxSFz0ByyfKuQ25eI6mI5xaSBbaG0W+WjF91nUK7V0bRthzI0Z4jM/3VOW9//Jd9/C9sPx/1R7c=
+	t=1765886375; cv=none; b=dKk3Q54lUyzQlLh8jv1rHhPDLr+kvE4YRyjLnZv7ZjB0/gffPj88LwSk5qnq87fY4FdEIRfbeRnFE16hVkLelAJ7A7dZSiIQL0Da/ZgOLL/tvAadAqkF8FTSwzI6v5Tw2WWE/wYxAjVNAMA+I4+CEe7K80J8sHXHneAxpsBoyYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888384; c=relaxed/simple;
-	bh=aWpiBfDJt7lAjbZMaXmjmlooq843iOb66p8zGGTc/aY=;
+	s=arc-20240116; t=1765886375; c=relaxed/simple;
+	bh=AKQZ2Q1gy+tfEayyqXsbO+sH5r8Wg8DAl78w3oJmJJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V1MWecfGKLWpeBhZB+yfZWuhHb0m/qLa/+0opi3xZnfshXq7oCvFaHNpv0IDySC0dSDUS666Po6me2g5LgGIdryQIjfev6YD16TrqVKLtdGHCWQ/2efypd6qaz3b+96nJ4ZQxCRs1yP0Yf9oFnbKTqxCI+/CS0OwbDQxXxtKSDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUY/EWPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D26C4CEF1;
-	Tue, 16 Dec 2025 12:33:03 +0000 (UTC)
+	 MIME-Version; b=bS/CWbnKDvMsfgntGXquCC0qRHTB+RvvXuqhetV9vRI7GSjjfcGwRCmDBbyKRk/5NHQX9pbaIG9KO1jSgaR/vjnYnwZmzBp9mGY/XlgMZAl/+A1NJVaEvG2mB4eKHRyXL/aix966iuMasYA0lsSBd0pzGIrPdYnMGU0L3ouC3sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBd82h4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A90C4CEF1;
+	Tue, 16 Dec 2025 11:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888384;
-	bh=aWpiBfDJt7lAjbZMaXmjmlooq843iOb66p8zGGTc/aY=;
+	s=korg; t=1765886375;
+	bh=AKQZ2Q1gy+tfEayyqXsbO+sH5r8Wg8DAl78w3oJmJJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUY/EWPwfafO9oZJVaUdPqjh37Etghkv+5b/O7VXvNdwp8wliYIqVxHf+EtSnPWA8
-	 /N5MbbRTB+8v+nBKhp3xWB9nI35eGulg/h5BTGl40nDhE6N5gGm60SPxkXSRZ5RNMy
-	 Al+o3fDZvem5zuOcwOaIIZW5LRej2htc+3o4MfG4=
+	b=mBd82h4JB9lA/oU5kkKAJGiHg9N9NVYa+bvAGSvZbgbhqLb3wv1r3xQ9CU5FH4A2m
+	 2wEWjkf5wpDkQ/EJcO4XlGkAzEZqE3KQ6mR2/MsYJPm10x5NKLtktxxupjgi3xB4LC
+	 64k/yDV2/k1pJnlnxl4ecNlC3bN5zzjbmFkP01gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Song Liu <song@kernel.org>,
-	Tingmao Wang <m@maowtm.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 491/614] landlock: Fix handling of disconnected directories
+Subject: [PATCH 6.17 417/507] net: dsa: b53: add support for 5389/5397/5398 ARL entry format
 Date: Tue, 16 Dec 2025 12:14:18 +0100
-Message-ID: <20251216111419.159564506@linuxfoundation.org>
+Message-ID: <20251216111400.568892402@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,173 +59,239 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
+[ Upstream commit 300f78e8b6b7be17c2c78afeded75be68acb1aa7 ]
 
-Disconnected files or directories can appear when they are visible and
-opened from a bind mount, but have been renamed or moved from the source
-of the bind mount in a way that makes them inaccessible from the mount
-point (i.e. out of scope).
+BCM5389, BCM5397 and BCM5398 use a different ARL entry format with just
+a 16 bit fwdentry register, as well as different search control and data
+offsets.
 
-Previously, access rights tied to files or directories opened through a
-disconnected directory were collected by walking the related hierarchy
-down to the root of the filesystem, without taking into account the
-mount point because it couldn't be found. This could lead to
-inconsistent access results, potential access right widening, and
-hard-to-debug renames, especially since such paths cannot be printed.
+So add appropriate ops for them and switch those chips to use them.
 
-For a sandboxed task to create a disconnected directory, it needs to
-have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
-the underlying source of the bind mount, and read access to the related
-mount point.   Because a sandboxed task cannot acquire more access
-rights than those defined by its Landlock domain, this could lead to
-inconsistent access rights due to missing permissions that should be
-inherited from the mount point hierarchy, while inheriting permissions
-from the filesystem hierarchy hidden by this mount point instead.
-
-Landlock now handles files and directories opened from disconnected
-directories by taking into account the filesystem hierarchy when the
-mount point is not found in the hierarchy walk, and also always taking
-into account the mount point from which these disconnected directories
-were opened.  This ensures that a rename is not allowed if it would
-widen access rights [1].
-
-The rationale is that, even if disconnected hierarchies might not be
-visible or accessible to a sandboxed task, relying on the collected
-access rights from them improves the guarantee that access rights will
-not be widened during a rename because of the access right comparison
-between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
-It may look like this would grant more access on disconnected files and
-directories, but the security policies are always enforced for all the
-evaluated hierarchies.  This new behavior should be less surprising to
-users and safer from an access control perspective.
-
-Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
-fix the related comment.
-
-Because opened files have their access rights stored in the related file
-security properties, there is no impact for disconnected or unlinked
-files.
-
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Song Liu <song@kernel.org>
-Reported-by: Tingmao Wang <m@maowtm.org>
-Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
-Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
-Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
-Reviewed-by: Tingmao Wang <m@maowtm.org>
-Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-8-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/errata/abi-1.h | 16 +++++++++++++
- security/landlock/fs.c           | 40 ++++++++++++++++++++++----------
- 2 files changed, 44 insertions(+), 12 deletions(-)
- create mode 100644 security/landlock/errata/abi-1.h
+ drivers/net/dsa/b53/b53_common.c | 53 ++++++++++++++++++++++++++++++--
+ drivers/net/dsa/b53/b53_priv.h   | 26 ++++++++++++++++
+ drivers/net/dsa/b53/b53_regs.h   | 13 ++++++++
+ 3 files changed, 89 insertions(+), 3 deletions(-)
 
-diff --git a/security/landlock/errata/abi-1.h b/security/landlock/errata/abi-1.h
-new file mode 100644
-index 0000000000000..e8a2bff2e5b6a
---- /dev/null
-+++ b/security/landlock/errata/abi-1.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/**
-+ * DOC: erratum_3
-+ *
-+ * Erratum 3: Disconnected directory handling
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * This fix addresses an issue with disconnected directories that occur when a
-+ * directory is moved outside the scope of a bind mount.  The change ensures
-+ * that evaluated access rights include both those from the disconnected file
-+ * hierarchy down to its filesystem root and those from the related mount point
-+ * hierarchy.  This prevents access right widening through rename or link
-+ * actions.
-+ */
-+LANDLOCK_ERRATUM(3)
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index d9c12b993fa7d..a2ed0e76938aa 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -909,21 +909,31 @@ static bool is_access_to_paths_allowed(
- 				break;
- 			}
- 		}
-+
- 		if (unlikely(IS_ROOT(walker_path.dentry))) {
--			/*
--			 * Stops at disconnected root directories.  Only allows
--			 * access to internal filesystems (e.g. nsfs, which is
--			 * reachable through /proc/<pid>/ns/<namespace>).
--			 */
--			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
-+			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
-+				/*
-+				 * Stops and allows access when reaching disconnected root
-+				 * directories that are part of internal filesystems (e.g. nsfs,
-+				 * which is reachable through /proc/<pid>/ns/<namespace>).
-+				 */
- 				allowed_parent1 = true;
- 				allowed_parent2 = true;
-+				break;
- 			}
--			break;
-+
-+			/*
-+			 * We reached a disconnected root directory from a bind mount.
-+			 * Let's continue the walk with the mount point we missed.
-+			 */
-+			dput(walker_path.dentry);
-+			walker_path.dentry = walker_path.mnt->mnt_root;
-+			dget(walker_path.dentry);
-+		} else {
-+			parent_dentry = dget_parent(walker_path.dentry);
-+			dput(walker_path.dentry);
-+			walker_path.dentry = parent_dentry;
- 		}
--		parent_dentry = dget_parent(walker_path.dentry);
--		dput(walker_path.dentry);
--		walker_path.dentry = parent_dentry;
- 	}
- 	path_put(&walker_path);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 50ed9b7157197..dedbd53412871 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1850,6 +1850,31 @@ static void b53_arl_write_entry_25(struct b53_device *dev,
+ 		    mac_vid);
+ }
  
-@@ -1021,6 +1031,9 @@ static access_mask_t maybe_remove(const struct dentry *const dentry)
-  * file.  While walking from @dir to @mnt_root, we record all the domain's
-  * allowed accesses in @layer_masks_dom.
-  *
-+ * Because of disconnected directories, this walk may not reach @mnt_dir.  In
-+ * this case, the walk will continue to @mnt_dir after this call.
-+ *
-  * This is similar to is_access_to_paths_allowed() but much simpler because it
-  * only handles walking on the same mount point and only checks one set of
-  * accesses.
-@@ -1062,8 +1075,11 @@ static bool collect_domain_accesses(
- 			break;
- 		}
++static void b53_arl_read_entry_89(struct b53_device *dev,
++				  struct b53_arl_entry *ent, u8 idx)
++{
++	u64 mac_vid;
++	u16 fwd_entry;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
++		   &mac_vid);
++	b53_read16(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx), &fwd_entry);
++	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
++}
++
++static void b53_arl_write_entry_89(struct b53_device *dev,
++				   const struct b53_arl_entry *ent, u8 idx)
++{
++	u32 fwd_entry;
++	u64 mac_vid;
++
++	b53_arl_from_entry_89(&mac_vid, &fwd_entry, ent);
++	b53_write64(dev, B53_ARLIO_PAGE,
++		    B53_ARLTBL_MAC_VID_ENTRY(idx), mac_vid);
++	b53_write16(dev, B53_ARLIO_PAGE,
++		    B53_ARLTBL_DATA_ENTRY(idx), fwd_entry);
++}
++
+ static void b53_arl_read_entry_95(struct b53_device *dev,
+ 				  struct b53_arl_entry *ent, u8 idx)
+ {
+@@ -2017,6 +2042,8 @@ static void b53_read_arl_srch_ctl(struct b53_device *dev, u8 *val)
  
--		/* We should not reach a root other than @mnt_root. */
--		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
-+		/*
-+		 * Stops at the mount point or the filesystem root for a disconnected
-+		 * directory.
-+		 */
-+		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
- 			break;
+ 	if (is5325(dev) || is5365(dev))
+ 		offset = B53_ARL_SRCH_CTL_25;
++	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
++		offset = B53_ARL_SRCH_CTL_89;
+ 	else
+ 		offset = B53_ARL_SRCH_CTL;
  
- 		parent_dentry = dget_parent(dir);
+@@ -2029,6 +2056,8 @@ static void b53_write_arl_srch_ctl(struct b53_device *dev, u8 val)
+ 
+ 	if (is5325(dev) || is5365(dev))
+ 		offset = B53_ARL_SRCH_CTL_25;
++	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
++		offset = B53_ARL_SRCH_CTL_89;
+ 	else
+ 		offset = B53_ARL_SRCH_CTL;
+ 
+@@ -2074,6 +2103,18 @@ static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry_25(ent, mac_vid);
+ }
+ 
++static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u16 fwd_entry;
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_MACVID_89,
++		   &mac_vid);
++	b53_read16(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_89, &fwd_entry);
++	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
++}
++
+ static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
+ 				   struct b53_arl_entry *ent)
+ {
+@@ -2664,6 +2705,12 @@ static const struct b53_arl_ops b53_arl_ops_65 = {
+ 	.arl_search_read = b53_arl_search_read_65,
+ };
+ 
++static const struct b53_arl_ops b53_arl_ops_89 = {
++	.arl_read_entry = b53_arl_read_entry_89,
++	.arl_write_entry = b53_arl_write_entry_89,
++	.arl_search_read = b53_arl_search_read_89,
++};
++
+ static const struct b53_arl_ops b53_arl_ops_95 = {
+ 	.arl_read_entry = b53_arl_read_entry_95,
+ 	.arl_write_entry = b53_arl_write_entry_95,
+@@ -2728,7 +2775,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM5395_DEVICE_ID,
+@@ -2756,7 +2803,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM5398_DEVICE_ID,
+@@ -2770,7 +2817,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM53101_DEVICE_ID,
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index c6e2d5e41c758..127ce7f6b16ba 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -353,6 +353,18 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
+ 	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
+ }
+ 
++static inline void b53_arl_to_entry_89(struct b53_arl_entry *ent,
++				       u64 mac_vid, u16 fwd_entry)
++{
++	memset(ent, 0, sizeof(*ent));
++	ent->port = fwd_entry & ARLTBL_DATA_PORT_ID_MASK_89;
++	ent->is_valid = !!(fwd_entry & ARLTBL_VALID_89);
++	ent->is_age = !!(fwd_entry & ARLTBL_AGE_89);
++	ent->is_static = !!(fwd_entry & ARLTBL_STATIC_89);
++	u64_to_ether_addr(mac_vid, ent->mac);
++	ent->vid = mac_vid >> ARLTBL_VID_S;
++}
++
+ static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
+ 				      const struct b53_arl_entry *ent)
+ {
+@@ -383,6 +395,20 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
+ 		*mac_vid |= ARLTBL_AGE_25;
+ }
+ 
++static inline void b53_arl_from_entry_89(u64 *mac_vid, u32 *fwd_entry,
++					 const struct b53_arl_entry *ent)
++{
++	*mac_vid = ether_addr_to_u64(ent->mac);
++	*mac_vid |= (u64)(ent->vid & ARLTBL_VID_MASK) << ARLTBL_VID_S;
++	*fwd_entry = ent->port & ARLTBL_DATA_PORT_ID_MASK_89;
++	if (ent->is_valid)
++		*fwd_entry |= ARLTBL_VALID_89;
++	if (ent->is_static)
++		*fwd_entry |= ARLTBL_STATIC_89;
++	if (ent->is_age)
++		*fwd_entry |= ARLTBL_AGE_89;
++}
++
+ static inline void b53_arl_read_entry(struct b53_device *dev,
+ 				      struct b53_arl_entry *ent, u8 idx)
+ {
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 8ce1ce72e9385..d9026cf865549 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -342,12 +342,20 @@
+ #define   ARLTBL_STATIC			BIT(15)
+ #define   ARLTBL_VALID			BIT(16)
+ 
++/* BCM5389 ARL Table Data Entry N Register format (16 bit) */
++#define   ARLTBL_DATA_PORT_ID_MASK_89	GENMASK(8, 0)
++#define   ARLTBL_TC_MASK_89		GENMASK(12, 10)
++#define   ARLTBL_AGE_89			BIT(13)
++#define   ARLTBL_STATIC_89		BIT(14)
++#define   ARLTBL_VALID_89		BIT(15)
++
+ /* Maximum number of bin entries in the ARL for all switches */
+ #define B53_ARLTBL_MAX_BIN_ENTRIES	4
+ 
+ /* ARL Search Control Register (8 bit) */
+ #define B53_ARL_SRCH_CTL		0x50
+ #define B53_ARL_SRCH_CTL_25		0x20
++#define B53_ARL_SRCH_CTL_89		0x30
+ #define   ARL_SRCH_VLID			BIT(0)
+ #define   ARL_SRCH_STDN			BIT(7)
+ 
+@@ -355,10 +363,12 @@
+ #define B53_ARL_SRCH_ADDR		0x51
+ #define B53_ARL_SRCH_ADDR_25		0x22
+ #define B53_ARL_SRCH_ADDR_65		0x24
++#define B53_ARL_SRCH_ADDR_89		0x31
+ #define  ARL_ADDR_MASK			GENMASK(14, 0)
+ 
+ /* ARL Search MAC/VID Result (64 bit) */
+ #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
++#define B53_ARL_SRCH_RSLT_MACVID_89	0x33
+ 
+ /* Single register search result on 5325 */
+ #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
+@@ -368,6 +378,9 @@
+ /* ARL Search Data Result (32 bit) */
+ #define B53_ARL_SRCH_RSTL_0		0x68
+ 
++/* BCM5389 ARL Search Data Result (16 bit) */
++#define B53_ARL_SRCH_RSLT_89		0x3b
++
+ #define B53_ARL_SRCH_RSTL_MACVID(x)	(B53_ARL_SRCH_RSTL_0_MACVID + ((x) * 0x10))
+ #define B53_ARL_SRCH_RSTL(x)		(B53_ARL_SRCH_RSTL_0 + ((x) * 0x10))
+ 
 -- 
 2.51.0
 
