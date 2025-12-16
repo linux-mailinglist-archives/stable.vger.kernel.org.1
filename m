@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED19CC2881
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:05:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E82CC35BB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7BC17302B793
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8FC30B43F1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295963596FB;
-	Tue, 16 Dec 2025 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682F397D02;
+	Tue, 16 Dec 2025 12:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6rZyWcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iULC6hWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE573596F7;
-	Tue, 16 Dec 2025 12:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9B239656B;
+	Tue, 16 Dec 2025 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886666; cv=none; b=d8fphl2ut791RUj8VBmxVTVuzjaiMgOd9ot+bQspsWJUkDl8Z7vuHncLoX47bHRrz34MRwNPW4kUJtYM5gPbjgq2r3xQBic0yVzCLqz/RRLkkOvXI7URa3UTNOcu7+MABwE6LHdLzbW4OI6tXlni/xo8eS6O2oNSew/228I72MI=
+	t=1765888586; cv=none; b=cuX+ZPkTjfRSjBqCqabm3NJS1yjqNXeS3+Y4wZ4rsVyuo6goqvwr3mcNKdXAxN6LvPt7oT5GAU8ulnMJlTOMLPN+QhjATr/z24p4NPbdBXswYU8kMMzP0JBvOPWf3rEbQUvDQrC2oDggXGfySYVJLz7IfmlzEdc9UjNC5ExkaJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886666; c=relaxed/simple;
-	bh=JJfIrxTfivwpinzhAgb7kkY97hK6D08IvE6gE5eZ5Is=;
+	s=arc-20240116; t=1765888586; c=relaxed/simple;
+	bh=gKRU8H+V7A0sTZDHI0b8RneITalQvAFrxvnhcnJ2wDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mt/9bSJBHqJw1JnUWRXMNqxIlncfGavSMoWMZJw+qre5M2AbruXhZgrV+BEeJhNz/xtLaCeq69w0mqF73/3IieOmEsYTBwm+Sn2jDji659BEdUXJfLx4wR91I3/5fG4QE6Dd+Huh4TR/vHYi9c8jCOkwOrW0070B7sAFlcC5upg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6rZyWcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CD8C4CEF1;
-	Tue, 16 Dec 2025 12:04:26 +0000 (UTC)
+	 MIME-Version; b=Xt9DOJbsSrxPp1UYDF/Blwjj9U2zIa05Z1BHQKg6rrTt9LV+EZqDpn6eAi1arGMXE2AHGwnuVSWE2VFHet2sAsylcU0xRTMYRgTA1/VOhmDKO2vs9eB4Avr5jNMVhanKQSBLx1Uus/AwDkUNqU3DPkzhWV0OnYOZi83jvYWJV8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iULC6hWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75F4C4CEF1;
+	Tue, 16 Dec 2025 12:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886666;
-	bh=JJfIrxTfivwpinzhAgb7kkY97hK6D08IvE6gE5eZ5Is=;
+	s=korg; t=1765888586;
+	bh=gKRU8H+V7A0sTZDHI0b8RneITalQvAFrxvnhcnJ2wDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6rZyWcO3VLrE6IO/AjG+d5ab9ugZj+iP2LZiNKwYDY4UOFx2Zyea0UrafL1ZGOsU
-	 SW1gCu/2XdramlBVQFu0K+Qa14RYap8LbHQeRquDd7EZSYgAFLxouEpL/jZikphGSL
-	 XjASkOjE3+KzEuIe0uKZodMR9XSVHHFIyyuvrL3M=
+	b=iULC6hWNhIsv0Gp59GESTCmNYjCPAch+mNkGLR6pVer/PSOpcLs5vGtVW2glVyvOD
+	 oT1UEFj/RsvA5NPe4GpBrwD1Qv+XkESLZQUNRLCWpT3OYFtTa/RAzInpmHZb1oJ4Sd
+	 9MJGpf2IgB3GrAP/Er4jLPLlJR09HL4wnqvkaUvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 505/507] ALSA: hda/tas2781: fix speaker id retrieval for multiple probes
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 579/614] drm/amdkfd: Use huge page size to check split svm range alignment
 Date: Tue, 16 Dec 2025 12:15:46 +0100
-Message-ID: <20251216111403.733072873@linuxfoundation.org>
+Message-ID: <20251216111422.362834367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,136 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-commit 945865a0ddf3e3950aea32e23e10d815ee9b21bc upstream.
+[ Upstream commit bf2084a7b1d75d093b6a79df4c10142d49fbaa0e ]
 
-Currently, on ASUS projects, the TAS2781 codec attaches the speaker GPIO
-to the first tasdevice_priv instance using devm. This causes
-tas2781_read_acpi to fail on subsequent probes since the GPIO is already
-managed by the first device. This causes a failure on Xbox Ally X,
-because it has two amplifiers, and prevents us from quirking both the
-Xbox Ally and Xbox Ally X in the realtek codec driver.
+When split svm ranges that have been mapped using huge page should use huge
+page size(2MB) to check split range alignment, not prange->granularity that
+means migration granularity.
 
-It is unnecessary to attach the GPIO to a device as it is static.
-Therefore, instead of attaching it and then reading it when loading the
-firmware, read its value directly in tas2781_read_acpi and store it in
-the private data structure. Then, make reading the value non-fatal so
-that ASUS projects that miss a speaker pin can still work, perhaps using
-fallback firmware.
-
-Fixes: 4e7035a75da9 ("ALSA: hda/tas2781: Add speaker id check for ASUS projects")
-Cc: stable@vger.kernel.org # 6.17
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Baojun Xu <baojun.xu@ti.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20251026191635.2447593-1-lkml@antheas.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ef6b2d4b7e5 ("drm/amdkfd: remap unaligned svm ranges that have split")
+Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 448ee45353ef9fb1a34f5f26eb3f48923c6f0898)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781.h                        |    2 -
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c |   44 ++++++++++++++-----------
- 2 files changed, 26 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 46 +++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -183,7 +183,6 @@ struct tasdevice_priv {
- 	struct acoustic_data acou_data;
- #endif
- 	struct tasdevice_fw *fmw;
--	struct gpio_desc *speaker_id;
- 	struct gpio_desc *reset;
- 	struct mutex codec_lock;
- 	struct regmap *regmap;
-@@ -200,6 +199,7 @@ struct tasdevice_priv {
- 	unsigned int magic_num;
- 	unsigned int chip_id;
- 	unsigned int sysclk;
-+	int speaker_id;
- 
- 	int irq;
- 	int cur_prog;
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -85,6 +85,7 @@ static const struct acpi_gpio_mapping ta
- 
- static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 74a1d3e1d52be..49dd0a81114e4 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1144,30 +1144,48 @@ static int
+ svm_range_split_tail(struct svm_range *prange, uint64_t new_last,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
  {
-+	struct gpio_desc *speaker_id;
- 	struct acpi_device *adev;
- 	struct device *physdev;
- 	LIST_HEAD(resources);
-@@ -117,19 +118,31 @@ static int tas2781_read_acpi(struct tasd
- 	/* Speaker id was needed for ASUS projects. */
- 	ret = kstrtou32(sub, 16, &subid);
- 	if (!ret && upper_16_bits(subid) == PCI_VENDOR_ID_ASUSTEK) {
--		ret = devm_acpi_dev_add_driver_gpios(p->dev,
--			tas2781_speaker_id_gpios);
--		if (ret < 0)
-+		ret = acpi_dev_add_driver_gpios(adev, tas2781_speaker_id_gpios);
-+		if (ret < 0) {
- 			dev_err(p->dev, "Failed to add driver gpio %d.\n",
- 				ret);
--		p->speaker_id = devm_gpiod_get(p->dev, "speakerid", GPIOD_IN);
--		if (IS_ERR(p->speaker_id)) {
--			dev_err(p->dev, "Failed to get Speaker id.\n");
--			ret = PTR_ERR(p->speaker_id);
--			goto err;
-+			p->speaker_id = -1;
-+			goto end_2563;
-+		}
-+
-+		speaker_id = fwnode_gpiod_get_index(acpi_fwnode_handle(adev),
-+			"speakerid", 0, GPIOD_IN, NULL);
-+		if (!IS_ERR(speaker_id)) {
-+			p->speaker_id = gpiod_get_value_cansleep(speaker_id);
-+			dev_dbg(p->dev, "Got speaker id gpio from ACPI: %d.\n",
-+				p->speaker_id);
-+			gpiod_put(speaker_id);
-+		} else {
-+			p->speaker_id = -1;
-+			ret = PTR_ERR(speaker_id);
-+			dev_err(p->dev, "Get speaker id gpio failed %d.\n",
-+				ret);
- 		}
-+
-+		acpi_dev_remove_driver_gpios(adev);
- 	} else {
--		p->speaker_id = NULL;
-+		p->speaker_id = -1;
- 	}
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *tail = NULL;
+-	int r = svm_range_split(prange, prange->start, new_last, &tail);
++	int r;
  
- end_2563:
-@@ -430,23 +443,16 @@ static void tasdevice_dspfw_init(void *c
- 	struct tas2781_hda *tas_hda = dev_get_drvdata(tas_priv->dev);
- 	struct tas2781_hda_i2c_priv *hda_priv = tas_hda->hda_priv;
- 	struct hda_codec *codec = tas_priv->codec;
--	int ret, spk_id;
-+	int ret;
+-	if (!r) {
+-		list_add(&tail->list, insert_list);
+-		if (!IS_ALIGNED(new_last + 1, 1UL << prange->granularity))
+-			list_add(&tail->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, prange->start, new_last, &tail);
++
++	if (r)
++		return r;
++
++	list_add(&tail->list, insert_list);
++
++	if (huge_page_mapping && tail->start > start_align &&
++	    tail->start < last_align_down && (!IS_ALIGNED(tail->start, 512)))
++		list_add(&tail->update_list, remap_list);
++
++	return 0;
+ }
  
- 	tasdevice_dsp_remove(tas_priv);
- 	tas_priv->fw_state = TASDEVICE_DSP_FW_PENDING;
--	if (tas_priv->speaker_id != NULL) {
--		// Speaker id need to be checked for ASUS only.
--		spk_id = gpiod_get_value(tas_priv->speaker_id);
--		if (spk_id < 0) {
--			// Speaker id is not valid, use default.
--			dev_dbg(tas_priv->dev, "Wrong spk_id = %d\n", spk_id);
--			spk_id = 0;
--		}
-+	if (tas_priv->speaker_id >= 0) {
- 		snprintf(tas_priv->coef_binaryname,
- 			  sizeof(tas_priv->coef_binaryname),
- 			  "TAS2XXX%04X%d.bin",
- 			  lower_16_bits(codec->core.subsystem_id),
--			  spk_id);
-+			  tas_priv->speaker_id);
- 	} else {
- 		snprintf(tas_priv->coef_binaryname,
- 			  sizeof(tas_priv->coef_binaryname),
+ static int
+ svm_range_split_head(struct svm_range *prange, uint64_t new_start,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
+ {
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *head = NULL;
+-	int r = svm_range_split(prange, new_start, prange->last, &head);
++	int r;
+ 
+-	if (!r) {
+-		list_add(&head->list, insert_list);
+-		if (!IS_ALIGNED(new_start, 1UL << prange->granularity))
+-			list_add(&head->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, new_start, prange->last, &head);
++
++	if (r)
++		return r;
++
++	list_add(&head->list, insert_list);
++
++	if (huge_page_mapping && head->last + 1 > start_align &&
++	    head->last + 1 < last_align_down && (!IS_ALIGNED(head->last, 512)))
++		list_add(&head->update_list, remap_list);
++
++	return 0;
+ }
+ 
+ static void
+-- 
+2.51.0
+
 
 
 
