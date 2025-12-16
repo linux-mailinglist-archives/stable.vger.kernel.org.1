@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B4CCC23AA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E9CC306E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67B603062E38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BFFE3036595
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B79341645;
-	Tue, 16 Dec 2025 11:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD34368288;
+	Tue, 16 Dec 2025 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytDcOJGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCIzDCRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB16313E13;
-	Tue, 16 Dec 2025 11:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866CE366555;
+	Tue, 16 Dec 2025 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884299; cv=none; b=I+qpGnoB+Ls+3ttzqmXPHtJvFhWJSVYdo/UeyoN+WJ+Hf+uRI2akO79rK1/8u36loemdaIhYn7wJ+4qf8GYhka1Y9/fMhh40ej8drGvdBywMyxyXw8ldspc52PEdhUo0KdaS7ZhoyDATiK8bNhPfd4Mu7ge9C5pWa48PTSez9q4=
+	t=1765887942; cv=none; b=GAOUBSjclNqFGhcPuCvJNoWoc45aO13RJ9O8010EnKzXiGQ2euOjFb/uIx/PU8flOH7LNpbriDR3lSZRiQNqfQvGyi2AgeBHmrgZiOksd29Q1rvLL8b72CcffkX14hxpwhdVAeA2m0m4eC3JtqvvTm+rvbb/fG7A7S2qfDYWGgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884299; c=relaxed/simple;
-	bh=f1ogkjWaJaVnnqJw3Uq5Ux07kStk17IQXo4UVeYH3gE=;
+	s=arc-20240116; t=1765887942; c=relaxed/simple;
+	bh=eyXZHeLc3lX9/TjVSqW/g8NwTGiCofEMmEtTDlCyLsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kdlc2FRRgi/im4+OVIQ08GRVjyWTeEkrXUwgiseN5mrWeQgC0+4B1M6SPodzaoqtGjbU1IY1naV0YI6OtTEzrDmXsq7wq3Y7Ml5FlRRZtw4MLbXKMeOEUWPaHRRf9rqkQdQ+rJB2qwl3P4ntxBxp8wilFuqhB14P9uicEvx5dGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytDcOJGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00F2C4CEF1;
-	Tue, 16 Dec 2025 11:24:58 +0000 (UTC)
+	 MIME-Version; b=tw6hDJXEktR5aoBgrd2Y3cBZrifrrC3bnj6dl2l1J2cSp1HC34tF2Vn+/T7YxcVGWzv40MsUankvQsLR8SbuwDbSu1N3VUuUM2q/7/QwWbA1x2Rp4Av4PqxQagqtgzYKJtiaLLogd9uhw+obHC9QuIqTiJH/cqu9PldQe0MjCn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCIzDCRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75EAC16AAE;
+	Tue, 16 Dec 2025 12:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884299;
-	bh=f1ogkjWaJaVnnqJw3Uq5Ux07kStk17IQXo4UVeYH3gE=;
+	s=korg; t=1765887942;
+	bh=eyXZHeLc3lX9/TjVSqW/g8NwTGiCofEMmEtTDlCyLsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytDcOJGN4ZHHc9cXBBElNzVKYYA+09lCLb0RdT4g1cPqP/KzN8zfDi9QhPeQGKwe1
-	 hcB8HP39MmQwq8LiGn99+gDOb0IyLe3XdgYvP5t3M3wDaqCLNPABT61iML5q57SB2z
-	 6yYeYZIz6E4+m7Ge9vaWLIGYoVIuiLEO7YjmFOGA=
+	b=OCIzDCRO28NCQcc1cuWFo7dTJjBLPYQd/N+iSv2YgNjz+PV9yMf81WGJjFvi3fkcd
+	 eqSOFFksyG6bYmFFB4FiqzBITEmqei2fxYoiZQMLCgT08D3sTBzORfhL3pQdPKYpn0
+	 Km0zNsheWsxfzHgqSi4pWDE7IxGhYe+rcyza+S1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/354] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
+Subject: [PATCH 6.18 352/614] selftests/bpf: Use ASSERT_STRNEQ to factor in long slab cache names
 Date: Tue, 16 Dec 2025 12:11:59 +0100
-Message-ID: <20251216111326.422379249@linuxfoundation.org>
+Message-ID: <20251216111414.116567450@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
+[ Upstream commit d088da904223e8f5e19c6d156cf372d5baec1a7c ]
 
-acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
-parent fwnode but returns without calling fwnode_handle_put() on it. This
-potentially leads to a fwnode refcount leak and prevents the parent node
-from being released properly.
+subtest_kmem_cache_iter_check_slabinfo() fundamentally compares slab
+cache names parsed out from /proc/slabinfo against those stored within
+struct kmem_cache_result. The current problem is that the slab cache
+name within struct kmem_cache_result is stored within a bounded
+fixed-length array (sized to SLAB_NAME_MAX(32)), whereas the name
+parsed out from /proc/slabinfo is not. Meaning, using ASSERT_STREQ()
+can certainly lead to test failures, particularly when dealing with
+slab cache names that are longer than SLAB_NAME_MAX(32)
+bytes. Notably, kmem_cache_create() allows callers to create slab
+caches with somewhat arbitrarily sized names via its __name identifier
+argument, so exceeding the SLAB_NAME_MAX(32) limit that is in place
+now can certainly happen.
 
-Call fwnode_handle_put() on the parent fwnode before returning to prevent
-the leak from occurring.
+Make subtest_kmem_cache_iter_check_slabinfo() more reliable by only
+checking up to sizeof(struct kmem_cache_result.name) - 1 using
+ASSERT_STRNEQ().
 
-Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: a496d0cdc84d ("selftests/bpf: Add a test for kmem_cache_iter")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://patch.msgid.link/20251118073734.4188710-1-mattbobrowski@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index b51b947b0ca5b..b7ee463e757d2 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1693,6 +1693,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
- 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
+diff --git a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+index 1de14b111931a..6e35e13c20220 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+@@ -57,7 +57,8 @@ static void subtest_kmem_cache_iter_check_slabinfo(struct kmem_cache_iter *skel)
+ 		if (!ASSERT_OK(ret, "kmem_cache_lookup"))
+ 			break;
  
-+	fwnode_handle_put(port_fwnode);
- 	return 0;
- }
+-		ASSERT_STREQ(r.name, name, "kmem_cache_name");
++		ASSERT_STRNEQ(r.name, name, sizeof(r.name) - 1,
++			      "kmem_cache_name");
+ 		ASSERT_EQ(r.obj_size, objsize, "kmem_cache_objsize");
  
+ 		seen++;
 -- 
 2.51.0
 
