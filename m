@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F803CC22FE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3ECCC3453
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8BB75303DB0C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DCA0530073D9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B6E341670;
-	Tue, 16 Dec 2025 11:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6CF354AFD;
+	Tue, 16 Dec 2025 11:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+BU7wQD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/kvCURq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82105313E13;
-	Tue, 16 Dec 2025 11:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D051F354AF7;
+	Tue, 16 Dec 2025 11:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884214; cv=none; b=kbFh6lIKNpaNXx5+P4pZ0GGCHkU1Ffdh5pNR7BfU9NaZ2XJ7aw6t0TPnQBHpnul2qU7c5dqz1gDyvABzMs4MH2P0QqPjgzAnI9FkIvKD4O5Tb5KbE2Vi5vLYCR6dRazBDoatyXz8tVQFCoRcKAQvEKTeMXXTwxliMD59LBWSVz0=
+	t=1765885810; cv=none; b=o+hSuFLc1ovzp56E8b0mDy3wSGETs6ltFHTfjMxLcxP56Z7KLjVcA9aoN0dxWEpQCYk3LvCSlpDAe/2oeznq9BaYPlJ7RjwSYKOB0Qdxi5t+g3ojX2c9EszDwSDUzlilvchAqaJMPalocqXteDmaUgIloLUkL6AW2w6nnwjEZyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884214; c=relaxed/simple;
-	bh=rsx80Ne10H698HQFt8muXnVvsAZf3TibK9qx1IHVlwU=;
+	s=arc-20240116; t=1765885810; c=relaxed/simple;
+	bh=+7IhLtaLbvMH58cudiz4LzxJp9VI9qT3lfjn83pmges=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pz8ZYzvyzBnCiQGdLXFYLRLeyNNiuZQfuhIrfN+Cb27RsCcqlFLqdbPMxoTRrIq8OeG2haYcA/+RMlbDw6zHhNC5Vr7O+JyplDspjyMyQEkWJYZpJedmk3Ph6otFs2SZNFloFAtHc4W821JCnSlTkB67HpcJk9eXXJoj+02GWcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+BU7wQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F55C4CEF5;
-	Tue, 16 Dec 2025 11:23:33 +0000 (UTC)
+	 MIME-Version; b=OJ/oU/XYpydeJuamK+5HwHmuaboMJdgj+DPyKqIh9JPzPVpiEmKKc9/5e3a2yovl+lZ+uCYg+nyTlcjp5EY7AxTelw1dIlQbHHhghkb9cfkSebBmYlr9K6mrVExZjHXaoWLLbBfUpeyc1i+SSVAp7GK+/Iz+WALE7lXQtTIuOz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/kvCURq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B43C4CEF1;
+	Tue, 16 Dec 2025 11:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884214;
-	bh=rsx80Ne10H698HQFt8muXnVvsAZf3TibK9qx1IHVlwU=;
+	s=korg; t=1765885810;
+	bh=+7IhLtaLbvMH58cudiz4LzxJp9VI9qT3lfjn83pmges=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+BU7wQDtxiJkLFwFkd4SJJDqTXtBNmSfu7xlnZCMdFVJ2G1HiGE464rXcR8kez7k
-	 MLdYRR42M/7svRDD5skqO5kqSsfBmROWouVL24iTdQMbcTi5R6QHlTtA7h2txjDyEd
-	 sqEkVfM0g43efQ17lzEXi6hqroudFVi1hJjqSts8=
+	b=w/kvCURqJGBirsfXbde45TdYDhLOVxc6q8rF4QPhKzrzFqhBqNGTS8Ere/NQyF2Zz
+	 G1Dz83scD9uqxBDFLIITP7kcC+eRC5E32IeaF3PmzSHK8OXvijHK/6btRL6Xs8ss2m
+	 RIyW/8mPUbDpgL3slF42CRIVrQZejPD52D8j+A74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/354] ext4: correct the checking of quota files before moving extents
+Subject: [PATCH 6.17 252/507] watchdog: starfive: Fix resource leak in probe error path
 Date: Tue, 16 Dec 2025 12:11:33 +0100
-Message-ID: <20251216111325.487735231@linuxfoundation.org>
+Message-ID: <20251216111354.622027586@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit a2e5a3cea4b18f6e2575acc444a5e8cce1fc8260 ]
+[ Upstream commit 5bcc5786a0cfa9249ccbe539833040a6285d0de3 ]
 
-The move extent operation should return -EOPNOTSUPP if any of the inodes
-is a quota inode, rather than requiring both to be quota inodes.
+If pm_runtime_put_sync() fails after watchdog_register_device()
+succeeds, the probe function jumps to err_exit without
+unregistering the watchdog device. This leaves the watchdog
+registered in the subsystem while the driver fails to load,
+resulting in a resource leak.
 
-Fixes: 02749a4c2082 ("ext4: add ext4_is_quota_file()")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251013015128.499308-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Add a new error label err_unregister_wdt to properly unregister
+the watchdog device.
+
+Fixes: 8bc22a2f1bf0 ("watchdog: starfive: Check pm_runtime_enabled() before decrementing usage counter")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/move_extent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/starfive-wdt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index a4c94eabc78ec..dfd7958899288 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -487,7 +487,7 @@ mext_check_arguments(struct inode *orig_inode,
- 		return -ETXTBSY;
+diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
+index 355918d62f63d..ed71d3960a0f2 100644
+--- a/drivers/watchdog/starfive-wdt.c
++++ b/drivers/watchdog/starfive-wdt.c
+@@ -500,12 +500,14 @@ static int starfive_wdt_probe(struct platform_device *pdev)
+ 		if (pm_runtime_enabled(&pdev->dev)) {
+ 			ret = pm_runtime_put_sync(&pdev->dev);
+ 			if (ret)
+-				goto err_exit;
++				goto err_unregister_wdt;
+ 		}
  	}
  
--	if (ext4_is_quota_file(orig_inode) && ext4_is_quota_file(donor_inode)) {
-+	if (ext4_is_quota_file(orig_inode) || ext4_is_quota_file(donor_inode)) {
- 		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
- 			orig_inode->i_ino, donor_inode->i_ino);
- 		return -EOPNOTSUPP;
+ 	return 0;
+ 
++err_unregister_wdt:
++	watchdog_unregister_device(&wdt->wdd);
+ err_exit:
+ 	starfive_wdt_disable_clock(wdt);
+ 	pm_runtime_disable(&pdev->dev);
 -- 
 2.51.0
 
