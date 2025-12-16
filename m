@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230C9CC2202
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D269CCC2779
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1D9203006717
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DF6C3071A97
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A00233B967;
-	Tue, 16 Dec 2025 11:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3093451CA;
+	Tue, 16 Dec 2025 11:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZIOR+zN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHbkx9qn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D362459D7;
-	Tue, 16 Dec 2025 11:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36A63451D4;
+	Tue, 16 Dec 2025 11:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884009; cv=none; b=U8MY5vehyIMrFOYG/w0PyOhL5mg9BSiwcDEaAA+B72R3Q75wifjgzJMDu3OEhKuI68AmM9tjt6r0j59Xx69sp5X0LIXoIqHGHBni3+4UpatXWHxjTXydJ35tcdX488lhZA+2TzyBOLhfdUdtwyYskmELBznKulpogxJdh5JjgTA=
+	t=1765885502; cv=none; b=YiqN8Yp9djUfkF6FNvOZwwbSQf0OVDZUWOAof629qGLRYGAJrhPEGTE4Nh6LTcRyXDg5TA1YMuh1vqTHQkRqiJ06PUijTeLdaP724PRSFKPgeeWruwu/JXZQR3+mnYfEPtb2n5ONSY+agX0W27SKQH+OBcGKCgZa1mHK+7jgUJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884009; c=relaxed/simple;
-	bh=pANH9Kyw4OxapbpOlLZ8VyjulaKSJE3veQit2yqa21w=;
+	s=arc-20240116; t=1765885502; c=relaxed/simple;
+	bh=Wz5zolmVx5uRpigTo3Pk9EPB83pnDfOdB/YZ0ur6ek4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2+gv3stch9JwiYsikPZaDZrccN96T6VOi1hUnk0FWHROrLUoatYv6X51/aNlP2zvgC8fgEcAlPOP2E05bw+Y0zs31fkIFaWlw41dudire78CZ6XyWB7P8b+1+TeHvY6ue4vJ8InVHIxBPxznzHxPwCsLdCFqfBCn3hyMAeB2VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZIOR+zN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60919C4CEF1;
-	Tue, 16 Dec 2025 11:20:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KTtf7eDsG5+8/fhfF3WmZZqHmCNLkWZqpgdGG8a9N8d9B7dCA4l8b5+p2xBo5Bymj50B0uU0XUeqxMxgv9u5vriEu6/yRMjKwbPUf/sFALTmNSJqCgnGip3OX+RinqADH1JnOY64axfWkgmgDHbWuXNV7BTzK6qee2XnQ92qzVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHbkx9qn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BC9C4CEF1;
+	Tue, 16 Dec 2025 11:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884008;
-	bh=pANH9Kyw4OxapbpOlLZ8VyjulaKSJE3veQit2yqa21w=;
+	s=korg; t=1765885502;
+	bh=Wz5zolmVx5uRpigTo3Pk9EPB83pnDfOdB/YZ0ur6ek4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZIOR+zNU3g+BsDqBxBWpTwxaZpspbQN3jXhNGhhFfv/WBoI/iJEXEWzFjo92/G1H
-	 vbSwVpEiETXgxpGTtS70NyOVv34xZVZZHsAFM0X7Ysj/nyhVTkwBAKbqMTjYwtfXcq
-	 CuDnYgxWTXMI7KiW0fhTY/zA74Rb4frNGxn9YZOc=
+	b=wHbkx9qnkPak2OkDQHUvmdg0DKd0Rzt8SVLrESQdk9bVS3bJibSLX/wHvXO1K0+92
+	 bhmho4ru+6xgQuo5aoShamJTbOeCWz0w5D0xtkfkEvIfPFZjGw+z3Q2zfnb3jgP2pA
+	 NaP1ITvd4vm8JcI1fMbgK5Pgsv2QP7F017bwiomI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/354] irqchip/irq-brcmstb-l2: Fix section mismatch
+Subject: [PATCH 6.17 158/507] power: supply: apm_power: only unset own apm_get_power_status
 Date: Tue, 16 Dec 2025 12:09:59 +0100
-Message-ID: <20251216111322.076328515@linuxfoundation.org>
+Message-ID: <20251216111351.246566167@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
 
-[ Upstream commit bbe1775924478e95372c2f896064ab6446000713 ]
+[ Upstream commit bd44ea12919ac4e83c9f3997240fe58266aa8799 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+Mirroring drivers/macintosh/apm_emu.c, this means that
+  modprobe apm_power && modprobe $anotherdriver && modprobe -r apm_power
+leaves $anotherdriver's apm_get_power_status instead of deleting it.
 
-Fixes: 51d9db5c8fbb ("irqchip/irq-brcmstb-l2: Switch to IRQCHIP_PLATFORM_DRIVER")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 3788ec932bfd ("[BATTERY] APM emulation driver for class batteries")
+Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+Link: https://patch.msgid.link/xczpgox57hxbunkcbdl5fxhc4gnsajsipldfidi7355afezk64@tarta.nabijaczleweli.xyz
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-brcmstb-l2.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/power/supply/apm_power.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
-index c988886917f73..60863b2548f5a 100644
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -168,10 +168,8 @@ static void brcmstb_l2_intc_resume(struct irq_data *d)
- 	irq_gc_unlock_irqrestore(gc, flags);
+diff --git a/drivers/power/supply/apm_power.c b/drivers/power/supply/apm_power.c
+index 9236e00785786..9933cdc5c387a 100644
+--- a/drivers/power/supply/apm_power.c
++++ b/drivers/power/supply/apm_power.c
+@@ -364,7 +364,8 @@ static int __init apm_battery_init(void)
+ 
+ static void __exit apm_battery_exit(void)
+ {
+-	apm_get_power_status = NULL;
++	if (apm_get_power_status == apm_battery_apm_get_power_status)
++		apm_get_power_status = NULL;
  }
  
--static int __init brcmstb_l2_intc_of_init(struct device_node *np,
--					  struct device_node *parent,
--					  const struct brcmstb_intc_init_params
--					  *init_params)
-+static int brcmstb_l2_intc_of_init(struct device_node *np, struct device_node *parent,
-+				   const struct brcmstb_intc_init_params *init_params)
- {
- 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
- 	unsigned int set = 0;
-@@ -287,14 +285,12 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 	return ret;
- }
- 
--static int __init brcmstb_l2_edge_intc_of_init(struct device_node *np,
--	struct device_node *parent)
-+static int brcmstb_l2_edge_intc_of_init(struct device_node *np, struct device_node *parent)
- {
- 	return brcmstb_l2_intc_of_init(np, parent, &l2_edge_intc_init);
- }
- 
--static int __init brcmstb_l2_lvl_intc_of_init(struct device_node *np,
--	struct device_node *parent)
-+static int brcmstb_l2_lvl_intc_of_init(struct device_node *np, struct device_node *parent)
- {
- 	return brcmstb_l2_intc_of_init(np, parent, &l2_lvl_intc_init);
- }
+ module_init(apm_battery_init);
 -- 
 2.51.0
 
