@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FFDCC2625
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49762CC4384
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BF5630C5C59
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7605E3028C13
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7AF341AD0;
-	Tue, 16 Dec 2025 11:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07D6347BBB;
+	Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0Ei6nnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba/6lGKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D2F341047;
-	Tue, 16 Dec 2025 11:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E5347BA8;
+	Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884783; cv=none; b=mFCJwxVa11rarTC5HuW4020lELYiRcHI7zJhwuJDi5lPXr9AAhUOWD9aKcljA0+2nII3TMukAY5Tu95cyqwCtas/AbQEwfyR4qa0eui1JCURG9tVO7VeTR0+Mf0aSYgz6iTJcj2aWnaeHEfqRp/HdTY0nwrGi3eyccm9VdzlgxY=
+	t=1765886334; cv=none; b=HMrzE8wDQIbrCUW7lMytTuKL+yEqbgvZPyrFmS8DRwfiTBwJ0bvdAP9Cd2zStw0bJSqzBS3zhlofX8CzQPr6uiOBvqwOanTAv+Dh+yyh5htZlIGLFRR77xRjeUwSAkV8zSt7nayYWrFetnsv+HLMrXFkjd5MOAJ+Fr1IUMabwTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884783; c=relaxed/simple;
-	bh=c0J7izQNxzumSvHQn1YdzKE2HyaW6B+FBk/liXYcA+I=;
+	s=arc-20240116; t=1765886334; c=relaxed/simple;
+	bh=XvAm+xWw/i0OmfoH1AQ09vrlqXlJ4LiaEiFTDwNNigE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZx6hDltI0O63HQ/GqjmxT35wY1mpH56sbu10x08ir5dCaIsxqArMNxGyKPHkFLTJVEb8Ixc9SgiDqeB6di+7/N5ZrQqJ3pwa1CCaz0uTi28ZOCQeroDEQ6sDmu1BR0DAggRf4LVrKKyxAfiFUl0l4XzMygGMwOaXUtH05wmF60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0Ei6nnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0C1C4CEF1;
-	Tue, 16 Dec 2025 11:33:02 +0000 (UTC)
+	 MIME-Version; b=HGKV03KvJ6eMsV09VID9Rhmjs16pROugEBPYJeoUZDa3+KQzUtnDoxe/Tn/BuIQYcvTFBH1xwAYdMEoVJWrCrGkM43G+vSpUuJcpEtZb95Yi89AHDP2SS5Bvio9wOjUkJV41FS6f8wM/ONaSjjIeOCG28xQiavAXG5VZsU+uq68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba/6lGKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A00C16AAE;
+	Tue, 16 Dec 2025 11:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884783;
-	bh=c0J7izQNxzumSvHQn1YdzKE2HyaW6B+FBk/liXYcA+I=;
+	s=korg; t=1765886333;
+	bh=XvAm+xWw/i0OmfoH1AQ09vrlqXlJ4LiaEiFTDwNNigE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0Ei6nnXWD394THKjrJHD2OPuo+CSvubMPc7f+/WauYrSmUgHWAs5njLEkTBWyXdR
-	 /OdHe47aImp7FxuDdb6OmEi4gxu2vkfx+PmK3LtpwuwwsjDCgFH5Ch5yDm7wERqZXg
-	 hzcY4Y+MgwjHcGIMCk/tgOShlvbZTO3pAL8lvRyQ=
+	b=ba/6lGKJPJqStt0GDfvh6AIzlekAG+gtxy/gMTub/QXxgyN5PzRUPh0m/8Xb8ZZPC
+	 VhxMp1LUebR4EKIemxK8nKNitxXl9WKp1O03dR4C5zlZrs4DWbt3pCUdjGX613IMa1
+	 hYIibRLynXVD/M5wIH00t18VzijhZ5VpaPDUq0e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/354] net: hsr: remove synchronize_rcu() from hsr_add_port()
+Subject: [PATCH 6.17 406/507] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
 Date: Tue, 16 Dec 2025 12:14:07 +0100
-Message-ID: <20251216111331.058964724@linuxfoundation.org>
+Message-ID: <20251216111400.161709991@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
 
-[ Upstream commit a3b3d2dc389568a77d0e25da17203e3616218e93 ]
+[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
 
-A synchronize_rcu() was added by mistake in commit
-c5a759117210 ("net/hsr: Use list_head (and rcu) instead
-of array for slave devices.")
+The "qcom,halt-regs" consists of a phandle reference followed by the
+three offsets within syscon for halt registers. Thus, we need to
+request 4 integers from of_property_read_variable_u32_array(), with
+the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
 
-RCU does not mandate to observe a grace period after
-list_add_tail_rcu().
+With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
+-EOVERFLOW, causing .probe() to fail.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250107144701.503884-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
+Increase MAX_HALT_REG to 4, and update the indexes accordingly.
+
+Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_slave.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 01762525c9456..9ac7cf0835118 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -210,7 +210,6 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
+index 93648734a2f25..74e9e642b5e74 100644
+--- a/drivers/remoteproc/qcom_q6v5_wcss.c
++++ b/drivers/remoteproc/qcom_q6v5_wcss.c
+@@ -85,7 +85,7 @@
+ #define TCSR_WCSS_CLK_MASK	0x1F
+ #define TCSR_WCSS_CLK_ENABLE	0x14
+ 
+-#define MAX_HALT_REG		3
++#define MAX_HALT_REG		4
+ enum {
+ 	WCSS_IPQ8074,
+ 	WCSS_QCS404,
+@@ -864,9 +864,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
+ 		return -EINVAL;
  	}
  
- 	list_add_tail_rcu(&port->port_list, &hsr->ports);
--	synchronize_rcu();
+-	wcss->halt_q6 = halt_reg[0];
+-	wcss->halt_wcss = halt_reg[1];
+-	wcss->halt_nc = halt_reg[2];
++	wcss->halt_q6 = halt_reg[1];
++	wcss->halt_wcss = halt_reg[2];
++	wcss->halt_nc = halt_reg[3];
  
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	netdev_update_features(master->dev);
+ 	return 0;
+ }
 -- 
 2.51.0
 
