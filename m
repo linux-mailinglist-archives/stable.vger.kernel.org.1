@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED02CC2592
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63312CC493B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 045A83036C93
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF7843057986
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED95343D92;
-	Tue, 16 Dec 2025 11:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B4736CE1C;
+	Tue, 16 Dec 2025 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCROORMU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek3xIvI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDDB343D88;
-	Tue, 16 Dec 2025 11:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB1F36CE11;
+	Tue, 16 Dec 2025 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884473; cv=none; b=Cu0213N0pV+/josVF8GTxAHt4X691OG6rDj8tUwaa/niPjBfRoGntIbFgnpwS4mEQxQsEpWl7+EnXfZyMun1CdGB++L7wLR2yKkc9GN1TalwFHMZBUn36VsKetsZOHfAeWqyRUrmi9BD1NihXsJz3K/q6NYaeca55cK6dgPXsvU=
+	t=1765888006; cv=none; b=Dx1ZIpurgV98OICM+NMe71X5RN+rZ+m2M5UZSbQgJJG64g5JzoTF/cnuMavITxqe5GAywoue5+UNcp3Av8NhF/1FJ1nNeYqAQngj6LE+IAl1KuPk/z4KpO0V02o8OO6DrZJr1Z6EPLB456/fffX92JVnJs596rAefrLmN/cvZao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884473; c=relaxed/simple;
-	bh=Q/rA4KPPnkqMuJ+t/1ud/J3pErHJcgt0jBHE+96cF3o=;
+	s=arc-20240116; t=1765888006; c=relaxed/simple;
+	bh=gCukoulbmHZgFYgUglxGcSAHmllOYbfIy4AqSSGNjZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXk6evGFnLmJudls0ptXzm5pF6GwoklXsGJEentffHKlXME1JGSmZBsTsn98NvkHPebvrl28PE7B2YS28oTkTdMgjedPCKv7sK5SbHZR6bXuXD0FSkZ9g5v6m5fg+C8nx47OXAreBqwa3b961T9I2+BLjfBj8E8XcyKFwo7hxck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCROORMU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE71C4CEF1;
-	Tue, 16 Dec 2025 11:27:52 +0000 (UTC)
+	 MIME-Version; b=rZrY14e8aY8jGJhufhNJ9qOqQ/R6LI4A7mlhr076Ic0sU69P2SbrI0PllQrH/VCuErqsRoubwedwzodLee7GC7ZSWBCMd977hacXfLqMoU1GYWsIj70HG2FucgHMMVK0lC1iDJuXenrSN5iAaRmzUfSAznuAcckcXYRl+cF7K8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek3xIvI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA01DC4CEF1;
+	Tue, 16 Dec 2025 12:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884473;
-	bh=Q/rA4KPPnkqMuJ+t/1ud/J3pErHJcgt0jBHE+96cF3o=;
+	s=korg; t=1765888006;
+	bh=gCukoulbmHZgFYgUglxGcSAHmllOYbfIy4AqSSGNjZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCROORMUHMGbaPDKsWF6NUxYzBlca17dKh03UbeOgYpMf3CP553yDTzEnas9Ib09W
-	 sEiXdV8qhgx/Nq8gmLXfIkjWbi9iBmocSW5mQWMnKI9fFUxjw5t/Rk/b6FomesVhMa
-	 b76b/40BexFnr95xjDuuFWNbmjCZn/VL9+GYz8F8=
+	b=ek3xIvI7kjsg+DJjrrc1N3HdmRYpr75e9ljUDFAx1asPmM54ZBygVzleUHsKTdsJ+
+	 ZY8Y190kPn0Ugfx6yEEw2ArmjC/4JT8D+0sK/QXt7pO9psnnRK8CNyTLDgaWAvzGe3
+	 hVvoZcY9YkGrCJuttS+ZCMBG/1Ui3dz2psrwA1ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Minas Harutyunyan <hminas@synopsys.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/354] usb: dwc2: disable platform lowlevel hw resources during shutdown
+Subject: [PATCH 6.18 403/614] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
 Date: Tue, 16 Dec 2025 12:12:50 +0100
-Message-ID: <20251216111328.274492945@linuxfoundation.org>
+Message-ID: <20251216111415.977381638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Dinh Nguyen <dinguyen@kernel.org>
 
-[ Upstream commit 7481a97c5f49f10c7490bb990d0e863f23b9bb71 ]
+[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
 
-On some SoC platforms, in shutdown stage, most components' power is cut
-off, but there's still power supply to the so called always-on
-domain, so if the dwc2's regulator is from the always-on domain, we
-need to explicitly disable it to save power.
+Fix this warning that was generated from "make htmldocs":
 
-Disable platform lowlevel hw resources such as phy, clock and
-regulators etc. in device shutdown hook to reduce non-necessary power
-consumption when the platform enters shutdown stage.
+WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
+not described in 'stratix10_svc'
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Acked-by: Minas Harutyunyan <hminas@synopsys.com>
-Link: https://lore.kernel.org/r/20250629094655.747-1-jszhang@kernel.org
+Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: b6ebcfdcac40 ("usb: dwc2: fix hang during shutdown if set as peripheral")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/stratix10-svc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index c1b7209b94836..79ce88b5f07d9 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -371,6 +371,9 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
- 
- 	dwc2_disable_global_interrupts(hsotg);
- 	synchronize_irq(hsotg->irq);
-+
-+	if (hsotg->ll_hw_enabled)
-+		dwc2_lowlevel_hw_disable(hsotg);
- }
- 
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 00f58e27f6de5..deee0e7be34bd 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
  /**
+  * struct stratix10_svc - svc private data
+  * @stratix10_svc_rsu: pointer to stratix10 RSU device
++ * @intel_svc_fcs: pointer to the FCS device
+  */
+ struct stratix10_svc {
+ 	struct platform_device *stratix10_svc_rsu;
 -- 
 2.51.0
 
