@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC72CC2C25
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C519ACC354F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:48:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2D0B83036924
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 39C96300AD84
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F23357A53;
-	Tue, 16 Dec 2025 12:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223B839B6D3;
+	Tue, 16 Dec 2025 12:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0izRvgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhQTX++I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05588357A4E;
-	Tue, 16 Dec 2025 12:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24E339B6CE;
+	Tue, 16 Dec 2025 12:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886623; cv=none; b=XxO1JeiDhPo9/LPaOAdPM0MXLS3VsMv+GuYXF2sJqQRoKNAdCYIIHA7XzQkdAo4oHz230NhV9R0kx7Vj/heXXsFEvWNoKK8230mpzmoTwRpLCLqEaaVYcu9DvODnsmYxc/P7XFcplkVSRQTecRanIn08vR+kh/lvIX9YV5KojKU=
+	t=1765888655; cv=none; b=Th9+ISHodrmx1GiLgHcUB9/5OYOwOqgBrtvvhaCjROWzb549rZp8j9ZYY2uQAl6ZO077/LIMhYbQlCN5EzELU3AnfXPiKy2QawWyUva98f/32Xp62arPtgVZCtCjZD2kXfDXeRyiZqwbhZ//7N3uRiWG0h3n64ZwwobYlkXyH3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886623; c=relaxed/simple;
-	bh=33Yx+qY+VU/Nm3JdH6v57HMtpK1QOW9Sta4OxhcwIjw=;
+	s=arc-20240116; t=1765888655; c=relaxed/simple;
+	bh=G9BKLI9LT8kabUxiPhl0JQCI6bEDqkh4iF1LTfH+KUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dzkgQ31YdMpaShmDBvIgPhnj3JDKKnD/fy9JVq3mXSnKagvfb4mOhZIvZqlK75QyN5v4tb1OJZD50Rt6JjmjTbpRNu3mrYMwH5xm5+8KwVJ/Ee7DD8Qoaoh7rRo8ZAd/iU2TNz98tpuMqg3eiJf+UXbS01OfCsmaaMpGpw2//6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0izRvgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61392C4CEF1;
-	Tue, 16 Dec 2025 12:03:42 +0000 (UTC)
+	 MIME-Version; b=dSXRYKWttYTLcdzD25JxRn44UJwghGOK8sLQMgfmCur5NxkvKLBKG91TJX7fP77Eiy0WfJF6qTs0+WObT6ui4RTrQOVNt1MYKwo7gOK0t7hhq2XqWKDziHNBOhepzni9Bp89Gyv8NbQ/rBn9UVx4qUx1L5YzRIBl85ekhsVpHEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhQTX++I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E7DC4CEF1;
+	Tue, 16 Dec 2025 12:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886622;
-	bh=33Yx+qY+VU/Nm3JdH6v57HMtpK1QOW9Sta4OxhcwIjw=;
+	s=korg; t=1765888655;
+	bh=G9BKLI9LT8kabUxiPhl0JQCI6bEDqkh4iF1LTfH+KUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0izRvgujZNIzNITrRGTEpvlB+S7hbbH0Agvy6/azxaXx5i/D3KpUkFvfqD+KQtwq
-	 ioFcTEU9O5FGvvSvRtNW4S5FiLdlURryjbQT7LoalnIpFuHnyZ4mI2P0QiVUCrD1Iy
-	 xjWBVNZnX5x3hRQdBf/rydlpMF4htJqBNUeHoiIk=
+	b=EhQTX++I7ECf7EycJJmoskmXbTmPj9xzXb5/bTbA05yo8jh330pJoMKvlSqJHIpwK
+	 wo2dsV+1p5T4cdnxS331WrlyZNp+9/CPPYJIT+fYJQsoZwrWLnCftmN4TnzI6ykx83
+	 9I0h0OmF/c3ICsMG7/oYop4t7PvmL46mrTFs79GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 490/507] efi/cper: Adjust infopfx size to accept an extra space
-Date: Tue, 16 Dec 2025 12:15:31 +0100
-Message-ID: <20251216111403.191513149@linuxfoundation.org>
+Subject: [PATCH 6.18 565/614] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
+Date: Tue, 16 Dec 2025 12:15:32 +0100
+Message-ID: <20251216111421.855441475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
+[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
 
-Compiling with W=1 with werror enabled produces an error:
+The drm_property_create_signed_range() function doesn't return error
+pointers it returns NULL on error.  Fix the error checking to match.
 
-drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
-drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                                                                ^
-drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-As the logic there adds an space at the end of infopx buffer.
-Add an extra space to avoid such warning.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper-arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_plane.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index f0a63d09d3c49..6ff781e47147c 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -240,7 +240,7 @@ void cper_print_proc_arm(const char *pfx,
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
--	char newpfx[64], infopfx[64];
-+	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index a30493ed97157..4cadea997129d 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -338,14 +338,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
  
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+ 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_x))
+-		return PTR_ERR(prop_x);
++	if (!prop_x)
++		return -ENOMEM;
  
+ 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_y)) {
++	if (!prop_y) {
+ 		drm_property_destroy(plane->dev, prop_x);
+-		return PTR_ERR(prop_y);
++		return -ENOMEM;
+ 	}
+ 
+ 	drm_object_attach_property(&plane->base, prop_x, 0);
 -- 
 2.51.0
 
