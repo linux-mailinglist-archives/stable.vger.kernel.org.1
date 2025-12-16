@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17343CC2DE2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7A7CC260A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD7E830BC52B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD1730B6019
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048F734A3D9;
-	Tue, 16 Dec 2025 11:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F75534107E;
+	Tue, 16 Dec 2025 11:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqvYrxFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRikCz/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B417334A3BF;
-	Tue, 16 Dec 2025 11:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A63340DB7;
+	Tue, 16 Dec 2025 11:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886368; cv=none; b=gzlCtg/5uPZ2LvUX/ek3haz/B91F8LxM9NqUVGCEpfZfavuQSMvQL9ZAKfpbN+R7GD32ZhyHMGAz/WbJcoGYWHx2DZc1LhNzuOqqUPfwiGl5b2rMtJbWM9n52hGyvHOmuXZuUYpfO3AK9G9Bd8NGm4pm0VLPGsPv1iznFSIJauI=
+	t=1765884754; cv=none; b=jfCw/QSdOnP1mS+WoUqXLa41vNGsbYokgQNMlA1EBb1EMMf1x0qU0g0LJeaUwwwitHtgSGJSNlaE/JuQHOGrAHXTx6Q0+kQ3a7s5tnFk/B3IdcL9ZtsODxJ8n9BXsL8sA5dw2bN2aRJp5THcipVUjF8h6LH+nlAh9DK4JnKOCrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886368; c=relaxed/simple;
-	bh=J0Vpr1lSzESiReWImJIzHuBQ2qbp46pVm/AWx0msAGk=;
+	s=arc-20240116; t=1765884754; c=relaxed/simple;
+	bh=QWaLBjJJ+b4JI6UCsOYLTdGhtkfoFp4wX2UAH5mWjiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8yTL85tB1APmW02MdZxNtXTUO7S01z414wjINLUKIvwf/z7Hk3H0UfBDLFUbc5MoDaLHYdq98IT2EKU9L1UfPlC5HrM399TKf7dBEYVXVylLN4Sv68T6deaSwOidbRZjNeE0McC2hQt76Z5NOUDfMYQjRn+dnaegJndI5gqA2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqvYrxFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09698C4CEF1;
-	Tue, 16 Dec 2025 11:59:27 +0000 (UTC)
+	 MIME-Version; b=sNmguE6x9gqQvCmxl2WGoa4Ig4SWEifgPE/zzGh+PRZIbf6GO5K4uFh+tJh3A3fk4Wk3bSR6ESsXiIithxP2TDmPrVPBOBTdHHze9en5VuED8IR5EV/T4xQKrDznhX39vBOlpoqmuN142mrQk/keLqo/aIT3q3B7YBdZycuviIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRikCz/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6684DC4CEF1;
+	Tue, 16 Dec 2025 11:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886368;
-	bh=J0Vpr1lSzESiReWImJIzHuBQ2qbp46pVm/AWx0msAGk=;
+	s=korg; t=1765884754;
+	bh=QWaLBjJJ+b4JI6UCsOYLTdGhtkfoFp4wX2UAH5mWjiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqvYrxFucQSFdvDYBtrKbI2uIvGC+ajgG+M0wggClnj7Ixy5xOslB4U44N9qrxUo0
-	 oabpHE6ig/yXq4eRYouJbUCgvmy1EMw6yl2oRrqLdpsX35naAjUfpEDp2Lg+vnFcO8
-	 v+6rPn2ihiUK1Vujr73wT8d0XygKZHFHLZpMGXqQ=
+	b=sRikCz/MGM4Gpq1EDMyObfAjJzRlMlYKjjw7smgt0idXYnpIh4QwdSfXKIcuOf7E9
+	 zkBGg7jwtBFwEQ/UP56GYVfMGVtxNXXbsuAO7YlRhs0jeNaZQqv7fbTPiGBin+U7dF
+	 WuEalLupNvk3RFRQ5N12/rHMYObCiED2LlHcfuy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 415/507] net: dsa: b53: split reading search entry into their own functions
+Subject: [PATCH 6.12 289/354] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
 Date: Tue, 16 Dec 2025 12:14:16 +0100
-Message-ID: <20251216111400.496414626@linuxfoundation.org>
+Message-ID: <20251216111331.383389526@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit e0c476f325a8c9b961a3d446c24d3c8ecae7d186 ]
+[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
 
-Split reading search entries into a function for each format.
+The page allocated for vmem using __get_free_pages() is not freed on the
+error paths after it. Fix that by adding a corresponding __free_pages()
+call to the error path.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-6-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 56 ++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/ssd1307fb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 38e6fa05042ca..190eb11644917 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2060,28 +2060,48 @@ static int b53_arl_search_wait(struct b53_device *dev)
- 	return -ETIMEDOUT;
- }
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index aa6cc0a8151ac..83dd31fa1fab5 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -680,7 +680,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	if (!ssd1307fb_defio) {
+ 		dev_err(dev, "Couldn't allocate deferred io.\n");
+ 		ret = -ENOMEM;
+-		goto fb_alloc_error;
++		goto fb_defio_error;
+ 	}
  
--static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
--			      struct b53_arl_entry *ent)
-+static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
- {
- 	u64 mac_vid;
- 
--	if (is5325(dev)) {
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
--			   &mac_vid);
--		b53_arl_to_entry_25(ent, mac_vid);
--	} else if (is5365(dev)) {
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
--			   &mac_vid);
--		b53_arl_to_entry_25(ent, mac_vid);
--	} else {
--		u32 fwd_entry;
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
-+		   &mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid);
-+}
- 
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
--			   &mac_vid);
--		b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
--			   &fwd_entry);
--		b53_arl_to_entry(ent, mac_vid, fwd_entry);
--	}
-+static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
-+{
-+	u64 mac_vid;
-+
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
-+		   &mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid);
-+}
-+
-+static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
-+
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
-+		   &mac_vid);
-+	b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
-+		   &fwd_entry);
-+	b53_arl_to_entry(ent, mac_vid, fwd_entry);
-+}
-+
-+static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
-+			      struct b53_arl_entry *ent)
-+{
-+	if (is5325(dev))
-+		b53_arl_search_read_25(dev, idx, ent);
-+	else if (is5365(dev))
-+		b53_arl_search_read_65(dev, idx, ent);
-+	else
-+		b53_arl_search_read_95(dev, idx, ent);
- }
- 
- static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	ssd1307fb_defio->delay = HZ / refreshrate;
+@@ -757,6 +757,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 		regulator_disable(par->vbat_reg);
+ reset_oled_error:
+ 	fb_deferred_io_cleanup(info);
++fb_defio_error:
++	__free_pages(vmem, get_order(vmem_size));
+ fb_alloc_error:
+ 	framebuffer_release(info);
+ 	return ret;
 -- 
 2.51.0
 
