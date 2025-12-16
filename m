@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387C4CC2CF2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 739EACC2F56
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56F593087912
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FDC4324C55D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2D235CB7D;
-	Tue, 16 Dec 2025 12:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30EA347BB5;
+	Tue, 16 Dec 2025 11:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWl1V01y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkd2VPJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E613659E7;
-	Tue, 16 Dec 2025 12:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F786346FCF;
+	Tue, 16 Dec 2025 11:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887056; cv=none; b=XyhT6XN20xdHTEYCpn0dU/UIoD9jmbfaSeZ8fQndHoK1FvF+T79aqNewZ+udcIchIv6Z4swLdLkclZ0nFBuhfcNZIyAG5AYFz3ZWAH3I3rQPpGq79oZO9qWNY9O38AvFz+mLZ51D2lCV1kLcYgYYzwwr8c1lqRGZwHkHU7ST9nc=
+	t=1765885104; cv=none; b=MoFKEKuHg0ll4bSEooJWaDML3Um510iuQ5ROcOc/hWlkDsJcn3n3OSWuSDGfDP6fcSBVMEPbRE7HS0+eMqjfVyFi0iqCEnb42tKQTm53nd7K07RQNEHU0IhQkCquWuE9B0KjqT0Pp6riWtNb9u92mATKHQRHdtDvwsQlvpfVI34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887056; c=relaxed/simple;
-	bh=1OMHyFLZu1STVhNJUdYJjUf/tnqNE6aIglU9uGmMyjA=;
+	s=arc-20240116; t=1765885104; c=relaxed/simple;
+	bh=Phis65EvhH70HGI+vUCMCfCpBi+9tPNsEDZvgZkSAnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mocfWUZhhhtF7G+ubUptz0PD+vVOZs1uV2gj0a27qh2Ik6lVULHpHdLcP9I68iUg9UJgat1juk74xRIkE3pBHM5imo0n+QqJcbpvkpZzhXLFp9ArrApWvyNIVMKaoLk2SZGxbBNRD+j3vxKhrgV4UTTiVAn+kt1kKvyu/XXEzIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWl1V01y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3E5C4CEF1;
-	Tue, 16 Dec 2025 12:10:55 +0000 (UTC)
+	 MIME-Version; b=HX9URVVuFLYssCmMNfNwcgoD1KLmhf2CaRjZlvoGPtnuem2iTmAqv61WMxciizXuavX1zxDX8qmktDysrrEcOj8/sMaY1lNsb8XG+NB3hcwqeoNs0H9umpdoSIzfp7Oga+nMT4ce8hGbDLc3T4O+R9GbDEqpPwEERJW/ITbMG0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkd2VPJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1F2C19423;
+	Tue, 16 Dec 2025 11:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887056;
-	bh=1OMHyFLZu1STVhNJUdYJjUf/tnqNE6aIglU9uGmMyjA=;
+	s=korg; t=1765885104;
+	bh=Phis65EvhH70HGI+vUCMCfCpBi+9tPNsEDZvgZkSAnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWl1V01ypVr5sVtXDiIJ4F6jPEL6St62f9ZUH+17Xpq+4jzpohxoEQ/+7MJtS8rVM
-	 IV+OeHuK9veaiCrW+pD/lI5ShBUOV6LOmYIFvawA6dxJb0/gDZOfLrlGr+h87h/czI
-	 tBr+8aLKuGh8yfOUWAaPDvrXGV96BaRdVD81qkgA=
+	b=mkd2VPJbcbb0JfUoWdaYn8QAmecGwMTzIXS5lryoE/Ej1acqXzcxWQyPeFBpQnzw7
+	 bH2BF2pIe5xyQpdtsC6LikgdV4xCtI8opDfHRhtG5xEUOaM3d2VEjjgyvzUeRBlIkz
+	 yrZNXTObDlAXfaOWa/wmlKw+8wTZ/DfxgHumI2vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/614] arm64: dts: qcom: sdm845-starqltechn: remove (address|size)-cells
+Subject: [PATCH 6.17 040/507] irqchip/irq-bcm7038-l1: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:08:01 +0100
-Message-ID: <20251216111405.467059248@linuxfoundation.org>
+Message-ID: <20251216111346.993509372@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 4133486382364f60ea7e4f2c9070555689d9606e ]
+[ Upstream commit e9db5332caaf4789ae3bafe72f61ad8e6e0c2d81 ]
 
-Drop the unused address/size-cells properties to silence the DT
-checker warning:
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callback must not live in init.
 
-pmic@66 (maxim,max77705): '#address-cells', '#size-cells' do not
-match any of the regexes: '^pinctrl-[0-9]+$'
-
-Fixes: 7a88a931d095 ("arm64: dts: qcom: sdm845-starqltechn: add max77705 PMIC")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250926-starqltechn-correct_max77705_nodes-v5-1-c6ab35165534@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c057c799e379 ("irqchip/irq-bcm7038-l1: Switch to IRQCHIP_PLATFORM_DRIVER")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 75a53f0bbebd0..45c7aa0f602d8 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -606,8 +606,6 @@ pmic@66 {
- 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
- 		pinctrl-0 = <&pmic_int_default>;
- 		pinctrl-names = "default";
--		#address-cells = <1>;
--		#size-cells = <0>;
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index 04fac0cc857fd..eda33bd5d080c 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -219,9 +219,8 @@ static int bcm7038_l1_set_affinity(struct irq_data *d,
+ }
+ #endif
  
- 		leds {
- 			compatible = "maxim,max77705-rgb";
+-static int __init bcm7038_l1_init_one(struct device_node *dn,
+-				      unsigned int idx,
+-				      struct bcm7038_l1_chip *intc)
++static int bcm7038_l1_init_one(struct device_node *dn, unsigned int idx,
++			       struct bcm7038_l1_chip *intc)
+ {
+ 	struct resource res;
+ 	resource_size_t sz;
+@@ -395,8 +394,7 @@ static const struct irq_domain_ops bcm7038_l1_domain_ops = {
+ 	.map			= bcm7038_l1_map,
+ };
+ 
+-static int __init bcm7038_l1_of_init(struct device_node *dn,
+-			      struct device_node *parent)
++static int bcm7038_l1_of_init(struct device_node *dn, struct device_node *parent)
+ {
+ 	struct bcm7038_l1_chip *intc;
+ 	int idx, ret;
 -- 
 2.51.0
 
