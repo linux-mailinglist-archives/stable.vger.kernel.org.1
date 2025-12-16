@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-201755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1ADACC37F9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4658CC2CE3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CBB130C10F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C9523029B59
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A39334FF5C;
-	Tue, 16 Dec 2025 11:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E2034D4E0;
+	Tue, 16 Dec 2025 11:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPmKPJDL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cyglz3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA48734FF5A;
-	Tue, 16 Dec 2025 11:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E2234D4D7;
+	Tue, 16 Dec 2025 11:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885681; cv=none; b=DivCB7BivXG3eQfPifp81uZDsQAjfTqb3Am93bnlw9tYPxorzjEUrqRaMZ0OUQ/4fOeVGm+NS8MYd5/9uoKlo0rwh9ODEjaRQvO42qjwIku5MeUZMJgMxRJyZAW0akdS+YeNEKqPq1N34jwJ/tVPdNUAP8d3YjH7FxH5XBfogJM=
+	t=1765885566; cv=none; b=fHyHvTnl0dJplopYcuRnTP2/79OTa6Z9ioVncidAhHay7zjR/doyBcVmt9h7Q2sWN9PcQrxW/G40I33C5e/uHnxYhSvymxgrSZtwhnWIgWlxOKfmxc5olr42lWSK+rSsLXY94LDufpJ/HpIEAxBZkVdxz2XZEeWrToYViai35g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885681; c=relaxed/simple;
-	bh=5TBHEkD/R7GNev4rtH3f5fC86+X9istmc1n5K+Vp64k=;
+	s=arc-20240116; t=1765885566; c=relaxed/simple;
+	bh=RN9BYux6HlDJHd1B2T3W7RT18hcjjOuV9szZqsSDIyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+0sT/lGlnzcwYF3UVEU3sMKLx4YB/ucXAPgc8cRpsCd/c/3mId+tKGpoZSrYXAiIgA4BV4MhUmV8/bptWL/zRR4tOxQZJmmnY3FfmW4llokwwt8IeOu/uLwaFEnl9MbVf+83RGuMkJtHrjq2cWwhp+dIJZsse5Xr76M/CpwfrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPmKPJDL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C29C4CEF1;
-	Tue, 16 Dec 2025 11:48:01 +0000 (UTC)
+	 MIME-Version; b=lknBDinUmfBNZOLpkG9t3+KEcaHXz+2Vpgk0vu8LX/0L5NjpVpGzulqsApOgHyldJpQbnG/mykZTCGQA95YK2a9cfPPDrD0blEuZ+QAsW78TTouSOtUDs6fo13nMXip6CpoPVRbbo7cXmvbiVwQVPC9fzXAtznoHFzOO4ZRSQ+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cyglz3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034EEC4CEF1;
+	Tue, 16 Dec 2025 11:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885681;
-	bh=5TBHEkD/R7GNev4rtH3f5fC86+X9istmc1n5K+Vp64k=;
+	s=korg; t=1765885566;
+	bh=RN9BYux6HlDJHd1B2T3W7RT18hcjjOuV9szZqsSDIyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPmKPJDL7z9Mr641jCV4s3DAIphYPztyFn2ABweE8cZjRNm05cABM9dEnSE7SqQts
-	 rUuXN7nVq36X3pNKvCW4bmj9XR6B2XfDEhAPArDoi+phGDHqBlq401C9cUX0fuagEO
-	 6FDglLoeY1P71ssa0tn3kDGOU7SY9ftlrujrE82A=
+	b=2Cyglz3gy/nakPy3wXC1gamT/246DUfGeujYSS5thUQVg0h5aXHZmpzwFgUdegxb+
+	 TNJRmd08dequ2oaUcn8m0riBOQ1J8SepYclg+SsVBclEmE6sTFaIuFi1M9B8GPwL6W
+	 oeJ50zOKo+fYPhaAI5npVLeRwlz2jsHBWGEs5q5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 169/507] cleanup: fix scoped_class()
-Date: Tue, 16 Dec 2025 12:10:10 +0100
-Message-ID: <20251216111351.641416326@linuxfoundation.org>
+Subject: [PATCH 6.17 170/507] spi: tegra210-quad: Fix timeout handling
+Date: Tue, 16 Dec 2025 12:10:11 +0100
+Message-ID: <20251216111351.677165442@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -64,55 +65,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit 4e97bae1b412cd6ed8053b3d8a242122952985cc ]
+[ Upstream commit b4e002d8a7cee3b1d70efad0e222567f92a73000 ]
 
-This is a class, not a guard so why on earth is it checking for guard
-pointers or conditional lock acquisition? None of it makes any sense at
-all.
+When the CPU that the QSPI interrupt handler runs on (typically CPU 0)
+is excessively busy, it can lead to rare cases of the IRQ thread not
+running before the transfer timeout is reached.
 
-I'm not sure what happened back then. Maybe I had a brief psychedelic
-period that I completely forgot about and spaced out into a zone where
-that initial macro implementation made any sense at all.
+While handling the timeouts, any pending transfers are cleaned up and
+the message that they correspond to is marked as failed, which leaves
+the curr_xfer field pointing at stale memory.
 
-Link: https://patch.msgid.link/20251103-work-creds-init_cred-v1-1-cb3ec8711a6a@kernel.org
-Fixes: 5c21c5f22d07 ("cleanup: add a scoped version of CLASS()")
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+To avoid this, clear curr_xfer to NULL upon timeout and check for this
+condition when the IRQ thread is finally run.
+
+While at it, also make sure to clear interrupts on failure so that new
+interrupts can be run.
+
+A better, more involved, fix would move the interrupt clearing into a
+hard IRQ handler. Ideally we would also want to signal that the IRQ
+thread no longer needs to be run after the timeout is hit to avoid the
+extra check for a valid transfer.
+
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20251028155703.4151791-2-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cleanup.h | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 2573585b7f068..19c7e475d3a4d 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -290,15 +290,16 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
- 	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
- 		class_##_name##_constructor
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 3be7499db21ec..d9ca3d7b082f2 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1024,8 +1024,10 @@ static void tegra_qspi_handle_error(struct tegra_qspi *tqspi)
+ 	dev_err(tqspi->dev, "error in transfer, fifo status 0x%08x\n", tqspi->status_reg);
+ 	tegra_qspi_dump_regs(tqspi);
+ 	tegra_qspi_flush_fifos(tqspi, true);
+-	if (device_reset(tqspi->dev) < 0)
++	if (device_reset(tqspi->dev) < 0) {
+ 		dev_warn_once(tqspi->dev, "device reset failed\n");
++		tegra_qspi_mask_clear_irq(tqspi);
++	}
+ }
  
--#define scoped_class(_name, var, args)                          \
--	for (CLASS(_name, var)(args);                           \
--	     __guard_ptr(_name)(&var) || !__is_cond_ptr(_name); \
--	     ({ goto _label; }))                                \
--		if (0) {                                        \
--_label:                                                         \
--			break;                                  \
-+#define __scoped_class(_name, var, _label, args...)        \
-+	for (CLASS(_name, var)(args); ; ({ goto _label; })) \
-+		if (0) {                                   \
-+_label:                                                    \
-+			break;                             \
- 		} else
+ static void tegra_qspi_transfer_end(struct spi_device *spi)
+@@ -1176,9 +1178,11 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 				}
  
-+#define scoped_class(_name, var, args...) \
-+	__scoped_class(_name, var, __UNIQUE_ID(label), args)
+ 				/* Reset controller if timeout happens */
+-				if (device_reset(tqspi->dev) < 0)
++				if (device_reset(tqspi->dev) < 0) {
+ 					dev_warn_once(tqspi->dev,
+ 						      "device reset failed\n");
++					tegra_qspi_mask_clear_irq(tqspi);
++				}
+ 				ret = -EIO;
+ 				goto exit;
+ 			}
+@@ -1200,11 +1204,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+ 		}
++		tqspi->curr_xfer = NULL;
+ 		transfer_phase++;
+ 	}
+ 	ret = 0;
+ 
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	msg->status = ret;
+ 
+ 	return ret;
+@@ -1290,6 +1296,8 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		msg->actual_length += xfer->len + dummy_bytes;
+ 
+ complete_xfer:
++		tqspi->curr_xfer = NULL;
 +
- /*
-  * DEFINE_GUARD(name, type, lock, unlock):
-  *	trivial wrapper around DEFINE_CLASS() above specifically
+ 		if (ret < 0) {
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+@@ -1395,6 +1403,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ 	tegra_qspi_calculate_curr_xfer_param(tqspi, t);
+ 	tegra_qspi_start_cpu_based_transfer(tqspi, t);
+ exit:
++	tqspi->curr_xfer = NULL;
+ 	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 	return IRQ_HANDLED;
+ }
+@@ -1480,6 +1489,15 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ {
+ 	struct tegra_qspi *tqspi = context_data;
+ 
++	/*
++	 * Occasionally the IRQ thread takes a long time to wake up (usually
++	 * when the CPU that it's running on is excessively busy) and we have
++	 * already reached the timeout before and cleaned up the timed out
++	 * transfer. Avoid any processing in that case and bail out early.
++	 */
++	if (!tqspi->curr_xfer)
++		return IRQ_NONE;
++
+ 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
+ 
+ 	if (tqspi->cur_direction & DATA_DIR_TX)
 -- 
 2.51.0
 
