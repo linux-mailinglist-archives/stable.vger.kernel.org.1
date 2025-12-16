@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242F5CC3E5C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:24:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F58CC276E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8052930C1627
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 583823072195
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D5934405F;
-	Tue, 16 Dec 2025 12:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9423446D5;
+	Tue, 16 Dec 2025 11:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OytGG40l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TguWhxPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6B536BCC2;
-	Tue, 16 Dec 2025 12:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD13446BB;
+	Tue, 16 Dec 2025 11:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887436; cv=none; b=bLmG38N5LBARVBKYpqBgioageYAcM1IbrllXEFan1yEDOhuACgSsPS9LcoTtXatNbfFHYYFjOeW5jhS9UGUG05YDk74PNSXOMCy5dpMozEaEynXuTnOQ8/WXUg/dSjT88PXGOGNa8RbX2QM33jG1Hgp7pjaT6LuXcfVxFfogVRg=
+	t=1765885495; cv=none; b=sF4t1PGmsg2Q+4U/nmaxnhLxvR4RVsN4IZI5mHOJ5kqYY+7NeCQWqwNacTt0C/lfoX/I7IHfN4AlrHqsRzZb7KFMB/AHqk5v4SmWCAxWdfNecSJmnFEfyd7lnYeAntbdgIDY/C/tgul7oKk+OhmFcIZdXlRlVMclLYhb3Yq351U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887436; c=relaxed/simple;
-	bh=RpEUZDxLecVWnETGseQyOBofRMasPyina5v+TvnEqhM=;
+	s=arc-20240116; t=1765885495; c=relaxed/simple;
+	bh=mNJ+LgjUL035u0tOaxNzwhGrBRYWB6LaSIHq36VM6WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQL719jgoHDlh9hg9HXxdoKyU440LoYqJAGZrHRXf7oFYSpjNnnBmj10UJ0VGqrE//uIznkKOs3SBJ8Q9hKXKFLQeCqVOn48ncC0poUN2VK0sBmY1BakOOd2SKugzkTILtvFLrSRWVSppxeMLIc1e/T55JuZTDvC2DYTMUXWBa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OytGG40l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AB4C4CEF5;
-	Tue, 16 Dec 2025 12:17:15 +0000 (UTC)
+	 MIME-Version; b=LPoAHtwU6JLxheRxnzXmGPxJr8RH72TYk/LCihNA/rm5xVDeQHUmehVpXvF5L79VpIJBWemJe7qGAHCqNF9XW/rySqio5omR6B5Yn5eZ9R+bIxjpddf7BpYZeGtHzx9EYvyhX9PmcdzGuJZ6FTMM0kMRBKj0FtRQJ33anD0pCy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TguWhxPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDAEC4CEF1;
+	Tue, 16 Dec 2025 11:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887435;
-	bh=RpEUZDxLecVWnETGseQyOBofRMasPyina5v+TvnEqhM=;
+	s=korg; t=1765885495;
+	bh=mNJ+LgjUL035u0tOaxNzwhGrBRYWB6LaSIHq36VM6WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OytGG40lo+9INzSk+wjKGaxPv29QEwMcs0lCyfgT8V4jNbON0ftd6dswTN+yQbRnH
-	 gAGKGrVLyu831rLS4cOHISqPxRmkrlSGN1Fxco/tuLr5K/hJ82CyNchO2S3aTLaR26
-	 uR0fPzVEbKlp53S5gbW1Bmqvv54n+cOX58hGtYjU=
+	b=TguWhxPFYPLcZI84NAjNf82UUYRjs6SqiFBcO/7d0lUBvp8Ogd73Mxy5dVHxYS/J3
+	 9HJLXzh7GJangC/nNr6EhS9W7A9J/HyiBVb9tDdeVkdkVjD6RtTai28ZZjf/IHev0l
+	 4jJrkFqBXSHie+GFflYHTvC2LDRPnZE3ax0KhHoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 229/614] nbd: defer config put in recv_work
-Date: Tue, 16 Dec 2025 12:09:56 +0100
-Message-ID: <20251216111409.668551878@linuxfoundation.org>
+Subject: [PATCH 6.17 156/507] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Date: Tue, 16 Dec 2025 12:09:57 +0100
+Message-ID: <20251216111351.176004868@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 9517b82d8d422d426a988b213fdd45c6b417b86d ]
+[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
 
-There is one uaf issue in recv_work when running NBD_CLEAR_SOCK and
-NBD_CMD_RECONFIGURE:
-  nbd_genl_connect     // conf_ref=2 (connect and recv_work A)
-  nbd_open	       // conf_ref=3
-  recv_work A done     // conf_ref=2
-  NBD_CLEAR_SOCK       // conf_ref=1
-  nbd_genl_reconfigure // conf_ref=2 (trigger recv_work B)
-  close nbd	       // conf_ref=1
-  recv_work B
-    config_put         // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
+variable sel with an undefined value which is then used in regmap_field_write().
 
-Or only running NBD_CLEAR_SOCK:
-  nbd_genl_connect   // conf_ref=2
-  nbd_open 	     // conf_ref=3
-  NBD_CLEAR_SOCK     // conf_ref=2
-  close nbd
-    nbd_release
-      config_put     // conf_ref=1
-  recv_work
-    config_put 	     // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Commit 87aac3a80af5 ("nbd: call nbd_config_put() before notifying the
-waiter") moved nbd_config_put() to run before waking up the waiter in
-recv_work, in order to ensure that nbd_start_device_ioctl() would not
-be woken up while nbd->task_recv was still uncleared.
-
-However, in nbd_start_device_ioctl(), after being woken up it explicitly
-calls flush_workqueue() to make sure all current works are finished.
-Therefore, there is no need to move the config put ahead of the wakeup.
-
-Move nbd_config_put() to the end of recv_work, so that the reference is
-held for the whole lifetime of the worker thread. This makes sure the
-config cannot be freed while recv_work is still running, even if clear
-+ reconfigure interleave.
-
-In addition, we don't need to worry about recv_work dropping the last
-nbd_put (which causes deadlock):
-
-path A (netlink with NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=1 (trigger recv_work)
-  open nbd // nbd_refs=2
-  NBD_CLEAR_SOCK
-  close nbd
-    nbd_release
-      nbd_disconnect_and_put
-        flush_workqueue // recv_work done
-      nbd_config_put
-        nbd_put // nbd_refs=1
-      nbd_put // nbd_refs=0
-        queue_work
-
-path B (netlink without NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=2 (trigger recv_work)
-  open nbd // nbd_refs=3
-  NBD_CLEAR_SOCK // conf_refs=2
-  close nbd
-    nbd_release
-      nbd_config_put // conf_refs=1
-      nbd_put // nbd_refs=2
-  recv_work done // conf_refs=0, nbd_refs=1
-  rmmod // nbd_refs=0
-
-Reported-by: syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6907edce.a70a0220.37351b.0014.GAE@google.com/T/
-Fixes: 87aac3a80af5 ("nbd: make the config put is called before the notifying the waiter")
-Depends-on: e2daec488c57 ("nbd: Fix hungtask when nbd_config_put")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 2 +-
+ drivers/power/supply/rt9467-charger.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index a853c65ac65df..215fc18115b78 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1024,9 +1024,9 @@ static void recv_work(struct work_struct *work)
- 	nbd_mark_nsock_dead(nbd, nsock, 1);
- 	mutex_unlock(&nsock->tx_lock);
- 
--	nbd_config_put(nbd);
- 	atomic_dec(&config->recv_threads);
- 	wake_up(&config->recv_wq);
-+	nbd_config_put(nbd);
- 	kfree(args);
- }
- 
+diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
+index 5f3efcac4a1bb..3beb8a763a923 100644
+--- a/drivers/power/supply/rt9467-charger.c
++++ b/drivers/power/supply/rt9467-charger.c
+@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
+ 	if (rsel == RT9467_RANGE_VMIVR) {
+ 		ret = linear_range_get_selector_high(range, value, &sel, &found);
+ 		if (ret)
+-			value = range->max_sel;
++			sel = range->max_sel;
+ 	} else {
+ 		linear_range_get_selector_within(range, value, &sel);
+ 	}
 -- 
 2.51.0
 
