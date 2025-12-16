@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD366CC2749
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C960CC2EBA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ADAA53020C27
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4427830081B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5162355038;
-	Tue, 16 Dec 2025 11:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EBC3624D3;
+	Tue, 16 Dec 2025 12:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2e2EFYal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G72OwZbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CA92F83A2;
-	Tue, 16 Dec 2025 11:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FB23644CA;
+	Tue, 16 Dec 2025 12:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885985; cv=none; b=iFwXRNMfmw1VQU4Imyxr/ck7G/cj4sKvIbYAHjThSe9tQr18fWpCpKtXJgHhSKp9a40u8+XOq0Pw+XH2pLXVubtLTqKjGJI/1gVzjHcTBeWytg19HhT4LEtYdu4EV0FiVM0gXMGUuCNuKfk6UqKJ+05fSUhf4c36PHWGLo6BEbY=
+	t=1765887925; cv=none; b=PFpbr0sDDiO4jGd47mu5kHMJ9eUydyKgHF3JwJ6elHRxGX4Q9AwhCaxE5JikGLm99dYREqFsy/JXdfTpK0YyFJ9jLv3uhlQm4WQXhDSDsXNeGRpXTmwSkI9hqY2q+f9s0G7v6dkxA6ZPTZnrYC1SY8TrqH1KCEs0Fc9jXdhn4sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885985; c=relaxed/simple;
-	bh=mB0m+/KZuuDLY9oErLzJsA/CG1qFBRNNdYZ+yQky3cM=;
+	s=arc-20240116; t=1765887925; c=relaxed/simple;
+	bh=XyPpxYFwRz11DRcM8gm7t838tTVhnONW+53Z1EUyrKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbayTIXGoK3bNSUlJ/AkinzCtT3ZBcGvnmutGDAm7QHlXVUu6OcNlpYThVWKnG+b6RTFVR85Kxsl2BeV5h2zsCe4DY21vl9q6sWZareywFKE7M93fj1K2vJikeFlyZ7EEiEqxUWh0+8GBL1J/WR3lYW/Ov1aCjk/uYsknVSJs7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2e2EFYal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B5AC16AAE;
-	Tue, 16 Dec 2025 11:53:04 +0000 (UTC)
+	 MIME-Version; b=OvpZXS5vnUXgiBBRpgQao6mZE6emwHr5Mjq9lW4kIP4Uc4ZxS93Y+y7kOdA+A1qPKSzs0Jj5j25yk9Y7UEi+8YeMu70ATVhmR7dwXiM82erO/j9oyqicZccqYb+F4QmQiurCeoEWBvcWA7ZBdWcI7iMNK2EwJQjI7NNT0kSJIhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G72OwZbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE18EC4CEF1;
+	Tue, 16 Dec 2025 12:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885985;
-	bh=mB0m+/KZuuDLY9oErLzJsA/CG1qFBRNNdYZ+yQky3cM=;
+	s=korg; t=1765887925;
+	bh=XyPpxYFwRz11DRcM8gm7t838tTVhnONW+53Z1EUyrKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2e2EFYaldSKI/e4ZtcQBrgyQz6RNC7RrLjM1RNUEDk6RN26Fim+592uU+EaHhBH+t
-	 /TWmW2Q6kVjWeS7JR4bOhKkVlDTG/QmT40L1GprNKvVYMs1Gkxcut9rBTgo+9RIrXw
-	 BWj3nCSSgzQH071jhoWgcRrowgfzJUL7v0RZbZcM=
+	b=G72OwZbL7ifdI50QiCM9s6Xs9I+y+hRYvNYLYYuju1/RUIs7MA2bfnCjIMLCcB3y4
+	 Bt1EfFSZUu1f4Dg6U9q4XD5jYX4jgL2vKeSlO9crJJcGgL21OjdS1+t94FplwTujVB
+	 P4GXxazSV93Y/bANlQh/B9R70uPbaEoXnOLhTQbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Yipeng <zhaoyipeng5@huawei.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 303/507] ima: Handle error code returned by ima_filter_rule_match()
-Date: Tue, 16 Dec 2025 12:12:24 +0100
-Message-ID: <20251216111356.450622800@linuxfoundation.org>
+Subject: [PATCH 6.18 378/614] RDMA/bnxt_re: Pass correct flag for dma mr creation
+Date: Tue, 16 Dec 2025 12:12:25 +0100
+Message-ID: <20251216111415.057517912@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Yipeng <zhaoyipeng5@huawei.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 738c9738e690f5cea24a3ad6fd2d9a323cf614f6 ]
+[ Upstream commit a26c4c7cdb50247b8486f1caa1ea8ab5e5c37edf ]
 
-In ima_match_rules(), if ima_filter_rule_match() returns -ENOENT due to
-the rule being NULL, the function incorrectly skips the 'if (!rc)' check
-and sets 'result = true'. The LSM rule is considered a match, causing
-extra files to be measured by IMA.
+DMA MR doesn't use the unified MR model. So the lkey passed
+on to the reg_mr command to FW should contain the correct
+lkey. Driver is incorrectly over writing the lkey with pdid
+and firmware commands fails due to this.
 
-This issue can be reproduced in the following scenario:
-After unloading the SELinux policy module via 'semodule -d', if an IMA
-measurement is triggered before ima_lsm_rules is updated,
-in ima_match_rules(), the first call to ima_filter_rule_match() returns
--ESTALE. This causes the code to enter the 'if (rc == -ESTALE &&
-!rule_reinitialized)' block, perform ima_lsm_copy_rule() and retry. In
-ima_lsm_copy_rule(), since the SELinux module has been removed, the rule
-becomes NULL, and the second call to ima_filter_rule_match() returns
--ENOENT. This bypasses the 'if (!rc)' check and results in a false match.
+Avoid passing the wrong key for cases where the unified MR
+registration is not used.
 
-Call trace:
-  selinux_audit_rule_match+0x310/0x3b8
-  security_audit_rule_match+0x60/0xa0
-  ima_match_rules+0x2e4/0x4a0
-  ima_match_policy+0x9c/0x1e8
-  ima_get_action+0x48/0x60
-  process_measurement+0xf8/0xa98
-  ima_bprm_check+0x98/0xd8
-  security_bprm_check+0x5c/0x78
-  search_binary_handler+0x6c/0x318
-  exec_binprm+0x58/0x1b8
-  bprm_execve+0xb8/0x130
-  do_execveat_common.isra.0+0x1a8/0x258
-  __arm64_sys_execve+0x48/0x68
-  invoke_syscall+0x50/0x128
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x44/0x200
-  el0t_64_sync_handler+0x100/0x130
-  el0t_64_sync+0x3c8/0x3d0
-
-Fix this by changing 'if (!rc)' to 'if (rc <= 0)' to ensure that error
-codes like -ENOENT do not bypass the check and accidentally result in a
-successful match.
-
-Fixes: 4af4662fa4a9d ("integrity: IMA policy")
-Signed-off-by: Zhao Yipeng <zhaoyipeng5@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: f786eebbbefa ("RDMA/bnxt_re: Avoid an extra hwrm per MR creation")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1763624215-10382-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 +++++---
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 6 +++---
+ drivers/infiniband/hw/bnxt_re/qplib_sp.h | 2 +-
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 128fab8979308..db6d55af5a80b 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -674,7 +674,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule,
- 				goto retry;
- 			}
- 		}
--		if (!rc) {
-+		if (rc <= 0) {
- 			result = false;
- 			goto out;
- 		}
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 84ce3fce2826b..f19b55c13d580 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -601,7 +601,8 @@ static int bnxt_re_create_fence_mr(struct bnxt_re_pd *pd)
+ 	mr->qplib_mr.va = (u64)(unsigned long)fence->va;
+ 	mr->qplib_mr.total_size = BNXT_RE_FENCE_BYTES;
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL,
+-			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE);
++			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE,
++			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev, "Failed to register fence-MR\n");
+ 		goto fail;
+@@ -4027,7 +4028,7 @@ struct ib_mr *bnxt_re_get_dma_mr(struct ib_pd *ib_pd, int mr_access_flags)
+ 	mr->qplib_mr.hwq.level = PBL_LVL_MAX;
+ 	mr->qplib_mr.total_size = -1; /* Infinte length */
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL, 0,
+-			       PAGE_SIZE);
++			       PAGE_SIZE, false);
+ 	if (rc)
+ 		goto fail_mr;
+ 
+@@ -4257,7 +4258,8 @@ static struct ib_mr *__bnxt_re_user_reg_mr(struct ib_pd *ib_pd, u64 length, u64
+ 
+ 	umem_pgs = ib_umem_num_dma_blocks(umem, page_size);
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, umem,
+-			       umem_pgs, page_size);
++			       umem_pgs, page_size,
++			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev, "Failed to register user MR - rc = %d\n", rc);
+ 		rc = -EIO;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index a9afac2cbb7cf..408a34df26672 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -578,7 +578,7 @@ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
+ }
+ 
+ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+-		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size)
++		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr)
+ {
+ 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
+ 	struct bnxt_qplib_hwq_attr hwq_attr = {};
+@@ -640,7 +640,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+ 	req.access = (mr->access_flags & BNXT_QPLIB_MR_ACCESS_MASK);
+ 	req.va = cpu_to_le64(mr->va);
+ 	req.key = cpu_to_le32(mr->lkey);
+-	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags))
++	if (unified_mr)
+ 		req.key = cpu_to_le32(mr->pd->id);
+ 	req.flags = cpu_to_le16(mr->flags);
+ 	req.mr_size = cpu_to_le64(mr->total_size);
+@@ -651,7 +651,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+ 	if (rc)
+ 		goto fail;
+ 
+-	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags)) {
++	if (unified_mr) {
+ 		mr->lkey = le32_to_cpu(resp.xid);
+ 		mr->rkey = mr->lkey;
+ 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+index 147b5d9c03138..5a45c55c6464c 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+@@ -341,7 +341,7 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
+ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
+ 			 bool block);
+ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+-		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size);
++		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr);
+ int bnxt_qplib_free_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr);
+ int bnxt_qplib_alloc_fast_reg_mr(struct bnxt_qplib_res *res,
+ 				 struct bnxt_qplib_mrw *mr, int max);
 -- 
 2.51.0
 
