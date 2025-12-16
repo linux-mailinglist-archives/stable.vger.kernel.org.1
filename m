@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A572CC2872
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:04:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93449CC31E2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B28130DC51B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A924E3086E29
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4282A350A17;
-	Tue, 16 Dec 2025 11:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BDE34BA53;
+	Tue, 16 Dec 2025 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSrr0Fjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+s6Q/7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21C7350A13;
-	Tue, 16 Dec 2025 11:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB7E33EAFD;
+	Tue, 16 Dec 2025 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885698; cv=none; b=l24NKCTIYQezeeWa9iBeB7X3ncYzuZQuI8PEG8VjACXSigYg6esdblrE+uCM0KWOWH5UJZMefOCaAl7EGT+ejF6Cr9XarpJUbqBhDwDJtc3BTMFnoiP1e34cKDTqW2TKl5TcNMrRKqLCu/kO1CyScNvMwYog0ziET8oVzK7ltt8=
+	t=1765887634; cv=none; b=c87gXXeUy0KsFQ6L6/AqMn9UWx9Oo8EgAJPn+3ISrxIBynNO+92NWXYwROP8RsWoLMyPd3xkXNvyaBvfPSTYfWQIOo3ACzoYiMYFp/Vr4TVwI8ii5IA6UZr90cFUmNmXxk9ysZVwXPPzxO0JjzJs5bLbYkZu+5TwSL6Jo23CRrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885698; c=relaxed/simple;
-	bh=d+8HUgHXE7zYlvDtMGkcE7qLbdJMaBZbZr1QZoOeKgM=;
+	s=arc-20240116; t=1765887634; c=relaxed/simple;
+	bh=LT9Eilf3XOAIRbmB7FgYiEDcgv9sDHogjaPiquOnggs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWsucWJZXdnzRRy+bDh/RazRLYmcpYEZqWgKcttKlInMh37abpeVmzmyxnaP1qgFaePCMRjSW+HQIjhMIBjfQVKV3CSgbnj9HIEcE2+JCdDMSzPcKQyAFWB314kmCPEw7mkap5R2kWX93MIJb42yszcO16bhD/o5+98PsVKv1PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSrr0Fjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CA8C4CEF1;
-	Tue, 16 Dec 2025 11:48:17 +0000 (UTC)
+	 MIME-Version; b=lBOFBSN595FIcjGwTpLv11QcsCoARpfKUhNgvT8974DTk1WIsyuN7ZH1/dxuHqMVki1pAb9WFQwZ8ohHm32AIHdM3HzlptBRUVid5aWY0+LGFVDHO6Be7x+tF82/SiQn1Jdtv/YFmOl/Nv64gnt6TcisiJZ+NtMD8OjjQNFRRT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+s6Q/7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28467C4CEF1;
+	Tue, 16 Dec 2025 12:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885697;
-	bh=d+8HUgHXE7zYlvDtMGkcE7qLbdJMaBZbZr1QZoOeKgM=;
+	s=korg; t=1765887634;
+	bh=LT9Eilf3XOAIRbmB7FgYiEDcgv9sDHogjaPiquOnggs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSrr0FjtpbY5dj0Jl/zEf6yFbDwxQ82TxlcZhT7iul4I2NDwEDlhDt6U5aP4s5fGW
-	 +Pds7m/M1TNW6voiFb/IOQ/+QZcUpYkVirZqX542vg26J/vMJN5HabtzURPdkG8I1z
-	 Iku695R/Wt9LLWBrMCzjc7ZL5o265tBgRzr488w4=
+	b=Q+s6Q/7I1AHz5YvDkPtEA+2mXuXIwgq3LsT1KnHkTjgXma7c9qf96ExdHJ/20NRGG
+	 PP4HsHZB1+jRwEBfbeiR+OiRgqvwbFi3idrDfZVyspQmsYGVk4KhXcx6TX4g2HD5WZ
+	 eovcKnaKn6brBXcx0taQRSFtWYmRBhHWLv0MMHec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"Chen, Zide" <zide.chen@intel.com>
-Subject: [PATCH 6.17 218/507] perf tools: Fix missing feature check for inherit + SAMPLE_READ
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 292/614] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
 Date: Tue, 16 Dec 2025 12:10:59 +0100
-Message-ID: <20251216111353.405971889@linuxfoundation.org>
+Message-ID: <20251216111411.951307935@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit 367377f45c0b568882567f797b7b18b263505be7 ]
+[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
 
-It should also have PERF_SAMPLE_TID to enable inherit and PERF_SAMPLE_READ
-on recent kernels.  Not having _TID makes the feature check wrongly detect
-the inherit and _READ support.
+The error that returned by ftrace_set_filter_ip() in register_fentry() is
+not handled properly. Just fix it.
 
-It was reported that the following command failed due to the error in
-the missing feature check on Intel SPR machines.
-
-  $ perf record -e '{cpu/mem-loads-aux/S,cpu/mem-loads,ldlat=3/PS}' -- ls
-  Error:
-  Failure to open event 'cpu/mem-loads,ldlat=3/PS' on PMU 'cpu' which will be removed.
-  Invalid event (cpu/mem-loads,ldlat=3/PS) in per-thread mode, enable system wide with '-a'.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 3b193a57baf15c468 ("perf tools: Detect missing kernel features properly")
-Reported-and-tested-by: Chen, Zide <zide.chen@intel.com>
-Closes: https://lore.kernel.org/lkml/20251022220802.1335131-1-zide.chen@intel.com/
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/trampoline.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 5df59812b80ca..9efd177551f2f 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2396,7 +2396,7 @@ static bool evsel__detect_missing_features(struct evsel *evsel, struct perf_cpu
- 	/* Please add new feature detection here. */
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index f2cb0b0970933..04104397c432e 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -220,7 +220,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
+ 	}
  
- 	attr.inherit = true;
--	attr.sample_type = PERF_SAMPLE_READ;
-+	attr.sample_type = PERF_SAMPLE_READ | PERF_SAMPLE_TID;
- 	if (has_attr_feature(&attr, /*flags=*/0))
- 		goto found;
- 	perf_missing_features.inherit_sample_read = true;
+ 	if (tr->func.ftrace_managed) {
+-		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		if (ret)
++			return ret;
+ 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
+ 	} else {
+ 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
 -- 
 2.51.0
 
