@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-201489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB88CC2656
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:45:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC6CCC2F5F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB32310A72D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECC533053F8D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BEA342509;
-	Tue, 16 Dec 2025 11:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A727396DC2;
+	Tue, 16 Dec 2025 12:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6g3M4Bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIzgGcQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49B4341AC3;
-	Tue, 16 Dec 2025 11:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E1F396DBF;
+	Tue, 16 Dec 2025 12:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884805; cv=none; b=eYI8GvQ71dGWQheDEW0GgE3Ok+/+MztycKw5cTF+I4IOvxKAtxi5hrAZKEi/xBsVizBYzuklijCGKiHYTHrUpSUAfRirApMDRfr2mH0vXOnju+byCvKmmLqS+NCXr8tCpQUivbbC5kWW9YUw2YOaEckLuVdDqfYz/2+tc3h2cGs=
+	t=1765888334; cv=none; b=HbgHhdib81LfYsmSnQn5RlJUkTfrZXzNmwUTnzGsDXEvHytucBKGCQwxYZ+fUAYyV2jWS0ZJjXdyCRgK0dkkp/RlxShGEhK0EoMkP6r4qjbkPX12dB0k6tBhBDd11zNu9z7TJzof6gQViw2lNJiT3mNa2SQ94/TFQxSCUrKoOjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884805; c=relaxed/simple;
-	bh=2YJObbejIoCSiH9cJlxpTzW3IZC33D6rFGZbVuPxvBw=;
+	s=arc-20240116; t=1765888334; c=relaxed/simple;
+	bh=+4C4a8vE4ua7RpataKP9rXbB4e7CwcJPyNokpBoX87k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYjBdl0NLXlVeGrw7KnVpiHAlkHE9BwyUcJWj/HhaBmRu+CwosJAb5PWDGIKkYCpwRibrnHuZKQAFo0QVmAjGBZz84bDVCD2cvFiSK0RU/6a7w7k2ubCMkdcbLqYbSol/hAkX2FJ4ZQkVDkhTJLmOzOmRJDPkWCMGY6Bimu3Vq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6g3M4Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4733DC4CEF1;
-	Tue, 16 Dec 2025 11:33:25 +0000 (UTC)
+	 MIME-Version; b=uFi+pCs6Byq+Kem21SJU+pR8x8uk5IOHQ9zK/7kY1n0ZwRpWOXtgScG7jGEJz80jVtdwTUprBHRx+kiLRdMXFCcxZacTopMDtYh5CdI/Y3qN/vWzYjZQD1eA61zhjKYViuk4RYJWR7dtzOqeEo4RjP9mWjfws0Jd8S9xbqiGUzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIzgGcQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23905C4CEF1;
+	Tue, 16 Dec 2025 12:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884805;
-	bh=2YJObbejIoCSiH9cJlxpTzW3IZC33D6rFGZbVuPxvBw=;
+	s=korg; t=1765888334;
+	bh=+4C4a8vE4ua7RpataKP9rXbB4e7CwcJPyNokpBoX87k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6g3M4BgOoRw3hSPDXrj5r0Yllfx+6oveJaSV/Otm0lBQ3lVpjJ9m3je0m0vMBtVd
-	 rHCPpPPoq6kRhxaQtjZlOvO96AGHdA7f6KB2HVx6V6VKn/GpRt8KSr17kTJX0UfKxR
-	 WXuP3+/ALlYAlOYAa/TOjngiQsiym/dJZP57Adqo=
+	b=oIzgGcQmz0A2S6r5P5o7YPZlsAittHgmqYDIa8/YhnGMlaFqxr21znDUmR4yrZTQM
+	 hZ/I8OPKtsO6MXfk9z6scGUTh9gZEHLzLxb+YQriKTFaG6gMl4+11/HNtiyMUkRzIk
+	 7NGMdtjlzSpf7m4OLNeb/nu/2eP51ZAQPcJ8lkBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stoler <michael.stoler@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/354] NFS: Initialise verifiers for visible dentries in readdir and lookup
+Subject: [PATCH 6.18 504/614] smb: client: relax WARN_ON_ONCE(SMBDIRECT_SOCKET_*) checks in recv_done() and smbd_conn_upcall()
 Date: Tue, 16 Dec 2025 12:14:31 +0100
-Message-ID: <20251216111331.926746561@linuxfoundation.org>
+Message-ID: <20251216111419.631079731@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +67,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 9bd545539b233725a3416801f7c374bff0327d6e ]
+[ Upstream commit dc10cf1368af8cb816dcaa2502ba7d44fff20612 ]
 
-Ensure that the verifiers are initialised before calling
-d_splice_alias() in both nfs_prime_dcache() and nfs_lookup().
+sc->first_error might already be set and sc->status
+is thus unexpected, so this should avoid the WARN[_ON]_ONCE()
+if sc->first_error is already set and have a usable error path.
 
-Reported-by: Michael Stoler <michael.stoler@vastdata.com>
-Fixes: a1147b8281bd ("NFS: Fix up directory verifier races")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+While there set sc->first_error as soon as possible.
+
+This is done based on a problem seen in similar places on
+the server. And there it was already very useful in order
+to find the problem when we have a meaningful WARN_ONCE()
+that prints details about the connection.
+
+This is much more useful:
+
+[  309.560973] expected[NEGOTIATE_NEEDED] != RDMA_CONNECT_RUNNING
+first_error=0 local=192.168.0.200:445 remote=192.168.0.100:60445
+[  309.561034] WARNING: CPU: 2 PID: 78 at transport_rdma.c:643
+recv_done+0x2fa/0x3d0 [ksmbd]
+
+than what we had before (only):
+
+[  894.140316] WARNING: CPU: 1 PID: 116 at
+fs/smb/server/transport_rdma.c:642 recv_done+0x308/0x360 [ksmbd]
+
+Fixes: 58dfba8a2d4e ("smb: client/smbdirect: replace SMBDIRECT_SOCKET_CONNECTING with more detailed states")
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 01af2bb8a7216..8c4fcd140fa13 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -787,16 +787,17 @@ void nfs_prime_dcache(struct dentry *parent, struct nfs_entry *entry,
- 		goto out;
- 	}
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index c6c428c2e08dd..788a0670c4a8d 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -7,6 +7,7 @@
+ #include <linux/module.h>
+ #include <linux/highmem.h>
+ #include <linux/folio_queue.h>
++#define __SMBDIRECT_SOCKET_DISCONNECT(__sc) smbd_disconnect_rdma_connection(__sc)
+ #include "../common/smbdirect/smbdirect_pdu.h"
+ #include "smbdirect.h"
+ #include "cifs_debug.h"
+@@ -186,6 +187,9 @@ static void smbd_disconnect_rdma_work(struct work_struct *work)
+ 	struct smbdirect_socket *sc =
+ 		container_of(work, struct smbdirect_socket, disconnect_work);
  
-+	nfs_set_verifier(dentry, dir_verifier);
- 	inode = nfs_fhget(dentry->d_sb, entry->fh, entry->fattr);
- 	alias = d_splice_alias(inode, dentry);
- 	d_lookup_done(dentry);
- 	if (alias) {
- 		if (IS_ERR(alias))
- 			goto out;
-+		nfs_set_verifier(alias, dir_verifier);
- 		dput(dentry);
- 		dentry = alias;
- 	}
--	nfs_set_verifier(dentry, dir_verifier);
- 	trace_nfs_readdir_lookup(d_inode(parent), dentry, 0);
- out:
- 	dput(dentry);
-@@ -2002,13 +2003,14 @@ struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, unsigned in
- 	nfs_lookup_advise_force_readdirplus(dir, flags);
++	if (sc->first_error == 0)
++		sc->first_error = -ECONNABORTED;
++
+ 	/*
+ 	 * make sure this and other work is not queued again
+ 	 * but here we don't block and avoid
+@@ -197,9 +201,6 @@ static void smbd_disconnect_rdma_work(struct work_struct *work)
+ 	disable_work(&sc->idle.immediate_work);
+ 	disable_delayed_work(&sc->idle.timer_work);
  
- no_entry:
-+	nfs_set_verifier(dentry, dir_verifier);
- 	res = d_splice_alias(inode, dentry);
- 	if (res != NULL) {
- 		if (IS_ERR(res))
- 			goto out;
-+		nfs_set_verifier(res, dir_verifier);
- 		dentry = res;
- 	}
--	nfs_set_verifier(dentry, dir_verifier);
- out:
- 	trace_nfs_lookup_exit(dir, dentry, flags, PTR_ERR_OR_ZERO(res));
- 	nfs_free_fattr(fattr);
+-	if (sc->first_error == 0)
+-		sc->first_error = -ECONNABORTED;
+-
+ 	switch (sc->status) {
+ 	case SMBDIRECT_SOCKET_NEGOTIATE_NEEDED:
+ 	case SMBDIRECT_SOCKET_NEGOTIATE_RUNNING:
+@@ -242,6 +243,9 @@ static void smbd_disconnect_rdma_work(struct work_struct *work)
+ 
+ static void smbd_disconnect_rdma_connection(struct smbdirect_socket *sc)
+ {
++	if (sc->first_error == 0)
++		sc->first_error = -ECONNABORTED;
++
+ 	/*
+ 	 * make sure other work (than disconnect_work) is
+ 	 * not queued again but here we don't block and avoid
+@@ -252,9 +256,6 @@ static void smbd_disconnect_rdma_connection(struct smbdirect_socket *sc)
+ 	disable_work(&sc->idle.immediate_work);
+ 	disable_delayed_work(&sc->idle.timer_work);
+ 
+-	if (sc->first_error == 0)
+-		sc->first_error = -ECONNABORTED;
+-
+ 	switch (sc->status) {
+ 	case SMBDIRECT_SOCKET_RESOLVE_ADDR_FAILED:
+ 	case SMBDIRECT_SOCKET_RESOLVE_ROUTE_FAILED:
+@@ -322,27 +323,27 @@ static int smbd_conn_upcall(
+ 
+ 	switch (event->event) {
+ 	case RDMA_CM_EVENT_ADDR_RESOLVED:
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RESOLVE_ADDR_RUNNING);
++		if (SMBDIRECT_CHECK_STATUS_DISCONNECT(sc, SMBDIRECT_SOCKET_RESOLVE_ADDR_RUNNING))
++			break;
+ 		sc->status = SMBDIRECT_SOCKET_RESOLVE_ROUTE_NEEDED;
+ 		wake_up(&sc->status_wait);
+ 		break;
+ 
+ 	case RDMA_CM_EVENT_ROUTE_RESOLVED:
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RESOLVE_ROUTE_RUNNING);
++		if (SMBDIRECT_CHECK_STATUS_DISCONNECT(sc, SMBDIRECT_SOCKET_RESOLVE_ROUTE_RUNNING))
++			break;
+ 		sc->status = SMBDIRECT_SOCKET_RDMA_CONNECT_NEEDED;
+ 		wake_up(&sc->status_wait);
+ 		break;
+ 
+ 	case RDMA_CM_EVENT_ADDR_ERROR:
+ 		log_rdma_event(ERR, "connecting failed event=%s\n", event_name);
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RESOLVE_ADDR_RUNNING);
+ 		sc->status = SMBDIRECT_SOCKET_RESOLVE_ADDR_FAILED;
+ 		smbd_disconnect_rdma_work(&sc->disconnect_work);
+ 		break;
+ 
+ 	case RDMA_CM_EVENT_ROUTE_ERROR:
+ 		log_rdma_event(ERR, "connecting failed event=%s\n", event_name);
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RESOLVE_ROUTE_RUNNING);
+ 		sc->status = SMBDIRECT_SOCKET_RESOLVE_ROUTE_FAILED;
+ 		smbd_disconnect_rdma_work(&sc->disconnect_work);
+ 		break;
+@@ -428,7 +429,8 @@ static int smbd_conn_upcall(
+ 					min_t(u8, sp->responder_resources,
+ 					      peer_responder_resources);
+ 
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RDMA_CONNECT_RUNNING);
++		if (SMBDIRECT_CHECK_STATUS_DISCONNECT(sc, SMBDIRECT_SOCKET_RDMA_CONNECT_RUNNING))
++			break;
+ 		sc->status = SMBDIRECT_SOCKET_NEGOTIATE_NEEDED;
+ 		wake_up(&sc->status_wait);
+ 		break;
+@@ -437,7 +439,6 @@ static int smbd_conn_upcall(
+ 	case RDMA_CM_EVENT_UNREACHABLE:
+ 	case RDMA_CM_EVENT_REJECTED:
+ 		log_rdma_event(ERR, "connecting failed event=%s\n", event_name);
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_RDMA_CONNECT_RUNNING);
+ 		sc->status = SMBDIRECT_SOCKET_RDMA_CONNECT_FAILED;
+ 		smbd_disconnect_rdma_work(&sc->disconnect_work);
+ 		break;
+@@ -699,7 +700,8 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		negotiate_done =
+ 			process_negotiation_response(response, wc->byte_len);
+ 		put_receive_buffer(sc, response);
+-		WARN_ON_ONCE(sc->status != SMBDIRECT_SOCKET_NEGOTIATE_RUNNING);
++		if (SMBDIRECT_CHECK_STATUS_WARN(sc, SMBDIRECT_SOCKET_NEGOTIATE_RUNNING))
++			negotiate_done = false;
+ 		if (!negotiate_done) {
+ 			sc->status = SMBDIRECT_SOCKET_NEGOTIATE_FAILED;
+ 			smbd_disconnect_rdma_connection(sc);
 -- 
 2.51.0
 
