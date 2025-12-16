@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D71CC2478
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED401CC2FFE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 710B23000B38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16D01303C020
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D28E34252F;
-	Tue, 16 Dec 2025 11:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A9636CE0B;
+	Tue, 16 Dec 2025 12:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oATEKlUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1466BFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC5342507;
-	Tue, 16 Dec 2025 11:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726D336CDF8;
+	Tue, 16 Dec 2025 12:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884457; cv=none; b=NLyZ/RZ2vudC1O1S58DNOdaWaZjnK1WPXlrEmaI0SnnACC30I5KYYhAYy2GoOitctLWhlW3GcoL19cBoLk2oZ78b/SPaFASCEGJD+N84nI3opIMERT6cOE62nMfu1Dpj4uRxG8w8OmOrin8ntsfldiVB3zciutHxoFFpJ9EYVFM=
+	t=1765887989; cv=none; b=TvmO2soIDV/LWbHVxMk2ZmH+axBwvhdFfd9sifSKBbAA4QRU5r92w9kRTQjZKX3ONL9uBsG2fxbU8HnbtkWLebsLm4xm2j5ahL4rOjTZAllyszL9ujNCrGKrArN1E7YHUeHGJFhru7cuAvGtKqbzze6nrJt7xC23/vB3IzvaLfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884457; c=relaxed/simple;
-	bh=LU1cJ0y7RG0PJG6l1N1e5B/oJELYTo4zxArjtMuOfP8=;
+	s=arc-20240116; t=1765887989; c=relaxed/simple;
+	bh=DCsgb2BFvohP9pppSZ3/eSsFrsSlf2R92NKWduE68Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5v8mxJAColwzOQGLmhrp0bIHGlltVF9JtnzRAUmbdYP95UUvI+by0MfEcqovjhsja7bkXD68jG5s+EJPk037MGKL4ua5y+rmN6Hz/sAq8ThXUxYhEVhL9EUp59dptUlojSI6WU1J2o/ohQdxF6/Fp9cS8IgzRaknKAvZN/mc4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oATEKlUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11361C4CEF1;
-	Tue, 16 Dec 2025 11:27:35 +0000 (UTC)
+	 MIME-Version; b=sUBozl4XYI7AmzZD6eyPyxDJ+ipM+cPGwIrwu33UOMCzMWuuP1BMZmQqC+CI9SSjHB0879Gqnp32Bh/d3eMuhMwFotlLpEUNRMif/Ag/cBvoeZFTyYDOEE24/5ZSxyabQFOILcJKDN9rxlH2hoEOSaH3Hw7ESxiwCjQXPg9MVDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1466BFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A8EC16AAE;
+	Tue, 16 Dec 2025 12:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884456;
-	bh=LU1cJ0y7RG0PJG6l1N1e5B/oJELYTo4zxArjtMuOfP8=;
+	s=korg; t=1765887989;
+	bh=DCsgb2BFvohP9pppSZ3/eSsFrsSlf2R92NKWduE68Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oATEKlUY0yo3cQy+mtbrkteJRcqs66bxMUJJH1iHhmYeSId8/vtKjMohggFMNvoxv
-	 K8Gp8SunHz3VSzdGySrys7G0XyotPLm89NvOWBTOs8uqV+Egh36ucgujDe6H1cbeZK
-	 qqN474KArcmmz7/NESA57R3+5uEH9Ahmdwf14mg4=
+	b=O1466BFMnXco899+WlRrztlseKGpVZRPIzZJn44I52hse9IfeulCZ1KiXJQmUQ1jE
+	 aCvs0bj7GucXzeFXZSrerB2pM4MD9AlSRuPIfu7NpGUpu7oWw4lmgldC1Q7zcdKMse
+	 3Ty3Vl3+c9/bbcQiulU6sGFRpkkUg3ObJwp0KXFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ben Greear <greearb@candelatech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/354] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+Subject: [PATCH 6.18 399/614] wifi: mt76: mt7996: skip deflink accounting for offchannel links
 Date: Tue, 16 Dec 2025 12:12:46 +0100
-Message-ID: <20251216111328.127541382@linuxfoundation.org>
+Message-ID: <20251216111415.830395669@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
+[ Upstream commit 4fe823b9ee0317b04ddc6d9e00fea892498aa0f2 ]
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+Do not take into account offchannel links for deflink accounting.
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
-
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
-
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
+Fixes: a3316d2fc669f ("wifi: mt76: mt7996: set vif default link_id adding/removing vif links")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-4-259ebf11f654@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 8a57d6c72335e..876bf79847717 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index ead56ce4c0362..5ff7ab596f88c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -370,7 +370,8 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
  
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
+ 	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
  
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
- 	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
+-	if (mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
++	if (!mlink->wcid->offchannel &&
++	    mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
+ 		mvif->mt76.deflink_id = link_conf->link_id;
  
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
+ 	return 0;
+@@ -401,7 +402,8 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
+ 
+-	if (mvif->mt76.deflink_id == link_conf->link_id) {
++	if (!mlink->wcid->offchannel &&
++	    mvif->mt76.deflink_id == link_conf->link_id) {
+ 		struct ieee80211_bss_conf *iter;
+ 		unsigned int link_id;
+ 
 -- 
 2.51.0
 
