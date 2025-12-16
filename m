@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE634CC2AD1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4F6CC23CD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF32E3023E80
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7503830220EC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61573559FF;
-	Tue, 16 Dec 2025 11:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357131AAE28;
+	Tue, 16 Dec 2025 11:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK1zhjCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNTksi1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A91C341AD7;
-	Tue, 16 Dec 2025 11:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D318A31ED9A;
+	Tue, 16 Dec 2025 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886269; cv=none; b=fr4EndjmT4bIOvTGT7UhWQUooTmFm8oNJTDcLKriE0ARl5aN/5lXIfS84jIr0J4/JaqDlllBy2PdDCpBDW3orq3N0kd/XxnMfV+3rMoGmucNMluCNMUEZ1nRqea4U1AfwIpO/ThNvhr2OLa55/wtCmWzYhtXTonQ4Dx+B4zUUog=
+	t=1765884551; cv=none; b=IXQe5HD7ok2n3Rkx3ZIHF2PrAwtYMWgVMwdP3Jg++s7BvEEtdmKmw3VSSwaYshomarpJ+H9px1LF/o0w8Nj1UZC5k+UF21wbGxHgMBYFXxoO5J90uOJKFkDesRVTfJr9x9XUFYRIGgBWs1K0E3HW5yKsQa3kQgE13TyQf/VrheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886269; c=relaxed/simple;
-	bh=PKCQI7XnrBfE5c2dDj8v6C3e6+pqFwj/huV7mPzEcko=;
+	s=arc-20240116; t=1765884551; c=relaxed/simple;
+	bh=i2CteQSK1rVX8YcETBcdy5CQuALoJVSTo6wQ8tDkWyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9C0zmcXMjEXw8Rn2INklv+yRyKao8jPQRDu4Vryu37rafTEsaDejOp68DGf0ZJTlTDsJ8ZN36OvNnKQQWK6ShMrTlPanpkjLOUdgn+FQEoIApAScs42JEe6GQTaLLBHgRNSJwmp0FUEtnW8Ut0yf++L7zb7DD+rWWfvfSJhA6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK1zhjCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F63BC4CEF1;
-	Tue, 16 Dec 2025 11:57:48 +0000 (UTC)
+	 MIME-Version; b=qGMJ85XtWLf784GrN4vKnCdrqE2pHDjHgBjlmLJp0mPeaSkfexNQhd234pIE/UAo76+aNsfeYBzqs25CvDLHIP8eUlyn+rsfsqdiR8Ix3QXYLmdEX2KdwSxN0wYxbPd6TbywTFVZtabTYtYuWvax1151ime9mwwPVD7xnCZtD40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNTksi1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8FBC4CEF1;
+	Tue, 16 Dec 2025 11:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886269;
-	bh=PKCQI7XnrBfE5c2dDj8v6C3e6+pqFwj/huV7mPzEcko=;
+	s=korg; t=1765884551;
+	bh=i2CteQSK1rVX8YcETBcdy5CQuALoJVSTo6wQ8tDkWyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eK1zhjCk2gesxgS8s2/PMW8sOM4koy0/9gpWGFx0loxrOx20hsQSDSwaWH7cI9Hpw
-	 uTiuca8I7Y1ov3nGfoS+f1RcAI8Qe65va+Fed/l71TYvC61oFoZ/1l394J08RvH4BI
-	 Rx+vTlw0hYs0vfq1BevMbbCUMK0ZT9ms8nJRPmws=
+	b=UNTksi1ACF74YvVBzhgjTUE8CvvzlVxmAKCd4q7bPZ1dhopaw95gR367HW4vbzwXX
+	 rstmj/+9nXI06W+mpgUA0ghp7GNL1m5EQU7mv3sbnTAmpPLFBVgCsUtyF8UQA2Ny7U
+	 BRWp9Hlk1AjvvSuvk69PEmpRxAdq2LEBRYryjWIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 354/507] RDMA/irdma: Do not directly rely on IB_PD_UNSAFE_GLOBAL_RKEY
+Subject: [PATCH 6.12 228/354] backlight: lp855x: Fix lp855x.h kernel-doc warnings
 Date: Tue, 16 Dec 2025 12:13:15 +0100
-Message-ID: <20251216111358.282228696@linuxfoundation.org>
+Message-ID: <20251216111329.177646948@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 71d3bdae5eab21cf8991a6f3cd914caa31d5a51f ]
+[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
 
-The HW disables bounds checking for MRs with a length of zero, so
-the driver will only allow a zero length MR if the "all_memory"
-flag is set, and this flag is only set if IB_PD_UNSAFE_GLOBAL_RKEY
-is set for the PD.
+Add a missing struct short description and a missing leading " *" to
+lp855x.h to avoid kernel-doc warnings:
 
-This means that the "get_dma_mr" method will currently fail unless
-the IB_PD_UNSAFE_GLOBAL_RKEY flag is set. This has not been an issue
-because the "get_dma_mr" method is only ever invoked if the device
-does not support the local DMA key or if IB_PD_UNSAFE_GLOBAL_RKEY
-is set, and so far, all IRDMA HW supports the local DMA lkey.
+Warning: include/linux/platform_data/lp855x.h:126 missing initial short
+ description on line:
+ * struct lp855x_platform_data
+Warning: include/linux/platform_data/lp855x.h:131 bad line:
+   Only valid when mode is PWM_BASED.
 
-However, some new HW does not support the local DMA lkey, so the
-"get_dma_mr" method needs to work without IB_PD_UNSAFE_GLOBAL_RKEY
-being set.
-
-To support HW that does not allow the local DMA lkey, the logic has
-been changed to pass an explicit flag to indicate when a dma_mr is
-being created so that the zero length will be allowed.
-
-Also, the "all_memory" flag has been forced to false for normal MR
-allocation since these MRs are never supposed to provide global
-unsafe rkey semantics anyway; only the MR created with "get_dma_mr"
-should support this.
-
-Fixes: bb6d73d9add6 ("RDMA/irdma: Prevent zero-length STAG registration")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-7-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/cm.c    |  2 +-
- drivers/infiniband/hw/irdma/main.h  |  2 +-
- drivers/infiniband/hw/irdma/verbs.c | 15 ++++++++-------
- drivers/infiniband/hw/irdma/verbs.h |  3 ++-
- 4 files changed, 12 insertions(+), 10 deletions(-)
+ include/linux/platform_data/lp855x.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
-index c6a0a661d6e7e..f4f4f92ba63ac 100644
---- a/drivers/infiniband/hw/irdma/cm.c
-+++ b/drivers/infiniband/hw/irdma/cm.c
-@@ -3710,7 +3710,7 @@ int irdma_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
- 	iwpd = iwqp->iwpd;
- 	tagged_offset = (uintptr_t)iwqp->ietf_mem.va;
- 	ibmr = irdma_reg_phys_mr(&iwpd->ibpd, iwqp->ietf_mem.pa, buf_len,
--				 IB_ACCESS_LOCAL_WRITE, &tagged_offset);
-+				 IB_ACCESS_LOCAL_WRITE, &tagged_offset, false);
- 	if (IS_ERR(ibmr)) {
- 		ret = -ENOMEM;
- 		goto error;
-diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
-index 674acc9521681..f863c0aaf85d7 100644
---- a/drivers/infiniband/hw/irdma/main.h
-+++ b/drivers/infiniband/hw/irdma/main.h
-@@ -538,7 +538,7 @@ void irdma_copy_ip_htonl(__be32 *dst, u32 *src);
- u16 irdma_get_vlan_ipv4(u32 *addr);
- void irdma_get_vlan_mac_ipv6(u32 *addr, u16 *vlan_id, u8 *mac);
- struct ib_mr *irdma_reg_phys_mr(struct ib_pd *ib_pd, u64 addr, u64 size,
--				int acc, u64 *iova_start);
-+				int acc, u64 *iova_start, bool dma_mr);
- int irdma_upload_qp_context(struct irdma_qp *iwqp, bool freeze, bool raw);
- void irdma_cqp_ce_handler(struct irdma_pci_f *rf, struct irdma_sc_cq *cq);
- int irdma_ah_cqp_op(struct irdma_pci_f *rf, struct irdma_sc_ah *sc_ah, u8 cmd,
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index eb4683b248af9..f8a7a0382a38a 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2654,7 +2654,6 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
- 	info->stag_idx = iwmr->stag >> IRDMA_CQPSQ_STAG_IDX_S;
- 	info->pd_id = iwpd->sc_pd.pd_id;
- 	info->total_len = iwmr->len;
--	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	info->remote_access = true;
- 	cqp_info->cqp_cmd = IRDMA_OP_ALLOC_STAG;
- 	cqp_info->post_sq = 1;
-@@ -2665,7 +2664,7 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
- 	if (status)
- 		return status;
- 
--	iwmr->is_hwreg = 1;
-+	iwmr->is_hwreg = true;
- 	return 0;
- }
- 
-@@ -2806,7 +2805,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
- 	stag_info->total_len = iwmr->len;
- 	stag_info->access_rights = irdma_get_mr_access(access);
- 	stag_info->pd_id = iwpd->sc_pd.pd_id;
--	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
-+	stag_info->all_memory = iwmr->dma_mr;
- 	if (stag_info->access_rights & IRDMA_ACCESS_FLAGS_ZERO_BASED)
- 		stag_info->addr_type = IRDMA_ADDR_TYPE_ZERO_BASED;
- 	else
-@@ -2833,7 +2832,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
- 	irdma_put_cqp_request(&iwdev->rf->cqp, cqp_request);
- 
- 	if (!ret)
--		iwmr->is_hwreg = 1;
-+		iwmr->is_hwreg = true;
- 
- 	return ret;
- }
-@@ -3169,7 +3168,7 @@ static int irdma_hwdereg_mr(struct ib_mr *ib_mr)
- 	if (status)
- 		return status;
- 
--	iwmr->is_hwreg = 0;
-+	iwmr->is_hwreg = false;
- 	return 0;
- }
- 
-@@ -3292,9 +3291,10 @@ static struct ib_mr *irdma_rereg_user_mr(struct ib_mr *ib_mr, int flags,
-  * @size: size of memory to register
-  * @access: Access rights
-  * @iova_start: start of virtual address for physical buffers
-+ * @dma_mr: Flag indicating whether this region is a PD DMA MR
-  */
- struct ib_mr *irdma_reg_phys_mr(struct ib_pd *pd, u64 addr, u64 size, int access,
--				u64 *iova_start)
-+				u64 *iova_start, bool dma_mr)
- {
- 	struct irdma_device *iwdev = to_iwdev(pd->device);
- 	struct irdma_pbl *iwpbl;
-@@ -3311,6 +3311,7 @@ struct ib_mr *irdma_reg_phys_mr(struct ib_pd *pd, u64 addr, u64 size, int access
- 	iwpbl = &iwmr->iwpbl;
- 	iwpbl->iwmr = iwmr;
- 	iwmr->type = IRDMA_MEMREG_TYPE_MEM;
-+	iwmr->dma_mr = dma_mr;
- 	iwpbl->user_base = *iova_start;
- 	stag = irdma_create_stag(iwdev);
- 	if (!stag) {
-@@ -3349,7 +3350,7 @@ static struct ib_mr *irdma_get_dma_mr(struct ib_pd *pd, int acc)
- {
- 	u64 kva = 0;
- 
--	return irdma_reg_phys_mr(pd, 0, 0, acc, &kva);
-+	return irdma_reg_phys_mr(pd, 0, 0, acc, &kva, true);
- }
+diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
+index ab222dd05bbc2..3b4a891acefe9 100644
+--- a/include/linux/platform_data/lp855x.h
++++ b/include/linux/platform_data/lp855x.h
+@@ -124,12 +124,12 @@ struct lp855x_rom_data {
+ };
  
  /**
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index 36ff8dd712f00..cbd8bef68ae4f 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -101,7 +101,8 @@ struct irdma_mr {
- 	};
- 	struct ib_umem *region;
- 	int access;
--	u8 is_hwreg;
-+	bool is_hwreg:1;
-+	bool dma_mr:1;
- 	u16 type;
- 	u32 page_cnt;
- 	u64 page_size;
+- * struct lp855x_platform_data
++ * struct lp855x_platform_data - lp855 platform-specific data
+  * @name : Backlight driver name. If it is not defined, default name is set.
+  * @device_control : value of DEVICE CONTROL register
+  * @initial_brightness : initial value of backlight brightness
+  * @period_ns : platform specific pwm period value. unit is nano.
+-		Only valid when mode is PWM_BASED.
++ *		Only valid when mode is PWM_BASED.
+  * @size_program : total size of lp855x_rom_data
+  * @rom_data : list of new eeprom/eprom registers
+  */
 -- 
 2.51.0
 
