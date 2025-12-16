@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7B0CC3780
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E7FCC314F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8B11302F69A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 73999304A4DE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4D4341666;
-	Tue, 16 Dec 2025 12:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92CE34D4EB;
+	Tue, 16 Dec 2025 11:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyfMnNlv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDZVhN6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48752BD5A2;
-	Tue, 16 Dec 2025 12:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D4034D4E4;
+	Tue, 16 Dec 2025 11:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887513; cv=none; b=HPopbtS188U4b+SRBvCgHRQHYlMOYIfIN9BXtfGd/G1WAeJw3waYiru524sYw131GldHDw2Ego2t957mp6JRPWQuvVXR03OKp3jUv/YDn4jtXdqZf3ASt06PcLmm3qThA2rv8MI5DYFyqTeqAByYthGjFCpIHfh0cPZZn/1EvaQ=
+	t=1765885576; cv=none; b=BbjrvCjQWKQYEXNjtmak6EhTOnK/DyeuGydLMcl1Q91x7E+rkwKaB3bxDdHjT670ebk+hB4LuDDcZNNezagEUqDDB4Qkm3vIKvxurNMfIMn1LIaDo9vhTlXldX9i0tJb//ZP/fBAXbzsrQ3YH7y1r8ogiuDHpOSlNboYhFZeWUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887513; c=relaxed/simple;
-	bh=gWAbfJRLVYOZZ7aXN0SrLb2OpIqPGW0FOsEOMHWwxMU=;
+	s=arc-20240116; t=1765885576; c=relaxed/simple;
+	bh=CIJUhA6ZG2XOIgOZoknzMWQIidIKFqrvQqNROXnxYtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=op8fVmuVxClkP4jJFxidEsnxRShlNNZMwad1L8rw5rXdcsYDV7yHzQqRz7k/HhmShhQatX3HYYOrzHviXycQWJPw4GAai9tOjjsoxa2E1qslsqG+3NboBLS7j3INxzLk1aWMymLzocrLq8j22PQBQt92y92oZGmAD0j/TcE3V2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyfMnNlv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DFCC4CEF1;
-	Tue, 16 Dec 2025 12:18:32 +0000 (UTC)
+	 MIME-Version; b=Jc2P8PHzEXWaSX7ybOv4sN7HtIO5zT+Gv5CWcU8W8TJSqRaneDkRtzqZdp5UucGNhwgD60w3bfBN3scTojI/RIkxfBKhq0KBO1XELqQq6g1AuF1G8l/y98ayaACzBsExJb9MjqNgdutEliXZtjS4y11n+tSXMAKRFpQP59ahxIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDZVhN6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB447C4CEF1;
+	Tue, 16 Dec 2025 11:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887513;
-	bh=gWAbfJRLVYOZZ7aXN0SrLb2OpIqPGW0FOsEOMHWwxMU=;
+	s=korg; t=1765885576;
+	bh=CIJUhA6ZG2XOIgOZoknzMWQIidIKFqrvQqNROXnxYtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyfMnNlvJjsORPiubbe2mVZ1lw+uOzOvtY1qF7ZcOIIBjZlU0MLUGapyRiejtROum
-	 /Dt9qSaX+b64KTgRvwA7o1pFWFIpFJYjYU55RS152UhaQUPEeJ9DJNDm6uPg3lqPyY
-	 nff1HRIRMfHM1tqyTbhCKsQQ5bO5LCT7ym+1qoVw=
+	b=pDZVhN6lkzjubvVfhBFdYDxgdl3zwDXenCRDGfpiGyX7yKPe4X5F91+ChMkS6oOFJ
+	 OhywRuItXeOl6ltobDnuElrJqmN5UbW3zpHj+kXKHeK8UZS48OdGXD+jrfjuqq/Xq+
+	 ZfwYyoPsSHFUVJkYc5m/lMfr68DYepjwWwgov6Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 254/614] coresight: etm3x: Always set tracers device mode on target CPU
-Date: Tue, 16 Dec 2025 12:10:21 +0100
-Message-ID: <20251216111410.577733259@linuxfoundation.org>
+Subject: [PATCH 6.17 181/507] wifi: rtw89: usb: fix leak in rtw89_usb_write_port()
+Date: Tue, 16 Dec 2025 12:10:22 +0100
+Message-ID: <20251216111352.073218223@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit ab3fde32afe6a77e5cc60f868e44e6e09424752b ]
+[ Upstream commit 7543818e97d5d54b3b2f75f1c4dedee298d7d914 ]
 
-The ETMv3 driver shares the same issue as ETMv4 regarding race
-conditions when accessing the device mode.
+When there is an attempt to write data and RTW89_FLAG_UNPLUGGED is set,
+this means device is disconnected and no urb is submitted.  Return
+appropriate error code to the caller to properly free the allocated
+resources.
 
-This commit applies the same fix: ensuring that the device mode is
-modified only by the target CPU to eliminate race conditions across
-CPUs.
+Found by Linux Verification Center (linuxtesting.org).
 
-Fixes: 22fd532eaa0c ("coresight: etm3x: adding operation mode for etm_enable()")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-3-f55553b6c8b3@arm.com
+Fixes: 2135c28be6a8 ("wifi: rtw89: Add usb.{c,h}")
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251104135720.321110-3-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm3x-core.c          | 59 +++++++++++++------
- 1 file changed, 40 insertions(+), 19 deletions(-)
+ drivers/net/wireless/realtek/rtw89/usb.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm3x-core.c b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-index 45630a1cd32fb..a5e809589d3e3 100644
---- a/drivers/hwtracing/coresight/coresight-etm3x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-@@ -439,13 +439,26 @@ struct etm_enable_arg {
- 	int rc;
- };
- 
--static void etm_enable_hw_smp_call(void *info)
-+static void etm_enable_sysfs_smp_call(void *info)
- {
- 	struct etm_enable_arg *arg = info;
-+	struct coresight_device *csdev;
- 
- 	if (WARN_ON(!arg))
- 		return;
-+
-+	csdev = arg->drvdata->csdev;
-+	if (!coresight_take_mode(csdev, CS_MODE_SYSFS)) {
-+		/* Someone is already using the tracer */
-+		arg->rc = -EBUSY;
-+		return;
-+	}
-+
- 	arg->rc = etm_enable_hw(arg->drvdata);
-+
-+	/* The tracer didn't start */
-+	if (arg->rc)
-+		coresight_set_mode(csdev, CS_MODE_DISABLED);
- }
- 
- static int etm_cpu_id(struct coresight_device *csdev)
-@@ -465,16 +478,26 @@ static int etm_enable_perf(struct coresight_device *csdev,
- 			   struct coresight_path *path)
- {
- 	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-+	int ret;
- 
- 	if (WARN_ON_ONCE(drvdata->cpu != smp_processor_id()))
- 		return -EINVAL;
- 
-+	if (!coresight_take_mode(csdev, CS_MODE_PERF))
-+		return -EBUSY;
-+
- 	/* Configure the tracer based on the session's specifics */
- 	etm_parse_event_config(drvdata, event);
- 	drvdata->traceid = path->trace_id;
- 
- 	/* And enable it */
--	return etm_enable_hw(drvdata);
-+	ret = etm_enable_hw(drvdata);
-+
-+	/* Failed to start tracer; roll back to DISABLED mode */
-+	if (ret)
-+		coresight_set_mode(csdev, CS_MODE_DISABLED);
-+
-+	return ret;
- }
- 
- static int etm_enable_sysfs(struct coresight_device *csdev, struct coresight_path *path)
-@@ -494,7 +517,7 @@ static int etm_enable_sysfs(struct coresight_device *csdev, struct coresight_pat
- 	if (cpu_online(drvdata->cpu)) {
- 		arg.drvdata = drvdata;
- 		ret = smp_call_function_single(drvdata->cpu,
--					       etm_enable_hw_smp_call, &arg, 1);
-+					       etm_enable_sysfs_smp_call, &arg, 1);
- 		if (!ret)
- 			ret = arg.rc;
- 		if (!ret)
-@@ -517,12 +540,6 @@ static int etm_enable(struct coresight_device *csdev, struct perf_event *event,
- 		      enum cs_mode mode, struct coresight_path *path)
- {
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index e8e064cf7e0ad..512a46dd9d06a 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -256,7 +256,7 @@ static int rtw89_usb_write_port(struct rtw89_dev *rtwdev, u8 ch_dma,
  	int ret;
--	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
--
--	if (!coresight_take_mode(csdev, mode)) {
--		/* Someone is already using the tracer */
--		return -EBUSY;
--	}
  
- 	switch (mode) {
- 	case CS_MODE_SYSFS:
-@@ -535,17 +552,12 @@ static int etm_enable(struct coresight_device *csdev, struct perf_event *event,
- 		ret = -EINVAL;
- 	}
+ 	if (test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags))
+-		return 0;
++		return -ENODEV;
  
--	/* The tracer didn't start */
--	if (ret)
--		coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
--
- 	return ret;
- }
+ 	urb = usb_alloc_urb(0, GFP_ATOMIC);
+ 	if (!urb)
+@@ -305,8 +305,9 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+ 					   txcb);
+ 		if (ret) {
+-			rtw89_err(rtwdev, "write port txch %d failed: %d\n",
+-				  txch, ret);
++			if (ret != -ENODEV)
++				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
++					  txch, ret);
  
--static void etm_disable_hw(void *info)
-+static void etm_disable_hw(struct etm_drvdata *drvdata)
- {
- 	int i;
--	struct etm_drvdata *drvdata = info;
- 	struct etm_config *config = &drvdata->config;
- 	struct coresight_device *csdev = drvdata->csdev;
- 
-@@ -567,6 +579,15 @@ static void etm_disable_hw(void *info)
- 		"cpu: %d disable smp call done\n", drvdata->cpu);
- }
- 
-+static void etm_disable_sysfs_smp_call(void *info)
-+{
-+	struct etm_drvdata *drvdata = info;
-+
-+	etm_disable_hw(drvdata);
-+
-+	coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
-+}
-+
- static void etm_disable_perf(struct coresight_device *csdev)
- {
- 	struct etm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
-@@ -588,6 +609,8 @@ static void etm_disable_perf(struct coresight_device *csdev)
- 
- 	CS_LOCK(drvdata->csa.base);
- 
-+	coresight_set_mode(drvdata->csdev, CS_MODE_DISABLED);
-+
- 	/*
- 	 * perf will release trace ids when _free_aux()
- 	 * is called at the end of the session
-@@ -612,7 +635,8 @@ static void etm_disable_sysfs(struct coresight_device *csdev)
- 	 * Executing etm_disable_hw on the cpu whose ETM is being disabled
- 	 * ensures that register writes occur when cpu is powered.
- 	 */
--	smp_call_function_single(drvdata->cpu, etm_disable_hw, drvdata, 1);
-+	smp_call_function_single(drvdata->cpu, etm_disable_sysfs_smp_call,
-+				 drvdata, 1);
- 
- 	spin_unlock(&drvdata->spinlock);
- 	cpus_read_unlock();
-@@ -652,9 +676,6 @@ static void etm_disable(struct coresight_device *csdev,
- 		WARN_ON_ONCE(mode);
- 		return;
- 	}
--
--	if (mode)
--		coresight_set_mode(csdev, CS_MODE_DISABLED);
- }
- 
- static const struct coresight_ops_source etm_source_ops = {
+ 			skb_dequeue(&txcb->tx_ack_queue);
+ 			kfree(txcb);
 -- 
 2.51.0
 
