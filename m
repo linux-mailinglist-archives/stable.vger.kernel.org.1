@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46ED1CC2601
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B39BCC2EFB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F3C63021F70
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 074C83109880
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B356A343204;
-	Tue, 16 Dec 2025 11:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D71A398B95;
+	Tue, 16 Dec 2025 12:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBeeLzQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmjXSm+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9F34320D;
-	Tue, 16 Dec 2025 11:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFBE398B90;
+	Tue, 16 Dec 2025 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884838; cv=none; b=Z4vnTNsA/hcgQal86+Ur0VPIu65Z4oDrfRhKgwZ5JPgNVqfw/A4gY0l549cIJ7ABPTLeYnnrHrrAGrzvNXN6bf0byCzHTwKANZVnkbF/cQ4P+eQVOXC8jEV4EMS38KYlWa9ltwUcIcflyC+Z3AdyR84YxisHZS6bePFAT/2fvvA=
+	t=1765888371; cv=none; b=r/PzqY+15IhLHUzStJc0SYsM0ocL6i02SuiHag4H6SL9i5STmkvZo0JWDr6bJrahoFYWAJxZof6y4u0EKsnPbf3UFrWrDmXncddhEN0ss7xIkVNvsoIRbTnJ6tPR9EA4rngPJDVNnccmm1XGwIDWHDI+IxrP/3dMNJmuCV0vlTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884838; c=relaxed/simple;
-	bh=tWpR2EZJneZmlGg7Gaw+XBttQxflLjgAOYweqbD2FZU=;
+	s=arc-20240116; t=1765888371; c=relaxed/simple;
+	bh=3A3n/kdJhZC4C5fDgfcf15u1eO1AijWl/SlV9MyPXIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MImBkQT7aEsYDoDyUmqQvrspfQTAm4svcpwQwNwRuTH0lqxrRIhbT6PLEDk78IPkF6fv+mwgOGi2h6qhYcFiz3UAsllWabY2wz43J2/Z4JzNNR4vD0go1tFyL4dd4S1FFVIgBvi+G1D5tZzODL19X2L6ASw5ZMzJaOWwU2286yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBeeLzQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBC7C4CEF1;
-	Tue, 16 Dec 2025 11:33:57 +0000 (UTC)
+	 MIME-Version; b=UXYwBY84IzMPQUmp+L6k1KV3IWZ3uMJs+SXPEbcP18lNf425fJ1klmQsX7+wDeoR4V7cuvJ40P6yOOaaO98wsvGKghOY1ZpohWLiXiPBAfUDaNx+vdwLdslETawJ1jVU8TJb+nVN/dpYwT2JYu/t0jTgboQeCBTVx4MpFjVtwCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmjXSm+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623C3C4CEF1;
+	Tue, 16 Dec 2025 12:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884838;
-	bh=tWpR2EZJneZmlGg7Gaw+XBttQxflLjgAOYweqbD2FZU=;
+	s=korg; t=1765888370;
+	bh=3A3n/kdJhZC4C5fDgfcf15u1eO1AijWl/SlV9MyPXIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBeeLzQ5raWSF1mXITqLrX5GSj0HIFqgeIvNQ+/v1IEMbLbWESlTeoaoyrpKnNf08
-	 N0cy9Axq+d6F1MLx1ypEt1WD/GeWpq+JFVxSjRok980BxXl/08tVeu9gEhLK2TYqiR
-	 5NWR1RV+aje3TnOW/FgokpXyxVCE3t9hancL6CZA=
+	b=tmjXSm+QhIRdDAJr9rO4evcZmnDFe6bjaI74Og52YjAHwRGy1kDQmaYjYIPxuuIcG
+	 zCX4deu4HH5Z3bYrAh3nuUrPMquwypDQAFiVOYoOBmPy6F8IlU8kWKyYISocGxIhAt
+	 ZU74nE7+u3xvQwMI3GsgeTAEgfe6coFcRGkTIN1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@primarydata.com>,
-	Lance Shelton <lance.shelton@hammerspace.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/354] Expand the type of nfs_fattr->valid
-Date: Tue, 16 Dec 2025 12:14:40 +0100
-Message-ID: <20251216111332.250851195@linuxfoundation.org>
+Subject: [PATCH 6.18 514/614] net: dsa: b53: add support for 5389/5397/5398 ARL entry format
+Date: Tue, 16 Dec 2025 12:14:41 +0100
+Message-ID: <20251216111419.991434692@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +61,237 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@primarydata.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit ce60ab3964782df9ba34f0a64c0bc766dd508bde ]
+[ Upstream commit 300f78e8b6b7be17c2c78afeded75be68acb1aa7 ]
 
-We need to be able to track more than 32 attributes per inode.
+BCM5389, BCM5397 and BCM5398 use a different ARL entry format with just
+a 16 bit fwdentry register, as well as different search control and data
+offsets.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@primarydata.com>
-Signed-off-by: Lance Shelton <lance.shelton@hammerspace.com>
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/1e3405fca54efd0be7c91c1da77917b94f5dfcc4.1748515333.git.bcodding@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 2b092175f5e3 ("NFS: Fix inheritance of the block sizes when automounting")
+So add appropriate ops for them and switch those chips to use them.
+
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-8-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c            |  2 +-
- include/linux/nfs_fs_sb.h |  2 +-
- include/linux/nfs_xdr.h   | 54 +++++++++++++++++++--------------------
- 3 files changed, 29 insertions(+), 29 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 53 ++++++++++++++++++++++++++++++--
+ drivers/net/dsa/b53/b53_priv.h   | 26 ++++++++++++++++
+ drivers/net/dsa/b53/b53_regs.h   | 13 ++++++++
+ 3 files changed, 89 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 5bab9db5417c2..1b43331eb6ece 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2214,7 +2214,7 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
- 	bool attr_changed = false;
- 	bool have_delegation;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 50ed9b7157197..dedbd53412871 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1850,6 +1850,31 @@ static void b53_arl_write_entry_25(struct b53_device *dev,
+ 		    mac_vid);
+ }
  
--	dfprintk(VFS, "NFS: %s(%s/%lu fh_crc=0x%08x ct=%d info=0x%x)\n",
-+	dfprintk(VFS, "NFS: %s(%s/%lu fh_crc=0x%08x ct=%d info=0x%llx)\n",
- 			__func__, inode->i_sb->s_id, inode->i_ino,
- 			nfs_display_fhandle_hash(NFS_FH(inode)),
- 			atomic_read(&inode->i_count), fattr->valid);
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 2cff5cafbaa78..97edf7b583d5e 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -169,8 +169,8 @@ struct nfs_server {
- #define NFS_MOUNT_SHUTDOWN			0x08000000
- #define NFS_MOUNT_NO_ALIGNWRITE		0x10000000
++static void b53_arl_read_entry_89(struct b53_device *dev,
++				  struct b53_arl_entry *ent, u8 idx)
++{
++	u64 mac_vid;
++	u16 fwd_entry;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
++		   &mac_vid);
++	b53_read16(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx), &fwd_entry);
++	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
++}
++
++static void b53_arl_write_entry_89(struct b53_device *dev,
++				   const struct b53_arl_entry *ent, u8 idx)
++{
++	u32 fwd_entry;
++	u64 mac_vid;
++
++	b53_arl_from_entry_89(&mac_vid, &fwd_entry, ent);
++	b53_write64(dev, B53_ARLIO_PAGE,
++		    B53_ARLTBL_MAC_VID_ENTRY(idx), mac_vid);
++	b53_write16(dev, B53_ARLIO_PAGE,
++		    B53_ARLTBL_DATA_ENTRY(idx), fwd_entry);
++}
++
+ static void b53_arl_read_entry_95(struct b53_device *dev,
+ 				  struct b53_arl_entry *ent, u8 idx)
+ {
+@@ -2017,6 +2042,8 @@ static void b53_read_arl_srch_ctl(struct b53_device *dev, u8 *val)
  
--	unsigned int		fattr_valid;	/* Valid attributes */
- 	unsigned int		caps;		/* server capabilities */
-+	__u64			fattr_valid;	/* Valid attributes */
- 	unsigned int		rsize;		/* read size */
- 	unsigned int		rpages;		/* read size (in pages) */
- 	unsigned int		wsize;		/* write size */
-diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
-index b7a08c875514f..ea751edf247bf 100644
---- a/include/linux/nfs_xdr.h
-+++ b/include/linux/nfs_xdr.h
-@@ -45,7 +45,7 @@ struct nfs4_threshold {
+ 	if (is5325(dev) || is5365(dev))
+ 		offset = B53_ARL_SRCH_CTL_25;
++	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
++		offset = B53_ARL_SRCH_CTL_89;
+ 	else
+ 		offset = B53_ARL_SRCH_CTL;
+ 
+@@ -2029,6 +2056,8 @@ static void b53_write_arl_srch_ctl(struct b53_device *dev, u8 val)
+ 
+ 	if (is5325(dev) || is5365(dev))
+ 		offset = B53_ARL_SRCH_CTL_25;
++	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
++		offset = B53_ARL_SRCH_CTL_89;
+ 	else
+ 		offset = B53_ARL_SRCH_CTL;
+ 
+@@ -2074,6 +2103,18 @@ static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry_25(ent, mac_vid);
+ }
+ 
++static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u16 fwd_entry;
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_MACVID_89,
++		   &mac_vid);
++	b53_read16(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_89, &fwd_entry);
++	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
++}
++
+ static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
+ 				   struct b53_arl_entry *ent)
+ {
+@@ -2664,6 +2705,12 @@ static const struct b53_arl_ops b53_arl_ops_65 = {
+ 	.arl_search_read = b53_arl_search_read_65,
  };
  
- struct nfs_fattr {
--	unsigned int		valid;		/* which fields are valid */
-+	__u64			valid;		/* which fields are valid */
- 	umode_t			mode;
- 	__u32			nlink;
- 	kuid_t			uid;
-@@ -80,32 +80,32 @@ struct nfs_fattr {
- 	struct nfs4_label	*label;
- };
++static const struct b53_arl_ops b53_arl_ops_89 = {
++	.arl_read_entry = b53_arl_read_entry_89,
++	.arl_write_entry = b53_arl_write_entry_89,
++	.arl_search_read = b53_arl_search_read_89,
++};
++
+ static const struct b53_arl_ops b53_arl_ops_95 = {
+ 	.arl_read_entry = b53_arl_read_entry_95,
+ 	.arl_write_entry = b53_arl_write_entry_95,
+@@ -2728,7 +2775,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM5395_DEVICE_ID,
+@@ -2756,7 +2803,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM5398_DEVICE_ID,
+@@ -2770,7 +2817,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
+-		.arl_ops = &b53_arl_ops_95,
++		.arl_ops = &b53_arl_ops_89,
+ 	},
+ 	{
+ 		.chip_id = BCM53101_DEVICE_ID,
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index c6e2d5e41c758..127ce7f6b16ba 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -353,6 +353,18 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
+ 	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
+ }
  
--#define NFS_ATTR_FATTR_TYPE		(1U << 0)
--#define NFS_ATTR_FATTR_MODE		(1U << 1)
--#define NFS_ATTR_FATTR_NLINK		(1U << 2)
--#define NFS_ATTR_FATTR_OWNER		(1U << 3)
--#define NFS_ATTR_FATTR_GROUP		(1U << 4)
--#define NFS_ATTR_FATTR_RDEV		(1U << 5)
--#define NFS_ATTR_FATTR_SIZE		(1U << 6)
--#define NFS_ATTR_FATTR_PRESIZE		(1U << 7)
--#define NFS_ATTR_FATTR_BLOCKS_USED	(1U << 8)
--#define NFS_ATTR_FATTR_SPACE_USED	(1U << 9)
--#define NFS_ATTR_FATTR_FSID		(1U << 10)
--#define NFS_ATTR_FATTR_FILEID		(1U << 11)
--#define NFS_ATTR_FATTR_ATIME		(1U << 12)
--#define NFS_ATTR_FATTR_MTIME		(1U << 13)
--#define NFS_ATTR_FATTR_CTIME		(1U << 14)
--#define NFS_ATTR_FATTR_PREMTIME		(1U << 15)
--#define NFS_ATTR_FATTR_PRECTIME		(1U << 16)
--#define NFS_ATTR_FATTR_CHANGE		(1U << 17)
--#define NFS_ATTR_FATTR_PRECHANGE	(1U << 18)
--#define NFS_ATTR_FATTR_V4_LOCATIONS	(1U << 19)
--#define NFS_ATTR_FATTR_V4_REFERRAL	(1U << 20)
--#define NFS_ATTR_FATTR_MOUNTPOINT	(1U << 21)
--#define NFS_ATTR_FATTR_MOUNTED_ON_FILEID (1U << 22)
--#define NFS_ATTR_FATTR_OWNER_NAME	(1U << 23)
--#define NFS_ATTR_FATTR_GROUP_NAME	(1U << 24)
--#define NFS_ATTR_FATTR_V4_SECURITY_LABEL (1U << 25)
-+#define NFS_ATTR_FATTR_TYPE		BIT_ULL(0)
-+#define NFS_ATTR_FATTR_MODE		BIT_ULL(1)
-+#define NFS_ATTR_FATTR_NLINK		BIT_ULL(2)
-+#define NFS_ATTR_FATTR_OWNER		BIT_ULL(3)
-+#define NFS_ATTR_FATTR_GROUP		BIT_ULL(4)
-+#define NFS_ATTR_FATTR_RDEV		BIT_ULL(5)
-+#define NFS_ATTR_FATTR_SIZE		BIT_ULL(6)
-+#define NFS_ATTR_FATTR_PRESIZE		BIT_ULL(7)
-+#define NFS_ATTR_FATTR_BLOCKS_USED	BIT_ULL(8)
-+#define NFS_ATTR_FATTR_SPACE_USED	BIT_ULL(9)
-+#define NFS_ATTR_FATTR_FSID		BIT_ULL(10)
-+#define NFS_ATTR_FATTR_FILEID		BIT_ULL(11)
-+#define NFS_ATTR_FATTR_ATIME		BIT_ULL(12)
-+#define NFS_ATTR_FATTR_MTIME		BIT_ULL(13)
-+#define NFS_ATTR_FATTR_CTIME		BIT_ULL(14)
-+#define NFS_ATTR_FATTR_PREMTIME		BIT_ULL(15)
-+#define NFS_ATTR_FATTR_PRECTIME		BIT_ULL(16)
-+#define NFS_ATTR_FATTR_CHANGE		BIT_ULL(17)
-+#define NFS_ATTR_FATTR_PRECHANGE	BIT_ULL(18)
-+#define NFS_ATTR_FATTR_V4_LOCATIONS	BIT_ULL(19)
-+#define NFS_ATTR_FATTR_V4_REFERRAL	BIT_ULL(20)
-+#define NFS_ATTR_FATTR_MOUNTPOINT	BIT_ULL(21)
-+#define NFS_ATTR_FATTR_MOUNTED_ON_FILEID BIT_ULL(22)
-+#define NFS_ATTR_FATTR_OWNER_NAME	BIT_ULL(23)
-+#define NFS_ATTR_FATTR_GROUP_NAME	BIT_ULL(24)
-+#define NFS_ATTR_FATTR_V4_SECURITY_LABEL BIT_ULL(25)
++static inline void b53_arl_to_entry_89(struct b53_arl_entry *ent,
++				       u64 mac_vid, u16 fwd_entry)
++{
++	memset(ent, 0, sizeof(*ent));
++	ent->port = fwd_entry & ARLTBL_DATA_PORT_ID_MASK_89;
++	ent->is_valid = !!(fwd_entry & ARLTBL_VALID_89);
++	ent->is_age = !!(fwd_entry & ARLTBL_AGE_89);
++	ent->is_static = !!(fwd_entry & ARLTBL_STATIC_89);
++	u64_to_ether_addr(mac_vid, ent->mac);
++	ent->vid = mac_vid >> ARLTBL_VID_S;
++}
++
+ static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
+ 				      const struct b53_arl_entry *ent)
+ {
+@@ -383,6 +395,20 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
+ 		*mac_vid |= ARLTBL_AGE_25;
+ }
  
- #define NFS_ATTR_FATTR (NFS_ATTR_FATTR_TYPE \
- 		| NFS_ATTR_FATTR_MODE \
++static inline void b53_arl_from_entry_89(u64 *mac_vid, u32 *fwd_entry,
++					 const struct b53_arl_entry *ent)
++{
++	*mac_vid = ether_addr_to_u64(ent->mac);
++	*mac_vid |= (u64)(ent->vid & ARLTBL_VID_MASK) << ARLTBL_VID_S;
++	*fwd_entry = ent->port & ARLTBL_DATA_PORT_ID_MASK_89;
++	if (ent->is_valid)
++		*fwd_entry |= ARLTBL_VALID_89;
++	if (ent->is_static)
++		*fwd_entry |= ARLTBL_STATIC_89;
++	if (ent->is_age)
++		*fwd_entry |= ARLTBL_AGE_89;
++}
++
+ static inline void b53_arl_read_entry(struct b53_device *dev,
+ 				      struct b53_arl_entry *ent, u8 idx)
+ {
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 8ce1ce72e9385..d9026cf865549 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -342,12 +342,20 @@
+ #define   ARLTBL_STATIC			BIT(15)
+ #define   ARLTBL_VALID			BIT(16)
+ 
++/* BCM5389 ARL Table Data Entry N Register format (16 bit) */
++#define   ARLTBL_DATA_PORT_ID_MASK_89	GENMASK(8, 0)
++#define   ARLTBL_TC_MASK_89		GENMASK(12, 10)
++#define   ARLTBL_AGE_89			BIT(13)
++#define   ARLTBL_STATIC_89		BIT(14)
++#define   ARLTBL_VALID_89		BIT(15)
++
+ /* Maximum number of bin entries in the ARL for all switches */
+ #define B53_ARLTBL_MAX_BIN_ENTRIES	4
+ 
+ /* ARL Search Control Register (8 bit) */
+ #define B53_ARL_SRCH_CTL		0x50
+ #define B53_ARL_SRCH_CTL_25		0x20
++#define B53_ARL_SRCH_CTL_89		0x30
+ #define   ARL_SRCH_VLID			BIT(0)
+ #define   ARL_SRCH_STDN			BIT(7)
+ 
+@@ -355,10 +363,12 @@
+ #define B53_ARL_SRCH_ADDR		0x51
+ #define B53_ARL_SRCH_ADDR_25		0x22
+ #define B53_ARL_SRCH_ADDR_65		0x24
++#define B53_ARL_SRCH_ADDR_89		0x31
+ #define  ARL_ADDR_MASK			GENMASK(14, 0)
+ 
+ /* ARL Search MAC/VID Result (64 bit) */
+ #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
++#define B53_ARL_SRCH_RSLT_MACVID_89	0x33
+ 
+ /* Single register search result on 5325 */
+ #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
+@@ -368,6 +378,9 @@
+ /* ARL Search Data Result (32 bit) */
+ #define B53_ARL_SRCH_RSTL_0		0x68
+ 
++/* BCM5389 ARL Search Data Result (16 bit) */
++#define B53_ARL_SRCH_RSLT_89		0x3b
++
+ #define B53_ARL_SRCH_RSTL_MACVID(x)	(B53_ARL_SRCH_RSTL_0_MACVID + ((x) * 0x10))
+ #define B53_ARL_SRCH_RSTL(x)		(B53_ARL_SRCH_RSTL_0 + ((x) * 0x10))
+ 
 -- 
 2.51.0
 
