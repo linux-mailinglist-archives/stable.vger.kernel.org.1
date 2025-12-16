@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A355CC2896
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF02CC2520
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 048883169033
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42F253063C0F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CB634676D;
-	Tue, 16 Dec 2025 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D685633E349;
+	Tue, 16 Dec 2025 11:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5NyeBma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttx5yF3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBB9345CCB;
-	Tue, 16 Dec 2025 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C1539FD9;
+	Tue, 16 Dec 2025 11:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886095; cv=none; b=ShO5U2AK6sHfTN9d5fr4GnmRFZW9j+6+l4MwwJkGLK9/uLpGrUit6igz/Oe8AVdKks3ElqiZ4jTtW9pUcD+f7pKeoXUEYCZrgK8T/anL37GpZItCfvPxkZ6FtCKEjo9edKfMtDExcTTieBXVp86ADMPLTzOzsm3+tF0/Gi2FG20=
+	t=1765884582; cv=none; b=jSLebxyWNbvfbglVE0sdDXOQzeQj7ZaWyaNUqwiB5nk/PgaG70l9edIVnaRZwRe3IjuH9UvZtzGf/8r4AjWHS96eqDDIQJVqpgu0LpjVDQIKdCGkl3ikvRfH/eVV6KNvEibk/eGyBsYFvdC9GsKjy4dgYtPr/DWDg2eK1tipzHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886095; c=relaxed/simple;
-	bh=Vox0+3yn1+b/itjMQEzv3uaow+fg/tzExicVLD9HpYs=;
+	s=arc-20240116; t=1765884582; c=relaxed/simple;
+	bh=BDO+Q5e7U1dZds16hpnG9isQZPLBXQzW43UPW8BsXVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLhMXR+8CU94l5LBSXD7l75DvECaPKWf9i1OcZx8ZiB6/2QDEMAD1jkkoU2TBJwhJCEOE+U9SkH0JqWgIkh92nyinJ3a8+YoWh4KDZV7/h/dM9JFCttQRfEaywKr5PghsXjVtpg8nGRaNRVA/jVkdziTLdaO9g2YYUQy1V7NTR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5NyeBma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A3FC4CEF1;
-	Tue, 16 Dec 2025 11:54:54 +0000 (UTC)
+	 MIME-Version; b=XbiehAm3G4exotkTUreawnBmY6LVAaLG7qiK/bq7cX/EZ6i4LumgwHv6wBVx9lti8M5YBNEfhsjTwP6PswHLBj8ojl32qZeVU5/0ic19lJb8SYog3/vAW3xlAqkL0DCI1KMLSrvm8X3Vh01QN6uwQrA3XFXvDAEoDMQe0rCf8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttx5yF3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF07C4CEF1;
+	Tue, 16 Dec 2025 11:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886095;
-	bh=Vox0+3yn1+b/itjMQEzv3uaow+fg/tzExicVLD9HpYs=;
+	s=korg; t=1765884582;
+	bh=BDO+Q5e7U1dZds16hpnG9isQZPLBXQzW43UPW8BsXVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5NyeBmaA++qyV23+VJDmQqdVcEjp56FYnXEATR1d/y7TvR5Q5hXipyHPcY926Kej
-	 Wzg7yl2mIWWsShv/MtDLE8Q/Ya6hFfvhs+OcWDbgE+ni79zR7J76XIwYeuh5hHMfPR
-	 5Bw/RNxpBAlkFguTw1L1XvQRbrfvNAbhnGeo6t2A=
+	b=ttx5yF3Vg1jAdwbafUgQ8vgwJYiWvHvMVBjOLf308WBGSvJh2E0n1p330ZznqG0Fx
+	 7U8GjUkMkrvLW7cYsTVHjPPWYMQY0OuPWpwGedWme1xpN+AYUS/By4c5e743u09i95
+	 eFj94hNt9zrHYzjq0BOWMl1pnMTmssfYSLYmyf5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 336/507] wifi: mt76: mt7996: Add missing locking in mt7996_mac_sta_rc_work()
+Subject: [PATCH 6.12 210/354] crypto: ccree - Correctly handle return of sg_nents_for_len
 Date: Tue, 16 Dec 2025 12:12:57 +0100
-Message-ID: <20251216111357.636215935@linuxfoundation.org>
+Message-ID: <20251216111328.529267602@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 7545551631fa63101f97974f49ac0b564814f703 ]
+[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
 
-Grab the mt76 mutex running mt7996_mac_sta_rc_work() since it is
-required by mt7996_mcu_add_rate_ctrl routine.
+Fix error handling in cc_map_hash_request_update where sg_nents_for_len
+return value was assigned to u32, converting negative errors to large
+positive values before passing to sg_copy_to_buffer.
 
-Fixes: 28d519d0d493a ("wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251118-mt7996-rc-work-missing-mtx-v1-1-0739c493a6cb@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Check sg_nents_for_len return value and propagate errors before
+assigning to areq_ctx->in_nents.
+
+Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index b0092794f37c9..4662111ad064d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2338,6 +2338,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 	LIST_HEAD(list);
- 	u32 changed;
+diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
+index bcca55bff910e..286e0d4b8f95e 100644
+--- a/drivers/crypto/ccree/cc_buffer_mgr.c
++++ b/drivers/crypto/ccree/cc_buffer_mgr.c
+@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	int rc = 0;
+ 	u32 dummy = 0;
+ 	u32 mapped_nents = 0;
++	int sg_nents;
  
-+	mutex_lock(&dev->mt76.mutex);
-+
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	list_splice_init(&dev->sta_rc_list, &list);
- 
-@@ -2370,6 +2372,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 	}
- 
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
-+
-+	mutex_unlock(&dev->mt76.mutex);
- }
- 
- void mt7996_mac_work(struct work_struct *work)
+ 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
+ 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
+@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	if (total_in_len < block_size) {
+ 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
+ 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
+-		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
++		sg_nents = sg_nents_for_len(src, nbytes);
++		if (sg_nents < 0)
++			return sg_nents;
++		areq_ctx->in_nents = sg_nents;
+ 		sg_copy_to_buffer(src, areq_ctx->in_nents,
+ 				  &curr_buff[*curr_buff_cnt], nbytes);
+ 		*curr_buff_cnt += nbytes;
 -- 
 2.51.0
 
