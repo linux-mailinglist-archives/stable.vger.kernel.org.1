@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-202154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740BDCC2A6B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585E6CC2750
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FA003011B0A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3944530BBFF0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86866364EB2;
-	Tue, 16 Dec 2025 12:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34E9345753;
+	Tue, 16 Dec 2025 11:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyiTE3PH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/TAHhae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AA6364EA6;
-	Tue, 16 Dec 2025 12:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9C1345730;
+	Tue, 16 Dec 2025 11:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886992; cv=none; b=Wp3H2KAaS+5EKSpD6RqqL0UrsQxYRDDG4FAg3Fa5LCTTRneS9r3Zlu6SWOeYrqydyS9bmb/rBkxoFShoHIMg2f2WbNvStfq/5G9LQSu+WCa2zQi+S4Qq4gA9c0rbwB37cIzIeTh9FdQSjnDhrxUqfZRtpoBfgffoMlzLMM158tE=
+	t=1765885034; cv=none; b=cE9o4V9xRNXoErSUnXqFU1IVzNvzdUSCzUa1KYjOWPmka8nt1EEznr7PYb/OC8ByV1hJtCSjJzLfn7EaBGuxnbCk8lZ6wDYma2dQfaKwFbGn64juIq5xCrzxU9J/xvkvujXpTFPjv7rSPbf/6xMKYq3W+QxIx2WaWBOYTKGFPWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886992; c=relaxed/simple;
-	bh=XTnjzUJQs7RZZBeL7EQXVXNYWEalwxn9AlCi0BArJHs=;
+	s=arc-20240116; t=1765885034; c=relaxed/simple;
+	bh=nJNGQe8DdGlhJoFVCJTnlSuZY61Rmjg8V3ilLv7Y0Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myQAlq3ZDGP2zctjuV39gUsDJIQF1KRq/h5Ev4K98Rrbe+HkrprxBhWfo3p8y27mispnPluZ3m1g/YN16us0/KjHnIBjBb+XqPQykmb0NV/JUnfGWD2HrPZnUkW8o00BfPe78/Q6YTbfgDymANsK+cLLkXn1lx2YFtis8Jkwevc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyiTE3PH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59BCC4CEF1;
-	Tue, 16 Dec 2025 12:09:51 +0000 (UTC)
+	 MIME-Version; b=nUiSKeyX72E7HDt+ok0l4kb+Zgt3u1k6vxNOwJbUQxBy0knBdfy7ri3mPrDLFDATt07tAUZ24hbyVusDtpk5g78Q5lipegsdilshCwBgVN58N8e9gspwvkvE0Z0jGlIhlWeG969Yb65+o0bAwbiX0/AQUz1+QB7CPffiptXc5p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/TAHhae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D72DC4CEF1;
+	Tue, 16 Dec 2025 11:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886992;
-	bh=XTnjzUJQs7RZZBeL7EQXVXNYWEalwxn9AlCi0BArJHs=;
+	s=korg; t=1765885034;
+	bh=nJNGQe8DdGlhJoFVCJTnlSuZY61Rmjg8V3ilLv7Y0Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyiTE3PH2WcvDaBhXgCpweImc2TntQ/CXscorcZ1YU20xksh5yK3kFwv0wt99j8Kc
-	 n76Iek4CDnyMHwQywerfRyzmRnw/zAZ2/z2toNyABs8rMMDVTV7jdZY7naMhbs0uCP
-	 A4V0HzV6UwbaAM5jBtwDHXukVs5BTHgICtLtMKd8=
+	b=N/TAHhaeJ9d2rdLcgOhmIXhpGF8zjP11WS2Lqt/x8ZmpNAyyWqm0gEMg4f1zLX+ot
+	 4MFxDduOSjTC3HokjtYh1RtjEi9U4Yh+eT5VTllZGWEsG78dzU1kanWoaI5nLidZ5C
+	 uygPsGMZ0RlPQkJmrdIq7r+LTrOWHEijIgyGVk7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/614] scsi: ufs: core: Move the ufshcd_enable_intr() declaration
+Subject: [PATCH 6.17 019/507] USB: Fix descriptor count when handling invalid MBIM extended descriptor
 Date: Tue, 16 Dec 2025 12:07:40 +0100
-Message-ID: <20251216111404.690493184@linuxfoundation.org>
+Message-ID: <20251216111346.232537515@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit b30006b5bec1dcba207bc42e7f7cd96a568acc27 ]
+[ Upstream commit 5570ad1423ee60f6e972dadb63fb2e5f90a54cbe ]
 
-ufshcd_enable_intr() is not exported and hence should not be declared in
-include/ufs/ufshcd.h.
+In cdc_parse_cdc_header(), the check for the USB_CDC_MBIM_EXTENDED_TYPE
+descriptor was using 'break' upon detecting an invalid length.
 
-Fixes: 253757797973 ("scsi: ufs: core: Change MCQ interrupt enable flow")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://patch.msgid.link/20251014200118.3390839-7-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This was incorrect because 'break' only exits the switch statement,
+causing the code to fall through to cnt++, thus incorrectly
+incrementing the count of parsed descriptors for a descriptor that was
+actually invalid and being discarded.
+
+This patch changes 'break' to 'goto next_desc;' to ensure that the
+logic skips the counter increment and correctly proceeds to the next
+descriptor in the buffer. This maintains an accurate count of only
+the successfully parsed descriptors.
+
+Fixes: e4c6fb7794982 ("usbnet: move the CDC parser into USB core")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20250928185611.764589-1-eeodqql09@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd-priv.h | 2 ++
- include/ufs/ufshcd.h           | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/message.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd-priv.h b/drivers/ufs/core/ufshcd-priv.h
-index d0a2c963a27d3..1f0d38aa37f92 100644
---- a/drivers/ufs/core/ufshcd-priv.h
-+++ b/drivers/ufs/core/ufshcd-priv.h
-@@ -6,6 +6,8 @@
- #include <linux/pm_runtime.h>
- #include <ufs/ufshcd.h>
- 
-+void ufshcd_enable_intr(struct ufs_hba *hba, u32 intrs);
-+
- static inline bool ufshcd_is_user_access_allowed(struct ufs_hba *hba)
- {
- 	return !hba->shutting_down;
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 0f95576bf1f6c..d949db3a46759 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1302,7 +1302,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
- 
- void ufshcd_enable_irq(struct ufs_hba *hba);
- void ufshcd_disable_irq(struct ufs_hba *hba);
--void ufshcd_enable_intr(struct ufs_hba *hba, u32 intrs);
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index d2b2787be4092..6138468c67c47 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -2431,7 +2431,7 @@ int cdc_parse_cdc_header(struct usb_cdc_parsed_header *hdr,
+ 			break;
+ 		case USB_CDC_MBIM_EXTENDED_TYPE:
+ 			if (elength < sizeof(struct usb_cdc_mbim_extended_desc))
+-				break;
++				goto next_desc;
+ 			hdr->usb_cdc_mbim_extended_desc =
+ 				(struct usb_cdc_mbim_extended_desc *)buffer;
+ 			break;
 -- 
 2.51.0
 
