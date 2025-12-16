@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1656CCC2E64
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D3ECC391A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B87D31FA3FE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84081309CBD3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517EE350D74;
-	Tue, 16 Dec 2025 12:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4742E34D3B2;
+	Tue, 16 Dec 2025 11:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHGgCNLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgkmfIjx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A467355025;
-	Tue, 16 Dec 2025 12:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00BF34D3A8;
+	Tue, 16 Dec 2025 11:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887242; cv=none; b=R2Co0lcMk+59DQY+ETAN0kcCoGtCCsRVAT+wG1Rhigeowo6BCqKjKHlS5aTzEz4hrFDA0XWL+5vfPjQM5LmtCUobEoaVbhLsfGjR56VoFkkbJFP5ADXXJ6RTw92GXZuLg2Xv3xu5ncBOO1h/rhINkz368Is053uhbMbA6T+E9qQ=
+	t=1765885299; cv=none; b=ssTC/6xTldBiliDXOJ9jNHqPASwB/zAe9o2apFHsZiqdskUyPKYU0XnQABA7Flmvndqu73emYEN+fTnRTGbJOsQ8vbhXWDTAX/uIJiC/U8lbjt/prHbupC6BhUx8UI1MkE6nv4V+Lvm8VXfSy3UY6YIjf2+dM5+/scKWkHaeFrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887242; c=relaxed/simple;
-	bh=hZG7nOhRnu4tYOQdBki9BENSledmgAqy8C8xzoR2oDY=;
+	s=arc-20240116; t=1765885299; c=relaxed/simple;
+	bh=3/hNln1eZ7Xsrego9GqeNhWN8CItHp6LT1b42NqM+mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJIumi0j/87iko1jvKbVTEoU79jWyoj6Qh/pv68VTTFnzryXVEx6BixHmwqeQzusS8Isq4y1jO1Yvs9gAZC6iqatL40cSK6JuAockEWcJ+BNMhYTtcmipgnaAak/gT2MAE/MPxVZIYkzTtIvGIb1IFQYv+rqw/1dKZWs2fJlrf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHGgCNLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FFEC4CEF1;
-	Tue, 16 Dec 2025 12:14:00 +0000 (UTC)
+	 MIME-Version; b=SfzAexNvBTiFv3NbfgI4ZZaEENwZ2lN2VcexOJgdSPJRfG6ft6sSjuvLO0aJDgDUf9SpHm+EVdwZSko3Ru4Ewq7sI0WIvDcC8xcFUKeWaYZ7rzvWG7GHF6gqM/c/kgQWZZ0VgWKJtVe5Wy6xOFVrte1Xaae0FfgmdvYEgyYheG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgkmfIjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57ADDC4CEF1;
+	Tue, 16 Dec 2025 11:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887241;
-	bh=hZG7nOhRnu4tYOQdBki9BENSledmgAqy8C8xzoR2oDY=;
+	s=korg; t=1765885298;
+	bh=3/hNln1eZ7Xsrego9GqeNhWN8CItHp6LT1b42NqM+mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHGgCNLXN8ZUrQbDf0ESDEnYKOKacRlYtVirTwtAntctXSIuAC2F8/yzyRPlcy3sp
-	 fMFSxd/FIvwEdDWP0P+9u4xdd9AEKEKoUp0iuMmp3dSPsD+Z37ZsW9MHuVvoO3RGhK
-	 Lczur4+UbPlFPawVeeNNpn2lws/nHYyMuv0Tam7I=
+	b=VgkmfIjxXGNTvyQNlVtFzwa/HNZ/KRzRq5gWznXm1x/pF6FOz3tgyFrt1CW9zpKQ/
+	 1o0Sfhbe2E8gwczh+6GxeLIFPrxEXVjVMn4/NzyGBT7ilW+zV7OpqF9M6DW96DZ5F0
+	 y2MFn9Ggoyqj6JF6A9n7T5zqQar05AaphdfBEOpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Joy Zou <joy.zou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 137/614] mtd: nand: relax ECC parameter validation check
-Date: Tue, 16 Dec 2025 12:08:24 +0100
-Message-ID: <20251216111406.297505745@linuxfoundation.org>
+Subject: [PATCH 6.17 064/507] arm64: dts: imx95-15x15-evk: add fan-supply property for pwm-fan
+Date: Tue, 16 Dec 2025 12:08:25 +0100
+Message-ID: <20251216111347.861653448@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Joy Zou <joy.zou@nxp.com>
 
-[ Upstream commit 050553c683f21eebd7d1020df9b2ec852e2a9e4e ]
+[ Upstream commit 93b2fac5cdaf0d501d04c9a4b0e5024632a6af7c ]
 
-Due to the custom handling and layouts of certain nand controllers this
-validity check will always fail for certain layouts. The check
-inherently depends on even chunk sizing and this is not always the
-case.
+Add fan-supply regulator to pwm-fan node to specify power source.
 
-Modify the check to only print a warning, instead of failing to
-init the attached NAND. This allows various 8 bit and 12 ECC strength
-layouts to be used.
-
-Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: e3e8b199aff8 ("arm64: dts: imx95: Add imx95-15x15-evk support")
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index c7d9501f646b3..ad6d66309597b 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6338,11 +6338,14 @@ static int nand_scan_tail(struct nand_chip *chip)
- 		ecc->steps = mtd->writesize / ecc->size;
- 	if (!base->ecc.ctx.nsteps)
- 		base->ecc.ctx.nsteps = ecc->steps;
--	if (ecc->steps * ecc->size != mtd->writesize) {
--		WARN(1, "Invalid ECC parameters\n");
--		ret = -EINVAL;
--		goto err_nand_manuf_cleanup;
--	}
-+
-+	/*
-+	 * Validity check: Warn if ECC parameters are not compatible with page size.
-+	 * Due to the custom handling of ECC blocks in certain controllers the check
-+	 * may result in an expected failure.
-+	 */
-+	if (ecc->steps * ecc->size != mtd->writesize)
-+		pr_warn("ECC parameters may be invalid in reference to underlying NAND chip\n");
+diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+index 46f6e0fbf2b09..29630b666d54a 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+@@ -44,6 +44,7 @@ chosen {
  
- 	if (!ecc->total) {
- 		ecc->total = ecc->steps * ecc->bytes;
+ 	fan0: pwm-fan {
+ 		compatible = "pwm-fan";
++		fan-supply = <&reg_vcc_12v>;
+ 		#cooling-cells = <2>;
+ 		cooling-levels = <64 128 192 255>;
+ 		pwms = <&tpm6 0 4000000 PWM_POLARITY_INVERTED>;
 -- 
 2.51.0
 
