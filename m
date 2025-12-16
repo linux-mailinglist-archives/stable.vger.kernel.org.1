@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753B9CC4651
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE5CCC3372
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD41030985ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C34D6306FF3D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E14534B402;
-	Tue, 16 Dec 2025 11:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC25135C1A1;
+	Tue, 16 Dec 2025 12:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhpPu7jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPtuhc8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224A296BDB;
-	Tue, 16 Dec 2025 11:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9708235BDBA;
+	Tue, 16 Dec 2025 12:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886390; cv=none; b=SWPloVSihlxKisyYTfuDKoOveWnbtRmL0bPsmEuwz4TQWhcqP3tC4jguqA/89a9tCyGVf4bZWat2v5uvLwHpoEYV0L4bJPFdWuqUIdh2E1M9ChcqvSjtPE79xS2gPDB6EqFA8jW9Xgm8muI/YNjzRYaOXZ3n2C3DBeq/u3jYI5s=
+	t=1765888204; cv=none; b=SGZ4hg5NXJ1ML2b34fx2B+BSFSoqrUb+R+ooue1TMjY43N/XlDJI5Sl2LO54iBYs+tyWV5isa+H8euOGQ1Vqw3K+teFeTDO6AH947AICKAlyNnuodevdklxZzR6GpD5ey4H9T0/jhBRe6U+3vsSXaj8aRV6RdooWyjABbOsY7hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886390; c=relaxed/simple;
-	bh=OMsjjE7zTKenF8X+nV1MEl4wy0eVqqTcsiC++sl9T7U=;
+	s=arc-20240116; t=1765888204; c=relaxed/simple;
+	bh=RfEo0Fnq4bWFzt+VFghsZ9ukPatCY38CE+sE4+UHxGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfLS/ALH9QXJWrbQ791NdyGHZQvWuiD/fC5WYbPUiSfiawwWV+SXYiWsPj4r9oviRzJCYdHdcIpXECPOoNEDMXYqJNAPRPpAtaI30hiUGhgyx1n5tiifx7SlsDkV2hmci/5ZtdSknlJSnhG0pEnHilLkPcFXbUQ1REhwNv3KfmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhpPu7jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669A3C4CEF1;
-	Tue, 16 Dec 2025 11:59:49 +0000 (UTC)
+	 MIME-Version; b=FwYlK4ufTHCs/kFsTkSQrhIxai6JOk9M7s+kj+LXOOdxhGwc9Pj5qsJMFRZ1Wqsya+8086LHOqJ6PcDz9PxKTeb84OYOJxJdXuzarEobW2y2lRtXoSCPMG+vb0OEBd+O7lkTetD6V+GUPkUi2pmcmXXLYMswgrCPsIDAYpNfDEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPtuhc8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00195C4CEF5;
+	Tue, 16 Dec 2025 12:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886390;
-	bh=OMsjjE7zTKenF8X+nV1MEl4wy0eVqqTcsiC++sl9T7U=;
+	s=korg; t=1765888204;
+	bh=RfEo0Fnq4bWFzt+VFghsZ9ukPatCY38CE+sE4+UHxGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhpPu7jHMwyikZrmQ6mem4UzPo+tobNDDbFH0sTJmEJ9aaoHNTcqeptEfwbiBv6v9
-	 9yCy4M3CfwmPJ68zCffV+7nqCPm3U/seffBlspVR7UfYR9bKAEog1WPGnpoaoUqT3Z
-	 f+u8vYWVoY2m7i064ommIviHhqvpOvZlDqCKCZgY=
+	b=wPtuhc8RBflaByQFtGFo5cLh6tGqJXVGhdL3ZI9VxjLWYyY6tCzG5GkpA1ppE5Jcl
+	 FVf85SPRFGOliLV0YaipYqOxB7G2uJGqvs7Z8EZ4voDPZEh69IqhtRJrKmi/6EhcUj
+	 xB7ebLcoI1ubbmVTQ2/q+Kde1cLmgRWFVFLbBH0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 389/507] ARM: dts: samsung: exynos4412-midas: turn off SDIO WLAN chip during system suspend
-Date: Tue, 16 Dec 2025 12:13:50 +0100
-Message-ID: <20251216111359.548724056@linuxfoundation.org>
+Subject: [PATCH 6.18 464/614] virtio: standardize Returns documentation style
+Date: Tue, 16 Dec 2025 12:13:51 +0100
+Message-ID: <20251216111418.181070398@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 2ff147fdfa99b8cbb8c2833e685fde7c42580ae6 ]
+[ Upstream commit 5e88a5a97d113619b674ebfdd1d2065f2edd10eb ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+Remove colons after "Returns" in virtio_map_ops function
+documentation - both to avoid triggering an htmldoc warning
+and for consistency with virtio_config_ops.
 
-Fixes: f77cbb9a3e5d ("ARM: dts: exynos: Add bcm4334 device node to Trats2")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-5-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+This affects map_page, alloc, need_sync, and max_mapping_size.
+
+Fixes: bee8c7c24b73 ("virtio: introduce map ops in virtio core")
+Message-Id: <c262893fa21f4b1265147ef864574a9bd173348f.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4412-midas.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/virtio_config.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-index 05ddddb565ee3..48245b1665a69 100644
---- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-@@ -1440,6 +1440,7 @@ &sdhci_3 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 
- 	mmc-pwrseq = <&wlan_pwrseq>;
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 6660132258d40..e231147ff92db 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -150,7 +150,7 @@ struct virtio_config_ops {
+  *      size: the buffer size
+  *      dir: mapping direction
+  *      attrs: mapping attributes
+- *      Returns: the mapped address
++ *      Returns the mapped address
+  * @unmap_page: unmap a buffer from the device
+  *      map: device specific mapping map
+  *      map_handle: the mapped address
+@@ -172,7 +172,7 @@ struct virtio_config_ops {
+  *      size: the size of the buffer
+  *      map_handle: the mapping address to sync
+  *      gfp: allocation flag (GFP_XXX)
+- *      Returns: virtual address of the allocated buffer
++ *      Returns virtual address of the allocated buffer
+  * @free: free a coherent buffer mapping
+  *      map: metadata for performing mapping
+  *      size: the size of the buffer
+@@ -182,13 +182,13 @@ struct virtio_config_ops {
+  * @need_sync: if the buffer needs synchronization
+  *      map: metadata for performing mapping
+  *      map_handle: the mapped address
+- *      Returns: whether the buffer needs synchronization
++ *      Returns whether the buffer needs synchronization
+  * @mapping_error: if the mapping address is error
+  *      map: metadata for performing mapping
+  *      map_handle: the mapped address
+  * @max_mapping_size: get the maximum buffer size that can be mapped
+  *      map: metadata for performing mapping
+- *      Returns: the maximum buffer size that can be mapped
++ *      Returns the maximum buffer size that can be mapped
+  */
+ struct virtio_map_ops {
+ 	dma_addr_t (*map_page)(union virtio_map map, struct page *page,
 -- 
 2.51.0
 
