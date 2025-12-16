@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08C6CC36EA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:08:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44876CC2DD3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F9833074D66
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:04:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E42D30ACACE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650A4346E6B;
-	Tue, 16 Dec 2025 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7C1350A2E;
+	Tue, 16 Dec 2025 11:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOb3Nxjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIbI5mXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6D134D4F1;
-	Tue, 16 Dec 2025 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAAC350A2A;
+	Tue, 16 Dec 2025 11:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887683; cv=none; b=l5HsdoOQoMY21PxaTOCWpv/MablaSBEDsI5WQLBSaxcq2AlgP4LFrUkyiJZcB365t6LVJPIaXf1FmaTeHfA2kYxMW3uGNgJgaI2uD8Pg0IdYrkRSdsTHgtuZii7U0obkaQ1aROdCiqHMGz/wru3Lv93t76QD6RpOG3lt6AkXl3I=
+	t=1765885743; cv=none; b=YlIb4QdssRbuLUdx9e5tgtvUFKUiS0BKB1CwNPENi4IORK78LUkxQhrIEXDjVp3gRpW4KOOylMikuP/mJy681mZfRvU1s/AZCDWD/jGgx4iijVibHG1a9IPnC7KO7F6Pkc9CnPppTR/GnGjgrTOZ/aOqzxu4drX65dhclkIzT/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887683; c=relaxed/simple;
-	bh=VlJTFW2o2K7P/FmjCVDi3WQDUQWoZcPRSJput8InFZI=;
+	s=arc-20240116; t=1765885743; c=relaxed/simple;
+	bh=hZDTBEvnhKmnXVvzQlgTED9u9QDDZ45LpDCvDOEMioU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYWl3BzBmrVRISTToaB5hPvsuKA9W8KK6092/13FSUVM6udwIe56S8SVHNu5xxvLW4b1aCMIi92MDMVbI+a4L1IbVGAgXTlVv7g4Dt9nJmB2+n3nDLc+56YADVxH2Bbs7PCL3bVlkLZxSVXM1U2bwuT337zk31mX6HAtZmZoEAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOb3Nxjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF10C4CEF1;
-	Tue, 16 Dec 2025 12:21:22 +0000 (UTC)
+	 MIME-Version; b=P00oxQo7mbM99xftszzVyjZ1FgI7QolhNelssHSxg4Ucx8ZGjtfvaKjslzPshMVYp+q3CG05VV1BX8d+s9Wq72uFRmwtE3FDfoaH0Df2Onw3ij5Ex0wf/L9mGA5D519/HwCBxqhjDc8ZR3VZOwcpx9oaWWsnOQIKzI0m0jCZwlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIbI5mXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A68C4CEF1;
+	Tue, 16 Dec 2025 11:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887683;
-	bh=VlJTFW2o2K7P/FmjCVDi3WQDUQWoZcPRSJput8InFZI=;
+	s=korg; t=1765885743;
+	bh=hZDTBEvnhKmnXVvzQlgTED9u9QDDZ45LpDCvDOEMioU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOb3NxjfczW/piIwYDAUNT+8tao7hxHzIkria6YHFLbiY5lv3LtHMTW/c8T0PsoKI
-	 yUo0Rwfkc5VWp/PgrQ4Vbzxh4lLyUc8yVhZr7gQrGExWN8DE7GtgI5Yc1pDunxcw1i
-	 4mPI+CGlY2BVo+05dVF88KHLgzDYljuarF4/McD0=
+	b=qIbI5mXLeYPuvKQn3mk7mcZSs3snpRfuPxtbytDhnUd/ctXPPvLyQT2NpzYXq4r25
+	 60S5l15Im/hvkt8TQ6k6wRp7yqf8ptpxtxCHdU6zajr3lkKROKIncSvudEjeojeozA
+	 yKc/A6dkjX8OX+fq76NT1kHfvIcCs4or2B5RrWiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 305/614] arm64: dts: imx95-tqma9596sa: reduce maximum FlexSPI frequency to 66MHz
+Subject: [PATCH 6.17 231/507] bpf: Free special fields when update [lru_,]percpu_hash maps
 Date: Tue, 16 Dec 2025 12:11:12 +0100
-Message-ID: <20251216111412.419329482@linuxfoundation.org>
+Message-ID: <20251216111353.871774335@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 461be3802562b2d41250b40868310579a32f32c1 ]
+[ Upstream commit 6af6e49a76c9af7d42eb923703e7648cb2bf401a ]
 
-66 MHz is the maximum FlexPI clock frequency in normal/overdrive mode
-when RXCLKSRC = 0 (Default)
+As [lru_,]percpu_hash maps support BPF_KPTR_{REF,PERCPU}, missing
+calls to 'bpf_obj_free_fields()' in 'pcpu_copy_value()' could cause the
+memory referenced by BPF_KPTR_{REF,PERCPU} fields to be held until the
+map gets freed.
 
-Fixes: 91d1ff322c47 ("arm64: dt: imx95: Add TQMa95xxSA")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fix this by calling 'bpf_obj_free_fields()' after
+'copy_map_value[,_long]()' in 'pcpu_copy_value()'.
+
+Fixes: 65334e64a493 ("bpf: Support kptrs in percpu hashmap and percpu LRU hashmap")
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251105151407.12723-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/hashtab.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index c3bb61ea67961..16c40d11d3b5d 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -115,7 +115,7 @@ &flexspi1 {
- 	flash0: flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <80000000>;
-+		spi-max-frequency = <66000000>;
- 		spi-tx-bus-width = <4>;
- 		spi-rx-bus-width = <4>;
- 		vcc-supply = <&reg_1v8>;
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 71f9931ac64cd..f3bc22ea503fd 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -939,15 +939,21 @@ static void free_htab_elem(struct bpf_htab *htab, struct htab_elem *l)
+ static void pcpu_copy_value(struct bpf_htab *htab, void __percpu *pptr,
+ 			    void *value, bool onallcpus)
+ {
++	void *ptr;
++
+ 	if (!onallcpus) {
+ 		/* copy true value_size bytes */
+-		copy_map_value(&htab->map, this_cpu_ptr(pptr), value);
++		ptr = this_cpu_ptr(pptr);
++		copy_map_value(&htab->map, ptr, value);
++		bpf_obj_free_fields(htab->map.record, ptr);
+ 	} else {
+ 		u32 size = round_up(htab->map.value_size, 8);
+ 		int off = 0, cpu;
+ 
+ 		for_each_possible_cpu(cpu) {
+-			copy_map_value_long(&htab->map, per_cpu_ptr(pptr, cpu), value + off);
++			ptr = per_cpu_ptr(pptr, cpu);
++			copy_map_value_long(&htab->map, ptr, value + off);
++			bpf_obj_free_fields(htab->map.record, ptr);
+ 			off += size;
+ 		}
+ 	}
 -- 
 2.51.0
 
