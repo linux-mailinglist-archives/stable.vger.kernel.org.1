@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9ACCC2734
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC081CC32C9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7FB933020CE9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEF14307DA64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E106D35502F;
-	Tue, 16 Dec 2025 11:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8728C3502A4;
+	Tue, 16 Dec 2025 12:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/t9rxOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdZcvzfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2E5355028;
-	Tue, 16 Dec 2025 11:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43779350288;
+	Tue, 16 Dec 2025 12:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885929; cv=none; b=aJAcYUTnHx53clvYd6kZiqSt3EjNLqRjuz8u1OJdRJyCY5sXOTRPkaNLcJmpsis1BJ4bJfiogbM+jnF6bVvAiJ25H8032nnW7/bAo7eceZvNOKHWJCDZ9/HbHVQiIB9J0P2ftqiMi/MUiT3s3RDOQ0pj/is7nFGCbz9iFF2QyDc=
+	t=1765887863; cv=none; b=jNZc6FMdrZs3E69x+u7F67swLgfpWy/IeR3u0/QngN8V4egjcIkvLn7QtmU3vi6Rl+duj1Ax+CiAGbDz9vJW43QbJ2cnNhJhKCfqu77YH0mW+laCzi4WJzqap0eXP0oSzPuOklj5g6DBxfPmyhm+1BTrACEi2FvII6wM3bnGLbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885929; c=relaxed/simple;
-	bh=o3NAQwnDYzc4Z64kZS3CjdCU0j47iAW6ekWuqcOX69E=;
+	s=arc-20240116; t=1765887863; c=relaxed/simple;
+	bh=vEj8HztgG13lA5bdHguP/H3pPfPyG3e+PNyKRcKz8mI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikaPWkjhvUnLSHy+8bbLOjaErqk05GYYEQSt3IBoArj+6G+q/UbD3+8ANHf2LqF3US6CMAxwZHR05MeM4qHNDyKzQUCA/gp6XxgddXJr/ZcBi/YmO7AAw1NSg0UEWvi2vJ2yhqKZt3Bj2L0vVVaePgoOzn4FI9m/iJFUiWpUG68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/t9rxOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCA3C4CEF1;
-	Tue, 16 Dec 2025 11:52:08 +0000 (UTC)
+	 MIME-Version; b=Qoz9jA5E0Q2Y5cfNUhyRzdM40hsw+cyPD2iWHjee4qlwqHHXuKbdGAfDXpX6DN/7nQzHI19LlTMU12WUdhHS2FauFQsJxUQKCwfzaYBzsq3fADW6MncPqSvg2NE+bJCzn0rmdlEzFVBhVqxoVopStUbdkhrW0wdfFX7N3VVSN1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdZcvzfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75008C4CEF1;
+	Tue, 16 Dec 2025 12:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885929;
-	bh=o3NAQwnDYzc4Z64kZS3CjdCU0j47iAW6ekWuqcOX69E=;
+	s=korg; t=1765887862;
+	bh=vEj8HztgG13lA5bdHguP/H3pPfPyG3e+PNyKRcKz8mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/t9rxOIopgw824+sqjirIRRHfj74Et8ysDCnDTp2O9R7KSj7zNIsY/cFbmPbTpAw
-	 YFQ4a0m9Gp7bBK8z+8e5MpiH6cEY4tiYo1TWeImJuQhHwu2LBO5vi6dO75CuHjFPqY
-	 WUYPMTispvj8TDwdfJmV9UR7ObmPcUGLUlm+UM4o=
+	b=zdZcvzfvhTbqt6RqowfDISL0Cv6CT5HlulqwpekptwXwJSstBhjIvLKYg7MvNP3ew
+	 LoK9iDXU9tfHabPM8aWesc22huqHbgEPnX5hyp3vKJeo5o38dhGoPXgvLEOVRgc1UR
+	 vq9vghUAiUXyNDTMKm+Cg2imAXL+A2af30jUnLes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Zhao Yipeng <zhaoyipeng5@huawei.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 287/507] of/fdt: Fix incorrect use of dt_root_addr_cells in early_init_dt_check_kho()
+Subject: [PATCH 6.18 361/614] ima: Handle error code returned by ima_filter_rule_match()
 Date: Tue, 16 Dec 2025 12:12:08 +0100
-Message-ID: <20251216111355.875120581@linuxfoundation.org>
+Message-ID: <20251216111414.440560998@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Zhao Yipeng <zhaoyipeng5@huawei.com>
 
-[ Upstream commit c85da64ce2c36bba469f6feede9ca768f0361741 ]
+[ Upstream commit 738c9738e690f5cea24a3ad6fd2d9a323cf614f6 ]
 
-When reading the fdt_size value, the argument passed to dt_mem_next_cell()
-is dt_root_addr_cells, but it should be dt_root_size_cells.
+In ima_match_rules(), if ima_filter_rule_match() returns -ENOENT due to
+the rule being NULL, the function incorrectly skips the 'if (!rc)' check
+and sets 'result = true'. The LSM rule is considered a match, causing
+extra files to be measured by IMA.
 
-The same issue occurs when reading the scratch_size value.
+This issue can be reproduced in the following scenario:
+After unloading the SELinux policy module via 'semodule -d', if an IMA
+measurement is triggered before ima_lsm_rules is updated,
+in ima_match_rules(), the first call to ima_filter_rule_match() returns
+-ESTALE. This causes the code to enter the 'if (rc == -ESTALE &&
+!rule_reinitialized)' block, perform ima_lsm_copy_rule() and retry. In
+ima_lsm_copy_rule(), since the SELinux module has been removed, the rule
+becomes NULL, and the second call to ima_filter_rule_match() returns
+-ENOENT. This bypasses the 'if (!rc)' check and results in a false match.
 
-Use a helper function to simplify the code and fix these issues.
+Call trace:
+  selinux_audit_rule_match+0x310/0x3b8
+  security_audit_rule_match+0x60/0xa0
+  ima_match_rules+0x2e4/0x4a0
+  ima_match_policy+0x9c/0x1e8
+  ima_get_action+0x48/0x60
+  process_measurement+0xf8/0xa98
+  ima_bprm_check+0x98/0xd8
+  security_bprm_check+0x5c/0x78
+  search_binary_handler+0x6c/0x318
+  exec_binprm+0x58/0x1b8
+  bprm_execve+0xb8/0x130
+  do_execveat_common.isra.0+0x1a8/0x258
+  __arm64_sys_execve+0x48/0x68
+  invoke_syscall+0x50/0x128
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x44/0x200
+  el0t_64_sync_handler+0x100/0x130
+  el0t_64_sync+0x3c8/0x3d0
 
-Fixes: 274cdcb1c004 ("arm64: add KHO support")
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://patch.msgid.link/20251115134753.179931-5-yuntao.wang@linux.dev
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fix this by changing 'if (!rc)' to 'if (rc <= 0)' to ensure that error
+codes like -ENOENT do not bypass the check and accidentally result in a
+successful match.
+
+Fixes: 4af4662fa4a9d ("integrity: IMA policy")
+Signed-off-by: Zhao Yipeng <zhaoyipeng5@huawei.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ security/integrity/ima/ima_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 0c18bdefbbeea..de16785a48695 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -924,26 +924,18 @@ static void __init early_init_dt_check_kho(void)
- {
- 	unsigned long node = chosen_node_offset;
- 	u64 fdt_start, fdt_size, scratch_start, scratch_size;
--	const __be32 *p;
--	int l;
- 
- 	if (!IS_ENABLED(CONFIG_KEXEC_HANDOVER) || (long)node < 0)
- 		return;
- 
--	p = of_get_flat_dt_prop(node, "linux,kho-fdt", &l);
--	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
-+	if (!of_flat_dt_get_addr_size(node, "linux,kho-fdt",
-+				      &fdt_start, &fdt_size))
- 		return;
- 
--	fdt_start = dt_mem_next_cell(dt_root_addr_cells, &p);
--	fdt_size = dt_mem_next_cell(dt_root_addr_cells, &p);
--
--	p = of_get_flat_dt_prop(node, "linux,kho-scratch", &l);
--	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
-+	if (!of_flat_dt_get_addr_size(node, "linux,kho-scratch",
-+				      &scratch_start, &scratch_size))
- 		return;
- 
--	scratch_start = dt_mem_next_cell(dt_root_addr_cells, &p);
--	scratch_size = dt_mem_next_cell(dt_root_addr_cells, &p);
--
- 	kho_populate(fdt_start, fdt_size, scratch_start, scratch_size);
- }
- 
+diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+index 128fab8979308..db6d55af5a80b 100644
+--- a/security/integrity/ima/ima_policy.c
++++ b/security/integrity/ima/ima_policy.c
+@@ -674,7 +674,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule,
+ 				goto retry;
+ 			}
+ 		}
+-		if (!rc) {
++		if (rc <= 0) {
+ 			result = false;
+ 			goto out;
+ 		}
 -- 
 2.51.0
 
