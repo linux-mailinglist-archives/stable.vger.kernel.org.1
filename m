@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E1CCC48FE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310ABCC29A5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0DF85303A080
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 334BF31946ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0CA376BD0;
-	Tue, 16 Dec 2025 12:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DBD34FF56;
+	Tue, 16 Dec 2025 11:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WA+eQv+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnp60gDq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE636D512;
-	Tue, 16 Dec 2025 12:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECAA34FF44;
+	Tue, 16 Dec 2025 11:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888059; cv=none; b=NSaW+EQjNNKc2/4aN9IgAe/IWSK65Gcc1bDeN2QrBmurBZYQwY92IYqhI1QWazr8uyxbA3xJkcYx1I7uHElCmsU7znqQ0CSmhawnRe6l/i39mi60V7pko0yJk9pYo9OPqh1ZEQVBzQ43e3H6r8l0vAWNSmTRXdYfHLYdD/4Aez8=
+	t=1765886159; cv=none; b=iFhuMEl5afQVU7MT4tGz5GgcV5Zf/qjEeVCTv/hrE2K/hUj0JKlgLITejdOkV7lZHgai7JQ9g8A8i4luxU4ctj7ZRwuLogZ/53TjJ1fjrQn8Pjhu4fUGD6ZqAO9VXl3mvqpL2it/2qWZXitkyHZjtkaaBCfP6/VeWCdqjJ4VwUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888059; c=relaxed/simple;
-	bh=7f228i3z3npAQl2rlL81PYGnLl7PGCzeUtU+rfjEwwI=;
+	s=arc-20240116; t=1765886159; c=relaxed/simple;
+	bh=7PNEEBGQuOFpnAoIAbtNVFdN7AwRUyv9VYwuPdHRv3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cM/rZEjR8b5hHQ4MVIZbuddBhq5sb5/uBVLxpr25EP58xhOnsfCrI0OJkCAOYkl6ZBhfRpKsJV2r7OdaVXXKs0nKsZIl/tQGYBZQuW9RxwEU5o3LaXutexOMJLKQtbfWrCBiMHwHH4DfxdNPc/du1pzx3sBcfgfCmk42G+zqQa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WA+eQv+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DD6C4CEF1;
-	Tue, 16 Dec 2025 12:27:38 +0000 (UTC)
+	 MIME-Version; b=GK6UgV/2RX0pLE7qqbXTmHTjEjKzOspkANtmGUjySpy03HPUzZyEvLBJb3yir2mJeTAL+RGnYrbCSi1Mt6wduIOAmdpHJu7KAbLMUa2VdmFkKfs0TccBMlz9WBzBdkmKEyRXebNy+QPmg3qp+xK9sFgfRa9ABAyxc735itGe05c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnp60gDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8337C4CEF1;
+	Tue, 16 Dec 2025 11:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888058;
-	bh=7f228i3z3npAQl2rlL81PYGnLl7PGCzeUtU+rfjEwwI=;
+	s=korg; t=1765886159;
+	bh=7PNEEBGQuOFpnAoIAbtNVFdN7AwRUyv9VYwuPdHRv3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WA+eQv+F0flF4ZhZ4u59mZvcMs/DEVJGhHUnediHBrbNXOJ1SRfSw2a89/mufbXnC
-	 UghUnTZZD7glPLU/wx+9V42T99OOggQBUEvRbz9SHLg5+9K2wugm6B5eUzOZ3svt4I
-	 VLBvWaI/ctJb8Sodt6bY0j6iJpiarXig5hn3Prog=
+	b=nnp60gDqeblUec6bX9QKBzsar/nuYSdaTdwk5DvFegcrx9TnMknBJ4qHEryh01uhV
+	 k6BxULUJ2S2g1JyomYboCAyFipvnOJ05pEb4PcwL0GaTyW1MdifHg412SFf6aWNNZ6
+	 cnkzIkxKxXgnwRNPZuHuXMie5Ij/GIwfo6oqlvUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Felix Fietkau <nbd@nbd.name>,
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 387/614] Revert "wifi: mt76: mt792x: improve monitor interface handling"
+Subject: [PATCH 6.17 313/507] PM / devfreq: hisi: Fix potential UAF in OPP handling
 Date: Tue, 16 Dec 2025 12:12:34 +0100
-Message-ID: <20251216111415.390444593@linuxfoundation.org>
+Message-ID: <20251216111356.807983077@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-[ Upstream commit cdb2941a516cf06929293604e2e0f4c1d6f3541e ]
+[ Upstream commit 26dd44a40096468396b6438985d8e44e0743f64c ]
 
-This reverts commit 55e95ce469d0c61041bae48b2ebb7fcbf6d1ba7f.
+Ensure all required data is acquired before calling dev_pm_opp_put(opp)
+to maintain correct resource acquisition and release order.
 
-mt792x drivers don't seem to support multi-radio devices yet.  At least
-they don't mess with `struct wiphy_radio` at the moment.
-
-Packet capturing on monitor interface doesn't work after the blamed patch:
-
-  tcpdump -i wls6mon -n -vvv
-
-Revert the NO_VIRTUAL_MONITOR feature for now to resolve the issue.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 55e95ce469d0 ("wifi: mt76: mt792x: improve monitor interface handling")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20251027111843.38975-1-pchelkin@ispras.ru
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 7da2fdaaa1e6 ("PM / devfreq: Add HiSilicon uncore frequency scaling driver")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/20250915062135.748653-1-zhangpengjie2@huawei.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/devfreq/hisi_uncore_freq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index c0e56541a9547..9cad572c34a38 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -688,7 +688,6 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
--	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
+diff --git a/drivers/devfreq/hisi_uncore_freq.c b/drivers/devfreq/hisi_uncore_freq.c
+index 96d1815059e32..c1ed70fa0a400 100644
+--- a/drivers/devfreq/hisi_uncore_freq.c
++++ b/drivers/devfreq/hisi_uncore_freq.c
+@@ -265,10 +265,11 @@ static int hisi_uncore_target(struct device *dev, unsigned long *freq,
+ 		dev_err(dev, "Failed to get opp for freq %lu hz\n", *freq);
+ 		return PTR_ERR(opp);
+ 	}
+-	dev_pm_opp_put(opp);
+ 
+ 	data = (u32)(dev_pm_opp_get_freq(opp) / HZ_PER_MHZ);
+ 
++	dev_pm_opp_put(opp);
++
+ 	return hisi_uncore_cmd_send(uncore, HUCF_PCC_CMD_SET_FREQ, &data);
+ }
  
 -- 
 2.51.0
