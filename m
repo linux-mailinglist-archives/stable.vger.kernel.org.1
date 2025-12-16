@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A49FCC45D9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04EACC251A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 140FB3003DAC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB6E8302B887
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A8F357725;
-	Tue, 16 Dec 2025 12:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C873446C7;
+	Tue, 16 Dec 2025 11:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txQsTMi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNjxgOw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE97357718;
-	Tue, 16 Dec 2025 12:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B703446A3;
+	Tue, 16 Dec 2025 11:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886572; cv=none; b=GsnUIObwvMpuBnjJ5fXYxrR4nQQBq5/HAPCKMALxIqW5LvcXwk4ANj25j5yrJSknRJykUwY72cuNxn7dR99NodHak7asu7mcVk831Vc0srPDFZdM+nxpgFogZn7E0L+GaP8JQccT+jQEcaxEc4qu9ItFvDvun9yrJoCHl2RwdL0=
+	t=1765884998; cv=none; b=CqZ3my1HUSlGjfHBNKcT5FasS/08gtkmmQ9XasK2X7u9ENRbIWkK1ePXEkMmJUFdCdJKsA0zNm+NrBr6lQtJ4hTaOmLue02vY0RZkvEbEVG2f5lfzeraF2r/yGig/AAZS5z6bfh2zbpv+2YymMJ7sWEKP1W8Js74Oug5T98ygug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886572; c=relaxed/simple;
-	bh=1eiIldV0LSdXIomS/UZPtDi+Wu21jWoLb7MZLbpdUTQ=;
+	s=arc-20240116; t=1765884998; c=relaxed/simple;
+	bh=QjKhx6c+jUU1iVIJMkVEfTs45JZ7dj1tkzCY2u+JBIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkGh5+PE1hZdsQje70veJ5P6Ed65aCw9HRpj0PFbW3j/Ra3MyajT+ZQAZBlQUaSMeNEE0T581IGUPKkZ3YdX5xfBJ9mHw6iM+6pYv+hZwPcZVC1DWsVmOpiMXrT6SHudsg2xNAy2PvL5PHXbbU3hysPI9vO2sCkgQJGBiebYdz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txQsTMi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0930C4CEF1;
-	Tue, 16 Dec 2025 12:02:51 +0000 (UTC)
+	 MIME-Version; b=KbViBhnaeP4sXCYhHQZH0yMGJg4zgMmsIvf1CviIEGfFWw98ZcLI1pG9C1KUNOJHyk5WW4zGs0WP0l5XPxIHY3xaB41Sh5KSoxyBpfh+wcRbCYCALAslRGG06t2OhDBLbKp9QTbWemKiLMmcOtCud1bXXv8lXUyxpL1sgNo1GnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNjxgOw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D6BC4CEF5;
+	Tue, 16 Dec 2025 11:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886572;
-	bh=1eiIldV0LSdXIomS/UZPtDi+Wu21jWoLb7MZLbpdUTQ=;
+	s=korg; t=1765884998;
+	bh=QjKhx6c+jUU1iVIJMkVEfTs45JZ7dj1tkzCY2u+JBIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txQsTMi9FPLD/zCx2ATpUHR0lLWJWfoBHomLxuGMX0m8mqDgMT1oyHFLkJjPloov+
-	 wsEtfE1XYHcIs3QNfYOEXWnzmcFQI+pWiB2iEwlsRx1iXcDxHxHrAGGSlAgTuPSQE0
-	 VTNVvBGriJ+i6s/W/Gr1JSW4+WbpuKtIIFNnWs70=
+	b=YNjxgOw5z9fioh1NzdYGiq7vmNamdC4OaUbCFqQ4PSuVuz1Odb0MyNtvDKaolexGe
+	 rtrKCM8Lp6HAMkTT5twWe/NbAEm+ZS5GBI/xrDIcKNhmtkijt5GOxadiWPn3QsGMeJ
+	 KyL9bfxHRX5420iAFinyupgnXm+MjSg7SthQG3TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Link Mauve <kernel@linkmauve.fr>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 476/507] rtc: gamecube: Check the return value of ioremap()
+	stable <stable@kernel.org>,
+	Haotien Hsu <haotienh@nvidia.com>,
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 6.12 350/354] usb: gadget: tegra-xudc: Always reinitialize data toggle when clear halt
 Date: Tue, 16 Dec 2025 12:15:17 +0100
-Message-ID: <20251216111402.687711729@linuxfoundation.org>
+Message-ID: <20251216111333.589688153@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Haotien Hsu <haotienh@nvidia.com>
 
-[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
+commit 2585973c7f9ee31d21e5848c996fab2521fd383d upstream.
 
-The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
-and return NULL, which is dereferenced without checking, leading to a
-NULL pointer dereference.
+The driver previously skipped handling ClearFeature(ENDPOINT_HALT)
+when the endpoint was already not halted. This prevented the
+controller from resetting the data sequence number and reinitializing
+the endpoint state.
 
-Add a check for the return value of ioremap() and return -ENOMEM on
-failure.
+According to USB 3.2 specification Rev. 1.1, section 9.4.5,
+ClearFeature(ENDPOINT_HALT) must always reset the data sequence and
+set the stream state machine to Disabled, regardless of whether the
+endpoint was halted.
 
-Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Link Mauve <kernel@linkmauve.fr>
-Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the early return so that ClearFeature(ENDPOINT_HALT) always
+resets the endpoint sequence state as required by the specification.
+
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://patch.msgid.link/20251127033540.2287517-1-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-gamecube.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/udc/tegra-xudc.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
-index c828bc8e05b9c..045d5d45ab4b0 100644
---- a/drivers/rtc/rtc-gamecube.c
-+++ b/drivers/rtc/rtc-gamecube.c
-@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1554,12 +1554,6 @@ static int __tegra_xudc_ep_set_halt(stru
+ 		return -ENOTSUPP;
  	}
  
- 	hw_srnprot = ioremap(res.start, resource_size(&res));
-+	if (!hw_srnprot) {
-+		pr_err("failed to ioremap hw_srnprot\n");
-+		return -ENOMEM;
-+	}
- 	old = ioread32be(hw_srnprot);
- 
- 	/* TODO: figure out why we use this magic constant.  I obtained it by
--- 
-2.51.0
-
+-	if (!!(xudc_readl(xudc, EP_HALT) & BIT(ep->index)) == halt) {
+-		dev_dbg(xudc->dev, "EP %u already %s\n", ep->index,
+-			halt ? "halted" : "not halted");
+-		return 0;
+-	}
+-
+ 	if (halt) {
+ 		ep_halt(xudc, ep->index);
+ 	} else {
 
 
 
