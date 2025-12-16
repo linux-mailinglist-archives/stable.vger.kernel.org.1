@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090E7CC2F5C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CD0CC24B7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4628E324D9DC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24FC33022D22
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE8835504F;
-	Tue, 16 Dec 2025 12:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520B8342C8E;
+	Tue, 16 Dec 2025 11:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnAcX3yE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8ghUOYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5EB35503D;
-	Tue, 16 Dec 2025 12:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F891342505;
+	Tue, 16 Dec 2025 11:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886488; cv=none; b=M0nsMe5611/6CMFwFL4BO6mo0oCh/vT4OkTnpa8Kwdl2nPFs4OJ2b5yMknL9jgRZ+RLO2a00wrCf3XeWcfPAw1ok0vGis7rRdVmfcdkkNnrvjk6XNOoKm8aa8JrRCNvmlLIVLqOsGvfFgQnEHn3qSFaWhw9TWh5hiFkB+r9uPJc=
+	t=1765884869; cv=none; b=bDCmSMuzxCn7dmgbi2XE1vx29H90hu63ArT8YerK/F9MvdSIX22Q6hAPzDPmnbnYajFqma6QJ9eRQ+svzC1By6c0K0PtrFsnk/53fKKnBFVXJ4N5QWICaZoOS//RNFoQxdDfd/ZTUqBag6s4OJjhsi10aDtBgNuuR2LsdQN+8GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886488; c=relaxed/simple;
-	bh=ronrqBTE9S+KJkSt8qXzAn05MG+QbsM2oRy+dJmkn8A=;
+	s=arc-20240116; t=1765884869; c=relaxed/simple;
+	bh=/KIKthTFQJ4ghJSUpYcj8gaGCef/Kj2Bpgzo0lURMbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iD9F2G7vRBixBkaE2Ba5urACXvAgWhM+hZ0blJaKfE1i2qi3jrxhiMyEXV6/XBaxyolhcr5cfYAhjwAw9U3YunEybLSh7sQ8D2gC0vm1SifEDXmV2wPAVCcyncC+Ruemz8gzlEJ/QFZlsce8rQ9SqehGkDPxN40lSuy+RY4fPe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnAcX3yE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A74C4CEF1;
-	Tue, 16 Dec 2025 12:01:27 +0000 (UTC)
+	 MIME-Version; b=vA1XbMrKLqVT4puFA0l+8dM4/hmRPCaDK4riXmh+ul9ZzHg/C9BG68ySOK4UpDEhThcuSHhEzmHaojd+OmGkENbS6C2hQ7WGofvD8KuD5GrIzZ57i1MZ2SFUot1n8bcyXleK1yshzmCP1hmivOy7XY6oEDOnzfS0zy+WvyPowKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8ghUOYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88767C4CEF1;
+	Tue, 16 Dec 2025 11:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886488;
-	bh=ronrqBTE9S+KJkSt8qXzAn05MG+QbsM2oRy+dJmkn8A=;
+	s=korg; t=1765884868;
+	bh=/KIKthTFQJ4ghJSUpYcj8gaGCef/Kj2Bpgzo0lURMbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnAcX3yEPQxp1pT6YyTHbkVn+Y1OOjlX32GEiviG7jymsKuqmmDnjdhcoTtK0eMhJ
-	 jfMkWl4t3RRcxFbldejhB++RRCKKt20ZPuna9kjPMMqr7fHUQUL/q50e5rbQjB9nZZ
-	 uwaDQFwT/LHP04Vfu2pMREFPnX1b/bboirwweu30=
+	b=M8ghUOYzTZnEtfcLco9P92ZApPnwUw6Fr+2l+jnAy15MzKFgcNJGuXacEU6QrAzE2
+	 Vo//z5L9D74a7mZjkauqV91/IPq663n/jjElQQ4H+ppQJ1qZxKomF5j/Ubk6MWdyW/
+	 ZM3AnWvNrzqGx2cX9fgpJTeWFbpsFMqU2Mo65JAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 450/507] Revert "nfs: ignore SB_RDONLY when mounting nfs"
+Subject: [PATCH 6.12 324/354] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
 Date: Tue, 16 Dec 2025 12:14:51 +0100
-Message-ID: <20251216111401.755250995@linuxfoundation.org>
+Message-ID: <20251216111332.647567825@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
+[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
 
-This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
+The drm_property_create_signed_range() function doesn't return error
+pointers it returns NULL on error.  Fix the error checking to match.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
-
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_plane.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index c0a44f389f8f4..5a43543c60b84 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -13,7 +13,7 @@
- #include <linux/nfslocalio.h>
- #include <linux/wait_bit.h>
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index a28b22fdd7a41..4fcb5d486de67 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -328,14 +328,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
  
--#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
-+#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
+ 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_x))
+-		return PTR_ERR(prop_x);
++	if (!prop_x)
++		return -ENOMEM;
  
- extern const struct export_operations nfs_export_ops;
+ 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
+ 						  INT_MIN, INT_MAX);
+-	if (IS_ERR(prop_y)) {
++	if (!prop_y) {
+ 		drm_property_destroy(plane->dev, prop_x);
+-		return PTR_ERR(prop_y);
++		return -ENOMEM;
+ 	}
  
+ 	drm_object_attach_property(&plane->base, prop_x, 0);
 -- 
 2.51.0
 
