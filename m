@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2835ACC2AEF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F376CC2D31
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FF6C3019374
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDA4D30E67D6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5C349B11;
-	Tue, 16 Dec 2025 11:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27F2364EBB;
+	Tue, 16 Dec 2025 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+zBcJAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgHRmre/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1654A349B0D;
-	Tue, 16 Dec 2025 11:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7041035CB7D;
+	Tue, 16 Dec 2025 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885172; cv=none; b=RtgX8Nh/m4mYp3U9SJV7cvnipmMdtt/KHW3QMPVd8EGkVqkyACrUa7/7jIoXh27ku62XZK1+04oeaJM0KSsRUH95s6tBo9TMm7b9z7qS/FfXfpUARdgJFs52fL3mZ4SDkwBw+gCHk1PmWWbK09hltjQ4jFU/mtKn5Cy7XbL/W5k=
+	t=1765887142; cv=none; b=UxWFH2qxm3SsNLLaV/S/4EatUEigJGzcieqeAHHmTwLQP2x74ijzYxcVlVJvi0lHPkVTuwNc9RcKKs6P5dxr3XEq4WZfNMMR1pG9BIFXoFpcz4wncP43OuADZeELLg/w+SSwWpPB8TTYSBdOeRLSdXO5iR1UtPTmymF7Igp9gRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885172; c=relaxed/simple;
-	bh=EkOBMw3++Vo6PiHgu9C/wX35ygd/GT3e6cn4yDkXrG0=;
+	s=arc-20240116; t=1765887142; c=relaxed/simple;
+	bh=3bw4jfvUT9hQiDQnsDd/XFPFn3NNNGUM/VF7wUb5NTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uanQKif5DwVK9kI4RohdnENiruwT2M7p8AMEEwHJe3PGeUIlRkY9of62HhR4efGOxf/sR0iw91oaixj33ru/ZYJmgRUjiALn/FAG1qdddXFXx1t3epp2qi8s+NmOjU9OUZdEhWOfcR+Y6qq7HPzhYXtnyvcN/9sOC/4HGwKIvDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+zBcJAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFD4C4CEF1;
-	Tue, 16 Dec 2025 11:39:30 +0000 (UTC)
+	 MIME-Version; b=gQB2fXYJ9YOlY+isVXMUJfIISqy1d73pWBWH9saSo58aJww59sT/3J+HoVRy0Ms9rXDUbJxFEeeWEmapK1knajHGPqFb8RycVQ99JeiKcrr7AT5SxCyC9Nq1IP00jNzfqJCr4ekq3562EL2VwTK2mtpCo4tNpCatNdUiU/u+sLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgHRmre/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36EAC4CEF1;
+	Tue, 16 Dec 2025 12:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885171;
-	bh=EkOBMw3++Vo6PiHgu9C/wX35ygd/GT3e6cn4yDkXrG0=;
+	s=korg; t=1765887142;
+	bh=3bw4jfvUT9hQiDQnsDd/XFPFn3NNNGUM/VF7wUb5NTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+zBcJAssBRwhhp2UB8hdvQk6/hBh8hsrApS3dyQ9QrSGMEW+FJOwXXI83rQWwmBD
-	 BmmasUrsRn5SFqnavc/rVCSKywIBdL4xZi9LhL+v5UCahWRNAUWNBMeb47Kcdu2iap
-	 EMg5vhbscukFjGRakeIl+SfcF1/Je+rBo/8cfLCE=
+	b=WgHRmre/yTsYG43my4/DFsCyrESTzZyg7ACCMbouqg04gULllzmZ1SdER4RUTCDQL
+	 SarZUr6EG3eGacQct4AGGHm8B7F1p6CY8u7MDO7yZsS3r8yzJzgGa4lvzrjLd4c2Yb
+	 W+q4z7qY5KXhwnzFuIVehw+G/BGtx2OLXaRUewtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yu Kuai <yukuai@kernel.org>,
-	chengkaitao <chengkaitao@kylinos.cn>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 058/507] block/mq-deadline: Introduce dd_start_request()
+Subject: [PATCH 6.18 132/614] ARM: dts: renesas: r9a06g032-rzn1d400-db: Drop invalid #cells properties
 Date: Tue, 16 Dec 2025 12:08:19 +0100
-Message-ID: <20251216111347.644815958@linuxfoundation.org>
+Message-ID: <20251216111406.118025836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 93a358af59c6e8ab00b57cfdb1c437516a4948ca ]
+[ Upstream commit ca7fffb6e92a7c93604ea2bae0e1c89b20750937 ]
 
-Prepare for adding a second caller of this function. No functionality
-has been changed.
+The 'ethernet-ports' node in the SoC DTSI handles them already. Fixes:
 
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Yu Kuai <yukuai@kernel.org>
-Cc: chengkaitao <chengkaitao@kylinos.cn>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: d60055cf5270 ("block/mq-deadline: Switch back to a single dispatch list")
+    arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dtb: switch@44050000 (renesas,r9a06g032-a5psw): Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
+	    from schema $id: http://devicetree.org/schemas/net/dsa/renesas,rzn1-a5psw.yaml#
+
+Fixes: 5b6d7c3c5861ad4a ("ARM: dts: r9a06g032-rzn1d400-db: Add switch description")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251007104624.19786-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 2e689b2c40213..9d449503613d6 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -310,6 +310,19 @@ static bool started_after(struct deadline_data *dd, struct request *rq,
- 	return time_after(start_time, latest_start);
- }
+diff --git a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
+index 3258b2e274346..4a72aa7663f25 100644
+--- a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
++++ b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
+@@ -308,8 +308,6 @@ &rtc0 {
  
-+static struct request *dd_start_request(struct deadline_data *dd,
-+					enum dd_data_dir data_dir,
-+					struct request *rq)
-+{
-+	u8 ioprio_class = dd_rq_ioclass(rq);
-+	enum dd_prio prio = ioprio_class_to_prio[ioprio_class];
-+
-+	dd->per_prio[prio].latest_pos[data_dir] = blk_rq_pos(rq);
-+	dd->per_prio[prio].stats.dispatched++;
-+	rq->rq_flags |= RQF_STARTED;
-+	return rq;
-+}
-+
- /*
-  * deadline_dispatch_requests selects the best request according to
-  * read/write expire, fifo_batch, etc and with a start time <= @latest_start.
-@@ -320,8 +333,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- {
- 	struct request *rq, *next_rq;
- 	enum dd_data_dir data_dir;
--	enum dd_prio prio;
--	u8 ioprio_class;
+ &switch {
+ 	status = "okay";
+-	#address-cells = <1>;
+-	#size-cells = <0>;
  
- 	lockdep_assert_held(&dd->lock);
- 
-@@ -415,12 +426,7 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- 	dd->batching++;
- 	deadline_move_request(dd, per_prio, rq);
- done:
--	ioprio_class = dd_rq_ioclass(rq);
--	prio = ioprio_class_to_prio[ioprio_class];
--	dd->per_prio[prio].latest_pos[data_dir] = blk_rq_pos(rq);
--	dd->per_prio[prio].stats.dispatched++;
--	rq->rq_flags |= RQF_STARTED;
--	return rq;
-+	return dd_start_request(dd, data_dir, rq);
- }
- 
- /*
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pins_eth3>, <&pins_eth4>, <&pins_mdio1>;
 -- 
 2.51.0
 
