@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D7DCC277F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08AFCC3038
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C169830D703D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41D0731A4A30
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912BB345741;
-	Tue, 16 Dec 2025 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4464236C5AE;
+	Tue, 16 Dec 2025 12:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WReIWtCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfQvxZ5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA434573F;
-	Tue, 16 Dec 2025 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1D36C590;
+	Tue, 16 Dec 2025 12:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885506; cv=none; b=IcXLAATnRyOVujvTzHOIev8pDsQkm1KtHLaVlsBBk/3lLeVAdjWukAF4rC/56XTwJ7QtLYSOa4x/wK8PdqHxG0AotKiKuMIvyLQ/l5EcqC5bpBS+o9bneIBkZ5II3kPy/WdZFZp/92lJJkefpoVqSs92dYN3LQzB7mk9E3l96Fc=
+	t=1765887452; cv=none; b=pePaeY4afm1262+167VqRN9JXxvyFGXd6FbQugY4XFIqaVzcWOoxTCGRuANcoElgIyCPmDaHMlGSGoFvh4dViResI+RhYoca+/7SeMnOP1mi/ZjBYTkoQ7AZ049WA9qddKysIo5Yvps7S/RzXosQIsoV9GasO+JG1PC04lekSHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885506; c=relaxed/simple;
-	bh=qz3Vl+oKTi/QTbzOLzyq2cvkRpDKC0f0AUxBjltB9eU=;
+	s=arc-20240116; t=1765887452; c=relaxed/simple;
+	bh=o8g56qhUQt5sXnTTUXepVBWwHYhQnZXAW1Xm3E7RiAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOmA6z5FCR0LQOEN6iK5q+VmlC1BeW73txAwxZr6NdzzSDpntsA8JvMXJF5wqyVMchIGYG9JhsGjEYtEACe4o/0DXy+OaT6SlpZ7rVPQARqSTjbjomHQiFS8OU8YSaRNxI4DGykwKf/cyC1r1hds5lvrmBbZT+WEE4oznGDMHSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WReIWtCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EB4C4CEF1;
-	Tue, 16 Dec 2025 11:45:05 +0000 (UTC)
+	 MIME-Version; b=OZCTzHjYN+jtEHZInAH1h8W3pHNW0UO7vrvgrVi1hXmO6tgTLkAuYRFy+J5Qco8XQ2lWURuYyBj3hQboAC0frODQqST9ymyXVNkHCXVZfaH1Kfo7zIT2vAr2RSLTrOjahd7A54nWD3k+yBq6+rexfxOziQGDSPh8ed5ORSQGYrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfQvxZ5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76317C4CEF1;
+	Tue, 16 Dec 2025 12:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885506;
-	bh=qz3Vl+oKTi/QTbzOLzyq2cvkRpDKC0f0AUxBjltB9eU=;
+	s=korg; t=1765887451;
+	bh=o8g56qhUQt5sXnTTUXepVBWwHYhQnZXAW1Xm3E7RiAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WReIWtCDpBvESuny98WORx5GAvwcGT4/sWxqaLJzZ6nSxabGQWqIyof1ghabvxrC3
-	 RZN+BxBqkT3Djhkjq8/pKbIpta+Npm8lXd6Tfx8kg1q+Ft5RJ9oOhZyWlJ5Ley+UYs
-	 engwSe+eJpqk6+5i8XbUw1/3Yi4uvB6ImgJUm2M8=
+	b=zfQvxZ5DcWpJiVJ+uT8FOXmhik1Sigyha3+2DvXQXDZUcUUn4Lbd6c7Fw6XcgY9Jn
+	 6obdSaz6g7MiPE9oHA7dLQwq+e38M0Bv6eFNlSH+/q6cD8GVVQGiQNm1F7egGygvD+
+	 vbG4cDPm9hYrR8VxT9cYRbPk4LkVdU/YYke0mG20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 159/507] scsi: target: Do not write NUL characters into ASCII configfs output
+Subject: [PATCH 6.18 233/614] iio: imu: bmi270: fix dev_err_probe error msg
 Date: Tue, 16 Dec 2025 12:10:00 +0100
-Message-ID: <20251216111351.282756850@linuxfoundation.org>
+Message-ID: <20251216111409.812020813@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit c03b55f235e283cae49c88b9602fd11096b92eba ]
+[ Upstream commit 02f86101e430cce9a99a044b483c4ed5b91bb3b8 ]
 
-NUL characters are not allowed in ASCII configfs output. Hence this
-patch.
+The bmi270 can be connected to I2C or a SPI interface. If it is a SPI,
+during probe, if devm_regmap_init() fails, it should print the "spi"
+term rather "i2c".
 
-Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251027184639.3501254-2-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 92cc50a00574 ("iio: imu: bmi270: Add spi driver for bmi270 imu")
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_configfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/imu/bmi270/bmi270_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index b19acd662726d..1bd28482e7cb3 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -2772,7 +2772,6 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
- 		cur_len = snprintf(buf, LU_GROUP_NAME_BUF, "%s/%s\n",
- 			config_item_name(&hba->hba_group.cg_item),
- 			config_item_name(&dev->dev_group.cg_item));
--		cur_len++; /* Extra byte for NULL terminator */
+diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
+index 19dd7734f9d07..80c9fa1d685ab 100644
+--- a/drivers/iio/imu/bmi270/bmi270_spi.c
++++ b/drivers/iio/imu/bmi270/bmi270_spi.c
+@@ -60,7 +60,7 @@ static int bmi270_spi_probe(struct spi_device *spi)
+ 				  &bmi270_spi_regmap_config);
+ 	if (IS_ERR(regmap))
+ 		return dev_err_probe(dev, PTR_ERR(regmap),
+-				     "Failed to init i2c regmap");
++				     "Failed to init spi regmap\n");
  
- 		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
- 			pr_warn("Ran out of lu_gp_show_attr"
+ 	return bmi270_core_probe(dev, regmap, chip_info);
+ }
 -- 
 2.51.0
 
