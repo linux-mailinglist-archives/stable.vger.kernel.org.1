@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-201585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4B2CC3510
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:46:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF48CCC3F9F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E83CD3063847
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 953CE304FEA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C166348440;
-	Tue, 16 Dec 2025 11:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9A03491C8;
+	Tue, 16 Dec 2025 11:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOGrVdd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2xvi736"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD0A347FF4;
-	Tue, 16 Dec 2025 11:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5DB34888F;
+	Tue, 16 Dec 2025 11:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885121; cv=none; b=JMSzXjDcict2bgytmGcF1mXJ9lk4r9vwWcYc99M7hB+O5QC7WYvILMKiVDn5IMosIghirAk4nGAAj5P/sPNLJjyZKEp1sn8Z+xfVrY1XTE+xC1WBy9BRtIVbRpfZL7ZGwL7VK638xm6l+F7D4YQ7RmHZ1MlCoIPJpYd3FTIyF80=
+	t=1765885158; cv=none; b=o0BGVr5092nMNRxodfHu8e+7CgO5aCyAI5AE5+sOd5U7EKUCbUmnX3WKz1Spw3xNG9ziFaXqMgveSfuGIpKgd9EmcPBGaIbKdUcuMke01ND3RAn6LhcMi7Dl1YK2yA0i6UStSx+v1h9ZMd8Ps6/OzpxdsaSF5oTontQVVENyUcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885121; c=relaxed/simple;
-	bh=85kn43mF8euOyTplU44l51mpDJKrtZNNXlu+2/nw1to=;
+	s=arc-20240116; t=1765885158; c=relaxed/simple;
+	bh=oQTxL2ijJwtDjmvRWG1utDaVI//vy9yNohG7f5O5T1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQyzgpTn2LVqpTQ8HV7x/ukqvRTrwj52DHeq0k433FM8kLIanOfQvs713QxF5vJuN7yeYzUhMaMlCkTcKVlY7rRoZ3yL7dZWGrz3qhENMC1NuKwE/SmqbtAKp8fBnFY6WKKomTNJJB33ofiLWTD9t/PF5EpafY+6V2uFDoUXsCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOGrVdd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2FFC4CEF1;
-	Tue, 16 Dec 2025 11:38:40 +0000 (UTC)
+	 MIME-Version; b=jtJzLzoUW3DEyECs88JIMVzP//ME/TRTls4mfPM0y9csJ7D2cjhqLirtxNaxGC7jmoHpWCRxZyLQc8uz+vDuXl8boML482tZ0OKfSSmKE02sEEo4ZgiEqlIYhplxE/oCKquBE/I/JZ8qR2GS2++DeMv6L3/R6qSxLgukvGDIWj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2xvi736; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23A8C4CEF1;
+	Tue, 16 Dec 2025 11:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885121;
-	bh=85kn43mF8euOyTplU44l51mpDJKrtZNNXlu+2/nw1to=;
+	s=korg; t=1765885158;
+	bh=oQTxL2ijJwtDjmvRWG1utDaVI//vy9yNohG7f5O5T1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOGrVdd9BqqXHD2ytEL9FSvqA+BgWGV0RKfk87mukynum5EAH+5lGPD/HKlRMCcQu
-	 0/Zw4gOCvLDmQjBdbJcf2/fWUbtTNoQ6PuVCbFd3XPNNike5g6llJStRHzKTftb9xT
-	 bBlRPTSK+eLQminAJ5DD1IRRGKIxPthLjJW5iV2U=
+	b=H2xvi736WbklyDhV1tUT/iVtvQ1pi54rfzL4bOYjGVf7IcgyIVslv5tQfEn5M/UnW
+	 /IPu57Ix2fgkan+8tZvi+VQECxJXBp2r2834YkgTj+MWLl4zxtdHgHyz98nbJNt5Wr
+	 UJgNpXJPUTHCP9sSoGTPMgvgxAeUER1wW6dFpH9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 027/507] remoteproc: imx_rproc: Fix runtime PM cleanup and improve remove path
-Date: Tue, 16 Dec 2025 12:07:48 +0100
-Message-ID: <20251216111346.519575908@linuxfoundation.org>
+Subject: [PATCH 6.17 028/507] objtool: Fix standalone --hacks=jump_label
+Date: Tue, 16 Dec 2025 12:07:49 +0100
+Message-ID: <20251216111346.557894656@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -66,65 +64,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Dylan Hatch <dylanbhatch@google.com>
 
-[ Upstream commit 80405a34e1f8975cdb2d7d8679bca7f768861035 ]
+[ Upstream commit be8374a5ba7cbab6b97df94b4ffe0b92f5c8a6d2 ]
 
-Proper cleanup should be done when rproc_add() fails by invoking both
-pm_runtime_disable() and pm_runtime_put_noidle() to avoid leaving the
-device in an inconsistent power state.
+The objtool command line 'objtool --hacks=jump_label foo.o' on its own
+should be expected to rewrite jump labels to NOPs. This means the
+add_special_section_alts() code path needs to run when only this option
+is provided.
 
-Fix it by adding pm_runtime_put_noidle() and pm_runtime_disable()
-in the error path.
+This is mainly relevant in certain debugging situations, but could
+potentially also fix kernel builds in which objtool is run with
+--hacks=jump_label but without --orc, --stackval, --uaccess, or
+--hacks=noinstr.
 
-Also Update the remove() callback to use pm_runtime_put_noidle() instead of
-pm_runtime_put(), to clearly indicate that only need to restore the usage
-count.
-
-Fixes: a876a3aacc43 ("remoteproc: imx_rproc: detect and attach to pre-booted remote cores")
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Hiago De Franco <hiago.franco@toradex.com>
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250926-imx_rproc_v3-v3-1-4c0ec279cc5f@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: de6fbcedf5ab ("objtool: Read special sections with alts only when specific options are selected")
+Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/objtool/check.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index a6eef0080ca9e..2eaff813a5b9f 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -1174,11 +1174,16 @@ static int imx_rproc_probe(struct platform_device *pdev)
- 	ret = rproc_add(rproc);
- 	if (ret) {
- 		dev_err(dev, "rproc_add failed\n");
--		goto err_put_clk;
-+		goto err_put_pm;
- 	}
- 
- 	return 0;
- 
-+err_put_pm:
-+	if (dcfg->method == IMX_RPROC_SCU_API) {
-+		pm_runtime_disable(dev);
-+		pm_runtime_put_noidle(dev);
-+	}
- err_put_clk:
- 	clk_disable_unprepare(priv->clk);
- err_put_scu:
-@@ -1198,7 +1203,7 @@ static void imx_rproc_remove(struct platform_device *pdev)
- 
- 	if (priv->dcfg->method == IMX_RPROC_SCU_API) {
- 		pm_runtime_disable(priv->dev);
--		pm_runtime_put(priv->dev);
-+		pm_runtime_put_noidle(priv->dev);
- 	}
- 	clk_disable_unprepare(priv->clk);
- 	rproc_del(rproc);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index d23fefcb15d38..ac2b8813c4a0a 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2563,7 +2563,8 @@ static int decode_sections(struct objtool_file *file)
+ 	 * Must be before add_jump_destinations(), which depends on 'func'
+ 	 * being set for alternatives, to enable proper sibling call detection.
+ 	 */
+-	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr) {
++	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr ||
++	    opts.hack_jump_label) {
+ 		ret = add_special_section_alts(file);
+ 		if (ret)
+ 			return ret;
 -- 
 2.51.0
 
