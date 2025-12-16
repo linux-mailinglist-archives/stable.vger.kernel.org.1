@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC6CCC27CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 980A3CC2E25
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 561B230616B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAE2E309C7EA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32B435502C;
-	Tue, 16 Dec 2025 11:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C100C361DB4;
+	Tue, 16 Dec 2025 12:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utJd542I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRl1G5re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA2E355026;
-	Tue, 16 Dec 2025 11:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D554361DB1;
+	Tue, 16 Dec 2025 12:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885905; cv=none; b=X9SjhC3xL3akDDo8MNFR/2jJZm7NPAhTFrgbfmd8tctUU9XY99N2JQfhjKHgygvaOr4AZEPx/GSxuv1HQu0NVvItsg92yY5SLJ7fBtlRZP1c0dqKY/fnaz+1+cWDYesDn97eLNzM6jYrCbaRhRRcyY4gqKacbDXjtagdOaZeh88=
+	t=1765887727; cv=none; b=n0Qx7sJI2U8kkk/UwE5bIPcbG89EkTzKw9MJF9dSZslqEJCf86vFW37/UwJmmLBKeF0iULpAp5xuzvSOdrnpO7UYZ56aDUGRMGkriIYnXNGMgTYyPiBiY1k0sTTQQyqxE6ddNWZh8d5lhGPPt49F/CoioQIuc98qyvPCufpu/9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885905; c=relaxed/simple;
-	bh=FCCWh2MQPIE4it4UTGdBhIGkIRC0tk1ItktYFFWLpIE=;
+	s=arc-20240116; t=1765887727; c=relaxed/simple;
+	bh=Q3dPeIRW5uinqTR6k+ukb173R6QzaPYSqez3+r8QhNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtuOqm77MIfrhL6HyVJHu7ZwV/J1WPrSsnvNCsLkWcMU0TSAIqRZigoLlEVfSBvGi9x70fvpgLYaLAdzJqs0Z+60YEX3jDGEtWZGrl4K5OBydc7INFjmjAHjTCO2xnFkzcd+nOXqggYcHURXL3GjdHrfVP3Alpc0W7SKxqXbYy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utJd542I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15A3C4CEF1;
-	Tue, 16 Dec 2025 11:51:44 +0000 (UTC)
+	 MIME-Version; b=okji/7XgJYXYo00CdbaQ5mRi81prXLq5Cr/TQ1eaocPnf60jzMirl8bEioDvcCYJwGjb1ucjtqoY36ArLcnQiI+sNNG5J4/tj9l7UUstbI7vYdNZ4FFQqnhL3W+2izDeGLLqvbOHynG85XgEJl9ZJYT3dwVz1iAi/fmdoYsO4oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRl1G5re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7F4C4CEF1;
+	Tue, 16 Dec 2025 12:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885905;
-	bh=FCCWh2MQPIE4it4UTGdBhIGkIRC0tk1ItktYFFWLpIE=;
+	s=korg; t=1765887727;
+	bh=Q3dPeIRW5uinqTR6k+ukb173R6QzaPYSqez3+r8QhNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utJd542IU36UNP9G7mo3g7A2wCqpMtNLz8pWHPp49zgoHt8qqSFWMZ/2FqTXK11zW
-	 6vdocn5OAz3VaHGoNDorydPj0g6cfIb593Cn9XspA0MO+sP4Ahu7vigNg11w++HbRe
-	 wm1Fh5iEAGOeCkg5UWaKsPo6c56+zRYnDA463S0Y=
+	b=SRl1G5re3dVHP9UYX7+JUGnXUYKRDDkDoFu/BSjwPl2CMr1rZ1qNttg+ZR67ZLdN0
+	 YZb2TK5aWZId3FUQotmsoOQXR1bMtRYR75DfpqQT8HaLjU9bOLISzY7Olc+TdOtlVK
+	 6vJFta3uOHylfSFzyRtMa7Yf7YPtV65wsAnchUZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 246/507] mshv: Fix deposit memory in MSHV_ROOT_HVCALL
+Subject: [PATCH 6.18 320/614] fs/ntfs3: Prevent memory leaks in add sub record
 Date: Tue, 16 Dec 2025 12:11:27 +0100
-Message-ID: <20251216111354.408070503@linuxfoundation.org>
+Message-ID: <20251216111412.958621776@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,173 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 4cc1aa469cd6b714adc958547a4866247bfd60a9 ]
+[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
 
-When the MSHV_ROOT_HVCALL ioctl is executing a hypercall, and gets
-HV_STATUS_INSUFFICIENT_MEMORY, it deposits memory and then returns
--EAGAIN to userspace. The expectation is that the VMM will retry.
+If a rb node with the same ino already exists in the rb tree, the newly
+alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
+up, which leads to the memory leak issue reported by syzbot.
 
-However, some VMM code in the wild doesn't do this and simply fails.
-Rather than force the VMM to retry, change the ioctl to deposit
-memory on demand and immediately retry the hypercall as is done with
-all the other hypercall helper functions.
+The best option to avoid this issue is to put the newly alloced mft node
+when a rb node with the same ino already exists in the rb tree and return
+the rb node found in the rb tree to the parent layer.
 
-In addition to making the ioctl easier to use, removing the need for
-multiple syscalls improves performance.
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888110bef280 (size 128):
+  backtrace (crc 126a088f):
+    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
+    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
 
-There is a complication: unlike the other hypercall helper functions,
-in MSHV_ROOT_HVCALL the input is opaque to the kernel. This is
-problematic for rep hypercalls, because the next part of the input
-list can't be copied on each loop after depositing pages (this was
-the original reason for returning -EAGAIN in this case).
+BUG: memory leak
+unreferenced object 0xffff888109093400 (size 1024):
+  backtrace (crc 7197c55e):
+    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
+    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
 
-Introduce hv_do_rep_hypercall_ex(), which adds a 'rep_start'
-parameter. This solves the issue, allowing the deposit loop in
-MSHV_ROOT_HVCALL to restart a rep hypercall after depositing pages
-partway through.
-
-Fixes: 621191d709b1 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
-Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/mshv_root_main.c    | 58 ++++++++++++++++++----------------
- include/asm-generic/mshyperv.h | 17 ++++++++--
- 2 files changed, 44 insertions(+), 31 deletions(-)
+ fs/ntfs3/frecord.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
-index cad09ff5f94dc..618cac041441a 100644
---- a/drivers/hv/mshv_root_main.c
-+++ b/drivers/hv/mshv_root_main.c
-@@ -164,6 +164,7 @@ static int mshv_ioctl_passthru_hvcall(struct mshv_partition *partition,
- 	unsigned int pages_order;
- 	void *input_pg = NULL;
- 	void *output_pg = NULL;
-+	u16 reps_completed;
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index a557e3ec0d4c4..e5a005d216f31 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -325,8 +325,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
  
- 	if (copy_from_user(&args, user_args, sizeof(args)))
- 		return -EFAULT;
-@@ -215,41 +216,42 @@ static int mshv_ioctl_passthru_hvcall(struct mshv_partition *partition,
- 	 */
- 	*(u64 *)input_pg = partition->pt_id;
+ 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
  
--	if (args.reps)
--		status = hv_do_rep_hypercall(args.code, args.reps, 0,
--					     input_pg, output_pg);
--	else
--		status = hv_do_hypercall(args.code, input_pg, output_pg);
--
--	if (hv_result(status) == HV_STATUS_CALL_PENDING) {
--		if (is_async) {
--			mshv_async_hvcall_handler(partition, &status);
--		} else { /* Paranoia check. This shouldn't happen! */
--			ret = -EBADFD;
--			goto free_pages_out;
-+	reps_completed = 0;
-+	do {
-+		if (args.reps) {
-+			status = hv_do_rep_hypercall_ex(args.code, args.reps,
-+							0, reps_completed,
-+							input_pg, output_pg);
-+			reps_completed = hv_repcomp(status);
-+		} else {
-+			status = hv_do_hypercall(args.code, input_pg, output_pg);
- 		}
--	}
- 
--	if (hv_result(status) == HV_STATUS_INSUFFICIENT_MEMORY) {
--		ret = hv_call_deposit_pages(NUMA_NO_NODE, partition->pt_id, 1);
--		if (!ret)
--			ret = -EAGAIN;
--	} else if (!hv_result_success(status)) {
--		ret = hv_result_to_errno(status);
--	}
-+		if (hv_result(status) == HV_STATUS_CALL_PENDING) {
-+			if (is_async) {
-+				mshv_async_hvcall_handler(partition, &status);
-+			} else { /* Paranoia check. This shouldn't happen! */
-+				ret = -EBADFD;
-+				goto free_pages_out;
-+			}
-+		}
+-	ni_add_mi(ni, m);
+-	*mi = m;
++	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
++	if (*mi != m)
++		mi_put(m);
 +
-+		if (hv_result_success(status))
-+			break;
-+
-+		if (hv_result(status) != HV_STATUS_INSUFFICIENT_MEMORY)
-+			ret = hv_result_to_errno(status);
-+		else
-+			ret = hv_call_deposit_pages(NUMA_NO_NODE,
-+						    partition->pt_id, 1);
-+	} while (!ret);
- 
--	/*
--	 * Always return the status and output data regardless of result.
--	 * The VMM may need it to determine how to proceed. E.g. the status may
--	 * contain the number of reps completed if a rep hypercall partially
--	 * succeeded.
--	 */
- 	args.status = hv_result(status);
--	args.reps = args.reps ? hv_repcomp(status) : 0;
-+	args.reps = reps_completed;
- 	if (copy_to_user(user_args, &args, sizeof(args)))
- 		ret = -EFAULT;
- 
--	if (output_pg &&
-+	if (!ret && output_pg &&
- 	    copy_to_user((void __user *)args.out_ptr, output_pg, args.out_sz))
- 		ret = -EFAULT;
- 
-diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
-index a729b77983fab..18ee23174da03 100644
---- a/include/asm-generic/mshyperv.h
-+++ b/include/asm-generic/mshyperv.h
-@@ -123,10 +123,12 @@ static inline unsigned int hv_repcomp(u64 status)
- 
- /*
-  * Rep hypercalls. Callers of this functions are supposed to ensure that
-- * rep_count and varhead_size comply with Hyper-V hypercall definition.
-+ * rep_count, varhead_size, and rep_start comply with Hyper-V hypercall
-+ * definition.
-  */
--static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
--				      void *input, void *output)
-+static inline u64 hv_do_rep_hypercall_ex(u16 code, u16 rep_count,
-+					 u16 varhead_size, u16 rep_start,
-+					 void *input, void *output)
- {
- 	u64 control = code;
- 	u64 status;
-@@ -134,6 +136,7 @@ static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
- 
- 	control |= (u64)varhead_size << HV_HYPERCALL_VARHEAD_OFFSET;
- 	control |= (u64)rep_count << HV_HYPERCALL_REP_COMP_OFFSET;
-+	control |= (u64)rep_start << HV_HYPERCALL_REP_START_OFFSET;
- 
- 	do {
- 		status = hv_do_hypercall(control, input, output);
-@@ -151,6 +154,14 @@ static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
- 	return status;
+ 	return true;
  }
  
-+/* For the typical case where rep_start is 0 */
-+static inline u64 hv_do_rep_hypercall(u16 code, u16 rep_count, u16 varhead_size,
-+				      void *input, void *output)
-+{
-+	return hv_do_rep_hypercall_ex(code, rep_count, varhead_size, 0,
-+				      input, output);
-+}
-+
- /* Generate the guest OS identifier as described in the Hyper-V TLFS */
- static inline u64 hv_generate_guest_id(u64 kernel_version)
- {
 -- 
 2.51.0
 
