@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D9ECC22FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B9DCC3459
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F9043093FB7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D77363035C0F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5541434167A;
-	Tue, 16 Dec 2025 11:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B04354AC5;
+	Tue, 16 Dec 2025 11:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su40Wp90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnuwBQ13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C033DEE1;
-	Tue, 16 Dec 2025 11:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C4B354AC0;
+	Tue, 16 Dec 2025 11:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884076; cv=none; b=DQf79aL8TShcQfuzaTOYvdnPbxgsC6uKUneQ60rktQcx7YvAsLjCAaYYCp75D0OApusKK2bm5RU6z6o+UajJ9b0tLAxyyXm2xpDaShJgSBuwuxCJWVGyC0I4ag0nfTy51dUGKYI9aQdSUW1MTkUjZhUxoiJ57NSOCB2SffK4oa4=
+	t=1765885787; cv=none; b=Br/G41RU+kff2XEmeQR77aOOUUvQnBWt80FkQj2acX10LK0sYGHRaum4Xndyrb3K/ZJb/RYWnIMo04245pqWcoo82x4vxu+dVxJ9bky85OBoPAhdv0L5JB1ah/gOS63fDA80xmA0dHbV68scLSqtBzraiub6vNXxtKy2vnawLEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884076; c=relaxed/simple;
-	bh=x1hLFdk01xDRlsK4K0aMY1KOWQ6wkUjL8RJeEdGyTDg=;
+	s=arc-20240116; t=1765885787; c=relaxed/simple;
+	bh=UMhG7d9F7pjv7GIRSyk0U02a7mm+qnF/E5baoqEItnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJBhrdO5xUd1yGBRtiV22dhLj1Qi8yUnq1mvbXG7BtMUUFxqhae12blIAHkpyo0URznI/qO5VghBG/DcQ1QQgAsZTOsHpmn97R/kmbHsxQZCFw/zLSA/A2rD5EwQRmvMHEFcWZmxEQ47nxhicWayIvwnzTqdCzjRTw58Zt2Bcqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su40Wp90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70319C4CEF5;
-	Tue, 16 Dec 2025 11:21:15 +0000 (UTC)
+	 MIME-Version; b=e6zVZMe8QIO2HvNBF7rYtWPDa0MBTwP4q2DwiJgTo+7MdcezOpnNC3vktaYdeuQQUcfAA+/fhGVFK64thbZ2Li3Co9vWLq6EBsynQCdQEapQF0IoUmZaxbaou5gnWcBmRkxTWXwARDPGz4vYz4loFFYOTUvkP8Iya/ZPZrXpzPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnuwBQ13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774F5C4CEF5;
+	Tue, 16 Dec 2025 11:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884075;
-	bh=x1hLFdk01xDRlsK4K0aMY1KOWQ6wkUjL8RJeEdGyTDg=;
+	s=korg; t=1765885787;
+	bh=UMhG7d9F7pjv7GIRSyk0U02a7mm+qnF/E5baoqEItnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Su40Wp90oxNdrr5l6AFMqXeZkePU9+m7vPpPNylLIW0LhzF8FA7X9fG6xdah1jlK0
-	 884IqFVqUULZmsNXYgE3zohQm3RcPCHQcaEkhuFIwUN9BIU9vq+aPKfpxyq9IH4Xni
-	 bMsjqVIlSLhaTlF0XOG8KBnIqm4wBWlIT2y+/F4o=
+	b=BnuwBQ13XqE//1X1FOFMaAEMXY9kEjTbn52o47TiKCfN6ia5aOcTz2LFyHXGU8fEk
+	 xP4lL6VlTuj8poJoewJg7peP8wZCjNHgiKohnrhCgctr2b2l8iS9H4HdCPfD1SpQvq
+	 EiACaq88csAB24wdkz5oMNw6mNWjL2llmo9LUT7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Namhyung Kim <Namhyung@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/354] perf: Remove get_perf_callchain() init_nr argument
+Subject: [PATCH 6.17 211/507] nbd: defer config unlock in nbd_genl_connect
 Date: Tue, 16 Dec 2025 12:10:52 +0100
-Message-ID: <20251216111324.002732154@linuxfoundation.org>
+Message-ID: <20251216111353.152309758@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit e649bcda25b5ae1a30a182cc450f928a0b282c93 ]
+[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
 
-The 'init_nr' argument has double duty: it's used to initialize both the
-number of contexts and the number of stack entries.  That's confusing
-and the callers always pass zero anyway.  Hard code the zero.
+There is one use-after-free warning when running NBD_CMD_CONNECT and
+NBD_CLEAR_SOCK:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <Namhyung@kernel.org>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/r/20250820180428.259565081@kernel.org
-Stable-dep-of: 23f852daa4ba ("bpf: Fix stackmap overflow check in __bpf_get_stackid()")
+nbd_genl_connect
+  nbd_alloc_and_init_config // config_refs=1
+  nbd_start_device // config_refs=2
+  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
+  recv_work done // config_refs=2
+						NBD_CLEAR_SOCK // config_refs=1
+						close nbd // config_refs=0
+  refcount_inc -> uaf
+
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
+ nbd_genl_connect+0x16d0/0x1ab0
+ genl_family_rcv_msg_doit+0x1f3/0x310
+ genl_rcv_msg+0x44a/0x790
+
+The issue can be easily reproduced by adding a small delay before
+refcount_inc(&nbd->config_refs) in nbd_genl_connect():
+
+        mutex_unlock(&nbd->config_lock);
+        if (!ret) {
+                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
++               printk("before sleep\n");
++               mdelay(5 * 1000);
++               printk("after sleep\n");
+                refcount_inc(&nbd->config_refs);
+                nbd_connect_reply(info, nbd->index);
+        }
+
+Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/perf_event.h |  2 +-
- kernel/bpf/stackmap.c      |  4 ++--
- kernel/events/callchain.c  | 12 ++++++------
- kernel/events/core.c       |  2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index ce64b4b937f06..c2bd4bc45a27b 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1602,7 +1602,7 @@ DECLARE_PER_CPU(struct perf_callchain_entry, perf_callchain_entry);
- extern void perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs);
- extern void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs);
- extern struct perf_callchain_entry *
--get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
-+get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
- 		   u32 max_stack, bool crosstask, bool add_mark);
- extern int get_callchain_buffers(int max_stack);
- extern void put_callchain_buffers(void);
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 3615c06b7dfa9..ec3a57a5fba1f 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -314,7 +314,7 @@ BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
- 	if (max_depth > sysctl_perf_event_max_stack)
- 		max_depth = sysctl_perf_event_max_stack;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 7a1e61cc47357..9ba4b20b80ba2 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2241,12 +2241,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
  
--	trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
-+	trace = get_perf_callchain(regs, kernel, user, max_depth,
- 				   false, false);
- 
- 	if (unlikely(!trace))
-@@ -451,7 +451,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	else if (kernel && task)
- 		trace = get_callchain_entry_for_task(task, max_depth);
- 	else
--		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
-+		trace = get_perf_callchain(regs, kernel, user, max_depth,
- 					   crosstask, false);
- 
- 	if (unlikely(!trace) || trace->nr < skip) {
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 49d87e6db553f..677901f456a94 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -216,7 +216,7 @@ static void fixup_uretprobe_trampoline_entries(struct perf_callchain_entry *entr
- }
- 
- struct perf_callchain_entry *
--get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
-+get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
- 		   u32 max_stack, bool crosstask, bool add_mark)
- {
- 	struct perf_callchain_entry *entry;
-@@ -231,11 +231,11 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 	if (!entry)
- 		return NULL;
- 
--	ctx.entry     = entry;
--	ctx.max_stack = max_stack;
--	ctx.nr	      = entry->nr = init_nr;
--	ctx.contexts       = 0;
--	ctx.contexts_maxed = false;
-+	ctx.entry		= entry;
-+	ctx.max_stack		= max_stack;
-+	ctx.nr			= entry->nr = 0;
-+	ctx.contexts		= 0;
-+	ctx.contexts_maxed	= false;
- 
- 	if (kernel && !user_mode(regs)) {
- 		if (add_mark)
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d6a86d8e9e59b..6bc8b84f12156 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7860,7 +7860,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- 	if (!kernel && !user)
- 		return &__empty_callchain;
- 
--	callchain = get_perf_callchain(regs, 0, kernel, user,
-+	callchain = get_perf_callchain(regs, kernel, user,
- 				       max_stack, crosstask, true);
- 	return callchain ?: &__empty_callchain;
- }
+ 	ret = nbd_start_device(nbd);
+ out:
+-	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
+ 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
+ 		refcount_inc(&nbd->config_refs);
+ 		nbd_connect_reply(info, nbd->index);
+ 	}
++	mutex_unlock(&nbd->config_lock);
++
+ 	nbd_config_put(nbd);
+ 	if (put_dev)
+ 		nbd_put(nbd);
 -- 
 2.51.0
 
