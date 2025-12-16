@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9870CC4678
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF28CC2662
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9565630C71EB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 087D9304DA08
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C4433DEE3;
-	Tue, 16 Dec 2025 12:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79116342CB2;
+	Tue, 16 Dec 2025 11:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db9D8sjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SesbAccL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA02F9E8;
-	Tue, 16 Dec 2025 12:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E1A342CA7;
+	Tue, 16 Dec 2025 11:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886431; cv=none; b=AwwoeZaS6cNaolV4pXLgbNZzCXXuxnVKU4TZB1KZecvw/OXiHFqgh6lHHBoYnYqsnIbZlQAd40WhdlLbmzeaHjB7CEg90Ge3bGjv9xlvXk33d20p+eL5l2ZE7TFFe3Et6hT399gnSzjzcyL9/LWABZgKqmGqXXZwttYlTtRXezs=
+	t=1765884825; cv=none; b=u7g9adwObyFaCH3CmmC2QbT5LFeywV9UGRHinx0mDRvtkmx0BH2nczwfbhWiMm5fQIghZkwv/zTZ5p+JB7PZfBAg3X9lYpcGG3lwsnSCuj0LzlYfXLLQoTD39ah1pGWhwIfG1VOExpAy8y7esZxtc6bEs1Ae4KWFQFxlQ6s8+Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886431; c=relaxed/simple;
-	bh=iNDzERgkvFfOKdxh8XCMgx6yU52DdDtHAv41Zn5ViE4=;
+	s=arc-20240116; t=1765884825; c=relaxed/simple;
+	bh=99eWctWIK1W2JgJjnAuHsD3mXPFzlr4GX0dv7qBpsd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t2s+iXIFRbZ+Dj1ZB/33pAJAeZNi2ixs3WmRJeyNtV9l4uY2i7QF8fctkqaE/llXECPPGgw14SB98PweRA6welcSvoi7C6e/Izmr32qOM1LhJCC//W0rnAfKNaUldAbb5fjuPgeb3YLQpuat2h7AxJ6cJ7KawbUiX32a838hbuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db9D8sjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4CDC4CEF1;
-	Tue, 16 Dec 2025 12:00:30 +0000 (UTC)
+	 MIME-Version; b=ROE7T/3YRCzWcbkIDWCGHRYPka7dPZyE4rgrLn9qdVmhIsq8GFyViShbrNs4/Pdw7WI22b7bs7O+pjYUKvCdRG6Ol5yibB7u1cj3m8j3OTWFnIsLNGEH1V2OpNyXhlOZC5DKQpr6eBw7WWV6FQVBTgXeh/VKt2hfw7lYRzLNKH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SesbAccL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B170C4CEF1;
+	Tue, 16 Dec 2025 11:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886431;
-	bh=iNDzERgkvFfOKdxh8XCMgx6yU52DdDtHAv41Zn5ViE4=;
+	s=korg; t=1765884825;
+	bh=99eWctWIK1W2JgJjnAuHsD3mXPFzlr4GX0dv7qBpsd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=db9D8sjq8mXozJm6YtAeBbD12ge8QFqM34xI4mXKMRi7KZRzKdNNlEzQ51o27wD+B
-	 p/q0rD18d+7qzKakWnNg/6xyANht1erTQL0x/IdEcb7Ok32pi5Yc90v+hUqBiOmNG0
-	 IvHoP+GFOUbtO6AT5mLQ4Bs2YxYgWM2UVfEFD0sg=
+	b=SesbAccL4f80f5r/URBpsI6LuOeFupoEDLoKHKXBUkQwiso3wByYl+dTgOZ/Qigjy
+	 kbw0Fabwq4ZF0hYlC+LYIWaFv0gYW7Ds5aUnHZmcBBp8tUftNPLEyxMiuhCKqrBV8o
+	 +618CWKaIpUjs4D5s9aC3oQLW/G1Id/H3HVMR+UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Xi Pardee <xi.pardee@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 435/507] platform/x86:intel/pmc: Update Arrow Lake telemetry GUID
+Subject: [PATCH 6.12 309/354] Revert "nfs: ignore SB_RDONLY when remounting nfs"
 Date: Tue, 16 Dec 2025 12:14:36 +0100
-Message-ID: <20251216111401.217723443@linuxfoundation.org>
+Message-ID: <20251216111332.106655401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Pardee <xi.pardee@linux.intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 644ab3bc98ee386f178d5209ae8170b3fac591aa ]
+[ Upstream commit 400fa37afbb11a601c204b72af0f0e5bc2db695c ]
 
-Update ARL_PMT_DMU_GUID value. Arrow Lake PMT DMU GUID has been updated
-after it was add to the driver. This updates ensures that the die C6
-value is available in the debug filesystem.
+This reverts commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a.
 
-Bugzilla Link: https://bugzilla.kernel.org/show_bug.cgi?id=220421
-Fixes: 83f168a1a437 ("platform/x86/intel/pmc: Add Arrow Lake S support to intel_pmc_core driver")
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Xi Pardee <xi.pardee@linux.intel.com>
-Link: https://patch.msgid.link/20251014214548.629023-2-xi.pardee@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
+
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 80c4de6ab44c ("nfs: ignore SB_RDONLY when remounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/super.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
-index 4a94a4ee031e6..24139617eef61 100644
---- a/drivers/platform/x86/intel/pmc/core.h
-+++ b/drivers/platform/x86/intel/pmc/core.h
-@@ -282,7 +282,7 @@ enum ppfear_regs {
- /* Die C6 from PUNIT telemetry */
- #define MTL_PMT_DMU_DIE_C6_OFFSET		15
- #define MTL_PMT_DMU_GUID			0x1A067102
--#define ARL_PMT_DMU_GUID			0x1A06A000
-+#define ARL_PMT_DMU_GUID			0x1A06A102
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index da5286514d8c7..44e5cb00e2ccf 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1046,16 +1046,6 @@ int nfs_reconfigure(struct fs_context *fc)
  
- #define LNL_PMC_MMIO_REG_LEN			0x2708
- #define LNL_PMC_LTR_OSSE			0x1B88
+ 	sync_filesystem(sb);
+ 
+-	/*
+-	 * The SB_RDONLY flag has been removed from the superblock during
+-	 * mounts to prevent interference between different filesystems.
+-	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
+-	 * during reconfiguration; otherwise, it may also result in the
+-	 * creation of redundant superblocks when mounting a directory with
+-	 * different rw and ro flags multiple times.
+-	 */
+-	fc->sb_flags_mask &= ~SB_RDONLY;
+-
+ 	/*
+ 	 * Userspace mount programs that send binary options generally send
+ 	 * them populated with default values. We have no way to know which
 -- 
 2.51.0
 
