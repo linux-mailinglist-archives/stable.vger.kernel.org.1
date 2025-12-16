@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36287CC48E6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1253BCC2406
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47C8C300DBBE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 85E8C30019E4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E09376BC3;
-	Tue, 16 Dec 2025 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC92D33E36B;
+	Tue, 16 Dec 2025 11:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUBRhFJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUDcbSG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4982F36D51F;
-	Tue, 16 Dec 2025 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880BC33D6F5;
+	Tue, 16 Dec 2025 11:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888042; cv=none; b=X+IyERpJsbE0VprX4bwCYuEjH6sdMFGKzphTWjIALcla9szgH6AU0DzRC8OptmGZlXOsrdVQam8MR5/xU63zu9tN9ky/oc3eUgc66PWukKf2Uyu7B8JZRhuJm0DJ5Pnz+8nk27EgsNgFJsDeSOuD253x2qmZzLtLiBXdXsabnV8=
+	t=1765884609; cv=none; b=rhxxgtQDnXGcRJKhg6xosNo1lNGO1gWN2AI8Y4x3PxJhWIe10e2Z78+JlPoC7SvO3WMBBOiB1xhu9rQdm1yfewjBknDOu/vnhIv8j5CariAWA/oi4It7WLT+P2Wcsg4SpEAoE6P3/7i/U6sRLWC32LATw5W9MVNITYMzpo577jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888042; c=relaxed/simple;
-	bh=KtbqM5YfbvRzUGDVUELM0Tc+plfskDUwTFWgP0eWZPc=;
+	s=arc-20240116; t=1765884609; c=relaxed/simple;
+	bh=sWH58wR/PoQgFZ8EdbGvdWyh6TNIwgT10tE+5E3q9eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOIs5mrmxWymuLUsqDXjIUY2acslic3oaYy63ppdq6D9lXdwOoePll2hKJUpwquPlkGur8Ygq1nbDR+NiL8x96w9LqPzCfZpHcxFlaqiFr1ButA/egTDEx5zjgyVL050ch7GHAjdgEKoLMo8fNQoydlfIG+/i1Mcs9Ye8y1pSpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUBRhFJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B2FC16AAE;
-	Tue, 16 Dec 2025 12:27:21 +0000 (UTC)
+	 MIME-Version; b=kKiyvNC4s6Lvz1cbWc1fE63Pz+0wtKd6zOFQv8E5pqGpDZiv6hVKb7+ovCB7PIXRtqJCaXx3pxQ2aZHLubFz/tfh3R4IcPSr6OO43cMF3TBhGoFAzG8EcD9OACEHVwOIKT2GVGxT1Bq5lAgV8MHdUc5eeDEMavEPHJeHDGqP5MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUDcbSG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D35C4CEF1;
+	Tue, 16 Dec 2025 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888042;
-	bh=KtbqM5YfbvRzUGDVUELM0Tc+plfskDUwTFWgP0eWZPc=;
+	s=korg; t=1765884609;
+	bh=sWH58wR/PoQgFZ8EdbGvdWyh6TNIwgT10tE+5E3q9eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUBRhFJGzx8q2Nk8DPleP9MDlv5716hPViLvVT2fXt0qI/f1oKFIsjLPasPkFCRlh
-	 7dsemr5W/w/xD7H8JK/uVLdx1SMn+8b/lOeGiNEw4M4/ec59xVGdfdI3mWzodfSUJ3
-	 7j4hwzR9Iq2CkLDDImXdxZ3bidkCY6cTtwisQ7I8=
+	b=UUDcbSG7f8K3mfX93JViIbjHgH2wTgCwG6CA9b+2M8KqLiHWYrYekNJ87BA2PmzLB
+	 z29MRNg7yaadds66FpquBA63zINKrVgzgjybPrbgvZGwnjWZJgbYQDdj5ncqgwh6Z8
+	 LpJQvGdBv1ytz2EEqOv131TdRqEcsh+4PrgZvofU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timur Tabi <ttabi@nvidia.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 413/614] drm/nouveau: restrict the flush page to a 32-bit address
+Subject: [PATCH 6.12 213/354] RDMA/bnxt_re: Fix the inline size for GenP7 devices
 Date: Tue, 16 Dec 2025 12:13:00 +0100
-Message-ID: <20251216111416.335001189@linuxfoundation.org>
+Message-ID: <20251216111328.636940586@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Tabi <ttabi@nvidia.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 04d98b3452331fa53ec3b698b66273af6ef73288 ]
+[ Upstream commit 6afe40ff484a1155b71158b911c65299496e35c3 ]
 
-The flush page DMA address is stored in a special register that is not
-associated with the GPU's standard DMA range.  For example, on Turing,
-the GPU's MMU can handle 47-bit addresses, but the flush page address
-register is limited to 40 bits.
+Inline size supported by the device is based on the number
+of SGEs supported by the adapter. Change the inline
+size calculation based on that.
 
-At the point during device initialization when the flush page is
-allocated, the DMA mask is still at its default of 32 bits.  So even
-though it's unlikely that the flush page could exist above a 40-bit
-address, the dma_map_page() call could fail, e.g. if IOMMU is disabled
-and the address is above 32 bits.  The simplest way to achieve all
-constraints is to allocate the page in the DMA32 zone.  Since the flush
-page is literally just a page, this is an acceptable limitation.  The
-alternative is to temporarily set the DMA mask to 40 (or 52 for Hopper
-and later) bits, but that could have unforseen side effects.
-
-In situations where the flush page is allocated above 32 bits and IOMMU
-is disabled, you will get an error like this:
-
-nouveau 0000:65:00.0: DMA addr 0x0000000107c56000+4096 overflow (mask ffffffff, bus limit 0).
-
-Fixes: 5728d064190e ("drm/nouveau/fb: handle sysmem flush page from common code")
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251113230323.1271726-1-ttabi@nvidia.com
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1763624215-10382-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c | 2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-index 8a286a9349ac6..7ce1b65e2c1c2 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-@@ -279,7 +279,7 @@ nvkm_fb_ctor(const struct nvkm_fb_func *func, struct nvkm_device *device,
- 	mutex_init(&fb->tags.mutex);
- 
- 	if (func->sysmem.flush_page_init) {
--		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | GFP_DMA32 | __GFP_ZERO);
- 		if (!fb->sysmem.flush_page)
- 			return -ENOMEM;
- 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 807439b1acb51..59093d78062d3 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -161,7 +161,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw)
+ 	attr->max_srq_wqes = le32_to_cpu(sb->max_srq_wr) - 1;
+ 	attr->max_srq_sges = sb->max_srq_sge;
+ 	attr->max_pkey = 1;
+-	attr->max_inline_data = le32_to_cpu(sb->max_inline_data);
++	attr->max_inline_data = attr->max_qp_sges * sizeof(struct sq_sge);
+ 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
+ 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
+ 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
 -- 
 2.51.0
 
