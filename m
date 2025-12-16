@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-202309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9832BCC29BE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220F6CC21B1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E9181302EB2F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA8F3302FA20
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C9536CE1D;
-	Tue, 16 Dec 2025 12:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DF7265CAD;
+	Tue, 16 Dec 2025 11:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpnXeu7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvkVMGs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598CD36D4ED;
-	Tue, 16 Dec 2025 12:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F08207A38;
+	Tue, 16 Dec 2025 11:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887483; cv=none; b=e3a5LzXxJEoaFjawwMh4ErOiTikU25N57CX1luawDNkDVwYZU/2JjLkQPGtXEKQUtFX8TZVpYIwWMoZVUqk8rFCwe8A9CYHujk2nm7QvuQo2gJdXYvfLUg8Tq3r94sNiS48Vp3JfyNNQ/jYmi6rWovmgD80x+IBvnhZiRJKWlJg=
+	t=1765883826; cv=none; b=fvkXguAOY0F2dqmqn2BGQp6Iiv4cO9EtxSHy4npL7KGZ3wTE27TWofH3vWB+yS4KOHlZWIj0A7ONdrH7aFoai9K6U4apDRBhHOx3FX24EwGEtwCo/PgEL9a8nieV+ITXcCG3Cq8jD/P5mxdI9J6WsOOXrZRfEjC8zS+oXVunnHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887483; c=relaxed/simple;
-	bh=9Be7dZvXZDAT2MdKDBtGiUGc7xEMYIjAKjwzEwEdHWk=;
+	s=arc-20240116; t=1765883826; c=relaxed/simple;
+	bh=RZc+ukwhLowLmt0HOkVi8d7H3Ire/UByjKeOKI7D5Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQbCWTvZgU9Fk+Hge+c13UmSVNMaN+7Hf9/L2kIpoJT37sP0x+w5kdkzQtfaR4DurfYVOBI433Exm6iLJbDz1CnCZGg4qGP4g1CBq4s8qKG3Z1Id8bozsAFDVlLguYvwAwzM79f2Nci++5WJuWiutV5bFHKp22E54Qa6a42APXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpnXeu7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D884AC4CEF1;
-	Tue, 16 Dec 2025 12:18:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XbzZtnmI+jHdB2LHRc+QwITnlTqRK3bQw6JluXS8clIiwnA/J9Kmj6GT0hP0mlQBUtEsCt7t5Irbl1oOJKHiE3SMVrnAx78zD2qnVFLlKBlZ7OeDL/GOa0whSXhhYmeLP9gMx1cDFbgZMILdlqHASl3jaz//RnjNEKY2gQMRvKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvkVMGs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D87C4CEF1;
+	Tue, 16 Dec 2025 11:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887483;
-	bh=9Be7dZvXZDAT2MdKDBtGiUGc7xEMYIjAKjwzEwEdHWk=;
+	s=korg; t=1765883825;
+	bh=RZc+ukwhLowLmt0HOkVi8d7H3Ire/UByjKeOKI7D5Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpnXeu7JbH8Xc+7wHQmSU5LJr8PVRRUQT1WU/S/7RE5nTbV0DzkumN9FfjQSi19me
-	 yKQQr0aaTGNHfCFO4RJmnpi1wCxCR80JIwFmQMsDW4syIcy42w7ZNfiWhiWHG5RdnK
-	 wpv76PCM5ocacOAfuLWn1NffD+92mrYWcoARl2HU=
+	b=AvkVMGs1/OhKddK3W+RZ8Yf+rhX+nN/0+VFFjpvkZEF5vBfLtOIZ9ZYWrxH2+k6t2
+	 6KTng9IuvNIYqr3muC0RCNbkhDlk+kba6pFOG+V2y4V+ip9DIf5UOku1II8TVdznoR
+	 n5ErE/g2eVa0xTjYMNixJFkE4+NXwfeDyBdc4D7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 211/614] efi/libstub: Fix page table access in 5-level to 4-level paging transition
+Subject: [PATCH 6.12 011/354] drm/panel: visionox-rm69299: Dont clear all mode flags
 Date: Tue, 16 Dec 2025 12:09:38 +0100
-Message-ID: <20251216111409.019931240@linuxfoundation.org>
+Message-ID: <20251216111321.316407757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Guido Günther <agx@sigxcpu.org>
 
-[ Upstream commit 84361123413efc84b06f3441c6c827b95d902732 ]
+[ Upstream commit 39144b611e9cd4f5814f4098c891b545dd70c536 ]
 
-When transitioning from 5-level to 4-level paging, the existing code
-incorrectly accesses page table entries by directly dereferencing CR3 and
-applying PAGE_MASK. This approach has several issues:
+Don't clear all mode flags. We only want to maek sure we use HS mode
+during unprepare.
 
-- __native_read_cr3() returns the raw CR3 register value, which on x86_64
-  includes not just the physical address but also flags Bits above the
-  physical address width of the system (i.e. above __PHYSICAL_MASK_SHIFT) are
-  also not masked.
-
-- The pgd value is masked by PAGE_SIZE which doesn't take into account the
-  higher bits such as _PAGE_BIT_NOPTISHADOW.
-
-Replace this with proper accessor functions:
-
-- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
-  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
-  reserved and must be 0.
-
-- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
-  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
-  the max physical address are reserved and must be 0.
-
-Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/20251103141002.2280812-3-usamaarif642@gmail.com
+Fixes: c7f66d32dd431 ("drm/panel: add support for rm69299 visionox panel")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250910-shift6mq-panel-v3-2-a7729911afb9@sigxcpu.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-5lvl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
-index f1c5fb45d5f7c..c00d0ae7ed5d5 100644
---- a/drivers/firmware/efi/libstub/x86-5lvl.c
-+++ b/drivers/firmware/efi/libstub/x86-5lvl.c
-@@ -66,7 +66,7 @@ void efi_5level_switch(void)
- 	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
- 	bool need_toggle = want_la57 ^ have_la57;
- 	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
--	u64 *cr3 = (u64 *)__native_read_cr3();
-+	pgd_t *cr3 = (pgd_t *)native_read_cr3_pa();
- 	u64 *new_cr3;
+diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+index 272490b9565bb..f06dca12febe4 100644
+--- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
++++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+@@ -62,7 +62,7 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
+ 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
+ 	int ret;
  
- 	if (!la57_toggle || !need_toggle)
-@@ -82,7 +82,7 @@ void efi_5level_switch(void)
- 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
- 	} else {
- 		/* take the new root table pointer from the current entry #0 */
--		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
-+		new_cr3 = (u64 *)(native_pgd_val(cr3[0]) & PTE_PFN_MASK);
+-	ctx->dsi->mode_flags = 0;
++	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
  
- 		/* copy the new root table if it is not 32-bit addressable */
- 		if ((u64)new_cr3 > U32_MAX)
+ 	ret = mipi_dsi_dcs_write(ctx->dsi, MIPI_DCS_SET_DISPLAY_OFF, NULL, 0);
+ 	if (ret < 0)
 -- 
 2.51.0
 
