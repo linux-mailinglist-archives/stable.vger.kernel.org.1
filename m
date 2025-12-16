@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98400CC2A4A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B969CC244B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74BCD3020DCA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1241B3022A6C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066BA3491E8;
-	Tue, 16 Dec 2025 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20609340DB7;
+	Tue, 16 Dec 2025 11:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJWrqkaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn6FootA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49FB3491C7;
-	Tue, 16 Dec 2025 11:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1834166B;
+	Tue, 16 Dec 2025 11:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886358; cv=none; b=rgZW9p17srkXxVn+AdAkAVkP2zdKg3BE/Pq/KavyiiVW6Y+WJXVQF0Redxk9edLoecibyuH5IDgR0VAhqFI+aLWlFG0PtCWTwncNmugkCASTAu5P/BZCy6Mh9dRPwVJpPlPoLmbchK35u6T/3dhqlfOK4e3CO467ubll41VHJ6Y=
+	t=1765884749; cv=none; b=mXSThT/eZ0YVQU769ncoWNkTrzkhBn4G3j9dSx2mw3VksSqCO2qR5YMOUww8OW1sUXrFqBhbplKsnbMNy+QWOu8hgqqE4Zj3BZDwyE4KdcWi0S4/eCVkQGfPNA3Sk5OOzRagieJfoTeKakx8iuQfByvsYVVwbmMawbEUwqrbGZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886358; c=relaxed/simple;
-	bh=UBA6g8JtKd4NJZfhg3R1Actyh7T0USLegkLcQqTDfh4=;
+	s=arc-20240116; t=1765884749; c=relaxed/simple;
+	bh=a0kaj3/zo2vpFvIuuEftPtw9oYCdtGRjYfhLjq2BnoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNl/jxwQ2rHNniwaiE2ps+zUYXnU4aMJZONVzMt4Ge6rbUoTT14t9kMju1kDvTIy7urOlZgFcfQ7RllzFum2xMEhCHyEDH1S4H3zlxI2oWSfdSwLCQDvLiqk8S8wwdHTP89SCJbjvz7Ha4NTwK5X16lmcX+SkuTDPwQ/1gqud5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJWrqkaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1926DC4CEF1;
-	Tue, 16 Dec 2025 11:59:17 +0000 (UTC)
+	 MIME-Version; b=N4opk/r0xxqc8uWpr023nhd0I8Tgqja4OfJt/K5Kn/oszN1yR9SDdRW/r4bVG7D1UqM5kKFuAfC3QVSBjXL9wEoTK4m12EZYRKkfccS/HS5dUX03wC39ySX6w0hYhoYHrv9YV9Og9eJEOqT1QFTcitJZ61hZ6wDokpL82pWbJgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn6FootA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD85C4CEF1;
+	Tue, 16 Dec 2025 11:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886358;
-	bh=UBA6g8JtKd4NJZfhg3R1Actyh7T0USLegkLcQqTDfh4=;
+	s=korg; t=1765884749;
+	bh=a0kaj3/zo2vpFvIuuEftPtw9oYCdtGRjYfhLjq2BnoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJWrqkaW/5IfDFQObT/brDcbIyBXZVPsMJP09x6g2FwhqSV2rQddMNzgog1G/6QUb
-	 PFNYSgLYXJ5O3HwhN9Tbpv7ljROItcDhAo91MbX2NAPJFARra0ittT7YG1+47Zyr1C
-	 YH3v4Jr73PpGwgRHM1wTq+sqQxfDNiVBwUnJqoX0=
+	b=Pn6FootACjCsH/NTWmA1eeot/6fGLgbWp+RZNMPbzQL3nmrcfUOLmZhiRiyXXG34Y
+	 IwmDmOmaJ/lYmiXmBVjL1g4bCZd2vRL8PPt8kAp69L1h2XHsotSfhYoT5cjdFHsZMW
+	 xJnjZRzTwWbvx5fjKEDn2rs9FoUpf0OByXQsqV3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 413/507] net: dsa: b53: move writing ARL entries into their own functions
-Date: Tue, 16 Dec 2025 12:14:14 +0100
-Message-ID: <20251216111400.424476586@linuxfoundation.org>
+Subject: [PATCH 6.12 288/354] pinctrl: single: Fix incorrect type for error return variable
+Date: Tue, 16 Dec 2025 12:14:15 +0100
+Message-ID: <20251216111331.347523521@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit bf6e9d2ae1dbafee53ec4ccd126595172e1e5278 ]
+[ Upstream commit 61d1bb53547d42c6bdaec9da4496beb3a1a05264 ]
 
-Move writing ARL entries into individual functions for each format.
+pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
+but assign it the return values of pcs_get_function() that may return
+negative error codes. This causes negative error codes to be
+converted to large positive values.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-4-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Change ret from unsigned int to int in both functions.
+
+Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 38 ++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 12 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 41dcd2d03230d..4c418e0531f73 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1840,6 +1840,16 @@ static void b53_arl_read_entry_25(struct b53_device *dev,
- 	b53_arl_to_entry_25(ent, mac_vid);
- }
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 1df0a00ae1ee8..2218d65a7d842 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -485,7 +485,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
+ 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
+ 	struct pcs_function *func;
+ 	enum pin_config_param param;
+-	unsigned offset = 0, data = 0, i, j, ret;
++	unsigned offset = 0, data = 0, i, j;
++	int ret;
  
-+static void b53_arl_write_entry_25(struct b53_device *dev,
-+				   const struct b53_arl_entry *ent, u8 idx)
-+{
-+	u64 mac_vid;
-+
-+	b53_arl_from_entry_25(&mac_vid, ent);
-+	b53_write64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		    mac_vid);
-+}
-+
- static void b53_arl_read_entry_95(struct b53_device *dev,
- 				  struct b53_arl_entry *ent, u8 idx)
+ 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (ret)
+@@ -549,9 +550,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
  {
-@@ -1852,6 +1862,19 @@ static void b53_arl_read_entry_95(struct b53_device *dev,
- 	b53_arl_to_entry(ent, mac_vid, fwd_entry);
- }
+ 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
+ 	struct pcs_function *func;
+-	unsigned offset = 0, shift = 0, i, data, ret;
++	unsigned offset = 0, shift = 0, i, data;
+ 	u32 arg;
+-	int j;
++	int j, ret;
+ 	enum pin_config_param param;
  
-+static void b53_arl_write_entry_95(struct b53_device *dev,
-+				   const struct b53_arl_entry *ent, u8 idx)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
-+
-+	b53_arl_from_entry(&mac_vid, &fwd_entry, ent);
-+	b53_write64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		    mac_vid);
-+	b53_write32(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx),
-+		    fwd_entry);
-+}
-+
- static int b53_arl_read(struct b53_device *dev, const u8 *mac,
- 			u16 vid, struct b53_arl_entry *ent, u8 *idx)
- {
-@@ -1892,9 +1915,8 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 		      const unsigned char *addr, u16 vid, bool is_valid)
- {
- 	struct b53_arl_entry ent;
--	u32 fwd_entry;
--	u64 mac, mac_vid = 0;
- 	u8 idx = 0;
-+	u64 mac;
- 	int ret;
- 
- 	/* Convert the array into a 64-bit MAC */
-@@ -1931,7 +1953,6 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 		/* We could not find a matching MAC, so reset to a new entry */
- 		dev_dbg(dev->dev, "{%pM,%.4d} not found, using idx: %d\n",
- 			addr, vid, idx);
--		fwd_entry = 0;
- 		break;
- 	default:
- 		dev_dbg(dev->dev, "{%pM,%.4d} found, using idx: %d\n",
-@@ -1959,16 +1980,9 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 	ent.is_age = false;
- 	memcpy(ent.mac, addr, ETH_ALEN);
- 	if (is5325(dev) || is5365(dev))
--		b53_arl_from_entry_25(&mac_vid, &ent);
-+		b53_arl_write_entry_25(dev, &ent, idx);
- 	else
--		b53_arl_from_entry(&mac_vid, &fwd_entry, &ent);
--
--	b53_write64(dev, B53_ARLIO_PAGE,
--		    B53_ARLTBL_MAC_VID_ENTRY(idx), mac_vid);
--
--	if (!is5325(dev) && !is5365(dev))
--		b53_write32(dev, B53_ARLIO_PAGE,
--			    B53_ARLTBL_DATA_ENTRY(idx), fwd_entry);
-+		b53_arl_write_entry_95(dev, &ent, idx);
- 
- 	return b53_arl_rw_op(dev, 0);
- }
+ 	ret = pcs_get_function(pctldev, pin, &func);
 -- 
 2.51.0
 
