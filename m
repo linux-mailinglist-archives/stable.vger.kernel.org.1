@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E85CC2577
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B4DCC3321
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8DCE30848B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BEA8307A845
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315C34107E;
-	Tue, 16 Dec 2025 11:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D3637831F;
+	Tue, 16 Dec 2025 12:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWZuslm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEy1CXFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F383396E4;
-	Tue, 16 Dec 2025 11:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77407378304;
+	Tue, 16 Dec 2025 12:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884714; cv=none; b=TQa2zPZPLvvokVaM94bXNpLIrcXvEXlHOz1qP5Hl44tURxMz70J1G39h1SZxkE6wsOo2RWpAXsQxjzZfo3sPCGD0CjaGMAW3VVM8l/AC+I7Fgr8OaYDN1bilOZXuhoC0cL8wj4P/2NuWrE7Q37GbgRswFNIYJjaHlSeuJJnBesI=
+	t=1765888244; cv=none; b=iyODiNoDL+gBW0zWr5F6ee65h7iZp44VduN/6BFyMle7gMtEH8/O3ewRVkoOSWXNNQ5BxB1nPeQtOTRGJYlm1ELwA0103JdErXFXSszIf0uVYgLKrEfLxVOD5s0e/T+zowFVfEJ8/rw8eyWGqxGy/rmbHIB9QCgEwWuTUagzeMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884714; c=relaxed/simple;
-	bh=KsJVfQlqoaBQwOIW5fcYL4oRBBGlDpgMeDduK+2i5Pg=;
+	s=arc-20240116; t=1765888244; c=relaxed/simple;
+	bh=TNk9y4gEiRjBCerHtfdGwiKKjzeTrQGihDxDUHrrOlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZ+v8kakNHZki1fukuXu2NM/yvJ26i2JLhl/VJRzpU4KRCegF/gPxHkGlZr8X8p1pf00w/w5WQDuzO2XLDBpg9DDOGqMz0LGMkU9UtGD2e/tZYMSYZyxa78Fh9oGIKgzouBIDSTRpRrmKhQrW7tqJb0hHcxmzNSe+VWuUiTJOdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWZuslm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528BFC4CEF1;
-	Tue, 16 Dec 2025 11:31:53 +0000 (UTC)
+	 MIME-Version; b=aC790CXbNHFu54pxhLpQ41WQg8wkC4XPaUMxDpcQfPr/E80lvoF6XxU4dxJCTyQxbwBsJ2+80iQ0LiyVF3td7dnV394ODR46yUOsk10J1qXy/ai9mEzapOdmMG/gev9U6xTxhthbLySDdxNXxOaFlLAidLYdlnOQk/8PhDZRx+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEy1CXFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE10AC4CEF5;
+	Tue, 16 Dec 2025 12:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884713;
-	bh=KsJVfQlqoaBQwOIW5fcYL4oRBBGlDpgMeDduK+2i5Pg=;
+	s=korg; t=1765888244;
+	bh=TNk9y4gEiRjBCerHtfdGwiKKjzeTrQGihDxDUHrrOlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWZuslm/doAvVuvjoSgASDotSjq8y1geaAz+KbVrx0ROhR8FurwlGLkn4Wt05EYGO
-	 OWZ/3eQoikMqL/ufFi+GFJ8X1M/lfVK8LzdzY/gZTh/KskFbyMgrqqzBbFzz0Kq9Tu
-	 hTkDZBzjPYg9to6gqAcC1FRm+9+N9JFRHWFeaJLM=
+	b=LEy1CXFzoyfTAN9yrg4I/jIIsUd0qFcgjO4AszFUKLnQAZncgNuo3Ge+koZQI08PA
+	 zk3amjP3SZUnPaWSAQHNC06fZVwQUAIOT0o0ppgxWwNB89zA01tZr6DAMIbnV9aY/w
+	 sx24IqLyD/iwoZlFkuDmUh+lj1X+ydJ7zDjTrB7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 275/354] mtd: lpddr_cmds: fix signed shifts in lpddr_cmds
+Subject: [PATCH 6.18 475/614] ARM: dts: samsung: exynos4210-i9100: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:14:02 +0100
-Message-ID: <20251216111330.877652283@linuxfoundation.org>
+Message-ID: <20251216111418.580725760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit c909fec69f84b39e63876c69b9df2c178c6b76ba ]
+[ Upstream commit 863d69923bdb6f414d0a3f504f1dfaeacbc00b09 ]
 
-There are several places where a value of type 'int' is shifted by
-lpddr->chipshift. lpddr->chipshift is derived from QINFO geometry and
-might reach 31 when QINFO reports a 2 GiB size - the maximum supported by
-LPDDR(1) compliant chips. This may cause unexpected sign-extensions when
-casting the integer value to the type of 'unsigned long'.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Use '1UL << lpddr->chipshift' and cast 'j' to unsigned long before
-shifting so the computation is performed at the destination width.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c68264711ca6 ("[MTD] LPDDR Command set driver")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-3-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/lpddr/lpddr_cmds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/lpddr/lpddr_cmds.c b/drivers/mtd/lpddr/lpddr_cmds.c
-index 14e36ae71958f..bd76479b90e4a 100644
---- a/drivers/mtd/lpddr/lpddr_cmds.c
-+++ b/drivers/mtd/lpddr/lpddr_cmds.c
-@@ -79,7 +79,7 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
- 		mutex_init(&shared[i].lock);
- 		for (j = 0; j < lpddr->qinfo->HWPartsNum; j++) {
- 			*chip = lpddr->chips[i];
--			chip->start += j << lpddr->chipshift;
-+			chip->start += (unsigned long)j << lpddr->chipshift;
- 			chip->oldstate = chip->state = FL_READY;
- 			chip->priv = &shared[i];
- 			/* those should be reset too since
-@@ -559,7 +559,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 			break;
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+index df229fb8a16be..8a635bee59fa9 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+@@ -853,6 +853,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 		/* get the chip */
-@@ -575,7 +575,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 		len -= thislen;
- 
- 		ofs = 0;
--		last_end += 1 << lpddr->chipshift;
-+		last_end += 1UL << lpddr->chipshift;
- 		chipnum++;
- 		chip = &lpddr->chips[chipnum];
- 	}
-@@ -601,7 +601,7 @@ static int lpddr_unpoint (struct mtd_info *mtd, loff_t adr, size_t len)
- 			break;
- 
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&vtf_reg>;
 -- 
 2.51.0
 
