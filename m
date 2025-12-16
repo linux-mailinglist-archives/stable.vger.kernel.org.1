@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42993CC2908
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:11:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38892CC2755
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECC59302AAEB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F8AD303E3E4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F10F3659F4;
-	Tue, 16 Dec 2025 12:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89C5346E5D;
+	Tue, 16 Dec 2025 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qB6UAyR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia+/p5Rm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDC8365A0E;
-	Tue, 16 Dec 2025 12:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4549346E57;
+	Tue, 16 Dec 2025 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887046; cv=none; b=S5yvVSSaFPeE50vC88nbr9ygWWMfBD6gPiJKUqNTLoZiozG1NbRouPeFsLO0968Lwz3Zpn4lpb1p4FNiWUjHj8Hd36fh2YmS8uqEzlt7GWGjqpo6O1/nD3ZRrI+VpxZVaYZyYCwVkfYOOWhRUQ+xjjdOA7aRlbPQbFdQJD90+MA=
+	t=1765885094; cv=none; b=tMRWrUxxR8xf17OZeQtZyEyEQ365mT8IR4aTynwG39LfMNhO1Mcl7iJfog8pC3dxhBAUZZXylHAvivcr7r19KnWCsHu/2HqRd0y+PMbNhEJG2so7o2rskYXHAS9v2tbbG0zdfVG3ZblxfLca47IEEcjBUTtiH5igOKBG3iKkmAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887046; c=relaxed/simple;
-	bh=NWMLudf3Q8WZTb9a/pzuhI3V1Bd0kq1exJIXU0y9dlQ=;
+	s=arc-20240116; t=1765885094; c=relaxed/simple;
+	bh=5LhOi+uPSXQPqQeqAoG6Shqw5MyV8NO1NI6a6IAJIiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLb83zQXQbboxI7eav3Sw9zeZ7n2vE52BRK7yeAbtriZxTQkSOBUO6l+hadYbbJxrqc5bGyWSuygi4h+dOeehXX1KzOTmJa2ClHaQIqT5xkFCEpTOlYcfY1t1HL9tShrUtGoWkjGM0nqNSLRlhdFlP9vbj49m40BIFwex0043kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qB6UAyR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5805FC4CEF1;
-	Tue, 16 Dec 2025 12:10:45 +0000 (UTC)
+	 MIME-Version; b=KNs6sMgpBuwf9JOojI5ajbE5QG+HfavajTB4MD9Im++hWuMNdkdD1pQUHvgfk6bX6m7oVjk7HSeI9o+86CVx8LLUIEi1gR//Qiqm7gsmtEhkS1xispMx/jpvJHIzFCCrtr6zwFdvJvWsLoJpqurHkTxqzSI6jLz9YhQIKoTnnjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia+/p5Rm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F64BC4CEF1;
+	Tue, 16 Dec 2025 11:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887045;
-	bh=NWMLudf3Q8WZTb9a/pzuhI3V1Bd0kq1exJIXU0y9dlQ=;
+	s=korg; t=1765885094;
+	bh=5LhOi+uPSXQPqQeqAoG6Shqw5MyV8NO1NI6a6IAJIiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qB6UAyR89C2xElKFLKUFASkUXEg+YEEL5pvNXgD/g7GqIG9FdR7vQHD9SApV2LnvE
-	 dzMfhAy66NUjQIfdxeKM7u4VMw/fMfAfDH2NBlbrfxQRy/+kMPotTTC+t5ljHNrqC/
-	 AWN4u/399Dqaduv0dCBW82y0LHaFD9jUFTcmZJvM=
+	b=Ia+/p5RmlkdZlkqJQ3cHf4Y7ekHMQ88luBcLVGkfyRvSKW76K+Sjnq62PJkchvGHB
+	 xpOY2jbVnvx/wQ3nByF6j0OFDiqHA7CfWXnQFY2cxhFMIjMeNPizcuFMbPXRabTUYe
+	 vsX+ap0+4PSz3vL4vsLHC0ll1zDqlkKnFiuV+Lis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 111/614] arm64: dts: qcom: x1e80100: Add missing quirk for HS only USB controller
+Subject: [PATCH 6.17 037/507] sched/fair: Forfeit vruntime on yield
 Date: Tue, 16 Dec 2025 12:07:58 +0100
-Message-ID: <20251216111405.357555764@linuxfoundation.org>
+Message-ID: <20251216111346.884468436@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Fernand Sieber <sieberf@amazon.com>
 
-[ Upstream commit 6b3e8a5d6c88609d9ce93789524f818cca0aa485 ]
+[ Upstream commit 79104becf42baeeb4a3f2b106f954b9fc7c10a3c ]
 
-The PIPE clock is provided by the USB3 PHY, which is predictably not
-connected to the HS-only controller. Add "qcom,select-utmi-as-pipe-clk"
-quirk to  HS only USB controller to disable pipe clock requirement.
+If a task yields, the scheduler may decide to pick it again. The task in
+turn may decide to yield immediately or shortly after, leading to a tight
+loop of yields.
 
-Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20251024105019.2220832-2-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+If there's another runnable task as this point, the deadline will be
+increased by the slice at each loop. This can cause the deadline to runaway
+pretty quickly, and subsequent elevated run delays later on as the task
+doesn't get picked again. The reason the scheduler can pick the same task
+again and again despite its deadline increasing is because it may be the
+only eligible task at that point.
+
+Fix this by making the task forfeiting its remaining vruntime and pushing
+the deadline one slice ahead. This implements yield behavior more
+authentically.
+
+We limit the forfeiting to eligible tasks. This is because core scheduling
+prefers running ineligible tasks rather than force idling. As such, without
+the condition, we can end up on a yield loop which makes the vruntime
+increase rapidly, leading to anomalous run delays later down the line.
+
+Fixes: 147f3efaa24182 ("sched/fair: Implement an EEVDF-like scheduling  policy")
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250401123622.584018-1-sieberf@amazon.com
+Link: https://lore.kernel.org/r/20250911095113.203439-1-sieberf@amazon.com
+Link: https://lore.kernel.org/r/20250916140228.452231-1-sieberf@amazon.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/fair.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 6beef835c33ad..662ad694cd914 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -4922,6 +4922,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 			interconnect-names = "usb-ddr",
- 					     "apps-usb";
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 4770d25ae2406..35b98cad06515 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8919,7 +8919,19 @@ static void yield_task_fair(struct rq *rq)
+ 	 */
+ 	rq_clock_skip_update(rq);
  
-+			qcom,select-utmi-as-pipe-clk;
- 			wakeup-source;
+-	se->deadline += calc_delta_fair(se->slice, se);
++	/*
++	 * Forfeit the remaining vruntime, only if the entity is eligible. This
++	 * condition is necessary because in core scheduling we prefer to run
++	 * ineligible tasks rather than force idling. If this happens we may
++	 * end up in a loop where the core scheduler picks the yielding task,
++	 * which yields immediately again; without the condition the vruntime
++	 * ends up quickly running away.
++	 */
++	if (entity_eligible(cfs_rq, se)) {
++		se->vruntime = se->deadline;
++		se->deadline += calc_delta_fair(se->slice, se);
++		update_min_vruntime(cfs_rq);
++	}
+ }
  
- 			status = "disabled";
+ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
 -- 
 2.51.0
 
