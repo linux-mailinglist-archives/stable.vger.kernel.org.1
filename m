@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B989CC2791
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45FACC2E3B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 073C8300E15A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 549C931E4C23
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7C135502A;
-	Tue, 16 Dec 2025 11:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF00136402A;
+	Tue, 16 Dec 2025 12:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqkOybKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ3ZHAjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDFE355027;
-	Tue, 16 Dec 2025 11:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4A2364021;
+	Tue, 16 Dec 2025 12:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885824; cv=none; b=oyWJpv3dd9hoU8IuSzrWb+hGMZGJdmaVdy5uirm4aXsCTCwPrMez9T0Xdgfp6/6vGUUEmw1HbjJKawr9CcpKDliJuMj5Vm1jAlHFMXfJRfGdsXE/3jcQ/spm7hiS3nB2h5XXZyUXxWrM0KLve+J/+gezIqooqkZRzaC/f5zLlnM=
+	t=1765887763; cv=none; b=o2X1L4FDYaHTNpQHguJ6hWHEzmABzqw/QKJPZgKKb2d37Hj1JIIRC8N20u4315/92yNfBZx7sBAzeZX2kzDWBYI31qN8TKHJlMJADBEY6WquBLsjQYDwjPH2LH/WdakQf3T2ILJOPFZuWbhrs80ZjYJ5qDlWstfSQD3D6A/f2ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885824; c=relaxed/simple;
-	bh=Nn2kXmRsEHFXJzKDBocS+9AFnG0DjY3nBJf8bj6tD2I=;
+	s=arc-20240116; t=1765887763; c=relaxed/simple;
+	bh=2oxMnqPSgM+Wuhx+wjhDJT+3hSLWlMnCX9IuwFGt57M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6X1/FXoB9nPtv54p+zXQyt0M6+rRUOcQIAi7MBuBRZE8EWkPMu+LIwAup0Bu/wCY99uMEK3aJvbIny8Mx8+lmfToLdqp97UjA813fDVZT2Q+/ZkwBxVlm4XaiDFwlq869Xt/MG7e5M6VGw6VyHhQW5vmMNOrSHaIufJ6ZI0jqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqkOybKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56887C4CEF1;
-	Tue, 16 Dec 2025 11:50:23 +0000 (UTC)
+	 MIME-Version; b=VHCeAPO9ckhPRhBLHG6BMW6vxGHla4qbPcIMhilruC/bMj4dHVeP6E0n7L//9PR9Pe6z8jyTbUOJqk6RNLSJjdgmNCPmudqcbBo8A0PatRnEweSrHBoG7LSOFSTM3etqhUCTU6jKSha3dwgZvidJjkeJLtRI7szAY+ZyaWJodS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ3ZHAjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FF3C4CEF1;
+	Tue, 16 Dec 2025 12:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885823;
-	bh=Nn2kXmRsEHFXJzKDBocS+9AFnG0DjY3nBJf8bj6tD2I=;
+	s=korg; t=1765887763;
+	bh=2oxMnqPSgM+Wuhx+wjhDJT+3hSLWlMnCX9IuwFGt57M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqkOybKXdyczPsVTO4LVjlIjHaQ5dIu3igQwA+mv2pusEvGnpATehvau1kNspYYGt
-	 1t4BI/yngtRxMfaKbkiaOoEuTccY/xbnTQI1+C4fv9SUpj3eFhXpBr3+ISclyxQab+
-	 KJiFcvmrUIG2t/tOFurp9bMs7ZhRJEVkJsOKxca0=
+	b=AZ3ZHAjciKGyTkd91+ht1e7kify2yOcYlilZTVh2WuU8+U2vAyvIdVT5D6ya3F+C2
+	 P1Rl7ISrlLhiKteU2pOgR18jc3c57HyKZeqtMA4gY40Zp/IBeH6oGE/Ks7L27jleI0
+	 CK8inTiwbCxTfJcpon9sG02ObuuwnMJdCtYMOc90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 256/507] arm64: dts: imx95-tqma9596sa: fix TPM5 pinctrl node name
+Subject: [PATCH 6.18 330/614] scsi: qla2xxx: Fix improper freeing of purex item
 Date: Tue, 16 Dec 2025 12:11:37 +0100
-Message-ID: <20251216111354.764999881@linuxfoundation.org>
+Message-ID: <20251216111413.321851525@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 046cb64923e8c05a8fb656baffcd8c3fc67fb688 ]
+[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
 
-tpm4grp will be overwritten. Fix node name
+In qla2xxx_process_purls_iocb(), an item is allocated via
+qla27xx_copy_multiple_pkt(), which internally calls
+qla24xx_alloc_purex_item().
 
-Fixes: 91d1ff322c47 ("arm64: dt: imx95: Add TQMa95xxSA")
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The qla24xx_alloc_purex_item() function may return a pre-allocated item
+from a per-adapter pool for small allocations, instead of dynamically
+allocating memory with kzalloc().
+
+An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
+kfree() to release the item. If the item was from the pre-allocated
+pool, calling kfree() on it is a bug that can lead to memory corruption.
+
+Fix this by using the correct deallocation function,
+qla24xx_free_purex_item(), which properly handles both dynamically
+allocated and pre-allocated items.
+
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index 180124cc5bce1..c3bb61ea67961 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -617,7 +617,7 @@ pinctrl_tpm4: tpm4grp {
- 		fsl,pins = <IMX95_PAD_GPIO_IO05__TPM4_CH0			0x51e>;
- 	};
- 
--	pinctrl_tpm5: tpm4grp {
-+	pinctrl_tpm5: tpm5grp {
- 		fsl,pins = <IMX95_PAD_GPIO_IO06__TPM5_CH0			0x51e>;
- 	};
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 316594aa40cc5..42eb65a62f1f3 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
+ 		a.reason = FCNVME_RJT_RC_LOGIC;
+ 		a.explanation = FCNVME_RJT_EXP_NONE;
+ 		xmt_reject = true;
+-		kfree(item);
++		qla24xx_free_purex_item(item);
+ 		goto out;
+ 	}
  
 -- 
 2.51.0
