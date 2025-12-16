@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032B3CC3E9D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50413CC2220
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 135C630D586F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C1F1306A538
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA6036C594;
-	Tue, 16 Dec 2025 12:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70192459D7;
+	Tue, 16 Dec 2025 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FosIubp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgGkGqAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD2036C58F;
-	Tue, 16 Dec 2025 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BBD2F260E;
+	Tue, 16 Dec 2025 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887448; cv=none; b=hO4j3xi+cbre49Y4wVjbA0CO9oKriPRfsc11tLGqT7+8M1h55FDrVKqc46JtM0nHSWWkv9+CRiCGlQqhTQah9/bLzYAGvakUdrZ7uTlrvY5kwq2Peihsw5vzHEVvkknYpAC9/wEHlamWEqMDt/PKB+SyPNDoy71PCsCvSeFJq60=
+	t=1765883896; cv=none; b=QiwjR6FCiRszDeq+Md2PQjKqUEhuHGljV2Dy999cSp888tmWydQmksXkMYuuK3t4fCWAPFo47uKJMYiRa270BrKeEtOmTE1MBIHFEFyGwUyRmJ6a2UmCaEgX8zZdJLOYq28tSLEYfXx2oL8guBfrb5qzGWZcjB7LKHkzJ5mVQS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887448; c=relaxed/simple;
-	bh=ks4fZMqCmHHTyWm/UMo7/fXUKGwGV8v+7i0DXKeldqk=;
+	s=arc-20240116; t=1765883896; c=relaxed/simple;
+	bh=eQ48n5/ilp+O1WU1T1HaCb9MD189RJuO6kPS8TOTKX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDwRlj1K5HaXLNBjs5LizbVPepqYM9xRYbV3vcMgVk30QfIQkXhqqRa4JsHhpY4PXskxU41U18MH95WDse2mG7aiAcYLIZ4Z60XNzIiC6ktxaPXIyq1Piaag1ovX9Cc1ukUCReYnMn4aIMoAc74J2R/zXmfi+vi5PGvbe+7E9qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FosIubp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449FAC16AAE;
-	Tue, 16 Dec 2025 12:17:28 +0000 (UTC)
+	 MIME-Version; b=SDLSSjJgGLyXwCOz+l+Fpw1yTware84kVU5He3dnSICmiVRfA6DJdaAOh9DIoGOxYE8kXy6EQE8krlW4ELfG02uzExgVJgS9uFtlhKOvJqVo+wblVjvAeEnha6z3DPgHC2b5WPb/oclNUOV5Gntf1FgzROwspmUxLbtX0WRMW7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgGkGqAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A39C4CEF1;
+	Tue, 16 Dec 2025 11:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887448;
-	bh=ks4fZMqCmHHTyWm/UMo7/fXUKGwGV8v+7i0DXKeldqk=;
+	s=korg; t=1765883896;
+	bh=eQ48n5/ilp+O1WU1T1HaCb9MD189RJuO6kPS8TOTKX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FosIubp+AicgLXpy1mYYKITk9zkLVR9GjRrRAofQrD8q8qmjkfmiNa4APtk6B6Mzu
-	 QCt9GPgO8xJGgq/FexuBaBD9B3eUy4MtIfWrxB5a4T2xAtc6Ilu99Qteu4nHOy99LM
-	 Gf7ePFDWxYJnsMX3h0al1sSLwRWMP8JTZYc0AY7g=
+	b=IgGkGqAdvaPcKLXtLlvn5j1B69dOULOGgxd6YhEK8BnHFk8GSRrjUWI/JAuNmO46W
+	 t5cttfaiyMZVqUVaEb3Cpm5b7NamHD+658hK6mxIZeBh4LVosau8ZX0DLCQvYb7FVq
+	 mSuiDeITQvICS3FVSCxfgbGypxkTd5A4z2/3plZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 206/614] ARM: dts: omap3: n900: Correct obsolete TWL4030 power compatible
+Subject: [PATCH 6.12 006/354] smack: fix bug: unprivileged task can create labels
 Date: Tue, 16 Dec 2025 12:09:33 +0100
-Message-ID: <20251216111408.840014884@linuxfoundation.org>
+Message-ID: <20251216111321.135608475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 3862123e9b56663c7a3e4a308e6e65bffe44f646 ]
+[ Upstream commit c147e13ea7fe9f118f8c9ba5e96cbd644b00d6b3 ]
 
-The "ti,twl4030-power-n900" compatible string is obsolete and is not
-supported by any in-kernel driver. Currently, the kernel falls back to
-the second entry, "ti,twl4030-power-idle-osc-off", to bind a driver to
-this node.
+If an unprivileged task is allowed to relabel itself
+(/smack/relabel-self is not empty),
+it can freely create new labels by writing their
+names into own /proc/PID/attr/smack/current
 
-Make this fallback explicit by removing the obsolete board-specific
-compatible. This preserves the existing functionality while making the
-DTS compliant with the new, stricter 'ti,twl.yaml' binding.
+This occurs because do_setattr() imports
+the provided label in advance,
+before checking "relabel-self" list.
 
-Fixes: daebabd578647 ("mfd: twl4030-power: Fix PM idle pin configuration to not conflict with regulators")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250914192516.164629-4-jihed.chaibi.dev@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+This change ensures that the "relabel-self" list
+is checked before importing the label.
+
+Fixes: 38416e53936e ("Smack: limited capability for changing process label")
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/smack/smack_lsm.c | 41 +++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-index c50ca572d1b9b..7db73d9bed9e4 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-@@ -508,7 +508,7 @@ twl_audio: audio {
- 	};
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index c9fbcfb9e6231..ce63e1439edbd 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -3786,8 +3786,8 @@ static int do_setattr(u64 attr, void *value, size_t size)
+ 	struct task_smack *tsp = smack_cred(current_cred());
+ 	struct cred *new;
+ 	struct smack_known *skp;
+-	struct smack_known_list_elem *sklep;
+-	int rc;
++	char *labelstr;
++	int rc = 0;
  
- 	twl_power: power {
--		compatible = "ti,twl4030-power-n900", "ti,twl4030-power-idle-osc-off";
-+		compatible = "ti,twl4030-power-idle-osc-off";
- 		ti,use_poweroff;
- 	};
- };
+ 	if (!smack_privileged(CAP_MAC_ADMIN) && list_empty(&tsp->smk_relabel))
+ 		return -EPERM;
+@@ -3798,28 +3798,41 @@ static int do_setattr(u64 attr, void *value, size_t size)
+ 	if (attr != LSM_ATTR_CURRENT)
+ 		return -EOPNOTSUPP;
+ 
+-	skp = smk_import_entry(value, size);
+-	if (IS_ERR(skp))
+-		return PTR_ERR(skp);
++	labelstr = smk_parse_smack(value, size);
++	if (IS_ERR(labelstr))
++		return PTR_ERR(labelstr);
+ 
+ 	/*
+ 	 * No process is ever allowed the web ("@") label
+ 	 * and the star ("*") label.
+ 	 */
+-	if (skp == &smack_known_web || skp == &smack_known_star)
+-		return -EINVAL;
++	if (labelstr[1] == '\0' /* '@', '*' */) {
++		const char c = labelstr[0];
++
++		if (c == *smack_known_web.smk_known ||
++		    c == *smack_known_star.smk_known) {
++			rc = -EPERM;
++			goto free_labelstr;
++		}
++	}
+ 
+ 	if (!smack_privileged(CAP_MAC_ADMIN)) {
+-		rc = -EPERM;
++		const struct smack_known_list_elem *sklep;
+ 		list_for_each_entry(sklep, &tsp->smk_relabel, list)
+-			if (sklep->smk_label == skp) {
+-				rc = 0;
+-				break;
+-			}
+-		if (rc)
+-			return rc;
++			if (strcmp(sklep->smk_label->smk_known, labelstr) == 0)
++				goto free_labelstr;
++		rc = -EPERM;
+ 	}
+ 
++free_labelstr:
++	kfree(labelstr);
++	if (rc)
++		return -EPERM;
++
++	skp = smk_import_entry(value, size);
++	if (IS_ERR(skp))
++		return PTR_ERR(skp);
++
+ 	new = prepare_creds();
+ 	if (new == NULL)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
