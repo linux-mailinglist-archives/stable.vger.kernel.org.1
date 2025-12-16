@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-202319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D919CC3777
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:14:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016BBCC3B5A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B837300C8F3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7BE930ECB6F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339F334167A;
-	Tue, 16 Dec 2025 12:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3859334D4F0;
+	Tue, 16 Dec 2025 11:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIU8LJje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLEg2Dj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30B830DD13;
-	Tue, 16 Dec 2025 12:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E834D4E4;
+	Tue, 16 Dec 2025 11:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887517; cv=none; b=T/ErdWyMUyjPecBid4IdBtI9TIgjVnNTAcfIO7PWtzzsy36AamMHSJtS+TBGCvx0s7vPjWeSBjCnVvNW1Qrl6101uvxJIB9wtBrdjXZYvyrM5dJNTvBCOi726Wsl0qH2rdqDrQOJVzJF9EqolJcU52SQZSngI03mPgs3DGXb5M0=
+	t=1765885580; cv=none; b=oyXUcbPUG+cBZrR/D/qHzhPR794Z5v6H4HH93az/11XGrsUlpTwoVZUOfCckQJKYSQOfU8IIIFcuVnZRHDPjuV+aTPF+s/7MfiCsOn1mR+FSla9r5LSkGBq/tAAIagrsJdyQrEiNBzVmMOvdvIflfM+plxncuovzqnNMDKViQ6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887517; c=relaxed/simple;
-	bh=K5NsbN469r2UudrGbyKYZusHV1LOrtxXBCCjQuhkoU8=;
+	s=arc-20240116; t=1765885580; c=relaxed/simple;
+	bh=cJCBAu4Xsd7YHC3MdAhW40lmf8oOS+ely9pbpFVahLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWSSmmT20whGkjlwL4kjxE3sE/xJe6toGbPz2gm3LcswXxhoWHn00sk8y4664QE4ziD8nft24TBZGHSbPKwHD1U/NpWaQSuEIJctAeBvJ3fdZI6bnXuNWm50unrhBR7y08JQGQD34dejpN1MmJPJb9+0lb6IqsIhhk6QMvOBoFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIU8LJje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575DAC4CEF1;
-	Tue, 16 Dec 2025 12:18:36 +0000 (UTC)
+	 MIME-Version; b=OC8OZ+U6z/iHgakiACrR5EXiRU21FvFy50Dp7/DNAwbOG1ApL0HmN3vggJc2ihCyzZpNY4aobynU45/QaJzDwl458ZBQTG7xUlxJMuDe5vhvPTCFAL4n7uAf5aZlr/5Ej3I07B+MS+7T7K5eEUq8WjbqOvmgwbXKJtAS02hsFsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLEg2Dj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F25C4CEF1;
+	Tue, 16 Dec 2025 11:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887516;
-	bh=K5NsbN469r2UudrGbyKYZusHV1LOrtxXBCCjQuhkoU8=;
+	s=korg; t=1765885579;
+	bh=cJCBAu4Xsd7YHC3MdAhW40lmf8oOS+ely9pbpFVahLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIU8LJjeMq3AwazyrvsJv6cYTho8CMLmea524TLH0c3wXg7/PKPlimugT7/92S6Uo
-	 EbD3CsJPCKbN2Q0DHtVRfAiWSONwltFcp5knwuZ1hkmWbvn6HKgGFCpubXtBs+44E5
-	 W+TFF+c4p229SgZaotBmRRe6iMnb8O1vs1Blzy2Q=
+	b=YLEg2Dj/OY8ZE1DmTS7LoZLLcAThhcgHG8DV70uknHulfABpcBi1mHJ1TGvCur2Fe
+	 6UejrWOaBa1XYJvkyqNG+U928hSfucOfRSYbz8cQ7eVUDhpnFdkGklfbOtRbWhtf7E
+	 K2OglUcY+eYqk11HQafoshTk9c6foOZIIrEnfdOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 255/614] coresight: etm4x: Correct polling IDLE bit
-Date: Tue, 16 Dec 2025 12:10:22 +0100
-Message-ID: <20251216111410.613614726@linuxfoundation.org>
+Subject: [PATCH 6.17 182/507] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Date: Tue, 16 Dec 2025 12:10:23 +0100
+Message-ID: <20251216111352.109505105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
+[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
 
-Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
-the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
-instead of the IDLE bit.
+When da9055_device_init() fails after regmap_add_irq_chip()
+succeeds but mfd_add_devices() fails, the error handling path
+only calls mfd_remove_devices() but forgets to call
+regmap_del_irq_chip(). This results in a resource leak.
 
-This commit corrects the typo.
+Fix this by adding regmap_del_irq_chip() to the error path so
+that resources are released properly.
 
-Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
+Fixes: 2896434cf272 ("mfd: DA9055 core driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/da9055-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 1324b40d54210..c562f82985192 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1924,7 +1924,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
+index 1f727ef60d638..8c989b74f924e 100644
+--- a/drivers/mfd/da9055-core.c
++++ b/drivers/mfd/da9055-core.c
+@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
+ err:
+ 	mfd_remove_devices(da9055->dev);
++	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
