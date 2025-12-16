@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12120CC3B57
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385E4CC24C6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 492D33071FAA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7BBA30F8F30
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBDC34F27F;
-	Tue, 16 Dec 2025 11:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E077A33E36F;
+	Tue, 16 Dec 2025 11:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuVSC43l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz3GMHVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B5C34F27A;
-	Tue, 16 Dec 2025 11:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9930833E37C;
+	Tue, 16 Dec 2025 11:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885636; cv=none; b=G5KM6U2vJI3aOikBA80PjYXu1GOnjw37nMmtn95Ktt9Ged00BNDUqGJNujaYoVX3CwrU3s1pHYc+Sdmjhxqq2VGwcuAf7bKbm36Gj2uOaDnmy0cykj1evAD8LTAazQIvrD0+CedCUMZ0WgUKE8NmDmev83qBZXuxDEHmsZZQcuk=
+	t=1765884033; cv=none; b=AosawLThHbQJxEy+adw1RiPZOu5mZ56YMnR/cdLiuF13R/JTG6dLrqR4zRXMWu2IUit0wXI/Tq5FoLKIw8duTxjHp3MIcb3bhVbg0SbZZWq7NZl04kscv3auDKZF0YVOBlv/o/Mr9m7+2s7uba2BYaaFyEHD0CrUYg3j28WHk6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885636; c=relaxed/simple;
-	bh=rkB+3/n9Y6kGxpOTmXfBTJAOynjeGMEBxpOI9aM15s0=;
+	s=arc-20240116; t=1765884033; c=relaxed/simple;
+	bh=O5elhKqgimEE3u4GkVJ47dTr9B363725gwbBOJQILT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejFYJW7W7JFW2yzxyBvkmz+35aB+psi6yRDqd3+/FW2heJnxVuWBGb2iZRIXgPUOWMPYGQEvU9MeHHDVvb2mAVXtri49odUEm/HRej0iTk664vkpow2pVwOrIzdbVrorFHLXQSre7LgG1/HNuXcxt5JZJ3BONtatNoGSk7AbYOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuVSC43l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432BBC4CEF1;
-	Tue, 16 Dec 2025 11:47:15 +0000 (UTC)
+	 MIME-Version; b=BagfqbCvQiSmHaGt9xspQAAwjLxIK5us/liL6WZml8JzAULW2rmFYJpNoKhi4IWoqZXIW6cbvjLOyxh/tPI7wC7rTQShmjINnZDJKnAGkubaViq501W457MKaxdBuYa5/c6uc7idMCUOwKA76AK8npu5uddg7kja++bdVWH7Lgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz3GMHVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E5FC4CEF1;
+	Tue, 16 Dec 2025 11:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885635;
-	bh=rkB+3/n9Y6kGxpOTmXfBTJAOynjeGMEBxpOI9aM15s0=;
+	s=korg; t=1765884033;
+	bh=O5elhKqgimEE3u4GkVJ47dTr9B363725gwbBOJQILT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuVSC43lKNt9n4Ch0yFk5vn388gm0xMqTDrBU32oEXAyCHTYZE4XIJGV8Q9dfF1zY
-	 BIZnyYlHkWsMI0PwAuX3H6/aQCgp8G+2Yx4jp994mHfBHh6u7R6VfTBZjbJi4VPJtg
-	 JCl/B5g8tZigbht4qpBattLUPZFTJDFprEvXlafg=
+	b=Iz3GMHVzZeV/tsZIDV1LzGQhFMt3C1iV5eC8tzaUOcF8oKtLw4ZiulifCfxMhXso8
+	 ix2lcvdzQmThYKxWIgUrOIdoV7G/LdpWzN0dDf+wOJa80ihAJGzqF5PWYLDnLd+2PF
+	 xbmMep0yEIFQ3qKjX9c2RYEUqbN6srQtCjWZvuWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 198/507] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
-Date: Tue, 16 Dec 2025 12:10:39 +0100
-Message-ID: <20251216111352.682171144@linuxfoundation.org>
+Subject: [PATCH 6.12 073/354] arm64: dts: qcom: x1e80100: Add missing quirk for HS only USB controller
+Date: Tue, 16 Dec 2025 12:10:40 +0100
+Message-ID: <20251216111323.569604738@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
+[ Upstream commit 6b3e8a5d6c88609d9ce93789524f818cca0aa485 ]
 
-Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
-have region for DWC controllers as it has the Root Port and controller
-specific registers, while ELBI has optional registers.
+The PIPE clock is provided by the USB3 PHY, which is predictably not
+connected to the HS-only controller. Add "qcom,select-utmi-as-pipe-clk"
+quirk to  HS only USB controller to disable pipe clock requirement.
 
-Hence, fix the binding. Though this is an ABI break, this change is needed
-to accurately describe the PCI memory map.
-
-Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
+Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20251024105019.2220832-2-krishna.kurapati@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-index 79a21ba0f9fd6..c8258ef403283 100644
---- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-@@ -36,13 +36,13 @@ properties:
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index b03f3ce250dbc..8536403e6ac99 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -4272,6 +4272,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 			interconnect-names = "usb-ddr",
+ 					     "apps-usb";
  
-   reg:
-     items:
--      - description: External local bus interface registers
-+      - description: Data Bus Interface registers
-       - description: Meson designed configuration registers
-       - description: PCIe configuration space
++			qcom,select-utmi-as-pipe-clk;
+ 			wakeup-source;
  
-   reg-names:
-     items:
--      - const: elbi
-+      - const: dbi
-       - const: cfg
-       - const: config
- 
-@@ -113,7 +113,7 @@ examples:
-     pcie: pcie@f9800000 {
-         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
-         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
--        reg-names = "elbi", "cfg", "config";
-+        reg-names = "dbi", "cfg", "config";
-         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
-         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
-         clock-names = "pclk", "port", "general";
+ 			status = "disabled";
 -- 
 2.51.0
 
