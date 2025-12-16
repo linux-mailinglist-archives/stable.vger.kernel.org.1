@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0508CC2E38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9398FCC2364
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3E6631E1865
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 075FD305482A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763E1363C74;
-	Tue, 16 Dec 2025 12:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EE7341AD6;
+	Tue, 16 Dec 2025 11:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqKleGU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td8YtZNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA8A363C70;
-	Tue, 16 Dec 2025 12:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2477F313E13;
+	Tue, 16 Dec 2025 11:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887757; cv=none; b=Y4AXgZ78lmmoWF5Km9UIiB5X54zQR32pYVmjABWPI1SpHT5QYj1BZFw4e+TnwGVKM+PTKWCnWRywb6htS5bWxERwCOiOploLm7K4qugIvrNRlwCaHWf5lCbqE8kUhgoALE++LwtF0x+ytwOdshZFDvU3uH476/tKxgkw7tVRx94=
+	t=1765884229; cv=none; b=V7TZ/vBFY+KEl/UDgib6q6vpllc4OameUG7J4yCUU2cVmWm0GN5UrbkRpmd6KKmEKQQiEqrLT+BVRYv1GgUtZGEsojYsMR4SPgpU6ELY8dDBnHrpiWb9DWRY+LP8+wSndiGxC8CW9H8i8x4snnzv6Z8KsEv4qhT9Uqk2TIUJR1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887757; c=relaxed/simple;
-	bh=8/XcvrO77IIY9Cmp6UBbkpNcUV0Bj2wwtuLk+uh7Rt0=;
+	s=arc-20240116; t=1765884229; c=relaxed/simple;
+	bh=PfZKUK1+UWpZEVoMCf9eOz+SBDoQCFvs/nRbd6KjJW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVhvYHdhVnoYBOTPXhB+s2iE+V1W6ilpC1KMEAAY2WxcXuyxwsRgnN+/qRPMJgQv+mwjl1iUOmYBWRl5p/FC14GrExE7dnN5g2xoayxC0iKidnrdir6aAvz9YSjtZx/waTmofrmy8Md43b6hebP4wMlaR+5gdpnPj/gi31T4PUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqKleGU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B439C4CEF1;
-	Tue, 16 Dec 2025 12:22:36 +0000 (UTC)
+	 MIME-Version; b=TaEky1OvTpTPXUU0JqzMFLnao0W4ZQZSulcSNovIvv6nlMQ71NSUd6eyBbMQh40+wN4HuPfT90dR0k9cl0wFWc5wVwmM/p8yfRlbdtVDBkjzniD2tm9NWzKHkOvkacTNDo+BZmmVWBmI2m3aEfcR6ix7ZHEHQ65mMRI/QQ5aQ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td8YtZNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE72C4CEF1;
+	Tue, 16 Dec 2025 11:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887757;
-	bh=8/XcvrO77IIY9Cmp6UBbkpNcUV0Bj2wwtuLk+uh7Rt0=;
+	s=korg; t=1765884229;
+	bh=PfZKUK1+UWpZEVoMCf9eOz+SBDoQCFvs/nRbd6KjJW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqKleGU5UBkMNZKP7813eWSjsscGDSVN0EaxssCD9tbkat3xrQ5FgDOGNyDzFFkIP
-	 y4D2ppgZFcvCw93cCg6uk/PlVnmbhWV3qWNUyAznVdOwOH28UFvzlorhnloZHl3rUG
-	 QqGMasBkuiRDVnqHEDN1g2+UCnrqKbZekDRJBgEE=
+	b=Td8YtZNJsV+gQ1RzpjD3RVYCuh2+b+6lvi8o4KPgC8VTsUkbv+8jSyhfyTfYikblv
+	 dD4vmWi+JJrJSvZ0JdAC8ZcuFqYTlNI/mDHyWgMwZnvWMrkXw6wcF/kmlsa/Ukd4wP
+	 P5k8efpZIi8hT3Kv5RLaZnhloaEVPOPjhg2YXYyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yun Zhou <yun.zhou@windriver.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 329/614] scsi: ufs: rockchip: Reset controller on PRE_CHANGE of hce enable notify
+Subject: [PATCH 6.12 129/354] md: fix rcu protection in md_wakeup_thread
 Date: Tue, 16 Dec 2025 12:11:36 +0100
-Message-ID: <20251216111413.286408305@linuxfoundation.org>
+Message-ID: <20251216111325.596562836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Yun Zhou <yun.zhou@windriver.com>
 
-[ Upstream commit b0ee72db9132bd19b1b80152b35e0cf6a6cbd9f2 ]
+[ Upstream commit 0dc76205549b4c25705e54345f211b9f66e018a0 ]
 
-This fixes the dme-reset failed when doing recovery. Because device
-reset is not enough, we could occasionally see the error below:
+We attempted to use RCU to protect the pointer 'thread', but directly
+passed the value when calling md_wakeup_thread(). This means that the
+RCU pointer has been acquired before rcu_read_lock(), which renders
+rcu_read_lock() ineffective and could lead to a use-after-free.
 
-ufshcd-rockchip 2a2d0000.ufs: uic cmd 0x14 with arg3 0x0 completion timeout
-ufshcd-rockchip 2a2d0000.ufs: dme-reset: error code -110
-ufshcd-rockchip 2a2d0000.ufs: DME_RESET failed
-ufshcd-rockchip 2a2d0000.ufs: ufshcd_host_reset_and_restore: Host init failed -110
-
-Fix this by resetting the controller on PRE_CHANGE stage of hce enable
-notify.
-
-Fixes: d3cbe455d6eb ("scsi: ufs: rockchip: Initial support for UFS")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1763009575-237552-1-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/linux-raid/20251015083227.1079009-1-yun.zhou@windriver.com
+Fixes: 446931543982 ("md: protect md_thread with rcu")
+Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-rockchip.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/md/md.c | 14 ++++++--------
+ drivers/md/md.h |  8 +++++++-
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-rockchip.c b/drivers/ufs/host/ufs-rockchip.c
-index 8754085dd0ccf..8cecb28cdce41 100644
---- a/drivers/ufs/host/ufs-rockchip.c
-+++ b/drivers/ufs/host/ufs-rockchip.c
-@@ -20,9 +20,17 @@
- #include "ufshcd-pltfrm.h"
- #include "ufs-rockchip.h"
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index d263076442924..5c39246c467e3 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -106,7 +106,7 @@ static int remove_and_add_spares(struct mddev *mddev,
+ 				 struct md_rdev *this);
+ static void mddev_detach(struct mddev *mddev);
+ static void export_rdev(struct md_rdev *rdev, struct mddev *mddev);
+-static void md_wakeup_thread_directly(struct md_thread __rcu *thread);
++static void md_wakeup_thread_directly(struct md_thread __rcu **thread);
  
-+static void ufs_rockchip_controller_reset(struct ufs_rockchip_host *host)
-+{
-+	reset_control_assert(host->rst);
-+	udelay(1);
-+	reset_control_deassert(host->rst);
-+}
-+
- static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
- 					 enum ufs_notify_change_status status)
- {
-+	struct ufs_rockchip_host *host = ufshcd_get_variant(hba);
- 	int err = 0;
+ /*
+  * Default number of read corrections we'll attempt on an rdev
+@@ -4899,7 +4899,7 @@ static void stop_sync_thread(struct mddev *mddev, bool locked)
+ 	 * Thread might be blocked waiting for metadata update which will now
+ 	 * never happen
+ 	 */
+-	md_wakeup_thread_directly(mddev->sync_thread);
++	md_wakeup_thread_directly(&mddev->sync_thread);
+ 	if (work_pending(&mddev->sync_work))
+ 		flush_work(&mddev->sync_work);
  
- 	if (status == POST_CHANGE) {
-@@ -37,6 +45,9 @@ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
- 		return ufshcd_vops_phy_initialization(hba);
- 	}
- 
-+	/* PRE_CHANGE */
-+	ufs_rockchip_controller_reset(host);
-+
+@@ -8051,22 +8051,21 @@ static int md_thread(void *arg)
  	return 0;
  }
  
-@@ -156,9 +167,7 @@ static int ufs_rockchip_common_init(struct ufs_hba *hba)
- 		return dev_err_probe(dev, PTR_ERR(host->rst),
- 				"failed to get reset control\n");
+-static void md_wakeup_thread_directly(struct md_thread __rcu *thread)
++static void md_wakeup_thread_directly(struct md_thread __rcu **thread)
+ {
+ 	struct md_thread *t;
  
--	reset_control_assert(host->rst);
--	udelay(1);
--	reset_control_deassert(host->rst);
-+	ufs_rockchip_controller_reset(host);
- 
- 	host->ref_out_clk = devm_clk_get_enabled(dev, "ref_out");
- 	if (IS_ERR(host->ref_out_clk))
-@@ -282,9 +291,7 @@ static int ufs_rockchip_runtime_resume(struct device *dev)
- 		return err;
- 	}
- 
--	reset_control_assert(host->rst);
--	udelay(1);
--	reset_control_deassert(host->rst);
-+	ufs_rockchip_controller_reset(host);
- 
- 	return ufshcd_runtime_resume(dev);
+ 	rcu_read_lock();
+-	t = rcu_dereference(thread);
++	t = rcu_dereference(*thread);
+ 	if (t)
+ 		wake_up_process(t->tsk);
+ 	rcu_read_unlock();
  }
+ 
+-void md_wakeup_thread(struct md_thread __rcu *thread)
++void __md_wakeup_thread(struct md_thread __rcu *thread)
+ {
+ 	struct md_thread *t;
+ 
+-	rcu_read_lock();
+ 	t = rcu_dereference(thread);
+ 	if (t) {
+ 		pr_debug("md: waking up MD thread %s.\n", t->tsk->comm);
+@@ -8074,9 +8073,8 @@ void md_wakeup_thread(struct md_thread __rcu *thread)
+ 		if (wq_has_sleeper(&t->wqueue))
+ 			wake_up(&t->wqueue);
+ 	}
+-	rcu_read_unlock();
+ }
+-EXPORT_SYMBOL(md_wakeup_thread);
++EXPORT_SYMBOL(__md_wakeup_thread);
+ 
+ struct md_thread *md_register_thread(void (*run) (struct md_thread *),
+ 		struct mddev *mddev, const char *name)
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index 8826dce9717da..20857b8984625 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -838,6 +838,12 @@ struct md_io_clone {
+ 
+ #define THREAD_WAKEUP  0
+ 
++#define md_wakeup_thread(thread) do {   \
++	rcu_read_lock();                    \
++	__md_wakeup_thread(thread);         \
++	rcu_read_unlock();                  \
++} while (0)
++
+ static inline void safe_put_page(struct page *p)
+ {
+ 	if (p) put_page(p);
+@@ -855,7 +861,7 @@ extern struct md_thread *md_register_thread(
+ 	struct mddev *mddev,
+ 	const char *name);
+ extern void md_unregister_thread(struct mddev *mddev, struct md_thread __rcu **threadp);
+-extern void md_wakeup_thread(struct md_thread __rcu *thread);
++extern void __md_wakeup_thread(struct md_thread __rcu *thread);
+ extern void md_check_recovery(struct mddev *mddev);
+ extern void md_reap_sync_thread(struct mddev *mddev);
+ extern enum sync_action md_sync_action(struct mddev *mddev);
 -- 
 2.51.0
 
