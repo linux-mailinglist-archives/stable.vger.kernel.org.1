@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-201766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D89CC2A4D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0174ECC225D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F05FD3020C38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE408303105C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2607934B66F;
-	Tue, 16 Dec 2025 11:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884F6341670;
+	Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcCRDFfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGIgVBKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754A234BA49;
-	Tue, 16 Dec 2025 11:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41836341069;
+	Tue, 16 Dec 2025 11:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885718; cv=none; b=NxXDkUKKC0x5oD61X4QwgHFUHUdV4CRbksw8YcnzLyZj3KUbl9U3YKc5+YahmyOsi30ormBQlvVzM44+sRDYdbQtLmdvX3IxPdjkJqPi3EY7raHY6+4QjaZruTiSzoPjDv5MzhMe6lnm1IVrrNC9Wf0UMMx6oQP+qjLc9easV7E=
+	t=1765884127; cv=none; b=SfgAc8fer/PvqNu6a+2pLesQaXB+VFATq9qkndvtpbYx5rOsaTCvMO7qI2ML9YulwRGxUdUU2f2BlkSCNZP4uAypo45RWDlL/t9BcU+CFpGWqOythKFv/LPOVThLTDjtAfgZLGl5XAdJ1xY+9xXqwqXmhnclH6LVlNC038moD1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885718; c=relaxed/simple;
-	bh=nts91pwJUzbc57tCK0B//wVs4MQ/XrdSOXZWZKXchlY=;
+	s=arc-20240116; t=1765884127; c=relaxed/simple;
+	bh=IT/z3bc3Z9z4S4KLm082v3ab4J/LVhn/L2DphjBDZRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyJLzNOyoxPkemgb1RavqF69LPrcVyD44LwUlU21hQ+TbVLI4GN/10VpCKD8qYW7HL+ONOejfBHGuzcMHpl2N8pH6qhXjwE3vT2et7vqGZqnUH0CgMWIPiFu9S3Pi08a9EsmAdtLEtlvITP20ZutcYCgfW+tgBWixsuWTGXxRYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcCRDFfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA98C4CEF1;
-	Tue, 16 Dec 2025 11:48:37 +0000 (UTC)
+	 MIME-Version; b=gXVPobNhYKVmq9OWdSPyVqTdNjW4ywba3l0S8ej+ifq5siCsJU0XGZ9a+McHN0ujGI875qG3vmMS/yzUzXO7KVriKqRiunoBNKAVskEihouDYfC0E35dkQpC+3CS/K/pQWAY9v0XhwIgN7MKe2GngcuaLjvXK2+b1/5jFdpkynQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGIgVBKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD32C4CEF1;
+	Tue, 16 Dec 2025 11:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885717;
-	bh=nts91pwJUzbc57tCK0B//wVs4MQ/XrdSOXZWZKXchlY=;
+	s=korg; t=1765884127;
+	bh=IT/z3bc3Z9z4S4KLm082v3ab4J/LVhn/L2DphjBDZRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcCRDFfzLVjGFvuo8fJP36QRHp8AQLM9YkdcVZxi30dQBJv34jcdpj0fjhCfuHGsm
-	 kwBscU06p7Pw95KOe0JhcDCe67pGiS1EPukpJ0XNFuinCYXlTzVYCFOpaZ9Ox8GzqN
-	 eXQ3gMV0xKvHkKgIuRyRdxmMuyUkx8SjrMNk7rQg=
+	b=vGIgVBKp05wXmF10DT2Bzcej7sQD3hv0UaQMRyBM3ZFSUttSHNxk3a01WdNkrmFHK
+	 gXJfAzOpbEu9XY08y03L+wWlzuJDLqNfsP+j5wMwmzk73Nltp479kMWEX37EgXgU0d
+	 7lCWO6ZDQ14ZmdgBFPjicYrP5s3qcyLC1vHREzcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 224/507] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
+Subject: [PATCH 6.12 098/354] arm64: dts: qcom: msm8996: add interconnect paths to USB2 controller
 Date: Tue, 16 Dec 2025 12:11:05 +0100
-Message-ID: <20251216111353.620292499@linuxfoundation.org>
+Message-ID: <20251216111324.471946454@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
+[ Upstream commit 242f7558e7bf54cb63c06506f7b0630dd67d45a4 ]
 
-In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
-to avoid crashing the whole kernel due to a filesystem corruption.
+Add the missing interconnects to the USB2 host. The Fixes tag points to
+the commit which broke probing of the USB host on that platform.
 
-Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
-Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
-Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 130733a10079 ("interconnect: qcom: msm8996: Promote to core_initcall")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Acked-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-2-a36a05d1f869@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
-index 80ebb0b7265a9..5a0228c51ec3c 100644
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 0a8884145865d..932994f65b250 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3449,6 +3449,9 @@ usb2: usb@76f8800 {
+ 					  <&gcc GCC_USB20_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <60000000>;
  
- 	rec = &el->l_recs[index];
- 
--	BUG_ON(ext_flags != rec->e_flags);
-+	if (ext_flags != rec->e_flags) {
-+		ret = ocfs2_error(inode->i_sb,
-+				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
-+				  (unsigned long long)ino, index, rec->e_flags, cpos);
-+		goto out;
-+	}
-+
- 	/*
- 	 * after moving/defraging to new location, the extent is not going
- 	 * to be refcounted anymore.
++			interconnects = <&pnoc MASTER_USB_HS &bimc SLAVE_EBI_CH0>,
++					<&bimc MASTER_AMPSS_M0 &pnoc SLAVE_USB_HS>;
++			interconnect-names = "usb-ddr", "apps-usb";
+ 			power-domains = <&gcc USB30_GDSC>;
+ 			qcom,select-utmi-as-pipe-clk;
+ 			status = "disabled";
 -- 
 2.51.0
 
