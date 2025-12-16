@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4CDCC325E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:20:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A28BCC2C43
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4ED530136EF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F103302EDB7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A15718A921;
-	Tue, 16 Dec 2025 12:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF6396DD6;
+	Tue, 16 Dec 2025 12:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbVpkxyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c54YgJeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CC033031F;
-	Tue, 16 Dec 2025 12:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32208396DD3;
+	Tue, 16 Dec 2025 12:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886415; cv=none; b=WkL79kSabclgO+LRmrgWaAKO740H2CeLyHrlob+IqrYuB1kOBxU9/P0qpVmMGOPjfRIYWir2VSQtpxOnL9IS6e0MBojNQFej3mFjbz1qx2a9sev6qcqPbf6V3Ywo487oTKruV9/zaL7rogEb9tG5MK+ok4gtQo9kc2hsMb6uQ2Q=
+	t=1765888338; cv=none; b=TAb4SqOmmmcN13pdD/49FctQMz9wuI8SV4IWZm5Uw2w9hFWrr7VhH6CRlW5vMGZPaxFsxI/ipdaJJw0bIWlTJBcSb+xvGQSMP6NG1i8qwHmZRvzIYyyRh76nVGDmDVd/VnBVqTpGnbj7lU+mq8fv4Et64oCxHZ2Oe1sIQCIGFWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886415; c=relaxed/simple;
-	bh=4I17GBg2ER7ukB5kd4biuAOU1KuoC+u59/7bMsfDXSE=;
+	s=arc-20240116; t=1765888338; c=relaxed/simple;
+	bh=o8ZncKbH1pVdpKl2Aiydc+8hE5VKQ2IA+6Eg4bF3eEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phOc6JCjjOXbBGIYOoHA/n0QAX7I9DTysLT/1lYF5zAsnvckb0/DQxxCCDOFThRlpc6JnSDZsRzgOqAU+pYNNDo4hdky9nChphzOfP0ncSrKIGYW3wXWzxmiMfXDSbcBAEVc7gXru3D3H2ggJPlvTHDuZszGT9E0fhQmJIvnk/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbVpkxyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E1CC4CEF1;
-	Tue, 16 Dec 2025 12:00:13 +0000 (UTC)
+	 MIME-Version; b=hOdmC/VPOWN+oKOJtp5J3/s2/3uXU34VYWbw7RWcxgI4oK8MaLTIe33cowK1CU8rm+z3WePt2W1qubbl+PSjeZ5Muwfp5JQFlNHah68HIe+JV6lvgvlo7Zex6wShPsjomWKYKD1Cf006NxveiI0lYyl1lbb3v0ACrtcFj28+6ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c54YgJeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D78AC4CEF1;
+	Tue, 16 Dec 2025 12:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886414;
-	bh=4I17GBg2ER7ukB5kd4biuAOU1KuoC+u59/7bMsfDXSE=;
+	s=korg; t=1765888337;
+	bh=o8ZncKbH1pVdpKl2Aiydc+8hE5VKQ2IA+6Eg4bF3eEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbVpkxyMGtGApV+txJ38sUpzd5kQJ+JekpBoV0sIK6H9uZepzF35lad5IcqbDgvmU
-	 rsaMzr3sNLXQ2RKmqCWsx4Ft+KXZDwbXJT8KYrbhvxN8dHLR07Zre1s1yP6I9zjE/t
-	 1HBAq0yEIdVUaMENvBm563vg4V60qralLz+66NGs=
+	b=c54YgJeX0hE1sDb3te7MWw65JVwoG7iGLknydjvs4Rc2ImBSfJxtuF6Dgx4WS8XVs
+	 UJnW8IwTe48UG2yZc8XIMbtk0G3/t79pVxC3ilVeK/XssG9BedHK6mWf2UlIptBOBn
+	 KWmWncLuJz0RzN1/HyFVc4m4fy8D/8m5RW+pGC4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Linus Walleij <linusw@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 430/507] pinctrl: single: Fix incorrect type for error return variable
-Date: Tue, 16 Dec 2025 12:14:31 +0100
-Message-ID: <20251216111401.038549333@linuxfoundation.org>
+Subject: [PATCH 6.18 505/614] um: Disable KASAN_INLINE when STATIC_LINK is selected
+Date: Tue, 16 Dec 2025 12:14:32 +0100
+Message-ID: <20251216111419.667263494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-[ Upstream commit 61d1bb53547d42c6bdaec9da4496beb3a1a05264 ]
+[ Upstream commit a3209bb94b36351f11e0d9e72ac44e5dd777a069 ]
 
-pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
-but assign it the return values of pcs_get_function() that may return
-negative error codes. This causes negative error codes to be
-converted to large positive values.
+um doesn't support KASAN_INLINE together with STATIC_LINK.
 
-Change ret from unsigned int to int in both functions.
+Instead of failing the build, disable KASAN_INLINE when
+STATIC_LINK is selected.
 
-Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511290451.x9GZVJ1l-lkp@intel.com/
+Fixes: 1e338f4d99e6 ("kasan: introduce ARCH_DEFER_KASAN and unify static key across modes")
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Link: https://patch.msgid.link/2620ab0bbba640b6237c50b9c0dca1c7d1142f5d.1764410067.git.chleroy@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/um/Kconfig             | 1 +
+ arch/um/include/asm/kasan.h | 4 ----
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 8aedee2720bcb..ac5eae50b8a2b 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -485,7 +485,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
- 	enum pin_config_param param;
--	unsigned offset = 0, data = 0, i, j, ret;
-+	unsigned offset = 0, data = 0, i, j;
-+	int ret;
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index 49781bee79058..93ed850d508ed 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -5,6 +5,7 @@ menu "UML-specific options"
+ config UML
+ 	bool
+ 	default y
++	select ARCH_DISABLE_KASAN_INLINE if STATIC_LINK
+ 	select ARCH_NEEDS_DEFER_KASAN if STATIC_LINK
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_HAS_CACHE_LINE_SIZE
+diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+index b54a4e937fd12..81bcdc0f962e6 100644
+--- a/arch/um/include/asm/kasan.h
++++ b/arch/um/include/asm/kasan.h
+@@ -24,10 +24,6 @@
  
- 	ret = pcs_get_function(pctldev, pin, &func);
- 	if (ret)
-@@ -549,9 +550,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- {
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
--	unsigned offset = 0, shift = 0, i, data, ret;
-+	unsigned offset = 0, shift = 0, i, data;
- 	u32 arg;
--	int j;
-+	int j, ret;
- 	enum pin_config_param param;
- 
- 	ret = pcs_get_function(pctldev, pin, &func);
+ #ifdef CONFIG_KASAN
+ void kasan_init(void);
+-
+-#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
+-#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
+-#endif
+ #else
+ static inline void kasan_init(void) { }
+ #endif /* CONFIG_KASAN */
 -- 
 2.51.0
 
