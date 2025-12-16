@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-201713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCBCCC2F47
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9832BCC29BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9A04303C827
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E9181302EB2F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C834D3B8;
-	Tue, 16 Dec 2025 11:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C9536CE1D;
+	Tue, 16 Dec 2025 12:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKT0m+wJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpnXeu7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676E346E51;
-	Tue, 16 Dec 2025 11:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598CD36D4ED;
+	Tue, 16 Dec 2025 12:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885546; cv=none; b=Ig3Kds9ndvW6NytjDQAwlyxQ4+Pt8EgF81OTAeNvgeU/aHZDBOKOFGqH1Frn8egPnQEqY+Mof4rVZScuDiwq3EX/rZLyx2ZQz5Ij/WMVSQPqZs9XY2c6JamAbfG12RJw9muWiAtTWC4kxl9n4KeNELAWABdstoMP+BB5Wwdcbpk=
+	t=1765887483; cv=none; b=e3a5LzXxJEoaFjawwMh4ErOiTikU25N57CX1luawDNkDVwYZU/2JjLkQPGtXEKQUtFX8TZVpYIwWMoZVUqk8rFCwe8A9CYHujk2nm7QvuQo2gJdXYvfLUg8Tq3r94sNiS48Vp3JfyNNQ/jYmi6rWovmgD80x+IBvnhZiRJKWlJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885546; c=relaxed/simple;
-	bh=TCYNtepyOjaT7l576oFP9Q9oVaGwI40rnJbSQnPHCOc=;
+	s=arc-20240116; t=1765887483; c=relaxed/simple;
+	bh=9Be7dZvXZDAT2MdKDBtGiUGc7xEMYIjAKjwzEwEdHWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANkrtWbGw38O521MNh88H/acrHDmCLYMG3dS1PEZkuZGeSf+ZGNyJXv4kenRBmhqHOh8RuzDh5Sa247NUgvv7R84rquiMF4I2hLNMvK3BbgG3C4Ke99xvh6mViW/h2T0fsAwgWJyHeRoXhB3iNOCB3FS8kitTtqh4GzP27qxj0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKT0m+wJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD6BC4CEF1;
-	Tue, 16 Dec 2025 11:45:45 +0000 (UTC)
+	 MIME-Version; b=LQbCWTvZgU9Fk+Hge+c13UmSVNMaN+7Hf9/L2kIpoJT37sP0x+w5kdkzQtfaR4DurfYVOBI433Exm6iLJbDz1CnCZGg4qGP4g1CBq4s8qKG3Z1Id8bozsAFDVlLguYvwAwzM79f2Nci++5WJuWiutV5bFHKp22E54Qa6a42APXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpnXeu7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D884AC4CEF1;
+	Tue, 16 Dec 2025 12:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885546;
-	bh=TCYNtepyOjaT7l576oFP9Q9oVaGwI40rnJbSQnPHCOc=;
+	s=korg; t=1765887483;
+	bh=9Be7dZvXZDAT2MdKDBtGiUGc7xEMYIjAKjwzEwEdHWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKT0m+wJ6J7sN9pfX20wjBpG44xj8VT/wx2xfmCv0pUPpVBNi/XaOChrOopxazjdP
-	 DgkkjNrLWYq31dbOQpVr72iX1ViRY2gjEQohmm9/DYD3WniwCWABDkGOceFx+b6cwn
-	 BdXV9/qJBEiyPcvlLtZBOfaMIMWnqcjndwBTqQuE=
+	b=NpnXeu7JbH8Xc+7wHQmSU5LJr8PVRRUQT1WU/S/7RE5nTbV0DzkumN9FfjQSi19me
+	 yKQQr0aaTGNHfCFO4RJmnpi1wCxCR80JIwFmQMsDW4syIcy42w7ZNfiWhiWHG5RdnK
+	 wpv76PCM5ocacOAfuLWn1NffD+92mrYWcoARl2HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 137/507] wifi: ath12k: fix potential memory leak in ath12k_wow_arp_ns_offload()
+Subject: [PATCH 6.18 211/614] efi/libstub: Fix page table access in 5-level to 4-level paging transition
 Date: Tue, 16 Dec 2025 12:09:38 +0100
-Message-ID: <20251216111350.492518047@linuxfoundation.org>
+Message-ID: <20251216111409.019931240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit be5febd51c478bc8e24ad3480435f2754a403b14 ]
+[ Upstream commit 84361123413efc84b06f3441c6c827b95d902732 ]
 
-When the call to ath12k_wmi_arp_ns_offload() fails, the temporary memory
-allocation for offload is not freed before returning. Fix that by
-freeing offload in the error path.
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-Fixes: 1666108c74c4 ("wifi: ath12k: support ARP and NS offload")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251028170457.134608-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags Bits above the
+  physical address width of the system (i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
+
+- The pgd value is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
+
+Replace this with proper accessor functions:
+
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
+
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20251103141002.2280812-3-usamaarif642@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wow.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/libstub/x86-5lvl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index dce9bd0bcaefb..e8481626f1940 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -758,6 +758,7 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set arp ns offload vdev %i: enable %d, ret %d\n",
- 				    arvif->vdev_id, enable, ret);
-+			kfree(offload);
- 			return ret;
- 		}
- 	}
+diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
+index f1c5fb45d5f7c..c00d0ae7ed5d5 100644
+--- a/drivers/firmware/efi/libstub/x86-5lvl.c
++++ b/drivers/firmware/efi/libstub/x86-5lvl.c
+@@ -66,7 +66,7 @@ void efi_5level_switch(void)
+ 	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
+ 	bool need_toggle = want_la57 ^ have_la57;
+ 	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
+-	u64 *cr3 = (u64 *)__native_read_cr3();
++	pgd_t *cr3 = (pgd_t *)native_read_cr3_pa();
+ 	u64 *new_cr3;
+ 
+ 	if (!la57_toggle || !need_toggle)
+@@ -82,7 +82,7 @@ void efi_5level_switch(void)
+ 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+ 	} else {
+ 		/* take the new root table pointer from the current entry #0 */
+-		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
++		new_cr3 = (u64 *)(native_pgd_val(cr3[0]) & PTE_PFN_MASK);
+ 
+ 		/* copy the new root table if it is not 32-bit addressable */
+ 		if ((u64)new_cr3 > U32_MAX)
 -- 
 2.51.0
 
