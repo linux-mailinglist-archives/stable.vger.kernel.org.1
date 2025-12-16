@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF172CC3B66
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E5FCC27B8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF27330F57AF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B71E3004B96
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B31F34DB52;
-	Tue, 16 Dec 2025 12:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BBE35502B;
+	Tue, 16 Dec 2025 11:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVy4Y6sk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzjbCnAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8D32D0F3;
-	Tue, 16 Dec 2025 12:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03207355026;
+	Tue, 16 Dec 2025 11:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887843; cv=none; b=bl4bMfnzze3YrbTuJysVEiQQQOpHhVT2yS1ip/rTGEcvoQe++Wz+v60S8rwXBtXfYKGU8BPMx/VVl7BWGcXR5pCjS92tQOyASbVCzCgW3Gh12uv3tJzZUIOpMjcADhHFFL8qHdverspMkEmhkKhc7+fflCIQuFvVOXm8ye7rd8Y=
+	t=1765885889; cv=none; b=jkRzHJ2AJk2aWkNfnmdVa9+C8ZSkVoHws6V2vb3HnF8DaFTTayoQnipXYKkuV31r1PanRQEXLoKQSVUIUmGd3K6k3Pk2eNCqat5cHr/b1CPkXfP/l3OR04Wjmq6xWtWE6wcXEXVJXnmAW1c7Esk/cOwfnJ4jz5rj2F0qCj/TL1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887843; c=relaxed/simple;
-	bh=QF8MGJ4mOvJdAW1ir/PfTdpUTP2DekdrBMdqy65iVrM=;
+	s=arc-20240116; t=1765885889; c=relaxed/simple;
+	bh=qywL7X4re66m47s5aoqhFSEwehv4B49cRPEDd5okgAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDpvj8eGIX3jv3PbHJvjMiyzkeJ9H9ACkT+uBHD9Q494bJTkKPqK7B3IJT5JxRc16jCWG+eBKgHjQMN6d6x0v6SvFtjXsX7FRiXXRSIY68xaERYh3FLKCFhTZXk/ZMFsDZ7Sp1SFF8grsbMZJ71qIinJ8BvulYI799COzzXm/U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVy4Y6sk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA28C4CEF1;
-	Tue, 16 Dec 2025 12:24:02 +0000 (UTC)
+	 MIME-Version; b=mu2Bw6qqrHmxkkhzZ4dYCrNoibQ3XIXjHjenfWJgf7IfyUGV7Ns0M8uQtR/w83mZnqY5cwlcdvealUWOpISfX1i45cXxbHvonBWffkIAonP1Ybjo4OW6vdHLafJJrh22lJv8vnQ+708o/W1cBIGgwHHrxd3xlnUnIQKq32bjVds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzjbCnAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED0DC4CEF1;
+	Tue, 16 Dec 2025 11:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887843;
-	bh=QF8MGJ4mOvJdAW1ir/PfTdpUTP2DekdrBMdqy65iVrM=;
+	s=korg; t=1765885888;
+	bh=qywL7X4re66m47s5aoqhFSEwehv4B49cRPEDd5okgAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVy4Y6skduK1VIWs2U0bglK+rZ0yhvTOGjO1xpQSzDnncZtpWj+cU+YqluiyosJJe
-	 Ti6WGw74s+Fa6x9dgbMfNtmOHLF/2ekM0X16coE+lnwawVn0HxANgnrtUJfuLVnlMo
-	 VsluTVcuZkNmooF8omqkDjVs1fbulgK5kN11VIuQ=
+	b=DzjbCnAaYdk4t9kZbZqr3Mzy8OxL1D2aGwzLK6EGBIl+M5ZMNk9+tNy48k+P2dUT4
+	 8pLHxVSY1wTDyLfARp6dgMeejjIyf3uhu5K95Hw+dFaP33F/yNCD39+Sjkkb93Zvm5
+	 WTx5xO2vCYgFUT06Esvd75zSdmAc/AaqawMWzgSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 347/614] phy: freescale: Initialize priv->lock
+Subject: [PATCH 6.17 273/507] drm/msm/a6xx: Fix the gemnoc workaround
 Date: Tue, 16 Dec 2025 12:11:54 +0100
-Message-ID: <20251216111413.935364583@linuxfoundation.org>
+Message-ID: <20251216111355.374037753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 95e5905698983df94069e185f9eb3c67c7cf75d5 ]
+[ Upstream commit ff7a6de043fce21ea5891311746b16121b385c59 ]
 
-Initialize priv->lock to fix the following warning.
+Correct the register offset and enable this workaround for all A7x
+and newer GPUs to match the recommendation. Also, downstream does this
+w/a after moving the fence to allow mode. So do the same.
 
-WARNING: CPU: 0 PID: 12 at kernel/locking/mutex.c:577 __mutex_lock+0x70c/0x8b8
- Modules linked in:
- Hardware name: Freescale i.MX8QM MEK (DT)
- Call trace:
-  __mutex_lock+0x70c/0x8b8 (P)
-  mutex_lock_nested+0x24/0x30
-  imx_hsio_power_on+0x4c/0x764
-  phy_power_on+0x7c/0x12c
-  imx_pcie_host_init+0x1d0/0x4d4
-  dw_pcie_host_init+0x188/0x4b0
-  imx_pcie_probe+0x324/0x6f4
-  platform_probe+0x5c/0x98
-  really_probe+0xbc/0x29c
-  __driver_probe_device+0x78/0x12c
-  driver_probe_device+0xd8/0x160
-  __device_attach_driver+0xb8/0x138
-  bus_for_each_drv+0x84/0xe4
-  __device_attach_async_helper+0xb8/0xdc
-  async_run_entry_fn+0x34/0xe0
-  process_one_work+0x220/0x694
-  worker_thread+0x1c0/0x36c
-  kthread+0x14c/0x224
-
-Fixes: 82c56b6dd24f ("phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20250925013806.569658-1-xiaolei.wang@windriver.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: dbfbb376b50c ("drm/msm/a6xx: Add A621 support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688997/
+Message-ID: <20251118-kaana-gpu-support-v4-3-86eeb8e93fb6@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-index 5dca93cd325c8..977d21d753a59 100644
---- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-@@ -533,7 +533,7 @@ static struct phy *imx_hsio_xlate(struct device *dev,
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index ee82489025c3c..bc7e111c46f96 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -471,8 +471,9 @@ static void a6xx_gemnoc_workaround(struct a6xx_gmu *gmu)
+ 	 * in the power down sequence not being fully executed. That in turn can
+ 	 * prevent CX_GDSC from collapsing. Assert Qactive to avoid this.
+ 	 */
+-	if (adreno_is_a621(adreno_gpu) || adreno_is_7c3(adreno_gpu))
+-		gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, BIT(0));
++	if (adreno_is_a7xx(adreno_gpu) || (adreno_is_a621(adreno_gpu) ||
++				adreno_is_7c3(adreno_gpu)))
++		gmu_write(gmu, REG_A6XX_GPU_GMU_CX_GMU_CX_FALNEXT_INTF, BIT(0));
+ }
  
- static int imx_hsio_probe(struct platform_device *pdev)
- {
--	int i;
-+	int i, ret;
- 	void __iomem *off;
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
-@@ -545,6 +545,9 @@ static int imx_hsio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	priv->dev = &pdev->dev;
- 	priv->drvdata = of_device_get_match_data(dev);
-+	ret = devm_mutex_init(dev, &priv->lock);
-+	if (ret)
-+		return ret;
+ /* Let the GMU know that we are about to go into slumber */
+@@ -508,10 +509,9 @@ static int a6xx_gmu_notify_slumber(struct a6xx_gmu *gmu)
+ 	}
  
- 	/* Get HSIO configuration mode */
- 	if (of_property_read_string(np, "fsl,hsio-cfg", &priv->hsio_cfg))
+ out:
+-	a6xx_gemnoc_workaround(gmu);
+-
+ 	/* Put fence into allow mode */
+ 	gmu_write(gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
++	a6xx_gemnoc_workaround(gmu);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
