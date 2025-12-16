@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A399CC3354
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09629CC3E21
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0DBE3063C2B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C632330269B8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C295A35A92A;
-	Tue, 16 Dec 2025 12:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AB934D924;
+	Tue, 16 Dec 2025 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctcvzNr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5dtpf/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2BB344052;
-	Tue, 16 Dec 2025 12:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3006F346A05;
+	Tue, 16 Dec 2025 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888177; cv=none; b=HWFVicbu0lVlLkHIrL0NdfxktoWHWIYT8vrWdWax21iYtrm0rMnXtjY3MAUS8iv0QcO7wo28qCDXdFk2J98P1q093vBN0GmJlV0DFpQoRXRzjrBYLsp5SjCm4Nx+sjn0QSX8UJX3n+0Oom9GYncXv30gkzJttL4v38DTKHESIhI=
+	t=1765886282; cv=none; b=TIZZgR1Hc3pSHCm769B2nkUetQrcK4JoIM75q/yBJdPPv1THoBGS6JZMaUof5X2fAgGR0YBuHFyUqcd7qGCOh4JXIaf4oh6TVMcnvg49NikL7PoDWAc5I1U8W6ErzKsgezUMQJK8wcSXLxIy2PcUuuIGJ3vyP3QElgn+2/Xr99E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888177; c=relaxed/simple;
-	bh=qzXTl6cDAe0pm1AwLLR6kq1x6y1Q7wVO6GnD4KvXD2k=;
+	s=arc-20240116; t=1765886282; c=relaxed/simple;
+	bh=cdPFOWdOetvGWS+qDKnlRHlPS+Oaks2RAuhJw2sgUUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2tQm5sYS/zl8eKAv81b2kjiCARj8XTrYrXhGvNTAGVmUuS5CzohnUX5EsspH4t8YbwDUjWpID23nDiIjy3r3mX6ZSbO4nPlXa+nznnclfkXX8naks69Mi5Ct7tSQULsQdsSdLFtoOyGwBD9ulrrQupBr0ooS4DPCVW8vUOOE8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctcvzNr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCDCC4CEF1;
-	Tue, 16 Dec 2025 12:29:36 +0000 (UTC)
+	 MIME-Version; b=Cov/W28NvG/3fnoizsnfeyFXld8fyIGdPPVXp2Rr4UAVDeytHS1o3KDZGUgdvb9lt0Dm35UYbvYO3wLbSyhGFdn7afw+V6pkg5e3DzivF0fnbSgeQEbvcNKM/kRYnt54Nk35YGpN5zTD1kYaiEmTdoEGGRM5LJSiPv8R1XwmhO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5dtpf/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97BCC4CEF5;
+	Tue, 16 Dec 2025 11:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888177;
-	bh=qzXTl6cDAe0pm1AwLLR6kq1x6y1Q7wVO6GnD4KvXD2k=;
+	s=korg; t=1765886282;
+	bh=cdPFOWdOetvGWS+qDKnlRHlPS+Oaks2RAuhJw2sgUUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctcvzNr8aLYq/bZGxSDXMuWELKqMHvF9JDXc7r2vYafmh0afbw018AS+DaUf75i5C
-	 R0GbmrolXVdPtXaNmwiJZVXWWwDxgorUix7fA/uIE8OJ69e5QppQ2YwAS48fdlgffh
-	 A3fORvN+XCAZX6WSk3PDPUYdHWsNuj30AVskjNAw=
+	b=R5dtpf/nhKnq5UtZL8q4u3MPmxlcB/OEgdCknAxYElRPPGa/KeI/WlzV7VWFayHIb
+	 H/DNpKFogObvS27akWdJyXMZaOP9vWKO38EfIEbBlC93773N+zB+9778JiyC1FBT0e
+	 Tkh/A/VlJG/qBIbT6UJWEq+xFqFv+2nFohW87Oxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ria Thomas <ria.thomas@morsemicro.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 422/614] RDMA/irdma: Fix data race in irdma_free_pble
+Subject: [PATCH 6.17 348/507] wifi: ieee80211: correct FILS status codes
 Date: Tue, 16 Dec 2025 12:13:09 +0100
-Message-ID: <20251216111416.660109928@linuxfoundation.org>
+Message-ID: <20251216111358.066729733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Ria Thomas <ria.thomas@morsemicro.com>
 
-[ Upstream commit 81f44409fb4f027d1e6d54edbeba5156ad94b214 ]
+[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
 
-Protects pble_rsrc counters with mutex to prevent data race.
-Fixes the following data race in irdma_free_pble reported by KCSAN:
+The FILS status codes are set to 108/109, but the IEEE 802.11-2020
+spec defines them as 112/113. Update the enum so it matches the
+specification and keeps the kernel consistent with standard values.
 
-BUG: KCSAN: data-race in irdma_free_pble [irdma] / irdma_free_pble [irdma]
-
-write to 0xffff91430baa0078 of 8 bytes by task 16956 on cpu 5:
- irdma_free_pble+0x3b/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffff91430baa0078 of 8 bytes by task 16953 on cpu 2:
- irdma_free_pble+0x23/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x0000000000005a62 -> 0x0000000000005a68
-
-Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-3-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
+Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
+Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/pble.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
-index fa6325adaedec..28dfad7f940c2 100644
---- a/drivers/infiniband/hw/irdma/pble.c
-+++ b/drivers/infiniband/hw/irdma/pble.c
-@@ -506,12 +506,14 @@ int irdma_get_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- void irdma_free_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- 		     struct irdma_pble_alloc *palloc)
- {
--	pble_rsrc->freedpbles += palloc->total_cnt;
--
- 	if (palloc->level == PBLE_LEVEL_2)
- 		free_lvl2(pble_rsrc, palloc);
- 	else
- 		irdma_prm_return_pbles(&pble_rsrc->pinfo,
- 				       &palloc->level1.chunkinfo);
-+
-+	mutex_lock(&pble_rsrc->pble_mutex_lock);
-+	pble_rsrc->freedpbles += palloc->total_cnt;
- 	pble_rsrc->stats_alloc_freed++;
-+	mutex_unlock(&pble_rsrc->pble_mutex_lock);
- }
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index e5a2096e022ef..e3562770ffff3 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3572,8 +3572,8 @@ enum ieee80211_statuscode {
+ 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
+ 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
+ 	/* 802.11ai */
+-	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
+-	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
++	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
++	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
+ 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
+ 	WLAN_STATUS_SAE_PK = 127,
+ 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
 -- 
 2.51.0
 
