@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A4ECC2731
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E89F7CC2DD6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97E1F306EDAE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 237E8318C0E9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB4434572F;
-	Tue, 16 Dec 2025 11:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39B6364EA0;
+	Tue, 16 Dec 2025 12:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QciV1BEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT1gVNje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7872D97B8;
-	Tue, 16 Dec 2025 11:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6DB364E9B;
+	Tue, 16 Dec 2025 12:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885021; cv=none; b=muW+mubfaXcs305jeu4ZpNtF3p9z+xN56G8e1kgxWyKXkoiOk5hqMZPReoPBLCNlO39xw2IboFDQuQ+BcliaysdugILQHtU0M05LTbpSqUl/TeGvHvHIbRgqm+Hv/faN8zgjSJvj6OehP+/Yb9GxrQcp2GBHb98veUoDnbZd7hs=
+	t=1765886982; cv=none; b=AESXi8M2zPqIm0pSXKVk1TC7lAMuMJVgFLSy3T4eESxruLkXJ+BOYlwDDl2OLxPiMeOc9aMcBN+rc84go7Wb88Yzahm106bSpfar8tmxNpwafF+iNjautzqAjCxkQL1QOV7Nv3izvnLBC4ilOnc6aI2E4nz+lXe8nssWlWPt2Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885021; c=relaxed/simple;
-	bh=oQwCXeDJsbunCdwAukhWQffR/p/2ztiAhithZycI+5E=;
+	s=arc-20240116; t=1765886982; c=relaxed/simple;
+	bh=Eec7RjljN39iOxmDUsSrFPQvjIo7IPclFy/quESvG7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFtrGKFDDpGEnU0nZNdPgOmmKtQ4qyQNZzBjcP1BHd1M7oBtul/ff9EHbfaGNND1clS7WpR044k7ZdGo0+zoKLUWHU39/44DdjjRV2YWGz+gjnJDt0n7dLvdB0tcy85n/oFPhbQ8ooEByG4J1fISA0z99NhHJbszT+2DYWnBpt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QciV1BEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414E2C4CEF1;
-	Tue, 16 Dec 2025 11:37:01 +0000 (UTC)
+	 MIME-Version; b=mWcRgTzcibeHevZtvwHkw13V5JcgHv0Zm4+HcE393dNbldyV8m/1j66QQKiO8du645xmd4a0/06KM15YNKwmD1XORaofWiMtqDaaPyAxM6QNnsDCpHnmbOv3Rf6L4UiRh0MNZOcLuYksfa55Yc69MHY0AFwpzK73QBHmT+luYW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT1gVNje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DB5C4CEF1;
+	Tue, 16 Dec 2025 12:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885021;
-	bh=oQwCXeDJsbunCdwAukhWQffR/p/2ztiAhithZycI+5E=;
+	s=korg; t=1765886982;
+	bh=Eec7RjljN39iOxmDUsSrFPQvjIo7IPclFy/quESvG7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QciV1BEjnS/qZJsdI+4nZdUPAnJEnJm6yQ3mQ5YWec3tGaNcWl9KJj6myK97pqCQG
-	 9D5VIa+EWQlQYs8myCS/evhs+PY4asD1eOZkN1QEl3F9sJdwL21rF+hdl/Sjo1XRWP
-	 rydbj86AzmstbUlhfXZEfZ4ni8uVQgaUWZNIKYF4=
+	b=kT1gVNjeKBRSQQ/StGPGiMOlm0873hAplNOphHxUduUXTr3+bR5ZYOHJeMlsClfTI
+	 UQTEsXwC6cKTd1WdKNjarv+9xXdFNvgCeHa6Tbq4N4zUZ5N+BUl1dgF9WgRMKK98HV
+	 XhbpXMIhh07jySb8Jnzi07X7qAyRVNfymHZvZ6rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 015/507] accel/ivpu: Fix DCT active percent format
-Date: Tue, 16 Dec 2025 12:07:36 +0100
-Message-ID: <20251216111346.087952762@linuxfoundation.org>
+Subject: [PATCH 6.18 090/614] wifi: ath11k: fix VHT MCS assignment
+Date: Tue, 16 Dec 2025 12:07:37 +0100
+Message-ID: <20251216111404.582104021@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit aa1c2b073ad23847dd2e7bdc7d30009f34ed7f59 ]
+[ Upstream commit 47d0cd6bccb4604192633cc8d29511e85d811fc0 ]
 
-The pcode MAILBOX STATUS register PARAM2 field expects DCT active
-percent in U1.7 value format. Convert percentage value to this
-format before writing to the register.
+While associating, firmware needs to know peer's receive capability to
+calculate its own VHT transmit MCS, currently host sends this information
+to firmware via mcs->rx_mcs_set field, this is wrong as firmware actually
+takes it from mcs->tx_mcs_set field. Till now there is no failure seen
+due to this, most likely because almost all peers are advertising the
+same capability for both transmit and receive. Swap the assignment to
+fix it.
 
-Fixes: a19bffb10c46 ("accel/ivpu: Implement DCT handling")
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://lore.kernel.org/r/20251001104322.1249896-1-karol.wachowski@linux.intel.com
+Besides, rate control mask is meant to limit our own transmit MCS, hence
+need to go via mcs->tx_mcs_set field. With the aforementioned swapping
+done, change is needed as well to apply it to the peer's receive
+capability rather than transmit capability.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-1-da40825c1783@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_hw_btrs.c | 2 +-
- drivers/accel/ivpu/ivpu_hw_btrs.h | 2 +-
- drivers/accel/ivpu/ivpu_pm.c      | 9 +++++++--
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c |  4 ++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 13 ++++++++-----
+ drivers/net/wireless/ath/ath11k/wmi.h |  2 ++
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.c b/drivers/accel/ivpu/ivpu_hw_btrs.c
-index b236c7234daab..05f4133c3511a 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.c
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.c
-@@ -753,7 +753,7 @@ int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable)
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 0e41b5a91d66d..49c639d73d58d 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2235,9 +2235,9 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
+ 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
+ 	arg->rx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.rx_highest);
+ 	arg->rx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map);
++	arg->rx_mcs_set = ath11k_peer_assoc_h_vht_limit(arg->rx_mcs_set, vht_mcs_mask);
+ 	arg->tx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.tx_highest);
+-	arg->tx_mcs_set = ath11k_peer_assoc_h_vht_limit(
+-		__le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map), vht_mcs_mask);
++	arg->tx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map);
+ 
+ 	/* In IPQ8074 platform, VHT mcs rate 10 and 11 is enabled by default.
+ 	 * VHT mcs rate 10 and 11 is not supported in 11ac standard.
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index e3b444333deed..649839d243293 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ #include <linux/skbuff.h>
+ #include <linux/ctype.h>
+@@ -2061,10 +2061,13 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
+ 	cmd->peer_bw_rxnss_override |= param->peer_bw_rxnss_override;
+ 
+ 	if (param->vht_capable) {
+-		mcs->rx_max_rate = param->rx_max_rate;
+-		mcs->rx_mcs_set = param->rx_mcs_set;
+-		mcs->tx_max_rate = param->tx_max_rate;
+-		mcs->tx_mcs_set = param->tx_mcs_set;
++		/* firmware interprets mcs->tx_mcs_set field as peer's
++		 * RX capability
++		 */
++		mcs->tx_max_rate = param->rx_max_rate;
++		mcs->tx_mcs_set = param->rx_mcs_set;
++		mcs->rx_max_rate = param->tx_max_rate;
++		mcs->rx_mcs_set = param->tx_mcs_set;
  	}
- }
  
--void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent)
-+void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent)
- {
- 	u32 val = 0;
- 	u32 cmd = enable ? DCT_ENABLE : DCT_DISABLE;
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
-index 032c384ac3d4d..c4c10e22f30f3 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.h
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
-@@ -36,7 +36,7 @@ u32 ivpu_hw_btrs_dpu_freq_get(struct ivpu_device *vdev);
- bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
- bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
- int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
--void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent);
-+void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent);
- u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index 475ddc94f1cfe..457ccf09df545 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -502,6 +502,11 @@ void ivpu_pm_irq_dct_work_fn(struct work_struct *work)
- 	else
- 		ret = ivpu_pm_dct_disable(vdev);
- 
--	if (!ret)
--		ivpu_hw_btrs_dct_set_status(vdev, enable, vdev->pm->dct_active_percent);
-+	if (!ret) {
-+		/* Convert percent to U1.7 format */
-+		u8 val = DIV_ROUND_CLOSEST(vdev->pm->dct_active_percent * 128, 100);
-+
-+		ivpu_hw_btrs_dct_set_status(vdev, enable, val);
-+	}
-+
- }
+ 	/* HE Rates */
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 9fcffaa2f383c..6e9354297e71d 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -4133,8 +4133,10 @@ struct wmi_rate_set {
+ struct wmi_vht_rate_set {
+ 	u32 tlv_header;
+ 	u32 rx_max_rate;
++	/* MCS at which the peer can transmit */
+ 	u32 rx_mcs_set;
+ 	u32 tx_max_rate;
++	/* MCS at which the peer can receive */
+ 	u32 tx_mcs_set;
+ 	u32 tx_max_mcs_nss;
+ } __packed;
 -- 
 2.51.0
 
