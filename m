@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4D5CC2DC7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45466CC31A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B29C231A67AE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26CD430C0F7E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980D6343D79;
-	Tue, 16 Dec 2025 11:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDEA35772A;
+	Tue, 16 Dec 2025 12:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzR1NwtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogdWi+nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2F5343D75;
-	Tue, 16 Dec 2025 11:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD461357718;
+	Tue, 16 Dec 2025 12:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884988; cv=none; b=goTmxoel4HXt0xWn/EwcMaZsjZIIMJV+U20KOHDnl3+dbsqj/+TWc6XX9BPBlgONPEcQ/CbFiqd3ixfoMZTbkgrHoSEeNow2WRLzU3tbCOgAkzssdFfZAX9mWvnI349FVgBpYfMcSuSVXcF4WiktcPVV7sz9j83chHwFlMvWhLQ=
+	t=1765886579; cv=none; b=Yg3FY4TMw6eF07MsowXJLgbtBbdXhz45og660pQLUqTn8ujanYTzhalDbediUHORqaMrsxtZAg/lI/Dx7MgBQ66G1Nj5wIqfg87lon5dwArc7ru/Iuf76kV8OT6RNhDKFKuQ2PGGoyMRDn2mRZa5Cxxq30RpTBoidjlsbEnUtXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884988; c=relaxed/simple;
-	bh=ssDH+ed1a79u8Rw9i8jDLniV9xy5jQGv1Khfka3I/Do=;
+	s=arc-20240116; t=1765886579; c=relaxed/simple;
+	bh=g6Y6U/zF4D6WRFSyCFZXLFYTvAclhbX6sSDcptmqJuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiLLe1DwBMpAlDDElemNoib5BJkromD6f3sHcvRy7at1kuCK9SowUj631jwF8/BhBMG/ng8kyEKeB2ZCF+8nzi2zo4yOGq1HlX0ZZ8fPhuKEbVAIeQ9YqvrA2TQNqpa5iY4dT+Xi1CZqMqXdP/WbjRDbvzh+1tLvrIEt0Med7nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzR1NwtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A237FC4CEF5;
-	Tue, 16 Dec 2025 11:36:27 +0000 (UTC)
+	 MIME-Version; b=PA2gF2SSgFky7I+SAfJCqM17cM1aD+/nIpR0gZx1AHAb09H+i+CU8ZCOBR4EU4Aa65cf35tWBYfIeOR/xpxK8vMMPI2VqlMoOsKcYRK7NsKArwnK+FlHU+qSOpucz/dHa6NDRAQDN+8K6eMITIDxl9tkXgloK0Icdr2bw6CZVnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogdWi+nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2AFC4CEF1;
+	Tue, 16 Dec 2025 12:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884988;
-	bh=ssDH+ed1a79u8Rw9i8jDLniV9xy5jQGv1Khfka3I/Do=;
+	s=korg; t=1765886579;
+	bh=g6Y6U/zF4D6WRFSyCFZXLFYTvAclhbX6sSDcptmqJuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzR1NwtKziSdAtj05aYh3zz5IEHYzjb3ltodXth+Hxfl6iARCgjVxpwBWLQRSgoMw
-	 9aCNAKFvzpf2ypUynpTizJE3YJNzimfQCCqnVsBhRuPgTzmhFX78D6GteFlhUXY7Vs
-	 HHHC8w+tv9yIYCk7u66pPm/uuoyInWxSxAMN1ciE=
+	b=ogdWi+nffSqp3vTmmi2UuA4ARDyjkCbbE1f/EQU/1Hnba1otdv2kmy7cWpo4K52Zc
+	 t0QWNXVzw1HbqDzYo8dj4jW+0QBTZIw24/6bAOLZhAvIdBAkIUr75hV0aY+YeEWPO2
+	 or4D7SnbiIlTp182xaCE6cZ+jeckG1H3Fzd5Fvao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Sven Peter <sven@kernel.org>
-Subject: [PATCH 6.12 352/354] usb: dwc3: dwc3_power_off_all_roothub_ports: Use ioremap_np when required
+	Takashi Iwai <tiwai@suse.de>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 478/507] ALSA: firewire-motu: add bounds check in put_user loop for DSP events
 Date: Tue, 16 Dec 2025 12:15:19 +0100
-Message-ID: <20251216111333.661199855@linuxfoundation.org>
+Message-ID: <20251216111402.760045257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Peter <sven@kernel.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 5ed9cc71432a8adf3c42223c935f714aac29901b upstream.
+[ Upstream commit 298e753880b6ea99ac30df34959a7a03b0878eed ]
 
-On Apple Silicon machines we can't use ioremap() / Device-nGnRE to map most
-regions but must use ioremap_np() / Device-nGnRnE whenever
-IORESOURCE_MEM_NONPOSTED is set. Make sure this is also done inside
-dwc3_power_off_all_roothub_ports to prevent SErrors.
+In the DSP event handling code, a put_user() loop copies event data.
+When the user buffer size is not aligned to 4 bytes, it could overwrite
+beyond the buffer boundary.
 
-Fixes: 2d2a3349521d ("usb: dwc3: Add workaround for host mode VBUS glitch when boot")
-Cc: stable@kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sven Peter <sven@kernel.org>
-Link: https://patch.msgid.link/20251015-b4-aplpe-dwc3-v2-2-cbd65a2d511a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by adding a bounds check before put_user().
+
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB788112C72AF8A1C8C448B4B8AFA3A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/host.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/firewire/motu/motu-hwdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -37,7 +37,10 @@ static void dwc3_power_off_all_roothub_p
- 
- 	/* xhci regs is not mapped yet, do it temperary here */
- 	if (dwc->xhci_resources[0].start) {
--		xhci_regs = ioremap(dwc->xhci_resources[0].start, DWC3_XHCI_REGS_END);
-+		if (dwc->xhci_resources[0].flags & IORESOURCE_MEM_NONPOSTED)
-+			xhci_regs = ioremap_np(dwc->xhci_resources[0].start, DWC3_XHCI_REGS_END);
-+		else
-+			xhci_regs = ioremap(dwc->xhci_resources[0].start, DWC3_XHCI_REGS_END);
- 		if (!xhci_regs) {
- 			dev_err(dwc->dev, "Failed to ioremap xhci_regs\n");
- 			return;
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index e594765747d5b..38807dd7a766b 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -75,7 +75,7 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf, long count,
+ 		while (consumed < count &&
+ 		       snd_motu_register_dsp_message_parser_copy_event(motu, &ev)) {
+ 			ptr = (u32 __user *)(buf + consumed);
+-			if (put_user(ev, ptr))
++			if (consumed + sizeof(ev) > count || put_user(ev, ptr))
+ 				return -EFAULT;
+ 			consumed += sizeof(ev);
+ 		}
+-- 
+2.51.0
+
 
 
 
