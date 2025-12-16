@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-201759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DC5CC37BC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:16:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1776CC31DC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54197305F105
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C4723083411
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3044D350A0A;
-	Tue, 16 Dec 2025 11:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E255D34B683;
+	Tue, 16 Dec 2025 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7EO2Osl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSHgPin7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ED5350A05;
-	Tue, 16 Dec 2025 11:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECBC34C14C;
+	Tue, 16 Dec 2025 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885695; cv=none; b=k4lEGNCxIz1hCOVI+co44NyRPMzXtUZ62c535MrCDLQCrJ/inn0Wy90+Fy2jl9ZRA1FlLT5/+6gZPx78pzGWoR5HGPWePxKuHBqcYF1fkIlR0et2/UrOI1lraGLajqX7UzuS7QuaZAk4B7suyWAJK1CLuwlKxMF/VJSXe0/U9R8=
+	t=1765887631; cv=none; b=jnze5UVBKLQ8SKOE93frKvpDkLZ00qeWFS8beIDzr8NUcYrG+170E96DTAFd3ZT8/YV/3KV6l/+jurdgpUUD/eZJLLTcxgX80iSgvBDcDyXpAI3NT00eJ53Egwo54HpoR9a1qnAY6RRNTEEdCiAP3lb7up/MyDsMLokBBDoJgPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885695; c=relaxed/simple;
-	bh=jvAd6NQJ+drI++bmInLY1VnXDRbuinXmoBvAqU9z8is=;
+	s=arc-20240116; t=1765887631; c=relaxed/simple;
+	bh=boAQcO+JropKPwhiRk9ebMDNspOOhPiltJU8jsIt0+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tILRNaeYiwxEflj4mQWYgknRoqJHA9mz839gNqXToZxvKggXctBOl/71xGhpQVnywBKMBb1o4Ln0pI8GFWuj0vG2xER2QWC1SQW8IQ71jPIMcjacD4p2OKejxQ0vI6t4h1IanTPPgrbYHcGAcfN4+WdypBNwG6ZT/sJCNdF7qcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7EO2Osl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA10C4CEF1;
-	Tue, 16 Dec 2025 11:48:14 +0000 (UTC)
+	 MIME-Version; b=OLHiG2pnzRuFdP5DrIBhXWKSXrOTdfOwYKtmG9C1PoODer0/81QWQezdJqHy2MQSEHSaYVPkNuiQANhdz/A9+QOXQ8a5lyvpCBR0FUCQAzBTAV5JdsPDUqnbpfKTnruzqMNa+LYn/5CFxV168TcdVxA3UdUVTajas3TC1jXy7vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSHgPin7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E5AC4CEF1;
+	Tue, 16 Dec 2025 12:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885694;
-	bh=jvAd6NQJ+drI++bmInLY1VnXDRbuinXmoBvAqU9z8is=;
+	s=korg; t=1765887631;
+	bh=boAQcO+JropKPwhiRk9ebMDNspOOhPiltJU8jsIt0+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7EO2OslgmCbcmClIxsfXrxT3SA4QFVLslVvHEMnQ1z40fC1q9pFmfnU+Jv66xa0j
-	 VgVP/FC1M0At5hy/45Wih8A8K7e103CQSbUDhsHov41Y0JL1BvkV8aP4B7UVzYKQIs
-	 0C2Fe6gEjcHeWHlZZi6Sf7Y6uSr5Ub7LshQPNVqQ=
+	b=PSHgPin7/BFPFf6oV+pzQGXBxcRi+7ZEPcvZz963WT+49BRvzUbC7Zj2JlDkL8Gem
+	 fQN4tL+jFGfjiv1Nw2qXsKsFhxrDgp0smGC08zhwUizHAqdcx8zkdpVz2DPid+x/mP
+	 0Y8Y6fGp2YGnG7ZTzWv5ip7+Xah5nOm9k8NLkICc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sahil Chandna <chandna.sahil@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 217/507] coresight: etm4x: Properly control filter in CPU idle with FEAT_TRF
+Subject: [PATCH 6.18 291/614] bpf: Prevent nesting overflow in bpf_try_get_buffers
 Date: Tue, 16 Dec 2025 12:10:58 +0100
-Message-ID: <20251216111353.369470018@linuxfoundation.org>
+Message-ID: <20251216111411.915453348@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Sahil Chandna <chandna.sahil@gmail.com>
 
-[ Upstream commit 1fdc2cd347a7bc58acacb6144404ee892cea6c2e ]
+[ Upstream commit c1da3df7191f1b4df9256bcd30d78f78201e1d17 ]
 
-If a CPU supports FEAT_TRF, as described in the section K5.5 "Context
-switching", Arm ARM (ARM DDI 0487 L.a), it defines a flow to prohibit
-program-flow trace, execute a TSB CSYNC instruction for flushing,
-followed by clearing TRCPRGCTLR.EN bit.
+bpf_try_get_buffers() returns one of multiple per-CPU buffers based on a
+per-CPU nesting counter. This mechanism expects that buffers are not
+endlessly acquired before being returned. migrate_disable() ensures that a
+task remains on the same CPU, but it does not prevent the task from being
+preempted by another task on that CPU.
 
-To restore the state, the reverse sequence is required.
+Without disabled preemption, a task may be preempted while holding a
+buffer, allowing another task to run on same CPU and acquire an
+additional buffer. Several such preemptions can cause the per-CPU
+nest counter to exceed MAX_BPRINTF_NEST_LEVEL and trigger the warning in
+bpf_try_get_buffers(). Adding preempt_disable()/preempt_enable() around
+buffer acquisition and release prevents this task preemption and
+preserves the intended bounded nesting behavior.
 
-This differs from the procedure described in the section 3.4.1 "The
-procedure when powering down the PE" of ARM IHI0064H.b, which involves
-the OS Lock to prevent external debugger accesses and implicitly
-disables trace.
-
-To be compatible with different ETM versions, explicitly control trace
-unit using etm4_disable_trace_unit() and etm4_enable_trace_unit()
-during CPU idle to comply with FEAT_TRF.
-
-As a result, the save states for TRFCR_ELx and trcprgctlr are redundant,
-remove them.
-
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-6-f55553b6c8b3@arm.com
+Reported-by: syzbot+b0cff308140f79a9c4cb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68f6a4c8.050a0220.1be48.0011.GAE@google.com/
+Fixes: 4223bf833c849 ("bpf: Remove preempt_disable in bpf_try_get_buffers")
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+Link: https://lore.kernel.org/r/20251114064922.11650-1-chandna.sahil@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 14 +++++++-------
- drivers/hwtracing/coresight/coresight-etm4x.h      |  3 ---
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ kernel/bpf/helpers.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 668665cd437ad..3906818e65c8a 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1858,9 +1858,11 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		goto out;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index e4007fea49091..81ef159ef89bd 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -777,9 +777,11 @@ int bpf_try_get_buffers(struct bpf_bprintf_buffers **bufs)
+ {
+ 	int nest_level;
+ 
++	preempt_disable();
+ 	nest_level = this_cpu_inc_return(bpf_bprintf_nest_level);
+ 	if (WARN_ON_ONCE(nest_level > MAX_BPRINTF_NEST_LEVEL)) {
+ 		this_cpu_dec(bpf_bprintf_nest_level);
++		preempt_enable();
+ 		return -EBUSY;
  	}
- 
-+	if (!drvdata->paused)
-+		etm4_disable_trace_unit(drvdata);
-+
- 	state = drvdata->save_state;
- 
--	state->trcprgctlr = etm4x_read32(csa, TRCPRGCTLR);
- 	if (drvdata->nr_pe)
- 		state->trcprocselr = etm4x_read32(csa, TRCPROCSELR);
- 	state->trcconfigr = etm4x_read32(csa, TRCCONFIGR);
-@@ -1970,9 +1972,6 @@ static int etm4_cpu_save(struct etmv4_drvdata *drvdata)
- {
- 	int ret = 0;
- 
--	/* Save the TRFCR irrespective of whether the ETM is ON */
--	if (drvdata->trfcr)
--		drvdata->save_trfcr = read_trfcr();
- 	/*
- 	 * Save and restore the ETM Trace registers only if
- 	 * the ETM is active.
-@@ -1994,7 +1993,6 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 	etm4_cs_unlock(drvdata, csa);
- 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
- 
--	etm4x_relaxed_write32(csa, state->trcprgctlr, TRCPRGCTLR);
- 	if (drvdata->nr_pe)
- 		etm4x_relaxed_write32(csa, state->trcprocselr, TRCPROCSELR);
- 	etm4x_relaxed_write32(csa, state->trcconfigr, TRCCONFIGR);
-@@ -2079,13 +2077,15 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 
- 	/* Unlock the OS lock to re-enable trace and external debug access */
- 	etm4_os_unlock(drvdata);
-+
-+	if (!drvdata->paused)
-+		etm4_enable_trace_unit(drvdata);
-+
- 	etm4_cs_lock(drvdata, csa);
+ 	*bufs = this_cpu_ptr(&bpf_bprintf_bufs[nest_level - 1]);
+@@ -792,6 +794,7 @@ void bpf_put_buffers(void)
+ 	if (WARN_ON_ONCE(this_cpu_read(bpf_bprintf_nest_level) == 0))
+ 		return;
+ 	this_cpu_dec(bpf_bprintf_nest_level);
++	preempt_enable();
  }
  
- static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- {
--	if (drvdata->trfcr)
--		write_trfcr(drvdata->save_trfcr);
- 	if (drvdata->state_needs_restore)
- 		__etm4_cpu_restore(drvdata);
- }
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 13ec9ecef46f5..b8796b4271025 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -866,7 +866,6 @@ struct etmv4_config {
-  * struct etm4_save_state - state to be preserved when ETM is without power
-  */
- struct etmv4_save_state {
--	u32	trcprgctlr;
- 	u32	trcprocselr;
- 	u32	trcconfigr;
- 	u32	trcauxctlr;
-@@ -980,7 +979,6 @@ struct etmv4_save_state {
-  *		at runtime, due to the additional setting of TRFCR_CX when
-  *		in EL2. Otherwise, 0.
-  * @config:	structure holding configuration parameters.
-- * @save_trfcr:	Saved TRFCR_EL1 register during a CPU PM event.
-  * @save_state:	State to be preserved across power loss
-  * @state_needs_restore: True when there is context to restore after PM exit
-  * @skip_power_up: Indicates if an implementation can skip powering up
-@@ -1037,7 +1035,6 @@ struct etmv4_drvdata {
- 	bool				lpoverride;
- 	u64				trfcr;
- 	struct etmv4_config		config;
--	u64				save_trfcr;
- 	struct etmv4_save_state		*save_state;
- 	bool				state_needs_restore;
- 	bool				skip_power_up;
+ void bpf_bprintf_cleanup(struct bpf_bprintf_data *data)
 -- 
 2.51.0
 
