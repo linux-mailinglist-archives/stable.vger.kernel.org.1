@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-201832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B006CC27FD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E69CDCC2400
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3F3E307C1B7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FAB2307D37D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074E335503F;
-	Tue, 16 Dec 2025 11:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AE7342160;
+	Tue, 16 Dec 2025 11:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh/Sd28a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0begbL+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE3F35502A;
-	Tue, 16 Dec 2025 11:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EF7341645;
+	Tue, 16 Dec 2025 11:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885936; cv=none; b=XpSx3oIQdqAhSRQvnQr8rYb19E8s4qRPq5E+4OTaYg+FDeIL1G063CpmNJlGVsPkzdOChSCtMxaDfOJv70/cRUOfSe2aL0UAfLGbmjJSWMgv7YscDLS+AFPNeIM2Yhb2tlOAb1BZi6GHwU9rnZ8KlVZ2ajopf6oNISwMDr6o38I=
+	t=1765884340; cv=none; b=uUSxwUxidlzOes3zI2bJOOxDhbIyndqfZN+TTB/9xYTCcBykuA3DybzA6Aqqu7n01ji6FkRIodJsHRaVGhfQkMgI5uZInQjhJ0dyNmiKqc+SAfy627kM6tP/SyQrZ9t0CPW5bV0uCOZcnlETvoGHn9EmL9G5xpPTLzKzoNvTP/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885936; c=relaxed/simple;
-	bh=Y7WrB91ioEvTRjIDKyBFdShBWR/610zC6KjJT6tSQAI=;
+	s=arc-20240116; t=1765884340; c=relaxed/simple;
+	bh=xYrmLVJJGFuBTMJd4ezGGWnQyrQfDj988KFx33Nz4TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNqrX9OjBeJD7TG2dezzwPAu6gbrYQdb2aeMLxLYEWJZKCargxpfFgst3CbaDSYWRoCzn3FQeXrL64N6anWBJsLKCpJC+vOZ7So+hQ2ajlc7C6M1DdB2GCVpHz+FuLpniSx/s2osHnT+aZCfqebyoRXPGQISLFWojQdOxL5FZgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh/Sd28a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120A1C4CEF1;
-	Tue, 16 Dec 2025 11:52:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NTdKFAXEqLBJTXaiDAnugcpYtQuBn/u3FrHnk7/erGCN4hbwlkDvMDqAaXp3zYN/S6jvsodg/6aoJfCKqqTz7FkmiFQfXfQr9R6GJwdnAukDQDyIWkHVZYTBfh2mmIoaQATamXGQeks7WuWbUUIxSTN2EFJ6dRM2mw6SHyJU2to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0begbL+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFAAC4CEF1;
+	Tue, 16 Dec 2025 11:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885935;
-	bh=Y7WrB91ioEvTRjIDKyBFdShBWR/610zC6KjJT6tSQAI=;
+	s=korg; t=1765884339;
+	bh=xYrmLVJJGFuBTMJd4ezGGWnQyrQfDj988KFx33Nz4TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hh/Sd28aciUboqIGkebcSSSlAg4bXOYTvJfwwO6+DvXAmIYj1XKT0G+mVQ++9RQsP
-	 0YZAKLkbGF84axFPgyli/H3u1F9JeC+GAkobaQX22OSAZDutQPdy2bfCMBJNvPMUlb
-	 u0sY7XLbhyz0gFog9inw5QvtW8ALMSZXp3op2yAI=
+	b=0begbL+A7yEy1gAwzbiOXqqucLe7lQc/4664M74fNarNWWpRBgxm16IfwAtmwuVgY
+	 2bqIyI5wTRLiBGRqzSPOyAo0ic9KbAclqNdYqmr42h+edgg1mfrTHnJ9tt79+biJAm
+	 THNUlQBYiTAM6vKPM2tH3p4176pJ/AVZrBcpBZN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 289/507] phy: renesas: rcar-gen3-usb2: Fix an error handling path in rcar_gen3_phy_usb2_probe()
+Subject: [PATCH 6.12 163/354] ps3disk: use memcpy_{from,to}_bvec index
 Date: Tue, 16 Dec 2025 12:12:10 +0100
-Message-ID: <20251216111355.946528435@linuxfoundation.org>
+Message-ID: <20251216111326.819737731@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Rene Rebe <rene@exactco.de>
 
-[ Upstream commit 662bb179d3381c7c069e44bb177396bcaee31cc8 ]
+[ Upstream commit 79bd8c9814a273fa7ba43399e1c07adec3fc95db ]
 
-If an error occurs after the reset_control_deassert(),
-reset_control_assert() must be called, as already done in the remove
-function.
+With 6e0a48552b8c (ps3disk: use memcpy_{from,to}_bvec) converting
+ps3disk to new bvec helpers, incrementing the offset was accidently
+lost, corrupting consecutive buffers. Restore index for non-corrupted
+data transfers.
 
-Use devm_add_action_or_reset() to add the missing call and simplify the
-.remove() function accordingly.
-
-While at it, drop struct rcar_gen3_chan::rstc as it is not used aymore.
-
-[claudiu.beznea: removed "struct reset_control *rstc = data;" from
- rcar_gen3_reset_assert(), dropped struct rcar_gen3_chan::rstc]
-
-Fixes: 4eae16375357 ("phy: renesas: rcar-gen3-usb2: Add support to initialize the bus")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251023135810.1688415-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 6e0a48552b8c (ps3disk: use memcpy_{from,to}_bvec)
+Signed-off-by: René Rebe <rene@exactco.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/block/ps3disk.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 47beb94cd4244..dece07c944918 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -125,7 +125,6 @@ struct rcar_gen3_chan {
- 	struct extcon_dev *extcon;
- 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
- 	struct regulator *vbus;
--	struct reset_control *rstc;
- 	struct work_struct work;
- 	spinlock_t lock;	/* protects access to hardware and driver data structure. */
- 	enum usb_dr_mode dr_mode;
-@@ -699,21 +698,31 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
- 	return candidate;
+diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
+index 226ffc743238e..b5b00021fe37d 100644
+--- a/drivers/block/ps3disk.c
++++ b/drivers/block/ps3disk.c
+@@ -85,10 +85,14 @@ static void ps3disk_scatter_gather(struct ps3_storage_device *dev,
+ 	struct bio_vec bvec;
+ 
+ 	rq_for_each_segment(bvec, req, iter) {
++		dev_dbg(&dev->sbd.core, "%s:%u: %u sectors from %llu\n",
++			__func__, __LINE__, bio_sectors(iter.bio),
++			iter.bio->bi_iter.bi_sector);
+ 		if (gather)
+ 			memcpy_from_bvec(dev->bounce_buf + offset, &bvec);
+ 		else
+ 			memcpy_to_bvec(&bvec, dev->bounce_buf + offset);
++		offset += bvec.bv_len;
+ 	}
  }
- 
-+static void rcar_gen3_reset_assert(void *data)
-+{
-+	reset_control_assert(data);
-+}
-+
- static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
- {
- 	struct device *dev = channel->dev;
-+	struct reset_control *rstc;
- 	int ret;
- 	u32 val;
- 
--	channel->rstc = devm_reset_control_array_get_shared(dev);
--	if (IS_ERR(channel->rstc))
--		return PTR_ERR(channel->rstc);
-+	rstc = devm_reset_control_array_get_shared(dev);
-+	if (IS_ERR(rstc))
-+		return PTR_ERR(rstc);
- 
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret)
- 		return ret;
- 
--	ret = reset_control_deassert(channel->rstc);
-+	ret = reset_control_deassert(rstc);
-+	if (ret)
-+		goto rpm_put;
-+
-+	ret = devm_add_action_or_reset(dev, rcar_gen3_reset_assert, rstc);
- 	if (ret)
- 		goto rpm_put;
- 
-@@ -860,7 +869,6 @@ static void rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
- 	if (channel->is_otg_channel)
- 		device_remove_file(&pdev->dev, &dev_attr_role);
- 
--	reset_control_assert(channel->rstc);
- 	pm_runtime_disable(&pdev->dev);
- };
  
 -- 
 2.51.0
