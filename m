@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-201993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF785CC3261
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:20:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701F8CC3013
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 266A3301CD14
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 666E232347D2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B78352FAB;
-	Tue, 16 Dec 2025 12:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95202397D02;
+	Tue, 16 Dec 2025 12:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="er1XFvcR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u++qQF+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E02B354AD6;
-	Tue, 16 Dec 2025 12:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509CC396DD7;
+	Tue, 16 Dec 2025 12:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886472; cv=none; b=HOAZUKj9cPZ1whjorgujRTM3qF+kkzP6VNTOWQW1E49SrVqilIVrkyxhXdNCj76e7rCIqHjARMGyPa3+q5g1WjOVcY+DV7JATzkDz1KJ3DiELkwtdI3Wef4uYtSuTGV0QHAYx37LcFMjWbozbV4DJtm/Nc6YpibT+/I8ZFwHEUQ=
+	t=1765888394; cv=none; b=VPB2/BaJq5GuDjr6dVpklndPcz5nxzxvvp6uSlwHfFcJYVE9w8OyxKPLBftB+wajfu56xKXHdNBDaRgwXtRhlBV8cKkazNm/AdZtG+Yi6edbV6aWqMqY5MT2AXz22fRNzNA8/Mxd6Ys8Bk4g8Oain9nB0OGQA6i80GV6sLAtyvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886472; c=relaxed/simple;
-	bh=CD3eXij185Am3RCPWPQVu0mlFoVdPA1IjVYTL57Cvnc=;
+	s=arc-20240116; t=1765888394; c=relaxed/simple;
+	bh=8Qvl/OWRxtm9+YXx2dcih/9wM8VeBmBa1CpNjbRNP+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7tpYZNU0ia0z6y4FyBpxNfaCOWqeifd+fQM8gR8q2/hWpHvpDWsEh4xSK0nVq+S3suMqbj50K6meXSYebC80FIDojKvQm1OAyNkYdpIPQvyyX6gX86NS2KfeiUX0ZUL2u/nnhRNgNh0tlleU1JQuY0YBcQaMYtxHsc7y2R/i8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=er1XFvcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95686C4CEF1;
-	Tue, 16 Dec 2025 12:01:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m81aG8SaoW+RqMBsukEke3pn9YYT3sYi4JxcQDsklEf6ZcBeaLbY2aKIeiyVdddWJ0CVLLMfx7YO/pvIHkl1aRlDqxBxY+9Aa2KkcuplhI0PP8BgH5paus1x8VEeIk/hk6UjVYJ7If7bl4wg9aMUUrGa5tlMsSE1VEB3PD/VS6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u++qQF+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACC7C4CEF1;
+	Tue, 16 Dec 2025 12:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886472;
-	bh=CD3eXij185Am3RCPWPQVu0mlFoVdPA1IjVYTL57Cvnc=;
+	s=korg; t=1765888394;
+	bh=8Qvl/OWRxtm9+YXx2dcih/9wM8VeBmBa1CpNjbRNP+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=er1XFvcR3cSczu5cazfZ05YfDxQU8V6xcFEj6xptba4I50KwSncMQD2Ex5Gaigt5h
-	 XrIXPUf6chZFCcIqRHY2gxtZ/zbXwTpb0WyW5z3idTjBwNnFpJe26hghld1n5q2atm
-	 Di+Ixo/GXbw8euYOXPOpvfiVUpS+NOjeF861McaU=
+	b=u++qQF+JAlklrwWGUvb3xObB5kgZYWyssCns2cevyM5KmFGPguIVJ2ZjoUwrUYH5A
+	 uSDzB+y1fUk+pCZAZe1DHtvHNnYK+dHdvMOVJbedfbuMuWNVi9nLb+IgorGPyXQQHp
+	 CqV+l64TYGyfoCEmI97we5jjeY5z0Wo9PDsac3NQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Steven Price <steven.price@arm.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lukasz Majewski <lukma@denx.de>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 446/507] panthor: save task pid and comm in panthor_group
+Subject: [PATCH 6.18 520/614] net: hsr: create an API to get hsr port type
 Date: Tue, 16 Dec 2025 12:14:47 +0100
-Message-ID: <20251216111401.612331658@linuxfoundation.org>
+Message-ID: <20251216111420.212006832@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,76 +62,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
 
-[ Upstream commit 33b9cb6dcda2520600ac4fec725946af32c2e586 ]
+[ Upstream commit a0244e76213980f3b9bb5d40b0b6705fcf24230d ]
 
-We would like to report them on gpu errors.
+Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1 ("net:
+hsr: Provide RedBox support (HSR-SAN)"), we see that different port
+types require different settings for hardware offload, which was not the
+case before when we only had HSR_PT_SLAVE_A and HSR_PT_SLAVE_B. But
+there is currently no way to know which port is which type, so create
+the hsr_get_port_type() API function and export it.
 
-We choose to save the info on panthor_group_create rather than on
-panthor_open because, when the two differ, we are more interested in the
-task that created the group.
+When hsr_get_port_type() is called from the device driver, the port can
+must be found in the HSR port list. An important use case is for this
+function to work from offloading drivers' NETDEV_CHANGEUPPER handler,
+which is triggered by hsr_portdev_setup() -> netdev_master_upper_dev_link().
+Therefore, we need to move the addition of the hsr_port to the HSR port
+list prior to calling hsr_portdev_setup(). This makes the error
+restoration path also more similar to hsr_del_port(), where
+kfree_rcu(port) is already used.
 
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250718063816.1452123-3-olvaffe@gmail.com
-Stable-dep-of: eec7e23d848d ("drm/panthor: Prevent potential UAF in group creation")
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
+Link: https://patch.msgid.link/20251130131657.65080-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ include/linux/if_hsr.h |  9 +++++++++
+ net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
+ net/hsr/hsr_slave.c    |  7 ++++---
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 99ce0948f2bae..35c4a86fe3052 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -641,6 +641,15 @@ struct panthor_group {
- 		size_t kbo_sizes;
- 	} fdinfo;
- 
-+	/** @task_info: Info of current->group_leader that created the group. */
-+	struct {
-+		/** @task_info.pid: pid of current->group_leader */
-+		pid_t pid;
+diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
+index d7941fd880329..f4cf2dd36d193 100644
+--- a/include/linux/if_hsr.h
++++ b/include/linux/if_hsr.h
+@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
+ extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
+ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ 				     enum hsr_port_type pt);
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type);
+ #else
+ static inline bool is_hsr_master(struct net_device *dev)
+ {
+@@ -59,6 +61,13 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
 +
-+		/** @task_info.comm: comm of current->group_leader */
-+		char comm[TASK_COMM_LEN];
-+	} task_info;
-+
- 	/** @state: Group state. */
- 	enum panthor_group_state state;
++static inline int hsr_get_port_type(struct net_device *hsr_dev,
++				    struct net_device *dev,
++				    enum hsr_port_type *type)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_HSR */
  
-@@ -3391,6 +3400,14 @@ group_create_queue(struct panthor_group *group,
- 	return ERR_PTR(ret);
+ #endif /*_LINUX_IF_HSR_H_*/
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 492cbc78ab75a..d1bfc49b5f017 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -690,6 +690,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ }
+ EXPORT_SYMBOL(hsr_get_port_ndev);
+ 
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type)
++{
++	struct hsr_priv *hsr = netdev_priv(hsr_dev);
++	struct hsr_port *port;
++
++	rcu_read_lock();
++	hsr_for_each_port(hsr, port) {
++		if (port->dev == dev) {
++			*type = port->type;
++			rcu_read_unlock();
++			return 0;
++		}
++	}
++	rcu_read_unlock();
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL(hsr_get_port_type);
++
+ /* Default multicast address for HSR Supervision frames */
+ static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
+ 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index 8177ac6c2d26d..afe06ba00ea44 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -207,14 +207,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	port->type = type;
+ 	ether_addr_copy(port->original_macaddress, dev->dev_addr);
+ 
++	list_add_tail_rcu(&port->port_list, &hsr->ports);
++
+ 	if (type != HSR_PT_MASTER) {
+ 		res = hsr_portdev_setup(hsr, dev, port, extack);
+ 		if (res)
+ 			goto fail_dev_setup;
+ 	}
+ 
+-	list_add_tail_rcu(&port->port_list, &hsr->ports);
+-
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	netdev_update_features(master->dev);
+ 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+@@ -222,7 +222,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	return 0;
+ 
+ fail_dev_setup:
+-	kfree(port);
++	list_del_rcu(&port->port_list);
++	kfree_rcu(port, rcu);
+ 	return res;
  }
  
-+static void group_init_task_info(struct panthor_group *group)
-+{
-+	struct task_struct *task = current->group_leader;
-+
-+	group->task_info.pid = task->pid;
-+	get_task_comm(group->task_info.comm, task);
-+}
-+
- static void add_group_kbo_sizes(struct panthor_device *ptdev,
- 				struct panthor_group *group)
- {
-@@ -3542,6 +3559,8 @@ int panthor_group_create(struct panthor_file *pfile,
- 	add_group_kbo_sizes(group->ptdev, group);
- 	spin_lock_init(&group->fdinfo.lock);
- 
-+	group_init_task_info(group);
-+
- 	return gid;
- 
- err_put_group:
 -- 
 2.51.0
 
