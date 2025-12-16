@@ -1,130 +1,141 @@
-Return-Path: <stable+bounces-201132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9525CC0B33
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8320CC0B79
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4D4E3009AB5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:16:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87609301B488
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20ACC1531C8;
-	Tue, 16 Dec 2025 03:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B12F1FC9;
+	Tue, 16 Dec 2025 03:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="uBHtHfcu"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IzWgVx1C"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCCD3B8D4C
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 03:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0A1EEE6;
+	Tue, 16 Dec 2025 03:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765855006; cv=none; b=Jt+KxBVNU7yccQWiYF1Em/JMnGtrdBVu2CJKoXNg+GMKm53qcqCrSBhWUAvTVtxFSPb7ZSRDfR3j2Q2IPqBradtj/eMpS9ERrV75fYn4BQPj5HPZhDKlI9FVEjGKLEzQ+T8W2ogPpKSa+TOXE9bY7OwXjkl3Je1JCBpzmL0pBwA=
+	t=1765855622; cv=none; b=h/6UOLtmZWcX8D1RKqmQsdP/b85G9ngTekTRd5JaCnzHuseROJJTWhan6ZObcIbz9+vX7v/tRIez6daUCNWfWxOv/2kaF3/rPyCCO+jvBl5i9eg88coLPjW1xc1ldnMytKEtVGBQoawDNe2Sr1ehwslqpv+HQDZcOmpLszywego=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765855006; c=relaxed/simple;
-	bh=g0UrYk7nfCIOLwUbZm7Hb+f81XOBwZ0oOTV309ggENo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q+CVANE4ENAOS3U1nLUEC8RCNS9Let+AjBzucYH1BWrPjUy9mLqtrRJDZuF692FioyaBcvBuCxoJkphDLnE9M1L3R/Z3vX6rMLqEcY7E8IsBnKZJEI4pvfwpLmYCA6UJFSmXADsWG1gm7Rt3UYH7CICAfJQ0lxXwJqSLLxq4xtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=uBHtHfcu; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=uBHtHfcuBWbkomPazcMDii5lGW0EKI1V8NKomdUYmvH/P++CP75fvFazp8Gx8XyBDNWXCGiuc/gbj
-	 4qocTKak2cqovBz+PmaQrY/ildJaFvKhQniU+kIgNQhd4jLOp4cjmJp4KtmLbED8gdtzgfVVrvyONW
-	 oiKcdBxPElM92Tzk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from ubuntu24.. (unknown[120.244.194.57])
-	by rmsmtp-lg-appmail-08-12086 (RichMail) with SMTP id 2f366940ce4d5cd-b0132;
-	Tue, 16 Dec 2025 11:13:21 +0800 (CST)
-X-RM-TRANSID:2f366940ce4d5cd-b0132
-From: lanbincn@139.com
-To: stable@vger.kernel.org
-Cc: Yi Sun <yi.sun@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.1.y] dmaengine: idxd: Remove improper idxd_free
-Date: Tue, 16 Dec 2025 03:13:13 +0000
-Message-ID: <20251216031313.4853-1-lanbincn@139.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765855622; c=relaxed/simple;
+	bh=Cry2wmAN4Cz9SSQ/+BLRd2os0ES9qjDa8veSNc/7MLI=;
+	h=Date:To:From:Subject:Message-Id; b=FBefLrJSGvUCmLwiNGO5+Vz78JlN0Ec5TALjX6l0RKDgEm4IULZ4LPVjWEJabpWt3M0CsnyVe6VbUsgUs2ERKJKlQxxs4Ad9MyYpD3Pg8hndAkGiegDlAGjCR8OknTxQYU+5sapKk7WTs8NNUyoFoprxuBtHKz4EuTmHcGPV7hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IzWgVx1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2479EC4CEF5;
+	Tue, 16 Dec 2025 03:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1765855621;
+	bh=Cry2wmAN4Cz9SSQ/+BLRd2os0ES9qjDa8veSNc/7MLI=;
+	h=Date:To:From:Subject:From;
+	b=IzWgVx1CkyYHAJe3k47wrVecZjwp9yebKYh4aTqzRhvwTiC2Hz7U8cDcZUX+N+QK5
+	 xODKC/3nWn9GpFlfQv3/H+JEs/gr7Zv9+IqD6z9zKNiNvPizpGbk1aEW/hMzg4KBTu
+	 V2N1TdynOaJ4CbMwkp+iOB66VxxhPTdUKiIz8Il0=
+Date: Mon, 15 Dec 2025 19:27:00 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,nathan@kernel.org,morbo@google.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,justinstitt@google.com,wakel@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251216032701.2479EC4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Yi Sun <yi.sun@intel.com>
 
-[ Upstream commit f41c538881eec4dcf5961a242097d447f848cda6 ]
+The patch titled
+     Subject: selftests/mm: fix thread state check in uffd-unit-tests
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
 
-The call to idxd_free() introduces a duplicate put_device() leading to a
-reference count underflow:
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 15 PID: 4428 at lib/refcount.c:28 refcount_warn_saturate+0xbe/0x110
-...
-Call Trace:
- <TASK>
-  idxd_remove+0xe4/0x120 [idxd]
-  pci_device_remove+0x3f/0xb0
-  device_release_driver_internal+0x197/0x200
-  driver_detach+0x48/0x90
-  bus_remove_driver+0x74/0xf0
-  pci_unregister_driver+0x2e/0xb0
-  idxd_exit_module+0x34/0x7a0 [idxd]
-  __do_sys_delete_module.constprop.0+0x183/0x280
-  do_syscall_64+0x54/0xd70
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
 
-The idxd_unregister_devices() which is invoked at the very beginning of
-idxd_remove(), already takes care of the necessary put_device() through the
-following call path:
-idxd_unregister_devices() -> device_unregister() -> put_device()
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-In addition, when CONFIG_DEBUG_KOBJECT_RELEASE is enabled, put_device() may
-trigger asynchronous cleanup via schedule_delayed_work(). If idxd_free() is
-called immediately after, it can result in a use-after-free.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Remove the improper idxd_free() to avoid both the refcount underflow and
-potential memory corruption during module unload.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Fixes: d5449ff1b04d ("dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call")
-Signed-off-by: Yi Sun <yi.sun@intel.com>
-Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Link: https://lore.kernel.org/r/20250729150313.1934101-2-yi.sun@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Slightly adjust the context. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+------------------------------------------------------
+From: Wake Liu <wakel@google.com>
+Subject: selftests/mm: fix thread state check in uffd-unit-tests
+Date: Wed, 10 Dec 2025 17:14:08 +0800
+
+In the thread_state_get() function, the logic to find the thread's state
+character was using `sizeof(header) - 1` to calculate the offset from the
+"State:\t" string.
+
+The `header` variable is a `const char *` pointer.  `sizeof()` on a
+pointer returns the size of the pointer itself, not the length of the
+string literal it points to.  This makes the code's behavior dependent on
+the architecture's pointer size.
+
+This bug was identified on a 32-bit ARM build (`gsi_tv_arm`) for Android,
+running on an ARMv8-based device, compiled with Clang 19.0.1.
+
+On this 32-bit architecture, `sizeof(char *)` is 4.  The expression
+`sizeof(header) - 1` resulted in an incorrect offset of 3, causing the
+test to read the wrong character from `/proc/[tid]/status` and fail.
+
+On 64-bit architectures, `sizeof(char *)` is 8, so the expression
+coincidentally evaluates to 7, which matches the length of "State:\t". 
+This is why the bug likely remained hidden on 64-bit builds.
+
+To fix this and make the code portable and correct across all
+architectures, this patch replaces `sizeof(header) - 1` with
+`strlen(header)`.  The `strlen()` function correctly calculates the
+string's length, ensuring the correct offset is always used.
+
+Link: https://lkml.kernel.org/r/20251210091408.3781445-1-wakel@google.com
+Fixes: f60b6634cd88 ("mm/selftests: add a test to verify mmap_changing race with -EAGAIN")
+Signed-off-by: Wake Liu <wakel@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Without this patch, this issue can be reproduced in Linux-6.1.y 
-when the idxd module is removed.
----
- drivers/dma/idxd/init.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index 127a6a302a5b..6059ffc08eac 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -816,7 +816,6 @@ static void idxd_remove(struct pci_dev *pdev)
- 	destroy_workqueue(idxd->wq);
- 	perfmon_pmu_remove(idxd);
- 	put_device(idxd_confdev(idxd));
--	idxd_free(idxd);
- }
- 
- static struct pci_driver idxd_pci_driver = {
--- 
-2.43.0
+ tools/testing/selftests/mm/uffd-unit-tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-fix-thread-state-check-in-uffd-unit-tests
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1317,7 +1317,7 @@ static thread_state thread_state_get(pid
+ 		p = strstr(tmp, header);
+ 		if (p) {
+ 			/* For example, "State:\tD (disk sleep)" */
+-			c = *(p + sizeof(header) - 1);
++			c = *(p + strlen(header));
+ 			return c == 'D' ?
+ 			    THR_STATE_UNINTERRUPTIBLE : THR_STATE_UNKNOWN;
+ 		}
+_
+
+Patches currently in -mm which might be from wakel@google.com are
+
+selftests-mm-fix-thread-state-check-in-uffd-unit-tests.patch
 
 
