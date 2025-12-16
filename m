@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB739CC3878
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:23:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53112CC2F44
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D33E30B0D86
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 741DD324B22C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFE3587A1;
-	Tue, 16 Dec 2025 12:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF97342505;
+	Tue, 16 Dec 2025 11:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEurKS8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjL2mefN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247C6355808;
-	Tue, 16 Dec 2025 12:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A7C34105B;
+	Tue, 16 Dec 2025 11:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887265; cv=none; b=DWX4cwoXppsYP6A/DNyy2zAIguDUOwePM46ueaVB0KI+zcAJKc1F6mB3kpgXUuXdrARr4Od9d1MKINpjV8gkx6NPm8eENigP5Giw1Q6BIVWtHUEXujXTfo31hrlNVcE1oU35rXsVF0rioc5WRU6IDjj7LbA9p8LJ5JgkPDzM1u0=
+	t=1765885431; cv=none; b=J6W1EmKr1khjTZiOhnOkqy5eM7HhjnwSYcME3yQvtBfLtORx2PacRTgRqGOdLwRMYMd3ZpnVWIBrKfOpQWvismFW8iNc69hR9r4f6n5G5IS0f7eKE71kBBg7Y8hMYjAf8lIWRGGySmhv3PA3h6weUT8htJCjoNrrCwDlpY4pkNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887265; c=relaxed/simple;
-	bh=Hth0uIq+5qKOoFZTzNePkFpsCxyV+D7bjV76mynB8UM=;
+	s=arc-20240116; t=1765885431; c=relaxed/simple;
+	bh=E7aY3rhavgaapIqJlGmyfHzbW/7+Y7f67aXcjkD610k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7U1B0V+xZmOCe/sgH7DclfjMmXTnpPWrF2XzffmDyxcDJRTsYw1lZguRZlyI63m8mj3+0CIPDrdtStNdjq/QS2WPt1FtDT361AqRZAqKplfwfzBdxAtaahmhbGO9FKT2iuecbnLeN0I5g7TXOZqoCE1F5XL/EIsZDykdElt+G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEurKS8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDA9C19424;
-	Tue, 16 Dec 2025 12:14:24 +0000 (UTC)
+	 MIME-Version; b=ArqimXmecZhScJGw/P+XJM3e7GiSW/BbzPiu6kbHz+Rsnv2Xuno2qdb44vnbCnXmyufbOPjkNj/1ZEJ7hT9luD/qS6PnTTzWyUbG5zFenvMpcS4di5s6G00mGKffYhwpKnyqc8oSBna1rqB+THth8VFqKhqPjZGMFKKr6uzca4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjL2mefN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9DCC4CEF1;
+	Tue, 16 Dec 2025 11:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887264;
-	bh=Hth0uIq+5qKOoFZTzNePkFpsCxyV+D7bjV76mynB8UM=;
+	s=korg; t=1765885431;
+	bh=E7aY3rhavgaapIqJlGmyfHzbW/7+Y7f67aXcjkD610k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEurKS8OTM6KbELU++gJ6zWPNlewydyThChiuhglnojR+z4HI89H1Jel7zfyngR0O
-	 coP1n8fzbL/ikcsSIt88KDJA1eVfVLjRX1tGck9iuwq3EKCp3mK1z0XVBdH4ld0tbI
-	 Um9PgI82+ert0Pxw0yIh92/l14wiZNLuC+i75ETs=
+	b=TjL2mefNRTl/pH6ksGVaWULTdbjsNlh6zMlpRPCxGDZHBJilwrFxab6vVwBv40Tdc
+	 dS7RzpQNEMF5LfLuVZK+0dOY9LlfE/6R/xu5Y1ZyKToPFAP7wvw4L/lu1HjfLzAYOX
+	 2oGEUD2o/7C2PxAhQcndiajzd3avQr4wBTXmDUSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 178/614] power: supply: rt5033_charger: Fix device node reference leaks
+Subject: [PATCH 6.17 104/507] sctp: Defer SCTP_DBG_OBJCNT_DEC() to sctp_destroy_sock().
 Date: Tue, 16 Dec 2025 12:09:05 +0100
-Message-ID: <20251216111407.822549361@linuxfoundation.org>
+Message-ID: <20251216111349.305412210@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 6cdc4d488c2f3a61174bfba4e8cc4ac92c219258 ]
+[ Upstream commit 622e8838a29845316668ec2e7648428878df7f9a ]
 
-The device node pointers `np_conn` and `np_edev`, obtained from
-of_parse_phandle() and of_get_parent() respectively, are not released.
-This results in a reference count leak.
+SCTP_DBG_OBJCNT_INC() is called only when sctp_init_sock()
+returns 0 after successfully allocating sctp_sk(sk)->ep.
 
-Add of_node_put() calls after the last use of these device nodes to
-properly release their references and fix the leaks.
+OTOH, SCTP_DBG_OBJCNT_DEC() is called in sctp_close().
 
-Fixes: 8242336dc8a8 ("power: supply: rt5033_charger: Add cable detection and USB OTG supply")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250929113234.1726-1-vulab@iscas.ac.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+The code seems to expect that the socket is always exposed
+to userspace once SCTP_DBG_OBJCNT_INC() is incremented, but
+there is a path where the assumption is not true.
+
+In sctp_accept(), sctp_sock_migrate() could fail after
+sctp_init_sock().
+
+Then, sk_common_release() does not call inet_release() nor
+sctp_close().  Instead, it calls sk->sk_prot->destroy().
+
+Let's move SCTP_DBG_OBJCNT_DEC() from sctp_close() to
+sctp_destroy_sock().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251023231751.4168390-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt5033_charger.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sctp/socket.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/rt5033_charger.c b/drivers/power/supply/rt5033_charger.c
-index 2fdc584397075..de724f23e453b 100644
---- a/drivers/power/supply/rt5033_charger.c
-+++ b/drivers/power/supply/rt5033_charger.c
-@@ -701,6 +701,8 @@ static int rt5033_charger_probe(struct platform_device *pdev)
- 	np_conn = of_parse_phandle(pdev->dev.of_node, "richtek,usb-connector", 0);
- 	np_edev = of_get_parent(np_conn);
- 	charger->edev = extcon_find_edev_by_node(np_edev);
-+	of_node_put(np_edev);
-+	of_node_put(np_conn);
- 	if (IS_ERR(charger->edev)) {
- 		dev_warn(charger->dev, "no extcon device found in device-tree\n");
- 		goto out;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 4921416434f9a..1c465365daf24 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -1554,8 +1554,6 @@ static void sctp_close(struct sock *sk, long timeout)
+ 	spin_unlock_bh(&net->sctp.addr_wq_lock);
+ 
+ 	sock_put(sk);
+-
+-	SCTP_DBG_OBJCNT_DEC(sock);
+ }
+ 
+ /* Handle EPIPE error. */
+@@ -5112,9 +5110,12 @@ static void sctp_destroy_sock(struct sock *sk)
+ 		sp->do_auto_asconf = 0;
+ 		list_del(&sp->auto_asconf_list);
+ 	}
++
+ 	sctp_endpoint_free(sp->ep);
++
+ 	sk_sockets_allocated_dec(sk);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	SCTP_DBG_OBJCNT_DEC(sock);
+ }
+ 
+ /* Triggered when there are no references on the socket anymore */
 -- 
 2.51.0
 
