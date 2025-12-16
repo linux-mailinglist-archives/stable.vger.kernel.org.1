@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-201871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B111CC29F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31287CC248D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9994C3004A69
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9101030253DF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CD8343D82;
-	Tue, 16 Dec 2025 11:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFA5343D71;
+	Tue, 16 Dec 2025 11:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYRvFbrH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juWw19Wl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9397314B6D;
-	Tue, 16 Dec 2025 11:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461AE3431E3;
+	Tue, 16 Dec 2025 11:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886066; cv=none; b=ewhmPGnPe+sz5E9Ec5R95TlW5TG9YfIlbeZYuitB1zHLhNhr44cNRIL2McWP6s8BXyPdtbEOneI73eG25t7VfUaE9zacM+uIQTPsKVPGNdrc2ItPV5UqVDy9R189ctwyzEGggIyCalj8IpSyFsznYeQSjEBQsbnGWfJCoLIgZ+Q=
+	t=1765884470; cv=none; b=WNpUaTzaC+NMmoQ8l2+xZG8nlhJw9q7dYO8J/KoX/TpnSVSya2jrcG6LJiMfv7yPqEym69xLx/fsxjDmhQIT7hHmpUlCDG+ubgv9a5WXmXq8GoYRmhk8Dzo/KSVeKcIy1/tvHVtWn83CWyTBc6lTd3NFgcud4pNZC16SDJ81qCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886066; c=relaxed/simple;
-	bh=q1sQbGULWlyPD8UOwNSMKpGd+SumnzHrwcRTvnDK+Qg=;
+	s=arc-20240116; t=1765884470; c=relaxed/simple;
+	bh=H+Vqmm7LJCqR+VPhv8z6BbvM2t0VflUqaICQnc1i24E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjNNAhMotfpaxryMQwN+WLpvXLgUs4IjI8yeYruBnCdPT2WESrbk4A5FWM04qu6wi+iT7sSl28oyP2CSleXIS+pUiqoY/z+Eop7wXqtGV6SflHRfK+BV1dTGt38ilmfHdzQ8x75PCG9SO+dtGKCatIocGW6N4my3guCc386WnEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYRvFbrH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCA9C4CEF1;
-	Tue, 16 Dec 2025 11:54:24 +0000 (UTC)
+	 MIME-Version; b=MBO4aHbp1tbVR676wFkx8YnZTxfg9TsIvjsantISM6JZ6CAs71Ds43lO0BfpI0bivML/UN+T3gZ/C31fex91b75zYgcZcrb/vPv3Bxs3BJv+m8mmicw81+UrFYkUnrjUpaAcm0m3SxG8PGw9kogrb4oGpMQfmhwmp+Qt2o5lXws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juWw19Wl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5BDC4CEF1;
+	Tue, 16 Dec 2025 11:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886065;
-	bh=q1sQbGULWlyPD8UOwNSMKpGd+SumnzHrwcRTvnDK+Qg=;
+	s=korg; t=1765884470;
+	bh=H+Vqmm7LJCqR+VPhv8z6BbvM2t0VflUqaICQnc1i24E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYRvFbrHpvidNqd5uowjazLdOfzE11WL1FiHpJjTsPa9T/dzNAJA2WKyHoSKosZoU
-	 h06cC1qhx6o9bDs03s4Vjnpbhg1oCCntfGD27vrqbqfnPzxIwNIPqcV+LLMUZ+Ircm
-	 gbQlNw7h30Eur5zSvTW/T0wgydoqyqCVFqrELrrg=
+	b=juWw19Wlyvc8EIN68lCGL9v0FXCGQYOBhhsZKN9qG6v6lod2v+Cqj42iV/jvPLs2m
+	 3n+Vb8b8um8w6AW/cPBudXBHPEQbs4arhEVLaZT3Jvpfipqq72ZsFllqqYt6+Dwe9O
+	 C7iXk3PNbjJ1s7rQeP1sjMtALbE5yWxc7pjdkPnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 328/507] wifi: mt76: mt7996: fix implicit beamforming support for mt7992
+Subject: [PATCH 6.12 202/354] usb: chaoskey: fix locking for O_NONBLOCK
 Date: Tue, 16 Dec 2025 12:12:49 +0100
-Message-ID: <20251216111357.348381615@linuxfoundation.org>
+Message-ID: <20251216111328.237398500@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 5d86765828b47444908a8689f2625872e8dac48f ]
+[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
 
-Fix the ibf_timeout field for mt7996, mt7992 and mt7990 chipsets. For
-the mt7992, this value shall be set as 0xff, while the others shall be
-set as 0x18.
+A failure to take a lock with O_NONBLOCK needs to result
+in -EAGAIN. Change it.
 
-Fixes: ad4c9a8a9803 ("wifi: mt76: mt7996: add implicit beamforming support for mt7992")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20251106064203.1000505-3-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 07b962e235850..f337e3267c6f0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1754,8 +1754,8 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- 	bf->ibf_nrow = tx_ant;
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index 225863321dc47..45cff32656c6e 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -444,9 +444,19 @@ static ssize_t chaoskey_read(struct file *file,
+ 			goto bail;
+ 		mutex_unlock(&dev->rng_lock);
  
- 	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he)
--		bf->ibf_timeout = is_mt7996(&dev->mt76) ? MT7996_IBF_TIMEOUT :
--							  MT7992_IBF_TIMEOUT;
-+		bf->ibf_timeout = is_mt7992(&dev->mt76) ? MT7992_IBF_TIMEOUT :
-+							  MT7996_IBF_TIMEOUT;
- 	else if (!ebf && link_sta->bandwidth <= IEEE80211_STA_RX_BW_40 && !bf->ncol)
- 		bf->ibf_timeout = MT7996_IBF_TIMEOUT_LEGACY;
- 	else
+-		result = mutex_lock_interruptible(&dev->lock);
+-		if (result)
+-			goto bail;
++		if (file->f_flags & O_NONBLOCK) {
++			result = mutex_trylock(&dev->lock);
++			if (result == 0) {
++				result = -EAGAIN;
++				goto bail;
++			} else {
++				result = 0;
++			}
++		} else {
++			result = mutex_lock_interruptible(&dev->lock);
++			if (result)
++				goto bail;
++		}
+ 		if (dev->valid == dev->used) {
+ 			result = _chaoskey_fill(dev);
+ 			if (result < 0) {
 -- 
 2.51.0
 
