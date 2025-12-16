@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF05CC240F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0158CC2806
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CAE530810A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA1793081022
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA2C32BF22;
-	Tue, 16 Dec 2025 11:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8B935503C;
+	Tue, 16 Dec 2025 11:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2qcxWWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZeqtYME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750B7341ACA;
-	Tue, 16 Dec 2025 11:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1235502D;
+	Tue, 16 Dec 2025 11:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884350; cv=none; b=KTDiZrt5nfCuWSMnbof9Vj5s5L9zkVz34SuSe4Qp5Su20wXv+u3wJPIOuOLHks921E18OBvkBTdpW+3wCxtnw0I2zRjdK63JxbUFoE2FF6jjl5b7nRaFRZ0LSqqXujtUvnvqZUaXUl2mBBMi5h3q2tCxbT2cxsxVey4ufMNrQNw=
+	t=1765885943; cv=none; b=SVNpx126B/eu3NNXDKNDfZdYzO9PC4XMY8MBfcXXeeHOWwOUuZBXY9FPpL67eZ2oqzk3us9ij9BKwjsS65ALQ60c9n4twtzYem7jagUpimax5hVOtTlNkLl5Y1f1a4o+nUVcX7bIJEeA1kKj9JVJhwuR48B8Z1yU3wApCZBkfdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884350; c=relaxed/simple;
-	bh=IoXaNsDadhYmlcAUEHeVlOjsOEgv3WFoixpU03kHL3I=;
+	s=arc-20240116; t=1765885943; c=relaxed/simple;
+	bh=FJwYzxF4VITM+N826QmRESTMcK0rJQuODIkU4AgVegE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxpsQ6q1p8Psrps9EZ9Cz2HsPTxApp+yVHuX8oAR5FEt5u3eMUFSI6DlVL484RmauTew2gfd9QHs7tic401zjDaEbybb0RNpfLIi2eJoaxpAVIED7W0jIWdo7s+kl+91PgNrCnhin02+54D+pcyOCIWNbhszC+iB8JuTVFf46XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2qcxWWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903F9C4CEF1;
-	Tue, 16 Dec 2025 11:25:49 +0000 (UTC)
+	 MIME-Version; b=s1Wgz7RKkAgSjZFh3fWhNLCGUNa8uyc08n1udSvJeILUsuZwaABg9hUF4AFkCT6tICGHWqD3a5b/bMn1nOvaIxwZuoBSSyU5I7uaGwssmmVuySs1fGDmdlRTcdnfc5JcDCRR89bBB09bRJTTnySWNRfq1bDaUFNnaADCftC66rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZeqtYME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1675FC4CEF1;
+	Tue, 16 Dec 2025 11:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884350;
-	bh=IoXaNsDadhYmlcAUEHeVlOjsOEgv3WFoixpU03kHL3I=;
+	s=korg; t=1765885942;
+	bh=FJwYzxF4VITM+N826QmRESTMcK0rJQuODIkU4AgVegE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2qcxWWP1Bf+w5lfDcLaFs+PpbGsb13Zu8ljfbbezbR0kVxbAJYGaarBK1VMuzGBb
-	 3YU5q6o/cEDhSHHXmhq/tekuXLr+HDNXwh+O+p9JS85F3t9C9YUWzznfY9sA5euFef
-	 5LrHQxX4GMWtHkZiCbhH9m5wYOP9uSVkLuKKcdx4=
+	b=pZeqtYMELgaTJF3ntkfY2jwDeUttS/UaBrHFinzF+MEI//DEZBEBtaQFpoHcXwyqY
+	 EVg9RAQ0ayCISC35b3Tc3UbjHapccNZU6SueggHzPKrWxx3PDmFANSRk+OWcxy4MzW
+	 2Vjfdiqo2U1CCKG2pCEh4N1X6N+04UJaeVkzu9Is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/354] selftests/bpf: Fix failure paths in send_signal test
+Subject: [PATCH 6.17 291/507] phy: rockchip: naneng-combphy: Fix PCIe L1ss support RK3562
 Date: Tue, 16 Dec 2025 12:12:12 +0100
-Message-ID: <20251216111326.891911858@linuxfoundation.org>
+Message-ID: <20251216111356.019073080@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit c13339039891dbdfa6c1972f0483bd07f610b776 ]
+[ Upstream commit be866e68966d20bcc4a73708093d577176f99c0c ]
 
-When test_send_signal_kern__open_and_load() fails parent closes the
-pipe which cases ASSERT_EQ(read(pipe_p2c...)) to fail, but child
-continues and enters infinite loop, while parent is stuck in wait(NULL).
-Other error paths have similar issue, so kill the child before waiting on it.
+When PCIe link enters L1 PM substates, the PHY will turn off its
+PLL for power-saving. However, it turns off the PLL too fast which
+leads the PHY to be broken. According to the PHY document, we need
+to delay PLL turnoff time.
 
-The bug was discovered while compiling all of selftests with -O1 instead of -O2
-which caused progs/test_send_signal_kern.c to fail to load.
-
-Fixes: ab8b7f0cb358 ("tools/bpf: Add self tests for bpf_send_signal_thread()")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20251113171153.2583-1-alexei.starovoitov@gmail.com
+Fixes: f13bff25161b ("phy: rockchip-naneng-combo: Support rk3562")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/1763459526-35004-2-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index 6cc69900b3106..752b75b7170df 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -145,6 +145,11 @@ static void test_send_signal_common(struct perf_event_attr *attr,
- skel_open_load_failure:
- 	close(pipe_c2p[0]);
- 	close(pipe_p2c[1]);
-+	/*
-+	 * Child is either about to exit cleanly or stuck in case of errors.
-+	 * Nudge it to exit.
-+	 */
-+	kill(pid, SIGKILL);
- 	wait(NULL);
- }
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index ce84166cd7725..6d69288693952 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -64,6 +64,10 @@
+ #define RK3568_PHYREG18				0x44
+ #define RK3568_PHYREG18_PLL_LOOP		0x32
  
++#define RK3568_PHYREG30				0x74
++#define RK3568_PHYREG30_GATE_TX_PCK_SEL         BIT(7)
++#define RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF BIT(7)
++
+ #define RK3568_PHYREG32				0x7C
+ #define RK3568_PHYREG32_SSC_MASK		GENMASK(7, 4)
+ #define RK3568_PHYREG32_SSC_DIR_MASK		GENMASK(5, 4)
+@@ -474,6 +478,10 @@ static int rk3562_combphy_cfg(struct rockchip_combphy_priv *priv)
+ 	case REF_CLOCK_100MHz:
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_100m, true);
+ 		if (priv->type == PHY_TYPE_PCIE) {
++			/* Gate_tx_pck_sel length select for L1ss support */
++			rockchip_combphy_updatel(priv, RK3568_PHYREG30_GATE_TX_PCK_SEL,
++						 RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF,
++						 RK3568_PHYREG30);
+ 			/* PLL KVCO tuning fine */
+ 			val = FIELD_PREP(RK3568_PHYREG33_PLL_KVCO_MASK,
+ 					 RK3568_PHYREG33_PLL_KVCO_VALUE);
 -- 
 2.51.0
 
