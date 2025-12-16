@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311ADCC2442
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0861CC27AC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D98D930ABA8C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D836C3047470
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D39342C99;
-	Tue, 16 Dec 2025 11:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9999935502C;
+	Tue, 16 Dec 2025 11:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYJdASob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9fiafnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B99342511;
-	Tue, 16 Dec 2025 11:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFB8355028;
+	Tue, 16 Dec 2025 11:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884373; cv=none; b=YHA1DTNUV2ty2a554ONK/S4jSi+F0/sR/ZOYVNHpxxcLU+uTTzpGUHI9wo9EU3wZW3WDVdU+C7tU7xbGHsMUxROU+u9wi/lV9R/mEiKRt78IYhADsxAAUbQlk3gsCyDMKEsD6D2yaylNuc0qYg8OVWJzxEMWWk4YVmSZhTCSNpU=
+	t=1765885861; cv=none; b=EsybKqlT0KITYRoSOXK7vkO5c9jv7UyRfwzOA3aHzK0xJWslwumRQgwdPY0sSQuoHkqJnunXHyqgiYQyxSyXAhsPnWkHK0RbZAvSWd3Oo+hwQRZk+fbdv9wkXPsc/B9jSDx4Z5E0GcTXzWzviufEVevDFDXwESstSnk9CDbxUpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884373; c=relaxed/simple;
-	bh=A1bDk/qeD5meMJpC0KYtVayuDN9VME5SR3Hw6XIqhq4=;
+	s=arc-20240116; t=1765885861; c=relaxed/simple;
+	bh=COnD8cmPd+snSbuNPWDH2q/M1lSSvz+jbOpvnJ2H1Xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqgoCBOLFiwA3HGzfWpVCTWwynMaIC4bOEoNdCFT5WohclZ9FkBW1BHO/Quv9HTXeIbO49GkeNxFDBiUXId4tN7Ce4PlbVDtc6d/7WDyislCfNUpH28VncYufl03cqZB80cMK0beuXtUa+knBDTTQx8eD8JlrudLScr0qSbJdNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYJdASob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0B3C4CEF5;
-	Tue, 16 Dec 2025 11:26:12 +0000 (UTC)
+	 MIME-Version; b=GsMXh/CpKFebk4Ii1Ph6yvEi/ARpV2QT640/0bshjghYmm46FZZzuXjbwsuY2lK497V8XzH0DK4/ToE0zyhBxthN+Bkjq6yY7k8FdmTxTVyZtvDtddBF0R4teO6akbuvLNJHu8moo7UxYxzGDKld2lE5t/DPUlB53X38Z5wif28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9fiafnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22E6C4CEF1;
+	Tue, 16 Dec 2025 11:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884372;
-	bh=A1bDk/qeD5meMJpC0KYtVayuDN9VME5SR3Hw6XIqhq4=;
+	s=korg; t=1765885861;
+	bh=COnD8cmPd+snSbuNPWDH2q/M1lSSvz+jbOpvnJ2H1Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYJdASobGojDZ5Hzq8NVMUvxrxVBes34+mpkY1wnGXrxxC93ZxQdrARjyfJDFK9jz
-	 QW8feV/N9puJgZb8XjNagFnlKePHEcXmnD0mMo5S+75QaqgEveFOYvO7IRQ6EvmAse
-	 aLME6H3c609jOgymtIVwRnNN9GPMvZIvxAMo9cSc=
+	b=n9fiafnPt847nknnz1kHGDVnpBphzzKMj4zuUSCuDspbfnLeTiWUgX+wdVIRSYQD7
+	 x1Qg2pAyKwUm5BRrY6seBGfaURMjXiJOPwKaynAAo2Q1k0pNBR+4YxmrYOTnhnxhPK
+	 eKejMyJRIFMzjkStyyDCRm7LCgUdWB6GEvHyQId4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shirisha G <shirisha@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/354] powerpc/kdump: Fix size calculation for hot-removed memory ranges
+Subject: [PATCH 6.17 266/507] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
 Date: Tue, 16 Dec 2025 12:11:47 +0100
-Message-ID: <20251216111325.990359074@linuxfoundation.org>
+Message-ID: <20251216111355.122654726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 7afe2383eff05f76f4ce2cfda658b7889c89f101 ]
+[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
 
-The elfcorehdr segment in the kdump image stores information about the
-memory regions (called crash memory ranges) that the kdump kernel must
-capture.
+When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
+Addressing Mode during early boot. During this, we should ensure that
+memory region allocations for stress_hpt_struct should happen from
+within RMA region as otherwise the boot might get stuck while doing
+memset of this region.
 
-When a memory hot-remove event occurs, the kernel regenerates the
-elfcorehdr for the currently loaded kdump image to remove the
-hot-removed memory from the crash memory ranges.
+History behind why do we have RMA region limitation is better explained
+in these 2 patches [1] & [2]. This patch ensures that memset to
+stress_hpt_struct during early boot does not cross ppc64_rma_size
+boundary.
 
-Call chain:
-remove_mem_range()
-update_crash_elfcorehdr()
-arch_crash_handle_hotplug_event()
-crash_handle_hotplug_event()
+[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
+[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
 
-While removing the hot-removed memory from the crash memory ranges in
-remove_mem_range(), if the removed memory lies within an existing crash
-range, that range is split into two. During this split, the size of the
-second range was being calculated incorrectly.
-
-This leads to dump capture failure with makedumpfile with below error:
-
-$ makedumpfile -l -d 31 /proc/vmcore /tmp/vmcore
-
-readpage_elf: Attempt to read non-existent page at 0xbbdab0000.
-readmem: type_addr: 0, addr:c000000bbdab7f00, size:16
-validate_mem_section: Can't read mem_section array.
-readpage_elf: Attempt to read non-existent page at 0xbbdab0000.
-readmem: type_addr: 0, addr:c000000bbdab7f00, size:8
-get_mm_sparsemem: Can't get the address of mem_section.
-
-The updated crash memory range in PT_LOAD entry is holding incorrect
-data (checkout FileSiz and MemSiz):
-
-readelf -a /proc/vmcore
-<snip...>
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000b013d0000 0xc000000b80000000 0x0000000b80000000
-                 0xffffffffc0000000 0xffffffffc0000000  RWE    0x0
-<snip...>
-
-Update the size calculation for the new crash memory range to fix this
-issue.
-
-Note: This problem will not occur if the kdump kernel is loaded or
-reloaded after a memory hot-remove operation.
-
-Fixes: 849599b702ef ("powerpc/crash: add crash memory hotplug support")
-Reported-by: Shirisha G <shirisha@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251105033941.1752287-1-sourabhjain@linux.ibm.com
+Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/ranges.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 3702b0bdab141..426bdca4667e7 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -697,8 +697,8 @@ int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
- 		 * two half.
- 		 */
- 		else {
-+			size = mem_rngs->ranges[i].end - end + 1;
- 			mem_rngs->ranges[i].end = base - 1;
--			size = mem_rngs->ranges[i].end - end;
- 			ret = add_mem_range(mem_ranges, end + 1, size);
- 		}
- 	}
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 4693c464fc5af..1e062056cfb82 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1302,11 +1302,14 @@ static void __init htab_initialize(void)
+ 	unsigned long table;
+ 	unsigned long pteg_count;
+ 	unsigned long prot;
+-	phys_addr_t base = 0, size = 0, end;
++	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 	u64 i;
+ 
+ 	DBG(" -> htab_initialize()\n");
+ 
++	if (firmware_has_feature(FW_FEATURE_LPAR))
++		limit = ppc64_rma_size;
++
+ 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
+ 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
+ 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
+@@ -1322,7 +1325,7 @@ static void __init htab_initialize(void)
+ 		// Too early to use nr_cpu_ids, so use NR_CPUS
+ 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
+ 						__alignof__(struct stress_hpt_struct),
+-						0, MEMBLOCK_ALLOC_ANYWHERE);
++						MEMBLOCK_LOW_LIMIT, limit);
+ 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
+ 		stress_hpt_struct = __va(tmp);
+ 
+@@ -1356,11 +1359,10 @@ static void __init htab_initialize(void)
+ 			mmu_hash_ops.hpte_clear_all();
+ #endif
+ 	} else {
+-		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 
+ 		table = memblock_phys_alloc_range(htab_size_bytes,
+ 						  htab_size_bytes,
+-						  0, limit);
++						  MEMBLOCK_LOW_LIMIT, limit);
+ 		if (!table)
+ 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
+ 			      &htab_size_bytes, &limit);
 -- 
 2.51.0
 
