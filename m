@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E86CC3E15
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9A1CC21BA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF8313003132
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4065C3040742
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15732335550;
-	Tue, 16 Dec 2025 12:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE2D2459D7;
+	Tue, 16 Dec 2025 11:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkCUzh9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfKjIOXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31BA343D9B;
-	Tue, 16 Dec 2025 12:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582C925FA10;
+	Tue, 16 Dec 2025 11:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887390; cv=none; b=Ez1OszAcSMOV7IaVkH7e9MacWN4KDsVPV6r0d6w7NF/bLhErq0MpDmmddy6JCgj8xhdriGFeyWLehsW6uMUFPAbQZ5JHJVsEU3Q/9Qj1bve5iJ70xPyIJqSQlN3pKA0gAduX+ukvrppQ+qyhfWxkJFoC115wPCuiYUaw13fBBeE=
+	t=1765883841; cv=none; b=uPoQqwElpwXWhsZRcFxM3L8WnqCbB4afWHm1e5SezTHZpI+frd7WQ3lG2BkMCDAhcUrTbWJZUHE5mPILlGZ30tsWAQ/GhKyAzFwRFF58brciNpUzYWl9M/tlaT7PmTy7go5yq4lPZkZk/0znAcAtqyXZfEnStO+qVCPILGncRJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887390; c=relaxed/simple;
-	bh=hZstq2Y6byIktVvo3hymvZXGuXqN6bUoJANAe82t78Q=;
+	s=arc-20240116; t=1765883841; c=relaxed/simple;
+	bh=RpXgPCx9Npv0Q7TeqedZA7wK4rPkUYmcMYAUsbxE5BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLZ0Ji3fopFRIsTi8WLjkmyb4VlDpRfRfn6z1519Txiwlg9uh8cAZ2yiY2SvTe8vDMZ34ryoJQ4Uw8NnHwP1lZPls6fukPDl4m40a0fZHl7FzGtceuOUJqxXO5W0dRYq73GNtdCYsmK7PiVIJfYtQrYtL59Bdrok//WOGDAAqXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkCUzh9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337B4C4CEF1;
-	Tue, 16 Dec 2025 12:16:29 +0000 (UTC)
+	 MIME-Version; b=tfMuV/BZ0BSJpwClzLgr7kOyZaEoAtwDcsbRabJLCOeyvpWSU/HHhoiH8Aj5tDwvOIuHYJI6ZjdQF467pIcgDuYpcSQoOR0F+0Gq3ThASVL8bpet8Lw+bAsS2ffARYNkBWCrIERaQM0dIgHnIS9QNQFSOyx5zwoZ5s3MKgkytjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfKjIOXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A078BC4CEF1;
+	Tue, 16 Dec 2025 11:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887390;
-	bh=hZstq2Y6byIktVvo3hymvZXGuXqN6bUoJANAe82t78Q=;
+	s=korg; t=1765883841;
+	bh=RpXgPCx9Npv0Q7TeqedZA7wK4rPkUYmcMYAUsbxE5BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkCUzh9Lhyrf23acTPNBef0lCx0hU5N2i41H9XnPAA+ajBAP5dgOXJcAOL36q490L
-	 loI27NewH3lzT+L2z10RRrI7+uyBLGh5zb92xeCdtCp7TLcVk+VOz6ZCt6YyQDo1UH
-	 BoZ5ClfuL7L09nW9hNTsUy5K+xIwK7y/E1VMAt8E=
+	b=nfKjIOXwwJOQlBzRro9V3Z4hHQoRniMnOu9X9UQeZGyzWTTLuGjZ8z4KqzeLhmt0w
+	 zYfITETMcWaVSB+i7kGUiPn7k7KMro+rEkg1LmKX8kDu6h1TS0ez497sZYb8bH00eQ
+	 VNmLpWawRmgYknbmIzUQJkIVF0v5kswZvAV7VqG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 216/614] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Subject: [PATCH 6.12 016/354] pinctrl: renesas: rzg2l: Fix PMC restore
 Date: Tue, 16 Dec 2025 12:09:43 +0100
-Message-ID: <20251216111409.201520774@linuxfoundation.org>
+Message-ID: <20251216111321.496467355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
+[ Upstream commit cea950101108b7bfffe26ec4007b8e263a4b56a8 ]
 
-When da9055_device_init() fails after regmap_add_irq_chip()
-succeeds but mfd_add_devices() fails, the error handling path
-only calls mfd_remove_devices() but forgets to call
-regmap_del_irq_chip(). This results in a resource leak.
+PMC restore needs unlocking the register using the PWPR register.
 
-Fix this by adding regmap_del_irq_chip() to the error path so
-that resources are released properly.
-
-Fixes: 2896434cf272 ("mfd: DA9055 core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ede014cd1ea6422d ("pinctrl: renesas: rzg2l: Add function pointer for PMC register write")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250921111557.103069-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9055-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
-index 1f727ef60d638..8c989b74f924e 100644
---- a/drivers/mfd/da9055-core.c
-+++ b/drivers/mfd/da9055-core.c
-@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
- 
- err:
- 	mfd_remove_devices(da9055->dev);
-+	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
- 	return ret;
- }
- 
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 698ab8cc970a6..c6ef77472d9a1 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -2807,7 +2807,11 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 		 * Now cache the registers or set them in the order suggested by
+ 		 * HW manual (section "Operation for GPIO Function").
+ 		 */
+-		RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
++		if (suspend)
++			RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + PMC(off), cache->pmc[port]);
++		else
++			pctrl->data->pmc_writeb(pctrl, cache->pmc[port], PMC(off));
++
+ 		if (has_iolh) {
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + IOLH(off),
+ 						 cache->iolh[0][port]);
 -- 
 2.51.0
 
