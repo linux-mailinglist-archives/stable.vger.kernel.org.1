@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-202064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38957CC3738
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BF1CC30F5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 067CB30B0277
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:05:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73557306C716
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9748E359703;
-	Tue, 16 Dec 2025 12:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C567E36657D;
+	Tue, 16 Dec 2025 12:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qon+ysE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVGgZDvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515E6359710;
-	Tue, 16 Dec 2025 12:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81791366560;
+	Tue, 16 Dec 2025 12:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886697; cv=none; b=CtSB8cvqZxpcOB7X/fm1D7L3Jxdk9O6CJN8MH+XBiVgfJnlQ2n1HHIC3+yjOA+bnQstfAM3eeWLnnBTRQ0lKiDKkUiihc80TY+/x1ZgXNodNHyyMif9Cg6xC2U56GJkwZGYHrnBevu8ymoE4A4YtIoZvhwcMHGqZ1eoGIyNb3Wg=
+	t=1765888572; cv=none; b=MkiGMMvaplvnXBtVQKyB/6fEe2C59bq/5AXSX6hgkoKQr/X55KMDXdqKdg1fG5Lxb4V/yO2mj28w/y40nCZZGj39klxmKkNSVArHW9p19weAeVEOrpsY7DKIeLqWkou4e/LQoijxUfbBx0qezhbqR+JyvhpcQ5eLW0gRQFiFdXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886697; c=relaxed/simple;
-	bh=KYbSwHbSysJdXFS/zP8WSe/n2KAiDC9CrcFrDkinC5k=;
+	s=arc-20240116; t=1765888572; c=relaxed/simple;
+	bh=ENRe+4f93RFJpuvZIvvMpo2rt+cWcDYVWoHdg6vsZT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8FiRvt4K4iBEd6R/+bbaco4oIVjx+HmikgmM9x1oAb4e+XjPHltdcndpBYuRR3A/X7puxXyuX2VFiOC3gbnbnaIpKYEGfuJVGqLakKX7MtInm8tImm1spC0iPn7grIG3BbdAPhJ6ric24pTwR1Ww05KX9YsZirWIQs7S30uOAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qon+ysE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AB5C4CEF5;
-	Tue, 16 Dec 2025 12:04:56 +0000 (UTC)
+	 MIME-Version; b=Nx6OwddZ6xa1uIQpqYA5laGnjQM5jSsLptIDGOEeJtBRgvdLQPdLeEKi2ZjuclCJv4o9Rw2APqaMpdY4jd8nWKGpazGio0/MjY9I2FEcL+L0cL4FhUxj3u11SEafdnU66bT36w0lVMrhv7wwwvi1sUH5ZvegRktHRXTWEwDb6/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVGgZDvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95076C4CEF1;
+	Tue, 16 Dec 2025 12:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886697;
-	bh=KYbSwHbSysJdXFS/zP8WSe/n2KAiDC9CrcFrDkinC5k=;
+	s=korg; t=1765888572;
+	bh=ENRe+4f93RFJpuvZIvvMpo2rt+cWcDYVWoHdg6vsZT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qon+ysE/Y6FYxEZuNNU5vCUM5hEC3j/vd+X4MtIfyyBKyQyntMLLLuTG44/nbKw0l
-	 OQMPJxMzwWr0tECVEqqOLmkmpNm+DqnzDfOH0MqmpZDuKCt3LeYSHNGs+DaPOvi8Yz
-	 S1HHSmCIcz8YTddYJkzJC0Fbm/Ci8m4QddcS40K8=
+	b=MVGgZDvKF1z67V6dDTOiolCaJUE2csZFIvAvzpmRoTP4ccyLrUAz5SMe7MLxGLdfk
+	 nN/iiYs6FqZ7Y7Ev7wZKqRlWAkHR74zhYoaoSzWrtA3ZHRlmngwTPwteqJ7qMEvGzs
+	 3lCKgarGyQDyytPyMVPC7twLfRVcmhya77dcAH7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Subject: [PATCH 6.17 500/507] usb: phy: Initialize struct usb_phy list_head
-Date: Tue, 16 Dec 2025 12:15:41 +0100
-Message-ID: <20251216111403.553352345@linuxfoundation.org>
+	Kathara Sasikumar <katharasasikumar007@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 575/614] docs: hwmon: fix link to g762 devicetree binding
+Date: Tue, 16 Dec 2025 12:15:42 +0100
+Message-ID: <20251216111422.217559714@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Kathara Sasikumar <katharasasikumar007@gmail.com>
 
-commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
+[ Upstream commit 08bfcf4ff9d39228150a757803fc02dffce84ab0 ]
 
-As part of the registration of a new 'struct usb_phy' with the USB PHY core
-via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
-usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
-order for the new instance x to be stored in phy_list, a static list
-kept internally by the core.
+The devicetree binding for g762 was converted to YAML to match vendor
+prefix conventions. Update the reference accordingly.
 
-After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-when executing either of the registration functions above it is possible
-that usb_add_extcon() fails, leading to either function returning before
-the call to list_add_tail(), leaving x->head uninitialized.
-
-Then, when a driver tries to undo the failed registration by calling
-usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
-list_del(&x->head) acting on an uninitialized variable, and thus a
-possible NULL pointer dereference.
-
-Fix this by initializing x->head before usb_add_extcon() has a
-chance to fail. Note that this was not needed before 7d21114dc6a2 since
-list_add_phy() was executed unconditionally and it guaranteed that x->head
-was initialized.
-
-Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kathara Sasikumar <katharasasikumar007@gmail.com>
+Link: https://lore.kernel.org/r/20251205215835.783273-1-katharasasikumar007@gmail.com
+Fixes: 3d8e25372417 ("dt-bindings: hwmon: g762: Convert to yaml schema")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/hwmon/g762.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum
- 		return -EINVAL;
- 	}
+diff --git a/Documentation/hwmon/g762.rst b/Documentation/hwmon/g762.rst
+index 0371b3365c48c..f224552a2d3cc 100644
+--- a/Documentation/hwmon/g762.rst
++++ b/Documentation/hwmon/g762.rst
+@@ -17,7 +17,7 @@ done via a userland daemon like fancontrol.
+ Note that those entries do not provide ways to setup the specific
+ hardware characteristics of the system (reference clock, pulses per
+ fan revolution, ...); Those can be modified via devicetree bindings
+-documented in Documentation/devicetree/bindings/hwmon/g762.txt or
++documented in Documentation/devicetree/bindings/hwmon/gmt,g762.yaml or
+ using a specific platform_data structure in board initialization
+ file (see include/linux/platform_data/g762.h).
  
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-@@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
+-- 
+2.51.0
+
 
 
 
