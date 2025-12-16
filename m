@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E83CC2A32
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0931CCC303B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 48B9C3020C3D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29B4A304BC40
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E8C341ACC;
-	Tue, 16 Dec 2025 11:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4449D36CE06;
+	Tue, 16 Dec 2025 12:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmDeFTqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7rUUgOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648E9313E13;
-	Tue, 16 Dec 2025 11:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FA9343D75;
+	Tue, 16 Dec 2025 12:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886005; cv=none; b=lVOK8mpWKz+5cfADTP0hj9yIm94hYjRQvokWAZ3rPDdehvYYgWSFJmSHYeJGHeMxEUilRKWjhcCOElqG+bz/Xa+vNFp2VCfRuA06jeyofNn9GCnaCCf19KfoBO4ISYBjuBkpQDsLU6dhwI0NmPOYu+C3M9Vh4iWj1iQTKtw7+xE=
+	t=1765887996; cv=none; b=qQKMWOjidfGJlARNLHiwq/EsXOvv5jVdjgN+Zeb3LaOxKeBngpySXaAfr2L//HZbwWdruOCIRVXh3n1dN6keeQRr8rAy2hLB1Yj9F0iOacNLUnN2gGQPQMom8dxBap1lzkl+QakD3ddsnV2zaDR0OIqotQWRQS/36ts9QjP5L28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886005; c=relaxed/simple;
-	bh=o5v/k9Si1qP+57kUqBR0fQux2CTeMy/GsuSniVCryYs=;
+	s=arc-20240116; t=1765887996; c=relaxed/simple;
+	bh=YRo0vJIJZ8Ht9YvMX2ypA3rGlfxNNKh66djMMPlPgAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gr2Qf/yIeQICXPVdOeNP28Mb4slyMVOACZAF81oFoQhaVTqrZpveTGKc9ntcqXkp6xjQJo5lTg97EJBWXCwMZMPUIteH58ivi2r3kgsd0tIL4mujgmuniv0b0V5/6POOdOIj+q+E/FTCpvUkKjQHn9zzP4k9RHidn/DWVfL585U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmDeFTqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7275C4CEF1;
-	Tue, 16 Dec 2025 11:53:24 +0000 (UTC)
+	 MIME-Version; b=pDmUmsoBRMD+AUjU1gi4RT95/d63S/hWBPFRBaM84n8/qd7ryeJAtFHn5hg9Rq0sFD6Kw5M//Gp2YpsOzdK1TbYrtW2oMLbjQRiefQCmtxYwg43rxdxTmID4oNaKrihdtKYK4gxBgwczobu4sPM7IDKFhFB913bP+A5IxQ8uDGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7rUUgOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62232C4CEF1;
+	Tue, 16 Dec 2025 12:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886005;
-	bh=o5v/k9Si1qP+57kUqBR0fQux2CTeMy/GsuSniVCryYs=;
+	s=korg; t=1765887995;
+	bh=YRo0vJIJZ8Ht9YvMX2ypA3rGlfxNNKh66djMMPlPgAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmDeFTqfFGwz4PVxLBngkc6RBeeIGxROLZDQp5U8WxI//EFHh1l64V5ZMX4sU5SFo
-	 E5ybKPwJUS6h28kWGI3WsXmNjU1rwydqPcX3Er8g5RMGajcKnyvz3cTXOGdbaRhUL9
-	 x6ghahfmZpcVEkd8fcE6MOW8QAOTKh7YwhXKW+Kc=
+	b=J7rUUgOZg9mE+g8nRHZdjsjK46AIR7InNsWu7F7NnB7ifsgHAxRNmMiGxMajUCS5W
+	 ZoxN6AW5BF9rpjNhekvx0YNo/TWr8jrOv264SCG3b7K6LaQb8ghkkfGtno5dJVK7nV
+	 R71CrdffqBPJxCjn1QB2Hn/+qPZ6UcTookkGQP9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 308/507] regulator: pca9450: Fix error code in probe()
-Date: Tue, 16 Dec 2025 12:12:29 +0100
-Message-ID: <20251216111356.629255644@linuxfoundation.org>
+Subject: [PATCH 6.18 383/614] wifi: mt76: mt7996: fix null pointer deref in mt7996_conf_tx()
+Date: Tue, 16 Dec 2025 12:12:30 +0100
+Message-ID: <20251216111415.237812355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 670500b41e543c5cb09eb9f7f0e4e26c5b5fdf7e ]
+[ Upstream commit 79277f8ad15ec5f255ed0e1427c7a8a3e94e7f52 ]
 
-Return "PTR_ERR(pca9450->sd_vsel_gpio)" instead of "ret".  The "ret"
-variable is success at this point.
+If a link does not have an assigned channel yet, mt7996_vif_link returns
+NULL. We still need to store the updated queue settings in that case, and
+apply them later.
+Move the location of the queue params to within struct mt7996_vif_link.
 
-Fixes: 3ce6f4f943dd ("regulator: pca9450: Fix control register for LDO5")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aSBqnPoBrsNB1Ale@stanley.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c0df2f0caa8d ("wifi: mt76: mt7996: prepare mt7996_mcu_set_tx for MLO support")
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250929111723.52486-1-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/pca9450-regulator.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 ++++++-
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index 4be270f4d6c35..91b96dbab328b 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -1251,10 +1251,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
- 	 * to this signal (if SION bit is set in IOMUX).
- 	 */
- 	pca9450->sd_vsel_gpio = gpiod_get_optional(&ldo5->dev, "sd-vsel", GPIOD_IN);
--	if (IS_ERR(pca9450->sd_vsel_gpio)) {
--		dev_err(&i2c->dev, "Failed to get SD_VSEL GPIO\n");
--		return ret;
--	}
-+	if (IS_ERR(pca9450->sd_vsel_gpio))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(pca9450->sd_vsel_gpio),
-+				     "Failed to get SD_VSEL GPIO\n");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 581314368c5ba..b53ca702591c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -665,8 +665,8 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	       unsigned int link_id, u16 queue,
+ 	       const struct ieee80211_tx_queue_params *params)
+ {
+-	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	struct mt7996_vif_link *mlink = mt7996_vif_link(dev, vif, link_id);
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
+ 	static const u8 mq_to_aci[] = {
+ 		[IEEE80211_AC_VO] = 3,
+ 		[IEEE80211_AC_VI] = 2,
+@@ -675,7 +675,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	};
  
- 	pca9450->sd_vsel_fixed_low =
- 		of_property_read_bool(ldo5->dev.of_node, "nxp,sd-vsel-fixed-low");
+ 	/* firmware uses access class index */
+-	mlink->queue_params[mq_to_aci[queue]] = *params;
++	link_info->queue_params[mq_to_aci[queue]] = *params;
+ 	/* no need to update right away, we'll get BSS_CHANGED_QOS */
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 0347ee0c2dd75..afa6a43bd51e5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3414,6 +3414,9 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ #define WMM_PARAM_SET		(WMM_AIFS_SET | WMM_CW_MIN_SET | \
+ 				 WMM_CW_MAX_SET | WMM_TXOP_SET)
+ 	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	unsigned int link_id = link_conf->link_id;
++	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
+ 	struct {
+ 		u8 bss_idx;
+ 		u8 __rsv[3];
+@@ -3431,7 +3434,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+ 
+ 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
+-		struct ieee80211_tx_queue_params *q = &link->queue_params[ac];
++		struct ieee80211_tx_queue_params *q = &link_info->queue_params[ac];
+ 		struct edca *e;
+ 		struct tlv *tlv;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 8ec2acdb33193..718e4d4ad85f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -253,16 +253,21 @@ struct mt7996_vif_link {
+ 	struct mt7996_sta_link msta_link;
+ 	struct mt7996_phy *phy;
+ 
+-	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
+ 	struct cfg80211_bitrate_mask bitrate_mask;
+ 
+ 	u8 mld_idx;
+ };
+ 
++struct mt7996_vif_link_info {
++	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
++};
++
+ struct mt7996_vif {
+ 	struct mt7996_vif_link deflink; /* must be first */
+ 	struct mt76_vif_data mt76;
+ 
++	struct mt7996_vif_link_info link_info[IEEE80211_MLD_MAX_NUM_LINKS];
++
+ 	u8 mld_group_idx;
+ 	u8 mld_remap_idx;
+ };
 -- 
 2.51.0
 
