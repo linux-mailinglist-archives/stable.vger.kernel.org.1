@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D41DCC465A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A58CC2D0A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0058630A051E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 233D7300CE27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4D033DEC5;
-	Tue, 16 Dec 2025 12:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C528D396DB3;
+	Tue, 16 Dec 2025 12:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtWhnpuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iB3Qfj2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABD41991B6;
-	Tue, 16 Dec 2025 12:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1EC397D1E;
+	Tue, 16 Dec 2025 12:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886428; cv=none; b=D1IryPxDGWIssjMNM2VpAi3lDmbQOmU0W0fX/OK/C37S+L7umKJtygV46z2L4vbGPUlSmwAQaEI54ct/Np9zr21az6MKeyH0j+vzmFCQ4/3sPq2cAmhO2/YYhlMAwbV5AjIKyy/MFkIEEQMke/qc3SBUW4MayA55ESQzZJS+uPU=
+	t=1765888351; cv=none; b=Hkbp+WeM5lzxJdCNtWCs2DceNfzzSUVFQEGKjlWifAMyNVQ4sKTDzlUF3h4NYMv1Vr7Fv1mA3UKWDtrTi5UtBT/59DsI8RgdmHuGev4+ed/a+oLnD19pzPCdIL729q6jukKg2mghXatuKGfLzhQvrwOJQh2RNM6zM0lTESoQb9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886428; c=relaxed/simple;
-	bh=kvvWt6GuhVzw8fzTPQMJG9qYxIhrHvcKZrWjN+Alwiw=;
+	s=arc-20240116; t=1765888351; c=relaxed/simple;
+	bh=9Q9auBIEw5wY3auuzomLqeKoHjuoFgWrCnyeE+tBpWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNxXEod0JJXphc8Ttb9ZFe/2t6Jpe2A2ZFBIMCcGL+LsEXz/Nr/PS7F0fXsyYLpA8FTpWN4ln15qiKyfMGWEeDgg7/XwXavGJ7VfaE0eGKnxueuMIKlfuqxFI/jMbGmN0M/CAjh0wJFGkARb2luxnA/DQMH6R6ZVL1q2kliFkfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtWhnpuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AD2C4CEF1;
-	Tue, 16 Dec 2025 12:00:27 +0000 (UTC)
+	 MIME-Version; b=QKoEMewHQXKQO33H2v+ET85f6XfjXPS2LAFQfYw5gpQj1PGqUVlXA4YN6XrUL0QSzelbUTcQVdp8x4oEC90bJ4t2zb0D0O1XsFTLES4PKrdsi6kaTuZmNPFPb0H4hBFSOQ2ldf8GjUgJ6Vs97apYP32INjnEFSlqypir8II9SYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iB3Qfj2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0688AC4CEF1;
+	Tue, 16 Dec 2025 12:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886427;
-	bh=kvvWt6GuhVzw8fzTPQMJG9qYxIhrHvcKZrWjN+Alwiw=;
+	s=korg; t=1765888351;
+	bh=9Q9auBIEw5wY3auuzomLqeKoHjuoFgWrCnyeE+tBpWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtWhnpuXwXZhCDLhMSWmFrpmGCrlNNT0F3ExvK1/expjbiUfhsz+tGOm2BGRObfDK
-	 FqYK/M31dRP6hBThIpAFpESCqJH1+7l8mWYbonWlHJoDkyNbaUL1HFn7QTd9VSwBwm
-	 5uP30nRJfYMFK8GKa1TeIagvl/m2iLCf9vfncjNU=
+	b=iB3Qfj2KQHybnSnU3D1NRiD3mjlB4di/zuGWnVoFVGV2Edbw7e6KBtZgd3iYPLVUs
+	 XJ5C/X31WVq1W32WEZmrvyLlruQU/VbgOZpokuvjzqgbduyXW26vUWbI4VHqdazbZy
+	 mZD0i5luFG4mspn1SwAemonrRsCg1ya3UzMMiIT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	John Stultz <jstultz@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Haiyue Wang <haiyuewa@163.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 434/507] sched/core: Fix psi_dequeue() for Proxy Execution
+Subject: [PATCH 6.18 508/614] net: dsa: b53: b53_arl_read{,25}(): use the entry for comparision
 Date: Tue, 16 Dec 2025 12:14:35 +0100
-Message-ID: <20251216111401.181915087@linuxfoundation.org>
+Message-ID: <20251216111419.775893816@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit c2ae8b0df2d1bb7a063f9e356e4e9a06cd4afe11 ]
+[ Upstream commit a6e4fd38bf2f2e2363b61c27f4e6c49b14e4bb07 ]
 
-Currently, if the sleep flag is set, psi_dequeue() doesn't
-change any of the psi_flags.
+Align the b53_arl_read{,25}() functions by consistently using the
+parsed arl entry instead of parsing the raw registers again.
 
-This is because psi_task_switch() will clear TSK_ONCPU as well
-as other potential flags (TSK_RUNNING), and the assumption is
-that a voluntary sleep always consists of a task being dequeued
-followed shortly there after with a psi_sched_switch() call.
-
-Proxy Execution changes this expectation, as mutex-blocked tasks
-that would normally sleep stay on the runqueue. But in the case
-where the mutex-owning task goes to sleep, or the owner is on a
-remote cpu, we will then deactivate the blocked task shortly
-after.
-
-In that situation, the mutex-blocked task will have had its
-TSK_ONCPU cleared when it was switched off the cpu, but it will
-stay TSK_RUNNING. Then if we later dequeue it (as currently done
-if we hit a case find_proxy_task() can't yet handle, such as the
-case of the owner being on another rq or a sleeping owner)
-psi_dequeue() won't change any state (leaving it TSK_RUNNING),
-as it incorrectly expects a psi_task_switch() call to
-immediately follow.
-
-Later on when the task get woken/re-enqueued, and psi_flags are
-set for TSK_RUNNING, we hit an error as the task is already
-TSK_RUNNING:
-
-  psi: inconsistent task state! task=188:kworker/28:0 cpu=28 psi_flags=4 clear=0 set=4
-
-To resolve this, extend the logic in psi_dequeue() so that
-if the sleep flag is set, we also check if psi_flags have
-TSK_ONCPU set (meaning the psi_task_switch is imminent) before
-we do the shortcut return.
-
-If TSK_ONCPU is not set, that means we've already switched away,
-and this psi_dequeue call needs to clear the flags.
-
-Fixes: be41bde4c3a8 ("sched: Add an initial sketch of the find_proxy_task() function")
-Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Haiyue Wang <haiyuewa@163.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://patch.msgid.link/20251205012721.756394-1-jstultz@google.com
-Closes: https://lore.kernel.org/lkml/20251117185550.365156-1-kprateek.nayak@amd.com/
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/stats.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 26f3fd4d34cea..73bd6bca4d310 100644
---- a/kernel/sched/stats.h
-+++ b/kernel/sched/stats.h
-@@ -180,8 +180,13 @@ static inline void psi_dequeue(struct task_struct *p, int flags)
- 	 * avoid walking all ancestors twice, psi_task_switch() handles
- 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
- 	 * Do nothing here.
-+	 *
-+	 * In the SCHED_PROXY_EXECUTION case we may do sleeping
-+	 * dequeues that are not followed by a task switch, so check
-+	 * TSK_ONCPU is set to ensure the task switch is imminent.
-+	 * Otherwise clear the flags as usual.
- 	 */
--	if (flags & DEQUEUE_SLEEP)
-+	if ((flags & DEQUEUE_SLEEP) && (p->psi_flags & TSK_ONCPU))
- 		return;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index a09ed32dccc07..4d8de90fb4ab8 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1830,7 +1830,7 @@ static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
+ 	return b53_arl_op_wait(dev);
+ }
  
- 	/*
+-static int b53_arl_read(struct b53_device *dev, u64 mac,
++static int b53_arl_read(struct b53_device *dev, const u8 *mac,
+ 			u16 vid, struct b53_arl_entry *ent, u8 *idx)
+ {
+ 	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
+@@ -1854,14 +1854,13 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
+ 			   B53_ARLTBL_DATA_ENTRY(i), &fwd_entry);
+ 		b53_arl_to_entry(ent, mac_vid, fwd_entry);
+ 
+-		if (!(fwd_entry & ARLTBL_VALID)) {
++		if (!ent->is_valid) {
+ 			set_bit(i, free_bins);
+ 			continue;
+ 		}
+-		if ((mac_vid & ARLTBL_MAC_MASK) != mac)
++		if (!ether_addr_equal(ent->mac, mac))
+ 			continue;
+-		if (dev->vlan_enabled &&
+-		    ((mac_vid >> ARLTBL_VID_S) & ARLTBL_VID_MASK) != vid)
++		if (dev->vlan_enabled && ent->vid != vid)
+ 			continue;
+ 		*idx = i;
+ 		return 0;
+@@ -1871,7 +1870,7 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
+ 	return *idx >= dev->num_arl_bins ? -ENOSPC : -ENOENT;
+ }
+ 
+-static int b53_arl_read_25(struct b53_device *dev, u64 mac,
++static int b53_arl_read_25(struct b53_device *dev, const u8 *mac,
+ 			   u16 vid, struct b53_arl_entry *ent, u8 *idx)
+ {
+ 	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
+@@ -1893,14 +1892,13 @@ static int b53_arl_read_25(struct b53_device *dev, u64 mac,
+ 
+ 		b53_arl_to_entry_25(ent, mac_vid);
+ 
+-		if (!(mac_vid & ARLTBL_VALID_25)) {
++		if (!ent->is_valid) {
+ 			set_bit(i, free_bins);
+ 			continue;
+ 		}
+-		if ((mac_vid & ARLTBL_MAC_MASK) != mac)
++		if (!ether_addr_equal(ent->mac, mac))
+ 			continue;
+-		if (dev->vlan_enabled &&
+-		    ((mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25) != vid)
++		if (dev->vlan_enabled && ent->vid != vid)
+ 			continue;
+ 		*idx = i;
+ 		return 0;
+@@ -1937,9 +1935,9 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+ 		return ret;
+ 
+ 	if (is5325(dev) || is5365(dev))
+-		ret = b53_arl_read_25(dev, mac, vid, &ent, &idx);
++		ret = b53_arl_read_25(dev, addr, vid, &ent, &idx);
+ 	else
+-		ret = b53_arl_read(dev, mac, vid, &ent, &idx);
++		ret = b53_arl_read(dev, addr, vid, &ent, &idx);
+ 
+ 	/* If this is a read, just finish now */
+ 	if (op)
 -- 
 2.51.0
 
