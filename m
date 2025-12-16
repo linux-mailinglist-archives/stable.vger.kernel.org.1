@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B9DCC3459
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B59DCC36DE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D77363035C0F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 061B83070640
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B04354AC5;
-	Tue, 16 Dec 2025 11:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D4434A3D8;
+	Tue, 16 Dec 2025 12:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnuwBQ13"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH4eKsqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C4B354AC0;
-	Tue, 16 Dec 2025 11:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274C34A3C5;
+	Tue, 16 Dec 2025 12:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885787; cv=none; b=Br/G41RU+kff2XEmeQR77aOOUUvQnBWt80FkQj2acX10LK0sYGHRaum4Xndyrb3K/ZJb/RYWnIMo04245pqWcoo82x4vxu+dVxJ9bky85OBoPAhdv0L5JB1ah/gOS63fDA80xmA0dHbV68scLSqtBzraiub6vNXxtKy2vnawLEM=
+	t=1765887616; cv=none; b=U8XXuLWJavTo1TzakKdhpPIoLdaC+r1ovwwkTou0wtCqPmz7+7ATEsAu2dG84ba7omOaF3FEPlWC4fuR8UAjgvfsZWajVfwcR8fP99UAVVSMpxoh0UGUPBPv/BGbyowk1AD0yX8rFvVt0mcFsmwuf6J04mrSItj+rVrjTDxnLAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885787; c=relaxed/simple;
-	bh=UMhG7d9F7pjv7GIRSyk0U02a7mm+qnF/E5baoqEItnk=;
+	s=arc-20240116; t=1765887616; c=relaxed/simple;
+	bh=hBnNpIVdXd8Wrf+Xx1x0Uz/iQwLK/8BVQqfvi8MBzVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6zVZMe8QIO2HvNBF7rYtWPDa0MBTwP4q2DwiJgTo+7MdcezOpnNC3vktaYdeuQQUcfAA+/fhGVFK64thbZ2Li3Co9vWLq6EBsynQCdQEapQF0IoUmZaxbaou5gnWcBmRkxTWXwARDPGz4vYz4loFFYOTUvkP8Iya/ZPZrXpzPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnuwBQ13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774F5C4CEF5;
-	Tue, 16 Dec 2025 11:49:46 +0000 (UTC)
+	 MIME-Version; b=keTjmmqYVv6WWSpSbdwmXY3n4IzFQZ35ZBtOq/P4fGZRJR5SX2n2VluAzMRDGyuhYzLTHN+1Mu3i1nCVuT4D5KIKbdXe6ez0qvx406Uf4FtplJFHSZ0VkVp7AVfJxMH7rB6e53vUfTvncAOj3fcFKtVl2u4TnzNdE0fL3hpezWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH4eKsqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6B6C4CEF1;
+	Tue, 16 Dec 2025 12:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885787;
-	bh=UMhG7d9F7pjv7GIRSyk0U02a7mm+qnF/E5baoqEItnk=;
+	s=korg; t=1765887616;
+	bh=hBnNpIVdXd8Wrf+Xx1x0Uz/iQwLK/8BVQqfvi8MBzVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnuwBQ13XqE//1X1FOFMaAEMXY9kEjTbn52o47TiKCfN6ia5aOcTz2LFyHXGU8fEk
-	 xP4lL6VlTuj8poJoewJg7peP8wZCjNHgiKohnrhCgctr2b2l8iS9H4HdCPfD1SpQvq
-	 EiACaq88csAB24wdkz5oMNw6mNWjL2llmo9LUT7I=
+	b=dH4eKsqNf2Cg1NSF4mW5NTXmKacDFR/BR9DQVfpev3J2Tzb1dM6YX6x8bGriw9qCu
+	 b7lrnZohsZm80Na6FdTW0UTMH/nRqDYAkf147+HRZQzXVJNE6AS6x1MtL38/40lmAB
+	 x4zET38hb1/uiHhf5OM7WtH87oWMDPpJZEOVtgck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 211/507] nbd: defer config unlock in nbd_genl_connect
-Date: Tue, 16 Dec 2025 12:10:52 +0100
-Message-ID: <20251216111353.152309758@linuxfoundation.org>
+Subject: [PATCH 6.18 286/614] drm/msm/dpu: drop dpu_hw_dsc_destroy() prototype
+Date: Tue, 16 Dec 2025 12:10:53 +0100
+Message-ID: <20251216111411.733507227@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
+[ Upstream commit d9792823d18ff9895eaf5769a29a54804f24bc25 ]
 
-There is one use-after-free warning when running NBD_CMD_CONNECT and
-NBD_CLEAR_SOCK:
+The commit a106ed98af68 ("drm/msm/dpu: use devres-managed allocation for
+HW blocks") dropped all dpu_hw_foo_destroy() functions, but the
+prototype for dpu_hw_dsc_destroy() was omitted. Drop it now to clean up
+the header.
 
-nbd_genl_connect
-  nbd_alloc_and_init_config // config_refs=1
-  nbd_start_device // config_refs=2
-  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
-  recv_work done // config_refs=2
-						NBD_CLEAR_SOCK // config_refs=1
-						close nbd // config_refs=0
-  refcount_inc -> uaf
-
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
- nbd_genl_connect+0x16d0/0x1ab0
- genl_family_rcv_msg_doit+0x1f3/0x310
- genl_rcv_msg+0x44a/0x790
-
-The issue can be easily reproduced by adding a small delay before
-refcount_inc(&nbd->config_refs) in nbd_genl_connect():
-
-        mutex_unlock(&nbd->config_lock);
-        if (!ret) {
-                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
-+               printk("before sleep\n");
-+               mdelay(5 * 1000);
-+               printk("after sleep\n");
-                refcount_inc(&nbd->config_refs);
-                nbd_connect_reply(info, nbd->index);
-        }
-
-Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a106ed98af68 ("drm/msm/dpu: use devres-managed allocation for HW blocks")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Jessica Zhang <jesszhan0024@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/683697/
+Link: https://lore.kernel.org/r/20251027-dpu-drop-dsc-destroy-v1-1-968128de4bf6@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 7a1e61cc47357..9ba4b20b80ba2 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2241,12 +2241,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
+index b7013c9822d23..cc7cc6f6f7cda 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
+@@ -71,12 +71,6 @@ struct dpu_hw_dsc *dpu_hw_dsc_init_1_2(struct drm_device *dev,
+ 				       const struct dpu_dsc_cfg *cfg,
+ 				       void __iomem *addr);
  
- 	ret = nbd_start_device(nbd);
- out:
--	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
- 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
- 		refcount_inc(&nbd->config_refs);
- 		nbd_connect_reply(info, nbd->index);
- 	}
-+	mutex_unlock(&nbd->config_lock);
-+
- 	nbd_config_put(nbd);
- 	if (put_dev)
- 		nbd_put(nbd);
+-/**
+- * dpu_hw_dsc_destroy - destroys dsc driver context
+- * @dsc:   Pointer to dsc driver context returned by dpu_hw_dsc_init
+- */
+-void dpu_hw_dsc_destroy(struct dpu_hw_dsc *dsc);
+-
+ static inline struct dpu_hw_dsc *to_dpu_hw_dsc(struct dpu_hw_blk *hw)
+ {
+ 	return container_of(hw, struct dpu_hw_dsc, base);
 -- 
 2.51.0
 
