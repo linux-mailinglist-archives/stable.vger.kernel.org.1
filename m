@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8467CC21FF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF25BCC3750
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8432B300B8D0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE477300D8FA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6673396F3;
-	Tue, 16 Dec 2025 11:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B234405E;
+	Tue, 16 Dec 2025 12:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axFOfrwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmC1ah7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E603233EE;
-	Tue, 16 Dec 2025 11:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BE6343D90;
+	Tue, 16 Dec 2025 12:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884001; cv=none; b=Jz6xLZ7FbwNdbvqQ/n32f6+oLSM+4tZUU2BF5nbHNvKQjxsHyLg0KkV1s4HuycyO3GZ7c5zrGLxeLopyJulcldY1AakvkSyPs5GRrLnyfp5Ox1gQJijG+rDNcp1UmN638zHB8UemIyvMgRW5tpfoQ/u09OxDX5ECtt+RAUm0TvM=
+	t=1765887539; cv=none; b=XkcmDsCwW60cnUcQYprtep3SnND65hYG83/QJjdrcPLMSv3Zuxgz/Hg9/wkZkgEUmudWU4a3cHTrVUefokD4BxHJzPo3gn7sH6YyuqNXFNP0WFMBHfIIvPkx895ssujQF6lvVCXXzSXFqCdEVYJG1CC97RCgfGBCRkN6OJJPMdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884001; c=relaxed/simple;
-	bh=HkB8+nNA01OkUF89NfmYXd3CO5HAt2B7mcuECtI1UPc=;
+	s=arc-20240116; t=1765887539; c=relaxed/simple;
+	bh=cltNZymdElDOFhhjQ/w2QZuQt1R+iIoajoAcMxIBPFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVVrZYD/HVSW33svRzWIM39tnEPCOtbzztfqL4zqF5RwBaKiLQ6B+Id6Voi/pcPnk9vvvSJvHvZ0iDaOGBbfV24Kc7Wtye0TVj0rqhdiPaQascmc9S7JCT0b/jRDFnhS/mkVSMrp5DGdHC2IxS6yn60mhpSaS9OS+cmdaDtQDq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axFOfrwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9301C4CEF1;
-	Tue, 16 Dec 2025 11:20:00 +0000 (UTC)
+	 MIME-Version; b=Du9W4TnuynzSu/xmhAtxgFD/ChEQNOPXUXJKDddRtRbS0gn8raJEj6dYAYcObj9c0t4FsSUGbdfDNwb9Xqnh5NO/cuTxLy9lc9nv1aJtmK2/L/iHIWos17hrfsR8qqDY20fnNV2V3Zi+jfgBrtHeLGDxEmR/8uKX8kHx+JXlTvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmC1ah7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473EEC4CEF1;
+	Tue, 16 Dec 2025 12:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884001;
-	bh=HkB8+nNA01OkUF89NfmYXd3CO5HAt2B7mcuECtI1UPc=;
+	s=korg; t=1765887539;
+	bh=cltNZymdElDOFhhjQ/w2QZuQt1R+iIoajoAcMxIBPFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axFOfrwUYn1IBtuybvhoxS+ohFVt3qJgL9m6X3ODGbUHOJklR/UlX43R8TekYHhgT
-	 KLYkhvR7B9n46UNW6HB4YVrcKlBdBIf9c8lMrmN9v0rvPe6dfmnmKsTOigPbkwNlrN
-	 tPO7gthDetbAuZ0ctYSMcu9DDVyC5kBDPsEMVJG8=
+	b=RmC1ah7Qv0eoDAbOY6M2rkEpyArspbBPrt4QTk39L6tG0Cqu3SvWeA7XdBDqzpTH/
+	 bdTA8BSIm+rSUfhqDO7+oYPbsxoHmR4YDzMiCrrmEtMnWaj4spdq2GLhXrmURchZ34
+	 PCI1VzojNY/CP48ham3HhcSQH2y8dYeRv2A0JvZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/354] clk: qcom: camcc-sm7150: Fix PLL config of PLL2
+Subject: [PATCH 6.18 261/614] clk: renesas: r9a09g077: Propagate rate changes to parent clocks
 Date: Tue, 16 Dec 2025 12:10:28 +0100
-Message-ID: <20251216111323.134482217@linuxfoundation.org>
+Message-ID: <20251216111410.829014431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 415aad75c7e5cdb72e0672dc1159be1a99535ecd ]
+[ Upstream commit 145dfd70b9c70e5bc03494a7ce8fa3748ac01af3 ]
 
-The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
-parameters that are provided in the vendor driver. Instead the upstream
-configuration should provide the final user_ctl value that is written to
-the USER_CTL register.
+Add the CLK_SET_RATE_PARENT flag to divider clock registration so that rate
+changes can propagate to parent clocks when needed. This allows the CPG
+divider clocks to request rate adjustments from their parent, ensuring
+correct frequency scaling and improved flexibility in clock rate selection.
 
-Fix the config so that the PLL is configured correctly.
-
-Fixes: 9f0532da4226 ("clk: qcom: Add Camera Clock Controller driver for SM7150")
-Suggested-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251021-agera-pll-fixups-v1-2-8c1d8aff4afc@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 065fe720eec6e ("clk: renesas: Add support for R9A09G077 SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251028165127.991351-2-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm7150.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/clk/renesas/r9a09g077-cpg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/camcc-sm7150.c b/drivers/clk/qcom/camcc-sm7150.c
-index 39033a6bb6160..ca0078428cb01 100644
---- a/drivers/clk/qcom/camcc-sm7150.c
-+++ b/drivers/clk/qcom/camcc-sm7150.c
-@@ -140,13 +140,9 @@ static struct clk_fixed_factor camcc_pll1_out_even = {
- /* 1920MHz configuration */
- static const struct alpha_pll_config camcc_pll2_config = {
- 	.l = 0x64,
--	.post_div_val = 0x3 << 8,
--	.post_div_mask = 0x3 << 8,
--	.early_output_mask = BIT(3),
--	.aux_output_mask = BIT(1),
--	.main_output_mask = BIT(0),
- 	.config_ctl_hi_val = 0x400003d6,
- 	.config_ctl_val = 0x20000954,
-+	.user_ctl_val = 0x0000030b,
- };
+diff --git a/drivers/clk/renesas/r9a09g077-cpg.c b/drivers/clk/renesas/r9a09g077-cpg.c
+index af3ef6d58c87c..d12975418a568 100644
+--- a/drivers/clk/renesas/r9a09g077-cpg.c
++++ b/drivers/clk/renesas/r9a09g077-cpg.c
+@@ -217,7 +217,7 @@ r9a09g077_cpg_div_clk_register(struct device *dev,
  
- static struct clk_alpha_pll camcc_pll2 = {
+ 	if (core->dtable)
+ 		clk_hw = clk_hw_register_divider_table(dev, core->name,
+-						       parent_name, 0,
++						       parent_name, CLK_SET_RATE_PARENT,
+ 						       addr,
+ 						       GET_SHIFT(core->conf),
+ 						       GET_WIDTH(core->conf),
+@@ -226,7 +226,7 @@ r9a09g077_cpg_div_clk_register(struct device *dev,
+ 						       &pub->rmw_lock);
+ 	else
+ 		clk_hw = clk_hw_register_divider(dev, core->name,
+-						 parent_name, 0,
++						 parent_name, CLK_SET_RATE_PARENT,
+ 						 addr,
+ 						 GET_SHIFT(core->conf),
+ 						 GET_WIDTH(core->conf),
 -- 
 2.51.0
 
