@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9BDCC24B1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C071CC2B16
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FDB8304FFC0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B914C300502F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7B43446C5;
-	Tue, 16 Dec 2025 11:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5A363C62;
+	Tue, 16 Dec 2025 12:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evG1Uu5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0CYyNqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA243446B8;
-	Tue, 16 Dec 2025 11:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F05E3644A0;
+	Tue, 16 Dec 2025 12:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884486; cv=none; b=L87sA3B7HPsnA20Kzyuokds4+G5o5Pajx70Isf+on+GB4nq4u4wv2T0+UFXpXg9EKT+1x5jNy5XEWTalUuo7rzhhu2rTdG5H+Aaf/Uj/qiWtu2yjyaH5tN9GQkB884i7mAhxCYnIJpx1rNRJMzbalpwva3QWQkAGB9zcMEO++zo=
+	t=1765887919; cv=none; b=czXk968O+tGZtmhX5QozIMITrOvsyd9laWkL233xmZxAyoxHVDhhb6+xmM2LEpgw5wQig9JDK2VIN9N+lfdbqVv6I1U3o3f2ygOCIutiQzwEKxrIPdNMG8m/+imm8PDv/BCuqQFm8kEediIT4UjqEcWArZ2uw4xyRAKDihFpKiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884486; c=relaxed/simple;
-	bh=tOziACPeHfjZbugyeIrtRVUSJ2l4YhWry6VsQobXpvQ=;
+	s=arc-20240116; t=1765887919; c=relaxed/simple;
+	bh=6ZUqyGtz+gXyB9sOdyKdeV/2iBCqcXPPW81reBIPswg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElY+TFQT1qDD3wOeaATNISQa3rhtpxMmhJW/mWJMuG0rMeE0n205E50Vq9pjE/sM4Ad5kDP7uQJaa/zFvl43YFjyOCmt80r9DE2zK2JVudKQQUOEhrpH9T8ITXv1e4Sa/u94LSy6qGq7AHdHYPCezvJ0ommPGvz1ycgjPq07G90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evG1Uu5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512D7C4CEF1;
-	Tue, 16 Dec 2025 11:28:06 +0000 (UTC)
+	 MIME-Version; b=bIwJtAMavtjEy3WS83lBrnKPJN30AuQjAfl6j059oQZ+ITyDiCtY66QCyZIxjc6qg9bNGJccOpIawje5qqsqa0lSO3BzffLx5mhOUlYUWrVuUDHZhE29RERJ0fhk6NjblUNM5rnMiM4CO+N1XPwdNfOj9cSzOz4uh+cw8qBZ+xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0CYyNqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26786C4CEF1;
+	Tue, 16 Dec 2025 12:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884486;
-	bh=tOziACPeHfjZbugyeIrtRVUSJ2l4YhWry6VsQobXpvQ=;
+	s=korg; t=1765887918;
+	bh=6ZUqyGtz+gXyB9sOdyKdeV/2iBCqcXPPW81reBIPswg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evG1Uu5Z/o5nvh7D48ZyNrwQ8L1EYBf4x3ti8MuRLz3q4tWgq16TsWD3+D9ZYfcyA
-	 OJIzTKIaWQmjQD4NtD18cg9yNqCUfGFRzVu48Tmy5dftw+OzY0gc1o1a1voOUFB85s
-	 ZYHmiW5LQdG3dzMCm0OQ+nX5nhA+lOsM9SrcYEPc=
+	b=A0CYyNqkVvrJQvJu79r4F2x9FKGp1hEa5q/FHB6h4pwUiWkEKoaxO+PiUzi8bMG0B
+	 ONdT+Nw1yXJ5mmeLoiExt3HNv4L72bFrRqGE7ppHaraAuvitiCbigpfqx5eDbn6sDv
+	 go5/1jCGspJYsqjwi/Ttl1IUbmpU5c2w+lw/TEOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/354] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
-Date: Tue, 16 Dec 2025 12:12:22 +0100
-Message-ID: <20251216111327.253205496@linuxfoundation.org>
+Subject: [PATCH 6.18 376/614] erofs: limit the level of fs stacking for file-backed mounts
+Date: Tue, 16 Dec 2025 12:12:23 +0100
+Message-ID: <20251216111414.984248500@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
+[ Upstream commit d53cd891f0e4311889349fff3a784dc552f814b9 ]
 
-When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
-Addressing Mode during early boot. During this, we should ensure that
-memory region allocations for stress_hpt_struct should happen from
-within RMA region as otherwise the boot might get stuck while doing
-memset of this region.
+Otherwise, it could cause potential kernel stack overflow (e.g., EROFS
+mounting itself).
 
-History behind why do we have RMA region limitation is better explained
-in these 2 patches [1] & [2]. This patch ensures that memset to
-stress_hpt_struct during early boot does not cross ppc64_rma_size
-boundary.
-
-[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
-[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
-
-Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
+Reviewed-by: Sheng Yong <shengyong1@xiaomi.com>
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/erofs/super.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index e1eadd03f1339..9914d89f9db7d 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1039,11 +1039,14 @@ static void __init htab_initialize(void)
- 	unsigned long table;
- 	unsigned long pteg_count;
- 	unsigned long prot;
--	phys_addr_t base = 0, size = 0, end;
-+	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
- 	u64 i;
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index cd8ff98c29384..937a215f626c1 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -639,6 +639,22 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
  
- 	DBG(" -> htab_initialize()\n");
+ 	sbi->blkszbits = PAGE_SHIFT;
+ 	if (!sb->s_bdev) {
++		/*
++		 * (File-backed mounts) EROFS claims it's safe to nest other
++		 * fs contexts (including its own) due to self-controlled RO
++		 * accesses/contexts and no side-effect changes that need to
++		 * context save & restore so it can reuse the current thread
++		 * context.  However, it still needs to bump `s_stack_depth` to
++		 * avoid kernel stack overflow from nested filesystems.
++		 */
++		if (erofs_is_fileio_mode(sbi)) {
++			sb->s_stack_depth =
++				file_inode(sbi->dif0.file)->i_sb->s_stack_depth + 1;
++			if (sb->s_stack_depth > FILESYSTEM_MAX_STACK_DEPTH) {
++				erofs_err(sb, "maximum fs stacking depth exceeded");
++				return -ENOTBLK;
++			}
++		}
+ 		sb->s_blocksize = PAGE_SIZE;
+ 		sb->s_blocksize_bits = PAGE_SHIFT;
  
-+	if (firmware_has_feature(FW_FEATURE_LPAR))
-+		limit = ppc64_rma_size;
-+
- 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
- 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
- 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
-@@ -1059,7 +1062,7 @@ static void __init htab_initialize(void)
- 		// Too early to use nr_cpu_ids, so use NR_CPUS
- 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
- 						__alignof__(struct stress_hpt_struct),
--						0, MEMBLOCK_ALLOC_ANYWHERE);
-+						MEMBLOCK_LOW_LIMIT, limit);
- 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
- 		stress_hpt_struct = __va(tmp);
- 
-@@ -1093,7 +1096,6 @@ static void __init htab_initialize(void)
- 			mmu_hash_ops.hpte_clear_all();
- #endif
- 	} else {
--		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
- 
- #ifdef CONFIG_PPC_CELL
- 		/*
-@@ -1109,7 +1111,7 @@ static void __init htab_initialize(void)
- 
- 		table = memblock_phys_alloc_range(htab_size_bytes,
- 						  htab_size_bytes,
--						  0, limit);
-+						  MEMBLOCK_LOW_LIMIT, limit);
- 		if (!table)
- 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
- 			      &htab_size_bytes, &limit);
 -- 
 2.51.0
 
