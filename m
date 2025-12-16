@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE87CC4A2B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5BBCC25EF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C2C630AB18B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5ECCF30FE495
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79484359F9D;
-	Tue, 16 Dec 2025 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88261341AC0;
+	Tue, 16 Dec 2025 11:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxeOecic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/aGLlHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3787C359F8E;
-	Tue, 16 Dec 2025 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F2D340DBF;
+	Tue, 16 Dec 2025 11:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888162; cv=none; b=INDcIueC1koQxtuo85rkSbg4eFFhKKNzFiXCDhysXByvABb6cHZVgsb+Y3xS2/Ka8lVTtjSXEiCJ2Jmxbowm1hRM2mQuxny6XtU2p7GVpXeJAiMDY8dRQ25LELaBfrTzaWzGggeE7t3ybajRFM30RZ1Gg/yGNXxkWYpdMgtQyJQ=
+	t=1765884737; cv=none; b=Fb3Bu+ydPID0U5L1u0kRE8zgBvQoyqqWnUFwDTSyEzaTazWkGF+yCSrb/Wu01N/ykgnSTipfRKjwSlLBUG3f4aD3c4t6eXo0tDkaPt5gBUYgkTXap+WSjWMNTl0uBdyi1jbnSPacf3Ud5vLciJVyBbLK5Me8E/k/x/1UQgQCPuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888162; c=relaxed/simple;
-	bh=CDw/14saPEGZPu8Bf0GKhQrmf4pgVWYh/i5lINwAmeg=;
+	s=arc-20240116; t=1765884737; c=relaxed/simple;
+	bh=bAXPDulxDDZ5D4xKzLb+p9CYOFdCNlAU9+FRTP7oTjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZ7P74qdBYUMPPbakmGvznt4bbFEx3wDrKbij/Q7jSPpQpzQw0Haym2yaa4i+bpts/31U2E81Yn0LBLeYFZ6MxDR1skhtNyw8OiLChlistUioqgKZFs7okxvfmahL/Dd6l66r1So6o+8dWUae9xKJc5s/EgVbsqPfkg7/T0TnEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxeOecic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F0DC4CEF1;
-	Tue, 16 Dec 2025 12:29:21 +0000 (UTC)
+	 MIME-Version; b=sprswSBvQkl45pOCQyoWIfer5L52S+TRRx3PY3EuxIkE89nhYfjb0GdRHDilTqVWBwg0kWPNMQqxvH6yCEaqEf5ilKJcH67MEx2ahfbaTttZPmqk9oT7F421X1H3YNMjI6OplPSs6M5gdEXgV7Vp2eC3/SLFz9Dw+UqFKL93t8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/aGLlHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2E9C4CEF1;
+	Tue, 16 Dec 2025 11:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888162;
-	bh=CDw/14saPEGZPu8Bf0GKhQrmf4pgVWYh/i5lINwAmeg=;
+	s=korg; t=1765884737;
+	bh=bAXPDulxDDZ5D4xKzLb+p9CYOFdCNlAU9+FRTP7oTjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZxeOecicEv/Xk3OgBq+/FyHocFavWaI7wCtNP56WcMlJb+eQ7nKirGsTlm98dap/N
-	 /d4GaZoB3xg6xfNM+dw1AW/5SZesqVe11Y4vqq7+PD+Htj6ZnR+H7I2LLCnKl7A9gM
-	 TltYYAPcJa80hdXGdRv9SA5ct7j1at7GhbpMlcak=
+	b=D/aGLlHJII/eQdxcwL71+RWOCgeH7f6HqnZem8kv6CzQXjnVjQsWZ/O24L6A4/jnr
+	 fep2ffzi8xxfaeXLkdi2UnoLOHBthaNUVDFDoZRQF9S7fnyXvc2b5MmKzeFUnGa90S
+	 LrkTyFyz4vED6gc1Jl2oBQe5Z0bPNWzDEFMsmI18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 450/614] hwmon: sy7636a: Fix regulator_enable resource leak on error path
+Subject: [PATCH 6.12 250/354] virtio: fix grammar in virtio_queue_info docs
 Date: Tue, 16 Dec 2025 12:13:37 +0100
-Message-ID: <20251216111417.674022565@linuxfoundation.org>
+Message-ID: <20251216111329.971313283@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 2f88425ef590b7fcc2324334b342e048edc144a9 ]
+[ Upstream commit 63598fba55ab9d384818fed48dc04006cecf7be4 ]
 
-In sy7636a_sensor_probe(), regulator_enable() is called but if
-devm_hwmon_device_register_with_info() fails, the function returns
-without calling regulator_disable(), leaving the regulator enabled
-and leaking the reference count.
+Fix grammar in the description of @ctx
 
-Switch to devm_regulator_get_enable() to automatically
-manage the regulator resource.
-
-Fixes: de34a4053250 ("hwmon: sy7636a: Add temperature driver for sy7636a")
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251126162602.2086-1-vulab@iscas.ac.cn
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: c502eb85c34e ("virtio: introduce virtio_queue_info struct and find_vqs_info() config op")
+Message-Id: <a5cf2b92573200bdb1c1927e559d3930d61a4af2.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sy7636a-hwmon.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/sy7636a-hwmon.c b/drivers/hwmon/sy7636a-hwmon.c
-index a12fc0ce70e76..d51daaf63d632 100644
---- a/drivers/hwmon/sy7636a-hwmon.c
-+++ b/drivers/hwmon/sy7636a-hwmon.c
-@@ -66,18 +66,13 @@ static const struct hwmon_chip_info sy7636a_chip_info = {
- static int sy7636a_sensor_probe(struct platform_device *pdev)
- {
- 	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
--	struct regulator *regulator;
- 	struct device *hwmon_dev;
- 	int err;
- 
- 	if (!regmap)
- 		return -EPROBE_DEFER;
- 
--	regulator = devm_regulator_get(&pdev->dev, "vcom");
--	if (IS_ERR(regulator))
--		return PTR_ERR(regulator);
--
--	err = regulator_enable(regulator);
-+	err = devm_regulator_get_enable(&pdev->dev, "vcom");
- 	if (err)
- 		return err;
- 
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 8189f859231cc..1255493b7f377 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -24,7 +24,7 @@ typedef void vq_callback_t(struct virtqueue *);
+  *        a virtqueue unused by the driver.
+  * @callback: A callback to invoke on a used buffer notification.
+  *            NULL for a virtqueue that does not need a callback.
+- * @ctx: A flag to indicate to maintain an extra context per virtqueue.
++ * @ctx: whether to maintain an extra context per virtqueue.
+  */
+ struct virtqueue_info {
+ 	const char *name;
 -- 
 2.51.0
 
