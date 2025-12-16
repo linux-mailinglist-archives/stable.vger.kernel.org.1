@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A28BCC2C43
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CE5CC259B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F103302EDB7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 094A5310D721
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF6396DD6;
-	Tue, 16 Dec 2025 12:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C66F342C94;
+	Tue, 16 Dec 2025 11:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c54YgJeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM81cSr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32208396DD3;
-	Tue, 16 Dec 2025 12:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0D4341648;
+	Tue, 16 Dec 2025 11:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888338; cv=none; b=TAb4SqOmmmcN13pdD/49FctQMz9wuI8SV4IWZm5Uw2w9hFWrr7VhH6CRlW5vMGZPaxFsxI/ipdaJJw0bIWlTJBcSb+xvGQSMP6NG1i8qwHmZRvzIYyyRh76nVGDmDVd/VnBVqTpGnbj7lU+mq8fv4Et64oCxHZ2Oe1sIQCIGFWg=
+	t=1765884809; cv=none; b=Wl50wWyf23ZIzbtoq3HZqdPXFW+Cp17E3Vo2yKtbVyzsKpIiqkiekcfNKFlV4ccaXcJIM5tpcnh5luSeE0uVR0FvbqeQoxRgIhOzg4zpdmkt1o/V6xp0ueASN0im5KnoGSfrhkPDoCRsFCxn8SSG5Eye60QEKRqi6trZMOAhGTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888338; c=relaxed/simple;
-	bh=o8ZncKbH1pVdpKl2Aiydc+8hE5VKQ2IA+6Eg4bF3eEI=;
+	s=arc-20240116; t=1765884809; c=relaxed/simple;
+	bh=kJyPEXuzss6Qd4cap2fUmWNLN2CCTyuGmVyc+Q5DbKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOdmC/VPOWN+oKOJtp5J3/s2/3uXU34VYWbw7RWcxgI4oK8MaLTIe33cowK1CU8rm+z3WePt2W1qubbl+PSjeZ5Muwfp5JQFlNHah68HIe+JV6lvgvlo7Zex6wShPsjomWKYKD1Cf006NxveiI0lYyl1lbb3v0ACrtcFj28+6ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c54YgJeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D78AC4CEF1;
-	Tue, 16 Dec 2025 12:32:17 +0000 (UTC)
+	 MIME-Version; b=UyeSPJVOjiXggYFnRw9RZN8fejJBS0JZriRpKMErLF1ekV4czbF5ozxkmKswxxHuEQ4pzfBc5EEGdqb5JMXsnXrabrXtlaB/ANMOiqudJr/yg0ZshSbIDwo08An+QDOrOAQrVlle/eKsZ0kKy/Q7OstaFd00wIfIH7xzRWUY4UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zM81cSr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15D0C4CEF5;
+	Tue, 16 Dec 2025 11:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888337;
-	bh=o8ZncKbH1pVdpKl2Aiydc+8hE5VKQ2IA+6Eg4bF3eEI=;
+	s=korg; t=1765884809;
+	bh=kJyPEXuzss6Qd4cap2fUmWNLN2CCTyuGmVyc+Q5DbKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c54YgJeX0hE1sDb3te7MWw65JVwoG7iGLknydjvs4Rc2ImBSfJxtuF6Dgx4WS8XVs
-	 UJnW8IwTe48UG2yZc8XIMbtk0G3/t79pVxC3ilVeK/XssG9BedHK6mWf2UlIptBOBn
-	 KWmWncLuJz0RzN1/HyFVc4m4fy8D/8m5RW+pGC4s=
+	b=zM81cSr/+eCpz0Dy9CKgf+WVphuJ6UVjUbZ2sQ/YXzRvsoH79CAkZyVVEeHpqD65Z
+	 3l/fBn4oUcvRG+sUAN87MM7n6cWWQLM4GT3/3hRt11V2dWBFVn5Vdx2OT9ClDrSDCG
+	 FZCbFrLkh25a/229Avy3ApSHp+acI1ocEIzXA4eE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 505/614] um: Disable KASAN_INLINE when STATIC_LINK is selected
+Subject: [PATCH 6.12 305/354] NFS: Initialise verifiers for visible dentries in nfs_atomic_open()
 Date: Tue, 16 Dec 2025 12:14:32 +0100
-Message-ID: <20251216111419.667263494@linuxfoundation.org>
+Message-ID: <20251216111331.962775154@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a3209bb94b36351f11e0d9e72ac44e5dd777a069 ]
+[ Upstream commit 518c32a1bc4f8df1a8442ee8cdfea3e2fcff20a0 ]
 
-um doesn't support KASAN_INLINE together with STATIC_LINK.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in nfs_atomic_open().
 
-Instead of failing the build, disable KASAN_INLINE when
-STATIC_LINK is selected.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202511290451.x9GZVJ1l-lkp@intel.com/
-Fixes: 1e338f4d99e6 ("kasan: introduce ARCH_DEFER_KASAN and unify static key across modes")
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Link: https://patch.msgid.link/2620ab0bbba640b6237c50b9c0dca1c7d1142f5d.1764410067.git.chleroy@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: 809fd143de88 ("NFSv4: Ensure nfs_atomic_open set the dentry verifier on ENOENT")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Kconfig             | 1 +
- arch/um/include/asm/kasan.h | 4 ----
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ fs/nfs/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index 49781bee79058..93ed850d508ed 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -5,6 +5,7 @@ menu "UML-specific options"
- config UML
- 	bool
- 	default y
-+	select ARCH_DISABLE_KASAN_INLINE if STATIC_LINK
- 	select ARCH_NEEDS_DEFER_KASAN if STATIC_LINK
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_HAS_CACHE_LINE_SIZE
-diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-index b54a4e937fd12..81bcdc0f962e6 100644
---- a/arch/um/include/asm/kasan.h
-+++ b/arch/um/include/asm/kasan.h
-@@ -24,10 +24,6 @@
- 
- #ifdef CONFIG_KASAN
- void kasan_init(void);
--
--#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
--#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
--#endif
- #else
- static inline void kasan_init(void) { }
- #endif /* CONFIG_KASAN */
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 8c4fcd140fa13..1cf1b2ddbf549 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2151,12 +2151,12 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		d_drop(dentry);
+ 		switch (err) {
+ 		case -ENOENT:
+-			d_splice_alias(NULL, dentry);
+ 			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
+ 				dir_verifier = inode_peek_iversion_raw(dir);
+ 			else
+ 				dir_verifier = nfs_save_change_attribute(dir);
+ 			nfs_set_verifier(dentry, dir_verifier);
++			d_splice_alias(NULL, dentry);
+ 			break;
+ 		case -EISDIR:
+ 		case -ENOTDIR:
 -- 
 2.51.0
 
