@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A56FCC2D16
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F95CC2A0B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6AC7B30131FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DEB9E3030CB2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E754934F27E;
-	Tue, 16 Dec 2025 12:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6670C34405E;
+	Tue, 16 Dec 2025 11:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFriu64s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGwGjkyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4695322527;
-	Tue, 16 Dec 2025 12:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C5D3446B3;
+	Tue, 16 Dec 2025 11:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887859; cv=none; b=gdYFipQpmTK5+JAkhMJF9oI8wOCdNDkxch+avunQrP6TReets+GeJj3OhcPKU448bPow/iSS+1nz1ymsj4SQ02UDUmzojKFC2js12iRtisT9DeGIRLCxSWZghHnONbUydaBcWB/p/Mt0OwiE7lxR0XDlYpqkzSSHkt35OFEGIrA=
+	t=1765886038; cv=none; b=k9phZDH39P1llaQWmahypcJ2c1+WbTgBW0GdD6MION18J/kkJJe0FKJx0vrpxerwHUXl8hjyl8vaFj9gvTwW8fnZ7ikiQkK3gC8PH8dSbLmw/ifXlC6PZenW10jrqi/2a1yWWNaVLxnT2unucL+zrhIrw9JnZRETz3xoF5ovzLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887859; c=relaxed/simple;
-	bh=aW4feubJ6uF/7KfOe3/wJgjz+AyOEcITwprtQ/UunSQ=;
+	s=arc-20240116; t=1765886038; c=relaxed/simple;
+	bh=YD1ikXHK5yfguxZ7XnM+nOjImuUxgiS/rN2j13iG3Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dASTpwrxjgx0Fxm83rXl36XSLfn9Fa0Yj2d0qQkmu6WMHf9qUDImBySgzdfEbDfG+4En1XBwGjGT6CXhwhfp107yUYvc6rq9dpTrYxgwMtroZ3cHFRnnOYao8SucDbm/ifYwvu0zoy92r0cJjb5pSDM25xqrpFqpyEVRVlS3e4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFriu64s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DB4C4CEF1;
-	Tue, 16 Dec 2025 12:24:18 +0000 (UTC)
+	 MIME-Version; b=fxZkF1MLzpZR66TNVd5VjrUEJtU06VTDLbVU5RZlQV0Kgiauzs0u1Z6+/NbF/8F4Gdu00bK5ld/vHHNTBmejOmIlRcjCxOUA4DWEPYiofVun+VXVkdk9WohL0gWcctq6yp1XaiSh4iNG5mSNKupd9D5rXISuSxTLu63CR2WDcN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGwGjkyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163A3C4CEF1;
+	Tue, 16 Dec 2025 11:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887859;
-	bh=aW4feubJ6uF/7KfOe3/wJgjz+AyOEcITwprtQ/UunSQ=;
+	s=korg; t=1765886038;
+	bh=YD1ikXHK5yfguxZ7XnM+nOjImuUxgiS/rN2j13iG3Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFriu64sPGnQg3DpIcB//rJMG9Ygvmy68ZiASGOaw96nCEG3qGUxf0NHj1Cafh8W1
-	 WpnhMeB384oHwCdBT3w8x8wTvElbY2tUJid5aGr5ZXOSZLLlZx7wVBk5pt0FrzW8pc
-	 2XZMIS+W5pI5PZcEQaZi41Ubt9c7cFNM/Mp9fghI=
+	b=aGwGjkySkSyuXHRVaaXGn3NsnkO3tJszZC9xtXRnsviUKCNglgDeA5WvY+NnpNmRt
+	 bWfvYyLkw8CaC3gRLj4OMT19rAvHbKMacW/IZq4rc8qairaw9RZqxakNX6WUmsY9BA
+	 N1Y3ynHm8UNuT5ENiuy9NSGBoK1+ElexOcpfKgsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 360/614] rtla: Fix -a overriding -t argument
+Subject: [PATCH 6.17 286/507] of/fdt: Consolidate duplicate code into helper functions
 Date: Tue, 16 Dec 2025 12:12:07 +0100
-Message-ID: <20251216111414.404909470@linuxfoundation.org>
+Message-ID: <20251216111355.839612183@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +60,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit ddb6e42494e5c48c17e64f29b7674b9add486a19 ]
+[ Upstream commit 8278cb72c60399f6dc6300c409879fb4c7291513 ]
 
-When running rtla as
+Currently, there are many pieces of nearly identical code scattered across
+different places. Consolidate the duplicate code into helper functions to
+improve maintainability and reduce the likelihood of errors.
 
-    `rtla <timerlat|osnoise> <top|hist> -t custom_file.txt -a 100`
-
--a options override trace output filename specified by -t option.
-Running the command above will create <timerlat|osnoise>_trace.txt file
-instead of custom_file.txt. Fix this by making sure that -a option does
-not override trace output filename even if it's passed after trace
-output filename is specified.
-
-Fixes: 173a3b014827 ("rtla/timerlat: Add the automatic trace option")
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Link: https://lore.kernel.org/r/b6ae60424050b2c1c8709e18759adead6012b971.1762186418.git.ipravdin.official@gmail.com
-[ use capital letter in subject, as required by tracing subsystem ]
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://patch.msgid.link/20251115134753.179931-2-yuntao.wang@linux.dev
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Stable-dep-of: c85da64ce2c3 ("of/fdt: Fix incorrect use of dt_root_addr_cells in early_init_dt_check_kho()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/osnoise_hist.c  | 3 ++-
- tools/tracing/rtla/src/osnoise_top.c   | 3 ++-
- tools/tracing/rtla/src/timerlat_hist.c | 3 ++-
- tools/tracing/rtla/src/timerlat_top.c  | 3 ++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/of/fdt.c       | 41 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/of_fdt.h |  9 +++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/tools/tracing/rtla/src/osnoise_hist.c b/tools/tracing/rtla/src/osnoise_hist.c
-index dffb6d0a98d7d..d22feb4d6cc9d 100644
---- a/tools/tracing/rtla/src/osnoise_hist.c
-+++ b/tools/tracing/rtla/src/osnoise_hist.c
-@@ -557,7 +557,8 @@ static struct common_params
- 			params->threshold = 1;
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 0edd639898a63..0c18bdefbbeea 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -625,6 +625,47 @@ const void *__init of_get_flat_dt_prop(unsigned long node, const char *name,
+ 	return fdt_getprop(initial_boot_params, node, name, size);
+ }
  
- 			/* set trace */
--			trace_output = "osnoise_trace.txt";
-+			if (!trace_output)
-+				trace_output = "osnoise_trace.txt";
- 
- 			break;
- 		case 'b':
-diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
-index 95418f7ecc961..a8d31030c4122 100644
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -397,7 +397,8 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
- 			params->threshold = 1;
- 
- 			/* set trace */
--			trace_output = "osnoise_trace.txt";
-+			if (!trace_output)
-+				trace_output = "osnoise_trace.txt";
- 
- 			break;
- 		case 'c':
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index 606c1688057b2..3d56df3d5fa0d 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -878,7 +878,8 @@ static struct common_params
- 			params->print_stack = auto_thresh;
- 
- 			/* set trace */
--			trace_output = "timerlat_trace.txt";
-+			if (!trace_output)
-+				trace_output = "timerlat_trace.txt";
- 
- 			break;
- 		case 'c':
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index fc479a0dcb597..6cc9a3607c665 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -628,7 +628,8 @@ static struct common_params
- 			params->print_stack = auto_thresh;
- 
- 			/* set trace */
--			trace_output = "timerlat_trace.txt";
-+			if (!trace_output)
-+				trace_output = "timerlat_trace.txt";
- 
- 			break;
- 		case '5':
++const __be32 *__init of_flat_dt_get_addr_size_prop(unsigned long node,
++						   const char *name,
++						   int *entries)
++{
++	const __be32 *prop;
++	int len, elen = (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32);
++
++	prop = of_get_flat_dt_prop(node, name, &len);
++	if (!prop || len % elen) {
++		*entries = 0;
++		return NULL;
++	}
++
++	*entries = len / elen;
++	return prop;
++}
++
++bool __init of_flat_dt_get_addr_size(unsigned long node, const char *name,
++				     u64 *addr, u64 *size)
++{
++	const __be32 *prop;
++	int entries;
++
++	prop = of_flat_dt_get_addr_size_prop(node, name, &entries);
++	if (!prop || entries != 1)
++		return false;
++
++	of_flat_dt_read_addr_size(prop, 0, addr, size);
++	return true;
++}
++
++void __init of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
++				      u64 *addr, u64 *size)
++{
++	int entry_cells = dt_root_addr_cells + dt_root_size_cells;
++	prop += entry_cells * entry_index;
++
++	*addr = dt_mem_next_cell(dt_root_addr_cells, &prop);
++	*size = dt_mem_next_cell(dt_root_size_cells, &prop);
++}
++
+ /**
+  * of_fdt_is_compatible - Return true if given node from the given blob has
+  * compat in its compatible list
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index b8d6c0c208760..51dadbaa3d63a 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -55,6 +55,15 @@ extern int of_get_flat_dt_subnode_by_name(unsigned long node,
+ 					  const char *uname);
+ extern const void *of_get_flat_dt_prop(unsigned long node, const char *name,
+ 				       int *size);
++
++extern const __be32 *of_flat_dt_get_addr_size_prop(unsigned long node,
++						   const char *name,
++						   int *entries);
++extern bool of_flat_dt_get_addr_size(unsigned long node, const char *name,
++				     u64 *addr, u64 *size);
++extern void of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
++				      u64 *addr, u64 *size);
++
+ extern int of_flat_dt_is_compatible(unsigned long node, const char *name);
+ extern unsigned long of_get_flat_dt_root(void);
+ extern uint32_t of_get_flat_dt_phandle(unsigned long node);
 -- 
 2.51.0
 
