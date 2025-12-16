@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-201349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD69CCC240C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1AECC26FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95BA4307FC38
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C34630215EB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6637C34214A;
-	Tue, 16 Dec 2025 11:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B584D35502B;
+	Tue, 16 Dec 2025 11:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzCQhBkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCdQXH3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2331F32BF22;
-	Tue, 16 Dec 2025 11:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A69355027;
+	Tue, 16 Dec 2025 11:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884348; cv=none; b=sQCggWaUXvpYzDa/rUcTk4osQFJ29d7bunU2CorjagtAGZwW5xtBQx/cj2WufQ5kW8N3v71A7kgle8DUQn50VQJ2CF2EDpy5aeK+kvnHn9fO3ztbT3mOKBxuwL44d9FOfsGu8f2Ef0sbD72AkPB96fXT8O8Uh3zZVOv6HUiMcd8=
+	t=1765885854; cv=none; b=VsfRTfW24L2xShLdmtzQbw7kguNB5seNLFSvD+llvcvdyMWNwsY8pV6Ri0teoIk+AVMszNMWoNTq10sfUfU9/+FbZs7dW7o5u89Nb4m7fmFyEe9IS2ZbDVkQoZkevCtG551uyERk2yvKlfyWOgTvOgnGW+aTQpINaMBIjQJRZWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884348; c=relaxed/simple;
-	bh=171R2pLdV4A+pBeCpGrXK/M3AY4tCJng92gXYyRM4gc=;
+	s=arc-20240116; t=1765885854; c=relaxed/simple;
+	bh=Yc/b300Fpcl0gu/wM/GpNzKoFxcWZ8zOLKBs21uxq/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7nQ8RrmnXB3RbqgFvp/SkMvEnLBr7NTMjsHPs8xdWjTzb2nMFUOwkqeoXcUrLggeHr1xm4VxktNDFz5oWSDNrejTFMMgfrTJ2deHGfZr6ZZ49Icm9KLu1Q7isSbCW5mhdfNepERT9YaIeWiyR2wqIF2j5OhV0AezpSdIkyOHsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzCQhBkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F366C4CEF1;
-	Tue, 16 Dec 2025 11:25:46 +0000 (UTC)
+	 MIME-Version; b=b6KXIjbst1hsWjB5f9K4bhpIQjrb7+XodBxnZW3FJjEE/2j33NuZQ3wYf1WKWxLN0rkxarlduu/9Q+C4kfClqkZGYtNj6tZVipDEXD6sZGP6Cvdv81pZsRT3KH177hoKKmc3v5cH97c84DSuQZD9BGH2opV9s2iMFv7pJW2xkHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCdQXH3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC976C4CEF1;
+	Tue, 16 Dec 2025 11:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884346;
-	bh=171R2pLdV4A+pBeCpGrXK/M3AY4tCJng92gXYyRM4gc=;
+	s=korg; t=1765885854;
+	bh=Yc/b300Fpcl0gu/wM/GpNzKoFxcWZ8zOLKBs21uxq/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzCQhBknn4atq5EHfMB86qjJVTykJdKw7U7YAGp1+a9MFrjqaauNHiDz0I7QyFhzu
-	 qI28TnODCLF7Y7VxVKVD4sLhukjbOJWpy2qCZ4wghYZcUENT0rA+zrYXTDWwm0QrUY
-	 6QB4PPsf0CHm5vfYue7XL1ZDs2IuUo0teSWFGWjQ=
+	b=jCdQXH3IGTVqsgunMwMvP+xEL+4JUK+E9HfSZxEgXoA0CeeJn/awr//5PLayfytJy
+	 EZA08yRh+XOrTvN5PdVSiXogrRmRoDanW7XT9W8LU83ceZO3EkejHfGhhnSoep0kNn
+	 hMmqfT9Nu9ykupm0HA1wMIEVlPb/d/ExmFM+XmHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Bean Huo <beanhuo@micron.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/354] scsi: ufs: core: fix incorrect buffer duplication in ufshcd_read_string_desc()
+Subject: [PATCH 6.17 264/507] net: stmmac: dwmac-sophgo: Add phy interface filter
 Date: Tue, 16 Dec 2025 12:11:45 +0100
-Message-ID: <20251216111325.918543284@linuxfoundation.org>
+Message-ID: <20251216111355.050761246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bean Huo <beanhuo@micron.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit d794b499f948801f54d67ddbc34a6eac5a6d150a ]
+[ Upstream commit db37c6e510deabc9b0ee27c08f1c5aaa19f2e8ef ]
 
-The function ufshcd_read_string_desc() was duplicating memory starting
-from the beginning of struct uc_string_id, which included the length and
-type fields. As a result, the allocated buffer contained unwanted
-metadata in addition to the string itself.
+As the SG2042 has an internal rx delay, the delay should be removed
+when initializing the mac, otherwise the phy will be misconfigurated.
 
-The correct behavior is to duplicate only the Unicode character array in
-the structure. Update the code so that only the actual string content is
-copied into the new buffer.
-
-Fixes: 5f57704dbcfe ("scsi: ufs: Use kmemdup in ufshcd_read_string_desc()")
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Link: https://patch.msgid.link/20251107230518.4060231-3-beanhuo@iokpp.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 543009e2d4cd ("net: stmmac: dwmac-sophgo: Add support for Sophgo SG2042 SoC")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Tested-by: Han Gao <rabenda.cn@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251114003805.494387-4-inochiama@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/dwmac-sophgo.c    | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index c8c22b95c3eef..33534e455b55c 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3799,7 +3799,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
- 		str[ret++] = '\0';
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
+index 3b7947a7a7ba7..fcdda2401968b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
+@@ -7,11 +7,16 @@
  
- 	} else {
--		str = kmemdup(uc_str, uc_str->len, GFP_KERNEL);
-+		str = kmemdup(uc_str->uc, uc_str->len, GFP_KERNEL);
- 		if (!str) {
- 			ret = -ENOMEM;
- 			goto out;
+ #include <linux/clk.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
+ 
+ #include "stmmac_platform.h"
+ 
++struct sophgo_dwmac_data {
++	bool has_internal_rx_delay;
++};
++
+ static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
+ 				    struct plat_stmmacenet_data *plat_dat,
+ 				    struct stmmac_resources *stmmac_res)
+@@ -32,6 +37,7 @@ static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
+ static int sophgo_dwmac_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
++	const struct sophgo_dwmac_data *data;
+ 	struct stmmac_resources stmmac_res;
+ 	struct device *dev = &pdev->dev;
+ 	int ret;
+@@ -50,11 +56,23 @@ static int sophgo_dwmac_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	data = device_get_match_data(&pdev->dev);
++	if (data && data->has_internal_rx_delay) {
++		plat_dat->phy_interface = phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface,
++									  false, true);
++		if (plat_dat->phy_interface == PHY_INTERFACE_MODE_NA)
++			return -EINVAL;
++	}
++
+ 	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
+ }
+ 
++static const struct sophgo_dwmac_data sg2042_dwmac_data = {
++	.has_internal_rx_delay = true,
++};
++
+ static const struct of_device_id sophgo_dwmac_match[] = {
+-	{ .compatible = "sophgo,sg2042-dwmac" },
++	{ .compatible = "sophgo,sg2042-dwmac", .data = &sg2042_dwmac_data },
+ 	{ .compatible = "sophgo,sg2044-dwmac" },
+ 	{ /* sentinel */ }
+ };
 -- 
 2.51.0
 
