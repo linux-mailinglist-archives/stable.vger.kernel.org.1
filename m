@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3728BCC228F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D919CC3777
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A30B304FEB8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B837300C8F3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCCA2459D7;
-	Tue, 16 Dec 2025 11:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339F334167A;
+	Tue, 16 Dec 2025 12:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2jX2jKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIU8LJje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED47A3358A8;
-	Tue, 16 Dec 2025 11:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30B830DD13;
+	Tue, 16 Dec 2025 12:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883979; cv=none; b=JmqnJzT2X49M1ivZFWG84CCCiZA6yJGoyRCH13PB+jWLUk8QgQ4+kTDIkhn661OOJwakBnVBaH32jU9KrKq0UnX0bU4PRwg9jUX4h7AtRoy0OXAH1VSfa6Fgpsv0X6aiPi2/Jrz7WGvWOIFypKeJatRVwZPI2B3DvZaIrhyrS6s=
+	t=1765887517; cv=none; b=T/ErdWyMUyjPecBid4IdBtI9TIgjVnNTAcfIO7PWtzzsy36AamMHSJtS+TBGCvx0s7vPjWeSBjCnVvNW1Qrl6101uvxJIB9wtBrdjXZYvyrM5dJNTvBCOi726Wsl0qH2rdqDrQOJVzJF9EqolJcU52SQZSngI03mPgs3DGXb5M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883979; c=relaxed/simple;
-	bh=fDQ/pU1dSh0CXqtWww+Qvn4tvPQJlKvd+M9bi8cQkpk=;
+	s=arc-20240116; t=1765887517; c=relaxed/simple;
+	bh=K5NsbN469r2UudrGbyKYZusHV1LOrtxXBCCjQuhkoU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CaUG28axs95EZazRnAI2ibgNVK7o/LiW3Gh+Bx8XP/I/2tE2hyAphLNFiuOpG5n2LRsccyWNc9MWmizDtfvCXkHnXx8Fz3Eziq0vtjACKfE8honj19civ3cfwNc9TH+1orVLbVPIjfGtxCTg2RRsUn/FBJkRuA15pgsRi82REyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2jX2jKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD82C4CEF1;
-	Tue, 16 Dec 2025 11:19:38 +0000 (UTC)
+	 MIME-Version; b=KWSSmmT20whGkjlwL4kjxE3sE/xJe6toGbPz2gm3LcswXxhoWHn00sk8y4664QE4ziD8nft24TBZGHSbPKwHD1U/NpWaQSuEIJctAeBvJ3fdZI6bnXuNWm50unrhBR7y08JQGQD34dejpN1MmJPJb9+0lb6IqsIhhk6QMvOBoFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIU8LJje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575DAC4CEF1;
+	Tue, 16 Dec 2025 12:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883978;
-	bh=fDQ/pU1dSh0CXqtWww+Qvn4tvPQJlKvd+M9bi8cQkpk=;
+	s=korg; t=1765887516;
+	bh=K5NsbN469r2UudrGbyKYZusHV1LOrtxXBCCjQuhkoU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2jX2jKCY/RMl5Em+bcHA07SJY3QF5ZyiEu8Oc/d31G5MYpPyzqkAa2Hd9XsQBqSl
-	 OXeOe7PyMeUS/S0x7Rmoaiun5QForbT7/EiG5GXUVUzgk11zlH8ieKFiHG2UlyEQh4
-	 MA99B07yQVVoTuq32xk8T/rWjyIUZmmIKntzpwYE=
+	b=IIU8LJjeMq3AwazyrvsJv6cYTho8CMLmea524TLH0c3wXg7/PKPlimugT7/92S6Uo
+	 EbD3CsJPCKbN2Q0DHtVRfAiWSONwltFcp5knwuZ1hkmWbvn6HKgGFCpubXtBs+44E5
+	 W+TFF+c4p229SgZaotBmRRe6iMnb8O1vs1Blzy2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/354] arm64: dts: exynos: gs101: fix sysreg_apm reg property
+Subject: [PATCH 6.18 255/614] coresight: etm4x: Correct polling IDLE bit
 Date: Tue, 16 Dec 2025 12:10:22 +0100
-Message-ID: <20251216111322.911770314@linuxfoundation.org>
+Message-ID: <20251216111410.613614726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 4348c22a4f15dbef1314f1a353d7f053b24e9ace ]
+[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
 
-Both the start address and size are incorrect for the apm_sysreg DT
-node. Update to match the TRM (rather than how it was defined
-downstream).
+Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
+the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
+instead of the IDLE bit.
 
-Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Link: https://patch.msgid.link/20251013-automatic-clocks-v1-5-72851ee00300@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This commit corrects the typo.
+
+Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/exynos/google/gs101.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/exynos/google/gs101.dtsi b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-index a509a59def428..d03987cc4370c 100644
---- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-+++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-@@ -1390,9 +1390,9 @@ cmu_apm: clock-controller@17400000 {
- 			clock-names = "oscclk";
- 		};
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 1324b40d54210..c562f82985192 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1924,7 +1924,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
  
--		sysreg_apm: syscon@174204e0 {
-+		sysreg_apm: syscon@17420000 {
- 			compatible = "google,gs101-apm-sysreg", "syscon";
--			reg = <0x174204e0 0x1000>;
-+			reg = <0x17420000 0x10000>;
- 		};
- 
- 		pmu_system_controller: system-controller@17460000 {
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 		etm4_os_unlock(drvdata);
 -- 
 2.51.0
 
