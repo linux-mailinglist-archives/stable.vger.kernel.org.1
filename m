@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD00CC27B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B3ECC22C2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B30793054C99
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F9513000949
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526C2355029;
-	Tue, 16 Dec 2025 11:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA336341645;
+	Tue, 16 Dec 2025 11:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPjw03N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoN8wQSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED72355026;
-	Tue, 16 Dec 2025 11:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95471313E13;
+	Tue, 16 Dec 2025 11:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885882; cv=none; b=RVr3KG78Np1UDypsk7RGxFVZUN+W39SyxamwBbtRtsQ+vmtpoK/B/YUIERCZaXP0N87/oVijZqzphJb2Bm/douj/FMiOxgqkMAuXkB+8A/AwLFenoZRKNCKv6QKQcS0t/mPvAOFwqmK3ntCkc3XTZYSOrEcs8AjKJm0vvsTvNGQ=
+	t=1765884274; cv=none; b=TmCfYpWe2WUYkqVtEXxfpbACxjv7vfdwkqmBs2QV7pnF6I1E+HmyRs4twOpHENuV5ryEEBdl+hd6hF4DAlh4q4n2MbP45uAbcTKrb05MixLe3Cj2EtMI4ENqpEARGvcQ+4dA81O2+4vrnntYYZWXLdfr06CXXed8YKfY0X9feKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885882; c=relaxed/simple;
-	bh=9cVnKIMInvE4M0CGzHrKKCgx13U3fH9fj53cx+BL4oo=;
+	s=arc-20240116; t=1765884274; c=relaxed/simple;
+	bh=asazDP7T7C/4OaEg8B8GAo8FOI6af5xLEw91expF0KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTUVmM5vMHCwNNqg4GYrlIQCHdeY/EwPwu8APcTYHe87vIOTfF7V3jkTdsE+WBIVqp3vVPfatxHOXCLP9Fgxk0b20oFEk3MsbfATwvX8Np4x/wQQRoTOJYk8Yu1r6dPSp8TrtFldEn7LA/A04QnBHYfawgBmXh7ZTaaaFqW2AUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPjw03N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B20EC4CEF1;
-	Tue, 16 Dec 2025 11:51:21 +0000 (UTC)
+	 MIME-Version; b=d7T4Zo04o0wNL7yRsoPVLvKIyQphvkCQwMLlmM6DwQw2oG9aQo25KER69Vby6wSX/miPldgHVtidGRn0H+DUfPaDrLvz6yLW7uKo8xJ48QyJQfMOCfs19guXMqpURyMyMJMcdkwwbt3uc7jilhUgHMfGcJm31lfgaRktAa7fu5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoN8wQSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135E2C4CEF1;
+	Tue, 16 Dec 2025 11:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885881;
-	bh=9cVnKIMInvE4M0CGzHrKKCgx13U3fH9fj53cx+BL4oo=;
+	s=korg; t=1765884274;
+	bh=asazDP7T7C/4OaEg8B8GAo8FOI6af5xLEw91expF0KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPjw03N54Sgupjmj9scbQDjjVawydv6XeNXMI6qlvKrbSVQX3YyiBj8k+r9+nvHc2
-	 b0x1DX/JJ/L2n+TAWpzsMrq1qzVdioMlfI+MU7qAxbiOPo1PpxNt3NCa4Df6Nk5ILr
-	 18vZFPXWldw0UbuRTr+yiWpzGMOxO5SUzjx8apKs=
+	b=JoN8wQSMzYOWQHuGflfyKyWxjVM2Rd5RTQpezP77OfoMjFug/jl6xRaNXCnE591YG
+	 rVRLYQzS+bf6P3SdOdwdpqFYl8g/HIK+NufZUHf0cVGL4HhLH6+p+ZJheAhz9rv5vh
+	 2rk+q1LZBSCdE9xPaOe0fmSxp/s5NInMDma8wSZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jay Liu <jay.liu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 271/507] drm/mediatek: Fix CCORR mtk_ctm_s31_32_to_s1_n function issue
+Subject: [PATCH 6.12 145/354] coresight: Change device mode to atomic type
 Date: Tue, 16 Dec 2025 12:11:52 +0100
-Message-ID: <20251216111355.303196775@linuxfoundation.org>
+Message-ID: <20251216111326.170079685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Liu <jay.liu@mediatek.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 20ac36b71c53b8c36c6903b5ca87c75226700a97 ]
+[ Upstream commit 693d1eaca940f277af24c74873ef2313816ff444 ]
 
-if matrixbit is 11,
-The range of color matrix is from 0 to (BIT(12) - 1).
-Values from 0 to (BIT(11) - 1) represent positive numbers,
-values from BIT(11) to (BIT(12) - 1) represent negative numbers.
-For example, -1 need converted to 8191.
-so convert S31.32 to HW Q2.11 format by drm_color_ctm_s31_32_to_qm_n,
-and set int_bits to 2.
+The device mode is defined as local type. This type cannot promise
+SMP-safe access.
 
-Fixes: 738ed4156fba ("drm/mediatek: Add matrix_bits private data for ccorr")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jay Liu <jay.liu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250921055416.25588-2-jay.liu@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Change to atomic type and impose relax ordering, which ensures the
+SMP-safe synchronisation and the ordering between the mode setting and
+relevant operations.
+
+Fixes: 22fd532eaa0c ("coresight: etm3x: adding operation mode for etm_enable()")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-1-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ccorr.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ include/linux/coresight.h | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
-index 10d60d2c2a568..6d7bf4afa78d3 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
-@@ -80,27 +80,6 @@ void mtk_ccorr_stop(struct device *dev)
- 	writel_relaxed(0x0, ccorr->regs + DISP_CCORR_EN);
+diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+index 59f99b7da43f5..0165a0b403cb9 100644
+--- a/include/linux/coresight.h
++++ b/include/linux/coresight.h
+@@ -245,15 +245,11 @@ struct coresight_trace_id_map {
+  *		by @coresight_ops.
+  * @access:	Device i/o access abstraction for this device.
+  * @dev:	The device entity associated to this component.
+- * @mode:	This tracer's mode, i.e sysFS, Perf or disabled. This is
+- *		actually an 'enum cs_mode', but is stored in an atomic type.
+- *		This is always accessed through local_read() and local_set(),
+- *		but wherever it's done from within the Coresight device's lock,
+- *		a non-atomic read would also work. This is the main point of
+- *		synchronisation between code happening inside the sysfs mode's
+- *		coresight_mutex and outside when running in Perf mode. A compare
+- *		and exchange swap is done to atomically claim one mode or the
+- *		other.
++ * @mode:	The device mode, i.e sysFS, Perf or disabled. This is actually
++ *		an 'enum cs_mode' but stored in an atomic type. Access is always
++ *		through atomic APIs, ensuring SMP-safe synchronisation between
++ *		racing from sysFS and Perf mode. A compare-and-exchange
++ *		operation is done to atomically claim one mode or the other.
+  * @refcnt:	keep track of what is in use. Only access this outside of the
+  *		device's spinlock when the coresight_mutex held and mode ==
+  *		CS_MODE_SYSFS. Otherwise it must be accessed from inside the
+@@ -282,7 +278,7 @@ struct coresight_device {
+ 	const struct coresight_ops *ops;
+ 	struct csdev_access access;
+ 	struct device dev;
+-	local_t	mode;
++	atomic_t mode;
+ 	int refcnt;
+ 	bool orphan;
+ 	/* sink specific fields */
+@@ -607,13 +603,14 @@ static inline bool coresight_is_percpu_sink(struct coresight_device *csdev)
+ static inline bool coresight_take_mode(struct coresight_device *csdev,
+ 				       enum cs_mode new_mode)
+ {
+-	return local_cmpxchg(&csdev->mode, CS_MODE_DISABLED, new_mode) ==
+-	       CS_MODE_DISABLED;
++	int curr = CS_MODE_DISABLED;
++
++	return atomic_try_cmpxchg_acquire(&csdev->mode, &curr, new_mode);
  }
  
--/* Converts a DRM S31.32 value to the HW S1.n format. */
--static u16 mtk_ctm_s31_32_to_s1_n(u64 in, u32 n)
--{
--	u16 r;
--
--	/* Sign bit. */
--	r = in & BIT_ULL(63) ? BIT(n + 1) : 0;
--
--	if ((in & GENMASK_ULL(62, 33)) > 0) {
--		/* identity value 0x100000000 -> 0x400(mt8183), */
--		/* identity value 0x100000000 -> 0x800(mt8192), */
--		/* if bigger this, set it to max 0x7ff. */
--		r |= GENMASK(n, 0);
--	} else {
--		/* take the n+1 most important bits. */
--		r |= (in >> (32 - n)) & GENMASK(n, 0);
--	}
--
--	return r;
--}
--
- void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ static inline enum cs_mode coresight_get_mode(struct coresight_device *csdev)
  {
- 	struct mtk_disp_ccorr *ccorr = dev_get_drvdata(dev);
-@@ -119,7 +98,7 @@ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
- 	input = ctm->matrix;
+-	return local_read(&csdev->mode);
++	return atomic_read_acquire(&csdev->mode);
+ }
  
- 	for (i = 0; i < ARRAY_SIZE(coeffs); i++)
--		coeffs[i] = mtk_ctm_s31_32_to_s1_n(input[i], matrix_bits);
-+		coeffs[i] = drm_color_ctm_s31_32_to_qm_n(input[i], 2, matrix_bits);
+ static inline void coresight_set_mode(struct coresight_device *csdev,
+@@ -629,7 +626,7 @@ static inline void coresight_set_mode(struct coresight_device *csdev,
+ 	WARN(new_mode != CS_MODE_DISABLED && current_mode != CS_MODE_DISABLED &&
+ 	     current_mode != new_mode, "Device already in use\n");
  
- 	mtk_ddp_write(cmdq_pkt, coeffs[0] << 16 | coeffs[1],
- 		      &ccorr->cmdq_reg, ccorr->regs, DISP_CCORR_COEF_0);
+-	local_set(&csdev->mode, new_mode);
++	atomic_set_release(&csdev->mode, new_mode);
+ }
+ 
+ extern struct coresight_device *
 -- 
 2.51.0
 
