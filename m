@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45FACC2E3B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FFACC231C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 549C931E4C23
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E84F303F78C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF00136402A;
-	Tue, 16 Dec 2025 12:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE381342160;
+	Tue, 16 Dec 2025 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ3ZHAjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DJOnYbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4A2364021;
-	Tue, 16 Dec 2025 12:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A329313E13;
+	Tue, 16 Dec 2025 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887763; cv=none; b=o2X1L4FDYaHTNpQHguJ6hWHEzmABzqw/QKJPZgKKb2d37Hj1JIIRC8N20u4315/92yNfBZx7sBAzeZX2kzDWBYI31qN8TKHJlMJADBEY6WquBLsjQYDwjPH2LH/WdakQf3T2ILJOPFZuWbhrs80ZjYJ5qDlWstfSQD3D6A/f2ao=
+	t=1765884232; cv=none; b=sSfv1SdtYZ8Tm32Qf9zpOUXOOK4GFUBnV97i8pqZwVHEf3mXvxuS9Zwz9cPM6YNd8gykElGT71HzTpyFZj+GcSmXgAR2QEfUDMsBUeqFSzaHX2zseMZUJY8yF8fTuaxEekqAhntrOmp8fBmW6jA6frGS177b3pX4A2WVg6dnRHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887763; c=relaxed/simple;
-	bh=2oxMnqPSgM+Wuhx+wjhDJT+3hSLWlMnCX9IuwFGt57M=;
+	s=arc-20240116; t=1765884232; c=relaxed/simple;
+	bh=Qv4T3bViZyS9lpg6SLQO0hTiSbnL2iwknk4dZ+pJlCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHCeAPO9ckhPRhBLHG6BMW6vxGHla4qbPcIMhilruC/bMj4dHVeP6E0n7L//9PR9Pe6z8jyTbUOJqk6RNLSJjdgmNCPmudqcbBo8A0PatRnEweSrHBoG7LSOFSTM3etqhUCTU6jKSha3dwgZvidJjkeJLtRI7szAY+ZyaWJodS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ3ZHAjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FF3C4CEF1;
-	Tue, 16 Dec 2025 12:22:42 +0000 (UTC)
+	 MIME-Version; b=EEG53lTJyzoQd8p9TJdVTDrVNkzoDFfaH1OILObd6sS+z/vDRO4eQxkPpdBcy/BNuWdShSqNuWIBLUNTrI/6mfRC5fBiPPxnusKZX/nZIfChbTT2a4mtt7IoOeT0h2M6fr0mqSC/xwIucvBAeubXHXiZhA1+emZ6IOASWxeXONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DJOnYbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C995FC4CEF1;
+	Tue, 16 Dec 2025 11:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887763;
-	bh=2oxMnqPSgM+Wuhx+wjhDJT+3hSLWlMnCX9IuwFGt57M=;
+	s=korg; t=1765884232;
+	bh=Qv4T3bViZyS9lpg6SLQO0hTiSbnL2iwknk4dZ+pJlCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZ3ZHAjciKGyTkd91+ht1e7kify2yOcYlilZTVh2WuU8+U2vAyvIdVT5D6ya3F+C2
-	 P1Rl7ISrlLhiKteU2pOgR18jc3c57HyKZeqtMA4gY40Zp/IBeH6oGE/Ks7L27jleI0
-	 CK8inTiwbCxTfJcpon9sG02ObuuwnMJdCtYMOc90=
+	b=0DJOnYbmB8u9wAIIj6S0PrrhtUOsA8sgZltVrF9MAAhELpynDhJCj66q1W2Le8Ruw
+	 FDe/q2CKBFjAMMdNFnTn2Ca3mdu1/t4xnEpRc+Nu8vcZt0YsX8XzIwF1JJAxI8gsaz
+	 5G6A9WiZjKwHsEVoH3Q3oWdHIJpxrCbXiQ/LtUOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 330/614] scsi: qla2xxx: Fix improper freeing of purex item
+Subject: [PATCH 6.12 130/354] nbd: defer config put in recv_work
 Date: Tue, 16 Dec 2025 12:11:37 +0100
-Message-ID: <20251216111413.321851525@linuxfoundation.org>
+Message-ID: <20251216111325.632250912@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
+[ Upstream commit 9517b82d8d422d426a988b213fdd45c6b417b86d ]
 
-In qla2xxx_process_purls_iocb(), an item is allocated via
-qla27xx_copy_multiple_pkt(), which internally calls
-qla24xx_alloc_purex_item().
+There is one uaf issue in recv_work when running NBD_CLEAR_SOCK and
+NBD_CMD_RECONFIGURE:
+  nbd_genl_connect     // conf_ref=2 (connect and recv_work A)
+  nbd_open	       // conf_ref=3
+  recv_work A done     // conf_ref=2
+  NBD_CLEAR_SOCK       // conf_ref=1
+  nbd_genl_reconfigure // conf_ref=2 (trigger recv_work B)
+  close nbd	       // conf_ref=1
+  recv_work B
+    config_put         // conf_ref=0
+    atomic_dec(&config->recv_threads); -> UAF
 
-The qla24xx_alloc_purex_item() function may return a pre-allocated item
-from a per-adapter pool for small allocations, instead of dynamically
-allocating memory with kzalloc().
+Or only running NBD_CLEAR_SOCK:
+  nbd_genl_connect   // conf_ref=2
+  nbd_open 	     // conf_ref=3
+  NBD_CLEAR_SOCK     // conf_ref=2
+  close nbd
+    nbd_release
+      config_put     // conf_ref=1
+  recv_work
+    config_put 	     // conf_ref=0
+    atomic_dec(&config->recv_threads); -> UAF
 
-An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
-kfree() to release the item. If the item was from the pre-allocated
-pool, calling kfree() on it is a bug that can lead to memory corruption.
+Commit 87aac3a80af5 ("nbd: call nbd_config_put() before notifying the
+waiter") moved nbd_config_put() to run before waking up the waiter in
+recv_work, in order to ensure that nbd_start_device_ioctl() would not
+be woken up while nbd->task_recv was still uncleared.
 
-Fix this by using the correct deallocation function,
-qla24xx_free_purex_item(), which properly handles both dynamically
-allocated and pre-allocated items.
+However, in nbd_start_device_ioctl(), after being woken up it explicitly
+calls flush_workqueue() to make sure all current works are finished.
+Therefore, there is no need to move the config put ahead of the wakeup.
 
-Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Move nbd_config_put() to the end of recv_work, so that the reference is
+held for the whole lifetime of the worker thread. This makes sure the
+config cannot be freed while recv_work is still running, even if clear
++ reconfigure interleave.
+
+In addition, we don't need to worry about recv_work dropping the last
+nbd_put (which causes deadlock):
+
+path A (netlink with NBD_CFLAG_DESTROY_ON_DISCONNECT):
+  connect  // nbd_refs=1 (trigger recv_work)
+  open nbd // nbd_refs=2
+  NBD_CLEAR_SOCK
+  close nbd
+    nbd_release
+      nbd_disconnect_and_put
+        flush_workqueue // recv_work done
+      nbd_config_put
+        nbd_put // nbd_refs=1
+      nbd_put // nbd_refs=0
+        queue_work
+
+path B (netlink without NBD_CFLAG_DESTROY_ON_DISCONNECT):
+  connect  // nbd_refs=2 (trigger recv_work)
+  open nbd // nbd_refs=3
+  NBD_CLEAR_SOCK // conf_refs=2
+  close nbd
+    nbd_release
+      nbd_config_put // conf_refs=1
+      nbd_put // nbd_refs=2
+  recv_work done // conf_refs=0, nbd_refs=1
+  rmmod // nbd_refs=0
+
+Reported-by: syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6907edce.a70a0220.37351b.0014.GAE@google.com/T/
+Fixes: 87aac3a80af5 ("nbd: make the config put is called before the notifying the waiter")
+Depends-on: e2daec488c57 ("nbd: Fix hungtask when nbd_config_put")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ drivers/block/nbd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
-index 316594aa40cc5..42eb65a62f1f3 100644
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
- 		a.reason = FCNVME_RJT_RC_LOGIC;
- 		a.explanation = FCNVME_RJT_EXP_NONE;
- 		xmt_reject = true;
--		kfree(item);
-+		qla24xx_free_purex_item(item);
- 		goto out;
- 	}
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index deb298371a6a3..e6b756c475cde 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -963,9 +963,9 @@ static void recv_work(struct work_struct *work)
+ 	nbd_mark_nsock_dead(nbd, nsock, 1);
+ 	mutex_unlock(&nsock->tx_lock);
+ 
+-	nbd_config_put(nbd);
+ 	atomic_dec(&config->recv_threads);
+ 	wake_up(&config->recv_wq);
++	nbd_config_put(nbd);
+ 	kfree(args);
+ }
  
 -- 
 2.51.0
