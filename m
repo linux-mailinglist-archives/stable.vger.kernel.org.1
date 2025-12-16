@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-201332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BF7CC23A7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05684CC2A29
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A95983062214
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 960D7302EFC1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A09D34214A;
-	Tue, 16 Dec 2025 11:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AED30F958;
+	Tue, 16 Dec 2025 11:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1S2dT4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdOa/ib1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3538E32BF22;
-	Tue, 16 Dec 2025 11:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C78344039;
+	Tue, 16 Dec 2025 11:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884296; cv=none; b=ZyogFSvbFwbXkQnphODXIttXp8KZbk4ZeX6rcHaK9Q/h1i/asdSE1K4X4u3hEtYkbhSsZfFRWZgbAGtPtFg5TwHVTkDHtyv5ykauosrKxy47FYhJjDaLEFpk7MkgjJckopauk/LZTDJ3kO90s0Mx90WSa2E5speOwoGephvIQ8g=
+	t=1765886042; cv=none; b=rIbcW/rowZDJwsZ5iQ2k+loFTxptGOvPOr4zSqtH4MJZrec32DdV26EW/7SctY9zcSUy06sml1/zRcwzf4zQS6SSi7UC97RxEuWp0D5hhbTTR0xYMLIL6ITgnkunQdYKXDeC1x70IYCtUMq8wAZTy6SYYl6Eotkv125IQO8+M88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884296; c=relaxed/simple;
-	bh=fs9kGNy6z3fZxu1KDFy0sBDNELh9n2jZCZT3sRHOpnM=;
+	s=arc-20240116; t=1765886042; c=relaxed/simple;
+	bh=FXpvU0qqf//RUsFYBGvYwPeURkaAWu2XRK1ndvdQr1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMi9WgiEni0PA1iC8oFe6Rhd8BQz2V2SGg/Q9+NxoGxNGb4FncVrQztu9OAg8aI3nfWzU2KtC2S5e13mbPmhe6IxGN9nqVDuoHKuyiu7tl/vxYb4n4LFM6XU4rIlNTUSIpd1FigtFBXGYGZp7eEhzqHt9RVMBzkmGnkIvpYomg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1S2dT4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8572FC4CEF1;
-	Tue, 16 Dec 2025 11:24:55 +0000 (UTC)
+	 MIME-Version; b=JgNPAjdXOiC41GDoZ1rfE0x6T6PXIQgR738kU9fCWupgCxyOoDlTUs2l76sT8zKF2V+B5BH929UnyyVxJqodeJye+WmrL67zjPHjYSOQssdVr9iBD9oeddtl5gsk+nsgPlmDke9PsLGuS3OAxhBaGd3/2fkbU69Vxr50ML9EMIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdOa/ib1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B623C4CEF1;
+	Tue, 16 Dec 2025 11:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884296;
-	bh=fs9kGNy6z3fZxu1KDFy0sBDNELh9n2jZCZT3sRHOpnM=;
+	s=korg; t=1765886042;
+	bh=FXpvU0qqf//RUsFYBGvYwPeURkaAWu2XRK1ndvdQr1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1S2dT4O52rwHJroTMyVH84+GXP9rA2ICVYl6AvKeWT3gad99mGvjxsW5gkgnOZDZ
-	 IG/GSTjkUW6y/H5r2X0yBmg8JsLBXi8O9iRssRcyrY1sEIRjbIQLizKz8bYlXrEiiO
-	 4lfeyIva1NJkt0oWZimMZ+0df+qW6lggDAWZf0IQ=
+	b=hdOa/ib1i2uy9rv5mpfetbN4amPnk1W51XXDKcFcxYJwRVULfVrNveygOJMRJOXzz
+	 PmcBLitkIpS3WVqtdcFY1fcBU7TqsrjVIJMYmnLAjt7uYjdEofTKoqAlB6kutruPlr
+	 fqa8nmFtwfC7PH4Ro+F5EwV3kyJ/YbMGIMQic31Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/354] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
+Subject: [PATCH 6.17 277/507] perf arm_spe: Fix memset subclass in operation
 Date: Tue, 16 Dec 2025 12:11:58 +0100
-Message-ID: <20251216111326.386599904@linuxfoundation.org>
+Message-ID: <20251216111355.518125482@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
+[ Upstream commit 33e1fffea492b7158a168914dc0da6aedf78d08e ]
 
-In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
-to avoid crashing the whole kernel due to a filesystem corruption.
+The operation subclass is extracted from bits [7..1] of the payload.
+Since bit [0] is not parsed, there is no chance to match the memset type
+(0x25). As a result, the memset payload is never parsed successfully.
 
-Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
-Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
-Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Instead of extracting a unified bit field, change to extract the
+specific bits for each operation subclass.
+
+Fixes: 34fb60400e32 ("perf arm-spe: Add raw decoding for SPEv1.3 MTE and MOPS load/store")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../arm-spe-decoder/arm-spe-pkt-decoder.c     | 25 ++++++-------------
+ .../arm-spe-decoder/arm-spe-pkt-decoder.h     | 15 ++++++-----
+ 2 files changed, 14 insertions(+), 26 deletions(-)
 
-diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
-index aa595cd1ab6fe..6fcaaeece6666 100644
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
+index 13cadb2f1ceac..3c4ef5381c76c 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
+@@ -357,31 +357,20 @@ static int arm_spe_pkt_desc_op_type(const struct arm_spe_pkt *packet,
+ 				arm_spe_pkt_out_string(&err, &buf, &buf_len, " AR");
+ 		}
  
- 	rec = &el->l_recs[index];
+-		switch (SPE_OP_PKT_LDST_SUBCLASS_GET(payload)) {
+-		case SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP:
++		if (SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " SIMD-FP");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_GP_REG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_GP_REG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " GP-REG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " UNSPEC-REG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " NV-SYSREG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MTE-TAG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MEMCPY:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MEMCPY(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MEMCPY");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MEMSET:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MEMSET(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MEMSET");
+-			break;
+-		default:
+-			break;
+-		}
  
--	BUG_ON(ext_flags != rec->e_flags);
-+	if (ext_flags != rec->e_flags) {
-+		ret = ocfs2_error(inode->i_sb,
-+				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
-+				  (unsigned long long)ino, index, rec->e_flags, cpos);
-+		goto out;
-+	}
-+
- 	/*
- 	 * after moving/defraging to new location, the extent is not going
- 	 * to be refcounted anymore.
+ 		if (SPE_OP_PKT_IS_LDST_SVE(payload)) {
+ 			/* SVE effective vector length */
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+index 2cdf9f6da2681..51d5d038f620f 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+@@ -118,14 +118,13 @@ enum arm_spe_events {
+ 
+ #define SPE_OP_PKT_IS_OTHER_SVE_OP(v)		(((v) & (BIT(7) | BIT(3) | BIT(0))) == 0x8)
+ 
+-#define SPE_OP_PKT_LDST_SUBCLASS_GET(v)		((v) & GENMASK_ULL(7, 1))
+-#define SPE_OP_PKT_LDST_SUBCLASS_GP_REG		0x0
+-#define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP	0x4
+-#define SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG	0x10
+-#define SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG	0x30
+-#define SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG	0x14
+-#define SPE_OP_PKT_LDST_SUBCLASS_MEMCPY		0x20
+-#define SPE_OP_PKT_LDST_SUBCLASS_MEMSET		0x25
++#define SPE_OP_PKT_LDST_SUBCLASS_GP_REG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x0)
++#define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP(v)	(((v) & GENMASK_ULL(7, 1)) == 0x4)
++#define SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x10)
++#define SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x30)
++#define SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x14)
++#define SPE_OP_PKT_LDST_SUBCLASS_MEMCPY(v)	(((v) & GENMASK_ULL(7, 1)) == 0x20)
++#define SPE_OP_PKT_LDST_SUBCLASS_MEMSET(v)	(((v) & GENMASK_ULL(7, 0)) == 0x25)
+ 
+ #define SPE_OP_PKT_IS_LDST_ATOMIC(v)		(((v) & (GENMASK_ULL(7, 5) | BIT(1))) == 0x2)
+ 
 -- 
 2.51.0
 
