@@ -1,75 +1,99 @@
-Return-Path: <stable+bounces-202732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA61CC4FE0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 20:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 140D1CC503A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 20:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA8DE3025305
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:18:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 545A230422BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FD4241691;
-	Tue, 16 Dec 2025 19:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF7132F74E;
+	Tue, 16 Dec 2025 19:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="SojeGptb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Leps6HpZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE47124DD15
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACCD324714
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765912689; cv=none; b=D/WkeJVAPjABZ+4jYiH6uRkxK1di8rEbptLZeYgyqNP1T36ihZr4SxeAIcetw+3B6H/sg4SPxYTPeuL6a78TAo9lfPm2MyHBRX1iBm9Vlh0w/vPNhrpMNbM901IJX0cJiZZTApPbzpUsqrLKnYVZzTabraDsuekAE+3Sis9SneE=
+	t=1765913731; cv=none; b=dmLytHu7XYn2hXzTUNUusSlXwx4Xbo8sdCq+kQ3wVWPHdL/5TpZ1ENUtyDlVlNfXhL6su46b6Jdm9LDBd9PXxk16gQoo17MqKZSx/e455800IG/bKE77N/BQS3t1VDhp0woSIoLpE248gx8U9kGNylyy8dLsVfDq0pISz58vNVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765912689; c=relaxed/simple;
-	bh=GikYVmqqxhjxJgm6gnrt4GXoCf0a/2j8+0kyUxo1+pE=;
-	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=KUIs4jjV5gttHcdvpe53n5TyWpVW7gDFG6fEKCSUtNPeaQU53HGGIp0ILiWm0krAvm9wyRavbnZpwf2VD/EjXCuMFx2xrGotQl0sr73unvbdbDJB/vIF5kMzbd69oHpqhm3v/7XCbfyVwWxHkIaub9gSu3chfRs7P+iKNO6ghsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=SojeGptb; arc=none smtp.client-ip=89.58.18.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id 538109A294D
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
-	t=1765912676; h=date:message-id:subject:from:to;
-	bh=GikYVmqqxhjxJgm6gnrt4GXoCf0a/2j8+0kyUxo1+pE=;
-	b=SojeGptbML87R5IYDq7PV1qkKiyCnazxLnbbd5Bs5RoS9+kjyLiWBsKJ60dd2ZIN6kqG+GzEN/I
-	5bmYGfGN4lOS4c/Gncxn6bF5dEdp7FeNHhPz+YUBcZLaMm443yaYXKfJTFofeu8peZ5Y986qn6vA6
-	DQvkziM/fET0zjlLrhXPObbJw6CwrB8RvNp47azJoYJr+tymijIwG+qYbmAe8lznPBx8Ta6VUDpej
-	gRJJLd3RVpDkEhVeK32MU7UBnbefFanz3ueRTsidvZikD+3n9MdFXISWH21YjIVY0oAMtFpGV4Mv8
-	3zxwIDrx/PoVUibSiK7/UcynCeFflFzl1lhQ==
+	s=arc-20240116; t=1765913731; c=relaxed/simple;
+	bh=Rakyn03cAn4ws+rNLp8303TuvZ2Hh6/IlUu4Bqrn6HY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RkPzLE6Dv9aQMfYenWggIfF/1js7sj/2F7LBT0NUUwMSt0put6pp1iCmtIzW2ZsQC7IXQ30vgiLk+PYb1wSU/qyLcRRYq/k8mbDCqjsLst/OQWvOEl6L/s6MeWK2CBRiECdf/6RemUP61FZMQwTIo7oDT4Z/1BuqVbNQo7yr7wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Leps6HpZ; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-37fd6e91990so33060271fa.3
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:35:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765913728; x=1766518528; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2fiWdyTxHzyXdHV/LzIlNud4Xk0jRxN/vsFndQKWzkA=;
+        b=Leps6HpZitSM5F1uc3Wh3+rdwY0yZ0CJ0o8rtMzsFIvwYkoL7G/3MygWQTE7SHNBIi
+         2caEP07L+Pk5WNUMQzIvnyCdTQf1pTgQnIyaieQP1SE2auzWUolR0XpvZFD9Zw5zWpF1
+         qbquDoy94nKyfoyveaNwVq/tLpu6lacRWtT6f1f0Agmz4i88Q2xTMM8LGMG3NZl4fBvA
+         ETiJ6QvGp70sSquPkogVASy3nQtU3S834HtsbElSP/Yb+svKNEDPg5bUWl93yJT6Ea6p
+         FCEMypmyNzOuFksO1b0ePm4PcoLKd97Ttgee/lk0bIZTepnlQrc+/Js7T9Fx98E/WB3x
+         XoGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765913728; x=1766518528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2fiWdyTxHzyXdHV/LzIlNud4Xk0jRxN/vsFndQKWzkA=;
+        b=u7BCb0AmvikxwljOEYq8klz/GN4Lhuw40op71R2oq2LFXTW3/oQA6Z6WScN72DL0no
+         M+7zDg7Zlj9QY96bd/li4cQQW5nD3wenqnWEtR2dD4AtZosWdBAnXg63fEmYMqtn7sA+
+         kR2Vclf932IMiGgUTWGWgOQMMOqdzo4BRSw6WKdTxRoNKrDSgGEMWlPVgY8pXjqNLaNU
+         JBjm82wntTKUlsvEfGuukZA7wVwwZuGcfewKvQTNpQoekssVddtKYwikNzm+Ujrj3Q1z
+         sNquaTa6k8PNp1bm9AgGHvKmOktRgBUvATqrbtulXCH7j9nbNUiTd44TqBpxbV/pS90W
+         vkzQ==
+X-Gm-Message-State: AOJu0Yzx+WbKb7ZpHOPcgJVVHBRASNJpbty6VPtVNQsgq1M0jdIgpbxP
+	M+/o9V/0By1qivUJ9mOzIrO9YqpfLDEPKKqq3pXyJhl7FbzyYjSa2uvjW+J1iWoM3o7jOynRh+K
+	gMzOHP2H2lHD+NGh9oJlAfBRyHEV1gTx+GofJ
+X-Gm-Gg: AY/fxX6VOu4b8s/JEkMncQH5qOPNMHfslGnee4cqPxbte/dbFO3lbgd6S86E4+8S3kE
+	q3KMXpkfdH95I/T5zs3kyE2hFpakNlzKO7b/66gJIzooPebZE/NSlFelsaW0HHCfbkd0TqhKVcU
+	5ZNtuqVXgRbCtDRQXyqmM4dL0BwvuFG+aNI3kdPVV/abysZXvuJB9IIDEmrIZR7lP4fvpcAxBKl
+	WlUf3dBXiPq7UY73allLwYdMhfj8frsF2skohL+JboMKo86ZxLaTzQp2kMvmSRyTwc/+7RNW/Ws
+	2BVk8eVrfI7CNpzU2YtkTa4udmLmfk+u+AaDGx8=
+X-Google-Smtp-Source: AGHT+IHZM8F29rp+QN4MkCIOrX/NB2E/euo2QTu/DopKbrenIZ+1+TQWP8v7tZWC9LQE2K4BhCvnHd3cxZ3xPZC7bVw=
+X-Received: by 2002:a05:651c:1549:b0:37a:31fc:1d53 with SMTP id
+ 38308e7fff4ca-37fd08e3424mr53192691fa.40.1765913727332; Tue, 16 Dec 2025
+ 11:35:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Dec 2025 20:17:54 +0100
-Message-Id: <DEZVSR85OD3F.SUN1BKV73WI8@achill.org>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
- <conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
- <achill@achill.org>, <sr@sladewatkins.com>
-Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
-From: "Achill Gilgenast" <achill@achill.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+MIME-Version: 1.0
 References: <20251216111401.280873349@linuxfoundation.org>
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Wed, 17 Dec 2025 01:05:15 +0530
+X-Gm-Features: AQt7F2qKOKbFXjxASAe-Bch2wX46L0eCWZnOy9xsLOGgVArYPoja3obSdP1hc1A
+Message-ID: <CAC-m1rrxiEimyx24MjZze6doMEN=EevwOMb+VPuiy1reh9Cdug@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue Dec 16, 2025 at 12:06 PM CET, Greg Kroah-Hartman wrote:
+On Tue, Dec 16, 2025 at 6:32=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
 > This is the start of the stable review cycle for the 6.18.2 release.
 > There are 614 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
@@ -79,18 +103,35 @@ On Tue Dec 16, 2025 at 12:06 PM CET, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.2-=
-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.2-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.18.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
 
-Thanks! Tested on all Alpine architectures & boot tested on x86_64.
+The Linux kernel version 6.18.2 was built and boot-tested using qemu-x86_64
+and qemu-arm64 with the default configuration (defconfig).
 
-Tested-by: Achill Gilgenast <achill@achill.org>=
+Both build and boot processes completed successfully on arm64 and x86_64.
+The kernel operated as expected in the virtualized environments, and no iss=
+ues
+were observed. No dmesg regressions were found.
+
+Build details:
+Architectures: arm64, x86_64
+Kernel version: 6.18.2
+Configuration: defconfig
+Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git
+Commit: 103c79e44ce7c81882928abab98b96517a8bce88
+
+Tested-by: Dileep Malepu dileep.debian@gmail.com
+
+Best regards,
+Dileep Malepu
 
