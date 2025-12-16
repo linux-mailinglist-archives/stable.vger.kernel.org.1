@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195E4CC2E87
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34898CC2445
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E941300D336
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97E743024116
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF1B3148B6;
-	Tue, 16 Dec 2025 12:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC9734250D;
+	Tue, 16 Dec 2025 11:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vq3NKyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnTffPJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E3D224AEF;
-	Tue, 16 Dec 2025 12:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80C734214A;
+	Tue, 16 Dec 2025 11:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887802; cv=none; b=W5bqKlKPdPdfQAHjc6ROQHNHk3qSJYpMtbwQ0E5Qmx+4wWK5Av/ahEV7XGDtpddl6NJIv5z/vNDh3iNw7dGrm9L3lJvlU+yEjtuZvM8ZA7auqwO95AQSZ0ErreNXQp6a8Eb3ShnEZ8yfp6+FWZm2zpRsG1SKf7KuT1Hi8rLcE/c=
+	t=1765884376; cv=none; b=qqeT/dhA/tYw7z4fUuK9+5rDIySd9iSHd5Ab3cP56IM2K6QM5hUo74+Bgnic+beLn8tEXGRTqo7MCrl29QmcOHvkCyD7nqJjymPp5Z5T0UmG2Lx47mp4Vs3B6TCFN1uBJCJcvDjpH91IhpTnKP42QdvNe3Hp9z6RqXNlLVEJeR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887802; c=relaxed/simple;
-	bh=LYFFM1VL+N10i0AJZ+q3fEtyZbduspwCxxpbKJXs1U8=;
+	s=arc-20240116; t=1765884376; c=relaxed/simple;
+	bh=zz0kv/qbLYbw3mxmQa4/vgKw+6sX+Cmbsq+9PtCPIMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D50y3JpLjwRw6coSE0u3zhWTkJheW4XmGNszvlemcCEkwIJD0+JG9Gf50vh5HuryyHIo3Dqyj+ikTgYQGtOBnmakGhnFWp5jkXWgd+yTQV3Xwu4Nd/pbzfEjMT+/8nsI/IqmK3qdCo9OJ7F5XOIoDRQE6YRVQEfQ9AIziTkp+TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vq3NKyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792B9C16AAE;
-	Tue, 16 Dec 2025 12:23:21 +0000 (UTC)
+	 MIME-Version; b=F8UIUb9WgH0rmjpePcoCFnPr983vgfmm2gCQZETL9FZ1ptuW6gEXiYG2DD5nCPfW7dNWMFaTp4jUjUDC9DgCALUqe0qg0X6+ppFC1O6ZVEBrJBn16fqpmoae9XO/hWOi9+Mxf6IhuYBuio7fB7bos9E+ZWCVg78nxj5pwv1kPI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnTffPJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486BC4CEF1;
+	Tue, 16 Dec 2025 11:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887802;
-	bh=LYFFM1VL+N10i0AJZ+q3fEtyZbduspwCxxpbKJXs1U8=;
+	s=korg; t=1765884376;
+	bh=zz0kv/qbLYbw3mxmQa4/vgKw+6sX+Cmbsq+9PtCPIMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Vq3NKynQBiqjQJ5fepWlwwJRJkQpi8GbDxcjMFtSW5g8IU7Lr9uq9j1h6GzxBcnT
-	 rHtW+so+F7lyx7q7QofwAf6L5ve0C/v71cNrjtX+iIhFlZUNv7S754VifoUA408WYX
-	 e7CFKi3UUEfBJaJgFArhsshHHLBu3Zh1PMQRrV6I=
+	b=EnTffPJ//GToe61z40dkIXdXG6qeZz5OAwRstT0gTKSf5Vy3ZLzhH6Ck8sA6jpN/N
+	 qA4Xa/HJhaU4Wt6S3KFUQg5doF9Y3rCrZ+Cey2R0v0ITiW+jkljK9TgKnAolaxfD3n
+	 twHeKYO7A9n72EjE+G+AKb1SH/diEuvX7sbCn51g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 341/614] of/fdt: Fix the len check in early_init_dt_check_for_usable_mem_range()
+Subject: [PATCH 6.12 141/354] powerpc/32: Fix unpaired stwcx. on interrupt exit
 Date: Tue, 16 Dec 2025 12:11:48 +0100
-Message-ID: <20251216111413.719343251@linuxfoundation.org>
+Message-ID: <20251216111326.026920164@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 463942de13cd30fad5dba709f708483eab7efc2c ]
+[ Upstream commit 10e1c77c3636d815db802ceef588522c2d2d947c ]
 
-The len value is in bytes, while `dt_root_addr_cells + dt_root_size_cells`
-is in cells (4 bytes per cell). Modulo calculation between them is
-incorrect, the units must be converted first.
+Commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
+exception exit from ppc64") erroneouly copied to powerpc/32 the logic
+from powerpc/64 based on feature CPU_FTR_STCX_CHECKS_ADDRESS which is
+always 0 on powerpc/32.
 
-Use helper functions to simplify the code and fix this issue.
+Re-instate the logic implemented by commit b64f87c16f3c ("[POWERPC]
+Avoid unpaired stwcx. on some processors") which is based on
+CPU_FTR_NEED_PAIRED_STWCX feature.
 
-Fixes: fb319e77a0e7 ("of: fdt: Add memory for devices by DT property "linux,usable-memory-range"")
-Fixes: 2af2b50acf9b9c38 ("of: fdt: Add generic support for handling usable memory range property")
-Fixes: 8f579b1c4e347b23 ("arm64: limit memory regions based on DT property, usable-memory-range")
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://patch.msgid.link/20251115134753.179931-4-yuntao.wang@linux.dev
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C exception exit from ppc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/powerpc/kernel/entry_32.S | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index b45f60dccd7cf..ea37ba694bcd7 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -884,8 +884,9 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
- void __init early_init_dt_check_for_usable_mem_range(void)
- {
- 	struct memblock_region rgn[MAX_USABLE_RANGES] = {0};
--	const __be32 *prop, *endp;
-+	const __be32 *prop;
- 	int len, i;
-+	u64 base, size;
- 	unsigned long node = chosen_node_offset;
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index f4a8c98772491..1beb578c64114 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -263,10 +263,9 @@ interrupt_return:
+ 	mtspr	SPRN_SRR1,r12
  
- 	if ((long)node < 0)
-@@ -893,14 +894,17 @@ void __init early_init_dt_check_for_usable_mem_range(void)
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
  
- 	pr_debug("Looking for usable-memory-range property... ");
+ 	lwz	r3,_CCR(r1)
+ 	lwz	r4,_LINK(r1)
+@@ -306,10 +305,9 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 	mtspr	SPRN_SRR1,r12
  
--	prop = of_get_flat_dt_prop(node, "linux,usable-memory-range", &len);
--	if (!prop || (len % (dt_root_addr_cells + dt_root_size_cells)))
-+	prop = of_flat_dt_get_addr_size_prop(node, "linux,usable-memory-range",
-+					     &len);
-+	if (!prop)
- 		return;
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
  
--	endp = prop + (len / sizeof(__be32));
--	for (i = 0; i < MAX_USABLE_RANGES && prop < endp; i++) {
--		rgn[i].base = dt_mem_next_cell(dt_root_addr_cells, &prop);
--		rgn[i].size = dt_mem_next_cell(dt_root_size_cells, &prop);
-+	len = min(len, MAX_USABLE_RANGES);
-+
-+	for (i = 0; i < len; i++) {
-+		of_flat_dt_read_addr_size(prop, i, &base, &size);
-+		rgn[i].base = base;
-+		rgn[i].size = size;
- 
- 		pr_debug("cap_mem_regions[%d]: base=%pa, size=%pa\n",
- 			 i, &rgn[i].base, &rgn[i].size);
+ 	lwz	r3,_LINK(r1)
+ 	lwz	r4,_CTR(r1)
 -- 
 2.51.0
 
