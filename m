@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE37ACC27A6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2286CC2BD1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0BB3300D43B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45F7731F3E21
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E210D35502D;
-	Tue, 16 Dec 2025 11:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863F3364024;
+	Tue, 16 Dec 2025 12:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwb/anB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW/Pdrbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B035502A;
-	Tue, 16 Dec 2025 11:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41928364032;
+	Tue, 16 Dec 2025 12:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885851; cv=none; b=qDT7MmxR5KqPNQiecHH6PtFEY2avWU4aRvZMqHiMrw5tt2Tt0BbI6dxHSiprrdDN6fy9ULEoNgWcqvErGlvHaWsB4+IED3noqimXY8CdbwOZOn8n6/7DJ5o0XFygaP1qyPNVLzGPo5soW58/TlVINUO6cknYlASZDQBPO66IK+s=
+	t=1765887786; cv=none; b=IFr+RjIfie5MYZHIMezpRfIo/UHqOs7wLw3AAZHAImGouTu+mmYG45X21w5xgVNuOwqdDaxxyxKaJyYcsaeblPHsv06BHnwyhdi0ITmpnUn6fEaR5m0hrYJPJNeyiRCkAG+i/GPSLUAn68tDeJgFDrRwLtwJmNjT0t7FaB3u9Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885851; c=relaxed/simple;
-	bh=dun44S3WeGzzunlxqbg5NQVI7RDoXki8Ot82HetvJGw=;
+	s=arc-20240116; t=1765887786; c=relaxed/simple;
+	bh=pWP1H+tnWBUX4Voil8UqUaq7y2WDBAiteANoKm3kP7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ836l3iYI0BkCzpvj+dJQceb4JtaRQ0bMnUgRwTWy0ufhafuSKKjKTd1lcEfZlKg8p7n4XsRNfd+FO4NsUcaSBvV4dRhYTGc3jxABhR3jvGrSz4yMyp80JkKACf9hHHeiUO7aeDQu3b4LnPZUt06wDtcAIyvuQlJtYWvSFgNNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwb/anB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD32EC4CEF1;
-	Tue, 16 Dec 2025 11:50:50 +0000 (UTC)
+	 MIME-Version; b=Bcss422/R8dLsDtdDvcjrFDbwGpW7eYIbj7A+0bZCKW3J24XmoD8eet4cOzV7ETLDuWfDOjfFcSBTv7IeNuuWDjBt+MsFQxLeGHfBm9GyhzcnkQ/RZVjwfJsQn+XPXgIF/6O+KuHJ9JlfjRHFmeKwOS7J5PZNfOD5COEt2cjxfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW/Pdrbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E8EC4CEF1;
+	Tue, 16 Dec 2025 12:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885851;
-	bh=dun44S3WeGzzunlxqbg5NQVI7RDoXki8Ot82HetvJGw=;
+	s=korg; t=1765887786;
+	bh=pWP1H+tnWBUX4Voil8UqUaq7y2WDBAiteANoKm3kP7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwb/anB0rQ9lRTFW/TysL2mWS56yF9T/6j75i/GYH/KmJQQinARG/WdtxGQn5uZ+M
-	 /cTUA4KDqLiWvbOcSlVj1u4WtQPI9loC8alGMslKLx5RtOzMX/9msvEV+VOVmN5kIl
-	 Jv08IACn6g9inXpKizId3rOYpWRmKufMqQrMdv9w=
+	b=PW/PdrbvWEv5+2rmGIERPESKeQtg23qoqB7J+ljOyxVCau1kN2p49hVN/G+gy5X1h
+	 p7oH4bz2TNKoiJoLW++zPWjZsjVZvOvyzQn3VkQEtbU7QKCGzptbN8kgA7SKbZ74lW
+	 uRCNjR8Yu0EHGtHuOGwPKGKVzz8gLyxeWwOg/KnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 263/507] net: phy: Add helper for fixing RGMII PHY mode based on internal mac delay
+Subject: [PATCH 6.18 337/614] mfd: mt6397-irq: Fix missing irq_domain_remove() in error path
 Date: Tue, 16 Dec 2025 12:11:44 +0100
-Message-ID: <20251216111355.014952149@linuxfoundation.org>
+Message-ID: <20251216111413.574066700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 24afd7827efb7c69adfc41835390470e3eec4740 ]
+[ Upstream commit b4b1bd1f330fdd13706382be6c90ce9f58cee3f5 ]
 
-The "phy-mode" property of devicetree indicates whether the PCB has
-delay now, which means the mac needs to modify the PHY mode based
-on whether there is an internal delay in the mac.
+If devm_request_threaded_irq() fails after irq_domain_create_linear()
+succeeds in mt6397_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-This modification is similar for many ethernet drivers. To simplify
-code, define the helper phy_fix_phy_mode_for_mac_delays(speed, mac_txid,
-mac_rxid) to fix PHY mode based on whether mac adds internal delay.
+Call irq_domain_remove() in the error path after a successful
+irq_domain_create_linear() to properly release the IRQ domain.
 
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251114003805.494387-3-inochiama@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: db37c6e510de ("net: stmmac: dwmac-sophgo: Add phy interface filter")
+Fixes: a4872e80ce7d ("mfd: mt6397: Extract IRQ related code from core driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121500.605-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy-core.c | 43 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        |  3 +++
- 2 files changed, 46 insertions(+)
+ drivers/mfd/mt6397-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-index 605ca20ae192d..0c63e6ba2cb0c 100644
---- a/drivers/net/phy/phy-core.c
-+++ b/drivers/net/phy/phy-core.c
-@@ -101,6 +101,49 @@ const char *phy_rate_matching_to_str(int rate_matching)
- }
- EXPORT_SYMBOL_GPL(phy_rate_matching_to_str);
+diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
+index 0e463026c5a91..5d2e5459f7444 100644
+--- a/drivers/mfd/mt6397-irq.c
++++ b/drivers/mfd/mt6397-irq.c
+@@ -229,6 +229,7 @@ int mt6397_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "failed to register irq=%d; err: %d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
-+/**
-+ * phy_fix_phy_mode_for_mac_delays - Convenience function for fixing PHY
-+ * mode based on whether mac adds internal delay
-+ *
-+ * @interface: The current interface mode of the port
-+ * @mac_txid: True if the mac adds internal tx delay
-+ * @mac_rxid: True if the mac adds internal rx delay
-+ *
-+ * Return: fixed PHY mode, or PHY_INTERFACE_MODE_NA if the interface can
-+ * not apply the internal delay
-+ */
-+phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-+						bool mac_txid, bool mac_rxid)
-+{
-+	if (!phy_interface_mode_is_rgmii(interface))
-+		return interface;
-+
-+	if (mac_txid && mac_rxid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	if (mac_txid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII_RXID;
-+		if (interface == PHY_INTERFACE_MODE_RGMII_TXID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	if (mac_rxid) {
-+		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-+			return PHY_INTERFACE_MODE_RGMII_TXID;
-+		if (interface == PHY_INTERFACE_MODE_RGMII_RXID)
-+			return PHY_INTERFACE_MODE_RGMII;
-+		return PHY_INTERFACE_MODE_NA;
-+	}
-+
-+	return interface;
-+}
-+EXPORT_SYMBOL_GPL(phy_fix_phy_mode_for_mac_delays);
-+
- /**
-  * phy_interface_num_ports - Return the number of links that can be carried by
-  *			     a given MAC-PHY physical link. Returns 0 if this is
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 04553419adc3f..2640ce96db3f3 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1795,6 +1795,9 @@ static inline bool phy_is_pseudo_fixed_link(struct phy_device *phydev)
- 	return phydev->is_pseudo_fixed_link;
- }
- 
-+phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-+						bool mac_txid, bool mac_rxid);
-+
- int phy_save_page(struct phy_device *phydev);
- int phy_select_page(struct phy_device *phydev, int page);
- int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
 -- 
 2.51.0
 
