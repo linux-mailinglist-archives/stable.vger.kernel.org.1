@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABC7CC37F6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50620CC2EE4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF08E3074D5B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 930FE303D3D7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A5C36A01D;
-	Tue, 16 Dec 2025 12:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0BF34D917;
+	Tue, 16 Dec 2025 12:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlpuBszh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbfrHo8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF3F36A018;
-	Tue, 16 Dec 2025 12:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D334D3A0;
+	Tue, 16 Dec 2025 12:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887396; cv=none; b=ll1GnqI3FYphkiGc47tvorXO9m/CeU03H+KsLSHfVVjJWIRkBsLBYmLDE+x/YMgbzNCK+St1jOQEXKhrb6Kogs3FaW+DxkbemRBXCSFCd2ogWCvCLhrOf96npvgVZ0zYnfhEKabQX7cWegmXPpiZ0YZiFWAh4ROrOGdE+Z09VUQ=
+	t=1765888743; cv=none; b=bHRru1JhstkKY9p4SyMbFs49aHqePUGvIghnpWGovnFfF/ZkU3O4HV1dLqE3cGwuHL0cWNq1g4ZpS2qANY47f0ljkCljGB7hanNmCzSgsn+BFqbbLgae66N3qeXX41wKuZezwCMPAILUb065yH96PC1mjcqayvkhvoVCf4EAtvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887396; c=relaxed/simple;
-	bh=Zu5Gma5Zt2VzwDhbpUgcuuudvUUPpSU4LYW8vUhb1dY=;
+	s=arc-20240116; t=1765888743; c=relaxed/simple;
+	bh=4v8J+MsXAvzInMD17ouUz84hTnO8xCWYFLR/SD473+A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DEfjmWrGFWIAiDm4hl/G52uMQlhf0TxE8mxeeNeqJFgmSdwzkfrvRuyOt0JKk0HvrabP9ibhEeKMItdlmPsP++4V3X2FTABCcH5iJknxaioLUHu5jV3xXyOXYPmYHY+Bs3emifuNPOkl8JzxFC0RsrbwCOrrm+wOt7eC0mB6qBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlpuBszh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88F4C4CEF1;
-	Tue, 16 Dec 2025 12:16:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765887396;
-	bh=Zu5Gma5Zt2VzwDhbpUgcuuudvUUPpSU4LYW8vUhb1dY=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=aqRlSz+MJIsiEF4OCc3w3O72Tv8IvkSTgCgvT2tx0zAOcZXI6+9lsKgi/8EYE9VY9hMHHppwG3nTn3NCe/mU+XceZC4jA6ExKkn6hGYAMoygI5GjHCzKof7nKwnG6BEjMtixO9f4bButWajbAz8EKZGVpJPKHGWpYjD67Er9uWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbfrHo8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5F3C4CEF1;
+	Tue, 16 Dec 2025 12:39:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765888743;
+	bh=4v8J+MsXAvzInMD17ouUz84hTnO8xCWYFLR/SD473+A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MlpuBszhXWPTG/ykRC8Uc0PaSiD7zcoA+ORsynBjv8yNzazr7lyj3C7YuSo+M0k2G
-	 dRIY/exJg6a2p+y5QGj01iNbkYabKEo6EFqS+dtZloArxeUATDKDtQN4kJyJTU5mSz
-	 NhrAr319HrNISIV2ieHE+gzBywcXPcHk76fi9ThhjSBT6uLDMRXxMuHSevncbpO8mJ
-	 r6f7wPzQic02XPHK79wUHyzthP7pB10Sipfb3QunKmJGPO+v4M3o6IdiAhNocgxH7n
-	 OYKgKsIerCxnR7LI1W3LK510pc4pJ2Re3/eC+56hK0W0aUmV98FSixoAig1C1vBRUu
-	 /d6DYrm/ildoQ==
-Date: Tue, 16 Dec 2025 17:46:32 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ma Ke <make24@iscas.ac.cn>, peter.ujfalusi@gmail.com,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] dmaengine: ti-dma-crossbar: Fix error handling in
- ti_am335x_xbar_route_allocate
-Message-ID: <aUFNoIzaGjAi_4SP@vaman>
-References: <20251215014249.11495-1-make24@iscas.ac.cn>
- <c0cc4abd-4000-4487-9837-e55c442c4d0d@kernel.org>
+	b=VbfrHo8O9c2Is0Xj4zr8SOc653uNpOepPiEELhYdPjXy5y7I1DrGS5BI9Gmbna0/I
+	 e1Hj/eh9t2/LXQT6y7dz8hA23sevLBEO4RHKSXRmWrHEaft/T5oXbD/v5gLNRp2c7w
+	 BKUpDy1wAbyeY+vUSMay+5Pww0NfBFlB5NVnrbdI=
+Date: Tue, 16 Dec 2025 13:17:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Brett A C Sheffield <bacs@librecast.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/507] 6.17.13-rc1 review
+Message-ID: <2025121634-lurk-angular-5d99@gregkh>
+References: <20251216111345.522190956@linuxfoundation.org>
+ <aUFMIK_av7G3aKui@auntie>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,48 +59,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c0cc4abd-4000-4487-9837-e55c442c4d0d@kernel.org>
+In-Reply-To: <aUFMIK_av7G3aKui@auntie>
 
-On 15-12-25, 12:52, Krzysztof Kozlowski wrote:
-> On 15/12/2025 02:42, Ma Ke wrote:
-> > ti_am335x_xbar_route_allocate() calls of_find_device_by_node() which
-> > increments the reference count of the platform device, but fails to
-> > call put_device() to decrement the reference count before returning.
-> > This could cause a reference count leak each time the function is
-> > called, preventing the platform device from being properly cleaned up
-> > and leading to memory leakage.
+On Tue, Dec 16, 2025 at 12:10:08PM +0000, Brett A C Sheffield wrote:
+> On 2025-12-16 12:07, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.17.13 release.
+> > There are 507 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 > > 
-> > Add proper put_device() calls in all exit paths to fix the reference
-> > count imbalance.
-> > 
-> > Found by code review.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
-> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> > ---
-> >  drivers/dma/ti/dma-crossbar.c | 24 ++++++++++++++++++------
-> >  1 file changed, 18 insertions(+), 6 deletions(-)
-> > 
+> > Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> > Anything received after that time might be too late.
 > 
-> 
-> Just a note, author sends and resends same patches without addressing
-> feedback. At least one case was very dubious or just incorrect code, and
-> author just ignored it and sent it again to hide the previous
-> discussion, so I suspect LLM generated content.
-> 
-> I did not review the code here, but please carefully review all patches
-> from this author before applying and simply do not trust that this looks
-> like a fix.
+> git has 6.17.13-rc2 not rc1 ?
 
-Right, I am very skeptical of random fixes coming in. Sometimes they
-just follow a boilerplate pattern and fix, not attempt seems to be made
-to check the environment and logic of fix..
+Yes, -rc2 is now out, I forgot to drop a patch for -rc1.
 
-> 
-> Best regards,
-> Krzysztof
+thanks,
 
--- 
-~Vinod
+greg k-h
 
