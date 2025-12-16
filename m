@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-202082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80DACC317C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818D9CC217D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E93E3148C50
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9B9E3050373
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A1035C1B8;
-	Tue, 16 Dec 2025 12:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C8F33AD86;
+	Tue, 16 Dec 2025 11:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkO1oLPT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvydYKku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC78E35C1B4;
-	Tue, 16 Dec 2025 12:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB77271A6D
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886757; cv=none; b=VgbAfIoimdy6HZOSWyXCkacTJB2c9yOtFM9NV9gZLsbE1iPVJ3pvrzFg5e44mIDd609NElw4pinGYkMNZ9yUFDZrVmtsjOOxCuY5fLJM0HFH2oLB20SnykamjaQZG5vYdtxH/zXNNIAvriKC9R38gEz5LQ1CmRvZD9qkaQkBQzY=
+	t=1765883215; cv=none; b=gcd8/o+xZ3Ixx2fotnO5cM6o6xqkNYkY+NPO5eG+FCdcsoX3+DMPKuNLGGpulARyy5WhxsqrUygJdKS5X3zK+zYyhmTPthDV4citE6DOusTs5L8f28tVErENp5G0ul0VvBUVv/9aFSqxR8IPtbTwu6XNyEq3kEZnzzcbu3OszrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886757; c=relaxed/simple;
-	bh=EXe8TyD2/HkhUAcFvQ106kH8INsC+gLrkJZXYP5WtLk=;
+	s=arc-20240116; t=1765883215; c=relaxed/simple;
+	bh=JPA9sA5kgBIUXKSJuAAePoAuAop39jxBU7kj8g3y1Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORx8H4E755W/pY1SkhDDr/gUxvGmtgHOOiJfjvF+p3jHHzHAYPASi+7OPDgXn5VviFJz+gkLbfL2ZG9PzhXFuKQkrTUzEqbZd7LlCknRMqkuIr+r3xDo6rOi97XnfSmPtaK6BuJVTlttcHe7DhWINAfW3bR7gvdRo46ia/6d8ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkO1oLPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD90C4CEF1;
-	Tue, 16 Dec 2025 12:05:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886757;
-	bh=EXe8TyD2/HkhUAcFvQ106kH8INsC+gLrkJZXYP5WtLk=;
+	 MIME-Version; b=YMswX6jyqVZVB8j3w8UPzH1tAayGtKVGJcOZBvkh53bl1Gj8mZoGsfa7qq1ArRey6hzFKOwwR2SLVxtfTy4XpnwAtzUw+C1c4n0Um9O+hXSem5xRQwA38mWrWxHpeZDhICgoe1Q3qFJbs/BHC0oor7o2wucutdeY/ES5HxU91FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvydYKku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C81C4CEF5;
+	Tue, 16 Dec 2025 11:06:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765883215;
+	bh=JPA9sA5kgBIUXKSJuAAePoAuAop39jxBU7kj8g3y1Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkO1oLPTsBv/nF7ZJcpNOCPTGXuUBCF4nesG5FE2CEvt8zBf3Lv0sLGtx8Oc2oz0b
-	 z1+mjBcxQ+uaQ02s0hSYPjrZxBUPs4PFPYJqX3AlZQ3OzkiOJtMBaV/nM6LiKUBeMo
-	 zLiI+6oefI18Ly/b7VUh8VxtSH4MMS01W3wSuioc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=dvydYKkuLAf90TcvNGGnIxAP1Y4lDYSVjsc4qwLUe46dZT851MWt/dswZmLiK7Ib6
+	 Ff/zQ7GruZXA1DFBfQ1o9p1Y8p7l2KgBmlBKZaOanilCshyBw6oc+l5RvW4wzEbWTr
+	 0neLLS0Me2h8iWmeRmNFEtnxFL3T2rjqQ8Z00JamAXnKNUonIX4fesCqA+znxdG3XB
+	 wzvXuISvSTm99ZHI9oRuTUGLvqLftUCLZR1+RlgiducIBHj5WTQeAEP713qNTANtaL
+	 XLaLVYkC1NU/XNC5YaZ18awiiIsyBPHfbCZdVbRhXktWHQvx7OZ89opwQddSVJoQxO
+	 qsBYTSVECryZw==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+Cc: Junrui Luo <moonafterrain@outlook.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/614] perf bpf_counter: Fix opening of "any"(-1) CPU events
-Date: Tue, 16 Dec 2025 12:06:30 +0100
-Message-ID: <20251216111402.144230281@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Subject: [PATCH 6.6.y 2/2] ALSA: wavefront: Clear substream pointers on close
+Date: Tue, 16 Dec 2025 06:06:30 -0500
+Message-ID: <20251216110630.2754006-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251216110630.2754006-1-sashal@kernel.org>
+References: <2025121600-skincare-suspense-5b69@gregkh>
+ <20251216110630.2754006-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,89 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: Junrui Luo <moonafterrain@outlook.com>
 
-------------------
+[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
 
-From: Ian Rogers <irogers@google.com>
+Clear substream pointers in close functions to avoid leaving dangling
+pointers, helping to improve code safety and
+prevents potential issues.
 
-[ Upstream commit 2a67955de13624ec17d1c2504d2c9eeb37933b77 ]
-
-The bperf BPF counter code doesn't handle "any"(-1) CPU events, always
-wanting to aggregate a count against a CPU, which avoids the need for
-atomics so let's not change that. Force evsels used for BPF counters
-to require a CPU when not in system-wide mode so that the "any"(-1)
-value isn't used during map propagation and evsel's CPU map matches
-that of the PMU.
-
-Fixes: b91917c0c6fa ("perf bpf_counter: Fix handling of cpumap fixing hybrid")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c     | 13 +++++++++++++
- tools/perf/util/bpf_counter.c |  7 ++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ sound/isa/wavefront/wavefront_midi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index 7006f848f87a6..f1c9d6c94fc50 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -2540,6 +2540,7 @@ int cmd_stat(int argc, const char **argv)
- 	unsigned int interval, timeout;
- 	const char * const stat_subcommands[] = { "record", "report" };
- 	char errbuf[BUFSIZ];
-+	struct evsel *counter;
+diff --git a/sound/isa/wavefront/wavefront_midi.c b/sound/isa/wavefront/wavefront_midi.c
+index 2dde66573618d..820a5a55d2523 100644
+--- a/sound/isa/wavefront/wavefront_midi.c
++++ b/sound/isa/wavefront/wavefront_midi.c
+@@ -278,6 +278,7 @@ static int snd_wavefront_midi_input_close(struct snd_rawmidi_substream *substrea
+ 	        return -EIO;
  
- 	setlocale(LC_ALL, "");
+ 	guard(spinlock_irqsave)(&midi->open);
++	midi->substream_input[mpu] = NULL;
+ 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
  
-@@ -2797,6 +2798,18 @@ int cmd_stat(int argc, const char **argv)
+ 	return 0;
+@@ -300,6 +301,7 @@ static int snd_wavefront_midi_output_close(struct snd_rawmidi_substream *substre
+ 	        return -EIO;
  
- 	evlist__warn_user_requested_cpus(evsel_list, target.cpu_list);
- 
-+	evlist__for_each_entry(evsel_list, counter) {
-+		/*
-+		 * Setup BPF counters to require CPUs as any(-1) isn't
-+		 * supported. evlist__create_maps below will propagate this
-+		 * information to the evsels. Note, evsel__is_bperf isn't yet
-+		 * set up, and this change must happen early, so directly use
-+		 * the bpf_counter variable and target information.
-+		 */
-+		if ((counter->bpf_counter || target.use_bpf) && !target__has_cpu(&target))
-+			counter->core.requires_cpu = true;
-+	}
-+
- 	if (evlist__create_maps(evsel_list, &target) < 0) {
- 		if (target__has_task(&target)) {
- 			pr_err("Problems finding threads of monitor\n");
-diff --git a/tools/perf/util/bpf_counter.c b/tools/perf/util/bpf_counter.c
-index ca5d01b9017db..a5882b5822057 100644
---- a/tools/perf/util/bpf_counter.c
-+++ b/tools/perf/util/bpf_counter.c
-@@ -460,6 +460,7 @@ static int bperf_reload_leader_program(struct evsel *evsel, int attr_map_fd,
- 	struct bperf_leader_bpf *skel = bperf_leader_bpf__open();
- 	int link_fd, diff_map_fd, err;
- 	struct bpf_link *link = NULL;
-+	struct perf_thread_map *threads;
- 
- 	if (!skel) {
- 		pr_err("Failed to open leader skeleton\n");
-@@ -495,7 +496,11 @@ static int bperf_reload_leader_program(struct evsel *evsel, int attr_map_fd,
- 	 * following evsel__open_per_cpu call
- 	 */
- 	evsel->leader_skel = skel;
--	evsel__open(evsel, evsel->core.cpus, evsel->core.threads);
-+	assert(!perf_cpu_map__has_any_cpu_or_is_empty(evsel->core.cpus));
-+	/* Always open system wide. */
-+	threads = thread_map__new_by_tid(-1);
-+	evsel__open(evsel, evsel->core.cpus, threads);
-+	perf_thread_map__put(threads);
- 
- out:
- 	bperf_leader_bpf__destroy(skel);
+ 	guard(spinlock_irqsave)(&midi->open);
++	midi->substream_output[mpu] = NULL;
+ 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
+ 	return 0;
+ }
 -- 
 2.51.0
-
-
 
 
