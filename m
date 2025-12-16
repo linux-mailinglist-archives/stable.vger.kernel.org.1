@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321E4CC2475
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D76CC27E2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81DC130202C6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 182453004465
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2442E219A8E;
-	Tue, 16 Dec 2025 11:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3334F497;
+	Tue, 16 Dec 2025 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTtD+nkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8hA7IMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59D5326926;
-	Tue, 16 Dec 2025 11:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0609534F475;
+	Tue, 16 Dec 2025 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884433; cv=none; b=Ub/NXp9k2fherTwZ6s8OJuYP+wO99fLJ/r7U5pU7ujwUN7ktso6D3Izmx4vs9lsqrlVDcPZXfWBMjxqzh6yMoRnrqOTxp0g0+aFPY79CeCk4cr/OYznrCD0b9IReMC0ofMhd8C5Wa6eJZOQiexy3f3cj+S+TpL3kWMfx7z7PbNc=
+	t=1765886143; cv=none; b=bvYchDDkT8nK90sxtefsbYTk7fWTbzMKKaXKtehdrwANRpcONWdE3jzVYaP8gegGy4gjLzEP+s8RcW8CRJykfNjrbZYLzB9xZdpWcaYrO8kxPxiQoiv1uccIb3z4xFhXgEGs4tUKeRupfN4oeIz40cBGdNxj76OZcHGbrXHAP5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884433; c=relaxed/simple;
-	bh=JJjmVDT/1DZ26GIdeUEqfEdI0kGOzKAgGT+WeiP+sHc=;
+	s=arc-20240116; t=1765886143; c=relaxed/simple;
+	bh=g20gjEDE2FvGAZ+rIHThvKmwpjHqmJCcDrBaTYCc9mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e06G7L0wezRHc8KpALZg4TJxlTb/FigrhIF43/X9//IGV12Bu0F0Ps/ecxo4OpMFmo2YPWo/4Ucb9G2Ov1bPKO2uWr05A1p8wWrn2yvD5N+U1UCQg9CGtG5XYOkfLhjB9bmjHw14S1zo5ZMMR6G/is1cchZRVv6q+NKeTpaFTBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTtD+nkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DFDC19422;
-	Tue, 16 Dec 2025 11:27:13 +0000 (UTC)
+	 MIME-Version; b=Rouju/+SgYMmW8hpA0FFiDScdtZ0P4X17t7KtGXCSKNVXLVSrSXCSQs3cVNy4m1Fygo0dvN8GXNaKOgS7mlmbDJaHLGpVJWLn3WNq9/wu4SA0v+pwtigcsgC9Mk0PjVvZh1w16oYBG1DsdsIZGMQ5gv/0gH40sZfxELkcvzFq1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8hA7IMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3975FC4CEF1;
+	Tue, 16 Dec 2025 11:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884433;
-	bh=JJjmVDT/1DZ26GIdeUEqfEdI0kGOzKAgGT+WeiP+sHc=;
+	s=korg; t=1765886142;
+	bh=g20gjEDE2FvGAZ+rIHThvKmwpjHqmJCcDrBaTYCc9mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTtD+nkXu+lgrLknf7HEia6Mc5hriZ3V7oLtWL9DSnc2tCeC9BBIV2qw5xICSXJ1e
-	 Bcts1UHMqaVGJdUkmO8sXTsglD9hL8er7QIZQ2rP93wec9eUBOycHWhSFjZJ2CilaJ
-	 2Ccr5fcqRz1upuaI9uSXWwGpmIqPpPmfcYvto4B8=
+	b=W8hA7IMygdF/NBPaK/AOj+qmokQM3fmA8RdKD8IAaNxauu/xggrZ9/FSkMZS9VBMi
+	 ODOh+/HaNiizsyuqaV0G1J0kSt95woVcXyPMexXZfPsBndNCjSDsC5yJSwZzMAGlSi
+	 syP0wJbQ/9YVUENQxvWILP2qkr+5MXsYlomMZzyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/354] leds: rgb: leds-qcom-lpg: Dont enable TRILED when configuring PWM
+Subject: [PATCH 6.17 318/507] RDMA/bnxt_re: Pass correct flag for dma mr creation
 Date: Tue, 16 Dec 2025 12:12:39 +0100
-Message-ID: <20251216111327.868439057@linuxfoundation.org>
+Message-ID: <20251216111356.989610558@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 072cd5f458d76b9e15d89ebdaea8b5cb1312eeef ]
+[ Upstream commit a26c4c7cdb50247b8486f1caa1ea8ab5e5c37edf ]
 
-The PWM signal from the LPG channel can be routed to PMIC GPIOs with
-proper GPIO configuration, and it is not necessary to enable the
-TRILED channel in that case. This also applies to the LPG channels
-that mapped to TRILED channels. Additionally, enabling the TRILED
-channel unnecessarily would cause a voltage increase in its power
-supply. Hence remove it.
+DMA MR doesn't use the unified MR model. So the lkey passed
+on to the reg_mr command to FW should contain the correct
+lkey. Driver is incorrectly over writing the lkey with pdid
+and firmware commands fails due to this.
 
-Fixes: 24e2d05d1b68 ("leds: Add driver for Qualcomm LPG")
-Signed-off-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://patch.msgid.link/20251119-lpg_triled_fix-v3-2-84b6dbdc774a@oss.qualcomm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Avoid passing the wrong key for cases where the unified MR
+registration is not used.
+
+Fixes: f786eebbbefa ("RDMA/bnxt_re: Avoid an extra hwrm per MR creation")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1763624215-10382-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 +++++---
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 6 +++---
+ drivers/infiniband/hw/bnxt_re/qplib_sp.h | 2 +-
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 5d8e27e2e7ae7..84e02867f3b43 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (c) 2017-2022 Linaro Ltd
-  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #include <linux/bits.h>
- #include <linux/bitfield.h>
-@@ -1246,8 +1246,6 @@ static int lpg_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 12fee23de81e7..ba87606263cfb 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -599,7 +599,8 @@ static int bnxt_re_create_fence_mr(struct bnxt_re_pd *pd)
+ 	mr->qplib_mr.va = (u64)(unsigned long)fence->va;
+ 	mr->qplib_mr.total_size = BNXT_RE_FENCE_BYTES;
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL,
+-			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE);
++			       BNXT_RE_FENCE_PBL_SIZE, PAGE_SIZE,
++			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev, "Failed to register fence-MR\n");
+ 		goto fail;
+@@ -3972,7 +3973,7 @@ struct ib_mr *bnxt_re_get_dma_mr(struct ib_pd *ib_pd, int mr_access_flags)
+ 	mr->qplib_mr.hwq.level = PBL_LVL_MAX;
+ 	mr->qplib_mr.total_size = -1; /* Infinte length */
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, NULL, 0,
+-			       PAGE_SIZE);
++			       PAGE_SIZE, false);
+ 	if (rc)
+ 		goto fail_mr;
  
- 	lpg_apply(chan);
+@@ -4202,7 +4203,8 @@ static struct ib_mr *__bnxt_re_user_reg_mr(struct ib_pd *ib_pd, u64 length, u64
  
--	triled_set(lpg, chan->triled_mask, chan->enabled ? chan->triled_mask : 0);
--
- out_unlock:
- 	mutex_unlock(&lpg->lock);
+ 	umem_pgs = ib_umem_num_dma_blocks(umem, page_size);
+ 	rc = bnxt_qplib_reg_mr(&rdev->qplib_res, &mr->qplib_mr, umem,
+-			       umem_pgs, page_size);
++			       umem_pgs, page_size,
++			       _is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags));
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev, "Failed to register user MR - rc = %d\n", rc);
+ 		rc = -EIO;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index f40b7d1692b06..6d1d55c8423d0 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -615,7 +615,7 @@ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
+ }
  
+ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+-		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size)
++		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr)
+ {
+ 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
+ 	struct bnxt_qplib_hwq_attr hwq_attr = {};
+@@ -677,7 +677,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+ 	req.access = (mr->access_flags & BNXT_QPLIB_MR_ACCESS_MASK);
+ 	req.va = cpu_to_le64(mr->va);
+ 	req.key = cpu_to_le32(mr->lkey);
+-	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags))
++	if (unified_mr)
+ 		req.key = cpu_to_le32(mr->pd->id);
+ 	req.flags = cpu_to_le16(mr->flags);
+ 	req.mr_size = cpu_to_le64(mr->total_size);
+@@ -688,7 +688,7 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+ 	if (rc)
+ 		goto fail;
+ 
+-	if (_is_alloc_mr_unified(res->dattr->dev_cap_flags)) {
++	if (unified_mr) {
+ 		mr->lkey = le32_to_cpu(resp.xid);
+ 		mr->rkey = mr->lkey;
+ 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+index 09faf4a1e849c..4e080108b1f24 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+@@ -340,7 +340,7 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
+ int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
+ 			 bool block);
+ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+-		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size);
++		      struct ib_umem *umem, int num_pbls, u32 buf_pg_size, bool unified_mr);
+ int bnxt_qplib_free_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr);
+ int bnxt_qplib_alloc_fast_reg_mr(struct bnxt_qplib_res *res,
+ 				 struct bnxt_qplib_mrw *mr, int max);
 -- 
 2.51.0
 
