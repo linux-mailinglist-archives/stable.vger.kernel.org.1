@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDEDCC296B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:15:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCA9CC25F2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4E553005F2B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 978C0301E6FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89E435F8AA;
-	Tue, 16 Dec 2025 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3528322B83;
+	Tue, 16 Dec 2025 11:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlj7Gmja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzWdocbK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ABF35F8A5;
-	Tue, 16 Dec 2025 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFA1347FE1;
+	Tue, 16 Dec 2025 11:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887334; cv=none; b=ZfuLh+RHymiMGO5lVszjjI+UIfjUfJEFgrFKLQRF6YuDY7N483Fk2/dQuNBUYDf43n1fZVf/zfTOSme8Mg79TU6NH7iMYpXpDvLZLL/Kuj7K8Ryl4CxWEh8qAdU3PbEvU5RCQUWzdJsSttJA9kXCytLghtGeY064UadGEaXgHPs=
+	t=1765885387; cv=none; b=VufewVqiEc73wVlJMy3bGqCs6CARyVdHf5r//dI6gR+BBsej3q3xV4fQ3NlaFcDKu2GZ3Oax5E7ghUahtMhlHb4jMpup+bJ00O/hd94JSZiTirvI7km+fdsmfafOiMDl4wa2L46W9/Yy1HHVYJ671Axe+9VrQhSRt25DC/xOfvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887334; c=relaxed/simple;
-	bh=s0VFVUDT//ekYxEneh0erJd+WMQFKwRjAdDu7GqewF0=;
+	s=arc-20240116; t=1765885387; c=relaxed/simple;
+	bh=44r30ZvOVnJR1qoDfDh+lGUahtu0Ap4Qqn+SaBgBN8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ToQQ+8hEK89oDC1f8vsX9ds0Kaf4/a+4U/e8o5TgtTBIERxCeVekAG/we5ZKuxqzXXaltuL+zdtjvmJTVa9syG8o0aT4s01jCETHFnhYzVQZtfYdBVnLugq5QqYM6RgbFyTEcec6qx9EDXKyVfN6hZQTy2uSc2A7TzK3uXZjngg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlj7Gmja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26A4C4CEF1;
-	Tue, 16 Dec 2025 12:15:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r+0eEub8qtNJ7RbxajsuxglNX1Aw69iIpDQi6UyK576QF7sp6VKazqm5D2GuNlKAlCSAqHalrbfqPYOYZ+UJaWTBPVj/HnANP+oEBQJ5B9T7LRDoXoqvCB/eQWZb+/2HRB4zORhmpXcTzckPD6FPyED0Yanf11Aq8VVN1bOkyHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzWdocbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F15C4CEF5;
+	Tue, 16 Dec 2025 11:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887334;
-	bh=s0VFVUDT//ekYxEneh0erJd+WMQFKwRjAdDu7GqewF0=;
+	s=korg; t=1765885387;
+	bh=44r30ZvOVnJR1qoDfDh+lGUahtu0Ap4Qqn+SaBgBN8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlj7Gmjax554Nb8mP4wADTcvbKqkwPScQVZHpuCvjHpZzfRQjMt3gMnSkvLZ/0pA+
-	 600ppf06/vgeVU089puXR1USARPs9dhv8ukyUvo2p6wl2FaoaRcrpAQSquaQVtNIAC
-	 71jYIdGxo826Dx93F6qmOCChyTx9t+rE+U8+3Ohc=
+	b=XzWdocbKF5703hsCqA0BUqyTVnaAljhrvZHDT9zncj+NO9zLoRhP9vNPdKzYCg142
+	 2tYoBtbMYIJA0pPLdn8qgBpmvIAZrQKbHVnlFYDVynwgqyqW0d5+aL+RpTTUjF/Ze8
+	 TBV9oYWY4OipBygO6PuELroMbW8K+595/qzd7Qgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot@syzkaller.appspotmail.com,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 197/614] ns: initialize ns_list_node for initial namespaces
-Date: Tue, 16 Dec 2025 12:09:24 +0100
-Message-ID: <20251216111408.516043338@linuxfoundation.org>
+Subject: [PATCH 6.17 124/507] tools/nolibc/stdio: let perror work when NOLIBC_IGNORE_ERRNO is set
+Date: Tue, 16 Dec 2025 12:09:25 +0100
+Message-ID: <20251216111350.024474258@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 3dd50c58664e2684bd610a57bf3ab713cbb0ea91 ]
+[ Upstream commit c485ca3aff2442adea4c08ceb5183e671ebed22a ]
 
-Make sure that the list is always initialized for initial namespaces.
+There is no errno variable when NOLIBC_IGNORE_ERRNO is defined. As such,
+simply print the message with "unknown error" rather than the integer
+value of errno.
 
-Link: https://patch.msgid.link/20251029-work-namespace-nstree-listns-v4-8-2e6f823ebdc0@kernel.org
-Fixes: 885fc8ac0a4d ("nstree: make iterator generic")
-Tested-by: syzbot@syzkaller.appspotmail.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: acab7bcdb1bc ("tools/nolibc/stdio: add perror() to report the errno value")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ns_common.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/include/nolibc/stdio.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
-index 3a72c3f81eca4..71a5e28344d11 100644
---- a/include/linux/ns_common.h
-+++ b/include/linux/ns_common.h
-@@ -127,6 +127,7 @@ void __ns_common_free(struct ns_common *ns);
- 	.ops			= to_ns_operations(&nsname),				\
- 	.stashed		= NULL,							\
- 	.__ns_ref		= REFCOUNT_INIT(refs),					\
-+	.ns_list_node		= LIST_HEAD_INIT(nsname.ns.ns_list_node),		\
+diff --git a/tools/include/nolibc/stdio.h b/tools/include/nolibc/stdio.h
+index 7630234408c58..724d05ce69624 100644
+--- a/tools/include/nolibc/stdio.h
++++ b/tools/include/nolibc/stdio.h
+@@ -600,7 +600,11 @@ int sscanf(const char *str, const char *format, ...)
+ static __attribute__((unused))
+ void perror(const char *msg)
+ {
++#ifdef NOLIBC_IGNORE_ERRNO
++	fprintf(stderr, "%s%sunknown error\n", (msg && *msg) ? msg : "", (msg && *msg) ? ": " : "");
++#else
+ 	fprintf(stderr, "%s%serrno=%d\n", (msg && *msg) ? msg : "", (msg && *msg) ? ": " : "", errno);
++#endif
  }
  
- #define ns_common_init(__ns)                     \
+ static __attribute__((unused))
 -- 
 2.51.0
 
