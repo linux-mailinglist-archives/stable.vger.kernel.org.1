@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C785CC2701
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4F1CC29C3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B14333093DB2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AFCBB3005F3A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9C3451DA;
-	Tue, 16 Dec 2025 11:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27AF364E83;
+	Tue, 16 Dec 2025 12:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYO1s/tP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcr3lOXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5413451CF;
-	Tue, 16 Dec 2025 11:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CABD3644DC;
+	Tue, 16 Dec 2025 12:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885018; cv=none; b=pYpIKli9uYupkvQC0f86Y+a/GcKjdZDW5vxvirNobMfECf1K//qO7hD3cYjppjzTts9KwR5a7l9ilrfmdlAJr6YYodZa9HU25hS60sKXAEGWsumw7L/RwBMd95B11JMUwBNmAgJuwCDs/2K1491zY3jYE08iKs3c1G6LZ0Alx2k=
+	t=1765886972; cv=none; b=WqxaEJ8yw37/Spjdk/ZPV6UWILn69fp3iaSlZWluP8eJlg2TvA8tEj7qzJrgRq2cU0LHbzBZMU+pHJk0M1xmdd3zjdrVI1jDqmf31ThgJAYUH4SQnsgIHn6vFAobPyldQ9wnICvX/lcmHJAW/nbtZ63Pxp+ZHSRqHeE19sN892c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885018; c=relaxed/simple;
-	bh=0KGgH2kZLZxr1yZkSf1mPDwlAwKZRAaXEGtP1FHF5E0=;
+	s=arc-20240116; t=1765886972; c=relaxed/simple;
+	bh=Cy+LEyNuYLZSL7ZK0AS21fCDD3qYjzGC7Eihqe08mWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVRtJEGCVKk2o1iM2lvz92d10pnSfDqEGs98zIpKpzq/tQgv0RU+JGQBnK/V7OIaj/+3ofvm8Go56VJJ5F110yQzPzG0lOf+bJpVBpUsHdk3Icxw52xcaDuzuweAEi6rcT3NNq8Ds+T1LYMCWdvuJbtfgUlNZYYvXSMEAOfk1vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYO1s/tP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D371EC4CEF5;
-	Tue, 16 Dec 2025 11:36:57 +0000 (UTC)
+	 MIME-Version; b=Me0dow4Ag++q0/qj7J/lA77Vplo3KqFUsOkJWk7to1DL/Fmq1zulspvKgybl1ptsL/BQFv7Oui/+C8GZUHltC3OOLGetKdO3e9skSud1eWxiZj5lP5ExfX1InME1lgYhkw8w+2Q1HSJ6p785qIKwylLwW31H8Tt3P/6OKzlnMw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcr3lOXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87A9C4CEF1;
+	Tue, 16 Dec 2025 12:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885018;
-	bh=0KGgH2kZLZxr1yZkSf1mPDwlAwKZRAaXEGtP1FHF5E0=;
+	s=korg; t=1765886972;
+	bh=Cy+LEyNuYLZSL7ZK0AS21fCDD3qYjzGC7Eihqe08mWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYO1s/tPIFgiYoo7LNRzUwKW8QiIMXtFDZOkBXliEyih9Atz3EPoYolA3f8YPXBFB
-	 6FCGCGSnTucd0T2zEPMRA+LX0iX0Ik8Wk3isAxhmFZt3KQV+nJsn9eZzQoUsbsUB5a
-	 jS9YYFq3MF2pVQKOEgo7SfqT4zQMOfi8DyLpR2P8=
+	b=gcr3lOXOnSBJ0IOkwVbxEX+NhvaXmk8VHvyeH0ufk+sE/z/Slr3zd0YfBsfvIS1yY
+	 pMcPH9YW8iIwDDMIkE6TQzn0lfWfzxKufMzA+95oiLUVo7btJ2LEq/GhrAHLgtNH5N
+	 SDb1hwQ868LR+aHoWlTieRTO+gIYUiPgIhwaxyrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 014/507] accel/ivpu: Make function parameter names consistent
+Subject: [PATCH 6.18 088/614] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
 Date: Tue, 16 Dec 2025 12:07:35 +0100
-Message-ID: <20251216111346.051714079@linuxfoundation.org>
+Message-ID: <20251216111404.510780477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit cf87f93847dea607e8a35983cb006ef8493f8065 ]
+[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
 
-Make ivpu_hw_btrs_dct_set_status() and ivpu_fw_boot_params_setup()
-declaration and definition parameter names consistent.
+Use check_add_overflow() to guard against potential integer overflows
+when adding the binary blob lengths and the size of an asymmetric_key_id
+structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
+possible buffer overflow when copying data from potentially malicious
+X.509 certificate fields that can be arbitrarily large, such as ASN.1
+INTEGER serial numbers, issuer names, etc.
 
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250808111014.328607-1-jacek.lawrynowicz@linux.intel.com
-Stable-dep-of: aa1c2b073ad2 ("accel/ivpu: Fix DCT active percent format")
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_fw.h      | 2 +-
- drivers/accel/ivpu/ivpu_hw_btrs.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_fw.h b/drivers/accel/ivpu/ivpu_fw.h
-index 9a3935be1c057..7081913fb0dde 100644
---- a/drivers/accel/ivpu/ivpu_fw.h
-+++ b/drivers/accel/ivpu/ivpu_fw.h
-@@ -45,7 +45,7 @@ struct ivpu_fw_info {
- int ivpu_fw_init(struct ivpu_device *vdev);
- void ivpu_fw_fini(struct ivpu_device *vdev);
- void ivpu_fw_load(struct ivpu_device *vdev);
--void ivpu_fw_boot_params_setup(struct ivpu_device *vdev, struct vpu_boot_params *bp);
-+void ivpu_fw_boot_params_setup(struct ivpu_device *vdev, struct vpu_boot_params *boot_params);
- 
- static inline bool ivpu_fw_is_cold_boot(struct ivpu_device *vdev)
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index ba2d9d1ea235a..348966ea2175c 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -141,12 +142,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
  {
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
-index d2d82651976d1..032c384ac3d4d 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.h
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
-@@ -36,7 +36,7 @@ u32 ivpu_hw_btrs_dpu_freq_get(struct ivpu_device *vdev);
- bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
- bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
- int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
--void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 dct_percent);
-+void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent);
- u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
+ 	struct asymmetric_key_id *kid;
+-
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	size_t kid_sz;
++	size_t len;
++
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(kid_sz, GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
 2.51.0
 
