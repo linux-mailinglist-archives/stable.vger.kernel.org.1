@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AF9CC2385
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF3CC27B5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21B36305A113
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56B58303F292
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E1C341ACA;
-	Tue, 16 Dec 2025 11:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A29235502C;
+	Tue, 16 Dec 2025 11:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODC7bgw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Sj9IT5o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4101313E13;
-	Tue, 16 Dec 2025 11:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90D9355027;
+	Tue, 16 Dec 2025 11:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884280; cv=none; b=MhgVLdVDLHp4zoYXUWacoCKtN/AkuXNdfp0WB8Mg0S3GwnFXEGGKOoa2NBDw7RlzQHDQSJGCEGiMLMUgkyVG1usayKdvfT+P1kpCMX0dbdZ7sChKGwKK6wvCEsYETCu52IVQNFSN5Q+9en/lFIVtrqSzXEFsZRqbfM1g1zYI/OY=
+	t=1765885885; cv=none; b=K02TL6doO25VYXw+vwT66gLlrXtaa/t4BkFt3IGscWw4PDip+SlIYP7N/KhBeeMO6Xo7qjXjgTVB8dByPuRAFLR0iVGCMkXVNoTy1MpTDNmUnyZBREuFq7FZB67IEl86SDmiWWqcIoiyfAhwEdkFGAFJrzTDbVKi6ueyXDvDe8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884280; c=relaxed/simple;
-	bh=86srxkA0c1PvT/EE3k4nl1ox9P2GlWhbkc5T+hKuBzY=;
+	s=arc-20240116; t=1765885885; c=relaxed/simple;
+	bh=zLjBQ3wbqNTz6qPyiXBs+A022avUstZ3aANk6bJP4qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diizb3ShVmkDSpP04qUDpM7uvoXsi4ed2tv6Ks2HsN0Wx1+lUdlKcF+aisbvjOfZs0//vpbjfxRlyMTMuzNTbl+o/NMiEIlZFImq+bcmuA5aazQJR7LbXoqHe5q7Khb35v3d58+WbKagYXV03SDlT5KZcxVlKEyWz/wrBYBC8qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODC7bgw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55181C4CEF1;
-	Tue, 16 Dec 2025 11:24:39 +0000 (UTC)
+	 MIME-Version; b=q9Lhrt3u7V3nbrb0zIlrYOKHBsLK4nhIvYD+j5O4ayZr0tGQxkwnQEFkCqg9WO00cAMdyVzHoVomaCoGwFXOC5fUro39YPTov7DdqEDNbdVQE1Ydf8GYzinSlGGvzCdUjWefCxztE01U5nix+GYDLeOELBCfUtTGrB0I1MuJwk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Sj9IT5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03301C4CEF1;
+	Tue, 16 Dec 2025 11:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884279;
-	bh=86srxkA0c1PvT/EE3k4nl1ox9P2GlWhbkc5T+hKuBzY=;
+	s=korg; t=1765885885;
+	bh=zLjBQ3wbqNTz6qPyiXBs+A022avUstZ3aANk6bJP4qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODC7bgw69NXbZEp9kbAZSa/c7ICtxV2Wy77UZXkWKKekmJL7VQGvllAcS5+/g4jf4
-	 bEwBuHsqoIfJgqJp/r0bDL9q7QObDOSoGav/zdpcaiHQ98SXc2FMTio5PwJLnoBAc/
-	 f8Ej+aCZKMLUTQkzLFhIVHS93dDiLOO+9IhrleDg=
+	b=1Sj9IT5oZ71WqDRXJ8DowLjVLPkbXlXxs/es/rjq7VI3KFfkOWr30wJvf6XmTik+s
+	 49IUtKnLxbTwPPvospetK2LmsvTywfrseIJycmRW+D7K0Rvo0YEavGV7AsUPX4ZYGZ
+	 +Xtm+UabBF/60pAiDDIUdyttEl2z+6t169gcmR8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/354] coresight: etm4x: Correct polling IDLE bit
+Subject: [PATCH 6.17 272/507] drm/msm/a6xx: Flush LRZ cache before PT switch
 Date: Tue, 16 Dec 2025 12:11:53 +0100
-Message-ID: <20251216111326.205909690@linuxfoundation.org>
+Message-ID: <20251216111355.338691524@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
+[ Upstream commit 180349b8407f3b268b2ceac0e590b8199e043081 ]
 
-Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
-the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
-instead of the IDLE bit.
+As per the recommendation, A7x and newer GPUs should flush the LRZ cache
+before switching the pagetable. Update a6xx_set_pagetable() to do this.
+While we are at it, sync both BV and BR before issuing  a
+CP_RESET_CONTEXT_STATE command, to match the downstream sequence.
 
-This commit corrects the typo.
-
-Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
+Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688995/
+Message-ID: <20251118-kaana-gpu-support-v4-2-86eeb8e93fb6@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 7b9eaeb115d21..9164e134814ae 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1844,7 +1844,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 1e363af319488..f8939f0fad4f2 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -224,7 +224,7 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 		OUT_RING(ring, submit->seqno - 1);
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
+ 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+-		OUT_RING(ring, CP_SET_THREAD_BOTH);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
+ 
+ 		/* Reset state used to synchronize BR and BV */
+ 		OUT_PKT7(ring, CP_RESET_CONTEXT_STATE, 1);
+@@ -235,7 +235,13 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 			 CP_RESET_CONTEXT_STATE_0_RESET_GLOBAL_LOCAL_TS);
+ 
+ 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+-		OUT_RING(ring, CP_SET_THREAD_BR);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
++
++		OUT_PKT7(ring, CP_EVENT_WRITE, 1);
++		OUT_RING(ring, LRZ_FLUSH);
++
++		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
++		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
+ 	}
+ 
+ 	if (!sysprof) {
 -- 
 2.51.0
 
