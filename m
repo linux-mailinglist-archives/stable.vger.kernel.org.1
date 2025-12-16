@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFD2CC25E6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30DECC2B2E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF11F302C5CE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FAD9312A418
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C6A34D3BF;
-	Tue, 16 Dec 2025 11:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1183B35CBB2;
+	Tue, 16 Dec 2025 12:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY9j+vEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCIOMwaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9259347FE1;
-	Tue, 16 Dec 2025 11:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B518935BDD4;
+	Tue, 16 Dec 2025 12:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885374; cv=none; b=S6sOKjTmGaAFTACPXzbBMMyqlO8m4SSHg00H+/weQuqxMSua2XEM23ZzzP+iKqDsiupE9o88q0xmOzb9kUAES1w0W4/5IJBJkkQ1VO493EHpTjoN7WQEJWPPEPVkV6ampSlx9nEWxDXnj4dMTxu9j9POIiNPp4tR5SOkoeuorkU=
+	t=1765887322; cv=none; b=l+J8vCX3c2nFp79o+EwIPEmD81fWLw5uAUdzKwHdEUET+NLzQvmBXxCAhnPyfHwYrVqso2rT9BcMMg+x40vX0rboLailrVmJ6F3CR9YBTlFmLJnhXH2oSKN2zqH/nkmmGayV8SOmFp/CKbREWG0vsl5KU0y4VdiiwFleksu9HNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885374; c=relaxed/simple;
-	bh=ojd4RUv+K9/BGUHoBIOvl4nFbQNVyn8wiJmC9DNfyx0=;
+	s=arc-20240116; t=1765887322; c=relaxed/simple;
+	bh=0P5TH3Ql91VnPvIg+V23ILPzGaz3FwnFkQHOKhJPYMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHsHv8zf1SQIerUTI8Fa5a7dGw9VQjwPSM9zRT3iJuYdwhtQHQS2J+qSt3PXavfSORcgkNqH5/cwiGNqEuKjTgRegpkZQJdOYp+NIcGx3XWjw6id6ffqFzDkSTWCBTsvDZfHQarhZxFaWHNkrcw9NDWocySeazC7i9IuWn2/AFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY9j+vEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8289AC4CEF5;
-	Tue, 16 Dec 2025 11:42:53 +0000 (UTC)
+	 MIME-Version; b=AqSzsoGlYGDY3AqCHcLBMZjalIW1Q5nbsfQu6KJYbk+cal53lg150T6o1m9xlT/onbLr53xbK8oJ10nEVvOHH7uW3KZ4y+CuG9UOi0cO52RZm1SPTJ+3n2TJa+FKKFbWDKJCKnXy1SB54IwPEmFeIIB0zzQw1NMAmQU2+CVI764=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCIOMwaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CBFC4CEF1;
+	Tue, 16 Dec 2025 12:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885374;
-	bh=ojd4RUv+K9/BGUHoBIOvl4nFbQNVyn8wiJmC9DNfyx0=;
+	s=korg; t=1765887321;
+	bh=0P5TH3Ql91VnPvIg+V23ILPzGaz3FwnFkQHOKhJPYMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CY9j+vEjsfS0hC4t8/OrV0sIrWqlfMCrZoprR9iz903jJ2kbNMeh3DueYSY3h/7jA
-	 RhuwDo5aOqEIQPWWtPNR+2TrY4wEjtUPJtCwkpz3MUm5Kb/ySK9/tjt74/x4xY8gX9
-	 2BYHX0AwhaCoeHgXnM2VZIONy2qg0MaBWkG+PDzc=
+	b=vCIOMwaU/I9kJ3SE/okQaPjNzoPECqVGKnnO3undpxKpcGPYFWSRm1yL0igtnL024
+	 dIlAGySj3sP5xVLeBBOKWfbhtnLFWq17Rs/QItIaoLBnDgqZzp0FGdYStZE0FKfiOi
+	 bD6mXtkLJHE0ckTAky79mCAZR5QBslb8a3Ioox5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 120/507] task_work: Fix NMI race condition
+Subject: [PATCH 6.18 194/614] drm/panthor: Fix UAF on kernel BO VA nodes
 Date: Tue, 16 Dec 2025 12:09:21 +0100
-Message-ID: <20251216111349.880530040@linuxfoundation.org>
+Message-ID: <20251216111408.400018272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit ef1ea98c8fffe227e5319215d84a53fa2a4bcebc ]
+[ Upstream commit 98dd5143447af0ee33551776d8b2560c35d0bc4a ]
 
-  __schedule()
-  // disable irqs
-      <NMI>
-	  task_work_add(current, work, TWA_NMI_CURRENT);
-      </NMI>
-  // current = next;
-  // enable irqs
-      <IRQ>
-	  task_work_set_notify_irq()
-	  test_and_set_tsk_thread_flag(current,
-                                       TIF_NOTIFY_RESUME); // wrong task!
-      </IRQ>
-  // original task skips task work on its next return to user (or exit!)
+If the MMU is down, panthor_vm_unmap_range() might return an error.
+We expect the page table to be updated still, and if the MMU is blocked,
+the rest of the GPU should be blocked too, so no risk of accessing
+physical memory returned to the system (which the current code doesn't
+cover for anyway).
 
-Fixes: 466e4d801cd4 ("task_work: Add TWA_NMI_CURRENT as an additional notify mode.")
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://patch.msgid.link/20250924080118.425949403@infradead.org
+Proceed with the rest of the cleanup instead of bailing out and leaving
+the va_node inserted in the drm_mm, which leads to UAF when other
+adjacent nodes are removed from the drm_mm tree.
+
+Reported-by: Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>
+Closes: https://gitlab.freedesktop.org/panfrost/linux/-/issues/57
+Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patch.msgid.link/20251031154818.821054-2-boris.brezillon@collabora.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/task_work.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_gem.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/task_work.c b/kernel/task_work.c
-index d1efec571a4a4..0f7519f8e7c93 100644
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -9,7 +9,12 @@ static struct callback_head work_exited; /* all we need is ->next == NULL */
- #ifdef CONFIG_IRQ_WORK
- static void task_work_set_notify_irq(struct irq_work *entry)
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index 3f43686f01958..14ed09d700f2f 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -86,7 +86,6 @@ static void panthor_gem_free_object(struct drm_gem_object *obj)
+ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
  {
--	test_and_set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
-+	/*
-+	 * no-op IPI
-+	 *
-+	 * TWA_NMI_CURRENT will already have set the TIF flag, all
-+	 * this interrupt does it tickle the return-to-user path.
-+	 */
+ 	struct panthor_vm *vm;
+-	int ret;
+ 
+ 	if (IS_ERR_OR_NULL(bo))
+ 		return;
+@@ -94,18 +93,11 @@ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
+ 	vm = bo->vm;
+ 	panthor_kernel_bo_vunmap(bo);
+ 
+-	if (drm_WARN_ON(bo->obj->dev,
+-			to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm)))
+-		goto out_free_bo;
+-
+-	ret = panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
+-	if (ret)
+-		goto out_free_bo;
+-
++	drm_WARN_ON(bo->obj->dev,
++		    to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm));
++	panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
+ 	panthor_vm_free_va(vm, &bo->va_node);
+ 	drm_gem_object_put(bo->obj);
+-
+-out_free_bo:
+ 	panthor_vm_put(vm);
+ 	kfree(bo);
  }
- static DEFINE_PER_CPU(struct irq_work, irq_work_NMI_resume) =
- 	IRQ_WORK_INIT_HARD(task_work_set_notify_irq);
-@@ -86,6 +91,7 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
- 		break;
- #ifdef CONFIG_IRQ_WORK
- 	case TWA_NMI_CURRENT:
-+		set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
- 		irq_work_queue(this_cpu_ptr(&irq_work_NMI_resume));
- 		break;
- #endif
 -- 
 2.51.0
 
