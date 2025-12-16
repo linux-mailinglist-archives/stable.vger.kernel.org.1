@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55C6CC29FC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622CBCC34DA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B128302E591
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C491B30B429B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35CD33A013;
-	Tue, 16 Dec 2025 11:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6E636CE0E;
+	Tue, 16 Dec 2025 12:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5HAUN6e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTG13Uor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9726B33D6E5;
-	Tue, 16 Dec 2025 11:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE561E0E14;
+	Tue, 16 Dec 2025 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886055; cv=none; b=kxRO9mLMZCTb+C/MVB5ExjpWiCeMcXHSMlUWFSOuoOTCbo+hDRzqSmXQdklekhKCuqBcgb6bmW1b0CrgQFSWMB4EuBtRuaBCk0PdbpI8uDvIoA73XyZ23nYdaYlo2fiAUWO7TaGnJTT5xlef6YKlDaMavI+RF3gbxKQVDwNn6xE=
+	t=1765887993; cv=none; b=ltGZfhgQOIfEiNifaKsCmcKbM6Os3DlzaJ2Z1eFS34Tqp9AqyytG6EzAMpYKi+fd+KmAWimTSbkQUraYkzik7taNQtMiUcSjxWg55ZZaz9LBFyMnkkdD6BqWLk5E0yx18QweaVvykrY9h1DHgs4ZTaPMHfjzm3B4VcqX2jnV6kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886055; c=relaxed/simple;
-	bh=Swvaz41RXOn+tjpBXZJhoa2f9+S9YJU9xapDTKhOMeU=;
+	s=arc-20240116; t=1765887993; c=relaxed/simple;
+	bh=4AYeTEg7EfM9Eb60ecIXb84DqyHC5Cv9XG1w8Xhhw5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL7yjusm7obuJls3g7W7Kn9LAqkj5F2S/jmO9JKVaAEj5GSHK0c4eTrD8WKCWh6pURRRtHeMTAn4xmhsPoUAOfdQYlG8XNvw76RImtu6rnTzGbeZiT5yeizXewD952F932q5T8PtXDN5qezkVkGGW878rFQClx+XsnTTeUYw10Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5HAUN6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D4DC4CEF1;
-	Tue, 16 Dec 2025 11:54:14 +0000 (UTC)
+	 MIME-Version; b=tDvAlweeaF4jHEQCOAzDDZOeuA9JCizbCdH94+7xTrikx3iq+Mz4mMjs5A+fQ5+GXmja3Gfc3IJRo7vgF+9AlTDdKVTJzM9T9E48JeUpg33WNyzBkfCRiaVGAXAjsMSBG3tMj/UNyDR67Iqyrjr3b+zRPIt7veyiNQWcXKM5bGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTG13Uor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD9BC4CEF1;
+	Tue, 16 Dec 2025 12:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886055;
-	bh=Swvaz41RXOn+tjpBXZJhoa2f9+S9YJU9xapDTKhOMeU=;
+	s=korg; t=1765887992;
+	bh=4AYeTEg7EfM9Eb60ecIXb84DqyHC5Cv9XG1w8Xhhw5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5HAUN6eZKIRpKMX7NHgJL794Mavk0DgbSuA2fxhdldLE8C85iJ6EYDhZZkSSr2Vz
-	 MDY5wNIREVnp+uQHO4QhJ3J6Mna0my5gMBR/fL7byV3qRhwHgEsES2A4JjxdPK/hwI
-	 5i3PyMuEuNp7cuXTu486t1pWCkOSvHy3EryE0ca8=
+	b=YTG13UorLjixuhRIsvgrSo+vpUAGpPb4J0JRcTxxtHdAYzJYt5EyGukTbEXpb8jKv
+	 qDGJKW/LSpPIcAZuOP5mwXrHR+X5dmkcExnY/H7n7b5HboDPzFtFgmK+feT7Jzt7xG
+	 8RZXBLxGdM8jaoHIFszKPdpQBEbhlXdNTTbw8sK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ben Greear <greearb@candelatech.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 325/507] wifi: mt76: mt7921: add MBSSID support
-Date: Tue, 16 Dec 2025 12:12:46 +0100
-Message-ID: <20251216111357.240328352@linuxfoundation.org>
+Subject: [PATCH 6.18 400/614] wifi: mt76: mt7996: skip ieee80211_iter_keys() on scanning link remove
+Date: Tue, 16 Dec 2025 12:12:47 +0100
+Message-ID: <20251216111415.867308407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 7ae99dd459ba1ea83a9b3d8de254f374182e602c ]
+[ Upstream commit 2a432a6d0066d4ce05a2d0eec1da9e061eb70c49 ]
 
-Enable MBSSID support for MT7921 by setting the
-appropriate capability to the firmware.
+mt7996_vif_link_remove routine is executed by mt76_scan_complete()
+without holding the wiphy mutex triggering the following lockdep warning.
 
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250812111642.3620845-1-mingyen.hsieh@mediatek.com
+ WARNING: CPU: 0 PID: 72 at net/mac80211/key.c:1029 ieee80211_iter_keys+0xe4/0x1a0 [mac80211]
+ CPU: 0 UID: 0 PID: 72 Comm: kworker/u32:2 Tainted: G S                  6.18.0-rc5+ #27 PREEMPT(full)
+ Tainted: [S]=CPU_OUT_OF_SPEC
+ Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/15/2023
+ Workqueue: phy3 mt76_scan_work [mt76]
+ RIP: 0010:ieee80211_iter_keys+0xe4/0x1a0 [mac80211]
+ Code: 4c 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f c3 48 8b 47 48 be ff ff ff ff 48 8d 78 68 e8 b4 eb 1e e1 85 c0 0f 85 49
+ff ff ff 4c 8b ab 90 1a 00 00 48 8d 83 90
+ RSP: 0018:ffffc900002f7cb0 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff888127e00ee0 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: ffff888127e00788 RDI: ffff88811132b5c8
+ RBP: ffffffffa0ddf400 R08: 0000000000000001 R09: 000000009dcc1dac
+ R10: 0000000000000001 R11: ffff88811132b5a0 R12: ffffc900002f7d00
+ R13: ffff8882581e6a80 R14: ffff888127e0afc8 R15: ffff888158832038
+ FS:  0000000000000000(0000) GS:ffff8884da486000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000030a0fd90 CR3: 0000000002c52004 CR4: 00000000003706f0
+ Call Trace:
+  <TASK>
+  ? lock_acquire+0xc2/0x2c0
+  mt7996_vif_link_remove+0x64/0x2b0 [mt7996e]
+  mt76_put_vif_phy_link+0x41/0x50 [mt76]
+  mt76_scan_complete+0x77/0x100 [mt76]
+  mt76_scan_work+0x2eb/0x3f0 [mt76]
+  ? process_one_work+0x1e5/0x6d0
+  process_one_work+0x221/0x6d0
+  worker_thread+0x19a/0x340
+  ? rescuer_thread+0x450/0x450
+  kthread+0x108/0x220
+  ? kthreads_online_cpu+0x110/0x110
+  ret_from_fork+0x1c6/0x220
+  ? kthreads_online_cpu+0x110/0x110
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+ irq event stamp: 45471
+ hardirqs last  enabled at (45477): [<ffffffff813d446e>] __up_console_sem+0x5e/0x70
+ hardirqs last disabled at (45482): [<ffffffff813d4453>] __up_console_sem+0x43/0x70
+ softirqs last  enabled at (44500): [<ffffffff81f2ae0c>] napi_pp_put_page+0xac/0xd0
+ softirqs last disabled at (44498): [<ffffffff81fa32a0>] page_pool_put_unrefed_netmem+0x290/0x3d0
+ ---[ end trace 0000000000000000 ]---
+
+Fix the issue skipping ieee80211_iter_keys() for scanning links in
+mt7996_vif_link_remove routine since we have not uploaded any hw keys
+for these links.
+
+Fixes: 04414d7bba78 ("wifi: mt76: mt7996: delete vif keys when requested")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20251115-mt7996-key-iter-link-remove-fix-v1-1-4f3f4e1eaa78@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: cdb2941a516c ("Revert "wifi: mt76: mt792x: improve monitor interface handling"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 25 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt792x_core.c  |  5 ++--
- 2 files changed, 27 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 16db0f2082d1e..fc3e6728fcfbf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1662,6 +1662,31 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
- 			return err;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 5ff7ab596f88c..2ad52ae2c5f55 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -392,7 +392,8 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	};
+ 	int idx = msta_link->wcid.idx;
  
-+	if (enable && vif->bss_conf.bssid_indicator) {
-+		struct {
-+			struct {
-+				u8 bss_idx;
-+				u8 pad[3];
-+			} __packed hdr;
-+			struct bss_info_uni_mbssid mbssid;
-+		} mbssid_req = {
-+			.hdr = {
-+				.bss_idx = mvif->idx,
-+			},
-+			.mbssid = {
-+				.tag = cpu_to_le16(UNI_BSS_INFO_11V_MBSSID),
-+				.len = cpu_to_le16(sizeof(struct bss_info_uni_mbssid)),
-+				.max_indicator = vif->bss_conf.bssid_indicator,
-+				.mbss_idx =  vif->bss_conf.bssid_index,
-+			},
-+		};
-+
-+		err = mt76_mcu_send_msg(mdev, MCU_UNI_CMD(BSS_INFO_UPDATE),
-+					&mbssid_req, sizeof(mbssid_req), true);
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	return mt76_connac_mcu_uni_set_chctx(phy, mvif, ctx);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_uni_add_bss);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 44378f7394e8d..c0e56541a9547 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -689,12 +689,11 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
- 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
-+	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
-+	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
+-	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
++	if (!mlink->wcid->offchannel)
++		ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
  
- 	if (is_mt7921(&dev->mt76)) {
- 		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
--	} else {
--		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
--		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
- 	}
- 
- 	if (dev->pm.enable)
+ 	mt7996_mcu_add_sta(dev, link_conf, NULL, link, NULL,
+ 			   CONN_STATE_DISCONNECT, false);
 -- 
 2.51.0
 
