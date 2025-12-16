@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED759CC469C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:49:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7593DCC3DCE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28EE63048D60
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4373008EEB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C6534D39F;
-	Tue, 16 Dec 2025 11:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0397D35C18D;
+	Tue, 16 Dec 2025 12:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwuVFQE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/W87t+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B1134D397;
-	Tue, 16 Dec 2025 11:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B464E35BDDE;
+	Tue, 16 Dec 2025 12:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885292; cv=none; b=MCbozd1sKY8Ui0PhZT9cFADE3hZdpOBt8FDCSe9XUSGkMbFFXVbgEJv6VRFUziCyKArXM4VmAtlvqtGMHTfVep17HH77m6+o5cjRhld6MTpZosexNoKS75IxDL82zE9zHuifW1YfELSGbl3aavYDsQj0BOkgkVL3rVnifEyIrlw=
+	t=1765887294; cv=none; b=Li3D29BmHyJad1aiW1dlKhdwnyQajZYwe4XmB2eP8/gCdSApmNcnGYmh584p4tjCUf7OUzQtBwzHML0ejzfr5waCLoyENForFms8S489A62kPjluSCDSaYcBfUoiMUnFfr0EI4v/4iVeUEBQOh7kIMsOm5u9N0MFmF5nSQDEpsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885292; c=relaxed/simple;
-	bh=D32q2iEddA4zwTeisLa8gQnkuttKIeQm85fsvaLxkqA=;
+	s=arc-20240116; t=1765887294; c=relaxed/simple;
+	bh=fFvmQ0SbBVcZ2mzcBDLQheuaAmPfIhadTEu8OYsYJRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8gl18ZE77YGzmeCOD9rEClA0xKvlxhI9bWBtXSQ/levGdirqQz+dJHFET5Cmyd+4c9kLTi+dP1Irm8cSFo8jF9EnMq//iZ7jXTlh+OBCROX6IL6eNJtft9rMuYu+Fl2aZFhn5UOa+z6G/HsDv8jS2VzXxHU6yqOb4/7t3rWVjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwuVFQE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E78C4CEF1;
-	Tue, 16 Dec 2025 11:41:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VSzlC+Qa0j848VmkVp2NBQlE7e/AtBnaerlZ5BWtyec+pmEFm0QxVSgfHuQAiLZ2H6LSLpFWNiWtsRQFQ5cAOcH/3fJbXx2NmaFDQdbGZMCiDbL0vJNIcHjnrYaje+y594P+UM9Z2DpHvGD6bxq4++0sYyJsEdoMdV4TQjqhkRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/W87t+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342D5C4CEF1;
+	Tue, 16 Dec 2025 12:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885292;
-	bh=D32q2iEddA4zwTeisLa8gQnkuttKIeQm85fsvaLxkqA=;
+	s=korg; t=1765887294;
+	bh=fFvmQ0SbBVcZ2mzcBDLQheuaAmPfIhadTEu8OYsYJRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwuVFQE75OorbAgBzp+k69hAQODDZCynVWbzN/yTeNAgp8FN0hX0JuXt9MhZUGqYY
-	 AAIY+keoe7XXbhdDgSxxhQeqLpR4YoezpD8vWvCTQ/Y+DvklrSgwVgoFeS45FDy9Au
-	 H6smTMOmcLIej50ChPb2grGV9nayWuJXhHH+2igg=
+	b=t/W87t+uoDKstrMnZjNY160rIbUotNW/cdl5p7xGv82uTGvPG1Z+wM99SkSz+C57Y
+	 oA1fuwPIjDWatDlI11LcMDhlL+9vPQyydndDjlIUeEWPhl+Qh25/yy5et8rGrbQZZ2
+	 /7fVjBNtxxV2E6VOuhTMvwAr96da1aO3w3i2ILr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 094/507] arm64: dts: qcom: sdm845-starqltechn: remove (address|size)-cells
-Date: Tue, 16 Dec 2025 12:08:55 +0100
-Message-ID: <20251216111348.943026943@linuxfoundation.org>
+Subject: [PATCH 6.18 169/614] arm64: dts: renesas: sparrow-hawk: Fix full-size DP connector node name and labels
+Date: Tue, 16 Dec 2025 12:08:56 +0100
+Message-ID: <20251216111407.472143440@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 4133486382364f60ea7e4f2c9070555689d9606e ]
+[ Upstream commit 9d22a34a016313137b9e534a918f1f9aa790aa69 ]
 
-Drop the unused address/size-cells properties to silence the DT
-checker warning:
+The DisplayPort connector on Retronix R-Car V4H Sparrow Hawk board
+is a full-size DisplayPort connector. Fix the copy-paste error and
+update the DT node name and labels accordingly. No functional change.
 
-pmic@66 (maxim,max77705): '#address-cells', '#size-cells' do not
-match any of the regexes: '^pinctrl-[0-9]+$'
-
-Fixes: 7a88a931d095 ("arm64: dts: qcom: sdm845-starqltechn: add max77705 PMIC")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250926-starqltechn-correct_max77705_nodes-v5-1-c6ab35165534@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a719915e76f2 ("arm64: dts: renesas: r8a779g3: Add Retronix R-Car V4H Sparrow Hawk board support")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251027184604.34550-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index d686531bf4eac..016a245a97c40 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -591,8 +591,6 @@ pmic@66 {
- 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
- 		pinctrl-0 = <&pmic_int_default>;
- 		pinctrl-names = "default";
--		#address-cells = <1>;
--		#size-cells = <0>;
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+index 1da8e476b2193..ff07d984cbf29 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
++++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+@@ -119,13 +119,13 @@ memory@600000000 {
+ 	};
  
- 		leds {
- 			compatible = "maxim,max77705-rgb";
+ 	/* Page 27 / DSI to Display */
+-	mini-dp-con {
++	dp-con {
+ 		compatible = "dp-connector";
+ 		label = "CN6";
+ 		type = "full-size";
+ 
+ 		port {
+-			mini_dp_con_in: endpoint {
++			dp_con_in: endpoint {
+ 				remote-endpoint = <&sn65dsi86_out>;
+ 			};
+ 		};
+@@ -407,7 +407,7 @@ sn65dsi86_in: endpoint {
+ 					port@1 {
+ 						reg = <1>;
+ 						sn65dsi86_out: endpoint {
+-							remote-endpoint = <&mini_dp_con_in>;
++							remote-endpoint = <&dp_con_in>;
+ 						};
+ 					};
+ 				};
 -- 
 2.51.0
 
