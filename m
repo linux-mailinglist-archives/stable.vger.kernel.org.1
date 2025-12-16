@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2853CCC2698
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF785CC3261
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B5D13031354
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 266A3301CD14
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55A9343D9E;
-	Tue, 16 Dec 2025 11:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B78352FAB;
+	Tue, 16 Dec 2025 12:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRjuCdPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="er1XFvcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8460D3314B4;
-	Tue, 16 Dec 2025 11:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E02B354AD6;
+	Tue, 16 Dec 2025 12:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884965; cv=none; b=PcUqJwEvl7kFBl+h32VCJYHT/pSkK0SqRVMTkl55HD1h818WTgyLqXDPNol/jVcernoMZJi+UqHNW0J+CYLhzI0HFItl4XFvEcHck7zG71KScDvd9I/V83KwnNKwNHx9cl+8CGNEF/oZM5Z1pYwFhtqkxCEOC0pJOxLoH1pwOs4=
+	t=1765886472; cv=none; b=HOAZUKj9cPZ1whjorgujRTM3qF+kkzP6VNTOWQW1E49SrVqilIVrkyxhXdNCj76e7rCIqHjARMGyPa3+q5g1WjOVcY+DV7JATzkDz1KJ3DiELkwtdI3Wef4uYtSuTGV0QHAYx37LcFMjWbozbV4DJtm/Nc6YpibT+/I8ZFwHEUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884965; c=relaxed/simple;
-	bh=5ALhiXYtH/3P6Z2OKqrmSXL2L4kFxce2kJmsnyxrnQ8=;
+	s=arc-20240116; t=1765886472; c=relaxed/simple;
+	bh=CD3eXij185Am3RCPWPQVu0mlFoVdPA1IjVYTL57Cvnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jc50tsBcEMyQ1/QtGjbzBFxNaOlz6uAF9EY4wCtJNXTLSsjcQIKOoA+aDkJyg4cEsUvSrDOVpxRO0szpfZ5YRHOR22n2uDlY7aydnRFE4xtjSLAXxzBVXrBCRV4gdW2OtV3ySiVUXQpv92InDnXQUV2E9VTatqOFDYrBAUn0jxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRjuCdPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5FFC4CEF1;
-	Tue, 16 Dec 2025 11:36:04 +0000 (UTC)
+	 MIME-Version; b=N7tpYZNU0ia0z6y4FyBpxNfaCOWqeifd+fQM8gR8q2/hWpHvpDWsEh4xSK0nVq+S3suMqbj50K6meXSYebC80FIDojKvQm1OAyNkYdpIPQvyyX6gX86NS2KfeiUX0ZUL2u/nnhRNgNh0tlleU1JQuY0YBcQaMYtxHsc7y2R/i8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=er1XFvcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95686C4CEF1;
+	Tue, 16 Dec 2025 12:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884965;
-	bh=5ALhiXYtH/3P6Z2OKqrmSXL2L4kFxce2kJmsnyxrnQ8=;
+	s=korg; t=1765886472;
+	bh=CD3eXij185Am3RCPWPQVu0mlFoVdPA1IjVYTL57Cvnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRjuCdPUnEcGRmeIS0qdHwM+XQUAS/5BVFQ+yIwg2qJTiJI4rlSr8yWE18bC2TX0A
-	 VprT8fOwf161oqP+IX4zJfWvUnPPVB4efelPm9VF0lhEmbYpgSxRhWx+YF2ZN8L6pS
-	 CRC4ollFfP//81Y6lFZBrqTujot3mMkM4VBPBnBQ=
+	b=er1XFvcR3cSczu5cazfZ05YfDxQU8V6xcFEj6xptba4I50KwSncMQD2Ex5Gaigt5h
+	 XrIXPUf6chZFCcIqRHY2gxtZ/zbXwTpb0WyW5z3idTjBwNnFpJe26hghld1n5q2atm
+	 Di+Ixo/GXbw8euYOXPOpvfiVUpS+NOjeF861McaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/354] ASoC: ak5558: Disable regulator when error happens
-Date: Tue, 16 Dec 2025 12:14:46 +0100
-Message-ID: <20251216111332.467867422@linuxfoundation.org>
+Subject: [PATCH 6.17 446/507] panthor: save task pid and comm in panthor_group
+Date: Tue, 16 Dec 2025 12:14:47 +0100
+Message-ID: <20251216111401.612331658@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-[ Upstream commit 1f8f726a2a29c28f65b30880335a1610c5e63594 ]
+[ Upstream commit 33b9cb6dcda2520600ac4fec725946af32c2e586 ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+We would like to report them on gpu errors.
 
-Fixes: 2ff6d5a108c6 ("ASoC: ak5558: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-3-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+We choose to save the info on panthor_group_create rather than on
+panthor_open because, when the two differ, we are more interested in the
+task that created the group.
+
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250718063816.1452123-3-olvaffe@gmail.com
+Stable-dep-of: eec7e23d848d ("drm/panthor: Prevent potential UAF in group creation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak5558.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/sound/soc/codecs/ak5558.c b/sound/soc/codecs/ak5558.c
-index 6c767609f95df..b1797319e4f57 100644
---- a/sound/soc/codecs/ak5558.c
-+++ b/sound/soc/codecs/ak5558.c
-@@ -372,7 +372,15 @@ static int __maybe_unused ak5558_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak5558->regmap, false);
- 	regcache_mark_dirty(ak5558->regmap);
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 99ce0948f2bae..35c4a86fe3052 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -641,6 +641,15 @@ struct panthor_group {
+ 		size_t kbo_sizes;
+ 	} fdinfo;
  
--	return regcache_sync(ak5558->regmap);
-+	ret = regcache_sync(ak5558->regmap);
-+	if (ret)
-+		goto err;
++	/** @task_info: Info of current->group_leader that created the group. */
++	struct {
++		/** @task_info.pid: pid of current->group_leader */
++		pid_t pid;
 +
-+	return 0;
-+err:
-+	regcache_cache_only(ak5558->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak5558->supplies), ak5558->supplies);
-+	return ret;
++		/** @task_info.comm: comm of current->group_leader */
++		char comm[TASK_COMM_LEN];
++	} task_info;
++
+ 	/** @state: Group state. */
+ 	enum panthor_group_state state;
+ 
+@@ -3391,6 +3400,14 @@ group_create_queue(struct panthor_group *group,
+ 	return ERR_PTR(ret);
  }
  
- static const struct dev_pm_ops ak5558_pm = {
++static void group_init_task_info(struct panthor_group *group)
++{
++	struct task_struct *task = current->group_leader;
++
++	group->task_info.pid = task->pid;
++	get_task_comm(group->task_info.comm, task);
++}
++
+ static void add_group_kbo_sizes(struct panthor_device *ptdev,
+ 				struct panthor_group *group)
+ {
+@@ -3542,6 +3559,8 @@ int panthor_group_create(struct panthor_file *pfile,
+ 	add_group_kbo_sizes(group->ptdev, group);
+ 	spin_lock_init(&group->fdinfo.lock);
+ 
++	group_init_task_info(group);
++
+ 	return gid;
+ 
+ err_put_group:
 -- 
 2.51.0
 
