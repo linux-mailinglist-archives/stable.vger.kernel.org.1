@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B20DCC3B84
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFF8CC3029
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FB1730E43AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BDA4312C2D7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AF5343D8A;
-	Tue, 16 Dec 2025 11:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4052534F470;
+	Tue, 16 Dec 2025 12:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBkhyHfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRzf34aP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF362773E5;
-	Tue, 16 Dec 2025 11:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DAC36B061;
+	Tue, 16 Dec 2025 12:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885472; cv=none; b=oFl86zQ36Mo2Z7HwXy1SrHQb3+UTijP+HBh30M/4QnxQ3YQKpMvNdzrAn5gilHYl5mWz1Dpum0DkgqzuPddshEBHbHtuHwaImClRcwaemosn/F5yEZnutIw8KuK2KZzrxxqmlZuNrmkba5RbuGovqvb6sCJy5X2N7YOK8zwMDj0=
+	t=1765887420; cv=none; b=SnnxHE9cl72kjTwMreThowGrSD9/6LYOGppyKGb1eJlg1A9FM4RaYTatsaSY1mos3S9tMuv9f7cyANUWCPFMWqQFb4WUtsgYUNoFPjysqjlD3k+Cpltl/UrQhxUHzoM8dg7MLFrPG3Lh0QKgzPfkCUkp2ZrxWdVb8JC8AnQCUwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885472; c=relaxed/simple;
-	bh=HfVwX4DT1Y7vkfQCUPL0Z+OVyHa4HmsDYwSB8aoeAQE=;
+	s=arc-20240116; t=1765887420; c=relaxed/simple;
+	bh=++ChSNnrSQ4icIBFwd5ccNfy6iUE4nkoWDAko0CQ5Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCDwyH4Hu9rM61CAjc7le/lloLDk3GzfpDUawSAYA1tCuX1+thUcdcq3D42Tur/hJ0cGjaw+21/mqiFAXHvMi452HdGlv3pouimrC4if7NfK+HDBIcybXLLeUc8pb4MtrooLJe+rMq9Secp4wmR/iuXGjGj1rtN0+4PeQfiVvYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBkhyHfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51741C4CEF5;
-	Tue, 16 Dec 2025 11:44:32 +0000 (UTC)
+	 MIME-Version; b=o3LzQD7SolG+VQRu89FEuRoFYcuNfGCEWA59zAIyZKW2E+aU/KKH7hDrjnRanvKA2NMP0R2IfGVizxze8EvskqAwbplqBAkpdEeNeEXz78BF2ozedvDJbE0fT6M0GP1cqtffp2bzsm/aKoGtW6jweSNcx1C11e/lJuJQ9ZL+wPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRzf34aP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6049DC4CEF1;
+	Tue, 16 Dec 2025 12:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885472;
-	bh=HfVwX4DT1Y7vkfQCUPL0Z+OVyHa4HmsDYwSB8aoeAQE=;
+	s=korg; t=1765887419;
+	bh=++ChSNnrSQ4icIBFwd5ccNfy6iUE4nkoWDAko0CQ5Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBkhyHfOanjilF+6OWYlKLv/F40kpG+dliQtAYTSenJDnOL0j3vAUI1gZYAVWxbG9
-	 XGevks1mu3NHPr/KksK7NGI74416X9t133NawDVjNN7JHlAkM3u8nXoOXQkuCvDuEX
-	 ZuCt0A1ES7IWM1/63JlYvVPQAzlnDbmHC2o29cWw=
+	b=LRzf34aP9XbcUcZOrZ/ixcdkhc19XtQyw/cza+HAVmgXw/eyrVplaJJwelyj1gXHo
+	 7DIPL582x4yzRxiAgW8Gu0UGms/kh7JG+AIXubpefjm+DYJ96PwW63D8GBNZR97G6+
+	 ipk2E6vXmis64ijz9RK/rUdYl/o3mvVuGDuBEYS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 150/507] timers/migration: Remove locking on group connection
+Subject: [PATCH 6.18 224/614] perf/x86/intel: Correct large PEBS flag check
 Date: Tue, 16 Dec 2025 12:09:51 +0100
-Message-ID: <20251216111350.960592316@linuxfoundation.org>
+Message-ID: <20251216111409.488479234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit fa9620355d4192200f15cb3d97c6eb9c02442249 ]
+[ Upstream commit 5e4e355ae7cdeb0fef5dbe908866e1f895abfacc ]
 
-Initializing the tmc's group, the group's number of children and the
-group's parent can all be done without locking because:
+current large PEBS flag check only checks if sample_regs_user contains
+unsupported GPRs but doesn't check if sample_regs_intr contains
+unsupported GPRs.
 
-  1) Reading the group's parent and its group mask is done locklessly.
+Of course, currently PEBS HW supports to sample all perf supported GPRs,
+the missed check doesn't cause real issue. But it won't be true any more
+after the subsequent patches support to sample SSP register. SSP
+sampling is not supported by adaptive PEBS HW and it would be supported
+until arch-PEBS HW. So correct this issue.
 
-  2) The connections prepared for a given CPU hierarchy are visible to the
-     target CPU once online, thanks to the CPU hotplug enforced memory
-     ordering.
-
-  3) In case of a newly created upper level, the new root and its
-     connections and initialization are made visible by the CPU which made
-     the connections. When that CPUs goes idle in the future, the new link
-     is published by tmigr_inactive_up() through the atomic RmW on
-     ->migr_state.
-
-  4) If CPUs were still walking up the active hierarchy, they could observe
-     the new root earlier. In this case the ordering is enforced by an
-     early initialization of the group mask and by barriers that maintain
-     address dependency as explained in:
-
-     b729cc1ec21a ("timers/migration: Fix another race between hotplug and idle entry/exit")
-     de3ced72a792 ("timers/migration: Enforce group initialization visibility to tree walkers")
-
-  5) Timers are propagated by a chain of group locking from the bottom to
-     the top. And while doing so, the tree also propagates groups links
-     and initialization. Therefore remote expiration, which also relies
-     on group locking, will observe those links and initialization while
-     holding the root lock before walking the tree remotely and update
-     remote timers. This is especially important for migrators in the
-     active hierarchy that may observe the new root early.
-
-Therefore the locking is unnecessary at initialization. If anything, it
-just brings confusion. Remove it.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251024132536.39841-3-frederic@kernel.org
-Stable-dep-of: 5eb579dfd46b ("timers/migration: Fix imbalanced NUMA trees")
+Fixes: a47ba4d77e12 ("perf/x86: Enable free running PEBS for REGS_USER/INTR")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20251029102136.61364-5-dapeng1.mi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer_migration.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/events/intel/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 1e371f1fdc86c..5f8aef94ca0f7 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1573,9 +1573,6 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
- {
- 	struct tmigr_walk data;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index fe65be0b9d9c4..9b824ed6fc1de 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4029,7 +4029,9 @@ static unsigned long intel_pmu_large_pebs_flags(struct perf_event *event)
+ 	if (!event->attr.exclude_kernel)
+ 		flags &= ~PERF_SAMPLE_REGS_USER;
+ 	if (event->attr.sample_regs_user & ~PEBS_GP_REGS)
+-		flags &= ~(PERF_SAMPLE_REGS_USER | PERF_SAMPLE_REGS_INTR);
++		flags &= ~PERF_SAMPLE_REGS_USER;
++	if (event->attr.sample_regs_intr & ~PEBS_GP_REGS)
++		flags &= ~PERF_SAMPLE_REGS_INTR;
+ 	return flags;
+ }
  
--	raw_spin_lock_irq(&child->lock);
--	raw_spin_lock_nested(&parent->lock, SINGLE_DEPTH_NESTING);
--
- 	if (activate) {
- 		/*
- 		 * @child is the old top and @parent the new one. In this
-@@ -1596,9 +1593,6 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
- 	 */
- 	smp_store_release(&child->parent, parent);
- 
--	raw_spin_unlock(&parent->lock);
--	raw_spin_unlock_irq(&child->lock);
--
- 	trace_tmigr_connect_child_parent(child);
- 
- 	if (!activate)
-@@ -1695,13 +1689,9 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 		if (i == 0) {
- 			struct tmigr_cpu *tmc = per_cpu_ptr(&tmigr_cpu, cpu);
- 
--			raw_spin_lock_irq(&group->lock);
--
- 			tmc->tmgroup = group;
- 			tmc->groupmask = BIT(group->num_children++);
- 
--			raw_spin_unlock_irq(&group->lock);
--
- 			trace_tmigr_connect_cpu_parent(tmc);
- 
- 			/* There are no children that need to be connected */
 -- 
 2.51.0
 
