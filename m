@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584DACC2504
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E78CC30A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F14E3027BC2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A3B1311BA32
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E49D342507;
-	Tue, 16 Dec 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3684354AFA;
+	Tue, 16 Dec 2025 12:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhvpHs9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQdWM+R3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1970A3314B4;
-	Tue, 16 Dec 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E783346A01;
+	Tue, 16 Dec 2025 12:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884952; cv=none; b=c9Ju47/XV0+UYOE37yPFz6j2eDyyI+tb60wVRyPZ+raY4ty4u/aGgpBptvDiG2uhJlihp5ZkqySuT6CLx+VEE9hAGIyYnQw1wzUyRAHpIPVbPyCgTY4V/mAwdY6Dl21WZaDh58FdkqijVtL6Qwx4ZlpT5wz9So9uNM58FKK8gvg=
+	t=1765888482; cv=none; b=WFgnNlUvmyz0mlAEI80auadGK5AWAd3aqR7ok4uHoBNuygMKT3xeoKTvif4W78MaJINpQrK3FNUKTSr0YrJudS7QQOsW/C2mDhI7YmAhzVWEUb56AH5WcbrTYh8IcJPegydIwq9LNBDXfhf1C9CuPseli2y7myzeRPnEOQ06pDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884952; c=relaxed/simple;
-	bh=JkkmDVwlnvDCcBMDhnP9SCp3QVu7CJLgpWFrSvoqcKE=;
+	s=arc-20240116; t=1765888482; c=relaxed/simple;
+	bh=DPDaRbXImkI3vNzne4bbnBQZKew6TjCdpZhU2EiBMyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InPTeq4mLfZTIzZVXm+BBjINxNIe7ZyaAt+nYut32QWLchQ7uN1JbCLCnHLBLDo7OuIU84/iTXzbgqCbG777+SqNFIL7v2l8bep+jD5GjTFERD9z/8U2qqzYg80QheX/Q6JrI3wc6oytnrAPi5JLOf9nkq7O44xvRPJksLJPdHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhvpHs9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B75FC4CEF1;
-	Tue, 16 Dec 2025 11:35:51 +0000 (UTC)
+	 MIME-Version; b=UTGZzPIVHZiFpBcNTtLlF263DEOss5EIEI+AHjq+klqvxQuDeQXiJIr28bHIBppqXw9Yr5lM3jPuexJVk0rG95rBlHqxVNYRxBpka3TbvjKSWPSfa2/aMNPkaOLWky/DNf7pSD8p890tLcAtePweIYQhcKXWKYhTGO9ZzzfGFh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQdWM+R3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0575C4CEF1;
+	Tue, 16 Dec 2025 12:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884952;
-	bh=JkkmDVwlnvDCcBMDhnP9SCp3QVu7CJLgpWFrSvoqcKE=;
+	s=korg; t=1765888482;
+	bh=DPDaRbXImkI3vNzne4bbnBQZKew6TjCdpZhU2EiBMyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UhvpHs9M99vGH5ddMvKBxCOiQj/tmYt2bs7/sB44GdBrKS64LkXnG7aZOxtSTWYKh
-	 usTXjdTmgzsAcCAfxgxyBRWaoP0b/B9itrOxztjjUWIHYM7K9EU5LVN76BP7QJ6pmz
-	 JjMVR404n5zmE8dKV3hWx83811I2EYjgNRMfCeX4=
+	b=YQdWM+R3/Zajq5DNifjtbAfpacq2UK0NJV7wDbtmIKHIpOgunxkxx05uDWwP+dg0v
+	 udEXWD66V+C/ANB7Xi3vycPWRycpu7Z9X7pZfzmcZiZq5CSfwCYUQXDVK8LQX1aaTC
+	 7H3tRIU/TW1ezj+ofqdDRtV1j+oemov7e0TGvq84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Zhang, Liyin(CN)" <Liyin.Zhang.CN@windriver.com>,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 347/354] net: lan743x: Allocate rings outside ZONE_DMA
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 547/614] Revert "nfs: ignore SB_RDONLY when remounting nfs"
 Date: Tue, 16 Dec 2025 12:15:14 +0100
-Message-ID: <20251216111333.478696343@linuxfoundation.org>
+Message-ID: <20251216111421.198844379@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 8a8f3f4991761a70834fe6719d09e9fd338a766e upstream.
+[ Upstream commit 400fa37afbb11a601c204b72af0f0e5bc2db695c ]
 
-The driver allocates ring elements using GFP_DMA flags. There is
-no dependency from LAN743x hardware on memory allocation should be
-in DMA_ZONE. Hence modifying the flags to use only GFP_ATOMIC. This
-is consistent with other callers of lan743x_rx_init_ring_element().
+This reverts commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a.
 
-Reported-by: Zhang, Liyin(CN) <Liyin.Zhang.CN@windriver.com>
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250415044509.6695-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
+
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 80c4de6ab44c ("nfs: ignore SB_RDONLY when remounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfs/super.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -2494,8 +2494,7 @@ static int lan743x_rx_process_buffer(str
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 72dee6f3050e6..527000f5d150c 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1051,16 +1051,6 @@ int nfs_reconfigure(struct fs_context *fc)
  
- 	/* save existing skb, allocate new skb and map to dma */
- 	skb = buffer_info->skb;
--	if (lan743x_rx_init_ring_element(rx, rx->last_head,
--					 GFP_ATOMIC | GFP_DMA)) {
-+	if (lan743x_rx_init_ring_element(rx, rx->last_head, GFP_ATOMIC)) {
- 		/* failed to allocate next skb.
- 		 * Memory is very low.
- 		 * Drop this packet and reuse buffer.
+ 	sync_filesystem(sb);
+ 
+-	/*
+-	 * The SB_RDONLY flag has been removed from the superblock during
+-	 * mounts to prevent interference between different filesystems.
+-	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
+-	 * during reconfiguration; otherwise, it may also result in the
+-	 * creation of redundant superblocks when mounting a directory with
+-	 * different rw and ro flags multiple times.
+-	 */
+-	fc->sb_flags_mask &= ~SB_RDONLY;
+-
+ 	/*
+ 	 * Userspace mount programs that send binary options generally send
+ 	 * them populated with default values. We have no way to know which
+-- 
+2.51.0
+
 
 
 
