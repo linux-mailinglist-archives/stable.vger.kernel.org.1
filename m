@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1323ECC347A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B111CC29F0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C408304AB62
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9994C3004A69
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B83736CE17;
-	Tue, 16 Dec 2025 12:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CD8343D82;
+	Tue, 16 Dec 2025 11:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Ohy1UE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYRvFbrH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA68036CE14;
-	Tue, 16 Dec 2025 12:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9397314B6D;
+	Tue, 16 Dec 2025 11:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887999; cv=none; b=RXSzD4DwG3tFjKgX6qTWpjS1D6X4D522eSy3Ntw3gyIIKRDiTqlr6r1a7PnLbyM3jDgTLX79Oka4X+GtPbbl+GRs44rFiBQ+bf/aD+PCq6bLVNcSVCQfxoDKTAE/ugvUZQY0FtfZa+8w3yGM8d7UbtWVBcjzPAU9kKRVbNaf8hI=
+	t=1765886066; cv=none; b=ewhmPGnPe+sz5E9Ec5R95TlW5TG9YfIlbeZYuitB1zHLhNhr44cNRIL2McWP6s8BXyPdtbEOneI73eG25t7VfUaE9zacM+uIQTPsKVPGNdrc2ItPV5UqVDy9R189ctwyzEGggIyCalj8IpSyFsznYeQSjEBQsbnGWfJCoLIgZ+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887999; c=relaxed/simple;
-	bh=S/Vux1qXzOQZ5STfgPojaQkWuCYGswkg44OJ25xdLTc=;
+	s=arc-20240116; t=1765886066; c=relaxed/simple;
+	bh=q1sQbGULWlyPD8UOwNSMKpGd+SumnzHrwcRTvnDK+Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrCLX20LotytfpKeo+4j4vwb4y+Ddbxp64TsXpTZGxNr3tJ/IqeCNH5XZxFXPkU3w0skaHAPxOBUKyROLHTKWaN29p3bZ0P6JxdspC+6E1RNcSy0PmVSuXVvNRxORDMwi6EsTCh/iQLvkzRqR8gF+Dxvts9M9EqfO01XaYK6Msc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Ohy1UE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A642C4CEF1;
-	Tue, 16 Dec 2025 12:26:38 +0000 (UTC)
+	 MIME-Version; b=EjNNAhMotfpaxryMQwN+WLpvXLgUs4IjI8yeYruBnCdPT2WESrbk4A5FWM04qu6wi+iT7sSl28oyP2CSleXIS+pUiqoY/z+Eop7wXqtGV6SflHRfK+BV1dTGt38ilmfHdzQ8x75PCG9SO+dtGKCatIocGW6N4my3guCc386WnEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYRvFbrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCA9C4CEF1;
+	Tue, 16 Dec 2025 11:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887999;
-	bh=S/Vux1qXzOQZ5STfgPojaQkWuCYGswkg44OJ25xdLTc=;
+	s=korg; t=1765886065;
+	bh=q1sQbGULWlyPD8UOwNSMKpGd+SumnzHrwcRTvnDK+Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9Ohy1UE/blBNLKUUtpEzOULDFRHKldxu0/7I0cXNQvbvOEV3c9I4Yr4781J2qW2B
-	 atReUYAfuJoP+dVZk7pm1Jdkz2GeWkbRpgTAQEI42XkNvcxFN/sAE7HW1trAMzFs+F
-	 T2aUszl+N1PnJI9RhSewduAm6Y05jsSZLlrVv2FE=
+	b=FYRvFbrHpvidNqd5uowjazLdOfzE11WL1FiHpJjTsPa9T/dzNAJA2WKyHoSKosZoU
+	 h06cC1qhx6o9bDs03s4Vjnpbhg1oCCntfGD27vrqbqfnPzxIwNIPqcV+LLMUZ+Ircm
+	 gbQlNw7h30Eur5zSvTW/T0wgydoqyqCVFqrELrrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 401/614] wifi: mt76: mt7996: Add missing locking in mt7996_mac_sta_rc_work()
-Date: Tue, 16 Dec 2025 12:12:48 +0100
-Message-ID: <20251216111415.904061917@linuxfoundation.org>
+Subject: [PATCH 6.17 328/507] wifi: mt76: mt7996: fix implicit beamforming support for mt7992
+Date: Tue, 16 Dec 2025 12:12:49 +0100
+Message-ID: <20251216111357.348381615@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit 7545551631fa63101f97974f49ac0b564814f703 ]
+[ Upstream commit 5d86765828b47444908a8689f2625872e8dac48f ]
 
-Grab the mt76 mutex running mt7996_mac_sta_rc_work() since it is
-required by mt7996_mcu_add_rate_ctrl routine.
+Fix the ibf_timeout field for mt7996, mt7992 and mt7990 chipsets. For
+the mt7992, this value shall be set as 0xff, while the others shall be
+set as 0x18.
 
-Fixes: 28d519d0d493a ("wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251118-mt7996-rc-work-missing-mtx-v1-1-0739c493a6cb@kernel.org
+Fixes: ad4c9a8a9803 ("wifi: mt76: mt7996: add implicit beamforming support for mt7992")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20251106064203.1000505-3-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index cfad46a532bb7..502136691a69e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2860,6 +2860,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 	LIST_HEAD(list);
- 	u32 changed;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 07b962e235850..f337e3267c6f0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1754,8 +1754,8 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 	bf->ibf_nrow = tx_ant;
  
-+	mutex_lock(&dev->mt76.mutex);
-+
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	list_splice_init(&dev->sta_rc_list, &list);
- 
-@@ -2892,6 +2894,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 	}
- 
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
-+
-+	mutex_unlock(&dev->mt76.mutex);
- }
- 
- void mt7996_mac_work(struct work_struct *work)
+ 	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he)
+-		bf->ibf_timeout = is_mt7996(&dev->mt76) ? MT7996_IBF_TIMEOUT :
+-							  MT7992_IBF_TIMEOUT;
++		bf->ibf_timeout = is_mt7992(&dev->mt76) ? MT7992_IBF_TIMEOUT :
++							  MT7996_IBF_TIMEOUT;
+ 	else if (!ebf && link_sta->bandwidth <= IEEE80211_STA_RX_BW_40 && !bf->ncol)
+ 		bf->ibf_timeout = MT7996_IBF_TIMEOUT_LEGACY;
+ 	else
 -- 
 2.51.0
 
