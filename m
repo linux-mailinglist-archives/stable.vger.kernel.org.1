@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7E9CC34A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF04CC24AE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5ACFC3007740
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FE9C30305BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F71736CE10;
-	Tue, 16 Dec 2025 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84CE3446C0;
+	Tue, 16 Dec 2025 11:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EsKx0x5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0n0D46yC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F4636D4E7;
-	Tue, 16 Dec 2025 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936D73446B7;
+	Tue, 16 Dec 2025 11:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888016; cv=none; b=d9d7fpTdr/Sw128RiK4dom3pVd8+6GxlNHZepp1PuVNc4NcRveNl40AUkl7We0FlL+UMgiGdawuPz8Dudo2IzN5LiKlf7hm4G7Dk0wbl/6sFwXj7J+IXENDhlMrmtnydCC36XY95kqnvT5aQU4CcsxDX8QFCBgS87t6j0d0HRFI=
+	t=1765884483; cv=none; b=k870rd/9+DEptEqScufQ/af7WyFjQVDTHtWvvlrFpgUs8a6pX5ZZa2p+ipmEI1O+ADFv/O0s1Q4lfMLhELRBogzowqbNDcXJqE63hQRZSKsY/yDOG3Wemvdrc3FUkeWXADd3uXKyjIC7bY18heqsL4xKbp/MgFwKwz0qk+sRRfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888016; c=relaxed/simple;
-	bh=x3S/59zaeYEDO6HEzziMsxu6bWYDN7A2FEF5/Cjmgck=;
+	s=arc-20240116; t=1765884483; c=relaxed/simple;
+	bh=a8GWY/XsflcpdtgABOlCeI02SzoFffQDb2vn2y/vk58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQ3QQp98ehaJWEVuWFfB7YzwSVylug9r2a+b+TyvS5yZVHhBFji6ggWELWJceYCLcMLH8Mb/9L7UJsUf8zCA0rwCd2Q9zZRq477OB8NG8DDIn1d42yB7erFszxPSnMIqJMybYOd/1aOEE6/Fu4WoqUH9yYDS3w8TmnZf17YMPho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EsKx0x5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DCAC4CEF1;
-	Tue, 16 Dec 2025 12:26:55 +0000 (UTC)
+	 MIME-Version; b=X1YF4OymKmAFjhSKv36KgW9CJ46iuglROA1UTOjMTZjiDwcDndkTNjG4BJ54oRGGTdJufTpOAhL9yVpS6j9PeMEtrTqcmuiBIraTWeldH0XbZJgLc5kPLAQEaDOPwc6u2cvvhWMr6e3mByg9unjpdVBnPGnAaTqECNI4K1XpoqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0n0D46yC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AD5C4CEF1;
+	Tue, 16 Dec 2025 11:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888016;
-	bh=x3S/59zaeYEDO6HEzziMsxu6bWYDN7A2FEF5/Cjmgck=;
+	s=korg; t=1765884483;
+	bh=a8GWY/XsflcpdtgABOlCeI02SzoFffQDb2vn2y/vk58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0EsKx0x5PqdFPDyrePAfWawf7tWUKj0MUWc3Iw8qooz460dYC/wWq+dOpmTeFFqW9
-	 P6Squ2iEd/7qf4POTjGp/hey3Ftp/YxAP9QFwRI4WTSbfqSFBr6Ti2PbKFJiZE3xya
-	 J5zNLBMPBMSirbroCX6ytRMcFcEz3vxMmehXGs1s=
+	b=0n0D46yCstmYVXOwguGjTYmowrdAHWBua2oAcTZlmAVsFl5ZiQQIHxNd+8jSf4DUf
+	 /HhaAybiSiFDGz+OkP7RcxP8K7b+EXGZIAQrhkcwW4gqiE5BYJ7BQwlmAzSFXlPvKm
+	 UNWl6ocEP4Id1U+7ofmTBELziNuNarWzhI+VKcK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Song Liu <song@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 406/614] bpftool: Allow bpftool to build with openssl < 3
+Subject: [PATCH 6.12 206/354] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
 Date: Tue, 16 Dec 2025 12:12:53 +0100
-Message-ID: <20251216111416.084488181@linuxfoundation.org>
+Message-ID: <20251216111328.382338968@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit 90ae54b4c7eca42d5ce006dd0a8cb0b5bfbf80d0 ]
+[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
 
-ERR_get_error_all()[1] is a openssl v3 API, so to make code
-compatible with openssl v1 utilize ERR_get_err_line_data
-instead.  Since openssl is already a build requirement for
-the kernel (minimum requirement openssl 1.0.0), this will
-allow bpftool to compile where opensslv3 is not available.
-Signing-related BPF selftests pass with openssl v1.
+The previous commit removed the PAGE_SIZE limit on transfer length of
+raw_io buffer in order to avoid any problems with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length. However
+this also removes the upperbound on user supplied length, allowing very
+large values to be passed to the allocator.
 
-[1] https://docs.openssl.org/3.4/man3/ERR_get_error/
+syzbot on fuzzing the transfer length with very large value (1.81GB)
+results in kmalloc() to fall back to the page allocator, which triggers
+a kernel warning as the page allocator cannot handle allocations more
+than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
 
-Fixes: 40863f4d6ef2 ("bpftool: Add support for signing BPF programs")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Acked-by: Song Liu <song@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/r/20251120084754.640405-2-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Since there is no limit imposed on the size of buffer for both control
+and non control transfers, cap the raw_io transfer length to
+KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
+prevent any warnings from the page allocator.
+
+Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/sign.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/bpf/bpftool/sign.c b/tools/bpf/bpftool/sign.c
-index b34f74d210e9c..f9b742f4bb104 100644
---- a/tools/bpf/bpftool/sign.c
-+++ b/tools/bpf/bpftool/sign.c
-@@ -28,6 +28,12 @@
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index c713a9854a3e5..3ffee64a63a24 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
  
- #define OPEN_SSL_ERR_BUF_LEN 256
+ static DEFINE_IDA(driver_id_numbers);
+ #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
++#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
  
-+/* Use deprecated in 3.0 ERR_get_error_line_data for openssl < 3 */
-+#if !defined(OPENSSL_VERSION_MAJOR) || (OPENSSL_VERSION_MAJOR < 3)
-+#define ERR_get_error_all(file, line, func, data, flags) \
-+	ERR_get_error_line_data(file, line, data, flags)
-+#endif
-+
- static void display_openssl_errors(int l)
- {
- 	char buf[OPEN_SSL_ERR_BUF_LEN];
+ #define RAW_EVENT_QUEUE_SIZE	16
+ 
+@@ -667,6 +668,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > USB_RAW_IO_LENGTH_MAX)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 -- 
 2.51.0
 
