@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE428CC469D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D432CC267D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2965830CDFDE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EA0E3058843
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969E6357721;
-	Tue, 16 Dec 2025 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE64B343D82;
+	Tue, 16 Dec 2025 11:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/ZI9YaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiM7cuJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52374357718;
-	Tue, 16 Dec 2025 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8BF341AC3;
+	Tue, 16 Dec 2025 11:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886569; cv=none; b=L2WU9PCXybBpH5zWaX4rRokcXASzNE2nW953wvvqnS6Y0pjRJMWEzonrsFKcpC9oV3vp7N1fUocN/KMMUaYv0LOjrwi1LX4IbimYWB37KGrQ929DEIkKikdfQM02xGxK8TTfF1+3VH7O+qKHHN95r7jM3POkaKLez4CR/ENPlIc=
+	t=1765884895; cv=none; b=mK6UFlWJlTLEhQkz4NPF5zWaX3IBacMFdBTfbteZtQgldqyeszPkByvflkkcXjBapuQ+qjE4kvLuY4Ug7/Lzgum3JkMm1Nxv6MYJP1v/vVIfXK9BR4HSgpuu/OTgEIjMHKWO8FQ2mjlI6R3jkPmg4J3am097afeyKcincBjAvzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886569; c=relaxed/simple;
-	bh=vfaxwEYcu5mzAiik++Fs9VZNe9r0FHR/ARcmE1sKMYc=;
+	s=arc-20240116; t=1765884895; c=relaxed/simple;
+	bh=M2PmgGJQ+dYzYbxOasY8hgPDliYqJRU7LK4KaE+zXSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyyDAaOq4AAm+XLq1NfOejeQuASCinc9Vwspe2S89b67rKD5Ez9mrz9QwyYl2qIMHXA4YzfUzoE6GCYcPTwcfAQ5lZHUHkIMFqq2Z9HbP/71FH4P1UL+Pulq8+sJGD1J9IO5D8znJW0U+9SO26hi2cMGi9vdZckQtZLBgnIMfwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/ZI9YaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834E9C4CEF1;
-	Tue, 16 Dec 2025 12:02:48 +0000 (UTC)
+	 MIME-Version; b=JR1Mv26OPYdQQXBUXn6STACz2ND19/qMZJoBAYD4zN7vfF0jLY+cwfC5QZ/rw65WKvTk/gL2pCnO3t0BujGsuvEZ1zkANp/sScuXwNkGvBx3b5UHPMNn/+A+wOd3OZXutJ09/p5S8rBpqkTrVvGDo/kzSKQBm7lyzi69y7j7mws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiM7cuJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13086C4CEF1;
+	Tue, 16 Dec 2025 11:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886568;
-	bh=vfaxwEYcu5mzAiik++Fs9VZNe9r0FHR/ARcmE1sKMYc=;
+	s=korg; t=1765884895;
+	bh=M2PmgGJQ+dYzYbxOasY8hgPDliYqJRU7LK4KaE+zXSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/ZI9YaLk2h9yM7tI+G0hz4KormhUvY50KAu30iLgrn3aNt7ifcUpSRAcwEdBdLni
-	 PSLEWN4sfj5vtwMIGxY0h8kE+9oQurfsBLsVBP41+yZ7juOJ+qJw3iTouHHj335P8F
-	 C7ifss7FPNFzmVYSmGcXpEtKsbaV3RKsgpkZr+YE=
+	b=GiM7cuJJLM0dryAf+tUY9cl+XqU53r1bbRRX7SqK06qCWwFekLZMK+G3qMxJzo4md
+	 eCwzxeVxKOGAblgJCTjkq1zigRQ/b4C8akQecOwOOebPIVKD79NZ422Vpn4Li4NbeE
+	 mEq/NAVoxUnis+Nt/QVJkYEYq4qoyxakvzJKeIDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 458/507] ASoC: ak5558: Disable regulator when error happens
+Subject: [PATCH 6.12 332/354] drm/amdkfd: Use huge page size to check split svm range alignment
 Date: Tue, 16 Dec 2025 12:14:59 +0100
-Message-ID: <20251216111402.041733685@linuxfoundation.org>
+Message-ID: <20251216111332.937548922@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-[ Upstream commit 1f8f726a2a29c28f65b30880335a1610c5e63594 ]
+[ Upstream commit bf2084a7b1d75d093b6a79df4c10142d49fbaa0e ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+When split svm ranges that have been mapped using huge page should use huge
+page size(2MB) to check split range alignment, not prange->granularity that
+means migration granularity.
 
-Fixes: 2ff6d5a108c6 ("ASoC: ak5558: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-3-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ef6b2d4b7e5 ("drm/amdkfd: remap unaligned svm ranges that have split")
+Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 448ee45353ef9fb1a34f5f26eb3f48923c6f0898)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak5558.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 46 +++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/codecs/ak5558.c b/sound/soc/codecs/ak5558.c
-index 683f3e472f500..73684fc5beb1a 100644
---- a/sound/soc/codecs/ak5558.c
-+++ b/sound/soc/codecs/ak5558.c
-@@ -372,7 +372,15 @@ static int ak5558_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak5558->regmap, false);
- 	regcache_mark_dirty(ak5558->regmap);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 99ce4fe5eb170..d65b0b23ec7b8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1143,30 +1143,48 @@ static int
+ svm_range_split_tail(struct svm_range *prange, uint64_t new_last,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
+ {
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *tail = NULL;
+-	int r = svm_range_split(prange, prange->start, new_last, &tail);
++	int r;
  
--	return regcache_sync(ak5558->regmap);
-+	ret = regcache_sync(ak5558->regmap);
-+	if (ret)
-+		goto err;
+-	if (!r) {
+-		list_add(&tail->list, insert_list);
+-		if (!IS_ALIGNED(new_last + 1, 1UL << prange->granularity))
+-			list_add(&tail->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, prange->start, new_last, &tail);
++
++	if (r)
++		return r;
++
++	list_add(&tail->list, insert_list);
++
++	if (huge_page_mapping && tail->start > start_align &&
++	    tail->start < last_align_down && (!IS_ALIGNED(tail->start, 512)))
++		list_add(&tail->update_list, remap_list);
 +
 +	return 0;
-+err:
-+	regcache_cache_only(ak5558->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak5558->supplies), ak5558->supplies);
-+	return ret;
  }
  
- static const struct dev_pm_ops ak5558_pm = {
+ static int
+ svm_range_split_head(struct svm_range *prange, uint64_t new_start,
+ 		     struct list_head *insert_list, struct list_head *remap_list)
+ {
++	unsigned long last_align_down = ALIGN_DOWN(prange->last, 512);
++	unsigned long start_align = ALIGN(prange->start, 512);
++	bool huge_page_mapping = last_align_down > start_align;
+ 	struct svm_range *head = NULL;
+-	int r = svm_range_split(prange, new_start, prange->last, &head);
++	int r;
+ 
+-	if (!r) {
+-		list_add(&head->list, insert_list);
+-		if (!IS_ALIGNED(new_start, 1UL << prange->granularity))
+-			list_add(&head->update_list, remap_list);
+-	}
+-	return r;
++	r = svm_range_split(prange, new_start, prange->last, &head);
++
++	if (r)
++		return r;
++
++	list_add(&head->list, insert_list);
++
++	if (huge_page_mapping && head->last + 1 > start_align &&
++	    head->last + 1 < last_align_down && (!IS_ALIGNED(head->last, 512)))
++		list_add(&head->update_list, remap_list);
++
++	return 0;
+ }
+ 
+ static void
 -- 
 2.51.0
 
