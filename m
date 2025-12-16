@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840B8CC3802
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CC4CC45D3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FE5D303F2D9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9948830073C1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043B34EEF0;
-	Tue, 16 Dec 2025 12:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A734BA24;
+	Tue, 16 Dec 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzkYFhNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Khrxf5e+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5B22367D1;
-	Tue, 16 Dec 2025 12:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5532C34B69B;
+	Tue, 16 Dec 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887219; cv=none; b=qTYUdxhtqfZJ6I30PQh86p8FsQ9ysKEWqy9c079LdDXF1Rhun+l5F354400hR+js/Dtf4h3wk7ubme+cFqTdtSunICRq6dya5twuuhMQPiO3FTd5NvUpi7RfPMAtP7Q+BhB5i/knFBXdaGUR4cj/8thA61bwgDpkRYf1SyHUcrQ=
+	t=1765885272; cv=none; b=gIsptLQoP5BGIP5+/gQwBz0BO2UHrRpviW3kw1yTYLXHUn94xbcNc8BJ9nX31mpD+T8l7cfzT88UgUP2P+0FpnNNP3PjfRNIcMsJxlzlWeb25YOLNejMTtcykyJ/tpFEydSdogyb8/RTr2VLsSKs8pCJPP3ot+dSzld1qC7sS9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887219; c=relaxed/simple;
-	bh=WsD0qq6KuD5A6bvRzqqe1ybQ9yoZTNA5cLSrUjY7ZzM=;
+	s=arc-20240116; t=1765885272; c=relaxed/simple;
+	bh=4ir7KOqc+TqjEw+zjYwXcGBt3x1SmJSZlA+wqvJ1s8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISaJJHDc2n1J8ila1KjkuplVeoAeoPYWw/SOUbbPKEcYiL6bl05HQ8NGEFjr1qRRX407vvb+c3s+TSChp01appij4eYgutrJtwxPpJKDlTEGjs32gS5AADaVuMmZ4lPVxr2FnvxQ/1pBt7GDxNV9AEfM0VKsGEKO9+pMkR8q0po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzkYFhNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A793BC4CEF1;
-	Tue, 16 Dec 2025 12:13:38 +0000 (UTC)
+	 MIME-Version; b=uPzUn8SAIfme1yo+WdxWL9EKIBlM5unQblUWCtwkhPS/4SuUSOb6762dw0Imks1+cuixaUU+UVSLit4M0g9oBxbKsL0pqxhp/silJyDy9Qvna1SZJEt7gPMUg7OuuxRpqNjyKyLSsN2MCCXZZAj+rC4aKZiXwts71AOUJGSHU1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Khrxf5e+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE864C4CEF1;
+	Tue, 16 Dec 2025 11:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887219;
-	bh=WsD0qq6KuD5A6bvRzqqe1ybQ9yoZTNA5cLSrUjY7ZzM=;
+	s=korg; t=1765885272;
+	bh=4ir7KOqc+TqjEw+zjYwXcGBt3x1SmJSZlA+wqvJ1s8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzkYFhNq1KE0y3TrJsWYk9tGw1MZCLOKtjuX/lN02z+oIJjoGIZnYU1UIalUVC/GO
-	 Mm4J1I/3kp6ujqy72pwlWQ+SIlclbVGSxk5wIHsubqk4Pcz0kL5Yf7+KcQhXsaFU7u
-	 DmU1TZIACDY2plk5OdEWvPWkAtqXiF32kdPTG4HE=
+	b=Khrxf5e+2j78+xsaqQeoRb/rgKr6RTnOVRIZfP7Bz6zEXa/GRnUwPPlJJapZrK5lg
+	 JExBw58h3R4RlLp3odLJfOxvydiACfXk5ZA6AII/TjiiBb5dy4/jx58nfFfCzNSXkM
+	 4FNBmwIXgHFC4Y81gQ1IE+xEAs0PRbPS7VU7dp28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	a-development <a-development@posteo.de>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 162/614] wifi: ath12k: fix error handling in creating hardware group
-Date: Tue, 16 Dec 2025 12:08:49 +0100
-Message-ID: <20251216111407.205918249@linuxfoundation.org>
+Subject: [PATCH 6.17 089/507] PCI: endpoint: pci-epf-test: Fix sleeping function being called from atomic context
+Date: Tue, 16 Dec 2025 12:08:50 +0100
+Message-ID: <20251216111348.763138680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
 
-[ Upstream commit 088a099690e4c0d291db505013317ab5dd58b4d5 ]
+[ Upstream commit 25423cda145f9ed6ee4a72d9f2603ac2a4685e74 ]
 
-In ath12k_core_init() when ath12k_core_hw_group_create() fails,
-ath12k_core_hw_group_destroy() is called where for each device below
-path would get executed
+When Root Complex (RC) triggers a Doorbell interrupt to Endpoint (EP), it
+triggers the below warning in the EP:
 
-	ath12k_core_soc_destroy()
-		ath12k_qmi_deinit_service()
-			qmi_handle_release()
+ BUG: sleeping function called from invalid context at kernel/locking/mutex.c:271
+ Call trace:
+  __might_resched+0x130/0x158
+  __might_sleep+0x70/0x88
+  mutex_lock+0x2c/0x80
+  pci_epc_get_msi+0x78/0xd8
+  pci_epf_test_raise_irq.isra.0+0x74/0x138
+  pci_epf_test_doorbell_handler+0x34/0x50
 
-This results in kernel crash in case one of the device fails at
-qmi_handle_init() when creating hardware group:
+The BUG arises because the EP's pci_epf_test_doorbell_handler() which is
+running in the hard IRQ context is making an indirect call to
+pci_epc_get_msi(), which uses mutex inside.
 
-ath12k_pci 0000:10:00.0: failed to initialize qmi handle
-ath12k_pci 0000:10:00.0: failed to initialize qmi :-517
-ath12k_pci 0000:10:00.0: failed to create soc core: -517
-ath12k_pci 0000:10:00.0: unable to create hw group
-BUG: unable to handle page fault for address: ffffffffffffffb7
-RIP: 0010:qmi_handle_release
-Call Trace:
- <TASK>
- ath12k_qmi_deinit_service
- ath12k_core_hw_group_destroy
- ath12k_core_init
- ath12k_pci_probe
+To fix the issue, convert the hard IRQ handler to a threaded IRQ handler to
+allow it to call functions that can sleep during bottom half execution.
+Also, register the threaded IRQ handler with IRQF_ONESHOT to keep the
+interrupt line disabled until the threaded IRQ handler completes execution.
 
-The detailed reason is, when qmi_handle_init() fails for a device
-ab->qmi.handle is not correctly initialized. Then
-ath12k_core_hw_group_create() returns failure, since error handing
-is done for all device, eventually qmi_handle_release() is called for the
-issue device and finally kernel crashes due to the uninitialized
-ab->qmi.handle.
-
-Fix this by moving error handling to ath12k_core_hw_group_create(), this
-way the issue device can be skipped.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: 6f245ea0ec6c ("wifi: ath12k: introduce device group abstraction")
-Link: https://lore.kernel.org/ath12k/fabc97122016d1a66a53ddedd965d134@posteo.net
-Reported-by: a-development <a-development@posteo.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220518
-Tested-by: a-development <a-development@posteo.de>
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251030-fix-hw-group-create-err-handling-v1-1-0659e4d15fb9@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: eff0c286aa91 ("PCI: endpoint: pci-epf-test: Add doorbell test support")
+Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+[mani: reworded description a bit]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251014024109.42287-1-bhanuseshukumar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 5d494c5cdc0da..a2137b363c2fe 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -2106,14 +2106,27 @@ static int ath12k_core_hw_group_create(struct ath12k_hw_group *ag)
- 		ret = ath12k_core_soc_create(ab);
- 		if (ret) {
- 			mutex_unlock(&ab->core_lock);
--			ath12k_err(ab, "failed to create soc core: %d\n", ret);
--			return ret;
-+			ath12k_err(ab, "failed to create soc %d core: %d\n", i, ret);
-+			goto destroy;
- 		}
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 31617772ad516..b05e8db575c35 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -730,8 +730,9 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
+ 	if (bar < BAR_0)
+ 		goto err_doorbell_cleanup;
  
- 		mutex_unlock(&ab->core_lock);
- 	}
- 
- 	return 0;
-+
-+destroy:
-+	for (i--; i >= 0; i--) {
-+		ab = ag->ab[i];
-+		if (!ab)
-+			continue;
-+
-+		mutex_lock(&ab->core_lock);
-+		ath12k_core_soc_destroy(ab);
-+		mutex_unlock(&ab->core_lock);
-+	}
-+
-+	return ret;
- }
- 
- void ath12k_core_hw_group_set_mlo_capable(struct ath12k_hw_group *ag)
-@@ -2188,7 +2201,7 @@ int ath12k_core_init(struct ath12k_base *ab)
- 		if (ret) {
- 			mutex_unlock(&ag->mutex);
- 			ath12k_warn(ab, "unable to create hw group\n");
--			goto err_destroy_hw_group;
-+			goto err_unassign_hw_group;
- 		}
- 	}
- 
-@@ -2196,8 +2209,7 @@ int ath12k_core_init(struct ath12k_base *ab)
- 
- 	return 0;
- 
--err_destroy_hw_group:
--	ath12k_core_hw_group_destroy(ab->ag);
-+err_unassign_hw_group:
- 	ath12k_core_hw_group_unassign(ab);
- err_unregister_notifier:
- 	ath12k_core_panic_notifier_unregister(ab);
+-	ret = request_irq(epf->db_msg[0].virq, pci_epf_test_doorbell_handler, 0,
+-			  "pci-ep-test-doorbell", epf_test);
++	ret = request_threaded_irq(epf->db_msg[0].virq, NULL,
++				   pci_epf_test_doorbell_handler, IRQF_ONESHOT,
++				   "pci-ep-test-doorbell", epf_test);
+ 	if (ret) {
+ 		dev_err(&epf->dev,
+ 			"Failed to request doorbell IRQ: %d\n",
 -- 
 2.51.0
 
