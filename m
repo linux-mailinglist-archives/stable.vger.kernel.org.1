@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AEACC3905
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B9FCC2923
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 186633096FE7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CB2A3005009
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEB634A784;
-	Tue, 16 Dec 2025 11:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE3E343D9D;
+	Tue, 16 Dec 2025 12:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKNF9LGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dO0fW53c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A79734A77D;
-	Tue, 16 Dec 2025 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FBA749C;
+	Tue, 16 Dec 2025 12:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885206; cv=none; b=tnTezsOOBGnhKZoXP+gJ1NBmhox2u5dnFs0CHSBIfU+D2s+uBrNEXcnH1JDcPdMJiV/WN0QlurD6FTty2jPNuUWs1qcI2SZ0U34YtLRiTgMSF9CFw8hZH9QzPPoPsXN7o4FxPpVNj4E8OCKzPXf2T6gbftulXHnIk/71gf26TVs=
+	t=1765887155; cv=none; b=k59qgZxnOXQIvCnNHRXxpwyCXI0kzlecCyBr6ltE0pK2/EegtZsY0suISroAK6DoOwuVnhilt8w8vbtCaXMlXy/iPOpiJ3jqCaasPB2c4tywcqXYnuxu2N0asm7h5Xxgb7ZoYuvFoT9RBAAW09xC4yeDmIw5EPFSNc1TXnybrVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885206; c=relaxed/simple;
-	bh=otH6QjS8pSLgoOtX20j3PVGAvlA9A8LUP4vbPdkAM5U=;
+	s=arc-20240116; t=1765887155; c=relaxed/simple;
+	bh=+uQ6QU0j8wUp/Z/PvplUHjsMXZInzM3xVnlr+5q+6u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6/erCqYqJyw1edNkAyxliUaKTQlKhky8EpHPns7BJ1g7ywl1j2ekBqO9HcAqVMbZI3xC65wcvpHQPFxN/6ufkpTberzoU3Us4WtDW8/GNqJ+pRUZIxcihiQcCxNw9OQBuuE62zq9Ni61SU6JlqYqDAebM9PLw+cs6v0AMaW7cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKNF9LGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29359C16AAE;
-	Tue, 16 Dec 2025 11:40:04 +0000 (UTC)
+	 MIME-Version; b=XvJJxd7l2v3XFQli1ua+FNEmaIeT/Dj8/L9jkWGkYK2TIspJHhFLqhSfKTt8aUj0oSaKAMvqtvBDNUObo0cn+EWccHOHXIcSbaXUavB+E5Cw9KpM1qvZ6Ijmi1EjiTzoIeeIII9TfgNp3Yn1r1u4Zj0vJtax9to4+QmftovksJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dO0fW53c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9842C4CEF1;
+	Tue, 16 Dec 2025 12:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885205;
-	bh=otH6QjS8pSLgoOtX20j3PVGAvlA9A8LUP4vbPdkAM5U=;
+	s=korg; t=1765887155;
+	bh=+uQ6QU0j8wUp/Z/PvplUHjsMXZInzM3xVnlr+5q+6u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKNF9LGZBmSV2rVMV65UMhcHbDL4tUjJwAvw34BPRrJuI9s43+oLR9GxUCPYS1qij
-	 4hMsgctpXDcucJphtaq0I4HP1hs2VPTp7TPMEnsCeC4L7pQ7q6eT/ipcf36YM0msJh
-	 n6xPtxCSBdL6KGnoW6qTAo2b6TB/uKlYlUqjEWvo=
+	b=dO0fW53cZ2N9wEVog+oCsG7IZDovJm6cA2SdaDpvpi8bbfrfXIIT3mR/WhdIj2TDt
+	 ASbnuYFuI1JweyqqEUA1BwFH0SqZuW+BlZL/v0s419PZ5gmc0mLuqzemwKGUIsBAXY
+	 rQRmO/SfdscQ1hTZvAniOBJpbrzhGpdCVmn30aWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 070/507] tty: serial: imx: Only configure the wake register when device is set as wakeup source
+Subject: [PATCH 6.18 144/614] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
 Date: Tue, 16 Dec 2025 12:08:31 +0100
-Message-ID: <20251216111348.079136334@linuxfoundation.org>
+Message-ID: <20251216111406.554689262@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit d55f3d2375ceeb08330d30f1e08196993c0b6583 ]
+[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
 
-Currently, the i.MX UART driver enables wake-related registers for all
-UART devices by default. However, this is unnecessary for devices that
-are not configured as wakeup sources. To address this, add a
-device_may_wakeup() check before configuring the UART wake-related
-registers.
+When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
+KASAN may report false-positive out-of-bounds access:
 
-Fixes: db1a9b55004c ("tty: serial: imx: Allow UART to be a source for wakeup")
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251002045259.2725461-2-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
+  Call Trace:
+    dump_stack_lvl
+    print_address_description.constprop.0
+    print_report
+    __show_regs
+    show_trace_log_lvl
+    sched_show_task
+    show_state_filter
+    sysrq_handle_showstate
+    __handle_sysrq
+    write_sysrq_trigger
+    proc_reg_write
+    vfs_write
+    ksys_write
+    do_syscall_64
+    entry_SYSCALL_64_after_hwframe
+
+The issue occurs as follows:
+
+  Task A (walk other tasks' stacks)           Task B (running)
+  1. echo t > /proc/sysrq-trigger
+  show_trace_log_lvl
+    regs = unwind_get_entry_regs()
+    show_regs_if_on_stack(regs)
+                                              2. The stack value pointed by
+                                                 `regs` keeps changing, and
+                                                 so are the tags in its
+                                                 KASAN shadow region.
+      __show_regs(regs)
+        regs->ax, regs->bx, ...
+          3. hit KASAN redzones, OOB
+
+When task A walks task B's stack without suspending it, the continuous changes
+in task B's stack (and corresponding KASAN shadow tags) may cause task A to
+hit KASAN redzones when accessing obsolete values on the stack, resulting in
+false positive reports.
+
+Simply stopping the task before unwinding is not a viable fix, as it would
+alter the state intended to inspect. This is especially true for diagnosing
+misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
+the root cause by changing the call stack.
+
+Therefore, fix this by disabling KASAN checks during asynchronous stack
+unwinding, which is identified when the unwinding task does not match the
+current task (task != current).
+
+  [ bp: Align arguments on function's opening brace. ]
+
+Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 500dfc009d03e..90e2ea1e8afe5 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2697,8 +2697,22 @@ static void imx_uart_save_context(struct imx_port *sport)
- /* called with irq off */
- static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 71ee20102a8af..b10684dedc589 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -181,8 +181,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+  * in false positive reports. Disable instrumentation to avoid those.
+  */
+ __no_kmsan_checks
+-static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+-			unsigned long *stack, const char *log_lvl)
++static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++				 unsigned long *stack, const char *log_lvl)
  {
-+	struct tty_port *port = &sport->port.state->port;
-+	struct device *tty_dev;
-+	bool may_wake = false;
- 	u32 ucr3;
+ 	struct unwind_state state;
+ 	struct stack_info stack_info = {0};
+@@ -303,6 +303,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	}
+ }
  
-+	scoped_guard(tty_port_tty, port) {
-+		struct tty_struct *tty = scoped_tty();
++static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++			       unsigned long *stack, const char *log_lvl)
++{
++	/*
++	 * Disable KASAN to avoid false positives during walking another
++	 * task's stacks, as values on these stacks may change concurrently
++	 * with task execution.
++	 */
++	bool disable_kasan = task && task != current;
 +
-+		tty_dev = tty->dev;
-+		may_wake = tty_dev && device_may_wakeup(tty_dev);
-+	}
++	if (disable_kasan)
++		kasan_disable_current();
 +
-+	/* only configure the wake register when device set as wakeup source */
-+	if (!may_wake)
-+		return;
++	__show_trace_log_lvl(task, regs, stack, log_lvl);
 +
- 	uart_port_lock_irq(&sport->port);
- 
- 	ucr3 = imx_uart_readl(sport, UCR3);
++	if (disable_kasan)
++		kasan_enable_current();
++}
++
+ void show_stack(struct task_struct *task, unsigned long *sp,
+ 		       const char *loglvl)
+ {
 -- 
 2.51.0
 
