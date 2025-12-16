@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-202482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC51CC48CE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:08:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DB2CC2899
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 328FA3008EE0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C95DF316C41D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F0736D515;
-	Tue, 16 Dec 2025 12:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFD034D4FD;
+	Tue, 16 Dec 2025 11:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zpaeb6ZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtRgkc6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22C1376BC5;
-	Tue, 16 Dec 2025 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CBE34D4F1;
+	Tue, 16 Dec 2025 11:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888046; cv=none; b=VUSDvNTzZmEFsaoa0nfV2s0716xndp6Pe55vbPv15HiuDXqs/fnImWFG2Hn36tv2wEFRT6mf+XQVlw4zPcUZb3ObystrkU73D04wPBBhnRQfyW4BtmTgQXghymYh3uzNlnX/UC1C1D10drvekse6m6CWCgOKvGBz+1N7C44nTvw=
+	t=1765886109; cv=none; b=srmSSn9V0SzgFHHsuu/rl4xEUw1jcNJMJniVZDW8iWdjpa1wG1dxKGYNkWcEyweraOtN78yladbuOoX7wjRbv+i0WUiL39/Knvlwy93vPfJLz9JrvhKj/mWvil1SdPr+XO8RLp1077XhLyOV1MaTWry+E5fkrGZoKAkJYkzB9h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888046; c=relaxed/simple;
-	bh=slCMW259RdwYcOSwG43n9QWEC14c/IkERMdnt4FWoW8=;
+	s=arc-20240116; t=1765886109; c=relaxed/simple;
+	bh=/ijqNUC5S4GYxbc79tnnCNzuWw4OWArL+K2vGvyTM8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVvSmDHtHtUc0pCcGHJvHYln6jQLgPqTWX0f6on3jatG+eutWvf6OrIJQP7amBebbDUopxP1sRPjUXJvtYfnDOX9IihCwjzebE6mInnOrVOoZ43inV/pqYn06jZjrCuiZArXiInMHvAiVLRd3EkcaxzbrSfHvgviuo4Kb5v3/QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zpaeb6ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1045AC4CEF1;
-	Tue, 16 Dec 2025 12:27:24 +0000 (UTC)
+	 MIME-Version; b=BNWOIkoZIrAhQB8C8OVpIOhB7UQkNW3VtuiVahLJzAzVrYGhQPJOlT2omcDaCqCIro1aMcXrSrvWG8+33l8F+/nU4GbpW8HRXPOivo5VBF48/b2iT80+SfGjwZu7DptcdsXh024NBpTP2GfRygcnW/ITkVNhCqRKcT5D3wro07c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtRgkc6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C07EC16AAE;
+	Tue, 16 Dec 2025 11:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888045;
-	bh=slCMW259RdwYcOSwG43n9QWEC14c/IkERMdnt4FWoW8=;
+	s=korg; t=1765886108;
+	bh=/ijqNUC5S4GYxbc79tnnCNzuWw4OWArL+K2vGvyTM8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zpaeb6ZTyIEX8MU9ag5FWo1VDbnXhPtx+pR9m/+qHXHRn17WdfYw2cAVH2u951X/E
-	 QGmkixk8JN6RDjhHRxi85pbcsQAVuGpicYf5oJak2rcvsg5C+AB5/GlucHy3OvqJql
-	 V3ULNLE/d0d7ABcCSMhY6Q9ujL62gOfsi0WlBteM=
+	b=WtRgkc6VY50VaERhfqPvriRFGLnMII2++sCnsIKh8SNBPV/cK37Zl3Lh3B9CSUyfv
+	 CrojnJGmGLS+gs44UR0ywjEY7GJLXZM9ixQqxc5aheCXTzeZ/r6tV6k+KrsfZk3BxY
+	 DMdhDj0i9FNHMMngzLFbnx1uxlQpJezPatbLNoss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Mentz <danielmentz@google.com>,
+	Ryan Huang <tzukui@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 414/614] um: Dont rename vmap to kernel_vmap
+Subject: [PATCH 6.17 340/507] iommu/arm-smmu-v3: Fix error check in arm_smmu_alloc_cd_tables
 Date: Tue, 16 Dec 2025 12:13:01 +0100
-Message-ID: <20251216111416.371823467@linuxfoundation.org>
+Message-ID: <20251216111357.779128162@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Ryan Huang <tzukui@google.com>
 
-[ Upstream commit a74b6c0e53a6df8e8a096b50c06c4f872906368a ]
+[ Upstream commit 5941f0e0c1e0be03ebc15b461f64208f5250d3d9 ]
 
-In order to work around the existence of a vmap symbol in libpcap, the
-UML makefile unconditionally redefines vmap to kernel_vmap. However,
-this not only affects the actual vmap symbol, but also anything else
-named vmap, including a number of struct members in DRM.
+In arm_smmu_alloc_cd_tables(), the error check following the
+dma_alloc_coherent() for cd_table->l2.l1tab incorrectly tests
+cd_table->l2.l2ptrs.
 
-This would not be too much of a problem, since all uses are also
-updated, except we now have Rust DRM bindings, which expect the
-corresponding Rust structs to have 'vmap' names. Since the redefinition
-applies in bindgen, but not to Rust code, we end up with errors such as:
+This means an allocation failure for l1tab goes undetected, causing
+the function to return 0 (success) erroneously.
 
-error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
-  --> rust/kernel/drm/gem/mod.rs:210:9
+Correct the check to test cd_table->l2.l1tab.
 
-Since libpcap support was removed in commit 12b8e7e69aa7 ("um: Remove
-obsolete pcap driver"), remove the, now unnecessary, define as well.
-
-We also take this opportunity to update the comment.
-
-Signed-off-by: David Gow <davidgow@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://patch.msgid.link/20251122083213.3996586-1-davidgow@google.com
-Fixes: 12b8e7e69aa7 ("um: Remove obsolete pcap driver")
-[adjust commmit message a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e3b1be2e73db ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_ctx_desc_cfg")
+Signed-off-by: Daniel Mentz <danielmentz@google.com>
+Signed-off-by: Ryan Huang <tzukui@google.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 7be0143b5ba35..721b652ffb658 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
- ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
- KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
- 
--# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
--# named - it's a common symbol in libpcap, so we get a binary which crashes.
--#
--# Same things for in6addr_loopback and mktime - found in libc. For these two we
--# only get link-time error, luckily.
-+# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
-+#  anything from referencing
-+# libc symbols with the same name, which can cause a linker error.
- #
- # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
- # embedded copy of longjmp, same thing for setjmp.
- #
--# These apply to USER_CFLAGS to.
-+# These apply to USER_CFLAGS too.
- 
- KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
--	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
-+	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
- 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
- 	-Din6addr_loopback=kernel_in6addr_loopback \
- 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 2a8b46b948f05..9780f40ba3e65 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1464,7 +1464,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
+ 		cd_table->l2.l1tab = dma_alloc_coherent(smmu->dev, l1size,
+ 							&cd_table->cdtab_dma,
+ 							GFP_KERNEL);
+-		if (!cd_table->l2.l2ptrs) {
++		if (!cd_table->l2.l1tab) {
+ 			ret = -ENOMEM;
+ 			goto err_free_l2ptrs;
+ 		}
 -- 
 2.51.0
 
