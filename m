@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF3CC27B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6472CC4A0B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56B58303F292
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82D1C3084DB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A29235502C;
-	Tue, 16 Dec 2025 11:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3540630DED0;
+	Tue, 16 Dec 2025 12:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Sj9IT5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/xie+sH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90D9355027;
-	Tue, 16 Dec 2025 11:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B92261B9C;
+	Tue, 16 Dec 2025 12:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885885; cv=none; b=K02TL6doO25VYXw+vwT66gLlrXtaa/t4BkFt3IGscWw4PDip+SlIYP7N/KhBeeMO6Xo7qjXjgTVB8dByPuRAFLR0iVGCMkXVNoTy1MpTDNmUnyZBREuFq7FZB67IEl86SDmiWWqcIoiyfAhwEdkFGAFJrzTDbVKi6ueyXDvDe8w=
+	t=1765887956; cv=none; b=ICfulYo+d8Bvbf7apt8pNd38LcYP0KqhDC4Ngq8p+W4natQgaTTjMqK9Ob32994Zs+8Jqip8lgapJMmaAzXuypM6C79jWc6fdgz9KTYynF6roAg2HFy3bHCz5XjKzUt4xDBPCtjWraWEnq/OzKgBLZqM+fMKcrta7EBH5Cbgzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885885; c=relaxed/simple;
-	bh=zLjBQ3wbqNTz6qPyiXBs+A022avUstZ3aANk6bJP4qk=;
+	s=arc-20240116; t=1765887956; c=relaxed/simple;
+	bh=SH431dr5Lb/OP22Z8uTTI2Pezg7ZNRsTqAxB8cuZndg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9Lhrt3u7V3nbrb0zIlrYOKHBsLK4nhIvYD+j5O4ayZr0tGQxkwnQEFkCqg9WO00cAMdyVzHoVomaCoGwFXOC5fUro39YPTov7DdqEDNbdVQE1Ydf8GYzinSlGGvzCdUjWefCxztE01U5nix+GYDLeOELBCfUtTGrB0I1MuJwk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Sj9IT5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03301C4CEF1;
-	Tue, 16 Dec 2025 11:51:24 +0000 (UTC)
+	 MIME-Version; b=cmxzWpVEMbksKQ5FVd37m7BX9EAkrdMEgL/HTbgmJzZenOSlKb3LxkkuOACgv4P+oXB7IHXKyFNbWmf3XDKwFkoGh/QKA+/PLa01221AvFN5bExjiH88dfaVCK31RtkRUvO2ZoTEtGSepRSdFZoZ4+Py0bzCMr6E8wAo5Kziqag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/xie+sH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BD3C4CEF1;
+	Tue, 16 Dec 2025 12:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885885;
-	bh=zLjBQ3wbqNTz6qPyiXBs+A022avUstZ3aANk6bJP4qk=;
+	s=korg; t=1765887955;
+	bh=SH431dr5Lb/OP22Z8uTTI2Pezg7ZNRsTqAxB8cuZndg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Sj9IT5oZ71WqDRXJ8DowLjVLPkbXlXxs/es/rjq7VI3KFfkOWr30wJvf6XmTik+s
-	 49IUtKnLxbTwPPvospetK2LmsvTywfrseIJycmRW+D7K0Rvo0YEavGV7AsUPX4ZYGZ
-	 +Xtm+UabBF/60pAiDDIUdyttEl2z+6t169gcmR8A=
+	b=U/xie+sHW2ccxxPJL+eQYDJxKEAQQpm1L5LsZ4iJHky7d7VDZLz0+xzCUezpT4jst
+	 Cj/WWFhroFggPaDBLOPLsvMjrsH7tg4geI1iPBHI+2yKncjmDqpSnyDMEw5NN3lSe+
+	 5gR6YBiz9pQKjTi58e7OGeP0IdbeKAvRy4NZlVHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 272/507] drm/msm/a6xx: Flush LRZ cache before PT switch
+Subject: [PATCH 6.18 346/614] phy: rockchip: naneng-combphy: Fix PCIe L1ss support RK3562
 Date: Tue, 16 Dec 2025 12:11:53 +0100
-Message-ID: <20251216111355.338691524@linuxfoundation.org>
+Message-ID: <20251216111413.899324518@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 180349b8407f3b268b2ceac0e590b8199e043081 ]
+[ Upstream commit be866e68966d20bcc4a73708093d577176f99c0c ]
 
-As per the recommendation, A7x and newer GPUs should flush the LRZ cache
-before switching the pagetable. Update a6xx_set_pagetable() to do this.
-While we are at it, sync both BV and BR before issuing  a
-CP_RESET_CONTEXT_STATE command, to match the downstream sequence.
+When PCIe link enters L1 PM substates, the PHY will turn off its
+PLL for power-saving. However, it turns off the PLL too fast which
+leads the PHY to be broken. According to the PHY document, we need
+to delay PLL turnoff time.
 
-Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688995/
-Message-ID: <20251118-kaana-gpu-support-v4-2-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: f13bff25161b ("phy: rockchip-naneng-combo: Support rk3562")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/1763459526-35004-2-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 1e363af319488..f8939f0fad4f2 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -224,7 +224,7 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
- 		OUT_RING(ring, submit->seqno - 1);
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index e303bec8a996f..7f8fc8e6d4890 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -106,6 +106,10 @@
+ #define RK3568_PHYREG18				0x44
+ #define RK3568_PHYREG18_PLL_LOOP		0x32
  
- 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
--		OUT_RING(ring, CP_SET_THREAD_BOTH);
-+		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
- 
- 		/* Reset state used to synchronize BR and BV */
- 		OUT_PKT7(ring, CP_RESET_CONTEXT_STATE, 1);
-@@ -235,7 +235,13 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
- 			 CP_RESET_CONTEXT_STATE_0_RESET_GLOBAL_LOCAL_TS);
- 
- 		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
--		OUT_RING(ring, CP_SET_THREAD_BR);
-+		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BOTH);
++#define RK3568_PHYREG30				0x74
++#define RK3568_PHYREG30_GATE_TX_PCK_SEL         BIT(7)
++#define RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF BIT(7)
 +
-+		OUT_PKT7(ring, CP_EVENT_WRITE, 1);
-+		OUT_RING(ring, LRZ_FLUSH);
-+
-+		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
-+		OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
- 	}
- 
- 	if (!sysprof) {
+ #define RK3568_PHYREG32				0x7C
+ #define RK3568_PHYREG32_SSC_MASK		GENMASK(7, 4)
+ #define RK3568_PHYREG32_SSC_DIR_MASK		GENMASK(5, 4)
+@@ -664,6 +668,10 @@ static int rk3562_combphy_cfg(struct rockchip_combphy_priv *priv)
+ 	case REF_CLOCK_100MHz:
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_100m, true);
+ 		if (priv->type == PHY_TYPE_PCIE) {
++			/* Gate_tx_pck_sel length select for L1ss support */
++			rockchip_combphy_updatel(priv, RK3568_PHYREG30_GATE_TX_PCK_SEL,
++						 RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF,
++						 RK3568_PHYREG30);
+ 			/* PLL KVCO tuning fine */
+ 			val = FIELD_PREP(RK3568_PHYREG33_PLL_KVCO_MASK,
+ 					 RK3568_PHYREG33_PLL_KVCO_VALUE);
 -- 
 2.51.0
 
