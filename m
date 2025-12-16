@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD586CC315B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:11:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F93CCC278B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA3BB30506BB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A31323004465
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55BC366577;
-	Tue, 16 Dec 2025 12:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9FA341AD7;
+	Tue, 16 Dec 2025 11:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cpogb4Kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/N72tYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FADD366570;
-	Tue, 16 Dec 2025 12:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E94342144;
+	Tue, 16 Dec 2025 11:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887368; cv=none; b=JQMTETV1s8SajhTbjch9591T4DEJpJMpYKjtvQ75UoWP00yLmPoM+gpYx4CUFgeqQk9129UZKKHmzj3OMdZWM5GlmfDP+rDlq5ZaWTItg77HkywlXdVm1Ylp4JwhX6TMjd+6xMssay4TlEGNrOpb24wrjfA0PBjNPINokhmEnWk=
+	t=1765885421; cv=none; b=MXQ/KfgEEqDLVOLq6e3TGW1jtVh9xlsLpI4SrPKSvRiaCNAjUr5rvgsW4w7pkpOUZThzGwCtOIZlzVEcSoJbL8mFuo+wyUZXBhXPEVZDNrpGrEJ5hgEqBhAI4S99Q+BbzdOdwh9pxtJsAuooXmJxNoDU5mFL84I/eBDtvZROI5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887368; c=relaxed/simple;
-	bh=LIluhzBISfZXtwfNc87dtpFjAYMa16AexsxouggP3Xs=;
+	s=arc-20240116; t=1765885421; c=relaxed/simple;
+	bh=skB71v2E+svvHDMslr5Rp1p4WZGOdugTO2ewGW4VJ2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lODfQ6LW6EQvftZ91uXnL2f1RgRnL5RcoEremz7/UcPC7/ubVjBmQE9NRdZMcNPXsE08yl3joSkxdd/5pzJjIglJt36KIEHNFoZUGuUWEyAQZee+q/ohGIPbMirxsHj2yaJ+034GAVwX27VEywSVVGMptooV1h89FVkPQj5dPXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cpogb4Kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4853C4CEF1;
-	Tue, 16 Dec 2025 12:16:07 +0000 (UTC)
+	 MIME-Version; b=Ro3mum5Cmjvrx6v271ODPptYnVxOGs8SbuqmJd7XIselO91r2PtcX+3/lcU+tobDmi4p/MwybTn6IuxeiO+BgJpMcReKg4Qiw8Lf4DFKQ4SIAxMmAwefCKeYerEYO1QExMnbnVoHDyatunkt8Y2fM5bO6CAgXgkp2d6WVgKTIUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/N72tYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC9CC4CEF1;
+	Tue, 16 Dec 2025 11:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887368;
-	bh=LIluhzBISfZXtwfNc87dtpFjAYMa16AexsxouggP3Xs=;
+	s=korg; t=1765885421;
+	bh=skB71v2E+svvHDMslr5Rp1p4WZGOdugTO2ewGW4VJ2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cpogb4KqoSdFQ6ESAEtKnZDVA066Zj8e4i+4YhF9l7dpWJhCTmiBsITOZP0TWZYSe
-	 jHXH5fTPhEuTtQShUhuHeiy46yVuTEiKSXCYR/XVGIUGTb/DmMDiwAlRGGAGTL2dBG
-	 nBeMDDmxEYG95pY+X9VxIxAXHDp49hasIwRpvCtY=
+	b=J/N72tYkPB1yx6FCE6BK85NWE+NJkB8ms9cFdg/24I8SjWjXAStj/BTsi+kBVt95r
+	 /8fhSiZDflP8P5fhQAiE828aEVpE4QzbBwQCcIH5uZSI5A52yTlR4duBChLGK4iOtW
+	 a5ZZcYgcbzbK5xx/VtWrnixt/PGWatdVKDXw31Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 175/614] timers/migration: Convert "while" loops to use "for"
+Subject: [PATCH 6.17 101/507] arm64: dts: qcom: sdm845-starqltechn: Fix i2c-gpio node name
 Date: Tue, 16 Dec 2025 12:09:02 +0100
-Message-ID: <20251216111407.702935511@linuxfoundation.org>
+Message-ID: <20251216111349.198043312@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 6c181b5667eea3e6564d334443536a5974190e15 ]
+[ Upstream commit 6030fa06360b8b8d898b66ac156adaaf990b83cb ]
 
-Both the "do while" and "while" loops in tmigr_setup_groups() eventually
-mimic the behaviour of "for" loops.
+Fix the following DT checker warning:
 
-Simplify accordingly.
+$nodename:0: 'i2c21' does not match '^i2c(@.+|-[a-z0-9]+)?$'
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251024132536.39841-2-frederic@kernel.org
-Stable-dep-of: 5eb579dfd46b ("timers/migration: Fix imbalanced NUMA trees")
+Fixes: 3a4600448bef ("arm64: dts: qcom: sdm845-starqltechn: add display PMIC")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251015-topic-starltechn_i2c_gpio-v1-1-6d303184ee87@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer_migration.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index c0c54dc5314c3..1e371f1fdc86c 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1642,22 +1642,23 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
- static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- {
- 	struct tmigr_group *group, *child, **stack;
--	int top = 0, err = 0, i = 0;
-+	int i, top = 0, err = 0;
- 	struct list_head *lvllist;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+index 1807e65621ef8..1a17870dcf6d9 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+@@ -143,7 +143,7 @@ rmtfs_mem: rmtfs-mem@fde00000 {
+ 		};
+ 	};
  
- 	stack = kcalloc(tmigr_hierarchy_levels, sizeof(*stack), GFP_KERNEL);
- 	if (!stack)
- 		return -ENOMEM;
- 
--	do {
-+	for (i = 0; i < tmigr_hierarchy_levels; i++) {
- 		group = tmigr_get_group(cpu, node, i);
- 		if (IS_ERR(group)) {
- 			err = PTR_ERR(group);
-+			i--;
- 			break;
- 		}
- 
- 		top = i;
--		stack[i++] = group;
-+		stack[i] = group;
- 
- 		/*
- 		 * When booting only less CPUs of a system than CPUs are
-@@ -1667,16 +1668,18 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 		 * be different from tmigr_hierarchy_levels, contains only a
- 		 * single group.
- 		 */
--		if (group->parent || list_is_singular(&tmigr_level_list[i - 1]))
-+		if (group->parent || list_is_singular(&tmigr_level_list[i]))
- 			break;
-+	}
- 
--	} while (i < tmigr_hierarchy_levels);
--
--	/* Assert single root */
--	WARN_ON_ONCE(!err && !group->parent && !list_is_singular(&tmigr_level_list[top]));
-+	/* Assert single root without parent */
-+	if (WARN_ON_ONCE(i >= tmigr_hierarchy_levels))
-+		return -EINVAL;
-+	if (WARN_ON_ONCE(!err && !group->parent && !list_is_singular(&tmigr_level_list[top])))
-+		return -EINVAL;
- 
--	while (i > 0) {
--		group = stack[--i];
-+	for (; i >= 0; i--) {
-+		group = stack[i];
- 
- 		if (err < 0) {
- 			list_del(&group->list);
+-	i2c21 {
++	i2c-21 {
+ 		compatible = "i2c-gpio";
+ 		sda-gpios = <&tlmm 127 GPIO_ACTIVE_HIGH>;
+ 		scl-gpios = <&tlmm 128 GPIO_ACTIVE_HIGH>;
 -- 
 2.51.0
 
