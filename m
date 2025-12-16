@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D4ACC2C88
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D477CC2CB2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85B44302259B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA4393002928
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA04F397D10;
-	Tue, 16 Dec 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37D3354ADE;
+	Tue, 16 Dec 2025 12:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kH+JIlPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTYUWGv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473D396DD7;
-	Tue, 16 Dec 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77981354AC9;
+	Tue, 16 Dec 2025 12:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888397; cv=none; b=qzME5Ovv1et25NdgwYeXygWS6IQqksMCAvmBSZXAssteGoNVJtuWH84uzm5FYFSv5WI1dPD+9bRI5EPS0u/rP2K1uR7wKrKUHRhkugAOFjA3/0FM2cuPtYKxFPRrrzIPuA7TldoadwYL89Vsm7+dpsZ4oqUtKtmpA0SURQMqRJY=
+	t=1765886475; cv=none; b=uaM6eW/RHX4LbfptyV29MF7Va3HM1WnBE0I+XVF/qSGknZ5jLBdRvyjKiBBi3Z8oMPPBR+c0+mwRJjAgLdeAfmMm9WzriOHdzluyzJMn8egaEXoRID32olEliY5nvOdUlwuoHVBWi58/s3yeFQP8SzesGzMJMmAwNWJYfWMK/jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888397; c=relaxed/simple;
-	bh=UvNBjFw5OdHlK4pKBum+cRP5F+8n5fDBRirJXYMzfug=;
+	s=arc-20240116; t=1765886475; c=relaxed/simple;
+	bh=q0HzoHuOJ5Mm6Sr5qRnINyPpluuxoBV+k11uccrUoh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+XfPMafTA01eHtCm/Zy7Qc4q+KZqQbqTBNoQH0BM2KDN7AWa5vcVPnGB7QqvSqIfp6HULpsO3FftbsbOCXGqo4ECphbKAio9HWJvW4866vIIJ0blgTE4tZ4OpJTL3EikBEf1owZzbyFV+iMol2sq9OkqvwujfAx1Lv5bCUuQw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kH+JIlPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B22C4CEF1;
-	Tue, 16 Dec 2025 12:33:16 +0000 (UTC)
+	 MIME-Version; b=bn9JPEB0ZMNerZhhuDcQm+/lIQOVE8ERrH8CtWUYNyCzn8+/LpNC8wvUJpTs5pwpsAHpr3F5LD21Dzn2CKiQd1g7Ud/f+pfwu1Et7iku7SDtWlorniJGd6Yc0pbvTGM3ULj5IjzqLsdb8VGdkmK0EwEJmuyJ50vWTL6usD9Bkmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTYUWGv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A4BC4CEF5;
+	Tue, 16 Dec 2025 12:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888397;
-	bh=UvNBjFw5OdHlK4pKBum+cRP5F+8n5fDBRirJXYMzfug=;
+	s=korg; t=1765886475;
+	bh=q0HzoHuOJ5Mm6Sr5qRnINyPpluuxoBV+k11uccrUoh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kH+JIlPKyC22MnGxx5MixvyTtqYChuZzP4p1x9Uso2ilt9I9WpquxRC5EWGQ7vuKL
-	 9vsEaN8JP6//UPzUnpV5CmpIoxuoHUi7Xx/+C2GgRT0XgyFuDkmJzxrfxK/0xSmCJf
-	 BD+fVYhJ8C7AJFT08C2cHHbbNGn0lcYLLBNimjbo=
+	b=CTYUWGv11ZXOdR//OU+ga7fETdp7ivZGkkYaXNAZ9dAB0oq6hMWxOl42dcvRjlLpo
+	 VB7yFRMrA6cXQjXCZ7dwKHjaPTXnzBb+SmzVgHLPsGLM6LHtM2mNkrlX5QDDJPc1lA
+	 RrfZ7vMnBGAr8Ve2GD8tzysG1PJ/OF44JvQBbfdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	George McCollister <george.mccollister@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Akash Goel <akash.goel@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Chia-I Wu <olvaffe@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 521/614] net: dsa: xrs700x: reject unsupported HSR configurations
+Subject: [PATCH 6.17 447/507] drm/panthor: Prevent potential UAF in group creation
 Date: Tue, 16 Dec 2025 12:14:48 +0100
-Message-ID: <20251216111420.248665361@linuxfoundation.org>
+Message-ID: <20251216111401.647885066@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Akash Goel <akash.goel@arm.com>
 
-[ Upstream commit 30296ac7642652428396222e720718f2661e9425 ]
+[ Upstream commit eec7e23d848d2194dd8791fcd0f4a54d4378eecd ]
 
-As discussed here:
-https://lore.kernel.org/netdev/20240620090210.drop6jwh7e5qw556@skbuf/
+This commit prevents the possibility of a use after free issue in the
+GROUP_CREATE ioctl function, which arose as pointer to the group is
+accessed in that ioctl function after storing it in the Xarray.
+A malicious userspace can second guess the handle of a group and try
+to call GROUP_DESTROY ioctl from another thread around the same time
+as GROUP_CREATE ioctl.
 
-the fact is that the xrs700x.c driver only supports offloading
-HSR_PT_SLAVE_A and HSR_PT_SLAVE_B (which were the only port types at the
-time the offload was written, _for this driver_).
+To prevent the use after free exploit, this commit uses a mark on an
+entry of group pool Xarray which is added just before returning from
+the GROUP_CREATE ioctl function. The mark is checked for all ioctls
+that specify the group handle and so userspace won't be abe to delete
+a group that isn't marked yet.
 
-Up until now, the API did not explicitly tell offloading drivers what
-port has what role. So xrs700x can get confused and think that it can
-support a configuration which it actually can't. There was a table in
-the attached link which gave an example:
+v2: Add R-bs and fixes tags
 
-$ ip link add name hsr0 type hsr slave1 swp0 slave2 swp1 \
-	interlink swp2 supervision 45 version 1
-
-        HSR_PT_SLAVE_A    HSR_PT_SLAVE_B      HSR_PT_INTERLINK
- ----------------------------------------------------------------
- user
- space        0                 1                   2
- requests
- ----------------------------------------------------------------
- XRS700X
- driver       1                 2                   -
- understands
-
-The switch would act as if the ring ports were swp1 and swp2.
-
-Now that we have explicit hsr_get_port_type() API, let's use that to
-work around the unintended semantical changes of the offloading API
-brought by the introduction of interlink ports in HSR.
-
-Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
-Cc: Lukasz Majewski <lukma@denx.de>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: George McCollister <george.mccollister@gmail.com>
-Link: https://patch.msgid.link/20251130131657.65080-5-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: de85488138247 ("drm/panthor: Add the scheduler logical block")
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
+Link: https://patch.msgid.link/20251127164912.3788155-1-akash.goel@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/xrs700x/xrs700x.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/panthor/panthor_sched.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/xrs700x/xrs700x.c b/drivers/net/dsa/xrs700x/xrs700x.c
-index 4dbcc49a9e526..0a05f4156ef4d 100644
---- a/drivers/net/dsa/xrs700x/xrs700x.c
-+++ b/drivers/net/dsa/xrs700x/xrs700x.c
-@@ -566,6 +566,7 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 	struct xrs700x *priv = ds->priv;
- 	struct net_device *user;
- 	int ret, i, hsr_pair[2];
-+	enum hsr_port_type type;
- 	enum hsr_version ver;
- 	bool fwd = false;
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 35c4a86fe3052..9d58e01a88a5e 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -772,6 +772,12 @@ struct panthor_job_profiling_data {
+  */
+ #define MAX_GROUPS_PER_POOL 128
  
-@@ -589,6 +590,16 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 		return -EOPNOTSUPP;
- 	}
++/*
++ * Mark added on an entry of group pool Xarray to identify if the group has
++ * been fully initialized and can be accessed elsewhere in the driver code.
++ */
++#define GROUP_REGISTERED XA_MARK_1
++
+ /**
+  * struct panthor_group_pool - Group pool
+  *
+@@ -2887,7 +2893,7 @@ void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
+ 		return;
  
-+	ret = hsr_get_port_type(hsr, dsa_to_port(ds, port)->user, &type);
-+	if (ret)
-+		return ret;
+ 	xa_lock(&gpool->xa);
+-	xa_for_each(&gpool->xa, i, group) {
++	xa_for_each_marked(&gpool->xa, i, group, GROUP_REGISTERED) {
+ 		guard(spinlock)(&group->fdinfo.lock);
+ 		pfile->stats.cycles += group->fdinfo.data.cycles;
+ 		pfile->stats.time += group->fdinfo.data.time;
+@@ -3561,6 +3567,8 @@ int panthor_group_create(struct panthor_file *pfile,
+ 
+ 	group_init_task_info(group);
+ 
++	xa_set_mark(&gpool->xa, gid, GROUP_REGISTERED);
 +
-+	if (type != HSR_PT_SLAVE_A && type != HSR_PT_SLAVE_B) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Only HSR slave ports can be offloaded");
-+		return -EOPNOTSUPP;
-+	}
+ 	return gid;
+ 
+ err_put_group:
+@@ -3575,6 +3583,9 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
+ 	struct panthor_scheduler *sched = ptdev->scheduler;
+ 	struct panthor_group *group;
+ 
++	if (!xa_get_mark(&gpool->xa, group_handle, GROUP_REGISTERED))
++		return -EINVAL;
 +
- 	dsa_hsr_foreach_port(dp, ds, hsr) {
- 		if (dp->index != port) {
- 			partner = dp;
+ 	group = xa_erase(&gpool->xa, group_handle);
+ 	if (!group)
+ 		return -EINVAL;
+@@ -3600,12 +3611,12 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
+ }
+ 
+ static struct panthor_group *group_from_handle(struct panthor_group_pool *pool,
+-					       u32 group_handle)
++					       unsigned long group_handle)
+ {
+ 	struct panthor_group *group;
+ 
+ 	xa_lock(&pool->xa);
+-	group = group_get(xa_load(&pool->xa, group_handle));
++	group = group_get(xa_find(&pool->xa, &group_handle, group_handle, GROUP_REGISTERED));
+ 	xa_unlock(&pool->xa);
+ 
+ 	return group;
+@@ -3692,7 +3703,7 @@ panthor_fdinfo_gather_group_mem_info(struct panthor_file *pfile,
+ 		return;
+ 
+ 	xa_lock(&gpool->xa);
+-	xa_for_each(&gpool->xa, i, group) {
++	xa_for_each_marked(&gpool->xa, i, group, GROUP_REGISTERED) {
+ 		stats->resident += group->fdinfo.kbo_sizes;
+ 		if (group->csg_id >= 0)
+ 			stats->active += group->fdinfo.kbo_sizes;
 -- 
 2.51.0
 
