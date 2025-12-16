@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-201398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A269ACC2382
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353A5CC2B04
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 175963005D20
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D90353019374
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE9656B81;
-	Tue, 16 Dec 2025 11:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B723596F7;
+	Tue, 16 Dec 2025 12:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoLPmhrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk9iXZPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C426A09B;
-	Tue, 16 Dec 2025 11:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436E5358D2A;
+	Tue, 16 Dec 2025 12:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884506; cv=none; b=q/SO7AuJepWgH1ODpK3YvG2qyPuzC28ZflFKV0QmTRbluYO7VZwkne67Vd+SpXN0kpQIq6vzntRiYgWaWppPTqcCybnelptCpyEm2EwfJZZzTIF8T6nr8R8ZmWt9XkxhBu6TjeS1fnWuThP3/tbvB/SGPA/WWd1pF+guo3wRy8k=
+	t=1765887902; cv=none; b=l0M2ywzkO7oW58RPffE66ow6lS70jUAgR/tHjNQFtDmvx6Fn+4gtJCEC2rCCYcJamqc21uzD5kKzw1FU3Iamtn8ADggXSeFMP12X/m0IB7yGUUJEF950eyKVhucCobbi61Qpkk0ySazDegAbUd58dkExFEWNVsmc25/mqHozAC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884506; c=relaxed/simple;
-	bh=rZHaWlAMa/HmLq/sec0jvTWiIVFU2R+JCeZNFVSdna0=;
+	s=arc-20240116; t=1765887902; c=relaxed/simple;
+	bh=HXt7Vum7lRgDj8Mxj8VW5e6gC3WCEkx8VNz7/h1s5QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ducfRQ3WQvBr4OxXN8IqDTIQ7TBfWHSeN114pDmAEgq3TkNrc2xBchD/Tjc2bSnhlmzSAawpev/5Xf07iiVR93hW6xeULeQJO41JCy4IRfSi44neoUw+mRpB6xzw86UGSQJu6QolK6fawPPV4kVT3LiKeVAL+dfplQrCIIJTCiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoLPmhrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFF0C4CEF1;
-	Tue, 16 Dec 2025 11:28:25 +0000 (UTC)
+	 MIME-Version; b=lFyOuvUIQZHSdjp9ENY/CDHtl+5T9PPkizR2nHuTi3WvR84craYD57iSLc4xIxttOO/UAGc6kPmhM+TQ52gge8iQW2bw6qNQawMZNwi5mLq/Ss2CjOVsMiOize1bhMKEzAb7LE+D3edEF3RJ7yM5OIuJcs8KBvPqQL7uqiVAkwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk9iXZPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0735C4CEF1;
+	Tue, 16 Dec 2025 12:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884505;
-	bh=rZHaWlAMa/HmLq/sec0jvTWiIVFU2R+JCeZNFVSdna0=;
+	s=korg; t=1765887902;
+	bh=HXt7Vum7lRgDj8Mxj8VW5e6gC3WCEkx8VNz7/h1s5QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoLPmhrYpzFiZm5tQsJpvKIuCgFjvM83IQx3Qhr+OEWj+nalht2I6gxVLT7dxgTMa
-	 OYtNF1hIW7es5a3MTsSAszPaPNKgnnJN/HjeMvOAmqpowiBm4Ex344xV8OWI1EZSMy
-	 QyStdp0NCtAbx/9oxDhrnjG9iReJbnZVSE76G7SU=
+	b=Bk9iXZPR9pnUOKxrwuNQuA2AK8VOY9AVEqOBjx+L8H/OGsaLAEPUEke99g/P4Enox
+	 TDuWlybesRLr+2stMiAxPWG/g1YX7Mk2xmTe/X0ZMcoT/OygxJugWWimPml7wuD4C6
+	 PLM7siXsy8f1jBSf/yMDh7EL3FNIFMTschMhXaVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Khazhismel Kumykov <khazhy@google.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/354] block/blk-throttle: Fix throttle slice time for SSDs
-Date: Tue, 16 Dec 2025 12:12:18 +0100
-Message-ID: <20251216111327.109810007@linuxfoundation.org>
+Subject: [PATCH 6.18 372/614] crypto: ccree - Correctly handle return of sg_nents_for_len
+Date: Tue, 16 Dec 2025 12:12:19 +0100
+Message-ID: <20251216111414.840485037@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit f76581f9f1d29e32e120b0242974ba266e79de58 ]
+[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
 
-Commit d61fcfa4bb18 ("blk-throttle: choose a small throtl_slice for SSD")
-introduced device type specific throttle slices if BLK_DEV_THROTTLING_LOW
-was enabled. Commit bf20ab538c81 ("blk-throttle: remove
-CONFIG_BLK_DEV_THROTTLING_LOW") removed support for BLK_DEV_THROTTLING_LOW,
-but left the device type specific throttle slices in place. This
-effectively changed throttling behavior on systems with SSD which now use
-a different and non-configurable slice time compared to non-SSD devices.
-Practical impact is that throughput tests with low configured throttle
-values (65536 bps) experience less than expected throughput on SSDs,
-presumably due to rounding errors associated with the small throttle slice
-time used for those devices. The same tests pass when setting the throttle
-values to 65536 * 4 = 262144 bps.
+Fix error handling in cc_map_hash_request_update where sg_nents_for_len
+return value was assigned to u32, converting negative errors to large
+positive values before passing to sg_copy_to_buffer.
 
-The original code sets the throttle slice time to DFL_THROTL_SLICE_HD if
-CONFIG_BLK_DEV_THROTTLING_LOW is disabled. Restore that code to fix the
-problem. With that, DFL_THROTL_SLICE_SSD is no longer necessary. Revert to
-the original code and re-introduce DFL_THROTL_SLICE to replace both
-DFL_THROTL_SLICE_HD and DFL_THROTL_SLICE_SSD. This effectively reverts
-commit d61fcfa4bb18 ("blk-throttle: choose a small throtl_slice for SSD").
+Check sg_nents_for_len return value and propagate errors before
+assigning to areq_ctx->in_nents.
 
-While at it, also remove MAX_THROTL_SLICE since it is not used anymore.
-
-Fixes: bf20ab538c81 ("blk-throttle: remove CONFIG_BLK_DEV_THROTTLING_LOW")
-Cc: Yu Kuai <yukuai@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index 6b82fcbd7e774..4aa66c07d2e83 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -22,9 +22,7 @@
- #define THROTL_QUANTUM 32
+diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
+index 3963bb91321fc..dc7e0cd51c259 100644
+--- a/drivers/crypto/ccree/cc_buffer_mgr.c
++++ b/drivers/crypto/ccree/cc_buffer_mgr.c
+@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	int rc = 0;
+ 	u32 dummy = 0;
+ 	u32 mapped_nents = 0;
++	int sg_nents;
  
- /* Throttling is performed over a slice and after that slice is renewed */
--#define DFL_THROTL_SLICE_HD (HZ / 10)
--#define DFL_THROTL_SLICE_SSD (HZ / 50)
--#define MAX_THROTL_SLICE (HZ)
-+#define DFL_THROTL_SLICE (HZ / 10)
- 
- /* A workqueue to queue throttle related work */
- static struct workqueue_struct *kthrotld_workqueue;
-@@ -1229,10 +1227,7 @@ static int blk_throtl_init(struct gendisk *disk)
- 		goto out;
- 	}
- 
--	if (blk_queue_nonrot(q))
--		td->throtl_slice = DFL_THROTL_SLICE_SSD;
--	else
--		td->throtl_slice = DFL_THROTL_SLICE_HD;
-+	td->throtl_slice = DFL_THROTL_SLICE;
- 	td->track_bio_latency = !queue_is_mq(q);
- 	if (!td->track_bio_latency)
- 		blk_stat_enable_accounting(q);
+ 	dev_dbg(dev, " update params : curr_buff=%p curr_buff_cnt=0x%X nbytes=0x%X src=%p curr_index=%u\n",
+ 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
+@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	if (total_in_len < block_size) {
+ 		dev_dbg(dev, " less than one block: curr_buff=%p *curr_buff_cnt=0x%X copy_to=%p\n",
+ 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
+-		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
++		sg_nents = sg_nents_for_len(src, nbytes);
++		if (sg_nents < 0)
++			return sg_nents;
++		areq_ctx->in_nents = sg_nents;
+ 		sg_copy_to_buffer(src, areq_ctx->in_nents,
+ 				  &curr_buff[*curr_buff_cnt], nbytes);
+ 		*curr_buff_cnt += nbytes;
 -- 
 2.51.0
 
