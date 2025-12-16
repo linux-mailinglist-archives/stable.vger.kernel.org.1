@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C272CC2AC5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6161CC35B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B1C430D2810
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4CBC30B11B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0943596F6;
-	Tue, 16 Dec 2025 12:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6998A39B6D8;
+	Tue, 16 Dec 2025 12:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2nQcwI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTjn94Ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6244C3596F7;
-	Tue, 16 Dec 2025 12:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2813739B6AA;
+	Tue, 16 Dec 2025 12:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886677; cv=none; b=b40aIjxXbzJlyy+UFTO3sMSXPkn8nphja0gIxLHg5AjuE/9FPwa/wmATlOewhDlV5ldqw3iGnZ+HECweRWQ3wggtOaA/fEgA8HSaOO5yOoDTqpR48fCqNmbsgJYqBAqXzEVWvtAqWKynzJ03PcoygWxLEHiPqIgC6Z5Dfe7OrS8=
+	t=1765888665; cv=none; b=bs6zP379jzk8uSRvw+vmDzI+9OjzwjHrSG7LMBYGE8WMAB3KGEb+7jYNW6H+xstJNVxV64Xz+o3pQ4zNAz2wpUw88wbsmqOYv/jqgM/19+Zjowcq0s9ZtH0qnLJOh73HeAXxP3eevgnuwbJrdHsi6LXPGVqekh7UNRCLylED5V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886677; c=relaxed/simple;
-	bh=b3FWn0jr1yTRsuGLXAN8ktmMVDnAOBLCuM4TSRq59L4=;
+	s=arc-20240116; t=1765888665; c=relaxed/simple;
+	bh=XAqe8G9i0i+c5fpAhZDe7ITHHLF+4zez6Lx3h6wQj4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNYk5L0KKorrufrwHM3GcCNyghzwrl44bHGp7Qbk4anPoCd8HjeTIM8/3gvSR0/GGJ/KgFimj9odcAsW2mD1w+dWt7AxG2LgEx5BGVnum1dlzzo7UsGlZA/KkaArL4ua+4xm37CUb3cMVgbeJCy6jQZw6DwaykJFC5yIsSEG9lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2nQcwI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7493CC4CEF1;
-	Tue, 16 Dec 2025 12:04:36 +0000 (UTC)
+	 MIME-Version; b=RxoI/ovjvCBwhdd/BVT2kKGaSD3rSfKFF08b1aIVh5it7Nv0mFr0AA3FeTBHMrtpPXX70YLxKOcr/y9MrOOyp9PKDqhDNEfXg3upVw18KlY/XQhrBt3D9MkXA5HUxBMDx4s1DkzgbNyjiLggmFCnree0sa7CL1CqTas454Iwbq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTjn94Ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84E9C4CEF1;
+	Tue, 16 Dec 2025 12:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886677;
-	bh=b3FWn0jr1yTRsuGLXAN8ktmMVDnAOBLCuM4TSRq59L4=;
+	s=korg; t=1765888665;
+	bh=XAqe8G9i0i+c5fpAhZDe7ITHHLF+4zez6Lx3h6wQj4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2nQcwI081FIfxHzKyMjluVAzxrEWPqHkXbx98dKd5kTCZhCV1SBRsV+xcIXZZrJP
-	 9nIbCgLov3IdD90TBi/dryjEe4LLF7xxXMPITMdpKY3H60Q/mAuIGbNIbjZDXGGmGS
-	 RM/mT3Om0uxlIDfQhzgt2UPe5o0QPs9qCWzvaLfU=
+	b=eTjn94AiuteJdJcXG8+X/duqy6oRsYqfm2X1fc7gz5PYefyomfrGbBKXav/vN9mnW
+	 Ul5x4h8NIZpAILg47WU+gDP0eoXCFQJ3c0Fe0EhSfMPkwN/J2nH8RXx/O+rNDRluux
+	 RIjRP2JJ1n+VOfDIOZXNTzDA/HtNKwNlLS8wYYaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Madhur Kumar <madhurkumar004@gmail.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 494/507] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
+Subject: [PATCH 6.18 568/614] drm/nouveau: refactor deprecated strcpy
 Date: Tue, 16 Dec 2025 12:15:35 +0100
-Message-ID: <20251216111403.337268217@linuxfoundation.org>
+Message-ID: <20251216111421.964352544@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Madhur Kumar <madhurkumar004@gmail.com>
 
-[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
+[ Upstream commit 2bdc2c0e12fac56e41ec05fb771ead986ea6dac0 ]
 
-If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
-it results in an out of bounds access.
+strcpy() has been deprecated because it performs no bounds checking on the
+destination buffer, which can lead to buffer overflows. Use the safer
+strscpy() instead.
 
-The code checks for invalid values, but doesn't set the error code.  Return
--EINVAL in that case, instead of returning success.
-
-Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
+Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Fixes: 15a996bbb697 ("drm/nouveau: assign fence_chan->name correctly")
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patch.msgid.link/20251204120822.17502-1-madhurkumar004@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mchp-eic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_fence.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
-index 516a3a0e359cc..c6b5529e17f1a 100644
---- a/drivers/irqchip/irq-mchp-eic.c
-+++ b/drivers/irqchip/irq-mchp-eic.c
-@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c b/drivers/gpu/drm/nouveau/nouveau_fence.c
+index 869d4335c0f45..4a193b7d6d9e4 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -183,11 +183,11 @@ nouveau_fence_context_new(struct nouveau_channel *chan, struct nouveau_fence_cha
+ 	fctx->context = drm->runl[chan->runlist].context_base + chan->chid;
  
- 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
- 	if (ret || hwirq >= MCHP_EIC_NIRQ)
--		return ret;
-+		return ret ?: -EINVAL;
+ 	if (chan == drm->cechan)
+-		strcpy(fctx->name, "copy engine channel");
++		strscpy(fctx->name, "copy engine channel");
+ 	else if (chan == drm->channel)
+-		strcpy(fctx->name, "generic kernel channel");
++		strscpy(fctx->name, "generic kernel channel");
+ 	else
+-		strcpy(fctx->name, cli->name);
++		strscpy(fctx->name, cli->name);
  
- 	switch (type) {
- 	case IRQ_TYPE_EDGE_RISING:
+ 	kref_init(&fctx->fence_ref);
+ 	if (!priv->uevent)
 -- 
 2.51.0
 
