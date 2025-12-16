@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D66CCC2634
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572EECC2A02
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 065CD30019C7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6342E302DCCD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CD3346778;
-	Tue, 16 Dec 2025 11:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C133364051;
+	Tue, 16 Dec 2025 12:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfnX52or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPRKXIdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EBC34676E;
-	Tue, 16 Dec 2025 11:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0336404C;
+	Tue, 16 Dec 2025 12:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885077; cv=none; b=Ij9mW5rwXcXGt3thOCK8tLHlj1SMCFceEqEv9TKVzNyFk8ahCupw6sJ05rxhfR+Ndox59sQNhEnAgdUmoAJwqTb9HXLg2sMBD+os/TUS5P6fPpV5WIyKNP77It+YR0qYukX1+rgRiyqGyDuaZiLu2KCIdqWzhnXJcYlCyvDHEh8=
+	t=1765886956; cv=none; b=sb4cO6U0Hu4F8eHhYB6DwNH0LmL/V/+dQeUWe0wxbnusmTG6GC7GjMyeSoVSDVdoqEuW6wgp28RvSYU7SSuV/ZAw3rMmx1yElGmKhiSv7p4WIMb9z2ygHLNWRUoCCpv95PlE20NbWVF1V/oadbKmQTcbavtBThlIiKs8t9fZFxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885077; c=relaxed/simple;
-	bh=aMWcoBtYt1X0vWnzFnQDkDM/woc956gck/KA3grhO5c=;
+	s=arc-20240116; t=1765886956; c=relaxed/simple;
+	bh=KL3+in8glG8B5UEsgFKriZzl5TnhTQNm/Oc4GXbFSr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJdZFGDmpAaCbKrE/r2XIq8gbW/Pl7vP9EwSP6ZgMY5S7Hot2xEqgDhpdQnV/hzdMLRgMiPVvRsfl5T4LCLzQACm8fZNAlBzn6rX/poDI2TQmG/RD8cGVZpRJfX5Q2nEZGoDe6+BtUaNUYISSI4teALx4UeNs0djU4vMmDoLrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfnX52or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEBAC4CEF1;
-	Tue, 16 Dec 2025 11:37:56 +0000 (UTC)
+	 MIME-Version; b=Dk3oLJjigL/yx8otVU0Y6GrNltzBBaoxyEPZA3OnEV8PLt6IFUIZ1upb2PK8qhwqE0s9V/xii4X2ITMNgGQ/uY4pPneKGpgD3hj3TI641mkJVBkxJhqiCFLZjiHdJ9A+rp/As6RL0vRUdJELvp4tmQ9+U6e2UjRrC+blKDWvbPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPRKXIdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62034C4CEF1;
+	Tue, 16 Dec 2025 12:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885077;
-	bh=aMWcoBtYt1X0vWnzFnQDkDM/woc956gck/KA3grhO5c=;
+	s=korg; t=1765886955;
+	bh=KL3+in8glG8B5UEsgFKriZzl5TnhTQNm/Oc4GXbFSr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfnX52ormNwaZgmz4t2OuKhIovGiixLgM1Wgkwx+z2YMOYgARd+Wtazmw5pxmL76R
-	 7FvJ1/KMy8MmnXmiKjYG3p46hhVqysKxnCQaN33eMkprSvA1K/mv4y9lMJD7qR4sr6
-	 sl/4yWSmn52HWuybMHcmiRc4ju7sMd962i7BbY+M=
+	b=MPRKXIdF6BC/BXA1pBidh4QyBvPB0dId7CjdDKq6iPYB4ulQMQa52kuJ3Fr3FCFvV
+	 OOJFuL1WON0ImnTnb+dPow8+50qeCcpsi7PJdhMlnygWeustAcrJ88+8m5qbUF/FJg
+	 EyatKM9r2oACX4KZGN4v9I9CNNI7tl/bJviB42Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 009/507] accel/ivpu: Ensure rpm_runtime_put in case of engine reset/resume fail
+Subject: [PATCH 6.18 083/614] clk: qcom: gcc-glymur: Update the halt check flags for pipe clocks
 Date: Tue, 16 Dec 2025 12:07:30 +0100
-Message-ID: <20251216111345.871461770@linuxfoundation.org>
+Message-ID: <20251216111404.324116411@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Taniya Das <taniya.das@oss.qualcomm.com>
 
-[ Upstream commit 9f6c63285737b141ca25a619add80a96111b8b96 ]
+[ Upstream commit 18da820eb632fbd99167f3fc6650a30db714ddfd ]
 
-Previously, aborting work could return early after engine reset or resume
-failure, skipping the necessary runtime_put cleanup leaving the device
-with incorrect reference count breaking runtime power management state.
+The pipe clocks for PCIE and USB are externally sourced and they should
+not be polled by the clock driver. Update the halt_check flags to 'SKIP'
+to disable polling for these clocks.
 
-Replace early returns with goto statements to ensure runtime_put is always
-executed.
+This helps avoid the clock status stuck at 'off' warnings, which are
+benign, since all consumers of the PHYs must initialize a given instance
+before performing any operations.
 
-Fixes: a47e36dc5d90 ("accel/ivpu: Trigger device recovery on engine reset/resume failure")
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://lore.kernel.org/r/20250916084809.850073-1-karol.wachowski@linux.intel.com
+Fixes: efe504300a17 ("clk: qcom: gcc: Add support for Global Clock Controller")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250925-glymur_gcc_usb_fixes-v2-1-ee4619571efe@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_job.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-glymur.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
-index 060f1fc031d34..dbefa43c74e28 100644
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -1012,7 +1012,7 @@ void ivpu_context_abort_work_fn(struct work_struct *work)
+diff --git a/drivers/clk/qcom/gcc-glymur.c b/drivers/clk/qcom/gcc-glymur.c
+index 62059120f9720..d938e7dc5b66e 100644
+--- a/drivers/clk/qcom/gcc-glymur.c
++++ b/drivers/clk/qcom/gcc-glymur.c
+@@ -6760,7 +6760,7 @@ static struct clk_branch gcc_usb3_prim_phy_com_aux_clk = {
  
- 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
- 		if (ivpu_jsm_reset_engine(vdev, 0))
--			return;
-+			goto runtime_put;
+ static struct clk_branch gcc_usb3_prim_phy_pipe_clk = {
+ 	.halt_reg = 0x3f088,
+-	.halt_check = BRANCH_HALT_DELAY,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x3f088,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -6816,7 +6816,7 @@ static struct clk_branch gcc_usb3_sec_phy_com_aux_clk = {
  
- 	mutex_lock(&vdev->context_list_lock);
- 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
-@@ -1036,7 +1036,7 @@ void ivpu_context_abort_work_fn(struct work_struct *work)
- 		goto runtime_put;
+ static struct clk_branch gcc_usb3_sec_phy_pipe_clk = {
+ 	.halt_reg = 0xe2078,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xe2078,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -6872,7 +6872,7 @@ static struct clk_branch gcc_usb3_tert_phy_com_aux_clk = {
  
- 	if (ivpu_jsm_hws_resume_engine(vdev, 0))
--		return;
-+		goto runtime_put;
- 	/*
- 	 * In hardware scheduling mode NPU already has stopped processing jobs
- 	 * and won't send us any further notifications, thus we have to free job related resources
+ static struct clk_branch gcc_usb3_tert_phy_pipe_clk = {
+ 	.halt_reg = 0xe1078,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xe1078,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -6961,7 +6961,7 @@ static struct clk_branch gcc_usb4_0_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0x2b0f4,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x2b0f4,
+ 		.enable_mask = BIT(0),
+@@ -6979,7 +6979,7 @@ static struct clk_branch gcc_usb4_0_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0x2b04c,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x62010,
+ 		.enable_mask = BIT(11),
+@@ -7033,7 +7033,7 @@ static struct clk_branch gcc_usb4_0_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_usb_pipe_clk = {
+ 	.halt_reg = 0x2b0bc,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x2b0bc,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -7196,7 +7196,7 @@ static struct clk_branch gcc_usb4_1_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0x2d118,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x2d118,
+ 		.enable_mask = BIT(0),
+@@ -7214,7 +7214,7 @@ static struct clk_branch gcc_usb4_1_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0x2d04c,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x62010,
+ 		.enable_mask = BIT(12),
+@@ -7268,7 +7268,7 @@ static struct clk_branch gcc_usb4_1_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_usb_pipe_clk = {
+ 	.halt_reg = 0x2d0e0,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x2d0e0,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -7431,7 +7431,7 @@ static struct clk_branch gcc_usb4_2_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0xe00f8,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0xe00f8,
+ 		.enable_mask = BIT(0),
+@@ -7449,7 +7449,7 @@ static struct clk_branch gcc_usb4_2_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0xe004c,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x62010,
+ 		.enable_mask = BIT(13),
+@@ -7503,7 +7503,7 @@ static struct clk_branch gcc_usb4_2_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_usb_pipe_clk = {
+ 	.halt_reg = 0xe00c0,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xe00c0,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
 -- 
 2.51.0
 
