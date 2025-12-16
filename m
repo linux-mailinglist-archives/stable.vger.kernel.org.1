@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB90CC273D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD5DCC2B4D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CDA230AD9FE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0708B30979BC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D2034574D;
-	Tue, 16 Dec 2025 11:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42497364EAB;
+	Tue, 16 Dec 2025 12:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMwyfnbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ9WO4O5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6ED345730;
-	Tue, 16 Dec 2025 11:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DC1364EA6;
+	Tue, 16 Dec 2025 12:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885031; cv=none; b=qbcDGxTh4mIRdblnsqjb+fc2FyJJeFjj7DcxwempkC2l4WZkPO3yeGs7Ssd/czUuXSjfNbsOUAdvYkP9FohDgjgOsHSSILg8juOs3gV6RLLTwVzkjLTqrf77B7qOigVxlsBUMDCZViCAXnXqPq8HP0RkfU5xE4CiQLLxkF2g16E=
+	t=1765886989; cv=none; b=Dd2vscWi6XRMqJcHJOxmHE9fKMxnB2Fb2Hc11cp4P/vcqBTlVe9uJjwdEBwnMIZHRzidRi5eFMoljXEobW7rul49zDepLs3xmU4I8A0s44VDZ5gDvm7KVfdDNd9eCYBTq1zUY9cEDM/TFclJNNkvpXE9gmhZx26KlWSdm0hm5o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885031; c=relaxed/simple;
-	bh=dl4FriRPdwElfT4JYQoMyaQkqiD0OHyUmCPGS5sxdNA=;
+	s=arc-20240116; t=1765886989; c=relaxed/simple;
+	bh=hAr/Vhie2iBdKOMJKKPrqINSB2OKX7OHURsf5KTCqQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n/iWF272uk9SQhh6KwIfmcyGrzck5UBvE3aQ178jfuuTeN9CByeteiOvbUj0PPSkLS8ErQXO7uXAo3dCQE7OaOyJIZp4dPlOexT+a75VUFIKv//55lISbNKvVl9p4lzr/DwqWGQfDV9HNvyC2qtxKUNwSWjMatEQHSKhJ1nlAmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMwyfnbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C79C4CEF1;
-	Tue, 16 Dec 2025 11:37:10 +0000 (UTC)
+	 MIME-Version; b=nNxTmfwXeXCSSQb/R2qvsCuTXVOkG3Bl/YuEMPNf+6gIE2WJgsm7Dxm/HfMlpPphhrCUvf68l+RbBEefoPThgEg4bYo7+Amhn8eX0GUU0yr9fOPRkcDugKejFb5VHciqAxMhZ8KtV/eitjhSIAfiXj0bk+nzlo2bcl8WAIEHqRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ9WO4O5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5924EC4CEF1;
+	Tue, 16 Dec 2025 12:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885031;
-	bh=dl4FriRPdwElfT4JYQoMyaQkqiD0OHyUmCPGS5sxdNA=;
+	s=korg; t=1765886988;
+	bh=hAr/Vhie2iBdKOMJKKPrqINSB2OKX7OHURsf5KTCqQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMwyfnbCINrSH1pBxj1P12uRpLccKmTmrH/jxqpb56JI/ukhE5MCiqpTGFyR++glf
-	 5FVRe4SEY8IskalmysagOsSo4lT9z6nygU3iX0mgtZhrvWqFI5QigybSw7K9oxId59
-	 UnzZkM6HD2pp2Ni67RhNt5OsIfe4PnrIeUqiYxt8=
+	b=rZ9WO4O5A1rsmFtoXJErdiomNogIWtrgoDvEpJsc15SXYJkyLuY4sHDfOrJtMWnbo
+	 G115kGWapFr85z4iODHBHfvj8Jvt5cx9WV9A2IyGs5Q6u2Vgy8DnTbj6xOI7dR3/vm
+	 qd6vNQxPYk140CLdjQCIaBqEvT/a8pm9rlKPB8dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 018/507] tools/nolibc: handle NULL wstatus argument to waitpid()
+Subject: [PATCH 6.18 092/614] s390/smp: Fix fallback CPU detection
 Date: Tue, 16 Dec 2025 12:07:39 +0100
-Message-ID: <20251216111346.196643300@linuxfoundation.org>
+Message-ID: <20251216111404.653876753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 812f223fe9be03dc22abb85240b6f075135d2386 ]
+[ Upstream commit 07a75d08cfa1b883a6e1256666e5f0617ee99231 ]
 
-wstatus is allowed to be NULL. Avoid a segmentation fault in this case.
+In case SCLP CPU detection does not work a fallback mechanism using SIGP is
+in place. Since a cleanup this does not work correctly anymore: new CPUs
+are only considered if their type matches the boot CPU.
 
-Fixes: 0c89abf5ab3f ("tools/nolibc: implement waitpid() in terms of waitid()")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Before the cleanup the information if a CPU type should be considered was
+also part of a structure generated by the fallback mechanism and indicated
+that a CPU type should not be considered when adding CPUs.
+
+Since the rework a global SCLP state is used instead. If the global SCLP
+state indicates that the CPU type should be considered and the fallback
+mechanism is used, there may be a mismatch with CPU types if CPUs are
+added. This can lead to a system with only a single CPU even tough there
+are many more CPUs.
+
+Address this by simply copying the boot cpu type into the generated data
+structure from the fallback mechanism.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: d08d94306e90 ("s390/smp: cleanup core vs. cpu in the SCLP interface")
+Reviewed-by: Mete Durlu <meted@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/sys/wait.h | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/s390/kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/include/nolibc/sys/wait.h b/tools/include/nolibc/sys/wait.h
-index 56ddb806da7f2..c1b797c234d11 100644
---- a/tools/include/nolibc/sys/wait.h
-+++ b/tools/include/nolibc/sys/wait.h
-@@ -82,23 +82,29 @@ pid_t waitpid(pid_t pid, int *status, int options)
- 
- 	switch (info.si_code) {
- 	case 0:
--		*status = 0;
-+		if (status)
-+			*status = 0;
- 		break;
- 	case CLD_EXITED:
--		*status = (info.si_status & 0xff) << 8;
-+		if (status)
-+			*status = (info.si_status & 0xff) << 8;
- 		break;
- 	case CLD_KILLED:
--		*status = info.si_status & 0x7f;
-+		if (status)
-+			*status = info.si_status & 0x7f;
- 		break;
- 	case CLD_DUMPED:
--		*status = (info.si_status & 0x7f) | 0x80;
-+		if (status)
-+			*status = (info.si_status & 0x7f) | 0x80;
- 		break;
- 	case CLD_STOPPED:
- 	case CLD_TRAPPED:
--		*status = (info.si_status << 8) + 0x7f;
-+		if (status)
-+			*status = (info.si_status << 8) + 0x7f;
- 		break;
- 	case CLD_CONTINUED:
--		*status = 0xffff;
-+		if (status)
-+			*status = 0xffff;
- 		break;
- 	default:
- 		return -1;
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index da84c0dc6b7e0..70df4ca5d4436 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -697,6 +697,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
+ 				continue;
+ 			info->core[info->configured].core_id =
+ 				address >> smp_cpu_mt_shift;
++			info->core[info->configured].type = boot_core_type;
+ 			info->configured++;
+ 		}
+ 		info->combined = info->configured;
 -- 
 2.51.0
 
