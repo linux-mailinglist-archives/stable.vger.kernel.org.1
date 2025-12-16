@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-202331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C504CC31A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A75CC237F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7B1E303CCCC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B46D300F710
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4537346E51;
-	Tue, 16 Dec 2025 12:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5B933F8AA;
+	Tue, 16 Dec 2025 11:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho6DZ7vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJdnJCY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9042B346FB6;
-	Tue, 16 Dec 2025 12:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A9E340A64;
+	Tue, 16 Dec 2025 11:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887553; cv=none; b=cIhVGlqf4AZvi2/JD+ATiObzWCH5kYLl3w4Zreep0D4NUoWchrZP24TYZQPGMkRMkOpiaYy+OCmppL4ABLJDkNdrmNer84erD4hEXV0duaw4er39zuG4h2NcmlhRIziROcFLDYIgcQ4THNOOAgQAo3PYeZlaXzQYPRjgs4PkQfU=
+	t=1765884066; cv=none; b=iaN3Vm+70CLRM+lk1x+7ds7IHYRKkge1yL93B2VgEY/f/uD9Zc8MK9N/KYedoKS1a27dHW46JYqNWA0vj6JRVV6eJofc1XQNUKCi/qn5QLDAyEJlTywfqx/CyRX1ubQ2dX/PXQosUjkEiaJWO+pWeNnGIALfYxP5Z1xJZTPYP6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887553; c=relaxed/simple;
-	bh=AySm7zN8pGrXLcbOqrfyqmCVacQfYDIxZrok8CP9BUA=;
+	s=arc-20240116; t=1765884066; c=relaxed/simple;
+	bh=gY5HEA+w3WnUjv5sI+JknHGwgyDAjkSeoJ2Y+wUxsjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3j7GrdXCwc7690l7utKiWYQI7iIQS9L5PY2sj4WUDGrb/8w+fMiJWwew+L1AiJdPQoh02PK9l+oRNp9nSnG2Mm03+u9762VEAN/8b9+1G89536NUKXqzKA9QbQN/aftn6WB0Gx2oI1L13/cYrV3Rd4GE48Dv2mEZ4cu8+pNsj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho6DZ7vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18357C4CEF1;
-	Tue, 16 Dec 2025 12:19:12 +0000 (UTC)
+	 MIME-Version; b=UtPEeg9MNy/P/CHXjvxUskqkdDf/hRH9YVckdJRmO6rxK/0Y2cZDCnjRb3lcUiZE/nRAYwyeFu4jYVtJuAcbLvyqMwscx/Y/90ols+dtKAIJfDt++/xLzJo1fSSqx/i07wlnl7oTyOLWkO57gcxSmzBs51YRqYu+/ksJRVKnthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJdnJCY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24DDC4CEF1;
+	Tue, 16 Dec 2025 11:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887553;
-	bh=AySm7zN8pGrXLcbOqrfyqmCVacQfYDIxZrok8CP9BUA=;
+	s=korg; t=1765884066;
+	bh=gY5HEA+w3WnUjv5sI+JknHGwgyDAjkSeoJ2Y+wUxsjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ho6DZ7vnK7mvMMOZxwcCLBkUEkx0tJCqADExc9/g87dM0wuz/tnWKPn1pHPozTUfR
-	 g6abZ6Q/xmNSAIj4PKpAwb+crWWVJsz6AFlCTDkCo6Ms2/Hzp0q56wRiHqzKusSHFY
-	 cZZcm9DiFtZkh4Ihry8pAmKMQxOHi1wvnlFntLcg=
+	b=cJdnJCY/KzIL3aT4wmsPITSwWLh8PIZUkFXxyzRZwzVEEqYC2/QlB0opOEMtFqHiQ
+	 0+d+bs/RJebHDpitIEI4cUqTtiPNN8y47e2KUJyChljB0d3nIueN8aQU89aN4ud6WN
+	 emaRVfdMMSsepHOkINW6vq02882yPwk7ZhyNTl9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	nieweiqiang <nieweiqiang@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 265/614] ocfs2: use correct endian in ocfs2_dinode_has_extents
+Subject: [PATCH 6.12 065/354] crypto: hisilicon/qm - restore original qos values
 Date: Tue, 16 Dec 2025 12:10:32 +0100
-Message-ID: <20251216111410.974470210@linuxfoundation.org>
+Message-ID: <20251216111323.281268830@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: nieweiqiang <nieweiqiang@huawei.com>
 
-[ Upstream commit c9dff86eb78a4b6b02b1e407993c946ccaf9bfb4 ]
+[ Upstream commit e7066160f5b4187ad9869b712fa7a35d3d5be6b9 ]
 
-Fields in ocfs2_dinode is little endian, covert to host endian when
-checking those contents.
+When the new qos valus setting fails, restore to
+the original qos values.
 
-Link: https://lkml.kernel.org/r/20251025123218.3997866-1-joseph.qi@linux.alibaba.com
-Fixes: fdbb6cd96ed5 ("ocfs2: correct l_next_free_rec in online check")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 72b010dc33b9 ("crypto: hisilicon/qm - supports writing QoS int the host")
+Signed-off-by: nieweiqiang <nieweiqiang@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/inode.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
-index fcc89856ab95b..0a0a96054bfec 100644
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -201,13 +201,15 @@ struct inode *ocfs2_iget(struct ocfs2_super *osb, u64 blkno, unsigned flags,
- static int ocfs2_dinode_has_extents(struct ocfs2_dinode *di)
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 711c299713687..d0b154d13f445 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3493,6 +3493,7 @@ static void qm_clear_vft_config(struct hisi_qm *qm)
+ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
  {
- 	/* inodes flagged with other stuff in id2 */
--	if (di->i_flags & (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL |
--			   OCFS2_CHAIN_FL | OCFS2_DEALLOC_FL))
-+	if (le32_to_cpu(di->i_flags) &
-+	    (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL | OCFS2_CHAIN_FL |
-+	     OCFS2_DEALLOC_FL))
- 		return 0;
- 	/* i_flags doesn't indicate when id2 is a fast symlink */
--	if (S_ISLNK(di->i_mode) && di->i_size && di->i_clusters == 0)
-+	if (S_ISLNK(le16_to_cpu(di->i_mode)) && le64_to_cpu(di->i_size) &&
-+	    !le32_to_cpu(di->i_clusters))
- 		return 0;
--	if (di->i_dyn_features & OCFS2_INLINE_DATA_FL)
-+	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL)
- 		return 0;
+ 	struct device *dev = &qm->pdev->dev;
++	struct qm_shaper_factor t_factor;
+ 	u32 ir = qos * QM_QOS_RATE;
+ 	int ret, total_vfs, i;
  
- 	return 1;
+@@ -3500,6 +3501,7 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 	if (fun_index > total_vfs)
+ 		return -EINVAL;
+ 
++	memcpy(&t_factor, &qm->factor[fun_index], sizeof(t_factor));
+ 	qm->factor[fun_index].func_qos = qos;
+ 
+ 	ret = qm_get_shaper_para(ir, &qm->factor[fun_index]);
+@@ -3513,11 +3515,21 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
+ 		if (ret) {
+ 			dev_err(dev, "type: %d, failed to set shaper vft!\n", i);
+-			return -EINVAL;
++			goto back_func_qos;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++back_func_qos:
++	memcpy(&qm->factor[fun_index], &t_factor, sizeof(t_factor));
++	for (i--; i >= ALG_TYPE_0; i--) {
++		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
++		if (ret)
++			dev_err(dev, "failed to restore shaper vft during rollback!\n");
++	}
++
++	return -EINVAL;
+ }
+ 
+ static u32 qm_get_shaper_vft_qos(struct hisi_qm *qm, u32 fun_index)
 -- 
 2.51.0
 
