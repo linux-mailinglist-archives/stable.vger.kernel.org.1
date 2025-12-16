@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B09CC256B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD428CC3E64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A35FA30A218F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4481830C27C9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D9340D98;
-	Tue, 16 Dec 2025 11:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3359E34EF11;
+	Tue, 16 Dec 2025 11:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkqteNmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgjn/2VV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0159E33BBC8;
-	Tue, 16 Dec 2025 11:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDC434DB5F;
+	Tue, 16 Dec 2025 11:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884693; cv=none; b=X0Ib15X5kmeXOxeqzfFaBez3SHx6PNqpE2puHOCB9dIZV4etfWcROvx1zS2qVJug6LLKPvvoXmW0sSu/rrrNBlamFBPURzAhyT9fT+AX88SXGXVu8JhXkfc9D7PK/dqXutIGoGkkP/f9/nooILTTUhIfNRIUITZod5KjXkDzLFM=
+	t=1765886295; cv=none; b=sCMNwlDJJN81SbNpYis4cHjx4ag6ikpez230SDw40Qtko5uQ76MKOCY1s7/8GhrFcmOI3ngS1eaXvoOJ2dpaFCNGpfDKgSImkcKOj6wquSg2kLXTfIeyNuSmeEHfxKAHyhePhllEloR2nTxRnAwCDfFD0Q2ugmEsOW+P37Zyi68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884693; c=relaxed/simple;
-	bh=yiKdaCVs/vHCw8yQiEa9EBHf1t9hc9rCINXzEMWFwYU=;
+	s=arc-20240116; t=1765886295; c=relaxed/simple;
+	bh=0wTn2h3gbvbuYtAbZexE2HRIdPrm1bpEAAJSmF5wo+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIAM9+AdJOsb4O7V1pQoqBpY5Hq0iDOn/uCTvarYfI8Xda8QuDzbqWZm9hPb7jpZ/VGWMYjirxLDY9G6g8/CBppUoeoD36n6Mx1XO0mzIIBK525LMUDUIXiFCZqMNH4TQFloGsuEKY7PTyRVtDV+ZVqnXVx3IYmcfmFHVG/zD3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkqteNmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68145C4CEF1;
-	Tue, 16 Dec 2025 11:31:32 +0000 (UTC)
+	 MIME-Version; b=AExl5OzcKL2qtP38Bw51Cf6+cZP6Bw4zEpQvwar2ZnnFVcyV5XrSPk9Ss8MAjOhjGuSkooCb75+df89855pEB8nxli5muzHH8xRQDXgeRijGCG3tz6ubkIIiTah8ab2Hk6ux1HpkWSc5lhaED1v/zomDZlI0inq2fBg1pNwZvoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgjn/2VV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394EEC4CEF1;
+	Tue, 16 Dec 2025 11:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884692;
-	bh=yiKdaCVs/vHCw8yQiEa9EBHf1t9hc9rCINXzEMWFwYU=;
+	s=korg; t=1765886295;
+	bh=0wTn2h3gbvbuYtAbZexE2HRIdPrm1bpEAAJSmF5wo+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkqteNmxZdiKDRKrZBq5eXDJNkYhqZ4mZgZq8Hdo6e6RVXaeC4mtGApuAPJf9gVvc
-	 lF8S2ZE0mlfvTWGrwPs7Iq4314Xu+DDsmAlfolMeWPGY0MQ1zLS0fD4uMf7SH24HXs
-	 Pv62+uGJSJ08C8L180cnjm7cV9bacwiE76mlR/pw=
+	b=vgjn/2VVwqllYQG08SJh2JbC3lSiAS9ZGa/VsFU82c2B04/q7xuKnloTWHe1eu4Dl
+	 S2284SXHUu1xO9BqumHP1mSQmO/b1whD2fVdjfwyzs7mrwxEiGOTUjwBvaWGzfor/K
+	 eauxiYVNB4myWQ+YsPWNFbYFnlIQM9dzD6vdnckk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/354] spi: ch341: fix out-of-bounds memory access in ch341_transfer_one
+Subject: [PATCH 6.17 396/507] net: stmmac: fix rx limit check in stmmac_rx_zc()
 Date: Tue, 16 Dec 2025 12:13:57 +0100
-Message-ID: <20251216111330.698234149@linuxfoundation.org>
+Message-ID: <20251216111359.799833467@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit 545d1287e40a55242f6ab68bcc1ba3b74088b1bc ]
+[ Upstream commit 8048168df56e225c94e50b04cb7b0514135d7a1c ]
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+The extra "count >= limit" check in stmmac_rx_zc() is redundant and
+has no effect because the value of "count" doesn't change after the
+while condition at this point.
 
-The 'len' variable is calculated as 'min(32, trans->len + 1)',
-which includes the 1-byte command header.
+However, it can change after "read_again:" label:
 
-When copying data from 'trans->tx_buf' to 'ch341->tx_buf + 1', using 'len'
-as the length is incorrect because:
+        while (count < limit) {
+            ...
 
-1. It causes an out-of-bounds read from 'trans->tx_buf' (which has size
-   'trans->len', i.e., 'len - 1' in this context).
-2. It can cause an out-of-bounds write to 'ch341->tx_buf' if 'len' is
-   CH341_PACKET_LENGTH (32). Writing 32 bytes to ch341->tx_buf + 1
-   overflows the buffer.
+            if (count >= limit)
+                break;
+    read_again:
+            ...
+            /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+            if (likely(status & rx_not_ls)) {
+                xsk_buff_free(buf->xdp);
+                buf->xdp = NULL;
+                dirty++;
+                count++;
+                goto read_again;
+            }
+            ...
 
-Fix this by copying 'len - 1' bytes.
+This patch addresses the same issue previously resolved in stmmac_rx()
+by commit fa02de9e7588 ("net: stmmac: fix rx budget limit check").
+The fix is the same: move the check after the label to ensure that it
+bounds the goto loop.
 
-Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Link: https://patch.msgid.link/20251128160630.0f922c45ec6084a46fb57099@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251126104327.175590-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ch341.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
-index d2351812d310d..0db74e95552f9 100644
---- a/drivers/spi/spi-ch341.c
-+++ b/drivers/spi/spi-ch341.c
-@@ -78,7 +78,7 @@ static int ch341_transfer_one(struct spi_controller *host,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 7a375de2258c4..abbd83f4c70f3 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5349,10 +5349,10 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+ 			len = 0;
+ 		}
  
- 	ch341->tx_buf[0] = CH341A_CMD_SPI_STREAM;
++read_again:
+ 		if (count >= limit)
+ 			break;
  
--	memcpy(ch341->tx_buf + 1, trans->tx_buf, len);
-+	memcpy(ch341->tx_buf + 1, trans->tx_buf, len - 1);
- 
- 	ret = usb_bulk_msg(ch341->udev, ch341->write_pipe, ch341->tx_buf, len,
- 			   NULL, CH341_DEFAULT_TIMEOUT);
+-read_again:
+ 		buf1_len = 0;
+ 		entry = next_entry;
+ 		buf = &rx_q->buf_pool[entry];
 -- 
 2.51.0
 
