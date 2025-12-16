@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-201839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC34CC284B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4275CC2301
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D12B2308945D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4310E3003111
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDC7355037;
-	Tue, 16 Dec 2025 11:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B633342506;
+	Tue, 16 Dec 2025 11:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbtcp7Wo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPm6Zo4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D35E355029;
-	Tue, 16 Dec 2025 11:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44768342160;
+	Tue, 16 Dec 2025 11:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885959; cv=none; b=Tk1WjGbU/9m/XkeLvOWvFgfbSZIcE84UG32kHY5B1wNnqQefDx55KxlkjE80BmFG2EBKJASaezlqEWGI7cNx3Gg9BcQ9Z/Ts63K17y8XjpIBj+ZCzvac2W36O1GwFoHO9CA7L7bjtAAW1cI/bAew78DyyAdESHN2RQKo9RKzn3U=
+	t=1765884369; cv=none; b=k9c+yqybmSUK36zuthN3Gl2soJRX8tHVF5aD1pV1+WgPeWxLKpg50dKRwSZotPwBjfHOXrczz7O9vsYFlmYJtRcoSAxoa6Kbb4ClSEkqx4DpNBySAPHAq5V+B6MbwhwFXtCAc8BSz8GxaJ2J+i6iT9blEQHjedcQaugfuNRrP64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885959; c=relaxed/simple;
-	bh=IZ5NdtlSmAPsxSUvJOXWM/0HfX0+Z1PTKPROmkoCPwU=;
+	s=arc-20240116; t=1765884369; c=relaxed/simple;
+	bh=UztBHw+ulcj1bf7oC19/gNZt9Bs5SPZPVl88iDB6Q8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b09YhSM1G7v4xM/RCjQYE4aFu9fMKjhc1lwX/0nkZC/zmFUbBCbR/vuqWwEfBPmneWuf+zUJdfBf2AmQkzwLvpIzhhrcXzAAYeht/60M3vl2X0eLBuniWNH+7tXAFPTpSXaWaWs8GIzbNYBeFL5H8F1ZE36VOiA0WmEalupVimY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbtcp7Wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A28C4CEF1;
-	Tue, 16 Dec 2025 11:52:38 +0000 (UTC)
+	 MIME-Version; b=sjd7a/T8GGawNwkDkbzP64Kqw8gKfronuxO2g1zU4ZSeqwx7YcMCpS14xVdmz4bDaS70avtoBolobZj8XKqHP89SFLlWp1PnOCkv1iqaLVSlGiZTKacvc/CXxBcc5pUDQMscTisJzz60QosEXAxSc8lxQtScDgGP6clxRjA1KXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPm6Zo4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490D4C4CEF1;
+	Tue, 16 Dec 2025 11:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885958;
-	bh=IZ5NdtlSmAPsxSUvJOXWM/0HfX0+Z1PTKPROmkoCPwU=;
+	s=korg; t=1765884366;
+	bh=UztBHw+ulcj1bf7oC19/gNZt9Bs5SPZPVl88iDB6Q8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lbtcp7WobCPH6cJ+TQe9tgd+OGf1snJYdc5N31PsMo0pKJUp9SIYlvbek/pYSsyyM
-	 smYcANQZ/zZjDMqTbkOA86gkRFwLCNHK+WqSGOL/GhhCnGGFJhVvTrf3f14i1vujd5
-	 e1CceUDe4lTnQzYAsXwJVuL7pzUeirbJNzxduZSg=
+	b=LPm6Zo4yfcR/NQQBC0oPd87hgSbTfZVONVNFep53ox7Jfi25eTUd5KsL/NuyA+bWU
+	 R/CBllA1L5RC0Y6CSIwbtu+H2xIDSgdrMjB3qqMgcCXt2AfVw2qUvXSkpyyb9S20iu
+	 g/XvSfFAgOLGFYCg89kHstqdr/mvMTEvNrYl5nrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 296/507] ASoC: SDCA: Fix missing dash in HIDE DisCo property
+Subject: [PATCH 6.12 170/354] NFSD/blocklayout: Fix minlength check in proc_layoutget
 Date: Tue, 16 Dec 2025 12:12:17 +0100
-Message-ID: <20251216111356.199383731@linuxfoundation.org>
+Message-ID: <20251216111327.073747483@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit 3508311f2e1c872b645f13c6fd52840418089d41 ]
+[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
 
-The property name is "mipi-sdca-RxUMP-ownership-transition-max-delay",
-with a dash between max and delay. Add the missing dash.
+The extent returned by the file system may have a smaller offset than
+the segment offset requested by the client. In this case, the minimum
+segment length must be checked against the requested range. Otherwise,
+the client may not be able to continue the read/write operation.
 
-Fixes: 13ef21dffe76 ("ASoC: SDCA: add support for HIDE entity properties and HID descriptor/report")
-Tested-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Tested-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251120153023.2105663-3-ckeepax@opensource.cirrus.com
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_functions.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/blocklayout.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
-index 0ccb6775f4de3..19b12564f822e 100644
---- a/sound/soc/sdca/sdca_functions.c
-+++ b/sound/soc/sdca/sdca_functions.c
-@@ -1263,7 +1263,7 @@ find_sdca_entity_hide(struct device *dev, struct fwnode_handle *function_node,
- 	unsigned char *report_desc = NULL;
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index 0822d8a119c6f..eefe50a17c4a0 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ {
+ 	struct nfsd4_layout_seg *seg = &args->lg_seg;
+ 	struct super_block *sb = inode->i_sb;
++	u64 length;
+ 	u32 block_size = i_blocksize(inode);
+ 	struct pnfs_block_extent *bex;
+ 	struct iomap iomap;
+@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ 		goto out_error;
+ 	}
  
- 	ret = fwnode_property_read_u32(entity_node,
--				       "mipi-sdca-RxUMP-ownership-transition-maxdelay", &delay);
-+				       "mipi-sdca-RxUMP-ownership-transition-max-delay", &delay);
- 	if (!ret)
- 		hide->max_delay = delay;
- 
+-	if (iomap.length < args->lg_minlength) {
++	length = iomap.offset + iomap.length - seg->offset;
++	if (length < args->lg_minlength) {
+ 		dprintk("pnfsd: extent smaller than minlength\n");
+ 		goto out_layoutunavailable;
+ 	}
 -- 
 2.51.0
 
