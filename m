@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63312CC493B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:11:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CCFCC2B53
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF7843057986
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E70AC3098A1F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B4736CE1C;
-	Tue, 16 Dec 2025 12:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB163446CB;
+	Tue, 16 Dec 2025 11:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek3xIvI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdPXFMiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB1F36CE11;
-	Tue, 16 Dec 2025 12:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB85126C02;
+	Tue, 16 Dec 2025 11:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888006; cv=none; b=Dx1ZIpurgV98OICM+NMe71X5RN+rZ+m2M5UZSbQgJJG64g5JzoTF/cnuMavITxqe5GAywoue5+UNcp3Av8NhF/1FJ1nNeYqAQngj6LE+IAl1KuPk/z4KpO0V02o8OO6DrZJr1Z6EPLB456/fffX92JVnJs596rAefrLmN/cvZao=
+	t=1765886072; cv=none; b=a7hpXikgclxmuVg5M6RK/ynEl4HT+QInbUlhQR7+EwGlqHmpyIj/b5iH3CfRYgi+9OlNmoKK/oN7QcjMOvsYMCxCxtANKMADDmVFMaSJICe/VInKvSOm0ZX24lJp5K21OQTnhtsDQaEjYPco6XlcZ83DnY/QZlU2sPNDWoAuEHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888006; c=relaxed/simple;
-	bh=gCukoulbmHZgFYgUglxGcSAHmllOYbfIy4AqSSGNjZQ=;
+	s=arc-20240116; t=1765886072; c=relaxed/simple;
+	bh=LE930jp4BfutVPrYDYN4Wf2kwIVEdCpqD7lKA3W9H8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZrY14e8aY8jGJhufhNJ9qOqQ/R6LI4A7mlhr076Ic0sU69P2SbrI0PllQrH/VCuErqsRoubwedwzodLee7GC7ZSWBCMd977hacXfLqMoU1GYWsIj70HG2FucgHMMVK0lC1iDJuXenrSN5iAaRmzUfSAznuAcckcXYRl+cF7K8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek3xIvI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA01DC4CEF1;
-	Tue, 16 Dec 2025 12:26:45 +0000 (UTC)
+	 MIME-Version; b=SXPaEmYVt/BqMpIcc7fddegr2ySRvJLsMKTmtrfX95OTXAyprvg/D4sANQaJ4ySRnN5RQZhWIJULKB36/NA8M1C46Ku9MLlSVstwww2NwNdOcZgS6ZG8yHL/6UZJE+6reHnGA2steqAXCZbsRut68k9NSr2q4OwpMCZLw09UxN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdPXFMiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593BBC4CEF1;
+	Tue, 16 Dec 2025 11:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888006;
-	bh=gCukoulbmHZgFYgUglxGcSAHmllOYbfIy4AqSSGNjZQ=;
+	s=korg; t=1765886071;
+	bh=LE930jp4BfutVPrYDYN4Wf2kwIVEdCpqD7lKA3W9H8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ek3xIvI7kjsg+DJjrrc1N3HdmRYpr75e9ljUDFAx1asPmM54ZBygVzleUHsKTdsJ+
-	 ZY8Y190kPn0Ugfx6yEEw2ArmjC/4JT8D+0sK/QXt7pO9psnnRK8CNyTLDgaWAvzGe3
-	 hVvoZcY9YkGrCJuttS+ZCMBG/1Ui3dz2psrwA1ws=
+	b=EdPXFMiKwq7qZytEcI7B6a1yYj2xAj/7UiNy3xN92zFXdx6X4bFScoxb4kGUgJHpr
+	 ccn+xlfD2pLS98nEe9eOmDmsKrWRotS8560DWuHfOh77AgaM2B+fVqPp0Ke9QoMvYN
+	 sysR64f2PPFjD7paDqmD1adRFMEWqkUIPTyCF+xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 403/614] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
-Date: Tue, 16 Dec 2025 12:12:50 +0100
-Message-ID: <20251216111415.977381638@linuxfoundation.org>
+Subject: [PATCH 6.17 330/507] wifi: mt76: mt7996: fix teardown command for an MLD peer
+Date: Tue, 16 Dec 2025 12:12:51 +0100
+Message-ID: <20251216111357.421177799@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinh Nguyen <dinguyen@kernel.org>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
+[ Upstream commit e077071e7ac48d5453072f615d51629891c5b90d ]
 
-Fix this warning that was generated from "make htmldocs":
+For an MLD peer, we only need to call the teardown command when removing
+the last link, and there's no need to call mt7996_mcu_add_sta() for the
+earlier links.
 
-WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
-not described in 'stratix10_svc'
-
-Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c1d6dd5d03eb ("wifi: mt76: mt7996: Add mt7996_mcu_teardown_mld_sta rouine")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251106064203.1000505-6-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 00f58e27f6de5..deee0e7be34bd 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
- /**
-  * struct stratix10_svc - svc private data
-  * @stratix10_svc_rsu: pointer to stratix10 RSU device
-+ * @intel_svc_fcs: pointer to the FCS device
-  */
- struct stratix10_svc {
- 	struct platform_device *stratix10_svc_rsu;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 016b7e02d969d..5f90a385b4d38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1197,13 +1197,13 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 				mt7996_mac_twt_teardown_flow(dev, link,
+ 							     msta_link, i);
+ 
+-			if (sta->mlo && links == BIT(link_id)) /* last link */
+-				mt7996_mcu_teardown_mld_sta(dev, link,
+-							    msta_link);
+-			else
++			if (!sta->mlo)
+ 				mt7996_mcu_add_sta(dev, link_conf, link_sta,
+ 						   link, msta_link,
+ 						   CONN_STATE_DISCONNECT, false);
++			else if (sta->mlo && links == BIT(link_id)) /* last link */
++				mt7996_mcu_teardown_mld_sta(dev, link,
++							    msta_link);
+ 			msta_link->wcid.sta_disabled = 1;
+ 			msta_link->wcid.sta = 0;
+ 			links = links & ~BIT(link_id);
 -- 
 2.51.0
 
