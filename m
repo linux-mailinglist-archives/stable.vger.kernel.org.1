@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACCA9CC25F2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A108CC3872
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 978C0301E6FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34B05305B4F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3528322B83;
-	Tue, 16 Dec 2025 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BFF35F8B4;
+	Tue, 16 Dec 2025 12:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzWdocbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PUkthfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFA1347FE1;
-	Tue, 16 Dec 2025 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B060E35F8AD;
+	Tue, 16 Dec 2025 12:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885387; cv=none; b=VufewVqiEc73wVlJMy3bGqCs6CARyVdHf5r//dI6gR+BBsej3q3xV4fQ3NlaFcDKu2GZ3Oax5E7ghUahtMhlHb4jMpup+bJ00O/hd94JSZiTirvI7km+fdsmfafOiMDl4wa2L46W9/Yy1HHVYJ671Axe+9VrQhSRt25DC/xOfvE=
+	t=1765887337; cv=none; b=HksFN0gqWVAmCVyIiia2DqSSWd9br0dPxtMQn5u1V2nwRMHxT0oddE7eTBsbswto30W8EPsiGJp5/ESPMuJ9tZOJj5iHceqqu+XUOrWUZBtn6qtqW169mD2kr2hzJ+093N1dlpp4VgbVt/WFFZmnEssO+ucmHeBWQJ2vdQffmZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885387; c=relaxed/simple;
-	bh=44r30ZvOVnJR1qoDfDh+lGUahtu0Ap4Qqn+SaBgBN8U=;
+	s=arc-20240116; t=1765887337; c=relaxed/simple;
+	bh=laAc84j5PuwbD4ZjtbrGb94IGaF5ir/dHOpUcAPx8Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r+0eEub8qtNJ7RbxajsuxglNX1Aw69iIpDQi6UyK576QF7sp6VKazqm5D2GuNlKAlCSAqHalrbfqPYOYZ+UJaWTBPVj/HnANP+oEBQJ5B9T7LRDoXoqvCB/eQWZb+/2HRB4zORhmpXcTzckPD6FPyED0Yanf11Aq8VVN1bOkyHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzWdocbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F15C4CEF5;
-	Tue, 16 Dec 2025 11:43:06 +0000 (UTC)
+	 MIME-Version; b=f/yel4LUnssXHwq+BK47FryqRv/LrSleknh0j13kRNxvbpbrCOwdRXwkP+3QuSGVTImF1tCeAFtg9M/vpjRZyJvYL3YaQAGNW868vnbZfUD7W7On/y20yyDb5jSNB2A6tGxLFIF/Gr/lP5FWc699oOZwp2zSY9z7vX4xFXk6jzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PUkthfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7257C4CEF1;
+	Tue, 16 Dec 2025 12:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885387;
-	bh=44r30ZvOVnJR1qoDfDh+lGUahtu0Ap4Qqn+SaBgBN8U=;
+	s=korg; t=1765887337;
+	bh=laAc84j5PuwbD4ZjtbrGb94IGaF5ir/dHOpUcAPx8Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzWdocbKF5703hsCqA0BUqyTVnaAljhrvZHDT9zncj+NO9zLoRhP9vNPdKzYCg142
-	 2tYoBtbMYIJA0pPLdn8qgBpmvIAZrQKbHVnlFYDVynwgqyqW0d5+aL+RpTTUjF/Ze8
-	 TBV9oYWY4OipBygO6PuELroMbW8K+595/qzd7Qgg=
+	b=0PUkthfQ3563PPgoZHksAyaX4pFfmwF87BA9rGPMqqngo2ds2gFc4Y5Q4fmRpnh6B
+	 GNK/ID1cXUxd9RF9dsHzSoUawTNiyWUxTAKie/83IYahdPNrbIIZKZMxtxeqPOAZSc
+	 vzqjKuAveKkZNnDqK+2atylbet4SlXOfHS7Z+H9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Songtang Liu <liusongtang@bytedance.com>,
+	Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 124/507] tools/nolibc/stdio: let perror work when NOLIBC_IGNORE_ERRNO is set
+Subject: [PATCH 6.18 198/614] iommu/amd: Fix potential out-of-bounds read in iommu_mmio_show
 Date: Tue, 16 Dec 2025 12:09:25 +0100
-Message-ID: <20251216111350.024474258@linuxfoundation.org>
+Message-ID: <20251216111408.553610261@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,45 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Songtang Liu <liusongtang@bytedance.com>
 
-[ Upstream commit c485ca3aff2442adea4c08ceb5183e671ebed22a ]
+[ Upstream commit a0c7005333f9a968abb058b1d77bbcd7fb7fd1e7 ]
 
-There is no errno variable when NOLIBC_IGNORE_ERRNO is defined. As such,
-simply print the message with "unknown error" rather than the integer
-value of errno.
+In iommu_mmio_write(), it validates the user-provided offset with the
+check: `iommu->dbg_mmio_offset > iommu->mmio_phys_end - 4`.
+This assumes a 4-byte access. However, the corresponding
+show handler, iommu_mmio_show(), uses readq() to perform an 8-byte
+(64-bit) read.
 
-Fixes: acab7bcdb1bc ("tools/nolibc/stdio: add perror() to report the errno value")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+If a user provides an offset equal to `mmio_phys_end - 4`, the check
+passes, and will lead to a 4-byte out-of-bounds read.
+
+Fix this by adjusting the boundary check to use sizeof(u64), which
+corresponds to the size of the readq() operation.
+
+Fixes: 7a4ee419e8c1 ("iommu/amd: Add debugfs support to dump IOMMU MMIO registers")
+Signed-off-by: Songtang Liu <liusongtang@bytedance.com>
+Reviewed-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+Tested-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/stdio.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iommu/amd/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/stdio.h b/tools/include/nolibc/stdio.h
-index 7630234408c58..724d05ce69624 100644
---- a/tools/include/nolibc/stdio.h
-+++ b/tools/include/nolibc/stdio.h
-@@ -600,7 +600,11 @@ int sscanf(const char *str, const char *format, ...)
- static __attribute__((unused))
- void perror(const char *msg)
- {
-+#ifdef NOLIBC_IGNORE_ERRNO
-+	fprintf(stderr, "%s%sunknown error\n", (msg && *msg) ? msg : "", (msg && *msg) ? ": " : "");
-+#else
- 	fprintf(stderr, "%s%serrno=%d\n", (msg && *msg) ? msg : "", (msg && *msg) ? ": " : "", errno);
-+#endif
- }
+diff --git a/drivers/iommu/amd/debugfs.c b/drivers/iommu/amd/debugfs.c
+index 10fa217a71199..20b04996441d6 100644
+--- a/drivers/iommu/amd/debugfs.c
++++ b/drivers/iommu/amd/debugfs.c
+@@ -37,7 +37,7 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
+ 	if (ret)
+ 		return ret;
  
- static __attribute__((unused))
+-	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - 4) {
++	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64)) {
+ 		iommu->dbg_mmio_offset = -1;
+ 		return  -EINVAL;
+ 	}
 -- 
 2.51.0
 
