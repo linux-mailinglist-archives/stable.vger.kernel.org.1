@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-202119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18D5CC4A9D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:28:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D287CC2CDA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B6153028C2E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:28:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A20730577EA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8901D35FF72;
-	Tue, 16 Dec 2025 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0312F3659E9;
+	Tue, 16 Dec 2025 12:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4Mmxcyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQHzPIbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB9835FF58;
-	Tue, 16 Dec 2025 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B193659E6;
+	Tue, 16 Dec 2025 12:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886877; cv=none; b=lGehGqG28MyTKUrloMYBHCz2RSQoqvwyPIaxfk/ZUk9CbUIYYVoCBmQW4+59lcucmQUnoReHOnmEC3s5SCmE1KyMINQ4FxhpiqXruDF+AaU+1KEYlttUplSIZdQb/JF2EzXfaCDVTszWCXUiiv/QWQI1CJohrgtfL3dJjjSwBSU=
+	t=1765887018; cv=none; b=nrD5ObOz8JLlvtYCEnwHA1VdEYhUVTwZHfAc2NxmiGJFdFnm6ONvYXv3/q+r1k7s5dyYxXHq0FKcgCRajvW0sAerueMBS/b3A3fbhWT3aMXjTzOkAf8Ebnf5ZxnktltEqDJs+38UmWshF41LX6xeGco22rECFTINSpHNGv1N2Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886877; c=relaxed/simple;
-	bh=HpmlNLqqGSbKG05pZIm0+32dqKCGY/zRMc3gvT54qgM=;
+	s=arc-20240116; t=1765887018; c=relaxed/simple;
+	bh=gT7Y3/zXuacWk8vs8IuYk+/3JuzWKtZy4MBOsgMb80E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGdSoFmMeI1SyopFgGKybr7elsexQwh4RX/zfYz2PBKDPGTNaeEZhRPd2xo/tq4UhagEQWoR+S8btDnMv4OkWeszN4G4rO9ixGkvAmtFi6v4awB0ggFA9K23Y5e5yHoJvcW7RGV+Fc4aTCbzqJ6EAzL7w8O40o+3HjFM9VdSqNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4Mmxcyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A515CC4CEF1;
-	Tue, 16 Dec 2025 12:07:56 +0000 (UTC)
+	 MIME-Version; b=FmjMfABloN9RjyRVIqyNGoELlJv45MoGYAPErrmr9C6gjYVwtbMNxEicHi55Qaukjkn1cOHK2QL/+ZvGGcLYAkFrYxM42+b73x0uD54lQuNHGKbXsbaHKZ/SYHUromVkdkKQAYXLt/j22Fhgi9VGjsIdZaoM4lJqgomnYlRimlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQHzPIbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC4BC4CEF1;
+	Tue, 16 Dec 2025 12:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886877;
-	bh=HpmlNLqqGSbKG05pZIm0+32dqKCGY/zRMc3gvT54qgM=;
+	s=korg; t=1765887018;
+	bh=gT7Y3/zXuacWk8vs8IuYk+/3JuzWKtZy4MBOsgMb80E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4MmxcyciZZmfsXEr/shIYRM2OWMJEw12+xNullFR6/68MvZ1gefuvcXxcwowJwO2
-	 A9hbOOGXNLa7SrQMJs+LETKXLXXhM3p/NYlSzMX7jqhP424dWYv2ilmJeGhUxhuTxT
-	 W2nyWZKes1m3+I1dfiN1amwOPmJJtUasnRLQmLIk=
+	b=aQHzPIbSoUl3vs278OtVHy9mx7DpS2FxPS/7/3pSHLgXwG+H6J9ge0quTnq2Pp2AS
+	 UnyDL0jOQBr2Z7F3U+Sc93m7cKpbajimifQJ1lcJ6e+wUfvq09XVeY0EjbkxoelqnO
+	 OjFqr2Wn0rcAGcgprypdFL2HTkA29HmIqLtoICFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
-	Sidharth Seela <sidharthseela@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 058/614] ntfs3: Fix uninit buffer allocated by __getname()
-Date: Tue, 16 Dec 2025 12:07:05 +0100
-Message-ID: <20251216111403.413478045@linuxfoundation.org>
+Subject: [PATCH 6.18 059/614] arm64: dts: qcom: ipq5424: correct the TF-A reserved memory to 512K
+Date: Tue, 16 Dec 2025 12:07:06 +0100
+Message-ID: <20251216111403.449763758@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,34 +64,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sidharth Seela <sidharthseela@gmail.com>
+From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
 
-[ Upstream commit 9948dcb2f7b5a1bf8e8710eafaf6016e00be3ad6 ]
+[ Upstream commit 28803705b552a0a711fa849490f14dca2bc5296e ]
 
-Fix uninit errors caused after buffer allocation given to 'de'; by
-initializing the buffer with zeroes. The fix was found by using KMSAN.
+Correct the reserved memory size for TF-A to 512K, as it was mistakenly
+marked as 500K. Update the reserved memory node accordingly.
 
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Fixes: 78ab59fee07f2 ("fs/ntfs3: Rework file operations")
-Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 8517204c982b ("arm64: dts: qcom: ipq5424: Add reserved memory for TF-A")
+Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251014-tfa-reserved-mem-v1-1-48c82033c8a7@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/ipq5424.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 3959f23c487a2..3a0676871bade 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1722,6 +1722,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	de = __getname();
- 	if (!de)
- 		return -ENOMEM;
-+	memset(de, 0, PATH_MAX);
+diff --git a/arch/arm64/boot/dts/qcom/ipq5424.dtsi b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+index ef2b52f3597d9..227d5ce297515 100644
+--- a/arch/arm64/boot/dts/qcom/ipq5424.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+@@ -213,7 +213,7 @@ smem@8a800000 {
+ 		};
  
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
+ 		tfa@8a832000 {
+-			reg = <0x0 0x8a832000 0x0 0x7d000>;
++			reg = <0x0 0x8a832000 0x0 0x80000>;
+ 			no-map;
+ 			status = "disabled";
+ 		};
 -- 
 2.51.0
 
