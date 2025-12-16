@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2816CC438D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2196DCC2574
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E015F30E92A3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E61C30ACC98
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9669633A038;
-	Tue, 16 Dec 2025 11:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C22B341650;
+	Tue, 16 Dec 2025 11:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj1K+qc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kih6ArlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E01728CF5E;
-	Tue, 16 Dec 2025 11:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED853341078;
+	Tue, 16 Dec 2025 11:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886299; cv=none; b=FJdM4nTvdqLDGe9jWXzVTJD9thuOPDsVvd03LjbVdt7NTztGMQMk3dpqO53lXPu5c4uesqXnMnaE3d+rde6p8YLl0ZfsX0AXxknONx5aRt1s7bUrbB6zfN0H0VFyD3H2dfENPUJc3gw/oJW+XoFmzPz0jhRcrYC8IRCBDPxDkVA=
+	t=1765884704; cv=none; b=PUO6TuPHuVwxPOdRq+FjrXD2O+dxBV5pOhXAYwkPajuovdGcqXgEtnCGG09pSTVCyRs9Xuway267NkquBh9up0SO91Hg1MzF/H+saGTaSAk0qsVCaln4QH8RTJ3PvCL907Cyeo/1Xd5rWMd6FnI5RvT0O7Ft3NUT7kpOGy7oNlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886299; c=relaxed/simple;
-	bh=zsb9Rze3uScWubT7VssUk5+HRl/NgjPyMLG49KCOJAI=;
+	s=arc-20240116; t=1765884704; c=relaxed/simple;
+	bh=fTYaGtO+voAbJB3LygTT0mtLciwEiXTLbceiq6yN55E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSoomXh64JQJixFdy1V5Q/yOEQsS3dE/sKWdCoUOs0CGOJ/zLKl4izWz/QSz3UXlx7kvNejS5TLPIEjqnVj7C+gZ4tcdLiy7oU68CVvrsXfkp2+HDlbyO7ETChFpHvWBC80vKnW2b87gJeTLScdSzMv+VLZyx4upR75jXzULGcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj1K+qc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF20FC4CEF1;
-	Tue, 16 Dec 2025 11:58:18 +0000 (UTC)
+	 MIME-Version; b=ihgvYeLiag6t5dlszhR1/Iv8/IIVjC4hB6M9A2nacf06TQHEXIaL1xdxc2Ysa7/IJZEjs208WEkmfUMU0t0deZtZUPkAVDSCse0do9pUXM+sBLVz9E6WqOmMLMBcoV1cbFTtnF9Fenrwk7yC0zfejT7M84dMRmM9rpX96zPedzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kih6ArlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17735C4CEF1;
+	Tue, 16 Dec 2025 11:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886299;
-	bh=zsb9Rze3uScWubT7VssUk5+HRl/NgjPyMLG49KCOJAI=;
+	s=korg; t=1765884703;
+	bh=fTYaGtO+voAbJB3LygTT0mtLciwEiXTLbceiq6yN55E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uj1K+qc3ZgJ+x9weTAhHGWLN8uBeKx1K6m7QyQ2K1LvYm/MBRte9kNY0yWBzc3JNT
-	 uNfobOXdPYLicHkez7GL/mL5xbuMI3wObcZgj8X5UAdaWmSqq1Ah9rNxUOJdhZsxBo
-	 R/nEnDHzapOVayJp40SkWksfQXeFXiL06kBD/NjE=
+	b=Kih6ArlJcyuIbHie0waB3M7QNs/ykLwtcVzNAyVO39cAIkkLfW/yr+efAvxwc5iAK
+	 Tc/VRbcc+YpokO+fb3dmzoABN94/rzTAGp9hd2yoLwgRHqAOPYkC5MJd3gA0OsiLke
+	 JAPiHBvHoKO/iKjuXj94X3HXH76vnDHwDlJh06wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Robert Marko <robimarko@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 397/507] mtd: rawnand: renesas: Handle devm_pm_runtime_enable() errors
-Date: Tue, 16 Dec 2025 12:13:58 +0100
-Message-ID: <20251216111359.835720392@linuxfoundation.org>
+Subject: [PATCH 6.12 272/354] net: phy: aquantia: check for NVMEM deferral
+Date: Tue, 16 Dec 2025 12:13:59 +0100
+Message-ID: <20251216111330.770693274@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit a3623e1ae1ed6be4d49b2ccb9996a9d2b65c1828 ]
+[ Upstream commit a6c121a2432eee2c4ebceb1483ccd4a50a52983d ]
 
-devm_pm_runtime_enable() can fail due to memory allocation failures.
-The current code ignores its return value and proceeds with
-pm_runtime_resume_and_get(), which may operate on incorrectly
-initialized runtime PM state.
+Currently, if NVMEM provider is probed later than Aquantia, loading the
+firmware will fail with -EINVAL.
 
-Check the return value of devm_pm_runtime_enable() and return the
-error code if it fails.
+To fix this, simply check for -EPROBE_DEFER when NVMEM is attempted and
+return it.
 
-Fixes: 6a2277a0ebe7 ("mtd: rawnand: renesas: Use runtime PM instead of the raw clock API")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: e93984ebc1c8 ("net: phy: aquantia: add firmware load support")
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251127114514.460924-1-robimarko@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/renesas-nand-controller.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/phy/aquantia/aquantia_firmware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
-index ac8c1b80d7be9..201dd62b99905 100644
---- a/drivers/mtd/nand/raw/renesas-nand-controller.c
-+++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
-@@ -1336,7 +1336,10 @@ static int rnandc_probe(struct platform_device *pdev)
- 	if (IS_ERR(rnandc->regs))
- 		return PTR_ERR(rnandc->regs);
+diff --git a/drivers/net/phy/aquantia/aquantia_firmware.c b/drivers/net/phy/aquantia/aquantia_firmware.c
+index dab3af80593f5..33b8c7676fb36 100644
+--- a/drivers/net/phy/aquantia/aquantia_firmware.c
++++ b/drivers/net/phy/aquantia/aquantia_firmware.c
+@@ -368,7 +368,7 @@ int aqr_firmware_load(struct phy_device *phydev)
+ 		 * assume that, and load a new image.
+ 		 */
+ 		ret = aqr_firmware_load_nvmem(phydev);
+-		if (!ret)
++		if (ret == -EPROBE_DEFER || !ret)
+ 			return ret;
  
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0)
- 		return ret;
+ 		ret = aqr_firmware_load_fs(phydev);
 -- 
 2.51.0
 
