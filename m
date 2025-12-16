@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCF9CC23E8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D03ACC29AB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E670A30253D6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4558C3195E03
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D3033F8AA;
-	Tue, 16 Dec 2025 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB8C34FF6D;
+	Tue, 16 Dec 2025 11:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLsWXu+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+U4boZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AC533D6F5;
-	Tue, 16 Dec 2025 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCA4343200;
+	Tue, 16 Dec 2025 11:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884572; cv=none; b=kMNMn1CQ8w2dm9UO6bd13WOHykFtTW8CsPMA+GzPqt/2mJ51jf5Quiv2lgHq7XBXzG/OhPtv0C5dq2y3Lma+rxIe2kOn+WQg52AX41w/bwFPigUyli7RZfp8jKUofVHjUM5TlPw5MN0DtPeKGGeKufQc4G/b1U4zfCnByODfy3w=
+	t=1765886173; cv=none; b=QkZbDUsGhMm9MAY520gz9m+DeFpRGymVk1ymDytEqmiCRjbR1mgIEzr2oQVxSnwn5gn8BWU4t9tGFirsyGPJGtp5LMoqr0fGO8LyY5SD8cX+6kFiPZRpMSd7+1lmgnSAijJcAWkyGCpBuWuuaEo2znJX92iB/DF3Y400YvwVhpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884572; c=relaxed/simple;
-	bh=D+f8UZTqw79aSrgWxWNReDC2JQ1xZkdYyydeb2cdk28=;
+	s=arc-20240116; t=1765886173; c=relaxed/simple;
+	bh=dD2juHI/iRRbheF8gNbK57bo5h3ILtUOU0VvAoZyzdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qp77sb0foaBwZlDZcvQeGB8uo7F0FG/tmIqYsp2MFod2Z2uKoF4xU8ZKN+KxlRF5IvvGQV3XtlPzkNwIVoiuXDdphgFBb8ZXuAL5lBcxgfMD7JbGkAGKhDS7BEL56SycUuN0TgSfbuYie0QTJS4gvu27cNHDHsLkwxWkhxIAioc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLsWXu+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8682C4CEF1;
-	Tue, 16 Dec 2025 11:29:31 +0000 (UTC)
+	 MIME-Version; b=dcEqwY3C7JmbxlxlGZ1sWxvIwQ3LCJkD9brPiQU/MAGRtoFwIAhjk8oAvoXx7W1tUvURRT2Cr5unhxtxB2ixP3WK2vLoLKPRKRnsCl9GzoEMaGOxlWh0NBCBAVGnmYllC7sKcY2bYOyBxfUhy6o5OXZVpfZbINAMPkj/vkz/JTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+U4boZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57637C4CEF5;
+	Tue, 16 Dec 2025 11:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884572;
-	bh=D+f8UZTqw79aSrgWxWNReDC2JQ1xZkdYyydeb2cdk28=;
+	s=korg; t=1765886172;
+	bh=dD2juHI/iRRbheF8gNbK57bo5h3ILtUOU0VvAoZyzdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLsWXu+8VfXHBQg5ZMSD15kScUwA6OCWnhgBhbYzl/a9hoPlNGwr2NqLQYITQTcLE
-	 152aQq2gstlE6aAyi+LA7OqC2ncILDQQNKWJhzaRlvKbmqHUgxbxt8swK8jzcvhL5f
-	 hvgwBMJKaFlM4OydSGfHe72tyXDzNVshoeXC0kpU=
+	b=c+U4boZP392OVFA+h9363ROxiliIhLIsrFHdq0G5jZ1tBgmOY6aEFbOUm8YW81YRg
+	 /Hk3JHy1i2fFnt1VY70ndhA0BAe7wXs0YC5oZ81uqmzNjRyYi/BrVL0oncOgqIkBav
+	 +y3dPRxdFU6VS9oj5fCWGz+7KT8L+eDUQi//WJjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/354] ASoC: nau8325: use simple i2c probe function
+Subject: [PATCH 6.17 360/507] ASoC: nau8325: use simple i2c probe function
 Date: Tue, 16 Dec 2025 12:13:21 +0100
-Message-ID: <20251216111329.393236905@linuxfoundation.org>
+Message-ID: <20251216111358.499742803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
