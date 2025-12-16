@@ -1,115 +1,122 @@
-Return-Path: <stable+bounces-201134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E975CC0B85
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:30:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A43CC0BA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 04:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5174C30194FC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:30:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A1733025597
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 03:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132643FFD;
-	Tue, 16 Dec 2025 03:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ya/maR3V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC63D30F538;
+	Tue, 16 Dec 2025 03:37:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03EF1D90DD;
-	Tue, 16 Dec 2025 03:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7EE30DD12;
+	Tue, 16 Dec 2025 03:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765855823; cv=none; b=fiMK7jsf8AyaD05iVxG2ltsisIz9dkFaQom71OPXL+q9cWjzAO2p1daxrX6eB5asw4Id7XyW/qgAOnqRTlgv17AC86vwRm3UM5xe9CgJ7FqL1XZ6r+9HuiJMkPLDBXTVpr/qgFX30ZcV6sLN4d+MWbjhYj6EGtI0vV18yowWTYA=
+	t=1765856239; cv=none; b=lX+e/oobSPbaAdCb6MhXnCUvOnIQdNdZ/SJky4neZ3srylrTQY0Etx5StDYgpSXQCDKzb9K8amLnWohd0dWjYTX51yBgDDjILwZcCushmWZdMY2HJNqz+0ohUwVdneFgLdkXsyK7QVjg5w4LO6a8x/FGW4ytdFHpqhiEy09pcUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765855823; c=relaxed/simple;
-	bh=ts4UgXQUSRB3DlY0oEK5TQ0Z3lJWVO3ZAGbqjy4/MbE=;
-	h=Date:To:From:Subject:Message-Id; b=LIRxqB/Yted+Y5UUFOGSfecDVwX1lFkjup3kH0DY2gXT10NLmPP8qrPcOJ8cHb6IwevUao11DOi1EZhuLlmPKNWHhbux5XA+ch2F6MbchjUpnIjlh+hWvVOhZhL1RdBV9a/x3yhVMXvmJpCqqM8dZGlIJoXWfMSrYQbSCuTAUnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ya/maR3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBDDC4CEF5;
-	Tue, 16 Dec 2025 03:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765855823;
-	bh=ts4UgXQUSRB3DlY0oEK5TQ0Z3lJWVO3ZAGbqjy4/MbE=;
-	h=Date:To:From:Subject:From;
-	b=ya/maR3V692N7ExXT9pmPp/qxHajrq+8m3BWfhWvAqmKUz+4EJsD3NG6xxCcnvxQV
-	 wmxlFvK4l4GMi+q1WYhklyDr4DFaZp/OPMKdxk6kRZzsWUvj7Bx/y/zeyxkBP6jMJs
-	 YdEsuFk5MQXl2sc3KfoCWtc3YgMNBIX058115PS4=
-Date: Mon, 15 Dec 2025 19:30:22 -0800
-To: mm-commits@vger.kernel.org,zhaochongxi2019@email.szu.edu.cn,stable@vger.kernel.org,kaushlendra.kumar@intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251216033023.3EBDDC4CEF5@smtp.kernel.org>
+	s=arc-20240116; t=1765856239; c=relaxed/simple;
+	bh=bAD7qxNiFLFdzt7WlIweVUEMW3vywq12f1bQwNdKBXo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eO1RgKm8dyrtWYTjseiQX4QKHw+RakOr23A4MX7AkTHikgadDeGWn5Tj/xRdj8CTf5nX5om5ZX4RnK4wsojdzG2onXCfx/AMHFTBDG68eWKqJHl0RzFKh+x1bhKqlwr9NcmKfbIGW2DlgevEGVl+VpNiQqS98uumRMra7l8jZdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowABX7A_Q00Bpk4rTAA--.50339S2;
+	Tue, 16 Dec 2025 11:36:48 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: razor@blackwall.org,
+	petrm@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] vxlan: fix dst ref count leak in the vxlan_xmit_one() error path
+Date: Tue, 16 Dec 2025 03:36:47 +0000
+Message-Id: <20251216033647.1792250-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABX7A_Q00Bpk4rTAA--.50339S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFWDGr47Xw1DZr1rur47CFg_yoW8XrWfpF
+	4v9398ZFW3J3yqqw4xJw1rXFWrKay0k34Ikr1vka4Fqw13A34DGa4q9Fy29rs0qrWxury5
+	Jr42gryrAF98ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
+	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUn9a9DUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgSA2lArg2VKgAAsg
 
+In the vxlan_xmit_one(), when the encap_bypass_if_local() returns an
+error, the function jumps to out_unlock without releasing the dst
+reference obtained from the udp_tunnel_dst_lookup(). This causes a
+reference count leak in both IPv4 and IPv6 paths.
 
-The patch titled
-     Subject: tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
+Fix by calling the dst_release() before goto out_unlock in both error
+paths:
+- For IPv4: release &rt->dst
+- For IPv6: release ndst
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Subject: tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
-Date: Tue, 9 Dec 2025 10:15:52 +0530
-
-The ternary operator in compare_ts() returns 1 when timestamps are equal,
-causing unstable sorting behavior. Replace with explicit three-way
-comparison that returns 0 for equal timestamps, ensuring stable qsort
-ordering and consistent output.
-
-Link: https://lkml.kernel.org/r/20251209044552.3396468-1-kaushlendra.kumar@intel.com
-Fixes: 8f9c447e2e2b ("tools/vm/page_owner_sort.c: support sorting pid and time")
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Cc: Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 56de859e9967 ("vxlan: lock RCU on TX path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
+ drivers/net/vxlan/vxlan_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
- tools/mm/page_owner_sort.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
---- a/tools/mm/page_owner_sort.c~tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting
-+++ a/tools/mm/page_owner_sort.c
-@@ -181,7 +181,11 @@ static int compare_ts(const void *p1, co
- {
- 	const struct block_list *l1 = p1, *l2 = p2;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index dab864bc733c..41bbc92cc234 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2479,8 +2479,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			err = encap_bypass_if_local(skb, dev, vxlan, AF_INET,
+ 						    dst_port, ifindex, vni,
+ 						    &rt->dst, rt->rt_flags);
+-			if (err)
++			if (err) {
++				dst_release(&rt->dst);
+ 				goto out_unlock;
++			}
  
--	return l1->ts_nsec < l2->ts_nsec ? -1 : 1;
-+	if (l1->ts_nsec < l2->ts_nsec)
-+		return -1;
-+	if (l1->ts_nsec > l2->ts_nsec)
-+		return 1;
-+	return 0;
- }
+ 			if (vxlan->cfg.df == VXLAN_DF_SET) {
+ 				df = htons(IP_DF);
+@@ -2560,8 +2562,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			err = encap_bypass_if_local(skb, dev, vxlan, AF_INET6,
+ 						    dst_port, ifindex, vni,
+ 						    ndst, rt6i_flags);
+-			if (err)
++			if (err) {
++				dst_release(ndst);
+ 				goto out_unlock;
++			}
+ 		}
  
- static int compare_cull_condition(const void *p1, const void *p2)
-_
-
-Patches currently in -mm which might be from kaushlendra.kumar@intel.com are
-
-tools-mm-page_owner_sort-fix-timestamp-comparison-for-stable-sorting.patch
+ 		err = skb_tunnel_check_pmtu(skb, ndst,
+-- 
+2.34.1
 
 
