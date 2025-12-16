@@ -1,80 +1,73 @@
-Return-Path: <stable+bounces-201123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28386CC07A7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 02:42:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCBCCC07E0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 02:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 428CD301357C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 01:42:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF4D93022209
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 01:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978C627E7DA;
-	Tue, 16 Dec 2025 01:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE8F1DB356;
+	Tue, 16 Dec 2025 01:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ksAHmGc9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aYNVHLZM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD413C3F2;
-	Tue, 16 Dec 2025 01:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A942D20CCCA
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 01:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765849371; cv=none; b=GfTci0XmnknjAsmkKtnm8iJo+6Y87L1WpwxQsYCBNW+HqN8IHyqFcFLDXN/7+o77vZDXXrB+BzFbDDGcLsRfdRt00x0xYyJ4PJW3i1QRggtBTtqU+gPlQQVXlYYPTgut3rByW3dHi8seU1Q4HU0U7lOJHNOiiOPf8/ESSkI0c2U=
+	t=1765849769; cv=none; b=O224gbIDN4HhAFnzBq1IFq9ZiNJGler3EVCrQBtzZJfupAgPAMd0JwRxVNzecrlkL2Af3dLntCmNm8KqEWmGjwb1EMzq6nRWcmRwCB/yvhXGDPrnZwG3XU8xF7I4Yel6WuiHUCzh1+czsqgtUeivtkPdDXHqbsCghnFWp0cPTAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765849371; c=relaxed/simple;
-	bh=+wI/maUGiiwwz81QpyvTJ+eJ/2U0A+v++rAocI1k0BA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Oa5fIu4UcsqnLJ59SOkfSEzPEG9N3qV1D9tEMT8SWp9IN8/Ow+Tc19m6xhVhC/YiyPuV2n7PG3bAr41PjAiqbtjWBz+wwvhQWhwT5h8BLHPpWeJhO5jGYShpFOVmITLZGra9AOEEehgQKNKhtS70hYG4nVY5G58omHAoYvJyUQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ksAHmGc9; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765849369; x=1797385369;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+wI/maUGiiwwz81QpyvTJ+eJ/2U0A+v++rAocI1k0BA=;
-  b=ksAHmGc9OletAQ8UIfBt/nBBvB3KJ8FuAVjYZzCyJ9S2u8PTU/8wMW75
-   va9ztJWD+7EUyoY7TrKvCBGeslD3FgrkATtrKzlYsbApkAzAQlXd8peq5
-   pUPjMk+kZNJykR2MJJ2iVeoxUxbv41lJUnSj1nnZJKlPvXwAeDhdQZfr1
-   zwmpA+i4GK5fBtlC91k99nwfPsKZ9AUCCE6Z250TShNJVBi8XvdgVAgWL
-   oPM5DmJ/DYFBUYsD6iaXz1DyBzWvUWQa4AugMXMT/USEs9DdKtrU3s9Ox
-   cWBiQmHxp+URsseXZ5SSdVVqNhAOM1tGLB6raq37jUvsgxXSSuFWM6o2s
-   A==;
-X-CSE-ConnectionGUID: fvqAWf6LQYWccnPUbsRM6Q==
-X-CSE-MsgGUID: U2vfu03jRRSS2C+VbF/ENg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="55327346"
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
-   d="scan'208";a="55327346"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 17:42:44 -0800
-X-CSE-ConnectionGUID: HaYJsbM/RTez8ofooBEdbQ==
-X-CSE-MsgGUID: XDLOFB1ARuenIwkAOH1xvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
-   d="scan'208";a="202989049"
-Received: from spr.sh.intel.com ([10.112.229.196])
-  by orviesa005.jf.intel.com with ESMTP; 15 Dec 2025 17:42:40 -0800
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: linux-perf-users@vger.kernel.org,
+	s=arc-20240116; t=1765849769; c=relaxed/simple;
+	bh=fwuaoiE+1wRiGWeTxqRK5J6HkpO8VfVCVLMwpdCbqsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=abkMJQdw7H9H1Ax4NuJtfRaJQOHSRIds1+5Y+Pab+FNEYb4XPMxobtJTt11p1WhyETQFETExrVx57NGE7w9w9/7pLUMQe+am/+JUec58YGTU0sWsKLPxsXYaXzyQUaiUgzm99bsjjytt5ar5LJOEc+CrrJPlHVAyeZF11vkLecg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aYNVHLZM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765849766;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=It2dxRkoiFfOGvLnY6fWBVCwG1DcRtHnlfmtjFBKdG4=;
+	b=aYNVHLZMKQYW40URAWS/oz8emhCvYiyDrjhj8a32K7DRX0jVHvdJnA4mPTIZwtxBB3+igD
+	UyptC4MuXnBvN/lPOC08EWFrucr6yRkAb2JTn6wjxfuKltpAnBueKvA7q/89KqlxsIK7PK
+	WMHtA8Ypt/le4GedAMoY4ybl30OQt1w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-MRqjLSmBPa-77BLSdP-2HA-1; Mon,
+ 15 Dec 2025 20:49:22 -0500
+X-MC-Unique: MRqjLSmBPa-77BLSdP-2HA-1
+X-Mimecast-MFC-AGG-ID: MRqjLSmBPa-77BLSdP-2HA_1765849760
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38C9E1956071;
+	Tue, 16 Dec 2025 01:49:19 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.112.35])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 13CB0180066A;
+	Tue, 16 Dec 2025 01:49:13 +0000 (UTC)
+From: Pingfan Liu <piliu@redhat.com>
+To: kexec@lists.infradead.org,
+	linux-integrity@vger.kernel.org
+Cc: Pingfan Liu <piliu@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Alexander Graf <graf@amazon.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
 	linux-kernel@vger.kernel.org,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] perf Documentation: Correct branch stack sampling call-stack option
-Date: Tue, 16 Dec 2025 09:39:49 +0800
-Message-Id: <20251216013949.1557008-1-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCHv3 1/2] kernel/kexec: Change the prototype of kimage_map_segment()
+Date: Tue, 16 Dec 2025 09:48:51 +0800
+Message-ID: <20251216014852.8737-1-piliu@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,42 +75,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The correct call-stack option for branch stack sampling should be "stack"
-instead of "call_stack". Correct it.
+The kexec segment index will be required to extract the corresponding
+information for that segment in kimage_map_segment(). Additionally,
+kexec_segment already holds the kexec relocation destination address and
+size. Therefore, the prototype of kimage_map_segment() can be changed.
 
-$perf record -e instructions -j call_stack -- sleep 1
-unknown branch filter call_stack, check man page
-
- Usage: perf record [<options>] [<command>]
-    or: perf record [<options>] -- <command> [<options>]
-
-    -j, --branch-filter <branch filter mask>
-                          branch stack filter modes
-
-Cc: stable@vger.kernel.org
-Fixes: 955f6def5590 ("perf record: Add remaining branch filters: "no_cycles", "no_flags" & "hw_index"")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+To: kexec@lists.infradead.org
+To: linux-integrity@vger.kernel.org
 ---
- tools/perf/Documentation/perf-record.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/kexec.h              | 4 ++--
+ kernel/kexec_core.c                | 9 ++++++---
+ security/integrity/ima/ima_kexec.c | 4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
-index e8b9aadbbfa5..3d19e77c9c53 100644
---- a/tools/perf/Documentation/perf-record.txt
-+++ b/tools/perf/Documentation/perf-record.txt
-@@ -454,7 +454,7 @@ following filters are defined:
- 	- no_tx: only when the target is not in a hardware transaction
- 	- abort_tx: only when the target is a hardware transaction abort
- 	- cond: conditional branches
--	- call_stack: save call stack
-+	- stack: save call stack
- 	- no_flags: don't save branch flags e.g prediction, misprediction etc
- 	- no_cycles: don't save branch cycles
- 	- hw_index: save branch hardware index
-
-base-commit: cb015814f8b6eebcbb8e46e111d108892c5e6821
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index ff7e231b0485..8a22bc9b8c6c 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
+ #define kexec_dprintk(fmt, arg...) \
+         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+ 
+-extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
++extern void *kimage_map_segment(struct kimage *image, int idx);
+ extern void kimage_unmap_segment(void *buffer);
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
+@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct pt_regs *regs) { }
+ static inline void crash_kexec(struct pt_regs *regs) { }
+ static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+ static inline int kexec_crash_loaded(void) { return 0; }
+-static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
++static inline void *kimage_map_segment(struct kimage *image, int idx)
+ { return NULL; }
+ static inline void kimage_unmap_segment(void *buffer) { }
+ #define kexec_in_progress false
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index 0f92acdd354d..1a79c5b18d8f 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -953,17 +953,20 @@ int kimage_load_segment(struct kimage *image, int idx)
+ 	return result;
+ }
+ 
+-void *kimage_map_segment(struct kimage *image,
+-			 unsigned long addr, unsigned long size)
++void *kimage_map_segment(struct kimage *image, int idx)
+ {
++	unsigned long addr, size, eaddr;
+ 	unsigned long src_page_addr, dest_page_addr = 0;
+-	unsigned long eaddr = addr + size;
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	addr = image->segment[idx].mem;
++	size = image->segment[idx].memsz;
++	eaddr = addr + size;
++
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
+index 7362f68f2d8b..5beb69edd12f 100644
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *image)
+ 	if (!image->ima_buffer_addr)
+ 		return;
+ 
+-	ima_kexec_buffer = kimage_map_segment(image,
+-					      image->ima_buffer_addr,
+-					      image->ima_buffer_size);
++	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
+ 	if (!ima_kexec_buffer) {
+ 		pr_err("Could not map measurements buffer.\n");
+ 		return;
 -- 
-2.34.1
+2.49.0
 
 
