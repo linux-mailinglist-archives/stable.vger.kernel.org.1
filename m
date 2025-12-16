@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A72CCC2845
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A39CCC2415
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8E830836CB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60DA330842B4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387BA355031;
-	Tue, 16 Dec 2025 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36400341645;
+	Tue, 16 Dec 2025 11:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HQzvR3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hz3MdM2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E535502A;
-	Tue, 16 Dec 2025 11:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B3E32BF22;
+	Tue, 16 Dec 2025 11:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885949; cv=none; b=Yii5j6i1GvphEoBqZt4UiMT0/GAEZPp9NFpSxoBxl3dbXg/woYvAi2HOGP1pf1agYX1DNeyXlWQuCJAbmGa7tuKOZwIHGAMCZchcwP5kYUKWdavnqlr6ojnc/9dIoUx3A5E1ho4QEQoHxbkXiA821J2cvTVlfEmEpP627oF7Vfw=
+	t=1765884357; cv=none; b=RbSlKzhzIgOl+OQ83EBasZvYxYoHseim3sULlh67YEfx27p2AQSY1kVjeDmNyea8rit8uZNiuvf6ldLpwOoQThi85oZO+oE5G75JfD3RtgYhrISM6Gs3aVvQ+kwJtjgNIeJXCIRatGJGwTI5oJLsRvYwonLBhfi1gsCQpfQupwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885949; c=relaxed/simple;
-	bh=o9odrf3Ck8H6SL83eqrRdKexLEWqdlBXh33YpXAvx5w=;
+	s=arc-20240116; t=1765884357; c=relaxed/simple;
+	bh=TThjot+hU+2s7S82Z8C64NjzrL3rCnNevImfv1iGQhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zpp3l7ktaQimjW5+cL4wEL4taUivYl+8SXUnWUozfYDqhguVjyPq0XcNRz5UkJ4kaL8SJG7W23qnlFZEV6mpiLAk6+374iqxjH3MddRWR57jfv6mUtjLArpCY3J5KMUqc70SxI1RmdyTtyJHR3SvLnQyfH+Nv6r7zlie/3F//Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HQzvR3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630FAC4CEF1;
-	Tue, 16 Dec 2025 11:52:28 +0000 (UTC)
+	 MIME-Version; b=oNB1X4FxZAm5wJ+TWNHiMSrTOtsKzwRJ/Wu4CcYXyFKEtc+1PJMuYaXfnHmQTxYKfbADDK9EHkrX/f2jENlahchO5kfDQXk2uSeA84YEmxuav/yAzpuq2HbkUWrF4gloZXC3oTzQJCa48OXgwvRZDPD6BJI7f3o4o9qnfkHI4LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hz3MdM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0907FC4CEF1;
+	Tue, 16 Dec 2025 11:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885948;
-	bh=o9odrf3Ck8H6SL83eqrRdKexLEWqdlBXh33YpXAvx5w=;
+	s=korg; t=1765884356;
+	bh=TThjot+hU+2s7S82Z8C64NjzrL3rCnNevImfv1iGQhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1HQzvR3zoWV7Ltki9AH4bYBimZWhEwzWjA/Irk+M81lJro8iEi58AAvx+NZcwmj2r
-	 ltKyFuxP//n4szn2/1Hzr+dN2TQoTD5RkjBGxjAwCUvlrcb5UZ9owJsLq2QqHAMZdz
-	 5m/CLezb9a0o+vAvQbSmgOoB5X0Ff1M9HtE30MH4=
+	b=2Hz3MdM2jK2MNFK+tPpzbUUpVH7YYIpk/NDrWNqzb0kdVGi1AO0ebeHqTJmWbGc4h
+	 NP2iGbs/Tn3ddHK9SsmiUr4bf/b8kHrl+dbdQVjdNRKsCgbeMtvoprMvVg5gIJ0m/P
+	 tGvlR0TXkdIXEj9nr8yq+hqWOHtbIQH+Wi5dYmGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 293/507] phy: rockchip: samsung-hdptx: Fix reported clock rate in high bpc mode
+Subject: [PATCH 6.12 167/354] watchdog: wdat_wdt: Fix ACPI table leak in probe function
 Date: Tue, 16 Dec 2025 12:12:14 +0100
-Message-ID: <20251216111356.091422698@linuxfoundation.org>
+Message-ID: <20251216111326.963859216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 72126e9623e1696ea83c77ef6d0306a6263bdd6b ]
+[ Upstream commit 25c0b472eab8379683d4eef681185c104bed8ffd ]
 
-When making use of the clock provider functionality, the output clock
-does normally match the TMDS character rate, which is what the PHY PLL
-gets configured to.
+wdat_wdt_probe() calls acpi_get_table() to obtain the WDAT ACPI table but
+never calls acpi_put_table() on any paths. This causes a permanent ACPI
+table memory leak.
 
-However, this is only applicable for default color depth of 8 bpc.  For
-higher depths, the output clock is further divided by the hardware
-according to the formula:
+Add a single cleanup path which calls acpi_put_table() to ensure
+the ACPI table is always released.
 
-  output_clock_rate = tmds_char_rate * 8 / bpc
-
-Since the existence of the clock divider wasn't taken into account when
-support for high bpc has been introduced, make the necessary adjustments
-to report the correct clock rate.
-
-Fixes: 9d0ec51d7c22 ("phy: rockchip: samsung-hdptx: Add high color depth management")
-Reported-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-1-ecc642a59d94@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 058dfc767008 ("ACPI / watchdog: Add support for WDAT hardware watchdog")
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/watchdog/wdat_wdt.c | 64 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 79db57ee90d14..8adf6e84fc0b7 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -1038,7 +1038,8 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx)
+diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+index 650fdc7996e1c..dd3c2d69c9df1 100644
+--- a/drivers/watchdog/wdat_wdt.c
++++ b/drivers/watchdog/wdat_wdt.c
+@@ -326,19 +326,27 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		return -ENODEV;
  
- 	ret = rk_hdptx_post_enable_pll(hdptx);
- 	if (!ret)
--		hdptx->hw_rate = hdptx->hdmi_cfg.tmds_char_rate;
-+		hdptx->hw_rate = DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8,
-+						       hdptx->hdmi_cfg.bpc);
+ 	wdat = devm_kzalloc(dev, sizeof(*wdat), GFP_KERNEL);
+-	if (!wdat)
+-		return -ENOMEM;
++	if (!wdat) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
  
- 	return ret;
+ 	regs = devm_kcalloc(dev, pdev->num_resources, sizeof(*regs),
+ 			    GFP_KERNEL);
+-	if (!regs)
+-		return -ENOMEM;
++	if (!regs) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
+ 
+ 	/* WDAT specification wants to have >= 1ms period */
+-	if (tbl->timer_period < 1)
+-		return -EINVAL;
+-	if (tbl->min_count > tbl->max_count)
+-		return -EINVAL;
++	if (tbl->timer_period < 1) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
++	if (tbl->min_count > tbl->max_count) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
+ 
+ 	wdat->period = tbl->timer_period;
+ 	wdat->wdd.min_timeout = DIV_ROUND_UP(wdat->period * tbl->min_count, 1000);
+@@ -355,15 +363,20 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		res = &pdev->resource[i];
+ 		if (resource_type(res) == IORESOURCE_MEM) {
+ 			reg = devm_ioremap_resource(dev, res);
+-			if (IS_ERR(reg))
+-				return PTR_ERR(reg);
++			if (IS_ERR(reg)) {
++				ret = PTR_ERR(reg);
++				goto out_put_table;
++			}
+ 		} else if (resource_type(res) == IORESOURCE_IO) {
+ 			reg = devm_ioport_map(dev, res->start, 1);
+-			if (!reg)
+-				return -ENOMEM;
++			if (!reg) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 		} else {
+ 			dev_err(dev, "Unsupported resource\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
+ 		}
+ 
+ 		regs[i] = reg;
+@@ -385,8 +398,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		}
+ 
+ 		instr = devm_kzalloc(dev, sizeof(*instr), GFP_KERNEL);
+-		if (!instr)
+-			return -ENOMEM;
++		if (!instr) {
++			ret = -ENOMEM;
++			goto out_put_table;
++		}
+ 
+ 		INIT_LIST_HEAD(&instr->node);
+ 		instr->entry = entries[i];
+@@ -417,7 +432,8 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 		if (!instr->reg) {
+ 			dev_err(dev, "I/O resource not found\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
+ 		}
+ 
+ 		instructions = wdat->instructions[action];
+@@ -425,8 +441,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 			instructions = devm_kzalloc(dev,
+ 						    sizeof(*instructions),
+ 						    GFP_KERNEL);
+-			if (!instructions)
+-				return -ENOMEM;
++			if (!instructions) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 
+ 			INIT_LIST_HEAD(instructions);
+ 			wdat->instructions[action] = instructions;
+@@ -443,7 +461,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_enable_reboot(wdat);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	platform_set_drvdata(pdev, wdat);
+ 
+@@ -460,12 +478,16 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	watchdog_set_nowayout(&wdat->wdd, nowayout);
+ 	watchdog_stop_on_reboot(&wdat->wdd);
+ 	watchdog_stop_on_unregister(&wdat->wdd);
+-	return devm_watchdog_register_device(dev, &wdat->wdd);
++	ret = devm_watchdog_register_device(dev, &wdat->wdd);
++
++out_put_table:
++	acpi_put_table((struct acpi_table_header *)tbl);
++	return ret;
  }
-@@ -1896,19 +1897,20 @@ static long rk_hdptx_phy_clk_round_rate(struct clk_hw *hw, unsigned long rate,
- 	 * hence ensure rk_hdptx_phy_clk_set_rate() won't be invoked with
- 	 * a different rate argument.
- 	 */
--	return hdptx->hdmi_cfg.tmds_char_rate;
-+	return DIV_ROUND_CLOSEST_ULL(hdptx->hdmi_cfg.tmds_char_rate * 8, hdptx->hdmi_cfg.bpc);
- }
  
- static int rk_hdptx_phy_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 				     unsigned long parent_rate)
- {
- 	struct rk_hdptx_phy *hdptx = to_rk_hdptx_phy(hw);
-+	unsigned long long tmds_rate = DIV_ROUND_CLOSEST_ULL(rate * hdptx->hdmi_cfg.bpc, 8);
- 
- 	/* Revert any unlikely TMDS char rate change since round_rate() */
--	if (hdptx->hdmi_cfg.tmds_char_rate != rate) {
--		dev_warn(hdptx->dev, "Reverting unexpected rate change from %lu to %llu\n",
--			 rate, hdptx->hdmi_cfg.tmds_char_rate);
--		hdptx->hdmi_cfg.tmds_char_rate = rate;
-+	if (hdptx->hdmi_cfg.tmds_char_rate != tmds_rate) {
-+		dev_warn(hdptx->dev, "Reverting unexpected rate change from %llu to %llu\n",
-+			 tmds_rate, hdptx->hdmi_cfg.tmds_char_rate);
-+		hdptx->hdmi_cfg.tmds_char_rate = tmds_rate;
- 	}
- 
- 	/*
+ static int wdat_wdt_suspend_noirq(struct device *dev)
 -- 
 2.51.0
 
