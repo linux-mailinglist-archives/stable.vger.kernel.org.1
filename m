@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E82BCC21D5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274F7CC2CD1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56C08304E3A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69C433015D2E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB88029B777;
-	Tue, 16 Dec 2025 11:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D723133D6E7;
+	Tue, 16 Dec 2025 11:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siAu1x28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzd2ewTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDD0258ED4;
-	Tue, 16 Dec 2025 11:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F31342C99;
+	Tue, 16 Dec 2025 11:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883862; cv=none; b=Snoxt5dZLLoI3RpoTC8/dCPdF0umDrP5uvek654y9tkxNZRLek7ahn0/NTFtxIXGxrZoK2HUK1npw9jZks61Du9/SLKhso5MEpJFH6cHVyDMkkNC3U5WVmNDA6DsLte7Qvb6IXO0kJc84cOKuAQ8ZrcQDj4iATqeyDlEHdMJ6d0=
+	t=1765885466; cv=none; b=r4L8N5YZlE+vR70MutyA+/4lqOo3UpoZPjm6o1nZvtuvf/4fasLlJillj1PpLN3i8mv+yER34S2f/SggEcQKI7oSY0/fnVdH9vI+Hg0fbfNele4MkIAI3Zld3LJHKTXOlV9A8/dSze2RFe+XXujT6HFPPBrzsDQ4IwluDbTCMAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883862; c=relaxed/simple;
-	bh=cM4dOlyE8C47RUBMmEFaRAQwpxa0GJLJ5GNyU1R5ASY=;
+	s=arc-20240116; t=1765885466; c=relaxed/simple;
+	bh=AwFGhrHu14z5o1kIRXT5JGLTmlX0QIpLe0XaBUTSveg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e52vD8VIaTQ85fdS1knAwNf7YZOJhmXNatBdfrjqDxoTHdhtGfZhvbTieMkHZJsJ21RMYatGl8cB5axVv4tg6FOE7zGzzv8fgQMa+nZGPwafd/Esf0QB1pcU67s0SK4HRRcXdrbZjK/U1KEqiJ2YPp9BXNFXYnHNZQ3eHvKK87U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siAu1x28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EF5C4CEF1;
-	Tue, 16 Dec 2025 11:17:41 +0000 (UTC)
+	 MIME-Version; b=LW6+vsEqjNvitlLdvaWtIP7rGINppEQAOk8qi5Q50yM1tMw/X8UP+IEOSQPAS1RhbCFrFp0IkHl6AN1FGASp5N5ld5Z0XBB4w5Jg5TY9YAkIsVkCrAVVHgjDTiZDl+2FR3ckq9j5KO98sM2xDD/PA6SHMNXgEc1dEuuOPk/s+H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzd2ewTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A76C4CEF1;
+	Tue, 16 Dec 2025 11:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883862;
-	bh=cM4dOlyE8C47RUBMmEFaRAQwpxa0GJLJ5GNyU1R5ASY=;
+	s=korg; t=1765885466;
+	bh=AwFGhrHu14z5o1kIRXT5JGLTmlX0QIpLe0XaBUTSveg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siAu1x289lyvI02yPtZZqltgVmK278GLHzEfYV5VXCZ4DX8FUn7xaD+ciH3EBH8Na
-	 kMYtE7sRKGIYSzrtOZBFx8uuI/16ypsfChv02zfODoTdYx/xh/L2zsXX73jYeHtt3W
-	 dmmqpedSjdNLsWA9JWh6zs1/6HV7z7/UzIc6Jb1Y=
+	b=Lzd2ewTYEt41EblP6/++uZJIcg3nI1CKuCRzG37t1llzOx7wARQgvL9mDwj4kpn9D
+	 NyXrVTLp3qU/6ZdFjUxB3C+lRaqu+eMdjmmCFeR4eMLIDxV6inhY2yVsc5rbPrxx2u
+	 AzvDIWfBBfG9HuPFeIp7MakFWII4AR4fNsoWoRk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/354] drm: atmel-hlcdc: fix atmel_xlcdc_plane_setup_scaler()
-Date: Tue, 16 Dec 2025 12:09:48 +0100
-Message-ID: <20251216111321.678725046@linuxfoundation.org>
+Subject: [PATCH 6.17 148/507] perf record: skip synthesize event when open evsel failed
+Date: Tue, 16 Dec 2025 12:09:49 +0100
+Message-ID: <20251216111350.889166682@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit a312acdcec57b3955fbf1f3057c13a6d38e4aa2a ]
+[ Upstream commit 163e5f2b96632b7fb2eaa965562aca0dbdf9f996 ]
 
-On SoCs, like the SAM9X75, which embed the XLCDC ip, the registers that
-configure the unified scaling engine were not filled with proper values.
+When using perf record with the `--overwrite` option, a segmentation fault
+occurs if an event fails to open. For example:
 
-Indeed, for YCbCr formats, the VXSCFACT bitfield of the HEOCFG25
-register and the HXSCFACT bitfield of the HEOCFG27 register were
-incorrect.
+  perf record -e cycles-ct -F 1000 -a --overwrite
+  Error:
+  cycles-ct:H: PMU Hardware doesn't support sampling/overflow-interrupts. Try 'perf stat'
+  perf: Segmentation fault
+      #0 0x6466b6 in dump_stack debug.c:366
+      #1 0x646729 in sighandler_dump_stack debug.c:378
+      #2 0x453fd1 in sigsegv_handler builtin-record.c:722
+      #3 0x7f8454e65090 in __restore_rt libc-2.32.so[54090]
+      #4 0x6c5671 in __perf_event__synthesize_id_index synthetic-events.c:1862
+      #5 0x6c5ac0 in perf_event__synthesize_id_index synthetic-events.c:1943
+      #6 0x458090 in record__synthesize builtin-record.c:2075
+      #7 0x45a85a in __cmd_record builtin-record.c:2888
+      #8 0x45deb6 in cmd_record builtin-record.c:4374
+      #9 0x4e5e33 in run_builtin perf.c:349
+      #10 0x4e60bf in handle_internal_command perf.c:401
+      #11 0x4e6215 in run_argv perf.c:448
+      #12 0x4e653a in main perf.c:555
+      #13 0x7f8454e4fa72 in __libc_start_main libc-2.32.so[3ea72]
+      #14 0x43a3ee in _start ??:0
 
-For 4:2:0 formats, both vertical and horizontal factors for
-chroma chanels should be divided by 2 from the factors for the luma
-channel. Hence:
+The --overwrite option implies --tail-synthesize, which collects non-sample
+events reflecting the system status when recording finishes. However, when
+evsel opening fails (e.g., unsupported event 'cycles-ct'), session->evlist
+is not initialized and remains NULL. The code unconditionally calls
+record__synthesize() in the error path, which iterates through the NULL
+evlist pointer and causes a segfault.
 
-HEOCFG24.VXSYFACT = VFACTOR
-HEOCFG25.VSXCFACT = VFACTOR / 2
-HEOCFG26.HXSYFACT = HFACTOR
-HEOCFG27.HXSCFACT = HFACTOR / 2
+To fix it, move the record__synthesize() call inside the error check block, so
+it's only called when there was no error during recording, ensuring that evlist
+is properly initialized.
 
-However, for 4:2:2 formats, only the horizontal factor for chroma
-chanels should be divided by 2 from the factor for the luma channel;
-the vertical factor is the same for all the luma and chroma channels.
-Hence:
-
-HEOCFG24.VXSYFACT = VFACTOR
-HEOCFG25.VXSCFACT = VFACTOR
-HEOCFG26.HXSYFACT = HFACTOR
-HEOCFG27.HXSCFACT = HFACTOR / 2
-
-Fixes: d498771b0b83 ("drm: atmel_hlcdc: Add support for XLCDC using IP specific driver ops")
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@microchip.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20241014094942.325211-1-manikandan.m@microchip.com
-Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+Fixes: 4ea648aec019 ("perf record: Add --tail-synthesize option")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c   | 27 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ tools/perf/builtin-record.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c b/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c
-index 4a7ba0918eca1..3787db014501e 100644
---- a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c
-+++ b/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c
-@@ -365,13 +365,34 @@ void atmel_xlcdc_plane_setup_scaler(struct atmel_hlcdc_plane *plane,
- 				    xfactor);
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index 7ea3a11aca70e..e7bebd1fa810a 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -2885,11 +2885,11 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
+ 		rec->bytes_written += off_cpu_write(rec->session);
  
- 	/*
--	 * With YCbCr 4:2:2 and YCbYcr 4:2:0 window resampling, configuration
--	 * register LCDC_HEOCFG25.VXSCFACT and LCDC_HEOCFG27.HXSCFACT is half
-+	 * With YCbCr 4:2:0 window resampling, configuration register
-+	 * LCDC_HEOCFG25.VXSCFACT and LCDC_HEOCFG27.HXSCFACT values are half
- 	 * the value of yfactor and xfactor.
-+	 *
-+	 * On the other hand, with YCbCr 4:2:2 window resampling, only the
-+	 * configuration register LCDC_HEOCFG27.HXSCFACT value is half the value
-+	 * of the xfactor; the value of LCDC_HEOCFG25.VXSCFACT is yfactor (no
-+	 * division by 2).
- 	 */
--	if (state->base.fb->format->format == DRM_FORMAT_YUV420) {
-+	switch (state->base.fb->format->format) {
-+	/* YCbCr 4:2:2 */
-+	case DRM_FORMAT_YUYV:
-+	case DRM_FORMAT_UYVY:
-+	case DRM_FORMAT_YVYU:
-+	case DRM_FORMAT_VYUY:
-+	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_NV61:
-+		xfactor /= 2;
-+		break;
-+
-+	/* YCbCr 4:2:0 */
-+	case DRM_FORMAT_YUV420:
-+	case DRM_FORMAT_NV21:
- 		yfactor /= 2;
- 		xfactor /= 2;
-+		break;
-+	default:
-+		break;
- 	}
+ 	record__read_lost_samples(rec);
+-	record__synthesize(rec, true);
+ 	/* this will be recalculated during process_buildids() */
+ 	rec->samples = 0;
  
- 	atmel_hlcdc_layer_write_cfg(&plane->layer, desc->layout.scaler_config + 2,
+ 	if (!err) {
++		record__synthesize(rec, true);
+ 		if (!rec->timestamp_filename) {
+ 			record__finish_output(rec);
+ 		} else {
 -- 
 2.51.0
 
