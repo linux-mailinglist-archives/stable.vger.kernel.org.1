@@ -1,82 +1,112 @@
-Return-Path: <stable+bounces-202719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D0ECC4844
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDA0CC48C5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A2CA30C12A0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:56:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A15E430EA620
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C7D1DE3DF;
-	Tue, 16 Dec 2025 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809CE31355F;
+	Tue, 16 Dec 2025 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQJcmnep"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFto8oZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C1E2882C5;
-	Tue, 16 Dec 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C443288502;
+	Tue, 16 Dec 2025 16:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765904183; cv=none; b=obEFzbqSWtTskpQc/EO6vH2KBBWX30ih14xUEvpV9CaENvY2vdks74n5rSCbROyK20Jst0H7NhQItOZe5pGcWGihS18jVds22zsY5QthOhGM53dJ+ShacQELcZ7ftazPvfLgWqfr8TG4WgcJD6B8vYMVbQaS+JrWhl7o2lROj50=
+	t=1765904386; cv=none; b=GK7THi2TN4EBizwaz3uWglHWo5rVgvja/uEnNkqjz/ZiYCbxuC4zvcZuEzgnK6MFrnNiiqBX4PI+1qym45F2SNTRyii8RXSDrE6PI/mhCIcTOhtuFxvcGHQTpwRtlk0OOHxsrpy81IhtRfEqXi6FpnDnP0iwSl9nivswDFJS4pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765904183; c=relaxed/simple;
-	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UDUbuoSrtmNOof/5CMZuCYI3JrSAFJPU+s9qk24fy2va2p1o7GeRha+bEPHJJ2fitBDIyqH6xvaUsU2ETJdUthlK+24JpWIzTodHRG+D+z0JfEpFhCjxB9zhHxxSEiLMUbrICygvGL7ba22/wkq19xfKTBZNDZPJnbntzl3HkpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQJcmnep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BD0C4CEF1;
-	Tue, 16 Dec 2025 16:56:21 +0000 (UTC)
+	s=arc-20240116; t=1765904386; c=relaxed/simple;
+	bh=jt1/q7cE1GsiB/oCFeOCisXWO1SGjLZu25/0fHSA/Rw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HcaYVcUcaF7vaVyi18Da5IiUFjyGpuF9QpfQwnURusoqpHO1gwRnYTItyrMYvDoTuH4uOBjhidh+9W21U2SkrInr22MNX2hx8Kt6kv91OoyqluMsiqsLpeOpXALclEIOMkQoX8z4n/WvVIMWEq9Siw/iwpwpQDZSFt9LnSKdkNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFto8oZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8945C19423;
+	Tue, 16 Dec 2025 16:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765904183;
-	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=tQJcmnep3X5OaTr7M8sl6sAneglR3sSnvztHM/lNU2JFpXSUR+VnRAysvJvxidnbW
-	 hGKH807FiJvuUhcRjyNeIIsZMjrnw+x+agK/YzR8ndjQ5kEFjqQePQ3sW4PaBc9pJd
-	 RAV6s/I9rgpSAd0/K1/tdTX6jdPH4Cj4bSQRSqmxpKZ8AJLnd3pQ26tiVuW/d/tP9S
-	 6tO7ZHHwJda28Lo4ItYxU5ryznvIlh1DB0RyK1nLE7c8vITsg1xqawZ6mbriuva3xL
-	 9/U/Eu+W6lTUg4ky064k5q4nvMSLo0tmshUkjxBsDYTGFBq20mWL5zqk1VNwPAf+zW
-	 GEhJ9zLFVWiLA==
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank.Li@nxp.com, Zhen Ni <zhen.ni@easystack.cn>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20251014090522.827726-1-zhen.ni@easystack.cn>
-References: <20251014090522.827726-1-zhen.ni@easystack.cn>
-Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
- alloc_chan_resources failure
-Message-Id: <176590418161.422798.10654079302568628725.b4-ty@kernel.org>
-Date: Tue, 16 Dec 2025 22:26:21 +0530
+	s=k20201202; t=1765904386;
+	bh=jt1/q7cE1GsiB/oCFeOCisXWO1SGjLZu25/0fHSA/Rw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lFto8oZIW55h7Dd/jNS4jF46GRTG8xTBdN3EnqUS7RMrAQxtdGze0g0WITffuJGHi
+	 ER7PQVa9dQNKXV7gVWq0qIq3udf5dxbsnuvKcV4be+db4s17AFZ8EIFxXSSvj05GHT
+	 CmID1TJTkyqNu1eRnKBI8BI2MBKpPgBGZ/Cw1yBxMikUEpy++3Y4LKsiTjeFyqAjEn
+	 jYnS9FOFezuo57CW5TXC+UGAbahVrbKlDCerTH7SL7xLKSrKZFyRRar4mzaN36h8WE
+	 badkaKSqPiCFl2htD2eaOxQTxd58C01Fdq+72fSGRD2SGQwfmdLe7QRHMq6uibZbbN
+	 +HtASkP5uuFJw==
+Date: Tue, 16 Dec 2025 16:59:42 +0000
+From: Simon Horman <horms@kernel.org>
+To: Minseong Kim <ii4gsp@gmail.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v4] atm: mpoa: Fix UAF on qos_head list in procfs
+Message-ID: <aUGP_kggEz_5-RAc@horms.kernel.org>
+References: <20251204062421.96986-2-ii4gsp@gmail.com>
+ <20251216120910.337436-1-ii4gsp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216120910.337436-1-ii4gsp@gmail.com>
 
-
-On Tue, 14 Oct 2025 17:05:22 +0800, Zhen Ni wrote:
-> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
-> the error paths only free IRQs and destroy the TCD pool, but forget to
-> call clk_disable_unprepare(). This causes the channel clock to remain
-> enabled, leaking power and resources.
+On Tue, Dec 16, 2025 at 09:09:10PM +0900, Minseong Kim wrote:
+> /proc/net/atm/mpc read-side iterates qos_head without synchronization,
+> while write-side can delete and free entries concurrently, leading to
+> use-after-free.
 > 
-> Fix it by disabling the channel clock in the error unwind path.
+> Protect qos_head with a mutex and ensure procfs search+delete operations
+> are serialized under the same lock.
 > 
-> [...]
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
 
-Applied, thanks!
+...
 
-[1/1] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
-      commit: b18cd8b210417f90537d914ffb96e390c85a7379
+> @@ -1521,8 +1525,11 @@ static void __exit atm_mpoa_cleanup(void)
+>  		mpc = tmp;
+>  	}
+>  
+> +	mutex_lock(&qos_mutex);
+>  	qos = qos_head;
+>  	qos_head = NULL;
+> +	mutex_unlock(&qos_mutex);
 
-Best regards,
+I don't think this is necessary.
+
+mpc_proc_clean() is called earlier in atm_mpoa_cleanup().  So I don't think
+any accesses to the procfs callbacks can be occurring at this point. So
+there is no need to guard against that.
+
+
+Conversely the following call chain accesses, qos_head, and uses an entry
+if found there. But there doesn't seem to be protection for concurrent
+access (or removal) from procfs.
+
+MPOA_res_reply_rcvd()->check_qos_and_open_shortcut->atm_mpoa_search_qos()
+
+In this case I'm concerned that extending the current locking approach may
+result in poor behaviour if procfs holds qos_mutex for an extended period.
+
+
+And I think that there is also a concurrency issue with
+access to qos_head in the following call chain.
+
+mpc_show()->atm_mpoa_disp_qos()
+
+...
+
 -- 
-~Vinod
-
-
+pw-bot: changes-requested
 
