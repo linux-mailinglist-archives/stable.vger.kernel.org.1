@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD2BCC2DF8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:44:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46C2CC3B33
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB11E30ECB52
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EEA130CDF11
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C16F34F241;
-	Tue, 16 Dec 2025 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2970933893E;
+	Tue, 16 Dec 2025 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsM1kC7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exv4QKc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331A334EF04;
-	Tue, 16 Dec 2025 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98D0347BAF;
+	Tue, 16 Dec 2025 12:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886129; cv=none; b=W2SGne0OufCIPTp5Zjt3SphUnl9LUzjRxW0mkvGm8f876nCMd9nXoeI5O2ejXRzbQqZxoqqf5SNvj+/tey38ukLzQyShFZ3Txr0PuxDEFZqnJfdLupceI09NmE05dxXHQLdZBb4HdovBKXr5oYLgJs6JzjeEmrfIyqe0SrXsqJ8=
+	t=1765888146; cv=none; b=mOFoJVA1ue0t80MRQcIOx9iPwvXEETqvIzk1PbPky2ZOlS+mJzs+lVp1xPlBgqmqg2Of6BzGnePzVoAL/IqJxbBu5OjlYPlWb0rIqAOyK7520LpbetQzKzy+qZwSZl0IQcp1hJZX6Lvrq1iqK0SkC4PkvXoCZrFwWKUWkyUzStc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886129; c=relaxed/simple;
-	bh=YqDfpA1WdO1XSY8F2lu5naDYKo/x4eBlzHe6ob+9ScM=;
+	s=arc-20240116; t=1765888146; c=relaxed/simple;
+	bh=djGzGkf9YbDFb0FeoO22OGSGUY79xAHvZdLlzJMuULM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkEFT7lU6So7BVG48sozFKjyXB9ISV4fe1wHHXjfaBkDTbYhkr4G4gbu70oBR5Y91z2ViUmdSMYAVIrz2ftuw6+ekYexVlAcqh7cdtSQeNiHmq0Ws8hg74zdsr30sRNS1IAdJWpDSxHSQ9Q+phJmrnLjQAY3NP+VkUZlL6pvmU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsM1kC7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94400C4CEF1;
-	Tue, 16 Dec 2025 11:55:28 +0000 (UTC)
+	 MIME-Version; b=Tr2+qFpGwjCviEwRW8z4nqzWaImhVT6GJcn98bZOoXU2PHaPaX+lIzivd3WtQbnjRxqsUVGkv5mkQY/lTKKp0Y/APVLWlu1TkBg16BVblmSyxeXuX5lYc7OAFhY1S9oXdhjQv/FaJMuNKza2Ov+Dumbi3QS/MAaK/ntu24KApR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exv4QKc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29752C4CEF1;
+	Tue, 16 Dec 2025 12:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886129;
-	bh=YqDfpA1WdO1XSY8F2lu5naDYKo/x4eBlzHe6ob+9ScM=;
+	s=korg; t=1765888146;
+	bh=djGzGkf9YbDFb0FeoO22OGSGUY79xAHvZdLlzJMuULM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsM1kC7Ztay6vUQ23XQkS5JM6Ajlx1M9Hux15qyEvySDGcqgDp/JIWWtqvx7F05RP
-	 2alBnY4EvvDwErDsS58dcrT90MOn6ga+/YwU/pMpfYpBdrucFXurA0tDodW6nohSW7
-	 AQNeMlz49pJYABZamAm0FxQ0BeDWeoEpBOPnA9mU=
+	b=exv4QKc7vrIz+2E6m55nSUVj62UFXV6DmxBHuKwRzE22rVh/w4tFI9e8kuGPMuPmd
+	 LdPlTDUFDEw83LdOmQ76Eq6Klf6UxKy1w7UPAVfmLYEQAtqaZr0C6b093kvJMigGUF
+	 iMqddFGiWvaeLr3MaOUYfpYH04IxV0tjdYH7N96s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timur Tabi <ttabi@nvidia.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 345/507] drm/nouveau: restrict the flush page to a 32-bit address
+Subject: [PATCH 6.18 419/614] backlight: lp855x: Fix lp855x.h kernel-doc warnings
 Date: Tue, 16 Dec 2025 12:13:06 +0100
-Message-ID: <20251216111357.959430014@linuxfoundation.org>
+Message-ID: <20251216111416.552270761@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Tabi <ttabi@nvidia.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 04d98b3452331fa53ec3b698b66273af6ef73288 ]
+[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
 
-The flush page DMA address is stored in a special register that is not
-associated with the GPU's standard DMA range.  For example, on Turing,
-the GPU's MMU can handle 47-bit addresses, but the flush page address
-register is limited to 40 bits.
+Add a missing struct short description and a missing leading " *" to
+lp855x.h to avoid kernel-doc warnings:
 
-At the point during device initialization when the flush page is
-allocated, the DMA mask is still at its default of 32 bits.  So even
-though it's unlikely that the flush page could exist above a 40-bit
-address, the dma_map_page() call could fail, e.g. if IOMMU is disabled
-and the address is above 32 bits.  The simplest way to achieve all
-constraints is to allocate the page in the DMA32 zone.  Since the flush
-page is literally just a page, this is an acceptable limitation.  The
-alternative is to temporarily set the DMA mask to 40 (or 52 for Hopper
-and later) bits, but that could have unforseen side effects.
+Warning: include/linux/platform_data/lp855x.h:126 missing initial short
+ description on line:
+ * struct lp855x_platform_data
+Warning: include/linux/platform_data/lp855x.h:131 bad line:
+   Only valid when mode is PWM_BASED.
 
-In situations where the flush page is allocated above 32 bits and IOMMU
-is disabled, you will get an error like this:
-
-nouveau 0000:65:00.0: DMA addr 0x0000000107c56000+4096 overflow (mask ffffffff, bus limit 0).
-
-Fixes: 5728d064190e ("drm/nouveau/fb: handle sysmem flush page from common code")
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251113230323.1271726-1-ttabi@nvidia.com
+Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/platform_data/lp855x.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-index 8a286a9349ac6..7ce1b65e2c1c2 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
-@@ -279,7 +279,7 @@ nvkm_fb_ctor(const struct nvkm_fb_func *func, struct nvkm_device *device,
- 	mutex_init(&fb->tags.mutex);
+diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
+index ab222dd05bbc2..3b4a891acefe9 100644
+--- a/include/linux/platform_data/lp855x.h
++++ b/include/linux/platform_data/lp855x.h
+@@ -124,12 +124,12 @@ struct lp855x_rom_data {
+ };
  
- 	if (func->sysmem.flush_page_init) {
--		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | GFP_DMA32 | __GFP_ZERO);
- 		if (!fb->sysmem.flush_page)
- 			return -ENOMEM;
- 
+ /**
+- * struct lp855x_platform_data
++ * struct lp855x_platform_data - lp855 platform-specific data
+  * @name : Backlight driver name. If it is not defined, default name is set.
+  * @device_control : value of DEVICE CONTROL register
+  * @initial_brightness : initial value of backlight brightness
+  * @period_ns : platform specific pwm period value. unit is nano.
+-		Only valid when mode is PWM_BASED.
++ *		Only valid when mode is PWM_BASED.
+  * @size_program : total size of lp855x_rom_data
+  * @rom_data : list of new eeprom/eprom registers
+  */
 -- 
 2.51.0
 
