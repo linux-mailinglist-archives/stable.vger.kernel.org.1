@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A38CC3BD8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F89CC21C9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B1B230F6590
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9C9E302C441
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFA5346A1B;
-	Tue, 16 Dec 2025 11:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227BF33D6DE;
+	Tue, 16 Dec 2025 11:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz1/vzx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OximJOHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596733A6F4;
-	Tue, 16 Dec 2025 11:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6FD33D6C1;
+	Tue, 16 Dec 2025 11:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885526; cv=none; b=LSq+CkIexZZq5mJHnA2gyBMsi0gXPcos3TjCmk5+3XAzte3T+pKv+hGn4sGwSTIjpbANhE45R5EKBEj2JQ7rBq1RY0/roWlbKsrHzGHPIopbqqCG76R4NQpGJ6+A+54rhQ7tt9vlh2+q1v5w5Qq/lif4AKB/odzWjf1LNYzbwDA=
+	t=1765883921; cv=none; b=r0E+6cUPURFlqgj66c2R6e9aSSWQrTliaGYr2H2+FjObirAmN5AXW5pKqsKIUDqwwZ4d4lJ4R/qR1vzO4fAS8ESUCwd31pCzDEDh5+PjZum0HEPxUJ0l2w1dUzowYmEVrdeab4Egnb+x1hoPp+D6oa8JlRdYTPwTLMInvFAyUQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885526; c=relaxed/simple;
-	bh=PUiN6cS6ygd+uvEbfESeFROI2co6dD/bNlKPgSWxm2o=;
+	s=arc-20240116; t=1765883921; c=relaxed/simple;
+	bh=rTjK5KNx2UjnKJRqDFdgyqgbEOJtJncr0oZjwPyZgME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRqblVrnIeqEWpITIlpP3DGo57uYZpgy+XkrGR1Ua/fCYajeTWw1gSbw9MtB7vK7FORuDVYnIFIDnfmpypfqpxxRlBuxltfN9a2b2maELS6k4gaAt4mCrO2+Aylo4cM6V4ii9j7NTPp3Lycp/CqohXDNW3DoHC9tUiUwvrQs12s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz1/vzx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACDDC4CEF1;
-	Tue, 16 Dec 2025 11:45:25 +0000 (UTC)
+	 MIME-Version; b=YD8d0ZbbRIw/m87R/jq1b0Vp7EXwsKU0VWAzkr6QSZRR/woItE6pKv4C4OQfZ9EeDbQCh3hw0E6zPnN7dyuBzrQsrkca7e2/RidVJiDUAggdov/LUuXOrH1wG5p2hyyQy9c+58AizRylorlLW7CkyfrKdWIM4jEwntMvMdv6M94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OximJOHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C016C4CEF1;
+	Tue, 16 Dec 2025 11:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885526;
-	bh=PUiN6cS6ygd+uvEbfESeFROI2co6dD/bNlKPgSWxm2o=;
+	s=korg; t=1765883921;
+	bh=rTjK5KNx2UjnKJRqDFdgyqgbEOJtJncr0oZjwPyZgME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wz1/vzx/BQMOmS5wcehe9oc81ZW/OjiEIEEflurVy/liDECBt5iaF1rttjh12TcoJ
-	 YliAf6uQoHY4j3hHkR3IYCUZd/61zCphQJan/7GC7H651UEy3oMaRcLEfpPf/P1/Ic
-	 lR1gHB/0lPXMLqx/1J0BW1fUQFilUXhcYQlOWQkg=
+	b=OximJOHC8zGZiZJe8D1Obzp5t+VXkZY91faVrK5UBl6poNMlW3QpEBm5IFDUGG5g/
+	 E+8eGABryZIeWobKzyknsec1He3bcR+1JR09WhOzhqLRaCA9WwPBArqA/M8FxKi5De
+	 jHw/LJvwlcWKNYmGG3Um7IcBrynTg3wHxI1yCugw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ketil Johnsen <ketil.johnsen@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
+	Sidharth Seela <sidharthseela@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 164/507] drm/panthor: Fix UAF race between device unplug and FW event processing
-Date: Tue, 16 Dec 2025 12:10:05 +0100
-Message-ID: <20251216111351.460625720@linuxfoundation.org>
+Subject: [PATCH 6.12 039/354] ntfs3: Fix uninit buffer allocated by __getname()
+Date: Tue, 16 Dec 2025 12:10:06 +0100
+Message-ID: <20251216111322.331078240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ketil Johnsen <ketil.johnsen@arm.com>
+From: Sidharth Seela <sidharthseela@gmail.com>
 
-[ Upstream commit 7051f6ba968fa69918d72cc26de4d6cf7ea05b90 ]
+[ Upstream commit 9948dcb2f7b5a1bf8e8710eafaf6016e00be3ad6 ]
 
-The function panthor_fw_unplug() will free the FW memory sections.
-The problem is that there could still be pending FW events which are yet
-not handled at this point. process_fw_events_work() can in this case try
-to access said freed memory.
+Fix uninit errors caused after buffer allocation given to 'de'; by
+initializing the buffer with zeroes. The fix was found by using KMSAN.
 
-Simply call disable_work_sync() to both drain and prevent future
-invocation of process_fw_events_work().
-
-Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
-Fixes: de85488138247 ("drm/panthor: Add the scheduler logical block")
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patch.msgid.link/20251027140217.121274-1-ketil.johnsen@arm.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Fixes: 78ab59fee07f2 ("fs/ntfs3: Rework file operations")
+Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 1 +
+ fs/ntfs3/inode.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 552542f70cabd..99ce0948f2bae 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -3826,6 +3826,7 @@ void panthor_sched_unplug(struct panthor_device *ptdev)
- 	struct panthor_scheduler *sched = ptdev->scheduler;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 4e2629d020b75..44fbd9156a30f 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1736,6 +1736,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
+ 	de = __getname();
+ 	if (!de)
+ 		return -ENOMEM;
++	memset(de, 0, PATH_MAX);
  
- 	cancel_delayed_work_sync(&sched->tick_work);
-+	disable_work_sync(&sched->fw_events_work);
- 
- 	mutex_lock(&sched->lock);
- 	if (sched->pm.has_ref) {
+ 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
+ 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
 -- 
 2.51.0
 
