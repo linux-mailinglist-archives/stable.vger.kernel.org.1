@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455B0CC2B1C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8ACCC25DA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B41C331CA1B0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4AE0D302218E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC8833C1A6;
-	Tue, 16 Dec 2025 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC82F34D4CA;
+	Tue, 16 Dec 2025 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKT/Jok0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3qIZSt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5FF1EBFE0;
-	Tue, 16 Dec 2025 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9692034D3BE;
+	Tue, 16 Dec 2025 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887311; cv=none; b=Ppt0iCe4EUAf5aXSosnwE57162SyrO3poYd2ws6llBs4o5bYmtamw4duVD3Go9+pnK+nsuvObYcxiDy7qQTtJse64OdoCxy4n9HzaIBYORscHOlfPfn2h6BGKfFfSM8WGIxMZ+fbdWjAd2WbPpuX+Uh5ojCnRZzmWZ/ZwdAO9N4=
+	t=1765885364; cv=none; b=mFoAqAIsxsu/hTUtyPplfdadP6fFFGSpWNmm8R4tiq4GdOKs0FieCD/RGwvwHUE/5uxB++rEkI5cayhohipHhkV6f65V2x+3eYM0iIXJrwzV6DayF9q7l69pmU82I/tOM2/2St3lH65TnI+/3Xl9XCDWgC22V7T0EOeBg3rxNl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887311; c=relaxed/simple;
-	bh=mW3qCaxDALrwyxnr7leRIHW4rL1sUHYgM66M0inBibw=;
+	s=arc-20240116; t=1765885364; c=relaxed/simple;
+	bh=o2ylr4ONH/WC/Qv7169mIHMzn0m5emZytD0Bvvh+ons=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uiocGyo2bSVHkWSTJ/2X1mfsz5xtu8bMLscszjQQTYeqkn4qB2R3A60ywAGJHuWGtWdACv4/45ec4O+C6S8emkrFDDwuv2Nf9eBHZD/4ymUUGLCKco2tKD9w69QoHinDFMiVrZPW/l1BvobfS0sYtfDXX5LtgJ2UZmoizpXuxdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKT/Jok0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23FFC4CEF1;
-	Tue, 16 Dec 2025 12:15:10 +0000 (UTC)
+	 MIME-Version; b=in//tXuCKCTZ0XW6LReEVmd01z4Z1kvOhEfhU5SpDrc/IDEKhVtTcpcNZiFhiHqIEll9GImbVQidjTACtulDJnzOQIQGkrlAAA0R+FESu6Di9M830aN9xqSsGE3RwIVwRyH1rVlDUGDqGjp0z+dx9yK1SSgkl0CupuR/wyix34c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3qIZSt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094E4C4CEF1;
+	Tue, 16 Dec 2025 11:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887311;
-	bh=mW3qCaxDALrwyxnr7leRIHW4rL1sUHYgM66M0inBibw=;
+	s=korg; t=1765885364;
+	bh=o2ylr4ONH/WC/Qv7169mIHMzn0m5emZytD0Bvvh+ons=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKT/Jok0uFu8TeNbiz0EISneHekPh+ymeX7lcxaXXkpAtWhfTvwibSX387QoSVm5X
-	 2yNnpOKYLkUvvCE2Kh1skplzbXEMBpOfvGPbZXFNmUsCZbH7lFzmB1Lo1RP9c5bFeY
-	 32EtxDAInAn7MQgDDILZEWXsEVYyRZBCeEjtZzxk=
+	b=e3qIZSt1LdCFStHPujBxo4ovcslyuKJVBs9+yJxqAdJg3/dbToUtWB1Ewu2RcmW3s
+	 +VbRUvvR64Bs+jjFTC52+Y2qSpfbznPls3N6h80Zy4LO0/HBX5f5SR4kBXLycC8NH5
+	 MtEC+bfEtmDMbIuzjJr1ZCicIrqSs6X/OGWwVg1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 191/614] drm/panthor: Fix group_free_queue() for partially initialized queues
+Subject: [PATCH 6.17 117/507] bpf: Refactor stack map trace depth calculation into helper function
 Date: Tue, 16 Dec 2025 12:09:18 +0100
-Message-ID: <20251216111408.291721498@linuxfoundation.org>
+Message-ID: <20251216111349.773306030@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 94a6d20feadbbe24e8a7b1c56394789ea5358fcc ]
+[ Upstream commit e17d62fedd10ae56e2426858bd0757da544dbc73 ]
 
-group_free_queue() can be called on a partially initialized queue
-object if something fails in group_create_queue(). Make sure we don't
-call drm_sched_entity_destroy() on an entity that hasn't been
-initialized.
+Extract the duplicated maximum allowed depth computation for stack
+traces stored in BPF stacks from bpf_get_stackid() and __bpf_get_stack()
+into a dedicated stack_map_calculate_max_depth() helper function.
 
-Fixes: 7d9c3442b02a ("drm/panthor: Defer scheduler entitiy destruction to queue release")
-Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patch.msgid.link/20251031160318.832427-2-boris.brezillon@collabora.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+This unifies the logic for:
+- The max depth computation
+- Enforcing the sysctl_perf_event_max_stack limit
+
+No functional changes for existing code paths.
+
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/bpf/20251025192858.31424-1-contact@arnaud-lcm.com
+Stable-dep-of: 23f852daa4ba ("bpf: Fix stackmap overflow check in __bpf_get_stackid()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/stackmap.c | 47 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 85ef9a7acc147..a39f0fb370dc6 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -895,7 +895,8 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
- 	if (IS_ERR_OR_NULL(queue))
- 		return;
+diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+index ec3a57a5fba1f..d6027bac61c35 100644
+--- a/kernel/bpf/stackmap.c
++++ b/kernel/bpf/stackmap.c
+@@ -42,6 +42,28 @@ static inline int stack_map_data_size(struct bpf_map *map)
+ 		sizeof(struct bpf_stack_build_id) : sizeof(u64);
+ }
  
--	drm_sched_entity_destroy(&queue->entity);
-+	if (queue->entity.fence_context)
-+		drm_sched_entity_destroy(&queue->entity);
++/**
++ * stack_map_calculate_max_depth - Calculate maximum allowed stack trace depth
++ * @size:  Size of the buffer/map value in bytes
++ * @elem_size:  Size of each stack trace element
++ * @flags:  BPF stack trace flags (BPF_F_USER_STACK, BPF_F_USER_BUILD_ID, ...)
++ *
++ * Return: Maximum number of stack trace entries that can be safely stored
++ */
++static u32 stack_map_calculate_max_depth(u32 size, u32 elem_size, u64 flags)
++{
++	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
++	u32 max_depth;
++	u32 curr_sysctl_max_stack = READ_ONCE(sysctl_perf_event_max_stack);
++
++	max_depth = size / elem_size;
++	max_depth += skip;
++	if (max_depth > curr_sysctl_max_stack)
++		return curr_sysctl_max_stack;
++
++	return max_depth;
++}
++
+ static int prealloc_elems_and_freelist(struct bpf_stack_map *smap)
+ {
+ 	u64 elem_size = sizeof(struct stack_map_bucket) +
+@@ -300,20 +322,17 @@ static long __bpf_get_stackid(struct bpf_map *map,
+ BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
+ 	   u64, flags)
+ {
+-	u32 max_depth = map->value_size / stack_map_data_size(map);
+-	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
++	u32 elem_size = stack_map_data_size(map);
+ 	bool user = flags & BPF_F_USER_STACK;
+ 	struct perf_callchain_entry *trace;
+ 	bool kernel = !user;
++	u32 max_depth;
  
- 	if (queue->scheduler.ops)
- 		drm_sched_fini(&queue->scheduler);
+ 	if (unlikely(flags & ~(BPF_F_SKIP_FIELD_MASK | BPF_F_USER_STACK |
+ 			       BPF_F_FAST_STACK_CMP | BPF_F_REUSE_STACKID)))
+ 		return -EINVAL;
+ 
+-	max_depth += skip;
+-	if (max_depth > sysctl_perf_event_max_stack)
+-		max_depth = sysctl_perf_event_max_stack;
+-
++	max_depth = stack_map_calculate_max_depth(map->value_size, elem_size, flags);
+ 	trace = get_perf_callchain(regs, kernel, user, max_depth,
+ 				   false, false);
+ 
+@@ -406,7 +425,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 			    struct perf_callchain_entry *trace_in,
+ 			    void *buf, u32 size, u64 flags, bool may_fault)
+ {
+-	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
++	u32 trace_nr, copy_len, elem_size, max_depth;
+ 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
+ 	bool crosstask = task && task != current;
+ 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
+@@ -438,21 +457,20 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 		goto clear;
+ 	}
+ 
+-	num_elem = size / elem_size;
+-	max_depth = num_elem + skip;
+-	if (sysctl_perf_event_max_stack < max_depth)
+-		max_depth = sysctl_perf_event_max_stack;
++	max_depth = stack_map_calculate_max_depth(size, elem_size, flags);
+ 
+ 	if (may_fault)
+ 		rcu_read_lock(); /* need RCU for perf's callchain below */
+ 
+-	if (trace_in)
++	if (trace_in) {
+ 		trace = trace_in;
+-	else if (kernel && task)
++		trace->nr = min_t(u32, trace->nr, max_depth);
++	} else if (kernel && task) {
+ 		trace = get_callchain_entry_for_task(task, max_depth);
+-	else
++	} else {
+ 		trace = get_perf_callchain(regs, kernel, user, max_depth,
+ 					   crosstask, false);
++	}
+ 
+ 	if (unlikely(!trace) || trace->nr < skip) {
+ 		if (may_fault)
+@@ -461,7 +479,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 	}
+ 
+ 	trace_nr = trace->nr - skip;
+-	trace_nr = (trace_nr <= num_elem) ? trace_nr : num_elem;
+ 	copy_len = trace_nr * elem_size;
+ 
+ 	ips = trace->ip + skip;
 -- 
 2.51.0
 
