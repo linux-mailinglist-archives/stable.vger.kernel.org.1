@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2021BCC268D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A51DCC4657
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 927AA305F65F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE522309EC1B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DD934167A;
-	Tue, 16 Dec 2025 11:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CB13563E6;
+	Tue, 16 Dec 2025 12:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn/9p+8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4hSJ/ce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A57342519;
-	Tue, 16 Dec 2025 11:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34E83563C8;
+	Tue, 16 Dec 2025 12:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884925; cv=none; b=Fh7ZuZGYiKcqJkwN4J+bLr+sKwOaC7HXoSs+L4klVtdOPiQNz65dMRMXgr6E+KzMNI0xnNZUIflRMvBR0UyqWAx/yvRrNGqGRR60u6uzlqsWv+SKweQBgnijTDbOfrJz91Xn0aAGs85bMXF/rP2Bi3Cb0rU9y+M4fvNTtfT1KWc=
+	t=1765886534; cv=none; b=tof953yGW4sbDh9nptLHPKWpbzeS9jqFvEM4P/b6M99kYiaIDmi/qvY9kK+yb/CDX51da+74qvAy2vz9XILutGF7gdGCzan2cJJOrk5vOTqu6CQn3A6FhkYmLKSEwB4Vs7zMwjuuyOX8Cw3Ob489PveWR8bqMz5DsPqPMEC6fpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884925; c=relaxed/simple;
-	bh=2RpTc+Ob8oPY4kEEz4C8TWKR9oJAjvCsUxGWO5C3rko=;
+	s=arc-20240116; t=1765886534; c=relaxed/simple;
+	bh=n+yGXqQZXM+ah5IAApfw9jHIzXWv5Q1VokmVuz1luAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heFuts+hB3FXNAoh3AfrCIRrQdSn0lVfofAqS0M8cc2odHtw7kRikuKK2ILwatqjLY2C4BLcd6vBNGkN8G+SltzCwFJFB1ZTteSuN7T//MMNa3eiTsXwyY2+A7CKPoPUs+R4JOkLOO4xEy9yoWdl0RCGdd9MF6brgsDrR62jG9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn/9p+8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3239FC4CEF1;
-	Tue, 16 Dec 2025 11:35:24 +0000 (UTC)
+	 MIME-Version; b=kPOnlHlVvvoGh2vq9ktEHz42S6pqlUyWWIjMacnRDyb8btz5h6qFHlOQtq43EHREjEEGeVpSA2gM+bLfLyDNxkWEoanpm8dIoHTrIL8ZF6miVTwRcRZPtOV+/X75E+a8ij/wrcDFEhaRgl0yYsuekBoDFc2e9Lel68Tm4m/XDUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4hSJ/ce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC51C4CEF1;
+	Tue, 16 Dec 2025 12:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884925;
-	bh=2RpTc+Ob8oPY4kEEz4C8TWKR9oJAjvCsUxGWO5C3rko=;
+	s=korg; t=1765886534;
+	bh=n+yGXqQZXM+ah5IAApfw9jHIzXWv5Q1VokmVuz1luAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zn/9p+8UsRtNHnbk4ig5wzcvssU1bqLcPdKwImi/K1voXBjgsSUYRjRkoBlxDZbJ/
-	 cTfAgXRWu7tFxdTQmGNx1f2VjDY56ElupoVIPy89RqpRVc5CSmzEKQr3U32rYLnLW9
-	 0Me7+4MKDCwpb8ox58LvB2eslpuV3TuiSKdOzTzI=
+	b=S4hSJ/ceWxV1uqosFfV1jltyW1wwYAdoSbTeoswBAcwEUyPdCLYP2ir+HkYy6Hqrm
+	 j/gCMfberkOeUmNNuoB4DgO6Aal3gZKIjABRLC/Ogrma8/xLxED86FahCNKqOIKeJM
+	 ucBQKhUI2BJcV9Nhi0zTstqamMhELDcS9zS3QsrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 340/354] efi/cper: Add a new helper function to print bitmasks
+Subject: [PATCH 6.17 466/507] ALSA: firewire-motu: fix buffer overflow in hwdep read for DSP events
 Date: Tue, 16 Dec 2025 12:15:07 +0100
-Message-ID: <20251216111333.224707200@linuxfoundation.org>
+Message-ID: <20251216111402.328196267@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit a976d790f49499ccaa0f991788ad8ebf92e7fd5c ]
+[ Upstream commit 210d77cca3d0494ed30a5c628b20c1d95fa04fb1 ]
 
-Add a helper function to print a string with names associated
-to each bit field.
+The DSP event handling code in hwdep_read() could write more bytes to
+the user buffer than requested, when a user provides a buffer smaller
+than the event header size (8 bytes).
 
-A typical example is:
+Fix by using min_t() to clamp the copy size, This ensures we never copy
+more than the user requested.
 
-	const char * const bits[] = {
-		"bit 3 name",
-		"bit 4 name",
-		"bit 5 name",
-	};
-	char str[120];
-        unsigned int bitmask = BIT(3) | BIT(5);
-
-	#define MASK  GENMASK(5,3)
-
-	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-			 bits, ARRAY_SIZE(bits));
-
-The above code fills string "str" with "bit 3 name|bit 5 name".
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78810656377E79E58350D951AFD9A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper.c | 60 +++++++++++++++++++++++++++++++++++++
- include/linux/cper.h        |  2 ++
- 2 files changed, 62 insertions(+)
+ sound/firewire/motu/motu-hwdep.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index b69e68ef3f02b..7f89a9fb2ecad 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -12,6 +12,7 @@
-  * Specification version 2.4.
-  */
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index fa2685665db3a..e594765747d5b 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -83,10 +83,11 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf, long count,
+ 		event.motu_register_dsp_change.type = SNDRV_FIREWIRE_EVENT_MOTU_REGISTER_DSP_CHANGE;
+ 		event.motu_register_dsp_change.count =
+ 			(consumed - sizeof(event.motu_register_dsp_change)) / 4;
+-		if (copy_to_user(buf, &event, sizeof(event.motu_register_dsp_change)))
++		if (copy_to_user(buf, &event,
++				 min_t(long, count, sizeof(event.motu_register_dsp_change))))
+ 			return -EFAULT;
  
-+#include <linux/bitmap.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/time.h>
-@@ -106,6 +107,65 @@ void cper_print_bits(const char *pfx, unsigned int bits,
- 		printk("%s\n", buf);
- }
+-		count = consumed;
++		count = min_t(long, count, consumed);
+ 	} else {
+ 		spin_unlock_irq(&motu->lock);
  
-+/**
-+ * cper_bits_to_str - return a string for set bits
-+ * @buf: buffer to store the output string
-+ * @buf_size: size of the output string buffer
-+ * @bits: bit mask
-+ * @strs: string array, indexed by bit position
-+ * @strs_size: size of the string array: @strs
-+ *
-+ * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
-+ * add the corresponding string describing the bit in @strs to @buf.
-+ *
-+ * A typical example is::
-+ *
-+ *	const char * const bits[] = {
-+ *		"bit 3 name",
-+ *		"bit 4 name",
-+ *		"bit 5 name",
-+ *	};
-+ *	char str[120];
-+ *	unsigned int bitmask = BIT(3) | BIT(5);
-+ *	#define MASK GENMASK(5,3)
-+ *
-+ *	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-+ *			 bits, ARRAY_SIZE(bits));
-+ *
-+ * The above code fills the string ``str`` with ``bit 3 name|bit 5 name``.
-+ *
-+ * Return: number of bytes stored or an error code if lower than zero.
-+ */
-+int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-+		     const char * const strs[], unsigned int strs_size)
-+{
-+	int len = buf_size;
-+	char *str = buf;
-+	int i, size;
-+
-+	*buf = '\0';
-+
-+	for_each_set_bit(i, &bits, strs_size) {
-+		if (!(bits & BIT_ULL(i)))
-+			continue;
-+
-+		if (*buf && len > 0) {
-+			*str = '|';
-+			len--;
-+			str++;
-+		}
-+
-+		size = strscpy(str, strs[i], len);
-+		if (size < 0)
-+			return size;
-+
-+		len -= size;
-+		str += size;
-+	}
-+	return len - buf_size;
-+}
-+EXPORT_SYMBOL_GPL(cper_bits_to_str);
-+
- static const char * const proc_type_strs[] = {
- 	"IA32/X64",
- 	"IA64",
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 265b0f8fc0b3c..25858a7608b7d 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -584,6 +584,8 @@ const char *cper_mem_err_type_str(unsigned int);
- const char *cper_mem_err_status_str(u64 status);
- void cper_print_bits(const char *prefix, unsigned int bits,
- 		     const char * const strs[], unsigned int strs_size);
-+int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-+		     const char * const strs[], unsigned int strs_size);
- void cper_mem_err_pack(const struct cper_sec_mem_err *,
- 		       struct cper_mem_err_compact *);
- const char *cper_mem_err_unpack(struct trace_seq *,
 -- 
 2.51.0
 
