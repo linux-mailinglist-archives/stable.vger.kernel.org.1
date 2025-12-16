@@ -1,374 +1,321 @@
-Return-Path: <stable+bounces-201151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AB8CC18B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:27:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63918CC19E7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7493B3095768
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:22:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECB9A300B309
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAB933D6C4;
-	Tue, 16 Dec 2025 08:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93AE313E00;
+	Tue, 16 Dec 2025 08:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="z9xVZMiH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CMQElSWo"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010049.outbound.protection.outlook.com [52.101.69.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD9A33C521
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 08:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765873244; cv=fail; b=O0I3OhG7wxICqb9m2/dQFEVKGE4vlUZ0H/pPuzOBtnmsxXiKtvUGa3iyfzgKHysLAF2jU1r+H9xB1EUwVybGrXaZhDTQ+m8wHMTjb6MVhrMG1+AXAdFCwE8jfUGRbm/HQ8eut8wJAV7RCm2O9IxtxR9mPTqGJ3WWNi8ob7fQags=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765873244; c=relaxed/simple;
-	bh=Cd3rxsIO4QwgpScCTgjvXJALqZd5tXDIs7WJG8gXeOA=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=YGolxLZaXsaF9dtX06EzkjluXtsdYCki2F9S0MfzRizucMWVYDgGNLvjwJ1qci5X0Y0vPe1/m39XVCyuK5/Keq4CclQ+5K+4oU8tTYI7ZUtRymuaam3ZcxAm+vkzOZS3d10E46t3hP56BwPKf9GsJnE1AvkurAz6V2HyrvJAUXE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=z9xVZMiH; arc=fail smtp.client-ip=52.101.69.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VjB73uUWegH2g35r34jr1n/OPCWUc/8SwQwIPznn5ufa6pfww4DDcxueH/0zRNqTtC42FZOSb2/vjY/kJ+GycpIR9ae4bCKGbWjALEevFuL4rYXpJSPFv31omD4vqMmDtK5apWq3yUrDOf8e6V+REkCAfQjEkmQvU+TRYKnbv7V3OlZqJ04GRNPa9/tuQkFbqm7NR7OIasMsI26Yz0IwFBfMHSJVrdwsncim8xu1Y8BpeVEDkrYxSncWkz2atTGhQVZ/DKE0iA7ziJWsNkjAdtEjl8f9z3ZRKmGMiCmtOsWtnZ1msTq8eu9ekpRDNJqV8o0O9tHRFravqBGaZjSEqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7imds23OAPNE4G5kyvO8Mh6z9IpTqwhcrOhHLeF/j3s=;
- b=bTygrzTgA9F2HD4cGxiQwJZs+ScGxJ1rnRrK91Vua0JtUsihzx50x+MEdJJfhomx0oCfc9GIFdXRKbDRySSVx3HJjWfaOAbzlkzssRyzFGBAn/izU6MU/gCc0oJKO8/EaUaoRccOud0Tx9IPgA4o6C7eI5JJa7nT75le7AkEua0kWKD/6r8+82+qirL7bLZj6fb4je8WMCmSPig/pwdT0VPfl70DJdGRROoEDibewVzOHxPPeffyO1VkfcmZEnzsdGQh1FsLc/mPadxUtq7z/x1wT7KnQNr4qGRyrN5KCO1oRkqvtQATWSjI6/9I1NGYyJQbq3zhsLoY156FyYFg4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7imds23OAPNE4G5kyvO8Mh6z9IpTqwhcrOhHLeF/j3s=;
- b=z9xVZMiHmz2ZDHMesZYhpp/EHzPb1j3A7z2DyYddR6cfDSOthros8B8Euhx2g9QTfIrRNvs0hiVKLs2fbWQt9aPy03UwK7Ry0I0oB0rM7fRR0ZRFKwA7Chl4w7rvp2d7AhekAFgABXkPtfZhwW1o/xvEQsAwF8qNc49cuIxtl0jh9wXndEKnfNomh+QPW6u/T+qR2CggDnCWGc7OCV94WCSUT124fiaA/YuQK1TKB8Cy2DD6txU3UDdY2W3U0gt7TDgrfu0S6WPV2yD+ImEEmvCNOHnPsBwJrdi25Fq1bE9oheRtW/OGkhoOrQrT81L5kLvQhSQ3CwtGmF2ftPb/lg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-Received: from BESP189MB3241.EURP189.PROD.OUTLOOK.COM (2603:10a6:b10:f3::19)
- by GV1P189MB2836.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:1ee::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 08:20:31 +0000
-Received: from BESP189MB3241.EURP189.PROD.OUTLOOK.COM
- ([fe80::bc3e:2aee:25eb:1a0b]) by BESP189MB3241.EURP189.PROD.OUTLOOK.COM
- ([fe80::bc3e:2aee:25eb:1a0b%3]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 08:20:31 +0000
-From: =?utf-8?q?David_Nystr=C3=B6m?= <david.nystrom@est.tech>
-Date: Tue, 16 Dec 2025 09:19:36 +0100
-Subject: [PATCH 5.10.y 2/2] ext4: fix out-of-bound read in
- ext4_xattr_inode_dec_ref_all()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251216-ext4_splat-v1-2-b76fd8748f44@est.tech>
-References: <20251216-ext4_splat-v1-0-b76fd8748f44@est.tech>
-In-Reply-To: <20251216-ext4_splat-v1-0-b76fd8748f44@est.tech>
-To: stable@vger.kernel.org
-Cc: Theodore Ts'o <tytso@mit.edu>, Ye Bin <yebin10@huawei.com>, 
- Sasha Levin <sashal@kernel.org>, 
- =?utf-8?q?David_Nystr=C3=B6m?= <david.nystrom@est.tech>, 
- Jan Kara <jack@suse.cz>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765873218; l=7470;
- i=david.nystrom@est.tech; s=20251215; h=from:subject:message-id;
- bh=lZEpHN2+NBtT5zUEluD8OH672ozSoy+Rlke83AjUxrY=;
- b=rwpXkuW/jUk3curhdLntRMoXvK1r+VoqurtmZBp/E/IVAA9Yb/U5dJElJMWf2hdf5iahYZ2gj
- G/7POuBOEWjBWayet8/m79+UuZtwRNe6e/msLhL9X+eh3PygMBPZO1V
-X-Developer-Key: i=david.nystrom@est.tech; a=ed25519;
- pk=4E3iRjA+3w+a4ykfCHDoL5z4ONs9OcY4IN3pTwIG7Bs=
-X-ClientProxiedBy: GVX0EPF0001A050.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::49f) To BESP189MB3241.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:b10:f3::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AB62C0F7D
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 08:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765874637; cv=none; b=E7/DMCMSQuDe1lcfusoJsGfcrcaqKiyEsET9MpBx8791JPX8l7VlgEl8cRqG5Re9MWnQ3DmgccWoPLoi2uZDjlWKCxQwqelpeDwr9erUM6D4P8iY9Sc/g2/l/oRG8QixFc1QrXr7maRW5YtELZar/Zwb9uZpihn0t0KHJ4OKxdQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765874637; c=relaxed/simple;
+	bh=sVE2uy1lfgD1T3yf8ycnp+3UiXq4hxYh/F0gCRqGTrA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IVYDZsIG7P7OFUHixNuxgGuenfYDFJPT15uNzchNW07YjWf/Mwh02N8ROWPM4B0jeQgsE4JVcm48Djy+RWkJCJJ+iP+8JcbrL78TbNdiQvy3xLdnSaWl1Gq3zpZw6Bp1wXbxSBqTG+8V8sdGMoyvVkAd5jGRmEDVAGpR3u2w7uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CMQElSWo; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b9208e1976so8067764b3a.1
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 00:43:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765874634; x=1766479434; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3YwVFuyayREOqPduUup4CfMPIb0E9MpA8gNuOyoTCFw=;
+        b=CMQElSWoBC9jqUn5u9uW2K+Ql/symas4KVB50xZj2HQYWlEtPPKQ9eg/FhqebJUbDZ
+         dlydfXbt3YirBFNlTHtpE5p613GSqIJTyVTUIbqaoAwQS8ZC8x2W9qaH9trHW2YocJ5j
+         js1xwZSub60dOY95WOyprjoxKk99UViGLZ6Hkvl0i2/fgPBneq6chtEPvdsBsTVwhif+
+         Vr5i3sbPlTLDCDgqcmxc+kno7mMUiRqUv8aXc/hMY/SLRvoGL69fHuyTTHsM1ntJI9IC
+         TsqgIe22fDKj7cxQ8tF8WNJo5kY26kpDJL6CqmJ2aSMJq3HLkqz6pHPd4yMZ/fHBcnQd
+         r83Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765874634; x=1766479434;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3YwVFuyayREOqPduUup4CfMPIb0E9MpA8gNuOyoTCFw=;
+        b=wv36fCov+Hy8VT/0EpzOhFXPp4tMzVDrkNKxJB7e1gae8yMQQIgA2y371CYs8fi5GN
+         FwNv6r17Sxcskm0cwxQ7Qv/KFtbSyi68xDgLDuwAPn8XkJtOePL2GHxqh9eqmdE2mND/
+         P3D8xIfK0qpVTjbBIByIDRCsJ1h8G1zQAPAZnsz8OSoMi4MZr0U/0ZZERDa/LwYuP/Cg
+         1oRXUl/GX2VQ29bTCPBpl8s9qaguh3UhT955bUrtbd+TASLgTfDIw5HNCjDJeuYaLDXe
+         +/oPNq8q4ItSEJoOjlZY5dnA42sYZZnoKdBhKIMKDX1r/xXvuPotmhIr0plCv36MZq9A
+         Io1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXciJc+QdZPw8d1hy1azMRFCF8LJDsV1DCM+0ZZXUB9e+YoKATadVU0CIcj5WNY0XHVDZvqaGo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjCN5Lv5T2H6Bn6E4CTpVgmgBqy0SEz7ST17cQ3cClH0RW2cky
+	+oQz8VSV3JETG4s9+oMuBhqufxRb4Tti0ALTWvQ66Q5iqZJNHX/LUtm1fRu6zV+yWjjn/AF1r5p
+	vZq7/FGCqJQaZDR9Ep70Rh290gQ==
+X-Google-Smtp-Source: AGHT+IEUK2E5WQWmckQII0liTKhGV27vc1qIeabtLP5TEhd2IumLLhVtg0DI/Adfpvx5Jx75V4rso5xYin8rXonE3Q==
+X-Received: from pfbjc37.prod.google.com ([2002:a05:6a00:6ca5:b0:7dd:8bba:638c])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:4304:b0:7e8:4398:b35f with SMTP id d2e1a72fcca58-7f66969f83dmr12436525b3a.50.1765874634535;
+ Tue, 16 Dec 2025 00:43:54 -0800 (PST)
+Date: Tue, 16 Dec 2025 08:43:34 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BESP189MB3241:EE_|GV1P189MB2836:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef0aac33-a5fb-4fa2-84bc-08de3c7bfa7c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?K1YwYm0rOW1qM1lsSlVyTk1lQm8rWnM3TFZVZ08zZnEwZVAvNjhldzNFQVZK?=
- =?utf-8?B?VXhQK3gra0JGRGdmSnNkVUZ5U2lQZnptMFRHZ3YwTmdMMDJ6S3pxUkVZQlB2?=
- =?utf-8?B?Z2J0OHdnK3JwTTBzVW9vN2hOSmpZclhqM3BFL3Z4eTlnSnlxVy9uK3JXTkZZ?=
- =?utf-8?B?TEk5dUlIUVpidjVQOTdZdXcvRTlXSElQejdCRmZ1ZmxCRFJreXA0TERiNSs2?=
- =?utf-8?B?ams3bHlFUnBRYTNCMWRzRkxMYVpNUTF2UWZPeEZiazExRWp5cmdlbVdaRktK?=
- =?utf-8?B?aEYyVGt4K1JnN0E3ZjhTL0VJaExnNS94QlF3TTd3TWJ5SlBrVGc2YlowT3JD?=
- =?utf-8?B?M29hbHZheDF1aGdKbGdDUkR6enNFbWYwa0RHTndnNWxoUk11LzJJYW15eUFK?=
- =?utf-8?B?NGFZSllZdG85NFR3RWZzVnBQcHlGaDl5U3RPMEpidWZKZkIzN0JrMHMxZGJK?=
- =?utf-8?B?TnN0eU1uMkV1R0hmVkU1NWNabk9vQkFCbjFBS05UYWliTEgrblB1SXJhZ2V2?=
- =?utf-8?B?TW9jZUMvREQzRlVXSDRIbm5qcllYUzJOWXpWOEQxTjcvY0JzSGdnRDRSTng5?=
- =?utf-8?B?NHBNUUR2b2dRcG9rdEdDa1VkTWhua1VvRzM3em9wQ1cxOWJRNGxudnIxblh4?=
- =?utf-8?B?NGlvaGxzcFZkcDQ2aElaQUtrN1ZKUEpySlNxZ0NKa3JFN0hsL3JZazdkd2ZY?=
- =?utf-8?B?emNIQUlSWC85alRwOTBaYzZ2Mk8zZ1JVWWVyY3NpMFV5V3RKUm90RWhpVFlF?=
- =?utf-8?B?azg0bDNoeVZCZGZoR3FycURqU1hPRUM2TUxYdmQ0R3F6a0I4bnc1VXBPa0pF?=
- =?utf-8?B?TlVydWhUNFRsbXlBSTVyamorRmJhTEV3dS92RUdLQTBGNVA3NDdWZ0FVdEdj?=
- =?utf-8?B?aEIrMHcxMjlHdVBzM2s5Nmh3R2s4TjZBdDBTRlBOaUJYMkljYWhJMUM2UnRK?=
- =?utf-8?B?eTl3OWREZjdQWXM3SHB3THhscHJIWmZuSTA3WmlmVm8rcXkzMGtnOWkrVjFT?=
- =?utf-8?B?a1Ztalcxb2FvR0taRFprakN1MllrWjM5SXM3blpvdG5ZTGpVS1A0MSswVU5P?=
- =?utf-8?B?cHRaZmxNZE9lbStzdlRBaWxpd3Q1cHNWY1JUc2pTNEdoSUFBcW1ZZmdXcURR?=
- =?utf-8?B?ZUpVSUp3QTNEU1FWcDFNaFo4UVc1NyszVGdPV0JkcWRySFdiRmRLSjR5TzZJ?=
- =?utf-8?B?dFd4cFk0TG1ObjFmM3VpMmhJU1Bwc280L21nRzEwMExrek9ldjJCZFMrQmVQ?=
- =?utf-8?B?TGJBNExzMytoRTBLamdiVVVreWRxWTRzVzFqOFZlWUdZaTAzbURucU9WYUp6?=
- =?utf-8?B?WXh0YnkrbEhtenJObkgrcmJKOGpFWjgwYTN5RE1JVXlmK1ZZUjQwQ3gxc01w?=
- =?utf-8?B?ZEl6dDlReENHaUx2QWJ4OWdjREhnRFg3VlBZdTcrOHUxZzVHR2s0YzkxNjcv?=
- =?utf-8?B?TENidnpHR2lKQVhHaTFYRm1OQU9ObC9WSXJXQ2tWRjVvVk02UDR5cmFLNi9L?=
- =?utf-8?B?ekI4ZldmR1hmdFRXZ2RILzhkYTQyZEFvRk9IRkdvNnROSURhUlRCRndLYnM1?=
- =?utf-8?B?dXhtWmJqVjAyTENZM0k5T2FJNTFaOUpOYlRZZVQveWxOdG9JWjg3TGdqU2Nt?=
- =?utf-8?B?dURWcnl0SUxnWmhXWHkyemQyR1RJK1k5TVJSWWQ2RUFpTkNta081R240TUs1?=
- =?utf-8?B?NC9vaEJGNHdzeVZqbk1GclVVemYrdTBTaml2N2lRK3RiaFVYaDlGbVcxZlQ5?=
- =?utf-8?B?ZjZ2b3lMNnFkeVk0SVdyVXRZR3ExSkl4UitpZFFiOVExU3J5Vk92aUNpT3M5?=
- =?utf-8?B?RHBKb092WUtwN2IzVU11ZTVKaElVSGZYVTNKVW5ZdzVPbE8zckloZGtwbnNw?=
- =?utf-8?B?N3ZYaVdkdWVQRjB4Yyt4RVo3b21FdkVuK2IybmxXZkZMcFE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BESP189MB3241.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MW1kWHVaZmdyRkQ3N0FVUkwrUFQ2S2I5NG1yeW14K2ZsN2pJNGM2b3VCclB5?=
- =?utf-8?B?NVVMeGZaVDlxOU5odGtKek9CZnJHbEVKc1EwSzJ5QmszV2pLZUtSN3dsaTB4?=
- =?utf-8?B?Q3VmMW13dG8yYk42UEd3SVh5RDFxVnV3ZmE1MHpSQUpwRE9aMnBzUjE5OFg3?=
- =?utf-8?B?L3dIejBXeWlQWmkxV2N3Z2h4SHZUVnhnMHBGd2JBc1RUTno2c0pJSDJuUWhL?=
- =?utf-8?B?cnBqSWp6Q0d0UXliNDhwM0htZnRITENkVERtakFFVTlaa0RzRXBobS9RanVp?=
- =?utf-8?B?NjQwVjA0UHk2VWNZcGNobmFZWG9wbUFqd3ZXRVlLWklGQ2ZkOXo1L1BSL0pX?=
- =?utf-8?B?TitNWFJEUjVXT3pOQWRqQXdLc3ZnNzlKWG0yQlJsRzNocmFqbXNIMUpkSmtS?=
- =?utf-8?B?QkpocjI1SFQ4RDFtTk92T1lIZE5XYi82Z0Q1ejBIZFFEMzV3UER5dlhhRzhT?=
- =?utf-8?B?N3JnYzF0bXNMb2VYUEZDSGZOQitqdGVFM2VuQ0I2RVU5UndiWWFSc1BwYzUw?=
- =?utf-8?B?aXl4bEQycHI2WC82dXB0UzhwMmJQVGVUQlV0SjhGOXhXTEJhM3c4cmI1SEFr?=
- =?utf-8?B?cUZrV1N6aHUvSTBMS1FnaHZsSmx5dE5UN1N0cFJSbjBSY3BzTnByS2wwbFlm?=
- =?utf-8?B?N2dIaGRZVFg4THI0SU5xT2lNakdHVE82ODFMWk1lRUtjQ2pnQkNnU2RybDZF?=
- =?utf-8?B?ZTJtaktCZGVnU1kxTjF0Q01OS2NhNnJGQ0J4S0laaVMwUDFwRjhHSi9vdFB4?=
- =?utf-8?B?K0VqN1Blc2VlbE9GRDRlMGxsQkFtYW16eU9SNm13YWtZeC9XZ2ZHQmpCek16?=
- =?utf-8?B?Y2dOcTAxcEpuNGRwVS9NNndaQ0RuRGxyaWdZTVdBTXpRSkladDhpcysyRVlY?=
- =?utf-8?B?Q1Z2OURXYTdtTnE4SjJublBkYnEzMFB1TWhvcEtaa2tiUllXV3RVYjl6OGdZ?=
- =?utf-8?B?QWJPTnZpNi92cTlkcExxeStLNGgyWVlYenloZ1kyMDN0NU9hUXRSSnJkV1kr?=
- =?utf-8?B?QVVLdFBFMXpkRStCc0hBczRtbm1lMHJBOWFwQzBHdXc4SVRkcVhWaW1KbDU3?=
- =?utf-8?B?bko2S0cxU1RBZGFianh6M0lFYlJWb2RCK2hiNTBySURFdWlWYmE5NVZydjBP?=
- =?utf-8?B?TXZhOVRTVVdoOW53dUZPYlcrazlqbUp3TVNzdHNiV01ROTBMZ1JabHpic3pO?=
- =?utf-8?B?aml2c1Q2UVdRMjNWdHdac0tqbWRpTTMyek1hanZULzRYYTM5ay9mdGg2OXZE?=
- =?utf-8?B?SmZYWTRHbmRvYnNyR043Q1U4T1BkVGxjMll3UVE5TlhoeWVXZEhXTktKbnd1?=
- =?utf-8?B?NU5laUIwTWIwS1JqVTI2Sm1SVXRFcFQ3VDdxMS9HbmZXYVhNb05hbDJpNFlt?=
- =?utf-8?B?WEIwY3pDMWptZWkyL05CNzdsSUpBQW9iQ24yb2ZiZG44U3lDUWJVWXVBRUJX?=
- =?utf-8?B?MHlLZzV2eGF2Wis4SUs2T0lsVlI0ZjducE90aDJpQktYZEJudE4xMHNlNFZ1?=
- =?utf-8?B?Z0xqYzc1b0NYaXFYdWJSRTBoazZuSjdQSXZhOU5hRkxCN0w4aDNmYlA0M2sw?=
- =?utf-8?B?YUxDMVlpQUpJc01Wbk1uMkZGRVVzK0JSZ1hXdlZaNlFDd1lRNkYzWW9oeHJN?=
- =?utf-8?B?OUFHOU51UGNMcTI1dFdXbmozMGRydU5hTG5ubG42Q3I2MDc3N0FmSDNmVHRl?=
- =?utf-8?B?QndGcUo3ZVJXODhBMFV5L3JRRmIwQzlyak1lRTJKeTI3QUExMWNrdENhRzUv?=
- =?utf-8?B?Z1EzK3ZEcnVZYlFrODlxV1JKRmZuRmlTOW5MNG92cGVOZWJidlZNSFRlYmw0?=
- =?utf-8?B?ZitOY2tibW40MWhRNWtMeFlVVmxFQm5qc3lLT09oZWJFcVNYemNlVjdPb1lY?=
- =?utf-8?B?R1ZXMFRIQVZXSjQvKzdlZXBTaHRkSDc0ak9DeitVU0sxbGpPLzZubmZ2cWxV?=
- =?utf-8?B?QlMxcFAvd255VTQxdHBEVWRhMXF2K3pOdk9RQjlia1c4SW9FSVo5WE9pVDNw?=
- =?utf-8?B?ZHpwSEQxdnFrT1lKUVNwWDREMDZlWUhSUGplWWhYb0RSSVpLdWpGSXdlLzhy?=
- =?utf-8?B?RHkyeFFSaHVCRnRqbVRTdkVrKzN4cUN2UGdLV1hUL0duV3BKVW9CTGZ1VFBM?=
- =?utf-8?B?RzAwY0JaVEU2YnhjVHQyQlRtNHY4ZUovVnZBSkN0R1o0TzNScktCNDAzQmpo?=
- =?utf-8?B?enc9PQ==?=
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef0aac33-a5fb-4fa2-84bc-08de3c7bfa7c
-X-MS-Exchange-CrossTenant-AuthSource: BESP189MB3241.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 08:20:31.4988
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sSATg7ewZkg120Ecj6qO/T3YmKemq11uTivMakKD3frDqqSikSsqfylINOZUaa+XrCbPgtQkRf3s0/FeTU18Ag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P189MB2836
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
+Message-ID: <20251216084334.903376-1-joonwonkang@google.com>
+Subject: [PATCH 1/2 RESEND] mailbox: Use per-thread completion to fix wrong
+ completion order
+From: Joonwon Kang <joonwonkang@google.com>
+To: jassisinghbrar@gmail.com
+Cc: thierry.reding@gmail.com, alexey.klimov@arm.com, sudeep.holla@arm.com, 
+	jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, Joonwon Kang <joonwonkang@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ye Bin <yebin10@huawei.com>
+Previously, a sender thread in mbox_send_message() could be woken up at
+a wrong time in blocking mode. It is because there was only a single
+completion for a channel whereas messages from multiple threads could be
+sent on the same channel in any order; since the shared completion could
+be signalled in any order, it could wake up a wrong sender thread.
 
-There's issue as follows:
-BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790
-Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
+This commit resolves the false wake-up issue with the following changes:
+- Completions are created just as many as the number of concurrent sender
+  threads
+- A completion is created on a sender thread's stack
+- Each slot of the message queue, i.e. `msg_data`, contains a pointer to
+  its target completion
+- tx_tick() signals the completion of the currently active slot of the
+  message queue
 
-CPU: 3 PID: 15172 Comm: syz-executor.0
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0xbe/0xfd lib/dump_stack.c:123
- print_address_description.constprop.0+0x1e/0x280 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- ext4_xattr_inode_dec_ref_all+0x6ff/0x790 fs/ext4/xattr.c:1137
- ext4_xattr_delete_inode+0x4c7/0xda0 fs/ext4/xattr.c:2896
- ext4_evict_inode+0xb3b/0x1670 fs/ext4/inode.c:323
- evict+0x39f/0x880 fs/inode.c:622
- iput_final fs/inode.c:1746 [inline]
- iput fs/inode.c:1772 [inline]
- iput+0x525/0x6c0 fs/inode.c:1758
- ext4_orphan_cleanup fs/ext4/super.c:3298 [inline]
- ext4_fill_super+0x8c57/0xba40 fs/ext4/super.c:5300
- mount_bdev+0x355/0x410 fs/super.c:1446
- legacy_get_tree+0xfe/0x220 fs/fs_context.c:611
- vfs_get_tree+0x8d/0x2f0 fs/super.c:1576
- do_new_mount fs/namespace.c:2983 [inline]
- path_mount+0x119a/0x1ad0 fs/namespace.c:3316
- do_mount+0xfc/0x110 fs/namespace.c:3329
- __do_sys_mount fs/namespace.c:3540 [inline]
- __se_sys_mount+0x219/0x2e0 fs/namespace.c:3514
- do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Memory state around the buggy address:
- ffff88807b002f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88807b002f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88807b003000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                   ^
- ffff88807b003080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88807b003100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Above issue happens as ext4_xattr_delete_inode() isn't check xattr
-is valid if xattr is in inode.
-To solve above issue call xattr_check_inode() check if xattr if valid
-in inode. In fact, we can directly verify in ext4_iget_extra_inode(),
-so that there is no divergent verification.
-
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250208063141.1539283-3-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-(cherry picked from commit 5701875f9609b000d91351eaa6bfd97fe2f157f4)
-Signed-off-by: David Nyström <david.nystrom@est.tech>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/1490809381-28869-1-git-send-email-jaswinder.singh@linaro.org
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
 ---
- fs/ext4/inode.c |  5 +++++
- fs/ext4/xattr.c | 26 +-------------------------
- fs/ext4/xattr.h |  7 +++++++
- 3 files changed, 13 insertions(+), 25 deletions(-)
+Link -> v1: The previous solution in the Link tries to have per-message
+  completion: `tx_cmpl[MBOX_TX_QUEUE_LEN]`; each completion belongs to
+  each slot of the message queue: `msg_data[i]`. Those completions take
+  up additional memory even when they are not used. Instead, this patch
+  tries to have per-"thread" completion; each completion belongs to each
+  sender thread and each slot of the message queue has a pointer to that
+  completion; `struct mbox_message` has the "pointer" field
+  `struct completion *tx_complete` which points to the completion which
+  is created on the stack of the sender, instead of owning the completion
+  by `struct completion tx_complete`. This way, we could avoid additional
+  memory use since a completion will be allocated only when necessary.
+  Plus, more importantly, we could avoid the window where the same
+  completion is reused by different sender threads which the previous
+  solution still has.
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 97f7cac0d349..719d9a2bc5a7 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4650,6 +4650,11 @@ static inline int ext4_iget_extra_inode(struct inode *inode,
- 	    *magic == cpu_to_le32(EXT4_XATTR_MAGIC)) {
- 		int err;
+ drivers/mailbox/mailbox.c          | 43 +++++++++++++++++++-----------
+ drivers/mailbox/tegra-hsp.c        |  2 +-
+ include/linux/mailbox_controller.h | 20 +++++++++-----
+ 3 files changed, 43 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 617ba505691d..0afe3ae3bfdc 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -23,7 +23,7 @@
+ static LIST_HEAD(mbox_cons);
+ static DEFINE_MUTEX(con_mutex);
  
-+		err = xattr_check_inode(inode, IHDR(inode, raw_inode),
-+					ITAIL(inode, raw_inode));
-+		if (err)
-+			return err;
-+
- 		ext4_set_inode_state(inode, EXT4_STATE_XATTR);
- 		err = ext4_find_inline_data_nolock(inode);
- 		if (!err && ext4_has_inline_data(inode))
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 73a9b2934865..16b9c87fd3d8 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -263,7 +263,7 @@ __ext4_xattr_check_block(struct inode *inode, struct buffer_head *bh,
- 	__ext4_xattr_check_block((inode), (bh),  __func__, __LINE__)
- 
- 
--static int
-+int
- __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
- 			 void *end, const char *function, unsigned int line)
+-static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
++static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete)
  {
-@@ -280,9 +280,6 @@ __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
- 	return error;
+ 	int idx;
+ 
+@@ -34,7 +34,8 @@ static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
+ 		return -ENOBUFS;
+ 
+ 	idx = chan->msg_free;
+-	chan->msg_data[idx] = mssg;
++	chan->msg_data[idx].data = mssg;
++	chan->msg_data[idx].tx_complete = tx_complete;
+ 	chan->msg_count++;
+ 
+ 	if (idx == MBOX_TX_QUEUE_LEN - 1)
+@@ -52,7 +53,7 @@ static void msg_submit(struct mbox_chan *chan)
+ 	int err = -EBUSY;
+ 
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+-		if (!chan->msg_count || chan->active_req)
++		if (!chan->msg_count || chan->active_req >= 0)
+ 			break;
+ 
+ 		count = chan->msg_count;
+@@ -62,14 +63,14 @@ static void msg_submit(struct mbox_chan *chan)
+ 		else
+ 			idx += MBOX_TX_QUEUE_LEN - count;
+ 
+-		data = chan->msg_data[idx];
++		data = chan->msg_data[idx].data;
+ 
+ 		if (chan->cl->tx_prepare)
+ 			chan->cl->tx_prepare(chan->cl, data);
+ 		/* Try to submit a message to the MBOX controller */
+ 		err = chan->mbox->ops->send_data(chan, data);
+ 		if (!err) {
+-			chan->active_req = data;
++			chan->active_req = idx;
+ 			chan->msg_count--;
+ 		}
+ 	}
+@@ -83,11 +84,17 @@ static void msg_submit(struct mbox_chan *chan)
+ 
+ static void tx_tick(struct mbox_chan *chan, int r)
+ {
+-	void *mssg;
++	int idx;
++	void *mssg = NULL;
++	struct completion *tx_complete = NULL;
+ 
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+-		mssg = chan->active_req;
+-		chan->active_req = NULL;
++		idx = chan->active_req;
++		if (idx >= 0) {
++			mssg = chan->msg_data[idx].data;
++			tx_complete = chan->msg_data[idx].tx_complete;
++			chan->active_req = -1;
++		}
+ 	}
+ 
+ 	/* Submit next message */
+@@ -101,7 +108,7 @@ static void tx_tick(struct mbox_chan *chan, int r)
+ 		chan->cl->tx_done(chan->cl, mssg, r);
+ 
+ 	if (r != -ETIME && chan->cl->tx_block)
+-		complete(&chan->tx_complete);
++		complete(tx_complete);
  }
  
--#define xattr_check_inode(inode, header, end) \
--	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
--
- static int
- xattr_find_entry(struct inode *inode, struct ext4_xattr_entry **pentry,
- 		 void *end, int name_index, const char *name, int sorted)
-@@ -600,9 +597,6 @@ ext4_xattr_ibody_get(struct inode *inode, int name_index, const char *name,
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
- 	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	entry = IFIRST(header);
- 	error = xattr_find_entry(inode, &entry, end, name_index, name, 0);
- 	if (error)
-@@ -734,7 +728,6 @@ ext4_xattr_ibody_list(struct dentry *dentry, char *buffer, size_t buffer_size)
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_inode *raw_inode;
- 	struct ext4_iloc iloc;
--	void *end;
- 	int error;
+ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
+@@ -114,7 +121,7 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
+ 	for (i = 0; i < mbox->num_chans; i++) {
+ 		struct mbox_chan *chan = &mbox->chans[i];
  
- 	if (!ext4_test_inode_state(inode, EXT4_STATE_XATTR))
-@@ -744,14 +737,9 @@ ext4_xattr_ibody_list(struct dentry *dentry, char *buffer, size_t buffer_size)
- 		return error;
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
--	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	error = ext4_xattr_list_entries(dentry, IFIRST(header),
- 					buffer, buffer_size);
+-		if (chan->active_req && chan->cl) {
++		if (chan->active_req >= 0 && chan->cl) {
+ 			txdone = chan->mbox->ops->last_tx_done(chan);
+ 			if (txdone)
+ 				tx_tick(chan, 0);
+@@ -245,11 +252,18 @@ EXPORT_SYMBOL_GPL(mbox_client_peek_data);
+ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ {
+ 	int t;
++	struct completion tx_complete;
  
--cleanup:
- 	brelse(iloc.bh);
- 	return error;
- }
-@@ -815,7 +803,6 @@ int ext4_get_inode_usage(struct inode *inode, qsize_t *usage)
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_xattr_entry *entry;
- 	qsize_t ea_inode_refs = 0;
--	void *end;
- 	int ret;
+ 	if (!chan || !chan->cl)
+ 		return -EINVAL;
  
- 	lockdep_assert_held_read(&EXT4_I(inode)->xattr_sem);
-@@ -826,10 +813,6 @@ int ext4_get_inode_usage(struct inode *inode, qsize_t *usage)
- 			goto out;
- 		raw_inode = ext4_raw_inode(&iloc);
- 		header = IHDR(inode, raw_inode);
--		end = ITAIL(inode, raw_inode);
--		ret = xattr_check_inode(inode, header, end);
--		if (ret)
--			goto out;
- 
- 		for (entry = IFIRST(header); !IS_LAST_ENTRY(entry);
- 		     entry = EXT4_XATTR_NEXT(entry))
-@@ -2217,9 +2200,6 @@ int ext4_xattr_ibody_find(struct inode *inode, struct ext4_xattr_info *i,
- 	is->s.here = is->s.first;
- 	is->s.end = ITAIL(inode, raw_inode);
- 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
--		error = xattr_check_inode(inode, header, is->s.end);
--		if (error)
--			return error;
- 		/* Find the named attribute. */
- 		error = xattr_find_entry(inode, &is->s.here, is->s.end,
- 					 i->name_index, i->name, 0);
-@@ -2743,10 +2723,6 @@ int ext4_expand_extra_isize_ea(struct inode *inode, int new_extra_isize,
- 	min_offs = end - base;
- 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
- 
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
--
- 	ifree = ext4_xattr_free_space(base, &min_offs, base, &total_ino);
- 	if (ifree >= isize_diff)
- 		goto shift;
-diff --git a/fs/ext4/xattr.h b/fs/ext4/xattr.h
-index 9a596e19c2b1..cbf235422aec 100644
---- a/fs/ext4/xattr.h
-+++ b/fs/ext4/xattr.h
-@@ -210,6 +210,13 @@ extern int ext4_xattr_ibody_set(handle_t *handle, struct inode *inode,
- extern struct mb_cache *ext4_xattr_create_cache(void);
- extern void ext4_xattr_destroy_cache(struct mb_cache *);
- 
-+extern int
-+__xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
-+		    void *end, const char *function, unsigned int line);
+-	t = add_to_rbuf(chan, mssg);
++	if (chan->cl->tx_block) {
++		init_completion(&tx_complete);
++		t = add_to_rbuf(chan, mssg, &tx_complete);
++	} else {
++		t = add_to_rbuf(chan, mssg, NULL);
++	}
 +
-+#define xattr_check_inode(inode, header, end) \
-+	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
+ 	if (t < 0) {
+ 		dev_err(chan->mbox->dev, "Try increasing MBOX_TX_QUEUE_LEN\n");
+ 		return t;
+@@ -266,7 +280,7 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ 		else
+ 			wait = msecs_to_jiffies(chan->cl->tx_tout);
+ 
+-		ret = wait_for_completion_timeout(&chan->tx_complete, wait);
++		ret = wait_for_completion_timeout(&tx_complete, wait);
+ 		if (ret == 0) {
+ 			t = -ETIME;
+ 			tx_tick(chan, t);
+@@ -319,9 +333,8 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+ 		chan->msg_free = 0;
+ 		chan->msg_count = 0;
+-		chan->active_req = NULL;
++		chan->active_req = -1;
+ 		chan->cl = cl;
+-		init_completion(&chan->tx_complete);
+ 
+ 		if (chan->txdone_method	== TXDONE_BY_POLL && cl->knows_txdone)
+ 			chan->txdone_method = TXDONE_BY_ACK;
+@@ -477,7 +490,7 @@ void mbox_free_channel(struct mbox_chan *chan)
+ 	/* The queued TX requests are simply aborted, no callbacks are made */
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+ 		chan->cl = NULL;
+-		chan->active_req = NULL;
++		chan->active_req = -1;
+ 		if (chan->txdone_method == TXDONE_BY_ACK)
+ 			chan->txdone_method = TXDONE_BY_POLL;
+ 	}
+diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+index ed9a0bb2bcd8..de7494ce0a9f 100644
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -497,7 +497,7 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
+ 			mbox_chan_txdone(chan, 0);
+ 
+ 			/* Wait until channel is empty */
+-			if (chan->active_req != NULL)
++			if (chan->active_req >= 0)
+ 				continue;
+ 
+ 			return 0;
+diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
+index 80a427c7ca29..67e08a440f5f 100644
+--- a/include/linux/mailbox_controller.h
++++ b/include/linux/mailbox_controller.h
+@@ -105,16 +105,25 @@ struct mbox_controller {
+  */
+ #define MBOX_TX_QUEUE_LEN	20
+ 
++/**
++ * struct mbox_message - Internal representation of a mailbox message
++ * @data:		Data packet
++ * @tx_complete:	Pointer to the transmission completion
++ */
++struct mbox_message {
++	void *data;
++	struct completion *tx_complete;
++};
 +
- #ifdef CONFIG_EXT4_FS_SECURITY
- extern int ext4_init_security(handle_t *handle, struct inode *inode,
- 			      struct inode *dir, const struct qstr *qstr);
-
+ /**
+  * struct mbox_chan - s/w representation of a communication chan
+  * @mbox:		Pointer to the parent/provider of this channel
+  * @txdone_method:	Way to detect TXDone chosen by the API
+  * @cl:			Pointer to the current owner of this channel
+- * @tx_complete:	Transmission completion
+- * @active_req:		Currently active request hook
++ * @active_req:		Index of the currently active slot in the queue
+  * @msg_count:		No. of mssg currently queued
+  * @msg_free:		Index of next available mssg slot
+- * @msg_data:		Hook for data packet
++ * @msg_data:		Queue of data packets
+  * @lock:		Serialise access to the channel
+  * @con_priv:		Hook for controller driver to attach private data
+  */
+@@ -122,10 +131,9 @@ struct mbox_chan {
+ 	struct mbox_controller *mbox;
+ 	unsigned txdone_method;
+ 	struct mbox_client *cl;
+-	struct completion tx_complete;
+-	void *active_req;
++	int active_req;
+ 	unsigned msg_count, msg_free;
+-	void *msg_data[MBOX_TX_QUEUE_LEN];
++	struct mbox_message msg_data[MBOX_TX_QUEUE_LEN];
+ 	spinlock_t lock; /* Serialise access to the channel */
+ 	void *con_priv;
+ };
 -- 
-2.48.1
+2.52.0.239.gd5f0c6e74e-goog
 
 
