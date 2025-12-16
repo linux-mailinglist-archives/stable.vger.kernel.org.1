@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-201825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E760CC27D9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A6CCC22ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CE553063386
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D1FD303C439
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5008C35502E;
-	Tue, 16 Dec 2025 11:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D964E34214A;
+	Tue, 16 Dec 2025 11:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0z6i//u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhdZ1iLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0283F355027;
-	Tue, 16 Dec 2025 11:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B9C341069;
+	Tue, 16 Dec 2025 11:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885912; cv=none; b=EnkP0v9cSjhsdiIPXy7iTtE5Mo4Uq1kbqADPGm7d9aZdx65GSDXszR9z7MU5ueVeFsNwapV38sxtL4FZmyGAnrDxmvan6ZHCimZzrBUu3nc9ghPdzwyo+lanBX2ER2WRmFul74bAZNLRQX8Bz59Cd7RYWqrwpYvyLAfQz6PNmCU=
+	t=1765884201; cv=none; b=Ra8OkovGMAx4m0rMy/2+2j3K2VIi22/+fMNWm68pgZpgvumHmaLhA4GVj2Uukh5F/yhgaRpwlOks9ScdKw4M4Vf+OAHmd9rA4JK9C6dVUDcb/JhHXX3OGNAdrh+1MJNE97/oWo9LVDfRAL82PFo2J1DRwnh847LjpSnmNOQg3Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885912; c=relaxed/simple;
-	bh=ZpvhSpKhfyITuaHkDjCfBYynYbV4KGt1SrCmJqNugNA=;
+	s=arc-20240116; t=1765884201; c=relaxed/simple;
+	bh=RflQ2igDhDZGOZUxIfDMJupjcMRWH2ksqGYmai82IC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9gHKkm/GXccubmuUg8ysxFnfh8m5bEAYwy9CzL4fe++9qhUHIjk55y7jdMtP7W46TTXKCMKOUrncFbitDm04ZsgExMxvLJfvXHO+woh0w1lUU3F+fEwgnm2GYNf9+q4JCBkz4wUxYokWEYMMXXhImnEC0wbeVG0y+rSieOqP+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0z6i//u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3F4C4CEF1;
-	Tue, 16 Dec 2025 11:51:51 +0000 (UTC)
+	 MIME-Version; b=suiI4UbrKqIYZebhXmAoRHxhxnIgiafct5nK3I7tGTwIuAVcSGT7bwWoxIx7IjibhZnEEEWmOI4KTzFj5TsWdhA74uAEcIvQIA6DBpaBjWvFHVUoXisscZxbUH3mvlYZ3c9ld/XFGcpxW6XaxY0gdVdEd05fifjIAtTP3Ecal6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhdZ1iLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F06C4CEF1;
+	Tue, 16 Dec 2025 11:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885911;
-	bh=ZpvhSpKhfyITuaHkDjCfBYynYbV4KGt1SrCmJqNugNA=;
+	s=korg; t=1765884201;
+	bh=RflQ2igDhDZGOZUxIfDMJupjcMRWH2ksqGYmai82IC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0z6i//u5eInop6/xSOAzXYptLw7KkTNxmoZAumuUPhcTqQS7hstwCcZj+RsYVVdL
-	 KcD/eHMVX4tZN0KEnlnAHWomV980nn8gSp4ls7xote8cuM1fIOuhz5/G3wKFXxT+u2
-	 HHWJNteWm9j3C+asJ/5Yq7NmpJRT++0/Nge0R9Ms=
+	b=xhdZ1iLyUg6dvszyQyFSfXFRLOAWHN1dBQlaB/PR7+RYs6Y8z3uUS5L4DxLZzcuIr
+	 qgm6VMYtmgXElFGS5HCVso9NgfYM1lPkoQxgwuwi5p+VubAfVMdmRO1H51Ga1gRzFi
+	 05WOY4OmHxJysBoQSjhPq/kAIn4FACMoJoxwWpiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Tianyu Lan <tiala@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 248/507] Drivers: hv: Allocate encrypted buffers when requested
+Subject: [PATCH 6.12 122/354] x86/boot: Fix page table access in 5-level to 4-level paging transition
 Date: Tue, 16 Dec 2025 12:11:29 +0100
-Message-ID: <20251216111354.479243388@linuxfoundation.org>
+Message-ID: <20251216111325.343957694@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,153 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Kisel <romank@linux.microsoft.com>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit 0a4534bdf29a5b7f5a355c267d28dad9c40ba252 ]
+[ Upstream commit eb2266312507d7b757859e2227aa5c4ba6280ebe ]
 
-Confidential VMBus is built around using buffers not shared with
-the host.
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-Support allocating encrypted buffers when requested.
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags. Bits above the
+  physical address width of the system i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
 
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Tianyu Lan <tiala@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: 510164539f16 ("Drivers: hv: Free msginfo when the buffer fails to decrypt")
+- The PGD entry is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
+
+Replace this with proper accessor functions:
+
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
+
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: e9d0e6330eb8 ("x86/boot/compressed/64: Prepare new top-level page table for trampoline")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/a482fd68-ce54-472d-8df1-33d6ac9f6bb5@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/channel.c      | 49 +++++++++++++++++++++++----------------
- drivers/hv/hyperv_vmbus.h |  3 ++-
- drivers/hv/ring_buffer.c  |  5 ++--
- 3 files changed, 34 insertions(+), 23 deletions(-)
+ arch/x86/boot/compressed/pgtable_64.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-index 7c7c66e0dc3f2..1621b95263a5b 100644
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -444,20 +444,23 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 		return ret;
- 	}
- 
--	/*
--	 * Set the "decrypted" flag to true for the set_memory_decrypted()
--	 * success case. In the failure case, the encryption state of the
--	 * memory is unknown. Leave "decrypted" as true to ensure the
--	 * memory will be leaked instead of going back on the free list.
--	 */
--	gpadl->decrypted = true;
--	ret = set_memory_decrypted((unsigned long)kbuffer,
--				   PFN_UP(size));
--	if (ret) {
--		dev_warn(&channel->device_obj->device,
--			 "Failed to set host visibility for new GPADL %d.\n",
--			 ret);
--		return ret;
-+	gpadl->decrypted = !((channel->co_external_memory && type == HV_GPADL_BUFFER) ||
-+		(channel->co_ring_buffer && type == HV_GPADL_RING));
-+	if (gpadl->decrypted) {
-+		/*
-+		 * The "decrypted" flag being true assumes that set_memory_decrypted() succeeds.
-+		 * But if it fails, the encryption state of the memory is unknown. In that case,
-+		 * leave "decrypted" as true to ensure the memory is leaked instead of going back
-+		 * on the free list.
-+		 */
-+		ret = set_memory_decrypted((unsigned long)kbuffer,
-+					PFN_UP(size));
-+		if (ret) {
-+			dev_warn(&channel->device_obj->device,
-+				"Failed to set host visibility for new GPADL %d.\n",
-+				ret);
-+			return ret;
-+		}
- 	}
- 
- 	init_completion(&msginfo->waitevent);
-@@ -545,8 +548,10 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 		 * left as true so the memory is leaked instead of being
- 		 * put back on the free list.
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index d8c5de40669d3..b20a5790c193d 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -3,6 +3,7 @@
+ #include <asm/bootparam.h>
+ #include <asm/bootparam_utils.h>
+ #include <asm/e820/types.h>
++#include <asm/pgtable.h>
+ #include <asm/processor.h>
+ #include "pgtable.h"
+ #include "../string.h"
+@@ -176,9 +177,10 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 		 * For 4- to 5-level paging transition, set up current CR3 as
+ 		 * the first and the only entry in a new top-level page table.
  		 */
--		if (!set_memory_encrypted((unsigned long)kbuffer, PFN_UP(size)))
--			gpadl->decrypted = false;
-+		if (gpadl->decrypted) {
-+			if (!set_memory_encrypted((unsigned long)kbuffer, PFN_UP(size)))
-+				gpadl->decrypted = false;
-+		}
+-		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
++		*trampoline_32bit = native_read_cr3_pa() | _PAGE_TABLE_NOENC;
+ 	} else {
+-		unsigned long src;
++		u64 *new_cr3;
++		pgd_t *pgdp;
+ 
+ 		/*
+ 		 * For 5- to 4-level paging transition, copy page table pointed
+@@ -188,8 +190,9 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 		 * We cannot just point to the page table from trampoline as it
+ 		 * may be above 4G.
+ 		 */
+-		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
+-		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
++		pgdp = (pgd_t *)native_read_cr3_pa();
++		new_cr3 = (u64 *)(native_pgd_val(pgdp[0]) & PTE_PFN_MASK);
++		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
  	}
  
- 	return ret;
-@@ -677,12 +682,13 @@ static int __vmbus_open(struct vmbus_channel *newchannel,
- 		goto error_clean_ring;
- 
- 	err = hv_ringbuffer_init(&newchannel->outbound,
--				 page, send_pages, 0);
-+				 page, send_pages, 0, newchannel->co_ring_buffer);
- 	if (err)
- 		goto error_free_gpadl;
- 
- 	err = hv_ringbuffer_init(&newchannel->inbound, &page[send_pages],
--				 recv_pages, newchannel->max_pkt_size);
-+				 recv_pages, newchannel->max_pkt_size,
-+				 newchannel->co_ring_buffer);
- 	if (err)
- 		goto error_free_gpadl;
- 
-@@ -863,8 +869,11 @@ int vmbus_teardown_gpadl(struct vmbus_channel *channel, struct vmbus_gpadl *gpad
- 
- 	kfree(info);
- 
--	ret = set_memory_encrypted((unsigned long)gpadl->buffer,
--				   PFN_UP(gpadl->size));
-+	if (gpadl->decrypted)
-+		ret = set_memory_encrypted((unsigned long)gpadl->buffer,
-+					PFN_UP(gpadl->size));
-+	else
-+		ret = 0;
- 	if (ret)
- 		pr_warn("Fail to set mem host visibility in GPADL teardown %d.\n", ret);
- 
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 4a01797d48513..0d969f77388ef 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -182,7 +182,8 @@ extern int hv_synic_cleanup(unsigned int cpu);
- void hv_ringbuffer_pre_init(struct vmbus_channel *channel);
- 
- int hv_ringbuffer_init(struct hv_ring_buffer_info *ring_info,
--		       struct page *pages, u32 pagecnt, u32 max_pkt_size);
-+		       struct page *pages, u32 pagecnt, u32 max_pkt_size,
-+			   bool confidential);
- 
- void hv_ringbuffer_cleanup(struct hv_ring_buffer_info *ring_info);
- 
-diff --git a/drivers/hv/ring_buffer.c b/drivers/hv/ring_buffer.c
-index 23ce1fb70de14..3c421a7f78c00 100644
---- a/drivers/hv/ring_buffer.c
-+++ b/drivers/hv/ring_buffer.c
-@@ -184,7 +184,8 @@ void hv_ringbuffer_pre_init(struct vmbus_channel *channel)
- 
- /* Initialize the ring buffer. */
- int hv_ringbuffer_init(struct hv_ring_buffer_info *ring_info,
--		       struct page *pages, u32 page_cnt, u32 max_pkt_size)
-+		       struct page *pages, u32 page_cnt, u32 max_pkt_size,
-+			   bool confidential)
- {
- 	struct page **pages_wraparound;
- 	int i;
-@@ -208,7 +209,7 @@ int hv_ringbuffer_init(struct hv_ring_buffer_info *ring_info,
- 
- 	ring_info->ring_buffer = (struct hv_ring_buffer *)
- 		vmap(pages_wraparound, page_cnt * 2 - 1, VM_MAP,
--			pgprot_decrypted(PAGE_KERNEL));
-+			confidential ? PAGE_KERNEL : pgprot_decrypted(PAGE_KERNEL));
- 
- 	kfree(pages_wraparound);
- 	if (!ring_info->ring_buffer)
+ 	toggle_la57(trampoline_32bit);
 -- 
 2.51.0
 
