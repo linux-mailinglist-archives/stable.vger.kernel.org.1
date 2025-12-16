@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1B8CC4504
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:33:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740D1CC26B0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A640A3072AD3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:28:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC2493063C1F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBE13431E3;
-	Tue, 16 Dec 2025 12:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B434D4C2;
+	Tue, 16 Dec 2025 11:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNdcwa4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuslF8iW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3BE3271F2;
-	Tue, 16 Dec 2025 12:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2FA34D3BB;
+	Tue, 16 Dec 2025 11:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887279; cv=none; b=NCWtaueJFxeQJsHOYFm1DpPNS2pgpNJ4feUKtxGTYim0q3lsA8PFcSirS8RFKPbZ+9JFihtsvzwXaL775kn7Kh7gdfn1kzgYF8HH32Zl8UERe1gOWJeMs70Lcs7ly8CQyPPBi4mz2Y/T4AniOg2PMU/Usv7KlAubcAh/2JdzVWc=
+	t=1765885332; cv=none; b=m9Gx8SnReR9IF3DaMCWpxgHxfApbbdRnL2I7PFRQQxYRQPW70BTKmTJUAW4WKJw1/Yp5lefxMzdBW0QNkqTGc19ApjciNEHjnBTkReTDrCOl0v6/cNM4bSF2jXP4zhpj1MokJAd5eMduUUcl2dqc9pNEj9gwgjw1nb91SdOzbyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887279; c=relaxed/simple;
-	bh=n+l/fY09RAauq6eaN/WHkmCLiJfjsgh3UZSES7ghFww=;
+	s=arc-20240116; t=1765885332; c=relaxed/simple;
+	bh=6OuTUaDVuq6lvOvaMnDftPuEvaAzdZP0bDW2E0lVaug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5W/d20QTESLeOCpTkvd9/+8k2wnu42ixGAW9UjKFZy6Gw7fUjsu6xU3uAx7bXi/Kkyu30JaJB2S8v7W/Eyxgh7SOBbYux84E94QBgX0SwxSgVfN3OBNuqhFOkN3RBn30Sx/KOpZN1jo2nU+IPW2b1Nq2LC7lYmerG8MjxlzjLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNdcwa4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7747EC4CEF5;
-	Tue, 16 Dec 2025 12:14:38 +0000 (UTC)
+	 MIME-Version; b=Vtdf0cGHivTkPv9Lo2CDhNb77/5sD0wrqdrmR9BXW/ZkoPUqFPgF5uUX4ZaaNTZyVHAm30eYXEwHc+ijtxusBK87Jv9GEuY9/5KImacj7vXJR46GJu1saweM3tJeuNgIFuiI8W4A6wCqVm7ab/5pDxIc6leE0uyDajieGIecQOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuslF8iW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC45C4CEF5;
+	Tue, 16 Dec 2025 11:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887278;
-	bh=n+l/fY09RAauq6eaN/WHkmCLiJfjsgh3UZSES7ghFww=;
+	s=korg; t=1765885331;
+	bh=6OuTUaDVuq6lvOvaMnDftPuEvaAzdZP0bDW2E0lVaug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNdcwa4zIrzooBbax3LA2BkcZVRUMegA0DgQ7xbMSvqBTrSy897o8BaCVJEX47beo
-	 hHi+5H6lyx2j76R/hOUshNLBbsUanWF3M608lnE3ZDh0hU98Ah4Clj6VLhLhpxrkaE
-	 a8jfmfimzYbaBOdHAulVsrTZ5XJuFAU9CULNUX/4=
+	b=SuslF8iWnqd/JZn2Nt4UgX2cWeM8XKwiQmXhIrd+jPQ33hEXCPgbMPsI8eXGBr54H
+	 DnELE5395MjOwxOo9lL7iakmKmxBW1ZpoBAr0sycu4EpWcm1eLrp8vaIWij/ePiZ27
+	 808DTRZdOhPJbaLwta2q6PcIG5cJ3tsKPmsc7HMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 182/614] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Subject: [PATCH 6.17 108/507] ARM: dts: renesas: gose: Remove superfluous port property
 Date: Tue, 16 Dec 2025 12:09:09 +0100
-Message-ID: <20251216111407.967470854@linuxfoundation.org>
+Message-ID: <20251216111349.449484759@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
+[ Upstream commit 00df14f34615630f92f97c9d6790bd9d25c4242d ]
 
-There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
-variable sel with an undefined value which is then used in regmap_field_write().
+'bus-width' is defined for the corresponding vin input port already.
+No need to declare it in the output port again. Fixes:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+    arch/arm/boot/dts/renesas/r8a7793-gose.dtb: composite-in@20 (adi,adv7180cp): ports:port@3:endpoint: Unevaluated properties are not allowed ('bus-width' was unexpected)
+    from schema $id: http://devicetree.org/schemas/media/i2c/adi,adv7180.yaml#
 
-Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250929093616.17679-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9467-charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/renesas/r8a7793-gose.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
-index b4917514bd701..44c26fb37a775 100644
---- a/drivers/power/supply/rt9467-charger.c
-+++ b/drivers/power/supply/rt9467-charger.c
-@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
- 	if (rsel == RT9467_RANGE_VMIVR) {
- 		ret = linear_range_get_selector_high(range, value, &sel, &found);
- 		if (ret)
--			value = range->max_sel;
-+			sel = range->max_sel;
- 	} else {
- 		linear_range_get_selector_within(range, value, &sel);
- 	}
+diff --git a/arch/arm/boot/dts/renesas/r8a7793-gose.dts b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
+index 45b267ec26794..5c6928c941aca 100644
+--- a/arch/arm/boot/dts/renesas/r8a7793-gose.dts
++++ b/arch/arm/boot/dts/renesas/r8a7793-gose.dts
+@@ -373,7 +373,6 @@ adv7180_in: endpoint {
+ 				port@3 {
+ 					reg = <3>;
+ 					adv7180_out: endpoint {
+-						bus-width = <8>;
+ 						remote-endpoint = <&vin1ep>;
+ 					};
+ 				};
 -- 
 2.51.0
 
