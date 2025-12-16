@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-202125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53BCCC3360
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A19ACC31BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5069930674E9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EBD430A897A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1CF361DA9;
-	Tue, 16 Dec 2025 12:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF5735CBC9;
+	Tue, 16 Dec 2025 12:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZXSQ8Hp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rufk3Z9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C33612FF;
-	Tue, 16 Dec 2025 12:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B11535CBC0;
+	Tue, 16 Dec 2025 12:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886896; cv=none; b=JpEzmky0+E7d4JRf8VBG3h/EgUuyGhQ/R2hf+/y9qy3O8hNVfwyGpThMoiBvVFN2/kiow/uv++JU0dwByqXNSA/j2O+qlwNLu02Qv2vd9hYiNWH7mZ5OMyhy5I/ml8bPWukAldubxcQvSZIt19w3Ou5qtYLLB3LTD2GFLbiQ19A=
+	t=1765886791; cv=none; b=VXxmmIBUNysO0JFHI395KHWsf8g37kYsuHErEo/MoXKQmHWXtUyINAoVZkah+sp27xjM9Y1HRha86Y1Vo1JqgP39LpQV9aCfF1MsK2ctPdc9Bhp296PYRqKlAWG00N0tl/zXNXyEnlwsREkknJLccEgP95Iy4zqmoC+iBurkZ1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886896; c=relaxed/simple;
-	bh=Ij74Q6hDcYJUK6dLOoWp2ngOhwqraRfHAr5mLGFMmOA=;
+	s=arc-20240116; t=1765886791; c=relaxed/simple;
+	bh=vZOCk/GQgnG1oQSkPglkCD8ixAta5KkD1VLFwVNcCV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYnvd1+sbNcbYFHVuwj5UOXroWeDCm4+sSkV0B36YCyNhgBxR1vAKN+EpX/m3kkZck/vzUxAqRzNxiPi5CnlpayMpJiOOvzYaO2DnqVb369nJJA+BLFdEreEs3A7Y0QYKyjHaiMMfibjfniw6t/xG3b19Jqsj+dZoGi+qnrzc2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZXSQ8Hp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5B3C4CEF1;
-	Tue, 16 Dec 2025 12:08:15 +0000 (UTC)
+	 MIME-Version; b=kdj2rwo2cTRbWCav/nsBAQUewPJEME3y+Kzs0XPIwbxVZglw1HBzl4ZKjMY/VSRG6WYGbaU/Qr5hPA0yQzFlIcdb6dviQwHMBoYrwTVhKiLczP2V6JBu9IFGjG1lv8h5ODzkd2YyU7VSN7ZaZG4VhdnwJAcURuNJpniTfuV5EZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rufk3Z9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DA6C4CEF1;
+	Tue, 16 Dec 2025 12:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886896;
-	bh=Ij74Q6hDcYJUK6dLOoWp2ngOhwqraRfHAr5mLGFMmOA=;
+	s=korg; t=1765886791;
+	bh=vZOCk/GQgnG1oQSkPglkCD8ixAta5KkD1VLFwVNcCV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZXSQ8HpnHe4PtHYAV36SwrVlWiDCpQbLt3IPyMOYgonKCACPfvt7A1NeAaRzjdfa
-	 q/Lr76ViqqzfDEAVMk3LdfMWjdYE84TrJdJ0IbwK9xGAQPl32hH2VddOkFapTmnykD
-	 yoNrQtIQ9fyQF1SR8xNVpl5zK+5kiGR7euMpTf1A=
+	b=Rufk3Z9ZNcz0QgBVRYKJGY+KB7HWEPD9Oz0Hn84ckda83nbZvzFRQAUk27EglXjL9
+	 h+dku2PknBQWfnvNskMYPttevJMWGXLD6A3eNU1FCJ760Hzpu3RN4Usp1YvHN8Fnkj
+	 QkCniFU/XwHBZRuAhT7ePHx3wBFG/PQrUt5++OBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dylan Hatch <dylanbhatch@google.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 033/614] objtool: Fix standalone --hacks=jump_label
-Date: Tue, 16 Dec 2025 12:06:40 +0100
-Message-ID: <20251216111402.508827536@linuxfoundation.org>
+Subject: [PATCH 6.18 034/614] objtool: Fix weak symbol detection
+Date: Tue, 16 Dec 2025 12:06:41 +0100
+Message-ID: <20251216111402.545103740@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -64,42 +65,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dylan Hatch <dylanbhatch@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit be8374a5ba7cbab6b97df94b4ffe0b92f5c8a6d2 ]
+[ Upstream commit 72567c630d32bc31f671977f78228c80937ed80e ]
 
-The objtool command line 'objtool --hacks=jump_label foo.o' on its own
-should be expected to rewrite jump labels to NOPs. This means the
-add_special_section_alts() code path needs to run when only this option
-is provided.
+find_symbol_hole_containing() fails to find a symbol hole (aka stripped
+weak symbol) if its section has no symbols before the hole.  This breaks
+weak symbol detection if -ffunction-sections is enabled.
 
-This is mainly relevant in certain debugging situations, but could
-potentially also fix kernel builds in which objtool is run with
---hacks=jump_label but without --orc, --stackval, --uaccess, or
---hacks=noinstr.
+Fix that by allowing the interval tree to contain section symbols, which
+are always at offset zero for a given section.
 
-Fixes: de6fbcedf5ab ("objtool: Read special sections with alts only when specific options are selected")
-Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
+Fixes a bunch of (-ffunction-sections) warnings like:
+
+  vmlinux.o: warning: objtool: .text.__x64_sys_io_setup+0x10: unreachable instruction
+
+Fixes: 4adb23686795 ("objtool: Ignore extra-symbol code")
+Acked-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Joe Lawrence <joe.lawrence@redhat.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/objtool/elf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 9004fbc067693..6059a546fb759 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2564,7 +2564,8 @@ static int decode_sections(struct objtool_file *file)
- 	 * Must be before add_jump_destinations(), which depends on 'func'
- 	 * being set for alternatives, to enable proper sibling call detection.
- 	 */
--	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr) {
-+	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr ||
-+	    opts.hack_jump_label) {
- 		ret = add_special_section_alts(file);
- 		if (ret)
- 			return ret;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index ca5d77db692a2..9cb51fcde7986 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -108,7 +108,7 @@ struct symbol_hole {
+ };
+ 
+ /*
+- * Find !section symbol where @offset is after it.
++ * Find the last symbol before @offset.
+  */
+ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ {
+@@ -119,8 +119,7 @@ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ 		return -1;
+ 
+ 	if (sh->key >= s->offset + s->len) {
+-		if (s->type != STT_SECTION)
+-			sh->sym = s;
++		sh->sym = s;
+ 		return 1;
+ 	}
+ 
+@@ -412,7 +411,8 @@ static void elf_add_symbol(struct elf *elf, struct symbol *sym)
+ 	sym->len = sym->sym.st_size;
+ 
+ 	__sym_for_each(iter, &sym->sec->symbol_tree, sym->offset, sym->offset) {
+-		if (iter->offset == sym->offset && iter->type == sym->type)
++		if (iter->offset == sym->offset && iter->type == sym->type &&
++		    iter->len == sym->len)
+ 			iter->alias = sym;
+ 	}
+ 
 -- 
 2.51.0
 
