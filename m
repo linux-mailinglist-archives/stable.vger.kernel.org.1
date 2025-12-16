@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-202604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C11CC31D0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10CECC465D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2756030CE881
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBDC030B8E27
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6D634C81E;
-	Tue, 16 Dec 2025 12:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BB03587BB;
+	Tue, 16 Dec 2025 12:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWkkh51g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXWZE/4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E6839A137;
-	Tue, 16 Dec 2025 12:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1C43587B1;
+	Tue, 16 Dec 2025 12:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888437; cv=none; b=VJDHKTl6hcLPhXFXfEKQgcPr0QXwVpx4mWNCovRkLwwaT887xwH3LI4cyO4wgIBVL9U7gFngyJWTcfefNYJd9oE9aQI99XkMq/0jX2LjlYMTU94NAM0xiObbUs25o5rfopcZi6pQhCtFp8O1zBIX0ZdGBJMiQi5bF92qSubalWw=
+	t=1765886633; cv=none; b=vBQz5ecUICs1UTDUdSMPu9pbe83L/D/RgxPdpHUaRuYi5crrjp/GDRe7L7L95DBLEDu0pwkpUbt9GgKE/8qmZq9a7xlqwm0Te58ip5CBmCknZCcZWU0s6+Fw3dtju1KSXNdlxh9PRpzZ+D3uy5t0V6GUQFwmiNRbTIqNapD8pV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888437; c=relaxed/simple;
-	bh=Z81E1/Rx7rcrYHgRK+75Nox8oljfM4HPx0yhMmjvBQM=;
+	s=arc-20240116; t=1765886633; c=relaxed/simple;
+	bh=9hXnDeE9npJfX6/ezxP4fWFO2+51RN1T120kuQlbazI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOhjAYV7qPrFmB94cGnwSFBCwaFWV2b93Bgf/7eloeGVJg6oafGwCoGPj8Gq9JQKmpFiUalcyEXTddb2WwQ3TpILqIbjKiN7ls/MA9xYX9+b8o6klYSCTuEmVu/+iX5xO+ppOjhJNWmBpPcSVs7KusM13YNb+LFbcULcotomcXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWkkh51g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115F1C4CEF1;
-	Tue, 16 Dec 2025 12:33:56 +0000 (UTC)
+	 MIME-Version; b=buD98HtviKZLuK+vbw8kDP3PNU++2yCKLAQg1kMYP9LJQ20UmcWVykVPztRoZmg9UbwH54geXRMEUOApuIfRyrYRK4wC9S7N5e41fzhcXyWBfTk+A7Fb6ewCAn7Y6zsowa0KZgcaegXDXl5B6D4wT4qV2oTsV3aZFRAAPwH5rk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXWZE/4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA57C4CEF1;
+	Tue, 16 Dec 2025 12:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888437;
-	bh=Z81E1/Rx7rcrYHgRK+75Nox8oljfM4HPx0yhMmjvBQM=;
+	s=korg; t=1765886633;
+	bh=9hXnDeE9npJfX6/ezxP4fWFO2+51RN1T120kuQlbazI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWkkh51gbdXHLKw+ZVxRfBaqSNiZt3Y3XDqgeVpIBrLQjW1y6X97ZyjMT2defHLiF
-	 yce1LzF9cJatLrCxo+HEOOFqj0n3TOd8nz1ZoqSIBnsm/nrdwCpkBoDFaSTDXyT6T/
-	 XQtjzAmvov5WPgHQ3t+ovvZ7eoQs8Quy/tyEYMEY=
+	b=vXWZE/4BdwsRPxXPGtObdNtCrZbOrqisx+bSRat4ZvAJIMTAw3aw8peI+2ykOrb05
+	 mISjzduamBCXWH62lPXZ62nb1b3EhOXuhiiAIGR2kLfByUfhgwEitBgNxezr7whlf0
+	 fIUfJOZDEvBQJkuQUyc6eSIR5MZO6gUMPqc5uEHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	John Stultz <jstultz@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Haiyue Wang <haiyuewa@163.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	shechenglong <shechenglong@xfusion.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 535/614] sched/core: Fix psi_dequeue() for Proxy Execution
+Subject: [PATCH 6.17 461/507] block: fix comment for op_is_zone_mgmt() to include RESET_ALL
 Date: Tue, 16 Dec 2025 12:15:02 +0100
-Message-ID: <20251216111420.762343537@linuxfoundation.org>
+Message-ID: <20251216111402.148402640@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: shechenglong <shechenglong@xfusion.com>
 
-[ Upstream commit c2ae8b0df2d1bb7a063f9e356e4e9a06cd4afe11 ]
+[ Upstream commit 8a32282175c964eb15638e8dfe199fc13c060f67 ]
 
-Currently, if the sleep flag is set, psi_dequeue() doesn't
-change any of the psi_flags.
+REQ_OP_ZONE_RESET_ALL is a zone management request, and op_is_zone_mgmt()
+has returned true for it.
 
-This is because psi_task_switch() will clear TSK_ONCPU as well
-as other potential flags (TSK_RUNNING), and the assumption is
-that a voluntary sleep always consists of a task being dequeued
-followed shortly there after with a psi_sched_switch() call.
+Update the comment to remove the misleading exception note so
+the documentation matches the implementation.
 
-Proxy Execution changes this expectation, as mutex-blocked tasks
-that would normally sleep stay on the runqueue. But in the case
-where the mutex-owning task goes to sleep, or the owner is on a
-remote cpu, we will then deactivate the blocked task shortly
-after.
-
-In that situation, the mutex-blocked task will have had its
-TSK_ONCPU cleared when it was switched off the cpu, but it will
-stay TSK_RUNNING. Then if we later dequeue it (as currently done
-if we hit a case find_proxy_task() can't yet handle, such as the
-case of the owner being on another rq or a sleeping owner)
-psi_dequeue() won't change any state (leaving it TSK_RUNNING),
-as it incorrectly expects a psi_task_switch() call to
-immediately follow.
-
-Later on when the task get woken/re-enqueued, and psi_flags are
-set for TSK_RUNNING, we hit an error as the task is already
-TSK_RUNNING:
-
-  psi: inconsistent task state! task=188:kworker/28:0 cpu=28 psi_flags=4 clear=0 set=4
-
-To resolve this, extend the logic in psi_dequeue() so that
-if the sleep flag is set, we also check if psi_flags have
-TSK_ONCPU set (meaning the psi_task_switch is imminent) before
-we do the shortcut return.
-
-If TSK_ONCPU is not set, that means we've already switched away,
-and this psi_dequeue call needs to clear the flags.
-
-Fixes: be41bde4c3a8 ("sched: Add an initial sketch of the find_proxy_task() function")
-Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Haiyue Wang <haiyuewa@163.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://patch.msgid.link/20251205012721.756394-1-jstultz@google.com
-Closes: https://lore.kernel.org/lkml/20251117185550.365156-1-kprateek.nayak@amd.com/
+Fixes: 12a1c9353c47 ("block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL")
+Signed-off-by: shechenglong <shechenglong@xfusion.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/stats.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/blk_types.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 26f3fd4d34cea..73bd6bca4d310 100644
---- a/kernel/sched/stats.h
-+++ b/kernel/sched/stats.h
-@@ -180,8 +180,13 @@ static inline void psi_dequeue(struct task_struct *p, int flags)
- 	 * avoid walking all ancestors twice, psi_task_switch() handles
- 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
- 	 * Do nothing here.
-+	 *
-+	 * In the SCHED_PROXY_EXECUTION case we may do sleeping
-+	 * dequeues that are not followed by a task switch, so check
-+	 * TSK_ONCPU is set to ensure the task switch is imminent.
-+	 * Otherwise clear the flags as usual.
- 	 */
--	if (flags & DEQUEUE_SLEEP)
-+	if ((flags & DEQUEUE_SLEEP) && (p->psi_flags & TSK_ONCPU))
- 		return;
+diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+index 1d6e2df0fdd31..93d83aba236bf 100644
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -471,10 +471,7 @@ static inline bool op_is_discard(blk_opf_t op)
+ }
  
- 	/*
+ /*
+- * Check if a bio or request operation is a zone management operation, with
+- * the exception of REQ_OP_ZONE_RESET_ALL which is treated as a special case
+- * due to its different handling in the block layer and device response in
+- * case of command failure.
++ * Check if a bio or request operation is a zone management operation.
+  */
+ static inline bool op_is_zone_mgmt(enum req_op op)
+ {
 -- 
 2.51.0
 
