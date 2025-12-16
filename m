@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA8ECC2ADA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 486E3CC35C7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D258D30F2195
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A05A30319A5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB535970D;
-	Tue, 16 Dec 2025 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F995363C6A;
+	Tue, 16 Dec 2025 12:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHJFLZFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Plb8cDTB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7523596F8;
-	Tue, 16 Dec 2025 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC43624A6;
+	Tue, 16 Dec 2025 12:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886690; cv=none; b=mjAeQEZPWxuBK3KNoGGdIoAjAyfpY2ERGb7QFhxi+adhVkiYLRmFUQmcJLJ7eQ/iIg7IcAGfzikC2xwCoEso5p4pvUpy4cHohyAnT3KzewAwPK19Z23/6ppI5wiJ1qtLrA6eIih55i4a/2WT4VhBYUgPgkUmiUWO5rXEX12bSqg=
+	t=1765888565; cv=none; b=sKZYFThO7GpKRO0RwUuXodVOg7ANI31Nea/PBUFW3witbmj9ONbLNBLXT8auKqdxYscEt2RrFCXIHiNOGe49EHq1KXcFwydD978nxKvLpmhm3NNPLQj0wW1/OXe2qyZHugdzyVhN1QxEJkp5rZ/JwqulUNgCMY5I9JKAunzAEbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886690; c=relaxed/simple;
-	bh=FqaTvmCTd33Frp9diy3FdsPvShLveskKrQ9l9pXHp+A=;
+	s=arc-20240116; t=1765888565; c=relaxed/simple;
+	bh=4SbF9E32jpDRh8Duu9GZ5foQtITz8oX8m4xvgDTT6m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzkTP1qDEi6+w3UC3cjGKitf0QbgIlGvhE5pu4r/Ni3c2+rh4JoFU+H2SYGbe/mBwsJOIAjskrLXsvDhvI+DkxXtdiX4gsDZKxDxi2qpC4q7j0jla3j4PB19z8tBgHlyB1rxJmal+JZPtqj1iPZ4vL5MewTZ0UHF+q9sDZzD/qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHJFLZFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE36C4CEF1;
-	Tue, 16 Dec 2025 12:04:49 +0000 (UTC)
+	 MIME-Version; b=eURnXpcOZrvjYoM9Sw6pz8Lv8N5GlgceHRXlM3CrmbTZOOmFhFUAAKJ7C/6JAzvyr73W1dvaeNsmFdCWVrft54B69bKXhMqrVaMKiS1Ku+iOXFQVU9MMlgel4B7PSm6BJ5/s0OakyBk1D/XBXfo99qYJwx9GW45comKBz8OHAUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Plb8cDTB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39674C4CEF1;
+	Tue, 16 Dec 2025 12:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886690;
-	bh=FqaTvmCTd33Frp9diy3FdsPvShLveskKrQ9l9pXHp+A=;
+	s=korg; t=1765888565;
+	bh=4SbF9E32jpDRh8Duu9GZ5foQtITz8oX8m4xvgDTT6m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHJFLZFIa3t9j/EJbCNSG/uYL7MVx4BDjMvNj+J7PZpvyCWZu0scIEPAifIhT4e7p
-	 bgwsoEWgzts1zqtHsIqXovcHoD1Rdh3fUCf4jXlY0G51X+B5F3wM3Xr+o6EYBB0EbR
-	 YHxCc4EipYTqUxcWSSRUYTunHHfc93zIVqkO6dic=
+	b=Plb8cDTBjm9IH0U3AY1+MFtuPulyR331qE28+WEu/ulILknhfOeDxSqrISfyFDnYx
+	 wfs/e2tWUafXZE8ykt/H7+wOytSJc4rDWq0hDCDOh3+HZWjQwTDfcrOdMS0F+5xIJD
+	 wdefidnK8bH3D+aeThVw0pmlhoJJlZ7zk3ImAFIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Haotien Hsu <haotienh@nvidia.com>,
-	Wayne Chang <waynec@nvidia.com>
-Subject: [PATCH 6.17 498/507] usb: gadget: tegra-xudc: Always reinitialize data toggle when clear halt
-Date: Tue, 16 Dec 2025 12:15:39 +0100
-Message-ID: <20251216111403.481446016@linuxfoundation.org>
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 573/614] nfs/localio: remove 61 byte hole from needless ____cacheline_aligned
+Date: Tue, 16 Dec 2025 12:15:40 +0100
+Message-ID: <20251216111422.145451834@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotien Hsu <haotienh@nvidia.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 2585973c7f9ee31d21e5848c996fab2521fd383d upstream.
+[ Upstream commit 0b873de2c02f9cc655bef6bee0eb9e404126ed6c ]
 
-The driver previously skipped handling ClearFeature(ENDPOINT_HALT)
-when the endpoint was already not halted. This prevented the
-controller from resetting the data sequence number and reinitializing
-the endpoint state.
+struct nfs_local_kiocb used ____cacheline_aligned on its iters[] array
+and as the structure evolved it caused a 61 byte hole to form.  Fix
+this by removing ____cacheline_aligned and reordering iters[] before
+iter_is_dio_aligned[].
 
-According to USB 3.2 specification Rev. 1.1, section 9.4.5,
-ClearFeature(ENDPOINT_HALT) must always reset the data sequence and
-set the stream state machine to Disabled, regardless of whether the
-endpoint was halted.
-
-Remove the early return so that ClearFeature(ENDPOINT_HALT) always
-resets the endpoint sequence state as required by the specification.
-
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20251127033540.2287517-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a218b9c3183 ("nfs/localio: do not issue misaligned DIO out-of-order")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/nfs/localio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -1559,12 +1559,6 @@ static int __tegra_xudc_ep_set_halt(stru
- 		return -ENOTSUPP;
- 	}
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 512d9c5ff608a..b98bb292fef0c 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -43,8 +43,8 @@ struct nfs_local_kiocb {
+ 	size_t                  end_len;
+ 	short int		end_iter_index;
+ 	atomic_t		n_iters;
++	struct iov_iter		iters[NFSLOCAL_MAX_IOS];
+ 	bool			iter_is_dio_aligned[NFSLOCAL_MAX_IOS];
+-	struct iov_iter		iters[NFSLOCAL_MAX_IOS] ____cacheline_aligned;
+ 	/* End mostly DIO-specific members */
+ };
  
--	if (!!(xudc_readl(xudc, EP_HALT) & BIT(ep->index)) == halt) {
--		dev_dbg(xudc->dev, "EP %u already %s\n", ep->index,
--			halt ? "halted" : "not halted");
--		return 0;
--	}
--
- 	if (halt) {
- 		ep_halt(xudc, ep->index);
- 	} else {
+-- 
+2.51.0
+
 
 
 
