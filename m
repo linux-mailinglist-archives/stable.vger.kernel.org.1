@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89015CC2589
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CF2CC4907
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE5AC30F47F8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E618B3046164
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237AB343D6A;
-	Tue, 16 Dec 2025 11:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE8F36CDFC;
+	Tue, 16 Dec 2025 12:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc+sT7i0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enLGOGCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B6A342507;
-	Tue, 16 Dec 2025 11:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF31F36C5B7;
+	Tue, 16 Dec 2025 12:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884449; cv=none; b=JGDPRL2qa9mEkbB5ynHWhmBERMUW+uE9jWYz4wM3jix4mbK++EIIuNu/ojx27voT3qtvAJ4iVsWD7ClnjrU8oGJRCMHWsaPtTDql6QVqPFMqv8PgbtTlM4umaSJlGh/BE5R+w7Ir0/zL2JKA4VRzfG88E0pvl6rPTlMmBcfGw44=
+	t=1765887983; cv=none; b=VQsDMH3Y4IzBimWK9op/lqZswvhfv43CGneAhy3/qoaxCiWDcBOhnfYwgKRlIVanAAxGglJbFJIIsuDgO9n4C7DjCfdBNH7AE6u+udwCaY4ipWpROoWsHTHlSykY4Sh353rON8Qymdttj3xoHJfJqkJQ2KYxp+5pAMKvj8V1b9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884449; c=relaxed/simple;
-	bh=qQ5ySyl+lIJnpdgYcu9GZwhZwg3a4ADzuhEXCKRZmHI=;
+	s=arc-20240116; t=1765887983; c=relaxed/simple;
+	bh=o6grrxKl8PdSo2lqNnjNJXAVXPtmsVXPsWFOVqj+e+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WpiOK/e0GQEM1Rl/MFfjRsutvFGah2lSVhMnl5w6DKpF+kncyxPjySdpNmKtjNbV3LQAhIKkvTTyyb9izcjZGrNN76VDspBFU3dt5g+CF/Z+KzrktRHUZW8+YVgj71n0XhesMSJ09C3DI/BcVyCvONpW1OyLMK5lZ/9s0jAIX98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc+sT7i0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39532C4CEF1;
-	Tue, 16 Dec 2025 11:27:29 +0000 (UTC)
+	 MIME-Version; b=ngvvLoDefo/UUMGh9til0fbGOmmP5vU/85tSfhMeCTg1XCBsRn/jrsn1H1HCD+GS0O4yZlhESZef8utA/wYAAa7MdhM+O2y+q30H+sRmQydmHirPT3ArzDlWqpKZqZiJ+QgXVt26Np4lHQ9qMXQDoBad0PbfSWOi2eRukmcXsY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enLGOGCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C301C4CEF1;
+	Tue, 16 Dec 2025 12:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884449;
-	bh=qQ5ySyl+lIJnpdgYcu9GZwhZwg3a4ADzuhEXCKRZmHI=;
+	s=korg; t=1765887982;
+	bh=o6grrxKl8PdSo2lqNnjNJXAVXPtmsVXPsWFOVqj+e+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bc+sT7i0uBiliR9RLsAQIFsYVGMWo4ax1/YSrNd9kcLMPNwBfSgLSmN9h873Wb6z7
-	 8oiAKCRHIPdAXliHHNEspp1mro6hyzzyiM3U1GqhwHqdJiFWO+3BQEk6xYRjZvggmQ
-	 9PZtOU3dDtgucH83xf3ZQWHa+oVV8tmofG/emTMQ=
+	b=enLGOGCxd4fwEQBPna5qePg+lm3NX3SPLqyg/gCy4F5cj/vOS6jQ62TPKICMlM2iZ
+	 gYm39VvcNy/i3bQNndmT7+5tKHm85S9wBlvs5/PVqb+/42Kfc1VsUEqunnoaq+7ZEG
+	 PzeyfQXk+cUS2v2OSlUQc2CC/3ZnLAAgU7SXQrds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ben Greear <greearb@candelatech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/354] net: phy: adin1100: Fix software power-down ready condition
+Subject: [PATCH 6.18 397/614] wifi: mt76: mt7996: grab mt76 mutex in mt7996_mac_sta_event()
 Date: Tue, 16 Dec 2025 12:12:44 +0100
-Message-ID: <20251216111328.049621978@linuxfoundation.org>
+Message-ID: <20251216111415.758629656@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit bccaf1fe08f2c9f96f6bc38391d41e67f6bf38e3 ]
+[ Upstream commit 5a4bcba26e9fbea87507a81ad891e70bb525014f ]
 
-Value CRSM_SFT_PD written to Software Power-Down Control Register
-(CRSM_SFT_PD_CNTRL) is 0x01 and therefor different to value
-CRSM_SFT_PD_RDY (0x02) read from System Status Register (CRSM_STAT) for
-confirmation powerdown has been reached.
+Grab mt76 mutex in mt7996_mac_sta_event routine in order to rely on
+mt76_dereference() utility macro.
 
-The condition could have only worked when disabling powerdown
-(both 0x00), but never when enabling it (0x01 != 0x02).
-
-Result is a timeout, like so:
-
-    $ ifdown eth0
-    macb f802c000.ethernet eth0: Link is Down
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-
-Fixes: 7eaf9132996a ("net: phy: adin1100: Add initial support for ADIN1100 industrial PHY")
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20251119124737.280939-2-ada@thorsis.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ecd72f9695e7e ("wifi: mt76: mt7996: Support MLO in mt7996_mac_sta_event()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-1-259ebf11f654@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/adin1100.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
-index 85f910e2d4fb2..918bb1cf7a4e7 100644
---- a/drivers/net/phy/adin1100.c
-+++ b/drivers/net/phy/adin1100.c
-@@ -201,7 +201,7 @@ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
- 		return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index beb455185f904..ead56ce4c0362 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1150,12 +1150,15 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 	unsigned long links = sta->valid_links;
+ 	struct ieee80211_link_sta *link_sta;
+ 	unsigned int link_id;
++	int err = 0;
++
++	mutex_lock(&dev->mt76.mutex);
  
- 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, ADIN_CRSM_STAT, ret,
--					 (ret & ADIN_CRSM_SFT_PD_RDY) == val,
-+					 !!(ret & ADIN_CRSM_SFT_PD_RDY) == en,
- 					 1000, 30000, true);
+ 	for_each_sta_active_link(vif, sta, link_sta, link_id) {
+ 		struct ieee80211_bss_conf *link_conf;
+ 		struct mt7996_sta_link *msta_link;
+ 		struct mt7996_vif_link *link;
+-		int i, err;
++		int i;
+ 
+ 		link_conf = link_conf_dereference_protected(vif, link_id);
+ 		if (!link_conf)
+@@ -1175,12 +1178,12 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 						 link, msta_link,
+ 						 CONN_STATE_CONNECT, true);
+ 			if (err)
+-				return err;
++				goto unlock;
+ 
+ 			err = mt7996_mcu_add_rate_ctrl(dev, msta_link->sta, vif,
+ 						       link_id, false);
+ 			if (err)
+-				return err;
++				goto unlock;
+ 
+ 			msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 			break;
+@@ -1189,7 +1192,7 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 						 link, msta_link,
+ 						 CONN_STATE_PORT_SECURE, false);
+ 			if (err)
+-				return err;
++				goto unlock;
+ 			break;
+ 		case MT76_STA_EVENT_DISASSOC:
+ 			for (i = 0; i < ARRAY_SIZE(msta_link->twt.flow); i++)
+@@ -1209,8 +1212,10 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 			break;
+ 		}
+ 	}
++unlock:
++	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return 0;
++	return err;
  }
  
+ static void
 -- 
 2.51.0
 
