@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2A3CC271E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDBDCC2A68
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DC3630B497A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 58064302D4CC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F11345CDE;
-	Tue, 16 Dec 2025 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C36363C72;
+	Tue, 16 Dec 2025 12:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1Hw8PJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPXz5YZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888AF345CCF;
-	Tue, 16 Dec 2025 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A17363C65;
+	Tue, 16 Dec 2025 12:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885064; cv=none; b=mNBoTpyoSB6OGY8IJwGU7yU2PXVksfhioDPjheaJ/XsqRn4+GPPhpbQscSnqN+I9P3XYk2c7Qqh1E7bEs6pW3GZzPkpDZ6waw+qn0a8KUoPeSDNp4oRk66GKYByTWeluXtrSVJJGZcI+toos9/L/nXLTOHuLi73dL8h5bqy8HB0=
+	t=1765886942; cv=none; b=m58jMsTsSz01it3fUVzxMFxJe9h4B5LxQiNwaNzpsThlYq9iZxWm0Vz2wpZCFwMAy++Z6JyqaJ+aCFC8KuoRDpWz/rOVtYP4KAIXVRHCFwUUO2YlbaGL7Epjz8xY14hnS9g0vx3hoD95HIHMxkk9H8MbLJC/mAZyPo2prtaXZPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885064; c=relaxed/simple;
-	bh=njsckYUFE/WgEjpKmNMWn6Eb9aSjtwRkadhDcnRNzL4=;
+	s=arc-20240116; t=1765886942; c=relaxed/simple;
+	bh=2ulqjyjmvZ/jK9DSfJzl4fr4S41Cuv5umyxBowETF/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3oUQ8VKMx8cIr/RSgNHkPLmQ+THQYzeGCSrMpWLx6G8fVmA0IizOKzdGfmr2tLlzYuaax1xiPzTNWGyAPfAq17EDwarvckv5HCGONcH3NWsieYM7O26r8MBGJaiw7+KR0OFZKxQY3WkH91zEd1LkWbpGmFF3XraPlUqMotqj1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1Hw8PJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F10AC4CEF1;
-	Tue, 16 Dec 2025 11:37:43 +0000 (UTC)
+	 MIME-Version; b=cPL+3cZUCindo5ywCdQa6n9NxMyz20v/kY9E++22syAM32VhVRdcHIooMzC7T3Epgd3VQu9a3BULB8zwAzHkQFS0OoCNgaAhqWWG+5cMsTkzcfoUxVIGlT7ZW9OHAyRfr28byj+6fipBTE3ExZjxQIgd4bbdgWRaB5O4j/v3yuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPXz5YZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E45C4CEF1;
+	Tue, 16 Dec 2025 12:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885064;
-	bh=njsckYUFE/WgEjpKmNMWn6Eb9aSjtwRkadhDcnRNzL4=;
+	s=korg; t=1765886942;
+	bh=2ulqjyjmvZ/jK9DSfJzl4fr4S41Cuv5umyxBowETF/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1Hw8PJS1Vx6s9cGOmV1nayZs3t0fWVR5MgeomLnpSwepNQ1nwf7565nUzcnFT2eg
-	 p/Ykf5zOuIeqD0Q7rwwIIcUm+Ol3vLK8eR5xuwXNUfUAXn4ctsYuVYxbHGFHN78D+P
-	 Nv6iHZ7g+/CfHFnGu1REh4ucFDTxXwIWxZv5AUkw=
+	b=JPXz5YZ3AmZ0nooe0qwbjt4l6ZD58K2l+O1CU1QlS/KH1wI+scSH42sOXxPRBuYpP
+	 q5tTOVpiu/9XxXsTcmzKrvDSxxCnSWZIxZqiDHl3KN7HTaTLFFhwuz03xbIQsF/W/0
+	 1hDCR6qaoRuNhmVeT+8j/gReCRXFLNF5tCuuxi9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 005/507] smack: fix bug: invalid label of unix socket file
+Subject: [PATCH 6.18 079/614] clk: qcom: camcc-sm8550: Specify Titan GDSC power domain as a parent to other
 Date: Tue, 16 Dec 2025 12:07:26 +0100
-Message-ID: <20251216111345.724107547@linuxfoundation.org>
+Message-ID: <20251216111404.179370876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,202 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 78fc6a94be252b27bb73e4926eed70b5e302a8e0 ]
+[ Upstream commit d8f1121ebf4036884fc9ab1968f606523dd1c1fe ]
 
-According to [1], the label of a UNIX domain socket (UDS)
-file (i.e., the filesystem object representing the socket)
-is not supposed to participate in Smack security.
+When a consumer turns on/off a power domain dependent on another power
+domain in hardware, the parent power domain shall be turned on/off by
+the power domain provider as well, and to get it the power domain hardware
+hierarchy shall be described in the CAMCC driver.
 
-To achieve this, [1] labels UDS files with "*"
-in smack_d_instantiate().
+Establish the power domain hierarchy with a Titan GDSC set as a parent of
+all other GDSC power domains provided by the SM8550 camera clock controller
+to enforce a correct sequence of enabling and disabling power domains by
+the consumers, this fixes the CAMCC as a supplier of power domains to CAMSS
+IP and its driver.
 
-Before [2], smack_d_instantiate() was responsible
-for initializing Smack security for all inodes,
-except ones under /proc
-
-[2] imposed the sole responsibility for initializing
-inode security for newly created filesystem objects
-on smack_inode_init_security().
-
-However, smack_inode_init_security() lacks some logic
-present in smack_d_instantiate().
-In particular, it does not label UDS files with "*".
-
-This patch adds the missing labeling of UDS files
-with "*" to smack_inode_init_security().
-
-Labeling UDS files with "*" in smack_d_instantiate()
-still works for stale UDS files that already exist on
-disk. Stale UDS files are useless, but I keep labeling
-them for consistency and maybe to make easier for user
-to delete them.
-
-Compared to [1], this version introduces the following
-improvements:
-
-  * UDS file label is held inside inode only
-    and not saved to xattrs.
-
-  * relabeling UDS files (setxattr, removexattr, etc.)
-    is blocked.
-
-[1] 2010-11-24 Casey Schaufler
-commit b4e0d5f0791b ("Smack: UDS revision")
-
-[2] 2023-11-16 roberto.sassu
-Fixes: e63d86b8b764 ("smack: Initialize the in-memory inode in smack_inode_init_security()")
-Link: https://lore.kernel.org/linux-security-module/20231116090125.187209-5-roberto.sassu@huaweicloud.com/
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Fixes: ccc4e6a061a2 ("clk: qcom: camcc-sm8550: Add camera clock controller driver for SM8550")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251021234450.2271279-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/LSM/Smack.rst |  5 +++
- security/smack/smack_lsm.c              | 58 +++++++++++++++++++------
- 2 files changed, 49 insertions(+), 14 deletions(-)
+ drivers/clk/qcom/camcc-sm8550.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/admin-guide/LSM/Smack.rst b/Documentation/admin-guide/LSM/Smack.rst
-index 6d44f4fdbf59f..1b554b5bf98e6 100644
---- a/Documentation/admin-guide/LSM/Smack.rst
-+++ b/Documentation/admin-guide/LSM/Smack.rst
-@@ -696,6 +696,11 @@ sockets.
- 	A privileged program may set this to match the label of another
- 	task with which it hopes to communicate.
+diff --git a/drivers/clk/qcom/camcc-sm8550.c b/drivers/clk/qcom/camcc-sm8550.c
+index 63aed9e4c362d..b8ece8a57a8a9 100644
+--- a/drivers/clk/qcom/camcc-sm8550.c
++++ b/drivers/clk/qcom/camcc-sm8550.c
+@@ -3204,6 +3204,8 @@ static struct clk_branch cam_cc_sfe_1_fast_ahb_clk = {
+ 	},
+ };
  
-+UNIX domain socket (UDS) with a BSD address functions both as a file in a
-+filesystem and as a socket. As a file, it carries the SMACK64 attribute. This
-+attribute is not involved in Smack security enforcement and is immutably
-+assigned the label "*".
++static struct gdsc cam_cc_titan_top_gdsc;
 +
- Smack Netlabel Exceptions
- ~~~~~~~~~~~~~~~~~~~~~~~~~
+ static struct gdsc cam_cc_bps_gdsc = {
+ 	.gdscr = 0x10004,
+ 	.en_rest_wait_val = 0x2,
+@@ -3213,6 +3215,7 @@ static struct gdsc cam_cc_bps_gdsc = {
+ 		.name = "cam_cc_bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 5cd19f3498cbd..30f20fef3331e 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1020,6 +1020,16 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 	bool trans_cred;
- 	bool trans_rule;
+@@ -3225,6 +3228,7 @@ static struct gdsc cam_cc_ife_0_gdsc = {
+ 		.name = "cam_cc_ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
-+	/*
-+	 * UNIX domain sockets use lower level socket data. Let
-+	 * UDS inode have fixed * label to keep smack_inode_permission() calm
-+	 * when called from unix_find_bsd()
-+	 */
-+	if (S_ISSOCK(inode->i_mode)) {
-+		/* forced label, no need to save to xattrs */
-+		issp->smk_inode = &smack_known_star;
-+		goto instant_inode;
-+	}
- 	/*
- 	 * If equal, transmuting already occurred in
- 	 * smack_dentry_create_files_as(). No need to check again.
-@@ -1056,14 +1066,16 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 		}
- 	}
+@@ -3237,6 +3241,7 @@ static struct gdsc cam_cc_ife_1_gdsc = {
+ 		.name = "cam_cc_ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
--	issp->smk_flags |= (SMK_INODE_INSTANT | transflag);
--	if (rc)
--		return rc;
--
--	return xattr_dupval(xattrs, xattr_count,
-+	if (rc == 0)
-+		if (xattr_dupval(xattrs, xattr_count,
- 			    XATTR_SMACK_SUFFIX,
- 			    issp->smk_inode->smk_known,
--		     strlen(issp->smk_inode->smk_known));
-+		     strlen(issp->smk_inode->smk_known)
-+		))
-+			rc = -ENOMEM;
-+instant_inode:
-+	issp->smk_flags |= (SMK_INODE_INSTANT | transflag);
-+	return rc;
- }
+@@ -3249,6 +3254,7 @@ static struct gdsc cam_cc_ife_2_gdsc = {
+ 		.name = "cam_cc_ife_2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
- /**
-@@ -1337,13 +1349,23 @@ static int smack_inode_setxattr(struct mnt_idmap *idmap,
- 	int check_import = 0;
- 	int check_star = 0;
- 	int rc = 0;
-+	umode_t const i_mode = d_backing_inode(dentry)->i_mode;
+@@ -3261,6 +3267,7 @@ static struct gdsc cam_cc_ipe_0_gdsc = {
+ 		.name = "cam_cc_ipe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
- 	/*
- 	 * Check label validity here so import won't fail in post_setxattr
- 	 */
--	if (strcmp(name, XATTR_NAME_SMACK) == 0 ||
--	    strcmp(name, XATTR_NAME_SMACKIPIN) == 0 ||
--	    strcmp(name, XATTR_NAME_SMACKIPOUT) == 0) {
-+	if (strcmp(name, XATTR_NAME_SMACK) == 0) {
-+		/*
-+		 * UDS inode has fixed label
-+		 */
-+		if (S_ISSOCK(i_mode)) {
-+			rc = -EINVAL;
-+		} else {
-+			check_priv = 1;
-+			check_import = 1;
-+		}
-+	} else if (strcmp(name, XATTR_NAME_SMACKIPIN) == 0 ||
-+		   strcmp(name, XATTR_NAME_SMACKIPOUT) == 0) {
- 		check_priv = 1;
- 		check_import = 1;
- 	} else if (strcmp(name, XATTR_NAME_SMACKEXEC) == 0 ||
-@@ -1353,7 +1375,7 @@ static int smack_inode_setxattr(struct mnt_idmap *idmap,
- 		check_star = 1;
- 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
- 		check_priv = 1;
--		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
-+		if (!S_ISDIR(i_mode) ||
- 		    size != TRANS_TRUE_SIZE ||
- 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
- 			rc = -EINVAL;
-@@ -1484,12 +1506,15 @@ static int smack_inode_removexattr(struct mnt_idmap *idmap,
- 	 * Don't do anything special for these.
- 	 *	XATTR_NAME_SMACKIPIN
- 	 *	XATTR_NAME_SMACKIPOUT
-+	 *	XATTR_NAME_SMACK if S_ISSOCK (UDS inode has fixed label)
- 	 */
- 	if (strcmp(name, XATTR_NAME_SMACK) == 0) {
--		struct super_block *sbp = dentry->d_sb;
--		struct superblock_smack *sbsp = smack_superblock(sbp);
-+		if (!S_ISSOCK(d_backing_inode(dentry)->i_mode)) {
-+			struct super_block *sbp = dentry->d_sb;
-+			struct superblock_smack *sbsp = smack_superblock(sbp);
+@@ -3273,6 +3280,7 @@ static struct gdsc cam_cc_sbi_gdsc = {
+ 		.name = "cam_cc_sbi_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
--		isp->smk_inode = sbsp->smk_default;
-+			isp->smk_inode = sbsp->smk_default;
-+		}
- 	} else if (strcmp(name, XATTR_NAME_SMACKEXEC) == 0)
- 		isp->smk_task = NULL;
- 	else if (strcmp(name, XATTR_NAME_SMACKMMAP) == 0)
-@@ -3607,7 +3632,7 @@ static void smack_d_instantiate(struct dentry *opt_dentry, struct inode *inode)
- 		 */
+@@ -3285,6 +3293,7 @@ static struct gdsc cam_cc_sfe_0_gdsc = {
+ 		.name = "cam_cc_sfe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
- 		/*
--		 * UNIX domain sockets use lower level socket data.
-+		 * UDS inode has fixed label (*)
- 		 */
- 		if (S_ISSOCK(inode->i_mode)) {
- 			final = &smack_known_star;
-@@ -4872,6 +4897,11 @@ static int smack_secctx_to_secid(const char *secdata, u32 seclen, u32 *secid)
+@@ -3297,6 +3306,7 @@ static struct gdsc cam_cc_sfe_1_gdsc = {
+ 		.name = "cam_cc_sfe_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
  
- static int smack_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen)
- {
-+	/*
-+	 * UDS inode has fixed label. Ignore nfs label.
-+	 */
-+	if (S_ISSOCK(inode->i_mode))
-+		return 0;
- 	return smack_inode_setsecurity(inode, XATTR_SMACK_SUFFIX, ctx,
- 				       ctxlen, 0);
- }
 -- 
 2.51.0
 
