@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D927CC2D9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A879CC2214
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51A283193B96
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42E473067D23
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB736D4F5;
-	Tue, 16 Dec 2025 12:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43C0327BF3;
+	Tue, 16 Dec 2025 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoz+2vv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuBFuFRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C899336D4F2;
-	Tue, 16 Dec 2025 12:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C031ED84;
+	Tue, 16 Dec 2025 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887489; cv=none; b=Zzze8bHot/47OMX27JDLG3zGOGKAnBK2Jj2jh5uCHivtsgHgaZRUZ1TIw/geOTWSlXcsr+/552x7scpSOjkcQRJ+UtByFHocrh5em6+Y+ueSRIS9ot2ZJfAbNDJioQL4EfBcCbaarcZ7J8CRIk/A3C80mc9zpximdHhlEE2P6Yc=
+	t=1765883886; cv=none; b=YqUbWShBhiJkZP78znBjn5sQkFvMmSTb4FHvHYhLPG+yi6yC8dcZf+cz+xW2Gs2Mt9bXP93M2KoSeywhKkvhEYLGP+6nac2exIlB5Wn2YP1/3oLtb20escriDWdWAi7ZGudp3MMnyFfAyLahWt+CIIn3s2s+j7Ya6yBfWaGhG7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887489; c=relaxed/simple;
-	bh=rXxEmLhuirInjVztVIAqucjlOkuGfpNPoXQdwfWyxJ8=;
+	s=arc-20240116; t=1765883886; c=relaxed/simple;
+	bh=nK5i2n0uHsvUVf3G+j8zBngwS1zJsICxgs+YsVJECCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+b+4YdfX8SOAJGEzAEsOLIQWyNLpu9bvujEzokg59wfsSjxRhBBJLa7QsPyyOufnmIPXgm4fukUvAVbq7GRH6uQvA1/kNK1anIzhKxUG7c3gmBGVPNj0Cc+mnyxusIE1YlkOsssIJL+HrWGElyi7KEfEgfA2/EuDGO8dONNDOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoz+2vv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E123C4CEF1;
-	Tue, 16 Dec 2025 12:18:09 +0000 (UTC)
+	 MIME-Version; b=NrlWApRCJP4qMvgPXp8X7CMY+Uy0OHUoTpAdvNrc4ZtxxqY7ZI2ZevIDTr5vfFhe0kHW5A8P/Sn/IBD9ji2ugyWfPzpdSMrxdhMLCgrhaZLxVnaLzzVIVHKo5z+jdJ04kiHz5vpb/gQFr/0n4TSOgT7KcukZKrBoqohB5tghfBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuBFuFRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E4FC4CEF1;
+	Tue, 16 Dec 2025 11:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887489;
-	bh=rXxEmLhuirInjVztVIAqucjlOkuGfpNPoXQdwfWyxJ8=;
+	s=korg; t=1765883886;
+	bh=nK5i2n0uHsvUVf3G+j8zBngwS1zJsICxgs+YsVJECCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uoz+2vv1+xayz64gzzr4k7zvP7DShXxHVHr03y04kkjNo55jJ97aL9k/P5EvJZsTC
-	 Qvtm9fGr+KMrEe/aAnVChAu+skk+P38WdTGU6FZbWDOomwnMwD8jayj02fDibO2s2+
-	 WEGbqcXx4Zqx83NK4ZFyewu+An1scyEoRBLzfd4g=
+	b=CuBFuFREZeHEPlY8ixxruQiAIfEP2FZCTiGjQK9/u2KjBVskFxFAFYAp3C+0dmw1V
+	 Yco8i/Gx1nODm5cRBko8WAlR1q7Rkjf1Oz2rRDk3wgG1l5rTEFdSU+nMHPKSKBnYvr
+	 sAXli6w+8Ysu7szTD9EvnW77jaCclKe0r90M9SEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 203/614] ARM: dts: am33xx: Add missing serial console speed
+Subject: [PATCH 6.12 003/354] smack: deduplicate xattr setting in smack_inode_init_security()
 Date: Tue, 16 Dec 2025 12:09:30 +0100
-Message-ID: <20251216111408.733481388@linuxfoundation.org>
+Message-ID: <20251216111321.027680284@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,215 +60,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 9c95fc710b0d05f797db9e26d56524efa74f8978 ]
+[ Upstream commit 8e5d9f916a9678e2dcbed2289b87efd453e4e052 ]
 
-Without a serial console speed specified in chosen/stdout-path in the
-DTB, the serial console uses the default speed of the serial driver,
-unless explicitly overridden in a legacy console= kernel command-line
-parameter.
-
-After dropping "ti,omap3-uart" from the list of compatible values in DT,
-AM33xx serial ports can no longer be used with the legacy OMAP serial
-driver, but only with the OMAP-flavored 8250 serial driver (which is
-mutually-exclusive with the former).  However, replacing
-CONFIG_SERIAL_OMAP=y by CONFIG_SERIAL_8250_OMAP=y (with/without enabling
-CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP) may not be sufficient to restore
-serial console functionality: the legacy OMAP serial driver defaults to
-115200 bps, while the 8250 serial driver defaults to 9600 bps, causing
-no visible output on the serial console when no appropriate console=
-kernel command-line parameter is specified.
-
-Fix this for all AM33xx boards by adding ":115200n8" to
-chosen/stdout-path.  This requires replacing the "&uartN" reference by
-the corresponding "serialN" DT alias.
-
-Fixes: ca8be8fc2c306efb ("ARM: dts: am33xx-l4: fix UART compatible")
-Fixes: 077e1cde78c3f904 ("ARM: omap2plus_defconfig: Enable 8250_OMAP")
-Closes: https://lore.kernel.org/CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Tested-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Link: https://lore.kernel.org/r/63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Stable-dep-of: 78fc6a94be25 ("smack: fix bug: invalid label of unix socket file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-boneblue.dts       | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts     | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-evm.dts            | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-evmsk.dts          | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-guardian.dts       | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-icev2.dts          | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-pdu001.dts         | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-sl50.dts           | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+ security/smack/smack_lsm.c | 56 ++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 27 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-index ad1e60a9b6fde..b75dabfa56ae7 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -16,7 +16,7 @@ memory@80000000 {
- 	};
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index d2fca7b1c6374..586ba83c6e1be 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -997,6 +997,24 @@ smk_rule_transmutes(struct smack_known *subject,
+ 	return (may > 0) && (may & MAY_TRANSMUTE);
+ }
  
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
++static int
++xattr_dupval(struct xattr *xattrs, int *xattr_count,
++	     const char *name, const void *value, unsigned int vallen)
++{
++	struct xattr * const xattr = lsm_get_xattr_slot(xattrs, xattr_count);
++
++	if (!xattr)
++		return 0;
++
++	xattr->value = kmemdup(value, vallen, GFP_NOFS);
++	if (!xattr->value)
++		return -ENOMEM;
++
++	xattr->value_len = vallen;
++	xattr->name = name;
++	return 0;
++}
++
+ /**
+  * smack_inode_init_security - copy out the smack from an inode
+  * @inode: the newly created inode
+@@ -1014,7 +1032,6 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 	struct task_smack *tsp = smack_cred(current_cred());
+ 	struct inode_smack * const issp = smack_inode(inode);
+ 	struct smack_known *dsp = smk_of_inode(dir);
+-	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
+ 	bool trans_cred;
+ 	bool trans_rule;
  
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-index f579df4c2c540..d430f0bef1653 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-@@ -13,7 +13,7 @@ / {
- 	compatible = "ti,am335x-bone-blue", "ti,am33xx";
+@@ -1033,8 +1050,6 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 	 * Mark the inode as changed.
+ 	 */
+ 	if (trans_cred || (trans_rule && smk_inode_transmutable(dir))) {
+-		struct xattr *xattr_transmute;
+-
+ 		/*
+ 		 * The caller of smack_dentry_create_files_as()
+ 		 * should have overridden the current cred, so the
+@@ -1046,35 +1061,22 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
  
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
+ 		if (S_ISDIR(inode->i_mode)) {
+ 			issp->smk_flags |= SMK_INODE_TRANSMUTE;
+-			xattr_transmute = lsm_get_xattr_slot(xattrs,
+-							     xattr_count);
+-			if (xattr_transmute) {
+-				xattr_transmute->value = kmemdup(TRANS_TRUE,
+-								 TRANS_TRUE_SIZE,
+-								 GFP_NOFS);
+-				if (!xattr_transmute->value)
+-					return -ENOMEM;
+-
+-				xattr_transmute->value_len = TRANS_TRUE_SIZE;
+-				xattr_transmute->name = XATTR_SMACK_TRANSMUTE;
+-			}
++
++			if (xattr_dupval(xattrs, xattr_count,
++				XATTR_SMACK_TRANSMUTE,
++				TRANS_TRUE,
++				TRANS_TRUE_SIZE
++			))
++				return -ENOMEM;
+ 		}
+ 	}
  
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-index 648e97fe1dfd5..ae5bc58984972 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-@@ -12,7 +12,7 @@ / {
- 		     "ti,am33xx";
+ 	issp->smk_flags |= SMK_INODE_INSTANT;
  
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
+-	if (xattr) {
+-		const char *inode_label = issp->smk_inode->smk_known;
+-
+-		xattr->value = kstrdup(inode_label, GFP_NOFS);
+-		if (!xattr->value)
+-			return -ENOMEM;
+-
+-		xattr->value_len = strlen(inode_label);
+-		xattr->name = XATTR_SMACK_SUFFIX;
+-	}
+-
+-	return 0;
++	return xattr_dupval(xattrs, xattr_count,
++			    XATTR_SMACK_SUFFIX,
++			    issp->smk_inode->smk_known,
++		     strlen(issp->smk_inode->smk_known));
+ }
  
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-evm.dts b/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-index 20222f82f21bf..856fa1191ed24 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-@@ -23,7 +23,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts b/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-index eba888dcd60e7..d8baccdf8bc46 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-@@ -30,7 +30,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-index 4b070e634b281..6ce3a2d029eed 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-@@ -14,7 +14,7 @@ / {
- 	compatible = "bosch,am335x-guardian", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 		tick-timer = &timer2;
- 	};
- 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-icev2.dts b/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-index 6f0f4fba043b9..ba488bba6925d 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-@@ -22,7 +22,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart3;
-+		stdout-path = "serial3:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-index 06a352f98b220..476a6bdaf43f3 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-@@ -15,7 +15,7 @@ / {
- 	compatible = "myir,myd-am335x", "myir,myc-am335x", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	clk12m: clk12m {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-index d28d397288476..23caaaabf3513 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-@@ -147,7 +147,7 @@ simple-audio-card,codec {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-index c9ccb9de21ad7..9f611debc2090 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-@@ -21,7 +21,7 @@ / {
- 	compatible = "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart3;
-+		stdout-path = "serial3:115200n8";
- 	};
- 
- 	cpus {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-index 78ce860e59b3d..24d9f90fad01f 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-@@ -15,7 +15,7 @@ / {
- 	compatible = "ti,am335x-pocketbeagle", "ti,am335x-bone", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-index f3524e5ee43e2..1dc4e344efd63 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-@@ -25,7 +25,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
+ /**
 -- 
 2.51.0
 
