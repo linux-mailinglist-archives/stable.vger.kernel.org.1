@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-201884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DB2CC2899
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74480CC24F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C95DF316C41D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACC18307B9A4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFD034D4FD;
-	Tue, 16 Dec 2025 11:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEC3315D37;
+	Tue, 16 Dec 2025 11:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtRgkc6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PZCMOiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CBE34D4F1;
-	Tue, 16 Dec 2025 11:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0382BE7B2;
+	Tue, 16 Dec 2025 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886109; cv=none; b=srmSSn9V0SzgFHHsuu/rl4xEUw1jcNJMJniVZDW8iWdjpa1wG1dxKGYNkWcEyweraOtN78yladbuOoX7wjRbv+i0WUiL39/Knvlwy93vPfJLz9JrvhKj/mWvil1SdPr+XO8RLp1077XhLyOV1MaTWry+E5fkrGZoKAkJYkzB9h0=
+	t=1765884615; cv=none; b=G8MnRvUqlSdWdPMsAqmLsp450J1JXiDpVXIzd6ZJxS1EQJs389YPuGJqIIr2AbmdhLjTIBgBriJ4sfuKzux+kw0ro762cPGwPlbZIEZeJcAq1MLst7IooSxeUzcIZqlaQ9N3dz1OGzAUPd7rAE3l3Ea/HEE+t8rn/eXDnVQPCGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886109; c=relaxed/simple;
-	bh=/ijqNUC5S4GYxbc79tnnCNzuWw4OWArL+K2vGvyTM8Y=;
+	s=arc-20240116; t=1765884615; c=relaxed/simple;
+	bh=P1jytPO3CrdUXnDEbzydeO0rQ709vAkL5R9/ENqOnOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNWOIkoZIrAhQB8C8OVpIOhB7UQkNW3VtuiVahLJzAzVrYGhQPJOlT2omcDaCqCIro1aMcXrSrvWG8+33l8F+/nU4GbpW8HRXPOivo5VBF48/b2iT80+SfGjwZu7DptcdsXh024NBpTP2GfRygcnW/ITkVNhCqRKcT5D3wro07c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtRgkc6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C07EC16AAE;
-	Tue, 16 Dec 2025 11:55:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kZsGaNH0ESMM0pVn214k3vN8uGxwZtjaKqBI/yjcYysRBeN8nRidZjXzLkOenoeAIdsM9fZr2+UPYqlkQVD4OfMBV53n423vlsbCQw+NzoaxrgW4f0bHfjgM7Sw1u7MLHOQQduFEsTcfut76qQsaWkY3QPyL8Sd3Wi6/6XkMOYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PZCMOiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04449C4CEF1;
+	Tue, 16 Dec 2025 11:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886108;
-	bh=/ijqNUC5S4GYxbc79tnnCNzuWw4OWArL+K2vGvyTM8Y=;
+	s=korg; t=1765884615;
+	bh=P1jytPO3CrdUXnDEbzydeO0rQ709vAkL5R9/ENqOnOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtRgkc6VY50VaERhfqPvriRFGLnMII2++sCnsIKh8SNBPV/cK37Zl3Lh3B9CSUyfv
-	 CrojnJGmGLS+gs44UR0ywjEY7GJLXZM9ixQqxc5aheCXTzeZ/r6tV6k+KrsfZk3BxY
-	 DMdhDj0i9FNHMMngzLFbnx1uxlQpJezPatbLNoss=
+	b=1PZCMOiMtL+7aItOLo01mNT9AFyfULk1fB01fEZEvVb44ubZAsyUSjqiuCmtFCVWo
+	 pPgUCTLMfC3rLjtRByKln+5eHSEZrKLMAn1jL39x1PRktTYaLqiGJj5eEcQrinWvbN
+	 yt6AXvfTNQgCY/PwpLPKHB8vhTt5kKugr+9uZjJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Mentz <danielmentz@google.com>,
-	Ryan Huang <tzukui@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 340/507] iommu/arm-smmu-v3: Fix error check in arm_smmu_alloc_cd_tables
-Date: Tue, 16 Dec 2025 12:13:01 +0100
-Message-ID: <20251216111357.779128162@linuxfoundation.org>
+Subject: [PATCH 6.12 215/354] ASoC: tas2781: correct the wrong period
+Date: Tue, 16 Dec 2025 12:13:02 +0100
+Message-ID: <20251216111328.708528037@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Huang <tzukui@google.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 5941f0e0c1e0be03ebc15b461f64208f5250d3d9 ]
+[ Upstream commit 950167a99dfd27eeaf177092908c598a31c79a7e ]
 
-In arm_smmu_alloc_cd_tables(), the error check following the
-dma_alloc_coherent() for cd_table->l2.l1tab incorrectly tests
-cd_table->l2.l2ptrs.
+A wrong preiod at the end of the sentence was reported by one of my
+customers. Their thorough code review is greatly appreciated.
 
-This means an allocation failure for l1tab goes undetected, causing
-the function to return 0 (success) erroneously.
-
-Correct the check to test cd_table->l2.l1tab.
-
-Fixes: e3b1be2e73db ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_ctx_desc_cfg")
-Signed-off-by: Daniel Mentz <danielmentz@google.com>
-Signed-off-by: Ryan Huang <tzukui@google.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 49e2e353fb0d ("ASoC: tas2781: Add Calibration Kcontrols for Chromebook")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20251121234427.402-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ sound/soc/codecs/tas2781-i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 2a8b46b948f05..9780f40ba3e65 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1464,7 +1464,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
- 		cd_table->l2.l1tab = dma_alloc_coherent(smmu->dev, l1size,
- 							&cd_table->cdtab_dma,
- 							GFP_KERNEL);
--		if (!cd_table->l2.l2ptrs) {
-+		if (!cd_table->l2.l1tab) {
- 			ret = -ENOMEM;
- 			goto err_free_l2ptrs;
- 		}
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 2f100cbfdc41f..282907b035064 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -1258,7 +1258,7 @@ static int tasdevice_create_cali_ctrls(struct tasdevice_priv *priv)
+ 
+ 	/*
+ 	 * Alloc kcontrol via devm_kzalloc(), which don't manually
+-	 * free the kcontrol。
++	 * free the kcontrol.
+ 	 */
+ 	cali_ctrls = devm_kcalloc(priv->dev, nctrls,
+ 		sizeof(cali_ctrls[0]), GFP_KERNEL);
 -- 
 2.51.0
 
