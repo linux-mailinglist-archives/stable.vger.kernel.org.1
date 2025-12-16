@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-201951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F5CCC2DA0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620A7CC24A9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2359A30802E8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 626413020179
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2D9347BAF;
-	Tue, 16 Dec 2025 11:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276B73431EA;
+	Tue, 16 Dec 2025 11:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6uNQY5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjpPzSHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B066346FD0;
-	Tue, 16 Dec 2025 11:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7CB221F0C;
+	Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886337; cv=none; b=Iwedra5By5PbQI3FAmv0rmTTZPVPDcfv6ZVems/5QKJ5n+LPM89j1wrE9kD1pOT+sL3s3asPWBGntj4hPp6BEn4iuKzQbCGE9X4kZoYCgN/jx5qIKhLwjSyGQJdMhR90jAJO7f6jn4SyZvNfYQsFx//eA6u3q53oArueHgkgSk0=
+	t=1765884841; cv=none; b=qX/lKrLDfDnUYAudIofNzpXOaMFQvy7LdAbmh+gp/1uKx454L/LkP6ia4IGnyEa9u4jou4VgrzLT6lrN4xX7HDD9A6iYRJHHd7s00gCLG0f8T37dOMaNpXZy5pppKldpzmCAlxPnw1x9ymXLV/408df4pWSMy83rBwL969DzE2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886337; c=relaxed/simple;
-	bh=OFmttU2Q0RD2tw/XfESS4NI08AijQJtU2Fdw40kdx3Q=;
+	s=arc-20240116; t=1765884841; c=relaxed/simple;
+	bh=NHDkJtnHTJRSWH7coEhSNq7cUXhwoIS2GgA4LL/DL80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYzxIBs0byeNcrdOUkQYrwFvsZo5kOZC0b6SbJfQ59PkUJpTH0gPz3Lib5Vd2Ti1uDxD/l3xFPt+aC+cyk7t5C8hkvcg9/7x0iHuLSumQo5UVggwuoEg0rqYl5/U063mHSL1Zty2B/tyovoMmJwuLjLfC5WiUyMfQMYYWcH8QPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6uNQY5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD888C4CEF5;
-	Tue, 16 Dec 2025 11:58:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZVK0LNiu5GWNvckMQc0FQs842MELOZGHaiFPkbWkSMaDc2JILqYCYg3UuUIxNLoQEqk+X4PWbFAZYRFShLZ9if76OC9x4RvxV1bmhZ+88GAV0fABpFQVRB+kdr2WjjzOuI2WYMhJN+n7on5n4ZTDd3B0NmerM7QxdZWpTiGAgTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjpPzSHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20243C4CEF1;
+	Tue, 16 Dec 2025 11:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886337;
-	bh=OFmttU2Q0RD2tw/XfESS4NI08AijQJtU2Fdw40kdx3Q=;
+	s=korg; t=1765884841;
+	bh=NHDkJtnHTJRSWH7coEhSNq7cUXhwoIS2GgA4LL/DL80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6uNQY5j4sKDUO5WzhK8IfPoRU2UKQKSDMqNjRKN1+//J7mb0cn6zaWZZ9KbAhjZ4
-	 iW/3PqP0m66EpPQnHfRqY3pLUSb/upncDdpfQFNeqC+zUqJXU8PSDdcTCQsgesGZy9
-	 hes9tuOeI+CYXJTJSw65qGHj9VnHGQUip/i9cv74=
+	b=SjpPzSHkGJ+/1ol2r66sJcZ/wPMgM3bh8gcaLJK80AT/XVdiJdODJVF2LOlP8RAHC
+	 c464+hS7GlF2kmk4DuLAp9e2Yrb4CHKHaO5LhsXVnO6rM7mqURMX5xKxykF/qzZu3b
+	 0/RFbeNkNhsljc9Cy0ESQ0wcBPOmSOn6UhkkUKh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lukasz Majewski <lukma@denx.de>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 407/507] md/raid5: fix IO hang when array is broken with IO inflight
-Date: Tue, 16 Dec 2025 12:14:08 +0100
-Message-ID: <20251216111400.208928503@linuxfoundation.org>
+Subject: [PATCH 6.12 282/354] net: hsr: create an API to get hsr port type
+Date: Tue, 16 Dec 2025 12:14:09 +0100
+Message-ID: <20251216111331.130795573@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,103 +62,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
 
-[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
+[ Upstream commit a0244e76213980f3b9bb5d40b0b6705fcf24230d ]
 
-Following test can cause IO hang:
+Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1 ("net:
+hsr: Provide RedBox support (HSR-SAN)"), we see that different port
+types require different settings for hardware offload, which was not the
+case before when we only had HSR_PT_SLAVE_A and HSR_PT_SLAVE_B. But
+there is currently no way to know which port is which type, so create
+the hsr_get_port_type() API function and export it.
 
-mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
-sleep 5
-echo 1 > /sys/block/sda/device/delete
-echo 1 > /sys/block/sdb/device/delete
-echo 1 > /sys/block/sdc/device/delete
-echo 1 > /sys/block/sdd/device/delete
+When hsr_get_port_type() is called from the device driver, the port can
+must be found in the HSR port list. An important use case is for this
+function to work from offloading drivers' NETDEV_CHANGEUPPER handler,
+which is triggered by hsr_portdev_setup() -> netdev_master_upper_dev_link().
+Therefore, we need to move the addition of the hsr_port to the HSR port
+list prior to calling hsr_portdev_setup(). This makes the error
+restoration path also more similar to hsr_del_port(), where
+kfree_rcu(port) is already used.
 
-dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
-
-Root cause:
-
-1) all disks removed, however all rdevs in the array is still in sync,
-IO will be issued normally.
-
-2) IO failure from sda, and set badblocks failed, sda will be faulty
-and MD_SB_CHANGING_PENDING will be set.
-
-3) error recovery try to recover this IO from other disks, IO will be
-issued to sdb, sdc, and sdd.
-
-4) IO failure from sdb, and set badblocks failed again, now array is
-broken and will become read-only.
-
-5) IO failure from sdc and sdd, however, stripe can't be handled anymore
-because MD_SB_CHANGING_PENDING is set:
-
-handle_stripe
- handle_stripe
- if (test_bit MD_SB_CHANGING_PENDING)
-  set_bit STRIPE_HANDLE
-  goto finish
-  // skip handling failed stripe
-
-release_stripe
- if (test_bit STRIPE_HANDLE)
-  list_add_tail conf->hand_list
-
-6) later raid5d can't handle failed stripe as well:
-
-raid5d
- md_check_recovery
-  md_update_sb
-   if (!md_is_rdwr())
-    // can't clear pending bit
-    return
- if (test_bit MD_SB_CHANGING_PENDING)
-  break;
-  // can't handle failed stripe
-
-Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
-fix this problem by skip this checking for read-only array.
-
-Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
-Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
+Link: https://patch.msgid.link/20251130131657.65080-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/if_hsr.h |  9 +++++++++
+ net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
+ net/hsr/hsr_slave.c    |  7 ++++---
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 771ac1cbab995..8f45de227f1c4 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -4938,7 +4938,8 @@ static void handle_stripe(struct stripe_head *sh)
- 		goto finish;
+diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
+index d7941fd880329..f4cf2dd36d193 100644
+--- a/include/linux/if_hsr.h
++++ b/include/linux/if_hsr.h
+@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
+ extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
+ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ 				     enum hsr_port_type pt);
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type);
+ #else
+ static inline bool is_hsr_master(struct net_device *dev)
+ {
+@@ -59,6 +61,13 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
++
++static inline int hsr_get_port_type(struct net_device *hsr_dev,
++				    struct net_device *dev,
++				    enum hsr_port_type *type)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_HSR */
  
- 	if (s.handle_bad_blocks ||
--	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
-+	    (md_is_rdwr(conf->mddev) &&
-+	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
- 		set_bit(STRIPE_HANDLE, &sh->state);
- 		goto finish;
+ #endif /*_LINUX_IF_HSR_H_*/
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index c568d91764235..386aba50930a3 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -689,6 +689,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ }
+ EXPORT_SYMBOL(hsr_get_port_ndev);
+ 
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++		      enum hsr_port_type *type)
++{
++	struct hsr_priv *hsr = netdev_priv(hsr_dev);
++	struct hsr_port *port;
++
++	rcu_read_lock();
++	hsr_for_each_port(hsr, port) {
++		if (port->dev == dev) {
++			*type = port->type;
++			rcu_read_unlock();
++			return 0;
++		}
++	}
++	rcu_read_unlock();
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL(hsr_get_port_type);
++
+ /* Default multicast address for HSR Supervision frames */
+ static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
+ 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index 9ac7cf0835118..70472726c6049 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -203,14 +203,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	port->dev = dev;
+ 	port->type = type;
+ 
++	list_add_tail_rcu(&port->port_list, &hsr->ports);
++
+ 	if (type != HSR_PT_MASTER) {
+ 		res = hsr_portdev_setup(hsr, dev, port, extack);
+ 		if (res)
+ 			goto fail_dev_setup;
  	}
-@@ -6753,7 +6754,8 @@ static void raid5d(struct md_thread *thread)
- 		int batch_size, released;
- 		unsigned int offset;
  
--		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		if (md_is_rdwr(mddev) &&
-+		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
- 			break;
+-	list_add_tail_rcu(&port->port_list, &hsr->ports);
+-
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	netdev_update_features(master->dev);
+ 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+@@ -218,7 +218,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	return 0;
  
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ fail_dev_setup:
+-	kfree(port);
++	list_del_rcu(&port->port_list);
++	kfree_rcu(port, rcu);
+ 	return res;
+ }
+ 
 -- 
 2.51.0
 
