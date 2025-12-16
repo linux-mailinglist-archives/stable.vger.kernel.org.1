@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC322CC21CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A38CC3BD8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 566E5302CAE9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B1B230F6590
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147C533B6EA;
-	Tue, 16 Dec 2025 11:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFA5346A1B;
+	Tue, 16 Dec 2025 11:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRtqtRkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz1/vzx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47F63358B0;
-	Tue, 16 Dec 2025 11:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596733A6F4;
+	Tue, 16 Dec 2025 11:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883918; cv=none; b=BpDIROFEtchnRQzPoY+FaiDmBybv/J7NSKNhivxsjhdoAux2e01vkvQagm4bc/kdd8j4gBRnINB5zIJUBwUoXpr/sDQgvyYx1btZGLkDYaGSdb5zn2zfChu6nO7V+5YSDZ/eZeBU3IoQbON2zHexr8AdCPnYmS5tRSWcHvy4kK8=
+	t=1765885526; cv=none; b=LSq+CkIexZZq5mJHnA2gyBMsi0gXPcos3TjCmk5+3XAzte3T+pKv+hGn4sGwSTIjpbANhE45R5EKBEj2JQ7rBq1RY0/roWlbKsrHzGHPIopbqqCG76R4NQpGJ6+A+54rhQ7tt9vlh2+q1v5w5Qq/lif4AKB/odzWjf1LNYzbwDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883918; c=relaxed/simple;
-	bh=RU5jHjNsplbT3KXwJBKCoOy9FklilujuUAyvv6KAgPw=;
+	s=arc-20240116; t=1765885526; c=relaxed/simple;
+	bh=PUiN6cS6ygd+uvEbfESeFROI2co6dD/bNlKPgSWxm2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LGAxZBv48ZZp0ng+Fbrq7en5ZEjCz0j+FxhOIEFxtaXI5K641FiDl5/8tZRddvsPYvwDKMB8fbjLB1/qV2C65DXHFwB5V2ZhBsqT+Tv5WUigllfuHxbROu3aq56k4YzSZWfSp1fmhYnEpxMlKT1IzttADeHy+gZ6bV2NRJjjLmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRtqtRkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09463C4CEF1;
-	Tue, 16 Dec 2025 11:18:37 +0000 (UTC)
+	 MIME-Version; b=qRqblVrnIeqEWpITIlpP3DGo57uYZpgy+XkrGR1Ua/fCYajeTWw1gSbw9MtB7vK7FORuDVYnIFIDnfmpypfqpxxRlBuxltfN9a2b2maELS6k4gaAt4mCrO2+Aylo4cM6V4ii9j7NTPp3Lycp/CqohXDNW3DoHC9tUiUwvrQs12s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz1/vzx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACDDC4CEF1;
+	Tue, 16 Dec 2025 11:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883918;
-	bh=RU5jHjNsplbT3KXwJBKCoOy9FklilujuUAyvv6KAgPw=;
+	s=korg; t=1765885526;
+	bh=PUiN6cS6ygd+uvEbfESeFROI2co6dD/bNlKPgSWxm2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRtqtRkUDngJ25Rz7z7GRK4CFP7hEQ/wFRCxqg3mCyCD0A0DDejc529jZzaB70rhp
-	 jxO1UFHeo+OiV1BgDsbsZOj8NpMWeithe2zabux6/PWKPpceJWuv6rkIEnyn/qt2C0
-	 lbCUEfWX8Kcu+AXIsAa8ERJ8uTSnojEYO3FYb2eI=
+	b=Wz1/vzx/BQMOmS5wcehe9oc81ZW/OjiEIEEflurVy/liDECBt5iaF1rttjh12TcoJ
+	 YliAf6uQoHY4j3hHkR3IYCUZd/61zCphQJan/7GC7H651UEy3oMaRcLEfpPf/P1/Ic
+	 lR1gHB/0lPXMLqx/1J0BW1fUQFilUXhcYQlOWQkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Ketil Johnsen <ketil.johnsen@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/354] ntfs3: fix uninit memory after failed mi_read in mi_format_new
+Subject: [PATCH 6.17 164/507] drm/panthor: Fix UAF race between device unplug and FW event processing
 Date: Tue, 16 Dec 2025 12:10:05 +0100
-Message-ID: <20251216111322.295188376@linuxfoundation.org>
+Message-ID: <20251216111351.460625720@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Ketil Johnsen <ketil.johnsen@arm.com>
 
-[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
+[ Upstream commit 7051f6ba968fa69918d72cc26de4d6cf7ea05b90 ]
 
-Fix a KMSAN un-init bug found by syzkaller.
+The function panthor_fw_unplug() will free the FW memory sections.
+The problem is that there could still be pending FW events which are yet
+not handled at this point. process_fw_events_work() can in this case try
+to access said freed memory.
 
-ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
-uptodate. We do not bring the buffer uptodate before setting it as
-uptodate. If the buffer were to not be uptodate, it could mean adding a
-buffer with un-init data to the mi record. Attempting to load that record
-will trigger KMSAN.
+Simply call disable_work_sync() to both drain and prevent future
+invocation of process_fw_events_work().
 
-Avoid this by setting the buffer as uptodate, if it’s not already, by
-overwriting it.
-
-Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
-Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
-Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
+Fixes: de85488138247 ("drm/panthor: Add the scheduler logical block")
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patch.msgid.link/20251027140217.121274-1-ketil.johnsen@arm.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fsntfs.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 6c73e93afb478..57933576212bb 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -1373,7 +1373,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
- 				}
- 				if (buffer_locked(bh))
- 					__wait_on_buffer(bh);
--				set_buffer_uptodate(bh);
-+
-+				lock_buffer(bh);
-+				if (!buffer_uptodate(bh))
-+				{
-+					memset(bh->b_data, 0, blocksize);
-+					set_buffer_uptodate(bh);
-+				}
-+				unlock_buffer(bh);
- 			} else {
- 				bh = ntfs_bread(sb, block);
- 				if (!bh) {
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 552542f70cabd..99ce0948f2bae 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -3826,6 +3826,7 @@ void panthor_sched_unplug(struct panthor_device *ptdev)
+ 	struct panthor_scheduler *sched = ptdev->scheduler;
+ 
+ 	cancel_delayed_work_sync(&sched->tick_work);
++	disable_work_sync(&sched->fw_events_work);
+ 
+ 	mutex_lock(&sched->lock);
+ 	if (sched->pm.has_ref) {
 -- 
 2.51.0
 
