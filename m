@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88575CC238E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6D5CC3062
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CAE68301CDBB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECD5B30576A9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041C832860D;
-	Tue, 16 Dec 2025 11:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE871376BEB;
+	Tue, 16 Dec 2025 12:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+OqlU7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwwzKlc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DF231ED9A;
-	Tue, 16 Dec 2025 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D80376BE8;
+	Tue, 16 Dec 2025 12:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884512; cv=none; b=Notg3e/NuV0m46CLnLPCnsrHo8gEcezsMfoVP0fRHXg/QR9kfLTggNKmaFk6iLjhurlGgCkO8JardbhmhyBrkKWM+B15Fb5HJiFXks4xeEdqxbsSZGwxZdBnLzX/o0+YIMifGXFYIFgpMeUcHVnsfkQz2n7fxWiY8+66FOiI6Ms=
+	t=1765888075; cv=none; b=nXFbMZhZPzN0VMQYNft6KzYfbydn9kjF5rd3qQn6BnXEJejymGJZ1ekGUcql2BGIrXi7WQ5pAdG7YMq6XxUpEkRL6dA31qLTSit0q56l4ZvIX4SsGAuGe62lzcJhXarBRyY7numB+v5vt4ZM9WppbhFoj0dy0WWasJBr2S2ncDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884512; c=relaxed/simple;
-	bh=J0buNbhCdodVZBU+/MBR6C+ayutUFc+r5/ONxCldvqo=;
+	s=arc-20240116; t=1765888075; c=relaxed/simple;
+	bh=Xsx6Yss8PvMqK98fqPn8svVK0afpa2trf9fzLtq/U+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKIg4m8e4EqNGeGCZm1w4dZ86LydtenzItCN9KKOY6tqrfxfnDteANWYGhFHupNYmbbr1tob5jTXxPG40RrTVofpVKWbvq1Iovrb0h36fZ6wdw60kcaHjgdiuwhS0JxPWSaFZlMbuIHWL60w4XgSNBgMtfgT9KU39shhqqIhx+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+OqlU7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB83C4CEF1;
-	Tue, 16 Dec 2025 11:28:31 +0000 (UTC)
+	 MIME-Version; b=E2wzE9vi0Cg/y0X3HPTnvu5hqmBTZVXvyvSaEL7WeZ3Kfvrbm6tOf+YqrqVxU4Ls7enEHllgHjhUau0Cta2hUKwL7MIauKSuguajIEJES3temOoYx9m43iQ2YtpphVB+Kxh94eLdxECZGvSNhGNQFcHcycfoZ37liUyXtMHmWAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwwzKlc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB1FC4CEF1;
+	Tue, 16 Dec 2025 12:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884512;
-	bh=J0buNbhCdodVZBU+/MBR6C+ayutUFc+r5/ONxCldvqo=;
+	s=korg; t=1765888075;
+	bh=Xsx6Yss8PvMqK98fqPn8svVK0afpa2trf9fzLtq/U+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+OqlU7a1F+3LI8h7Bcvo/Cu5HNgHIMpKpmznEr08DYG53QZGUQJOJxTl7lOyt0De
-	 Y3o0wl9DQckVfT8QuWcVAMXQhSim+Jk64eIg+Rqb2zFoIofZMH75XoDC2rxFSrAUKE
-	 3cSphMu+/fDzpfdI0pKJdt/IayNsYfn15RZWsqDc=
+	b=PwwzKlc7Hki5RivUvyhV2hCpWEYsEL7j/tw1pWsIlhoKTZ5QyL1gItas3ky7IEbXd
+	 7fjU/s3uy5cB65QuKDZwNEiTXHjh7itnPXC/lXC5YqTVZb2ouXAkhwfoC4+psoujuQ
+	 FUi1NG3BL44fYNGbNjHgGIu7d96Lrc5L0JGv1npw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Ria Thomas <ria.thomas@morsemicro.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 217/354] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
+Subject: [PATCH 6.18 417/614] wifi: ieee80211: correct FILS status codes
 Date: Tue, 16 Dec 2025 12:13:04 +0100
-Message-ID: <20251216111328.780306106@linuxfoundation.org>
+Message-ID: <20251216111416.480068302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinh Nguyen <dinguyen@kernel.org>
+From: Ria Thomas <ria.thomas@morsemicro.com>
 
-[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
+[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
 
-Fix this warning that was generated from "make htmldocs":
+The FILS status codes are set to 108/109, but the IEEE 802.11-2020
+spec defines them as 112/113. Update the enum so it matches the
+specification and keeps the kernel consistent with standard values.
 
-WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
-not described in 'stratix10_svc'
-
-Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
+Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
+Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 554b6b95187b4..4627a00a5590b 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
- /**
-  * struct stratix10_svc - svc private data
-  * @stratix10_svc_rsu: pointer to stratix10 RSU device
-+ * @intel_svc_fcs: pointer to the FCS device
-  */
- struct stratix10_svc {
- 	struct platform_device *stratix10_svc_rsu;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index ddff9102f6332..1f4679092e69d 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3594,8 +3594,8 @@ enum ieee80211_statuscode {
+ 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
+ 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
+ 	/* 802.11ai */
+-	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
+-	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
++	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
++	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
+ 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
+ 	WLAN_STATUS_SAE_PK = 127,
+ 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
 -- 
 2.51.0
 
