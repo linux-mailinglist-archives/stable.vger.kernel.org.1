@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FF5CC27EB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2FCCC2493
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 64800302E7D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCAD83028328
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E2834FF48;
-	Tue, 16 Dec 2025 11:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCBA343D64;
+	Tue, 16 Dec 2025 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dokTi+Jc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5AdrzrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDCA34F49F;
-	Tue, 16 Dec 2025 11:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B483342507;
+	Tue, 16 Dec 2025 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886156; cv=none; b=dAnkMwFB0gjZczGejw4b8k14j3uzNNqh7SUAlCO29i6dAk9rlxED22lWbHEe0HzNgYp8pmsASy/iEcLRFTyxwuGLHcaehr1/CNhx0Ykt7d+XuMXEb7vIy5Sq/mWqCMrfYR39tlEnzUlyhktbem8ntcRCqxdVwQCzl4gxbHaPIxg=
+	t=1765884446; cv=none; b=UnpGZi+AmeiYe8i9Pmgh0Z9OjFFScHBuqMxMxjyQ7jFbgHeRTMHtNHq3Ngnl8JaoN3Ou0UrUh8BauWy0CrDMvF58dupmYCVtJzOPXYRTaZ8ijGwJDnGCaeKr8VPUNJN3K87PuMuSgldBY+Ik2Jek0tTehlfT556oQ4gQkFBQV4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886156; c=relaxed/simple;
-	bh=n12f45r9xq46BwI8crqu5bOdjUlIJsm5Rlb+LuB1dSc=;
+	s=arc-20240116; t=1765884446; c=relaxed/simple;
+	bh=HKH3b6SYn0ozyjgvMrBMbNqzxP7weY1hoL7IMGZko3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O08KktGb/HX7eOr1sZoR6ZjDhTf0340HidmS7HS+hKKxLH/GVcohs3/lMak1hKNWAi0ztVLNgy9FpXcPvLVuv38sdW94don/8HBe24MFVHY7LyoQvg/Z5axdtt1lWqObayrgr8KooBn0nTjMGom6e0mKOxnXPBoV5gM70vnX9zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dokTi+Jc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FF3C4CEF1;
-	Tue, 16 Dec 2025 11:55:55 +0000 (UTC)
+	 MIME-Version; b=uzaA9xfUg6+AqpRmvarEfwXej1GEVEUEnxt4iDlrn+UMdbmT9j9DX6F/MnvwLfh6/rvXDLK739IKiobSnY1IsHLlKQBK3dTFOgi37jkL3wodqC86fPVdFUGDt/BUUb2JRbSc6TrqkTh6qmEg8KT4PoMdOcNrWHuSLoUDHq7TZHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5AdrzrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E65C4CEF5;
+	Tue, 16 Dec 2025 11:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886156;
-	bh=n12f45r9xq46BwI8crqu5bOdjUlIJsm5Rlb+LuB1dSc=;
+	s=korg; t=1765884446;
+	bh=HKH3b6SYn0ozyjgvMrBMbNqzxP7weY1hoL7IMGZko3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dokTi+Jc6w0GUBu8HuqkJSIkN8ZuY40QoepWMqEMAgFA+F9EuRkis2C+3DvtTP9FF
-	 ZyXkP53eqxWJibrivUGAGgWEXCcg2hcpB7foskKoEVJRwYCFKoN4VBNeKVT9syWAUX
-	 BfIhaWrQAYJZekQEY2lZJIk2M7Jf8UnHmwxvz1fk=
+	b=u5AdrzrIXu6lfG5vrN2FgD+Ml0+jDckZVcP4V3WPKwUhaVxTf4MJDALWLPvn/GY+/
+	 D5xMZs8WZsPr/wdh4iPRZOK5lIEVzgjTp59oeT4FKSi05J0eJHYofuZUKr2ZjqosFM
+	 /Bnz3vPZk6VPjashXPXSwy06/W+WhSk4UaAt+8iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Algea Cao <algea.cao@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 322/507] wifi: mt76: mt7996: fix null pointer deref in mt7996_conf_tx()
+Subject: [PATCH 6.12 196/354] phy: rockchip: samsung-hdptx: Prevent Inter-Pair Skew from exceeding the limits
 Date: Tue, 16 Dec 2025 12:12:43 +0100
-Message-ID: <20251216111357.132574675@linuxfoundation.org>
+Message-ID: <20251216111328.012386394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 79277f8ad15ec5f255ed0e1427c7a8a3e94e7f52 ]
+[ Upstream commit 51023cf6cc5db3423dea6620746d9087e336e024 ]
 
-If a link does not have an assigned channel yet, mt7996_vif_link returns
-NULL. We still need to store the updated queue settings in that case, and
-apply them later.
-Move the location of the queue params to within struct mt7996_vif_link.
+Fixup PHY deskew FIFO to prevent the phase of D2 lane going ahead of
+other lanes.  It's worth noting this might only happen when dealing with
+HDMI 2.0 rates.
 
-Fixes: c0df2f0caa8d ("wifi: mt76: mt7996: prepare mt7996_mcu_set_tx for MLO support")
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250929111723.52486-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Co-developed-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251028-phy-hdptx-fixes-v1-3-ecc642a59d94@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 ++++++-
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 4693d376e64ee..016b7e02d969d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -650,8 +650,8 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	       unsigned int link_id, u16 queue,
- 	       const struct ieee80211_tx_queue_params *params)
- {
--	struct mt7996_dev *dev = mt7996_hw_dev(hw);
--	struct mt7996_vif_link *mlink = mt7996_vif_link(dev, vif, link_id);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
- 	static const u8 mq_to_aci[] = {
- 		[IEEE80211_AC_VO] = 3,
- 		[IEEE80211_AC_VI] = 2,
-@@ -660,7 +660,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	};
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index d287e818fb03c..3d0950048ef96 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -553,13 +553,9 @@ static const struct reg_sequence rk_hdtpx_common_lane_init_seq[] = {
  
- 	/* firmware uses access class index */
--	mlink->queue_params[mq_to_aci[queue]] = *params;
-+	link_info->queue_params[mq_to_aci[queue]] = *params;
- 	/* no need to update right away, we'll get BSS_CHANGED_QOS */
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 0d688ec5a8163..07b962e235850 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3438,6 +3438,9 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- #define WMM_PARAM_SET		(WMM_AIFS_SET | WMM_CW_MIN_SET | \
- 				 WMM_CW_MAX_SET | WMM_TXOP_SET)
- 	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	unsigned int link_id = link_conf->link_id;
-+	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
- 	struct {
- 		u8 bss_idx;
- 		u8 __rsv[3];
-@@ -3455,7 +3458,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 	skb_put_data(skb, &hdr, sizeof(hdr));
- 
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
--		struct ieee80211_tx_queue_params *q = &link->queue_params[ac];
-+		struct ieee80211_tx_queue_params *q = &link_info->queue_params[ac];
- 		struct edca *e;
- 		struct tlv *tlv;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 048d9a9898c6e..498a2eefd7a8a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -246,16 +246,21 @@ struct mt7996_vif_link {
- 	struct mt7996_sta_link msta_link;
- 	struct mt7996_phy *phy;
- 
--	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
- 	struct cfg80211_bitrate_mask bitrate_mask;
- 
- 	u8 mld_idx;
+ static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
+ 	REG_SEQ0(LANE_REG(0312), 0x00),
+-	REG_SEQ0(LANE_REG(031e), 0x00),
+ 	REG_SEQ0(LANE_REG(0412), 0x00),
+-	REG_SEQ0(LANE_REG(041e), 0x00),
+ 	REG_SEQ0(LANE_REG(0512), 0x00),
+-	REG_SEQ0(LANE_REG(051e), 0x00),
+ 	REG_SEQ0(LANE_REG(0612), 0x00),
+-	REG_SEQ0(LANE_REG(061e), 0x08),
+ 	REG_SEQ0(LANE_REG(0303), 0x2f),
+ 	REG_SEQ0(LANE_REG(0403), 0x2f),
+ 	REG_SEQ0(LANE_REG(0503), 0x2f),
+@@ -572,6 +568,11 @@ static const struct reg_sequence rk_hdtpx_tmds_lane_init_seq[] = {
+ 	REG_SEQ0(LANE_REG(0406), 0x1c),
+ 	REG_SEQ0(LANE_REG(0506), 0x1c),
+ 	REG_SEQ0(LANE_REG(0606), 0x1c),
++	/* Keep Inter-Pair Skew in the limits */
++	REG_SEQ0(LANE_REG(031e), 0x02),
++	REG_SEQ0(LANE_REG(041e), 0x02),
++	REG_SEQ0(LANE_REG(051e), 0x02),
++	REG_SEQ0(LANE_REG(061e), 0x0a),
  };
  
-+struct mt7996_vif_link_info {
-+	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
-+};
-+
- struct mt7996_vif {
- 	struct mt7996_vif_link deflink; /* must be first */
- 	struct mt76_vif_data mt76;
- 
-+	struct mt7996_vif_link_info link_info[IEEE80211_MLD_MAX_NUM_LINKS];
-+
- 	u8 mld_group_idx;
- 	u8 mld_remap_idx;
- };
+ static bool rk_hdptx_phy_is_rw_reg(struct device *dev, unsigned int reg)
 -- 
 2.51.0
 
