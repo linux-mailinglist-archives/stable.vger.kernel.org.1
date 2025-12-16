@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAB2CC3BA8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:48:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE75CC42E8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2BF314568D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60CE9303F2D4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF15637831D;
-	Tue, 16 Dec 2025 12:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D59C341648;
+	Tue, 16 Dec 2025 11:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR1YgHlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muDCRbzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FE8378319;
-	Tue, 16 Dec 2025 12:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC682341065;
+	Tue, 16 Dec 2025 11:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888247; cv=none; b=SCegjtTbxKlhqel86riFktwONGkCvNdZ0QpY094b/ul1qleOxMt66WwSJFzXOG9IZWz76vhETj2WB6xSiYxJ+a0YryUJEzT5ncRy6LZS2mfnqS53UOcvNUUoUw4GC29IhQIz78b+SaMhPwFd/HmjXzdn5uiq465mGhOsHUxY6LY=
+	t=1765886317; cv=none; b=LxfBAeJ3JR1EAEyGNDYo+Lgs0r1g0/C0msRZGHSy35GVXxVOdCmMsr7/v1LmsheEuX0YHcbtDQHAljIWDpoUvQu4VH5C9bgCCbyqAGxeI8tsRjJE99CKA+B3G4KA9MFqCHv/Q6zqBo5Ze6Dp1/3rKbgeU1d49qqbLgdNood03+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888247; c=relaxed/simple;
-	bh=2CXTmNpIQBVjd5vinhsuZDSkC7p6CgjMefUR7O6rixw=;
+	s=arc-20240116; t=1765886317; c=relaxed/simple;
+	bh=d6fXh+5DfEBM0Wcu8FY4iC4xRAaGEX1TZupRPE5O4Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nctVzyw5u74bhlFopTY1rZsiOk6AfG2awVN/PsJEGgcN3uzHY89Zav5BVclZ3UmwbBaAI2rkJTytCA55z8CfKWAL+gWZNR6fr+qdx8VET3Xn6LkDA2nETP+DqnGtQRThcNzFlsWO4j5713RScT9EtRjdoEezlBvWzLcev00mNMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR1YgHlH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA9CC4CEF5;
-	Tue, 16 Dec 2025 12:30:46 +0000 (UTC)
+	 MIME-Version; b=CxMAHEzB1dS1nSJhBh+NS53fO5CujkS+E0VtnuWvj7/kGD6XiYzF/jW0qTC6BnBFVJyL8aTMOxP2iBpJKpoSq968KjvZ/BzZg+62zZYwu80MH0zG95tnZpjwuQ9ZnkdWT0MHlDSqeP452vzR+IZI7c6HP1xzhbxe6gP7ngGQ80I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muDCRbzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC10C4CEF1;
+	Tue, 16 Dec 2025 11:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888247;
-	bh=2CXTmNpIQBVjd5vinhsuZDSkC7p6CgjMefUR7O6rixw=;
+	s=korg; t=1765886316;
+	bh=d6fXh+5DfEBM0Wcu8FY4iC4xRAaGEX1TZupRPE5O4Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR1YgHlHswuANnjRd72qtI2/A1O/ZPiwRCDNJ8B7PItSDRgXJjT+TwDyrOK9rl6dy
-	 C+SnfUrDS7iAv8tcfLfdEHixxcSDPZVizZb2SvL0niLbuUzmD+E+CyStqTSQDF/wbq
-	 1u5QGX8as6b6AnWaDz/XHUZznZeEimPF4weoiqfc=
+	b=muDCRbzlBACMDh7Kpef9kZLD0Y6vofXGliVRNri/yHTQ4sZYCUR7ICg2UUopj+DNN
+	 F1a4MSA5oW8RX2uZAjuIc4LvMPmqBwcOufvAzL8PwPCS1KdQnOKY5mcYN5oKNIAbQq
+	 PvvQ+zZnASTqpnLZHKlI3wOxKqzXTlLBcwQ1+fiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 476/614] ARM: dts: samsung: exynos4210-trats: turn off SDIO WLAN chip during system suspend
+Subject: [PATCH 6.17 402/507] net: netpoll: initialize work queue before error checks
 Date: Tue, 16 Dec 2025 12:14:03 +0100
-Message-ID: <20251216111418.616575647@linuxfoundation.org>
+Message-ID: <20251216111400.017630632@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 97cc9c346b2c9cde075b9420fc172137d2427711 ]
+[ Upstream commit e5235eb6cfe02a51256013a78f7b28779a7740d5 ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+Prevent a kernel warning when netconsole setup fails on devices with
+IFF_DISABLE_NETPOLL flag. The warning (at kernel/workqueue.c:4242 in
+__flush_work) occurs because the cleanup path tries to cancel an
+uninitialized work queue.
 
-Fixes: a19f6efc01df ("ARM: dts: exynos: Enable WLAN support for the Trats board")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-4-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+When __netpoll_setup() encounters a device with IFF_DISABLE_NETPOLL,
+it fails early and calls skb_pool_flush() for cleanup. This function
+calls cancel_work_sync(&np->refill_wq), but refill_wq hasn't been
+initialized yet, triggering the warning.
+
+Move INIT_WORK() to the beginning of __netpoll_setup(), ensuring the
+work queue is properly initialized before any potential failure points.
+This allows the cleanup path to safely cancel the work queue regardless
+of where the setup fails.
+
+Fixes: 248f6571fd4c5 ("netpoll: Optimize skb refilling on critical path")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20251127-netpoll_fix_init_work-v1-1-65c07806d736@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-trats.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-trats.dts b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
-index 95e0e01b6ff6b..6bd902cb8f4ad 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-trats.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
-@@ -518,6 +518,7 @@ &sdhci_3 {
- 	#size-cells = <0>;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index be5658ff74ee2..27f573d2c5e36 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -554,6 +554,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 	int err;
  
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 	mmc-pwrseq = <&wlan_pwrseq>;
- 	vmmc-supply = <&tflash_reg>;
+ 	skb_queue_head_init(&np->skb_pool);
++	INIT_WORK(&np->refill_wq, refill_skbs_work_handler);
+ 
+ 	if (ndev->priv_flags & IFF_DISABLE_NETPOLL) {
+ 		np_err(np, "%s doesn't support polling, aborting\n",
+@@ -592,7 +593,6 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 
+ 	/* fill up the skb queue */
+ 	refill_skbs(np);
+-	INIT_WORK(&np->refill_wq, refill_skbs_work_handler);
+ 
+ 	/* last thing to do is link it to the net device structure */
+ 	rcu_assign_pointer(ndev->npinfo, npinfo);
 -- 
 2.51.0
 
