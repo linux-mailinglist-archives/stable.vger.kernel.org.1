@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6BCCC2827
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5EF8CC253E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 609EA302E1E1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:00:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAAFB3083305
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA636355812;
-	Tue, 16 Dec 2025 11:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7412BE7B2;
+	Tue, 16 Dec 2025 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO/ql+9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVwqmQDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E993557E8;
-	Tue, 16 Dec 2025 11:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442E326A08F;
+	Tue, 16 Dec 2025 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886246; cv=none; b=d6yl86F9SbAdtbDMpgL8qeklfoG96tPmbYwhLasQcScSGxjHUWU75fNmOgPIGi1JQGLrLBh5LtKdFRsC4Y2jGdlrdyL7DrWnVGki0MSr0n8roRoJS1klWa+FQJTpjJacDiBmqa2pVislvqZYNTj5lWlL3j4+Zs2XNYtKBML21mE=
+	t=1765884635; cv=none; b=cOEXYBapwTpNXiEkpNoYGgXBR3wB8SjP7jFzJX+N92vH987pjKrIBkxpQxDlUl2svkfFoHNI4RT/P6y9kYXb4317nbwpp3RpxHfKyGtEAGrNbTc7F1CyF5XYVENG7sbxbvCBYlS8NBvQOeR7miRYywilMCwcPt1VcVVYspuksS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886246; c=relaxed/simple;
-	bh=cFHyXDWxO62Jg6FFx00gU/mSfrd6iKv3bBTbkF7FM88=;
+	s=arc-20240116; t=1765884635; c=relaxed/simple;
+	bh=y/ibQcIxuE2vPPabs5sk4FzOLKSGOC9nhS3qFyAZoFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jINYCWAK6Z4jzZ4niWEjqpV2urnsdP/w49VHDEimyIvSgxEwFQxFKKkF0+xEzxBijZ5d6woH5uCjYlxNvTLUN8espEEZdQGaHBDYdxIc6jawNSS6oeWMa0JXGHvOoTvio8A1lDvRhCSM67Qt3zToqXbPechA5PJ4zP5fdOFfSjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO/ql+9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3891C16AAE;
-	Tue, 16 Dec 2025 11:57:25 +0000 (UTC)
+	 MIME-Version; b=VJElLs32lPzdvi+/J52SBIu6c3SI6ZOey/TcRP4MJvZy7Xy/CW9vQuVJ/7LS+tLDcFqfHLMYxXPpUZ7uhxYryfToIBA7jR3kjADYPlfm9x9rWNeO0olgZt9wkeT+peqROE87HkjY7asuw1kZZDUlTxspeHmXaajNL9cozXhqpA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVwqmQDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6C4C4CEF1;
+	Tue, 16 Dec 2025 11:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886246;
-	bh=cFHyXDWxO62Jg6FFx00gU/mSfrd6iKv3bBTbkF7FM88=;
+	s=korg; t=1765884634;
+	bh=y/ibQcIxuE2vPPabs5sk4FzOLKSGOC9nhS3qFyAZoFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO/ql+9klBOSf4FmlZqB5C6ebyh7XwxGY0cClitIJvbfqb3ckypxA437BSr7/6+Te
-	 naw0+WloXX2H5CviIES+rWkLqUe96TcDHZSUV5NGxk0Q+N290sEcEl/pghONvnPUUE
-	 MEvCddCgxmEm6yZCt/dA2cmrBbj/9Ob0j4UB2pjM=
+	b=IVwqmQDznv92whGo4988ff+cs2BXS7w9pUk7+jBiKMMWS5Bhh3UeD6SHVpcs7qX/K
+	 +TYx9hzOom9CQM6uU8l8cEJ+Aiu7BtpsdEJjWdVxsfjebe2SW5LBhgqD+baN2o2FJ1
+	 1P9NqOIuXksrgNtb+z+gtXJW0y+fLadzTzSoWvxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Brett Creeley <brett.creeley@amd.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 379/507] virtio: fix virtqueue_set_affinity() docs
-Date: Tue, 16 Dec 2025 12:13:40 +0100
-Message-ID: <20251216111359.190524125@linuxfoundation.org>
+Subject: [PATCH 6.12 254/354] vdpa/pds: use %pe for ERR_PTR() in event handler registration
+Date: Tue, 16 Dec 2025 12:13:41 +0100
+Message-ID: <20251216111330.118732193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
+[ Upstream commit 731ca4a4cc52fd5c5ae309edcfd2d7e54ece3321 ]
 
-Rewrite the comment for better grammar and clarity.
+Use %pe instead of %ps when printing ERR_PTR() values. %ps is intended
+for string pointers, while %pe correctly prints symbolic error names
+for error pointers returned via ERR_PTR().
+This shows the returned error value more clearly.
 
-Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
-Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: 67f27b8b3a34 ("pds_vdpa: subscribe to the pds_core events")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20251018174705.1511982-1-alok.a.tiwari@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
+ drivers/vdpa/pds/vdpa_dev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 2e7ead07376d1..ba621d86517c3 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -312,7 +312,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
-  * @vq: the virtqueue
-  * @cpu_mask: the cpu mask
-  *
-- * Pay attention the function are best-effort: the affinity hint may not be set
-+ * Note that this function is best-effort: the affinity hint may not be set
-  * due to config support, irq type and sharing.
-  *
-  */
+diff --git a/drivers/vdpa/pds/vdpa_dev.c b/drivers/vdpa/pds/vdpa_dev.c
+index 301d95e085960..a1eff7441450c 100644
+--- a/drivers/vdpa/pds/vdpa_dev.c
++++ b/drivers/vdpa/pds/vdpa_dev.c
+@@ -51,7 +51,7 @@ static int pds_vdpa_register_event_handler(struct pds_vdpa_device *pdsv)
+ 		err = pdsc_register_notify(nb);
+ 		if (err) {
+ 			nb->notifier_call = NULL;
+-			dev_err(dev, "failed to register pds event handler: %ps\n",
++			dev_err(dev, "failed to register pds event handler: %pe\n",
+ 				ERR_PTR(err));
+ 			return -EINVAL;
+ 		}
 -- 
 2.51.0
 
