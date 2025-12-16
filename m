@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331A9CC2E9C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF9ACC4672
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A31B03005F3A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F73C30C0802
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD75235B15D;
-	Tue, 16 Dec 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB46357714;
+	Tue, 16 Dec 2025 12:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs1IVRmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AR7IpqG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328D34F473;
-	Tue, 16 Dec 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71DD3570D9;
+	Tue, 16 Dec 2025 12:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888472; cv=none; b=svleSfZ4MmtAXFOFQDsuuJMYn7Tsegfry7CgPxlv9CaFeulL1RDn7msoqRInPxtBJWufjFL988dz0Ew02WgAMyF5cy4Q+TCbpGyLTU211+u+wp0LD+jGAtfNTMP00iDo65kuBKpT8/ECwHU9ftfNuOO/CFhFcnFt9BGEzeuzypA=
+	t=1765886552; cv=none; b=m45YGMKmf10scLN90v163UBqzKGA4iafrlLfkRlZtwrL4MYdZys2UbA9i7QtsKafIrcYMK2aYmC3rgvFcjvvBqR8lBQvc2HXvRjuxTQokQJ3Xdf11zq5XLmFKbE61q7pMYmnVvCL91edP5gmImQLdpWPqKGXqWdToaXekM/DVjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888472; c=relaxed/simple;
-	bh=aSAeYIxjMKgP2wBr+sXRzwREnsNuHz+JZaogqN56PlE=;
+	s=arc-20240116; t=1765886552; c=relaxed/simple;
+	bh=WuxkaZ5BcBBJwuvPAdGpj4CQeaiRPOT1zH3kEwwvOgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/6RIILZsKtT7ETVS9U/o/1dK6AsW/7gfwjqBB7n6zgi8p3wvQjzj2GGTA/dWjolvCFVMrF6jPi+pu1XhTzamahMze1BT9hAn7dWKBZixq4uqksbCiPvpfPboF6Qqdk55k7BXBhqtMoIYxDAZzfP0xDfAmoqcL5ckP5VA3YtWnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs1IVRmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DA0C4CEF5;
-	Tue, 16 Dec 2025 12:34:31 +0000 (UTC)
+	 MIME-Version; b=LctJvkmcFeMsMZCjFMguusXzE1/7KkDq7uoTVQct1hTIqhdLc+pD46mTl12B3IsRJL9p0G9fKG9ANlbueQ6lYzuzeuhA5YdD7TX2n0bmEgb6chmubpWAh7n3Q9WRnRmUpCBAR6N7Yz8hjnKhxZONPZBiU/knShZsGuw6hGkSG84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AR7IpqG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1900FC4CEF1;
+	Tue, 16 Dec 2025 12:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888472;
-	bh=aSAeYIxjMKgP2wBr+sXRzwREnsNuHz+JZaogqN56PlE=;
+	s=korg; t=1765886552;
+	bh=WuxkaZ5BcBBJwuvPAdGpj4CQeaiRPOT1zH3kEwwvOgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zs1IVRmWPCz/hUbsSPJCH7qnsiXvWVaNElCjEQdlikBHXLHMujZWYSVPqbzGKfcEP
-	 VxrC77PRqU3lQZ+O87/EkJY9wAsVOm+OVHdZOm16D2hBNvP4aG8DbeydGWmnPATgpn
-	 iSn8uyH+ykhGYG7NxVd3yy3O4hK4Ab3AiWb1aH5k=
+	b=AR7IpqG5uS38zDo69Cs9oFQBPNLFSziOiKGfDReSy9qn3w03fRhdP9pKG8Zb08677
+	 gydJj1udzL0gYO8x0c+597VAgTBk1RnQCQEXqqxtHutBmPc2r8jdSSlVe5jvSM4L0k
+	 bk7KxT7MQqxjuwZdJdg6CXQ99bjykgo4Q5Gc5+wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stoler <michael.stoler@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kathara Sasikumar <katharasasikumar007@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 544/614] NFS: Initialise verifiers for visible dentries in _nfs4_open_and_get_state
-Date: Tue, 16 Dec 2025 12:15:11 +0100
-Message-ID: <20251216111421.089967739@linuxfoundation.org>
+Subject: [PATCH 6.17 471/507] docs: hwmon: fix link to g762 devicetree binding
+Date: Tue, 16 Dec 2025 12:15:12 +0100
+Message-ID: <20251216111402.508253360@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kathara Sasikumar <katharasasikumar007@gmail.com>
 
-[ Upstream commit 0f900f11002ff52391fc2aa4a75e59f26ed1c242 ]
+[ Upstream commit 08bfcf4ff9d39228150a757803fc02dffce84ab0 ]
 
-Ensure that the verifiers are initialised before calling
-d_splice_alias() in _nfs4_open_and_get_state().
+The devicetree binding for g762 was converted to YAML to match vendor
+prefix conventions. Update the reference accordingly.
 
-Reported-by: Michael Stoler <michael.stoler@vastdata.com>
-Fixes: cf5b4059ba71 ("NFSv4: Fix races between open and dentry revalidation")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Kathara Sasikumar <katharasasikumar007@gmail.com>
+Link: https://lore.kernel.org/r/20251205215835.783273-1-katharasasikumar007@gmail.com
+Fixes: 3d8e25372417 ("dt-bindings: hwmon: g762: Convert to yaml schema")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ Documentation/hwmon/g762.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 93c6ce04332b8..6f4e14fb7b9b8 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3174,18 +3174,6 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
- 	if (opendata->o_res.rflags & NFS4_OPEN_RESULT_PRESERVE_UNLINKED)
- 		set_bit(NFS_INO_PRESERVE_UNLINKED, &NFS_I(state->inode)->flags);
+diff --git a/Documentation/hwmon/g762.rst b/Documentation/hwmon/g762.rst
+index 0371b3365c48c..f224552a2d3cc 100644
+--- a/Documentation/hwmon/g762.rst
++++ b/Documentation/hwmon/g762.rst
+@@ -17,7 +17,7 @@ done via a userland daemon like fancontrol.
+ Note that those entries do not provide ways to setup the specific
+ hardware characteristics of the system (reference clock, pulses per
+ fan revolution, ...); Those can be modified via devicetree bindings
+-documented in Documentation/devicetree/bindings/hwmon/g762.txt or
++documented in Documentation/devicetree/bindings/hwmon/gmt,g762.yaml or
+ using a specific platform_data structure in board initialization
+ file (see include/linux/platform_data/g762.h).
  
--	dentry = opendata->dentry;
--	if (d_really_is_negative(dentry)) {
--		struct dentry *alias;
--		d_drop(dentry);
--		alias = d_splice_alias(igrab(state->inode), dentry);
--		/* d_splice_alias() can't fail here - it's a non-directory */
--		if (alias) {
--			dput(ctx->dentry);
--			ctx->dentry = dentry = alias;
--		}
--	}
--
- 	switch(opendata->o_arg.claim) {
- 	default:
- 		break;
-@@ -3196,7 +3184,20 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
- 			break;
- 		if (opendata->o_res.delegation.type != 0)
- 			dir_verifier = nfs_save_change_attribute(dir);
--		nfs_set_verifier(dentry, dir_verifier);
-+	}
-+
-+	dentry = opendata->dentry;
-+	nfs_set_verifier(dentry, dir_verifier);
-+	if (d_really_is_negative(dentry)) {
-+		struct dentry *alias;
-+		d_drop(dentry);
-+		alias = d_splice_alias(igrab(state->inode), dentry);
-+		/* d_splice_alias() can't fail here - it's a non-directory */
-+		if (alias) {
-+			dput(ctx->dentry);
-+			nfs_set_verifier(alias, dir_verifier);
-+			ctx->dentry = dentry = alias;
-+		}
- 	}
- 
- 	/* Parse layoutget results before we check for access */
 -- 
 2.51.0
 
