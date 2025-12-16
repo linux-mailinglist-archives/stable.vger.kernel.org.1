@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0861CC27AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA55CC2AF5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D836C3047470
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37B8230146DB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9999935502C;
-	Tue, 16 Dec 2025 11:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA93328639;
+	Tue, 16 Dec 2025 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9fiafnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxjG73a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFB8355028;
-	Tue, 16 Dec 2025 11:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C83644C3;
+	Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885861; cv=none; b=EsybKqlT0KITYRoSOXK7vkO5c9jv7UyRfwzOA3aHzK0xJWslwumRQgwdPY0sSQuoHkqJnunXHyqgiYQyxSyXAhsPnWkHK0RbZAvSWd3Oo+hwQRZk+fbdv9wkXPsc/B9jSDx4Z5E0GcTXzWzviufEVevDFDXwESstSnk9CDbxUpY=
+	t=1765887799; cv=none; b=I1cUUhAG9rMeSi3pAs1iaC6SbXi92hLC3v2j7U18nUqRyTc6eS/KAkleVdPgAZPDCeNce/2p2oXlMXsYh5YlWlVw0DtIK/mmiRoDrpc79X/9XCSGCabSD+/wJ5n+YJHr5HwVBvMe8PlKI5JQtyxyWdGLQvMWMr7d+A6ouiBMktI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885861; c=relaxed/simple;
-	bh=COnD8cmPd+snSbuNPWDH2q/M1lSSvz+jbOpvnJ2H1Xg=;
+	s=arc-20240116; t=1765887799; c=relaxed/simple;
+	bh=BSrf4JH46TCHVxPCVfuDx8Z45juhcCK2nSjV6XofSJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsMXh/CpKFebk4Ii1Ph6yvEi/ARpV2QT640/0bshjghYmm46FZZzuXjbwsuY2lK497V8XzH0DK4/ToE0zyhBxthN+Bkjq6yY7k8FdmTxTVyZtvDtddBF0R4teO6akbuvLNJHu8moo7UxYxzGDKld2lE5t/DPUlB53X38Z5wif28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9fiafnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22E6C4CEF1;
-	Tue, 16 Dec 2025 11:51:00 +0000 (UTC)
+	 MIME-Version; b=NKY6Qo0mc6tbx83cVshET/UhuZZhcxvQafUEwZOqVaLkq5G5eWF0dkThBk/9uueHuIsbLrloF1BgCdc+RFb03iG1adPbM2GNf00Io29K4be55Gnq3UA20cvhOFeaPKq4uYPPGWSYAdM3CdZKKnHaK2sMET7muuIWSABFcAH6WNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxjG73a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A5FC4CEF1;
+	Tue, 16 Dec 2025 12:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885861;
-	bh=COnD8cmPd+snSbuNPWDH2q/M1lSSvz+jbOpvnJ2H1Xg=;
+	s=korg; t=1765887798;
+	bh=BSrf4JH46TCHVxPCVfuDx8Z45juhcCK2nSjV6XofSJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9fiafnPt847nknnz1kHGDVnpBphzzKMj4zuUSCuDspbfnLeTiWUgX+wdVIRSYQD7
-	 x1Qg2pAyKwUm5BRrY6seBGfaURMjXiJOPwKaynAAo2Q1k0pNBR+4YxmrYOTnhnxhPK
-	 eKejMyJRIFMzjkStyyDCRm7LCgUdWB6GEvHyQId4=
+	b=xxjG73a/c4RlGl8J0gTKop0p0uIgH5fUIRueZ+syL3T+X54Z5LyyXW8Cur8rNTe2X
+	 DVzPteN9JCkNR/vE6EV/smH39tabvGD94o+69YebwC0jjpQL14N+DsOFnhd8jxouOu
+	 hJSzBFcOjl89T7qy8T8sFouxSTwomR3nf9Rt6onY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 266/507] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
+Subject: [PATCH 6.18 340/614] of/fdt: Fix the len check in early_init_dt_check_for_elfcorehdr()
 Date: Tue, 16 Dec 2025 12:11:47 +0100
-Message-ID: <20251216111355.122654726@linuxfoundation.org>
+Message-ID: <20251216111413.682796530@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
+[ Upstream commit bec5f6092bc1328895992ff02b862ba34b45a0b7 ]
 
-When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
-Addressing Mode during early boot. During this, we should ensure that
-memory region allocations for stress_hpt_struct should happen from
-within RMA region as otherwise the boot might get stuck while doing
-memset of this region.
+The len value is in bytes, while `dt_root_addr_cells + dt_root_size_cells`
+is in cells (4 bytes per cell). Comparing them directly is incorrect.
 
-History behind why do we have RMA region limitation is better explained
-in these 2 patches [1] & [2]. This patch ensures that memset to
-stress_hpt_struct during early boot does not cross ppc64_rma_size
-boundary.
+Use a helper function to simplify the code and address this issue.
 
-[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
-[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
-
-Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
+Fixes: f7e7ce93aac1 ("of: fdt: Add generic support for handling elf core headers property")
+Fixes: e62aaeac426ab1dd ("arm64: kdump: provide /proc/vmcore file")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://patch.msgid.link/20251115134753.179931-3-yuntao.wang@linux.dev
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/of/fdt.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 4693c464fc5af..1e062056cfb82 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1302,11 +1302,14 @@ static void __init htab_initialize(void)
- 	unsigned long table;
- 	unsigned long pteg_count;
- 	unsigned long prot;
--	phys_addr_t base = 0, size = 0, end;
-+	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
- 	u64 i;
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 0c18bdefbbeea..b45f60dccd7cf 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -853,21 +853,15 @@ static void __init early_init_dt_check_for_initrd(unsigned long node)
+  */
+ static void __init early_init_dt_check_for_elfcorehdr(unsigned long node)
+ {
+-	const __be32 *prop;
+-	int len;
+-
+ 	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
+ 		return;
  
- 	DBG(" -> htab_initialize()\n");
+ 	pr_debug("Looking for elfcorehdr property... ");
  
-+	if (firmware_has_feature(FW_FEATURE_LPAR))
-+		limit = ppc64_rma_size;
-+
- 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
- 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
- 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
-@@ -1322,7 +1325,7 @@ static void __init htab_initialize(void)
- 		// Too early to use nr_cpu_ids, so use NR_CPUS
- 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
- 						__alignof__(struct stress_hpt_struct),
--						0, MEMBLOCK_ALLOC_ANYWHERE);
-+						MEMBLOCK_LOW_LIMIT, limit);
- 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
- 		stress_hpt_struct = __va(tmp);
+-	prop = of_get_flat_dt_prop(node, "linux,elfcorehdr", &len);
+-	if (!prop || (len < (dt_root_addr_cells + dt_root_size_cells)))
++	if (!of_flat_dt_get_addr_size(node, "linux,elfcorehdr",
++				      &elfcorehdr_addr, &elfcorehdr_size))
+ 		return;
  
-@@ -1356,11 +1359,10 @@ static void __init htab_initialize(void)
- 			mmu_hash_ops.hpte_clear_all();
- #endif
- 	} else {
--		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
- 
- 		table = memblock_phys_alloc_range(htab_size_bytes,
- 						  htab_size_bytes,
--						  0, limit);
-+						  MEMBLOCK_LOW_LIMIT, limit);
- 		if (!table)
- 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
- 			      &htab_size_bytes, &limit);
+-	elfcorehdr_addr = dt_mem_next_cell(dt_root_addr_cells, &prop);
+-	elfcorehdr_size = dt_mem_next_cell(dt_root_size_cells, &prop);
+-
+ 	pr_debug("elfcorehdr_start=0x%llx elfcorehdr_size=0x%llx\n",
+ 		 elfcorehdr_addr, elfcorehdr_size);
+ }
 -- 
 2.51.0
 
