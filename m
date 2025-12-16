@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FAFCC2CBC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1250CC21A5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1F9230133FD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 380703005F1C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C964D342C8B;
-	Tue, 16 Dec 2025 11:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C87207A38;
+	Tue, 16 Dec 2025 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2egLPxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPcnypXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DB7342506;
-	Tue, 16 Dec 2025 11:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDA02459D7;
+	Tue, 16 Dec 2025 11:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885456; cv=none; b=KKwf6N6P58lGbwxKjVk9L+LJxZvPsUxj5gn1+i4g64pNIcEZKLJ2H44stmahwt2D685MVptazdcQcR4gxWY+DhnLwQqcpubfUCxZqxOzHVJzkpzD55LaWt2HwegWCjzyQ45xLu0oN1m98inKQ/y5MJniBwHT+/mptw5yW5Z0ecU=
+	t=1765883852; cv=none; b=I6vmb7Eqx1qmpaJ7+z4kFq9RhpSvsoqX4fQoHFvVFFDXvYluK2ZGU1/6qWEfi3TleaOaIfMs1NFF8rQFncWt9cJlo5ZQVZ1s/Yb/+Jkv/FfsmO6PXcfUaf9jmdM99IFf0DwQ/jUuWApcAEoSh23EIGSK/LWOGexrlQyYF+tJz5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885456; c=relaxed/simple;
-	bh=xndQ/YOX0plBQvNZX18nyUP/zV4L5abIeIHY55v1ERI=;
+	s=arc-20240116; t=1765883852; c=relaxed/simple;
+	bh=4TnTm7+Xwm4ygzo4fKf9dNr9FNOiXsYhmo7UoiIfmgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z/gsi+V6notCiCUt0YwLMKXwlKmq/uJksfqwDXXhOv3uPuV6Glzl+RmSrJy5RQowOc42lATiLsNbOejBVxAxVNAwcQoBN8BeUYjXePCb77yHrc/Zz4xlr7aUlpGbCKrYkXIMwB7qlSxnIMr2SRhX1vBOD93S5ylJ1hsLnUa49l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2egLPxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97ACC4CEF1;
-	Tue, 16 Dec 2025 11:44:15 +0000 (UTC)
+	 MIME-Version; b=mUBFRbQo1+g3U9KvU49kC1Lrenm1kRc6KhL0blNWQNYAEHDmBMRmEQYiwOnSCj7QhelT595mw70DxLmItpuX7t0LF9Y7z/6LeZz4vRvQmEmhfe5l8USzz0kLVBKF23HPbSsHPfpw2N2wHBY5coDBmL6hfewnYSO/D/UJ+SvQrHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPcnypXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B60C4CEF1;
+	Tue, 16 Dec 2025 11:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885456;
-	bh=xndQ/YOX0plBQvNZX18nyUP/zV4L5abIeIHY55v1ERI=;
+	s=korg; t=1765883851;
+	bh=4TnTm7+Xwm4ygzo4fKf9dNr9FNOiXsYhmo7UoiIfmgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2egLPxcM55eoHZhuJUnFMcSs910Ni09R5mSMKJi1YmTp4vVMm6zhiITi+Q3CdkcO
-	 j4oDQyDkRnVnMAEU5jGB4xaDz6AbzwCcLSLq0TS6VkVSg47R2ZrSYJL1gCSGmE5DtJ
-	 e6bBo03bUvsNnQUs8HnSgq3sA24G2ncByYUMvU64=
+	b=bPcnypXRv2GM/G5WvKNy/I69mrTT1xSjC/eeVrerSfMiJDU0As1ZhZfkots1h5G8e
+	 NDWaifAfelCKXbJ36SFdh9VcmnPiKnE1t87b5NGmy2NhMuPJNSbAvpJVzsCb8+MLeZ
+	 ZHyBARJXomnZuewGlZRaqxcxSWVvx1eg7pOTstf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thierry Bultel <thierry.bultel.yh@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 145/507] arm64: dts: renesas: sparrow-hawk: Fix full-size DP connector node name and labels
+Subject: [PATCH 6.12 019/354] clk: renesas: Pass sub struct of cpg_mssr_priv to cpg_clk_register
 Date: Tue, 16 Dec 2025 12:09:46 +0100
-Message-ID: <20251216111350.780989260@linuxfoundation.org>
+Message-ID: <20251216111321.605004812@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +58,558 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Thierry Bultel <thierry.bultel.yh@bp.renesas.com>
 
-[ Upstream commit 9d22a34a016313137b9e534a918f1f9aa790aa69 ]
+[ Upstream commit 3d37ca1482c36975255f29911a529f84f1bc34a9 ]
 
-The DisplayPort connector on Retronix R-Car V4H Sparrow Hawk board
-is a full-size DisplayPort connector. Fix the copy-paste error and
-update the DT node name and labels accordingly. No functional change.
+In a subsequent patch, the registration callback will need more parameters
+from cpg_mssr_priv (like another base address with clock controllers
+with double register block, and also, notifiers and rmw_lock).
+Instead of adding more parameters, move the needed parameters to a public
+sub-struct.
+Instead moving clks to this structure, which would have implied to add
+an allocation (and cleanup) for it, keep the way the allocation is done
+and just have a copy of the pointer in the public structure.
 
-Fixes: a719915e76f2 ("arm64: dts: renesas: r8a779g3: Add Retronix R-Car V4H Sparrow Hawk board support")
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251027184604.34550-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Thierry Bultel <thierry.bultel.yh@bp.renesas.com>
+Link: https://lore.kernel.org/20250515141828.43444-5-thierry.bultel.yh@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: b91401af6c00 ("clk: renesas: cpg-mssr: Read back reset registers to assure values latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/renesas/r7s9210-cpg-mssr.c  |  7 +-
+ drivers/clk/renesas/r8a77970-cpg-mssr.c |  8 +-
+ drivers/clk/renesas/rcar-gen2-cpg.c     |  5 +-
+ drivers/clk/renesas/rcar-gen2-cpg.h     |  3 +-
+ drivers/clk/renesas/rcar-gen3-cpg.c     |  6 +-
+ drivers/clk/renesas/rcar-gen3-cpg.h     |  3 +-
+ drivers/clk/renesas/rcar-gen4-cpg.c     |  6 +-
+ drivers/clk/renesas/rcar-gen4-cpg.h     |  3 +-
+ drivers/clk/renesas/renesas-cpg-mssr.c  | 98 ++++++++++++-------------
+ drivers/clk/renesas/renesas-cpg-mssr.h  | 20 ++++-
+ 10 files changed, 88 insertions(+), 71 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-index 2c1ab75e4d910..e5af9c056ac97 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-@@ -118,13 +118,13 @@ memory@600000000 {
- 	};
+diff --git a/drivers/clk/renesas/r7s9210-cpg-mssr.c b/drivers/clk/renesas/r7s9210-cpg-mssr.c
+index a85227c248f31..733244687daa8 100644
+--- a/drivers/clk/renesas/r7s9210-cpg-mssr.c
++++ b/drivers/clk/renesas/r7s9210-cpg-mssr.c
+@@ -159,12 +159,13 @@ static void __init r7s9210_update_clk_table(struct clk *extal_clk,
  
- 	/* Page 27 / DSI to Display */
--	mini-dp-con {
-+	dp-con {
- 		compatible = "dp-connector";
- 		label = "CN6";
- 		type = "full-size";
+ static struct clk * __init rza2_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers)
++	struct cpg_mssr_pub *pub)
+ {
+-	struct clk *parent;
++	void __iomem *base = pub->base0;
++	struct clk **clks = pub->clks;
+ 	unsigned int mult = 1;
+ 	unsigned int div = 1;
++	struct clk *parent;
  
- 		port {
--			mini_dp_con_in: endpoint {
-+			dp_con_in: endpoint {
- 				remote-endpoint = <&sn65dsi86_out>;
- 			};
- 		};
-@@ -371,7 +371,7 @@ sn65dsi86_in: endpoint {
- 					port@1 {
- 						reg = <1>;
- 						sn65dsi86_out: endpoint {
--							remote-endpoint = <&mini_dp_con_in>;
-+							remote-endpoint = <&dp_con_in>;
- 						};
- 					};
- 				};
+ 	parent = clks[core->parent];
+ 	if (IS_ERR(parent))
+diff --git a/drivers/clk/renesas/r8a77970-cpg-mssr.c b/drivers/clk/renesas/r8a77970-cpg-mssr.c
+index 3cec0f501b947..e2bda2c107306 100644
+--- a/drivers/clk/renesas/r8a77970-cpg-mssr.c
++++ b/drivers/clk/renesas/r8a77970-cpg-mssr.c
+@@ -219,10 +219,11 @@ static int __init r8a77970_cpg_mssr_init(struct device *dev)
+ 
+ static struct clk * __init r8a77970_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers)
++	struct cpg_mssr_pub *pub)
+ {
+ 	const struct clk_div_table *table;
++	void __iomem *base = pub->base0;
++	struct clk **clks = pub->clks;
+ 	const struct clk *parent;
+ 	unsigned int shift;
+ 
+@@ -236,8 +237,7 @@ static struct clk * __init r8a77970_cpg_clk_register(struct device *dev,
+ 		shift = 4;
+ 		break;
+ 	default:
+-		return rcar_gen3_cpg_clk_register(dev, core, info, clks, base,
+-						  notifiers);
++		return rcar_gen3_cpg_clk_register(dev, core, info, pub);
+ 	}
+ 
+ 	parent = clks[core->parent];
+diff --git a/drivers/clk/renesas/rcar-gen2-cpg.c b/drivers/clk/renesas/rcar-gen2-cpg.c
+index 4c3764972bad9..ab34bb8c3e079 100644
+--- a/drivers/clk/renesas/rcar-gen2-cpg.c
++++ b/drivers/clk/renesas/rcar-gen2-cpg.c
+@@ -274,10 +274,11 @@ static const struct soc_device_attribute cpg_quirks_match[] __initconst = {
+ 
+ struct clk * __init rcar_gen2_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers)
++	struct cpg_mssr_pub *pub)
+ {
+ 	const struct clk_div_table *table = NULL;
++	void __iomem *base = pub->base0;
++	struct clk **clks = pub->clks;
+ 	const struct clk *parent;
+ 	const char *parent_name;
+ 	unsigned int mult = 1;
+diff --git a/drivers/clk/renesas/rcar-gen2-cpg.h b/drivers/clk/renesas/rcar-gen2-cpg.h
+index bdcd4a38d48d0..3d4b127fdeaf4 100644
+--- a/drivers/clk/renesas/rcar-gen2-cpg.h
++++ b/drivers/clk/renesas/rcar-gen2-cpg.h
+@@ -32,8 +32,7 @@ struct rcar_gen2_cpg_pll_config {
+ 
+ struct clk *rcar_gen2_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers);
++	struct cpg_mssr_pub *pub);
+ int rcar_gen2_cpg_init(const struct rcar_gen2_cpg_pll_config *config,
+ 		       unsigned int pll0_div, u32 mode);
+ 
+diff --git a/drivers/clk/renesas/rcar-gen3-cpg.c b/drivers/clk/renesas/rcar-gen3-cpg.c
+index 20b89eb6c35c1..1766d77adefcb 100644
+--- a/drivers/clk/renesas/rcar-gen3-cpg.c
++++ b/drivers/clk/renesas/rcar-gen3-cpg.c
+@@ -346,9 +346,11 @@ static const struct soc_device_attribute cpg_quirks_match[] __initconst = {
+ 
+ struct clk * __init rcar_gen3_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers)
++	struct cpg_mssr_pub *pub)
+ {
++	struct raw_notifier_head *notifiers = &pub->notifiers;
++	void __iomem *base = pub->base0;
++	struct clk **clks = pub->clks;
+ 	const struct clk *parent;
+ 	unsigned int mult = 1;
+ 	unsigned int div = 1;
+diff --git a/drivers/clk/renesas/rcar-gen3-cpg.h b/drivers/clk/renesas/rcar-gen3-cpg.h
+index bfdc649bdf12c..d15a5d1df71c7 100644
+--- a/drivers/clk/renesas/rcar-gen3-cpg.h
++++ b/drivers/clk/renesas/rcar-gen3-cpg.h
+@@ -81,8 +81,7 @@ struct rcar_gen3_cpg_pll_config {
+ 
+ struct clk *rcar_gen3_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers);
++	struct cpg_mssr_pub *pub);
+ int rcar_gen3_cpg_init(const struct rcar_gen3_cpg_pll_config *config,
+ 		       unsigned int clk_extalr, u32 mode);
+ 
+diff --git a/drivers/clk/renesas/rcar-gen4-cpg.c b/drivers/clk/renesas/rcar-gen4-cpg.c
+index 31aa790fd003d..fb9a876aaba5c 100644
+--- a/drivers/clk/renesas/rcar-gen4-cpg.c
++++ b/drivers/clk/renesas/rcar-gen4-cpg.c
+@@ -418,9 +418,11 @@ static const struct clk_div_table cpg_rpcsrc_div_table[] = {
+ 
+ struct clk * __init rcar_gen4_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers)
++	struct cpg_mssr_pub *pub)
+ {
++	struct raw_notifier_head *notifiers = &pub->notifiers;
++	void __iomem *base = pub->base0;
++	struct clk **clks = pub->clks;
+ 	const struct clk *parent;
+ 	unsigned int mult = 1;
+ 	unsigned int div = 1;
+diff --git a/drivers/clk/renesas/rcar-gen4-cpg.h b/drivers/clk/renesas/rcar-gen4-cpg.h
+index 717fd148464fe..6c8280b37c37b 100644
+--- a/drivers/clk/renesas/rcar-gen4-cpg.h
++++ b/drivers/clk/renesas/rcar-gen4-cpg.h
+@@ -78,8 +78,7 @@ struct rcar_gen4_cpg_pll_config {
+ 
+ struct clk *rcar_gen4_cpg_clk_register(struct device *dev,
+ 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
+-	struct clk **clks, void __iomem *base,
+-	struct raw_notifier_head *notifiers);
++	struct cpg_mssr_pub *pub);
+ int rcar_gen4_cpg_init(const struct rcar_gen4_cpg_pll_config *config,
+ 		       unsigned int clk_extalr, u32 mode);
+ 
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index 22699a47e675c..291a01778aa48 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -127,16 +127,14 @@ static const u16 srstclr_for_gen4[] = {
+  * struct cpg_mssr_priv - Clock Pulse Generator / Module Standby
+  *                        and Software Reset Private Data
+  *
++ * @pub: Data passed to clock registration callback
+  * @rcdev: Optional reset controller entity
+  * @dev: CPG/MSSR device
+- * @base: CPG/MSSR register block base address
+  * @reg_layout: CPG/MSSR register layout
+- * @rmw_lock: protects RMW register accesses
+  * @np: Device node in DT for this CPG/MSSR module
+  * @num_core_clks: Number of Core Clocks in clks[]
+  * @num_mod_clks: Number of Module Clocks in clks[]
+  * @last_dt_core_clk: ID of the last Core Clock exported to DT
+- * @notifiers: Notifier chain to save/restore clock state for system resume
+  * @status_regs: Pointer to status registers array
+  * @control_regs: Pointer to control registers array
+  * @reset_regs: Pointer to reset registers array
+@@ -148,20 +146,18 @@ static const u16 srstclr_for_gen4[] = {
+  * @clks: Array containing all Core and Module Clocks
+  */
+ struct cpg_mssr_priv {
++	struct cpg_mssr_pub pub;
+ #ifdef CONFIG_RESET_CONTROLLER
+ 	struct reset_controller_dev rcdev;
+ #endif
+ 	struct device *dev;
+-	void __iomem *base;
+ 	enum clk_reg_layout reg_layout;
+-	spinlock_t rmw_lock;
+ 	struct device_node *np;
+ 
+ 	unsigned int num_core_clks;
+ 	unsigned int num_mod_clks;
+ 	unsigned int last_dt_core_clk;
+ 
+-	struct raw_notifier_head notifiers;
+ 	const u16 *status_regs;
+ 	const u16 *control_regs;
+ 	const u16 *reset_regs;
+@@ -207,38 +203,39 @@ static int cpg_mstp_clock_endisable(struct clk_hw *hw, bool enable)
+ 
+ 	dev_dbg(dev, "MSTP %u%02u/%pC %s\n", reg, bit, hw->clk,
+ 		str_on_off(enable));
+-	spin_lock_irqsave(&priv->rmw_lock, flags);
++	spin_lock_irqsave(&priv->pub.rmw_lock, flags);
+ 
+ 	if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A) {
+-		value = readb(priv->base + priv->control_regs[reg]);
++		value = readb(priv->pub.base0 + priv->control_regs[reg]);
+ 		if (enable)
+ 			value &= ~bitmask;
+ 		else
+ 			value |= bitmask;
+-		writeb(value, priv->base + priv->control_regs[reg]);
++		writeb(value, priv->pub.base0 + priv->control_regs[reg]);
+ 
+ 		/* dummy read to ensure write has completed */
+-		readb(priv->base + priv->control_regs[reg]);
+-		barrier_data(priv->base + priv->control_regs[reg]);
++		readb(priv->pub.base0 + priv->control_regs[reg]);
++		barrier_data(priv->pub.base0 + priv->control_regs[reg]);
++
+ 	} else {
+-		value = readl(priv->base + priv->control_regs[reg]);
++		value = readl(priv->pub.base0 + priv->control_regs[reg]);
+ 		if (enable)
+ 			value &= ~bitmask;
+ 		else
+ 			value |= bitmask;
+-		writel(value, priv->base + priv->control_regs[reg]);
++		writel(value, priv->pub.base0 + priv->control_regs[reg]);
+ 	}
+ 
+-	spin_unlock_irqrestore(&priv->rmw_lock, flags);
++	spin_unlock_irqrestore(&priv->pub.rmw_lock, flags);
+ 
+ 	if (!enable || priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
+ 		return 0;
+ 
+-	error = readl_poll_timeout_atomic(priv->base + priv->status_regs[reg],
++	error = readl_poll_timeout_atomic(priv->pub.base0 + priv->status_regs[reg],
+ 					  value, !(value & bitmask), 0, 10);
+ 	if (error)
+ 		dev_err(dev, "Failed to enable SMSTP %p[%d]\n",
+-			priv->base + priv->control_regs[reg], bit);
++			priv->pub.base0 + priv->control_regs[reg], bit);
+ 
+ 	return error;
+ }
+@@ -257,12 +254,13 @@ static int cpg_mstp_clock_is_enabled(struct clk_hw *hw)
+ {
+ 	struct mstp_clock *clock = to_mstp_clock(hw);
+ 	struct cpg_mssr_priv *priv = clock->priv;
++	unsigned int reg = clock->index / 32;
+ 	u32 value;
+ 
+ 	if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
+-		value = readb(priv->base + priv->control_regs[clock->index / 32]);
++		value = readb(priv->pub.base0 + priv->control_regs[reg]);
+ 	else
+-		value = readl(priv->base + priv->status_regs[clock->index / 32]);
++		value = readl(priv->pub.base0 + priv->status_regs[reg]);
+ 
+ 	return !(value & BIT(clock->index % 32));
+ }
+@@ -354,7 +352,7 @@ static void __init cpg_mssr_register_core_clk(const struct cpg_core_clk *core,
+ 	case CLK_TYPE_DIV6P1:
+ 	case CLK_TYPE_DIV6_RO:
+ 		WARN_DEBUG(core->parent >= priv->num_core_clks);
+-		parent = priv->clks[core->parent];
++		parent = priv->pub.clks[core->parent];
+ 		if (IS_ERR(parent)) {
+ 			clk = parent;
+ 			goto fail;
+@@ -364,12 +362,12 @@ static void __init cpg_mssr_register_core_clk(const struct cpg_core_clk *core,
+ 
+ 		if (core->type == CLK_TYPE_DIV6_RO)
+ 			/* Multiply with the DIV6 register value */
+-			div *= (readl(priv->base + core->offset) & 0x3f) + 1;
++			div *= (readl(priv->pub.base0 + core->offset) & 0x3f) + 1;
+ 
+ 		if (core->type == CLK_TYPE_DIV6P1) {
+ 			clk = cpg_div6_register(core->name, 1, &parent_name,
+-						priv->base + core->offset,
+-						&priv->notifiers);
++						priv->pub.base0 + core->offset,
++						&priv->pub.notifiers);
+ 		} else {
+ 			clk = clk_register_fixed_factor(NULL, core->name,
+ 							parent_name, 0,
+@@ -385,8 +383,7 @@ static void __init cpg_mssr_register_core_clk(const struct cpg_core_clk *core,
+ 	default:
+ 		if (info->cpg_clk_register)
+ 			clk = info->cpg_clk_register(dev, core, info,
+-						     priv->clks, priv->base,
+-						     &priv->notifiers);
++						     &priv->pub);
+ 		else
+ 			dev_err(dev, "%s has unsupported core clock type %u\n",
+ 				core->name, core->type);
+@@ -397,7 +394,7 @@ static void __init cpg_mssr_register_core_clk(const struct cpg_core_clk *core,
+ 		goto fail;
+ 
+ 	dev_dbg(dev, "Core clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
+-	priv->clks[id] = clk;
++	priv->pub.clks[id] = clk;
+ 	return;
+ 
+ fail:
+@@ -420,14 +417,14 @@ static void __init cpg_mssr_register_mod_clk(const struct mssr_mod_clk *mod,
+ 	WARN_DEBUG(id < priv->num_core_clks);
+ 	WARN_DEBUG(id >= priv->num_core_clks + priv->num_mod_clks);
+ 	WARN_DEBUG(mod->parent >= priv->num_core_clks + priv->num_mod_clks);
+-	WARN_DEBUG(PTR_ERR(priv->clks[id]) != -ENOENT);
++	WARN_DEBUG(PTR_ERR(priv->pub.clks[id]) != -ENOENT);
+ 
+ 	if (!mod->name) {
+ 		/* Skip NULLified clock */
+ 		return;
+ 	}
+ 
+-	parent = priv->clks[mod->parent];
++	parent = priv->pub.clks[mod->parent];
+ 	if (IS_ERR(parent)) {
+ 		clk = parent;
+ 		goto fail;
+@@ -629,7 +626,7 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+ 	dev_dbg(priv->dev, "reset %u%02u\n", reg, bit);
+ 
+ 	/* Reset module */
+-	writel(bitmask, priv->base + priv->reset_regs[reg]);
++	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
+ 
+ 	/*
+ 	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
+@@ -642,7 +639,7 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+ 		usleep_range(35, 1000);
+ 
+ 	/* Release module from reset state */
+-	writel(bitmask, priv->base + priv->reset_clear_regs[reg]);
++	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
+ 
+ 	return 0;
+ }
+@@ -656,7 +653,7 @@ static int cpg_mssr_assert(struct reset_controller_dev *rcdev, unsigned long id)
+ 
+ 	dev_dbg(priv->dev, "assert %u%02u\n", reg, bit);
+ 
+-	writel(bitmask, priv->base + priv->reset_regs[reg]);
++	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
+ 	return 0;
+ }
+ 
+@@ -670,7 +667,7 @@ static int cpg_mssr_deassert(struct reset_controller_dev *rcdev,
+ 
+ 	dev_dbg(priv->dev, "deassert %u%02u\n", reg, bit);
+ 
+-	writel(bitmask, priv->base + priv->reset_clear_regs[reg]);
++	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
+ 	return 0;
+ }
+ 
+@@ -682,7 +679,7 @@ static int cpg_mssr_status(struct reset_controller_dev *rcdev,
+ 	unsigned int bit = id % 32;
+ 	u32 bitmask = BIT(bit);
+ 
+-	return !!(readl(priv->base + priv->reset_regs[reg]) & bitmask);
++	return !!(readl(priv->pub.base0 + priv->reset_regs[reg]) & bitmask);
+ }
+ 
+ static const struct reset_control_ops cpg_mssr_reset_ops = {
+@@ -909,12 +906,12 @@ static int cpg_mssr_suspend_noirq(struct device *dev)
+ 		if (priv->smstpcr_saved[reg].mask)
+ 			priv->smstpcr_saved[reg].val =
+ 				priv->reg_layout == CLK_REG_LAYOUT_RZ_A ?
+-				readb(priv->base + priv->control_regs[reg]) :
+-				readl(priv->base + priv->control_regs[reg]);
++				readb(priv->pub.base0 + priv->control_regs[reg]) :
++				readl(priv->pub.base0 + priv->control_regs[reg]);
+ 	}
+ 
+ 	/* Save core clocks */
+-	raw_notifier_call_chain(&priv->notifiers, PM_EVENT_SUSPEND, NULL);
++	raw_notifier_call_chain(&priv->pub.notifiers, PM_EVENT_SUSPEND, NULL);
+ 
+ 	return 0;
+ }
+@@ -931,7 +928,7 @@ static int cpg_mssr_resume_noirq(struct device *dev)
+ 		return 0;
+ 
+ 	/* Restore core clocks */
+-	raw_notifier_call_chain(&priv->notifiers, PM_EVENT_RESUME, NULL);
++	raw_notifier_call_chain(&priv->pub.notifiers, PM_EVENT_RESUME, NULL);
+ 
+ 	/* Restore module clocks */
+ 	for (reg = 0; reg < ARRAY_SIZE(priv->smstpcr_saved); reg++) {
+@@ -940,29 +937,29 @@ static int cpg_mssr_resume_noirq(struct device *dev)
+ 			continue;
+ 
+ 		if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
+-			oldval = readb(priv->base + priv->control_regs[reg]);
++			oldval = readb(priv->pub.base0 + priv->control_regs[reg]);
+ 		else
+-			oldval = readl(priv->base + priv->control_regs[reg]);
++			oldval = readl(priv->pub.base0 + priv->control_regs[reg]);
+ 		newval = oldval & ~mask;
+ 		newval |= priv->smstpcr_saved[reg].val & mask;
+ 		if (newval == oldval)
+ 			continue;
+ 
+ 		if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A) {
+-			writeb(newval, priv->base + priv->control_regs[reg]);
++			writeb(newval, priv->pub.base0 + priv->control_regs[reg]);
+ 			/* dummy read to ensure write has completed */
+-			readb(priv->base + priv->control_regs[reg]);
+-			barrier_data(priv->base + priv->control_regs[reg]);
++			readb(priv->pub.base0 + priv->control_regs[reg]);
++			barrier_data(priv->pub.base0 + priv->control_regs[reg]);
+ 			continue;
+ 		} else
+-			writel(newval, priv->base + priv->control_regs[reg]);
++			writel(newval, priv->pub.base0 + priv->control_regs[reg]);
+ 
+ 		/* Wait until enabled clocks are really enabled */
+ 		mask &= ~priv->smstpcr_saved[reg].val;
+ 		if (!mask)
+ 			continue;
+ 
+-		error = readl_poll_timeout_atomic(priv->base + priv->status_regs[reg],
++		error = readl_poll_timeout_atomic(priv->pub.base0 + priv->status_regs[reg],
+ 						oldval, !(oldval & mask), 0, 10);
+ 		if (error)
+ 			dev_warn(dev, "Failed to enable SMSTP%u[0x%x]\n", reg,
+@@ -1075,12 +1072,13 @@ static int __init cpg_mssr_common_init(struct device *dev,
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	priv->pub.clks = priv->clks;
+ 	priv->np = np;
+ 	priv->dev = dev;
+-	spin_lock_init(&priv->rmw_lock);
++	spin_lock_init(&priv->pub.rmw_lock);
+ 
+-	priv->base = of_iomap(np, 0);
+-	if (!priv->base) {
++	priv->pub.base0 = of_iomap(np, 0);
++	if (!priv->pub.base0) {
+ 		error = -ENOMEM;
+ 		goto out_err;
+ 	}
+@@ -1088,7 +1086,7 @@ static int __init cpg_mssr_common_init(struct device *dev,
+ 	priv->num_core_clks = info->num_total_core_clks;
+ 	priv->num_mod_clks = info->num_hw_mod_clks;
+ 	priv->last_dt_core_clk = info->last_dt_core_clk;
+-	RAW_INIT_NOTIFIER_HEAD(&priv->notifiers);
++	RAW_INIT_NOTIFIER_HEAD(&priv->pub.notifiers);
+ 	priv->reg_layout = info->reg_layout;
+ 	if (priv->reg_layout == CLK_REG_LAYOUT_RCAR_GEN2_AND_GEN3) {
+ 		priv->status_regs = mstpsr;
+@@ -1108,7 +1106,7 @@ static int __init cpg_mssr_common_init(struct device *dev,
+ 	}
+ 
+ 	for (i = 0; i < nclks; i++)
+-		priv->clks[i] = ERR_PTR(-ENOENT);
++		priv->pub.clks[i] = ERR_PTR(-ENOENT);
+ 
+ 	error = cpg_mssr_reserved_init(priv, info);
+ 	if (error)
+@@ -1125,8 +1123,8 @@ static int __init cpg_mssr_common_init(struct device *dev,
+ reserve_err:
+ 	cpg_mssr_reserved_exit(priv);
+ out_err:
+-	if (priv->base)
+-		iounmap(priv->base);
++	if (priv->pub.base0)
++		iounmap(priv->pub.base0);
+ 	kfree(priv);
+ 
+ 	return error;
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.h b/drivers/clk/renesas/renesas-cpg-mssr.h
+index a1d6e0cbcff94..7ce3cc9a64c1e 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.h
++++ b/drivers/clk/renesas/renesas-cpg-mssr.h
+@@ -8,6 +8,8 @@
+ #ifndef __CLK_RENESAS_CPG_MSSR_H__
+ #define __CLK_RENESAS_CPG_MSSR_H__
+ 
++#include <linux/notifier.h>
++
+     /*
+      * Definitions of CPG Core Clocks
+      *
+@@ -29,6 +31,21 @@ struct cpg_core_clk {
+ 	unsigned int offset;
+ };
+ 
++/**
++ * struct cpg_mssr_pub - data shared with device-specific clk registration code
++ *
++ * @base0: CPG/MSSR register block base0 address
++ * @notifiers: Notifier chain to save/restore clock state for system resume
++ * @rmw_lock: protects RMW register accesses
++ * @clks: pointer to clocks
++ */
++struct cpg_mssr_pub {
++	void __iomem *base0;
++	struct raw_notifier_head notifiers;
++	spinlock_t rmw_lock;
++	struct clk **clks;
++};
++
+ enum clk_types {
+ 	/* Generic */
+ 	CLK_TYPE_IN,		/* External Clock Input */
+@@ -153,8 +170,7 @@ struct cpg_mssr_info {
+ 	struct clk *(*cpg_clk_register)(struct device *dev,
+ 					const struct cpg_core_clk *core,
+ 					const struct cpg_mssr_info *info,
+-					struct clk **clks, void __iomem *base,
+-					struct raw_notifier_head *notifiers);
++					struct cpg_mssr_pub *pub);
+ };
+ 
+ extern const struct cpg_mssr_info r7s9210_cpg_mssr_info;
 -- 
 2.51.0
 
