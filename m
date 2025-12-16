@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5011CCC22B3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD628CC2E14
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC4CC3038247
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 766A030A35E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836D2341645;
-	Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46683596E1;
+	Tue, 16 Dec 2025 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGjJpX/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guXy6qVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202CD341069;
-	Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4FA3590D0;
+	Tue, 16 Dec 2025 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884163; cv=none; b=PPMMUxsQgahGSWNHeJ6n7JJrYxSF0HbeA5PiWwYFde8FZd6lGx+PHbWCFVXYPaSNJpk8x0ZUh5euh/r8hwCS2LMN9Zx0SPSsIVTZ7/UfpQJm8xQP2IpcnYlXV1pe2n/iVqUmdPA2/7JC4FNDmEAZqjKlCrm5BYN06hooTmdQ66k=
+	t=1765887724; cv=none; b=a34wBZie15vYfUOEneaBXO2YpFwoRE3fz5QOdezSONkUgAYmFj4f1nCoeYzUBwgebxvDvdSZtHa9Ftog+aV1yltlFdyujfs/qYmMbPY362C0Z8fXXE1fJ6AotK/TW0xBCM8ZDUXjCYDrYDNxOc+e+ha8M2n21yjC4TQobqqL2is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884163; c=relaxed/simple;
-	bh=HV1IKTN2kp9cvZMZWlqjS59mZBdt2t6iD/LIeIkAcHo=;
+	s=arc-20240116; t=1765887724; c=relaxed/simple;
+	bh=Gbs9eAnHVENAYDXVyz4qUd42MnEUF5lk44kH7BK0zvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgtosshWgq4XXwMpPulLlDh4Q+IS70Vahfzs461zIbiq2MLB804BUi9rEpBxejzzFEcoByfScbS7QJaIFwhkB5ZODeZPTY1ozE0qD5CAw0S3+nnhM7xyz5QUVdzTr5iEwkTPuD9RpDnMDTMr6Y1FBed5B9N8QYKLJzo8rEDT5NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGjJpX/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98746C4CEF1;
-	Tue, 16 Dec 2025 11:22:42 +0000 (UTC)
+	 MIME-Version; b=jWhG1DqS93T9RImddmuV5YOf+U0s/B5gUa6uIZ9b6fGLMB9xV9fYwpbWl0h/9NQjtYWtz619ZiSVCcD1ZJn5SCsqGOxGhXoM40n5sfoJM7T40yAv3r6N4Z+x1BF8HpW01CRmCXJlrG5NAzZX076lhQGT3tv+suGPv1LsiQCAAAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guXy6qVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B169DC4CEF1;
+	Tue, 16 Dec 2025 12:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884163;
-	bh=HV1IKTN2kp9cvZMZWlqjS59mZBdt2t6iD/LIeIkAcHo=;
+	s=korg; t=1765887724;
+	bh=Gbs9eAnHVENAYDXVyz4qUd42MnEUF5lk44kH7BK0zvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGjJpX/oMYF54w3uQqKPCBi0dUUodNLIcDpPfIsXlUubdgQph5BgFamtgZMawKVuA
-	 5PDlWohy10B3GM4wVCULDZayGTt4AOFHGhpeGCdDjPvNu6BisTf62ATqf37bYXPilz
-	 e09i6GP9/HsZa7vgbLtfzvExAO5n27WOdokdmAPI=
+	b=guXy6qVFY4MBhD8KXbbuaKeqq0I1ru2CAfyjGMVnTgQFYJLsj1qKjhHbU9Lytil22
+	 qT80mqUdcWuCt+1i3eA08Gr+OW853xxyyof8ArLyk0KsPQkw0ahhV65kXjK+88LO0T
+	 vzgwY2CSORNwKZc9xsJ2FtUCQDt4gsdEgrOmb0+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tingmao Wang <m@maowtm.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/354] fs/9p: Dont open remote file with APPEND mode when writeback cache is used
+Subject: [PATCH 6.18 311/614] PCI: stm32: Fix EP page_size alignment
 Date: Tue, 16 Dec 2025 12:11:18 +0100
-Message-ID: <20251216111324.944560058@linuxfoundation.org>
+Message-ID: <20251216111412.636129618@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tingmao Wang <m@maowtm.org>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit a63dd8fd137933551bfd9aeeeaa942f04c7aad65 ]
+[ Upstream commit ff529a9307a03ec03ed9751da053b57149300053 ]
 
-When page cache is used, writebacks are done on a page granularity, and it
-is expected that the underlying filesystem (such as v9fs) should respect
-the write position.  However, currently v9fs will passthrough O_APPEND to
-the server even on cached mode.  This causes data corruption if a sync or
-fstat gets between two writes to the same file.
+pci_epc_mem_alloc_addr() allocates a CPU address from the ATU window phys
+base and a page number. Set the ep->page_size so the resulting CPU address
+is correctly aligned with the ATU required alignment.
 
-This patch removes the APPEND flag from the open request we send to the
-server when writeback caching is involved.  I believe keeping server-side
-APPEND is probably fine for uncached mode (even if two fds are opened, one
-without O_APPEND and one with it, this should still be fine since they
-would use separate fid for the writes).
-
-Signed-off-by: Tingmao Wang <m@maowtm.org>
-Fixes: 4eb3117888a9 ("fs/9p: Rework cache modes and add new options to Documentation")
-Message-ID: <20251102235631.8724-1-m@maowtm.org>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 151f3d29baf4 ("PCI: stm32-ep: Add PCIe Endpoint support for STM32MP25")
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+[mani: added fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251114-atu_align_ep-v1-1-88da5366fa04@foss.st.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_file.c       | 11 ++++++++---
- fs/9p/vfs_inode.c      |  3 +--
- fs/9p/vfs_inode_dotl.c |  2 +-
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/pci/controller/dwc/pcie-stm32-ep.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 348cc90bf9c56..de0d1f74de46c 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -43,14 +43,18 @@ int v9fs_file_open(struct inode *inode, struct file *file)
- 	struct v9fs_session_info *v9ses;
- 	struct p9_fid *fid;
- 	int omode;
-+	int o_append;
+diff --git a/drivers/pci/controller/dwc/pcie-stm32-ep.c b/drivers/pci/controller/dwc/pcie-stm32-ep.c
+index faa6433a784f3..7d48038d576d9 100644
+--- a/drivers/pci/controller/dwc/pcie-stm32-ep.c
++++ b/drivers/pci/controller/dwc/pcie-stm32-ep.c
+@@ -214,6 +214,8 @@ static int stm32_add_pcie_ep(struct stm32_pcie *stm32_pcie,
  
- 	p9_debug(P9_DEBUG_VFS, "inode: %p file: %p\n", inode, file);
- 	v9ses = v9fs_inode2v9ses(inode);
--	if (v9fs_proto_dotl(v9ses))
-+	if (v9fs_proto_dotl(v9ses)) {
- 		omode = v9fs_open_to_dotl_flags(file->f_flags);
--	else
-+		o_append = P9_DOTL_APPEND;
-+	} else {
- 		omode = v9fs_uflags2omode(file->f_flags,
- 					v9fs_proto_dotu(v9ses));
-+		o_append = P9_OAPPEND;
-+	}
- 	fid = file->private_data;
- 	if (!fid) {
- 		fid = v9fs_fid_clone(file_dentry(file));
-@@ -58,9 +62,10 @@ int v9fs_file_open(struct inode *inode, struct file *file)
- 			return PTR_ERR(fid);
+ 	ep->ops = &stm32_pcie_ep_ops;
  
- 		if ((v9ses->cache & CACHE_WRITEBACK) && (omode & P9_OWRITE)) {
--			int writeback_omode = (omode & ~P9_OWRITE) | P9_ORDWR;
-+			int writeback_omode = (omode & ~(P9_OWRITE | o_append)) | P9_ORDWR;
- 
- 			p9_debug(P9_DEBUG_CACHE, "write-only file with writeback enabled, try opening O_RDWR\n");
++	ep->page_size = stm32_pcie_epc_features.align;
 +
- 			err = p9_client_open(fid, writeback_omode);
- 			if (err < 0) {
- 				p9_debug(P9_DEBUG_CACHE, "could not open O_RDWR, disabling caches\n");
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 3e68521f4e2f9..1723a37d1846e 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -791,7 +791,7 @@ v9fs_vfs_atomic_open(struct inode *dir, struct dentry *dentry,
- 	p9_omode = v9fs_uflags2omode(flags, v9fs_proto_dotu(v9ses));
- 
- 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
--		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
-+		p9_omode = (p9_omode & ~(P9_OWRITE | P9_OAPPEND)) | P9_ORDWR;
- 		p9_debug(P9_DEBUG_CACHE,
- 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
- 	}
-@@ -1404,4 +1404,3 @@ static const struct inode_operations v9fs_symlink_inode_operations = {
- 	.getattr = v9fs_vfs_getattr,
- 	.setattr = v9fs_vfs_setattr,
- };
--
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 3397939fd2d5a..40a4fc65a5441 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -286,7 +286,7 @@ v9fs_vfs_atomic_open_dotl(struct inode *dir, struct dentry *dentry,
- 	}
- 
- 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
--		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
-+		p9_omode = (p9_omode & ~(P9_OWRITE | P9_DOTL_APPEND)) | P9_ORDWR;
- 		p9_debug(P9_DEBUG_CACHE,
- 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
- 	}
+ 	ret = dw_pcie_ep_init(ep);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to initialize ep: %d\n", ret);
 -- 
 2.51.0
 
