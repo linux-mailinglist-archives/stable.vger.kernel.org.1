@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BDACC2631
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1445BCC2EA9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9245430C3361
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A732303017D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C812342151;
-	Tue, 16 Dec 2025 11:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4EB396576;
+	Tue, 16 Dec 2025 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lo2SbSs/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVkMLS6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA8E341AD8;
-	Tue, 16 Dec 2025 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8715A39656B;
+	Tue, 16 Dec 2025 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884789; cv=none; b=gvmk5ntIAS3biC19lYONheCxY1+tgs9UO1G8gJLG+tyQzdn4gYAXv+WlmD2tPzqNR9vYhTAHxYGi51cjj4uWY3tFaBSOM5yN6bezpdPmZeiR0+olWdQjLufTTLBm+bYTq0IlibebAVpOtEEO8x4slmCkuiWH8xN8L5pZH2ffXek=
+	t=1765888318; cv=none; b=ec1PQytcUBQSvmqhRJGQ4gXPsCDWG40q0gb7bBgy7a/NsCGuOsBIseEXBzpA8PEsfkKuT+beBpggv8Gpevs29JfBDerYnH5jt0Mwgzou6O+0PcYeZOUfGGQQTQFvgFYfAsL6+6lboDiqAgnZ8lhXlUs7vunw9Rxo+WVTLSo2xoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884789; c=relaxed/simple;
-	bh=OvSdUnkO26ewMkmRjhftKdMlUEmzVobmDXn/t+VrXFo=;
+	s=arc-20240116; t=1765888318; c=relaxed/simple;
+	bh=lyoglxECy02AR0O2KOrjHKTxrU7klFHmrEqPU5lRy7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBkouPaclHK1bMBQlbn+zk8ugKNHXBimhu9P34FVZHMP7sj/gGe2lQHFzdx9XSJuto3urtRq2bbO2uuQvXVPU/CaikVJRuAe8YjZyrPMttXbBvH+oYI51BHp5+SftBmcWCVGEMT5iOS1NFbZaNhGYEg+QnnNZOqhnB0KZsk51A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lo2SbSs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B198C4CEF1;
-	Tue, 16 Dec 2025 11:33:09 +0000 (UTC)
+	 MIME-Version; b=jyx4ch3be8pTD/aTMQuVsG75Pn5467bb9T7BWv4KM754YTsRAtsll/YYv3IQUemXXsdo6UhKsn21EYv7aYpTG7vJtNAl0njdfGUTvWVAbO8Dazr79LmPCYAIf+//YvYFmEHkY1xMva8UmaxU58Ut6yQCl07lv9otUgjlScZBNTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVkMLS6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAD2C4CEF1;
+	Tue, 16 Dec 2025 12:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884789;
-	bh=OvSdUnkO26ewMkmRjhftKdMlUEmzVobmDXn/t+VrXFo=;
+	s=korg; t=1765888318;
+	bh=lyoglxECy02AR0O2KOrjHKTxrU7klFHmrEqPU5lRy7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lo2SbSs/2vvjVEc+KnCEkTjqAbSqGU8MWCjxDMlBkfE+iIS1fnQIq6K/Ulnva5uXb
-	 mrqpONjXDfKrIoNfSIAtes2lZLtk1cJoXfeQgZZe+02igoTZVpCG4i05KAjOmwOi+E
-	 Jvfr1j5RbJyL29vu5v4TNOvT6weAzTcca338pvI8=
+	b=jVkMLS6TGvQw6Y2TaRzFzcq+90QgcQFF3LkGSXzVfD1bYajRo6e2HFKCyufauRGre
+	 m/bwIwVLXwAJFhNxieMUdLDVP1y5bI7M91oWPNcZMpDsM7cgri70ECS5vsN9x5dEfz
+	 FEoNHHou7rsC5wUY+8RWzw7spSWCSyO+L0fhvFyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/354] f2fs: add gc_boost_gc_multiple sysfs node
+Subject: [PATCH 6.18 499/614] md/raid5: fix IO hang when array is broken with IO inflight
 Date: Tue, 16 Dec 2025 12:14:26 +0100
-Message-ID: <20251216111331.744676016@linuxfoundation.org>
+Message-ID: <20251216111419.449371626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 1d4c5dbba1a53aeaf2c6cc84e7ba94c436d18852 ]
+[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
 
-Add a sysfs knob to set a multiplier for the background GC migration
-window when F2FS Garbage Collection is boosted.
+Following test can cause IO hang:
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
+mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
+sleep 5
+echo 1 > /sys/block/sda/device/delete
+echo 1 > /sys/block/sdb/device/delete
+echo 1 > /sys/block/sdc/device/delete
+echo 1 > /sys/block/sdd/device/delete
+
+dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
+
+Root cause:
+
+1) all disks removed, however all rdevs in the array is still in sync,
+IO will be issued normally.
+
+2) IO failure from sda, and set badblocks failed, sda will be faulty
+and MD_SB_CHANGING_PENDING will be set.
+
+3) error recovery try to recover this IO from other disks, IO will be
+issued to sdb, sdc, and sdd.
+
+4) IO failure from sdb, and set badblocks failed again, now array is
+broken and will become read-only.
+
+5) IO failure from sdc and sdd, however, stripe can't be handled anymore
+because MD_SB_CHANGING_PENDING is set:
+
+handle_stripe
+ handle_stripe
+ if (test_bit MD_SB_CHANGING_PENDING)
+  set_bit STRIPE_HANDLE
+  goto finish
+  // skip handling failed stripe
+
+release_stripe
+ if (test_bit STRIPE_HANDLE)
+  list_add_tail conf->hand_list
+
+6) later raid5d can't handle failed stripe as well:
+
+raid5d
+ md_check_recovery
+  md_update_sb
+   if (!md_is_rdwr())
+    // can't clear pending bit
+    return
+ if (test_bit MD_SB_CHANGING_PENDING)
+  break;
+  // can't handle failed stripe
+
+Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
+fix this problem by skip this checking for read-only array.
+
+Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
+Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++++
- fs/f2fs/gc.c                            | 3 ++-
- fs/f2fs/gc.h                            | 1 +
- fs/f2fs/sysfs.c                         | 9 +++++++++
- 4 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/md/raid5.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index ade7da6352de6..e5ec2a7982eef 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -867,3 +867,10 @@ Description:	This threshold is used to control triggering garbage collection whi
- 		reserved section before preallocating on pinned file.
- 		By default, the value is ovp_sections, especially, for zoned ufs, the
- 		value is 1.
-+
-+What:		/sys/fs/f2fs/<disk>/gc_boost_gc_multiple
-+Date:		June 2025
-+Contact:	"Daeho Jeong" <daehojeong@google.com>
-+Description:	Set a multiplier for the background GC migration window when F2FS GC is
-+		boosted. The range should be from 1 to the segment count in a section.
-+		Default: 5
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index c0e43d6056a0a..2cc7e16f76659 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -197,6 +197,7 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 24b32a0c95b40..8b5f8a12d4179 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -4956,7 +4956,8 @@ static void handle_stripe(struct stripe_head *sh)
+ 		goto finish;
  
- 	gc_th->urgent_sleep_time = DEF_GC_THREAD_URGENT_SLEEP_TIME;
- 	gc_th->valid_thresh_ratio = DEF_GC_THREAD_VALID_THRESH_RATIO;
-+	gc_th->boost_gc_multiple = BOOST_GC_MULTIPLE;
- 
- 	if (f2fs_sb_has_blkzoned(sbi)) {
- 		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED;
-@@ -1757,7 +1758,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 					!has_enough_free_blocks(sbi,
- 					sbi->gc_thread->boost_zoned_gc_percent))
- 				window_granularity *=
--					BOOST_GC_MULTIPLE;
-+					sbi->gc_thread->boost_gc_multiple;
- 
- 			end_segno = start_segno + window_granularity;
- 		}
-diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
-index 5c1eaf55e1277..efa1968810a06 100644
---- a/fs/f2fs/gc.h
-+++ b/fs/f2fs/gc.h
-@@ -68,6 +68,7 @@ struct f2fs_gc_kthread {
- 	unsigned int no_zoned_gc_percent;
- 	unsigned int boost_zoned_gc_percent;
- 	unsigned int valid_thresh_ratio;
-+	unsigned int boost_gc_multiple;
- };
- 
- struct gc_inode_list {
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 624ce79f08fd2..dce3ef405832e 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -854,6 +854,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
+ 	if (s.handle_bad_blocks ||
+-	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
++	    (md_is_rdwr(conf->mddev) &&
++	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
+ 		set_bit(STRIPE_HANDLE, &sh->state);
+ 		goto finish;
  	}
+@@ -6768,7 +6769,8 @@ static void raid5d(struct md_thread *thread)
+ 		int batch_size, released;
+ 		unsigned int offset;
  
-+	if (!strcmp(a->attr.name, "gc_boost_gc_multiple")) {
-+		if (t < 1 || t > SEGS_PER_SEC(sbi))
-+			return -EINVAL;
-+		sbi->gc_thread->boost_gc_multiple = (unsigned int)t;
-+		return count;
-+	}
-+
- 	*ui = (unsigned int)t;
+-		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++		if (md_is_rdwr(mddev) &&
++		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
+ 			break;
  
- 	return count;
-@@ -1080,6 +1087,7 @@ GC_THREAD_RW_ATTR(gc_no_gc_sleep_time, no_gc_sleep_time);
- GC_THREAD_RW_ATTR(gc_no_zoned_gc_percent, no_zoned_gc_percent);
- GC_THREAD_RW_ATTR(gc_boost_zoned_gc_percent, boost_zoned_gc_percent);
- GC_THREAD_RW_ATTR(gc_valid_thresh_ratio, valid_thresh_ratio);
-+GC_THREAD_RW_ATTR(gc_boost_gc_multiple, boost_gc_multiple);
- 
- /* SM_INFO ATTR */
- SM_INFO_RW_ATTR(reclaim_segments, rec_prefree_segments);
-@@ -1248,6 +1256,7 @@ static struct attribute *f2fs_attrs[] = {
- 	ATTR_LIST(gc_no_zoned_gc_percent),
- 	ATTR_LIST(gc_boost_zoned_gc_percent),
- 	ATTR_LIST(gc_valid_thresh_ratio),
-+	ATTR_LIST(gc_boost_gc_multiple),
- 	ATTR_LIST(gc_idle),
- 	ATTR_LIST(gc_urgent),
- 	ATTR_LIST(reclaim_segments),
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
 -- 
 2.51.0
 
