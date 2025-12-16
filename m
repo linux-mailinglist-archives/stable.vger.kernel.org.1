@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD92CC294A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E758CC2F4A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52B8E30136F4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C4408302AAE4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95EA357A4B;
-	Tue, 16 Dec 2025 12:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1FE362125;
+	Tue, 16 Dec 2025 12:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmXBB8f6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNCbT759"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485A357736;
-	Tue, 16 Dec 2025 12:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FC2361DD1;
+	Tue, 16 Dec 2025 12:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886596; cv=none; b=SthZfA+G/X59uCdN/X2gfV5fLogKq9MDWs/7IglNIog8zT9xJp2Jkmg6t4FdusHbfE8yxJNCDrx0hgpCGzA8K/9/y8fSChdX7+DyUZrJXY0X/a/x4l4l3Lpxn07J3Qw5J3Z2cjC5alRtCcu6pEaXTeN0iYGReu1Lr29hvvQqefQ=
+	t=1765888522; cv=none; b=Jmm+7AzQTZz2m3raCyRMA7PBGsOzlamL6tfspwik9qWTyRb8A9aM98070lyMGe9n4bTnqsNaqMlCH9fywzKs4umxqt41T2Y4yuACuGuOs2UAdD4WWk4P7zduTk/I+DECnM9YJ65EjAEWOZRiXJOJ9Q8vOYMIhqowzq/Ugxkztrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886596; c=relaxed/simple;
-	bh=Bkh8PphUyRedExyisd9usqtyPNk17m545F2+rZUmXuE=;
+	s=arc-20240116; t=1765888522; c=relaxed/simple;
+	bh=sfoikDdgRv8JfeTMrSkTcyJsfiof8YT6C+YNPi/OXXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p4xXehVIdQ8V5S9+koy46KvRFgtT/gExIbGiq1rou4rO17JXIbeGS5uAT+Rg+H8r/LEkgyZ9Sb8r/1nunhiLviZlVqk2mGVqD7YCd/VpjtGtSbboIIbg5191aChj3q6knLBmZnJ9EeBezlkstCGlfeSYReLg6yakoEpKdCKprfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmXBB8f6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BF1C4CEF5;
-	Tue, 16 Dec 2025 12:03:15 +0000 (UTC)
+	 MIME-Version; b=Q3MBWVg54H+78gsVcQU7RUlREV++0DlbVHWQY9VtblnrdVYCgrpdaPW9Uj/qfE1ZWahvD7ajQzHvk5HOv+F4hg0pFoTANqayrzom+vzduG9iwX/bgqsMYsQEIh0+/TchQYHL1XptBJpZljYr33E77moJ6jU4cRLA1i3G7fSJA6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNCbT759; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C74C4CEF1;
+	Tue, 16 Dec 2025 12:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886596;
-	bh=Bkh8PphUyRedExyisd9usqtyPNk17m545F2+rZUmXuE=;
+	s=korg; t=1765888522;
+	bh=sfoikDdgRv8JfeTMrSkTcyJsfiof8YT6C+YNPi/OXXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmXBB8f6Eu6NuuCOMWtHZCmPNnFfUgvvoSELWahYQit1EmgYfOBA5RPXWpDhVfHCp
-	 49A9suk4oWB8blMUmsQIslKbQZMAs2ndxmIp1QuCelbqW3vAdH/iaWdTnehKrZiAh8
-	 crx11wx6NpD+A2nBFoIn7dePSkMPmFo2UIyvmpfY=
+	b=oNCbT759QteyNNorK//XGTj6K3mUeqSgaDdLDtsgxfaNgEcjvIvd143PTcBFxLBjS
+	 Uehdf9+1E8Y0Nu6VeBht/4Y43+bzLQZcyXYFH2yKdIzVZ5UymAYlPca9lb6NUZ2dU3
+	 PfruhSuMjt7l/LYsBkDvMYaM+5msYpVuKrBYmM1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 483/507] drm/{i915, xe}/fbdev: deduplicate struct drm_mode_fb_cmd2 init
-Date: Tue, 16 Dec 2025 12:15:24 +0100
-Message-ID: <20251216111402.939621514@linuxfoundation.org>
+Subject: [PATCH 6.18 558/614] f2fs: revert summary entry count from 2048 to 512 in 16kb block support
+Date: Tue, 16 Dec 2025 12:15:25 +0100
+Message-ID: <20251216111421.597526760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,218 +59,459 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit f9ff39f940f5ddd1d4ffcff602de7206aa1ff05d ]
+[ Upstream commit 7ee8bc3942f20964ad730871b885688ea3a2961a ]
 
-Pull struct drm_mode_fb_cmd2 initialization out of the driver dependent
-code into shared display code.
+The recent increase in the number of Segment Summary Area (SSA) entries
+from 512 to 2048 was an unintentional change in logic of 16kb block
+support. This commit corrects the issue.
 
-v2: Rebase on xe stride alignment change
+To better utilize the space available from the erroneous 2048-entry
+calculation, we are implementing a solution to share the currently
+unused SSA space with neighboring segments. This enhances overall
+SSA utilization without impacting the established 8MB segment size.
 
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://lore.kernel.org/r/e922e47bfd39f9c5777f869ff23c23309ebbb380.1758184771.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Stable-dep-of: 460b31720369 ("drm/i915/fbdev: Hold runtime PM ref during fbdev BO creation")
+Fixes: d7e9a9037de2 ("f2fs: Support Block Size == Page Size")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_fbdev.c    | 32 ++++++++++++++++++-
- drivers/gpu/drm/i915/display/intel_fbdev_fb.c | 25 ++++-----------
- drivers/gpu/drm/i915/display/intel_fbdev_fb.h |  4 +--
- drivers/gpu/drm/xe/display/intel_fbdev_fb.c   | 25 ++++-----------
- 4 files changed, 45 insertions(+), 41 deletions(-)
+ fs/f2fs/f2fs.h          |   2 +
+ fs/f2fs/gc.c            | 117 +++++++++++++++++++++++-----------------
+ fs/f2fs/recovery.c      |   2 +-
+ fs/f2fs/segment.c       |  38 +++++++++----
+ fs/f2fs/segment.h       |   8 ++-
+ fs/f2fs/super.c         |  14 +++++
+ fs/f2fs/sysfs.c         |   7 +++
+ include/linux/f2fs_fs.h |   5 +-
+ 8 files changed, 130 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_fbdev.c b/drivers/gpu/drm/i915/display/intel_fbdev.c
-index 46c6de5f60888..e46c08762b847 100644
---- a/drivers/gpu/drm/i915/display/intel_fbdev.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbdev.c
-@@ -207,6 +207,35 @@ static const struct drm_fb_helper_funcs intel_fb_helper_funcs = {
- 	.fb_set_suspend = intelfb_set_suspend,
- };
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 5b4e9548a231f..5149f351f03d2 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -245,6 +245,7 @@ struct f2fs_mount_info {
+ #define F2FS_FEATURE_COMPRESSION		0x00002000
+ #define F2FS_FEATURE_RO				0x00004000
+ #define F2FS_FEATURE_DEVICE_ALIAS		0x00008000
++#define F2FS_FEATURE_PACKED_SSA			0x00010000
  
-+static void intel_fbdev_fill_mode_cmd(struct drm_fb_helper_surface_size *sizes,
-+				      struct drm_mode_fb_cmd2 *mode_cmd)
-+{
-+	/* we don't do packed 24bpp */
-+	if (sizes->surface_bpp == 24)
-+		sizes->surface_bpp = 32;
+ #define __F2FS_HAS_FEATURE(raw_super, mask)				\
+ 	((raw_super->feature & cpu_to_le32(mask)) != 0)
+@@ -4710,6 +4711,7 @@ F2FS_FEATURE_FUNCS(casefold, CASEFOLD);
+ F2FS_FEATURE_FUNCS(compression, COMPRESSION);
+ F2FS_FEATURE_FUNCS(readonly, RO);
+ F2FS_FEATURE_FUNCS(device_alias, DEVICE_ALIAS);
++F2FS_FEATURE_FUNCS(packed_ssa, PACKED_SSA);
+ 
+ #ifdef CONFIG_BLK_DEV_ZONED
+ static inline bool f2fs_zone_is_seq(struct f2fs_sb_info *sbi, int devi,
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 8abf521530ff3..af2f4d28462c0 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1732,7 +1732,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 	unsigned char type = IS_DATASEG(get_seg_entry(sbi, segno)->type) ?
+ 						SUM_TYPE_DATA : SUM_TYPE_NODE;
+ 	unsigned char data_type = (type == SUM_TYPE_DATA) ? DATA : NODE;
+-	int submitted = 0;
++	int submitted = 0, sum_blk_cnt;
+ 
+ 	if (__is_large_section(sbi)) {
+ 		sec_end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
+@@ -1766,22 +1766,28 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 
+ 	sanity_check_seg_type(sbi, get_seg_entry(sbi, segno)->type);
+ 
++	segno = rounddown(segno, SUMS_PER_BLOCK);
++	sum_blk_cnt = DIV_ROUND_UP(end_segno - segno, SUMS_PER_BLOCK);
+ 	/* readahead multi ssa blocks those have contiguous address */
+ 	if (__is_large_section(sbi))
+ 		f2fs_ra_meta_pages(sbi, GET_SUM_BLOCK(sbi, segno),
+-					end_segno - segno, META_SSA, true);
++					sum_blk_cnt, META_SSA, true);
+ 
+ 	/* reference all summary page */
+ 	while (segno < end_segno) {
+-		struct folio *sum_folio = f2fs_get_sum_folio(sbi, segno++);
++		struct folio *sum_folio = f2fs_get_sum_folio(sbi, segno);
 +
-+	mode_cmd->width = sizes->surface_width;
-+	mode_cmd->height = sizes->surface_height;
++		segno += SUMS_PER_BLOCK;
+ 		if (IS_ERR(sum_folio)) {
+ 			int err = PTR_ERR(sum_folio);
+ 
+-			end_segno = segno - 1;
+-			for (segno = start_segno; segno < end_segno; segno++) {
++			end_segno = segno - SUMS_PER_BLOCK;
++			segno = rounddown(start_segno, SUMS_PER_BLOCK);
++			while (segno < end_segno) {
+ 				sum_folio = filemap_get_folio(META_MAPPING(sbi),
+ 						GET_SUM_BLOCK(sbi, segno));
+ 				folio_put_refs(sum_folio, 2);
++				segno += SUMS_PER_BLOCK;
+ 			}
+ 			return err;
+ 		}
+@@ -1790,68 +1796,83 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 
+ 	blk_start_plug(&plug);
+ 
+-	for (segno = start_segno; segno < end_segno; segno++) {
+-		struct f2fs_summary_block *sum;
++	segno = start_segno;
++	while (segno < end_segno) {
++		unsigned int cur_segno;
+ 
+ 		/* find segment summary of victim */
+ 		struct folio *sum_folio = filemap_get_folio(META_MAPPING(sbi),
+ 					GET_SUM_BLOCK(sbi, segno));
++		unsigned int block_end_segno = rounddown(segno, SUMS_PER_BLOCK)
++					+ SUMS_PER_BLOCK;
 +
-+	mode_cmd->pitches[0] = ALIGN(mode_cmd->width * DIV_ROUND_UP(sizes->surface_bpp, 8), 64);
-+	mode_cmd->pixel_format = drm_mode_legacy_fb_format(sizes->surface_bpp,
-+							   sizes->surface_depth);
-+}
++		if (block_end_segno > end_segno)
++			block_end_segno = end_segno;
+ 
+ 		if (is_cursec(sbi, GET_SEC_FROM_SEG(sbi, segno))) {
+ 			f2fs_err(sbi, "%s: segment %u is used by log",
+ 							__func__, segno);
+ 			f2fs_bug_on(sbi, 1);
+-			goto skip;
++			goto next_block;
+ 		}
+ 
+-		if (get_valid_blocks(sbi, segno, false) == 0)
+-			goto freed;
+-		if (gc_type == BG_GC && __is_large_section(sbi) &&
+-				migrated >= sbi->migration_granularity)
+-			goto skip;
+ 		if (!folio_test_uptodate(sum_folio) ||
+ 		    unlikely(f2fs_cp_error(sbi)))
+-			goto skip;
++			goto next_block;
+ 
+-		sum = folio_address(sum_folio);
+-		if (type != GET_SUM_TYPE((&sum->footer))) {
+-			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SIT and SSA",
+-				 segno, type, GET_SUM_TYPE((&sum->footer)));
+-			f2fs_stop_checkpoint(sbi, false,
+-				STOP_CP_REASON_CORRUPTED_SUMMARY);
+-			goto skip;
+-		}
++		for (cur_segno = segno; cur_segno < block_end_segno;
++				cur_segno++) {
++			struct f2fs_summary_block *sum;
+ 
+-		/*
+-		 * this is to avoid deadlock:
+-		 * - lock_page(sum_page)         - f2fs_replace_block
+-		 *  - check_valid_map()            - down_write(sentry_lock)
+-		 *   - down_read(sentry_lock)     - change_curseg()
+-		 *                                  - lock_page(sum_page)
+-		 */
+-		if (type == SUM_TYPE_NODE)
+-			submitted += gc_node_segment(sbi, sum->entries, segno,
+-								gc_type);
+-		else
+-			submitted += gc_data_segment(sbi, sum->entries, gc_list,
+-							segno, gc_type,
+-							force_migrate);
++			if (get_valid_blocks(sbi, cur_segno, false) == 0)
++				goto freed;
++			if (gc_type == BG_GC && __is_large_section(sbi) &&
++					migrated >= sbi->migration_granularity)
++				continue;
+ 
+-		stat_inc_gc_seg_count(sbi, data_type, gc_type);
+-		sbi->gc_reclaimed_segs[sbi->gc_mode]++;
+-		migrated++;
++			sum = SUM_BLK_PAGE_ADDR(sum_folio, cur_segno);
++			if (type != GET_SUM_TYPE((&sum->footer))) {
++				f2fs_err(sbi, "Inconsistent segment (%u) type "
++						"[%d, %d] in SSA and SIT",
++						cur_segno, type,
++						GET_SUM_TYPE((&sum->footer)));
++				f2fs_stop_checkpoint(sbi, false,
++						STOP_CP_REASON_CORRUPTED_SUMMARY);
++				continue;
++			}
+ 
+-freed:
+-		if (gc_type == FG_GC &&
+-				get_valid_blocks(sbi, segno, false) == 0)
+-			seg_freed++;
++			/*
++			 * this is to avoid deadlock:
++			 *  - lock_page(sum_page)     - f2fs_replace_block
++			 *   - check_valid_map()        - down_write(sentry_lock)
++			 *    - down_read(sentry_lock) - change_curseg()
++			 *                               - lock_page(sum_page)
++			 */
++			if (type == SUM_TYPE_NODE)
++				submitted += gc_node_segment(sbi, sum->entries,
++						cur_segno, gc_type);
++			else
++				submitted += gc_data_segment(sbi, sum->entries,
++						gc_list, cur_segno,
++						gc_type, force_migrate);
+ 
+-		if (__is_large_section(sbi))
+-			sbi->next_victim_seg[gc_type] =
+-				(segno + 1 < sec_end_segno) ?
+-					segno + 1 : NULL_SEGNO;
+-skip:
++			stat_inc_gc_seg_count(sbi, data_type, gc_type);
++			sbi->gc_reclaimed_segs[sbi->gc_mode]++;
++			migrated++;
 +
-+static struct intel_framebuffer *
-+__intel_fbdev_fb_alloc(struct intel_display *display,
-+		       struct drm_fb_helper_surface_size *sizes)
-+{
-+	struct drm_mode_fb_cmd2 mode_cmd = {};
-+	struct intel_framebuffer *fb;
++freed:
++			if (gc_type == FG_GC &&
++					get_valid_blocks(sbi, cur_segno, false) == 0)
++				seg_freed++;
 +
-+	intel_fbdev_fill_mode_cmd(sizes, &mode_cmd);
-+
-+	fb = intel_fbdev_fb_alloc(display->drm, &mode_cmd);
-+
-+	return fb;
-+}
-+
- int intel_fbdev_driver_fbdev_probe(struct drm_fb_helper *helper,
- 				   struct drm_fb_helper_surface_size *sizes)
++			if (__is_large_section(sbi))
++				sbi->next_victim_seg[gc_type] =
++					(cur_segno + 1 < sec_end_segno) ?
++					cur_segno + 1 : NULL_SEGNO;
++		}
++next_block:
+ 		folio_put_refs(sum_folio, 2);
++		segno = block_end_segno;
+ 	}
+ 
+ 	if (submitted)
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index 215e442db72c8..af72309b9bfc6 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -519,7 +519,7 @@ static int check_index_in_prev_nodes(struct f2fs_sb_info *sbi,
+ 	sum_folio = f2fs_get_sum_folio(sbi, segno);
+ 	if (IS_ERR(sum_folio))
+ 		return PTR_ERR(sum_folio);
+-	sum_node = folio_address(sum_folio);
++	sum_node = SUM_BLK_PAGE_ADDR(sum_folio, segno);
+ 	sum = sum_node->entries[blkoff];
+ 	f2fs_folio_put(sum_folio, true);
+ got_it:
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index b45eace879d74..ac84559dc2693 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2712,7 +2712,15 @@ struct folio *f2fs_get_sum_folio(struct f2fs_sb_info *sbi, unsigned int segno)
+ void f2fs_update_meta_page(struct f2fs_sb_info *sbi,
+ 					void *src, block_t blk_addr)
  {
-@@ -237,7 +266,8 @@ int intel_fbdev_driver_fbdev_probe(struct drm_fb_helper *helper,
- 	if (!fb || drm_WARN_ON(display->drm, !intel_fb_bo(&fb->base))) {
- 		drm_dbg_kms(display->drm,
- 			    "no BIOS fb, allocating a new one\n");
--		fb = intel_fbdev_fb_alloc(display->drm, sizes);
+-	struct folio *folio = f2fs_grab_meta_folio(sbi, blk_addr);
++	struct folio *folio;
 +
-+		fb = __intel_fbdev_fb_alloc(display, sizes);
- 		if (IS_ERR(fb))
- 			return PTR_ERR(fb);
++	if (SUMS_PER_BLOCK == 1)
++		folio = f2fs_grab_meta_folio(sbi, blk_addr);
++	else
++		folio = f2fs_get_meta_folio_retry(sbi, blk_addr);
++
++	if (IS_ERR(folio))
++		return;
+ 
+ 	memcpy(folio_address(folio), src, PAGE_SIZE);
+ 	folio_mark_dirty(folio);
+@@ -2720,9 +2728,21 @@ void f2fs_update_meta_page(struct f2fs_sb_info *sbi,
+ }
+ 
+ static void write_sum_page(struct f2fs_sb_info *sbi,
+-			struct f2fs_summary_block *sum_blk, block_t blk_addr)
++		struct f2fs_summary_block *sum_blk, unsigned int segno)
+ {
+-	f2fs_update_meta_page(sbi, (void *)sum_blk, blk_addr);
++	struct folio *folio;
++
++	if (SUMS_PER_BLOCK == 1)
++		return f2fs_update_meta_page(sbi, (void *)sum_blk,
++				GET_SUM_BLOCK(sbi, segno));
++
++	folio = f2fs_get_sum_folio(sbi, segno);
++	if (IS_ERR(folio))
++		return;
++
++	memcpy(SUM_BLK_PAGE_ADDR(folio, segno), sum_blk, sizeof(*sum_blk));
++	folio_mark_dirty(folio);
++	f2fs_folio_put(folio, true);
+ }
+ 
+ static void write_current_sum_page(struct f2fs_sb_info *sbi,
+@@ -2987,7 +3007,7 @@ static int new_curseg(struct f2fs_sb_info *sbi, int type, bool new_sec)
+ 	int ret;
+ 
+ 	if (curseg->inited)
+-		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, segno));
++		write_sum_page(sbi, curseg->sum_blk, segno);
+ 
+ 	segno = __get_next_segno(sbi, type);
+ 	ret = get_new_segment(sbi, &segno, new_sec, pinning);
+@@ -3046,7 +3066,7 @@ static int change_curseg(struct f2fs_sb_info *sbi, int type)
+ 	struct folio *sum_folio;
+ 
+ 	if (curseg->inited)
+-		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
++		write_sum_page(sbi, curseg->sum_blk, curseg->segno);
+ 
+ 	__set_test_and_inuse(sbi, new_segno);
+ 
+@@ -3065,7 +3085,7 @@ static int change_curseg(struct f2fs_sb_info *sbi, int type)
+ 		memset(curseg->sum_blk, 0, SUM_ENTRY_SIZE);
+ 		return PTR_ERR(sum_folio);
+ 	}
+-	sum_node = folio_address(sum_folio);
++	sum_node = SUM_BLK_PAGE_ADDR(sum_folio, new_segno);
+ 	memcpy(curseg->sum_blk, sum_node, SUM_ENTRY_SIZE);
+ 	f2fs_folio_put(sum_folio, true);
+ 	return 0;
+@@ -3154,8 +3174,7 @@ static void __f2fs_save_inmem_curseg(struct f2fs_sb_info *sbi, int type)
+ 		goto out;
+ 
+ 	if (get_valid_blocks(sbi, curseg->segno, false)) {
+-		write_sum_page(sbi, curseg->sum_blk,
+-				GET_SUM_BLOCK(sbi, curseg->segno));
++		write_sum_page(sbi, curseg->sum_blk, curseg->segno);
  	} else {
-diff --git a/drivers/gpu/drm/i915/display/intel_fbdev_fb.c b/drivers/gpu/drm/i915/display/intel_fbdev_fb.c
-index 4de13d1a4c7a7..685612e6afc53 100644
---- a/drivers/gpu/drm/i915/display/intel_fbdev_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbdev_fb.c
-@@ -3,7 +3,7 @@
-  * Copyright © 2023 Intel Corporation
+ 		mutex_lock(&DIRTY_I(sbi)->seglist_lock);
+ 		__set_test_and_free(sbi, curseg->segno, true);
+@@ -3833,8 +3852,7 @@ int f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct folio *folio,
+ 	if (segment_full) {
+ 		if (type == CURSEG_COLD_DATA_PINNED &&
+ 		    !((curseg->segno + 1) % sbi->segs_per_sec)) {
+-			write_sum_page(sbi, curseg->sum_blk,
+-					GET_SUM_BLOCK(sbi, curseg->segno));
++			write_sum_page(sbi, curseg->sum_blk, curseg->segno);
+ 			reset_curseg_fields(curseg);
+ 			goto skip_new_segment;
+ 		}
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 1ce2c8abaf488..e883f14c228f2 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -85,8 +85,12 @@ static inline void sanity_check_seg_type(struct f2fs_sb_info *sbi,
+ #define GET_ZONE_FROM_SEG(sbi, segno)				\
+ 	GET_ZONE_FROM_SEC(sbi, GET_SEC_FROM_SEG(sbi, segno))
+ 
+-#define GET_SUM_BLOCK(sbi, segno)				\
+-	((sbi)->sm_info->ssa_blkaddr + (segno))
++#define SUMS_PER_BLOCK (F2FS_BLKSIZE / F2FS_SUM_BLKSIZE)
++#define GET_SUM_BLOCK(sbi, segno)	\
++	(SM_I(sbi)->ssa_blkaddr + (segno / SUMS_PER_BLOCK))
++#define GET_SUM_BLKOFF(segno) (segno % SUMS_PER_BLOCK)
++#define SUM_BLK_PAGE_ADDR(folio, segno)	\
++	(folio_address(folio) + GET_SUM_BLKOFF(segno) * F2FS_SUM_BLKSIZE)
+ 
+ #define GET_SUM_TYPE(footer) ((footer)->entry_type)
+ #define SET_SUM_TYPE(footer, type) ((footer)->entry_type = (type))
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index db7afb8064115..9085b4a511a48 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4051,6 +4051,20 @@ static int sanity_check_raw_super(struct f2fs_sb_info *sbi,
+ 	if (sanity_check_area_boundary(sbi, folio, index))
+ 		return -EFSCORRUPTED;
+ 
++	/*
++	 * Check for legacy summary layout on 16KB+ block devices.
++	 * Modern f2fs-tools packs multiple 4KB summary areas into one block,
++	 * whereas legacy versions used one block per summary, leading
++	 * to a much larger SSA.
++	 */
++	if (SUMS_PER_BLOCK > 1 &&
++		    !(__F2FS_HAS_FEATURE(raw_super, F2FS_FEATURE_PACKED_SSA))) {
++		f2fs_info(sbi, "Error: Device formatted with a legacy version. "
++			"Please reformat with a tool supporting the packed ssa "
++			"feature for block sizes larger than 4kb.");
++		return -EOPNOTSUPP;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 6d2a4fba68a29..5685b454bfd12 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -235,6 +235,9 @@ static ssize_t features_show(struct f2fs_attr *a,
+ 	if (f2fs_sb_has_compression(sbi))
+ 		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "compression");
++	if (f2fs_sb_has_packed_ssa(sbi))
++		len += sysfs_emit_at(buf, len, "%s%s",
++				len ? ", " : "", "packed_ssa");
+ 	len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "pin_file");
+ 	len += sysfs_emit_at(buf, len, "\n");
+@@ -1296,6 +1299,7 @@ F2FS_FEATURE_RO_ATTR(pin_file);
+ #ifdef CONFIG_UNICODE
+ F2FS_FEATURE_RO_ATTR(linear_lookup);
+ #endif
++F2FS_FEATURE_RO_ATTR(packed_ssa);
+ 
+ #define ATTR_LIST(name) (&f2fs_attr_##name.attr)
+ static struct attribute *f2fs_attrs[] = {
+@@ -1455,6 +1459,7 @@ static struct attribute *f2fs_feat_attrs[] = {
+ #ifdef CONFIG_UNICODE
+ 	BASE_ATTR_LIST(linear_lookup),
+ #endif
++	BASE_ATTR_LIST(packed_ssa),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs_feat);
+@@ -1490,6 +1495,7 @@ F2FS_SB_FEATURE_RO_ATTR(casefold, CASEFOLD);
+ F2FS_SB_FEATURE_RO_ATTR(compression, COMPRESSION);
+ F2FS_SB_FEATURE_RO_ATTR(readonly, RO);
+ F2FS_SB_FEATURE_RO_ATTR(device_alias, DEVICE_ALIAS);
++F2FS_SB_FEATURE_RO_ATTR(packed_ssa, PACKED_SSA);
+ 
+ static struct attribute *f2fs_sb_feat_attrs[] = {
+ 	ATTR_LIST(sb_encryption),
+@@ -1507,6 +1513,7 @@ static struct attribute *f2fs_sb_feat_attrs[] = {
+ 	ATTR_LIST(sb_compression),
+ 	ATTR_LIST(sb_readonly),
+ 	ATTR_LIST(sb_device_alias),
++	ATTR_LIST(sb_packed_ssa),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs_sb_feat);
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 6afb4a13b81d6..a7880787cad36 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -17,6 +17,7 @@
+ #define F2FS_LOG_SECTORS_PER_BLOCK	(PAGE_SHIFT - 9) /* log number for sector/blk */
+ #define F2FS_BLKSIZE			PAGE_SIZE /* support only block == page */
+ #define F2FS_BLKSIZE_BITS		PAGE_SHIFT /* bits for F2FS_BLKSIZE */
++#define F2FS_SUM_BLKSIZE		4096	/* only support 4096 byte sum block */
+ #define F2FS_MAX_EXTENSION		64	/* # of extension entries */
+ #define F2FS_EXTENSION_LEN		8	/* max size of extension */
+ 
+@@ -441,7 +442,7 @@ struct f2fs_sit_block {
+  * from node's page's beginning to get a data block address.
+  * ex) data_blkaddr = (block_t)(nodepage_start_address + ofs_in_node)
   */
+-#define ENTRIES_IN_SUM		(F2FS_BLKSIZE / 8)
++#define ENTRIES_IN_SUM		(F2FS_SUM_BLKSIZE / 8)
+ #define	SUMMARY_SIZE		(7)	/* sizeof(struct f2fs_summary) */
+ #define	SUM_FOOTER_SIZE		(5)	/* sizeof(struct summary_footer) */
+ #define SUM_ENTRY_SIZE		(SUMMARY_SIZE * ENTRIES_IN_SUM)
+@@ -467,7 +468,7 @@ struct summary_footer {
+ 	__le32 check_sum;		/* summary checksum */
+ } __packed;
  
--#include <drm/drm_fb_helper.h>
-+#include <linux/fb.h>
- 
- #include "gem/i915_gem_lmem.h"
- 
-@@ -14,28 +14,15 @@
- #include "intel_fbdev_fb.h"
- 
- struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_device *drm,
--					       struct drm_fb_helper_surface_size *sizes)
-+					       struct drm_mode_fb_cmd2 *mode_cmd)
- {
- 	struct intel_display *display = to_intel_display(drm);
- 	struct drm_i915_private *dev_priv = to_i915(drm);
- 	struct drm_framebuffer *fb;
--	struct drm_mode_fb_cmd2 mode_cmd = {};
- 	struct drm_i915_gem_object *obj;
- 	int size;
- 
--	/* we don't do packed 24bpp */
--	if (sizes->surface_bpp == 24)
--		sizes->surface_bpp = 32;
--
--	mode_cmd.width = sizes->surface_width;
--	mode_cmd.height = sizes->surface_height;
--
--	mode_cmd.pitches[0] = ALIGN(mode_cmd.width *
--				    DIV_ROUND_UP(sizes->surface_bpp, 8), 64);
--	mode_cmd.pixel_format = drm_mode_legacy_fb_format(sizes->surface_bpp,
--							  sizes->surface_depth);
--
--	size = mode_cmd.pitches[0] * mode_cmd.height;
-+	size = mode_cmd->pitches[0] * mode_cmd->height;
- 	size = PAGE_ALIGN(size);
- 
- 	obj = ERR_PTR(-ENODEV);
-@@ -64,9 +51,9 @@ struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_device *drm,
- 
- 	fb = intel_framebuffer_create(intel_bo_to_drm_bo(obj),
- 				      drm_get_format_info(drm,
--							  mode_cmd.pixel_format,
--							  mode_cmd.modifier[0]),
--				      &mode_cmd);
-+							  mode_cmd->pixel_format,
-+							  mode_cmd->modifier[0]),
-+				      mode_cmd);
- 	if (IS_ERR(fb)) {
- 		i915_gem_object_put(obj);
- 		goto err;
-diff --git a/drivers/gpu/drm/i915/display/intel_fbdev_fb.h b/drivers/gpu/drm/i915/display/intel_fbdev_fb.h
-index 668ae355f5e5b..83454ffbf79cd 100644
---- a/drivers/gpu/drm/i915/display/intel_fbdev_fb.h
-+++ b/drivers/gpu/drm/i915/display/intel_fbdev_fb.h
-@@ -7,14 +7,14 @@
- #define __INTEL_FBDEV_FB_H__
- 
- struct drm_device;
--struct drm_fb_helper_surface_size;
- struct drm_gem_object;
-+struct drm_mode_fb_cmd2;
- struct fb_info;
- struct i915_vma;
- struct intel_display;
- 
- struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_device *drm,
--					       struct drm_fb_helper_surface_size *sizes);
-+					       struct drm_mode_fb_cmd2 *mode_cmd);
- int intel_fbdev_fb_fill_info(struct intel_display *display, struct fb_info *info,
- 			     struct drm_gem_object *obj, struct i915_vma *vma);
- 
-diff --git a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-index 4c9e4de92d3c7..96ad1c1009310 100644
---- a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-+++ b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-@@ -3,7 +3,7 @@
-  * Copyright © 2023 Intel Corporation
-  */
- 
--#include <drm/drm_fb_helper.h>
-+#include <linux/fb.h>
- 
- #include "intel_display_core.h"
- #include "intel_display_types.h"
-@@ -16,27 +16,14 @@
- #include <generated/xe_wa_oob.h>
- 
- struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_device *drm,
--					       struct drm_fb_helper_surface_size *sizes)
-+					       struct drm_mode_fb_cmd2 *mode_cmd)
- {
- 	struct drm_framebuffer *fb;
- 	struct xe_device *xe = to_xe_device(drm);
--	struct drm_mode_fb_cmd2 mode_cmd = {};
- 	struct xe_bo *obj;
- 	int size;
- 
--	/* we don't do packed 24bpp */
--	if (sizes->surface_bpp == 24)
--		sizes->surface_bpp = 32;
--
--	mode_cmd.width = sizes->surface_width;
--	mode_cmd.height = sizes->surface_height;
--
--	mode_cmd.pitches[0] = ALIGN(mode_cmd.width *
--				    DIV_ROUND_UP(sizes->surface_bpp, 8), 64);
--	mode_cmd.pixel_format = drm_mode_legacy_fb_format(sizes->surface_bpp,
--							  sizes->surface_depth);
--
--	size = mode_cmd.pitches[0] * mode_cmd.height;
-+	size = mode_cmd->pitches[0] * mode_cmd->height;
- 	size = PAGE_ALIGN(size);
- 	obj = ERR_PTR(-ENODEV);
- 
-@@ -67,9 +54,9 @@ struct intel_framebuffer *intel_fbdev_fb_alloc(struct drm_device *drm,
- 
- 	fb = intel_framebuffer_create(&obj->ttm.base,
- 				      drm_get_format_info(drm,
--							  mode_cmd.pixel_format,
--							  mode_cmd.modifier[0]),
--				      &mode_cmd);
-+							  mode_cmd->pixel_format,
-+							  mode_cmd->modifier[0]),
-+				      mode_cmd);
- 	if (IS_ERR(fb)) {
- 		xe_bo_unpin_map_no_vm(obj);
- 		goto err;
+-#define SUM_JOURNAL_SIZE	(F2FS_BLKSIZE - SUM_FOOTER_SIZE -\
++#define SUM_JOURNAL_SIZE	(F2FS_SUM_BLKSIZE - SUM_FOOTER_SIZE -\
+ 				SUM_ENTRY_SIZE)
+ #define NAT_JOURNAL_ENTRIES	((SUM_JOURNAL_SIZE - 2) /\
+ 				sizeof(struct nat_journal_entry))
 -- 
 2.51.0
 
