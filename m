@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-202224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE2BCC37C9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A261CC392C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEB1C3038F24
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5E9630AEBB0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341A334EEE6;
-	Tue, 16 Dec 2025 12:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038934B437;
+	Tue, 16 Dec 2025 11:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdPRU2Ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQcE4ADC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA3934EEF0;
-	Tue, 16 Dec 2025 12:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04CA34B683;
+	Tue, 16 Dec 2025 11:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887217; cv=none; b=LOLIwIudhnbbULcs4pwp+hh/pC7in2qIzMwlX4ecUZbxIlMobqykyD4ZMEVhtkm3OS88Tk56eckX24HDlHWxHFsVpA908kjS+K0k9yoiVOMQOx4ts0ZozP+uuM1J1/2agbUvqPjC5/LyJek1qUahObmtz+qSL06uawMm6xac15k=
+	t=1765885265; cv=none; b=Zdp7lL5b81SMrBYxk2n2O+jMl3GZPBHSFM3QUfkwZCTCpdP4N/NvH55HNihwIjwUnggcn0+4xzPeYHZCOandu4PHCMbSB0h0Vnq82h9OXhmBpvz5MNUN6mP80UKqSQxX0xNmMNTTuvU0eEjYzpGQsirnpDQzqXlOfmdpqqEqWsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887217; c=relaxed/simple;
-	bh=ovHzXjeThtM0UpMuapJLnqnvcs/eXLsS9D3wS3DYiuE=;
+	s=arc-20240116; t=1765885265; c=relaxed/simple;
+	bh=54Pqh2u1ZIviqCp4BocKOCR66Qlas7Ia7nlbITkSfuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QresP7sq+Br+tmbJ/mlvQgRTND8P1FTSXr53y3kVio44BHVxzUdZARldzjvrTxuY+KD1g0NcskxAzSjc66cSK095SGEsaorx6VdkCxEh0HUQcJyuzrZFXU4OvQIHi2jwZNGxniUsK4wDyeed/EvOx7mawaWiwu01wlVALWxsoTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdPRU2Ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE34BC4CEF1;
-	Tue, 16 Dec 2025 12:13:35 +0000 (UTC)
+	 MIME-Version; b=tjfy86j+t+afPFIBa8NM6QHDC2fvKa1DFHqHZ2sOqDxFveNFTsBfH5HnrMW8UDav8BqJt7kIIUjhQ7uPZJWTKdPxLiFQbmi+1MBOR3QbkxXPTl+iXA16r4Yx8SGbECLKmjZeVnU5UGyN16xKqaeaYlLN79yINl1wkQ490S7XNa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQcE4ADC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AE1C4CEF1;
+	Tue, 16 Dec 2025 11:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887216;
-	bh=ovHzXjeThtM0UpMuapJLnqnvcs/eXLsS9D3wS3DYiuE=;
+	s=korg; t=1765885265;
+	bh=54Pqh2u1ZIviqCp4BocKOCR66Qlas7Ia7nlbITkSfuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdPRU2Tygc8W4UivH/EKJcIH+182qscwX1FKd2R5XPCC9wGTzr56kQzdvWIOzC6h7
-	 2iv+qmMHdWx04ikku7yASsizJKk8jemft8rAoRWmcJEomApfJ/wtf5UxAJbnKGiHjH
-	 EbZmBXg4O06uVWSozKlcnFu3cj4+37aVAJxzGSc0=
+	b=xQcE4ADC74AsPYHY1p16HwTCcFd1pz4zTH1dfUWM1nOsxiw5jKngsL6NxxZffyufE
+	 vY5DbNajr63ICu0GT0YS8tTPO1W+ZNL5zPzhJWeBb2QofapOOoSjzRX4BSM8k6jhcg
+	 cjoXPmEw994zzvqPVCL5t5PERSFCNqsNpqN4L7aQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,12 +44,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 161/614] wifi: ath12k: fix reusing m3 memory
+Subject: [PATCH 6.17 087/507] wifi: ath12k: restore register window after global reset
 Date: Tue, 16 Dec 2025 12:08:48 +0100
-Message-ID: <20251216111407.169555946@linuxfoundation.org>
+Message-ID: <20251216111348.690549595@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit 00575bb44b2c2aa53d0a768de2b80c9c1af0174d ]
+[ Upstream commit a41281f6518e485220d180a6031d302a736fc463 ]
 
-During firmware recovery or suspend/resume, m3 memory could be reused if
-the size of the new m3 binary is equal to or less than that of the
-existing memory. There will be issues for the latter case, since
-m3_mem->size will be updated with a smaller value and this value is
-eventually used in the free path, where the original total size should be
-used instead.
+Hardware target implements an address space larger than that PCI BAR can
+map. In order to be able to access the whole target address space, the
+BAR space is split into 4 segments, of which the last 3, called windows,
+can be dynamically mapped to the desired area. This is achieved by
+updating WINDOW_REG_ADDRESS register with appropriate window value.
+Currently each time when accessing a register that beyond WINDOW_START,
+host calculates the window value and caches it after window update,
+this way next time when accessing a register falling in the same window,
+host knows that the window is already good hence no additional update
+needed.
 
-To fix it, add a new member in m3_mem_region structure to track the original
-memory size and use it in free path.
+However this mechanism breaks after global reset is triggered in
+ath12k_pci_soc_global_reset(), because with global reset hardware resets
+WINDOW_REG_ADDRESS register hence the window is not properly mapped any
+more. Current host does nothing about this, as a result a subsequent
+register access may not work as expected if it falls in a window same as
+before.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+Although there is no obvious issue seen now, better to fix it to avoid
+future problem. The fix is done by restoring the window register after
+global reset.
 
-Fixes: 05090ae82f44 ("wifi: ath12k: check M3 buffer size as well whey trying to reuse it")
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251029-ath12k-fix-m3-reuse-v1-1-69225bacfc5d@oss.qualcomm.com
+Link: https://patch.msgid.link/20251017-ath12k-reset-window-cache-v1-1-29e0e751deed@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++----
- drivers/net/wireless/ath/ath12k/qmi.h |  5 ++++-
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 36325e62aa242..8de9aee2498ec 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index c729d5526c753..60b8f7361b7f6 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
 @@ -1,7 +1,7 @@
  // SPDX-License-Identifier: BSD-3-Clause-Clear
  /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
 - * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
 + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
- #include <linux/elf.h>
-@@ -3114,9 +3114,10 @@ static void ath12k_qmi_m3_free(struct ath12k_base *ab)
- 	if (!m3_mem->vaddr)
- 		return;
- 
--	dma_free_coherent(ab->dev, m3_mem->size,
-+	dma_free_coherent(ab->dev, m3_mem->total_size,
- 			  m3_mem->vaddr, m3_mem->paddr);
- 	m3_mem->vaddr = NULL;
-+	m3_mem->total_size = 0;
- 	m3_mem->size = 0;
+ #include <linux/module.h>
+@@ -218,6 +218,19 @@ static inline bool ath12k_pci_is_offset_within_mhi_region(u32 offset)
+ 	return (offset >= PCI_MHIREGLEN_REG && offset <= PCI_MHI_REGION_END);
  }
  
-@@ -3152,7 +3153,7 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 
- 	/* In recovery/resume cases, M3 buffer is not freed, try to reuse that */
- 	if (m3_mem->vaddr) {
--		if (m3_mem->size >= m3_len)
-+		if (m3_mem->total_size >= m3_len)
- 			goto skip_m3_alloc;
- 
- 		/* Old buffer is too small, free and reallocate */
-@@ -3164,11 +3165,13 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 					   GFP_KERNEL);
- 	if (!m3_mem->vaddr) {
- 		ath12k_err(ab, "failed to allocate memory for M3 with size %zu\n",
--			   fw->size);
-+			   m3_len);
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
-+	m3_mem->total_size = m3_len;
++static void ath12k_pci_restore_window(struct ath12k_base *ab)
++{
++	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
 +
- skip_m3_alloc:
- 	memcpy(m3_mem->vaddr, m3_data, m3_len);
- 	m3_mem->size = m3_len;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index 4767d9a2e309e..7a88268aa1e9e 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.h
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
++	spin_lock_bh(&ab_pci->window_lock);
++
++	iowrite32(WINDOW_ENABLE_BIT | ab_pci->register_window,
++		  ab->mem + WINDOW_REG_ADDRESS);
++	ioread32(ab->mem + WINDOW_REG_ADDRESS);
++
++	spin_unlock_bh(&ab_pci->window_lock);
++}
++
+ static void ath12k_pci_soc_global_reset(struct ath12k_base *ab)
+ {
+ 	u32 val, delay;
+@@ -242,6 +255,11 @@ static void ath12k_pci_soc_global_reset(struct ath12k_base *ab)
+ 	val = ath12k_pci_read32(ab, PCIE_SOC_GLOBAL_RESET);
+ 	if (val == 0xffffffff)
+ 		ath12k_warn(ab, "link down error during global reset\n");
++
++	/* Restore window register as its content is cleared during
++	 * hardware global reset, such that it aligns with host cache.
++	 */
++	ath12k_pci_restore_window(ab);
+ }
  
- #ifndef ATH12K_QMI_H
-@@ -120,6 +120,9 @@ struct target_info {
- };
- 
- struct m3_mem_region {
-+	/* total memory allocated */
-+	u32 total_size;
-+	/* actual memory being used */
- 	u32 size;
- 	dma_addr_t paddr;
- 	void *vaddr;
+ static void ath12k_pci_clear_dbg_registers(struct ath12k_base *ab)
 -- 
 2.51.0
 
