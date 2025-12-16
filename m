@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFD9CC2A26
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C2ECC2B77
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49305300486B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5CC30BB291
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE8F345CD3;
-	Tue, 16 Dec 2025 11:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C1F3624DE;
+	Tue, 16 Dec 2025 12:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h16UBMSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+zJ6uoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8B4345730;
-	Tue, 16 Dec 2025 11:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A306E3624D4;
+	Tue, 16 Dec 2025 12:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885061; cv=none; b=Y+qO0PzxmuSIen2s1/6K6H1lKMWwNWCorWsI/mo7qXxw8TJC5pqtwZCoqCKzPSrsnc8KPYHazxo8Q79hTTFNZGXrNQh3CI6s+s5Q+I880w8a9NMGhmUVxmXh377FnA2Lv31C7RhJxb0uxhrX/t46GvfQMLIGF3t5s+m4XYdbTzc=
+	t=1765886935; cv=none; b=A/cwDvTlNwtMnTniI49dv7SGcC8JMkh0H/RP2Pk6DHmirG507qy+caZBkvck9PtBB3VNRvQlxlfKv3kGn/m0TRCVBkOBs4/HPV4kV7XoJJzgC5yS4V7n+OZx2QYAtNQShCR+2Gg9MFumXYmug/au+proCpfdIggwVbmv6LspTfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885061; c=relaxed/simple;
-	bh=vMWYA9sd2YGUksJev3TE0F+8H62Z7hQJoepn8rEHfjY=;
+	s=arc-20240116; t=1765886935; c=relaxed/simple;
+	bh=ROk1mLLHcACxYDlCAJPPwCFUd94lAZGEgJJ2ltYOk3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhxJ1jZ/rf1qDza9JWKV5hUMPHzaYktir6ScOjoVh8p4nSUOej4oEt2SJSbiPmgDI3+znFqtMlL7r7oWgBVr9aYH6KuNJt6/i9JNd7U42hI3xQrZJUUYx/yNOprR1IYz/I5hqeVOygF41wFhfoF/hgUxXqX9Ky5ctmOvlY4GF7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h16UBMSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA7EC4CEF1;
-	Tue, 16 Dec 2025 11:37:40 +0000 (UTC)
+	 MIME-Version; b=BbeWgkX7pRIEVDJsAzAr6JSKxRjWPFPPafNEL85rPGrFrsPUfC64fAJdClfpdJ8X3UwyG9RgJfRSsI21M1mdzlWzBABcQXXQVxopqtWaXq1Q6kVhD5fYfJWk8YDz9X8W5QfNyRu/45AF2prS/hh7PNwMj3JuJsZhLFhYYrvwXZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+zJ6uoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A94C4CEF1;
+	Tue, 16 Dec 2025 12:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885061;
-	bh=vMWYA9sd2YGUksJev3TE0F+8H62Z7hQJoepn8rEHfjY=;
+	s=korg; t=1765886935;
+	bh=ROk1mLLHcACxYDlCAJPPwCFUd94lAZGEgJJ2ltYOk3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h16UBMSMZpna3DhEyxu86r/RKgCzAusfzLKljdCTqcRD7kWy945iCLQEVKrZn3Iy5
-	 Z1bmBGvRKuMbOBN0pEhsDwWQ05AbULEvi9rGrfszn0WasNnVW8Mkeo8+eF1BtATpl8
-	 +Q4lIxUiAOqBm6K9vKBmR11M22KuDSKPWKb28QB4=
+	b=F+zJ6uoEu8RXLmg8nrds+2CW2MnszEnY9RJbpqHn9ZsDZUvzHsRzkxKpHZBeDOvsr
+	 aCN7kde+XC9/Jf8JIRi2uF2NKNLbD6GiwZW3KrOxNqjB5NUNW7G9Pu6LXiEoXDvUrj
+	 fDkAUXFxyuC5/4Bq5XpD2kU2RwdadqrefANh6AdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 004/507] smack: always "instantiate" inode in smack_inode_init_security()
+Subject: [PATCH 6.18 078/614] tty: serial: imx: Only configure the wake register when device is set as wakeup source
 Date: Tue, 16 Dec 2025 12:07:25 +0100
-Message-ID: <20251216111345.688377550@linuxfoundation.org>
+Message-ID: <20251216111404.143747469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit 69204f6cdb90f56b7ca27966d1080841108fc5de ]
+[ Upstream commit d55f3d2375ceeb08330d30f1e08196993c0b6583 ]
 
-If memory allocation for the SMACK64TRANSMUTE
-xattr value fails in smack_inode_init_security(),
-the SMK_INODE_INSTANT flag is not set in
-(struct inode_smack *issp)->smk_flags,
-leaving the inode as not "instantiated".
+Currently, the i.MX UART driver enables wake-related registers for all
+UART devices by default. However, this is unnecessary for devices that
+are not configured as wakeup sources. To address this, add a
+device_may_wakeup() check before configuring the UART wake-related
+registers.
 
-It does not matter if fs frees the inode
-after failed smack_inode_init_security() call,
-but there is no guarantee for this.
-
-To be safe, mark the inode as "instantiated",
-even if allocation of xattr values fails.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Stable-dep-of: 78fc6a94be25 ("smack: fix bug: invalid label of unix socket file")
+Fixes: db1a9b55004c ("tty: serial: imx: Allow UART to be a source for wakeup")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251002045259.2725461-2-sherry.sun@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/tty/serial/imx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 8609ae26e365e..5cd19f3498cbd 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1015,6 +1015,8 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 	struct task_smack *tsp = smack_cred(current_cred());
- 	struct inode_smack * const issp = smack_inode(inode);
- 	struct smack_known *dsp = smk_of_inode(dir);
-+	int rc = 0;
-+	int transflag = 0;
- 	bool trans_cred;
- 	bool trans_rule;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 500dfc009d03e..90e2ea1e8afe5 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2697,8 +2697,22 @@ static void imx_uart_save_context(struct imx_port *sport)
+ /* called with irq off */
+ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+ {
++	struct tty_port *port = &sport->port.state->port;
++	struct device *tty_dev;
++	bool may_wake = false;
+ 	u32 ucr3;
  
-@@ -1043,18 +1045,20 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 			issp->smk_inode = dsp;
++	scoped_guard(tty_port_tty, port) {
++		struct tty_struct *tty = scoped_tty();
++
++		tty_dev = tty->dev;
++		may_wake = tty_dev && device_may_wakeup(tty_dev);
++	}
++
++	/* only configure the wake register when device set as wakeup source */
++	if (!may_wake)
++		return;
++
+ 	uart_port_lock_irq(&sport->port);
  
- 		if (S_ISDIR(inode->i_mode)) {
--			issp->smk_flags |= SMK_INODE_TRANSMUTE;
-+			transflag = SMK_INODE_TRANSMUTE;
- 
- 			if (xattr_dupval(xattrs, xattr_count,
- 				XATTR_SMACK_TRANSMUTE,
- 				TRANS_TRUE,
- 				TRANS_TRUE_SIZE
- 			))
--				return -ENOMEM;
-+				rc = -ENOMEM;
- 		}
- 	}
- 
--	issp->smk_flags |= SMK_INODE_INSTANT;
-+	issp->smk_flags |= (SMK_INODE_INSTANT | transflag);
-+	if (rc)
-+		return rc;
- 
- 	return xattr_dupval(xattrs, xattr_count,
- 			    XATTR_SMACK_SUFFIX,
+ 	ucr3 = imx_uart_readl(sport, UCR3);
 -- 
 2.51.0
 
