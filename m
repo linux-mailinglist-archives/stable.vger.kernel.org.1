@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A39CCC2415
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D1DCC324F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60DA330842B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E4C63004876
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36400341645;
-	Tue, 16 Dec 2025 11:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5E42BFC8F;
+	Tue, 16 Dec 2025 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hz3MdM2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+ScjGqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B3E32BF22;
-	Tue, 16 Dec 2025 11:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C9B3148B8;
+	Tue, 16 Dec 2025 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884357; cv=none; b=RbSlKzhzIgOl+OQ83EBasZvYxYoHseim3sULlh67YEfx27p2AQSY1kVjeDmNyea8rit8uZNiuvf6ldLpwOoQThi85oZO+oE5G75JfD3RtgYhrISM6Gs3aVvQ+kwJtjgNIeJXCIRatGJGwTI5oJLsRvYwonLBhfi1gsCQpfQupwc=
+	t=1765887889; cv=none; b=R0719exJv7AzKwKSEheSbh6wUUpwSCCQOcVpSvYvSo4W6khATUT7UvPg5zCWDKqtLwy0XHN1ksmltZzorSZ79OkqUGJeQGs5a+bt+FYi7jn5bcDrPgEe0f3QNC3xKWnz8Rq971BBfB6/n3x1Om2SXHaMem9Kahycj9/FCgnwJkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884357; c=relaxed/simple;
-	bh=TThjot+hU+2s7S82Z8C64NjzrL3rCnNevImfv1iGQhA=;
+	s=arc-20240116; t=1765887889; c=relaxed/simple;
+	bh=KcLGxSKuzM+861STHxn59mn/rxtUm8Ug48jqCXKtuTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNB1X4FxZAm5wJ+TWNHiMSrTOtsKzwRJ/Wu4CcYXyFKEtc+1PJMuYaXfnHmQTxYKfbADDK9EHkrX/f2jENlahchO5kfDQXk2uSeA84YEmxuav/yAzpuq2HbkUWrF4gloZXC3oTzQJCa48OXgwvRZDPD6BJI7f3o4o9qnfkHI4LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hz3MdM2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0907FC4CEF1;
-	Tue, 16 Dec 2025 11:25:55 +0000 (UTC)
+	 MIME-Version; b=KUupmGCY6RM5iWXReabh1VDW0XpVCwcanLhER0unqw2RSUzhzCZckgsee3PKop7GAv+8z0xpYqdsxbFjz5QXeulNIe4VuUEsEI3je3bhS2JAQEor11LRD0bwvRqdqtsLLlpdIe8M6hlIZ0CyrqcIzEXk9ZciWE7q37u7kr76dVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+ScjGqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55EFC4CEF1;
+	Tue, 16 Dec 2025 12:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884356;
-	bh=TThjot+hU+2s7S82Z8C64NjzrL3rCnNevImfv1iGQhA=;
+	s=korg; t=1765887889;
+	bh=KcLGxSKuzM+861STHxn59mn/rxtUm8Ug48jqCXKtuTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Hz3MdM2jK2MNFK+tPpzbUUpVH7YYIpk/NDrWNqzb0kdVGi1AO0ebeHqTJmWbGc4h
-	 NP2iGbs/Tn3ddHK9SsmiUr4bf/b8kHrl+dbdQVjdNRKsCgbeMtvoprMvVg5gIJ0m/P
-	 tGvlR0TXkdIXEj9nr8yq+hqWOHtbIQH+Wi5dYmGc=
+	b=f+ScjGqmuAsmcaZ/KfsmnKU6NvBPs94+kgzBK0UUW8bMn+nEBdQ5OG6d2qeeeFJLf
+	 Oiri425PjLztEPxt0pf+PtL4uNQI7GcrKYWQxhiZP6SKU3pDFI9FZBk1o32jDqScOI
+	 mIcY7ybmtEytaD7Aguo70PAnz631igC/TZKQ7JS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/354] watchdog: wdat_wdt: Fix ACPI table leak in probe function
-Date: Tue, 16 Dec 2025 12:12:14 +0100
-Message-ID: <20251216111326.963859216@linuxfoundation.org>
+Subject: [PATCH 6.18 368/614] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
+Date: Tue, 16 Dec 2025 12:12:15 +0100
+Message-ID: <20251216111414.692421876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,162 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 25c0b472eab8379683d4eef681185c104bed8ffd ]
+[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
 
-wdat_wdt_probe() calls acpi_get_table() to obtain the WDAT ACPI table but
-never calls acpi_put_table() on any paths. This causes a permanent ACPI
-table memory leak.
+Currently, test_perf_branches_no_hw() relies on the busy loop within
+test_perf_branches_common() being slow enough to allow at least one
+perf event sample tick to occur before starting to tear down the
+backing perf event BPF program. With a relatively small fixed
+iteration count of 1,000,000, this is not guaranteed on modern fast
+CPUs, resulting in the test run to subsequently fail with the
+following:
 
-Add a single cleanup path which calls acpi_put_table() to ensure
-the ACPI table is always released.
+bpf_testmod.ko is already unloaded.
+Loading bpf_testmod.ko...
+Successfully loaded bpf_testmod.ko.
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:PASS:output not valid 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_bad_sample:FAIL:output not valid no valid sample from prog
+Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
+Successfully unloaded bpf_testmod.ko.
 
-Fixes: 058dfc767008 ("ACPI / watchdog: Add support for WDAT hardware watchdog")
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
+million increments of a volatile integer can take significantly less
+than 1 millisecond. If the spin loop and detachment of the perf event
+BPF program elapses before the first 1 ms sampling interval elapses,
+the perf event will never end up firing. Fix this by bumping the loop
+iteration counter a little within test_perf_branches_common(), along
+with ensuring adding another loop termination condition which is
+directly influenced by the backing perf event BPF program
+executing. Notably, a concious decision was made to not adjust the
+sample_freq value as that is just not a reliable way to go about
+fixing the problem. It effectively still leaves the race window open.
+
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/wdat_wdt.c | 64 +++++++++++++++++++++++++------------
- 1 file changed, 43 insertions(+), 21 deletions(-)
+ .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
+ .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
-index 650fdc7996e1c..dd3c2d69c9df1 100644
---- a/drivers/watchdog/wdat_wdt.c
-+++ b/drivers/watchdog/wdat_wdt.c
-@@ -326,19 +326,27 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index 06c7986131d96..0a7ef770c487c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
+ 	int pbe_size = sizeof(struct perf_branch_entry);
+ 	int duration = 0;
  
- 	wdat = devm_kzalloc(dev, sizeof(*wdat), GFP_KERNEL);
--	if (!wdat)
--		return -ENOMEM;
-+	if (!wdat) {
-+		ret = -ENOMEM;
-+		goto out_put_table;
-+	}
- 
- 	regs = devm_kcalloc(dev, pdev->num_resources, sizeof(*regs),
- 			    GFP_KERNEL);
--	if (!regs)
--		return -ENOMEM;
-+	if (!regs) {
-+		ret = -ENOMEM;
-+		goto out_put_table;
-+	}
- 
- 	/* WDAT specification wants to have >= 1ms period */
--	if (tbl->timer_period < 1)
--		return -EINVAL;
--	if (tbl->min_count > tbl->max_count)
--		return -EINVAL;
-+	if (tbl->timer_period < 1) {
-+		ret = -EINVAL;
-+		goto out_put_table;
-+	}
-+	if (tbl->min_count > tbl->max_count) {
-+		ret = -EINVAL;
-+		goto out_put_table;
-+	}
- 
- 	wdat->period = tbl->timer_period;
- 	wdat->wdd.min_timeout = DIV_ROUND_UP(wdat->period * tbl->min_count, 1000);
-@@ -355,15 +363,20 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 		res = &pdev->resource[i];
- 		if (resource_type(res) == IORESOURCE_MEM) {
- 			reg = devm_ioremap_resource(dev, res);
--			if (IS_ERR(reg))
--				return PTR_ERR(reg);
-+			if (IS_ERR(reg)) {
-+				ret = PTR_ERR(reg);
-+				goto out_put_table;
-+			}
- 		} else if (resource_type(res) == IORESOURCE_IO) {
- 			reg = devm_ioport_map(dev, res->start, 1);
--			if (!reg)
--				return -ENOMEM;
-+			if (!reg) {
-+				ret = -ENOMEM;
-+				goto out_put_table;
-+			}
- 		} else {
- 			dev_err(dev, "Unsupported resource\n");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto out_put_table;
- 		}
- 
- 		regs[i] = reg;
-@@ -385,8 +398,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 		}
- 
- 		instr = devm_kzalloc(dev, sizeof(*instr), GFP_KERNEL);
--		if (!instr)
--			return -ENOMEM;
-+		if (!instr) {
-+			ret = -ENOMEM;
-+			goto out_put_table;
-+		}
- 
- 		INIT_LIST_HEAD(&instr->node);
- 		instr->entry = entries[i];
-@@ -417,7 +432,8 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 
- 		if (!instr->reg) {
- 			dev_err(dev, "I/O resource not found\n");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto out_put_table;
- 		}
- 
- 		instructions = wdat->instructions[action];
-@@ -425,8 +441,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 			instructions = devm_kzalloc(dev,
- 						    sizeof(*instructions),
- 						    GFP_KERNEL);
--			if (!instructions)
--				return -ENOMEM;
-+			if (!instructions) {
-+				ret = -ENOMEM;
-+				goto out_put_table;
-+			}
- 
- 			INIT_LIST_HEAD(instructions);
- 			wdat->instructions[action] = instructions;
-@@ -443,7 +461,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 
- 	ret = wdat_wdt_enable_reboot(wdat);
- 	if (ret)
--		return ret;
-+		goto out_put_table;
- 
- 	platform_set_drvdata(pdev, wdat);
- 
-@@ -460,12 +478,16 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 
- 	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
- 	if (ret)
--		return ret;
-+		goto out_put_table;
- 
- 	watchdog_set_nowayout(&wdat->wdd, nowayout);
- 	watchdog_stop_on_reboot(&wdat->wdd);
- 	watchdog_stop_on_unregister(&wdat->wdd);
--	return devm_watchdog_register_device(dev, &wdat->wdd);
-+	ret = devm_watchdog_register_device(dev, &wdat->wdd);
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
 +
-+out_put_table:
-+	acpi_put_table((struct acpi_table_header *)tbl);
-+	return ret;
- }
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
+ 	int written_stack = skel->bss->written_stack_out;
+ 	int duration = 0;
  
- static int wdat_wdt_suspend_noirq(struct device *dev)
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
+ 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
+ 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
+ 		goto out_destroy;
+-	/* spin the loop for a while (random high number) */
+-	for (i = 0; i < 1000000; ++i)
++
++	/* Spin the loop for a while by using a high iteration count, and by
++	 * checking whether the specific run count marker has been explicitly
++	 * incremented at least once by the backing perf_event BPF program.
++	 */
++	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
+ 		++j;
+ 
+ 	test_perf_branches__detach(skel);
+diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+index a1ccc831c882f..05ac9410cd68c 100644
+--- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
++++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+@@ -8,6 +8,7 @@
+ #include <bpf/bpf_tracing.h>
+ 
+ int valid = 0;
++int run_cnt = 0;
+ int required_size_out = 0;
+ int written_stack_out = 0;
+ int written_global_out = 0;
+@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
+ 	__u64 entries[4 * 3] = {0};
+ 	int required_size, written_stack, written_global;
+ 
++	++run_cnt;
++
+ 	/* write to stack */
+ 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
+ 	/* ignore spurious events */
 -- 
 2.51.0
 
