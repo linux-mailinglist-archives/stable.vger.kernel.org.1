@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E686CC379B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:15:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B409CC22CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA7683051D32
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AD9B30656E2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBA034F486;
-	Tue, 16 Dec 2025 11:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CA7341048;
+	Tue, 16 Dec 2025 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW+h9rFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYTOkk7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBF334F270;
-	Tue, 16 Dec 2025 11:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCC233F378;
+	Tue, 16 Dec 2025 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885652; cv=none; b=i/xOi/snuKRJGfpf5twdPGO1TJbgJ/e+KNgM2YWb4AAYjFRU8O5JdW9q/6RmajmgVNhcq4ynjWqOPXgiUaEAkFHlLhr4x6K+Na5lOZolEEJgFQhgurA2Fm6Nk7m7cGrSgcVit8/H7mJbOdzxtSg/S+sGDSFisAGpl5JeU4rqv2c=
+	t=1765884043; cv=none; b=aTTJco55F1Q9+FvxiLPDxKKxHQb1S6Cqh+ovTFnNUsz8/Jh2W9TCev1ww2YGI7/6/vHRoLGJ8SGc/tRINdqqz+TXCBC0dszexwA3U+xLaZ551j6QOIXPbC/RWH0Qd037OZIJDyL+Oazlp/2vxBy2mmxwNUAqO+Ku2p7o2JXk/jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885652; c=relaxed/simple;
-	bh=W16Er8FZ4glxsChahzms/ybamlRAa53870Mrh24YcfM=;
+	s=arc-20240116; t=1765884043; c=relaxed/simple;
+	bh=KaUDvvOQPE/y6YRuphB4hRBEwWmSMiL0e1pF8ckZq/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDVN+3wLrJvCDSqHgRxvDm8FTvNkTjefGWBU7Q+ReNjN5buO52zVZYa6c3hLQqyk4+dSn1/WR2CElWK3d3+gVNTBDYDC9JZw4i0H0zVo9ioiTla3Q/7/aYvvOX5X78enUEuqaRiE8kgf61YfLqNugweUasKllfLLeKVJ2d1nPJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW+h9rFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C53C4CEF1;
-	Tue, 16 Dec 2025 11:47:31 +0000 (UTC)
+	 MIME-Version; b=bLiAcYQ/smKn1JmnDOTRCIqjDmHXw8d3EpP/gqk9m0eGuI9nQWVjM6uD+OUSE9TZQmhva8ciaEl9JbZd78aW+9ntJoSg5KoUDzv38SpCyjz3QUR3hDe4NmReXVod6eddMyAgeNRp2KpNzMfQzwUfLPCBI2zm1u0KfBGk6aI+iLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYTOkk7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFC4C4CEF1;
+	Tue, 16 Dec 2025 11:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885652;
-	bh=W16Er8FZ4glxsChahzms/ybamlRAa53870Mrh24YcfM=;
+	s=korg; t=1765884043;
+	bh=KaUDvvOQPE/y6YRuphB4hRBEwWmSMiL0e1pF8ckZq/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pW+h9rFH8gg4uNQHxraKQn5MqY9x9GoaawFdZCjplIQhbaaGafgX5PiFdaT5w98hM
-	 SlsvMnmecwuRyCmIG7Bo5/TQuzey7Lidqj2NycyqhGrw1qnfwH2H4lzpvUaaGwaelE
-	 AkZSU6oA25uAth+FNH7A5igXIx/TPtV/1kLxVq3w=
+	b=YYTOkk7KvyUEOOVE6lgwjh0VHb7SaNjP37nIWC4iOPyDYujayjmnw41iaVsvX2s6R
+	 uqRheAetBabHxld+Ba/snBKn0OHlm1V4JCj3t4PEBjsqvSnlBNTMhQVAtJqgnLqn5Y
+	 4gJWYDVP16YYbNr9yLwcW1LRXm/a8Zzd8DCrJHQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Alexander Martinz <amartinz@shiftphones.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 202/507] ntfs3: init run lock for extend inode
+Subject: [PATCH 6.12 076/354] arm64: dts: qcom: qcm6490-shift-otter: Add missing reserved-memory
 Date: Tue, 16 Dec 2025 12:10:43 +0100
-Message-ID: <20251216111352.830570140@linuxfoundation.org>
+Message-ID: <20251216111323.677571180@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Alexander Martinz <amartinz@shiftphones.com>
 
-[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
+[ Upstream commit f404fdcb50021fdad6bc734d69468cc777901a80 ]
 
-After setting the inode mode of $Extend to a regular file, executing the
-truncate system call will enter the do_truncate() routine, causing the
-run_lock uninitialized error reported by syzbot.
+It seems we also need to reserve a region of 81 MiB called "removed_mem"
+otherwise we can easily hit memory errors with higher RAM usage.
 
-Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
-a regular file, the do_truncate() routine would not be entered.
-
-Add the run_lock initialization when loading $Extend.
-
-syzbot reported:
-INFO: trying to register non-static key.
-Call Trace:
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
- register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
- __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
- ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
- ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
-
-Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
-Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
-Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 249666e34c24 ("arm64: dts: qcom: add QCM6490 SHIFTphone 8")
+Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index cf7e869fdc40c..d085bc4370348 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -472,6 +472,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
- 		mode = S_IFREG;
-+		init_rwsem(&ni->file.run_lock);
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+index 75930f9576966..ce5cd758e28b4 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+@@ -118,6 +118,11 @@ cdsp_mem: cdsp@88f00000 {
+ 			no-map;
+ 		};
+ 
++		removed_mem: removed@c0000000 {
++			reg = <0x0 0xc0000000 0x0 0x5100000>;
++			no-map;
++		};
++
+ 		rmtfs_mem: rmtfs@f8500000 {
+ 			compatible = "qcom,rmtfs-mem";
+ 			reg = <0x0 0xf8500000 0x0 0x600000>;
 -- 
 2.51.0
 
