@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DE7CC26C2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43EBCC2B0D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBC6F306FE62
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54DE531C2738
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E63A34D4CF;
-	Tue, 16 Dec 2025 11:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637AF35C1BA;
+	Tue, 16 Dec 2025 12:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnNjhy4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JruAzYCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9FE34D3B9;
-	Tue, 16 Dec 2025 11:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9FB35C1B1;
+	Tue, 16 Dec 2025 12:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885348; cv=none; b=tRrMH7Ma/PmQZj/Xf0FOT5mCJSeAJ34eXZFX3LGRae2jj3T/ZlOCXoKKl3BFpz0sXfpRt9+HMa5uFohA4zdbiq/dNC9F7/ko3GhNZ2mioT0QrkarDjMzNz/r7LzW/VgqF7IeeCK1HZPNquWCVGwF2HyfYhKUtFhFfqImlHQK0KQ=
+	t=1765887298; cv=none; b=mHB/O00iKMeH4CnfEZn2HQd6izAzJmB8xO2iS4XQZSVzOLKj/ek8s87P740izNlZB/6kyH1yBptCMdXneZs8/EEUHLJovzhvxjrCQldFYcC/5EoGXuiZL5xtBr7+0iorkGN3WiS7lLdYoX9utHF4GF1d48UOZO4D3bwjVSxIodU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885348; c=relaxed/simple;
-	bh=UIndcyj4qQpV7XLr9zOz4zRQipPsOlnjkoazX6vgn68=;
+	s=arc-20240116; t=1765887298; c=relaxed/simple;
+	bh=1wQsLA4GKjqWSAEFbsyXnmJQotEkqhJmxjRaoJLoWhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8b8qEvmvpbuU7K3zrwAAeV4zq74QnR+G5puNCXemPzUgs3ggXZBQtSqlvR44Na3xfwUE43jf219Mm4Csj4emTQZ/+vSwrFmjGqDoKQeY+GGulA7aeIu1QSU9wk/kfUD5oF3XEfzM5eLjpS8knE6HOkSx33jnvXUVAQHONQzHjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnNjhy4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136B4C4CEF1;
-	Tue, 16 Dec 2025 11:42:27 +0000 (UTC)
+	 MIME-Version; b=YLIu+VE3vlKOm0JX3Be3zekSF0K9I1G961t1+0BXoUJdux8u8ggNUtY8E/5N2qyLO1Lknd6MbwjM127LbmNO1raBXn2tlAEKSaet+6odtZi+E3dAwGJvtr/y7UR1idE4GvhhJpIVsT0nONUuQ2aB969W5XAvFq7sxXfPVCt8YrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JruAzYCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FE5C4CEF1;
+	Tue, 16 Dec 2025 12:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885348;
-	bh=UIndcyj4qQpV7XLr9zOz4zRQipPsOlnjkoazX6vgn68=;
+	s=korg; t=1765887298;
+	bh=1wQsLA4GKjqWSAEFbsyXnmJQotEkqhJmxjRaoJLoWhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnNjhy4w9hMpT/kfxUYOyq/xkIsd7/VAEulR0EF2CZJMzmGouY7K4ZqkJsUPFqt7M
-	 qgqqiS+ixW6BK9hmz5TDd68udWw35I1qA/cN0Y09W6vTfp7Fmr7RzFdVN3xemcJQ3w
-	 /tDBDrZMBABMhCkEZYY2WIQ7Ha/Ir9CtFbwFm7S4=
+	b=JruAzYCOy6AA9lE0MGPfKZXexP5xGCd5adfPz9mnaQNXZZVQwLyopq5+g5565piR3
+	 jNbO4nlWF3kEFQw4z/9DmZYYqwHJNprnGE4f3oWKZfWOp9PTIRIinwe6agap2z4Bo4
+	 SCCAhe8s2533xHPbq67Gttpk8VyMIOZF9nwauAyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 113/507] Revert "mtd: rawnand: marvell: fix layouts"
+Subject: [PATCH 6.18 187/614] scsi: target: Do not write NUL characters into ASCII configfs output
 Date: Tue, 16 Dec 2025 12:09:14 +0100
-Message-ID: <20251216111349.628846606@linuxfoundation.org>
+Message-ID: <20251216111408.149248558@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit fbd72cb463fdea3a0c900dd5d6e813cdebc3a73c ]
+[ Upstream commit c03b55f235e283cae49c88b9602fd11096b92eba ]
 
-This reverts commit e6a30d0c48a1e8a68f1cc413bee65302ab03ddfb.
+NUL characters are not allowed in ASCII configfs output. Hence this
+patch.
 
-This change resulted in the 8bit ECC layouts having the incorrect amount
-of read/write chunks, the last spare bytes chunk would always be missed.
-
-Fixes: e6a30d0c48a1 ("mtd: rawnand: marvell: fix layouts")
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251027184639.3501254-2-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/target/target_core_configfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 303b3016a070b..38b7eb5b992c8 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -290,13 +290,16 @@ static const struct marvell_hw_ecc_layout marvell_nfc_layouts[] = {
- 	MARVELL_LAYOUT( 2048,   512,  4,  1,  1, 2048, 32, 30,  0,  0,  0),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,32, 30),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,64, 30),
--	MARVELL_LAYOUT( 2048,   512,  16, 4,  4, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 2048,   512,  12, 3,  2, 704,   0, 30,640,  0, 30),
-+	MARVELL_LAYOUT( 2048,   512,  16, 5,  4, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 4096,   512,  4,  2,  2, 2048, 32, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 4096,   512,  8,  4,  4, 1024,  0, 30,  0, 64, 30),
--	MARVELL_LAYOUT( 4096,   512,  16, 8,  8, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 4096,   512,  8,  5,  4, 1024,  0, 30,  0, 64, 30),
-+	MARVELL_LAYOUT( 4096,   512,  12, 6,  5, 704,   0, 30,576, 32, 30),
-+	MARVELL_LAYOUT( 4096,   512,  16, 9,  8, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 8192,   512,  4,  4,  4, 2048,  0, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 8192,   512,  8,  8,  8, 1024,  0, 30,  0, 160, 30),
--	MARVELL_LAYOUT( 8192,   512,  16, 16, 16, 512,  0, 30,  0,  32, 30),
-+	MARVELL_LAYOUT( 8192,   512,  8,  9,  8, 1024,  0, 30,  0, 160, 30),
-+	MARVELL_LAYOUT( 8192,   512,  12, 12, 11, 704,  0, 30,448,  64, 30),
-+	MARVELL_LAYOUT( 8192,   512,  16, 17, 16, 512,  0, 30,  0,  32, 30),
- };
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index b19acd662726d..1bd28482e7cb3 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2772,7 +2772,6 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
+ 		cur_len = snprintf(buf, LU_GROUP_NAME_BUF, "%s/%s\n",
+ 			config_item_name(&hba->hba_group.cg_item),
+ 			config_item_name(&dev->dev_group.cg_item));
+-		cur_len++; /* Extra byte for NULL terminator */
  
- /**
+ 		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
 -- 
 2.51.0
 
