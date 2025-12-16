@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3ADCC2A35
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650DACC2B9B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 974873027FC4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CD0F30E9DFB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7151C3451CE;
-	Tue, 16 Dec 2025 11:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A15B3644CE;
+	Tue, 16 Dec 2025 12:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/CaN+Tn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+qs92pr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0C92D97B8;
-	Tue, 16 Dec 2025 11:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E73644CB;
+	Tue, 16 Dec 2025 12:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885015; cv=none; b=UIMrOQ0ImgPCmevx2zhPSXdzZmpUL1fM8TOnugwkVZEsbealA/r7Mw0NnKuxc7tmsiykCvHQ7r6YfJ8bb3A6uXjNyyhIoBcKpK4m4JqoYm3Fs6S67GP9mnK2NFZvpBHkmdEPPu2zRg+51oXlWIjJJvmgL+KOCMCVuZJNDlDIw+k=
+	t=1765886969; cv=none; b=CZfYQ+PtE6UF0Sjsd6CYufuynsiZElhf/HmhOfBAnENvmh1IF94wfaOB/MQqX/A/0s5jXocN4iqPVG29d7pMC3YtbTHeQgLOoRUZls7z8Cs34cKeMgjepvtCthDUy/SzqZcDJ0TazUjgk8ZKQyGjuaLE93hY5pzW0fpdTsMqOZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885015; c=relaxed/simple;
-	bh=Yf2QO+B26TOUMwUkrmy7G715BN0Q0e03HqWVshnRBhA=;
+	s=arc-20240116; t=1765886969; c=relaxed/simple;
+	bh=emF6TvkpEjSebWXPiPI2renPbVvaY3lmjFT0gLdK5R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQwOlLEAHctm3JyHtR+4Rd4Lh2NF67+fspw1Ys91tFLOsM46ukeWOuYD6IUcHcAGYMK0dda8xUuCPgmfpFyKpQx+7f0GIe621uZv29N98VBCcUZN6as2+JCz1o56SEPaVtAEtbMCb0HOCLJ+kzWxMHCgkBNGjhkBC4ze7GRZb64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/CaN+Tn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBE4C4CEF1;
-	Tue, 16 Dec 2025 11:36:54 +0000 (UTC)
+	 MIME-Version; b=RHMcIy1W/jIlBW1V+dBAjjZcN0LYrEH9rZ7N6vFDynPkWyqdToh+WUL0vxgvHnzh/xKk1e08BMrbSFPhCbBmUgwucllwW9vQKo5deu1h3tnP2SiRemoJn/YL99P3AfOCzsRD8ejDEOLyv5ZVOhW3J+iSrfo02XKEWfdE1lWhn80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+qs92pr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3FBC4CEF1;
+	Tue, 16 Dec 2025 12:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885015;
-	bh=Yf2QO+B26TOUMwUkrmy7G715BN0Q0e03HqWVshnRBhA=;
+	s=korg; t=1765886969;
+	bh=emF6TvkpEjSebWXPiPI2renPbVvaY3lmjFT0gLdK5R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/CaN+TnKw7ZLA6+JU4TnkIMTBKiw+Em4gIEJiUm3cJR8e7JSAPPJid4ksesw2aJC
-	 31TBdlTJes6Ka5nnV3sI+XyLOMINr3V/M6nTSZ8rZXVFYvHfGJzKQWm0P9k17HxH+K
-	 tbRNWJ50WrSHgsbBhXG0wGrxaMB7DjLji7dIyC6w=
+	b=Y+qs92pr5Ni294UPYHkDtmIwtBq8hHbaCGt8c699zfXSxtiDC9xgFOAt6N9nmuBHc
+	 DQeAZnMx7mEGT+rUWlcHO3m7TFZ6TsKGzlmU6zuiEs7c79mdWYHNm+TwlVh+J0nww8
+	 Ut0o/09xN0vrpW1vOp/Q65v3BKsJmPI+6yxptOcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 013/507] accel/ivpu: Fix page fault in ivpu_bo_unbind_all_bos_from_context()
+Subject: [PATCH 6.18 087/614] soc: qcom: gsbi: fix double disable caused by devm
 Date: Tue, 16 Dec 2025 12:07:34 +0100
-Message-ID: <20251216111346.015437518@linuxfoundation.org>
+Message-ID: <20251216111404.474716962@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8b694b405a84696f1d964f6da7cf9721e68c4714 ]
+[ Upstream commit 2286e18e3937c69cc103308a8c1d4898d8a7b04f ]
 
-Don't add BO to the vdev->bo_list in ivpu_gem_create_object().
-When failure happens inside drm_gem_shmem_create(), the BO is not
-fully created and ivpu_gem_bo_free() callback will not be called
-causing a deleted BO to be left on the list.
+In the commit referenced by the Fixes tag, devm_clk_get_enabled() was
+introduced to replace devm_clk_get() and clk_prepare_enable(). While
+the clk_disable_unprepare() call in the error path was correctly
+removed, the one in the remove function was overlooked, leading to a
+double disable issue.
 
-Fixes: 8d88e4cdce4f ("accel/ivpu: Use GEM shmem helper for all buffers")
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://lore.kernel.org/r/20250925145114.1446283-1-maciej.falkowski@linux.intel.com
+Remove the redundant clk_disable_unprepare() call from gsbi_remove()
+to fix this issue. Since all resources are now managed by devres
+and will be automatically released, the remove function serves no purpose
+and can be deleted entirely.
+
+Fixes: 489d7a8cc286 ("soc: qcom: use devm_clk_get_enabled() in gsbi_probe()")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/stable/20251020160215.523-1-vulab%40iscas.ac.cn
+Link: https://lore.kernel.org/r/20251020160215.523-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/soc/qcom/qcom_gsbi.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index dc6d0d15cda9c..171e809575ad6 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -193,7 +193,6 @@ void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_m
+diff --git a/drivers/soc/qcom/qcom_gsbi.c b/drivers/soc/qcom/qcom_gsbi.c
+index 8f1158e0c6313..a25d1de592f06 100644
+--- a/drivers/soc/qcom/qcom_gsbi.c
++++ b/drivers/soc/qcom/qcom_gsbi.c
+@@ -212,13 +212,6 @@ static int gsbi_probe(struct platform_device *pdev)
+ 	return of_platform_populate(node, NULL, NULL, &pdev->dev);
+ }
  
- struct drm_gem_object *ivpu_gem_create_object(struct drm_device *dev, size_t size)
- {
--	struct ivpu_device *vdev = to_ivpu_device(dev);
- 	struct ivpu_bo *bo;
- 
- 	if (size == 0 || !PAGE_ALIGNED(size))
-@@ -208,20 +207,17 @@ struct drm_gem_object *ivpu_gem_create_object(struct drm_device *dev, size_t siz
- 
- 	INIT_LIST_HEAD(&bo->bo_list_node);
- 
--	mutex_lock(&vdev->bo_list_lock);
--	list_add_tail(&bo->bo_list_node, &vdev->bo_list);
--	mutex_unlock(&vdev->bo_list_lock);
+-static void gsbi_remove(struct platform_device *pdev)
+-{
+-	struct gsbi_info *gsbi = platform_get_drvdata(pdev);
 -
--	ivpu_dbg(vdev, BO, " alloc: bo %8p size %9zu\n", bo, size);
- 	return &bo->base.base;
- }
+-	clk_disable_unprepare(gsbi->hclk);
+-}
+-
+ static const struct of_device_id gsbi_dt_match[] = {
+ 	{ .compatible = "qcom,gsbi-v1.0.0", },
+ 	{ },
+@@ -232,7 +225,6 @@ static struct platform_driver gsbi_driver = {
+ 		.of_match_table	= gsbi_dt_match,
+ 	},
+ 	.probe = gsbi_probe,
+-	.remove = gsbi_remove,
+ };
  
- struct drm_gem_object *ivpu_gem_prime_import(struct drm_device *dev,
- 					     struct dma_buf *dma_buf)
- {
-+	struct ivpu_device *vdev = to_ivpu_device(dev);
- 	struct device *attach_dev = dev->dev;
- 	struct dma_buf_attachment *attach;
- 	struct drm_gem_object *obj;
-+	struct ivpu_bo *bo;
- 	int ret;
- 
- 	attach = dma_buf_attach(dma_buf, attach_dev);
-@@ -239,6 +235,14 @@ struct drm_gem_object *ivpu_gem_prime_import(struct drm_device *dev,
- 	obj->import_attach = attach;
- 	obj->resv = dma_buf->resv;
- 
-+	bo = to_ivpu_bo(obj);
-+
-+	mutex_lock(&vdev->bo_list_lock);
-+	list_add_tail(&bo->bo_list_node, &vdev->bo_list);
-+	mutex_unlock(&vdev->bo_list_lock);
-+
-+	ivpu_dbg(vdev, BO, "import: bo %8p size %9zu\n", bo, ivpu_bo_size(bo));
-+
- 	return obj;
- 
- fail_detach:
-@@ -269,6 +273,12 @@ static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 fla
- 	bo->base.map_wc = flags & DRM_IVPU_BO_WC;
- 	bo->flags = flags;
- 
-+	mutex_lock(&vdev->bo_list_lock);
-+	list_add_tail(&bo->bo_list_node, &vdev->bo_list);
-+	mutex_unlock(&vdev->bo_list_lock);
-+
-+	ivpu_dbg(vdev, BO, " alloc: bo %8p size %9llu\n", bo, size);
-+
- 	return bo;
- }
- 
+ module_platform_driver(gsbi_driver);
 -- 
 2.51.0
 
