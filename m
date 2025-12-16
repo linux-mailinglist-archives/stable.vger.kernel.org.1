@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0931CCC303B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22CACC233D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29B4A304BC40
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D5DF3005F36
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4449D36CE06;
-	Tue, 16 Dec 2025 12:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF71A343D82;
+	Tue, 16 Dec 2025 11:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7rUUgOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw26n1KK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FA9343D75;
-	Tue, 16 Dec 2025 12:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C19D343D79;
+	Tue, 16 Dec 2025 11:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887996; cv=none; b=qQKMWOjidfGJlARNLHiwq/EsXOvv5jVdjgN+Zeb3LaOxKeBngpySXaAfr2L//HZbwWdruOCIRVXh3n1dN6keeQRr8rAy2hLB1Yj9F0iOacNLUnN2gGQPQMom8dxBap1lzkl+QakD3ddsnV2zaDR0OIqotQWRQS/36ts9QjP5L28=
+	t=1765884402; cv=none; b=tHKLmGfKK4n3pBDRJNykaXmO5YeuV52jArnLlrZycDnEH07/hq1pB3LmHrxvUpbAa/zmRYKSvsiaMidkyxq69BAuFt/Jbgf0tAseukDXcf5Ju+aB8C8lMqRjcBXDVPMVWTuwsdHWsvdy6bNkNM++efnUrtsrhD3LpjH0XhozayU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887996; c=relaxed/simple;
-	bh=YRo0vJIJZ8Ht9YvMX2ypA3rGlfxNNKh66djMMPlPgAk=;
+	s=arc-20240116; t=1765884402; c=relaxed/simple;
+	bh=rKtC7eqXwPEa8+Yic44D3DJyho9L8ZKfZjEBTxzYuqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDmUmsoBRMD+AUjU1gi4RT95/d63S/hWBPFRBaM84n8/qd7ryeJAtFHn5hg9Rq0sFD6Kw5M//Gp2YpsOzdK1TbYrtW2oMLbjQRiefQCmtxYwg43rxdxTmID4oNaKrihdtKYK4gxBgwczobu4sPM7IDKFhFB913bP+A5IxQ8uDGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7rUUgOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62232C4CEF1;
-	Tue, 16 Dec 2025 12:26:35 +0000 (UTC)
+	 MIME-Version; b=JmxIzsZXma/PB7kiMo9GBowj7U2jdiB+H42IiKgIpY5Cb1R6V0Ce0oAriM9FeNz9Ck+P0DIfZWWe6qWCuIJuXYLRvPSN90yyrW942Mi+JEOPxU9/OvMenM2/e/8pYfGochKOunIneboi94g9nPwdCS4v/pa4rzGnD76DeW6CZR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw26n1KK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0F1C4CEF5;
+	Tue, 16 Dec 2025 11:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887995;
-	bh=YRo0vJIJZ8Ht9YvMX2ypA3rGlfxNNKh66djMMPlPgAk=;
+	s=korg; t=1765884402;
+	bh=rKtC7eqXwPEa8+Yic44D3DJyho9L8ZKfZjEBTxzYuqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7rUUgOZg9mE+g8nRHZdjsjK46AIR7InNsWu7F7NnB7ifsgHAxRNmMiGxMajUCS5W
-	 ZoxN6AW5BF9rpjNhekvx0YNo/TWr8jrOv264SCG3b7K6LaQb8ghkkfGtno5dJVK7nV
-	 R71CrdffqBPJxCjn1QB2Hn/+qPZ6UcTookkGQP9s=
+	b=Vw26n1KKFGcXzznkpEr92IMd4Qr6M632E+QICnXlcd+Q75HPOziX9GLVIBvWeuG9l
+	 uFNYVQAYu97KZ9HZwAu0hmDVmeFBPX/VKojXzUXarxwjqL1c7iT4XKAEEgSW3kLE7e
+	 qPSwzSOZSML4qu+hdZcRSNATGByMyVAy7dnWWRtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Garri Djavadyan <g.djavadyan@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 383/614] wifi: mt76: mt7996: fix null pointer deref in mt7996_conf_tx()
+Subject: [PATCH 6.12 183/354] ipv6: clear RA flags when adding a static route
 Date: Tue, 16 Dec 2025 12:12:30 +0100
-Message-ID: <20251216111415.237812355@linuxfoundation.org>
+Message-ID: <20251216111327.542259250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 79277f8ad15ec5f255ed0e1427c7a8a3e94e7f52 ]
+[ Upstream commit f72514b3c5698e4b900b25345e09f9ed33123de6 ]
 
-If a link does not have an assigned channel yet, mt7996_vif_link returns
-NULL. We still need to store the updated queue settings in that case, and
-apply them later.
-Move the location of the queue params to within struct mt7996_vif_link.
+When an IPv6 Router Advertisement (RA) is received for a prefix, the
+kernel creates the corresponding on-link route with flags RTF_ADDRCONF
+and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
 
-Fixes: c0df2f0caa8d ("wifi: mt76: mt7996: prepare mt7996_mcu_set_tx for MLO support")
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250929111723.52486-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+If later a user configures a static IPv6 address on the same prefix the
+kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
+and RTF_PREFIX_RT. When the next RA for that prefix is received, the
+kernel sees the route as RA-learned and wrongly configures back the
+lifetime. This is problematic because if the route expires, the static
+address won't have the corresponding on-link route.
+
+This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
+the lifetime is configured when the next RA arrives. If the static
+address is deleted, the route becomes RA-learned again.
+
+Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
+Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
+Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251115095939.6967-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 ++++++-
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ net/ipv6/ip6_fib.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 581314368c5ba..b53ca702591c6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -665,8 +665,8 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	       unsigned int link_id, u16 queue,
- 	       const struct ieee80211_tx_queue_params *params)
- {
--	struct mt7996_dev *dev = mt7996_hw_dev(hw);
--	struct mt7996_vif_link *mlink = mt7996_vif_link(dev, vif, link_id);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
- 	static const u8 mq_to_aci[] = {
- 		[IEEE80211_AC_VO] = 3,
- 		[IEEE80211_AC_VI] = 2,
-@@ -675,7 +675,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	};
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index aa1046fbf28e5..ebfe2b9b11b7e 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1138,6 +1138,10 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					fib6_set_expires(iter, rt->expires);
+ 					fib6_add_gc_list(iter);
+ 				}
++				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
++					iter->fib6_flags &= ~RTF_ADDRCONF;
++					iter->fib6_flags &= ~RTF_PREFIX_RT;
++				}
  
- 	/* firmware uses access class index */
--	mlink->queue_params[mq_to_aci[queue]] = *params;
-+	link_info->queue_params[mq_to_aci[queue]] = *params;
- 	/* no need to update right away, we'll get BSS_CHANGED_QOS */
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 0347ee0c2dd75..afa6a43bd51e5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3414,6 +3414,9 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- #define WMM_PARAM_SET		(WMM_AIFS_SET | WMM_CW_MIN_SET | \
- 				 WMM_CW_MAX_SET | WMM_TXOP_SET)
- 	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	unsigned int link_id = link_conf->link_id;
-+	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
- 	struct {
- 		u8 bss_idx;
- 		u8 __rsv[3];
-@@ -3431,7 +3434,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 	skb_put_data(skb, &hdr, sizeof(hdr));
- 
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
--		struct ieee80211_tx_queue_params *q = &link->queue_params[ac];
-+		struct ieee80211_tx_queue_params *q = &link_info->queue_params[ac];
- 		struct edca *e;
- 		struct tlv *tlv;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 8ec2acdb33193..718e4d4ad85f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -253,16 +253,21 @@ struct mt7996_vif_link {
- 	struct mt7996_sta_link msta_link;
- 	struct mt7996_phy *phy;
- 
--	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
- 	struct cfg80211_bitrate_mask bitrate_mask;
- 
- 	u8 mld_idx;
- };
- 
-+struct mt7996_vif_link_info {
-+	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
-+};
-+
- struct mt7996_vif {
- 	struct mt7996_vif_link deflink; /* must be first */
- 	struct mt76_vif_data mt76;
- 
-+	struct mt7996_vif_link_info link_info[IEEE80211_MLD_MAX_NUM_LINKS];
-+
- 	u8 mld_group_idx;
- 	u8 mld_remap_idx;
- };
+ 				if (rt->fib6_pmtu)
+ 					fib6_metric_set(iter, RTAX_MTU,
 -- 
 2.51.0
 
