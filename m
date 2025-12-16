@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2918ACC2D94
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7029CC224A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8D7931946D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6439B3045F64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FC836D4F3;
-	Tue, 16 Dec 2025 12:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8035633D6F2;
+	Tue, 16 Dec 2025 11:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amtdl5XU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED/Ezyqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A4B36D4F8;
-	Tue, 16 Dec 2025 12:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C133D6C0;
+	Tue, 16 Dec 2025 11:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887493; cv=none; b=YtTuqwe2OxnfdSlaJOj7z4pkzA97PctzNQYusZCz//15otedI7fmKmWEpaiRIbtgIigDPL6sO9jMFWk2Tlr2yVseejTWpO6kVBwaYNlHrWwDbSzwGQYN0JtfyQ3nRJldgBS7REPWUVCl+aoJmdXdHM7qj1/AyX5jA51AKIUq918=
+	t=1765883925; cv=none; b=LQdinbxb2tro0PZ5Vr36RVRZnbJHX/dz8gleXC4T2/7aeZl17XoSAzXnwlxc5Ny7QRX44TlTxPk3QEbxWisKEpbdT6lpRtxrIXgPp7sY+qTCuKMFtuk+zG9tNqVGJp0S2ERQwJJ3+Uu0kpBv/BrotPnPOqupNTeZzqHM1wNgKPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887493; c=relaxed/simple;
-	bh=IPlPEpWc1DdCAGP9Q8c6ySsOCjcoQccVixHP2SCFgMM=;
+	s=arc-20240116; t=1765883925; c=relaxed/simple;
+	bh=zlPsRTRNPxQ2nXmWtAHtm1gNwvPSJBnqc57MWht2Qi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blF2BnDy07DhcYX+UzKOZilK5defCMrsxEuGzl/wWzfxnDeNVCJ4cMkpCDOKMkPl9woZ0CBA0zRE1BdwUAjxKz1wgKDjQ225c9QpfHZjPxIQytXzlgIqQ8Ci/qJmh5lglkG6Is6ZKMjtfVeOU3ehHVupTCUw7ZgBetVXSeQ026c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amtdl5XU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC41C4CEF1;
-	Tue, 16 Dec 2025 12:18:12 +0000 (UTC)
+	 MIME-Version; b=F+/maGuaCcP2INbPXSBB4IvM88Dn+PJMH/BGbCdhvyn/3+7w9t3mW9Sgx0F1UWEq8GMWM3hhqD7cIFtE8oDhGCWUpz4FJgQ0qfsFBedwlysb8FklZlkrQ92hLV0UJIpZ8IeD5aUnIZxnbkQFEJz4/aH4Dql6rOJKvHFHUSbtdrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ED/Ezyqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3EEC4CEF1;
+	Tue, 16 Dec 2025 11:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887493;
-	bh=IPlPEpWc1DdCAGP9Q8c6ySsOCjcoQccVixHP2SCFgMM=;
+	s=korg; t=1765883925;
+	bh=zlPsRTRNPxQ2nXmWtAHtm1gNwvPSJBnqc57MWht2Qi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amtdl5XUgsryNhcZjwUwksNZbRX6Dn6jh/bTzqSOAt3GLK1Al2M3BgpSaZjn0Ryrp
-	 UGNoEue69XyXtZPAjT0m0kzsKebyCY+cVaMX4mmoKCr6oVF4fFPEf9ZTLw1RE/itM9
-	 2yOkWmY4URdXM6jUY8u8FPVenEN3wZCF/XkBzgEc=
+	b=ED/EzyqeH/mCc8XqZY9dMAd38vRJXP5/PPQ8KPzTawmP9zxbjXTQbGNwY2dnZYRSG
+	 TkczxEv1xwqW0piN6f9RxumrSMkXSO5SXEYexf6bcWWHkp7fn45VEnoho7nA9ie8sM
+	 ZN6fVwRC1czlHEXu8QBLDW5EDJPcL9IDlZWjrWu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Bean Huo <beanhuo@micron.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 240/614] scsi: ufs: core: fix incorrect buffer duplication in ufshcd_read_string_desc()
+Subject: [PATCH 6.12 040/354] dt-bindings: clock: qcom,x1e80100-gcc: Add missing video resets
 Date: Tue, 16 Dec 2025 12:10:07 +0100
-Message-ID: <20251216111410.063450573@linuxfoundation.org>
+Message-ID: <20251216111322.366741646@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bean Huo <beanhuo@micron.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit d794b499f948801f54d67ddbc34a6eac5a6d150a ]
+[ Upstream commit d0b706509fb04449add5446e51a494bfeadcac10 ]
 
-The function ufshcd_read_string_desc() was duplicating memory starting
-from the beginning of struct uc_string_id, which included the length and
-type fields. As a result, the allocated buffer contained unwanted
-metadata in addition to the string itself.
+Add the missing video resets that are needed for the iris video codec.
 
-The correct behavior is to duplicate only the Unicode character array in
-the structure. Update the code so that only the actual string content is
-copied into the new buffer.
-
-Fixes: 5f57704dbcfe ("scsi: ufs: Use kmemdup in ufshcd_read_string_desc()")
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Link: https://patch.msgid.link/20251107230518.4060231-3-beanhuo@iokpp.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250709-x1e-videocc-v2-4-ad1acf5674b4@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 8abe970efea5 ("clk: qcom: gcc-x1e80100: Add missing USB4 clocks/resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dt-bindings/clock/qcom,x1e80100-gcc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index d6a060a724618..12f5a7a973128 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3837,7 +3837,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
- 		str[ret++] = '\0';
- 
- 	} else {
--		str = kmemdup(uc_str, uc_str->len, GFP_KERNEL);
-+		str = kmemdup(uc_str->uc, uc_str->len, GFP_KERNEL);
- 		if (!str) {
- 			ret = -ENOMEM;
- 			goto out;
+diff --git a/include/dt-bindings/clock/qcom,x1e80100-gcc.h b/include/dt-bindings/clock/qcom,x1e80100-gcc.h
+index 24ba9e2a5cf6c..710c340f24a57 100644
+--- a/include/dt-bindings/clock/qcom,x1e80100-gcc.h
++++ b/include/dt-bindings/clock/qcom,x1e80100-gcc.h
+@@ -482,4 +482,6 @@
+ #define GCC_USB_1_PHY_BCR					85
+ #define GCC_USB_2_PHY_BCR					86
+ #define GCC_VIDEO_BCR						87
++#define GCC_VIDEO_AXI0_CLK_ARES					88
++#define GCC_VIDEO_AXI1_CLK_ARES					89
+ #endif
 -- 
 2.51.0
 
