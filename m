@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-202506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8A2CC3B27
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F73CC2523
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDCCE30C8AD5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6DE930647B8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A535505A;
-	Tue, 16 Dec 2025 12:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899CA33D6F5;
+	Tue, 16 Dec 2025 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZg4tVX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+MlPSXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBFB336EFF;
-	Tue, 16 Dec 2025 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5A315786;
+	Tue, 16 Dec 2025 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888120; cv=none; b=FQWTMLJ15EZOT6lcOvdlXaidNGPXikgsyNTLai/zVYOSQzi35NeXTDX6JA8tw3J8akPmUl9J6/4lhaVuAf+qRp21MiRzvbYSk+oymWalZFs0pZZfHHy47cMkVKkqEFhDgm5y4xmicYX1itOnHMudc/dnmb/DzJrKVdVqBNv8DNY=
+	t=1765884589; cv=none; b=Tk+FHrt8PCTChT9o8K/407oIcwC9ArKJFDmtEaQlwXbk0F82zQkGhripLL0fn8kqrga49ai0w8/cWwwU8LN3HbL3SuR6kKpSPrdFAojk1aCE6qjylHBZRAuIPhsHF75jg83lIVA5TYRnoqKWJOcNSCYnhiQoB9EPRiYed0PWn6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888120; c=relaxed/simple;
-	bh=X8lZhWYfw9y32RK4GZ+UEF+BJ47yECQk/OuV7PD6j04=;
+	s=arc-20240116; t=1765884589; c=relaxed/simple;
+	bh=cf09LaJoHrPottRfotqkY/1aLhTYq6ZAoHjYlQDPHko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivef0Ns2kSgz37yoRDTpwa+ID6nKPB27kLRYr54wbYsvPjswjwoN0Hy5kWb+mzCJvM4nAM1ROSyQYw5njg+R7+N4GdW1p2pVD7f1b9YdMaxFdLjj9qMe6APUSRVsLpL5aeEwsWmNmQE6brqlYCVFqfBZBNBYfDnhOsUJk19rEZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZg4tVX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39168C4CEF1;
-	Tue, 16 Dec 2025 12:28:40 +0000 (UTC)
+	 MIME-Version; b=lGVYwBT5oNx/wVkoWg0gydU18GntQi9G3JafbpMkPlFryEnRhCPR4EkJIuMFRtk2LmzXTDBZhw2PYuvPYS5O0uTbU8U8wxFuWAk+EuQwV92S9uAWwaTNOScUqO55XKfp34BXXQ+YViAAHggLFOn3IGHm7/FL5oz4cx2g06sSWQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+MlPSXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD69C4CEF1;
+	Tue, 16 Dec 2025 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888120;
-	bh=X8lZhWYfw9y32RK4GZ+UEF+BJ47yECQk/OuV7PD6j04=;
+	s=korg; t=1765884589;
+	bh=cf09LaJoHrPottRfotqkY/1aLhTYq6ZAoHjYlQDPHko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZg4tVX/ZJjdFntq8T73XuDh8LkQRahINu/iI4K/J9Xum6uOokEE6gKm5FyLpVNVM
-	 dHxeOrHwj7wZmTDgwlHBfRnhtf2sSfb3/dk7Z7gmASoshTFdbhMJG1Oeolf/qF4P1I
-	 dpNEfpWNr5U/IHD0NGFr4YVEnFJXO1ikn5RrX/UY=
+	b=O+MlPSXJsyWEVhJxnXlFfBBGpknxEOQbQysKiGTviZGLYRjepDN1bTwCAaASFXFry
+	 d8M1lXNxGQA48vqe/pg3HKPJ88Ds6NkslzexsbAn6ciFRFuFmCDMsWlPZZMbSMALDE
+	 kVh1SDZ+1XlI6P93ICUlGUZex6Etrez0cguRa5K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 438/614] ASoC: nau8325: use simple i2c probe function
+Subject: [PATCH 6.12 238/354] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS select FW_LOADER
 Date: Tue, 16 Dec 2025 12:13:25 +0100
-Message-ID: <20251216111417.243479270@linuxfoundation.org>
+Message-ID: <20251216111329.537553758@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Alexandre Courbot <acourbot@nvidia.com>
 
-[ Upstream commit b4d072c98e47c562834f2a050ca98a1c709ef4f9 ]
+[ Upstream commit 9906efa545d1d2cf25a614eeb219d3f8d5a302cd ]
 
-The i2c probe functions here don't use the id information provided in
-their second argument, so the single-parameter i2c probe function
-("probe_new") can be used instead.
+The use of firmware_loader is an implementation detail of drivers rather
+than a dependency. FW_LOADER is typically selected rather than depended
+on; the Rust abstractions should do the same thing.
 
-This avoids scanning the identifier tables during probes.
-
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20251126091759.2490019-2-perex@perex.cz
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: cd41d3420ef6 ("ASoC: nau8325: add missing build config")
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Link: https://patch.msgid.link/20251106-b4-select-rust-fw-v3-1-771172257755@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8325.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/base/firmware_loader/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/nau8325.c b/sound/soc/codecs/nau8325.c
-index 2266f320a8f22..5b3115b0a7e58 100644
---- a/sound/soc/codecs/nau8325.c
-+++ b/sound/soc/codecs/nau8325.c
-@@ -829,8 +829,7 @@ static int nau8325_read_device_properties(struct device *dev,
- 	return 0;
- }
+diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+index a037016742651..4bf593fb253ac 100644
+--- a/drivers/base/firmware_loader/Kconfig
++++ b/drivers/base/firmware_loader/Kconfig
+@@ -40,7 +40,7 @@ config FW_LOADER_DEBUG
+ config RUST_FW_LOADER_ABSTRACTIONS
+ 	bool "Rust Firmware Loader abstractions"
+ 	depends on RUST
+-	depends on FW_LOADER=y
++	select FW_LOADER
+ 	help
+ 	  This enables the Rust abstractions for the firmware loader API.
  
--static int nau8325_i2c_probe(struct i2c_client *i2c,
--			     const struct i2c_device_id *id)
-+static int nau8325_i2c_probe(struct i2c_client *i2c)
- {
- 	struct device *dev = &i2c->dev;
- 	struct nau8325 *nau8325 = dev_get_platdata(dev);
 -- 
 2.51.0
 
