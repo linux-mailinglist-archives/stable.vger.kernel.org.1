@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07C7CC2AAD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2764ACC35A0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC87C30BEA6E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04611309F20B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B859D359704;
-	Tue, 16 Dec 2025 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFC636BCDC;
+	Tue, 16 Dec 2025 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ8koqCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCkiffH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C941359701;
-	Tue, 16 Dec 2025 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B1D368271;
+	Tue, 16 Dec 2025 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886660; cv=none; b=pr7hpZ+F30redUxJ4udf3RrFnekt5NFjMYJr6fGIfxBcJcYxNOYG/WeG+LDKgcTYR8h5WFF1HF/DbCZ0eMtyx88oo2kFx41lrn7BZiXyWCRxP6sqCD0Un8tASJEYV72xc4K6meYQCFBylxwdwwsuRcDHX0pHJIJcJGucGg0ccqM=
+	t=1765888579; cv=none; b=SVJ762b51BDpkdMfgKow+j+jFxRJq9amvqoWj4eFhh/n6NvDjdbYFwyOlvtH1r9MT9nTie2hlErGwdurhJCS+awvedfG5Ib5NSWMGM75T8Q/G4P+hFfrDTwnOwvTGEdBfqS7BQOLxW8pzZlH7/dnLHwLL72RON/IAJGkXi/LVn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886660; c=relaxed/simple;
-	bh=TwlqX//9DuVX/gRJOIml89Wwfndn7L7fLyvnDEYJUFg=;
+	s=arc-20240116; t=1765888579; c=relaxed/simple;
+	bh=DwFUIefzRQbHk0K4yFzErvhZTPoDwsnsnHzQsGSai6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCB6rXF0u7hkFZyyptVssQC6d6CfoQxaqpMYvNJOjqjew2KYhoPZDcHL5iVmiEL1fIDuk0JPRL+9oTIKKtrWW0IS9vh9yaMMrKUEpGPf3VFyUl2M6m6tJ316R4iB8VHnTcEEAMk6sjv87yBuq17QBN6qYJK5V/JtE45F2PxDd6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ8koqCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1E3C4CEF1;
-	Tue, 16 Dec 2025 12:04:19 +0000 (UTC)
+	 MIME-Version; b=MSjUU7GOM4E2lZg6aHvuIXrMlAQFaemuDobuFkVv6140ROxdhoCYwA50aQfYdXpJU11U60BjuUu0XxIvSNpvRK3hsnre2FjEBIn4vWBvmUOblSLBeJMhi8R46iETflXtyocgJTxOxlHtenkofNfEn4GKULF2Z52zSO8pyJA2QMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCkiffH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740E4C4CEF1;
+	Tue, 16 Dec 2025 12:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886660;
-	bh=TwlqX//9DuVX/gRJOIml89Wwfndn7L7fLyvnDEYJUFg=;
+	s=korg; t=1765888578;
+	bh=DwFUIefzRQbHk0K4yFzErvhZTPoDwsnsnHzQsGSai6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQ8koqCh0SLZBCUmbwoGQSnElA9wKYD2cnV71tz2NXJ8QRYP/k1J+xZNHX1a45jSi
-	 V3WY7Up5JEbggZNUEKdvRZ6Cm0vIm8ke/mqeTU+gx9/64Xgkj3TAPpj12cmGIfQ1U6
-	 1AOmk3QZRwI5rw50Wt/dXuiXyI6AkDG/4/HUNlUs=
+	b=WCkiffH30ND7tdnLfyLcEF0Bo7orQ5kFGQyRNkbNnHXh8BW0MQF2nbUVHBMc2UaEo
+	 yaF4gj+tZzzWb0fAfMpWVLvHzq0fq7zGfzW+VCn5PSc8yhwPRfioWGZ+mhp8dLNH4o
+	 kFT83JSxOOjjjw3fELjKslgKX0G+OSUvka/pfyoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 503/507] ALSA: dice: fix buffer overflow in detect_stream_formats()
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 577/614] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
 Date: Tue, 16 Dec 2025 12:15:44 +0100
-Message-ID: <20251216111403.660188858@linuxfoundation.org>
+Message-ID: <20251216111422.290497808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-commit 324f3e03e8a85931ce0880654e3c3eb38b0f0bba upstream.
+[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
 
-The function detect_stream_formats() reads the stream_count value directly
-from a FireWire device without validating it. This can lead to
-out-of-bounds writes when a malicious device provides a stream_count value
-greater than MAX_STREAMS.
+atomic_pool_expand iteratively tries the allocation while decrementing
+the page order. There is no need to issue a warning if an attempted
+allocation fails.
 
-Fix by applying the same validation to both TX and RX stream counts in
-detect_stream_formats().
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 58579c056c1c ("ALSA: dice: use extended protocol to detect available stream formats")
-Cc: stable@vger.kernel.org
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881B043FC68B4C0DA40B73DAFDCA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
+[mszyprow: fixed typo]
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/dice/dice-extension.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/dma/pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/firewire/dice/dice-extension.c
-+++ b/sound/firewire/dice/dice-extension.c
-@@ -116,7 +116,7 @@ static int detect_stream_formats(struct
- 			break;
- 
- 		base_offset += EXT_APP_STREAM_ENTRIES;
--		stream_count = be32_to_cpu(reg[0]);
-+		stream_count = min_t(unsigned int, be32_to_cpu(reg[0]), MAX_STREAMS);
- 		err = read_stream_entries(dice, section_addr, base_offset,
- 					  stream_count, mode,
- 					  dice->tx_pcm_chs,
-@@ -125,7 +125,7 @@ static int detect_stream_formats(struct
- 			break;
- 
- 		base_offset += stream_count * EXT_APP_STREAM_ENTRY_SIZE;
--		stream_count = be32_to_cpu(reg[1]);
-+		stream_count = min_t(unsigned int, be32_to_cpu(reg[1]), MAX_STREAMS);
- 		err = read_stream_entries(dice, section_addr, base_offset,
- 					  stream_count,
- 					  mode, dice->rx_pcm_chs,
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index ee45dee33d491..26392badc36b0 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -93,7 +93,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
+ 			page = dma_alloc_from_contiguous(NULL, 1 << order,
+ 							 order, false);
+ 		if (!page)
+-			page = alloc_pages(gfp, order);
++			page = alloc_pages(gfp | __GFP_NOWARN, order);
+ 	} while (!page && order-- > 0);
+ 	if (!page)
+ 		goto out;
+-- 
+2.51.0
+
 
 
 
