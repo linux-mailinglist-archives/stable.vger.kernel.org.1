@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A4DCC4654
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BDACC2631
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F9753099BCA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9245430C3361
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D4F3563CE;
-	Tue, 16 Dec 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C812342151;
+	Tue, 16 Dec 2025 11:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG+5DKI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lo2SbSs/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DE53563CB;
-	Tue, 16 Dec 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA8E341AD8;
+	Tue, 16 Dec 2025 11:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886509; cv=none; b=TVhyDR19wZcw9T2/tnuwxEb8Cv7CT39aRLjsFQI/HY0yKx31vO+cK0EctRmj/WPrXlmCw1ImEXpCziSIsgQBOzdTBZzK8rmqZLDrs7y0up+ZkKHeBnmNjBsTAInso8vzdoCMoOTODChcL/kR06myaKw/kqgkU/2scczoqCQZ3Cs=
+	t=1765884789; cv=none; b=gvmk5ntIAS3biC19lYONheCxY1+tgs9UO1G8gJLG+tyQzdn4gYAXv+WlmD2tPzqNR9vYhTAHxYGi51cjj4uWY3tFaBSOM5yN6bezpdPmZeiR0+olWdQjLufTTLBm+bYTq0IlibebAVpOtEEO8x4slmCkuiWH8xN8L5pZH2ffXek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886509; c=relaxed/simple;
-	bh=VuHo/aIp1BiwEDd6lmMSOUCKQ0WV/fXLC6C2V9YKzck=;
+	s=arc-20240116; t=1765884789; c=relaxed/simple;
+	bh=OvSdUnkO26ewMkmRjhftKdMlUEmzVobmDXn/t+VrXFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fu6ZzPGUgrM8MYNT+lECRCT6qYIUGIGrnlIPpBHvgNRpe/GZqMQ73lduA2eIZEDqcu9EgDhOOE5ZEaSzXzGr2jUCzcowlL3/fDKhcKQlDW4qdG0HnU6tvAE/Kr/O6C9O2DFKTM/W4lr50XUo2WNnC8Z199mHVEZqa6Q5tkN8qPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG+5DKI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698FAC4CEF1;
-	Tue, 16 Dec 2025 12:01:48 +0000 (UTC)
+	 MIME-Version; b=YBkouPaclHK1bMBQlbn+zk8ugKNHXBimhu9P34FVZHMP7sj/gGe2lQHFzdx9XSJuto3urtRq2bbO2uuQvXVPU/CaikVJRuAe8YjZyrPMttXbBvH+oYI51BHp5+SftBmcWCVGEMT5iOS1NFbZaNhGYEg+QnnNZOqhnB0KZsk51A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lo2SbSs/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B198C4CEF1;
+	Tue, 16 Dec 2025 11:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886509;
-	bh=VuHo/aIp1BiwEDd6lmMSOUCKQ0WV/fXLC6C2V9YKzck=;
+	s=korg; t=1765884789;
+	bh=OvSdUnkO26ewMkmRjhftKdMlUEmzVobmDXn/t+VrXFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG+5DKI6eQdbQHM8jk8jNJsznQt9tEhYrkmg9Tn83z03u8cXVGnA/3B5+Fg5u6WWg
-	 I3tIer/GjKlIPPm8IWUW5S+ORkRgIvh0ENV8ay+7utlypNP5nt6ShMikEwW7SS0MKm
-	 Awjbj1otzMBq2TE18WKKcHUZqWJwBe0R+KyMzy3k=
+	b=Lo2SbSs/2vvjVEc+KnCEkTjqAbSqGU8MWCjxDMlBkfE+iIS1fnQIq6K/Ulnva5uXb
+	 mrqpONjXDfKrIoNfSIAtes2lZLtk1cJoXfeQgZZe+02igoTZVpCG4i05KAjOmwOi+E
+	 Jvfr1j5RbJyL29vu5v4TNOvT6weAzTcca338pvI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	George McCollister <george.mccollister@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 424/507] net: dsa: xrs700x: reject unsupported HSR configurations
-Date: Tue, 16 Dec 2025 12:14:25 +0100
-Message-ID: <20251216111400.822105957@linuxfoundation.org>
+Subject: [PATCH 6.12 299/354] f2fs: add gc_boost_gc_multiple sysfs node
+Date: Tue, 16 Dec 2025 12:14:26 +0100
+Message-ID: <20251216111331.744676016@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit 30296ac7642652428396222e720718f2661e9425 ]
+[ Upstream commit 1d4c5dbba1a53aeaf2c6cc84e7ba94c436d18852 ]
 
-As discussed here:
-https://lore.kernel.org/netdev/20240620090210.drop6jwh7e5qw556@skbuf/
+Add a sysfs knob to set a multiplier for the background GC migration
+window when F2FS Garbage Collection is boosted.
 
-the fact is that the xrs700x.c driver only supports offloading
-HSR_PT_SLAVE_A and HSR_PT_SLAVE_B (which were the only port types at the
-time the offload was written, _for this driver_).
-
-Up until now, the API did not explicitly tell offloading drivers what
-port has what role. So xrs700x can get confused and think that it can
-support a configuration which it actually can't. There was a table in
-the attached link which gave an example:
-
-$ ip link add name hsr0 type hsr slave1 swp0 slave2 swp1 \
-	interlink swp2 supervision 45 version 1
-
-        HSR_PT_SLAVE_A    HSR_PT_SLAVE_B      HSR_PT_INTERLINK
- ----------------------------------------------------------------
- user
- space        0                 1                   2
- requests
- ----------------------------------------------------------------
- XRS700X
- driver       1                 2                   -
- understands
-
-The switch would act as if the ring ports were swp1 and swp2.
-
-Now that we have explicit hsr_get_port_type() API, let's use that to
-work around the unintended semantical changes of the offloading API
-brought by the introduction of interlink ports in HSR.
-
-Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
-Cc: Lukasz Majewski <lukma@denx.de>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: George McCollister <george.mccollister@gmail.com>
-Link: https://patch.msgid.link/20251130131657.65080-5-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/xrs700x/xrs700x.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++++
+ fs/f2fs/gc.c                            | 3 ++-
+ fs/f2fs/gc.h                            | 1 +
+ fs/f2fs/sysfs.c                         | 9 +++++++++
+ 4 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/xrs700x/xrs700x.c b/drivers/net/dsa/xrs700x/xrs700x.c
-index 4dbcc49a9e526..0a05f4156ef4d 100644
---- a/drivers/net/dsa/xrs700x/xrs700x.c
-+++ b/drivers/net/dsa/xrs700x/xrs700x.c
-@@ -566,6 +566,7 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 	struct xrs700x *priv = ds->priv;
- 	struct net_device *user;
- 	int ret, i, hsr_pair[2];
-+	enum hsr_port_type type;
- 	enum hsr_version ver;
- 	bool fwd = false;
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index ade7da6352de6..e5ec2a7982eef 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -867,3 +867,10 @@ Description:	This threshold is used to control triggering garbage collection whi
+ 		reserved section before preallocating on pinned file.
+ 		By default, the value is ovp_sections, especially, for zoned ufs, the
+ 		value is 1.
++
++What:		/sys/fs/f2fs/<disk>/gc_boost_gc_multiple
++Date:		June 2025
++Contact:	"Daeho Jeong" <daehojeong@google.com>
++Description:	Set a multiplier for the background GC migration window when F2FS GC is
++		boosted. The range should be from 1 to the segment count in a section.
++		Default: 5
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index c0e43d6056a0a..2cc7e16f76659 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -197,6 +197,7 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
  
-@@ -589,6 +590,16 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 		return -EOPNOTSUPP;
+ 	gc_th->urgent_sleep_time = DEF_GC_THREAD_URGENT_SLEEP_TIME;
+ 	gc_th->valid_thresh_ratio = DEF_GC_THREAD_VALID_THRESH_RATIO;
++	gc_th->boost_gc_multiple = BOOST_GC_MULTIPLE;
+ 
+ 	if (f2fs_sb_has_blkzoned(sbi)) {
+ 		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED;
+@@ -1757,7 +1758,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 					!has_enough_free_blocks(sbi,
+ 					sbi->gc_thread->boost_zoned_gc_percent))
+ 				window_granularity *=
+-					BOOST_GC_MULTIPLE;
++					sbi->gc_thread->boost_gc_multiple;
+ 
+ 			end_segno = start_segno + window_granularity;
+ 		}
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 5c1eaf55e1277..efa1968810a06 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -68,6 +68,7 @@ struct f2fs_gc_kthread {
+ 	unsigned int no_zoned_gc_percent;
+ 	unsigned int boost_zoned_gc_percent;
+ 	unsigned int valid_thresh_ratio;
++	unsigned int boost_gc_multiple;
+ };
+ 
+ struct gc_inode_list {
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 624ce79f08fd2..dce3ef405832e 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -854,6 +854,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 		return count;
  	}
  
-+	ret = hsr_get_port_type(hsr, dsa_to_port(ds, port)->user, &type);
-+	if (ret)
-+		return ret;
-+
-+	if (type != HSR_PT_SLAVE_A && type != HSR_PT_SLAVE_B) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Only HSR slave ports can be offloaded");
-+		return -EOPNOTSUPP;
++	if (!strcmp(a->attr.name, "gc_boost_gc_multiple")) {
++		if (t < 1 || t > SEGS_PER_SEC(sbi))
++			return -EINVAL;
++		sbi->gc_thread->boost_gc_multiple = (unsigned int)t;
++		return count;
 +	}
 +
- 	dsa_hsr_foreach_port(dp, ds, hsr) {
- 		if (dp->index != port) {
- 			partner = dp;
+ 	*ui = (unsigned int)t;
+ 
+ 	return count;
+@@ -1080,6 +1087,7 @@ GC_THREAD_RW_ATTR(gc_no_gc_sleep_time, no_gc_sleep_time);
+ GC_THREAD_RW_ATTR(gc_no_zoned_gc_percent, no_zoned_gc_percent);
+ GC_THREAD_RW_ATTR(gc_boost_zoned_gc_percent, boost_zoned_gc_percent);
+ GC_THREAD_RW_ATTR(gc_valid_thresh_ratio, valid_thresh_ratio);
++GC_THREAD_RW_ATTR(gc_boost_gc_multiple, boost_gc_multiple);
+ 
+ /* SM_INFO ATTR */
+ SM_INFO_RW_ATTR(reclaim_segments, rec_prefree_segments);
+@@ -1248,6 +1256,7 @@ static struct attribute *f2fs_attrs[] = {
+ 	ATTR_LIST(gc_no_zoned_gc_percent),
+ 	ATTR_LIST(gc_boost_zoned_gc_percent),
+ 	ATTR_LIST(gc_valid_thresh_ratio),
++	ATTR_LIST(gc_boost_gc_multiple),
+ 	ATTR_LIST(gc_idle),
+ 	ATTR_LIST(gc_urgent),
+ 	ATTR_LIST(reclaim_segments),
 -- 
 2.51.0
 
