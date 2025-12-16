@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF31FCC2B8C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:28:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A4ECC2731
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F15903148C68
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97E1F306EDAE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D749364E9A;
-	Tue, 16 Dec 2025 12:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB4434572F;
+	Tue, 16 Dec 2025 11:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1zU/0PT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QciV1BEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CF1364E8C;
-	Tue, 16 Dec 2025 12:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7872D97B8;
+	Tue, 16 Dec 2025 11:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886979; cv=none; b=jrOfMnLrmUXsS6WiMT3DtMvG23HmSslKC75No3XWzcZkgclFjxLAFtJiQEiqRpxvQ5tBwc+tOTG6zEDAuTyFagNdGMlpWb2hfSzFjpIHtmz4QUW6liFCd/KlyWHvfZMYvoezLoKGZOqJssOWlO+pWUKqeeO045NG8bFi+tUlJZ8=
+	t=1765885021; cv=none; b=muW+mubfaXcs305jeu4ZpNtF3p9z+xN56G8e1kgxWyKXkoiOk5hqMZPReoPBLCNlO39xw2IboFDQuQ+BcliaysdugILQHtU0M05LTbpSqUl/TeGvHvHIbRgqm+Hv/faN8zgjSJvj6OehP+/Yb9GxrQcp2GBHb98veUoDnbZd7hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886979; c=relaxed/simple;
-	bh=9+LZGRMPqQLTwvyiWchMMIjmtmJSbIXFH17GBNgYOc0=;
+	s=arc-20240116; t=1765885021; c=relaxed/simple;
+	bh=oQwCXeDJsbunCdwAukhWQffR/p/2ztiAhithZycI+5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prHe/kQ1AiZrIFujlvrb0Fk7ERiIQKb51/XtG8gAVmGqri5zcAERJLL6Q2eJOyym/skHjTOeOXV4Ij/ZWVivs9jA1tu0uqLUKiVxv2CT3DwVMjWs+e2SOSBBgChKkEc6eM/C0y6ZI26o1+oUaPgMYINcjkdxB2dUMKhFfC8MgMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1zU/0PT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA93DC4CEF1;
-	Tue, 16 Dec 2025 12:09:38 +0000 (UTC)
+	 MIME-Version; b=SFtrGKFDDpGEnU0nZNdPgOmmKtQ4qyQNZzBjcP1BHd1M7oBtul/ff9EHbfaGNND1clS7WpR044k7ZdGo0+zoKLUWHU39/44DdjjRV2YWGz+gjnJDt0n7dLvdB0tcy85n/oFPhbQ8ooEByG4J1fISA0z99NhHJbszT+2DYWnBpt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QciV1BEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414E2C4CEF1;
+	Tue, 16 Dec 2025 11:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886979;
-	bh=9+LZGRMPqQLTwvyiWchMMIjmtmJSbIXFH17GBNgYOc0=;
+	s=korg; t=1765885021;
+	bh=oQwCXeDJsbunCdwAukhWQffR/p/2ztiAhithZycI+5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1zU/0PTospmccGpUScoZMdjx+UKZfr2HtfU6Qf8kUVjCJg2XxRcIETcuOWVwY/1a
-	 wIdsqX6SE/DB2cVLcAkIEcp+qk0QQiT6p9ZAbE0Es6BuPGZPn763+45mq9qmPK/kW5
-	 gafwriRW8uHPFTas9124LmBwNL5HQ9eDGn7GKR1Y=
+	b=QciV1BEjnS/qZJsdI+4nZdUPAnJEnJm6yQ3mQ5YWec3tGaNcWl9KJj6myK97pqCQG
+	 9D5VIa+EWQlQYs8myCS/evhs+PY4asD1eOZkN1QEl3F9sJdwL21rF+hdl/Sjo1XRWP
+	 rydbj86AzmstbUlhfXZEfZ4ni8uVQgaUWZNIKYF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	nieweiqiang <nieweiqiang@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 089/614] crypto: hisilicon/qm - restore original qos values
+Subject: [PATCH 6.17 015/507] accel/ivpu: Fix DCT active percent format
 Date: Tue, 16 Dec 2025 12:07:36 +0100
-Message-ID: <20251216111404.546381635@linuxfoundation.org>
+Message-ID: <20251216111346.087952762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: nieweiqiang <nieweiqiang@huawei.com>
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
 
-[ Upstream commit e7066160f5b4187ad9869b712fa7a35d3d5be6b9 ]
+[ Upstream commit aa1c2b073ad23847dd2e7bdc7d30009f34ed7f59 ]
 
-When the new qos valus setting fails, restore to
-the original qos values.
+The pcode MAILBOX STATUS register PARAM2 field expects DCT active
+percent in U1.7 value format. Convert percentage value to this
+format before writing to the register.
 
-Fixes: 72b010dc33b9 ("crypto: hisilicon/qm - supports writing QoS int the host")
-Signed-off-by: nieweiqiang <nieweiqiang@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a19bffb10c46 ("accel/ivpu: Implement DCT handling")
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://lore.kernel.org/r/20251001104322.1249896-1-karol.wachowski@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_hw_btrs.c | 2 +-
+ drivers/accel/ivpu/ivpu_hw_btrs.h | 2 +-
+ drivers/accel/ivpu/ivpu_pm.c      | 9 +++++++--
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 3b391a1466353..0968304c0cb51 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -3678,6 +3678,7 @@ static void qm_clear_vft_config(struct hisi_qm *qm)
- static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
- {
- 	struct device *dev = &qm->pdev->dev;
-+	struct qm_shaper_factor t_factor;
- 	u32 ir = qos * QM_QOS_RATE;
- 	int ret, total_vfs, i;
- 
-@@ -3685,6 +3686,7 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
- 	if (fun_index > total_vfs)
- 		return -EINVAL;
- 
-+	memcpy(&t_factor, &qm->factor[fun_index], sizeof(t_factor));
- 	qm->factor[fun_index].func_qos = qos;
- 
- 	ret = qm_get_shaper_para(ir, &qm->factor[fun_index]);
-@@ -3698,11 +3700,21 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
- 		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
- 		if (ret) {
- 			dev_err(dev, "type: %d, failed to set shaper vft!\n", i);
--			return -EINVAL;
-+			goto back_func_qos;
- 		}
+diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.c b/drivers/accel/ivpu/ivpu_hw_btrs.c
+index b236c7234daab..05f4133c3511a 100644
+--- a/drivers/accel/ivpu/ivpu_hw_btrs.c
++++ b/drivers/accel/ivpu/ivpu_hw_btrs.c
+@@ -753,7 +753,7 @@ int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable)
  	}
- 
- 	return 0;
-+
-+back_func_qos:
-+	memcpy(&qm->factor[fun_index], &t_factor, sizeof(t_factor));
-+	for (i--; i >= ALG_TYPE_0; i--) {
-+		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
-+		if (ret)
-+			dev_err(dev, "failed to restore shaper vft during rollback!\n");
-+	}
-+
-+	return -EINVAL;
  }
  
- static u32 qm_get_shaper_vft_qos(struct hisi_qm *qm, u32 fun_index)
+-void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent)
++void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent)
+ {
+ 	u32 val = 0;
+ 	u32 cmd = enable ? DCT_ENABLE : DCT_DISABLE;
+diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
+index 032c384ac3d4d..c4c10e22f30f3 100644
+--- a/drivers/accel/ivpu/ivpu_hw_btrs.h
++++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
+@@ -36,7 +36,7 @@ u32 ivpu_hw_btrs_dpu_freq_get(struct ivpu_device *vdev);
+ bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
+ bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
+ int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
+-void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 active_percent);
++void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u8 active_percent);
+ u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
+ u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
+ u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
+diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+index 475ddc94f1cfe..457ccf09df545 100644
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -502,6 +502,11 @@ void ivpu_pm_irq_dct_work_fn(struct work_struct *work)
+ 	else
+ 		ret = ivpu_pm_dct_disable(vdev);
+ 
+-	if (!ret)
+-		ivpu_hw_btrs_dct_set_status(vdev, enable, vdev->pm->dct_active_percent);
++	if (!ret) {
++		/* Convert percent to U1.7 format */
++		u8 val = DIV_ROUND_CLOSEST(vdev->pm->dct_active_percent * 128, 100);
++
++		ivpu_hw_btrs_dct_set_status(vdev, enable, val);
++	}
++
+ }
 -- 
 2.51.0
 
