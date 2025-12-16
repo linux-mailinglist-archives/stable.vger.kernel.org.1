@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76138CC278E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77029CC2BBF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 726A73008F94
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B4CB30AD9F5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C348E35502A;
-	Tue, 16 Dec 2025 11:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85FF363C6C;
+	Tue, 16 Dec 2025 12:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHObZISX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q63EFwaa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806E0355027;
-	Tue, 16 Dec 2025 11:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF9363C66;
+	Tue, 16 Dec 2025 12:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885817; cv=none; b=EicusCb3GTwJH1Iy6H2qGsC3YGxykFihood7bsIxL9u+JuYtHv32CVun6GF1J1ZrGJAVfggYKqzxvbQz54EmzWn+WNK8DnVS7WpoMY+0wpNDx1XgcBN90VazR80saspkxbQYtpfz2/qWjHZRDA5URos7ALJWWhA5NWiSxypuBQc=
+	t=1765887754; cv=none; b=QaRA5PdyCAsAjdg/bBFW6SUxABWC98l9C7tICnc8I3ftl2/aaw2q8O/MtbYxmCn7U7EMNYiZQExDknNsddex93DxtdM+r69XHRgmDddVooLCtFyZ7Hbu58CvgRxfytNf6L1rtTgD2lFaIlcx+XJUqsPFeCHs63gMl2SpYYL02uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885817; c=relaxed/simple;
-	bh=1VQ06xjwwAry9WcXytZsCir9no7i6osFXzGylA+hC0M=;
+	s=arc-20240116; t=1765887754; c=relaxed/simple;
+	bh=qu7SiDJMAZEeYh+UoIwMwqBCWXvB3p+RsSHGyKhDCd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flKgtEwtbfbGLLWKuCMIPfufmaqoN4RKpPCv5LHZRIvAaxV9zkleIMC17uqfPvpm8xQqOVu7sX5lFWYsZK23F9d1HSG1kDFcMs/AfqZ5lAvFZ65ey3XfCsiL3jYc+KjzGN0CzILTxYwPgnI29XlDSM+9iQY4phG/6S1yQlqkISY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHObZISX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C9CC4CEF1;
-	Tue, 16 Dec 2025 11:50:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HTPjAs28G6R6SBfvj0KsNbmhchZkHvNST7pFZrZU/LmLlyo/oJdOiXjPlb5ZZufjKuHzFk9CunkEnnHPLZuWzsAQiWXNnD+uPmywnxabjQVxzx5sjL3thoPZRdqX+vcW22zqS2mv5s3Tbqr9tf+JuOzk8SsnYq1UDjbyqoLa03U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q63EFwaa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EA1C4CEF1;
+	Tue, 16 Dec 2025 12:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885817;
-	bh=1VQ06xjwwAry9WcXytZsCir9no7i6osFXzGylA+hC0M=;
+	s=korg; t=1765887754;
+	bh=qu7SiDJMAZEeYh+UoIwMwqBCWXvB3p+RsSHGyKhDCd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHObZISXsHwSXrw6NJIs92e8hJE5dn8MXFeN0QNRYmV/JMQO0+eFcVjY38LuhZXem
-	 KgKAMQB/D47FTygh+/ExVnMLXSBVJxfRVZTzsBltElG5YXm57wB3lY7UKJkRItm7o4
-	 WQIlsr7vziYHjSHurFbkbAHKr39g2avl10ar77hw=
+	b=Q63EFwaarE2Zs+dlKp/P8x52F7tZoGerkpjIShp+gL9KahI7Z0xnckz764DJLU2jb
+	 eKOp9EQrbzVXyNrdyjafaiBt7WJW6oo5qha16026yPJqDVMBwip3SngLmETF5QYnqm
+	 cl6oq1rI4Oj8yvyRXBK5qm+RIdqRDr8RMnsVpGaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 254/507] tracefs: fix a leak in eventfs_create_events_dir()
+Subject: [PATCH 6.18 328/614] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
 Date: Tue, 16 Dec 2025 12:11:35 +0100
-Message-ID: <20251216111354.693454579@linuxfoundation.org>
+Message-ID: <20251216111413.250280142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,48 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
+[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
 
-If we have LOCKDOWN_TRACEFS, the function bails out - *after*
-having locked the parent directory and without bothering to
-undo that.  Just check it before tracefs_start_creating()...
+The .free callback cleared among others the enable bit PWENx in the
+control register. When the PWM is requested later again this bit isn't
+restored but the core assumes the PWM is enabled and thus skips a
+request to configure the same state as before.
 
-Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+To fix that don't touch the hardware configuration in .free(). For
+symmetry also drop .request() and configure the mode completely in
+.apply().
+
+Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
+ 1 file changed, 3 insertions(+), 25 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 8705c77a9e75a..93c231601c8e2 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -757,7 +757,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 						const struct eventfs_entry *entries,
- 						int size, void *data)
- {
--	struct dentry *dentry = tracefs_start_creating(name, parent);
-+	struct dentry *dentry;
- 	struct eventfs_root_inode *rei;
- 	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
-@@ -768,6 +768,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	if (security_locked_down(LOCKDOWN_TRACEFS))
- 		return NULL;
+diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
+index 578e95e0296c6..532903da521fd 100644
+--- a/drivers/pwm/pwm-bcm2835.c
++++ b/drivers/pwm/pwm-bcm2835.c
+@@ -34,29 +34,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
+ 	return pwmchip_get_drvdata(chip);
+ }
  
-+	dentry = tracefs_start_creating(name, parent);
- 	if (IS_ERR(dentry))
- 		return ERR_CAST(dentry);
+-static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-
+-	return 0;
+-}
+-
+-static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-}
+-
+ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			     const struct pwm_state *state)
+ {
+@@ -102,6 +79,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	/* set polarity */
+ 	val = readl(pc->base + PWM_CONTROL);
+ 
++	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
++	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
++
+ 	if (state->polarity == PWM_POLARITY_NORMAL)
+ 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
+ 	else
+@@ -119,8 +99,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ }
+ 
+ static const struct pwm_ops bcm2835_pwm_ops = {
+-	.request = bcm2835_pwm_request,
+-	.free = bcm2835_pwm_free,
+ 	.apply = bcm2835_pwm_apply,
+ };
  
 -- 
 2.51.0
