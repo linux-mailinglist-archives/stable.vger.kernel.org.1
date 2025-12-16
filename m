@@ -1,126 +1,105 @@
-Return-Path: <stable+bounces-202739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AC1CC5415
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 22:48:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A600CC554B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 23:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD7B9301275A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 21:48:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 523E1300D411
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 22:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EB433C189;
-	Tue, 16 Dec 2025 21:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CD6315D2F;
+	Tue, 16 Dec 2025 22:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J5l/k24t"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CTVztaVS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716DB21CC79
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 21:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAE329BDBF;
+	Tue, 16 Dec 2025 22:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765921721; cv=none; b=nwX6AunN42dMOzDadnIR+TWF6iwOX6l/V8fh02GIPTjOLxy/Y9ApDokjuBu7YbW+e8dyrR7CyP0Gvp14g27D0x8LZWhhn6pOZcnA0mmVPtKIiZzENnt9jeNy+JUTukSXgVrBzKdDCfjBcqXH4LT3FDSnjwaMny8qM4t85svkwn8=
+	t=1765923570; cv=none; b=hbKQSmuELLQi/CPWMLyr1a9Odic8mdvJK3xpUnbTWFnFQ4pI/8uZiQWZKPsBr91XN2pFjCKlqkkyjiWx6fBpxVX6uMDxQPKes9337XkmlCVfWEFiD8WpOA8ZSKiF87UFZOFSAPw1+tkARQbGkajjJWKtCw46neZR7kfKpc7+TS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765921721; c=relaxed/simple;
-	bh=I3khe0INvGbPezO8MZGli6eEOt5M5BEU8F4wdYbG+KU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pUk6qG0805S+P9jeI8kF2nFPCskEw0OVJSj8UgUsBu5A9tSBYUVQ79qKRL2fXZv/sQ1/kickJ2LSdXKiwtkJD4naw3sQzQgHlCPl5qk94KKq6YN+5veDRQxTGQp0z+27Kbxgjuvs0l+Ys5Ez+u5BZrwzZF9ZMyReqryjWsFEdzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J5l/k24t; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-34c84ec3b6eso3335190a91.3
-        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 13:48:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765921711; x=1766526511; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eMTHmxf1vh/B5qiF+nhjuqwN+fGfM3fi/VSYaVSs8Ac=;
-        b=J5l/k24tH8AR/Nj4SrlXOYNTa+VGUhvV8OYgDL520wKFqE1Pkkn7YVYcgdG/k8Oj74
-         0mMEfTYs6HKZFKqjGwXFOiqWi0t276Uxv1twAa/RfvJBe6SbZ91swXI8+RSEzrX/xns1
-         8EbN286DGDFSeRTM+vMx/nT2NbuOWI5q60ukMeuJkzb9/vob7r1O7BlhCOjs8z0rp3B9
-         bmCul/lTIIX4M5RDXY8J38m8EahZC9kh12zYhSCwZgJMRVYSR/Nio4t8tUmL2/YbUIX9
-         RJLtMlXkBvSpctq8lzMkYpy8vaNl5uttoXZ3lQPeOR2t0uL8FNCsL5Hsa7oHaAP7z2qF
-         AV0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765921711; x=1766526511;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eMTHmxf1vh/B5qiF+nhjuqwN+fGfM3fi/VSYaVSs8Ac=;
-        b=utIyYnf/4YkjfXULeuvcK615tAEKS3NCymEXqBmA15xXQ0Iuqopf9PvvCbFhMlUlRP
-         OIYd7hXOAfhMgroOZscmUAJ0cEmaihPfa7G7XGSMQ+e83WLWSS9Duha4cSgCBXmYlfQB
-         f7HKauwQKzP9sVIKFWIq+I8HtjAge+P0OJj6/Ov6mlAyrn6zvvswWKeF0Gk8fVf9ZjbC
-         1m2T/f2S1kfDIVEQ49ZDcWCn8a1aWHFqPljpn9RjjWfTtxglNcLAvPbT/Jnk5/JvT8md
-         Z3V6o1zmoBGHnvs9ZnJxCZ84O3C5NAxuWquXpM1OjhUtR17MP43j9upbjzlmxwQGY6Tj
-         b4OA==
-X-Forwarded-Encrypted: i=1; AJvYcCUu+uMs/NRzA8vx4zuwyRx5No5wWX2hWQFYaM9zQHNaRSozUKIoD7uSbEDVicDtoOU6oJT9Scg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybGkCpV2Iw1Ewb+8TF/nlPIgcicFavq6WXDS0IzzR6kjwwXJHe
-	xz26B81fryC06qh52Tf0NInHcCBdAB/9VHklb9o2YpJFrDQxixU62hNAZGuoEw==
-X-Gm-Gg: AY/fxX61crSxBI1aa70FBv5uphrV7WJ+IhKgG76y5eotqBs5PcAT4hIwcazL6TPyRma
-	C7WocaXw6AVey6H7GJ/nO7wegqqrmIu23/8pOt78EIiqc4zb2xk7cjHNHckDYrY60exEJywPRS3
-	RYODQBTEbPQQ/cHjz3DjEVY/bA43v6ZWYxfv1+26gN26MVoiufTWRd+OBURWY6y6XYXz13RD3bD
-	AH8NZqhHApZtrQo+Ons3bsipnAgEY1hXRg1qIzXg//DyoX31B2eJKp2Ez9wEw8dFkgUNu6X5pcC
-	Q3YzxaoY6fGJ1HvlKWiY9FC8qHOabjcTreLT1Zk5pkcwMOdjZLgh9OaX4KcjssL4HFb5bxQj25N
-	ZoGrvmiw78c+vM/i9b0a5a7aqUg/2nP9voOgsawxF499aNyN4F81y6VN/ljJNZ5Actb53IB4oSb
-	6pCh/c7mLabVYHRYI8b9riGG/EiVoFfRuY8wiJKw==
-X-Google-Smtp-Source: AGHT+IFOlKrP5dymtFfEhr+JD4QtZshAYy9tk2jSUN52Wv1Dnrw/OYGy8yUGpFmBSM94R3467aMp8g==
-X-Received: by 2002:a05:701b:2309:b0:11b:8278:9f3a with SMTP id a92af1059eb24-11f34ac5418mr11887492c88.8.1765921710596;
-        Tue, 16 Dec 2025 13:48:30 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f461a0ad4sm15625722c88.14.2025.12.16.13.48.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Dec 2025 13:48:29 -0800 (PST)
-Message-ID: <011fb0d4-bdc5-4997-858b-466a381a21c4@gmail.com>
-Date: Tue, 16 Dec 2025 13:48:27 -0800
+	s=arc-20240116; t=1765923570; c=relaxed/simple;
+	bh=onE6oEYwRp1XIDNnKwrmZ3KBDvY66p9IfbO7ZaxAa/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AyYyM+m3BmjXVOgX+y4u7bO7mJC1gCaZeQK/fNoEk7LjBHOK2SIW4SFQvkiJ2INd4VapCaUC2dsFgwrVzhB0KUIVkKfPb4HBfiZWIaOtqEvp2WkAFUe0dIbBambEwTZ5jondwtWjUUjTRTimjtdEomM6EiNDHozJVpoMXIRjcJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CTVztaVS; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C8671007D74A;
+	Tue, 16 Dec 2025 23:19:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1765923555; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=mcHyZCRFbtk6J5Yz1SQnm6tsrl3EcpVS61mGlWerz10=;
+	b=CTVztaVSvusmDmU3n6UI0bNwUHii/jRpnuUv+yk7zBEd8v5OGxWhopofe/E5YYwl9cZ6yT
+	cFwjnpcL/4Bcyfo/vGzvM64uaaV8G+jkPeZtPSBJQlOCdUuAa9H/vl4BMFY6EnjNKEuIOE
+	2z9zUOjPXrbXEtKXYqPUHay9pfh4nzZnLFmFpY7YxUh/yO49jIRrlS0BXQ3JjNguHET2E4
+	F6zg/1mwRLZRiNHDdAzr1h0YWOKsXKrPPtFVe+f6Ys0AxAA97SS+PYPpHGP9Ilm9MJ9mOi
+	TL+1FuMuYCHa/Fss2TpK/lspu1sZkrgMmSMe/PxXzD0O2rjuTpYrsHyJ7YAYIA==
+Date: Tue, 16 Dec 2025 23:19:09 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
+Message-ID: <aUHa3VJic7o42AeS@duo.ucw.cz>
+References: <20251216111320.896758933@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251216111401.280873349@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gKbLbaIJ2eJNk4Hg"
+Content-Disposition: inline
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 12/16/25 03:06, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.2 release.
-> There are 614 patches in this series, all will be posted as a response
+
+--gKbLbaIJ2eJNk4Hg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 6.12.63 release.
+> There are 354 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
-> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+CIP testing did not find any problems here:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.12.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--gKbLbaIJ2eJNk4Hg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaUHa3QAKCRAw5/Bqldv6
+8nDHAKCAetxWN6ZVAJIT1FvxSI4kBzOb+gCeO4GOEwCi701ydp0+zY+7jreeLb0=
+=fo9r
+-----END PGP SIGNATURE-----
+
+--gKbLbaIJ2eJNk4Hg--
 
