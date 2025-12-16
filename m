@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E407CC353A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:47:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387C4CC2CF2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73CB130671D8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56F593087912
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90117346FA8;
-	Tue, 16 Dec 2025 11:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2D235CB7D;
+	Tue, 16 Dec 2025 12:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuV+cKqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWl1V01y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6E7346FA2;
-	Tue, 16 Dec 2025 11:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E613659E7;
+	Tue, 16 Dec 2025 12:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885101; cv=none; b=DrSiirMWjb6pdfp7eebQ6XEyhby1R4GHhXL9nej+jH/FLyMyzYu17VcOQTf+P3WyeePyxoc6cyKr3Fr6eurbgZnQu3OsiUQZDbHCZt3vQJArgAk91qLJWoUhV7UCQfh/1Mjx395tkFmHPLWIhVNHqrDP4I6n77rigXg5jDNtz6I=
+	t=1765887056; cv=none; b=XyhT6XN20xdHTEYCpn0dU/UIoD9jmbfaSeZ8fQndHoK1FvF+T79aqNewZ+udcIchIv6Z4swLdLkclZ0nFBuhfcNZIyAG5AYFz3ZWAH3I3rQPpGq79oZO9qWNY9O38AvFz+mLZ51D2lCV1kLcYgYYzwwr8c1lqRGZwHkHU7ST9nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885101; c=relaxed/simple;
-	bh=vHdTMfShfQSRAcafIB6jAfW4r4fNoS7xkZnDcGok1hI=;
+	s=arc-20240116; t=1765887056; c=relaxed/simple;
+	bh=1OMHyFLZu1STVhNJUdYJjUf/tnqNE6aIglU9uGmMyjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SI5uI4vmdDZFhBSSUahfs9eGReU1uGxzZYumq2CLtCPawGYTBcDd9yK97nbgdYbufNONclumhKagsJSifhlejhoGoPrYWD/D7RRayzLrWStnXdSDC+FMgy9KvxP5CFngq2K1RvYBhBfdx71X5b/aSeI3+9+QOiK93e9ow7ds7EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuV+cKqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1AAC4CEF1;
-	Tue, 16 Dec 2025 11:38:20 +0000 (UTC)
+	 MIME-Version; b=mocfWUZhhhtF7G+ubUptz0PD+vVOZs1uV2gj0a27qh2Ik6lVULHpHdLcP9I68iUg9UJgat1juk74xRIkE3pBHM5imo0n+QqJcbpvkpZzhXLFp9ArrApWvyNIVMKaoLk2SZGxbBNRD+j3vxKhrgV4UTTiVAn+kt1kKvyu/XXEzIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWl1V01y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3E5C4CEF1;
+	Tue, 16 Dec 2025 12:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885101;
-	bh=vHdTMfShfQSRAcafIB6jAfW4r4fNoS7xkZnDcGok1hI=;
+	s=korg; t=1765887056;
+	bh=1OMHyFLZu1STVhNJUdYJjUf/tnqNE6aIglU9uGmMyjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QuV+cKqhKej3hyMmi8PGjkMrd1NA6z5kQnlYx1IjZfinGzTbfKAbmalfswCSPT11j
-	 AhCUzXfiCR/Oxun/MB+vleDl462q7Gh3SRbkud0qwF/KbeQtMVFwtjmyXpC5nJUDLB
-	 53RFcc1xF+FTT/y+o18q3QLrpyJwbl2FOWeZ+JT4=
+	b=gWl1V01ypVr5sVtXDiIJ4F6jPEL6St62f9ZUH+17Xpq+4jzpohxoEQ/+7MJtS8rVM
+	 IV+OeHuK9veaiCrW+pD/lI5ShBUOV6LOmYIFvawA6dxJb0/gDZOfLrlGr+h87h/czI
+	 tBr+8aLKuGh8yfOUWAaPDvrXGV96BaRdVD81qkgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 039/507] irqchip/bcm2712-mip: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:08:00 +0100
-Message-ID: <20251216111346.957439678@linuxfoundation.org>
+Subject: [PATCH 6.18 114/614] arm64: dts: qcom: sdm845-starqltechn: remove (address|size)-cells
+Date: Tue, 16 Dec 2025 12:08:01 +0100
+Message-ID: <20251216111405.467059248@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit a8452d1d59d46066051e676d5daa472cd08cb304 ]
+[ Upstream commit 4133486382364f60ea7e4f2c9070555689d9606e ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callback must not live in init.
+Drop the unused address/size-cells properties to silence the DT
+checker warning:
 
-Fixes: 32c6c054661a ("irqchip: Add Broadcom BCM2712 MSI-X interrupt controller")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+pmic@66 (maxim,max77705): '#address-cells', '#size-cells' do not
+match any of the regexes: '^pinctrl-[0-9]+$'
+
+Fixes: 7a88a931d095 ("arm64: dts: qcom: sdm845-starqltechn: add max77705 PMIC")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250926-starqltechn-correct_max77705_nodes-v5-1-c6ab35165534@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm2712-mip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm2712-mip.c b/drivers/irqchip/irq-bcm2712-mip.c
-index 256c2d59f717d..8466646e5a2da 100644
---- a/drivers/irqchip/irq-bcm2712-mip.c
-+++ b/drivers/irqchip/irq-bcm2712-mip.c
-@@ -232,7 +232,7 @@ static int mip_parse_dt(struct mip_priv *mip, struct device_node *np)
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+index 75a53f0bbebd0..45c7aa0f602d8 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+@@ -606,8 +606,6 @@ pmic@66 {
+ 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
+ 		pinctrl-0 = <&pmic_int_default>;
+ 		pinctrl-names = "default";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
  
--static int __init mip_of_msi_init(struct device_node *node, struct device_node *parent)
-+static int mip_of_msi_init(struct device_node *node, struct device_node *parent)
- {
- 	struct platform_device *pdev;
- 	struct mip_priv *mip;
+ 		leds {
+ 			compatible = "maxim,max77705-rgb";
 -- 
 2.51.0
 
