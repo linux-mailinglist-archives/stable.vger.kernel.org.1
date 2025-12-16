@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A491CC2EFA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA677CC3FD5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 044B6322F9A4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 547C230681BA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137DE398B8A;
-	Tue, 16 Dec 2025 12:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B9534CFB9;
+	Tue, 16 Dec 2025 12:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py6FVXfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0puYEQZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FF1398B85;
-	Tue, 16 Dec 2025 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D634573C;
+	Tue, 16 Dec 2025 12:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888367; cv=none; b=XX8VmCb0bdoaI6OOzTKjYLK8KAhQtesyKf4+RR5TZqm+iCc68XdcPOFxYZgyqT8xwmUEAszVNKxOzBhTTZ7i9IPmXp7UeGV/6ZJ/0r0x6X9OTJT5YR2UccZWRh3NGergDI9ZiUuZEqlkNTik0HM+dTqKyo5CnuiWfhuQjmShclw=
+	t=1765886444; cv=none; b=um7bdMN4d/RfVuGrV3yCUn+CjxtK5bHHnExlYOfWWUQpUxCylMhhjKE5CxBJq+LDKET/C3iNJBExhF26Qxf695elFrdKCYfGBgjJ8DCgQwSk9Tya/gNFJq8m6iSa5eYJWKJv31a6XEld0d96fmfYekmsHuEpf/+/dg5VQvZiL7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888367; c=relaxed/simple;
-	bh=6iWdaX0yyuWzGwuj2WihmhTIwbpLCHG6qnO9MPlF718=;
+	s=arc-20240116; t=1765886444; c=relaxed/simple;
+	bh=cA6rF+Nbqcro8MVyhjkktINb/eeplvIkingLnggH2/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRg++cmLHcMJCgvXyE1MSWZ5U9MtXSznNVDWrvhs5sxo1EkMAHrQE2BcaRSZdoUT5pheoB8aJK/jRSfeV7kvRQSdxug9ywfRupFP/7hdpkyY06OQhir5bh6MXlaBhlLxt3Dusi3G+3/qcPDicR9S5KQBUls4petAoR846nq9kx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py6FVXfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC31C4CEF1;
-	Tue, 16 Dec 2025 12:32:47 +0000 (UTC)
+	 MIME-Version; b=RgFWqKXDjKlt2tKv0Qp9b94rzcDUWy/bE+n57bLFm6u0fKcyD4ljcwE5lH9oUT7V6W3C0UlAkGF0lU5miCVlDo0VCnwcZz5Gwf1VkzXzRtfyFcpHLa/Hipt6FTQ73dJe8P7VACar7+bE3EtBNN536NH5louUYdW9+Uxvzi82gbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0puYEQZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CD8C4CEF1;
+	Tue, 16 Dec 2025 12:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888367;
-	bh=6iWdaX0yyuWzGwuj2WihmhTIwbpLCHG6qnO9MPlF718=;
+	s=korg; t=1765886444;
+	bh=cA6rF+Nbqcro8MVyhjkktINb/eeplvIkingLnggH2/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py6FVXfvkLgnRQWoRjU7VMliz7pK5hBcFry352moIjni9gZu2YqbF0oJ+EHUXEn4Z
-	 anICTJdfhOg6rPrsUorJzKN6xCtT+tar1vNDOOfpCxCgcPFKo5iC1BtSm63T993H+F
-	 lLBMgSsar1NQBuKidf9nBAxRQKxp3vpXq3bXLE58=
+	b=0puYEQZx/rNm42GFHvGggRZLWqMPI7/7qix0yO6Vz/XESLGS66fHzm0sNfo2yoSk/
+	 +nqRjPshu8e8c2WG7JcCO8+vNksuJeudF/W5f8WatsrCjyr8cWOKHhuGnERL7Edoha
+	 IElPaw6w2tGkOjI8g0zwWr9mA2LjeJX/E5SgbYQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 513/614] net: dsa: b53: move ARL entry functions into ops struct
+Subject: [PATCH 6.17 439/507] kbuild: install-extmod-build: Properly fix CC expansion when ccache is used
 Date: Tue, 16 Dec 2025 12:14:40 +0100
-Message-ID: <20251216111419.955788313@linuxfoundation.org>
+Message-ID: <20251216111401.361829783@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,363 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit a7e73339ad46ade76d29fb6cc7d7854222608c26 ]
+[ Upstream commit 4ab2ee307983548b29ddaab0ecaef82d526cf4c9 ]
 
-Now that the differences in ARL entry formats are neatly contained into
-functions per chip family, wrap them into an ops struct and add wrapper
-functions to access them.
+Currently, when cross-compiling and ccache is used, the expanding of CC
+turns out to be without any quotes, leading to the following error:
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-7-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+make[4]: *** No rule to make target 'aarch64-linux-gnu-gcc'.  Stop.
+make[3]: *** [Makefile:2164: run-command] Error 2
+
+And it makes sense, because after expansion it ends up like this:
+
+make run-command KBUILD_RUN_COMMAND=+$(MAKE) \
+HOSTCC=ccache aarch64-linux-gnu-gcc VPATH= srcroot=. $(build)= ...
+
+So add another set of double quotes to surround whatever CC expands to
+to make sure the aarch64-linux-gnu-gcc isn't expanded to something that
+looks like an entirely separate target.
+
+Fixes: 140332b6ed72 ("kbuild: fix linux-headers package build when $(CC) cannot link userspace")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20251111-kbuild-install-extmod-build-fix-cc-expand-third-try-v2-1-15ba1b37e71a@linaro.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 67 ++++++++++++++++++++++----------
- drivers/net/dsa/b53/b53_priv.h   | 30 ++++++++++++++
- 2 files changed, 76 insertions(+), 21 deletions(-)
+ scripts/package/install-extmod-build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 190eb11644917..50ed9b7157197 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1890,10 +1890,7 @@ static int b53_arl_read(struct b53_device *dev, const u8 *mac,
+diff --git a/scripts/package/install-extmod-build b/scripts/package/install-extmod-build
+index 054fdf45cc37a..2576cf7902dbb 100755
+--- a/scripts/package/install-extmod-build
++++ b/scripts/package/install-extmod-build
+@@ -63,7 +63,7 @@ if [ "${CC}" != "${HOSTCC}" ]; then
+ 	# Clear VPATH and srcroot because the source files reside in the output
+ 	# directory.
+ 	# shellcheck disable=SC2016 # $(MAKE) and $(build) will be expanded by Make
+-	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC='"${CC}"' VPATH= srcroot=. $(build)='"$(realpath --relative-to=. "${destdir}")"/scripts
++	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC="'"${CC}"'" VPATH= srcroot=. $(build)='"$(realpath --relative-to=. "${destdir}")"/scripts
  
- 	/* Read the bins */
- 	for (i = 0; i < dev->num_arl_bins; i++) {
--		if (is5325(dev) || is5365(dev))
--			b53_arl_read_entry_25(dev, ent, i);
--		else
--			b53_arl_read_entry_95(dev, ent, i);
-+		b53_arl_read_entry(dev, ent, i);
- 
- 		if (!ent->is_valid) {
- 			set_bit(i, free_bins);
-@@ -1979,10 +1976,7 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 	ent.is_static = true;
- 	ent.is_age = false;
- 	memcpy(ent.mac, addr, ETH_ALEN);
--	if (is5325(dev) || is5365(dev))
--		b53_arl_write_entry_25(dev, &ent, idx);
--	else
--		b53_arl_write_entry_95(dev, &ent, idx);
-+	b53_arl_write_entry(dev, &ent, idx);
- 
- 	return b53_arl_rw_op(dev, 0);
- }
-@@ -2093,17 +2087,6 @@ static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
- 	b53_arl_to_entry(ent, mac_vid, fwd_entry);
- }
- 
--static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
--			      struct b53_arl_entry *ent)
--{
--	if (is5325(dev))
--		b53_arl_search_read_25(dev, idx, ent);
--	else if (is5365(dev))
--		b53_arl_search_read_65(dev, idx, ent);
--	else
--		b53_arl_search_read_95(dev, idx, ent);
--}
--
- static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
- 			dsa_fdb_dump_cb_t *cb, void *data)
- {
-@@ -2137,13 +2120,13 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
- 		if (ret)
- 			break;
- 
--		b53_arl_search_rd(priv, 0, &results[0]);
-+		b53_arl_search_read(priv, 0, &results[0]);
- 		ret = b53_fdb_copy(port, &results[0], cb, data);
- 		if (ret)
- 			break;
- 
- 		if (results_per_hit == 2) {
--			b53_arl_search_rd(priv, 1, &results[1]);
-+			b53_arl_search_read(priv, 1, &results[1]);
- 			ret = b53_fdb_copy(port, &results[1], cb, data);
- 			if (ret)
- 				break;
-@@ -2669,6 +2652,24 @@ static const struct dsa_switch_ops b53_switch_ops = {
- 	.port_change_mtu	= b53_change_mtu,
- };
- 
-+static const struct b53_arl_ops b53_arl_ops_25 = {
-+	.arl_read_entry = b53_arl_read_entry_25,
-+	.arl_write_entry = b53_arl_write_entry_25,
-+	.arl_search_read = b53_arl_search_read_25,
-+};
-+
-+static const struct b53_arl_ops b53_arl_ops_65 = {
-+	.arl_read_entry = b53_arl_read_entry_25,
-+	.arl_write_entry = b53_arl_write_entry_25,
-+	.arl_search_read = b53_arl_search_read_65,
-+};
-+
-+static const struct b53_arl_ops b53_arl_ops_95 = {
-+	.arl_read_entry = b53_arl_read_entry_95,
-+	.arl_write_entry = b53_arl_write_entry_95,
-+	.arl_search_read = b53_arl_search_read_95,
-+};
-+
- struct b53_chip_data {
- 	u32 chip_id;
- 	const char *dev_name;
-@@ -2682,6 +2683,7 @@ struct b53_chip_data {
- 	u8 duplex_reg;
- 	u8 jumbo_pm_reg;
- 	u8 jumbo_size_reg;
-+	const struct b53_arl_ops *arl_ops;
- };
- 
- #define B53_VTA_REGS	\
-@@ -2701,6 +2703,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.arl_buckets = 1024,
- 		.imp_port = 5,
- 		.duplex_reg = B53_DUPLEX_STAT_FE,
-+		.arl_ops = &b53_arl_ops_25,
- 	},
- 	{
- 		.chip_id = BCM5365_DEVICE_ID,
-@@ -2711,6 +2714,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.arl_buckets = 1024,
- 		.imp_port = 5,
- 		.duplex_reg = B53_DUPLEX_STAT_FE,
-+		.arl_ops = &b53_arl_ops_65,
- 	},
- 	{
- 		.chip_id = BCM5389_DEVICE_ID,
-@@ -2724,6 +2728,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM5395_DEVICE_ID,
-@@ -2737,6 +2742,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM5397_DEVICE_ID,
-@@ -2750,6 +2756,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM5398_DEVICE_ID,
-@@ -2763,6 +2770,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53101_DEVICE_ID,
-@@ -2776,6 +2784,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53115_DEVICE_ID,
-@@ -2789,6 +2798,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53125_DEVICE_ID,
-@@ -2802,6 +2812,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53128_DEVICE_ID,
-@@ -2815,6 +2826,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM63XX_DEVICE_ID,
-@@ -2828,6 +2840,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_63XX,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK_63XX,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE_63XX,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53010_DEVICE_ID,
-@@ -2841,6 +2854,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53011_DEVICE_ID,
-@@ -2854,6 +2868,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53012_DEVICE_ID,
-@@ -2867,6 +2882,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53018_DEVICE_ID,
-@@ -2880,6 +2896,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53019_DEVICE_ID,
-@@ -2893,6 +2910,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM58XX_DEVICE_ID,
-@@ -2906,6 +2924,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM583XX_DEVICE_ID,
-@@ -2919,6 +2938,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	/* Starfighter 2 */
- 	{
-@@ -2933,6 +2953,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM7445_DEVICE_ID,
-@@ -2946,6 +2967,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM7278_DEVICE_ID,
-@@ -2959,6 +2981,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- 	{
- 		.chip_id = BCM53134_DEVICE_ID,
-@@ -2973,6 +2996,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
-+		.arl_ops = &b53_arl_ops_95,
- 	},
- };
- 
-@@ -3001,6 +3025,7 @@ static int b53_switch_init(struct b53_device *dev)
- 			dev->num_vlans = chip->vlans;
- 			dev->num_arl_bins = chip->arl_bins;
- 			dev->num_arl_buckets = chip->arl_buckets;
-+			dev->arl_ops = chip->arl_ops;
- 			break;
- 		}
- 	}
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index 2f44b3b6a0d9f..c6e2d5e41c758 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -58,6 +58,17 @@ struct b53_io_ops {
- 				bool link_up);
- };
- 
-+struct b53_arl_entry;
-+
-+struct b53_arl_ops {
-+	void (*arl_read_entry)(struct b53_device *dev,
-+			       struct b53_arl_entry *ent, u8 idx);
-+	void (*arl_write_entry)(struct b53_device *dev,
-+				const struct b53_arl_entry *ent, u8 idx);
-+	void (*arl_search_read)(struct b53_device *dev, u8 idx,
-+				struct b53_arl_entry *ent);
-+};
-+
- #define B53_INVALID_LANE	0xff
- 
- enum {
-@@ -127,6 +138,7 @@ struct b53_device {
- 	struct mutex stats_mutex;
- 	struct mutex arl_mutex;
- 	const struct b53_io_ops *ops;
-+	const struct b53_arl_ops *arl_ops;
- 
- 	/* chip specific data */
- 	u32 chip_id;
-@@ -371,6 +383,24 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
- 		*mac_vid |= ARLTBL_AGE_25;
- }
- 
-+static inline void b53_arl_read_entry(struct b53_device *dev,
-+				      struct b53_arl_entry *ent, u8 idx)
-+{
-+	dev->arl_ops->arl_read_entry(dev, ent, idx);
-+}
-+
-+static inline void b53_arl_write_entry(struct b53_device *dev,
-+				       const struct b53_arl_entry *ent, u8 idx)
-+{
-+	dev->arl_ops->arl_write_entry(dev, ent, idx);
-+}
-+
-+static inline void b53_arl_search_read(struct b53_device *dev, u8 idx,
-+				       struct b53_arl_entry *ent)
-+{
-+	dev->arl_ops->arl_search_read(dev, idx, ent);
-+}
-+
- #ifdef CONFIG_BCM47XX
- 
- #include <linux/bcm47xx_nvram.h>
+ 	rm -f "${destdir}/scripts/Kbuild"
+ fi
 -- 
 2.51.0
 
