@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B95CC3917
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E336DCC2CA0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25D3C309C1C4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB6633132EE7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4063834AB14;
-	Tue, 16 Dec 2025 11:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E729A3659F4;
+	Tue, 16 Dec 2025 12:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcL4/n7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBrNcCiZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F012934AB09;
-	Tue, 16 Dec 2025 11:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2FF749C;
+	Tue, 16 Dec 2025 12:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885212; cv=none; b=GNfamG4uq4R6aYTTZRMdZExYGKR0tQj8W252taVJCzHIa42f+nE1J30JdlqhRbtmmRQU3NxkERjHQl8ru71DbSkC3u3itmn4KLEgRxSp9Ne+PW4bzWa0Wg9vd/V7YbNbhoJGWTkuHWJIWpYM7381nR+4MxSP4f0GJrGUIl09VDs=
+	t=1765887165; cv=none; b=GY9HEGlA1wD5DNWejuyp/wGev7m7fxk99A+sYHOVV0/uqWhIdeaI0UZjyHEbKHXeU6Oynhjq7MWV7eeRonmFrn/KOoMkQ1Yq1GVWdrKPjJurnTSTzYckrYQNCgumN8of88l95Xw8o3/v4G09q3LA51A9CB5/80M3+MITfAPymbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885212; c=relaxed/simple;
-	bh=ELZfAp7RPxTuTzoTSK/rsRyC/L3f8skWZkzoaanXm4g=;
+	s=arc-20240116; t=1765887165; c=relaxed/simple;
+	bh=TdIMqoA2jCSXX1Zmv0+y1Vf1uV8H4TFKF7a8bmx8598=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhZIE2cCP8kfypmrfhwzwZMqy8/kW2Of7V5RvDlymiUGWNrbGQY7t0oTrc1lGMvALrnueHxjt/0S6EOtLEYRoHdt0vmrzoWGv/nEOLmwyJTiAORX0C1pwZK4NpT58VTFftikQ3qXo05o/+qjo3srUt//1zXwtTT2Hs1Vy7Zwh6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcL4/n7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF4AC4CEF1;
-	Tue, 16 Dec 2025 11:40:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MBpkem9jEmZcPKhTNim9yt71uhRdqNfZvx1AqiexS+yEkd4janXl0cS+8sIBwsHjJbLhkBurNDTW9v+zr6mzAVGDjv8rhbcOaeOlofHIZNV1zjv4+Bw+qZvJEi+ZWSzKo7qrpy7KyHD0yjSvSNsHwIPK4/HrcZJml5qKNvzrx5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBrNcCiZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037BCC4CEF1;
+	Tue, 16 Dec 2025 12:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885211;
-	bh=ELZfAp7RPxTuTzoTSK/rsRyC/L3f8skWZkzoaanXm4g=;
+	s=korg; t=1765887165;
+	bh=TdIMqoA2jCSXX1Zmv0+y1Vf1uV8H4TFKF7a8bmx8598=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcL4/n7dUpWzPPn5tn/xvlWYEgEoZJhdwsklkrl9U1f0ForATqj14mEISvhvN+hPu
-	 csFgSyFm99IwXpf7pthypaJnEuQO+wRdhJG2+l+Hr7J9FE3zi6hICErhhF6rBjg1+p
-	 RT7Du/DO2/rc5hwT7QYp5XN17L+X+9SQqqu5u/00=
+	b=kBrNcCiZMetuBaQm/gJeYLtwtWw5/pDLevyLUNLBh2GwjKosuO7iiymcQ/Kh9zJuS
+	 EC8nK9sbGrPDql6RZ0aotqxxx+jPHf1+jDtu0oZnNDHt6bmdJzgBOTmDdcnbOTyhew
+	 Az8t30lcH5ePD2fhLHFdktlOc/6BpGmBZQAJPnTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Imran Shaik <imran.shaik@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 072/507] clk: qcom: camcc-sm6350: Specify Titan GDSC power domain as a parent to other
-Date: Tue, 16 Dec 2025 12:08:33 +0100
-Message-ID: <20251216111348.150618137@linuxfoundation.org>
+Subject: [PATCH 6.18 147/614] tools/nolibc/dirent: avoid errno in readdir_r
+Date: Tue, 16 Dec 2025 12:08:34 +0100
+Message-ID: <20251216111406.663042594@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit a76ce61d7225934b0a52c8172a8cd944002a8c6f ]
+[ Upstream commit 4ada5679f18dbbe92d87c37a842c3368e6ab5e4a ]
 
-When a consumer turns on/off a power domain dependent on another power
-domain in hardware, the parent power domain shall be turned on/off by
-the power domain provider as well, and to get it the power domain hardware
-hierarchy shall be described in the CAMCC driver.
+Using errno is not possible when NOLIBC_IGNORE_ERRNO is set. Use
+sys_lseek instead of lseek as that avoids using errno.
 
-Establish the power domain hierarchy with a Titan GDSC set as a parent of
-all other GDSC power domains provided by the SM6350 camera clock controller
-to enforce a correct sequence of enabling and disabling power domains by
-the consumers, this fixes the CAMCC as a supplier of power domains to CAMSS
-IP and its driver.
-
-Fixes: 80f5451d9a7c ("clk: qcom: Add camera clock controller driver for SM6350")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20251021234450.2271279-3-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 665fa8dea90d ("tools/nolibc: add support for directory access")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm6350.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/include/nolibc/dirent.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
-index 8aac97d29ce3f..6c272f7b07219 100644
---- a/drivers/clk/qcom/camcc-sm6350.c
-+++ b/drivers/clk/qcom/camcc-sm6350.c
-@@ -1693,6 +1693,8 @@ static struct clk_branch camcc_sys_tmr_clk = {
- 	},
- };
+diff --git a/tools/include/nolibc/dirent.h b/tools/include/nolibc/dirent.h
+index 758b95c48e7a4..61a122a60327d 100644
+--- a/tools/include/nolibc/dirent.h
++++ b/tools/include/nolibc/dirent.h
+@@ -86,9 +86,9 @@ int readdir_r(DIR *dirp, struct dirent *entry, struct dirent **result)
+ 	 * readdir() can only return one entry at a time.
+ 	 * Make sure the non-returned ones are not skipped.
+ 	 */
+-	ret = lseek(fd, ldir->d_off, SEEK_SET);
+-	if (ret == -1)
+-		return errno;
++	ret = sys_lseek(fd, ldir->d_off, SEEK_SET);
++	if (ret < 0)
++		return -ret;
  
-+static struct gdsc titan_top_gdsc;
-+
- static struct gdsc bps_gdsc = {
- 	.gdscr = 0x6004,
- 	.en_rest_wait_val = 0x2,
-@@ -1702,6 +1704,7 @@ static struct gdsc bps_gdsc = {
- 		.name = "bps_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- 	.flags = VOTABLE,
- };
- 
-@@ -1714,6 +1717,7 @@ static struct gdsc ipe_0_gdsc = {
- 		.name = "ipe_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- 	.flags = VOTABLE,
- };
- 
-@@ -1726,6 +1730,7 @@ static struct gdsc ife_0_gdsc = {
- 		.name = "ife_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- };
- 
- static struct gdsc ife_1_gdsc = {
-@@ -1737,6 +1742,7 @@ static struct gdsc ife_1_gdsc = {
- 		.name = "ife_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- };
- 
- static struct gdsc ife_2_gdsc = {
-@@ -1748,6 +1754,7 @@ static struct gdsc ife_2_gdsc = {
- 		.name = "ife_2_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- };
- 
- static struct gdsc titan_top_gdsc = {
+ 	entry->d_ino = ldir->d_ino;
+ 	/* the destination should always be big enough */
 -- 
 2.51.0
 
