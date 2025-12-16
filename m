@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8052ACC2EF4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0652CC3FC9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B215322EBA1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A55D3065872
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557DA398B81;
-	Tue, 16 Dec 2025 12:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FF433EAF5;
+	Tue, 16 Dec 2025 12:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPfCHVhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RkfYAkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11397398B7D;
-	Tue, 16 Dec 2025 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F9133EAE4;
+	Tue, 16 Dec 2025 12:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888365; cv=none; b=evILo4uayLI3zhWsrBy2WC+IDBeEUdkNWNKQ5rjbUyoZWHhdQQXMPB5kvJUpG0oqFGWfVS5DxTm7CBC7i9aaQf7Z2FIDR4dlEQU9XwR3mliLwSKcbfBTXckSoGMmN4HphYQwDy+WhgeMThaFiPF1+ItA73KhE7+WrfkG93eFzx0=
+	t=1765886441; cv=none; b=CSrrFOdIP29HV1lg7G3YYPEGa4+Z3OLTsPeB2/Lgg+lkA/1OuhVmaq+dVz1caODJE/H4jbiwupBpODgPBGrNJKMXtZxiOkFW2Yh9N7XgA91solDIy/nPyL3cXwRS7GRn4WPNVz0ui483bdQpWb420w+K1fnnrR/seaZKVFGmonY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888365; c=relaxed/simple;
-	bh=3d/KXMrmeYKw1rpoCMjJpy/1YUV/4sedCWmIA2/SYfE=;
+	s=arc-20240116; t=1765886441; c=relaxed/simple;
+	bh=zcwXyp1bU7e64VqmZOJvaHz3ZY7hqlaMu5p3dDS4ouk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIC0F6Ga5Vh/MKTAjCfraH5VI/ekFldwfupyIMemigeh1Qpl3YWhnXRlK3bqo2MqzvPrNdnBun0UwrQOaytHyOpwQOr7qvSfd4oXFFYkecY8dCAfYZLzm3QVEnL2UUl4oe12gr9V1lZ5V/hl1YSzfnP6xoXgOWB1DrDlLEqPHsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPfCHVhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248EAC4CEF1;
-	Tue, 16 Dec 2025 12:32:43 +0000 (UTC)
+	 MIME-Version; b=qiASuc0kEb2J+MkuhudpxCwdmp6f0OLkO+PYUSDov6Ozh36V5GtyHJj4Iio7PYEkVI0FHFHNi9NHs954Pd2k1VwrLRZgSTpcRf5Q6Quyky9pMUD1PZuNSiGnXGAqNfhg+cJG+qynChbHksAWoRQL4sL86xQn58SahXOgmiqU2B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RkfYAkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E3AC4CEF1;
+	Tue, 16 Dec 2025 12:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888364;
-	bh=3d/KXMrmeYKw1rpoCMjJpy/1YUV/4sedCWmIA2/SYfE=;
+	s=korg; t=1765886441;
+	bh=zcwXyp1bU7e64VqmZOJvaHz3ZY7hqlaMu5p3dDS4ouk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPfCHVhHfwJJSZCa08DoyBgG1eIuxk2l6Lkjsv+bTUUmLys5FbdbdVU3qxLdFeT6T
-	 liJ0kKIN1mm5i77KR5hnQO3fNldwJ9b9JwUMx/Bpm0y1YyIWqI4DVzBzRXTm0qCOCQ
-	 3wmJx3tAYo78ec7lO9/4G9U6c8QMt1o5JmodPd08=
+	b=1RkfYAklirJzwUNIRkeiJlDz4z/ePoFQnbfRLvQRB1qG8u/XJrJxduydvXb2hdsq+
+	 fP2w+RRmbjGPtkM9OdtPXvpUCbh1lO72Y3ypp4LwXF4QxwOmj4DUYQgcP62qbD5oaP
+	 fVJG3HvOaXrUJA2UjScj/SJyocu+ZUHq32+pDrrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	James Le Cuirot <chewi@gentoo.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 512/614] net: dsa: b53: split reading search entry into their own functions
+Subject: [PATCH 6.17 438/507] kbuild: install-extmod-build: Fix when given dir outside the build dir
 Date: Tue, 16 Dec 2025 12:14:39 +0100
-Message-ID: <20251216111419.919701039@linuxfoundation.org>
+Message-ID: <20251216111401.326093175@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: James Le Cuirot <chewi@gentoo.org>
 
-[ Upstream commit e0c476f325a8c9b961a3d446c24d3c8ecae7d186 ]
+[ Upstream commit 5ff90d427ef841fa48608d0c19a81c48d6126d46 ]
 
-Split reading search entries into a function for each format.
+Commit b5e395653546 ("kbuild: install-extmod-build: Fix build when
+specifying KBUILD_OUTPUT") tried to address the "build" variable
+expecting a relative path by using `realpath --relative-base=.`, but
+this only works when the given directory is below the current directory.
+`realpath --relative-to=.` will return a relative path in all cases.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-6-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Fixes: b5e395653546 ("kbuild: install-extmod-build: Fix build when specifying KBUILD_OUTPUT")
+Signed-off-by: James Le Cuirot <chewi@gentoo.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20251016091417.9985-1-chewi@gentoo.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Stable-dep-of: 4ab2ee307983 ("kbuild: install-extmod-build: Properly fix CC expansion when ccache is used")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 56 ++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 18 deletions(-)
+ scripts/package/install-extmod-build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 38e6fa05042ca..190eb11644917 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2060,28 +2060,48 @@ static int b53_arl_search_wait(struct b53_device *dev)
- 	return -ETIMEDOUT;
- }
+diff --git a/scripts/package/install-extmod-build b/scripts/package/install-extmod-build
+index b96538787f3d9..054fdf45cc37a 100755
+--- a/scripts/package/install-extmod-build
++++ b/scripts/package/install-extmod-build
+@@ -63,7 +63,7 @@ if [ "${CC}" != "${HOSTCC}" ]; then
+ 	# Clear VPATH and srcroot because the source files reside in the output
+ 	# directory.
+ 	# shellcheck disable=SC2016 # $(MAKE) and $(build) will be expanded by Make
+-	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC='"${CC}"' VPATH= srcroot=. $(build)='"$(realpath --relative-base=. "${destdir}")"/scripts
++	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC='"${CC}"' VPATH= srcroot=. $(build)='"$(realpath --relative-to=. "${destdir}")"/scripts
  
--static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
--			      struct b53_arl_entry *ent)
-+static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
- {
- 	u64 mac_vid;
- 
--	if (is5325(dev)) {
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
--			   &mac_vid);
--		b53_arl_to_entry_25(ent, mac_vid);
--	} else if (is5365(dev)) {
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
--			   &mac_vid);
--		b53_arl_to_entry_25(ent, mac_vid);
--	} else {
--		u32 fwd_entry;
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
-+		   &mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid);
-+}
- 
--		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
--			   &mac_vid);
--		b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
--			   &fwd_entry);
--		b53_arl_to_entry(ent, mac_vid, fwd_entry);
--	}
-+static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
-+{
-+	u64 mac_vid;
-+
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
-+		   &mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid);
-+}
-+
-+static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
-+
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
-+		   &mac_vid);
-+	b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
-+		   &fwd_entry);
-+	b53_arl_to_entry(ent, mac_vid, fwd_entry);
-+}
-+
-+static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
-+			      struct b53_arl_entry *ent)
-+{
-+	if (is5325(dev))
-+		b53_arl_search_read_25(dev, idx, ent);
-+	else if (is5365(dev))
-+		b53_arl_search_read_65(dev, idx, ent);
-+	else
-+		b53_arl_search_read_95(dev, idx, ent);
- }
- 
- static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	rm -f "${destdir}/scripts/Kbuild"
+ fi
 -- 
 2.51.0
 
