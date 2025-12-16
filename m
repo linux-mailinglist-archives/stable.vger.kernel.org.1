@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3F9CC2F17
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412ABCC270A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C387131146BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE5E93002B8C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DF41400C;
-	Tue, 16 Dec 2025 12:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0A535502A;
+	Tue, 16 Dec 2025 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lQ1vH2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3dg095q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D090F224AEF;
-	Tue, 16 Dec 2025 12:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC85355026;
+	Tue, 16 Dec 2025 11:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887805; cv=none; b=SO8g5fYc7ILB/+XhuAPMik8riPoS3866XH9Rfdn9ymKwRRyw5xkUKqBmM1m3XfPaKdDm83yolc43R6iv3y2aRlLDb0JQrKRCwKXkNf03S6Lk2oF5zSb2myu4+w6Y3N/JNDTHGTh7ZZD4HjvJfkC03W9DPnacMsnsPP80pmc/Hb4=
+	t=1765885867; cv=none; b=VOohQnYlSvzmGJklsUSZpWLdMV1VH7IM7iBRi0FHB3BwDUh8oVTq6b4AB8ji9Fs/gTHz39nug2ntcxdc2zubGD9aNvBnMQ+cV4EihrRfgw8fgQgiPQnSKUsqhfJbLbnGedJXLFxr6IgFkmK1gY5PqQGnvv594mAbMGukLK/EEZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887805; c=relaxed/simple;
-	bh=dTtPQOVLEsFoAxatqH5XEbL1tat3gLcNQFiIGjn32Zs=;
+	s=arc-20240116; t=1765885867; c=relaxed/simple;
+	bh=yuUfNUTU3C6Wb2c8gcWuOQb+p5nMU4yReH23EjaXkJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouVq+05BQ5WlsdCPSkRVUBBGSN2mkicEiidz9+EmBOFIbEffMCgdGhHcv6zRJsMWqNJZE6bLSVXjkUG4C32AQs7EdBH8oIRlO+Zl1bo/kinT2EM9VGqbBmOiKjopXUeXFcuB7cXeBVxKHGfHbbU9ouonJd7FNkEJxwl/sz/axQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lQ1vH2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371EAC4CEF1;
-	Tue, 16 Dec 2025 12:23:24 +0000 (UTC)
+	 MIME-Version; b=SP1Di53ornI4Q6AJDMIxI3LQKD488v7QE+rHRroRVxJHrnOb8GUMG6B+uNqqU7QIHlJQkY1CgZE+21URtCLfrvA+9DTIHAYUYupbQ5weRpQoXQ3oFSRa/ON4KdvEuI8yucfXhkLwd4boFwNDeLXeyx3JLEJypCJr2OMLjYjsfPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3dg095q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45084C4CEF5;
+	Tue, 16 Dec 2025 11:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887805;
-	bh=dTtPQOVLEsFoAxatqH5XEbL1tat3gLcNQFiIGjn32Zs=;
+	s=korg; t=1765885867;
+	bh=yuUfNUTU3C6Wb2c8gcWuOQb+p5nMU4yReH23EjaXkJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lQ1vH2s5JP/Fak6CQhdyNjDiaVg3PNtqzRKrmHJKzGBxZe9KVDmg16ZHOWHXhY6Y
-	 +NnN7JIYNvH5g3oszggrFuq5EP1SmNQJ97KmXGgFcZq1WAZP/M4XG4yyE6eSPNPQkk
-	 O3KcYEB9DI6JgZYvHTiaWSjsoJeYSS/LONTHTfxg=
+	b=M3dg095qu6R6kYEQcYRBIA72pfHyHHoS0lst6CBE/NdKE0jk19JZkZ7a5bpZNJeW1
+	 3UpM+2saqqIFemRXyNJcuPWUWqpu1Dvq+bFawzdsysPNjVw5cc5a6VhcoMMzYFU4yj
+	 8d2CIxm8ydqqer3CL4QTE567eua2cjygW/ya3EkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <yuntao.wang@linux.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 342/614] of/fdt: Fix incorrect use of dt_root_addr_cells in early_init_dt_check_kho()
+Subject: [PATCH 6.17 268/507] net: stmmac: Fix VLAN 0 deletion in vlan_del_hw_rx_fltr()
 Date: Tue, 16 Dec 2025 12:11:49 +0100
-Message-ID: <20251216111413.755266987@linuxfoundation.org>
+Message-ID: <20251216111355.196264613@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-[ Upstream commit c85da64ce2c36bba469f6feede9ca768f0361741 ]
+[ Upstream commit d9db25723677c3741a0cf3643f7f7429fc983921 ]
 
-When reading the fdt_size value, the argument passed to dt_mem_next_cell()
-is dt_root_addr_cells, but it should be dt_root_size_cells.
+When the "rx-vlan-filter" feature is enabled on a network device, the 8021q
+module automatically adds a VLAN 0 hardware filter when the device is
+brought administratively up.
 
-The same issue occurs when reading the scratch_size value.
+For stmmac, this causes vlan_add_hw_rx_fltr() to create a new entry for
+VID 0 in the mac_device_info->vlan_filter array, in the following format:
 
-Use a helper function to simplify the code and fix these issues.
+    VLAN_TAG_DATA_ETV | VLAN_TAG_DATA_VEN | vid
 
-Fixes: 274cdcb1c004 ("arm64: add KHO support")
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://patch.msgid.link/20251115134753.179931-5-yuntao.wang@linux.dev
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Here, VLAN_TAG_DATA_VEN indicates that the hardware filter is enabled for
+that VID.
+
+However, on the delete path, vlan_del_hw_rx_fltr() searches the vlan_filter
+array by VID only, without verifying whether a VLAN entry is enabled. As a
+result, when the 8021q module attempts to remove VLAN 0, the function may
+mistakenly match a zero-initialized slot rather than the actual VLAN 0
+entry, causing incorrect deletions and leaving stale entries in the
+hardware table.
+
+Fix this by verifying that the VLAN entry's enable bit (VLAN_TAG_DATA_VEN)
+is set before matching and deleting by VID. This ensures only active VLAN
+entries are removed and avoids leaving stale entries in the VLAN filter
+table, particularly for VLAN ID 0.
+
+Fixes: ed64639bc1e08 ("net: stmmac: Add support for VLAN Rx filtering")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20251113112721.70500-2-ovidiu.panait.rb@renesas.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index ea37ba694bcd7..fdaee4906836f 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -922,26 +922,18 @@ static void __init early_init_dt_check_kho(void)
- {
- 	unsigned long node = chosen_node_offset;
- 	u64 fdt_start, fdt_size, scratch_start, scratch_size;
--	const __be32 *p;
--	int l;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+index 0b6f6228ae35d..fd97879a87408 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+@@ -122,7 +122,8 @@ static int vlan_del_hw_rx_fltr(struct net_device *dev,
  
- 	if (!IS_ENABLED(CONFIG_KEXEC_HANDOVER) || (long)node < 0)
- 		return;
+ 	/* Extended Rx VLAN Filter Enable */
+ 	for (i = 0; i < hw->num_vlan; i++) {
+-		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid) {
++		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VEN) &&
++		    ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid)) {
+ 			ret = vlan_write_filter(dev, hw, i, 0);
  
--	p = of_get_flat_dt_prop(node, "linux,kho-fdt", &l);
--	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
-+	if (!of_flat_dt_get_addr_size(node, "linux,kho-fdt",
-+				      &fdt_start, &fdt_size))
- 		return;
- 
--	fdt_start = dt_mem_next_cell(dt_root_addr_cells, &p);
--	fdt_size = dt_mem_next_cell(dt_root_addr_cells, &p);
--
--	p = of_get_flat_dt_prop(node, "linux,kho-scratch", &l);
--	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
-+	if (!of_flat_dt_get_addr_size(node, "linux,kho-scratch",
-+				      &scratch_start, &scratch_size))
- 		return;
- 
--	scratch_start = dt_mem_next_cell(dt_root_addr_cells, &p);
--	scratch_size = dt_mem_next_cell(dt_root_addr_cells, &p);
--
- 	kho_populate(fdt_start, fdt_size, scratch_start, scratch_size);
- }
- 
+ 			if (!ret)
 -- 
 2.51.0
 
