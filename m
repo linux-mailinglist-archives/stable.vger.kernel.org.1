@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93449CC31E2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:15:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE5FCC223E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A924E3086E29
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1DE6A302E5CB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BDE34BA53;
-	Tue, 16 Dec 2025 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85BE34167A;
+	Tue, 16 Dec 2025 11:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+s6Q/7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnEmZI8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB7E33EAFD;
-	Tue, 16 Dec 2025 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63535341648;
+	Tue, 16 Dec 2025 11:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887634; cv=none; b=c87gXXeUy0KsFQ6L6/AqMn9UWx9Oo8EgAJPn+3ISrxIBynNO+92NWXYwROP8RsWoLMyPd3xkXNvyaBvfPSTYfWQIOo3ACzoYiMYFp/Vr4TVwI8ii5IA6UZr90cFUmNmXxk9ysZVwXPPzxO0JjzJs5bLbYkZu+5TwSL6Jo23CRrc=
+	t=1765884104; cv=none; b=VjtVSTywv28kbgQlP34F2u3XKRVxnops1hassaK/lsVQT2HILnSiJKoS8PU1g7Fbh4KM3VSWaz5ew3OR0BNJP6JGBLDFYOMwEh9XwlB+NbnQSdQt8z1B/j26tLCQUUNAe3DbbUCGxiKwGpStlkAJU9bfyNzsUhvWZIgLGJznMNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887634; c=relaxed/simple;
-	bh=LT9Eilf3XOAIRbmB7FgYiEDcgv9sDHogjaPiquOnggs=;
+	s=arc-20240116; t=1765884104; c=relaxed/simple;
+	bh=3Xu5QcOv9HT/bOG0soB9zjGw2zzwtYK+MTgYgsMG/eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBOFBSN595FIcjGwTpLv11QcsCoARpfKUhNgvT8974DTk1WIsyuN7ZH1/dxuHqMVki1pAb9WFQwZ8ohHm32AIHdM3HzlptBRUVid5aWY0+LGFVDHO6Be7x+tF82/SiQn1Jdtv/YFmOl/Nv64gnt6TcisiJZ+NtMD8OjjQNFRRT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+s6Q/7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28467C4CEF1;
-	Tue, 16 Dec 2025 12:20:33 +0000 (UTC)
+	 MIME-Version; b=jlSkCWwcSMiFuzEPYWSvL3BoT9DTksob79vPln5Dor8idUCtJnwPsBi3nsLYQTz9zuXtYpe0MtV4nY3XJ3TWGNgpi2Kk624hRdpOBhV0K01PgoV7IdtCwvr/lCtb+7FVifAg2ZNGYFkYn3ux+7+GNQ9Uh+9A8N06TdY6cevdSBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnEmZI8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD15FC4CEF1;
+	Tue, 16 Dec 2025 11:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887634;
-	bh=LT9Eilf3XOAIRbmB7FgYiEDcgv9sDHogjaPiquOnggs=;
+	s=korg; t=1765884104;
+	bh=3Xu5QcOv9HT/bOG0soB9zjGw2zzwtYK+MTgYgsMG/eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+s6Q/7I1AHz5YvDkPtEA+2mXuXIwgq3LsT1KnHkTjgXma7c9qf96ExdHJ/20NRGG
-	 PP4HsHZB1+jRwEBfbeiR+OiRgqvwbFi3idrDfZVyspQmsYGVk4KhXcx6TX4g2HD5WZ
-	 eovcKnaKn6brBXcx0taQRSFtWYmRBhHWLv0MMHec=
+	b=jnEmZI8aabTytx67qFJsI3t8F76TJkgmprkKSZb36Ac8a0Dj6hEWZ5arzpXhTGC/s
+	 +GYrOh6kR1zSlzr1acuNjQ3KS7nUUDeug0koXpcy6nZO21FoSbBVEFJlwEtQHMV1FA
+	 jICfn28GVLN3/yhB1e4oct5mvKb2BcNkqPb54NjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 292/614] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
+Subject: [PATCH 6.12 092/354] soc: qcom: smem: fix hwspinlock resource leak in probe error paths
 Date: Tue, 16 Dec 2025 12:10:59 +0100
-Message-ID: <20251216111411.951307935@linuxfoundation.org>
+Message-ID: <20251216111324.255576794@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
+[ Upstream commit dc5db35073a19f6d3c30bea367b551c1a784ef8f ]
 
-The error that returned by ftrace_set_filter_ip() in register_fentry() is
-not handled properly. Just fix it.
+The hwspinlock acquired via hwspin_lock_request_specific() is not
+released on several error paths. This results in resource leakage
+when probe fails.
 
-Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Switch to devm_hwspin_lock_request_specific() to automatically
+handle cleanup on probe failure. Remove the manual hwspin_lock_free()
+in qcom_smem_remove() as devm handles it automatically.
+
+Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251029022733.255-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/trampoline.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/smem.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index f2cb0b0970933..04104397c432e 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -220,7 +220,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index 56eea77395bf2..170f88ce0e50e 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -1186,7 +1186,7 @@ static int qcom_smem_probe(struct platform_device *pdev)
+ 		return hwlock_id;
  	}
  
- 	if (tr->func.ftrace_managed) {
--		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		if (ret)
-+			return ret;
- 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
- 	} else {
- 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
+-	smem->hwlock = hwspin_lock_request_specific(hwlock_id);
++	smem->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, hwlock_id);
+ 	if (!smem->hwlock)
+ 		return -ENXIO;
+ 
+@@ -1239,7 +1239,6 @@ static void qcom_smem_remove(struct platform_device *pdev)
+ {
+ 	platform_device_unregister(__smem->socinfo);
+ 
+-	hwspin_lock_free(__smem->hwlock);
+ 	__smem = NULL;
+ }
+ 
 -- 
 2.51.0
 
