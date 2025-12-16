@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-201860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D94CC29DD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32E4CC3001
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C2B6E3005F0B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB3E530FC819
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD3B3446A4;
-	Tue, 16 Dec 2025 11:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD0234F252;
+	Tue, 16 Dec 2025 12:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vvNe+1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol+6Hnsj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D37328604;
-	Tue, 16 Dec 2025 11:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CBD34EF08;
+	Tue, 16 Dec 2025 12:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886029; cv=none; b=tfszfWe71SRqeVS/nPFxZlNMN58sF7wk0p/rQ0ioH6Yyfc1ZAivJE7supGm9tYcgRSqNtPc7I50fIJUo1mt4v01dkFokzQLJnqWBsRgwSSBwuER3Vid4GNIx6TZcX8QdXBlnk95LPMcrb+D02AjsLdKHKR1KfmADIyCTPgZ2a88=
+	t=1765887850; cv=none; b=H1lFcR5Ct8QZK+d3wDbil/FSSPThY1ISx/rx6s8KH+/cav5M8pjuuOLK7bAXTG6S9bjipBWlaQNMDixWp/3HctdS+6BWwMgILFnRFZPJCcRzvbuTWgb4Od/iHGBJrzBoNgi+kEiCMnQ9Nce7e2izdQiA9woQOXRPk2s2I5zXfbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886029; c=relaxed/simple;
-	bh=f78bF29XqgTcsivlfKOVXPRfs0DDAhaz6GRKmrAaQDQ=;
+	s=arc-20240116; t=1765887850; c=relaxed/simple;
+	bh=+0ORCyiFXp8in2I3wlMRj+2jRskgdWUThPtzaRUeRaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQCLbAPphv/nHo9iXeCXh5I4Hby6QMBPBmI1d0E2gFgZSB+PT39fOQ/AKcm/vj2GH53iMcp5lehcIDQF02hfyL7vYildwdQqZfgkihrQYuE4O6PN3Rx6YKFRBJApv/YkP0VeGMtz14jMsIhBp06wEGO0wjBUU0NhOTk61j8FKN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vvNe+1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCCBC4CEF1;
-	Tue, 16 Dec 2025 11:53:48 +0000 (UTC)
+	 MIME-Version; b=DvTq1q30DX9MWfdIR/VtHBYrcfWZAJRPbpKd8JX2jTXdrdenmO2RPAqF4rH6UtUbozZDrAwVj+52TDvahwqllEci3b2Gsz4OlSg7SCdf+P9pvnk4WRqk86TqJV3k+7mWYmZO+4GAStkVBX45iwDmnTYVOcJYP8ERqKku/qoPZi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol+6Hnsj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC53C4CEF1;
+	Tue, 16 Dec 2025 12:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886029;
-	bh=f78bF29XqgTcsivlfKOVXPRfs0DDAhaz6GRKmrAaQDQ=;
+	s=korg; t=1765887849;
+	bh=+0ORCyiFXp8in2I3wlMRj+2jRskgdWUThPtzaRUeRaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0vvNe+1Y0wEtOlDXRPRoKfLeVuTTkm+eBYPFg+X7ezSOTv7FjwIKwG+O18qmazUFp
-	 YrGFyC7/jiZtKMppY9scPfkxnbeGJNq9p/FPwREjmLmvMRzu48U515LheZsr1Tu0gC
-	 kqjLAq+3W+7+46bDDUWtOh5218anKfaBurQro6yI=
+	b=ol+6HnsjNe+U3k5JOufYqLsOxmMF4NCDtyj8Atf/Oof3/5AMO0M5PfUlOZJuueViG
+	 aYVKocP9UfRlABMXDINy9SwOi6LRM/pu93kv6gE1GU33tESiGGux++Omk9pdxJDcnJ
+	 McCzzJUbigIl989p6hMxkwlASHr2C9sNvvE30h/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chien Wong <m@xv97.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 283/507] wifi: mac80211: fix CMAC functions not handling errors
+	Jason Tian <jason@os.amperecomputing.com>,
+	Shengwei Luo <luoshengwei@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Daniel Ferguson <danielf@os.amperecomputing.com>
+Subject: [PATCH 6.18 357/614] RAS: Report all ARM processor CPER information to userspace
 Date: Tue, 16 Dec 2025 12:12:04 +0100
-Message-ID: <20251216111355.732233704@linuxfoundation.org>
+Message-ID: <20251216111414.295027088@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,198 +66,310 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chien Wong <m@xv97.com>
+From: Jason Tian <jason@os.amperecomputing.com>
 
-[ Upstream commit 353cda30d30e5dc7cacf8de5d2546724708ae3bb ]
+[ Upstream commit 05954511b73e748d0370549ad9dd9cd95297d97a ]
 
-The called hash functions could fail thus we should check return values.
+The ARM processor CPER record was added in UEFI v2.6 and remained
+unchanged up to v2.10.
 
-Fixes: 26717828b75d ("mac80211: aes-cmac: switch to shash CMAC driver")
-Signed-off-by: Chien Wong <m@xv97.com>
-Link: https://patch.msgid.link/20251113140511.48658-2-m@xv97.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Yet, the original arm_event trace code added by
+
+  e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+
+is incomplete, as it only traces some fields of UAPI 2.6 table N.16, not
+exporting any information from tables N.17 to N.29 of the record.
+
+This is not enough for the user to be able to figure out what has
+exactly happened or to take appropriate action.
+
+According to the UEFI v2.9 specification chapter N2.4.4, the ARM
+processor error section includes:
+
+- several (ERR_INFO_NUM) ARM processor error information structures
+  (Tables N.17 to N.20);
+- several (CONTEXT_INFO_NUM) ARM processor context information
+  structures (Tables N.21 to N.29);
+- several vendor specific error information structures. The
+  size is given by Section Length minus the size of the other
+  fields.
+
+In addition, it also exports two fields that are parsed by the GHES
+driver when firmware reports it, e.g.:
+
+- error severity
+- CPU logical index
+
+Report all of these information to userspace via a the ARM tracepoint so
+that userspace can properly record the error and take decisions related
+to CPU core isolation according to error severity and other info.
+
+The updated ARM trace event now contains the following fields:
+
+======================================  =============================
+UEFI field on table N.16                ARM Processor trace fields
+======================================  =============================
+Validation                              handled when filling data for
+                                        affinity MPIDR and running
+                                        state.
+ERR_INFO_NUM                            pei_len
+CONTEXT_INFO_NUM                        ctx_len
+Section Length                          indirectly reported by
+                                        pei_len, ctx_len and oem_len
+Error affinity level                    affinity
+MPIDR_EL1                               mpidr
+MIDR_EL1                                midr
+Running State                           running_state
+PSCI State                              psci_state
+Processor Error Information Structure   pei_err - count at pei_len
+Processor Context                       ctx_err- count at ctx_len
+Vendor Specific Error Info              oem - count at oem_len
+======================================  =============================
+
+It should be noted that decoding of tables N.17 to N.29, if needed, will
+be handled in userspace. That gives more flexibility, as there won't be
+any need to flood the kernel with micro-architecture specific error
+decoding.
+
+Also, decoding the other fields require a complex logic, and should be
+done for each of the several values inside the record field.  So, let
+userspace daemons like rasdaemon decode them, parsing such tables and
+having vendor-specific micro-architecture-specific decoders.
+
+ [mchehab: modified description, solved merge conflicts and fixed coding style]
+
+Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
+Co-developed-by: Shengwei Luo <luoshengwei@huawei.com>
+Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com> # rebased
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Tested-by: Shiju Jose <shiju.jose@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-section
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/aes_cmac.c | 63 +++++++++++++++++++++++++++++------------
- net/mac80211/aes_cmac.h |  8 +++---
- net/mac80211/wpa.c      | 20 +++++++------
- 3 files changed, 61 insertions(+), 30 deletions(-)
+ drivers/acpi/apei/ghes.c | 11 ++++-----
+ drivers/ras/ras.c        | 40 ++++++++++++++++++++++++++++++--
+ include/linux/ras.h      | 16 ++++++++++---
+ include/ras/ras_event.h  | 49 ++++++++++++++++++++++++++++++++++++----
+ 4 files changed, 99 insertions(+), 17 deletions(-)
 
-diff --git a/net/mac80211/aes_cmac.c b/net/mac80211/aes_cmac.c
-index 48c04f89de20a..65989c7dfc680 100644
---- a/net/mac80211/aes_cmac.c
-+++ b/net/mac80211/aes_cmac.c
-@@ -22,50 +22,77 @@
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 97ee19f2cae06..7d2466b515046 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -552,7 +552,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ }
  
- static const u8 zero[CMAC_TLEN_256];
- 
--void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
--			const u8 *data, size_t data_len, u8 *mic)
-+int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
-+		       const u8 *data, size_t data_len, u8 *mic)
+ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+-				       int sev, bool sync)
++				     int sev, bool sync)
  {
-+	int err;
- 	SHASH_DESC_ON_STACK(desc, tfm);
- 	u8 out[AES_BLOCK_SIZE];
- 	const __le16 *fc;
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+ 	int flags = sync ? MF_ACTION_REQUIRED : 0;
+@@ -560,9 +560,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 	int sec_sev, i;
+ 	char *p;
  
- 	desc->tfm = tfm;
- 
--	crypto_shash_init(desc);
--	crypto_shash_update(desc, aad, AAD_LEN);
-+	err = crypto_shash_init(desc);
-+	if (err)
-+		return err;
-+	err = crypto_shash_update(desc, aad, AAD_LEN);
-+	if (err)
-+		return err;
- 	fc = (const __le16 *)aad;
- 	if (ieee80211_is_beacon(*fc)) {
- 		/* mask Timestamp field to zero */
--		crypto_shash_update(desc, zero, 8);
--		crypto_shash_update(desc, data + 8, data_len - 8 - CMAC_TLEN);
-+		err = crypto_shash_update(desc, zero, 8);
-+		if (err)
-+			return err;
-+		err = crypto_shash_update(desc, data + 8,
-+					  data_len - 8 - CMAC_TLEN);
-+		if (err)
-+			return err;
- 	} else {
--		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
-+		err = crypto_shash_update(desc, data,
-+					  data_len - CMAC_TLEN);
-+		if (err)
-+			return err;
- 	}
--	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
+-	log_arm_hw_error(err);
 -
-+	err = crypto_shash_finup(desc, zero, CMAC_TLEN, out);
-+	if (err)
-+		return err;
- 	memcpy(mic, out, CMAC_TLEN);
-+
-+	return 0;
- }
+ 	sec_sev = ghes_severity(gdata->error_severity);
++	log_arm_hw_error(err, sec_sev);
+ 	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
+ 		return false;
  
--void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
--			    const u8 *data, size_t data_len, u8 *mic)
-+int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
-+			   const u8 *data, size_t data_len, u8 *mic)
+@@ -895,11 +894,9 @@ static void ghes_do_proc(struct ghes *ghes,
+ 
+ 			arch_apei_report_mem_error(sev, mem_err);
+ 			queued = ghes_handle_memory_failure(gdata, sev, sync);
+-		}
+-		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
++		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+ 			ghes_handle_aer(gdata);
+-		}
+-		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
++		} else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+ 			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+ 		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
+ 			struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
+diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
+index ac0e132ccc3eb..2a5b5a9fdcb36 100644
+--- a/drivers/ras/ras.c
++++ b/drivers/ras/ras.c
+@@ -53,9 +53,45 @@ void log_non_standard_event(const guid_t *sec_type, const guid_t *fru_id,
+ }
+ EXPORT_SYMBOL_GPL(log_non_standard_event);
+ 
+-void log_arm_hw_error(struct cper_sec_proc_arm *err)
++void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
  {
-+	int err;
- 	SHASH_DESC_ON_STACK(desc, tfm);
- 	const __le16 *fc;
- 
- 	desc->tfm = tfm;
- 
--	crypto_shash_init(desc);
--	crypto_shash_update(desc, aad, AAD_LEN);
-+	err = crypto_shash_init(desc);
-+	if (err)
-+		return err;
-+	err = crypto_shash_update(desc, aad, AAD_LEN);
-+	if (err)
-+		return err;
- 	fc = (const __le16 *)aad;
- 	if (ieee80211_is_beacon(*fc)) {
- 		/* mask Timestamp field to zero */
--		crypto_shash_update(desc, zero, 8);
--		crypto_shash_update(desc, data + 8,
--				    data_len - 8 - CMAC_TLEN_256);
-+		err = crypto_shash_update(desc, zero, 8);
-+		if (err)
-+			return err;
-+		err = crypto_shash_update(desc, data + 8,
-+					  data_len - 8 - CMAC_TLEN_256);
-+		if (err)
-+			return err;
- 	} else {
--		crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
-+		err = crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
-+		if (err)
-+			return err;
- 	}
--	crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
-+	return crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
+-	trace_arm_event(err);
++	struct cper_arm_err_info *err_info;
++	struct cper_arm_ctx_info *ctx_info;
++	u8 *ven_err_data;
++	u32 ctx_len = 0;
++	int n, sz, cpu;
++	s32 vsei_len;
++	u32 pei_len;
++	u8 *pei_err, *ctx_err;
++
++	pei_len = sizeof(struct cper_arm_err_info) * err->err_info_num;
++	pei_err = (u8 *)(err + 1);
++
++	err_info = (struct cper_arm_err_info *)(err + 1);
++	ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
++	ctx_err = (u8 *)ctx_info;
++
++	for (n = 0; n < err->context_info_num; n++) {
++		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
++		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
++		ctx_len += sz;
++	}
++
++	vsei_len = err->section_length - (sizeof(struct cper_sec_proc_arm) + pei_len + ctx_len);
++	if (vsei_len < 0) {
++		pr_warn(FW_BUG "section length: %d\n", err->section_length);
++		pr_warn(FW_BUG "section length is too small\n");
++		pr_warn(FW_BUG "firmware-generated error record is incorrect\n");
++		vsei_len = 0;
++	}
++	ven_err_data = (u8 *)ctx_info;
++
++	cpu = GET_LOGICAL_INDEX(err->mpidr);
++	if (cpu < 0)
++		cpu = -1;
++
++	trace_arm_event(err, pei_err, pei_len, ctx_err, ctx_len,
++			ven_err_data, (u32)vsei_len, sev, cpu);
  }
  
- struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
-diff --git a/net/mac80211/aes_cmac.h b/net/mac80211/aes_cmac.h
-index 76817446fb838..f74150542142a 100644
---- a/net/mac80211/aes_cmac.h
-+++ b/net/mac80211/aes_cmac.h
-@@ -11,10 +11,10 @@
+ static int __init ras_init(void)
+diff --git a/include/linux/ras.h b/include/linux/ras.h
+index a64182bc72ad3..468941bfe855f 100644
+--- a/include/linux/ras.h
++++ b/include/linux/ras.h
+@@ -24,8 +24,7 @@ int __init parse_cec_param(char *str);
+ void log_non_standard_event(const guid_t *sec_type,
+ 			    const guid_t *fru_id, const char *fru_text,
+ 			    const u8 sev, const u8 *err, const u32 len);
+-void log_arm_hw_error(struct cper_sec_proc_arm *err);
+-
++void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev);
+ #else
+ static inline void
+ log_non_standard_event(const guid_t *sec_type,
+@@ -33,7 +32,7 @@ log_non_standard_event(const guid_t *sec_type,
+ 		       const u8 sev, const u8 *err, const u32 len)
+ { return; }
+ static inline void
+-log_arm_hw_error(struct cper_sec_proc_arm *err) { return; }
++log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev) { return; }
+ #endif
  
- struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
- 						  size_t key_len);
--void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
--			const u8 *data, size_t data_len, u8 *mic);
--void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
--			    const u8 *data, size_t data_len, u8 *mic);
-+int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
-+		       const u8 *data, size_t data_len, u8 *mic);
-+int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
-+			   const u8 *data, size_t data_len, u8 *mic);
- void ieee80211_aes_cmac_key_free(struct crypto_shash *tfm);
+ struct atl_err {
+@@ -53,4 +52,15 @@ static inline unsigned long
+ amd_convert_umc_mca_addr_to_sys_addr(struct atl_err *err) { return -EINVAL; }
+ #endif /* CONFIG_AMD_ATL */
  
- #endif /* AES_CMAC_H */
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 40d5d9e484791..bb0fa505cdcae 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -869,8 +869,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 	/*
- 	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
- 	 */
--	ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			   skb->data + 24, skb->len - 24, mmie->mic);
-+	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
-+			       skb->data + 24, skb->len - 24, mmie->mic))
-+		return TX_DROP;
++#if defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++#include <asm/smp_plat.h>
++/*
++ * Include ARM-specific SMP header which provides a function mapping mpidr to
++ * CPU logical index.
++ */
++#define GET_LOGICAL_INDEX(mpidr) get_logical_index(mpidr & MPIDR_HWID_BITMASK)
++#else
++#define GET_LOGICAL_INDEX(mpidr) -EINVAL
++#endif /* CONFIG_ARM || CONFIG_ARM64 */
++
+ #endif /* __RAS_H__ */
+diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+index c8cd0f00c8454..c9f0b1018bcce 100644
+--- a/include/ras/ras_event.h
++++ b/include/ras/ras_event.h
+@@ -168,11 +168,25 @@ TRACE_EVENT(mc_event,
+  * This event is generated when hardware detects an ARM processor error
+  * has occurred. UEFI 2.6 spec section N.2.4.4.
+  */
++#define APEIL "ARM Processor Err Info data len"
++#define APEID "ARM Processor Err Info raw data"
++#define APECIL "ARM Processor Err Context Info data len"
++#define APECID "ARM Processor Err Context Info raw data"
++#define VSEIL "Vendor Specific Err Info data len"
++#define VSEID "Vendor Specific Err Info raw data"
+ TRACE_EVENT(arm_event,
  
- 	return TX_CONTINUE;
- }
-@@ -916,8 +917,9 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
+-	TP_PROTO(const struct cper_sec_proc_arm *proc),
++	TP_PROTO(const struct cper_sec_proc_arm *proc,
++		 const u8 *pei_err,
++		 const u32 pei_len,
++		 const u8 *ctx_err,
++		 const u32 ctx_len,
++		 const u8 *oem,
++		 const u32 oem_len,
++		 u8 sev,
++		 int cpu),
  
- 	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
- 	 */
--	ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic);
-+	if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
-+				   skb->data + 24, skb->len - 24, mmie->mic))
-+		return TX_DROP;
+-	TP_ARGS(proc),
++	TP_ARGS(proc, pei_err, pei_len, ctx_err, ctx_len, oem, oem_len, sev, cpu),
  
- 	return TX_CONTINUE;
- }
-@@ -956,8 +958,9 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
- 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
--		ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				   skb->data + 24, skb->len - 24, mic);
-+		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
-+				       skb->data + 24, skb->len - 24, mic))
-+			return RX_DROP_U_DECRYPT_FAIL;
- 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
-@@ -1006,8 +1009,9 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
--		ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic);
-+		if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
-+					   skb->data + 24, skb->len - 24, mic))
-+			return RX_DROP_U_DECRYPT_FAIL;
- 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
+ 	TP_STRUCT__entry(
+ 		__field(u64, mpidr)
+@@ -180,6 +194,14 @@ TRACE_EVENT(arm_event,
+ 		__field(u32, running_state)
+ 		__field(u32, psci_state)
+ 		__field(u8, affinity)
++		__field(u32, pei_len)
++		__dynamic_array(u8, pei_buf, pei_len)
++		__field(u32, ctx_len)
++		__dynamic_array(u8, ctx_buf, ctx_len)
++		__field(u32, oem_len)
++		__dynamic_array(u8, oem_buf, oem_len)
++		__field(u8, sev)
++		__field(int, cpu)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -199,12 +221,29 @@ TRACE_EVENT(arm_event,
+ 			__entry->running_state = ~0;
+ 			__entry->psci_state = ~0;
+ 		}
++		__entry->pei_len = pei_len;
++		memcpy(__get_dynamic_array(pei_buf), pei_err, pei_len);
++		__entry->ctx_len = ctx_len;
++		memcpy(__get_dynamic_array(ctx_buf), ctx_err, ctx_len);
++		__entry->oem_len = oem_len;
++		memcpy(__get_dynamic_array(oem_buf), oem, oem_len);
++		__entry->sev = sev;
++		__entry->cpu = cpu;
+ 	),
+ 
+-	TP_printk("affinity level: %d; MPIDR: %016llx; MIDR: %016llx; "
+-		  "running state: %d; PSCI state: %d",
++	TP_printk("cpu: %d; error: %d; affinity level: %d; MPIDR: %016llx; MIDR: %016llx; "
++		  "running state: %d; PSCI state: %d; "
++		  "%s: %d; %s: %s; %s: %d; %s: %s; %s: %d; %s: %s",
++		  __entry->cpu,
++		  __entry->sev,
+ 		  __entry->affinity, __entry->mpidr, __entry->midr,
+-		  __entry->running_state, __entry->psci_state)
++		  __entry->running_state, __entry->psci_state,
++		  APEIL, __entry->pei_len, APEID,
++		  __print_hex(__get_dynamic_array(pei_buf), __entry->pei_len),
++		  APECIL, __entry->ctx_len, APECID,
++		  __print_hex(__get_dynamic_array(ctx_buf), __entry->ctx_len),
++		  VSEIL, __entry->oem_len, VSEID,
++		  __print_hex(__get_dynamic_array(oem_buf), __entry->oem_len))
+ );
+ 
+ /*
 -- 
 2.51.0
 
