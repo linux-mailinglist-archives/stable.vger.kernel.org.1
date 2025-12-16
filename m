@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7814FCC34B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3819DCC2640
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9852C305BEC5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:39:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C6193048DBA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D79B36CE01;
-	Tue, 16 Dec 2025 12:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EDE344039;
+	Tue, 16 Dec 2025 11:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdXYCA4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjcigebU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F1836CDFA;
-	Tue, 16 Dec 2025 12:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E7431B10F;
+	Tue, 16 Dec 2025 11:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887963; cv=none; b=nMN/67bda9IZkg0QnNnaDfVJeYWfvTqEAAPXXRMZ83QRT16DcED7eHoe7u2aFSaBfYBuDkPO/lKd3WbL7e0Xbh+xgoWscmaCV6aIwyFsKCc538jUkuSZC5uz1IHFEWzx2SdLYgyGgftYhslD3dcunJNtYqMqlzjIuRdn1EO5ago=
+	t=1765884431; cv=none; b=UlX9ZK8vE37hkhUVWM7yjWqkNdmNq53cg0uF2ZFp1UKZ82G34H6YZMu3WFpBOWezJHoz95v4tGO5VyTknsPvi8vi9/vDgGlgOqr77wIGiBqZuInRGs+jy7jOjba758O+LBKT8WZUCrKmNLEkepdmHOHswPoqp3QsHy5uLmY0pks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887963; c=relaxed/simple;
-	bh=YI58U6olesAR1YqwGa3MC7P0ORY46LyqXApz4Os1d6Y=;
+	s=arc-20240116; t=1765884431; c=relaxed/simple;
+	bh=Sok0bEkFfDcajiSz/ZynEFQuhbz6xsVaQfVvmX8ZueI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAhbcpucYrrQlYPej+/zXdnRs2O9SqYitKR9LZiYR3pwuN6Gs3Dnhoa8kxorKb7waIFrXbNRU21Ijpuo8LSdVx4F7pHoyicT2GSf3iidXJAWK3igQNWt45Ch7gGBBofllsbQXbJo8PgygwCEh+o+0RRWJubSx7/AtWStX2ZdhhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdXYCA4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5FDC4CEF1;
-	Tue, 16 Dec 2025 12:26:02 +0000 (UTC)
+	 MIME-Version; b=eTMOaqfDKp9XqSun5MrsyeTwlNqFIJWyCwMbnQ0/eo68UU7P29FIYYoSQZQUwm4BNLzGXl52k+nEpGx0KwTxT5pKhrRKqKwsaT0fmHp4mTKmFdMbjZ+ZRJytrdR70bhEOBNIFEaQPy75bhh36rArOf402WyBueOmUknH2FgQ6TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjcigebU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA07C4CEF1;
+	Tue, 16 Dec 2025 11:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887962;
-	bh=YI58U6olesAR1YqwGa3MC7P0ORY46LyqXApz4Os1d6Y=;
+	s=korg; t=1765884430;
+	bh=Sok0bEkFfDcajiSz/ZynEFQuhbz6xsVaQfVvmX8ZueI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdXYCA4zcTpwsQmOG6f+n/w4VwueqIpU7nqTlZkY/iTALt78stqyEGcEWNKuS3mbY
-	 yvqN1txJUaLAxQq5K9lZpfcaMSo9ZJTyxqBN3JLlQZwSnwv+RIzwOANKhtFgp31nbL
-	 3kDgxO7WXhKXcS1/pmFSAD9IGpGU1MmTsWtnzn4o=
+	b=xjcigebUUJ48wsf/jhvloqfTUtIRxLRczzRxDeUUHm+RzfvKUx98nNJn4WmEFuS9o
+	 MpqQaApkGPir5WYabHk9h0zEg8GhN9l1qs7p+IKvXVfcDd/xjzYAyIOJOR96lSYD+z
+	 vQmt2Ou7AP/nAxSDp40R98zWOg9f09A7WWqXdnBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 391/614] wifi: mt76: mt7996: fix teardown command for an MLD peer
+Subject: [PATCH 6.12 191/354] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
 Date: Tue, 16 Dec 2025 12:12:38 +0100
-Message-ID: <20251216111415.538788103@linuxfoundation.org>
+Message-ID: <20251216111327.832690592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit e077071e7ac48d5453072f615d51629891c5b90d ]
+[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
 
-For an MLD peer, we only need to call the teardown command when removing
-the last link, and there's no need to call mt7996_mcu_add_sta() for the
-earlier links.
+If devm_request_threaded_irq() fails after irq_domain_add_linear()
+succeeds in mt6358_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-Fixes: c1d6dd5d03eb ("wifi: mt76: mt7996: Add mt7996_mcu_teardown_mld_sta rouine")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-6-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Call irq_domain_remove() in the error path after a successful
+irq_domain_add_linear() to properly release the IRQ domain.
+
+Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/mt6358-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 2b52d057287a1..aa46ea707b406 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1206,13 +1206,13 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 				mt7996_mac_twt_teardown_flow(dev, link,
- 							     msta_link, i);
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index 49830b526ee88..10a0952615a17 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -286,6 +286,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
--			if (sta->mlo && links == BIT(link_id)) /* last link */
--				mt7996_mcu_teardown_mld_sta(dev, link,
--							    msta_link);
--			else
-+			if (!sta->mlo)
- 				mt7996_mcu_add_sta(dev, link_conf, link_sta,
- 						   link, msta_link,
- 						   CONN_STATE_DISCONNECT, false);
-+			else if (sta->mlo && links == BIT(link_id)) /* last link */
-+				mt7996_mcu_teardown_mld_sta(dev, link,
-+							    msta_link);
- 			msta_link->wcid.sta_disabled = 1;
- 			msta_link->wcid.sta = 0;
- 			links = links & ~BIT(link_id);
 -- 
 2.51.0
 
