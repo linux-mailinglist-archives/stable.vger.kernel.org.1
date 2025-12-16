@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-202683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C676BCC3D1B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:07:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C30CC2271
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B45430F55D7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:59:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E05B5302CF51
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F322727E3;
-	Tue, 16 Dec 2025 12:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3615233B967;
+	Tue, 16 Dec 2025 11:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/Le5kCB"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CdLBVsq+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B89450FE;
-	Tue, 16 Dec 2025 12:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0EB32862F;
+	Tue, 16 Dec 2025 11:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888704; cv=none; b=Iu2VtcNSRp8vhN0lvMfor3RF/A/3Dt3x17DlSpup/m+H2rF+cWRh/zauh9wo34in/e6hqBYCwDTM8ehIHzEHc0ugQh70WS7A0ApP5ThJhImOJtUWQAGPrTbe3zGglcTR3hZRzUt0snT+RHe35+8v7Kwm20xxPhpcV86TykmNrtU=
+	t=1765883958; cv=none; b=ZNdoNFEIrAMlYNY93MBFg9wL6GyIKCf+AwTEINQtq4PrlVC4dDaYlCVg32Kf/TaWz/cMqRzO9YfuQBkQEY8f2rZ1wEiCSrre8Ofs/r9/OuGqu9wwqwBL+Kng0hm3AHXE+AMlMH0pH+VyHfcRjUeruLnF7co8RnrHOSeghsrECvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888704; c=relaxed/simple;
-	bh=S1rGGLFElGfstla8/jJk1rup0Jify13dMI8yJkPEnkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmThUXzroOfSn6jclvSdkT5utUSCqP52RB26MozU1ADsHgSM2dz9VuX1VPdPkizICGEiKlv7ubADeQNL8+9YQ/zJNQLNh01QM7rnD+kF8R6oxrWVVQ6EYTCXjAbVDjnHwYih6DbRPPvYFv7AV4jVvaHEhCKfmuIZ9lMRq0mr64c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/Le5kCB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B09C4CEF1;
-	Tue, 16 Dec 2025 12:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888704;
-	bh=S1rGGLFElGfstla8/jJk1rup0Jify13dMI8yJkPEnkM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/Le5kCBdjiIisNNJFhZH1Vm5px0UKZOw+JHC5bwc3SYOsbP0He/jeIoJTzcnol7f
-	 4+B5cb9k6IZVHaTxKB+Afw2M0bSCS8Rr3V32nsDRwIflQUgirg76LJTVLzfc9H0NB1
-	 TuhRrp2Mq5qBTGUj+3Bvkl/AmeX5ZNOnX7lPzslo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 614/614] ALSA: wavefront: Fix integer overflow in sample size validation
-Date: Tue, 16 Dec 2025 12:16:21 +0100
-Message-ID: <20251216111423.644811099@linuxfoundation.org>
+	s=arc-20240116; t=1765883958; c=relaxed/simple;
+	bh=jV4nqNrOmliNsJ3gSGNq3tq5z4vr/GaPek6PTEEgpdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b43oE7z/nqoKWVp0T2bTHfkUSoWWHaCH8ZygRaK680BaN3qqCZTDPM9UZ2AupPVFzQjZPzHEMomNXllaXexk9aCsklrbTWFC2K07UkpCUM0l6idpZq4wle6UdW18wdWH6UxZEXgKQj8PoSrLG9PqBcCAhQR1loS/elYjXFh/EO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CdLBVsq+; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=wajJfvGHfxjrujb+tDRZGXUj+CeBAKL7X/uzaz61ESc=; t=1765883956; x=1767093556; 
+	b=CdLBVsq+z3taYlzn9t1Zn6Z5W7wyfyfK5pBVSSpjjai7Gib5JgBhljBh3d4gXHjfjiLjvMn2gxl
+	ujouuhOOUtDQ886ZQkVRGc+Ylv+s979Mik9ss6KGVD2/bbJh3cyQmsc5uvn+nzJbDk7dp3OKR1Pja
+	rGJ0yGgZiQlcvDa1765G8i9MmYNxQMCFg1hSpQ8RRQbcg6prrvHPzt+Iu5WF8SrF41fSWn6QoM9Kh
+	vPgyMvVfxgHgq+T/UalMySb3hTgJhDzaTTZeSKuYAu4Mb8JlJtjQgnsTAea9owhi1b0xzriLCZOk6
+	k+cOn1GBawtFRdbuKDzXMMKe/NOX2Mket1DA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vVT5F-0000000ALEY-0Hxf;
+	Tue, 16 Dec 2025 12:19:13 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	stable@vger.kernel.org,
+	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
+Subject: [PATCH v2] wifi: mac80211: restore non-chanctx injection behaviour
+Date: Tue, 16 Dec 2025 12:19:09 +0100
+Message-ID: <20251216111909.25076-2-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,44 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+During the transition to use channel contexts throughout, the
+ability to do injection while in monitor mode concurrent with
+another interface was lost, since the (virtual) monitor won't
+have a chanctx assigned in this scenario.
 
-From: Junrui Luo <moonafterrain@outlook.com>
+We could use the local->hw.conf.chandef in the emulation case,
+but that wouldn't fix drivers (such as mt76) that themselves
+are now using channel contexts.
 
-commit 0c4a13ba88594fd4a27292853e736c6b4349823d upstream.
+So instead, assume that if there's just a single chanctx that
+must be the one meant for injection, addressing both cases.
 
-The wavefront_send_sample() function has an integer overflow issue
-when validating sample size. The header->size field is u32 but gets
-cast to int for comparison with dev->freemem
-
-Fix by using unsigned comparison to avoid integer overflow.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881B47789D1B060CE8BF4C3AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218763
+Reported-by: Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
+Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- sound/isa/wavefront/wavefront_synth.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v2: use the single chanctx if such a thing exists to fix both
+    cases of emulation and drivers that changed like mt76
+---
+ net/mac80211/tx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/sound/isa/wavefront/wavefront_synth.c
-+++ b/sound/isa/wavefront/wavefront_synth.c
-@@ -950,9 +950,9 @@ wavefront_send_sample (snd_wavefront_t *
- 	if (header->size) {
- 		dev->freemem = wavefront_freemem (dev);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 9d8b0a25f73c..22d0df442ac0 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2395,6 +2395,18 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 				rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
+ 	}
  
--		if (dev->freemem < (int)header->size) {
-+		if (dev->freemem < 0 || dev->freemem < header->size) {
- 			dev_err(dev->card->dev,
--				"insufficient memory to load %d byte sample.\n",
-+				"insufficient memory to load %u byte sample.\n",
- 				header->size);
- 			return -ENOMEM;
- 		}
-
++	if (!chanctx_conf) {
++		struct ieee80211_chanctx *ctx;
++		bool first = true;
++
++		list_for_each_entry_rcu(ctx, &local->chanctx_list, list) {
++			if (!first)
++				goto fail_rcu;
++			chanctx_conf = &ctx->conf;
++			first = false;
++		}
++	}
++
+ 	if (chanctx_conf)
+ 		chandef = &chanctx_conf->def;
+ 	else
+-- 
+2.52.0
 
 
