@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217A4CC2F70
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEF5CC2C85
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 956D53073931
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68BFE302C470
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C8734FF6D;
-	Tue, 16 Dec 2025 12:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F058397D0C;
+	Tue, 16 Dec 2025 12:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh7mYSpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZYgmMa2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540834F492;
-	Tue, 16 Dec 2025 12:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD5A1DF75B;
+	Tue, 16 Dec 2025 12:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886454; cv=none; b=JSLsPzQ0Yd8NiXVmPjRrtT7ZMkWrGP0mnnoACg3XLMTKADiXygrQN14/x6+0Tzujl6lxToXcOxLEQC7m7dH2Podz5OPJjNTzNX7+2rllQZqEziwO+Hfs2tw9zG87O3KoBC5csvRytZjs6e1MPFSKBHVQ8y3YXKLgC/PLliXROMo=
+	t=1765888374; cv=none; b=aGkQfMdDsO2ezd5xe6ZccVD4jjFPIj1tHWN9tbQnxWi1DlTiZF9IIXsp84qf/R+zguup5g4uoX+aaFn4ka4unEavxxdvUpl2hmqzLaYfcsNoHfHXt8MwOn08hH8sOKLXX8sx6zNU18yp3q9mhNt4ErwuUZjBv8BSoDWNq9PhVzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886454; c=relaxed/simple;
-	bh=8IxCQz8zQ8CnTV8YnP2rhdODZua9GNPnah0ycVLe/IE=;
+	s=arc-20240116; t=1765888374; c=relaxed/simple;
+	bh=onme7fhlEm9XHEV8Emd0QOkfHjinO+Ue0p33cQjUD+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cdgCa0xA1JVtpymCJ8bJlXo7lmWWvxQGGSYU20z1QuVCv1agBMI5Stl3+IFfxV+PWmfIEqz/GI1Bd7uxvTc6dtZmiviXYYtwEDHWHeL+i2pC+ScwK85JvvFSDq25rl/xdAYzCqOKBQPgJOudZz6K7ssQScymTEVwqWCqurn4H14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh7mYSpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354CEC4CEF1;
-	Tue, 16 Dec 2025 12:00:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xqk55GDLvB0de3rh0d9WwUSrtVsnxdPZzOFN1hYgWvpJl284uHh6PUSz0fhBGKsjHywoqn7WB0zlBrdt11eqtKnBX3u5G1COFOU5THoKoFVm2pQvoSAQ51BVIC95914JBSQDNQlfq1VFeLXYpIEYh9Gq9ScXdVB/uS5NdwczYnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZYgmMa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3540C4CEF1;
+	Tue, 16 Dec 2025 12:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886454;
-	bh=8IxCQz8zQ8CnTV8YnP2rhdODZua9GNPnah0ycVLe/IE=;
+	s=korg; t=1765888374;
+	bh=onme7fhlEm9XHEV8Emd0QOkfHjinO+Ue0p33cQjUD+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xh7mYSpeUZUSz48mhiC4VkOuKKbK2R+KxsFOyKXfwpBn19+i91mZI2yXNBlB659Z3
-	 kkokcMwtrg4sVAm4N2/++PDjln0DPLDMUcaxi9qtVuXMxElibHLZAxO/CRmNlPbUsI
-	 hqbm9+WRSgUxbvU/PYlBIOGOoLBKYPpSZ86XqHFk=
+	b=EZYgmMa2CY6OZzUERbzGWOGRdvJjr3A85m14P0HrZKTGEJ63jTJdi77+XAe+ZtFt4
+	 IMh9+udlnriJ1sOQ4W9QGeDyR+Tvv/YWqyPwSe2vivuOPIZSwGB+QowPrL/YHN46je
+	 KFzwIFgiTcVnX7fiQSDosNytRh51ArWeWmdH6r2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 441/507] fs/nls: Fix utf16 to utf8 conversion
+Subject: [PATCH 6.18 515/614] net: dsa: b53: use same ARL search result offset for BCM5325/65
 Date: Tue, 16 Dec 2025 12:14:42 +0100
-Message-ID: <20251216111401.434084810@linuxfoundation.org>
+Message-ID: <20251216111420.028193382@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 25524b6190295577e4918c689644451365e6466d ]
+[ Upstream commit 8e46aacea4264bcb8d4265fb07577afff58ae78d ]
 
-Currently the function responsible for converting between utf16 and
-utf8 strings will ignore any characters that cannot be converted. This
-however also includes multi-byte characters that do not fit into the
-provided string buffer.
+BCM5365's search result is at the same offset as BCM5325's search
+result, and they (mostly) share the same format, so switch BCM5365 to
+BCM5325's arl ops.
 
-This can cause problems if such a multi-byte character is followed by
-a single-byte character. In such a case the multi-byte character might
-be ignored when the provided string buffer is too small, but the
-single-byte character might fit and is thus still copied into the
-resulting string.
-
-Fix this by stop filling the provided string buffer once a character
-does not fit. In order to be able to do this extend utf32_to_utf8()
-to return useful errno codes instead of -1.
-
-Fixes: 74675a58507e ("NLS: update handling of Unicode")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251111131125.3379-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20251128080625.27181-4-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 18 +-----------------
+ drivers/net/dsa/b53/b53_regs.h   |  4 +---
+ 2 files changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index 18d597e49a194..d434c4463a8f7 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -94,7 +94,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
- 
- 	l = u;
- 	if (l > UNICODE_MAX || (l & SURROGATE_MASK) == SURROGATE_PAIR)
--		return -1;
-+		return -EILSEQ;
- 
- 	nc = 0;
- 	for (t = utf8_table; t->cmask && maxout; t++, maxout--) {
-@@ -110,7 +110,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
- 			return nc;
- 		}
- 	}
--	return -1;
-+	return -EOVERFLOW;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index dedbd53412871..68e9162087ab4 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2093,16 +2093,6 @@ static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry_25(ent, mac_vid);
  }
- EXPORT_SYMBOL(utf32_to_utf8);
  
-@@ -217,8 +217,16 @@ int utf16s_to_utf8s(const wchar_t *pwcs, int inlen, enum utf16_endian endian,
- 				inlen--;
- 			}
- 			size = utf32_to_utf8(u, op, maxout);
--			if (size == -1) {
--				/* Ignore character and move on */
-+			if (size < 0) {
-+				if (size == -EILSEQ) {
-+					/* Ignore character and move on */
-+					continue;
-+				}
-+				/*
-+				 * Stop filling the buffer with data once a character
-+				 * does not fit anymore.
-+				 */
-+				break;
- 			} else {
- 				op += size;
- 				maxout -= size;
+-static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
+-				   struct b53_arl_entry *ent)
+-{
+-	u64 mac_vid;
+-
+-	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
+-		   &mac_vid);
+-	b53_arl_to_entry_25(ent, mac_vid);
+-}
+-
+ static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
+ 				   struct b53_arl_entry *ent)
+ {
+@@ -2699,12 +2689,6 @@ static const struct b53_arl_ops b53_arl_ops_25 = {
+ 	.arl_search_read = b53_arl_search_read_25,
+ };
+ 
+-static const struct b53_arl_ops b53_arl_ops_65 = {
+-	.arl_read_entry = b53_arl_read_entry_25,
+-	.arl_write_entry = b53_arl_write_entry_25,
+-	.arl_search_read = b53_arl_search_read_65,
+-};
+-
+ static const struct b53_arl_ops b53_arl_ops_89 = {
+ 	.arl_read_entry = b53_arl_read_entry_89,
+ 	.arl_write_entry = b53_arl_write_entry_89,
+@@ -2761,7 +2745,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
+-		.arl_ops = &b53_arl_ops_65,
++		.arl_ops = &b53_arl_ops_25,
+ 	},
+ 	{
+ 		.chip_id = BCM5389_DEVICE_ID,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index d9026cf865549..f2a3696d122fa 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -370,10 +370,8 @@
+ #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
+ #define B53_ARL_SRCH_RSLT_MACVID_89	0x33
+ 
+-/* Single register search result on 5325 */
++/* Single register search result on 5325/5365 */
+ #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
+-/* Single register search result on 5365 */
+-#define B53_ARL_SRCH_RSTL_0_MACVID_65	0x30
+ 
+ /* ARL Search Data Result (32 bit) */
+ #define B53_ARL_SRCH_RSTL_0		0x68
 -- 
 2.51.0
 
