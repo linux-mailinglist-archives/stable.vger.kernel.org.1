@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725BACC2980
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B0CCC32FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0353C31667F9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6C295300776A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292373451B3;
-	Tue, 16 Dec 2025 11:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29747376BDF;
+	Tue, 16 Dec 2025 12:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvImykkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUXhMjEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888F3446D8;
-	Tue, 16 Dec 2025 11:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4058376BDD;
+	Tue, 16 Dec 2025 12:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886081; cv=none; b=HrPiPOOhElCkZKyZqcksxS8p2/ahNRDYcoyRhyg3BtNwrLiHdwYcvxm/vDQQoqK/Yp77L/Xp3iSTTduA1hNI9j1S4q2Tf1hPkXugWaxWS9ZRtAOuj8XN5ixlr5VmBRQI1NRgtfcH0OmMyAyVUaejWp//sk6ndixFrHP9oZZHbyo=
+	t=1765888065; cv=none; b=nXis059EfuC+VhCYY2DcBWwYnhNmXBnf++cYLEcuxWOvXfpsYtoSeW+zuSdZadg3IYdcQEgtQNkkIJzn2rG71p2y9g2O/0gm6E6bZ7Iw7RwztSoYgk7B+SawmJAfw1sMhF4X0VLrCPYjHqRXalT3HHzBiHVF864HOGi1z6gPJqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886081; c=relaxed/simple;
-	bh=R54kaWJBsOZJ9xTyz6iUyPqlyin4FjZO2ni22JLroSs=;
+	s=arc-20240116; t=1765888065; c=relaxed/simple;
+	bh=5pc4P7OI0eGK5zPdrAZzdyqY2BbzZXRiKbCoCgJeCGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxrhDcQJGMIOqdarkAbfy5aBr3tya5VkJxVt0VmcFgnI5ZDSQgNe4+t5QMDiuegmERLKY18XPKxQfTGZMir08jc8dGiMtZ1FyC9/A66g1F3TU3P0N5jPhZTl1sjGftA3ANqoRLCFrmkzanzGHd3su1Wg9jh1JHlLXSY5aNtUoEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvImykkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4933EC4CEF1;
-	Tue, 16 Dec 2025 11:54:41 +0000 (UTC)
+	 MIME-Version; b=UXm9ofwzunLiT0O3u26eW+rYwDWiQ3w1KOb3EqijUdem8+1NPSKhmQNr3HRzjnuTRIlIHxc6Nou068irSIehmLmhhwLGoBxvd6vgFAY7cLtQvH+z33JDd6FxOjB9rpXM6OGvjqjzeGkl2pr7EXFpOCw5ukiAOH4Pew/loAeqe8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUXhMjEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B366FC4CEF1;
+	Tue, 16 Dec 2025 12:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886081;
-	bh=R54kaWJBsOZJ9xTyz6iUyPqlyin4FjZO2ni22JLroSs=;
+	s=korg; t=1765888065;
+	bh=5pc4P7OI0eGK5zPdrAZzdyqY2BbzZXRiKbCoCgJeCGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvImykkPNhFBXy2/71jk7350T2eEvbtmHl4+Au+bYYI9rHJ/oOUZXz2ZMYApMt85J
-	 XOt2O52nTYzGOOsmK+AWS49xTj8w8Jm8odqV31D3NpOfN11jaGdHUlv+T/y1JeMvMT
-	 f2hA+RB3RadqNyaFhooXjegFTvPOhlfkSpBVG/2I=
+	b=yUXhMjEgeTFdLMm/JQREN2fQJLnB3929eP/ZsVHFOodmJh+wHCfW3QSHzrzWCbdGX
+	 sWRhonAYFJ0MBGnU74TR5ZxYMdkKkvDTckEy7F7uN92kdylMJ8cmMIhfZwKFEzCdSn
+	 lwGpEiVW43QuocXvsb0yvI6WLeaDouNBxzzNW7NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
-Subject: [PATCH 6.17 315/507] erofs: correct FSDAX detection
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 389/614] wifi: mt76: mt7996: fix implicit beamforming support for mt7992
 Date: Tue, 16 Dec 2025 12:12:36 +0100
-Message-ID: <20251216111356.879402831@linuxfoundation.org>
+Message-ID: <20251216111415.466373685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit ebe4f3f6eb0c10f87c58e52a8912694c14fdeda6 ]
+[ Upstream commit 5d86765828b47444908a8689f2625872e8dac48f ]
 
-The detection of the primary device is skipped incorrectly
-if the multiple or flattened feature is enabled.
+Fix the ibf_timeout field for mt7996, mt7992 and mt7990 chipsets. For
+the mt7992, this value shall be set as 0xff, while the others shall be
+set as 0x18.
 
-It also fixes the FSDAX misdetection for non-block extra blobs.
-
-Fixes: c6993c4cb918 ("erofs: Fallback to normal access if DAX is not supported on extra device")
-Reported-and-tested-by: syzbot+31b8fb02cb8a25bd5e78@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/691af9f6.a70a0220.3124cb.0097.GAE@google.com
-Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: ad4c9a8a9803 ("wifi: mt76: mt7996: add implicit beamforming support for mt7992")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20251106064203.1000505-3-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index db13b40a78e07..edac533a389cb 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -174,15 +174,15 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
- 		if (!erofs_is_fileio_mode(sbi)) {
- 			dif->dax_dev = fs_dax_get_by_bdev(file_bdev(file),
- 					&dif->dax_part_off, NULL, NULL);
--			if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
--				erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
--					   dif->path);
--				clear_opt(&sbi->opt, DAX_ALWAYS);
--			}
- 		} else if (!S_ISREG(file_inode(file)->i_mode)) {
- 			fput(file);
- 			return -EINVAL;
- 		}
-+		if (!dif->dax_dev && test_opt(&sbi->opt, DAX_ALWAYS)) {
-+			erofs_info(sb, "DAX unsupported by %s. Turning off DAX.",
-+				   dif->path);
-+			clear_opt(&sbi->opt, DAX_ALWAYS);
-+		}
- 		dif->file = file;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index afa6a43bd51e5..9af3c48707ab7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1822,8 +1822,8 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 	bf->ibf_nrow = tx_ant;
  
-@@ -215,13 +215,13 @@ static int erofs_scan_devices(struct super_block *sb,
- 			  ondisk_extradevs, sbi->devs->extra_devices);
- 		return -EINVAL;
- 	}
--	if (!ondisk_extradevs) {
--		if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
--			erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
--			clear_opt(&sbi->opt, DAX_ALWAYS);
--		}
--		return 0;
-+
-+	if (test_opt(&sbi->opt, DAX_ALWAYS) && !sbi->dif0.dax_dev) {
-+		erofs_info(sb, "DAX unsupported by block device. Turning off DAX.");
-+		clear_opt(&sbi->opt, DAX_ALWAYS);
- 	}
-+	if (!ondisk_extradevs)
-+		return 0;
- 
- 	if (!sbi->devs->extra_devices && !erofs_is_fscache_mode(sb))
- 		sbi->devs->flatdev = true;
+ 	if (link_sta->eht_cap.has_eht || link_sta->he_cap.has_he)
+-		bf->ibf_timeout = is_mt7996(&dev->mt76) ? MT7996_IBF_TIMEOUT :
+-							  MT7992_IBF_TIMEOUT;
++		bf->ibf_timeout = is_mt7992(&dev->mt76) ? MT7992_IBF_TIMEOUT :
++							  MT7996_IBF_TIMEOUT;
+ 	else if (!ebf && link_sta->bandwidth <= IEEE80211_STA_RX_BW_40 && !bf->ncol)
+ 		bf->ibf_timeout = MT7996_IBF_TIMEOUT_LEGACY;
+ 	else
 -- 
 2.51.0
 
