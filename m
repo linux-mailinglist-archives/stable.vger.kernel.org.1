@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D4ACC250F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AA3CC42DF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DEC93062220
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E15C7303BDF4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4204233CEB9;
-	Tue, 16 Dec 2025 11:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E545534676D;
+	Tue, 16 Dec 2025 11:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrgZeW2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChmDTulN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD3A33DED4;
-	Tue, 16 Dec 2025 11:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D063451DB;
+	Tue, 16 Dec 2025 11:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884556; cv=none; b=foqNVSlzasK1YNdzHS+WFc6nQVApD3YtiibEdpGm6tOv55k4vDjQfS3UqGUeW5l/qA/DLW5GTDeow+tFyo8zjNG5Zv8Kk7RDT4h6aoyh8qyYZ/Qfw9hty+u/2r5fUN5nEenEfUKYjdrqT0a+SHd/8nmPPjxMu5W5rBnARGwrPO8=
+	t=1765886275; cv=none; b=IDbeTYyMbcP7INSbamkA3w748neQOtgdoKBorejq5gRBsTsQ7xT8GUVCI3C/QnCsjDujxCFj3ar8kPc8sCV6K/YO7gne2r6tlzYHIq8wCPPsa+yq7UvaKe0w2wLQ18rdAxmhpcxEa/zXXCgeHrPuGlrV+MzHIUOTEzvQTi3c52g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884556; c=relaxed/simple;
-	bh=sJX3S+SaKGsV4GTGV6di2ag0hHJn8LP6CtH/cD39vJw=;
+	s=arc-20240116; t=1765886275; c=relaxed/simple;
+	bh=pgQYHb19+GlOsnm6pkfnFiOrMzSn+GCKvIkTx6LdfN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srgsUikYEAzo+ZVk9pEvLaH6SIzzATBh55kI7mxnGe3+vHtVfoTTF7OImGi2I4MPIo6k/3hJ/+rHRPE/EEYi42Yx+TBrlzgdrurbdU+7DuRBgTO6Jtwh1pcaJUlMXzaFjID8iCVw7vf1TsYvSDaVyHtaknZLiB7XIj88ydgltW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrgZeW2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10382C4CEF1;
-	Tue, 16 Dec 2025 11:29:14 +0000 (UTC)
+	 MIME-Version; b=grhRfVhr6RLoLMCPYNcByJ7M5/EqXGSfPOhC1KmIzJI2zZokegn7Q7qqWaNWwpS8x5c31tBX+EVkr5q88q8M3D/ARy9z8DaJ3xfPrYWpJ3yNYaDu6EOosqB8ju13xqFOKDU6QT6kUXEQqGFVmgDi4MsmeRqhuMUBMoUr1Wzlvlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChmDTulN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EDAC4CEF1;
+	Tue, 16 Dec 2025 11:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884555;
-	bh=sJX3S+SaKGsV4GTGV6di2ag0hHJn8LP6CtH/cD39vJw=;
+	s=korg; t=1765886275;
+	bh=pgQYHb19+GlOsnm6pkfnFiOrMzSn+GCKvIkTx6LdfN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrgZeW2RX2Jvjr0mlUX80hohPE6HTiOLVJWosIEETK6bDOaRGP3hQYMg/nH5og/03
-	 YVnD9kyjFqLNByHJdFXTYz+XbEMHvr5syj+x/leftSTIxzlh4nqT8745cdOSMmF/11
-	 22jR6AxIMfozbmnTkYpkrAkdQICinJLDA1g3R6IE=
+	b=ChmDTulNLm+UEzZgjF0rnaJXQjw9c9k6txDyzT2xwE5x+OhUgzcYnjyG8+FtYwYuX
+	 V7zwAgQXHmgvHLmLwsnjb2VuSFHjViPnneSL7qSHHGtvJFX0MepMnA/z3VbUBoz5CC
+	 UhWK7RlmswX9q/r5cLUjBndWNayp21Czq9/i55r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/354] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
-Date: Tue, 16 Dec 2025 12:13:16 +0100
-Message-ID: <20251216111329.214267618@linuxfoundation.org>
+Subject: [PATCH 6.17 356/507] clocksource/drivers/ralink: Fix resource leaks in init error path
+Date: Tue, 16 Dec 2025 12:13:17 +0100
+Message-ID: <20251216111358.354220705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
+[ Upstream commit 2ba8e2aae1324704565a7d4d66f199d056c9e3c6 ]
 
-Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
-matching groups. This is more than what is defined as maximum by the ARM
-SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
-Limit the SMR groups to 128") disabled use of the additional groups because
-they don't exhibit the same behavior as the architecture supported ones.
+The ralink_systick_init() function does not release all acquired resources
+on its error paths. If irq_of_parse_and_map() or a subsequent call fails,
+the previously created I/O memory mapping and IRQ mapping are leaked.
 
-It seems like this is just another quirk of the hypervisor: When running
-bare-metal without the hypervisor, the additional groups appear to behave
-just like all others. The boot firmware uses some of the additional groups,
-so ignoring them in this situation leads to stream match conflicts whenever
-we allocate a new SMR group for the same SID.
+Add goto-based error handling labels to ensure that all allocated
+resources are correctly freed.
 
-The workaround exists primarily because the bypass quirk detection fails
-when using a S2CR register from the additional matching groups, so let's
-perform the test with the last reliable S2CR (127) and then limit the
-number of SMR groups only if we detect that we are running below the
-hypervisor (because of the bypass quirk).
-
-Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 1f2acc5a8a0a ("MIPS: ralink: Add support for systick timer found on newer ralink SoC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20251030090710.1603-1-vulab@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/clocksource/timer-ralink.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 0c35a235ab6d0..1a72d067e5843 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -299,17 +299,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
--	 * 128 stream matching groups. For unknown reasons, the additional
--	 * groups don't exhibit the same behavior as the architected registers,
--	 * so limit the groups to 128 until the behavior is fixed for the other
--	 * groups.
-+	 * 128 stream matching groups. The additional registers appear to have
-+	 * the same behavior as the architected registers in the hardware.
-+	 * However, on some firmware versions, the hypervisor does not
-+	 * correctly trap and emulate accesses to the additional registers,
-+	 * resulting in unexpected behavior.
-+	 *
-+	 * If there are more than 128 groups, use the last reliable group to
-+	 * detect if we need to apply the bypass quirk.
- 	 */
--	if (smmu->num_mapping_groups > 128) {
--		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
--		smmu->num_mapping_groups = 128;
--	}
--
--	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+	if (smmu->num_mapping_groups > 128)
-+		last_s2cr = ARM_SMMU_GR0_S2CR(127);
-+	else
-+		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
- 
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
-@@ -332,6 +334,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 
- 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
- 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
-+
-+		if (smmu->num_mapping_groups > 128) {
-+			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+			smmu->num_mapping_groups = 128;
-+		}
+diff --git a/drivers/clocksource/timer-ralink.c b/drivers/clocksource/timer-ralink.c
+index 6ecdb4228f763..68434d9ed9107 100644
+--- a/drivers/clocksource/timer-ralink.c
++++ b/drivers/clocksource/timer-ralink.c
+@@ -130,14 +130,15 @@ static int __init ralink_systick_init(struct device_node *np)
+ 	systick.dev.irq = irq_of_parse_and_map(np, 0);
+ 	if (!systick.dev.irq) {
+ 		pr_err("%pOFn: request_irq failed", np);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_iounmap;
  	}
  
- 	for (i = 0; i < smmu->num_mapping_groups; i++) {
+ 	ret = clocksource_mmio_init(systick.membase + SYSTICK_COUNT, np->name,
+ 				    SYSTICK_FREQ, 301, 16,
+ 				    clocksource_mmio_readl_up);
+ 	if (ret)
+-		return ret;
++		goto err_free_irq;
+ 
+ 	clockevents_register_device(&systick.dev);
+ 
+@@ -145,6 +146,12 @@ static int __init ralink_systick_init(struct device_node *np)
+ 			np, systick.dev.mult, systick.dev.shift);
+ 
+ 	return 0;
++
++err_free_irq:
++	irq_dispose_mapping(systick.dev.irq);
++err_iounmap:
++	iounmap(systick.membase);
++	return ret;
+ }
+ 
+ TIMER_OF_DECLARE(systick, "ralink,cevt-systick", ralink_systick_init);
 -- 
 2.51.0
 
