@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FADCC3F99
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:35:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57EFCC2968
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B25B304B397
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2CB4301F016
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D965434D3AC;
-	Tue, 16 Dec 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D64735CB7A;
+	Tue, 16 Dec 2025 12:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1itA0VZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MT7QcEA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9553434D3A8;
-	Tue, 16 Dec 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F6935F8A3;
+	Tue, 16 Dec 2025 12:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885295; cv=none; b=h7tiHFAf7/ADMuFvubNfu6JWWyjaaObqmrjc5qY+90x4HyBrWtuI24Iq+1AkTErbhfUV/ZMjvwVPDZzuepu2Fwlz2UJSfMe0sQVK0fxiHJv+RHAJqYmxsCCUJgOiaFD3wj+rs0kXTNaydotEqlAJb2TZGEUdZV1I1YJ1VOoVEUA=
+	t=1765887331; cv=none; b=ReXOBrkwN/MkyEoQ1w8l6kXzgY0s31IvEz8vTRj769LbFMFMpaA4Ct1fa2wveyZXPuPfCnLyJ7qB0ZTlqsqHGU0k2ElK1ZXV2lyBLSojrGusSj0jmgiOq3RXnz+Q6ZqW+si0mOe9cOg8Ewf7X0FlhCceDthiqXFdj1vaxN/dguo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885295; c=relaxed/simple;
-	bh=m2FgzkKYYoruca/XHReQowmj2q7Nllhd9p5GTELfg0s=;
+	s=arc-20240116; t=1765887331; c=relaxed/simple;
+	bh=WTkHMGCouxfVCFy/tTV7PQRWhjJAQqaaIinBf7KrM9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hn73inYpCQsRPxla6zL1QfhVRwHKBIf1+Q4JJTsykkbtEt1VjMRIHOOKso+AVKxNki2zqWJfMEvvyD96Kh1vyUbwVjEiL7BOET5uCyVnbepzXckIcL855MKH7jNxC7tfLz9VV4oMNmejpq2bVTq3vg0c4L77KcsA6iA50CD3GFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1itA0VZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CBBC4CEF1;
-	Tue, 16 Dec 2025 11:41:34 +0000 (UTC)
+	 MIME-Version; b=d+501pTUP4C4lrBKer8n2TQk6PZGUkM4rIUXRO8NWku+4ZwBECWobjN536/KuNhWhaUJPrJtAdIVoL53RTYdYcqFH1gJSjYodMrzSHr3BYrS0pjwAxAnxx3AiMexsXG5M8ku6mrPK/h00sVzKNNWrgAs25xIgOetB4t46SJsWMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MT7QcEA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB53AC4CEF5;
+	Tue, 16 Dec 2025 12:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885295;
-	bh=m2FgzkKYYoruca/XHReQowmj2q7Nllhd9p5GTELfg0s=;
+	s=korg; t=1765887331;
+	bh=WTkHMGCouxfVCFy/tTV7PQRWhjJAQqaaIinBf7KrM9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1itA0VZVKVFww24sRooE2oHKJgwySot66Q1wSIeq6Yl7we4b4vbl8dA0hEQNswfhO
-	 JlAqtSHSi5BDfyH3w5riEuyIVZeLIIlD0B1JFP4b7uViJjnEmECZrlmxljgP0yScBR
-	 uLV5fd6kKnZAPQwZ3lLKte8VD3Lu6cBR+hOdksCo=
+	b=MT7QcEA+Tyd+pC91NwYbcE3yujnKE9sQLTXpVfjKAYXJy3I3Vdr9mQJEhkglS26HP
+	 tIu9gvzBUmWhFUjdG/TFZWUY79B2tDjkirz79NjGwvaYGna1u4gzN+OgkjR1bcrwhO
+	 PFTIw5oEREmNxktRgcK+oHhEjUDtEcA/FGfgWe0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Eric=20Gon=C3=A7alves?= <ghatto404@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot@syzkaller.appspotmail.com,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 095/507] arm64: dts: qcom: starqltechn: remove extra empty line
-Date: Tue, 16 Dec 2025 12:08:56 +0100
-Message-ID: <20251216111348.980009150@linuxfoundation.org>
+Subject: [PATCH 6.18 170/614] cgroup: add cgroup namespace to tree after owner is set
+Date: Tue, 16 Dec 2025 12:08:57 +0100
+Message-ID: <20251216111407.508992138@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Gonçalves <ghatto404@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 6e71c5812856d67881572159098f701184c9356a ]
+[ Upstream commit 768b1565d9d1e1eebf7567f477f7f46c05a98a4d ]
 
-Remove empty white line ine starqltechn device tree at the end of
-max77705_charger node.
+Otherwise we trip VFS_WARN_ON_ONC() in __ns_tree_add_raw().
 
-Signed-off-by: Eric Gonçalves <ghatto404@gmail.com>
-Link: https://lore.kernel.org/r/20250828204929.35402-1-ghatto404@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 4372b15d89e2 ("arm64: dts: qcom: sdm845-starqltechn: fix max77705 interrupts")
+Link: https://patch.msgid.link/20251029-work-namespace-nstree-listns-v4-6-2e6f823ebdc0@kernel.org
+Fixes: 7c6059398533 ("cgroup: support ns lookup")
+Tested-by: syzbot@syzkaller.appspotmail.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/cgroup/namespace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 016a245a97c40..e0d83b6344215 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -631,7 +631,6 @@ max77705_charger: charger@69 {
- 		monitored-battery = <&battery>;
- 		interrupt-parent = <&pm8998_gpios>;
- 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
--
- 	};
+diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
+index fdbe57578e688..db9617556dd70 100644
+--- a/kernel/cgroup/namespace.c
++++ b/kernel/cgroup/namespace.c
+@@ -30,7 +30,6 @@ static struct cgroup_namespace *alloc_cgroup_ns(void)
+ 	ret = ns_common_init(new_ns);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+-	ns_tree_add(new_ns);
+ 	return no_free_ptr(new_ns);
+ }
  
- 	fuel-gauge@36 {
+@@ -86,6 +85,7 @@ struct cgroup_namespace *copy_cgroup_ns(u64 flags,
+ 	new_ns->ucounts = ucounts;
+ 	new_ns->root_cset = cset;
+ 
++	ns_tree_add(new_ns);
+ 	return new_ns;
+ }
+ 
 -- 
 2.51.0
 
