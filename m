@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B0FCC2F64
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151F5CC235B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B7543257719
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E33FB304D54D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C63E3446D8;
-	Tue, 16 Dec 2025 12:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E7134214A;
+	Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/NLDCcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saSFdHzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC33A33F8AA;
-	Tue, 16 Dec 2025 12:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431D0341069;
+	Tue, 16 Dec 2025 11:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887822; cv=none; b=tHnRoERtIW76c/UvsmBHs2EOQo1ai8M6OaJMnEUXObjH7yUVKeYGVJ+92GBFJ1MImAdEwOK5fqZgnrzlOmToa9RKuKJi1iEZnMlJK2a+kNjuEb68rOyEcXnoYdSC742EZHNtNk21L5FkoTkHXEjvzDJrBd3NcMycVD6e7SGL4To=
+	t=1765884179; cv=none; b=V0tqa54AoLbi9BVaYbNDiQx3gmtDtPf5W8RETJKSX5DPpdSP6t6dXIfQGceuxRBcTtIUA7tYg09Smi/LapYN8v6MuRu/rGHzhM0BAWt0lH5h3gTttlnHuBFbZ03XXmvH71LVmHQSZcRx5SIcM6Z9Rfcau9or4EzGPHm9CxhBvrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887822; c=relaxed/simple;
-	bh=Z/c3uWRe5f5Ftteo7520W68h1+/fZHov+5YXsgrs9SU=;
+	s=arc-20240116; t=1765884179; c=relaxed/simple;
+	bh=LADstBapGfVhYUq9jB57Dh2JabwFJNWHrbPNR7S0/jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSoxSOrHx6kbEKzuke4tyn67QNmw2NHUuV3upszZx9Ah0qrIDPRG9wCHhqhfpJ8HRIxITvxxWedz/3X+H5xvNPo1mcZwIHsLHPdpTvhXOOdZbcwzaXM69asHdRfy0kzyLSr05tyjq039oQ9cxVu0JhvonVusObUbX9FhV2HfHnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/NLDCcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AABDC4CEF1;
-	Tue, 16 Dec 2025 12:23:42 +0000 (UTC)
+	 MIME-Version; b=jo+D84N82xVUXsVpYH8bYbN2u27EOjxV+D6We/5rQFj/xs7qgTSkdIoPQqoh+ZdTgkoCiVrDcBAMR5OlOxTHavRC1Ms/ZcCjx1DyLCJX7ktM6DRKrBsGAKvNeZaRRLQ89KpKIJBgvsuwQxJxZ/o0/BhCXFF9aml9gdoVxwq6AZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saSFdHzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3847C4CEF1;
+	Tue, 16 Dec 2025 11:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887822;
-	bh=Z/c3uWRe5f5Ftteo7520W68h1+/fZHov+5YXsgrs9SU=;
+	s=korg; t=1765884179;
+	bh=LADstBapGfVhYUq9jB57Dh2JabwFJNWHrbPNR7S0/jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/NLDCcTW2a54Ms+i7PTapS7zKbokwp9rtEPJgixWjCq+xhw9qlhYXZMojE8O4P0I
-	 XoO4bWnoessa/uNO4DIsCdHJRUqFKeSxdXCMLlZ2EawI3wlR7MmtZ6hYn+lag15ZQR
-	 rgInoxJxVa6QZ/GNe5f4E4zlN3S9WHlIn5EFXj30=
+	b=saSFdHzXOuPlcH5jQh2b2qf6MzPd0EqDFTo9xwUeH2ENiTqSyaVEV8KJbIALwHFd6
+	 OX0PnDC+E7euqg2jCdVdRHsWdxHOVY86J7sIwLaR62OkhJG8uRaJv8t90287TMycFE
+	 rCWtVlHU6p8JpT0sl0qMGlsaKANA6osddFJirDYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 315/614] bpf: Fix invalid prog->stats access when update_effective_progs fails
-Date: Tue, 16 Dec 2025 12:11:22 +0100
-Message-ID: <20251216111412.779495993@linuxfoundation.org>
+Subject: [PATCH 6.12 116/354] drm/panthor: Fix UAF on kernel BO VA nodes
+Date: Tue, 16 Dec 2025 12:11:23 +0100
+Message-ID: <20251216111325.127016729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 7dc211c1159d991db609bdf4b0fb9033c04adcbc ]
+[ Upstream commit 98dd5143447af0ee33551776d8b2560c35d0bc4a ]
 
-Syzkaller triggers an invalid memory access issue following fault
-injection in update_effective_progs. The issue can be described as
-follows:
+If the MMU is down, panthor_vm_unmap_range() might return an error.
+We expect the page table to be updated still, and if the MMU is blocked,
+the rest of the GPU should be blocked too, so no risk of accessing
+physical memory returned to the system (which the current code doesn't
+cover for anyway).
 
-__cgroup_bpf_detach
-  update_effective_progs
-    compute_effective_progs
-      bpf_prog_array_alloc <-- fault inject
-  purge_effective_progs
-    /* change to dummy_bpf_prog */
-    array->items[index] = &dummy_bpf_prog.prog
+Proceed with the rest of the cleanup instead of bailing out and leaving
+the va_node inserted in the drm_mm, which leads to UAF when other
+adjacent nodes are removed from the drm_mm tree.
 
----softirq start---
-__do_softirq
-  ...
-    __cgroup_bpf_run_filter_skb
-      __bpf_prog_run_save_cb
-        bpf_prog_run
-          stats = this_cpu_ptr(prog->stats)
-          /* invalid memory access */
-          flags = u64_stats_update_begin_irqsave(&stats->syncp)
----softirq end---
-
-  static_branch_dec(&cgroup_bpf_enabled_key[atype])
-
-The reason is that fault injection caused update_effective_progs to fail
-and then changed the original prog into dummy_bpf_prog.prog in
-purge_effective_progs. Then a softirq came, and accessing the members of
-dummy_bpf_prog.prog in the softirq triggers invalid mem access.
-
-To fix it, skip updating stats when stats is NULL.
-
-Fixes: 492ecee892c2 ("bpf: enable program stats")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Link: https://lore.kernel.org/r/20251115102343.2200727-1-pulehui@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Lars-Ivar Hesselberg Simonsen <lars-ivar.simonsen@arm.com>
+Closes: https://gitlab.freedesktop.org/panfrost/linux/-/issues/57
+Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patch.msgid.link/20251031154818.821054-2-boris.brezillon@collabora.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 12 +++++++-----
- kernel/bpf/syscall.c   |  3 +++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panthor/panthor_gem.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 973233b82dc1f..569de3b14279a 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -712,11 +712,13 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index be97d56bc011d..8387a075150bd 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -32,7 +32,6 @@ static void panthor_gem_free_object(struct drm_gem_object *obj)
+ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
+ {
+ 	struct panthor_vm *vm;
+-	int ret;
  
- 		duration = sched_clock() - start;
--		stats = this_cpu_ptr(prog->stats);
--		flags = u64_stats_update_begin_irqsave(&stats->syncp);
--		u64_stats_inc(&stats->cnt);
--		u64_stats_add(&stats->nsecs, duration);
--		u64_stats_update_end_irqrestore(&stats->syncp, flags);
-+		if (likely(prog->stats)) {
-+			stats = this_cpu_ptr(prog->stats);
-+			flags = u64_stats_update_begin_irqsave(&stats->syncp);
-+			u64_stats_inc(&stats->cnt);
-+			u64_stats_add(&stats->nsecs, duration);
-+			u64_stats_update_end_irqrestore(&stats->syncp, flags);
-+		}
- 	} else {
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
- 	}
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 8a129746bd6cc..15f9afdbfc275 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2462,6 +2462,9 @@ void notrace bpf_prog_inc_misses_counter(struct bpf_prog *prog)
- 	struct bpf_prog_stats *stats;
- 	unsigned int flags;
+ 	if (IS_ERR_OR_NULL(bo))
+ 		return;
+@@ -40,18 +39,11 @@ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
+ 	vm = bo->vm;
+ 	panthor_kernel_bo_vunmap(bo);
  
-+	if (unlikely(!prog->stats))
-+		return;
-+
- 	stats = this_cpu_ptr(prog->stats);
- 	flags = u64_stats_update_begin_irqsave(&stats->syncp);
- 	u64_stats_inc(&stats->misses);
+-	if (drm_WARN_ON(bo->obj->dev,
+-			to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm)))
+-		goto out_free_bo;
+-
+-	ret = panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
+-	if (ret)
+-		goto out_free_bo;
+-
++	drm_WARN_ON(bo->obj->dev,
++		    to_panthor_bo(bo->obj)->exclusive_vm_root_gem != panthor_vm_root_gem(vm));
++	panthor_vm_unmap_range(vm, bo->va_node.start, bo->va_node.size);
+ 	panthor_vm_free_va(vm, &bo->va_node);
+ 	drm_gem_object_put(bo->obj);
+-
+-out_free_bo:
+ 	panthor_vm_put(vm);
+ 	kfree(bo);
+ }
 -- 
 2.51.0
 
