@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3819DCC2640
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85015CC27DC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C6193048DBA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D46B530231B9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EDE344039;
-	Tue, 16 Dec 2025 11:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39DF34F470;
+	Tue, 16 Dec 2025 11:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjcigebU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fY1XAPWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E7431B10F;
-	Tue, 16 Dec 2025 11:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE27334F469;
+	Tue, 16 Dec 2025 11:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884431; cv=none; b=UlX9ZK8vE37hkhUVWM7yjWqkNdmNq53cg0uF2ZFp1UKZ82G34H6YZMu3WFpBOWezJHoz95v4tGO5VyTknsPvi8vi9/vDgGlgOqr77wIGiBqZuInRGs+jy7jOjba758O+LBKT8WZUCrKmNLEkepdmHOHswPoqp3QsHy5uLmY0pks=
+	t=1765886139; cv=none; b=b8K0kgGsJpnY5/O4V0Ddk7AnsVsQLxPXQ0O816QyKK+8LfBd/qO8IPjOkjY5HjPNpLpe2WnPmtao2W47JtWjJqs7qJnMyf6sK32BLmQ5TkblbS2RSqzvID3AetdtSAUHRcBoCvSaEVEOOFFwAJkEPAumEKvwxWGczbTtE7uAXlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884431; c=relaxed/simple;
-	bh=Sok0bEkFfDcajiSz/ZynEFQuhbz6xsVaQfVvmX8ZueI=;
+	s=arc-20240116; t=1765886139; c=relaxed/simple;
+	bh=cTISUqNg1cs6Hag7vJy5/TJoFesRmmmNJ0A2pQDkIy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTMOaqfDKp9XqSun5MrsyeTwlNqFIJWyCwMbnQ0/eo68UU7P29FIYYoSQZQUwm4BNLzGXl52k+nEpGx0KwTxT5pKhrRKqKwsaT0fmHp4mTKmFdMbjZ+ZRJytrdR70bhEOBNIFEaQPy75bhh36rArOf402WyBueOmUknH2FgQ6TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjcigebU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA07C4CEF1;
-	Tue, 16 Dec 2025 11:27:10 +0000 (UTC)
+	 MIME-Version; b=gYZIrrkuRo1mTm1ibmDmemwNSqK9hPakplz/yLmCGJCBNhLAuGbOCquz7+zR0bZceTa3l5lDh39fsISWMHpOgZ1yS/wXzHp5tpbiRuY325J62L5SMX/Q/Oogh+FtN5peuf5YEQJHEKHtsElUSTZ+rMZ5ADrtHDXx0vIcdjvYhg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fY1XAPWG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC56C4CEF1;
+	Tue, 16 Dec 2025 11:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884430;
-	bh=Sok0bEkFfDcajiSz/ZynEFQuhbz6xsVaQfVvmX8ZueI=;
+	s=korg; t=1765886139;
+	bh=cTISUqNg1cs6Hag7vJy5/TJoFesRmmmNJ0A2pQDkIy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjcigebUUJ48wsf/jhvloqfTUtIRxLRczzRxDeUUHm+RzfvKUx98nNJn4WmEFuS9o
-	 MpqQaApkGPir5WYabHk9h0zEg8GhN9l1qs7p+IKvXVfcDd/xjzYAyIOJOR96lSYD+z
-	 vQmt2Ou7AP/nAxSDp40R98zWOg9f09A7WWqXdnBk=
+	b=fY1XAPWGbt69opYooc/TyvWKbF3AvkMo/5myXeOJsWeuHnavmU6pusUPr8B6wbj5L
+	 DIaNp2rXHvFaCbGjxZEK+fnbJ7J+UZAh5RnoncjZksC+G1emG8V06QBWK/l6Llkvsd
+	 qAuMbev8DC7nidd3YfUsKqkJTNdOO5hWYlOi2xwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/354] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Subject: [PATCH 6.17 317/507] RDMA/bnxt_re: Fix the inline size for GenP7 devices
 Date: Tue, 16 Dec 2025 12:12:38 +0100
-Message-ID: <20251216111327.832690592@linuxfoundation.org>
+Message-ID: <20251216111356.953549764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
+[ Upstream commit 6afe40ff484a1155b71158b911c65299496e35c3 ]
 
-If devm_request_threaded_irq() fails after irq_domain_add_linear()
-succeeds in mt6358_irq_init(), the function returns without removing
-the created IRQ domain, leading to a resource leak.
+Inline size supported by the device is based on the number
+of SGEs supported by the adapter. Change the inline
+size calculation based on that.
 
-Call irq_domain_remove() in the error path after a successful
-irq_domain_add_linear() to properly release the IRQ domain.
-
-Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1763624215-10382-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mt6358-irq.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
-index 49830b526ee88..10a0952615a17 100644
---- a/drivers/mfd/mt6358-irq.c
-+++ b/drivers/mfd/mt6358-irq.c
-@@ -286,6 +286,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
- 	if (ret) {
- 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
- 			chip->irq, ret);
-+		irq_domain_remove(chip->irq_domain);
- 		return ret;
- 	}
- 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 68981399598d8..f40b7d1692b06 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -161,7 +161,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw)
+ 	attr->max_srq_wqes = le32_to_cpu(sb->max_srq_wr) - 1;
+ 	attr->max_srq_sges = sb->max_srq_sge;
+ 	attr->max_pkey = 1;
+-	attr->max_inline_data = le32_to_cpu(sb->max_inline_data);
++	attr->max_inline_data = attr->max_qp_sges * sizeof(struct sq_sge);
+ 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
+ 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
+ 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
 -- 
 2.51.0
 
