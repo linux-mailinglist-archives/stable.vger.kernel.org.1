@@ -1,201 +1,205 @@
-Return-Path: <stable+bounces-201142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6B2CC13DB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:07:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F97CC148A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 08:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1351C300E7B3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 07:07:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F2703039CD5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 07:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9BE33C198;
-	Tue, 16 Dec 2025 07:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162F031ED71;
+	Tue, 16 Dec 2025 07:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSKdUGNX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdcNRo1P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C6233B943
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 07:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41ED158538;
+	Tue, 16 Dec 2025 07:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765868872; cv=none; b=fiI4gfTRTkPqT57zdZTokZfcjv/7MAGq3J4xcmqaYAZl3xn8t8jzvAf+EkMo3EnzEPau8ciSOU37kfhSuQPJJfMfTWV8VZ16xgfTQI338nQefbPXyYF4vbLyusKMJ0LTgbXCMA5F3x36WrWUbNOD0I101Mhridn2dNuCk99WUfw=
+	t=1765869078; cv=none; b=prXWjQReQUvGMA2BD67U/No9uf5ELe16ANqe7EDRjim3JvbjA5uJcofdsi5uCJrgrThg1XtfMujF54zL37tHifkq3psFmj2FsoloLSPBY9RTzHDTMJPFoxneCNMRCTh5SWHwGbp0++oOOsL87QDQJgZyLy4Rvql3RtrZBMucrog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765868872; c=relaxed/simple;
-	bh=Q+mk+mouamuEEyAnhc0mw3Y5KbvTWFbsXdDe8Twl2c8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q6+wTZ4bzPalfUbY8dsIpFnyaFHHONk5YRqG0INZmesjl4pCgZp2nBm9D1jGpfVEItV8YDXdcYWOv279F/lYbWkR2/YjopfP3ilI56dpEJX/agP6uDtZesmPhecRRKC39MEhgab5KRgdP6fd8atesY6XK+jVtr/9VF0p3fzmbuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSKdUGNX; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee2014c228so31105421cf.2
-        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 23:07:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765868866; x=1766473666; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HScJKo2ZJ/IGih9vrcGVoqKVZ2gLkTQ4915YFT77Pi0=;
-        b=OSKdUGNXAdzu840N2QlvAlm6z41pJw/DU//qy6PaCZ+QEqqAuMi4pxHAQHqUzBhWGD
-         owy1KcS/S4sN6vCjYIdD6XUUgoJ10BN36mI5jcINDDHSYelvD5gBujOYQyUgqFu/yGdD
-         4XGxyLMN9FhYSkR8vao4kIYWcfwUUBPIyH/pN1jR3GS5lx85a88u0ddVESKm+nL1X46+
-         0x6rGfoQoY67LohkfFQRYf6CTke/6XX2n5llb+BjzvmQmxhHPRGE/MFV4UX/8BB0aX9/
-         2J6s4eyorxatkGHEOrgvj5nSHToQIRejjZ0Mo5iL57AbccD7xNLcm7kmOaQUNQP/VSdY
-         Q4cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765868866; x=1766473666;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HScJKo2ZJ/IGih9vrcGVoqKVZ2gLkTQ4915YFT77Pi0=;
-        b=ombtqlTH1UsPd9dAtF97LUfSfgdvuzolKfBxkhP6xmlt0iaDZ2zskQxygy0A/ksbrL
-         TAoVyEIWsRx+zWufjc7kWvU/jE0mqSOqO3TRFu+SgFpYyrRKNoN7fBaWEjPunDkz8A/L
-         FdqzIuy1MmYP0e/UOLhxiX2yVzUxtJ5nxkrcvcGWBXJ21snHbWqcpspambsoVAUpatpN
-         YrFJ3RmpLu80QTi/IWeQ7x2MT8Aq1F76DVuhNhwlZPEslrJT04245Y1h1ZSd8jPi64LE
-         dzVvDQ2IrTtXan2DXZEoNZRoLJsNXA8x9HKnXwjvZXASuAU8c6P5MCVX+Bmv4QFEkXY3
-         ugyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXj04GSVebvbdSuNHhIGisayQhGwuxt5edOHqBpuV2SutwBFEBqqwNdt3Rke12eEu80JA7ZJbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU8F28h/RUO+xARLz+f5OpSp83iHpT+dbYKNOPiWpkvtJ2HPHV
-	qlRHSlZ1YRd3soiRuQusWDz+DT8EMXk4thQU+AIE5c2e9DvnOIVeQPyGXptWhjXRNMiHzYHUr59
-	o7+okws+0fnRbBv842iKq9zTEcfp+dLY=
-X-Gm-Gg: AY/fxX7b+k7yMPVtin8x74mgnCU4cKhFP36Qo3i4h9t5e0nDJbo3CeXm9s8PE2x2tZP
-	jaUjo0OyEXPWx5FikY//30d0OX3P2uPuFisoHX16wxNcKNMFURV/zTdl16oqeWRrezLQRAUFqSM
-	Fgw5c2+2prSWonEPQy2Xyp6QBNlhtmiB/Ne+YhG/Bl6+uIo+sCzuhx2z2Fa+DhW0L7tum4QGhH5
-	KFufhMcnukQZRhDnhiXdpb/lJ/lEO5moQHeF45TQcdxx6U/tyZ6U/Edf5Gblo/8tyCSeOZAiKVV
-	yDWS9Cd0wZE=
-X-Google-Smtp-Source: AGHT+IHdFbcCr8rDYHyI9PjajR/t+4eN/PBNmV7BmRo8+mJOOy3yb1aGTT+f0yRNO2U2a9JTAylP005Pr7cTKtFcS5w=
-X-Received: by 2002:a05:622a:4889:b0:4f0:5dd:c963 with SMTP id
- d75a77b69052e-4f1d04715femr185534361cf.7.1765868865896; Mon, 15 Dec 2025
- 23:07:45 -0800 (PST)
+	s=arc-20240116; t=1765869078; c=relaxed/simple;
+	bh=fa0zgiC6/KfmKqs37/xhEKTiioKlQhOHMyFCK890XW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R6eq6kNHRu4GkeTtVVgRmFODLA0rYEzwMU5fYHIYJBiAaJk70XdCy5IVnap2oZmZWSsdm4s2gBXxml2R5NHv9Am1r5oZO62MUzDODmYxgC2aAiG4/8/DZs1zlxCx2y6l1rDF+j5U17tLS3jc+y1PiPx1cEE+XoccjrnJKD8QnDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdcNRo1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CB3C4CEF1;
+	Tue, 16 Dec 2025 07:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765869076;
+	bh=fa0zgiC6/KfmKqs37/xhEKTiioKlQhOHMyFCK890XW4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KdcNRo1Pf5tXBBHEsPzhlOvkk6Iz1Pw4F0OZe8FqH9sSo0F4sCNZYZAkTUD5pTUTo
+	 0PVNWGz+ivbql3mtjebM0zEepuGU6I2luXKzIK4S8pJg7Np0CaAVm4KvOYiaIrvoDP
+	 CbGV+Hw5G2lfMXKxZx9HCGhWvpyvPNUF0H8/OW2eImrYy0e6DPVSlM4T9AMFGt5LSu
+	 ewlKETUCK20rfCA9uj/9vXvExaZD8QZoyVyFXbaUJehClQVYVIiJ3c1xU1K6NI5WLE
+	 2EAvvHrju7jouaP0Kl+ns7/nnU5sWgTjA4rT8iqGZ7RKR3vKbrt6GMLKp1bx7k2gPa
+	 nGPBGm4knedUw==
+Message-ID: <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
+Date: Tue, 16 Dec 2025 08:11:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com> <2410c88d-380a-4aef-898e-857307a57959@bsbernd.com>
-In-Reply-To: <2410c88d-380a-4aef-898e-857307a57959@bsbernd.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 16 Dec 2025 15:07:34 +0800
-X-Gm-Features: AQt7F2qpFeQSv5QD2stCOPk1MGDu8zClAXpXqMgzVuI8pDG-5lp3de5bo6jqHcY
-Message-ID: <CAJnrk1Z9gddx9F1oSbq9bWfFefURCqoAg3SDmT2Wqrnb1bwrwA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Bernd Schubert <bernd@bsbernd.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
-	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in
+ alarms_store
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+ David Laight <david.laight.linux@gmail.com>,
+ Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251111204422.41993-2-thorsten.blum@linux.dev>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251111204422.41993-2-thorsten.blum@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 16, 2025 at 1:09=E2=80=AFAM Bernd Schubert <bernd@bsbernd.com> =
-wrote:
->
-> On 12/15/25 04:00, Joanne Koong wrote:
-> > Skip waiting on writeback for inodes that belong to mappings that do no=
-t
-> > have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> > mapping flag).
-> >
-> > This restores fuse back to prior behavior where syncs are no-ops. This
-> > is needed because otherwise, if a system is running a faulty fuse
-> > server that does not reply to issued write requests, this will cause
-> > wait_sb_inodes() to wait forever.
-> >
-> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
-l rb tree")
-> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> > Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > ---
-> >   fs/fs-writeback.c       |  3 ++-
-> >   fs/fuse/file.c          |  4 +++-
-> >   include/linux/pagemap.h | 11 +++++++++++
-> >   3 files changed, 16 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> > index 6800886c4d10..ab2e279ed3c2 100644
-> > --- a/fs/fs-writeback.c
-> > +++ b/fs/fs-writeback.c
-> > @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb=
-)
-> >                * do not have the mapping lock. Skip it here, wb complet=
-ion
-> >                * will remove it.
-> >                */
-> > -             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> > +             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> > +                 mapping_no_data_integrity(mapping))
-> >                       continue;
-> >
-> >               spin_unlock_irq(&sb->s_inode_wblist_lock);
-> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> > index 01bc894e9c2b..3b2a171e652f 100644
-> > --- a/fs/fuse/file.c
-> > +++ b/fs/fuse/file.c
-> > @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, u=
-nsigned int flags)
-> >
-> >       inode->i_fop =3D &fuse_file_operations;
-> >       inode->i_data.a_ops =3D &fuse_file_aops;
-> > -     if (fc->writeback_cache)
-> > +     if (fc->writeback_cache) {
-> >               mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
-ata);
-> > +             mapping_set_no_data_integrity(&inode->i_data);
-> > +     }
->
-> For a future commit, maybe we could add a FUSE_INIT flag that allows priv=
-ileged
-> fuse server to not set this? Maybe even in combination with an enforced r=
-equest
-> timeout?
+On 11/11/2025 21:44, Thorsten Blum wrote:
+> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+> bytes and a NUL terminator is appended. However, the 'size' argument
+> does not account for this extra byte. The original code then allocated
+> 'size' bytes and used strcpy() to copy 'buf', which always writes one
+> byte past the allocated buffer since strcpy() copies until the NUL
+> terminator at index 'size'.
+> 
+> Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+> without allocating any intermediate memory or string copying. This
+> removes the overflow while simplifying the code.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Compile-tested only.
+> 
+> Changes in v4:
+> - Use simple_strtoll because kstrtoint also parses long long internally
+> - Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
+> - Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
+>   while maintaining the same behavior and return values as before
+> - Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
+> 
+> Changes in v3:
+> - Add integer range check for 'temp' to match kstrtoint() behavior
+> - Explicitly cast 'temp' to int when calling int_to_short()
+> - Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
+> 
+> Changes in v2:
+> - Fix buffer overflow instead of truncating the copy using strscpy()
+> - Parse buffer directly using simple_strtol() as suggested by David
+> - Update patch subject and description
+> - Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
+> ---
+>  drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
+>  1 file changed, 21 insertions(+), 43 deletions(-)
+> 
+> diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+> index 9ccedb3264fb..5707fa34e804 100644
+> --- a/drivers/w1/slaves/w1_therm.c
+> +++ b/drivers/w1/slaves/w1_therm.c
+> @@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
+>  	struct w1_slave *sl = dev_to_w1_slave(device);
+>  	struct therm_info info;
+>  	u8 new_config_register[3];	/* array of data to be written */
+> -	int temp, ret;
+> -	char *token = NULL;
+> +	long long temp;
+> +	int ret = 0;
+>  	s8 tl, th;	/* 1 byte per value + temp ring order */
+> -	char *p_args, *orig;
+> -
+> -	p_args = orig = kmalloc(size, GFP_KERNEL);
+> -	/* Safe string copys as buf is const */
+> -	if (!p_args) {
+> -		dev_warn(device,
+> -			"%s: error unable to allocate memory %d\n",
+> -			__func__, -ENOMEM);
+> -		return size;
+> -	}
+> -	strcpy(p_args, buf);
+> -
+> -	/* Split string using space char */
+> -	token = strsep(&p_args, " ");
+> -
+> -	if (!token)	{
+> -		dev_info(device,
+> -			"%s: error parsing args %d\n", __func__, -EINVAL);
+> -		goto free_m;
+> -	}
+> -
+> -	/* Convert 1st entry to int */
+> -	ret = kstrtoint (token, 10, &temp);
+> +	const char *p = buf;
+> +	char *endp;
+> +
+> +	temp = simple_strtoll(p, &endp, 10);
 
-That sounds good, thanks for reviewing this, Bernd!
+Why using this, instead of explicitly encouraged kstrtoll()?
 
->
-> >
-> >       INIT_LIST_HEAD(&fi->write_files);
-> >       INIT_LIST_HEAD(&fi->queued_writes);
-> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> > index 31a848485ad9..ec442af3f886 100644
-> > --- a/include/linux/pagemap.h
-> > +++ b/include/linux/pagemap.h
-> > @@ -210,6 +210,7 @@ enum mapping_flags {
-> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
-> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
-shouldn't
-> >                                  account usage to user cgroups */
-> > +     AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
-> >       /* Bits 16-25 are used for FOLIO_ORDER */
-> >       AS_FOLIO_ORDER_BITS =3D 5,
-> >       AS_FOLIO_ORDER_MIN =3D 16,
-> > @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_=
-on_reclaim(const struct addres
-> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
-lags);
-> >   }
-> >
-> > +static inline void mapping_set_no_data_integrity(struct address_space =
-*mapping)
-> > +{
-> > +     set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> > +}
-> > +
-> > +static inline bool mapping_no_data_integrity(const struct address_spac=
-e *mapping)
-> > +{
-> > +     return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> > +}
-> > +
-> >   static inline gfp_t mapping_gfp_mask(const struct address_space *mapp=
-ing)
-> >   {
-> >       return mapping->gfp_mask;
->
->
-> Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+> +	if (p == endp || *endp != ' ')
+> +		ret = -EINVAL;
+> +	else if (temp < INT_MIN || temp > INT_MAX)
+> +		ret = -ERANGE;
+>  	if (ret) {
+>  		dev_info(device,
+>  			"%s: error parsing args %d\n", __func__, ret);
+> -		goto free_m;
+> +		goto err;
+
+So this is just return size.
+
+
+Best regards,
+Krzysztof
 
