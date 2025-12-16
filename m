@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA1DCC2C9D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFC1CC4973
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D676312EFFE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52E5230410FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD873659ED;
-	Tue, 16 Dec 2025 12:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7128934AAFB;
+	Tue, 16 Dec 2025 11:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XncIjZ2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7FeoCGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1159749C;
-	Tue, 16 Dec 2025 12:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2326834AAF2;
+	Tue, 16 Dec 2025 11:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887159; cv=none; b=TfoFS11BY7h0f4Pun5w6QzH/dZgm/Cmu9TjKFDFaQcQK9k3fONccyoe3lakKeHMCL+nlQKEODsPOmTrBK4lRQiLYt7ZAqLk+tx42PXi/7SikFmjI/SraDoyIfFIHysuOy3hWCEOk+8obb3+oFqwlaxN0bCblbe+aWSkDOVMC0CU=
+	t=1765885209; cv=none; b=Q90LkcV8eA9x9q2LaWv8CVuo9MQWn0cbmq6iKZq6nh1wgMc1Jf11lxnw5IlNUPsRvUP986a0EGi+lOLVgnm9ivl3uwp7ph2NhxFVqLL5wyIqwePOWXhZbHKM5qfh27eTbHPdMQUoUuqo9lAI1pcyND9t2RLQA09+EesUcOHet48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887159; c=relaxed/simple;
-	bh=Xcbr6jb+vmiT6T4IME/r/KXT3PbxSFPfYftR5BHVCgg=;
+	s=arc-20240116; t=1765885209; c=relaxed/simple;
+	bh=w9wAuGJrt/1xvZfgizRqvfjFVSQh4zJeTaBKYQ3jdhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8Atg9tdRBJzljzCFi+LRfrYrX6nc2kKHrh+1ZIFTscT8qp8YB7siHQkvvL8le6IyAqPgnrilc5EykhBD8sWvyS5zPzfn/uTHo1yM3nTdpjO2uyz7kX6uHXJknEMinuMvFSR5DakdK0S8iFm1bYJAkqZNeVas9M9zAqjc8ACxSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XncIjZ2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DDEC4CEF1;
-	Tue, 16 Dec 2025 12:12:38 +0000 (UTC)
+	 MIME-Version; b=UA9tvVKrsX8Cjc78/jzfumu63IrOxi5tCQF4HE5jIG5t14BiMZi0K1N/OjBzMQolqXKkTTpIwTw6p4DF+LoDstTf1tXvL/k4kFl4ZlbYG8yvSNJ/koC/b7Ullx9mIX/Nrk1q8J/+1esTxSfIYjwHsGl4VPLU3c7gBCNnHiyXnrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7FeoCGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3602EC4CEF5;
+	Tue, 16 Dec 2025 11:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887158;
-	bh=Xcbr6jb+vmiT6T4IME/r/KXT3PbxSFPfYftR5BHVCgg=;
+	s=korg; t=1765885208;
+	bh=w9wAuGJrt/1xvZfgizRqvfjFVSQh4zJeTaBKYQ3jdhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XncIjZ2VFX1IFUBquCCkqWBcteM+c21XJLq6+qxNuFaLwqo24CjmtwAS224EZT/8G
-	 qNC782RikhsVNOxojoZNySkZpIHHoMmUe6OqswnktZzm+kC1yCmX/cWcCE2vuKAy25
-	 Kz6ionXk41f9BwIr5gNt0OXXz9o/h5fognQ8jp0Q=
+	b=c7FeoCGfse1JPLdkjZAGyI3NBA3OxGLqw1koHoNAuJWsI+oVVCjvdsz/t/V4Bft5s
+	 aO/FMVl5lWMfpzR3zEbdTtKqbo4qPZMEYhVNu1LvNygQWaHkchH6BPBVxj823r18mB
+	 CCxFo6nehCVrPpV4kkg/znjB0wvEYEF49hvJdg1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 145/614] accel/ivpu: Remove skip of dma unmap for imported buffers
+Subject: [PATCH 6.17 071/507] clk: qcom: camcc-sm8550: Specify Titan GDSC power domain as a parent to other
 Date: Tue, 16 Dec 2025 12:08:32 +0100
-Message-ID: <20251216111406.591462361@linuxfoundation.org>
+Message-ID: <20251216111348.115095779@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit c063c1bbee67391f12956d2ffdd5da00eb87ff79 ]
+[ Upstream commit d8f1121ebf4036884fc9ab1968f606523dd1c1fe ]
 
-Rework of imported buffers introduced in the commit
-e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
-switched the logic of imported buffers by dma mapping/unmapping
-them just as the regular buffers.
+When a consumer turns on/off a power domain dependent on another power
+domain in hardware, the parent power domain shall be turned on/off by
+the power domain provider as well, and to get it the power domain hardware
+hierarchy shall be described in the CAMCC driver.
 
-The commit didn't include removal of skipping dma unmap of imported
-buffers which results in them being mapped without unmapping.
+Establish the power domain hierarchy with a Titan GDSC set as a parent of
+all other GDSC power domains provided by the SM8550 camera clock controller
+to enforce a correct sequence of enabling and disabling power domains by
+the consumers, this fixes the CAMCC as a supplier of power domains to CAMSS
+IP and its driver.
 
-Fixes: e0c0891cd63b ("accel/ivpu: Rework bind/unbind of imported buffers")
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Link: https://patch.msgid.link/20251027150933.2384538-1-maciej.falkowski@linux.intel.com
+Fixes: ccc4e6a061a2 ("clk: qcom: camcc-sm8550: Add camera clock controller driver for SM8550")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251021234450.2271279-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/clk/qcom/camcc-sm8550.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index 1fca969df19dc..a38e41f9c7123 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -157,9 +157,6 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
- 		bo->ctx = NULL;
- 	}
+diff --git a/drivers/clk/qcom/camcc-sm8550.c b/drivers/clk/qcom/camcc-sm8550.c
+index 63aed9e4c362d..b8ece8a57a8a9 100644
+--- a/drivers/clk/qcom/camcc-sm8550.c
++++ b/drivers/clk/qcom/camcc-sm8550.c
+@@ -3204,6 +3204,8 @@ static struct clk_branch cam_cc_sfe_1_fast_ahb_clk = {
+ 	},
+ };
  
--	if (drm_gem_is_imported(&bo->base.base))
--		return;
--
- 	if (bo->base.sgt) {
- 		if (bo->base.base.import_attach) {
- 			dma_buf_unmap_attachment(bo->base.base.import_attach,
++static struct gdsc cam_cc_titan_top_gdsc;
++
+ static struct gdsc cam_cc_bps_gdsc = {
+ 	.gdscr = 0x10004,
+ 	.en_rest_wait_val = 0x2,
+@@ -3213,6 +3215,7 @@ static struct gdsc cam_cc_bps_gdsc = {
+ 		.name = "cam_cc_bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3225,6 +3228,7 @@ static struct gdsc cam_cc_ife_0_gdsc = {
+ 		.name = "cam_cc_ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3237,6 +3241,7 @@ static struct gdsc cam_cc_ife_1_gdsc = {
+ 		.name = "cam_cc_ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3249,6 +3254,7 @@ static struct gdsc cam_cc_ife_2_gdsc = {
+ 		.name = "cam_cc_ife_2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3261,6 +3267,7 @@ static struct gdsc cam_cc_ipe_0_gdsc = {
+ 		.name = "cam_cc_ipe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3273,6 +3280,7 @@ static struct gdsc cam_cc_sbi_gdsc = {
+ 		.name = "cam_cc_sbi_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3285,6 +3293,7 @@ static struct gdsc cam_cc_sfe_0_gdsc = {
+ 		.name = "cam_cc_sfe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -3297,6 +3306,7 @@ static struct gdsc cam_cc_sfe_1_gdsc = {
+ 		.name = "cam_cc_sfe_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
 -- 
 2.51.0
 
