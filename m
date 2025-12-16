@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-202495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EA9CC3385
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE634CC2AD1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D6CC304EDB7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF32E3023E80
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02B376BFC;
-	Tue, 16 Dec 2025 12:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61573559FF;
+	Tue, 16 Dec 2025 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raLvK3ZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK1zhjCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76928376BE9;
-	Tue, 16 Dec 2025 12:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A91C341AD7;
+	Tue, 16 Dec 2025 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888085; cv=none; b=bVbRyysaHQTQxgDI3MjyfeLScuuxT5D75VyIvnXGUd+44CSqtq8mDF5/guy1raoPJlu0cqmxePYiioE7/ZoJJKbvxzxeRSgMhbiPSWiD0HIhs6qkdglp9pilowvOdp+9ZVCuNPqpPx+/wlcVHzYHnMaNtuvlGjQenzWj0Rho9qM=
+	t=1765886269; cv=none; b=fr4EndjmT4bIOvTGT7UhWQUooTmFm8oNJTDcLKriE0ARl5aN/5lXIfS84jIr0J4/JaqDlllBy2PdDCpBDW3orq3N0kd/XxnMfV+3rMoGmucNMluCNMUEZ1nRqea4U1AfwIpO/ThNvhr2OLa55/wtCmWzYhtXTonQ4Dx+B4zUUog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888085; c=relaxed/simple;
-	bh=uK2/gvRRL0b4c2WMGGsIoEdHm9yUn3Q5FZDSBHx24KA=;
+	s=arc-20240116; t=1765886269; c=relaxed/simple;
+	bh=PKCQI7XnrBfE5c2dDj8v6C3e6+pqFwj/huV7mPzEcko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJzilQM+rHpSbqZhod9se0lBeZd7XCm4HgKRqoMIHR/Kd7wxUI833aohyCiYwX3sT42wA1oEINpEL3svj+1M1e1ZWzay4ktIUZfI1Qws7askx+C4qCSYdOtD5GCQIgSSFEIBr4+tq67VSmEGDjJ9ANHn+Zu4LF8f0nHRZpgqmI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raLvK3ZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9590C4CEF1;
-	Tue, 16 Dec 2025 12:28:04 +0000 (UTC)
+	 MIME-Version; b=B9C0zmcXMjEXw8Rn2INklv+yRyKao8jPQRDu4Vryu37rafTEsaDejOp68DGf0ZJTlTDsJ8ZN36OvNnKQQWK6ShMrTlPanpkjLOUdgn+FQEoIApAScs42JEe6GQTaLLBHgRNSJwmp0FUEtnW8Ut0yf++L7zb7DD+rWWfvfSJhA6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK1zhjCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F63BC4CEF1;
+	Tue, 16 Dec 2025 11:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888085;
-	bh=uK2/gvRRL0b4c2WMGGsIoEdHm9yUn3Q5FZDSBHx24KA=;
+	s=korg; t=1765886269;
+	bh=PKCQI7XnrBfE5c2dDj8v6C3e6+pqFwj/huV7mPzEcko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=raLvK3ZPgGpnNCZSAVf8o29aIBFDvse09I+MCxPH0HqemCyTugVumxTryq0EofbB1
-	 2NZQenuT/CV6p4fm2IqOXBoZK6CQ9liu9U6VWZklSQH84mQ3VZpAzCqVoubKJhTaVx
-	 rMLa1C+atgCGu2ndIiEDypC7rW/TRfQxBi4weWXE=
+	b=eK1zhjCk2gesxgS8s2/PMW8sOM4koy0/9gpWGFx0loxrOx20hsQSDSwaWH7cI9Hpw
+	 uTiuca8I7Y1ov3nGfoS+f1RcAI8Qe65va+Fed/l71TYvC61oFoZ/1l394J08RvH4BI
+	 Rx+vTlw0hYs0vfq1BevMbbCUMK0ZT9ms8nJRPmws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,12 +44,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 428/614] RDMA/irdma: Remove doorbell elision logic
+Subject: [PATCH 6.17 354/507] RDMA/irdma: Do not directly rely on IB_PD_UNSAFE_GLOBAL_RKEY
 Date: Tue, 16 Dec 2025 12:13:15 +0100
-Message-ID: <20251216111416.880944925@linuxfoundation.org>
+Message-ID: <20251216111358.282228696@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 62356fccb195f83d2ceafc787c5ba87ebbe5edfe ]
+[ Upstream commit 71d3bdae5eab21cf8991a6f3cd914caa31d5a51f ]
 
-In some cases, this logic can result in doorbell writes being
-skipped when they should not have been (at least on GEN3 HW),
-so remove it. This also means that the mb() can be safely
-downgraded to dma_wmb().
+The HW disables bounds checking for MRs with a length of zero, so
+the driver will only allow a zero length MR if the "all_memory"
+flag is set, and this flag is only set if IB_PD_UNSAFE_GLOBAL_RKEY
+is set for the PD.
 
-Fixes: 551c46edc769 ("RDMA/irdma: Add user/kernel shared libraries")
+This means that the "get_dma_mr" method will currently fail unless
+the IB_PD_UNSAFE_GLOBAL_RKEY flag is set. This has not been an issue
+because the "get_dma_mr" method is only ever invoked if the device
+does not support the local DMA key or if IB_PD_UNSAFE_GLOBAL_RKEY
+is set, and so far, all IRDMA HW supports the local DMA lkey.
+
+However, some new HW does not support the local DMA lkey, so the
+"get_dma_mr" method needs to work without IB_PD_UNSAFE_GLOBAL_RKEY
+being set.
+
+To support HW that does not allow the local DMA lkey, the logic has
+been changed to pass an explicit flag to indicate when a dma_mr is
+being created so that the zero length will be allowed.
+
+Also, the "all_memory" flag has been forced to false for normal MR
+allocation since these MRs are never supposed to provide global
+unsafe rkey semantics anyway; only the MR created with "get_dma_mr"
+should support this.
+
+Fixes: bb6d73d9add6 ("RDMA/irdma: Prevent zero-length STAG registration")
 Signed-off-by: Jacob Moroni <jmoroni@google.com>
 Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-9-tatyana.e.nikolova@intel.com
+Link: https://patch.msgid.link/20251125025350.180-7-tatyana.e.nikolova@intel.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/puda.c |  1 -
- drivers/infiniband/hw/irdma/uk.c   | 31 ++----------------------------
- drivers/infiniband/hw/irdma/user.h |  1 -
- 3 files changed, 2 insertions(+), 31 deletions(-)
+ drivers/infiniband/hw/irdma/cm.c    |  2 +-
+ drivers/infiniband/hw/irdma/main.h  |  2 +-
+ drivers/infiniband/hw/irdma/verbs.c | 15 ++++++++-------
+ drivers/infiniband/hw/irdma/verbs.h |  3 ++-
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/puda.c b/drivers/infiniband/hw/irdma/puda.c
-index 694e5a9ed15d0..9cd14a50f1a93 100644
---- a/drivers/infiniband/hw/irdma/puda.c
-+++ b/drivers/infiniband/hw/irdma/puda.c
-@@ -685,7 +685,6 @@ static int irdma_puda_qp_create(struct irdma_puda_rsrc *rsrc)
- 	ukqp->rq_size = rsrc->rq_size;
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index c6a0a661d6e7e..f4f4f92ba63ac 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -3710,7 +3710,7 @@ int irdma_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
+ 	iwpd = iwqp->iwpd;
+ 	tagged_offset = (uintptr_t)iwqp->ietf_mem.va;
+ 	ibmr = irdma_reg_phys_mr(&iwpd->ibpd, iwqp->ietf_mem.pa, buf_len,
+-				 IB_ACCESS_LOCAL_WRITE, &tagged_offset);
++				 IB_ACCESS_LOCAL_WRITE, &tagged_offset, false);
+ 	if (IS_ERR(ibmr)) {
+ 		ret = -ENOMEM;
+ 		goto error;
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index 674acc9521681..f863c0aaf85d7 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -538,7 +538,7 @@ void irdma_copy_ip_htonl(__be32 *dst, u32 *src);
+ u16 irdma_get_vlan_ipv4(u32 *addr);
+ void irdma_get_vlan_mac_ipv6(u32 *addr, u16 *vlan_id, u8 *mac);
+ struct ib_mr *irdma_reg_phys_mr(struct ib_pd *ib_pd, u64 addr, u64 size,
+-				int acc, u64 *iova_start);
++				int acc, u64 *iova_start, bool dma_mr);
+ int irdma_upload_qp_context(struct irdma_qp *iwqp, bool freeze, bool raw);
+ void irdma_cqp_ce_handler(struct irdma_pci_f *rf, struct irdma_sc_cq *cq);
+ int irdma_ah_cqp_op(struct irdma_pci_f *rf, struct irdma_sc_ah *sc_ah, u8 cmd,
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index eb4683b248af9..f8a7a0382a38a 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2654,7 +2654,6 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
+ 	info->stag_idx = iwmr->stag >> IRDMA_CQPSQ_STAG_IDX_S;
+ 	info->pd_id = iwpd->sc_pd.pd_id;
+ 	info->total_len = iwmr->len;
+-	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	info->remote_access = true;
+ 	cqp_info->cqp_cmd = IRDMA_OP_ALLOC_STAG;
+ 	cqp_info->post_sq = 1;
+@@ -2665,7 +2664,7 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
+ 	if (status)
+ 		return status;
  
- 	IRDMA_RING_INIT(ukqp->sq_ring, ukqp->sq_size);
--	IRDMA_RING_INIT(ukqp->initial_ring, ukqp->sq_size);
- 	IRDMA_RING_INIT(ukqp->rq_ring, ukqp->rq_size);
- 	ukqp->wqe_alloc_db = qp->pd->dev->wqe_alloc_db;
+-	iwmr->is_hwreg = 1;
++	iwmr->is_hwreg = true;
+ 	return 0;
+ }
  
-diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
-index ce1ae10c30fca..d5568584ad5e3 100644
---- a/drivers/infiniband/hw/irdma/uk.c
-+++ b/drivers/infiniband/hw/irdma/uk.c
-@@ -114,33 +114,8 @@ void irdma_clr_wqes(struct irdma_qp_uk *qp, u32 qp_wqe_idx)
+@@ -2806,7 +2805,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
+ 	stag_info->total_len = iwmr->len;
+ 	stag_info->access_rights = irdma_get_mr_access(access);
+ 	stag_info->pd_id = iwpd->sc_pd.pd_id;
+-	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
++	stag_info->all_memory = iwmr->dma_mr;
+ 	if (stag_info->access_rights & IRDMA_ACCESS_FLAGS_ZERO_BASED)
+ 		stag_info->addr_type = IRDMA_ADDR_TYPE_ZERO_BASED;
+ 	else
+@@ -2833,7 +2832,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
+ 	irdma_put_cqp_request(&iwdev->rf->cqp, cqp_request);
+ 
+ 	if (!ret)
+-		iwmr->is_hwreg = 1;
++		iwmr->is_hwreg = true;
+ 
+ 	return ret;
+ }
+@@ -3169,7 +3168,7 @@ static int irdma_hwdereg_mr(struct ib_mr *ib_mr)
+ 	if (status)
+ 		return status;
+ 
+-	iwmr->is_hwreg = 0;
++	iwmr->is_hwreg = false;
+ 	return 0;
+ }
+ 
+@@ -3292,9 +3291,10 @@ static struct ib_mr *irdma_rereg_user_mr(struct ib_mr *ib_mr, int flags,
+  * @size: size of memory to register
+  * @access: Access rights
+  * @iova_start: start of virtual address for physical buffers
++ * @dma_mr: Flag indicating whether this region is a PD DMA MR
   */
- void irdma_uk_qp_post_wr(struct irdma_qp_uk *qp)
+ struct ib_mr *irdma_reg_phys_mr(struct ib_pd *pd, u64 addr, u64 size, int access,
+-				u64 *iova_start)
++				u64 *iova_start, bool dma_mr)
  {
--	u64 temp;
--	u32 hw_sq_tail;
--	u32 sw_sq_head;
--
--	/* valid bit is written and loads completed before reading shadow */
--	mb();
--
--	/* read the doorbell shadow area */
--	get_64bit_val(qp->shadow_area, 0, &temp);
--
--	hw_sq_tail = (u32)FIELD_GET(IRDMA_QP_DBSA_HW_SQ_TAIL, temp);
--	sw_sq_head = IRDMA_RING_CURRENT_HEAD(qp->sq_ring);
--	if (sw_sq_head != qp->initial_ring.head) {
--		if (sw_sq_head != hw_sq_tail) {
--			if (sw_sq_head > qp->initial_ring.head) {
--				if (hw_sq_tail >= qp->initial_ring.head &&
--				    hw_sq_tail < sw_sq_head)
--					writel(qp->qp_id, qp->wqe_alloc_db);
--			} else {
--				if (hw_sq_tail >= qp->initial_ring.head ||
--				    hw_sq_tail < sw_sq_head)
--					writel(qp->qp_id, qp->wqe_alloc_db);
--			}
--		}
--	}
--
--	qp->initial_ring.head = qp->sq_ring.head;
-+	dma_wmb();
-+	writel(qp->qp_id, qp->wqe_alloc_db);
+ 	struct irdma_device *iwdev = to_iwdev(pd->device);
+ 	struct irdma_pbl *iwpbl;
+@@ -3311,6 +3311,7 @@ struct ib_mr *irdma_reg_phys_mr(struct ib_pd *pd, u64 addr, u64 size, int access
+ 	iwpbl = &iwmr->iwpbl;
+ 	iwpbl->iwmr = iwmr;
+ 	iwmr->type = IRDMA_MEMREG_TYPE_MEM;
++	iwmr->dma_mr = dma_mr;
+ 	iwpbl->user_base = *iova_start;
+ 	stag = irdma_create_stag(iwdev);
+ 	if (!stag) {
+@@ -3349,7 +3350,7 @@ static struct ib_mr *irdma_get_dma_mr(struct ib_pd *pd, int acc)
+ {
+ 	u64 kva = 0;
+ 
+-	return irdma_reg_phys_mr(pd, 0, 0, acc, &kva);
++	return irdma_reg_phys_mr(pd, 0, 0, acc, &kva, true);
  }
  
  /**
-@@ -1574,7 +1549,6 @@ static void irdma_setup_connection_wqes(struct irdma_qp_uk *qp,
- 	qp->conn_wqes = move_cnt;
- 	IRDMA_RING_MOVE_HEAD_BY_COUNT_NOCHECK(qp->sq_ring, move_cnt);
- 	IRDMA_RING_MOVE_TAIL_BY_COUNT(qp->sq_ring, move_cnt);
--	IRDMA_RING_MOVE_HEAD_BY_COUNT_NOCHECK(qp->initial_ring, move_cnt);
- }
- 
- /**
-@@ -1719,7 +1693,6 @@ int irdma_uk_qp_init(struct irdma_qp_uk *qp, struct irdma_qp_uk_init_info *info)
- 	qp->max_sq_frag_cnt = info->max_sq_frag_cnt;
- 	sq_ring_size = qp->sq_size << info->sq_shift;
- 	IRDMA_RING_INIT(qp->sq_ring, sq_ring_size);
--	IRDMA_RING_INIT(qp->initial_ring, sq_ring_size);
- 	if (info->first_sq_wq) {
- 		irdma_setup_connection_wqes(qp, info);
- 		qp->swqe_polarity = 1;
-diff --git a/drivers/infiniband/hw/irdma/user.h b/drivers/infiniband/hw/irdma/user.h
-index ab57f689827a0..aeebf768174ab 100644
---- a/drivers/infiniband/hw/irdma/user.h
-+++ b/drivers/infiniband/hw/irdma/user.h
-@@ -456,7 +456,6 @@ struct irdma_srq_uk {
- 	struct irdma_uk_attrs *uk_attrs;
- 	__le64 *shadow_area;
- 	struct irdma_ring srq_ring;
--	struct irdma_ring initial_ring;
- 	u32 srq_id;
- 	u32 srq_size;
- 	u32 max_srq_frag_cnt;
+diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
+index 36ff8dd712f00..cbd8bef68ae4f 100644
+--- a/drivers/infiniband/hw/irdma/verbs.h
++++ b/drivers/infiniband/hw/irdma/verbs.h
+@@ -101,7 +101,8 @@ struct irdma_mr {
+ 	};
+ 	struct ib_umem *region;
+ 	int access;
+-	u8 is_hwreg;
++	bool is_hwreg:1;
++	bool dma_mr:1;
+ 	u16 type;
+ 	u32 page_cnt;
+ 	u64 page_size;
 -- 
 2.51.0
 
