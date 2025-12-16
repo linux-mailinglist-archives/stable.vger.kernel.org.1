@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C174DCC23B0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5D9CC27A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DC113031243
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6D0430305AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B368342CB6;
-	Tue, 16 Dec 2025 11:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DCB35502B;
+	Tue, 16 Dec 2025 11:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a5aNHfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDFjwqfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D5D342CB1;
-	Tue, 16 Dec 2025 11:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AF9355027;
+	Tue, 16 Dec 2025 11:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884389; cv=none; b=WhOtsDxOlHGOLdAe/ETdUFXntXZ8pP9ChPNgoqThGyaDSh0rlwH6FRT9Ke+S9ClKDyZ3XHER5UdFBHHGjn13NM/KSs8AI5HsdYqZN1/dAX6EA+lOLUIpkvk+spqqX9lDl5hdIV7wNDnRszD2Kqs/upRaY0Kvl4xAWXbC6e2t0fs=
+	t=1765885847; cv=none; b=r5Ksykd0DSDMwwQw+ItGT0hxPV72Qrl/gv2grSHpcBmQk+hYFxKeJtLy/UtA91WADsJDwimJa43Qj5WKIAWOpPrXDZThKcpzEOpx9mn+BKzXUbgb8fB+ElMI2poK9sqNvDIc2I0BiIjjmD10DALFOpJERw24nPDv93MtbBnMYSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884389; c=relaxed/simple;
-	bh=lhcNmKgTU3BHxfsR7PcGc2GPRqUBQ8sPdlXDvLaNUbw=;
+	s=arc-20240116; t=1765885847; c=relaxed/simple;
+	bh=iNzDm+LT419HreyIbpWoliAa4MqZmoUk66EaWJu4Z38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTdn8FgM95G69KqA8hCJA3RsNbmLGaICWo7VQxNMo8znTYJrBQqK34KEygOjxgM2lIm+DK7llPWcACyrBkUWuoQz537HkUapd0/L4mfRukVut3QrtLo1NQfmPk+kszR5UBG5PnCEP+RfotC51kADEdpBCGOnNLLLpn2p2u4Mwys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a5aNHfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6755DC4CEF1;
-	Tue, 16 Dec 2025 11:26:28 +0000 (UTC)
+	 MIME-Version; b=UNsTktNKn57w4IuI3Y5od/0giFlIzgvL/p2MFXaxWuByKLphiKljM0U1Y4BBuOrii/U45AJ2566AE1P88O7+VzKVeu+rRtJ/6PTsm502uvLwCCxIBzF59gZZfFDc0uwYhs4aBoCFqIB9d3D0YYB0eOkqRAY2YvbLMEakhHx6YzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDFjwqfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A056C4CEF1;
+	Tue, 16 Dec 2025 11:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884388;
-	bh=lhcNmKgTU3BHxfsR7PcGc2GPRqUBQ8sPdlXDvLaNUbw=;
+	s=korg; t=1765885847;
+	bh=iNzDm+LT419HreyIbpWoliAa4MqZmoUk66EaWJu4Z38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1a5aNHfedCGnsx4qV/5Bwz1AumV1TI2aOLMLqtR32vWrqcvjrANdV9M/DFIpKLx8X
-	 ODiIPp+EC9zIs9hBPGFIpPeGVN0MmvgA4OShU7STJUQ90B3bdRs807evDpET9qNlLw
-	 ot+X0xi+fibDTFCiZ2xWpwFZ4FlnWbvGXRkiYvto=
+	b=uDFjwqfCbSNeI5yye11QrcuMDILLzKrE1y6Tx6wo2NuWbUswsINOL7iEPXIMEJPPu
+	 3jat+kqd6Y86Ggug8+9xbua2jB3F7rIky+CoXc+DDFKqr5BK6FsliEmlH8d/bq2hT8
+	 Mczx0Dk9sdU6qUtgQyk93JjW2se3034H8y5VXFtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/354] ARM: dts: stm32: stm32mp157c-phycore: Fix STMPE811 touchscreen node properties
-Date: Tue, 16 Dec 2025 12:11:42 +0100
-Message-ID: <20251216111325.810582364@linuxfoundation.org>
+Subject: [PATCH 6.17 262/507] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
+Date: Tue, 16 Dec 2025 12:11:43 +0100
+Message-ID: <20251216111354.979363361@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit e40b061cd379f4897e705d17cf1b4572ad0f3963 ]
+[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
 
-Move st,adc-freq, st,mod-12b, st,ref-sel, and st,sample-time properties
-from the touchscreen subnode to the parent touch@44 node. These properties
-are defined in the st,stmpe.yaml schema for the parent node, not the
-touchscreen subnode, resolving the validation error about unevaluated
-properties.
+In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
+allocations in a loop. When an allocation fails, the previously
+successful allocations are not freed on exit.
 
-Fixes: 27538a18a4fcc ("ARM: dts: stm32: add STM32MP1-based Phytec SoM")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250915224611.169980-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fix that by jumping to err_free_rings label on error, which calls
+rtl8180_free_rx_ring() to free the allocations. Remove the free of
+rx_ring in rtl8180_init_rx_ring() error path, and set the freed
+priv->rx_buf entry to null, to avoid double free.
+
+Fixes: f653211197f3 ("Add rtl8180 wireless driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi    | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-index bf0c32027baf7..370b2afbf15bf 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
-@@ -185,13 +185,13 @@ touch@44 {
- 		interrupt-parent = <&gpioi>;
- 		vio-supply = <&v3v3>;
- 		vcc-supply = <&v3v3>;
-+		st,sample-time = <4>;
-+		st,mod-12b = <1>;
-+		st,ref-sel = <0>;
-+		st,adc-freq = <1>;
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index 2905baea62390..070c0431c4821 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
  
- 		touchscreen {
- 			compatible = "st,stmpe-ts";
--			st,sample-time = <4>;
--			st,mod-12b = <1>;
--			st,ref-sel = <0>;
--			st,adc-freq = <1>;
- 			st,ave-ctrl = <1>;
- 			st,touch-det-delay = <2>;
- 			st,settling = <2>;
+ 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
++			priv->rx_buf[i] = NULL;
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+ 
+ 	ret = rtl8180_init_rx_ring(dev);
+ 	if (ret)
+-		return ret;
++		goto err_free_rings;
+ 
+ 	for (i = 0; i < (dev->queues + 1); i++)
+ 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
 -- 
 2.51.0
 
