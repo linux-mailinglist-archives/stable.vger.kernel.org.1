@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412ABCC270A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7E0CC2448
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE5E93002B8C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7559E30B62E1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0A535502A;
-	Tue, 16 Dec 2025 11:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8370342505;
+	Tue, 16 Dec 2025 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3dg095q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPgIxu5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC85355026;
-	Tue, 16 Dec 2025 11:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F593358D4;
+	Tue, 16 Dec 2025 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885867; cv=none; b=VOohQnYlSvzmGJklsUSZpWLdMV1VH7IM7iBRi0FHB3BwDUh8oVTq6b4AB8ji9Fs/gTHz39nug2ntcxdc2zubGD9aNvBnMQ+cV4EihrRfgw8fgQgiPQnSKUsqhfJbLbnGedJXLFxr6IgFkmK1gY5PqQGnvv594mAbMGukLK/EEZc=
+	t=1765884379; cv=none; b=dnAfbyTI4RZga/G/dw1nWsW18GQpIOkswFre7Gj9yGjhVhG+jW7wcOzfhtHSxlWErrDKEUUH2allzt/Tk3JoloyU7QY9a4h9e6K5Ti1m3WZ68KnQ9fEp3O28I/Y1YzgKP+H80eGWMl245yplLawRE7Xgr8gZXWxKvHOId4H96/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885867; c=relaxed/simple;
-	bh=yuUfNUTU3C6Wb2c8gcWuOQb+p5nMU4yReH23EjaXkJc=;
+	s=arc-20240116; t=1765884379; c=relaxed/simple;
+	bh=qhxnIl3dOrd+ij1HOeg9aJCFO09LINS2+jrS5AnYuew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SP1Di53ornI4Q6AJDMIxI3LQKD488v7QE+rHRroRVxJHrnOb8GUMG6B+uNqqU7QIHlJQkY1CgZE+21URtCLfrvA+9DTIHAYUYupbQ5weRpQoXQ3oFSRa/ON4KdvEuI8yucfXhkLwd4boFwNDeLXeyx3JLEJypCJr2OMLjYjsfPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3dg095q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45084C4CEF5;
-	Tue, 16 Dec 2025 11:51:07 +0000 (UTC)
+	 MIME-Version; b=G8XYGR6rhn8PhECWJxxr1J6CX8qEiZON/yWE0IuT4xjK3vkMHCb15CN5r/DWzwf4UTZfeN+p0mzKaBEPrTnSHDP8bz29aTAGUCdx++l6Y28hJV4BNuYt29bymdnRo+ZrJWwqQCoqHoUHnB4ar76WZz4/7zdZ1SID4GVPBYsZbhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPgIxu5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7904C4CEF1;
+	Tue, 16 Dec 2025 11:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885867;
-	bh=yuUfNUTU3C6Wb2c8gcWuOQb+p5nMU4yReH23EjaXkJc=;
+	s=korg; t=1765884379;
+	bh=qhxnIl3dOrd+ij1HOeg9aJCFO09LINS2+jrS5AnYuew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3dg095qu6R6kYEQcYRBIA72pfHyHHoS0lst6CBE/NdKE0jk19JZkZ7a5bpZNJeW1
-	 3UpM+2saqqIFemRXyNJcuPWUWqpu1Dvq+bFawzdsysPNjVw5cc5a6VhcoMMzYFU4yj
-	 8d2CIxm8ydqqer3CL4QTE567eua2cjygW/ya3EkM=
+	b=gPgIxu5ZcxG3ErLZ8HShltIWqcvCMN6ZCeEtiDgowJiro1iv5r3ltehYgRsk8okY1
+	 XUMRqIWwryGMyYSbDwLIGdvm5F3fvk5JZGAo7Fgj4PpmmS4x5iB/y3Ra1wAZoRWuzG
+	 XsIl7VViqCa6IhJn30fMOqkZoqRUEmYy86SbUrrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Long Li <leo.lilong@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 268/507] net: stmmac: Fix VLAN 0 deletion in vlan_del_hw_rx_fltr()
+Subject: [PATCH 6.12 142/354] macintosh/mac_hid: fix race condition in mac_hid_toggle_emumouse
 Date: Tue, 16 Dec 2025 12:11:49 +0100
-Message-ID: <20251216111355.196264613@linuxfoundation.org>
+Message-ID: <20251216111326.062130044@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit d9db25723677c3741a0cf3643f7f7429fc983921 ]
+[ Upstream commit 1e4b207ffe54cf33a4b7a2912c4110f89c73bf3f ]
 
-When the "rx-vlan-filter" feature is enabled on a network device, the 8021q
-module automatically adds a VLAN 0 hardware filter when the device is
-brought administratively up.
+The following warning appears when running syzkaller, and this issue also
+exists in the mainline code.
 
-For stmmac, this causes vlan_add_hw_rx_fltr() to create a new entry for
-VID 0 in the mac_device_info->vlan_filter array, in the following format:
+ ------------[ cut here ]------------
+ list_add double add: new=ffffffffa57eee28, prev=ffffffffa57eee28, next=ffffffffa5e63100.
+ WARNING: CPU: 0 PID: 1491 at lib/list_debug.c:35 __list_add_valid_or_report+0xf7/0x130
+ Modules linked in:
+ CPU: 0 PID: 1491 Comm: syz.1.28 Not tainted 6.6.0+ #3
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:__list_add_valid_or_report+0xf7/0x130
+ RSP: 0018:ff1100010dfb7b78 EFLAGS: 00010282
+ RAX: 0000000000000000 RBX: ffffffffa57eee18 RCX: ffffffff97fc9817
+ RDX: 0000000000040000 RSI: ffa0000002383000 RDI: 0000000000000001
+ RBP: ffffffffa57eee28 R08: 0000000000000001 R09: ffe21c0021bf6f2c
+ R10: 0000000000000001 R11: 6464615f7473696c R12: ffffffffa5e63100
+ R13: ffffffffa57eee28 R14: ffffffffa57eee28 R15: ff1100010dfb7d48
+ FS:  00007fb14398b640(0000) GS:ff11000119600000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 000000010d096005 CR4: 0000000000773ef0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 80000000
+ Call Trace:
+  <TASK>
+  input_register_handler+0xb3/0x210
+  mac_hid_start_emulation+0x1c5/0x290
+  mac_hid_toggle_emumouse+0x20a/0x240
+  proc_sys_call_handler+0x4c2/0x6e0
+  new_sync_write+0x1b1/0x2d0
+  vfs_write+0x709/0x950
+  ksys_write+0x12a/0x250
+  do_syscall_64+0x5a/0x110
+  entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-    VLAN_TAG_DATA_ETV | VLAN_TAG_DATA_VEN | vid
+The WARNING occurs when two processes concurrently write to the mac-hid
+emulation sysctl, causing a race condition in mac_hid_toggle_emumouse().
+Both processes read old_val=0, then both try to register the input handler,
+leading to a double list_add of the same handler.
 
-Here, VLAN_TAG_DATA_VEN indicates that the hardware filter is enabled for
-that VID.
+  CPU0                             CPU1
+  -------------------------        -------------------------
+  vfs_write() //write 1            vfs_write()  //write 1
+    proc_sys_write()                 proc_sys_write()
+      mac_hid_toggle_emumouse()          mac_hid_toggle_emumouse()
+        old_val = *valp // old_val=0
+                                           old_val = *valp // old_val=0
+                                           mutex_lock_killable()
+                                           proc_dointvec() // *valp=1
+                                           mac_hid_start_emulation()
+                                             input_register_handler()
+                                           mutex_unlock()
+        mutex_lock_killable()
+        proc_dointvec()
+        mac_hid_start_emulation()
+          input_register_handler() //Trigger Warning
+        mutex_unlock()
 
-However, on the delete path, vlan_del_hw_rx_fltr() searches the vlan_filter
-array by VID only, without verifying whether a VLAN entry is enabled. As a
-result, when the 8021q module attempts to remove VLAN 0, the function may
-mistakenly match a zero-initialized slot rather than the actual VLAN 0
-entry, causing incorrect deletions and leaving stale entries in the
-hardware table.
+Fix this by moving the old_val read inside the mutex lock region.
 
-Fix this by verifying that the VLAN entry's enable bit (VLAN_TAG_DATA_VEN)
-is set before matching and deleting by VID. This ensures only active VLAN
-entries are removed and avoids leaving stale entries in the VLAN filter
-table, particularly for VLAN ID 0.
-
-Fixes: ed64639bc1e08 ("net: stmmac: Add support for VLAN Rx filtering")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20251113112721.70500-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250819091035.2263329-1-leo.lilong@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c | 3 ++-
+ drivers/macintosh/mac_hid.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-index 0b6f6228ae35d..fd97879a87408 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-@@ -122,7 +122,8 @@ static int vlan_del_hw_rx_fltr(struct net_device *dev,
+diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
+index b461b1bed25b2..6247dbe493dea 100644
+--- a/drivers/macintosh/mac_hid.c
++++ b/drivers/macintosh/mac_hid.c
+@@ -187,13 +187,14 @@ static int mac_hid_toggle_emumouse(const struct ctl_table *table, int write,
+ 				   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int *valp = table->data;
+-	int old_val = *valp;
++	int old_val;
+ 	int rc;
  
- 	/* Extended Rx VLAN Filter Enable */
- 	for (i = 0; i < hw->num_vlan; i++) {
--		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid) {
-+		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VEN) &&
-+		    ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid)) {
- 			ret = vlan_write_filter(dev, hw, i, 0);
+ 	rc = mutex_lock_killable(&mac_hid_emumouse_mutex);
+ 	if (rc)
+ 		return rc;
  
- 			if (!ret)
++	old_val = *valp;
+ 	rc = proc_dointvec(table, write, buffer, lenp, ppos);
+ 
+ 	if (rc == 0 && write && *valp != old_val) {
 -- 
 2.51.0
 
