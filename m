@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B23CC2782
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:54:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5A5CC29A2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0824930D844B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 387BB3004A52
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CF4345CC3;
-	Tue, 16 Dec 2025 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8CC36C5B8;
+	Tue, 16 Dec 2025 12:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYMFeZOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="090h0OVA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75938345CAF;
-	Tue, 16 Dec 2025 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B35936C5A0;
+	Tue, 16 Dec 2025 12:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885509; cv=none; b=cG2DJO3NmEW4SxfP6dzFElyKAJGWC4Ao/8kb0B+ePuqUXGoyNQap61puGmWdxK6yQ7x6fr0N+VOX7uLM/09CGg0iiOmuyL912dfn1zvjs55xwNO4f9n+d+lDSo4FoxtKA0jGfDDQQqqwxzh6d8SvUFsR6ryqxKEibDUigJn1jlQ=
+	t=1765887455; cv=none; b=U/+MNxTep7HkWN8TmzuJZyogoYvjraWUQJ7uIBY5BQJUwMenxdE4+Fr43Wypma1fGOIjGGUhiCJ3VqB+6xlP4aaTRgfO16fCQ6T+HLxi+YLuNeLmuqmJ5np/7OA9GGP/EARQbxll78dGljafyxAskDXVlRWUD3XInunPG4pgnwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885509; c=relaxed/simple;
-	bh=At0QGQ8rWzjbVBruSwx+HAH0x8HnYZFzon8DgTmRPIc=;
+	s=arc-20240116; t=1765887455; c=relaxed/simple;
+	bh=qP15A7vM3GrNM917OU89QKEg6IIhHNW8XRzC51h70iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYEgeg/R65tnSC8RAMIrhnVNA8aeWOHqYXBRbFCUW4yt9ZVMDmPaeLnx3qv8+pj9RjYiZMBKaXlZIsv9f2YculiX1mYxXSIOrRy9Rn5tf1IsQHF3YTRwLV9NFCQ5DjC6rru5U7U/lHwNrq2bjcuN2L8PX2g6ufRhdeMiQZippos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYMFeZOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4B5C4CEF1;
-	Tue, 16 Dec 2025 11:45:08 +0000 (UTC)
+	 MIME-Version; b=hm2o5qVqX5jYq1XwSAgHCVowtgYAeMpYD+OO2JDhT0xLcVyujbivxc4xu25+5Hjn2D5nrF1A0h+qydWxYjAGvMwjTLEA22XHYja/8Jpa6IW5m0x9KntyKvp/WSq+JDUGBnFRq/sKJBipsjXFmO6dhSrQmtgU4eJJvu49cd3gt88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=090h0OVA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AFCC4CEF1;
+	Tue, 16 Dec 2025 12:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885509;
-	bh=At0QGQ8rWzjbVBruSwx+HAH0x8HnYZFzon8DgTmRPIc=;
+	s=korg; t=1765887455;
+	bh=qP15A7vM3GrNM917OU89QKEg6IIhHNW8XRzC51h70iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYMFeZOH/rsMaRu95lYa3HUaN71592CdqcMgKuk522IR+itBL4Xkh4mch8/KZ0Ct3
-	 wD9vMwrJKWx0I8/inOOOHVnAe3ylJi/RH0C65Hi81SGU6ZoKxR63gqz6G2nPLVArnd
-	 0QXs3V5h7/RKNpy0l+7q0FQdHv3hitkk14XVbehk=
+	b=090h0OVAuqYJHbO8Hou4v2TCLohgRDjwz5OPrqwsfN3BoK5f5vk1igZc2gQl7+3xd
+	 AKytnSqrxYEhITOUfsFlhmGm3mSQHtYzaAbWfPPGmrIHYwId7jt7liwmLled1xSK6I
+	 LmgbfLu5LbXJcc7g1Y4j/1DGRKfcAl6AnacFbrqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 160/507] scsi: target: Fix LUN/device R/W and total command stats
+Subject: [PATCH 6.18 234/614] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
 Date: Tue, 16 Dec 2025 12:10:01 +0100
-Message-ID: <20251216111351.318636766@linuxfoundation.org>
+Message-ID: <20251216111409.847583571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,173 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 95aa2041c654161d1b5c1eca5379d67d91ef1cf2 ]
+[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
 
-In commit 9cf2317b795d ("scsi: target: Move I/O path stats to per CPU")
-I saw we sometimes use %u and also misread the spec. As a result I
-thought all the stats were supposed to be 32-bit only. However, for the
-majority of cases we support currently, the spec specifies u64 bit
-stats. This patch converts the stats changed in the commit above to u64.
+Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
+have region for DWC controllers as it has the Root Port and controller
+specific registers, while ELBI has optional registers.
 
-Fixes: 9cf2317b795d ("scsi: target: Move I/O path stats to per CPU")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://patch.msgid.link/20250917221338.14813-2-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Hence, fix the binding. Though this is an ABI break, this change is needed
+to accurately describe the PCI memory map.
+
+Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_stat.c | 24 ++++++++++++------------
- include/target/target_core_base.h | 12 ++++++------
- 2 files changed, 18 insertions(+), 18 deletions(-)
+ Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/target/target_core_stat.c b/drivers/target/target_core_stat.c
-index 6bdf2d8bd6942..4fdc307ea38bc 100644
---- a/drivers/target/target_core_stat.c
-+++ b/drivers/target/target_core_stat.c
-@@ -282,7 +282,7 @@ static ssize_t target_stat_lu_num_cmds_show(struct config_item *item,
- 	struct se_device *dev = to_stat_lu_dev(item);
- 	struct se_dev_io_stats *stats;
- 	unsigned int cpu;
--	u32 cmds = 0;
-+	u64 cmds = 0;
+diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+index 79a21ba0f9fd6..c8258ef403283 100644
+--- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+@@ -36,13 +36,13 @@ properties:
  
- 	for_each_possible_cpu(cpu) {
- 		stats = per_cpu_ptr(dev->stats, cpu);
-@@ -290,7 +290,7 @@ static ssize_t target_stat_lu_num_cmds_show(struct config_item *item,
- 	}
+   reg:
+     items:
+-      - description: External local bus interface registers
++      - description: Data Bus Interface registers
+       - description: Meson designed configuration registers
+       - description: PCIe configuration space
  
- 	/* scsiLuNumCommands */
--	return snprintf(page, PAGE_SIZE, "%u\n", cmds);
-+	return snprintf(page, PAGE_SIZE, "%llu\n", cmds);
- }
+   reg-names:
+     items:
+-      - const: elbi
++      - const: dbi
+       - const: cfg
+       - const: config
  
- static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
-@@ -299,7 +299,7 @@ static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
- 	struct se_device *dev = to_stat_lu_dev(item);
- 	struct se_dev_io_stats *stats;
- 	unsigned int cpu;
--	u32 bytes = 0;
-+	u64 bytes = 0;
- 
- 	for_each_possible_cpu(cpu) {
- 		stats = per_cpu_ptr(dev->stats, cpu);
-@@ -307,7 +307,7 @@ static ssize_t target_stat_lu_read_mbytes_show(struct config_item *item,
- 	}
- 
- 	/* scsiLuReadMegaBytes */
--	return snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
-+	return snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
- }
- 
- static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
-@@ -316,7 +316,7 @@ static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
- 	struct se_device *dev = to_stat_lu_dev(item);
- 	struct se_dev_io_stats *stats;
- 	unsigned int cpu;
--	u32 bytes = 0;
-+	u64 bytes = 0;
- 
- 	for_each_possible_cpu(cpu) {
- 		stats = per_cpu_ptr(dev->stats, cpu);
-@@ -324,7 +324,7 @@ static ssize_t target_stat_lu_write_mbytes_show(struct config_item *item,
- 	}
- 
- 	/* scsiLuWrittenMegaBytes */
--	return snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
-+	return snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
- }
- 
- static ssize_t target_stat_lu_resets_show(struct config_item *item, char *page)
-@@ -1044,7 +1044,7 @@ static ssize_t target_stat_auth_num_cmds_show(struct config_item *item,
- 	struct se_dev_entry *deve;
- 	unsigned int cpu;
- 	ssize_t ret;
--	u32 cmds = 0;
-+	u64 cmds = 0;
- 
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
-@@ -1059,7 +1059,7 @@ static ssize_t target_stat_auth_num_cmds_show(struct config_item *item,
- 	}
- 
- 	/* scsiAuthIntrOutCommands */
--	ret = snprintf(page, PAGE_SIZE, "%u\n", cmds);
-+	ret = snprintf(page, PAGE_SIZE, "%llu\n", cmds);
- 	rcu_read_unlock();
- 	return ret;
- }
-@@ -1073,7 +1073,7 @@ static ssize_t target_stat_auth_read_mbytes_show(struct config_item *item,
- 	struct se_dev_entry *deve;
- 	unsigned int cpu;
- 	ssize_t ret;
--	u32 bytes = 0;
-+	u64 bytes = 0;
- 
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
-@@ -1088,7 +1088,7 @@ static ssize_t target_stat_auth_read_mbytes_show(struct config_item *item,
- 	}
- 
- 	/* scsiAuthIntrReadMegaBytes */
--	ret = snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
-+	ret = snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
- 	rcu_read_unlock();
- 	return ret;
- }
-@@ -1102,7 +1102,7 @@ static ssize_t target_stat_auth_write_mbytes_show(struct config_item *item,
- 	struct se_dev_entry *deve;
- 	unsigned int cpu;
- 	ssize_t ret;
--	u32 bytes = 0;
-+	u64 bytes = 0;
- 
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, lacl->mapped_lun);
-@@ -1117,7 +1117,7 @@ static ssize_t target_stat_auth_write_mbytes_show(struct config_item *item,
- 	}
- 
- 	/* scsiAuthIntrWrittenMegaBytes */
--	ret = snprintf(page, PAGE_SIZE, "%u\n", bytes >> 20);
-+	ret = snprintf(page, PAGE_SIZE, "%llu\n", bytes >> 20);
- 	rcu_read_unlock();
- 	return ret;
- }
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index c4d9116904aa0..27e1f9d5f0c6c 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -671,9 +671,9 @@ struct se_lun_acl {
- };
- 
- struct se_dev_entry_io_stats {
--	u32			total_cmds;
--	u32			read_bytes;
--	u32			write_bytes;
-+	u64			total_cmds;
-+	u64			read_bytes;
-+	u64			write_bytes;
- };
- 
- struct se_dev_entry {
-@@ -806,9 +806,9 @@ struct se_device_queue {
- };
- 
- struct se_dev_io_stats {
--	u32			total_cmds;
--	u32			read_bytes;
--	u32			write_bytes;
-+	u64			total_cmds;
-+	u64			read_bytes;
-+	u64			write_bytes;
- };
- 
- struct se_device {
+@@ -113,7 +113,7 @@ examples:
+     pcie: pcie@f9800000 {
+         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
+         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
+-        reg-names = "elbi", "cfg", "config";
++        reg-names = "dbi", "cfg", "config";
+         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
+         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
+         clock-names = "pclk", "port", "general";
 -- 
 2.51.0
 
