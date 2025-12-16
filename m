@@ -1,98 +1,96 @@
-Return-Path: <stable+bounces-202731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A6DCC4EFD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA61CC4FE0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 20:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0AAD30321C5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:44:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA8DE3025305
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BB733C50A;
-	Tue, 16 Dec 2025 18:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FD4241691;
+	Tue, 16 Dec 2025 19:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btGQm/Co"
+	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="SojeGptb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF43335559
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 18:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE47124DD15
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765910666; cv=none; b=Sx4U5zkKWhJEX3MClD1bW1V41TmQKZ4kv47b9rrDh4Xiuq4u+gurvUncRI9Gl4UBwuTa3ke+L31kXfko4dtWP/62NnThx5kpHvY5vd0Ge2TAK8r6YGYCiS/iCme+dlhj0WPhbE4L7d2JU6vuwZFzCmTeUO7uM3Dp/ZVQj3ggslk=
+	t=1765912689; cv=none; b=D/WkeJVAPjABZ+4jYiH6uRkxK1di8rEbptLZeYgyqNP1T36ihZr4SxeAIcetw+3B6H/sg4SPxYTPeuL6a78TAo9lfPm2MyHBRX1iBm9Vlh0w/vPNhrpMNbM901IJX0cJiZZTApPbzpUsqrLKnYVZzTabraDsuekAE+3Sis9SneE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765910666; c=relaxed/simple;
-	bh=N86iY285Ufrqvw6QGzCZzxCjjsfyw5l5I4LxbHDi1mQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=B/UArwXS+5wfZKzL9Xlh3UKxb4PUqDePB92ovc7oQWT4NrLBDV5hFUToCtfrkkKqE+0YhMtiupSJceQQL5DWj8cDo3iCUZuQn03ZL4JJa0Z0H6jU7GpWFsNPQkLGfoEzhbjkreo8ZuUvYYUKt1uoMdVmfOTizJOOMHN7PBmDecM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btGQm/Co; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765910664; x=1797446664;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=N86iY285Ufrqvw6QGzCZzxCjjsfyw5l5I4LxbHDi1mQ=;
-  b=btGQm/CopX/l/A4CtEfVLVC9MpWRsArEdVshvEoZm/8odx6Z7SbyR+/f
-   14pxYuGOMXNxu6y8kLBB6we5+XERXVJHc5k/56OJZCGymod2JDm8UhWtE
-   kn9Dwlh8pWprWhs5mfOqCcMoMdD/8AF64U06itASpHdBsUXz3QT8DLelR
-   OpxjjjyYEgZ+pJFLmdlX++KiCdzVHaOqaIbouG/i2llze5//L/mrtXses
-   uQjOEjDBDkNzA1t8wmj2iQ/wGHEoWLRyW0+cu7na+Sd7GVNJC7UY5cCJ+
-   tbTkz67OTgbD0Chrg2wiKGyWFUkw/2i2WV2s/USviDvlIJU2CHXFQqQhD
-   g==;
-X-CSE-ConnectionGUID: CBeF48j4TnqTpdPfepMV2g==
-X-CSE-MsgGUID: nm713bwFTjm0EjwEyIIEhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="55412501"
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
-   d="scan'208";a="55412501"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 10:44:22 -0800
-X-CSE-ConnectionGUID: D7lRAn+KS/azxJn/tj8yHQ==
-X-CSE-MsgGUID: HPmy69loRaqZFSm9pYvcuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
-   d="scan'208";a="197848696"
-Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 16 Dec 2025 10:44:21 -0800
-Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVa1o-000000003jo-1DIB;
-	Tue, 16 Dec 2025 18:44:11 +0000
-Date: Wed, 17 Dec 2025 02:43:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Petko Manolov <petko.manolov@konsulko.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb()
- failure
-Message-ID: <aUGoWyl1QocktKkz@7df3ebb995de>
+	s=arc-20240116; t=1765912689; c=relaxed/simple;
+	bh=GikYVmqqxhjxJgm6gnrt4GXoCf0a/2j8+0kyUxo1+pE=;
+	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=KUIs4jjV5gttHcdvpe53n5TyWpVW7gDFG6fEKCSUtNPeaQU53HGGIp0ILiWm0krAvm9wyRavbnZpwf2VD/EjXCuMFx2xrGotQl0sr73unvbdbDJB/vIF5kMzbd69oHpqhm3v/7XCbfyVwWxHkIaub9gSu3chfRs7P+iKNO6ghsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=SojeGptb; arc=none smtp.client-ip=89.58.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id 538109A294D
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 19:17:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
+	t=1765912676; h=date:message-id:subject:from:to;
+	bh=GikYVmqqxhjxJgm6gnrt4GXoCf0a/2j8+0kyUxo1+pE=;
+	b=SojeGptbML87R5IYDq7PV1qkKiyCnazxLnbbd5Bs5RoS9+kjyLiWBsKJ60dd2ZIN6kqG+GzEN/I
+	5bmYGfGN4lOS4c/Gncxn6bF5dEdp7FeNHhPz+YUBcZLaMm443yaYXKfJTFofeu8peZ5Y986qn6vA6
+	DQvkziM/fET0zjlLrhXPObbJw6CwrB8RvNp47azJoYJr+tymijIwG+qYbmAe8lznPBx8Ta6VUDpej
+	gRJJLd3RVpDkEhVeK32MU7UBnbefFanz3ueRTsidvZikD+3n9MdFXISWH21YjIVY0oAMtFpGV4Mv8
+	3zxwIDrx/PoVUibSiK7/UcynCeFflFzl1lhQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216184113.197439-1-petko.manolov@konsulko.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 16 Dec 2025 20:17:54 +0100
+Message-Id: <DEZVSR85OD3F.SUN1BKV73WI8@achill.org>
+Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+ <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+ <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+ <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+ <conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+ <achill@achill.org>, <sr@sladewatkins.com>
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+From: "Achill Gilgenast" <achill@achill.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Greeting: Hi mom! Look, I'm in somebodys mail client!
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
 
-Hi,
+On Tue Dec 16, 2025 at 12:06 PM CET, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.2 release.
+> There are 614 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.2-=
+rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
+ linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
+Thanks! Tested on all Alpine architectures & boot tested on x86_64.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb() failure
-Link: https://lore.kernel.org/stable/20251216184113.197439-1-petko.manolov%40konsulko.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Tested-by: Achill Gilgenast <achill@achill.org>=
 
