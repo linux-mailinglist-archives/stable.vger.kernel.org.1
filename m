@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E530CC21A8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5148CC305C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 765CB3020594
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A38AF3251667
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA54525FA10;
-	Tue, 16 Dec 2025 11:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83CE342C8F;
+	Tue, 16 Dec 2025 11:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXfVOZKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9DeGlUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49D62459D7;
-	Tue, 16 Dec 2025 11:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D4D342506;
+	Tue, 16 Dec 2025 11:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883858; cv=none; b=LiTLYMnjd0kEHAHmduEDc48uL+i3APHwfNr1clGugHIBUK8mqB7HrmzK/ZifHi0kgTgLmSygX4aRM//W8/9Wntq213eQ1snpEv7HIy8wwFlweoTw6zdmTYo0oXNI5QifvW5qz88sjTcymUclydADTkzBrZuvgQfRJVvNgkmq7Pw=
+	t=1765885459; cv=none; b=G9zqac+2j3pJRCjBHsgon85A7uUrzb8X7tfUW3CInlF33ZTeimNILYQImCJuqsk+h96tzHu7Oj4FbbyOLnZA4GWqmxODWCpkqoqXqi5CnkGP9VEl66a7aHZS+FWpcj7TXfrnxKjIQbZij3JALP155AanAzvu7kNdUGc3kunsYqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883858; c=relaxed/simple;
-	bh=F5HLs4RDVaDnfVBSl3yAQ/kAROpjXhO8tib12avtf7A=;
+	s=arc-20240116; t=1765885459; c=relaxed/simple;
+	bh=Cpr8i17Idk2I+h7zFjJveCjQbcDSdh1V8xgWlIwFmVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpRIzA2sni0LoPyrvdpQxazi8AluK39B4WqoMXLLTgPl41qkWY5o88lePSY4eNDKDsgB9QZpkN18xc7gB6HeiJiIIR75bZi//6Gh3lgtlHt+QbrtXrCVwSJjYj9NBffWg8sYVPJyRgohxusNK3o8elSUWB2uln9lIRI8IWuGTbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXfVOZKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BF8C4CEF1;
-	Tue, 16 Dec 2025 11:17:37 +0000 (UTC)
+	 MIME-Version; b=gOFfrUTjg6HlYiChoTWZcxj05qEPshETVj9Zju6dbMGUuJDQX8BUJXv63rKFZPN/rFGgtIhuGmAqaW5qN4vjOzzCleKs6F5DQf7ZBiM6qXr6d2A3vJIny7vdf+C1g5n0mwApxRXC/xUpnslXVTvC6f0fLE19k2KfaV2lSjoXA+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9DeGlUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F92C4CEF1;
+	Tue, 16 Dec 2025 11:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883858;
-	bh=F5HLs4RDVaDnfVBSl3yAQ/kAROpjXhO8tib12avtf7A=;
+	s=korg; t=1765885459;
+	bh=Cpr8i17Idk2I+h7zFjJveCjQbcDSdh1V8xgWlIwFmVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXfVOZKma6vZ8z9hj/pLX0Mn/b7OPG2WRFmVdeq3JSGdCSY6opaKIDA0LS4cQravu
-	 e+EB1ApnTsZxfIR7BnqbFrhoLc4oBqn+TkJ+YpctQIip0jNxHxPb3ySg/5I2UIFsmi
-	 7Ls5JzRCMvwb7HEu05MOwaqJNmz55oiKgYqI/7mc=
+	b=E9DeGlUKNgPpLV0E9W5pKD+xJJNKZESB8srsQ8ts0WJ3ojelb80JKvmfEcCQnowql
+	 2jd4JE95LjDO/+9wuNanmC4XkTDNQYPKl8kQWOG8xVpI8DK9TRXkJ/j3Mu3BmsZBUp
+	 MKrM9BsLfeaVVOhSSXct8KKJNPCpzyK2klWf5yAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/354] clk: renesas: cpg-mssr: Read back reset registers to assure values latched
+Subject: [PATCH 6.17 146/507] drm/imagination: Fix reference to devm_platform_get_and_ioremap_resource()
 Date: Tue, 16 Dec 2025 12:09:47 +0100
-Message-ID: <20251216111321.642222447@linuxfoundation.org>
+Message-ID: <20251216111350.817101334@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit b91401af6c00ffab003698bfabd4c166df30748b ]
+[ Upstream commit f1aa93005d0d6fb3293ca9c3eb08d1d1557117bf ]
 
-On R-Car V4H, the PCIEC controller DBI read would generate an SError in
-case the controller reset is released by writing SRSTCLR register first,
-and immediately afterward reading some PCIEC controller DBI register.
-The issue triggers in rcar_gen4_pcie_additional_common_init() on
-dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW), which on V4H is the first
-read after reset_control_deassert(dw->core_rsts[DW_PCIE_PWR_RST].rstc).
+The call to devm_platform_ioremap_resource() was replaced by a call to
+devm_platform_get_and_ioremap_resource(), but the comment referring to
+the function's possible returned error codes was not updated.
 
-The reset controller which contains the SRSTCLR register and the PCIEC
-controller which contains the DBI register share the same root access
-bus, but the bus then splits into separate segments before reaching each
-IP.  Even if the SRSTCLR write access was posted on the bus before the
-DBI read access, it seems the DBI read access may reach the PCIEC
-controller before the SRSTCLR write completed, and trigger the SError.
-
-Mitigate the issue by adding a dummy SRSTCLR read, which assures the
-SRSTCLR write completes fully and is latched into the reset controller,
-before the PCIEC DBI read access can occur.
-
-Fixes: 0ab55cf18341 ("clk: renesas: cpg-mssr: Add support for R-Car V4H")
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250922162113.113223-1-marek.vasut+renesas@mailbox.org
+Fixes: 927f3e0253c11276 ("drm/imagination: Implement MIPS firmware processor and MMU support")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patch.msgid.link/2266514318480d17f52c7e5e67578dae6827914e.1761745586.git.geert+renesas@glider.be
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/renesas-cpg-mssr.c | 46 ++++++++++++--------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ drivers/gpu/drm/imagination/pvr_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index 291a01778aa48..e0f0dc8c0e56d 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -615,18 +615,32 @@ static int __init cpg_mssr_add_clk_domain(struct device *dev,
- 
- #define rcdev_to_priv(x)	container_of(x, struct cpg_mssr_priv, rcdev)
- 
--static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
--			  unsigned long id)
-+static int cpg_mssr_reset_operate(struct reset_controller_dev *rcdev,
-+				  const char *func, bool set, unsigned long id)
- {
- 	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
- 	unsigned int reg = id / 32;
- 	unsigned int bit = id % 32;
-+	const u16 off = set ? priv->reset_regs[reg] : priv->reset_clear_regs[reg];
- 	u32 bitmask = BIT(bit);
- 
--	dev_dbg(priv->dev, "reset %u%02u\n", reg, bit);
-+	if (func)
-+		dev_dbg(priv->dev, "%s %u%02u\n", func, reg, bit);
-+
-+	writel(bitmask, priv->pub.base0 + off);
-+	readl(priv->pub.base0 + off);
-+	barrier_data(priv->pub.base0 + off);
-+
-+	return 0;
-+}
-+
-+static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
-+			  unsigned long id)
-+{
-+	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
- 
- 	/* Reset module */
--	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
-+	cpg_mssr_reset_operate(rcdev, "reset", true, id);
- 
- 	/*
- 	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
-@@ -639,36 +653,18 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
- 		usleep_range(35, 1000);
- 
- 	/* Release module from reset state */
--	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
--
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, NULL, false, id);
- }
- 
- static int cpg_mssr_assert(struct reset_controller_dev *rcdev, unsigned long id)
- {
--	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
--	unsigned int reg = id / 32;
--	unsigned int bit = id % 32;
--	u32 bitmask = BIT(bit);
--
--	dev_dbg(priv->dev, "assert %u%02u\n", reg, bit);
--
--	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, "assert", true, id);
- }
- 
- static int cpg_mssr_deassert(struct reset_controller_dev *rcdev,
- 			     unsigned long id)
- {
--	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
--	unsigned int reg = id / 32;
--	unsigned int bit = id % 32;
--	u32 bitmask = BIT(bit);
--
--	dev_dbg(priv->dev, "deassert %u%02u\n", reg, bit);
--
--	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, "deassert", false, id);
- }
- 
- static int cpg_mssr_status(struct reset_controller_dev *rcdev,
+diff --git a/drivers/gpu/drm/imagination/pvr_device.c b/drivers/gpu/drm/imagination/pvr_device.c
+index 8b9ba4983c4cb..f9271efbd74aa 100644
+--- a/drivers/gpu/drm/imagination/pvr_device.c
++++ b/drivers/gpu/drm/imagination/pvr_device.c
+@@ -47,7 +47,7 @@
+  *
+  * Return:
+  *  * 0 on success, or
+- *  * Any error returned by devm_platform_ioremap_resource().
++ *  * Any error returned by devm_platform_get_and_ioremap_resource().
+  */
+ static int
+ pvr_device_reg_init(struct pvr_device *pvr_dev)
 -- 
 2.51.0
 
