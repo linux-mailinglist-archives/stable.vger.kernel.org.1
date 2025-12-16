@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A17CC22CB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395ACCC4113
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77BFD306452F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9746830C8AE3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEBB33D6F6;
-	Tue, 16 Dec 2025 11:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0970F34EEE1;
+	Tue, 16 Dec 2025 11:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z5RoPTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFmoAnxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA53533B967;
-	Tue, 16 Dec 2025 11:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE4C34E779;
+	Tue, 16 Dec 2025 11:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884030; cv=none; b=d1BS0VFV6xMzxHMb9cBtufRM/IEQDW3RcbcO4faS47HcIfX0ur2IZGcq6Rev7R8p7+SC9Pp+EBoZcvPUu4NfFlZkOABrDKyFdSpmSKTTXm67CPeEZGX8Zvk+yshR/wGhSbXhaDEZTV30Xx4WCDCa6P1o5//t8+OhUshJkldEuYE=
+	t=1765885609; cv=none; b=sbNVxF2AbIfFcmFasixAL35twrRvi0OQtkOa+GPKmgGuPZtm2HmVIvI+3614GlqP8dDdnc+PWGlMEAHbSa8wXs9FLq21yeviek/bbsfiebVZX4+PDA2OPl6GgpgS0ag/R5pD0vVX+aeGdS4DRDf9EE/LVqiWDm2OC9sT2IXyTGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884030; c=relaxed/simple;
-	bh=YF29EcrdtWsWqRzvzt91UEd0HI7R4pKN8CP54WIZVLU=;
+	s=arc-20240116; t=1765885609; c=relaxed/simple;
+	bh=9oEkU3ua0R4xbSocXnKhRT2fEC9h1en037XXxr+6oUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM9OX9IHNvi7tLe2m4tA32YS73CyDgwjlgxRb0d94vVf8Jwb2Y83Uit2FkYpIXAntcB9otozun49lus9mk4EpQ0lyPgIGt+iDhPGffiWpPYipDCgKy+BLFMR6uYFt/XyQTVtnjHY9Zxu2hIv5HLsFqZyHkAYc1gNwXLC66++O6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z5RoPTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BB3C4CEF1;
-	Tue, 16 Dec 2025 11:20:29 +0000 (UTC)
+	 MIME-Version; b=W1VZ747wK7Qe+QFnVeiV8jfae4qfOODLoYTwmQ8m37tLidSVsRbG/oI9C1cb/UC24yBh3Zn+ech+1KIrCV4qIzRbwSiecYCSzHotg7+AxzY0hkBavXlW0WFDJqvYQHdO3khr0agmSe8JrKafT9GiseaAcuBK+6xI3UEXst+b+To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFmoAnxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18D3C4CEF1;
+	Tue, 16 Dec 2025 11:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884030;
-	bh=YF29EcrdtWsWqRzvzt91UEd0HI7R4pKN8CP54WIZVLU=;
+	s=korg; t=1765885609;
+	bh=9oEkU3ua0R4xbSocXnKhRT2fEC9h1en037XXxr+6oUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0z5RoPTIxA6M1bK6my+FnuZ5uOVrrbmn78qUAgjvjWppd67fTtwWA865QPW9PHxhg
-	 e+0jili/1hA98sNfQNkjzsHchTqfx+Qer2aa7grf4HsmUTfIZBNkNCpxVK4lsUTiVd
-	 DPelAPU7Nlq0+BItldSmk37umDXVIOePue/7DSi4=
+	b=cFmoAnxQvcrn3tFJLWUi1HpVWWGzBvKk5bci/K/8bb/rzpIMPVhNur6Iw0QQMDeyU
+	 Oc8P7zUkmbGCV1Ame15bmJSaZYZlrBr5HoT2K+46RM2HSQ6jeBQ7ZPPu7qrakqyPgG
+	 JhIvSfgennJ8E7lIbFlRbLzDTSfodMnvA/klvNgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lukas Wunner <lukas@wunner.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Xiao Ni <xni@redhat.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/354] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
+Subject: [PATCH 6.17 190/507] md: delete mddev kobj before deleting gendisk kobj
 Date: Tue, 16 Dec 2025 12:10:31 +0100
-Message-ID: <20251216111323.245862263@linuxfoundation.org>
+Message-ID: <20251216111352.395465597@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
+[ Upstream commit cc394b94dc40b661efc9895665abf03640ffff2d ]
 
-Use check_add_overflow() to guard against potential integer overflows
-when adding the binary blob lengths and the size of an asymmetric_key_id
-structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
-possible buffer overflow when copying data from potentially malicious
-X.509 certificate fields that can be arbitrarily large, such as ASN.1
-INTEGER serial numbers, issuer names, etc.
+In sync del gendisk path, it deletes gendisk first and the directory
+/sys/block/md is removed. Then it releases mddev kobj in a delayed work.
+If we enable debug log in sysfs_remove_group, we can see the debug log
+'sysfs group bitmap not found for kobject md'. It's the reason that the
+parent kobj has been deleted, so it can't find parent directory.
 
-Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+In creating path, it allocs gendisk first, then adds mddev kobj. So it
+should delete mddev kobj before deleting gendisk.
+
+Before commit 9e59d609763f ("md: call del_gendisk in control path"), it
+releases mddev kobj first. If the kobj hasn't been deleted, it does clean
+job and deletes the kobj. Then it calls del_gendisk and releases gendisk
+kobj. So it doesn't need to call kobject_del to delete mddev kobj. After
+this patch, in sync del gendisk path, the sequence changes. So it needs
+to call kobject_del to delete mddev kobj.
+
+After this patch, the sequence is:
+1. kobject del mddev kobj
+2. del_gendisk deletes gendisk kobj
+3. mddev_delayed_delete releases mddev kobj
+4. md_kobj_release releases gendisk kobj
+
+Link: https://lore.kernel.org/linux-raid/20250928012424.61370-1-xni@redhat.com
+Fixes: 9e59d609763f ("md: call del_gendisk in control path")
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/md/md.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 43af5fa510c09..7859b0692b42b 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -11,6 +11,7 @@
- #include <crypto/public_key.h>
- #include <linux/seq_file.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <keys/system_keyring.h>
-@@ -151,12 +152,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
- 						     size_t len_2)
- {
- 	struct asymmetric_key_id *kid;
--
--	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
--		      GFP_KERNEL);
-+	size_t kid_sz;
-+	size_t len;
-+
-+	if (check_add_overflow(len_1, len_2, &len))
-+		return ERR_PTR(-EOVERFLOW);
-+	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
-+		return ERR_PTR(-EOVERFLOW);
-+	kid = kmalloc(kid_sz, GFP_KERNEL);
- 	if (!kid)
- 		return ERR_PTR(-ENOMEM);
--	kid->len = len_1 + len_2;
-+	kid->len = len;
- 	memcpy(kid->data, val_1, len_1);
- 	memcpy(kid->data + len_1, val_2, len_2);
- 	return kid;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 4e033c26fdd46..07e48faa87e0b 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -887,8 +887,10 @@ void mddev_unlock(struct mddev *mddev)
+ 		 * do_md_stop. dm raid only uses md_stop to stop. So dm raid
+ 		 * doesn't need to check MD_DELETED when getting reconfig lock
+ 		 */
+-		if (test_bit(MD_DELETED, &mddev->flags))
++		if (test_bit(MD_DELETED, &mddev->flags)) {
++			kobject_del(&mddev->kobj);
+ 			del_gendisk(mddev->gendisk);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(mddev_unlock);
 -- 
 2.51.0
 
