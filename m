@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F200CC23D6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D400CCC28A8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDD8230275A5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29A4C31957AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B0D39FD9;
-	Tue, 16 Dec 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066A534FF61;
+	Tue, 16 Dec 2025 11:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO8zPhgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjXXf9KX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E4D33EB1A;
-	Tue, 16 Dec 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA67C34FF51;
+	Tue, 16 Dec 2025 11:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884562; cv=none; b=tMu8JFBQoXXnFE6tqs99aFyc/eQe1Sz9NCFlmxyJ0rflQKa8nYIbs/X0qGtXZQlUQ/5t9mxZsAXra+mSKOJZ08s5k20UxL7QRiUj6iCq6tNNiMJ3HPkZlN96BV+ujRqX+ezNvV6+5zeaBgWQlCQz//NqZ9oemrBs53eZ1QTmX+c=
+	t=1765886167; cv=none; b=BAmUoKdc2VrLUK9mZ4Ode6qRl15tx+LICm7m8TVDQmrbh05CEo5LGXhSuOfoFHRJt1bokbVbfL3OdLrdkdzQ6MIxH8rWcpl6k/eAIOdGJaUnJjdR8ozmn03pcqIZsRvnvs/KxBXbEZUKWjaw1py1wVQ2XHoJO37ZI0U82xK4odI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884562; c=relaxed/simple;
-	bh=ScS8xO6gaPDgN+zNvjwKbri+JazVTvwb6tGgO83rUSM=;
+	s=arc-20240116; t=1765886167; c=relaxed/simple;
+	bh=Fh1paKlnYwh5qG1YgZJwKz1JBBTKJHA9hotI/z0MWUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFoGVGijVoEFJ77wV7rBuiMzKQsFxneDLREhvP5oDPUFUQtGJrK34f+6GKfj4iIutr1u8YoMXEgFMWbI+KzCVv302hYSJQn6gW0k28qDuUzi2ilDgA7VbS41iC10zDvQae+wYON3hhDilzGgfJxpJ22quohXTFB6Up25YlQ7vcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO8zPhgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BE4C4CEF1;
-	Tue, 16 Dec 2025 11:29:21 +0000 (UTC)
+	 MIME-Version; b=m1UHFyvuwj45268WR16/n/9yD3kJW3oWa45/6KsiqmYBDjg3uqwLvOwdKpey+f8mUn6gM2avAdYBHJDM6iRlkHaGIOXtaFZRzNsyMlcWDtHGL46eRh8c1q8BAcOCI9XJKZ/yFLCOV4X2jEqDaQkeBnIZsn1m5OxDAvFS1PSKghM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjXXf9KX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3607C4CEF1;
+	Tue, 16 Dec 2025 11:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884562;
-	bh=ScS8xO6gaPDgN+zNvjwKbri+JazVTvwb6tGgO83rUSM=;
+	s=korg; t=1765886166;
+	bh=Fh1paKlnYwh5qG1YgZJwKz1JBBTKJHA9hotI/z0MWUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NO8zPhgtWTG3IcKIa2aKRNanWHHN70+KG7+1kjI/4EwJhTmKBl+rrAUwEu4xMiXy6
-	 xtJHafhb4LhU3QwHIXscBhaulV/ki2u4Fe742bxR/aRKWXzkSKBajlO9/luRIYeeqe
-	 8eIRK3N5rlQXVyb5Enm1beSUDl8B1ChXV6Oc1d0g=
+	b=FjXXf9KX02cF15wjHE0WWRo0QtjsxqHq1nxkpXTGpniFWpZkg86PkumSTHzjiUg1i
+	 8yzX/4Jtb2s7TSmvhlIYrKpxhWA4uoG6n6tj/AOqGBd2+8BiT/PECavkLCFyHVkBdK
+	 adeO83LoepojnOm+T3rWvKw66y7ePGgbdCwc2oFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/354] RDMA/irdma: Fix data race in irdma_free_pble
-Date: Tue, 16 Dec 2025 12:13:18 +0100
-Message-ID: <20251216111329.286070187@linuxfoundation.org>
+Subject: [PATCH 6.17 358/507] clocksource/drivers/nxp-stm: Fix section mismatches
+Date: Tue, 16 Dec 2025 12:13:19 +0100
+Message-ID: <20251216111358.426324424@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 81f44409fb4f027d1e6d54edbeba5156ad94b214 ]
+[ Upstream commit b452d2c97eeccbf9c7ac5b3d2d9e80bf6d8a23db ]
 
-Protects pble_rsrc counters with mutex to prevent data race.
-Fixes the following data race in irdma_free_pble reported by KCSAN:
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init. Device managed resource actions
+similarly cannot be discarded.
 
-BUG: KCSAN: data-race in irdma_free_pble [irdma] / irdma_free_pble [irdma]
+The "_probe" suffix of the driver structure name prevents modpost from
+warning about this so replace it to catch any similar future issues.
 
-write to 0xffff91430baa0078 of 8 bytes by task 16956 on cpu 5:
- irdma_free_pble+0x3b/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffff91430baa0078 of 8 bytes by task 16953 on cpu 2:
- irdma_free_pble+0x23/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x0000000000005a62 -> 0x0000000000005a68
-
-Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-3-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: stable@vger.kernel.org	# 6.16
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20251017054943.7195-1-johan@kernel.org
+Stable-dep-of: 6a2416892e89 ("clocksource/drivers/nxp-stm: Prevent driver unbind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/pble.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
-index f381b8d51f532..bd9e7b7f6ca34 100644
---- a/drivers/infiniband/hw/irdma/pble.c
-+++ b/drivers/infiniband/hw/irdma/pble.c
-@@ -498,12 +498,14 @@ int irdma_get_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- void irdma_free_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- 		     struct irdma_pble_alloc *palloc)
- {
--	pble_rsrc->freedpbles += palloc->total_cnt;
--
- 	if (palloc->level == PBLE_LEVEL_2)
- 		free_lvl2(pble_rsrc, palloc);
- 	else
- 		irdma_prm_return_pbles(&pble_rsrc->pinfo,
- 				       &palloc->level1.chunkinfo);
-+
-+	mutex_lock(&pble_rsrc->pble_mutex_lock);
-+	pble_rsrc->freedpbles += palloc->total_cnt;
- 	pble_rsrc->stats_alloc_freed++;
-+	mutex_unlock(&pble_rsrc->pble_mutex_lock);
+diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
+index 8bca183abe8f2..bbb671b6e0284 100644
+--- a/drivers/clocksource/timer-nxp-stm.c
++++ b/drivers/clocksource/timer-nxp-stm.c
+@@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksource *cs)
+ 	nxp_stm_clocksource_enable(cs);
  }
+ 
+-static void __init devm_clocksource_unregister(void *data)
++static void devm_clocksource_unregister(void *data)
+ {
+ 	struct stm_timer *stm_timer = data;
+ 
+ 	clocksource_unregister(&stm_timer->cs);
+ }
+ 
+-static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
+-					   const char *name, void __iomem *base, struct clk *clk)
++static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
++				    const char *name, void __iomem *base, struct clk *clk)
+ {
+ 	int ret;
+ 
+@@ -295,9 +295,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_device *ced)
+ 	nxp_stm_module_get(stm_timer);
+ }
+ 
+-static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
+-						  const char *name, void __iomem *base, int irq,
+-						  struct clk *clk, int cpu)
++static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
++					   const char *name, void __iomem *base, int irq,
++					   struct clk *clk, int cpu)
+ {
+ 	stm_timer->base = base;
+ 	stm_timer->rate = clk_get_rate(clk);
+@@ -384,7 +384,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int __init nxp_stm_timer_probe(struct platform_device *pdev)
++static int nxp_stm_timer_probe(struct platform_device *pdev)
+ {
+ 	struct stm_timer *stm_timer;
+ 	struct device *dev = &pdev->dev;
+@@ -480,14 +480,14 @@ static const struct of_device_id nxp_stm_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
+ 
+-static struct platform_driver nxp_stm_probe = {
++static struct platform_driver nxp_stm_driver = {
+ 	.probe	= nxp_stm_timer_probe,
+ 	.driver	= {
+ 		.name		= "nxp-stm",
+ 		.of_match_table	= nxp_stm_of_match,
+ 	},
+ };
+-module_platform_driver(nxp_stm_probe);
++module_platform_driver(nxp_stm_driver);
+ 
+ MODULE_DESCRIPTION("NXP System Timer Module driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
