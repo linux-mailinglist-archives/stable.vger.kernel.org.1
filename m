@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E421CC23EB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21117CC338A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E8BA301A704
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 185B2307BD26
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB1333F374;
-	Tue, 16 Dec 2025 11:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B94E347BC9;
+	Tue, 16 Dec 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YSeFmdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc6rTAPv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D381C33E36B;
-	Tue, 16 Dec 2025 11:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265EA25CC40;
+	Tue, 16 Dec 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884576; cv=none; b=UibmTGlrqzZpaOjH6ytvD8GiUQ02Ea8cKDMBUF1pgSZenV4nA/iI4T1m3xJlJ0EuGqfZcQLYhf3i797JQwQU1zfq1IGNTy3r5K6tkaCvHyxiSe9VCOCduuzgrW8NeX+zYH0IlJVdL27OS0f8KouOH9UO0ZHiS7q/tsw8vXMmO+Q=
+	t=1765888108; cv=none; b=EdFOlzjhuz6m/O96KcjzjcXIzd7ggYhewO/wfOljuylCL3sPSqY0uY9bkOxKiZbwjuKHT7SpvBJKVXa5P+R7rPPmZyyDIQyffiQqWLRLFOKohMH1hOA/KeWN4fRQnuLwVIiClS9glBrp6mRfKg2h0SHD4wErdfJJEqWulUufPqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884576; c=relaxed/simple;
-	bh=CI0nRP4+PMgzvTJcaRZvjbZpaPWuX+fPVVf/+SIu7uM=;
+	s=arc-20240116; t=1765888108; c=relaxed/simple;
+	bh=PnAGG4HJq3yz7LfEr55nI74CHq9ghrhXtEVli+E62zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mi51FO1KiCcD0s8tLdTodbw+CBapvg02RF0RqrauWljFvA+8Ra7sBOSPEzFKg9G9QaVNJuUVUlG3RMA8Ro+4laTnLcxS0/A68OebEmtwjYtPpzdxZRLEyBU53r8n1BwLYi8YCANc0jgVv+MIEAfAQ98zl3ob4o3fHquAoXcJ9k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YSeFmdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED70C4CEF1;
-	Tue, 16 Dec 2025 11:29:34 +0000 (UTC)
+	 MIME-Version; b=dfRDLtMw21MCq2Xyb28LOtXeu8QC1FWv7Hyheg3Sfka8eQ8o7eShq8wSawHv3Xf6t+iAXPXYMHLtXzcjz9wqF1PdCyAiQhG4mQZU4BAOX1HS2q0XNdhztA4LOCfCZtUwbCTZEwTS+3bZFohJJvj2Pswep7n21F5jmWB7pImbgaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc6rTAPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF41C4CEF1;
+	Tue, 16 Dec 2025 12:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884575;
-	bh=CI0nRP4+PMgzvTJcaRZvjbZpaPWuX+fPVVf/+SIu7uM=;
+	s=korg; t=1765888108;
+	bh=PnAGG4HJq3yz7LfEr55nI74CHq9ghrhXtEVli+E62zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YSeFmdo6T70xgCtCd+jIJqKdIOQC6ZtvnVUMd2DFabfneXUtRRz/8g2+ASviWwkk
-	 0eRdCeOk2NLxTb9/vh4FiuiNFf1ZGTBc0nOhTuI7GmgJCATIpkd7gpim2gOpTlRCeE
-	 shIvJLGvZGeOUsRSPO+6J3DKQTSodPNcOPV/zAZ4=
+	b=uc6rTAPvKCo8p9/2KPUC2TKKga0RZS2vNVQ89AulCd3WNua2j3o2nsFlG7qRP+StE
+	 2mGRalb+sGhVDVjGoFU1lXoGEo8OGbOVlxXMK//drpe+yclSpEc6VbQS9cEMw/wNEv
+	 +JdsazRjgxFdtUIQS11y2r6pMTHPNUhzzDEP8WpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seven Lee <wtli@nuvoton.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/354] ASoC: nau8325: add missing build config
+Subject: [PATCH 6.18 435/614] clocksource/drivers/nxp-pit: Prevent driver unbind
 Date: Tue, 16 Dec 2025 12:13:22 +0100
-Message-ID: <20251216111329.429425948@linuxfoundation.org>
+Message-ID: <20251216111417.133900325@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cd41d3420ef658b2ca902d7677536ec8e25b610a ]
+[ Upstream commit e25f964cf414dafa6bee5c9c2c0b1d1fb041dc92 ]
 
-This configuration was missing from the initial commit.
+The driver does not support unbinding (e.g. as clockevents cannot be
+deregistered) so suppress the bind attributes to prevent the driver from
+being unbound and rebound after registration (and disabling the timer
+when reprobing fails).
 
-Found by Jiri Benc <jbenc@redhat.com>
+Even if the driver can currently only be built-in, also switch to
+builtin_platform_driver() to prevent it from being unloaded should
+modular builds ever be enabled.
 
-Fixes: c0a3873b9938 ("ASoC: nau8325: new driver")
-Cc: Seven Lee <wtli@nuvoton.com>
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20251126091759.2490019-3-perex@perex.cz
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32g2 / s32g3 support")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20251111153226.579-3-johan@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/Kconfig  | 5 +++++
- sound/soc/codecs/Makefile | 2 ++
- 2 files changed, 7 insertions(+)
+ drivers/clocksource/timer-nxp-pit.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
-index 6a72561c4189b..399dcf3d1c64b 100644
---- a/sound/soc/codecs/Kconfig
-+++ b/sound/soc/codecs/Kconfig
-@@ -162,6 +162,7 @@ config SND_SOC_ALL_CODECS
- 	imply SND_SOC_MT6359
- 	imply SND_SOC_MT6660
- 	imply SND_SOC_NAU8315
-+	imply SND_SOC_NAU8325
- 	imply SND_SOC_NAU8540
- 	imply SND_SOC_NAU8810
- 	imply SND_SOC_NAU8821
-@@ -2541,6 +2542,10 @@ config SND_SOC_MT6660
- config SND_SOC_NAU8315
- 	tristate "Nuvoton Technology Corporation NAU8315 CODEC"
+diff --git a/drivers/clocksource/timer-nxp-pit.c b/drivers/clocksource/timer-nxp-pit.c
+index 2d0a3554b6bf7..d1740f18f7180 100644
+--- a/drivers/clocksource/timer-nxp-pit.c
++++ b/drivers/clocksource/timer-nxp-pit.c
+@@ -374,9 +374,10 @@ static struct platform_driver nxp_pit_driver = {
+ 	.driver = {
+ 		.name = "nxp-pit",
+ 		.of_match_table = pit_timer_of_match,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = pit_timer_probe,
+ };
+-module_platform_driver(nxp_pit_driver);
++builtin_platform_driver(nxp_pit_driver);
  
-+config SND_SOC_NAU8325
-+	tristate "Nuvoton Technology Corporation NAU8325 CODEC"
-+	depends on I2C
-+
- config SND_SOC_NAU8540
- 	tristate "Nuvoton Technology Corporation NAU85L40 CODEC"
- 	depends on I2C
-diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
-index 69cb0b39f2200..47c621b3a0378 100644
---- a/sound/soc/codecs/Makefile
-+++ b/sound/soc/codecs/Makefile
-@@ -183,6 +183,7 @@ snd-soc-mt6359-y := mt6359.o
- snd-soc-mt6359-accdet-y := mt6359-accdet.o
- snd-soc-mt6660-y := mt6660.o
- snd-soc-nau8315-y := nau8315.o
-+snd-soc-nau8325-y := nau8325.o
- snd-soc-nau8540-y := nau8540.o
- snd-soc-nau8810-y := nau8810.o
- snd-soc-nau8821-y := nau8821.o
-@@ -585,6 +586,7 @@ obj-$(CONFIG_SND_SOC_MT6359)	+= snd-soc-mt6359.o
- obj-$(CONFIG_SND_SOC_MT6359_ACCDET) += mt6359-accdet.o
- obj-$(CONFIG_SND_SOC_MT6660)	+= snd-soc-mt6660.o
- obj-$(CONFIG_SND_SOC_NAU8315)   += snd-soc-nau8315.o
-+obj-$(CONFIG_SND_SOC_NAU8325)   += snd-soc-nau8325.o
- obj-$(CONFIG_SND_SOC_NAU8540)   += snd-soc-nau8540.o
- obj-$(CONFIG_SND_SOC_NAU8810)   += snd-soc-nau8810.o
- obj-$(CONFIG_SND_SOC_NAU8821)   += snd-soc-nau8821.o
+ TIMER_OF_DECLARE(vf610, "fsl,vf610-pit", pit_timer_init);
 -- 
 2.51.0
 
