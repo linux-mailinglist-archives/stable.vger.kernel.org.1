@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-201874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A71CC2DCA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D5ACC2FF8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71AB930EF237
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE3493032E75
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F343446D2;
-	Tue, 16 Dec 2025 11:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5528836CE1E;
+	Tue, 16 Dec 2025 12:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQMrpJnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdedDTtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414FC3446CE;
-	Tue, 16 Dec 2025 11:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0022736CE11;
+	Tue, 16 Dec 2025 12:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886075; cv=none; b=MheCS8Up4kU1C0ZGk24C+YFOJieN25tbI+IV/P4WwjqllenyLHXAEAE7/Xq7is6NAWJGrzHIe3tC6471wprm3Kj5g93S5NhY7b6NUyimVkpS7o0YtmpfFwvjEBm0vAxLaNCmm9VwGXHpmptaMK7dkd0gFc7h/buWAkbRHmLH79U=
+	t=1765888013; cv=none; b=q5YRZd0MKwylnATgaFbKln5lGF7kcum469KdSNFZpfIYftAPhWOZLhwQqtzXWSwXrLOujby5c8lkmPAFuJvWnc7p5Ir1czjWURHY3MeSrQPFUFxeXsQ5D6XbnJzIEFGmSx1/IV/uyflTFCGEQbCF0l1/kxOSEolKWqRrdBTgeyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886075; c=relaxed/simple;
-	bh=Ja9zfZgjNWSlatuN43KaREtzFK7EFb8DHbFh2vxSucc=;
+	s=arc-20240116; t=1765888013; c=relaxed/simple;
+	bh=Ubo7/g7X4eajzUPDdDHFr7y1aW082a34vUEFokxf6Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JktdXO42wDHD8aKsOWsA8dW+ctfrf8VkfFLxrs4q3wXcErfVhHEXmzNoxizw06ym7AS8L5UWcs8jTP+W+sF9SuSt7winwhhgzlR+lyl1izwccvR8aPPeoKQoBHDXror3U0/dgNTeaLBBQ4YT+OGtbc51ILLkRo/74ilsr5IED64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQMrpJnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D895C4CEF1;
-	Tue, 16 Dec 2025 11:54:34 +0000 (UTC)
+	 MIME-Version; b=j7DTHjxCSgdjCRwdnmv9DPUFGG1IADwXJnvPIkZutdh/cZALYNwlVKnn0rcfx3Fo5mALY9MhBJ4pdTFvOCboaTpXzLYepIhJovxkgy6DBGZRfFWg000jZzQXaxOxkCE4CLGaDglYg6b4Qd8yO1qWBRAfkjuaD6FhOXju/6Ikj04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdedDTtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6302CC4CEF1;
+	Tue, 16 Dec 2025 12:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886075;
-	bh=Ja9zfZgjNWSlatuN43KaREtzFK7EFb8DHbFh2vxSucc=;
+	s=korg; t=1765888012;
+	bh=Ubo7/g7X4eajzUPDdDHFr7y1aW082a34vUEFokxf6Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQMrpJncxnOhRBupkrvoOcaozfPSHkedoe2hNVnLylUe7gsODEZgc2KDmf5wr3nXu
-	 kiljAW9P/EnT/0Tm6OM89F2ZWJVcLZb2s9EBRwvpoJslof7VnCj0gFSuFEXFUW+FKy
-	 xMusKXZ4PCDVrDbxyKRgb1vqb+6z3fF8oTLtvg4I=
+	b=ZdedDTtB02AAdKpiLQT7pFMhdwIKoHnxhME+2zvHTH3yr+B01dskKuQMcLyK1Vfx+
+	 LnQ7h+D895wRLZBaVvnDbc+ElQec/9V3fpP3wpq+U185ISKp4zug6qV5vi9B4Se8WD
+	 7jTLrNv1zhQosw/56oFru8DRWiWB9Y3DMbg4Hs8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Daniel Mentz <danielmentz@google.com>,
+	Ryan Huang <tzukui@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 331/507] wifi: mt76: mt7996: set link_valid field when initializing wcid
+Subject: [PATCH 6.18 405/614] iommu/arm-smmu-v3: Fix error check in arm_smmu_alloc_cd_tables
 Date: Tue, 16 Dec 2025 12:12:52 +0100
-Message-ID: <20251216111357.457229974@linuxfoundation.org>
+Message-ID: <20251216111416.048846092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Ryan Huang <tzukui@google.com>
 
-[ Upstream commit 7eaea3a8ba1e9bb58f87e3030f6ce18537e57e1f ]
+[ Upstream commit 5941f0e0c1e0be03ebc15b461f64208f5250d3d9 ]
 
-This ensures the upper layer uses the correct link ID during packet
-processing.
+In arm_smmu_alloc_cd_tables(), the error check following the
+dma_alloc_coherent() for cd_table->l2.l1tab incorrectly tests
+cd_table->l2.l2ptrs.
 
-Fixes: dd82a9e02c05 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-7-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+This means an allocation failure for l1tab goes undetected, causing
+the function to return 0 (success) erroneously.
+
+Correct the check to test cd_table->l2.l1tab.
+
+Fixes: e3b1be2e73db ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_ctx_desc_cfg")
+Signed-off-by: Daniel Mentz <danielmentz@google.com>
+Signed-off-by: Ryan Huang <tzukui@google.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 5f90a385b4d38..b8bd2bda5172f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -346,6 +346,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	INIT_LIST_HEAD(&msta_link->rc_list);
- 	msta_link->wcid.idx = idx;
- 	msta_link->wcid.link_id = link_conf->link_id;
-+	msta_link->wcid.link_valid = ieee80211_vif_is_mld(vif);
- 	msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	mt76_wcid_init(&msta_link->wcid, band_idx);
- 
-@@ -969,6 +970,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 	msta_link->wcid.sta = 1;
- 	msta_link->wcid.idx = idx;
- 	msta_link->wcid.link_id = link_id;
-+	msta_link->wcid.link_valid = !!sta->valid_links;
- 	msta_link->wcid.def_wcid = &msta->deflink.wcid;
- 
- 	ewma_avg_signal_init(&msta_link->avg_ack_signal);
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 2a8b46b948f05..9780f40ba3e65 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1464,7 +1464,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
+ 		cd_table->l2.l1tab = dma_alloc_coherent(smmu->dev, l1size,
+ 							&cd_table->cdtab_dma,
+ 							GFP_KERNEL);
+-		if (!cd_table->l2.l2ptrs) {
++		if (!cd_table->l2.l1tab) {
+ 			ret = -ENOMEM;
+ 			goto err_free_l2ptrs;
+ 		}
 -- 
 2.51.0
 
