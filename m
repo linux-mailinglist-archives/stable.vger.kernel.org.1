@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC05CC3BF0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:51:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4B4CC226E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A6E631157F9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 269B9302EB00
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A7E34EF00;
-	Tue, 16 Dec 2025 11:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE76341ACB;
+	Tue, 16 Dec 2025 11:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSngTtNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dm4wfKEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7A34EEFB;
-	Tue, 16 Dec 2025 11:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF92C341069;
+	Tue, 16 Dec 2025 11:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885622; cv=none; b=VUo4FCYZfk0GZKP/35hcxBdMYi/5mRi64W+TZ2kc+Vnfak5n1kRtrLYqG4Erzq00/pbOVteH0P4GRYqTQNCmOrKTPW6g1CqETWY6ttfZKC3Yu07XDxSZwuR1JbZG2mmLFpz0nf/IUWYpnzIdkJBsJgl+prKumF/oIW8c+FqyHb4=
+	t=1765884134; cv=none; b=Ltv5gBNFnS2vgPSfF81cGdbvggzvMb6TqiD148gP8TAVjvdCABt83lzQbQPfDNZXMzv9p2xKP2lTCYfrC3Oaam85tK2ve14qEt92tCKaGZTorgK8F/jpfkEKcBpgphodGPW45ltkBVyRx3kYwJKdVooSvYlDIfVm3RJYbCfGwVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885622; c=relaxed/simple;
-	bh=BIOfW6657/bLTsVSnjv5HS1iRtwJEegSEsEXH9jRFgY=;
+	s=arc-20240116; t=1765884134; c=relaxed/simple;
+	bh=DZwnqcNt6jhb7lptX6qxfSAQbjxfixpbIsaIc97RToA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lp9/CnZSYHde/Q2sLhh8GgxF0eN78Pfe4ZT5Mdde2sThiBchphN1FtpTB9XQRnH0XkPyqSkTQKPX8IBYW44hcSMjpY0cL7fQhq59XiDvH7ZGC4javKyWuFdfT2QbrhllSq8J5D5ihUrBcHKOwreqC7/3twPIhLMmgkhwGRWH4cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSngTtNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FD3C4CEF5;
-	Tue, 16 Dec 2025 11:47:02 +0000 (UTC)
+	 MIME-Version; b=QdelH4KsqLJDg+ZuBS4Y+dkZN26LBzge5qJGnLp0vyNZE7WxnLJaHKEi4Qhk3/uWuwZqQOHJ8P3P68y0wmUx0OY6EDG7KXr9sQ2mMrulFdl2fqRgehlUe8XcxizI8V82bmYeQSlEaqmbCxM/2VctdNkw6kofiiUSeEpjQdLIfaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dm4wfKEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2AFC4CEF1;
+	Tue, 16 Dec 2025 11:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885622;
-	bh=BIOfW6657/bLTsVSnjv5HS1iRtwJEegSEsEXH9jRFgY=;
+	s=korg; t=1765884133;
+	bh=DZwnqcNt6jhb7lptX6qxfSAQbjxfixpbIsaIc97RToA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSngTtNSVaz/xeXCYlOrmQEP7HncqNfAxAjJqzuhWL9oJ6tKTWH8JPtMK9TYTG9E7
-	 mTJKKZu9nsVzfgsVLLRTrzya0yEoYIljWIfYLUwSAA79DkdSC7yOExsc6JgEBQ1pAk
-	 EBhUvkbtApr1TJwQeJYLkvN4L8WJxJ+ChFUGz3lw=
+	b=dm4wfKEy7sye1DVCCG9PCG9kVUGeZPIAqdVU9pjs3mVVaP19QeoSguHe0iejnABe6
+	 J2N2G9/mLMprzQsz+nBWoBfQl/e+WDaqoWtYd4cWX7vTA9uUsRqciWH+6FP6PNpHgX
+	 A8/GU6s7g8Kl9gjT2TKA4hS5dotJ1UHJpmA27sTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 194/507] scsi: stex: Fix reboot_notifier leak in probe error path
+Subject: [PATCH 6.12 068/354] s390/smp: Fix fallback CPU detection
 Date: Tue, 16 Dec 2025 12:10:35 +0100
-Message-ID: <20251216111352.538924139@linuxfoundation.org>
+Message-ID: <20251216111323.389604910@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
+[ Upstream commit 07a75d08cfa1b883a6e1256666e5f0617ee99231 ]
 
-In stex_probe(), register_reboot_notifier() is called at the beginning,
-but if any subsequent initialization step fails, the function returns
-without unregistering the notifier, resulting in a resource leak.
+In case SCLP CPU detection does not work a fallback mechanism using SIGP is
+in place. Since a cleanup this does not work correctly anymore: new CPUs
+are only considered if their type matches the boot CPU.
 
-Add unregister_reboot_notifier() in the out_disable error path to ensure
-proper cleanup on all failure paths.
+Before the cleanup the information if a CPU type should be considered was
+also part of a structure generated by the fallback mechanism and indicated
+that a CPU type should not be considered when adding CPUs.
 
-Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Since the rework a global SCLP state is used instead. If the global SCLP
+state indicates that the CPU type should be considered and the fallback
+mechanism is used, there may be a mismatch with CPU types if CPUs are
+added. This can lead to a system with only a single CPU even tough there
+are many more CPUs.
+
+Address this by simply copying the boot cpu type into the generated data
+structure from the fallback mechanism.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: d08d94306e90 ("s390/smp: cleanup core vs. cpu in the SCLP interface")
+Reviewed-by: Mete Durlu <meted@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/stex.c | 1 +
+ arch/s390/kernel/smp.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
-index 63ed7f9aaa937..34a557297feff 100644
---- a/drivers/scsi/stex.c
-+++ b/drivers/scsi/stex.c
-@@ -1844,6 +1844,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- out_scsi_host_put:
- 	scsi_host_put(host);
- out_disable:
-+	unregister_reboot_notifier(&stex_notifier);
- 	pci_disable_device(pdev);
- 
- 	return err;
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index 4df56fdb24880..b976f603dddcd 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -710,6 +710,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
+ 				continue;
+ 			info->core[info->configured].core_id =
+ 				address >> smp_cpu_mt_shift;
++			info->core[info->configured].type = boot_core_type;
+ 			info->configured++;
+ 		}
+ 		info->combined = info->configured;
 -- 
 2.51.0
 
