@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-201849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4914BCC2761
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D670FCC237C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83602302E979
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5266E3005F1A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3554A355037;
-	Tue, 16 Dec 2025 11:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70B031ED9A;
+	Tue, 16 Dec 2025 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnX5D21i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOQwTRwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7879338F2F;
-	Tue, 16 Dec 2025 11:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923183233EE;
+	Tue, 16 Dec 2025 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885992; cv=none; b=TO77h72qtYtuR14Ja8HvusrN/Lq9ghzEVbOMjQT2zqkQDfcWUvKayTV1tDsVPOL8ab0Xbl2KztFdMQZEHWQDUrPLAZllzS3BuhLOqHIgdEjdpiwqBgc414r083JnOmmZ7H8I014PTrJE+JKeLzrhbVOSS7bgZKNMmjkVj0sXTTM=
+	t=1765884499; cv=none; b=L4pB4oDJr0Kd9PXATPrRTN6Uiz9jIAOSACCtJ8FHmcJ+BFbScYX02TwoA9/e/ies3KqP2aLWcvTeXCPo8GnB/fj/CcHn8G3oUGK61z83c8NtYPSH8lIHV3a+isIy2aDN9Xmkyw65em45iXTwBfrwmHE8FyA4OuuMOfpssh1CF60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885992; c=relaxed/simple;
-	bh=jwIHR0IpPTpqZ4SUNRlqUA2U/3KfcdrVgPQ/jY8/shQ=;
+	s=arc-20240116; t=1765884499; c=relaxed/simple;
+	bh=Qm37MQaeQvA2+7mlhceBg5qCj862313AN5b/Pc9JJF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0iyID9uua0tb9Z8V7p6jjatEU1lSm0aSWkAaKOoaI0kgJbfNMbt/b57qrT7JFgaP18GltSf6Clvr4aGikwnTfuBnCCOciVBUO2P6u4yyLbaWSsGeZYCO7do8KgRgHU6iFiesFpQhXXE2WxYD0LOiAde2y6a/QBdijXgCawyz5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnX5D21i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719F8C4CEF1;
-	Tue, 16 Dec 2025 11:53:11 +0000 (UTC)
+	 MIME-Version; b=WKJ7S3EcwWbFUjzUGGyXD5S54gY4NaiazTDKRGxS4wNkXU6QBab4ojnuf04q7MQNjB+I16UNPuZZr6InrTMUxkGkSuyN+jVLrgYUo1GU/YlNtDkANSu0zxpr4oxupkTa80ma4BYR0p13aHwephgVAN/vHMpmqimWp0JNcaYNBLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOQwTRwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0427CC4CEF1;
+	Tue, 16 Dec 2025 11:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885991;
-	bh=jwIHR0IpPTpqZ4SUNRlqUA2U/3KfcdrVgPQ/jY8/shQ=;
+	s=korg; t=1765884499;
+	bh=Qm37MQaeQvA2+7mlhceBg5qCj862313AN5b/Pc9JJF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnX5D21igR6dN9EGEMj+tLR8pSN5EwT3lwFPl3BC9yBlmuOc1xiFxeJlTeb/j/a2l
-	 guJhMN+xa1lilMxUTlNkB8n75Xj6noGW2l6pRwbsnbl3AeGqMYRsRbB7yLSNz5Ir2f
-	 s3L2zfLvWGeb6VF9aydIUY5BpsIvWiLZFGE62Fqo=
+	b=ZOQwTRwuJ53SbetKHX6MofrTMdd4VCIQ5984bJsutDvWfOEl1IjRjp1CZXb+RNdPa
+	 5aH0FqbTzeK0NlQuy3wDE5TadVWHE+xuZcD5OlSnriZ5w2XhcNPJ8NXqUicTdlpjgA
+	 h6EleIpkc8Xs78K2UJgljuDSwCM1RUS/LyUk6lRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jay Liu <jay.liu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 305/507] usb: dwc2: fix hang during shutdown if set as peripheral
+Subject: [PATCH 6.12 179/354] drm/mediatek: Fix CCORR mtk_ctm_s31_32_to_s1_n function issue
 Date: Tue, 16 Dec 2025 12:12:26 +0100
-Message-ID: <20251216111356.522197193@linuxfoundation.org>
+Message-ID: <20251216111327.398061535@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Jay Liu <jay.liu@mediatek.com>
 
-[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
+[ Upstream commit 20ac36b71c53b8c36c6903b5ca87c75226700a97 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+if matrixbit is 11,
+The range of color matrix is from 0 to (BIT(12) - 1).
+Values from 0 to (BIT(11) - 1) represent positive numbers,
+values from BIT(11) to (BIT(12) - 1) represent negative numbers.
+For example, -1 need converted to 8191.
+so convert S31.32 to HW Q2.11 format by drm_color_ctm_s31_32_to_qm_n,
+and set int_bits to 2.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
-
-But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
-level. This would result in hang during shutdown if dwc2 is configured
-as peripheral mode.
-
-Fix this hang by only disable and sync irq when lowlevel hw is enabled.
-
-Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 738ed4156fba ("drm/mediatek: Add matrix_bits private data for ccorr")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jay Liu <jay.liu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250921055416.25588-2-jay.liu@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ccorr.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 3f83ecc9fc236..b07bdf16326a4 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -369,11 +369,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
- {
- 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
- 
--	dwc2_disable_global_interrupts(hsotg);
--	synchronize_irq(hsotg->irq);
--
--	if (hsotg->ll_hw_enabled)
-+	if (hsotg->ll_hw_enabled) {
-+		dwc2_disable_global_interrupts(hsotg);
-+		synchronize_irq(hsotg->irq);
- 		dwc2_lowlevel_hw_disable(hsotg);
-+	}
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+index 9b75727e0861c..cb6d829d93db1 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+@@ -80,27 +80,6 @@ void mtk_ccorr_stop(struct device *dev)
+ 	writel_relaxed(0x0, ccorr->regs + DISP_CCORR_EN);
  }
  
- /**
+-/* Converts a DRM S31.32 value to the HW S1.n format. */
+-static u16 mtk_ctm_s31_32_to_s1_n(u64 in, u32 n)
+-{
+-	u16 r;
+-
+-	/* Sign bit. */
+-	r = in & BIT_ULL(63) ? BIT(n + 1) : 0;
+-
+-	if ((in & GENMASK_ULL(62, 33)) > 0) {
+-		/* identity value 0x100000000 -> 0x400(mt8183), */
+-		/* identity value 0x100000000 -> 0x800(mt8192), */
+-		/* if bigger this, set it to max 0x7ff. */
+-		r |= GENMASK(n, 0);
+-	} else {
+-		/* take the n+1 most important bits. */
+-		r |= (in >> (32 - n)) & GENMASK(n, 0);
+-	}
+-
+-	return r;
+-}
+-
+ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ {
+ 	struct mtk_disp_ccorr *ccorr = dev_get_drvdata(dev);
+@@ -119,7 +98,7 @@ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ 	input = ctm->matrix;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(coeffs); i++)
+-		coeffs[i] = mtk_ctm_s31_32_to_s1_n(input[i], matrix_bits);
++		coeffs[i] = drm_color_ctm_s31_32_to_qm_n(input[i], 2, matrix_bits);
+ 
+ 	mtk_ddp_write(cmdq_pkt, coeffs[0] << 16 | coeffs[1],
+ 		      &ccorr->cmdq_reg, ccorr->regs, DISP_CCORR_COEF_0);
 -- 
 2.51.0
 
