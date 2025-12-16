@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710F8CC23EE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A56FCC2D16
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02987306AE1A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6AC7B30131FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5D34214A;
-	Tue, 16 Dec 2025 11:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E754934F27E;
+	Tue, 16 Dec 2025 12:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVgamN9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFriu64s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F3341645;
-	Tue, 16 Dec 2025 11:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4695322527;
+	Tue, 16 Dec 2025 12:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884329; cv=none; b=osgxBZNSy9VFK2ptfJPuTb92/oDIEmfKWhCogQ9L7EUPFyQdyfVqOouZHthUXHqSBG2CRugPuDbAEgt60Gx4qiEAzUTBIAArpyyNbljqteU8uYiOz3jLwuyKPTDujtkkIICT9Td4LRJH9BCLAD+RO1Aj3X+hVjFPH/E/fC/NLPs=
+	t=1765887859; cv=none; b=gdYFipQpmTK5+JAkhMJF9oI8wOCdNDkxch+avunQrP6TReets+GeJj3OhcPKU448bPow/iSS+1nz1ymsj4SQ02UDUmzojKFC2js12iRtisT9DeGIRLCxSWZghHnONbUydaBcWB/p/Mt0OwiE7lxR0XDlYpqkzSSHkt35OFEGIrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884329; c=relaxed/simple;
-	bh=8WWcHjrhqb12owofp7MEgb9c7rHIc4zCYYwDwlF0boA=;
+	s=arc-20240116; t=1765887859; c=relaxed/simple;
+	bh=aW4feubJ6uF/7KfOe3/wJgjz+AyOEcITwprtQ/UunSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXJdzVl1zYpod3R3e/wzyin7HpEdh6/AbKLOPdCSJpbb6Sml/P40cv7A04T1mVhUlh9JamPZAzvO6KyBZWGFlv9uj7oCY+4+RAgEgdMwEDJEXckGe59OqiXY++hUBgjo5pFpe6MlTlqj8HdonpgUv3+1zyGHQzRB/5ZPme/SNj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVgamN9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09DEC4CEF1;
-	Tue, 16 Dec 2025 11:25:28 +0000 (UTC)
+	 MIME-Version; b=dASTpwrxjgx0Fxm83rXl36XSLfn9Fa0Yj2d0qQkmu6WMHf9qUDImBySgzdfEbDfG+4En1XBwGjGT6CXhwhfp107yUYvc6rq9dpTrYxgwMtroZ3cHFRnnOYao8SucDbm/ifYwvu0zoy92r0cJjb5pSDM25xqrpFqpyEVRVlS3e4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFriu64s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DB4C4CEF1;
+	Tue, 16 Dec 2025 12:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884329;
-	bh=8WWcHjrhqb12owofp7MEgb9c7rHIc4zCYYwDwlF0boA=;
+	s=korg; t=1765887859;
+	bh=aW4feubJ6uF/7KfOe3/wJgjz+AyOEcITwprtQ/UunSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVgamN9SKRwbIe2dx+G9arF6sU8VcBZtoZSBbOUvHpV44Ty8fb2OXcZmmPdP6tztT
-	 glswqGQ2GqRgLqyHJpaXi9/wMj2EXRNa+6UHZxlBWeMMIv/5OBpRQGCb3fhJkw8hD2
-	 /HB5mKh1BjRTjcasSvIq0hMbCNirwT07x14W6VOw=
+	b=GFriu64sPGnQg3DpIcB//rJMG9Ygvmy68ZiASGOaw96nCEG3qGUxf0NHj1Cafh8W1
+	 WpnhMeB384oHwCdBT3w8x8wTvElbY2tUJid5aGr5ZXOSZLLlZx7wVBk5pt0FrzW8pc
+	 2XZMIS+W5pI5PZcEQaZi41Ubt9c7cFNM/Mp9fghI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/354] crypto: iaa - Fix incorrect return value in save_iaa_wq()
+Subject: [PATCH 6.18 360/614] rtla: Fix -a overriding -t argument
 Date: Tue, 16 Dec 2025 12:12:07 +0100
-Message-ID: <20251216111326.710805957@linuxfoundation.org>
+Message-ID: <20251216111414.404909470@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
+[ Upstream commit ddb6e42494e5c48c17e64f29b7674b9add486a19 ]
 
-The save_iaa_wq() function unconditionally returns 0, even when an error
-is encountered. This prevents the error code from being propagated to the
-caller.
+When running rtla as
 
-Fix this by returning the 'ret' variable, which holds the actual status
-of the operations within the function.
+    `rtla <timerlat|osnoise> <top|hist> -t custom_file.txt -a 100`
 
-Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+-a options override trace output filename specified by -t option.
+Running the command above will create <timerlat|osnoise>_trace.txt file
+instead of custom_file.txt. Fix this by making sure that -a option does
+not override trace output filename even if it's passed after trace
+output filename is specified.
+
+Fixes: 173a3b014827 ("rtla/timerlat: Add the automatic trace option")
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Reviewed-by: Tomas Glozar <tglozar@redhat.com>
+Link: https://lore.kernel.org/r/b6ae60424050b2c1c8709e18759adead6012b971.1762186418.git.ipravdin.official@gmail.com
+[ use capital letter in subject, as required by tracing subsystem ]
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/src/osnoise_hist.c  | 3 ++-
+ tools/tracing/rtla/src/osnoise_top.c   | 3 ++-
+ tools/tracing/rtla/src/timerlat_hist.c | 3 ++-
+ tools/tracing/rtla/src/timerlat_top.c  | 3 ++-
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index df2728cccf8b3..e9391cf2c397c 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -807,7 +807,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
- 	if (!cpus_per_iaa)
- 		cpus_per_iaa = 1;
- out:
--	return 0;
-+	return ret;
- }
+diff --git a/tools/tracing/rtla/src/osnoise_hist.c b/tools/tracing/rtla/src/osnoise_hist.c
+index dffb6d0a98d7d..d22feb4d6cc9d 100644
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -557,7 +557,8 @@ static struct common_params
+ 			params->threshold = 1;
  
- static void remove_iaa_wq(struct idxd_wq *wq)
+ 			/* set trace */
+-			trace_output = "osnoise_trace.txt";
++			if (!trace_output)
++				trace_output = "osnoise_trace.txt";
+ 
+ 			break;
+ 		case 'b':
+diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
+index 95418f7ecc961..a8d31030c4122 100644
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -397,7 +397,8 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
+ 			params->threshold = 1;
+ 
+ 			/* set trace */
+-			trace_output = "osnoise_trace.txt";
++			if (!trace_output)
++				trace_output = "osnoise_trace.txt";
+ 
+ 			break;
+ 		case 'c':
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 606c1688057b2..3d56df3d5fa0d 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -878,7 +878,8 @@ static struct common_params
+ 			params->print_stack = auto_thresh;
+ 
+ 			/* set trace */
+-			trace_output = "timerlat_trace.txt";
++			if (!trace_output)
++				trace_output = "timerlat_trace.txt";
+ 
+ 			break;
+ 		case 'c':
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index fc479a0dcb597..6cc9a3607c665 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -628,7 +628,8 @@ static struct common_params
+ 			params->print_stack = auto_thresh;
+ 
+ 			/* set trace */
+-			trace_output = "timerlat_trace.txt";
++			if (!trace_output)
++				trace_output = "timerlat_trace.txt";
+ 
+ 			break;
+ 		case '5':
 -- 
 2.51.0
 
