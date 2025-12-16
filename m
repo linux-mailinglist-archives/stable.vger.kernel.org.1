@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF32ACC3007
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90966CC2F63
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E13D1322E78B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B3F03063C00
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167A4398B79;
-	Tue, 16 Dec 2025 12:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89BD33E37B;
+	Tue, 16 Dec 2025 12:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyksbhi0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSiEtcD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6E3398B78;
-	Tue, 16 Dec 2025 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49EE299924;
+	Tue, 16 Dec 2025 12:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888361; cv=none; b=CfVavvBIOQCwl5Uac2Bvgvyf66Vx8rppLM5IyyuC7cEHlg30gEGWzUj5BNwhpsBC+g088jVFP6xsCHYeD7kxqLUtO4izzgxmJuAc4h1N6lHm9hfMIy3c4ygizPtGOxej51wvue2MV/30rnk0CkakqFDmwdMHHm5BSd081vJkBqQ=
+	t=1765886438; cv=none; b=ULqRIvhd+LA4E3EfEpFzU/u6+CZX94yfZsfrA6HOyn6rN1tv34aospAjJaA3CA0blJJFwwkos8iWImg3zx7E71IIXfwlcLipNdePMgGsVsWqJqQpxtXFHOcwbqHTe2wpYnGkC3dh9thrPUdXpm42ZVzeemEAND1KvtjJKprUWpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888361; c=relaxed/simple;
-	bh=X2XPSw0Vv+u9B1dHYI0kfqHo7p9tQ3iVuDgllRrfkd4=;
+	s=arc-20240116; t=1765886438; c=relaxed/simple;
+	bh=jo1ONWgoRolVFVlXpD2yJ51T0eCyvHWJG+gyeHLOi2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zi+HytbsArqGZyZDI9IKvvVO3VYoc9Wgb5g0rFg5UWTBmPTK5rWZR+DvLdm3Ctl753zt5LYDPtFjk02CBIZXHVtRJBqWdSOh1trdHJmfjyhLXS8xk+euKOld6hRg7QIExno+swmERbBAwQ8uq6IrSGVUaSt9bHp4GoJNCEgOQC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyksbhi0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71F4C4CEF1;
-	Tue, 16 Dec 2025 12:32:40 +0000 (UTC)
+	 MIME-Version; b=r/dB4OZD98nfB9SNKqCM3V9xwXIu/HHN4nFzojMaeplx+7iNl/uxqxJDFnvliKoiiQxCB0bhpGBRYm1qjcwH9rtOyp6QeG39deIO9fzMmTStL2QxKAIoh+hegLRNoK4Qzd8sSzfzIp27QHLmggPiIi8fJZ+d9q9R2Oo7nU8vv7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSiEtcD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1E6C4CEF1;
+	Tue, 16 Dec 2025 12:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888361;
-	bh=X2XPSw0Vv+u9B1dHYI0kfqHo7p9tQ3iVuDgllRrfkd4=;
+	s=korg; t=1765886438;
+	bh=jo1ONWgoRolVFVlXpD2yJ51T0eCyvHWJG+gyeHLOi2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyksbhi0tErJ7lFCv0qBHZZD3CQWmdi2H7MkdQ6EpMX3QMDU2rJIWCu5B0GF+cefx
-	 lZIn3bss4vXTaY3NaMeQ+OYU9kJYU3SkLhQIiM1jQvARmGsQHInFzIgZvpIPos6EF+
-	 mIPEfCqus1rI9XIvKcMPb45uxvBqNV1SJab46VsQ=
+	b=cSiEtcD9J6Ee6UfUeR6eFOLWQQdKC5CpEmfQtCYEfXg1v5aZ5JNGzgy61wrlwdggp
+	 t5UBmkGEaX/yvwGOq/pP9kEzlSCdO/udfNyEYhe9Rs3TicpXY/Cs5/8v/87KqqFh5Z
+	 jKZcngz3w/Fl6IM+0+anJSwCXMIVQX3Zt5vPQG/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 511/614] net: dsa: b53: provide accessors for accessing ARL_SRCH_CTL
+Subject: [PATCH 6.17 437/507] rtc: amlogic-a4: fix double free caused by devm
 Date: Tue, 16 Dec 2025 12:14:38 +0100
-Message-ID: <20251216111419.883280997@linuxfoundation.org>
+Message-ID: <20251216111401.290197290@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 1716be6db04af53bac9b869f01156a460595cf41 ]
+[ Upstream commit 384150d7a5b60c1086790a8ee07b0629f906cca2 ]
 
-In order to more easily support more formats, move accessing
-ARL_SRCH_CTL into helper functions to contain the differences.
+The clock obtained via devm_clk_get_enabled() is automatically managed
+by devres and will be disabled and freed on driver detach. Manually
+calling clk_disable_unprepare() in error path and remove function
+causes double free.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-5-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Remove the redundant clk_disable_unprepare() calls from the probe
+error path and aml_rtc_remove(), allowing the devm framework to
+automatically manage the clock lifecycle.
+
+Fixes: c89ac9182ee2 ("rtc: support for the Amlogic on-chip RTC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Link: https://patch.msgid.link/20251021103559.1903-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 37 +++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/rtc/rtc-amlogic-a4.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 4c418e0531f73..38e6fa05042ca 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2017,18 +2017,37 @@ int b53_fdb_del(struct dsa_switch *ds, int port,
- }
- EXPORT_SYMBOL(b53_fdb_del);
+diff --git a/drivers/rtc/rtc-amlogic-a4.c b/drivers/rtc/rtc-amlogic-a4.c
+index 09d78c2cc6918..c3cac29d96f07 100644
+--- a/drivers/rtc/rtc-amlogic-a4.c
++++ b/drivers/rtc/rtc-amlogic-a4.c
+@@ -390,7 +390,6 @@ static int aml_rtc_probe(struct platform_device *pdev)
  
--static int b53_arl_search_wait(struct b53_device *dev)
-+static void b53_read_arl_srch_ctl(struct b53_device *dev, u8 *val)
+ 	return 0;
+ err_clk:
+-	clk_disable_unprepare(rtc->sys_clk);
+ 	device_init_wakeup(dev, false);
+ 
+ 	return ret;
+@@ -423,9 +422,6 @@ static SIMPLE_DEV_PM_OPS(aml_rtc_pm_ops,
+ 
+ static void aml_rtc_remove(struct platform_device *pdev)
  {
--	unsigned int timeout = 1000;
--	u8 reg, offset;
-+	u8 offset;
-+
-+	if (is5325(dev) || is5365(dev))
-+		offset = B53_ARL_SRCH_CTL_25;
-+	else
-+		offset = B53_ARL_SRCH_CTL;
-+
-+	b53_read8(dev, B53_ARLIO_PAGE, offset, val);
-+}
-+
-+static void b53_write_arl_srch_ctl(struct b53_device *dev, u8 val)
-+{
-+	u8 offset;
- 
- 	if (is5325(dev) || is5365(dev))
- 		offset = B53_ARL_SRCH_CTL_25;
- 	else
- 		offset = B53_ARL_SRCH_CTL;
- 
-+	b53_write8(dev, B53_ARLIO_PAGE, offset, val);
-+}
-+
-+static int b53_arl_search_wait(struct b53_device *dev)
-+{
-+	unsigned int timeout = 1000;
-+	u8 reg;
-+
- 	do {
--		b53_read8(dev, B53_ARLIO_PAGE, offset, &reg);
-+		b53_read_arl_srch_ctl(dev, &reg);
- 		if (!(reg & ARL_SRCH_STDN))
- 			return -ENOENT;
- 
-@@ -2083,23 +2102,15 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
- 	unsigned int count = 0, results_per_hit = 1;
- 	struct b53_device *priv = ds->priv;
- 	struct b53_arl_entry results[2];
--	u8 offset;
- 	int ret;
--	u8 reg;
- 
- 	if (priv->num_arl_bins > 2)
- 		results_per_hit = 2;
- 
- 	mutex_lock(&priv->arl_mutex);
- 
--	if (is5325(priv) || is5365(priv))
--		offset = B53_ARL_SRCH_CTL_25;
--	else
--		offset = B53_ARL_SRCH_CTL;
+-	struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
 -
- 	/* Start search operation */
--	reg = ARL_SRCH_STDN;
--	b53_write8(priv, B53_ARLIO_PAGE, offset, reg);
-+	b53_write_arl_srch_ctl(priv, ARL_SRCH_STDN);
+-	clk_disable_unprepare(rtc->sys_clk);
+ 	device_init_wakeup(&pdev->dev, false);
+ }
  
- 	do {
- 		ret = b53_arl_search_wait(priv);
 -- 
 2.51.0
 
