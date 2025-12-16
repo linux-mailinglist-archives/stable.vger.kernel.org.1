@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B1CC32F7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:25:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F705CC243F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0777F305D665
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 316213027A32
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF29362137;
-	Tue, 16 Dec 2025 12:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D44426A08F;
+	Tue, 16 Dec 2025 11:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/usxdVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQmeIM8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F66361DD8;
-	Tue, 16 Dec 2025 12:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CA03164C3;
+	Tue, 16 Dec 2025 11:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888215; cv=none; b=PTPAxg7pKfvCp32ZLv+j7CcXgbHXaEg3Ix8JpEBmh7hyGPHnQadxjKATojjiJfQW7iWUlTdLX9St1ZPsiOiGWP8qaNSU5FPwvRIXxMZt7YkUwn6r5nhKv+CTfZz5TUEEzG+RUWuRxGYC9sDDC/PJRZ+xqV8jcIDsAV9R5SwPWQ4=
+	t=1765884683; cv=none; b=FJVba86QGn2qzkMCXaWfXH+8QqYp4KBTPVb0i6KYqRheaDR4lqWxysRiLPrnDI4BmNLxM0fCAUQ+YWzMzj0DAu5XN4GP+v6mkvq118EJBhalUYKRR4hXjTtRmuJ+Xxn4y0QAavIbBIECrGMnzUCMrpZi2pUxJ2XXrnWOtv/EvpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888215; c=relaxed/simple;
-	bh=nBGjGo8Hjn137JZGYVI71r/2rVXmHLUVOaqQ4zWAGM4=;
+	s=arc-20240116; t=1765884683; c=relaxed/simple;
+	bh=QnhcoUM4VQFdHCtVi++O6FhInFd8jtfAGYI9uDSM9SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVhmxkqPNg4bVS6u7M4TeR4sx+4BMmf3jh92XSP1gickbSX8lNawCgIlW0GK+IQimReZ08rTPoWU/S6w0fQ/vp6vqyen7UclaMKFMolDIZaIZ+ENgn6V7jNDoTBRslFL+7Kp58rO9lsf0J035nR51ranh/8MUxxfg07witM4p/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/usxdVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8A9C4CEF5;
-	Tue, 16 Dec 2025 12:30:14 +0000 (UTC)
+	 MIME-Version; b=MHr3R5eZvZDzc1YXOSsnt2qPgEtk2kjkqcVCgaGzRE1MDWGCA7Oxn5oTux6cxjTTFu+uS3LmY8JaVvk0nNolZiDD181R4VXnhc+y9SLnOFKYvVKm6kHmjUaSWVTIY9W7q8O6l0HZHcWm+ie/GUDrB78xjYK/op38VCgjX9VJpaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQmeIM8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CDAC4CEF1;
+	Tue, 16 Dec 2025 11:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888214;
-	bh=nBGjGo8Hjn137JZGYVI71r/2rVXmHLUVOaqQ4zWAGM4=;
+	s=korg; t=1765884683;
+	bh=QnhcoUM4VQFdHCtVi++O6FhInFd8jtfAGYI9uDSM9SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/usxdVkJlQnrXqVI06fDJq4YrOLe+2oUnm6VLSfheXA/89jp+3uwm3E6CRPwyOEf
-	 c8rsnrSvwRqp9lSPSRILitccF7FNHp8f/s1wivuehZcJVF8+eSqDSQ1Qw0GoAdBvJm
-	 XY7cHcjqhB2fvygpnXGUHEjoX7jJ1GFq55cUESX4=
+	b=UQmeIM8izXbpBBfjLr9oPgyD/6afGWg+6YzFje9q0/Euh8fOwgKNnjIijliUZpsYn
+	 5n64owBGUP4So4F8ylgG6gilG6/suSALb+ovbdL8W5uZqrkIUCCYqw3dFyJKEZ5nGD
+	 KTAP5RgKeWMDSCoRomxxu8ir6+hUFrs5TI3FnVHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 467/614] vdpa/mlx5: Fix incorrect error code reporting in query_virtqueues
+Subject: [PATCH 6.12 267/354] netfilter: nft_connlimit: update the count if add was skipped
 Date: Tue, 16 Dec 2025 12:13:54 +0100
-Message-ID: <20251216111418.291484056@linuxfoundation.org>
+Message-ID: <20251216111330.589340215@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit f0ea2e91093ac979d07ebd033e0f45869b1d2608 ]
+[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
 
-When query_virtqueues() fails, the error log prints the variable err
-instead of cmd->err. Since err may still be zero at this point, the
-log message can misleadingly report a success value 0 even though the
-command actually failed.
+Connlimit expression can be used for all kind of packets and not only
+for packets with connection state new. See this ruleset as example:
 
-Even worse, once err is set to the first failure, subsequent logs
-print that same stale value. This makes the error reporting appear
-one step behind the actual failing queue index, which is confusing
-and misleading.
+table ip filter {
+        chain input {
+                type filter hook input priority filter; policy accept;
+                tcp dport 22 ct count over 4 counter
+        }
+}
 
-Fix the log to report cmd->err, which reflects the real failure code
-returned by the firmware.
+Currently, if the connection count goes over the limit the counter will
+count the packets. When a connection is closed, the connection count
+won't decrement as it should because it is only updated for new
+connections due to an optimization on __nf_conncount_add() that prevents
+updating the list if the connection is duplicated.
 
-Fixes: 1fcdf43ea69e ("vdpa/mlx5: Use async API for vq query command")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20250929134258.80956-1-alok.a.tiwari@oracle.com>
+To solve this problem, check whether the connection was skipped and if
+so, update the list. Adjust count_tree() too so the same fix is applied
+for xt_connlimit.
+
+Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
+Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c  | 12 ++++++++----
+ net/netfilter/nft_connlimit.c | 13 +++++++++++--
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index a7936bd1aabe1..ddaa1366704bb 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -1256,7 +1256,7 @@ static int query_virtqueues(struct mlx5_vdpa_net *ndev,
- 		int vq_idx = start_vq + i;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 0ffc5ff78a714..b84cfb5616df4 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
+ 	if (ct && nf_ct_is_confirmed(ct)) {
+ 		if (refcounted)
+ 			nf_ct_put(ct);
+-		return 0;
++		return -EEXIST;
+ 	}
  
- 		if (cmd->err) {
--			mlx5_vdpa_err(mvdev, "query vq %d failed, err: %d\n", vq_idx, err);
-+			mlx5_vdpa_err(mvdev, "query vq %d failed, err: %d\n", vq_idx, cmd->err);
- 			if (!err)
- 				err = cmd->err;
- 			continue;
+ 	if ((u32)jiffies == list->last_gc)
+@@ -398,7 +398,7 @@ insert_tree(struct net *net,
+ 			int ret;
+ 
+ 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
+-			if (ret)
++			if (ret && ret != -EEXIST)
+ 				count = 0; /* hotdrop */
+ 			else
+ 				count = rbconn->list.count;
+@@ -501,10 +501,14 @@ count_tree(struct net *net,
+ 			/* same source network -> be counted! */
+ 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
+ 			spin_unlock_bh(&rbconn->list.list_lock);
+-			if (ret)
++			if (ret && ret != -EEXIST) {
+ 				return 0; /* hotdrop */
+-			else
++			} else {
++				/* -EEXIST means add was skipped, update the list */
++				if (ret == -EEXIST)
++					nf_conncount_gc_list(net, &rbconn->list);
+ 				return rbconn->list.count;
++			}
+ 		}
+ 	}
+ 
+diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
+index d998e27713ac7..83a7d5769396c 100644
+--- a/net/netfilter/nft_connlimit.c
++++ b/net/netfilter/nft_connlimit.c
+@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
+ 
+ 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
+ 	if (err) {
+-		regs->verdict.code = NF_DROP;
+-		return;
++		if (err == -EEXIST) {
++			/* Call gc to update the list count if any connection has
++			 * been closed already. This is useful for softlimit
++			 * connections like limiting bandwidth based on a number
++			 * of open connections.
++			 */
++			nf_conncount_gc_list(nft_net(pkt), priv->list);
++		} else {
++			regs->verdict.code = NF_DROP;
++			return;
++		}
+ 	}
+ 
+ 	count = priv->list->count;
 -- 
 2.51.0
 
