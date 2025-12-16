@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C472ECC31A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7055ECC2680
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0521B30B42B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C29330FD669
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3E03587A9;
-	Tue, 16 Dec 2025 12:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF06343D84;
+	Tue, 16 Dec 2025 11:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrZO+7VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obanHhB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865373587A4;
-	Tue, 16 Dec 2025 12:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF84F342CB1;
+	Tue, 16 Dec 2025 11:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886629; cv=none; b=OhWGu0CymZmhChcYDUbIsY0SCTZRDimilCuOb3BDYAnCfkJ7mPbU1cJ1G6qGoeXRkJ7n9RNJHSVcQ+r8PnnlfPpC1fltje2cnonHVu4PF+Kd5ulQF7pdN04PPK8DsHseoSwrUj+Cxbs9o+RlRu8wPdjsUT/TGUavg0el7R/J0YQ=
+	t=1765884905; cv=none; b=LQkb/LLplnioW5ZhBzRJ3l2YismAYi9HAU3mPNYQzpqv14VjOOsICWeIJBAmTtVgB7sLARQ3Fm8Rnq235BA4B54Mme/+WEjIhahBGCSxkqZiLRTuUPZR2ksA+E9sRpqYra+oaqWigk2cR1aqHYK6xfyKU+xPUQq/rJkx6N8OLLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886629; c=relaxed/simple;
-	bh=M7elHLJd/lwesp9JTCXLzUd1LELlzkQfjSHigsgy0CU=;
+	s=arc-20240116; t=1765884905; c=relaxed/simple;
+	bh=mISf4KZnr/A9LPwZjhspMCNxv+Nyqnlrab3mOCcPWro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjHzYnxn3A043+Y3+50R2fEHDKerDg1jdvebkkYZd9u1kjKK+n595cEmcFWDuZx3qidKJCpDVkCjbmLCDxh66OOdkpmPo01E/c7dmzkz+FAcD7gaCHF47ofX7YpF3jVqAey0mRrArfsxZBCVduSCXf4rVjWdJ338SWsOPW87Kzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrZO+7VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9443C4CEF1;
-	Tue, 16 Dec 2025 12:03:48 +0000 (UTC)
+	 MIME-Version; b=YfIr4zH2521pPgrUMX/rqhaTi6MYDsyKuug0VJ6wgGwXjhC/VoMrbbroQphh69grprt8iLp6ZrkMg4euYMi0abzQq7Dus14n1qUqdehQ4PmStpMHTvX3kr70Dri88mLgVgLi7R/BDHGjMrvg1xIIemlcT43rI/Wh95FIOnynVZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obanHhB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21217C4CEF1;
+	Tue, 16 Dec 2025 11:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886629;
-	bh=M7elHLJd/lwesp9JTCXLzUd1LELlzkQfjSHigsgy0CU=;
+	s=korg; t=1765884905;
+	bh=mISf4KZnr/A9LPwZjhspMCNxv+Nyqnlrab3mOCcPWro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WrZO+7VHpNKyQ57Lm5vqswQ4hGY+7+l6WC4323sJcjyWBxzwwgixOyq3+31jei3Zb
-	 Lk2WyWjH5tbrdoaX7xpowVWxtkpwNy2bWIOgUvZMydw2m33cGEIyzUbpcJkq2M6BqJ
-	 CdlRP0dU5RTnENVaViHCIv76dI3CaWeY/qitwtUI=
+	b=obanHhB4AEG6mFjIbXNj/Ya7d6YX+jigyMg+r/9bkA68beeVwhiUvJK+ROAezHSCK
+	 wiQFVmcDnAlym88q99TOsSVIxlyAaHwJ5VAPFS2IaXiX5aBXs5uzMFBNDEPgMDqCOp
+	 OjySUFKlTwhY/HjKgTundnqiX//kaiPT+WjTJpWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Zhang <cong.zhang@oss.qualcomm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Takashi Iwai <tiwai@suse.de>,
+	Junrui Luo <moonafterrain@outlook.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 460/507] blk-mq: Abort suspend when wakeup events are pending
+Subject: [PATCH 6.12 334/354] ALSA: firewire-motu: add bounds check in put_user loop for DSP events
 Date: Tue, 16 Dec 2025 12:15:01 +0100
-Message-ID: <20251216111402.112974071@linuxfoundation.org>
+Message-ID: <20251216111333.009007493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Zhang <cong.zhang@oss.qualcomm.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit c196bf43d706592d8801a7513603765080e495fb ]
+[ Upstream commit 298e753880b6ea99ac30df34959a7a03b0878eed ]
 
-During system suspend, wakeup capable IRQs for block device can be
-delayed, which can cause blk_mq_hctx_notify_offline() to hang
-indefinitely while waiting for pending request to complete.
-Skip the request waiting loop and abort suspend when wakeup events are
-pending to prevent the deadlock.
+In the DSP event handling code, a put_user() loop copies event data.
+When the user buffer size is not aligned to 4 bytes, it could overwrite
+beyond the buffer boundary.
 
-Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
-Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix by adding a bounds check before put_user().
+
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB788112C72AF8A1C8C448B4B8AFA3A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ sound/firewire/motu/motu-hwdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 19f62b070ca9d..3e9f82c9a89d2 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -23,6 +23,7 @@
- #include <linux/cache.h>
- #include <linux/sched/topology.h>
- #include <linux/sched/signal.h>
-+#include <linux/suspend.h>
- #include <linux/delay.h>
- #include <linux/crash_dump.h>
- #include <linux/prefetch.h>
-@@ -3721,6 +3722,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
- {
- 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
- 			struct blk_mq_hw_ctx, cpuhp_online);
-+	int ret = 0;
- 
- 	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
- 		return 0;
-@@ -3741,12 +3743,24 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
- 	 * frozen and there are no requests.
- 	 */
- 	if (percpu_ref_tryget(&hctx->queue->q_usage_counter)) {
--		while (blk_mq_hctx_has_requests(hctx))
-+		while (blk_mq_hctx_has_requests(hctx)) {
-+			/*
-+			 * The wakeup capable IRQ handler of block device is
-+			 * not called during suspend. Skip the loop by checking
-+			 * pm_wakeup_pending to prevent the deadlock and improve
-+			 * suspend latency.
-+			 */
-+			if (pm_wakeup_pending()) {
-+				clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
-+				ret = -EBUSY;
-+				break;
-+			}
- 			msleep(5);
-+		}
- 		percpu_ref_put(&hctx->queue->q_usage_counter);
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- /*
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index 28885c8004aea..8519a9f9ce2c0 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -75,7 +75,7 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf, long count,
+ 		while (consumed < count &&
+ 		       snd_motu_register_dsp_message_parser_copy_event(motu, &ev)) {
+ 			ptr = (u32 __user *)(buf + consumed);
+-			if (put_user(ev, ptr))
++			if (consumed + sizeof(ev) > count || put_user(ev, ptr))
+ 				return -EFAULT;
+ 			consumed += sizeof(ev);
+ 		}
 -- 
 2.51.0
 
