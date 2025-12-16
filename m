@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02186CC3AC7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:42:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F337CC438A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 946163030DA1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB73D30E9295
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF63148A7;
-	Tue, 16 Dec 2025 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98309349B03;
+	Tue, 16 Dec 2025 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CN6rh2BM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="048f2AmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D63734106A;
-	Tue, 16 Dec 2025 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346CF349AE5;
+	Tue, 16 Dec 2025 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888427; cv=none; b=RkqsBffeBEAaD/vTaLAAO0wN3sTElt3xuQqG+IQjm/4Qe6ax8MQZCSZjAp8JYsxUDXguc4LOoEziK8AfiuCMfNYFSM4prw8uKWZGAmcRVQ3rhRJ9N9q9SIon+HRX0Lt/ZAqAunXCIQieGT5BgJcJLR4GJJueVOiu40hEIwXiZng=
+	t=1765886365; cv=none; b=o7Y1b0fBHbaVCIWg6yNmqoV2ImSVj5wtjZOt2H2qqZB8ul00Gn4ua+ECQ/w5Z3+Axnw5zTUx2etHAhxSDRW0aP6bTsG93tobGWxzfPNkUuiSJfC2hAWXx3egTm3/8qxkE9QV1tkyLY9PrQ/pStZGkOEBW/9n256Dq6R+RUOO3EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888427; c=relaxed/simple;
-	bh=Xci+LabOWJqUSEH9M4qdoPtaDe3Hl0emJE8NgWarRAk=;
+	s=arc-20240116; t=1765886365; c=relaxed/simple;
+	bh=pYXAxC18i+dgOpk71t/cmFPa0lo6hfHijBPBZo2Hcv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLDuse3kujLWAZyu8NzNC1gf/UaR2Xxki9+3doe4wOa4Ucn6bTURxT02v5ziBANC4eUDr1Jy4Q/dYe7oHwQTJpvuiU2bi+JLjvYMDXmt9jerEQkrMTea57AXapT98bJ5n9eJFUMGsN9dyor1UJU+rrd7CA5N66XilaEueQfeEyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CN6rh2BM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B305C4CEF1;
-	Tue, 16 Dec 2025 12:33:46 +0000 (UTC)
+	 MIME-Version; b=V8RDs8ZO1//GrCq4i4esrg6MYNuNcnT99qgF6DtjDVtpiKpZ4y+nORUH7BZcUsGg+svTdiiIK1wF09xk6Y2DtB4/McCQASqzubDiUzZW0aEOfBdqROwFrICFAns/BQi7Zzq+mm6K5JyOpsb8WjFVpK4N49WMDpZLuebffXgxnJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=048f2AmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B33C4CEF1;
+	Tue, 16 Dec 2025 11:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888427;
-	bh=Xci+LabOWJqUSEH9M4qdoPtaDe3Hl0emJE8NgWarRAk=;
+	s=korg; t=1765886365;
+	bh=pYXAxC18i+dgOpk71t/cmFPa0lo6hfHijBPBZo2Hcv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CN6rh2BM8J7pJlUqIFOTabtFpDxck87h8/Df5PgJfZl2TJvvOI5Yxwq/M6ozTWOuF
-	 3D1qnEV3uIk1ca+Y1OqYVngjdOrz+jcLpeHfWntjWJaTTzKFmdGaKcHD83ik/BRi9j
-	 fjwdk37R4/9M5JQug8KOHxRbKwjtzU/AkNE7z7fk=
+	b=048f2AmP6d5mQDuQvlox1qF8nDkRCN6IBfW+v34sUSheEdSmkjQq3ZbEgWfWlKoip
+	 R8XiWXwQdsvlbn2V51OQxpA08zhrJjH84cmDXhKD1B8v3f8hg4LxMUPpgOs1TVVZBm
+	 6SWwCB1NUYekLkg/3kjNf8q4hrAA4Cs/KCD2Kz+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 488/614] spi: ch341: fix out-of-bounds memory access in ch341_transfer_one
+Subject: [PATCH 6.17 414/507] net: dsa: b53: provide accessors for accessing ARL_SRCH_CTL
 Date: Tue, 16 Dec 2025 12:14:15 +0100
-Message-ID: <20251216111419.050852685@linuxfoundation.org>
+Message-ID: <20251216111400.460340252@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 545d1287e40a55242f6ab68bcc1ba3b74088b1bc ]
+[ Upstream commit 1716be6db04af53bac9b869f01156a460595cf41 ]
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+In order to more easily support more formats, move accessing
+ARL_SRCH_CTL into helper functions to contain the differences.
 
-The 'len' variable is calculated as 'min(32, trans->len + 1)',
-which includes the 1-byte command header.
-
-When copying data from 'trans->tx_buf' to 'ch341->tx_buf + 1', using 'len'
-as the length is incorrect because:
-
-1. It causes an out-of-bounds read from 'trans->tx_buf' (which has size
-   'trans->len', i.e., 'len - 1' in this context).
-2. It can cause an out-of-bounds write to 'ch341->tx_buf' if 'len' is
-   CH341_PACKET_LENGTH (32). Writing 32 bytes to ch341->tx_buf + 1
-   overflows the buffer.
-
-Fix this by copying 'len - 1' bytes.
-
-Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Link: https://patch.msgid.link/20251128160630.0f922c45ec6084a46fb57099@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-5-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ch341.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 37 +++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
-index 46bc208f2d050..79d2f9ab4ef03 100644
---- a/drivers/spi/spi-ch341.c
-+++ b/drivers/spi/spi-ch341.c
-@@ -78,7 +78,7 @@ static int ch341_transfer_one(struct spi_controller *host,
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 4c418e0531f73..38e6fa05042ca 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2017,18 +2017,37 @@ int b53_fdb_del(struct dsa_switch *ds, int port,
+ }
+ EXPORT_SYMBOL(b53_fdb_del);
  
- 	ch341->tx_buf[0] = CH341A_CMD_SPI_STREAM;
+-static int b53_arl_search_wait(struct b53_device *dev)
++static void b53_read_arl_srch_ctl(struct b53_device *dev, u8 *val)
+ {
+-	unsigned int timeout = 1000;
+-	u8 reg, offset;
++	u8 offset;
++
++	if (is5325(dev) || is5365(dev))
++		offset = B53_ARL_SRCH_CTL_25;
++	else
++		offset = B53_ARL_SRCH_CTL;
++
++	b53_read8(dev, B53_ARLIO_PAGE, offset, val);
++}
++
++static void b53_write_arl_srch_ctl(struct b53_device *dev, u8 val)
++{
++	u8 offset;
  
--	memcpy(ch341->tx_buf + 1, trans->tx_buf, len);
-+	memcpy(ch341->tx_buf + 1, trans->tx_buf, len - 1);
+ 	if (is5325(dev) || is5365(dev))
+ 		offset = B53_ARL_SRCH_CTL_25;
+ 	else
+ 		offset = B53_ARL_SRCH_CTL;
  
- 	ret = usb_bulk_msg(ch341->udev, ch341->write_pipe, ch341->tx_buf, len,
- 			   NULL, CH341_DEFAULT_TIMEOUT);
++	b53_write8(dev, B53_ARLIO_PAGE, offset, val);
++}
++
++static int b53_arl_search_wait(struct b53_device *dev)
++{
++	unsigned int timeout = 1000;
++	u8 reg;
++
+ 	do {
+-		b53_read8(dev, B53_ARLIO_PAGE, offset, &reg);
++		b53_read_arl_srch_ctl(dev, &reg);
+ 		if (!(reg & ARL_SRCH_STDN))
+ 			return -ENOENT;
+ 
+@@ -2083,23 +2102,15 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 	unsigned int count = 0, results_per_hit = 1;
+ 	struct b53_device *priv = ds->priv;
+ 	struct b53_arl_entry results[2];
+-	u8 offset;
+ 	int ret;
+-	u8 reg;
+ 
+ 	if (priv->num_arl_bins > 2)
+ 		results_per_hit = 2;
+ 
+ 	mutex_lock(&priv->arl_mutex);
+ 
+-	if (is5325(priv) || is5365(priv))
+-		offset = B53_ARL_SRCH_CTL_25;
+-	else
+-		offset = B53_ARL_SRCH_CTL;
+-
+ 	/* Start search operation */
+-	reg = ARL_SRCH_STDN;
+-	b53_write8(priv, B53_ARLIO_PAGE, offset, reg);
++	b53_write_arl_srch_ctl(priv, ARL_SRCH_STDN);
+ 
+ 	do {
+ 		ret = b53_arl_search_wait(priv);
 -- 
 2.51.0
 
