@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-201500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620A7CC24A9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB40BCC324C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 626413020179
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7B8633007651
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276B73431EA;
-	Tue, 16 Dec 2025 11:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D536D37D127;
+	Tue, 16 Dec 2025 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjpPzSHk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz8KroWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7CB221F0C;
-	Tue, 16 Dec 2025 11:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9270037A3FF;
+	Tue, 16 Dec 2025 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884841; cv=none; b=qX/lKrLDfDnUYAudIofNzpXOaMFQvy7LdAbmh+gp/1uKx454L/LkP6ia4IGnyEa9u4jou4VgrzLT6lrN4xX7HDD9A6iYRJHHd7s00gCLG0f8T37dOMaNpXZy5pppKldpzmCAlxPnw1x9ymXLV/408df4pWSMy83rBwL969DzE2U=
+	t=1765888269; cv=none; b=KBaMAo+//A9vFkkTkx3YkhKkpyQzmOodXafsvm8+hDWIMtLYc3DvCbNk8KaizLf5VyHFi+20X0OIiJkGKsD1MqyRWWnofjPrJPI7PehDkjG5cMyP51VxYukWwVJqeoelGAGzcN9M3qk14ynC6iHxbTrIQrt5ZJX2T2EG7rI6WDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884841; c=relaxed/simple;
-	bh=NHDkJtnHTJRSWH7coEhSNq7cUXhwoIS2GgA4LL/DL80=;
+	s=arc-20240116; t=1765888269; c=relaxed/simple;
+	bh=+gHMSJgfAVRpBg0ZVtgVS9FPXgG+niyKjjmFleBnoKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZVK0LNiu5GWNvckMQc0FQs842MELOZGHaiFPkbWkSMaDc2JILqYCYg3UuUIxNLoQEqk+X4PWbFAZYRFShLZ9if76OC9x4RvxV1bmhZ+88GAV0fABpFQVRB+kdr2WjjzOuI2WYMhJN+n7on5n4ZTDd3B0NmerM7QxdZWpTiGAgTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjpPzSHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20243C4CEF1;
-	Tue, 16 Dec 2025 11:34:00 +0000 (UTC)
+	 MIME-Version; b=DLEh3DH9Oi1nJvzaWFjggZ/fs4HkwYHhe4j/0LPvyaB9zFP7R8tQzN2NlWxIfCdh8fEjmFTzGQv+O4QURvzB1btcv+RHSmzQLBIOQeMw2iVoTnd3chXol2/ulMlrNCDBhXPC+c6p/8F0X+8yoUhwzJLWwODVNXINHPP8h8jd8f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz8KroWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E36C4CEF1;
+	Tue, 16 Dec 2025 12:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884841;
-	bh=NHDkJtnHTJRSWH7coEhSNq7cUXhwoIS2GgA4LL/DL80=;
+	s=korg; t=1765888269;
+	bh=+gHMSJgfAVRpBg0ZVtgVS9FPXgG+niyKjjmFleBnoKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SjpPzSHkGJ+/1ol2r66sJcZ/wPMgM3bh8gcaLJK80AT/XVdiJdODJVF2LOlP8RAHC
-	 c464+hS7GlF2kmk4DuLAp9e2Yrb4CHKHaO5LhsXVnO6rM7mqURMX5xKxykF/qzZu3b
-	 0/RFbeNkNhsljc9Cy0ESQ0wcBPOmSOn6UhkkUKh0=
+	b=iz8KroWY8o20+t4eA2bnuumQ4ePynGxt/t638sgSbVFqfPaXTy2SIZTxUxOwGRt/T
+	 OZ4yb4tIHPnQKhmXA79srmESvkNx4ltlbonJcregSUfZjdVuG/lNNGvsav4DBBZY98
+	 v7kqvWjT5FSa7uqNeJffPH/9XLvftDThrgz73N5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lukasz Majewski <lukma@denx.de>,
-	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 282/354] net: hsr: create an API to get hsr port type
+Subject: [PATCH 6.18 482/614] netfilter: nf_conncount: rework API to use sk_buff directly
 Date: Tue, 16 Dec 2025 12:14:09 +0100
-Message-ID: <20251216111331.130795573@linuxfoundation.org>
+Message-ID: <20251216111418.834926392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +58,505 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit a0244e76213980f3b9bb5d40b0b6705fcf24230d ]
+[ Upstream commit be102eb6a0e7c03db00e50540622f4e43b2d2844 ]
 
-Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1 ("net:
-hsr: Provide RedBox support (HSR-SAN)"), we see that different port
-types require different settings for hardware offload, which was not the
-case before when we only had HSR_PT_SLAVE_A and HSR_PT_SLAVE_B. But
-there is currently no way to know which port is which type, so create
-the hsr_get_port_type() API function and export it.
+When using nf_conncount infrastructure for non-confirmed connections a
+duplicated track is possible due to an optimization introduced since
+commit d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC").
 
-When hsr_get_port_type() is called from the device driver, the port can
-must be found in the HSR port list. An important use case is for this
-function to work from offloading drivers' NETDEV_CHANGEUPPER handler,
-which is triggered by hsr_portdev_setup() -> netdev_master_upper_dev_link().
-Therefore, we need to move the addition of the hsr_port to the HSR port
-list prior to calling hsr_portdev_setup(). This makes the error
-restoration path also more similar to hsr_del_port(), where
-kfree_rcu(port) is already used.
+In order to fix this introduce a new conncount API that receives
+directly an sk_buff struct.  It fetches the tuple and zone and the
+corresponding ct from it. It comes with both existing conncount variants
+nf_conncount_count_skb() and nf_conncount_add_skb(). In addition remove
+the old API and adjust all the users to use the new one.
 
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Lukasz Majewski <lukma@denx.de>
-Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
-Link: https://patch.msgid.link/20251130131657.65080-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30296ac76426 ("net: dsa: xrs700x: reject unsupported HSR configurations")
+This way, for each sk_buff struct it is possible to check if there is a
+ct present and already confirmed. If so, skip the add operation.
+
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_hsr.h |  9 +++++++++
- net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
- net/hsr/hsr_slave.c    |  7 ++++---
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_conntrack_count.h |  17 +-
+ net/netfilter/nf_conncount.c               | 177 ++++++++++++++-------
+ net/netfilter/nft_connlimit.c              |  21 +--
+ net/netfilter/xt_connlimit.c               |  14 +-
+ net/openvswitch/conntrack.c                |  16 +-
+ 5 files changed, 142 insertions(+), 103 deletions(-)
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index d7941fd880329..f4cf2dd36d193 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
- struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- 				     enum hsr_port_type pt);
-+int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+		      enum hsr_port_type *type);
- #else
- static inline bool is_hsr_master(struct net_device *dev)
- {
-@@ -59,6 +61,13 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- {
- 	return ERR_PTR(-EINVAL);
- }
-+
-+static inline int hsr_get_port_type(struct net_device *hsr_dev,
-+				    struct net_device *dev,
-+				    enum hsr_port_type *type)
-+{
-+	return -EINVAL;
-+}
- #endif /* CONFIG_HSR */
+diff --git a/include/net/netfilter/nf_conntrack_count.h b/include/net/netfilter/nf_conntrack_count.h
+index 1b58b5b91ff6a..52a06de41aa0f 100644
+--- a/include/net/netfilter/nf_conntrack_count.h
++++ b/include/net/netfilter/nf_conntrack_count.h
+@@ -18,15 +18,14 @@ struct nf_conncount_list {
+ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen);
+ void nf_conncount_destroy(struct net *net, struct nf_conncount_data *data);
  
- #endif /*_LINUX_IF_HSR_H_*/
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index c568d91764235..386aba50930a3 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -689,6 +689,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- }
- EXPORT_SYMBOL(hsr_get_port_ndev);
- 
-+int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+		      enum hsr_port_type *type)
-+{
-+	struct hsr_priv *hsr = netdev_priv(hsr_dev);
-+	struct hsr_port *port;
+-unsigned int nf_conncount_count(struct net *net,
+-				struct nf_conncount_data *data,
+-				const u32 *key,
+-				const struct nf_conntrack_tuple *tuple,
+-				const struct nf_conntrack_zone *zone);
+-
+-int nf_conncount_add(struct net *net, struct nf_conncount_list *list,
+-		     const struct nf_conntrack_tuple *tuple,
+-		     const struct nf_conntrack_zone *zone);
++unsigned int nf_conncount_count_skb(struct net *net,
++				    const struct sk_buff *skb,
++				    u16 l3num,
++				    struct nf_conncount_data *data,
++				    const u32 *key);
 +
-+	rcu_read_lock();
-+	hsr_for_each_port(hsr, port) {
-+		if (port->dev == dev) {
-+			*type = port->type;
-+			rcu_read_unlock();
-+			return 0;
-+		}
++int nf_conncount_add_skb(struct net *net, const struct sk_buff *skb,
++			 u16 l3num, struct nf_conncount_list *list);
+ 
+ void nf_conncount_list_init(struct nf_conncount_list *list);
+ 
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 913ede2f57f9a..0ffc5ff78a714 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -122,15 +122,65 @@ find_or_evict(struct net *net, struct nf_conncount_list *list,
+ 	return ERR_PTR(-EAGAIN);
+ }
+ 
++static bool get_ct_or_tuple_from_skb(struct net *net,
++				     const struct sk_buff *skb,
++				     u16 l3num,
++				     struct nf_conn **ct,
++				     struct nf_conntrack_tuple *tuple,
++				     const struct nf_conntrack_zone **zone,
++				     bool *refcounted)
++{
++	const struct nf_conntrack_tuple_hash *h;
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn *found_ct;
++
++	found_ct = nf_ct_get(skb, &ctinfo);
++	if (found_ct && !nf_ct_is_template(found_ct)) {
++		*tuple = found_ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
++		*zone = nf_ct_zone(found_ct);
++		*ct = found_ct;
++		return true;
 +	}
-+	rcu_read_unlock();
 +
-+	return -EINVAL;
++	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb), l3num, net, tuple))
++		return false;
++
++	if (found_ct)
++		*zone = nf_ct_zone(found_ct);
++
++	h = nf_conntrack_find_get(net, *zone, tuple);
++	if (!h)
++		return true;
++
++	found_ct = nf_ct_tuplehash_to_ctrack(h);
++	*refcounted = true;
++	*ct = found_ct;
++
++	return true;
 +}
-+EXPORT_SYMBOL(hsr_get_port_type);
 +
- /* Default multicast address for HSR Supervision frames */
- static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
- 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 9ac7cf0835118..70472726c6049 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -203,14 +203,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	port->dev = dev;
- 	port->type = type;
+ static int __nf_conncount_add(struct net *net,
+-			      struct nf_conncount_list *list,
+-			      const struct nf_conntrack_tuple *tuple,
+-			      const struct nf_conntrack_zone *zone)
++			      const struct sk_buff *skb,
++			      u16 l3num,
++			      struct nf_conncount_list *list)
+ {
++	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+ 	const struct nf_conntrack_tuple_hash *found;
+ 	struct nf_conncount_tuple *conn, *conn_n;
++	struct nf_conntrack_tuple tuple;
++	struct nf_conn *ct = NULL;
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
++	bool refcounted = false;
++
++	if (!get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted))
++		return -ENOENT;
++
++	if (ct && nf_ct_is_confirmed(ct)) {
++		if (refcounted)
++			nf_ct_put(ct);
++		return 0;
++	}
  
-+	list_add_tail_rcu(&port->port_list, &hsr->ports);
+ 	if ((u32)jiffies == list->last_gc)
+ 		goto add_new_node;
+@@ -144,10 +194,10 @@ static int __nf_conncount_add(struct net *net,
+ 		if (IS_ERR(found)) {
+ 			/* Not found, but might be about to be confirmed */
+ 			if (PTR_ERR(found) == -EAGAIN) {
+-				if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
++				if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+ 				    nf_ct_zone_id(&conn->zone, conn->zone.dir) ==
+ 				    nf_ct_zone_id(zone, zone->dir))
+-					return 0; /* already exists */
++					goto out_put; /* already exists */
+ 			} else {
+ 				collect++;
+ 			}
+@@ -156,7 +206,7 @@ static int __nf_conncount_add(struct net *net,
+ 
+ 		found_ct = nf_ct_tuplehash_to_ctrack(found);
+ 
+-		if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
++		if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+ 		    nf_ct_zone_equal(found_ct, zone, zone->dir)) {
+ 			/*
+ 			 * We should not see tuples twice unless someone hooks
+@@ -165,7 +215,7 @@ static int __nf_conncount_add(struct net *net,
+ 			 * Attempt to avoid a re-add in this case.
+ 			 */
+ 			nf_ct_put(found_ct);
+-			return 0;
++			goto out_put;
+ 		} else if (already_closed(found_ct)) {
+ 			/*
+ 			 * we do not care about connections which are
+@@ -188,31 +238,35 @@ static int __nf_conncount_add(struct net *net,
+ 	if (conn == NULL)
+ 		return -ENOMEM;
+ 
+-	conn->tuple = *tuple;
++	conn->tuple = tuple;
+ 	conn->zone = *zone;
+ 	conn->cpu = raw_smp_processor_id();
+ 	conn->jiffies32 = (u32)jiffies;
+ 	list_add_tail(&conn->node, &list->head);
+ 	list->count++;
+ 	list->last_gc = (u32)jiffies;
 +
- 	if (type != HSR_PT_MASTER) {
- 		res = hsr_portdev_setup(hsr, dev, port, extack);
- 		if (res)
- 			goto fail_dev_setup;
++out_put:
++	if (refcounted)
++		nf_ct_put(ct);
+ 	return 0;
+ }
+ 
+-int nf_conncount_add(struct net *net,
+-		     struct nf_conncount_list *list,
+-		     const struct nf_conntrack_tuple *tuple,
+-		     const struct nf_conntrack_zone *zone)
++int nf_conncount_add_skb(struct net *net,
++			 const struct sk_buff *skb,
++			 u16 l3num,
++			 struct nf_conncount_list *list)
+ {
+ 	int ret;
+ 
+ 	/* check the saved connections */
+ 	spin_lock_bh(&list->list_lock);
+-	ret = __nf_conncount_add(net, list, tuple, zone);
++	ret = __nf_conncount_add(net, skb, l3num, list);
+ 	spin_unlock_bh(&list->list_lock);
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(nf_conncount_add);
++EXPORT_SYMBOL_GPL(nf_conncount_add_skb);
+ 
+ void nf_conncount_list_init(struct nf_conncount_list *list)
+ {
+@@ -309,19 +363,22 @@ static void schedule_gc_worker(struct nf_conncount_data *data, int tree)
+ 
+ static unsigned int
+ insert_tree(struct net *net,
++	    const struct sk_buff *skb,
++	    u16 l3num,
+ 	    struct nf_conncount_data *data,
+ 	    struct rb_root *root,
+ 	    unsigned int hash,
+-	    const u32 *key,
+-	    const struct nf_conntrack_tuple *tuple,
+-	    const struct nf_conntrack_zone *zone)
++	    const u32 *key)
+ {
+ 	struct nf_conncount_rb *gc_nodes[CONNCOUNT_GC_MAX_NODES];
++	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
++	bool do_gc = true, refcounted = false;
++	unsigned int count = 0, gc_count = 0;
+ 	struct rb_node **rbnode, *parent;
+-	struct nf_conncount_rb *rbconn;
++	struct nf_conntrack_tuple tuple;
+ 	struct nf_conncount_tuple *conn;
+-	unsigned int count = 0, gc_count = 0;
+-	bool do_gc = true;
++	struct nf_conncount_rb *rbconn;
++	struct nf_conn *ct = NULL;
+ 
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+ restart:
+@@ -340,7 +397,7 @@ insert_tree(struct net *net,
+ 		} else {
+ 			int ret;
+ 
+-			ret = nf_conncount_add(net, &rbconn->list, tuple, zone);
++			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
+ 			if (ret)
+ 				count = 0; /* hotdrop */
+ 			else
+@@ -364,30 +421,35 @@ insert_tree(struct net *net,
+ 		goto restart;
  	}
  
--	list_add_tail_rcu(&port->port_list, &hsr->ports);
--
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	netdev_update_features(master->dev);
- 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
-@@ -218,7 +218,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	return 0;
+-	/* expected case: match, insert new node */
+-	rbconn = kmem_cache_alloc(conncount_rb_cachep, GFP_ATOMIC);
+-	if (rbconn == NULL)
+-		goto out_unlock;
++	if (get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted)) {
++		/* expected case: match, insert new node */
++		rbconn = kmem_cache_alloc(conncount_rb_cachep, GFP_ATOMIC);
++		if (rbconn == NULL)
++			goto out_unlock;
  
- fail_dev_setup:
--	kfree(port);
-+	list_del_rcu(&port->port_list);
-+	kfree_rcu(port, rcu);
- 	return res;
+-	conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
+-	if (conn == NULL) {
+-		kmem_cache_free(conncount_rb_cachep, rbconn);
+-		goto out_unlock;
+-	}
++		conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
++		if (conn == NULL) {
++			kmem_cache_free(conncount_rb_cachep, rbconn);
++			goto out_unlock;
++		}
+ 
+-	conn->tuple = *tuple;
+-	conn->zone = *zone;
+-	conn->cpu = raw_smp_processor_id();
+-	conn->jiffies32 = (u32)jiffies;
+-	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
++		conn->tuple = tuple;
++		conn->zone = *zone;
++		conn->cpu = raw_smp_processor_id();
++		conn->jiffies32 = (u32)jiffies;
++		memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
++
++		nf_conncount_list_init(&rbconn->list);
++		list_add(&conn->node, &rbconn->list.head);
++		count = 1;
++		rbconn->list.count = count;
+ 
+-	nf_conncount_list_init(&rbconn->list);
+-	list_add(&conn->node, &rbconn->list.head);
+-	count = 1;
+-	rbconn->list.count = count;
++		rb_link_node_rcu(&rbconn->node, parent, rbnode);
++		rb_insert_color(&rbconn->node, root);
+ 
+-	rb_link_node_rcu(&rbconn->node, parent, rbnode);
+-	rb_insert_color(&rbconn->node, root);
++		if (refcounted)
++			nf_ct_put(ct);
++	}
+ out_unlock:
+ 	spin_unlock_bh(&nf_conncount_locks[hash]);
+ 	return count;
+@@ -395,10 +457,10 @@ insert_tree(struct net *net,
+ 
+ static unsigned int
+ count_tree(struct net *net,
++	   const struct sk_buff *skb,
++	   u16 l3num,
+ 	   struct nf_conncount_data *data,
+-	   const u32 *key,
+-	   const struct nf_conntrack_tuple *tuple,
+-	   const struct nf_conntrack_zone *zone)
++	   const u32 *key)
+ {
+ 	struct rb_root *root;
+ 	struct rb_node *parent;
+@@ -422,7 +484,7 @@ count_tree(struct net *net,
+ 		} else {
+ 			int ret;
+ 
+-			if (!tuple) {
++			if (!skb) {
+ 				nf_conncount_gc_list(net, &rbconn->list);
+ 				return rbconn->list.count;
+ 			}
+@@ -437,7 +499,7 @@ count_tree(struct net *net,
+ 			}
+ 
+ 			/* same source network -> be counted! */
+-			ret = __nf_conncount_add(net, &rbconn->list, tuple, zone);
++			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
+ 			spin_unlock_bh(&rbconn->list.list_lock);
+ 			if (ret)
+ 				return 0; /* hotdrop */
+@@ -446,10 +508,10 @@ count_tree(struct net *net,
+ 		}
+ 	}
+ 
+-	if (!tuple)
++	if (!skb)
+ 		return 0;
+ 
+-	return insert_tree(net, data, root, hash, key, tuple, zone);
++	return insert_tree(net, skb, l3num, data, root, hash, key);
+ }
+ 
+ static void tree_gc_worker(struct work_struct *work)
+@@ -511,18 +573,19 @@ static void tree_gc_worker(struct work_struct *work)
+ }
+ 
+ /* Count and return number of conntrack entries in 'net' with particular 'key'.
+- * If 'tuple' is not null, insert it into the accounting data structure.
+- * Call with RCU read lock.
++ * If 'skb' is not null, insert the corresponding tuple into the accounting
++ * data structure. Call with RCU read lock.
+  */
+-unsigned int nf_conncount_count(struct net *net,
+-				struct nf_conncount_data *data,
+-				const u32 *key,
+-				const struct nf_conntrack_tuple *tuple,
+-				const struct nf_conntrack_zone *zone)
++unsigned int nf_conncount_count_skb(struct net *net,
++				    const struct sk_buff *skb,
++				    u16 l3num,
++				    struct nf_conncount_data *data,
++				    const u32 *key)
+ {
+-	return count_tree(net, data, key, tuple, zone);
++	return count_tree(net, skb, l3num, data, key);
++
+ }
+-EXPORT_SYMBOL_GPL(nf_conncount_count);
++EXPORT_SYMBOL_GPL(nf_conncount_count_skb);
+ 
+ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen)
+ {
+diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
+index fc35a11cdca20..5df7134131d29 100644
+--- a/net/netfilter/nft_connlimit.c
++++ b/net/netfilter/nft_connlimit.c
+@@ -24,26 +24,11 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
+ 					 const struct nft_pktinfo *pkt,
+ 					 const struct nft_set_ext *ext)
+ {
+-	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+-	const struct nf_conntrack_tuple *tuple_ptr;
+-	struct nf_conntrack_tuple tuple;
+-	enum ip_conntrack_info ctinfo;
+-	const struct nf_conn *ct;
+ 	unsigned int count;
++	int err;
+ 
+-	tuple_ptr = &tuple;
+-
+-	ct = nf_ct_get(pkt->skb, &ctinfo);
+-	if (ct != NULL) {
+-		tuple_ptr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
+-		zone = nf_ct_zone(ct);
+-	} else if (!nf_ct_get_tuplepr(pkt->skb, skb_network_offset(pkt->skb),
+-				      nft_pf(pkt), nft_net(pkt), &tuple)) {
+-		regs->verdict.code = NF_DROP;
+-		return;
+-	}
+-
+-	if (nf_conncount_add(nft_net(pkt), priv->list, tuple_ptr, zone)) {
++	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
++	if (err) {
+ 		regs->verdict.code = NF_DROP;
+ 		return;
+ 	}
+diff --git a/net/netfilter/xt_connlimit.c b/net/netfilter/xt_connlimit.c
+index 0189f8b6b0bd1..848287ab79cfb 100644
+--- a/net/netfilter/xt_connlimit.c
++++ b/net/netfilter/xt_connlimit.c
+@@ -31,8 +31,6 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ {
+ 	struct net *net = xt_net(par);
+ 	const struct xt_connlimit_info *info = par->matchinfo;
+-	struct nf_conntrack_tuple tuple;
+-	const struct nf_conntrack_tuple *tuple_ptr = &tuple;
+ 	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+ 	enum ip_conntrack_info ctinfo;
+ 	const struct nf_conn *ct;
+@@ -40,13 +38,8 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	u32 key[5];
+ 
+ 	ct = nf_ct_get(skb, &ctinfo);
+-	if (ct != NULL) {
+-		tuple_ptr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
++	if (ct)
+ 		zone = nf_ct_zone(ct);
+-	} else if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb),
+-				      xt_family(par), net, &tuple)) {
+-		goto hotdrop;
+-	}
+ 
+ 	if (xt_family(par) == NFPROTO_IPV6) {
+ 		const struct ipv6hdr *iph = ipv6_hdr(skb);
+@@ -69,10 +62,9 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 		key[1] = zone->id;
+ 	}
+ 
+-	connections = nf_conncount_count(net, info->data, key, tuple_ptr,
+-					 zone);
++	connections = nf_conncount_count_skb(net, skb, xt_family(par), info->data, key);
+ 	if (connections == 0)
+-		/* kmalloc failed, drop it entirely */
++		/* kmalloc failed or tuple couldn't be found, drop it entirely */
+ 		goto hotdrop;
+ 
+ 	return (connections > info->limit) ^ !!(info->flags & XT_CONNLIMIT_INVERT);
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index e573e92213029..a0811e1fba656 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -928,8 +928,8 @@ static u32 ct_limit_get(const struct ovs_ct_limit_info *info, u16 zone)
+ }
+ 
+ static int ovs_ct_check_limit(struct net *net,
+-			      const struct ovs_conntrack_info *info,
+-			      const struct nf_conntrack_tuple *tuple)
++			      const struct sk_buff *skb,
++			      const struct ovs_conntrack_info *info)
+ {
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+ 	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+@@ -942,8 +942,9 @@ static int ovs_ct_check_limit(struct net *net,
+ 	if (per_zone_limit == OVS_CT_LIMIT_UNLIMITED)
+ 		return 0;
+ 
+-	connections = nf_conncount_count(net, ct_limit_info->data,
+-					 &conncount_key, tuple, &info->zone);
++	connections = nf_conncount_count_skb(net, skb, info->family,
++					     ct_limit_info->data,
++					     &conncount_key);
+ 	if (connections > per_zone_limit)
+ 		return -ENOMEM;
+ 
+@@ -972,8 +973,7 @@ static int ovs_ct_commit(struct net *net, struct sw_flow_key *key,
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	if (static_branch_unlikely(&ovs_ct_limit_enabled)) {
+ 		if (!nf_ct_is_confirmed(ct)) {
+-			err = ovs_ct_check_limit(net, info,
+-				&ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple);
++			err = ovs_ct_check_limit(net, skb, info);
+ 			if (err) {
+ 				net_warn_ratelimited("openvswitch: zone: %u "
+ 					"exceeds conntrack limit\n",
+@@ -1770,8 +1770,8 @@ static int __ovs_ct_limit_get_zone_limit(struct net *net,
+ 	zone_limit.limit = limit;
+ 	nf_ct_zone_init(&ct_zone, zone_id, NF_CT_DEFAULT_ZONE_DIR, 0);
+ 
+-	zone_limit.count = nf_conncount_count(net, data, &conncount_key, NULL,
+-					      &ct_zone);
++	zone_limit.count = nf_conncount_count_skb(net, NULL, 0, data,
++						  &conncount_key);
+ 	return nla_put_nohdr(reply, sizeof(zone_limit), &zone_limit);
  }
  
 -- 
