@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D113CCC2668
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8052ACC2EF4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C856331103A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B215322EBA1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212F03431E4;
-	Tue, 16 Dec 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557DA398B81;
+	Tue, 16 Dec 2025 12:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sznTRQNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPfCHVhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C919A342CBD;
-	Tue, 16 Dec 2025 11:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11397398B7D;
+	Tue, 16 Dec 2025 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884831; cv=none; b=ZFIVPdSbJFsE6JPCXmFvYW/239cOIp27rNEWcQrDw9KroO1wpyXbQh0kIImFq4f/CL9HXw2bNCCoTwVuxalAN5Yq4ZFrbMQ1P07lJLmebCzCgRkO6KujaLFGcsMhUv4FRgDmhx2uTj/QWpPu0a3FAJSNaRVlxt07KI8TAymXmc4=
+	t=1765888365; cv=none; b=evILo4uayLI3zhWsrBy2WC+IDBeEUdkNWNKQ5rjbUyoZWHhdQQXMPB5kvJUpG0oqFGWfVS5DxTm7CBC7i9aaQf7Z2FIDR4dlEQU9XwR3mliLwSKcbfBTXckSoGMmN4HphYQwDy+WhgeMThaFiPF1+ItA73KhE7+WrfkG93eFzx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884831; c=relaxed/simple;
-	bh=wxi7rLnlqV7CjoSR1VeKMqesOg09nAn/YbwTkutBTBs=;
+	s=arc-20240116; t=1765888365; c=relaxed/simple;
+	bh=3d/KXMrmeYKw1rpoCMjJpy/1YUV/4sedCWmIA2/SYfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qH5aJ8+NiFQRuS0PosqlxBTMy7yTjP6Edb9/uzk+5KDWzxnnr9ViJLj6pQyLL02c/t+k1uWhxIle1/LfF2LF0aA0tFIQv7d3Qc4Wy5kOMwj7ZzPWBbxxIzbTjysDJ+pkzxMvSiMPfr34OoDhN90xG7Efdaw9hxzZXAfrQW2UH8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sznTRQNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32179C4CEF1;
-	Tue, 16 Dec 2025 11:33:51 +0000 (UTC)
+	 MIME-Version; b=mIC0F6Ga5Vh/MKTAjCfraH5VI/ekFldwfupyIMemigeh1Qpl3YWhnXRlK3bqo2MqzvPrNdnBun0UwrQOaytHyOpwQOr7qvSfd4oXFFYkecY8dCAfYZLzm3QVEnL2UUl4oe12gr9V1lZ5V/hl1YSzfnP6xoXgOWB1DrDlLEqPHsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPfCHVhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248EAC4CEF1;
+	Tue, 16 Dec 2025 12:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884831;
-	bh=wxi7rLnlqV7CjoSR1VeKMqesOg09nAn/YbwTkutBTBs=;
+	s=korg; t=1765888364;
+	bh=3d/KXMrmeYKw1rpoCMjJpy/1YUV/4sedCWmIA2/SYfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sznTRQNHCGZOZWr6JFtFXHMkciFKytyPtsErrey967+0Rh0xsmBQYAPstEmRxBSnb
-	 20/SSoLR/dCgukNmN40n1Mr3+c3A3Qg8gNI99pUayTXXeadeWDhgpUEplDBxcwHfSv
-	 nXU4goo/emeoDbALnYklJDLTxJh54DzklV/dvqAI=
+	b=xPfCHVhHfwJJSZCa08DoyBgG1eIuxk2l6Lkjsv+bTUUmLys5FbdbdVU3qxLdFeT6T
+	 liJ0kKIN1mm5i77KR5hnQO3fNldwJ9b9JwUMx/Bpm0y1YyIWqI4DVzBzRXTm0qCOCQ
+	 3wmJx3tAYo78ec7lO9/4G9U6c8QMt1o5JmodPd08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/354] Revert "nfs: ignore SB_RDONLY when mounting nfs"
-Date: Tue, 16 Dec 2025 12:14:38 +0100
-Message-ID: <20251216111332.178766528@linuxfoundation.org>
+Subject: [PATCH 6.18 512/614] net: dsa: b53: split reading search entry into their own functions
+Date: Tue, 16 Dec 2025 12:14:39 +0100
+Message-ID: <20251216111419.919701039@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
+[ Upstream commit e0c476f325a8c9b961a3d446c24d3c8ecae7d186 ]
 
-This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
+Split reading search entries into a function for each format.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
-
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-6-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 56 ++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 18 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 456b423402814..63ee469d6c8f7 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -13,7 +13,7 @@
- #include <linux/nfslocalio.h>
- #include <linux/wait_bit.h>
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 38e6fa05042ca..190eb11644917 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2060,28 +2060,48 @@ static int b53_arl_search_wait(struct b53_device *dev)
+ 	return -ETIMEDOUT;
+ }
  
--#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
-+#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
+-static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
+-			      struct b53_arl_entry *ent)
++static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
+ {
+ 	u64 mac_vid;
  
- extern const struct export_operations nfs_export_ops;
+-	if (is5325(dev)) {
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
+-			   &mac_vid);
+-		b53_arl_to_entry_25(ent, mac_vid);
+-	} else if (is5365(dev)) {
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
+-			   &mac_vid);
+-		b53_arl_to_entry_25(ent, mac_vid);
+-	} else {
+-		u32 fwd_entry;
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
++		   &mac_vid);
++	b53_arl_to_entry_25(ent, mac_vid);
++}
  
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
+-			   &mac_vid);
+-		b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
+-			   &fwd_entry);
+-		b53_arl_to_entry(ent, mac_vid, fwd_entry);
+-	}
++static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
++		   &mac_vid);
++	b53_arl_to_entry_25(ent, mac_vid);
++}
++
++static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u32 fwd_entry;
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
++		   &mac_vid);
++	b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
++		   &fwd_entry);
++	b53_arl_to_entry(ent, mac_vid, fwd_entry);
++}
++
++static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
++			      struct b53_arl_entry *ent)
++{
++	if (is5325(dev))
++		b53_arl_search_read_25(dev, idx, ent);
++	else if (is5365(dev))
++		b53_arl_search_read_65(dev, idx, ent);
++	else
++		b53_arl_search_read_95(dev, idx, ent);
+ }
+ 
+ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
 -- 
 2.51.0
 
