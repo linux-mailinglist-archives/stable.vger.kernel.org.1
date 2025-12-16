@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2492CC2538
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B9ACC3C05
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35F3F30A539C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63535310D700
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38496340DBF;
-	Tue, 16 Dec 2025 11:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DA9393DF9;
+	Tue, 16 Dec 2025 12:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eViwcXkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pijJswye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D889A341072;
-	Tue, 16 Dec 2025 11:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E22393DF3;
+	Tue, 16 Dec 2025 12:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884696; cv=none; b=RRWeF2yHLMusrZguDcbo+Z+uCIyb+GA2A90TY5eVVI2qvIZfzsTr0B2J3bdZyEVgDl62YpvSd/OKC7jUkpjZWvXpWP1vHMkcW2z/n10vww+uXM3MsW3+xBIVQWiAfgqg5JS8M32eQK6JaWHboYqrUAsIpYcxB3C7J2cm7+mOJDE=
+	t=1765888227; cv=none; b=O7KpLjURI6CFUJwhcuKDc08gneW+WjmrdktPpN3ha4hWcmo2D6dy8yhzP7yi6vJEKi/TJCRDbK1O6BEHQtWHlEgKeh4u6xPNPAfJ91cVlBUnptaewNmGPaonEK3E1Ctv3P3Kv6LP+EsulgSoRGUsVWm2K81eq+qoJ2Nn6lUXBJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884696; c=relaxed/simple;
-	bh=o+MEhb58ZPpTypoagwSxpsSsDy54cKYrs/bz3f6Syaw=;
+	s=arc-20240116; t=1765888227; c=relaxed/simple;
+	bh=uPZGInyT0uZW64pRZxRTW1COsiV9BaF4QjXSEj54JY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ums02T/VGwnWp1tQeTHNliMAhKyknMGPFyVGVvnBIxfu8qTSp3SprP7XIfO3xb6LD864ce0SioW1UwANtS9ycbsCEQibDco8rTmRVljaMFqXhm7EqGdeXCYBgHc9qgBrjk9pRnxiFxPteonRu7Hg2GvPOVvZghsNjlD/UN83eAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eViwcXkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE624C4CEF1;
-	Tue, 16 Dec 2025 11:31:35 +0000 (UTC)
+	 MIME-Version; b=ZZpqf7UMMRPGnm5+kQQhbj2A2rcCYmB462W8uoulxSfZKnJz8xTl+qMHYji6pUXtyLWOzWA0x3EZTqMxv4Hw3mHnkIslmmQKogaoUnNZw3ZFuc77afpPSXrO4P5ucGeJDmdhc+KngpcK3Ou4uWBYIkz0TO1sut+rV7jklhqT0Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pijJswye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A8C4CEF1;
+	Tue, 16 Dec 2025 12:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884696;
-	bh=o+MEhb58ZPpTypoagwSxpsSsDy54cKYrs/bz3f6Syaw=;
+	s=korg; t=1765888226;
+	bh=uPZGInyT0uZW64pRZxRTW1COsiV9BaF4QjXSEj54JY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eViwcXkSH2cL7Zj0ykpiD4bbPjjYN9vj8THS6rXlczwKBIrAVyKbtXNm9plvv1/dj
-	 tuhkDT1f2cDoB5hPr/5wb+xx16Evc1kKpDBZwv8FJ1zbmVZjNNtNBVZkmuYq4cIkog
-	 MISXg0iJMNBLGTldpoLfUePtKR75zsVJCJp+sXp4=
+	b=pijJswyeZI1jsdVzhiJAySBtLeihbXt4LNd5uS0pV3fSTnZTnx/5wA0zvHpCzJUOf
+	 xePRihej7YySRpv+sbMrSrkabGTYfQ5XISXThvjr4Z5L1wJQUfjrBSm71Zd7+lpngs
+	 OWNK+hEN0hgy21SC0I72EL7fvkQpDQlPcju6jBxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Williamson <alex.williamson@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/354] vfio/pci: Use RCU for error/request triggers to avoid circular locking
+Subject: [PATCH 6.18 471/614] ASoC: Intel: catpt: Fix error path in hw_params()
 Date: Tue, 16 Dec 2025 12:13:58 +0100
-Message-ID: <20251216111330.734462522@linuxfoundation.org>
+Message-ID: <20251216111418.435516278@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,306 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@nvidia.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 98693e0897f754e3f51ce6626ed5f785f625ba2b ]
+[ Upstream commit 86a5b621be658fc8fe594ca6db317d64de30cce1 ]
 
-Thanks to a device generating an ACS violation during bus reset,
-lockdep reported the following circular locking issue:
+Do not leave any resources hanging on the DSP side if
+applying user settings fails.
 
-CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
-CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
-CPU2: AER: holds pci_bus_sem, acquires igate
-
-This results in a potential 3-way deadlock.
-
-Remove the pci_bus_sem->igate leg of the triangle by using RCU
-to peek at the eventfd rather than locking it with igate.
-
-Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20251124223623.2770706-1-alex@shazbot.org
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Fixes: 768a3a3b327d ("ASoC: Intel: catpt: Optimize applying user settings")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20251126095523.3925364-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
- drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
- drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
- include/linux/vfio_pci_core.h     | 10 ++++-
- 4 files changed, 93 insertions(+), 41 deletions(-)
+ sound/soc/intel/catpt/pcm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 595503fa9ca89..c7ea0b23924af 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -42,6 +42,40 @@ static bool nointxmask;
- static bool disable_vga;
- static bool disable_idle_d3;
+diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
+index bf734c69c4e09..eb03cecdee281 100644
+--- a/sound/soc/intel/catpt/pcm.c
++++ b/sound/soc/intel/catpt/pcm.c
+@@ -417,8 +417,10 @@ static int catpt_dai_hw_params(struct snd_pcm_substream *substream,
+ 		return CATPT_IPC_ERROR(ret);
  
-+static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
-+{
-+	struct vfio_pci_eventfd *eventfd =
-+		container_of(rcu, struct vfio_pci_eventfd, rcu);
-+
-+	eventfd_ctx_put(eventfd->ctx);
-+	kfree(eventfd);
-+}
-+
-+int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
-+				    struct vfio_pci_eventfd __rcu **peventfd,
-+				    struct eventfd_ctx *ctx)
-+{
-+	struct vfio_pci_eventfd *new = NULL;
-+	struct vfio_pci_eventfd *old;
-+
-+	lockdep_assert_held(&vdev->igate);
-+
-+	if (ctx) {
-+		new = kzalloc(sizeof(*new), GFP_KERNEL_ACCOUNT);
-+		if (!new)
-+			return -ENOMEM;
-+
-+		new->ctx = ctx;
+ 	ret = catpt_dai_apply_usettings(dai, stream);
+-	if (ret)
++	if (ret) {
++		catpt_ipc_free_stream(cdev, stream->info.stream_hw_id);
+ 		return ret;
 +	}
-+
-+	old = rcu_replace_pointer(*peventfd, new,
-+				  lockdep_is_held(&vdev->igate));
-+	if (old)
-+		call_rcu(&old->rcu, vfio_pci_eventfd_rcu_free);
-+
-+	return 0;
-+}
-+
- /* List of PF's that vfio_pci_core_sriov_configure() has been called on */
- static DEFINE_MUTEX(vfio_pci_sriov_pfs_mutex);
- static LIST_HEAD(vfio_pci_sriov_pfs);
-@@ -697,14 +731,8 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
- 	vfio_pci_core_disable(vdev);
  
- 	mutex_lock(&vdev->igate);
--	if (vdev->err_trigger) {
--		eventfd_ctx_put(vdev->err_trigger);
--		vdev->err_trigger = NULL;
--	}
--	if (vdev->req_trigger) {
--		eventfd_ctx_put(vdev->req_trigger);
--		vdev->req_trigger = NULL;
--	}
-+	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
-+	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
- 	mutex_unlock(&vdev->igate);
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_close_device);
-@@ -1807,21 +1835,21 @@ void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count)
- 	struct vfio_pci_core_device *vdev =
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
- 	struct pci_dev *pdev = vdev->pdev;
-+	struct vfio_pci_eventfd *eventfd;
- 
--	mutex_lock(&vdev->igate);
--
--	if (vdev->req_trigger) {
-+	rcu_read_lock();
-+	eventfd = rcu_dereference(vdev->req_trigger);
-+	if (eventfd) {
- 		if (!(count % 10))
- 			pci_notice_ratelimited(pdev,
- 				"Relaying device request to user (#%u)\n",
- 				count);
--		eventfd_signal(vdev->req_trigger);
-+		eventfd_signal(eventfd->ctx);
- 	} else if (count == 0) {
- 		pci_warn(pdev,
- 			"No device request channel registered, blocked until released by user\n");
- 	}
--
--	mutex_unlock(&vdev->igate);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_request);
- 
-@@ -2228,13 +2256,13 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
- 						pci_channel_state_t state)
- {
- 	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
-+	struct vfio_pci_eventfd *eventfd;
- 
--	mutex_lock(&vdev->igate);
--
--	if (vdev->err_trigger)
--		eventfd_signal(vdev->err_trigger);
--
--	mutex_unlock(&vdev->igate);
-+	rcu_read_lock();
-+	eventfd = rcu_dereference(vdev->err_trigger);
-+	if (eventfd)
-+		eventfd_signal(eventfd->ctx);
-+	rcu_read_unlock();
- 
- 	return PCI_ERS_RESULT_CAN_RECOVER;
- }
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index b2cf1af7fb0c7..ed86747749e53 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -735,21 +735,27 @@ static int vfio_pci_set_msi_trigger(struct vfio_pci_core_device *vdev,
+ 	stream->allocated = true;
  	return 0;
- }
- 
--static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
-+static int vfio_pci_set_ctx_trigger_single(struct vfio_pci_core_device *vdev,
-+					   struct vfio_pci_eventfd __rcu **peventfd,
- 					   unsigned int count, uint32_t flags,
- 					   void *data)
- {
- 	/* DATA_NONE/DATA_BOOL enables loopback testing */
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		if (*ctx) {
--			if (count) {
--				eventfd_signal(*ctx);
--			} else {
--				eventfd_ctx_put(*ctx);
--				*ctx = NULL;
--			}
-+		struct vfio_pci_eventfd *eventfd;
-+
-+		eventfd = rcu_dereference_protected(*peventfd,
-+						lockdep_is_held(&vdev->igate));
-+
-+		if (!eventfd)
-+			return -EINVAL;
-+
-+		if (count) {
-+			eventfd_signal(eventfd->ctx);
- 			return 0;
- 		}
-+
-+		return vfio_pci_eventfd_replace_locked(vdev, peventfd, NULL);
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		uint8_t trigger;
- 
-@@ -757,8 +763,15 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
- 			return -EINVAL;
- 
- 		trigger = *(uint8_t *)data;
--		if (trigger && *ctx)
--			eventfd_signal(*ctx);
-+
-+		if (trigger) {
-+			struct vfio_pci_eventfd *eventfd =
-+					rcu_dereference_protected(*peventfd,
-+					lockdep_is_held(&vdev->igate));
-+
-+			if (eventfd)
-+				eventfd_signal(eventfd->ctx);
-+		}
- 
- 		return 0;
- 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-@@ -769,22 +782,23 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
- 
- 		fd = *(int32_t *)data;
- 		if (fd == -1) {
--			if (*ctx)
--				eventfd_ctx_put(*ctx);
--			*ctx = NULL;
-+			return vfio_pci_eventfd_replace_locked(vdev,
-+							       peventfd, NULL);
- 		} else if (fd >= 0) {
- 			struct eventfd_ctx *efdctx;
-+			int ret;
- 
- 			efdctx = eventfd_ctx_fdget(fd);
- 			if (IS_ERR(efdctx))
- 				return PTR_ERR(efdctx);
- 
--			if (*ctx)
--				eventfd_ctx_put(*ctx);
-+			ret = vfio_pci_eventfd_replace_locked(vdev,
-+							      peventfd, efdctx);
-+			if (ret)
-+				eventfd_ctx_put(efdctx);
- 
--			*ctx = efdctx;
-+			return ret;
- 		}
--		return 0;
- 	}
- 
- 	return -EINVAL;
-@@ -797,7 +811,7 @@ static int vfio_pci_set_err_trigger(struct vfio_pci_core_device *vdev,
- 	if (index != VFIO_PCI_ERR_IRQ_INDEX || start != 0 || count > 1)
- 		return -EINVAL;
- 
--	return vfio_pci_set_ctx_trigger_single(&vdev->err_trigger,
-+	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->err_trigger,
- 					       count, flags, data);
- }
- 
-@@ -808,7 +822,7 @@ static int vfio_pci_set_req_trigger(struct vfio_pci_core_device *vdev,
- 	if (index != VFIO_PCI_REQ_IRQ_INDEX || start != 0 || count > 1)
- 		return -EINVAL;
- 
--	return vfio_pci_set_ctx_trigger_single(&vdev->req_trigger,
-+	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->req_trigger,
- 					       count, flags, data);
- }
- 
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 5e4fa69aee16c..cf5e42fca27e7 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -26,6 +26,10 @@ struct vfio_pci_ioeventfd {
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
- void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
- 
-+int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
-+				    struct vfio_pci_eventfd __rcu **peventfd,
-+				    struct eventfd_ctx *ctx);
-+
- int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
- 			    unsigned index, unsigned start, unsigned count,
- 			    void *data);
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index fbb472dd99b36..99da27c032d70 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -12,6 +12,7 @@
- #include <linux/pci.h>
- #include <linux/vfio.h>
- #include <linux/irqbypass.h>
-+#include <linux/rcupdate.h>
- #include <linux/types.h>
- #include <linux/uuid.h>
- #include <linux/notifier.h>
-@@ -27,6 +28,11 @@
- struct vfio_pci_core_device;
- struct vfio_pci_region;
- 
-+struct vfio_pci_eventfd {
-+	struct eventfd_ctx	*ctx;
-+	struct rcu_head		rcu;
-+};
-+
- struct vfio_pci_regops {
- 	ssize_t (*rw)(struct vfio_pci_core_device *vdev, char __user *buf,
- 		      size_t count, loff_t *ppos, bool iswrite);
-@@ -83,8 +89,8 @@ struct vfio_pci_core_device {
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
--	struct eventfd_ctx	*err_trigger;
--	struct eventfd_ctx	*req_trigger;
-+	struct vfio_pci_eventfd __rcu *err_trigger;
-+	struct vfio_pci_eventfd __rcu *req_trigger;
- 	struct eventfd_ctx	*pm_wake_eventfd_ctx;
- 	struct list_head	dummy_resources_list;
- 	struct mutex		ioeventfds_lock;
 -- 
 2.51.0
 
