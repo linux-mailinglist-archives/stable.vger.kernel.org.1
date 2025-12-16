@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F26CC31C4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D9ECC22FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 382E030735ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F9043093FB7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D460634A3CB;
-	Tue, 16 Dec 2025 12:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5541434167A;
+	Tue, 16 Dec 2025 11:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPbZKKb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su40Wp90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BEB3491E8;
-	Tue, 16 Dec 2025 12:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C033DEE1;
+	Tue, 16 Dec 2025 11:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887613; cv=none; b=fyjBrLP0ZL5+RsbjtDjNO+iloUgMG659CuX10mx7DqjBfIVBCQCw/jCRAw3QPjovrdjBlOjolDtBY6y1mkLibqSJHY0iB1vR6lvM4AWLuIt6UWrBfL+9vDMXwvMVc9GWsJq0HknUnuqx3VfGpRV0AsPOfqb2i79T/zZN0zUN6BY=
+	t=1765884076; cv=none; b=DQf79aL8TShcQfuzaTOYvdnPbxgsC6uKUneQ60rktQcx7YvAsLjCAaYYCp75D0OApusKK2bm5RU6z6o+UajJ9b0tLAxyyXm2xpDaShJgSBuwuxCJWVGyC0I4ag0nfTy51dUGKYI9aQdSUW1MTkUjZhUxoiJ57NSOCB2SffK4oa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887613; c=relaxed/simple;
-	bh=kZvw99Sk4PyskrjGBmMuwytjlLlvQDBKhA1fswpPaBI=;
+	s=arc-20240116; t=1765884076; c=relaxed/simple;
+	bh=x1hLFdk01xDRlsK4K0aMY1KOWQ6wkUjL8RJeEdGyTDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GD07pKgkx2nv3WhGfRXE1dfSyiJM6ffWmnZXv6ToKKRFY1J/RILzGeDAVtweq1n2IDkCPZ156nbn7NgGjRU+MZoERs+YHkVQC4kuv6RnGLHYKPio9QXPJ9QpbbA40C2EJ2ixC11MiDxD4bMtJ2FeXMhrmZg97YRDNUHHQsM6n6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPbZKKb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6BC4CEF1;
-	Tue, 16 Dec 2025 12:20:12 +0000 (UTC)
+	 MIME-Version; b=HJBhrdO5xUd1yGBRtiV22dhLj1Qi8yUnq1mvbXG7BtMUUFxqhae12blIAHkpyo0URznI/qO5VghBG/DcQ1QQgAsZTOsHpmn97R/kmbHsxQZCFw/zLSA/A2rD5EwQRmvMHEFcWZmxEQ47nxhicWayIvwnzTqdCzjRTw58Zt2Bcqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su40Wp90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70319C4CEF5;
+	Tue, 16 Dec 2025 11:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887613;
-	bh=kZvw99Sk4PyskrjGBmMuwytjlLlvQDBKhA1fswpPaBI=;
+	s=korg; t=1765884075;
+	bh=x1hLFdk01xDRlsK4K0aMY1KOWQ6wkUjL8RJeEdGyTDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPbZKKb4qHmOjBQfNhUu0PyxI25DZfKZhYVl7arG36e/3wtrp3InqddoneKF6ST3K
-	 hZJkQZKImR+YhGEqwQhLztfdSv09M8JUZsh/h6CzC9ojdPBOn4efmYgKzIE2wXW+qY
-	 Jcm0GNZ2ySCDlKp9H6qO/n7NM1QoV3UEghPAzUkk=
+	b=Su40Wp90oxNdrr5l6AFMqXeZkePU9+m7vPpPNylLIW0LhzF8FA7X9fG6xdah1jlK0
+	 884IqFVqUULZmsNXYgE3zohQm3RcPCHQcaEkhuFIwUN9BIU9vq+aPKfpxyq9IH4Xni
+	 bMsjqVIlSLhaTlF0XOG8KBnIqm4wBWlIT2y+/F4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Namhyung Kim <Namhyung@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 285/614] arm64: dts: qcom: qrb2210-rb1: Fix UART3 wakeup IRQ storm
+Subject: [PATCH 6.12 085/354] perf: Remove get_perf_callchain() init_nr argument
 Date: Tue, 16 Dec 2025 12:10:52 +0100
-Message-ID: <20251216111411.698102848@linuxfoundation.org>
+Message-ID: <20251216111324.002732154@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 9c92d36b0b1ea8b2a19dbe0416434f3491dbfaaf ]
+[ Upstream commit e649bcda25b5ae1a30a182cc450f928a0b282c93 ]
 
-For BT use cases, pins are configured with pull-up state in sleep state
-to avoid noise. If IRQ type is configured as level high and the GPIO line
-is also in a high state, it causes continuous interrupt assertions leading
-to an IRQ storm when wakeup irq enables at system suspend/runtime suspend.
+The 'init_nr' argument has double duty: it's used to initialize both the
+number of contexts and the number of stack entries.  That's confusing
+and the callers always pass zero anyway.  Hard code the zero.
 
-Switching to edge-triggered interrupt (IRQ_TYPE_EDGE_FALLING) resolves
-this by only triggering on state transitions (high-to-low) rather than
-maintaining sensitivity to the static level state, effectively preventing
-the continuous interrupt condition and eliminating the wakeup IRQ storm.
-
-Fixes: 9380e0a1d449 ("arm64: dts: qcom: qrb2210-rb1: add Bluetooth support")
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251110101043.2108414-2-praveen.talari@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <Namhyung@kernel.org>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/r/20250820180428.259565081@kernel.org
+Stable-dep-of: 23f852daa4ba ("bpf: Fix stackmap overflow check in __bpf_get_stackid()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/perf_event.h |  2 +-
+ kernel/bpf/stackmap.c      |  4 ++--
+ kernel/events/callchain.c  | 12 ++++++------
+ kernel/events/core.c       |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-index 67ba508e92ba1..3eedfb2cf4799 100644
---- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-@@ -649,7 +649,7 @@ key_volp_n: key-volp-n-state {
- &uart3 {
- 	/delete-property/ interrupts;
- 	interrupts-extended = <&intc GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
--			      <&tlmm 11 IRQ_TYPE_LEVEL_HIGH>;
-+			      <&tlmm 11 IRQ_TYPE_EDGE_FALLING>;
- 	pinctrl-0 = <&uart3_default>;
- 	pinctrl-1 = <&uart3_sleep>;
- 	pinctrl-names = "default", "sleep";
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index ce64b4b937f06..c2bd4bc45a27b 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1602,7 +1602,7 @@ DECLARE_PER_CPU(struct perf_callchain_entry, perf_callchain_entry);
+ extern void perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs);
+ extern void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs);
+ extern struct perf_callchain_entry *
+-get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
++get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+ 		   u32 max_stack, bool crosstask, bool add_mark);
+ extern int get_callchain_buffers(int max_stack);
+ extern void put_callchain_buffers(void);
+diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+index 3615c06b7dfa9..ec3a57a5fba1f 100644
+--- a/kernel/bpf/stackmap.c
++++ b/kernel/bpf/stackmap.c
+@@ -314,7 +314,7 @@ BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
+ 	if (max_depth > sysctl_perf_event_max_stack)
+ 		max_depth = sysctl_perf_event_max_stack;
+ 
+-	trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
++	trace = get_perf_callchain(regs, kernel, user, max_depth,
+ 				   false, false);
+ 
+ 	if (unlikely(!trace))
+@@ -451,7 +451,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 	else if (kernel && task)
+ 		trace = get_callchain_entry_for_task(task, max_depth);
+ 	else
+-		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
++		trace = get_perf_callchain(regs, kernel, user, max_depth,
+ 					   crosstask, false);
+ 
+ 	if (unlikely(!trace) || trace->nr < skip) {
+diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
+index 49d87e6db553f..677901f456a94 100644
+--- a/kernel/events/callchain.c
++++ b/kernel/events/callchain.c
+@@ -216,7 +216,7 @@ static void fixup_uretprobe_trampoline_entries(struct perf_callchain_entry *entr
+ }
+ 
+ struct perf_callchain_entry *
+-get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
++get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+ 		   u32 max_stack, bool crosstask, bool add_mark)
+ {
+ 	struct perf_callchain_entry *entry;
+@@ -231,11 +231,11 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 	if (!entry)
+ 		return NULL;
+ 
+-	ctx.entry     = entry;
+-	ctx.max_stack = max_stack;
+-	ctx.nr	      = entry->nr = init_nr;
+-	ctx.contexts       = 0;
+-	ctx.contexts_maxed = false;
++	ctx.entry		= entry;
++	ctx.max_stack		= max_stack;
++	ctx.nr			= entry->nr = 0;
++	ctx.contexts		= 0;
++	ctx.contexts_maxed	= false;
+ 
+ 	if (kernel && !user_mode(regs)) {
+ 		if (add_mark)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d6a86d8e9e59b..6bc8b84f12156 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7860,7 +7860,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ 	if (!kernel && !user)
+ 		return &__empty_callchain;
+ 
+-	callchain = get_perf_callchain(regs, 0, kernel, user,
++	callchain = get_perf_callchain(regs, kernel, user,
+ 				       max_stack, crosstask, true);
+ 	return callchain ?: &__empty_callchain;
+ }
 -- 
 2.51.0
 
