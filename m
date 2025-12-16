@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F705CC243F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:31:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5934CC2FB6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 316213027A32
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E469B319F1AA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D44426A08F;
-	Tue, 16 Dec 2025 11:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A6365A03;
+	Tue, 16 Dec 2025 12:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQmeIM8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InJ4sY07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CA03164C3;
-	Tue, 16 Dec 2025 11:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23313644B3;
+	Tue, 16 Dec 2025 12:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884683; cv=none; b=FJVba86QGn2qzkMCXaWfXH+8QqYp4KBTPVb0i6KYqRheaDR4lqWxysRiLPrnDI4BmNLxM0fCAUQ+YWzMzj0DAu5XN4GP+v6mkvq118EJBhalUYKRR4hXjTtRmuJ+Xxn4y0QAavIbBIECrGMnzUCMrpZi2pUxJ2XXrnWOtv/EvpY=
+	t=1765888218; cv=none; b=r2KMXyEovRVQ3ZRE2qy30PqKX4kbik9BPzigNEG8OGp4n1dW7Q9njGdr2YmDTipEA1Pgm9VwsYUo2ZtTXxROx4RJD7a4xnRRXsA4LJJxspyU1dO/3aaGnv5L3pYGfWkTkHi8T6p/MqLuEqGf7wy02PU/00fobcUR0tiWOi90m1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884683; c=relaxed/simple;
-	bh=QnhcoUM4VQFdHCtVi++O6FhInFd8jtfAGYI9uDSM9SY=;
+	s=arc-20240116; t=1765888218; c=relaxed/simple;
+	bh=AZJvkBCNy4cnZtKpo7j+0JAxYn5g2ojg/3UjwWbjOL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHr3R5eZvZDzc1YXOSsnt2qPgEtk2kjkqcVCgaGzRE1MDWGCA7Oxn5oTux6cxjTTFu+uS3LmY8JaVvk0nNolZiDD181R4VXnhc+y9SLnOFKYvVKm6kHmjUaSWVTIY9W7q8O6l0HZHcWm+ie/GUDrB78xjYK/op38VCgjX9VJpaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQmeIM8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CDAC4CEF1;
-	Tue, 16 Dec 2025 11:31:22 +0000 (UTC)
+	 MIME-Version; b=ldEIuL9/b28wIlVPilmhq5l4dJXwBikKM++4h5jEI3g6ZompFxXqqKnqfDeHns7QrV2awbWagUvVcnzX+bseSSqTWqqlGtzjzeJ2W8h7i+wfCBIH1JiF8xTX8galQX3qhLkjri5sHIrw2L8MJLi9/Ul1xCXkCmnRLzr/3ZJJQms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InJ4sY07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77408C16AAE;
+	Tue, 16 Dec 2025 12:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884683;
-	bh=QnhcoUM4VQFdHCtVi++O6FhInFd8jtfAGYI9uDSM9SY=;
+	s=korg; t=1765888217;
+	bh=AZJvkBCNy4cnZtKpo7j+0JAxYn5g2ojg/3UjwWbjOL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQmeIM8izXbpBBfjLr9oPgyD/6afGWg+6YzFje9q0/Euh8fOwgKNnjIijliUZpsYn
-	 5n64owBGUP4So4F8ylgG6gilG6/suSALb+ovbdL8W5uZqrkIUCCYqw3dFyJKEZ5nGD
-	 KTAP5RgKeWMDSCoRomxxu8ir6+hUFrs5TI3FnVHs=
+	b=InJ4sY077uUDFVMcEfVrdP+bMZ436gnJbN2bjvEUSpsY7Ii1a9awaA7qiN9K1ZmSB
+	 Iya+yQruQQgG/UoqLkf+USND1ljPy317WnghckIgSAsBYjodVwgrkSq8iGFI+gDasm
+	 xye/KboVsVHI/cZb6o0bCqBOQvzMX/7T+VEAuf6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/354] netfilter: nft_connlimit: update the count if add was skipped
-Date: Tue, 16 Dec 2025 12:13:54 +0100
-Message-ID: <20251216111330.589340215@linuxfoundation.org>
+Subject: [PATCH 6.18 468/614] vhost: Fix kthread worker cgroup failure handling
+Date: Tue, 16 Dec 2025 12:13:55 +0100
+Message-ID: <20251216111418.327428552@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
+[ Upstream commit f3f64c2eaffbc3169bbe1e5d1e897e6dacc839d1 ]
 
-Connlimit expression can be used for all kind of packets and not only
-for packets with connection state new. See this ruleset as example:
+If we fail to attach to a cgroup we are leaking the id. This adds
+a new goto to free the id.
 
-table ip filter {
-        chain input {
-                type filter hook input priority filter; policy accept;
-                tcp dport 22 ct count over 4 counter
-        }
-}
-
-Currently, if the connection count goes over the limit the counter will
-count the packets. When a connection is closed, the connection count
-won't decrement as it should because it is only updated for new
-connections due to an optimization on __nf_conncount_add() that prevents
-updating the list if the connection is duplicated.
-
-To solve this problem, check whether the connection was skipped and if
-so, update the list. Adjust count_tree() too so the same fix is applied
-for xt_connlimit.
-
-Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
-Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 7d9896e9f6d0 ("vhost: Reintroduce kthread API and add mode selection")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20251101194358.13605-1-michael.christie@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c  | 12 ++++++++----
- net/netfilter/nft_connlimit.c | 13 +++++++++++--
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ drivers/vhost/vhost.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 0ffc5ff78a714..b84cfb5616df4 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
- 	if (ct && nf_ct_is_confirmed(ct)) {
- 		if (refcounted)
- 			nf_ct_put(ct);
--		return 0;
-+		return -EEXIST;
- 	}
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index a78226b37739d..bccdc9eab267a 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -804,11 +804,13 @@ static int vhost_kthread_worker_create(struct vhost_worker *worker,
  
- 	if ((u32)jiffies == list->last_gc)
-@@ -398,7 +398,7 @@ insert_tree(struct net *net,
- 			int ret;
+ 	ret = vhost_attach_task_to_cgroups(worker);
+ 	if (ret)
+-		goto stop_worker;
++		goto free_id;
  
- 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
--			if (ret)
-+			if (ret && ret != -EEXIST)
- 				count = 0; /* hotdrop */
- 			else
- 				count = rbconn->list.count;
-@@ -501,10 +501,14 @@ count_tree(struct net *net,
- 			/* same source network -> be counted! */
- 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
- 			spin_unlock_bh(&rbconn->list.list_lock);
--			if (ret)
-+			if (ret && ret != -EEXIST) {
- 				return 0; /* hotdrop */
--			else
-+			} else {
-+				/* -EEXIST means add was skipped, update the list */
-+				if (ret == -EEXIST)
-+					nf_conncount_gc_list(net, &rbconn->list);
- 				return rbconn->list.count;
-+			}
- 		}
- 	}
+ 	worker->id = id;
+ 	return 0;
  
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index d998e27713ac7..83a7d5769396c 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 
- 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
- 	if (err) {
--		regs->verdict.code = NF_DROP;
--		return;
-+		if (err == -EEXIST) {
-+			/* Call gc to update the list count if any connection has
-+			 * been closed already. This is useful for softlimit
-+			 * connections like limiting bandwidth based on a number
-+			 * of open connections.
-+			 */
-+			nf_conncount_gc_list(nft_net(pkt), priv->list);
-+		} else {
-+			regs->verdict.code = NF_DROP;
-+			return;
-+		}
- 	}
- 
- 	count = priv->list->count;
++free_id:
++	xa_erase(&dev->worker_xa, id);
+ stop_worker:
+ 	vhost_kthread_do_stop(worker);
+ 	return ret;
 -- 
 2.51.0
 
