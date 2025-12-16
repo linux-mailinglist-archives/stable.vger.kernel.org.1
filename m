@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549B4CC3B0C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6584CC28D8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C35083007743
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:45:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99D153025283
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9754F349B0D;
-	Tue, 16 Dec 2025 11:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A12355802;
+	Tue, 16 Dec 2025 12:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFnO3Crk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0BuWZ98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5321A34A3AC;
-	Tue, 16 Dec 2025 11:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8DD3659E6;
+	Tue, 16 Dec 2025 12:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885185; cv=none; b=ALBaim0yMmlIpa+k5WrhaSr1gVKspPhN1SpGYNZ1tqX0jFKzbcI3MaBs3PJZtzqKH6fEg0zSJZFl+GIVqPYJVXl7J4j9ANv8qtBJXWVUv37EAmShUonHH5g5JZeRoek5r7aYhLhZWjwy/jATgqcLU+HUACjDANLYwPH49WyxLq0=
+	t=1765887028; cv=none; b=mhQx5ocaGuLas5n4S4N4YmACwKUJarLnBhRu9T4T/EH9yabJBJy398jyUWIZYKWiC+HHUbodpYJGgYLYQvACnmhUCfIrZsiL2dXb0ETwTetPGWK0yrn9r5vU1rBuxAsy+28Cq4RUd6TPh8IbX/e+1DgXE7PvExND3Q3nElpwiX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885185; c=relaxed/simple;
-	bh=aM6bFBwQIiF1LCEnxaaPiKib8E61dE41XWuJdLu44WA=;
+	s=arc-20240116; t=1765887028; c=relaxed/simple;
+	bh=DyX3Co6iJWqv7vWvGOPBaP6VgQ7LqmLTSfRwDRNi6Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clby6ymheNP6jFRi6GK/9+v/7TIb/GWQZ2blI7XguQET3jzP/nP20BWdUaLtkElfAs6hbaAuSC8ze+FptG+Rk7J/p0uJTrz25Xtbb21AszxmUIxio75rRnVJ1/Dpuo0WNjZgq+LCIGUwczWeuVNUfMK99EZBp/9SLkwhSVRFCc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFnO3Crk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEB7C4CEF1;
-	Tue, 16 Dec 2025 11:39:44 +0000 (UTC)
+	 MIME-Version; b=adXRGHNhsxRNTT70ILTEGmn7vwQC0a31PhwvXOmH1xJ3RXXVma/qjEI8pa4lsRhCzMPveUyEyWf1eGps/j7JJG2x+8/fmbFgEYI2ko4FNolHtvFPB1dzkcnuKHilforCwLIBAO1B8FiutG3I5zScOgLzlaqBHMfR5MuOGGNXqjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0BuWZ98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8D8C4CEF1;
+	Tue, 16 Dec 2025 12:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885184;
-	bh=aM6bFBwQIiF1LCEnxaaPiKib8E61dE41XWuJdLu44WA=;
+	s=korg; t=1765887028;
+	bh=DyX3Co6iJWqv7vWvGOPBaP6VgQ7LqmLTSfRwDRNi6Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFnO3Crkc0ytEJraabZYzIi2xSa+Z7CVyCznVQMI/AURxaGvzx5exrmbn/xBRjmmk
-	 k5FBT+7VAp+kXA65/Y0ahM7w6Ukny/WSJMFqHO+6QaFvj94NXWI/a+Ph7nf+jC1T+8
-	 han8CM2Th+cLVta+zsy1IqHFUFmX3ag1nt/9CHVI=
+	b=I0BuWZ98RB5Cn/g93Jk+ZH0AQdBxY0Q0G7Vk3FZLIcP/BTo2zQlz9t4aozUhJmEDh
+	 qvx3hFI7w/4nXJq1J2Mo7W0W1jXznH8iKhZQld1UCXDPhpmVMEdcigEjWhjiq8wR0P
+	 buRiPUoLQHv2X+xj/CQ1qiMa02mVuyX1CdRad2Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 031/507] perf parse-events: Fix legacy cache events if event is duplicated in a PMU
-Date: Tue, 16 Dec 2025 12:07:52 +0100
-Message-ID: <20251216111346.665069555@linuxfoundation.org>
+Subject: [PATCH 6.18 106/614] leds: upboard: Fix module alias
+Date: Tue, 16 Dec 2025 12:07:53 +0100
+Message-ID: <20251216111405.177836336@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
 
-[ Upstream commit b7b76f607a15f16031001687e733046b5f6f5d86 ]
+[ Upstream commit c06a017439110debd335b6864bc2d69835624235 ]
 
-The term list when adding an event to a PMU is expected to have the
-event name for the alias lookup. Also, set found_supported so that
--EINVAL isn't returned.
+The module alias does not match the cell name defined in the MFD driver,
+preventing automatic loading when the driver is built as a module. So fix
+the module alias to ensure proper module auto-loading.
 
-Fixes: 62593394f66a ("perf parse-events: Legacy cache names on all
-PMUs and lower priority")
-
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 0ef2929a0181 ("leds: Add AAEON UP board LED driver")
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251020-leds-upboard-fix-module-alias-v2-1-84ac5c3a1a81@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/parse-events.c | 28 +++++++++++++++++++++++++++-
- tools/perf/util/parse-events.h |  3 ++-
- tools/perf/util/parse-events.y |  2 +-
- 3 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/leds/leds-upboard.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index 0026cff4d69e4..fbf287363d9e6 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -475,8 +475,10 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
- 
- int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
- 			   struct parse_events_state *parse_state,
--			   struct parse_events_terms *parsed_terms)
-+			   struct parse_events_terms *parsed_terms,
-+			   void *loc_)
- {
-+	YYLTYPE *loc = loc_;
- 	struct perf_pmu *pmu = NULL;
- 	bool found_supported = false;
- 	const char *config_name = get_config_name(parsed_terms);
-@@ -497,12 +499,36 @@ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
- 			 * The PMU has the event so add as not a legacy cache
- 			 * event.
- 			 */
-+			struct parse_events_terms temp_terms;
-+			struct parse_events_term *term;
-+			char *config = strdup(name);
-+
-+			if (!config)
-+				goto out_err;
-+
-+			parse_events_terms__init(&temp_terms);
-+			if (!parsed_terms)
-+				parsed_terms = &temp_terms;
-+
-+			if (parse_events_term__num(&term,
-+						    PARSE_EVENTS__TERM_TYPE_USER,
-+						    config, /*num=*/1, /*novalue=*/true,
-+						    loc, /*loc_val=*/NULL) < 0) {
-+				zfree(&config);
-+				goto out_err;
-+			}
-+			list_add(&term->list, &parsed_terms->terms);
-+
- 			ret = parse_events_add_pmu(parse_state, list, pmu,
- 						   parsed_terms,
- 						   first_wildcard_match,
- 						   /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
-+			list_del_init(&term->list);
-+			parse_events_term__delete(term);
-+			parse_events_terms__exit(&temp_terms);
- 			if (ret)
- 				goto out_err;
-+			found_supported = true;
- 			if (first_wildcard_match == NULL)
- 				first_wildcard_match =
- 					container_of(list->prev, struct evsel, core.node);
-diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
-index 62dc7202e3bad..c498d896badfd 100644
---- a/tools/perf/util/parse-events.h
-+++ b/tools/perf/util/parse-events.h
-@@ -235,7 +235,8 @@ int parse_events_add_numeric(struct parse_events_state *parse_state,
- 			     bool wildcard);
- int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
- 			   struct parse_events_state *parse_state,
--			   struct parse_events_terms *parsed_terms);
-+			   struct parse_events_terms *parsed_terms,
-+			   void *loc);
- int parse_events__decode_legacy_cache(const char *name, int pmu_type, __u64 *config);
- int parse_events_add_breakpoint(struct parse_events_state *parse_state,
- 				struct list_head *list,
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index a2361c0040d75..ced26c549c33a 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -353,7 +353,7 @@ PE_LEGACY_CACHE opt_event_config
- 	if (!list)
- 		YYNOMEM;
- 
--	err = parse_events_add_cache(list, &parse_state->idx, $1, parse_state, $2);
-+	err = parse_events_add_cache(list, &parse_state->idx, $1, parse_state, $2, &@1);
- 
- 	parse_events_terms__delete($2);
- 	free($1);
+diff --git a/drivers/leds/leds-upboard.c b/drivers/leds/leds-upboard.c
+index b350eb294280f..12989b2f19530 100644
+--- a/drivers/leds/leds-upboard.c
++++ b/drivers/leds/leds-upboard.c
+@@ -123,4 +123,4 @@ MODULE_AUTHOR("Gary Wang <garywang@aaeon.com.tw>");
+ MODULE_AUTHOR("Thomas Richard <thomas.richard@bootlin.com>");
+ MODULE_DESCRIPTION("UP Board LED driver");
+ MODULE_LICENSE("GPL");
+-MODULE_ALIAS("platform:upboard-led");
++MODULE_ALIAS("platform:upboard-leds");
 -- 
 2.51.0
 
