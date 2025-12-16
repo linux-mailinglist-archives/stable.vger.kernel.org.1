@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D3BCC2256
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1347CC3E73
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B13E3073A1D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93E2E3030D86
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE69633E341;
-	Tue, 16 Dec 2025 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D708345732;
+	Tue, 16 Dec 2025 12:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0N5Qcf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcC1GCiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7942B3358A8;
-	Tue, 16 Dec 2025 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E5D34405B;
+	Tue, 16 Dec 2025 12:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883939; cv=none; b=EeLwNhvu0PmkEuLev7oJ4/7uw6jvn/Hc2i9JuvNKppxfO6KpkPNjtCuB1dPPCaEM+PM7ntaQcE4yu+a5uWwY3LE9639083/uXMAInH++FcXkgxN+2FtIUD0DZ6GV+Ha4Dr7RC1ZRQimqIaeOqdJwytbsFwTimNYMjWVQMBOA+X0=
+	t=1765887589; cv=none; b=sVAGA+Yt/kKcP3LsVv8lRpDAs3eybXxyZO/4oIe+CH4qeJvvUqRdWC4Lo69zrMXwQR4Puox3rzXAAr7UmO9jxwjvEIv+yBnUbr/O00E7omjE9waQbQwN12O0g/YXxI0iwz+SYSgUlxc/N3E4mfq1glRpdsQYW1N8TAHZA95a/8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883939; c=relaxed/simple;
-	bh=qUr7ierVOsdzCfr3Q5dYpYxtCBLeUHbC/J6AD1sJfhM=;
+	s=arc-20240116; t=1765887589; c=relaxed/simple;
+	bh=yf1yNu/0BENn7bUS4ANMPW7OqOfS/VN2kDaL9509ydE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSLGsvbevZiSeKvvtsI1U0hpa+TkPItCe+n0OX97O/CKhk9NYAo6Wz5IuLm82Mk5xaekanO5bQsb26SncvEMJ4jE6Tbct2f1juk0bxXsFwxEt4J6ila0iwevzYo+52efXTUdgkU+Q2/drtYXdsrQ+yAcNbrwAOrLwcWbNoZQywc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0N5Qcf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6558C4CEF1;
-	Tue, 16 Dec 2025 11:18:58 +0000 (UTC)
+	 MIME-Version; b=bnUetuwKlS7n5AbGgpnI42GA0QxL4A6giN9LBIlwpOsIki+j9J75OL2xQhF3L+zB6Qc/Q7GYYc2BOH5OH6dz4uy3keZl/8BawQxnKekXcYh0p/B3FLQUmPYdUJ+CsnR/m3rVGQWhy5BA/tNZktDw3sjevHEFadLLIsJD0z02RFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcC1GCiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66929C4CEF1;
+	Tue, 16 Dec 2025 12:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883939;
-	bh=qUr7ierVOsdzCfr3Q5dYpYxtCBLeUHbC/J6AD1sJfhM=;
+	s=korg; t=1765887588;
+	bh=yf1yNu/0BENn7bUS4ANMPW7OqOfS/VN2kDaL9509ydE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0N5Qcf8twlfNmw2bHpRGCQcxhzISulSNkwNMoFqHYD1Ntx6v1sQNrIk+P4Hl76YL
-	 gZobqVIf2DUse1cPLqAsgkHWMEbja478Xh0HFAr/sHYiv17fsfbyrAqy7Xp9BnutlP
-	 Lqygkvt8UitbH2GwXH72p4cvclOJe0zFLiNYdPvw=
+	b=zcC1GCiGjuOqgE11AAC8+rcTEkWznzpApsMbmj9cCSHmLVVsisGkK01u9Gy0hHuJg
+	 JoC/O2gV23En0g9yVSVbXDNFC0s8Cjot2vl+675cfO1OMeI3A+jQ4hMD+PwMpTo1jI
+	 ZsgM7lWXM5UwL8Rc2bRVfD4G2aMi5TDFtvJ+yJY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shirisha G <shirisha@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/354] inet: Avoid ehash lookup race in inet_ehash_insert()
+Subject: [PATCH 6.18 244/614] powerpc/kdump: Fix size calculation for hot-removed memory ranges
 Date: Tue, 16 Dec 2025 12:10:11 +0100
-Message-ID: <20251216111322.512764396@linuxfoundation.org>
+Message-ID: <20251216111410.207356364@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 1532ed0d0753c83e72595f785f82b48c28bbe5dc ]
+[ Upstream commit 7afe2383eff05f76f4ce2cfda658b7889c89f101 ]
 
-Since ehash lookups are lockless, if one CPU performs a lookup while
-another concurrently deletes and inserts (removing reqsk and inserting sk),
-the lookup may fail to find the socket, an RST may be sent.
+The elfcorehdr segment in the kdump image stores information about the
+memory regions (called crash memory ranges) that the kdump kernel must
+capture.
 
-The call trace map is drawn as follows:
-   CPU 0                           CPU 1
-   -----                           -----
-				inet_ehash_insert()
-                                spin_lock()
-                                sk_nulls_del_node_init_rcu(osk)
-__inet_lookup_established()
-	(lookup failed)
-                                __sk_nulls_add_node_rcu(sk, list)
-                                spin_unlock()
+When a memory hot-remove event occurs, the kernel regenerates the
+elfcorehdr for the currently loaded kdump image to remove the
+hot-removed memory from the crash memory ranges.
 
-As both deletion and insertion operate on the same ehash chain, this patch
-introduces a new sk_nulls_replace_node_init_rcu() helper functions to
-implement atomic replacement.
+Call chain:
+remove_mem_range()
+update_crash_elfcorehdr()
+arch_crash_handle_hotplug_event()
+crash_handle_hotplug_event()
 
-Fixes: 5e0724d027f0 ("tcp/dccp: fix hashdance race for passive sessions")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251015020236.431822-3-xuanqiang.luo@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+While removing the hot-removed memory from the crash memory ranges in
+remove_mem_range(), if the removed memory lies within an existing crash
+range, that range is split into two. During this split, the size of the
+second range was being calculated incorrectly.
+
+This leads to dump capture failure with makedumpfile with below error:
+
+$ makedumpfile -l -d 31 /proc/vmcore /tmp/vmcore
+
+readpage_elf: Attempt to read non-existent page at 0xbbdab0000.
+readmem: type_addr: 0, addr:c000000bbdab7f00, size:16
+validate_mem_section: Can't read mem_section array.
+readpage_elf: Attempt to read non-existent page at 0xbbdab0000.
+readmem: type_addr: 0, addr:c000000bbdab7f00, size:8
+get_mm_sparsemem: Can't get the address of mem_section.
+
+The updated crash memory range in PT_LOAD entry is holding incorrect
+data (checkout FileSiz and MemSiz):
+
+readelf -a /proc/vmcore
+<snip...>
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000b013d0000 0xc000000b80000000 0x0000000b80000000
+                 0xffffffffc0000000 0xffffffffc0000000  RWE    0x0
+<snip...>
+
+Update the size calculation for the new crash memory range to fix this
+issue.
+
+Note: This problem will not occur if the kdump kernel is loaded or
+reloaded after a memory hot-remove operation.
+
+Fixes: 849599b702ef ("powerpc/crash: add crash memory hotplug support")
+Reported-by: Shirisha G <shirisha@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251105033941.1752287-1-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h         | 13 +++++++++++++
- net/ipv4/inet_hashtables.c |  8 ++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ arch/powerpc/kexec/ranges.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 722f409cccd35..6edd9cac50067 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -829,6 +829,19 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
- 	return rc;
- }
- 
-+static inline bool sk_nulls_replace_node_init_rcu(struct sock *old,
-+						  struct sock *new)
-+{
-+	if (sk_hashed(old)) {
-+		hlist_nulls_replace_init_rcu(&old->sk_nulls_node,
-+					     &new->sk_nulls_node);
-+		__sock_put(old);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static inline void __sk_add_node(struct sock *sk, struct hlist_head *list)
- {
- 	hlist_add_head(&sk->sk_node, list);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 2b4a588247639..37a6acff537e6 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -671,8 +671,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	spin_lock(lock);
- 	if (osk) {
- 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
--		ret = sk_nulls_del_node_init_rcu(osk);
--	} else if (found_dup_sk) {
-+		ret = sk_nulls_replace_node_init_rcu(osk, sk);
-+		goto unlock;
-+	}
-+
-+	if (found_dup_sk) {
- 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
- 		if (*found_dup_sk)
- 			ret = false;
-@@ -681,6 +684,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	if (ret)
- 		__sk_nulls_add_node_rcu(sk, list);
- 
-+unlock:
- 	spin_unlock(lock);
- 
- 	return ret;
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+index 3702b0bdab141..426bdca4667e7 100644
+--- a/arch/powerpc/kexec/ranges.c
++++ b/arch/powerpc/kexec/ranges.c
+@@ -697,8 +697,8 @@ int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
+ 		 * two half.
+ 		 */
+ 		else {
++			size = mem_rngs->ranges[i].end - end + 1;
+ 			mem_rngs->ranges[i].end = base - 1;
+-			size = mem_rngs->ranges[i].end - end;
+ 			ret = add_mem_range(mem_ranges, end + 1, size);
+ 		}
+ 	}
 -- 
 2.51.0
 
