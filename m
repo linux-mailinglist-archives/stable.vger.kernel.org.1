@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C27CC32D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D7DCC2B5F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA456307E5A2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9E7D313D58D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808EB34F275;
-	Tue, 16 Dec 2025 12:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29C3446B7;
+	Tue, 16 Dec 2025 11:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMBAOFJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NChqFZPX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234FA34EF0A;
-	Tue, 16 Dec 2025 12:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC963314AC;
+	Tue, 16 Dec 2025 11:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887853; cv=none; b=gzjRRwH4ojfDgSfZEjA+VXJxXDNi323oOzzaY8KYsYpCpZKbQPIgY2ijVsSdEWYwp87P4Le7Rvm/l9cDrZbCu+o0J/+6DctHj4v62m5VYDGKyULu++0nMlUy6absijSKcmIgAsas9+PjPUYdcnSWby94WARZSobM+5CKqqVGMN0=
+	t=1765886035; cv=none; b=Vdmi/ZH6zrRM+i6ZiqbbgeBJ9QjIGHynNGN7XE0XJhPJygg/PJw6EURS2lJ8DWvMMwrokAPg2kcfZaMpZjO3ekaqfMSbnv5RV59tBFQE4oCvVXoug85Xhro297+iSo/l2SDhP4Dlgly5R/9X0m7wMWjDHRrcVp11mAkg8kXvhng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887853; c=relaxed/simple;
-	bh=gd5bl14FfRjXtDkrz3Fi5vchbOUzpEV2hpae6LLBzfw=;
+	s=arc-20240116; t=1765886035; c=relaxed/simple;
+	bh=aneJxBffyeFNtSH8RRHCZRzuoskX6sQ3DIS0gzc33v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyRInZq/vbQ4wFmrV14ESUikL/k8Z3VIiArv/WrXQIFvEwEmsyv+jBXx3hpKqehIfkGEwonebo/7L+wlXiShmK29C+UhFD7zUClsGpThNeboUo1b1OnQtaKSrjcStiFNFpMvrezf8jmXOE/ED4muTq7QYySYRXmqfBl58Queq8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMBAOFJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D85C4CEF1;
-	Tue, 16 Dec 2025 12:24:12 +0000 (UTC)
+	 MIME-Version; b=lKGr5wYNYySLd/SvNFVg7eS7LrlKHj9g6tXVY9yRo3MfbNvOYI72i7lu7Dn003pP10YSZr50RpKkqFUpmkO3HGvbUjXZBOA+GGhQ4EjPJyztbj1QUOb0YsaK0R7+5nSHA2OrSEa2WI+mpsZa1dRYeyMGaCgi7XrDiY4uF04uCZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NChqFZPX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05314C4CEF5;
+	Tue, 16 Dec 2025 11:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887853;
-	bh=gd5bl14FfRjXtDkrz3Fi5vchbOUzpEV2hpae6LLBzfw=;
+	s=korg; t=1765886035;
+	bh=aneJxBffyeFNtSH8RRHCZRzuoskX6sQ3DIS0gzc33v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wMBAOFJ82b92pFvB4m4kn7/Gb6ublVSwaWXjVpHoHrmsgH3Vs8I6pq87I4YYZld96
-	 LiOgDERu//DtfYVWCtFBNA0NBKhqAuwB/T7GiDjUTmUfHrt6xCn/arweA54XeZ0Co+
-	 y+2ax4m3U/hKPc7soEWABzEJ9kiRaXNFZSALTUTs=
+	b=NChqFZPXgQhDcdc6allNByO43qVBBbSjJbpjlpXD00Umv8aUkBLOe4u1bX7p6HX/T
+	 1Wh+TkfXYuxjru+Oi+V1zgFlA2MzjCtI5I8Qn5S1heja9kJDWQekBhEVVtHFVoFUGQ
+	 PC0WMz2b7Tie50XyeFuKJv6zsoz7F8dJhrzsubsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 358/614] rtla/tests: Extend action tests to 5s
-Date: Tue, 16 Dec 2025 12:12:05 +0100
-Message-ID: <20251216111414.332434252@linuxfoundation.org>
+Subject: [PATCH 6.17 285/507] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Date: Tue, 16 Dec 2025 12:12:06 +0100
+Message-ID: <20251216111355.803859376@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit d649e9f04cb0224817dac8190461ef1674e32b37 ]
+[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
 
-In non-BPF mode, it takes up to 1 second for RTLA to notice that tracing
-has been stopped. That means that action tests cannot have a 1 second
-duration, as the SIGALRM will be racing with the threshold overflow.
+If devm_request_threaded_irq() fails after irq_domain_add_linear()
+succeeds in mt6358_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-Previously, non-BPF mode actions were buggy and always executed
-the action, even when stopping on duration or SIGINT, preventing
-this issue from manifesting. Now that this has been fixed, the tests
-have become flaky, and this has to be adjusted.
+Call irq_domain_remove() in the error path after a successful
+irq_domain_add_linear() to properly release the IRQ domain.
 
-Fixes: 4e26f84abfbb ("rtla/tests: Add tests for actions")
-Fixes: 05b7e10687c6 ("tools/rtla: Add remaining support for osnoise actions")
-Reviewed-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20251007095341.186923-2-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/tests/osnoise.t  | 4 ++--
- tools/tracing/rtla/tests/timerlat.t | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/mt6358-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/tracing/rtla/tests/osnoise.t b/tools/tracing/rtla/tests/osnoise.t
-index e3c89d45a6bb0..08196443fef16 100644
---- a/tools/tracing/rtla/tests/osnoise.t
-+++ b/tools/tracing/rtla/tests/osnoise.t
-@@ -39,9 +39,9 @@ check "hist stop at failed action" \
- check "top stop at failed action" \
- 	"timerlat top -T 2 --on-threshold shell,command='echo -n abc; false' --on-threshold shell,command='echo -n defgh'" 2 "^abc" "defgh"
- check "hist with continue" \
--	"osnoise hist -S 2 -d 1s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
-+	"osnoise hist -S 2 -d 5s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
- check "top with continue" \
--	"osnoise top -q -S 2 -d 1s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
-+	"osnoise top -q -S 2 -d 5s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
- check "hist with trace output at end" \
- 	"osnoise hist -d 1s --on-end trace" 0 "^  Saving trace to osnoise_trace.txt$"
- check "top with trace output at end" \
-diff --git a/tools/tracing/rtla/tests/timerlat.t b/tools/tracing/rtla/tests/timerlat.t
-index b5d1e7260a9be..b550a6ae24456 100644
---- a/tools/tracing/rtla/tests/timerlat.t
-+++ b/tools/tracing/rtla/tests/timerlat.t
-@@ -60,9 +60,9 @@ check "hist stop at failed action" \
- check "top stop at failed action" \
- 	"timerlat top -T 2 --on-threshold shell,command='echo -n 1; false' --on-threshold shell,command='echo -n 2'" 2 "^1ALL"
- check "hist with continue" \
--	"timerlat hist -T 2 -d 1s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
-+	"timerlat hist -T 2 -d 5s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
- check "top with continue" \
--	"timerlat top -q -T 2 -d 1s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
-+	"timerlat top -q -T 2 -d 5s --on-threshold shell,command='echo TestOutput' --on-threshold continue" 0 "^TestOutput$"
- check "hist with trace output at end" \
- 	"timerlat hist -d 1s --on-end trace" 0 "^  Saving trace to timerlat_trace.txt$"
- check "top with trace output at end" \
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index f467b00d23660..74cf208430440 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -285,6 +285,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
+ 
 -- 
 2.51.0
 
