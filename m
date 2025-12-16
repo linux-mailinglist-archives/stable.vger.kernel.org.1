@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC45DCC2A50
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC039CC36D5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2B1B930303AB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 23070306819C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBEF34B682;
-	Tue, 16 Dec 2025 11:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D89352928;
+	Tue, 16 Dec 2025 12:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LX72++Ct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpTJc54W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C05C34B1B4;
-	Tue, 16 Dec 2025 11:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94F634D3AB;
+	Tue, 16 Dec 2025 12:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885714; cv=none; b=ugJqf40Ts6hvVPQxsP5bDVPprL/VPET2+OdqoOZyHFJxqjlZCRtorcyH2wYp0zceOC+S4cmMde1Kbf8fQ+B1fFXJSPTlMcAitdxBSbBEBaKuuq3e76TSGXhcFCGly2HK2Gb/YepqZxYbMR/rkFeBzS2YA4OwpTOfpTbA1vKFY6k=
+	t=1765887653; cv=none; b=T9Zs09hGALPf/Q3pPBnWDUFtQnF621fDEKVrOb4rUpGyOnms1e9nCR+Yq7/xwtLFXtDHAA2bph3UNB0YnJ0G+WLFjMMuwzFjnTFHHouNafb+8Mg6/b4BCTkSd/xzgGxcJ/zKIUgK5EZTJGxv5zZzHskkrh/WvWon9bS0BnNbCec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885714; c=relaxed/simple;
-	bh=LYdl5Fnww+pqk3BiWz+RgcexLrQJ7GsgOalBXOSbmiw=;
+	s=arc-20240116; t=1765887653; c=relaxed/simple;
+	bh=BT3c/qGEA92CeN40JIEU5uHQ9PnDa9bVvRsoNTjUZKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5KrkuQuHspG7U0rdA0RwHNwYMCXOjdZndiuf4LOo2kofrCfmxouYiqzwxpNayWzRP6vowgykR3tjCguVNsliWWzXAFrLaXSbC01NAuC45eBHWtgwWZuu4eC18vSwnCUm75KBwSOddoZITOQtM5v2HIFTluoonGkOHMXhv9bZR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LX72++Ct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBBBC4CEF1;
-	Tue, 16 Dec 2025 11:48:33 +0000 (UTC)
+	 MIME-Version; b=ABO52BusBrIWuDCK2knAA649QcaqI7DmGVK6r8SxlQjIcFSSDP1Gw6nrSMqX89UNU1PTdNZRhZGwFHXvL8xaMUoDTn7df9RcbNBPV72glEKF7Z5vIPztzU9aJ8LvTfgtUCwNhc116ANTXhk5/JO0eF+5AKNTYrQv/3MQg7WveEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpTJc54W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B24C4CEF1;
+	Tue, 16 Dec 2025 12:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885714;
-	bh=LYdl5Fnww+pqk3BiWz+RgcexLrQJ7GsgOalBXOSbmiw=;
+	s=korg; t=1765887653;
+	bh=BT3c/qGEA92CeN40JIEU5uHQ9PnDa9bVvRsoNTjUZKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LX72++Ct7cZ8fPbN+paEtn458xU2l/CmNIN/P+k9q2QwpFG99frN0KUtjDhLcigab
-	 CQcwhv/wQmeMPJDI0SspXgKDfKI1XQe37g8esM+Pu2YYkYb9erUwS03CvQ6Q1dn7Ka
-	 oGL/dAKZDjPfcjXXbJ+H9W1BY4lTSsrtVHFv9vAw=
+	b=BpTJc54WTOm1/PKzJAW9xfOVvQu6eifDKPvB6MOvXNTWG2mVNvO8gWRkEFuB6PWVV
+	 R3huthsJAgUFXoGrJ/Zm5nK8Yiywb9ub9hfxXxzZr1l7HKAQoVRUroVcZbtM/QHEMT
+	 VOSkf9WgvvhzjtCidd9fB8WNM77JAKxFtTCb8IYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Petr Mladek <pmladek@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 223/507] lib/vsprintf: Check pointer before dereferencing in time_and_date()
+Subject: [PATCH 6.18 297/614] watchdog: wdat_wdt: Fix ACPI table leak in probe function
 Date: Tue, 16 Dec 2025 12:11:04 +0100
-Message-ID: <20251216111353.584473713@linuxfoundation.org>
+Message-ID: <20251216111412.130877234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 372a12bd5df0199aa234eaf8ef31ed7ecd61d40f ]
+[ Upstream commit 25c0b472eab8379683d4eef681185c104bed8ffd ]
 
-The pointer may be invalid when gets to the printf(). In particular
-the time_and_date() dereferencing it in some cases without checking.
+wdat_wdt_probe() calls acpi_get_table() to obtain the WDAT ACPI table but
+never calls acpi_put_table() on any paths. This causes a permanent ACPI
+table memory leak.
 
-Move the check from rtc_str() to time_and_date() to cover all cases.
+Add a single cleanup path which calls acpi_put_table() to ensure
+the ACPI table is always released.
 
-Fixes: 7daac5b2fdf8 ("lib/vsprintf: Print time64_t in human readable format")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://patch.msgid.link/20251110132118.4113976-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: 058dfc767008 ("ACPI / watchdog: Add support for WDAT hardware watchdog")
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/vsprintf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/watchdog/wdat_wdt.c | 64 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 21 deletions(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index eb0cb11d0d126..a356965c1d734 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -1928,9 +1928,6 @@ char *rtc_str(char *buf, char *end, const struct rtc_time *tm,
- 	bool found = true;
- 	int count = 2;
+diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+index 650fdc7996e1c..dd3c2d69c9df1 100644
+--- a/drivers/watchdog/wdat_wdt.c
++++ b/drivers/watchdog/wdat_wdt.c
+@@ -326,19 +326,27 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		return -ENODEV;
  
--	if (check_pointer(&buf, end, tm, spec))
--		return buf;
--
- 	switch (fmt[count]) {
- 	case 'd':
- 		have_t = false;
-@@ -1996,6 +1993,9 @@ static noinline_for_stack
- char *time_and_date(char *buf, char *end, void *ptr, struct printf_spec spec,
- 		    const char *fmt)
- {
-+	if (check_pointer(&buf, end, ptr, spec))
-+		return buf;
+ 	wdat = devm_kzalloc(dev, sizeof(*wdat), GFP_KERNEL);
+-	if (!wdat)
+-		return -ENOMEM;
++	if (!wdat) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
+ 
+ 	regs = devm_kcalloc(dev, pdev->num_resources, sizeof(*regs),
+ 			    GFP_KERNEL);
+-	if (!regs)
+-		return -ENOMEM;
++	if (!regs) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
+ 
+ 	/* WDAT specification wants to have >= 1ms period */
+-	if (tbl->timer_period < 1)
+-		return -EINVAL;
+-	if (tbl->min_count > tbl->max_count)
+-		return -EINVAL;
++	if (tbl->timer_period < 1) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
++	if (tbl->min_count > tbl->max_count) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
+ 
+ 	wdat->period = tbl->timer_period;
+ 	wdat->wdd.min_timeout = DIV_ROUND_UP(wdat->period * tbl->min_count, 1000);
+@@ -355,15 +363,20 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		res = &pdev->resource[i];
+ 		if (resource_type(res) == IORESOURCE_MEM) {
+ 			reg = devm_ioremap_resource(dev, res);
+-			if (IS_ERR(reg))
+-				return PTR_ERR(reg);
++			if (IS_ERR(reg)) {
++				ret = PTR_ERR(reg);
++				goto out_put_table;
++			}
+ 		} else if (resource_type(res) == IORESOURCE_IO) {
+ 			reg = devm_ioport_map(dev, res->start, 1);
+-			if (!reg)
+-				return -ENOMEM;
++			if (!reg) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 		} else {
+ 			dev_err(dev, "Unsupported resource\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
+ 		}
+ 
+ 		regs[i] = reg;
+@@ -385,8 +398,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		}
+ 
+ 		instr = devm_kzalloc(dev, sizeof(*instr), GFP_KERNEL);
+-		if (!instr)
+-			return -ENOMEM;
++		if (!instr) {
++			ret = -ENOMEM;
++			goto out_put_table;
++		}
+ 
+ 		INIT_LIST_HEAD(&instr->node);
+ 		instr->entry = entries[i];
+@@ -417,7 +432,8 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 		if (!instr->reg) {
+ 			dev_err(dev, "I/O resource not found\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
+ 		}
+ 
+ 		instructions = wdat->instructions[action];
+@@ -425,8 +441,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 			instructions = devm_kzalloc(dev,
+ 						    sizeof(*instructions),
+ 						    GFP_KERNEL);
+-			if (!instructions)
+-				return -ENOMEM;
++			if (!instructions) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 
+ 			INIT_LIST_HEAD(instructions);
+ 			wdat->instructions[action] = instructions;
+@@ -443,7 +461,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_enable_reboot(wdat);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	platform_set_drvdata(pdev, wdat);
+ 
+@@ -460,12 +478,16 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	watchdog_set_nowayout(&wdat->wdd, nowayout);
+ 	watchdog_stop_on_reboot(&wdat->wdd);
+ 	watchdog_stop_on_unregister(&wdat->wdd);
+-	return devm_watchdog_register_device(dev, &wdat->wdd);
++	ret = devm_watchdog_register_device(dev, &wdat->wdd);
 +
- 	switch (fmt[1]) {
- 	case 'R':
- 		return rtc_str(buf, end, (const struct rtc_time *)ptr, spec, fmt);
++out_put_table:
++	acpi_put_table((struct acpi_table_header *)tbl);
++	return ret;
+ }
+ 
+ static int wdat_wdt_suspend_noirq(struct device *dev)
 -- 
 2.51.0
 
