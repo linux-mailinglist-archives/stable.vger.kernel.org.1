@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31495CC3531
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A216CC246C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12BE130ECB63
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE31930DEE6F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8273E376BDA;
-	Tue, 16 Dec 2025 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969DD342CB1;
+	Tue, 16 Dec 2025 11:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4Br1Rw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1fUmj/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAE2376BD5;
-	Tue, 16 Dec 2025 12:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518A6342513;
+	Tue, 16 Dec 2025 11:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888056; cv=none; b=QPwvaj/6d99ajmgkitE4HHmxIfJCDNLk00yJFA8O7CQsvgtEzWy5RcU4K3CCK69b4dfePxg8b0Djh9KEHOsoLjoGIC+P60GnboLwqOq3d/vqr4xYs9uV9FyYVUuS8nBqjona9SDYUHUyo3n4UxDBtJz0l3MCySflS27Jj6To+Zg=
+	t=1765884415; cv=none; b=IH1XV3TIfJQTxzDg58WInrO+B6UZhcys+7Hg1KIHlQTfvJDO01si5XyOmA4YTRYN25hiPuUVn+/N/l+YC746s2tBcHbOyMkH/N0T6FWHVycEOLHiwyIKUVH6xReET1j5yjrzp6cmvNnuIb6XHaqogbrpobunaMM803cI6mfh3Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888056; c=relaxed/simple;
-	bh=kiAM5AHd90wdE80LiUWUrpGWLWsuGzFFhJJvZTt+bNU=;
+	s=arc-20240116; t=1765884415; c=relaxed/simple;
+	bh=ajlVi+VFGd1DaQ1UOeuyuZNF73IsGYxrH4d8T8FlMVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2Xg15yHv0Sm0aLYb0l4zNzVr3VtxvN1vwFJd68/32qVvUTW/C+9RSCjpyALrwwt1FrmAJB7ORVVv8yLK65dBUBb5zkRzJeae5/YHKP3VFfVOrqUeV3daiVasM8Ugx/aN2vhn+uOObegwipn+ugAL+dlt4dIB4e+QTgXA8PGJ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4Br1Rw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339DCC4CEF1;
-	Tue, 16 Dec 2025 12:27:35 +0000 (UTC)
+	 MIME-Version; b=W+JDjJIZYGyh6I3hiYrkqHsvXBpxArBdA960jNYXrhkTiLzdSef+iIuTz8QvXKTScKrDr3YulsIsPAn2QQB9itYFLwpiH6IB0lJMrNXwDmPrPq/SjEfr1gdUJIQ0mbbsVTr5JhLybLwKB8JcCspm979kzeWAi1tsHZ0B8UTDMTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1fUmj/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CDCC4CEF1;
+	Tue, 16 Dec 2025 11:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888055;
-	bh=kiAM5AHd90wdE80LiUWUrpGWLWsuGzFFhJJvZTt+bNU=;
+	s=korg; t=1765884415;
+	bh=ajlVi+VFGd1DaQ1UOeuyuZNF73IsGYxrH4d8T8FlMVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4Br1Rw9HkfHihe1BjhuCNF0BxeyAwFmw6nPJ7evetc6/RPLRWqHpJOrLO8oIPk9r
-	 wFSiIOLNX7zp+nU3xpB58CQWYR7lG0x42xgISS+obZkj32oNf4ho0q9i9y1gAatXKG
-	 32gNeZf6KGrRQeJHyAdugsBdp0EApVOZIhLeHGlc=
+	b=R1fUmj/ZSRCBj72DnXROEJWe0xJoSALXrxQCNOApYB4lOAyidoymYYSNIrzvYfc8o
+	 XOQFIi6N6qCQZLDGsNibfTVCr4Z1yosOsg3HAV2OHB0WcUQsRcILZu5N8NuLCf8Qgu
+	 IYNwAtN/5aecqBr57ewPWEJbhbK70nzF2nKuCV4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 386/614] wifi: mt76: mt7996: Remove useless check in mt7996_msdu_page_get_from_cache()
-Date: Tue, 16 Dec 2025 12:12:33 +0100
-Message-ID: <20251216111415.354804015@linuxfoundation.org>
+Subject: [PATCH 6.12 187/354] scsi: qla2xxx: Fix improper freeing of purex item
+Date: Tue, 16 Dec 2025 12:12:34 +0100
+Message-ID: <20251216111327.688582946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 2157e49892c5eae210b8fa6ee8672bd9d0ffa4b5 ]
+[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
 
-Get rid of useless null-pointer check in mt7996_msdu_page_get_from_cache
-since we have already verfied the list is not empty.
+In qla2xxx_process_purls_iocb(), an item is allocated via
+qla27xx_copy_multiple_pkt(), which internally calls
+qla24xx_alloc_purex_item().
 
-Fixes: b1e58e137b616 ("wifi: mt76: mt7996: Introduce RRO MSDU callbacks")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202510100155.MS0IXhzm-lkp@intel.com/
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251014-mt7996_msdu_page_get_from_cache-remove-null-ptr-check-v1-1-fbeb7881e192@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The qla24xx_alloc_purex_item() function may return a pre-allocated item
+from a per-adapter pool for small allocations, instead of dynamically
+allocating memory with kzalloc().
+
+An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
+kfree() to release the item. If the item was from the pre-allocated
+pool, calling kfree() on it is a bug that can lead to memory corruption.
+
+Fix this by using the correct deallocation function,
+qla24xx_free_purex_item(), which properly handles both dynamically
+allocated and pre-allocated items.
+
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 9501def3e0e3e..284f2eea71e5b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1681,8 +1681,7 @@ mt7996_msdu_page_get_from_cache(struct mt7996_dev *dev)
- 	if (!list_empty(&dev->wed_rro.page_cache)) {
- 		p = list_first_entry(&dev->wed_rro.page_cache,
- 				     struct mt7996_msdu_page, list);
--		if (p)
--			list_del(&p->list);
-+		list_del(&p->list);
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 316594aa40cc5..42eb65a62f1f3 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -1292,7 +1292,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
+ 		a.reason = FCNVME_RJT_RC_LOGIC;
+ 		a.explanation = FCNVME_RJT_EXP_NONE;
+ 		xmt_reject = true;
+-		kfree(item);
++		qla24xx_free_purex_item(item);
+ 		goto out;
  	}
  
- 	spin_unlock(&dev->wed_rro.lock);
 -- 
 2.51.0
 
