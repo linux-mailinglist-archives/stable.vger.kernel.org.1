@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A9FCC2358
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B0FCC2F64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D749B304D9FA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B7543257719
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D80F341AD6;
-	Tue, 16 Dec 2025 11:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C63E3446D8;
+	Tue, 16 Dec 2025 12:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fqp5mKbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/NLDCcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2B8341069;
-	Tue, 16 Dec 2025 11:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC33A33F8AA;
+	Tue, 16 Dec 2025 12:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884176; cv=none; b=BLiR9aUKcoce1tifQZBEPIpn2ZJj7Km365Z7twiAUn0y3KY9BuXYTAGIcxV7Ywo+iZD6zIZSeb5ddzBkKiqvWV0XFn/db6/96xEcbUnY6ANNW48WBclqQnLKblDEYh7ToQ3EgjaoWKYwQR82xeSw+V7QTPE/5BEbJi8/6HckEd0=
+	t=1765887822; cv=none; b=tHnRoERtIW76c/UvsmBHs2EOQo1ai8M6OaJMnEUXObjH7yUVKeYGVJ+92GBFJ1MImAdEwOK5fqZgnrzlOmToa9RKuKJi1iEZnMlJK2a+kNjuEb68rOyEcXnoYdSC742EZHNtNk21L5FkoTkHXEjvzDJrBd3NcMycVD6e7SGL4To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884176; c=relaxed/simple;
-	bh=7gIG2grRrRud4HU+CXsohF+Y7NFULwyGJ4jerROMLWU=;
+	s=arc-20240116; t=1765887822; c=relaxed/simple;
+	bh=Z/c3uWRe5f5Ftteo7520W68h1+/fZHov+5YXsgrs9SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esvvF+Y3naEeIehp033MTjsqfoHPSIO3oPBMt2zzC3pAKbUDsc57th2/Flgu/woTqaC8XraPc1tJ7zbN5vsulAPRQ4Uyp1hFyEV/ZFnZHat3O2fEBGHpsxINEcWhtDMvzE5UbQeRPL5AQziOj8VfSE5ZAa66KBXXilxEx/z5/m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fqp5mKbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9EBC4CEF1;
-	Tue, 16 Dec 2025 11:22:55 +0000 (UTC)
+	 MIME-Version; b=RSoxSOrHx6kbEKzuke4tyn67QNmw2NHUuV3upszZx9Ah0qrIDPRG9wCHhqhfpJ8HRIxITvxxWedz/3X+H5xvNPo1mcZwIHsLHPdpTvhXOOdZbcwzaXM69asHdRfy0kzyLSr05tyjq039oQ9cxVu0JhvonVusObUbX9FhV2HfHnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/NLDCcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AABDC4CEF1;
+	Tue, 16 Dec 2025 12:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884176;
-	bh=7gIG2grRrRud4HU+CXsohF+Y7NFULwyGJ4jerROMLWU=;
+	s=korg; t=1765887822;
+	bh=Z/c3uWRe5f5Ftteo7520W68h1+/fZHov+5YXsgrs9SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fqp5mKbIFPAmQnHM7NrkR5WcfEtbHSWoCdT3f4d5ACdlIeZWyq/L6DqrZCMVx5GtZ
-	 07+Mt2sQN/lBXRLK3l0wGGEIdDiYmKCjXea3jSiGf7k9ntH64fuCaW3AxTsk7jBnhz
-	 XgCuc/dDAENKYHrhMGAYtbbAJg08O+1GeKSslcnw=
+	b=z/NLDCcTW2a54Ms+i7PTapS7zKbokwp9rtEPJgixWjCq+xhw9qlhYXZMojE8O4P0I
+	 XoO4bWnoessa/uNO4DIsCdHJRUqFKeSxdXCMLlZ2EawI3wlR7MmtZ6hYn+lag15ZQR
+	 rgInoxJxVa6QZ/GNe5f4E4zlN3S9WHlIn5EFXj30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ketil Johnsen <ketil.johnsen@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/354] drm/panthor: Fix race with suspend during unplug
+Subject: [PATCH 6.18 315/614] bpf: Fix invalid prog->stats access when update_effective_progs fails
 Date: Tue, 16 Dec 2025 12:11:22 +0100
-Message-ID: <20251216111325.090135121@linuxfoundation.org>
+Message-ID: <20251216111412.779495993@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ketil Johnsen <ketil.johnsen@arm.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 08be57e6e8aa20ea5a6dd2552e38ac168d6a9b11 ]
+[ Upstream commit 7dc211c1159d991db609bdf4b0fb9033c04adcbc ]
 
-There is a race between panthor_device_unplug() and
-panthor_device_suspend() which can lead to IRQ handlers running on a
-powered down GPU. This is how it can happen:
-- unplug routine calls drm_dev_unplug()
-- panthor_device_suspend() can now execute, and will skip a lot of
-  important work because the device is currently marked as unplugged.
-- IRQs will remain active in this case and IRQ handlers can therefore
-  try to access a powered down GPU.
+Syzkaller triggers an invalid memory access issue following fault
+injection in update_effective_progs. The issue can be described as
+follows:
 
-The fix is simply to take the PM ref in panthor_device_unplug() a
-little bit earlier, before drm_dev_unplug().
+__cgroup_bpf_detach
+  update_effective_progs
+    compute_effective_progs
+      bpf_prog_array_alloc <-- fault inject
+  purge_effective_progs
+    /* change to dummy_bpf_prog */
+    array->items[index] = &dummy_bpf_prog.prog
 
-Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
-Fixes: 5fe909cae118a ("drm/panthor: Add the device logical block")
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251022103242.1083311-1-ketil.johnsen@arm.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+---softirq start---
+__do_softirq
+  ...
+    __cgroup_bpf_run_filter_skb
+      __bpf_prog_run_save_cb
+        bpf_prog_run
+          stats = this_cpu_ptr(prog->stats)
+          /* invalid memory access */
+          flags = u64_stats_update_begin_irqsave(&stats->syncp)
+---softirq end---
+
+  static_branch_dec(&cgroup_bpf_enabled_key[atype])
+
+The reason is that fault injection caused update_effective_progs to fail
+and then changed the original prog into dummy_bpf_prog.prog in
+purge_effective_progs. Then a softirq came, and accessing the members of
+dummy_bpf_prog.prog in the softirq triggers invalid mem access.
+
+To fix it, skip updating stats when stats is NULL.
+
+Fixes: 492ecee892c2 ("bpf: enable program stats")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Link: https://lore.kernel.org/r/20251115102343.2200727-1-pulehui@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/filter.h | 12 +++++++-----
+ kernel/bpf/syscall.c   |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 01dff89bed4e1..e36d414044e02 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -64,6 +64,8 @@ void panthor_device_unplug(struct panthor_device *ptdev)
- 		return;
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 973233b82dc1f..569de3b14279a 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -712,11 +712,13 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
+ 
+ 		duration = sched_clock() - start;
+-		stats = this_cpu_ptr(prog->stats);
+-		flags = u64_stats_update_begin_irqsave(&stats->syncp);
+-		u64_stats_inc(&stats->cnt);
+-		u64_stats_add(&stats->nsecs, duration);
+-		u64_stats_update_end_irqrestore(&stats->syncp, flags);
++		if (likely(prog->stats)) {
++			stats = this_cpu_ptr(prog->stats);
++			flags = u64_stats_update_begin_irqsave(&stats->syncp);
++			u64_stats_inc(&stats->cnt);
++			u64_stats_add(&stats->nsecs, duration);
++			u64_stats_update_end_irqrestore(&stats->syncp, flags);
++		}
+ 	} else {
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
  	}
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 8a129746bd6cc..15f9afdbfc275 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2462,6 +2462,9 @@ void notrace bpf_prog_inc_misses_counter(struct bpf_prog *prog)
+ 	struct bpf_prog_stats *stats;
+ 	unsigned int flags;
  
-+	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
++	if (unlikely(!prog->stats))
++		return;
 +
- 	/* Call drm_dev_unplug() so any access to HW blocks happening after
- 	 * that point get rejected.
- 	 */
-@@ -74,8 +76,6 @@ void panthor_device_unplug(struct panthor_device *ptdev)
- 	 */
- 	mutex_unlock(&ptdev->unplug.lock);
- 
--	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
--
- 	/* Now, try to cleanly shutdown the GPU before the device resources
- 	 * get reclaimed.
- 	 */
+ 	stats = this_cpu_ptr(prog->stats);
+ 	flags = u64_stats_update_begin_irqsave(&stats->syncp);
+ 	u64_stats_inc(&stats->misses);
 -- 
 2.51.0
 
