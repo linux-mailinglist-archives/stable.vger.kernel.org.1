@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-202455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6472CC4A0B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:19:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF172CC3B66
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82D1C3084DB5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF27330F57AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3540630DED0;
-	Tue, 16 Dec 2025 12:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B31F34DB52;
+	Tue, 16 Dec 2025 12:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/xie+sH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVy4Y6sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B92261B9C;
-	Tue, 16 Dec 2025 12:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8D32D0F3;
+	Tue, 16 Dec 2025 12:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887956; cv=none; b=ICfulYo+d8Bvbf7apt8pNd38LcYP0KqhDC4Ngq8p+W4natQgaTTjMqK9Ob32994Zs+8Jqip8lgapJMmaAzXuypM6C79jWc6fdgz9KTYynF6roAg2HFy3bHCz5XjKzUt4xDBPCtjWraWEnq/OzKgBLZqM+fMKcrta7EBH5Cbgzn0=
+	t=1765887843; cv=none; b=bl4bMfnzze3YrbTuJysVEiQQQOpHhVT2yS1ip/rTGEcvoQe++Wz+v60S8rwXBtXfYKGU8BPMx/VVl7BWGcXR5pCjS92tQOyASbVCzCgW3Gh12uv3tJzZUIOpMjcADhHFFL8qHdverspMkEmhkKhc7+fflCIQuFvVOXm8ye7rd8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887956; c=relaxed/simple;
-	bh=SH431dr5Lb/OP22Z8uTTI2Pezg7ZNRsTqAxB8cuZndg=;
+	s=arc-20240116; t=1765887843; c=relaxed/simple;
+	bh=QF8MGJ4mOvJdAW1ir/PfTdpUTP2DekdrBMdqy65iVrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmxzWpVEMbksKQ5FVd37m7BX9EAkrdMEgL/HTbgmJzZenOSlKb3LxkkuOACgv4P+oXB7IHXKyFNbWmf3XDKwFkoGh/QKA+/PLa01221AvFN5bExjiH88dfaVCK31RtkRUvO2ZoTEtGSepRSdFZoZ4+Py0bzCMr6E8wAo5Kziqag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/xie+sH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BD3C4CEF1;
-	Tue, 16 Dec 2025 12:25:55 +0000 (UTC)
+	 MIME-Version; b=UDpvj8eGIX3jv3PbHJvjMiyzkeJ9H9ACkT+uBHD9Q494bJTkKPqK7B3IJT5JxRc16jCWG+eBKgHjQMN6d6x0v6SvFtjXsX7FRiXXRSIY68xaERYh3FLKCFhTZXk/ZMFsDZ7Sp1SFF8grsbMZJ71qIinJ8BvulYI799COzzXm/U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVy4Y6sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA28C4CEF1;
+	Tue, 16 Dec 2025 12:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887955;
-	bh=SH431dr5Lb/OP22Z8uTTI2Pezg7ZNRsTqAxB8cuZndg=;
+	s=korg; t=1765887843;
+	bh=QF8MGJ4mOvJdAW1ir/PfTdpUTP2DekdrBMdqy65iVrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/xie+sHW2ccxxPJL+eQYDJxKEAQQpm1L5LsZ4iJHky7d7VDZLz0+xzCUezpT4jst
-	 Cj/WWFhroFggPaDBLOPLsvMjrsH7tg4geI1iPBHI+2yKncjmDqpSnyDMEw5NN3lSe+
-	 5gR6YBiz9pQKjTi58e7OGeP0IdbeKAvRy4NZlVHk=
+	b=VVy4Y6skduK1VIWs2U0bglK+rZ0yhvTOGjO1xpQSzDnncZtpWj+cU+YqluiyosJJe
+	 Ti6WGw74s+Fa6x9dgbMfNtmOHLF/2ekM0X16coE+lnwawVn0HxANgnrtUJfuLVnlMo
+	 VsluTVcuZkNmooF8omqkDjVs1fbulgK5kN11VIuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 346/614] phy: rockchip: naneng-combphy: Fix PCIe L1ss support RK3562
-Date: Tue, 16 Dec 2025 12:11:53 +0100
-Message-ID: <20251216111413.899324518@linuxfoundation.org>
+Subject: [PATCH 6.18 347/614] phy: freescale: Initialize priv->lock
+Date: Tue, 16 Dec 2025 12:11:54 +0100
+Message-ID: <20251216111413.935364583@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,51 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit be866e68966d20bcc4a73708093d577176f99c0c ]
+[ Upstream commit 95e5905698983df94069e185f9eb3c67c7cf75d5 ]
 
-When PCIe link enters L1 PM substates, the PHY will turn off its
-PLL for power-saving. However, it turns off the PLL too fast which
-leads the PHY to be broken. According to the PHY document, we need
-to delay PLL turnoff time.
+Initialize priv->lock to fix the following warning.
 
-Fixes: f13bff25161b ("phy: rockchip-naneng-combo: Support rk3562")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+WARNING: CPU: 0 PID: 12 at kernel/locking/mutex.c:577 __mutex_lock+0x70c/0x8b8
+ Modules linked in:
+ Hardware name: Freescale i.MX8QM MEK (DT)
+ Call trace:
+  __mutex_lock+0x70c/0x8b8 (P)
+  mutex_lock_nested+0x24/0x30
+  imx_hsio_power_on+0x4c/0x764
+  phy_power_on+0x7c/0x12c
+  imx_pcie_host_init+0x1d0/0x4d4
+  dw_pcie_host_init+0x188/0x4b0
+  imx_pcie_probe+0x324/0x6f4
+  platform_probe+0x5c/0x98
+  really_probe+0xbc/0x29c
+  __driver_probe_device+0x78/0x12c
+  driver_probe_device+0xd8/0x160
+  __device_attach_driver+0xb8/0x138
+  bus_for_each_drv+0x84/0xe4
+  __device_attach_async_helper+0xb8/0xdc
+  async_run_entry_fn+0x34/0xe0
+  process_one_work+0x220/0x694
+  worker_thread+0x1c0/0x36c
+  kthread+0x14c/0x224
+
+Fixes: 82c56b6dd24f ("phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/1763459526-35004-2-git-send-email-shawn.lin@rock-chips.com
+Link: https://patch.msgid.link/20250925013806.569658-1-xiaolei.wang@windriver.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index e303bec8a996f..7f8fc8e6d4890 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -106,6 +106,10 @@
- #define RK3568_PHYREG18				0x44
- #define RK3568_PHYREG18_PLL_LOOP		0x32
+diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
+index 5dca93cd325c8..977d21d753a59 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
++++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
+@@ -533,7 +533,7 @@ static struct phy *imx_hsio_xlate(struct device *dev,
  
-+#define RK3568_PHYREG30				0x74
-+#define RK3568_PHYREG30_GATE_TX_PCK_SEL         BIT(7)
-+#define RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF BIT(7)
-+
- #define RK3568_PHYREG32				0x7C
- #define RK3568_PHYREG32_SSC_MASK		GENMASK(7, 4)
- #define RK3568_PHYREG32_SSC_DIR_MASK		GENMASK(5, 4)
-@@ -664,6 +668,10 @@ static int rk3562_combphy_cfg(struct rockchip_combphy_priv *priv)
- 	case REF_CLOCK_100MHz:
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_100m, true);
- 		if (priv->type == PHY_TYPE_PCIE) {
-+			/* Gate_tx_pck_sel length select for L1ss support */
-+			rockchip_combphy_updatel(priv, RK3568_PHYREG30_GATE_TX_PCK_SEL,
-+						 RK3568_PHYREG30_GATE_TX_PCK_DLY_PLL_OFF,
-+						 RK3568_PHYREG30);
- 			/* PLL KVCO tuning fine */
- 			val = FIELD_PREP(RK3568_PHYREG33_PLL_KVCO_MASK,
- 					 RK3568_PHYREG33_PLL_KVCO_VALUE);
+ static int imx_hsio_probe(struct platform_device *pdev)
+ {
+-	int i;
++	int i, ret;
+ 	void __iomem *off;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+@@ -545,6 +545,9 @@ static int imx_hsio_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	priv->dev = &pdev->dev;
+ 	priv->drvdata = of_device_get_match_data(dev);
++	ret = devm_mutex_init(dev, &priv->lock);
++	if (ret)
++		return ret;
+ 
+ 	/* Get HSIO configuration mode */
+ 	if (of_property_read_string(np, "fsl,hsio-cfg", &priv->hsio_cfg))
 -- 
 2.51.0
 
