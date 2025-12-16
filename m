@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F91CC221A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97097CC4543
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:35:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4C09300C250
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D94930AF2F8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E9D34104A;
-	Tue, 16 Dec 2025 11:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0F534888C;
+	Tue, 16 Dec 2025 12:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xbCF1AY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBXT+6y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B2341048;
-	Tue, 16 Dec 2025 11:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3A53451A6;
+	Tue, 16 Dec 2025 12:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884040; cv=none; b=L9/G4TnhZRa9gNTrG7uA4VXMViUxOCmwWoClvWFnz2ULQG1o9mLRAiFq8UfHFIc1cIFbRCBrKy8n9UvUCQ1al9vsGrpZOA9LzRhM/xiJYzKz0kFY1JuPFkf46Xkcld8DlG57md8HsuLm8QTP5AMoZLPk8hCHtJlsCFeQBSGuHDc=
+	t=1765887608; cv=none; b=bx6vHXaJKTOxtH8TYUH28epR42bLm6aFYH6GO/W8h5NSrXRGpJzv8WIzqb/4ZKp/tFWywd/TMIwbVzqUmKN9GGV/tNbmartHyQ2wqoaQVErCeTzeIyybqR673nAPRGwyeJwcSlhpP0++2RjHUJFjZWPGgCh1VToPXPloQ9Hn7YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884040; c=relaxed/simple;
-	bh=4dZRL/SsFjM/OLLdIo8sNixgt4QqN9FWx8I/w7UA4Qk=;
+	s=arc-20240116; t=1765887608; c=relaxed/simple;
+	bh=TTqM87pbxhjFfonaX+gPN9yPqY/54TwdT/dXypFbkYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bA42BIjO6j9l8+hdhofqRgF/kUY8dCCmfDVtAROwT8Z6BF31QxCRlIlUnqexATB9+vEkgPnWlWZCVFI9fxGQ+zK+018OobiA5Eu2qnpZnRhDzMzJFZmMvrHbC7dCs2Uw7G5CgrKXjYR3VaaidpBXcLYxRyv/9QHZtQrX88eXcJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xbCF1AY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9721C4CEF1;
-	Tue, 16 Dec 2025 11:20:39 +0000 (UTC)
+	 MIME-Version; b=qIa11EOFAqMXMaa2J8/OTqlmqWcw8ZR10afsLnYJMwDcxsQeIIASsWnXc5fZAEeeoMLXXz2IQiWHIcGaqjYxywv1NXu6RbcfD0T0SQ4ud4VkyOf8cToAUyhtJ1/bawqIsZSUruOE5W+QfCCWC5uB1yjHqgudhMRI7O/8K+QcVQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBXT+6y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C09C4CEF1;
+	Tue, 16 Dec 2025 12:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884040;
-	bh=4dZRL/SsFjM/OLLdIo8sNixgt4QqN9FWx8I/w7UA4Qk=;
+	s=korg; t=1765887607;
+	bh=TTqM87pbxhjFfonaX+gPN9yPqY/54TwdT/dXypFbkYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xbCF1AY8PBcvvG0F5juAZ72fTpSK7jLqRovLjsG6CfobdN3FxMmNWGxbAf/0mIxl
-	 vbaTdnFEYxrm9dwnEcgJYIVSA3+TxCucGCxjHCc+viAssJthEGIQDgbHnyWcpNFxpy
-	 SdE5Ryt6GPMiwhxCBV9FwXPiUIys7y01P78G7jz8=
+	b=jBXT+6y+oXMPNsjxdHHuagn65sFMkMyOuT/gfx4r9sjDmzoSvGIIow/+/X4se3ghJ
+	 s6BbdQML2tB+m4H6ljg0OKVp9Xgqc95LM+ty9UlqrFNgEd9YDknYO59K1Hp5BP4t2D
+	 COQ3lvBV5OAFPtqtkblj6Z69l5QyfTf6LvgWoLP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/354] arm64: dts: qcom: sm8650: set ufs as dma coherent
+Subject: [PATCH 6.18 275/614] soc: renesas: r9a09g056-sys: Populate max_register
 Date: Tue, 16 Dec 2025 12:10:42 +0100
-Message-ID: <20251216111323.640954690@linuxfoundation.org>
+Message-ID: <20251216111411.338609952@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit c2703c90161b45bca5b65f362adbae02ed71fcc1 ]
+[ Upstream commit 4ff787433ba6d564b00334b4bfd6350f5b6f4bb3 ]
 
-The UFS device is ovbiously dma coherent like the other IOMMU devices
-like usb, mmc, ... let's fix this by adding the flag.
+Populate max_register to avoid external aborts.
 
-To be sure an extensive test has been performed to be sure it's
-safe, as downstream uses this flag for UFS as well.
-
-As an experiment, I checked how the dma-coherent could impact
-the UFS bandwidth, and it happens the max bandwidth on cached
-write is slighly highter (up to 10%) while using less cpu time
-since cache sync/flush is skipped.
-
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251007-topic-sm8650-upstream-ufs-dma-coherent-v1-1-f3cfeaee04ce@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2da2740fb9c8 ("soc: renesas: rz-sysc: Add syscon/regmap support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251105070526.264445-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/renesas/r9a09g056-sys.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index bd91624bd3bfc..6763c750f6801 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -2590,6 +2590,8 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+diff --git a/drivers/soc/renesas/r9a09g056-sys.c b/drivers/soc/renesas/r9a09g056-sys.c
+index 3ad1422eba36e..16b4e433c3373 100644
+--- a/drivers/soc/renesas/r9a09g056-sys.c
++++ b/drivers/soc/renesas/r9a09g056-sys.c
+@@ -72,4 +72,5 @@ static const struct rz_sysc_soc_id_init_data rzv2n_sys_soc_id_init_data __initco
  
- 			iommus = <&apps_smmu 0x60 0>;
- 
-+			dma-coherent;
-+
- 			lanes-per-direction = <2>;
- 			qcom,ice = <&ice>;
- 
+ const struct rz_sysc_init_data rzv2n_sys_init_data = {
+ 	.soc_id_init_data = &rzv2n_sys_soc_id_init_data,
++	.max_register = 0x170c,
+ };
 -- 
 2.51.0
 
