@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-202322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4098CCC2BAA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F12CC21F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A1D9301A731
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9342300927D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EA1344052;
-	Tue, 16 Dec 2025 12:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B0133B961;
+	Tue, 16 Dec 2025 11:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmdKzJTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVUKZNHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F145433A00F;
-	Tue, 16 Dec 2025 12:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853C532862F;
+	Tue, 16 Dec 2025 11:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887527; cv=none; b=NEHWpkx8vUove8Fg2c+Ksa0PcpEU+045md8FOPzsjZYLxLiaolLMRXZjkt703M6ScKbnYoDESdyEkJEOSO60cIrwqUDcwzpovjhLda66co5avNXhQuQOYbcXkN2EpH9rH9ZNY387vgjjyjtviHsjukGVmR8uFbAZutZXsn4c0eo=
+	t=1765883994; cv=none; b=fEXB/4GjUd32MFqhX1EjUBjdGQ9QK5aPy4Oqwqf4WlFbu1q3NdKv/EkI/XoD8Sscp3skRVnWjNeVqa5Y70LlG0MJ/JqtarCkHy6idZnIQNXtluXacwp165vQvtug+W8+gc6FDkt3nDRlk4u8W6Z78SWUxIYMBPkm0yYOSSKvrAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887527; c=relaxed/simple;
-	bh=EPVqwo5opi5AWqKaeQpstBDo4hTpJw021M3gPFDv2ZQ=;
+	s=arc-20240116; t=1765883994; c=relaxed/simple;
+	bh=RSnW1nYiaa12KpJ0tToNnGJOxzmDNSAjP19o1PGSs1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRjJwe3Q/II7STw4VZh9VSfkcMQ2hb2yxlog2O6+C05/fA0cb7sEugyIxkCsSOsBLCaVhvz4rxxtfA9oZrd31NWNe2jElLyVord2fQjrOkGmMcAERduT3W90u90Rn//atv9uZmNuQZ/wH4Doqm/HLxyDA2a6MyG8n9PLNW4Rmao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmdKzJTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EDCC4CEF1;
-	Tue, 16 Dec 2025 12:18:46 +0000 (UTC)
+	 MIME-Version; b=lykMFrUUK+xmF4F6NJuX1bDOk/Op7Dddbm8yu8W8Gkmm5V2bj95uPCzHc8cOdHgIhOvP3GS//0jhEL28ayyAziADv2XneAhcxKsRGHfvk+a8PumGJ2jiYRq8F79AAXv7qM9s2gVhAH/KbJx2piQLd3OFauNUbGZO2AEKHQ3JzH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVUKZNHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DBCC4CEF1;
+	Tue, 16 Dec 2025 11:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887526;
-	bh=EPVqwo5opi5AWqKaeQpstBDo4hTpJw021M3gPFDv2ZQ=;
+	s=korg; t=1765883994;
+	bh=RSnW1nYiaa12KpJ0tToNnGJOxzmDNSAjP19o1PGSs1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmdKzJTZSklRZSELUHoX7jv5+nynJfTE2Xm7+HDAX5/tI9bDd/Io/Ey+RB+sYmjBg
-	 k7Sh6r3f5SHnosEyd20VrQzezIVp2d56Wu9gXiOA5ZA+ye3PdrzEL6whKttlEKVAAG
-	 rITCmnPwE7Uin+FzkgBZtEiB6Y0y5PpDf9hs1nOw=
+	b=WVUKZNHiVG/0dhKNndw7h+My4ny3KVTShfRUNsFteFquf9Z29eintjy5C/kl1Xohl
+	 I+eF5v0heWFuc+JtmoVSvQ9CVn2O6pHxyhS3vIA52wfoIBVZ+R1JoKpPGnllvluj7N
+	 dZKvoXC55xPl51Clg1+9mjnU4rUaBV6qDAsZjCs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"Chen, Zide" <zide.chen@intel.com>
-Subject: [PATCH 6.18 258/614] perf tools: Fix missing feature check for inherit + SAMPLE_READ
-Date: Tue, 16 Dec 2025 12:10:25 +0100
-Message-ID: <20251216111410.721124044@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/354] clk: qcom: camcc-sm6350: Specify Titan GDSC power domain as a parent to other
+Date: Tue, 16 Dec 2025 12:10:26 +0100
+Message-ID: <20251216111323.057333198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 367377f45c0b568882567f797b7b18b263505be7 ]
+[ Upstream commit a76ce61d7225934b0a52c8172a8cd944002a8c6f ]
 
-It should also have PERF_SAMPLE_TID to enable inherit and PERF_SAMPLE_READ
-on recent kernels.  Not having _TID makes the feature check wrongly detect
-the inherit and _READ support.
+When a consumer turns on/off a power domain dependent on another power
+domain in hardware, the parent power domain shall be turned on/off by
+the power domain provider as well, and to get it the power domain hardware
+hierarchy shall be described in the CAMCC driver.
 
-It was reported that the following command failed due to the error in
-the missing feature check on Intel SPR machines.
+Establish the power domain hierarchy with a Titan GDSC set as a parent of
+all other GDSC power domains provided by the SM6350 camera clock controller
+to enforce a correct sequence of enabling and disabling power domains by
+the consumers, this fixes the CAMCC as a supplier of power domains to CAMSS
+IP and its driver.
 
-  $ perf record -e '{cpu/mem-loads-aux/S,cpu/mem-loads,ldlat=3/PS}' -- ls
-  Error:
-  Failure to open event 'cpu/mem-loads,ldlat=3/PS' on PMU 'cpu' which will be removed.
-  Invalid event (cpu/mem-loads,ldlat=3/PS) in per-thread mode, enable system wide with '-a'.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 3b193a57baf15c468 ("perf tools: Detect missing kernel features properly")
-Reported-and-tested-by: Chen, Zide <zide.chen@intel.com>
-Closes: https://lore.kernel.org/lkml/20251022220802.1335131-1-zide.chen@intel.com/
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 80f5451d9a7c ("clk: qcom: Add camera clock controller driver for SM6350")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251021234450.2271279-3-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/camcc-sm6350.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 56ebefd075f2e..9df9818e37013 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2473,7 +2473,7 @@ static bool evsel__detect_missing_features(struct evsel *evsel, struct perf_cpu
- 	/* Please add new feature detection here. */
+diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
+index 418668184ec35..454763425f611 100644
+--- a/drivers/clk/qcom/camcc-sm6350.c
++++ b/drivers/clk/qcom/camcc-sm6350.c
+@@ -1692,6 +1692,8 @@ static struct clk_branch camcc_sys_tmr_clk = {
+ 	},
+ };
  
- 	attr.inherit = true;
--	attr.sample_type = PERF_SAMPLE_READ;
-+	attr.sample_type = PERF_SAMPLE_READ | PERF_SAMPLE_TID;
- 	if (has_attr_feature(&attr, /*flags=*/0))
- 		goto found;
- 	perf_missing_features.inherit_sample_read = true;
++static struct gdsc titan_top_gdsc;
++
+ static struct gdsc bps_gdsc = {
+ 	.gdscr = 0x6004,
+ 	.en_rest_wait_val = 0x2,
+@@ -1701,6 +1703,7 @@ static struct gdsc bps_gdsc = {
+ 		.name = "bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ 	.flags = VOTABLE,
+ };
+ 
+@@ -1713,6 +1716,7 @@ static struct gdsc ipe_0_gdsc = {
+ 		.name = "ipe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ 	.flags = VOTABLE,
+ };
+ 
+@@ -1725,6 +1729,7 @@ static struct gdsc ife_0_gdsc = {
+ 		.name = "ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+ static struct gdsc ife_1_gdsc = {
+@@ -1736,6 +1741,7 @@ static struct gdsc ife_1_gdsc = {
+ 		.name = "ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+ static struct gdsc ife_2_gdsc = {
+@@ -1747,6 +1753,7 @@ static struct gdsc ife_2_gdsc = {
+ 		.name = "ife_2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+ static struct gdsc titan_top_gdsc = {
 -- 
 2.51.0
 
