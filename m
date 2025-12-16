@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136C1CC24BD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D08CC2B19
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D0053053B13
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 83B313006739
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6E83446B9;
-	Tue, 16 Dec 2025 11:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FB73644C2;
+	Tue, 16 Dec 2025 12:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3sg3GN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt3GDhx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37FB3446AF;
-	Tue, 16 Dec 2025 11:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518A33624D3;
+	Tue, 16 Dec 2025 12:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884493; cv=none; b=ZIlhQG5uTsYqYMHzkW4rdseRJMQgSpAyYR623q7MS7AHr9nqcRvVkYRVP+kIGIKL1HU0X5KQTSTJ1u1fgRovEGfNBH5oX7dAS+5pMPpeFkhiFx1lj6kmJ7hEBdrmzzamt28laEHJaRM2dXTLbVFcF7V5JvFK7liZ7b+YPhUa62I=
+	t=1765887923; cv=none; b=PLBiOZv7J3vdL1wQlfc5/4IZrkiX1n+M4OG3B22c2p+yBdDiXwRQ/FQ3RIYMHenMyITYw9/+zwjajUALYOPU7zrI+03GUyL4d47LUnFHsEP3kbCiXsCC0c0zcb+dcD/GT9lPAGOhIVHvmIdecUZbMS62l5gOtcQk/EExW3ah72s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884493; c=relaxed/simple;
-	bh=NByymMPEts248j57jcHcdNoemSukincLAIDnF5DWPo0=;
+	s=arc-20240116; t=1765887923; c=relaxed/simple;
+	bh=oli2fywteawu3ipDPp6Xy6i4lJu01882ppaMd2LkEkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFRb4Lx55ZfThRqYFZwRN2JZrGVycpO/rwqQnepOHLhhU4CeRKsK41JSqEOay3E43bQshzZBB1424jjQKui16t7K2d3UGy7gj+nbZgo9IwEEPoDuJQ9YgT1feXXjWfPNpci9QxNQyQkYVE1nexbzeZs7JKHxypm5c6FKgzmaMQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3sg3GN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DEEC4CEF1;
-	Tue, 16 Dec 2025 11:28:12 +0000 (UTC)
+	 MIME-Version; b=PZAf+hSnN4qJh1I43ihEjD7+JXP49UTjCVeC3acGsY6YMK4SgAb9Q2aaS7k55VUAoRwW8APwBRlD2AGbX3VKjcoTl14AfmBEKJoPlW4U/7N29/WE4pvaMLvKIHVrONhdmI6jvvV1UHaZaALFWUtLnhbPO2k5FK7WbXmb8yxwJAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt3GDhx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BF9C4CEF1;
+	Tue, 16 Dec 2025 12:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884492;
-	bh=NByymMPEts248j57jcHcdNoemSukincLAIDnF5DWPo0=;
+	s=korg; t=1765887921;
+	bh=oli2fywteawu3ipDPp6Xy6i4lJu01882ppaMd2LkEkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3sg3GN1Wu++9gyQrepELXLEqGZRcO9zXlhu9RK/zxH5ifDmYNC1VUoAm7BLEJso7
-	 BU6Z+sFxG746SUwh02urAQWfzO7Cd7eWcOQaHeCMGeuzzDM/yFoVEEw7n/AHgJdoBa
-	 MqDJz58FbvubADdVhkHUhhZDbDtqGGe0E/xvnrZg=
+	b=vt3GDhx/MTqisDAw4m6dKC+7GvtZxmNOZ0vneHX6ytS4+lOzmksHunWjfbWJxlG/Q
+	 Zu8TTMuxfsH5omGiECIEZO0IeB7o1aofKsm6cC6A6GKiqJsFXljMIH+mB+Da8887D+
+	 hYiKuQGXwI6tTzmrSFXUZp+p/H1FDTx+i6oZRg/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/354] fs/ntfs3: out1 also needs to put mi
+Subject: [PATCH 6.18 377/614] RDMA/bnxt_re: Fix the inline size for GenP7 devices
 Date: Tue, 16 Dec 2025 12:12:24 +0100
-Message-ID: <20251216111327.325042535@linuxfoundation.org>
+Message-ID: <20251216111415.021299127@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 4d78d1173a653acdaf7500a32b8dc530ca4ad075 ]
+[ Upstream commit 6afe40ff484a1155b71158b911c65299496e35c3 ]
 
-After ntfs_look_free_mft() executes successfully, all subsequent code
-that fails to execute must put mi.
+Inline size supported by the device is based on the number
+of SGEs supported by the adapter. Change the inline
+size calculation based on that.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1763624215-10382-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index ed38014d17505..ec2be861db33d 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1069,9 +1069,9 @@ static int ni_ins_attr_ext(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le,
- 
- out2:
- 	ni_remove_mi(ni, mi);
--	mi_put(mi);
- 
- out1:
-+	mi_put(mi);
- 	ntfs_mark_rec_free(sbi, rno, is_mft);
- 
- out:
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 9ef581ed785c8..a9afac2cbb7cf 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -162,7 +162,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw)
+ 	attr->max_srq_wqes = le32_to_cpu(sb->max_srq_wr) - 1;
+ 	attr->max_srq_sges = sb->max_srq_sge;
+ 	attr->max_pkey = 1;
+-	attr->max_inline_data = le32_to_cpu(sb->max_inline_data);
++	attr->max_inline_data = attr->max_qp_sges * sizeof(struct sq_sge);
+ 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
+ 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
+ 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
 -- 
 2.51.0
 
