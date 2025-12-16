@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD62ECC22BF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEF8CC2F2F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0729B30391FD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEEBB312D81E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3D734214A;
-	Tue, 16 Dec 2025 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EB43644CB;
+	Tue, 16 Dec 2025 12:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc2z5Ql4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBBtxpzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09350341069;
-	Tue, 16 Dec 2025 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16ED3644C8;
+	Tue, 16 Dec 2025 12:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884169; cv=none; b=gWjQIWEB70K/M5lNCqb8jR5dytfVFKqjsve6dKHoVnsX+DtzLix2wT4u8OTdAcqdythPZSpQijQnsjeDg9yDb0sRK4gHQtEZfi0diNKyIC/TMxcZ6fkJtB/bWrHwmqDvVahzpsjOGbRvE8KdlSht3quUcqKK0Dtor1QGTHawEgo=
+	t=1765887796; cv=none; b=puHHhnkmUVGSmTOPqVohFMi2f5emlnWwJqpT7Oqjh/eqxib1G9Dw+AoeVogRY3dF8BWr4rB0DeGCmu9LvCqWehAeCeThN3ZtU3BltLOBjHFFzrHGectIWjVUS0rdbtBsATFRddxFXsEmxyeTEJdqv16LUDyaDrZzvLWQkz20Z6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884169; c=relaxed/simple;
-	bh=Q2f9VFPbfDJkrAKfUZGKEz220GgktzLPCsZb3hoVywc=;
+	s=arc-20240116; t=1765887796; c=relaxed/simple;
+	bh=BGNzjgoV9IRhumlhr/KS6lFESUOUjplYkgthA3qKLwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NSP6wcAv2fjomM1pbrbjvJMo2+6KGbBDRumASXSyXb1Lx1Ziy+IFb5snT7jU7PWA1wi43kDIjQPGiNG5LyNzUuBpqIu2BPnKVnjR7SZBbjhvQ3xyScZBENkZ60dTG4l6DPhTxhAbje7znF70PCWaE8DkwIO/BVNdVdsn8xRL7mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc2z5Ql4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80094C4CEF5;
-	Tue, 16 Dec 2025 11:22:48 +0000 (UTC)
+	 MIME-Version; b=J+cORNb8V/+3xnzFcVzQKZfx4IFCOLLYBA8Y7W6XKXFymi9hCx5t7W0PyWpysxMe98bIbQyTpObX4WNQuwBNiad2oiN+bQecmFZ68npGlXjXmEb00Uhnc8YWnwb0iC1M84NKrTxmzbUgOTcuqg7mPbxoHM2YEOR9QdyU5EL1uJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBBtxpzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6005BC19422;
+	Tue, 16 Dec 2025 12:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884168;
-	bh=Q2f9VFPbfDJkrAKfUZGKEz220GgktzLPCsZb3hoVywc=;
+	s=korg; t=1765887795;
+	bh=BGNzjgoV9IRhumlhr/KS6lFESUOUjplYkgthA3qKLwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vc2z5Ql4draZWOxUvfbwZMRRHKghTZI2vgrEtTH3banxAKCuNO+i91WoyS2KdMp08
-	 gekmE5c7MxkLeADPXueFYWKbR3+V8Zn4tFGOZuaxq1//mOC5WqcoqgNJbeP9K3l6YM
-	 ihU82iy2j1grkIozDLDMeztWWrBh5E74/OuTUvf4=
+	b=KBBtxpzzGlk4068D1hxgXnyQVL25E0Ns/XC6e2Dad2cUlBQdfVio/mTOmCQ3JgkgJ
+	 rZhIMqomTupyKv2AR1ds+41H4qx6DGxsUr8uNwxXOb/VXVa0A8B5hF8WJ2ZVeX0WVR
+	 LnSWZCrcaK7ZP45cKXhpiC7SGPrEc8/tSihFBzDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/354] drm/panthor: Fix group_free_queue() for partially initialized queues
+Subject: [PATCH 6.18 313/614] net: phy: Add helper for fixing RGMII PHY mode based on internal mac delay
 Date: Tue, 16 Dec 2025 12:11:20 +0100
-Message-ID: <20251216111325.016712035@linuxfoundation.org>
+Message-ID: <20251216111412.708008419@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit 94a6d20feadbbe24e8a7b1c56394789ea5358fcc ]
+[ Upstream commit 24afd7827efb7c69adfc41835390470e3eec4740 ]
 
-group_free_queue() can be called on a partially initialized queue
-object if something fails in group_create_queue(). Make sure we don't
-call drm_sched_entity_destroy() on an entity that hasn't been
-initialized.
+The "phy-mode" property of devicetree indicates whether the PCB has
+delay now, which means the mac needs to modify the PHY mode based
+on whether there is an internal delay in the mac.
 
-Fixes: 7d9c3442b02a ("drm/panthor: Defer scheduler entitiy destruction to queue release")
-Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patch.msgid.link/20251031160318.832427-2-boris.brezillon@collabora.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+This modification is similar for many ethernet drivers. To simplify
+code, define the helper phy_fix_phy_mode_for_mac_delays(speed, mac_txid,
+mac_rxid) to fix PHY mode based on whether mac adds internal delay.
+
+Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251114003805.494387-3-inochiama@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: db37c6e510de ("net: stmmac: dwmac-sophgo: Add phy interface filter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/phy-core.c | 43 ++++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        |  3 +++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 875b9a78d34bc..81ea3a79ab49c 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -865,7 +865,8 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
- 	if (IS_ERR_OR_NULL(queue))
- 		return;
+diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
+index 605ca20ae192d..0c63e6ba2cb0c 100644
+--- a/drivers/net/phy/phy-core.c
++++ b/drivers/net/phy/phy-core.c
+@@ -101,6 +101,49 @@ const char *phy_rate_matching_to_str(int rate_matching)
+ }
+ EXPORT_SYMBOL_GPL(phy_rate_matching_to_str);
  
--	drm_sched_entity_destroy(&queue->entity);
-+	if (queue->entity.fence_context)
-+		drm_sched_entity_destroy(&queue->entity);
++/**
++ * phy_fix_phy_mode_for_mac_delays - Convenience function for fixing PHY
++ * mode based on whether mac adds internal delay
++ *
++ * @interface: The current interface mode of the port
++ * @mac_txid: True if the mac adds internal tx delay
++ * @mac_rxid: True if the mac adds internal rx delay
++ *
++ * Return: fixed PHY mode, or PHY_INTERFACE_MODE_NA if the interface can
++ * not apply the internal delay
++ */
++phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
++						bool mac_txid, bool mac_rxid)
++{
++	if (!phy_interface_mode_is_rgmii(interface))
++		return interface;
++
++	if (mac_txid && mac_rxid) {
++		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
++			return PHY_INTERFACE_MODE_RGMII;
++		return PHY_INTERFACE_MODE_NA;
++	}
++
++	if (mac_txid) {
++		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
++			return PHY_INTERFACE_MODE_RGMII_RXID;
++		if (interface == PHY_INTERFACE_MODE_RGMII_TXID)
++			return PHY_INTERFACE_MODE_RGMII;
++		return PHY_INTERFACE_MODE_NA;
++	}
++
++	if (mac_rxid) {
++		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
++			return PHY_INTERFACE_MODE_RGMII_TXID;
++		if (interface == PHY_INTERFACE_MODE_RGMII_RXID)
++			return PHY_INTERFACE_MODE_RGMII;
++		return PHY_INTERFACE_MODE_NA;
++	}
++
++	return interface;
++}
++EXPORT_SYMBOL_GPL(phy_fix_phy_mode_for_mac_delays);
++
+ /**
+  * phy_interface_num_ports - Return the number of links that can be carried by
+  *			     a given MAC-PHY physical link. Returns 0 if this is
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 3c7634482356e..0bc00a4cceb24 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1813,6 +1813,9 @@ static inline bool phy_is_pseudo_fixed_link(struct phy_device *phydev)
+ 	return phydev->is_pseudo_fixed_link;
+ }
  
- 	if (queue->scheduler.ops)
- 		drm_sched_fini(&queue->scheduler);
++phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
++						bool mac_txid, bool mac_rxid);
++
+ int phy_save_page(struct phy_device *phydev);
+ int phy_select_page(struct phy_device *phydev, int page);
+ int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
 -- 
 2.51.0
 
