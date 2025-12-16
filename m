@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-201475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B186DCC2619
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2D6CC3010
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBE1930B815A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE043232656
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903F834107E;
-	Tue, 16 Dec 2025 11:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2849E39A121;
+	Tue, 16 Dec 2025 12:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOgb4hYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUY/EWPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2D234029C;
-	Tue, 16 Dec 2025 11:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D898639A11E;
+	Tue, 16 Dec 2025 12:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884760; cv=none; b=g/t90LO/n0TifCFiX2opWCwLcx+skZLfb1R8JzuBmNEw8PhxEVrP5TnZWHWEfVom8+AxARVQB+aMyQ5Eq38RQftJVyMLANsHfRm6THiHgpCb8UKYNfHk/7+jSP+fDolI3D2hWzPcJ0K5qOQ/Jm3PUPJEOtFjIL+DtpNvlJahdQg=
+	t=1765888384; cv=none; b=cW9FpYg4X4U4WYshtK5iH0M5FdQ03ptQNTsGT+rJlMfYqHTfW6nx1Xr7WpwAGkB5VEy/j/EVGDyZjF0Ox2Hwus6UL1IohNsUDxSFz0ByyfKuQ25eI6mI5xaSBbaG0W+WjF91nUK7V0bRthzI0Z4jM/3VOW9//Jd9/C9sPx/1R7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884760; c=relaxed/simple;
-	bh=oZQTZ1wvdkW3n6/DdFBI8vB9ojhJpq+pL5sx0bL6F/4=;
+	s=arc-20240116; t=1765888384; c=relaxed/simple;
+	bh=aWpiBfDJt7lAjbZMaXmjmlooq843iOb66p8zGGTc/aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNmX6bH3P2FIRt98JPbOUeQF5kLIn8h295UKvACuZNGy+I6aWs+NaKKNIMu65jUCZfUa6i4Lep1zhLZvBeEKkgHdAjK/a4WV8Cd1iuVwtMCWgxOKrFdAFq9huQafrHW0hbM/wmYXZQHBWI1wUZQs2dLxHnmE8yRxN7u0NXGiSPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOgb4hYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC43AC4CEF1;
-	Tue, 16 Dec 2025 11:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V1MWecfGKLWpeBhZB+yfZWuhHb0m/qLa/+0opi3xZnfshXq7oCvFaHNpv0IDySC0dSDUS666Po6me2g5LgGIdryQIjfev6YD16TrqVKLtdGHCWQ/2efypd6qaz3b+96nJ4ZQxCRs1yP0Yf9oFnbKTqxCI+/CS0OwbDQxXxtKSDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUY/EWPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D26C4CEF1;
+	Tue, 16 Dec 2025 12:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884760;
-	bh=oZQTZ1wvdkW3n6/DdFBI8vB9ojhJpq+pL5sx0bL6F/4=;
+	s=korg; t=1765888384;
+	bh=aWpiBfDJt7lAjbZMaXmjmlooq843iOb66p8zGGTc/aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOgb4hYe3wT6fiQzznTUwwMm0sZzPUmbaV8dFv1o61ir6CvSREO9jh9C9q8kDyCSB
-	 3xVwt5MYnXA+o6qhgzB6hteZj18WTsYvFOhDt5UiwWjB/zELiwKAQN7hAwcpw37NdD
-	 hlp5KGYxn5ALzSQGR5Dv5K6cF3pDT8j9WeG6rLKY=
+	b=PUY/EWPwfafO9oZJVaUdPqjh37Etghkv+5b/O7VXvNdwp8wliYIqVxHf+EtSnPWA8
+	 /N5MbbRTB+8v+nBKhp3xWB9nI35eGulg/h5BTGl40nDhE6N5gGm60SPxkXSRZ5RNMy
+	 Al+o3fDZvem5zuOcwOaIIZW5LRej2htc+3o4MfG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xupengbo <xupengbo@oppo.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Song Liu <song@kernel.org>,
+	Tingmao Wang <m@maowtm.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 291/354] sched/fair: Fix unfairness caused by stalled tg_load_avg_contrib when the last task migrates out
+Subject: [PATCH 6.18 491/614] landlock: Fix handling of disconnected directories
 Date: Tue, 16 Dec 2025 12:14:18 +0100
-Message-ID: <20251216111331.454959658@linuxfoundation.org>
+Message-ID: <20251216111419.159564506@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,173 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xupengbo <xupengbo@oppo.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit ca125231dd29fc0678dd3622e9cdea80a51dffe4 ]
+[ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
 
-When a task is migrated out, there is a probability that the tg->load_avg
-value will become abnormal. The reason is as follows:
+Disconnected files or directories can appear when they are visible and
+opened from a bind mount, but have been renamed or moved from the source
+of the bind mount in a way that makes them inaccessible from the mount
+point (i.e. out of scope).
 
-1. Due to the 1ms update period limitation in update_tg_load_avg(), there
-   is a possibility that the reduced load_avg is not updated to tg->load_avg
-   when a task migrates out.
+Previously, access rights tied to files or directories opened through a
+disconnected directory were collected by walking the related hierarchy
+down to the root of the filesystem, without taking into account the
+mount point because it couldn't be found. This could lead to
+inconsistent access results, potential access right widening, and
+hard-to-debug renames, especially since such paths cannot be printed.
 
-2. Even though __update_blocked_fair() traverses the leaf_cfs_rq_list and
-   calls update_tg_load_avg() for cfs_rqs that are not fully decayed, the key
-   function cfs_rq_is_decayed() does not check whether
-   cfs->tg_load_avg_contrib is null. Consequently, in some cases,
-   __update_blocked_fair() removes cfs_rqs whose avg.load_avg has not been
-   updated to tg->load_avg.
+For a sandboxed task to create a disconnected directory, it needs to
+have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
+the underlying source of the bind mount, and read access to the related
+mount point.   Because a sandboxed task cannot acquire more access
+rights than those defined by its Landlock domain, this could lead to
+inconsistent access rights due to missing permissions that should be
+inherited from the mount point hierarchy, while inheriting permissions
+from the filesystem hierarchy hidden by this mount point instead.
 
-Add a check of cfs_rq->tg_load_avg_contrib in cfs_rq_is_decayed(),
-which fixes the case (2.) mentioned above.
+Landlock now handles files and directories opened from disconnected
+directories by taking into account the filesystem hierarchy when the
+mount point is not found in the hierarchy walk, and also always taking
+into account the mount point from which these disconnected directories
+were opened.  This ensures that a rename is not allowed if it would
+widen access rights [1].
 
-Fixes: 1528c661c24b ("sched/fair: Ratelimit update to tg->load_avg")
-Signed-off-by: xupengbo <xupengbo@oppo.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Aaron Lu <ziqianlu@bytedance.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Aaron Lu <ziqianlu@bytedance.com>
-Link: https://patch.msgid.link/20250827022208.14487-1-xupengbo@oppo.com
+The rationale is that, even if disconnected hierarchies might not be
+visible or accessible to a sandboxed task, relying on the collected
+access rights from them improves the guarantee that access rights will
+not be widened during a rename because of the access right comparison
+between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
+It may look like this would grant more access on disconnected files and
+directories, but the security policies are always enforced for all the
+evaluated hierarchies.  This new behavior should be less surprising to
+users and safer from an access control perspective.
+
+Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
+fix the related comment.
+
+Because opened files have their access rights stored in the related file
+security properties, there is no impact for disconnected or unlinked
+files.
+
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Song Liu <song@kernel.org>
+Reported-by: Tingmao Wang <m@maowtm.org>
+Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
+Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
+Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
+Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
+Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
+Reviewed-by: Tingmao Wang <m@maowtm.org>
+Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 3 +++
- 1 file changed, 3 insertions(+)
+ security/landlock/errata/abi-1.h | 16 +++++++++++++
+ security/landlock/fs.c           | 40 ++++++++++++++++++++++----------
+ 2 files changed, 44 insertions(+), 12 deletions(-)
+ create mode 100644 security/landlock/errata/abi-1.h
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bf35f6f0a9c4b..62b8c7e914ebc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4198,6 +4198,9 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
- 	if (child_cfs_rq_on_list(cfs_rq))
- 		return false;
- 
-+	if (cfs_rq->tg_load_avg_contrib)
-+		return false;
+diff --git a/security/landlock/errata/abi-1.h b/security/landlock/errata/abi-1.h
+new file mode 100644
+index 0000000000000..e8a2bff2e5b6a
+--- /dev/null
++++ b/security/landlock/errata/abi-1.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
- 	return true;
- }
++/**
++ * DOC: erratum_3
++ *
++ * Erratum 3: Disconnected directory handling
++ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ *
++ * This fix addresses an issue with disconnected directories that occur when a
++ * directory is moved outside the scope of a bind mount.  The change ensures
++ * that evaluated access rights include both those from the disconnected file
++ * hierarchy down to its filesystem root and those from the related mount point
++ * hierarchy.  This prevents access right widening through rename or link
++ * actions.
++ */
++LANDLOCK_ERRATUM(3)
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index d9c12b993fa7d..a2ed0e76938aa 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -909,21 +909,31 @@ static bool is_access_to_paths_allowed(
+ 				break;
+ 			}
+ 		}
++
+ 		if (unlikely(IS_ROOT(walker_path.dentry))) {
+-			/*
+-			 * Stops at disconnected root directories.  Only allows
+-			 * access to internal filesystems (e.g. nsfs, which is
+-			 * reachable through /proc/<pid>/ns/<namespace>).
+-			 */
+-			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
++			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
++				/*
++				 * Stops and allows access when reaching disconnected root
++				 * directories that are part of internal filesystems (e.g. nsfs,
++				 * which is reachable through /proc/<pid>/ns/<namespace>).
++				 */
+ 				allowed_parent1 = true;
+ 				allowed_parent2 = true;
++				break;
+ 			}
+-			break;
++
++			/*
++			 * We reached a disconnected root directory from a bind mount.
++			 * Let's continue the walk with the mount point we missed.
++			 */
++			dput(walker_path.dentry);
++			walker_path.dentry = walker_path.mnt->mnt_root;
++			dget(walker_path.dentry);
++		} else {
++			parent_dentry = dget_parent(walker_path.dentry);
++			dput(walker_path.dentry);
++			walker_path.dentry = parent_dentry;
+ 		}
+-		parent_dentry = dget_parent(walker_path.dentry);
+-		dput(walker_path.dentry);
+-		walker_path.dentry = parent_dentry;
+ 	}
+ 	path_put(&walker_path);
  
+@@ -1021,6 +1031,9 @@ static access_mask_t maybe_remove(const struct dentry *const dentry)
+  * file.  While walking from @dir to @mnt_root, we record all the domain's
+  * allowed accesses in @layer_masks_dom.
+  *
++ * Because of disconnected directories, this walk may not reach @mnt_dir.  In
++ * this case, the walk will continue to @mnt_dir after this call.
++ *
+  * This is similar to is_access_to_paths_allowed() but much simpler because it
+  * only handles walking on the same mount point and only checks one set of
+  * accesses.
+@@ -1062,8 +1075,11 @@ static bool collect_domain_accesses(
+ 			break;
+ 		}
+ 
+-		/* We should not reach a root other than @mnt_root. */
+-		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
++		/*
++		 * Stops at the mount point or the filesystem root for a disconnected
++		 * directory.
++		 */
++		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
+ 			break;
+ 
+ 		parent_dentry = dget_parent(dir);
 -- 
 2.51.0
 
