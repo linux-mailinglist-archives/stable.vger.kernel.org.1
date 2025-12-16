@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C14CC2DA3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1323ECC347A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5A7331A0D0D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C408304AB62
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE0333893E;
-	Tue, 16 Dec 2025 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B83736CE17;
+	Tue, 16 Dec 2025 12:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5XIOYJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Ohy1UE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07102126C02;
-	Tue, 16 Dec 2025 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA68036CE14;
+	Tue, 16 Dec 2025 12:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886062; cv=none; b=ZUY3fGl5to+AGbezFNJk/OzsktAKioAzhhTjuSiadhyV45zGDgVvr3LndzvdyyT8yiCY0RnVzxtWi/3O5qOGkZgWpzad4dJ4DUszjiN10Q5NKpNmABVs0P2PAmAqm8sb5Gz+EtdXw1KFgXxhRQNMDAKxeRlVC0J+FBYavz1IHTc=
+	t=1765887999; cv=none; b=RXSzD4DwG3tFjKgX6qTWpjS1D6X4D522eSy3Ntw3gyIIKRDiTqlr6r1a7PnLbyM3jDgTLX79Oka4X+GtPbbl+GRs44rFiBQ+bf/aD+PCq6bLVNcSVCQfxoDKTAE/ugvUZQY0FtfZa+8w3yGM8d7UbtWVBcjzPAU9kKRVbNaf8hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886062; c=relaxed/simple;
-	bh=TrZUAQBXpNSrqH/E7A2jSEDUjK9NVrrKHLY72z1pgnY=;
+	s=arc-20240116; t=1765887999; c=relaxed/simple;
+	bh=S/Vux1qXzOQZ5STfgPojaQkWuCYGswkg44OJ25xdLTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyA1wyzOD7YWmqXeWIybmbOOxKQzdRyQ0PfKJx0yd1xeOWCh4yqELTmOthbWxlt30kZLq80CLHHN1eQ/xFQxOdnPMRKfIA2fnfNUbIidfmyi/b8lFOLS/wY7EUZv0eG7JT6gXHTkeSKc0FDbJTmhefgZk6W0acZMAdbtzXJY6qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5XIOYJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8B5C4CEF1;
-	Tue, 16 Dec 2025 11:54:21 +0000 (UTC)
+	 MIME-Version; b=QrCLX20LotytfpKeo+4j4vwb4y+Ddbxp64TsXpTZGxNr3tJ/IqeCNH5XZxFXPkU3w0skaHAPxOBUKyROLHTKWaN29p3bZ0P6JxdspC+6E1RNcSy0PmVSuXVvNRxORDMwi6EsTCh/iQLvkzRqR8gF+Dxvts9M9EqfO01XaYK6Msc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Ohy1UE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A642C4CEF1;
+	Tue, 16 Dec 2025 12:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886061;
-	bh=TrZUAQBXpNSrqH/E7A2jSEDUjK9NVrrKHLY72z1pgnY=;
+	s=korg; t=1765887999;
+	bh=S/Vux1qXzOQZ5STfgPojaQkWuCYGswkg44OJ25xdLTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5XIOYJ8yaYqzz4KVnU5mJFj7+luYtuihCSAE1lcQ3wVKxsbzEiV90SVmGW25+b+a
-	 N1LrNN4B4SxCeWqUxey5Ed85znB4rPyGwi3frbiQlb+zhkBOAfbS5lz98oS9IeG9R3
-	 9ADRwtrjxdliMalUn+glt3WV+0WXL8LLtIy3G2+E=
+	b=R9Ohy1UE/blBNLKUUtpEzOULDFRHKldxu0/7I0cXNQvbvOEV3c9I4Yr4781J2qW2B
+	 atReUYAfuJoP+dVZk7pm1Jdkz2GeWkbRpgTAQEI42XkNvcxFN/sAE7HW1trAMzFs+F
+	 T2aUszl+N1PnJI9RhSewduAm6Y05jsSZLlrVv2FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 327/507] wifi: mt76: mt7996: fix max nss value when getting rx chainmask
+Subject: [PATCH 6.18 401/614] wifi: mt76: mt7996: Add missing locking in mt7996_mac_sta_rc_work()
 Date: Tue, 16 Dec 2025 12:12:48 +0100
-Message-ID: <20251216111357.312493870@linuxfoundation.org>
+Message-ID: <20251216111415.904061917@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 361b59b6be7c33c43b619d5cada394efc0f3b398 ]
+[ Upstream commit 7545551631fa63101f97974f49ac0b564814f703 ]
 
-Since wiphy->available_antennas_tx now accumulates the chainmask of all
-the radios of a wiphy, use phy->orig_antenna_mask to get the original
-max nss for comparison.
+Grab the mt76 mutex running mt7996_mac_sta_rc_work() since it is
+required by mt7996_mcu_add_rate_ctrl routine.
 
-Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20251106064203.1000505-1-shayne.chen@mediatek.com
+Fixes: 28d519d0d493a ("wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251118-mt7996-rc-work-missing-mtx-v1-1-0739c493a6cb@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 498a2eefd7a8a..5a415424291f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -720,7 +720,7 @@ void mt7996_memcpy_fromio(struct mt7996_dev *dev, void *buf, u32 offset,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index cfad46a532bb7..502136691a69e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -2860,6 +2860,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
+ 	LIST_HEAD(list);
+ 	u32 changed;
  
- static inline u16 mt7996_rx_chainmask(struct mt7996_phy *phy)
- {
--	int max_nss = hweight8(phy->mt76->hw->wiphy->available_antennas_tx);
-+	int max_nss = hweight16(phy->orig_antenna_mask);
- 	int cur_nss = hweight8(phy->mt76->antenna_mask);
- 	u16 tx_chainmask = phy->mt76->chainmask;
++	mutex_lock(&dev->mt76.mutex);
++
+ 	spin_lock_bh(&dev->mt76.sta_poll_lock);
+ 	list_splice_init(&dev->sta_rc_list, &list);
  
+@@ -2892,6 +2894,8 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
+ 	}
+ 
+ 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
++
++	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+ void mt7996_mac_work(struct work_struct *work)
 -- 
 2.51.0
 
