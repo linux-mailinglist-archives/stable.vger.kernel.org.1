@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-201911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A796CC28C2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD94ECC2824
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34B6831B0536
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A58DF302EDB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B789F35503C;
-	Tue, 16 Dec 2025 11:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FA4355809;
+	Tue, 16 Dec 2025 11:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOtuVoBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHj7ETT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7464C3502BF;
-	Tue, 16 Dec 2025 11:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5666355805;
+	Tue, 16 Dec 2025 11:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886202; cv=none; b=GCecPgbP9/Cc/JhpE2v4WaD0kaKVqMcwxq01vdjeEBnIb2hMBElN9Y4b/dg4yq+SvLSoBwhJ5avSvmlztPT1oSFum7Jf94Zrc/l0P8YKnUGkQp84xtvP/7gu+RvvxGcbxtMzwH4Og6BJFPSNadrAxDCVMb2Ydv7Wn3VdKjoTsMw=
+	t=1765886239; cv=none; b=S+ZGOAG447Ixn4lR4Xziwhm5eg3+oi6HMuwNxGQCvr3427kXjrFV1d5zJ3/vHfztXd3wedzKCE1Wn0US7p1HAHUBtpoYZkM/EkGzjbrCGbolQPO/nq0fHl0UDKUVM9rNiRPVle9i2BIlg6AEC3/eZeIMueQNUyKMApNkT2ZVMts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886202; c=relaxed/simple;
-	bh=xwgruAQw6mLaayEZkZUcxiNF34MJggAuYkiQDZXysU8=;
+	s=arc-20240116; t=1765886239; c=relaxed/simple;
+	bh=7ApV+VoahW9oQNLpv9TysniJ+eOPILeCRuM8BqL4ngM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVtXVizd5J8VTUUR4uBVbEnmwzCdq174iKurh8f0lXjzkcrrbbBGzjSJqkF829hnElYwu73A9KxIFvnP7FyFbXVnNk3n7kEwgfeoA0vVf0ram6ajEjul0pq3M9V8mhSfOCS+aNEiByAVupJT/RafsOqQPNfpUltPFWkQaws9P8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOtuVoBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD88EC4CEF1;
-	Tue, 16 Dec 2025 11:56:41 +0000 (UTC)
+	 MIME-Version; b=P/aF9dMHyJ5/HPDRRwg8/V32p3IBLpNQ8l7izfGCVWOiPZ9BH84Ad5qa85fCfzWwwYqWze8FBz9YgTYxM4wh3ACRvQGSsUjNtCvCaO3Q42EJce+r1OEM/Zm7BnKg6s6kXGjJszN1O0+TxPfpv7BoJP4jI9a3RfPh/jUDDf/UXek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHj7ETT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64447C4CEF1;
+	Tue, 16 Dec 2025 11:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886202;
-	bh=xwgruAQw6mLaayEZkZUcxiNF34MJggAuYkiQDZXysU8=;
+	s=korg; t=1765886239;
+	bh=7ApV+VoahW9oQNLpv9TysniJ+eOPILeCRuM8BqL4ngM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOtuVoBURyDnTX/YeLk7A3lhGWko73JAcMp4w3JkCkWlfJIVcZeUvgaw3Jr9l9LTY
-	 POnqMsmzncF9GMLEdT5gmRGRyEk4moQecr2zfOUJBuJEt3uJDtck4BgWYq4b93+HhU
-	 e/BKA3auAYXia3wARPuVgEKNrs836F1izTsSQPkg=
+	b=SHj7ETT+wFGof6GBxvyRWUmtIFKgvVfSctmtdrCnLFAWvc8cjzsuzlj/ZG6ECJJoM
+	 p5fa7G6M+ymhbfV3u7HKD9HVl9A4InlSiqWdm4JhRU7qo2zUyG+tb8NKv4hnZzWhsR
+	 jYqLjpt4m0LVyP+YFEW00N15KWSG9pcmtU0rVQus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 350/507] backlight: lp855x: Fix lp855x.h kernel-doc warnings
-Date: Tue, 16 Dec 2025 12:13:11 +0100
-Message-ID: <20251216111358.139053441@linuxfoundation.org>
+Subject: [PATCH 6.17 351/507] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
+Date: Tue, 16 Dec 2025 12:13:12 +0100
+Message-ID: <20251216111358.174977476@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -65,48 +64,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
+[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
 
-Add a missing struct short description and a missing leading " *" to
-lp855x.h to avoid kernel-doc warnings:
+Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
+matching groups. This is more than what is defined as maximum by the ARM
+SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
+Limit the SMR groups to 128") disabled use of the additional groups because
+they don't exhibit the same behavior as the architecture supported ones.
 
-Warning: include/linux/platform_data/lp855x.h:126 missing initial short
- description on line:
- * struct lp855x_platform_data
-Warning: include/linux/platform_data/lp855x.h:131 bad line:
-   Only valid when mode is PWM_BASED.
+It seems like this is just another quirk of the hypervisor: When running
+bare-metal without the hypervisor, the additional groups appear to behave
+just like all others. The boot firmware uses some of the additional groups,
+so ignoring them in this situation leads to stream match conflicts whenever
+we allocate a new SMR group for the same SID.
 
-Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+The workaround exists primarily because the bypass quirk detection fails
+when using a S2CR register from the additional matching groups, so let's
+perform the test with the last reliable S2CR (127) and then limit the
+number of SMR groups only if we detect that we are running below the
+hypervisor (because of the bypass quirk).
+
+Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/lp855x.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
-index ab222dd05bbc2..3b4a891acefe9 100644
---- a/include/linux/platform_data/lp855x.h
-+++ b/include/linux/platform_data/lp855x.h
-@@ -124,12 +124,12 @@ struct lp855x_rom_data {
- };
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 57c097e876130..c939d0856b719 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -431,17 +431,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
  
- /**
-- * struct lp855x_platform_data
-+ * struct lp855x_platform_data - lp855 platform-specific data
-  * @name : Backlight driver name. If it is not defined, default name is set.
-  * @device_control : value of DEVICE CONTROL register
-  * @initial_brightness : initial value of backlight brightness
-  * @period_ns : platform specific pwm period value. unit is nano.
--		Only valid when mode is PWM_BASED.
-+ *		Only valid when mode is PWM_BASED.
-  * @size_program : total size of lp855x_rom_data
-  * @rom_data : list of new eeprom/eprom registers
-  */
+ 	/*
+ 	 * Some platforms support more than the Arm SMMU architected maximum of
+-	 * 128 stream matching groups. For unknown reasons, the additional
+-	 * groups don't exhibit the same behavior as the architected registers,
+-	 * so limit the groups to 128 until the behavior is fixed for the other
+-	 * groups.
++	 * 128 stream matching groups. The additional registers appear to have
++	 * the same behavior as the architected registers in the hardware.
++	 * However, on some firmware versions, the hypervisor does not
++	 * correctly trap and emulate accesses to the additional registers,
++	 * resulting in unexpected behavior.
++	 *
++	 * If there are more than 128 groups, use the last reliable group to
++	 * detect if we need to apply the bypass quirk.
+ 	 */
+-	if (smmu->num_mapping_groups > 128) {
+-		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
+-		smmu->num_mapping_groups = 128;
+-	}
+-
+-	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++	if (smmu->num_mapping_groups > 128)
++		last_s2cr = ARM_SMMU_GR0_S2CR(127);
++	else
++		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
+ 
+ 	/*
+ 	 * With some firmware versions writes to S2CR of type FAULT are
+@@ -464,6 +466,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 
+ 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
+ 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
++
++		if (smmu->num_mapping_groups > 128) {
++			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
++			smmu->num_mapping_groups = 128;
++		}
+ 	}
+ 
+ 	for (i = 0; i < smmu->num_mapping_groups; i++) {
 -- 
 2.51.0
 
