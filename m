@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E31CC2A6E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93347CC2A87
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 146483015968
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7783030185DB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389ED35292C;
-	Tue, 16 Dec 2025 11:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CE63587DA;
+	Tue, 16 Dec 2025 12:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOyPY9tB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2GvM6Xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF61A352925;
-	Tue, 16 Dec 2025 11:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7692B3587D8;
+	Tue, 16 Dec 2025 12:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885757; cv=none; b=Qbg7cJGAss2TrY1JOf7P1N/S4pSH8OYyASALF/i6G5hdONCSibgLY3rPUF4uHkaYwnFg7e+44at9e0aDLx+OedMfeXgPld3SmI+f8u3yHBnN7iHsrMZJOnupDlVgadKboQcFnQV4lOxJwM4gVS1+KQ6DU4Z3O98QlZ7TO9bnX1A=
+	t=1765887714; cv=none; b=eFGefGjgKQAqUwmQtzigMRtiFK/NazkrS6/nfd/dpltNP2IRRywNVsH57oJ94GcmxOQOtyPcSDtREZdTQS/x6pkxk0yKjSxlxkMMT8MudKcvPVXPS6dZUgdo2x/k3HqYHidxVSooXr9ZQb+lRyUX9G2qRG5TGtfdlh/9q3dD6y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885757; c=relaxed/simple;
-	bh=mlhjpXjsKLpJAu6Yz3elNlYrTfaLPL3ltQFrKga2X4U=;
+	s=arc-20240116; t=1765887714; c=relaxed/simple;
+	bh=RcNhrLP8yj+ayL9AgbW+2tVE43n2Qzl1l8l/zsMlqI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNuhe+LcOkBAk2x2rhNN3ClHI0hMT+oYbVR6UtQ72WzhPm5eqdPWOJ+VAnuW6OE7I1wd99pJQIuhy2s2d1oSXpvSjjwO0Uvg/4G0sZcU2ksa/kc76rNMklwqYsxui7An0YxKSY4Zp2mjSECRVWV2Qp2CNq95bXNcYG/I/KrjD+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOyPY9tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48012C4CEF1;
-	Tue, 16 Dec 2025 11:49:16 +0000 (UTC)
+	 MIME-Version; b=MgToH2xNJP7oufhSOFEyD7r3z7b1yDKYrPBalKTOrOPvYJ8dpks82HtgjQ/VT30u0ep/oLBHqWc+/zi3lmGInHe18+fY1H4de5yqCWxadk/PmCFrNmAXG5s8tbTaWRlQuOOZOZovD16immETIC4vMQcO+Mg9Aqfd519hEyhKXQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2GvM6Xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E171DC4CEF1;
+	Tue, 16 Dec 2025 12:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885756;
-	bh=mlhjpXjsKLpJAu6Yz3elNlYrTfaLPL3ltQFrKga2X4U=;
+	s=korg; t=1765887714;
+	bh=RcNhrLP8yj+ayL9AgbW+2tVE43n2Qzl1l8l/zsMlqI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOyPY9tBZyH+QKtbXMNj3qN1IJqwuHg4OB03d1mRcftgv5BE4CxfqZt/P0ii8WN+/
-	 0t8oEHRtD/JeK6L7XL3GV6g+W+1983L0anpwG+uKf1tOTpAKmOfn5amIDdCvwejrHs
-	 cNOZymOu6Trow4MAFltmq4sXXFVrNeFglAlHasNI=
+	b=k2GvM6XpSvIxmLGIQnMietmypVuqPAekLQTctXVtKjAwBVNTll4JDv86kG3xNVy25
+	 R/XY6vTz+zE0QJ8+e29njji2iDf8Lj+fqMZ4Eh7UfoLVv5tqmhJP2u8NesdGmEUxfD
+	 u+81zVclsOxX6B8ifJyoccJ12mGq7CXQMxs/rWOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 208/507] powerpc/32: Fix unpaired stwcx. on interrupt exit
+Subject: [PATCH 6.18 282/614] s390/fpu: Fix false-positive kmsan report in fpu_vstl()
 Date: Tue, 16 Dec 2025 12:10:49 +0100
-Message-ID: <20251216111353.045473886@linuxfoundation.org>
+Message-ID: <20251216111411.590854796@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
 
-[ Upstream commit 10e1c77c3636d815db802ceef588522c2d2d947c ]
+[ Upstream commit 14e4e4175b64dd9216b522f6ece8af6997d063b2 ]
 
-Commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
-exception exit from ppc64") erroneouly copied to powerpc/32 the logic
-from powerpc/64 based on feature CPU_FTR_STCX_CHECKS_ADDRESS which is
-always 0 on powerpc/32.
+A false-positive kmsan report is detected when running ping command.
 
-Re-instate the logic implemented by commit b64f87c16f3c ("[POWERPC]
-Avoid unpaired stwcx. on some processors") which is based on
-CPU_FTR_NEED_PAIRED_STWCX feature.
+An inline assembly instruction 'vstl' can write varied amount of bytes
+depending on value of 'index' argument. If 'index' > 0, 'vstl' writes
+at least 2 bytes.
 
-Fixes: b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C exception exit from ppc64")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu
+clang generates kmsan write helper call depending on inline assembly
+constraints. Constraints are evaluated compile-time, but value of
+'index' argument is known only at runtime.
+
+clang currently generates call to __msan_instrument_asm_store with 1 byte
+as size. Manually call kmsan function to indicate correct amount of bytes
+written and fix false-positive report.
+
+This change fixes following kmsan reports:
+
+[   36.563119] =====================================================
+[   36.563594] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
+[   36.563852]  virtqueue_add+0x35c6/0x7c70
+[   36.564016]  virtqueue_add_outbuf+0xa0/0xb0
+[   36.564266]  start_xmit+0x288c/0x4a20
+[   36.564460]  dev_hard_start_xmit+0x302/0x900
+[   36.564649]  sch_direct_xmit+0x340/0xea0
+[   36.564894]  __dev_queue_xmit+0x2e94/0x59b0
+[   36.565058]  neigh_resolve_output+0x936/0xb40
+[   36.565278]  __neigh_update+0x2f66/0x3a60
+[   36.565499]  neigh_update+0x52/0x60
+[   36.565683]  arp_process+0x1588/0x2de0
+[   36.565916]  NF_HOOK+0x1da/0x240
+[   36.566087]  arp_rcv+0x3e4/0x6e0
+[   36.566306]  __netif_receive_skb_list_core+0x1374/0x15a0
+[   36.566527]  netif_receive_skb_list_internal+0x1116/0x17d0
+[   36.566710]  napi_complete_done+0x376/0x740
+[   36.566918]  virtnet_poll+0x1bae/0x2910
+[   36.567130]  __napi_poll+0xf4/0x830
+[   36.567294]  net_rx_action+0x97c/0x1ed0
+[   36.567556]  handle_softirqs+0x306/0xe10
+[   36.567731]  irq_exit_rcu+0x14c/0x2e0
+[   36.567910]  do_io_irq+0xd4/0x120
+[   36.568139]  io_int_handler+0xc2/0xe8
+[   36.568299]  arch_cpu_idle+0xb0/0xc0
+[   36.568540]  arch_cpu_idle+0x76/0xc0
+[   36.568726]  default_idle_call+0x40/0x70
+[   36.568953]  do_idle+0x1d6/0x390
+[   36.569486]  cpu_startup_entry+0x9a/0xb0
+[   36.569745]  rest_init+0x1ea/0x290
+[   36.570029]  start_kernel+0x95e/0xb90
+[   36.570348]  startup_continue+0x2e/0x40
+[   36.570703]
+[   36.570798] Uninit was created at:
+[   36.571002]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
+[   36.571261]  kmalloc_reserve+0x12a/0x470
+[   36.571553]  __alloc_skb+0x310/0x860
+[   36.571844]  __ip_append_data+0x483e/0x6a30
+[   36.572170]  ip_append_data+0x11c/0x1e0
+[   36.572477]  raw_sendmsg+0x1c8c/0x2180
+[   36.572818]  inet_sendmsg+0xe6/0x190
+[   36.573142]  __sys_sendto+0x55e/0x8e0
+[   36.573392]  __s390x_sys_socketcall+0x19ae/0x2ba0
+[   36.573571]  __do_syscall+0x12e/0x240
+[   36.573823]  system_call+0x6e/0x90
+[   36.573976]
+[   36.574017] Byte 35 of 98 is uninitialized
+[   36.574082] Memory access of size 98 starts at 0000000007aa0012
+[   36.574218]
+[   36.574325] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G    B            N  6.17.0-dirty #16 NONE
+[   36.574541] Tainted: [B]=BAD_PAGE, [N]=TEST
+[   36.574617] Hardware name: IBM 3931 A01 703 (KVM/Linux)
+[   36.574755] =====================================================
+
+[   63.532541] =====================================================
+[   63.533639] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
+[   63.533989]  virtqueue_add+0x35c6/0x7c70
+[   63.534940]  virtqueue_add_outbuf+0xa0/0xb0
+[   63.535861]  start_xmit+0x288c/0x4a20
+[   63.536708]  dev_hard_start_xmit+0x302/0x900
+[   63.537020]  sch_direct_xmit+0x340/0xea0
+[   63.537997]  __dev_queue_xmit+0x2e94/0x59b0
+[   63.538819]  neigh_resolve_output+0x936/0xb40
+[   63.539793]  ip_finish_output2+0x1ee2/0x2200
+[   63.540784]  __ip_finish_output+0x272/0x7a0
+[   63.541765]  ip_finish_output+0x4e/0x5e0
+[   63.542791]  ip_output+0x166/0x410
+[   63.543771]  ip_push_pending_frames+0x1a2/0x470
+[   63.544753]  raw_sendmsg+0x1f06/0x2180
+[   63.545033]  inet_sendmsg+0xe6/0x190
+[   63.546006]  __sys_sendto+0x55e/0x8e0
+[   63.546859]  __s390x_sys_socketcall+0x19ae/0x2ba0
+[   63.547730]  __do_syscall+0x12e/0x240
+[   63.548019]  system_call+0x6e/0x90
+[   63.548989]
+[   63.549779] Uninit was created at:
+[   63.550691]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
+[   63.550975]  kmalloc_reserve+0x12a/0x470
+[   63.551969]  __alloc_skb+0x310/0x860
+[   63.552949]  __ip_append_data+0x483e/0x6a30
+[   63.553902]  ip_append_data+0x11c/0x1e0
+[   63.554912]  raw_sendmsg+0x1c8c/0x2180
+[   63.556719]  inet_sendmsg+0xe6/0x190
+[   63.557534]  __sys_sendto+0x55e/0x8e0
+[   63.557875]  __s390x_sys_socketcall+0x19ae/0x2ba0
+[   63.558869]  __do_syscall+0x12e/0x240
+[   63.559832]  system_call+0x6e/0x90
+[   63.560780]
+[   63.560972] Byte 35 of 98 is uninitialized
+[   63.561741] Memory access of size 98 starts at 0000000005704312
+[   63.561950]
+[   63.562824] CPU: 3 UID: 0 PID: 192 Comm: ping Tainted: G    B            N  6.17.0-dirty #16 NONE
+[   63.563868] Tainted: [B]=BAD_PAGE, [N]=TEST
+[   63.564751] Hardware name: IBM 3931 A01 703 (KVM/Linux)
+[   63.564986] =====================================================
+
+Fixes: dcd3e1de9d17 ("s390/checksum: provide csum_partial_copy_nocheck()")
+Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/entry_32.S | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/s390/include/asm/fpu-insn.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index f4a8c98772491..1beb578c64114 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -263,10 +263,9 @@ interrupt_return:
- 	mtspr	SPRN_SRR1,r12
+diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
+index e99f8bca8e08c..96727f3bd0dce 100644
+--- a/arch/s390/include/asm/fpu-insn.h
++++ b/arch/s390/include/asm/fpu-insn.h
+@@ -12,6 +12,7 @@
+ #ifndef __ASSEMBLER__
  
- BEGIN_FTR_SECTION
-+	lwarx   r0,0,r1
-+END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	stwcx.	r0,0,r1		/* to clear the reservation */
--FTR_SECTION_ELSE
--	lwarx	r0,0,r1
--ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ #include <linux/instrumented.h>
++#include <linux/kmsan.h>
+ #include <asm/asm-extable.h>
  
- 	lwz	r3,_CCR(r1)
- 	lwz	r4,_LINK(r1)
-@@ -306,10 +305,9 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	mtspr	SPRN_SRR1,r12
+ asm(".include \"asm/fpu-insn-asm.h\"\n");
+@@ -393,6 +394,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
+ 		     : [vxr] "=Q" (*(u8 *)vxr)
+ 		     : [index] "d" (index), [v1] "I" (v1)
+ 		     : "memory");
++	kmsan_unpoison_memory(vxr, size);
+ }
  
- BEGIN_FTR_SECTION
-+	lwarx   r0,0,r1
-+END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	stwcx.	r0,0,r1		/* to clear the reservation */
--FTR_SECTION_ELSE
--	lwarx	r0,0,r1
--ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
+@@ -409,6 +411,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
+ 		: [vxr] "=R" (*(u8 *)vxr)
+ 		: [index] "d" (index), [v1] "I" (v1)
+ 		: "memory", "1");
++	kmsan_unpoison_memory(vxr, size);
+ }
  
- 	lwz	r3,_LINK(r1)
- 	lwz	r4,_CTR(r1)
+ #endif /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
 -- 
 2.51.0
 
