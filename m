@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB279CC2AB3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D91CCC22E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC7623014105
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBD08300097E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB11F36403D;
-	Tue, 16 Dec 2025 12:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366EE342177;
+	Tue, 16 Dec 2025 11:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4D4r6pR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0BQ2SKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AC8364024;
-	Tue, 16 Dec 2025 12:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66BF341ACA;
+	Tue, 16 Dec 2025 11:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887783; cv=none; b=f3Dsygec85paa9ijzwAO1t/IaGeNZUJyk/hKp0bxoQnSzyhJijdtjemtjc+qHcr0gxxIgvOiIDpaRWvEMBJD8eg/1Q6j3I1N9BALZeqby8K/Y62YI7iAj0AbAstzepOHXYaGLpmFkA2qrYGhjZivjacQzhetMRl/FHCLpryvkT4=
+	t=1765884310; cv=none; b=Pu9ajQe4FE6/3uNfho9plwcsD7vUnxzG6TmHhADVL898HV/04EC4kTz2uohnclpxn4u12Qk1+lgGRSnL6vyuQL6MWEFvF72mXMfd12iXYakFAerC4VcpP5SGqXHRYa/Er2sCrpqIxjSyo9c3V8I3fTJj9DG7NtchsC3u34rfNzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887783; c=relaxed/simple;
-	bh=RHVwxkYpkLjdEIOWTRzH8MQtpIotqrGoq+aeK/JRfJA=;
+	s=arc-20240116; t=1765884310; c=relaxed/simple;
+	bh=KaA4e8dFhv3IKYxmdTzp371PACOCT4XrdSlM/4FXkaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uis7KNCWEiuVNdnMSB2AQcNNaQB2kJG+qOPK2UQMIie5Rf2TJxpCj2LInzmbSvuNT+A8H02NNEyJQUF2WAcJzMQmFQxk45ct+5Y4SMuAJxWWM4EjiEdxIVIfj3xcpT0EoV6MzJc8jC42XWuJRz7opLZ4dYhOBJlqJYFk6H3Fzhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4D4r6pR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC007C4CEF1;
-	Tue, 16 Dec 2025 12:23:02 +0000 (UTC)
+	 MIME-Version; b=o4XethROpYDF3a6/QffnIYFl2EKqcUyzVAQiOPgIpND77zMetYK+/eiijjTgywXD1t60gD4IDKq3qbUvuwfI1gVmYnP6ijlR07mOYxh15HvAyrmfbVcn0eIs40HRNvKpHO/40fME6Fozw5QdbXT8AlnC83aZHXevWVDZPMJKABY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0BQ2SKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E40C4CEF1;
+	Tue, 16 Dec 2025 11:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887783;
-	bh=RHVwxkYpkLjdEIOWTRzH8MQtpIotqrGoq+aeK/JRfJA=;
+	s=korg; t=1765884309;
+	bh=KaA4e8dFhv3IKYxmdTzp371PACOCT4XrdSlM/4FXkaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4D4r6pRpHkHlRfdecdLh/H7XaLyFff7+BBZ8K6tts/z1hiSfKOBvi8yWqCNlwhkI
-	 0FDCVGx7NcSTkkOr/DVjEN0pxKMagSj4XiYs9vzMNxK+GlQ7tvyQWvqW5/zFp0azpM
-	 xsB0qxu9eLB7g8s1u/ay6OcfnG8yc6BlagwJmzhg=
+	b=I0BQ2SKiC/VsfcZlWRaIVZ59ieq5VPrfhNG/dMMKj1qI9ewLUWhV0yv/KRT1GjQHR
+	 D8gGcttYBUZyYkJajp4Ywc6woEvyESWaVJqbncGI7xR3MhE6qoRRgrbKtM0Bf40cXl
+	 z1MBgJEITBgkUtIBikZuqjjn0okV/ec5guV99WG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Crystal Wood <crwood@redhat.com>,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Akash Goel <akash.goel@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 336/614] tools/rtla: Fix --on-threshold always triggering
-Date: Tue, 16 Dec 2025 12:11:43 +0100
-Message-ID: <20251216111413.538618151@linuxfoundation.org>
+Subject: [PATCH 6.12 137/354] drm/panthor: Fix potential memleak of vma structure
+Date: Tue, 16 Dec 2025 12:11:44 +0100
+Message-ID: <20251216111325.882351173@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Akash Goel <akash.goel@arm.com>
 
-[ Upstream commit 417bd0d502f90a2e785e7299dae4f248b5ac0292 ]
+[ Upstream commit 4492d54d59872bb72e119ff9f77969ab4d8a0e6b ]
 
-Commit 8d933d5c89e8 ("rtla/timerlat: Add continue action") moved the
-code performing on-threshold actions (enabled through --on-threshold
-option) to inside the RTLA main loop.
+This commit addresses a memleak issue of panthor_vma (or drm_gpuva)
+structure in Panthor driver, that can happen if the GPU page table
+update operation to map the pages fail.
+The issue is very unlikely to occur in practice.
 
-The condition in the loop does not check whether the threshold was
-actually exceeded or if stop tracing was requested by the user through
-SIGINT or duration. This leads to a bug where on-threshold actions are
-always performed, even when the threshold was not hit.
+v2: Add panthor_vm_op_ctx_return_vma() helper (Boris)
 
-(BPF mode is not affected, since it uses a different condition in the
-while loop.)
+v3: Add WARN_ON_ONCE (Boris)
 
-Add a condition that checks for !stop_tracing before executing the
-actions. Also, fix incorrect brackets in hist_main_loop to match the
-semantics of top_main_loop.
-
-Fixes: 8d933d5c89e8 ("rtla/timerlat: Add continue action")
-Fixes: 2f3172f9dd58 ("tools/rtla: Consolidate code between osnoise/timerlat and hist/top")
-Reviewed-by: Crystal Wood <crwood@redhat.com>
-Reviewed-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20251007095341.186923-1-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251021081042.1377406-1-akash.goel@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/common.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
-index 2e6e3dac1897f..b197037fc58b3 100644
---- a/tools/tracing/rtla/src/common.c
-+++ b/tools/tracing/rtla/src/common.c
-@@ -268,6 +268,10 @@ int top_main_loop(struct osnoise_tool *tool)
- 			tool->ops->print_stats(tool);
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index d548a6e0311dd..ed769749ec354 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -1139,6 +1139,20 @@ static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
+ 	}
+ }
  
- 		if (osnoise_trace_is_off(tool, record)) {
-+			if (stop_tracing)
-+				/* stop tracing requested, do not perform actions */
-+				return 0;
++static void
++panthor_vm_op_ctx_return_vma(struct panthor_vm_op_ctx *op_ctx,
++			     struct panthor_vma *vma)
++{
++	for (u32 i = 0; i < ARRAY_SIZE(op_ctx->preallocated_vmas); i++) {
++		if (!op_ctx->preallocated_vmas[i]) {
++			op_ctx->preallocated_vmas[i] = vma;
++			return;
++		}
++	}
 +
- 			actions_perform(&params->threshold_actions);
- 
- 			if (!params->threshold_actions.continue_flag)
-@@ -315,20 +319,22 @@ int hist_main_loop(struct osnoise_tool *tool)
- 		}
- 
- 		if (osnoise_trace_is_off(tool, tool->record)) {
-+			if (stop_tracing)
-+				/* stop tracing requested, do not perform actions */
-+				break;
++	WARN_ON_ONCE(1);
++}
 +
- 			actions_perform(&params->threshold_actions);
+ static struct panthor_vma *
+ panthor_vm_op_ctx_get_vma(struct panthor_vm_op_ctx *op_ctx)
+ {
+@@ -2037,8 +2051,10 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
+ 	ret = panthor_vm_map_pages(vm, op->map.va.addr, flags_to_prot(vma->flags),
+ 				   op_ctx->map.sgt, op->map.gem.offset,
+ 				   op->map.va.range);
+-	if (ret)
++	if (ret) {
++		panthor_vm_op_ctx_return_vma(op_ctx, vma);
+ 		return ret;
++	}
  
--			if (!params->threshold_actions.continue_flag) {
-+			if (!params->threshold_actions.continue_flag)
- 				/* continue flag not set, break */
- 				break;
- 
--				/* continue action reached, re-enable tracing */
--				if (tool->record)
--					trace_instance_start(&tool->record->trace);
--				if (tool->aa)
--					trace_instance_start(&tool->aa->trace);
--				trace_instance_start(&tool->trace);
--			}
--			break;
-+			/* continue action reached, re-enable tracing */
-+			if (tool->record)
-+				trace_instance_start(&tool->record->trace);
-+			if (tool->aa)
-+				trace_instance_start(&tool->aa->trace);
-+			trace_instance_start(&tool->trace);
- 		}
- 
- 		/* is there still any user-threads ? */
+ 	/* Ref owned by the mapping now, clear the obj field so we don't release the
+ 	 * pinning/obj ref behind GPUVA's back.
 -- 
 2.51.0
 
