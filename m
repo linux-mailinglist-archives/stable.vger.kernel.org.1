@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-202148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4F1CC29C3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF31FCC2B8C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFCBB3005F3A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F15903148C68
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27AF364E83;
-	Tue, 16 Dec 2025 12:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D749364E9A;
+	Tue, 16 Dec 2025 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcr3lOXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1zU/0PT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CABD3644DC;
-	Tue, 16 Dec 2025 12:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CF1364E8C;
+	Tue, 16 Dec 2025 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886972; cv=none; b=WqxaEJ8yw37/Spjdk/ZPV6UWILn69fp3iaSlZWluP8eJlg2TvA8tEj7qzJrgRq2cU0LHbzBZMU+pHJk0M1xmdd3zjdrVI1jDqmf31ThgJAYUH4SQnsgIHn6vFAobPyldQ9wnICvX/lcmHJAW/nbtZ63Pxp+ZHSRqHeE19sN892c=
+	t=1765886979; cv=none; b=jrOfMnLrmUXsS6WiMT3DtMvG23HmSslKC75No3XWzcZkgclFjxLAFtJiQEiqRpxvQ5tBwc+tOTG6zEDAuTyFagNdGMlpWb2hfSzFjpIHtmz4QUW6liFCd/KlyWHvfZMYvoezLoKGZOqJssOWlO+pWUKqeeO045NG8bFi+tUlJZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886972; c=relaxed/simple;
-	bh=Cy+LEyNuYLZSL7ZK0AS21fCDD3qYjzGC7Eihqe08mWo=;
+	s=arc-20240116; t=1765886979; c=relaxed/simple;
+	bh=9+LZGRMPqQLTwvyiWchMMIjmtmJSbIXFH17GBNgYOc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Me0dow4Ag++q0/qj7J/lA77Vplo3KqFUsOkJWk7to1DL/Fmq1zulspvKgybl1ptsL/BQFv7Oui/+C8GZUHltC3OOLGetKdO3e9skSud1eWxiZj5lP5ExfX1InME1lgYhkw8w+2Q1HSJ6p785qIKwylLwW31H8Tt3P/6OKzlnMw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcr3lOXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87A9C4CEF1;
-	Tue, 16 Dec 2025 12:09:31 +0000 (UTC)
+	 MIME-Version; b=prHe/kQ1AiZrIFujlvrb0Fk7ERiIQKb51/XtG8gAVmGqri5zcAERJLL6Q2eJOyym/skHjTOeOXV4Ij/ZWVivs9jA1tu0uqLUKiVxv2CT3DwVMjWs+e2SOSBBgChKkEc6eM/C0y6ZI26o1+oUaPgMYINcjkdxB2dUMKhFfC8MgMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1zU/0PT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA93DC4CEF1;
+	Tue, 16 Dec 2025 12:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886972;
-	bh=Cy+LEyNuYLZSL7ZK0AS21fCDD3qYjzGC7Eihqe08mWo=;
+	s=korg; t=1765886979;
+	bh=9+LZGRMPqQLTwvyiWchMMIjmtmJSbIXFH17GBNgYOc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcr3lOXOnSBJ0IOkwVbxEX+NhvaXmk8VHvyeH0ufk+sE/z/Slr3zd0YfBsfvIS1yY
-	 pMcPH9YW8iIwDDMIkE6TQzn0lfWfzxKufMzA+95oiLUVo7btJ2LEq/GhrAHLgtNH5N
-	 SDb1hwQ868LR+aHoWlTieRTO+gIYUiPgIhwaxyrs=
+	b=i1zU/0PTospmccGpUScoZMdjx+UKZfr2HtfU6Qf8kUVjCJg2XxRcIETcuOWVwY/1a
+	 wIdsqX6SE/DB2cVLcAkIEcp+qk0QQiT6p9ZAbE0Es6BuPGZPn763+45mq9qmPK/kW5
+	 gafwriRW8uHPFTas9124LmBwNL5HQ9eDGn7GKR1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lukas Wunner <lukas@wunner.de>,
+	nieweiqiang <nieweiqiang@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/614] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
-Date: Tue, 16 Dec 2025 12:07:35 +0100
-Message-ID: <20251216111404.510780477@linuxfoundation.org>
+Subject: [PATCH 6.18 089/614] crypto: hisilicon/qm - restore original qos values
+Date: Tue, 16 Dec 2025 12:07:36 +0100
+Message-ID: <20251216111404.546381635@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,60 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: nieweiqiang <nieweiqiang@huawei.com>
 
-[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
+[ Upstream commit e7066160f5b4187ad9869b712fa7a35d3d5be6b9 ]
 
-Use check_add_overflow() to guard against potential integer overflows
-when adding the binary blob lengths and the size of an asymmetric_key_id
-structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
-possible buffer overflow when copying data from potentially malicious
-X.509 certificate fields that can be arbitrarily large, such as ASN.1
-INTEGER serial numbers, issuer names, etc.
+When the new qos valus setting fails, restore to
+the original qos values.
 
-Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 72b010dc33b9 ("crypto: hisilicon/qm - supports writing QoS int the host")
+Signed-off-by: nieweiqiang <nieweiqiang@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index ba2d9d1ea235a..348966ea2175c 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -11,6 +11,7 @@
- #include <crypto/public_key.h>
- #include <linux/seq_file.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <keys/system_keyring.h>
-@@ -141,12 +142,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
- 						     size_t len_2)
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 3b391a1466353..0968304c0cb51 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3678,6 +3678,7 @@ static void qm_clear_vft_config(struct hisi_qm *qm)
+ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
  {
- 	struct asymmetric_key_id *kid;
--
--	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
--		      GFP_KERNEL);
-+	size_t kid_sz;
-+	size_t len;
+ 	struct device *dev = &qm->pdev->dev;
++	struct qm_shaper_factor t_factor;
+ 	u32 ir = qos * QM_QOS_RATE;
+ 	int ret, total_vfs, i;
+ 
+@@ -3685,6 +3686,7 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 	if (fun_index > total_vfs)
+ 		return -EINVAL;
+ 
++	memcpy(&t_factor, &qm->factor[fun_index], sizeof(t_factor));
+ 	qm->factor[fun_index].func_qos = qos;
+ 
+ 	ret = qm_get_shaper_para(ir, &qm->factor[fun_index]);
+@@ -3698,11 +3700,21 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
+ 		if (ret) {
+ 			dev_err(dev, "type: %d, failed to set shaper vft!\n", i);
+-			return -EINVAL;
++			goto back_func_qos;
+ 		}
+ 	}
+ 
+ 	return 0;
 +
-+	if (check_add_overflow(len_1, len_2, &len))
-+		return ERR_PTR(-EOVERFLOW);
-+	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
-+		return ERR_PTR(-EOVERFLOW);
-+	kid = kmalloc(kid_sz, GFP_KERNEL);
- 	if (!kid)
- 		return ERR_PTR(-ENOMEM);
--	kid->len = len_1 + len_2;
-+	kid->len = len;
- 	memcpy(kid->data, val_1, len_1);
- 	memcpy(kid->data + len_1, val_2, len_2);
- 	return kid;
++back_func_qos:
++	memcpy(&qm->factor[fun_index], &t_factor, sizeof(t_factor));
++	for (i--; i >= ALG_TYPE_0; i--) {
++		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
++		if (ret)
++			dev_err(dev, "failed to restore shaper vft during rollback!\n");
++	}
++
++	return -EINVAL;
+ }
+ 
+ static u32 qm_get_shaper_vft_qos(struct hisi_qm *qm, u32 fun_index)
 -- 
 2.51.0
 
