@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7055ECC2680
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C11CC31D0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C29330FD669
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2756030CE881
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF06343D84;
-	Tue, 16 Dec 2025 11:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6D634C81E;
+	Tue, 16 Dec 2025 12:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obanHhB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWkkh51g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF84F342CB1;
-	Tue, 16 Dec 2025 11:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E6839A137;
+	Tue, 16 Dec 2025 12:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884905; cv=none; b=LQkb/LLplnioW5ZhBzRJ3l2YismAYi9HAU3mPNYQzpqv14VjOOsICWeIJBAmTtVgB7sLARQ3Fm8Rnq235BA4B54Mme/+WEjIhahBGCSxkqZiLRTuUPZR2ksA+E9sRpqYra+oaqWigk2cR1aqHYK6xfyKU+xPUQq/rJkx6N8OLLg=
+	t=1765888437; cv=none; b=VJDHKTl6hcLPhXFXfEKQgcPr0QXwVpx4mWNCovRkLwwaT887xwH3LI4cyO4wgIBVL9U7gFngyJWTcfefNYJd9oE9aQI99XkMq/0jX2LjlYMTU94NAM0xiObbUs25o5rfopcZi6pQhCtFp8O1zBIX0ZdGBJMiQi5bF92qSubalWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884905; c=relaxed/simple;
-	bh=mISf4KZnr/A9LPwZjhspMCNxv+Nyqnlrab3mOCcPWro=;
+	s=arc-20240116; t=1765888437; c=relaxed/simple;
+	bh=Z81E1/Rx7rcrYHgRK+75Nox8oljfM4HPx0yhMmjvBQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfIr4zH2521pPgrUMX/rqhaTi6MYDsyKuug0VJ6wgGwXjhC/VoMrbbroQphh69grprt8iLp6ZrkMg4euYMi0abzQq7Dus14n1qUqdehQ4PmStpMHTvX3kr70Dri88mLgVgLi7R/BDHGjMrvg1xIIemlcT43rI/Wh95FIOnynVZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obanHhB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21217C4CEF1;
-	Tue, 16 Dec 2025 11:35:04 +0000 (UTC)
+	 MIME-Version; b=fOhjAYV7qPrFmB94cGnwSFBCwaFWV2b93Bgf/7eloeGVJg6oafGwCoGPj8Gq9JQKmpFiUalcyEXTddb2WwQ3TpILqIbjKiN7ls/MA9xYX9+b8o6klYSCTuEmVu/+iX5xO+ppOjhJNWmBpPcSVs7KusM13YNb+LFbcULcotomcXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWkkh51g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115F1C4CEF1;
+	Tue, 16 Dec 2025 12:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884905;
-	bh=mISf4KZnr/A9LPwZjhspMCNxv+Nyqnlrab3mOCcPWro=;
+	s=korg; t=1765888437;
+	bh=Z81E1/Rx7rcrYHgRK+75Nox8oljfM4HPx0yhMmjvBQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obanHhB4AEG6mFjIbXNj/Ya7d6YX+jigyMg+r/9bkA68beeVwhiUvJK+ROAezHSCK
-	 wiQFVmcDnAlym88q99TOsSVIxlyAaHwJ5VAPFS2IaXiX5aBXs5uzMFBNDEPgMDqCOp
-	 OjySUFKlTwhY/HjKgTundnqiX//kaiPT+WjTJpWw=
+	b=WWkkh51gbdXHLKw+ZVxRfBaqSNiZt3Y3XDqgeVpIBrLQjW1y6X97ZyjMT2defHLiF
+	 yce1LzF9cJatLrCxo+HEOOFqj0n3TOd8nz1ZoqSIBnsm/nrdwCpkBoDFaSTDXyT6T/
+	 XQtjzAmvov5WPgHQ3t+ovvZ7eoQs8Quy/tyEYMEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Junrui Luo <moonafterrain@outlook.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	John Stultz <jstultz@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Haiyue Wang <haiyuewa@163.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/354] ALSA: firewire-motu: add bounds check in put_user loop for DSP events
-Date: Tue, 16 Dec 2025 12:15:01 +0100
-Message-ID: <20251216111333.009007493@linuxfoundation.org>
+Subject: [PATCH 6.18 535/614] sched/core: Fix psi_dequeue() for Proxy Execution
+Date: Tue, 16 Dec 2025 12:15:02 +0100
+Message-ID: <20251216111420.762343537@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 298e753880b6ea99ac30df34959a7a03b0878eed ]
+[ Upstream commit c2ae8b0df2d1bb7a063f9e356e4e9a06cd4afe11 ]
 
-In the DSP event handling code, a put_user() loop copies event data.
-When the user buffer size is not aligned to 4 bytes, it could overwrite
-beyond the buffer boundary.
+Currently, if the sleep flag is set, psi_dequeue() doesn't
+change any of the psi_flags.
 
-Fix by adding a bounds check before put_user().
+This is because psi_task_switch() will clear TSK_ONCPU as well
+as other potential flags (TSK_RUNNING), and the assumption is
+that a voluntary sleep always consists of a task being dequeued
+followed shortly there after with a psi_sched_switch() call.
 
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB788112C72AF8A1C8C448B4B8AFA3A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Proxy Execution changes this expectation, as mutex-blocked tasks
+that would normally sleep stay on the runqueue. But in the case
+where the mutex-owning task goes to sleep, or the owner is on a
+remote cpu, we will then deactivate the blocked task shortly
+after.
+
+In that situation, the mutex-blocked task will have had its
+TSK_ONCPU cleared when it was switched off the cpu, but it will
+stay TSK_RUNNING. Then if we later dequeue it (as currently done
+if we hit a case find_proxy_task() can't yet handle, such as the
+case of the owner being on another rq or a sleeping owner)
+psi_dequeue() won't change any state (leaving it TSK_RUNNING),
+as it incorrectly expects a psi_task_switch() call to
+immediately follow.
+
+Later on when the task get woken/re-enqueued, and psi_flags are
+set for TSK_RUNNING, we hit an error as the task is already
+TSK_RUNNING:
+
+  psi: inconsistent task state! task=188:kworker/28:0 cpu=28 psi_flags=4 clear=0 set=4
+
+To resolve this, extend the logic in psi_dequeue() so that
+if the sleep flag is set, we also check if psi_flags have
+TSK_ONCPU set (meaning the psi_task_switch is imminent) before
+we do the shortcut return.
+
+If TSK_ONCPU is not set, that means we've already switched away,
+and this psi_dequeue call needs to clear the flags.
+
+Fixes: be41bde4c3a8 ("sched: Add an initial sketch of the find_proxy_task() function")
+Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Haiyue Wang <haiyuewa@163.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://patch.msgid.link/20251205012721.756394-1-jstultz@google.com
+Closes: https://lore.kernel.org/lkml/20251117185550.365156-1-kprateek.nayak@amd.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/motu/motu-hwdep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/stats.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
-index 28885c8004aea..8519a9f9ce2c0 100644
---- a/sound/firewire/motu/motu-hwdep.c
-+++ b/sound/firewire/motu/motu-hwdep.c
-@@ -75,7 +75,7 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf, long count,
- 		while (consumed < count &&
- 		       snd_motu_register_dsp_message_parser_copy_event(motu, &ev)) {
- 			ptr = (u32 __user *)(buf + consumed);
--			if (put_user(ev, ptr))
-+			if (consumed + sizeof(ev) > count || put_user(ev, ptr))
- 				return -EFAULT;
- 			consumed += sizeof(ev);
- 		}
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 26f3fd4d34cea..73bd6bca4d310 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -180,8 +180,13 @@ static inline void psi_dequeue(struct task_struct *p, int flags)
+ 	 * avoid walking all ancestors twice, psi_task_switch() handles
+ 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
+ 	 * Do nothing here.
++	 *
++	 * In the SCHED_PROXY_EXECUTION case we may do sleeping
++	 * dequeues that are not followed by a task switch, so check
++	 * TSK_ONCPU is set to ensure the task switch is imminent.
++	 * Otherwise clear the flags as usual.
+ 	 */
+-	if (flags & DEQUEUE_SLEEP)
++	if ((flags & DEQUEUE_SLEEP) && (p->psi_flags & TSK_ONCPU))
+ 		return;
+ 
+ 	/*
 -- 
 2.51.0
 
