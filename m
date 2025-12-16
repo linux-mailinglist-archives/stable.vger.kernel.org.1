@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46C2CC3B33
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7885CC24EA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EEA130CDF11
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:39:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A22B7305A812
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2970933893E;
-	Tue, 16 Dec 2025 12:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CEA31ED9A;
+	Tue, 16 Dec 2025 11:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exv4QKc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afpq0XTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98D0347BAF;
-	Tue, 16 Dec 2025 12:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DB431B10B;
+	Tue, 16 Dec 2025 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888146; cv=none; b=mOFoJVA1ue0t80MRQcIOx9iPwvXEETqvIzk1PbPky2ZOlS+mJzs+lVp1xPlBgqmqg2Of6BzGnePzVoAL/IqJxbBu5OjlYPlWb0rIqAOyK7520LpbetQzKzy+qZwSZl0IQcp1hJZX6Lvrq1iqK0SkC4PkvXoCZrFwWKUWkyUzStc=
+	t=1765884523; cv=none; b=cSrwN44j+jMmFdk9tfFu78o+jHvLDGTCFACfUJ5ol8o2ntOMl7Fo9OnLbzLBsy9jWtL/T/PHTexq0cho7H9jrdOO2ltwhKiTZDKmXE0uVSVlg0/2BDfAulbkAaFXBz3Slw5R7m+qhROl+jvp7/Gic4X6zgcgghDa0smjPM9mlwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888146; c=relaxed/simple;
-	bh=djGzGkf9YbDFb0FeoO22OGSGUY79xAHvZdLlzJMuULM=;
+	s=arc-20240116; t=1765884523; c=relaxed/simple;
+	bh=u/lkwx6QeH+y9seLWfic8c1kUFyWRjR6/fQrjhejFF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tr2+qFpGwjCviEwRW8z4nqzWaImhVT6GJcn98bZOoXU2PHaPaX+lIzivd3WtQbnjRxqsUVGkv5mkQY/lTKKp0Y/APVLWlu1TkBg16BVblmSyxeXuX5lYc7OAFhY1S9oXdhjQv/FaJMuNKza2Ov+Dumbi3QS/MAaK/ntu24KApR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exv4QKc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29752C4CEF1;
-	Tue, 16 Dec 2025 12:29:06 +0000 (UTC)
+	 MIME-Version; b=RliGehBk+KFAIsNbtFgbz6NMOmMza0kusCuPXXvs/SMKyY8xQw5rTJVvsdt5LwJ3S2bN/FlZ7qSprTNEhH0HLxcHAbgFPdIodfkfQTZiH7MTH15SdNjatw3oI4LMd0ISI7JLGKfP1/qRl+XnVnah4F2P8F4tI/md3HKhQlifU+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afpq0XTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258FEC4CEF1;
+	Tue, 16 Dec 2025 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888146;
-	bh=djGzGkf9YbDFb0FeoO22OGSGUY79xAHvZdLlzJMuULM=;
+	s=korg; t=1765884522;
+	bh=u/lkwx6QeH+y9seLWfic8c1kUFyWRjR6/fQrjhejFF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exv4QKc7vrIz+2E6m55nSUVj62UFXV6DmxBHuKwRzE22rVh/w4tFI9e8kuGPMuPmd
-	 LdPlTDUFDEw83LdOmQ76Eq6Klf6UxKy1w7UPAVfmLYEQAtqaZr0C6b093kvJMigGUF
-	 iMqddFGiWvaeLr3MaOUYfpYH04IxV0tjdYH7N96s=
+	b=afpq0XTQoZXKUgnPmcL4GYJDCmT7BLI8FsXlXFLo8HXUn4USrdq9RmNf8fEXVE1W3
+	 XB4a8siso4SZBdpQ+ZtW+0eJLfnE4GiTwbEfs56wvpYA5gPjB0L+h94LvYM6vhhUos
+	 Ul4H2q1a9hCSkcmPw1t70GRi5IlJvizFp2n0QI1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 419/614] backlight: lp855x: Fix lp855x.h kernel-doc warnings
-Date: Tue, 16 Dec 2025 12:13:06 +0100
-Message-ID: <20251216111416.552270761@linuxfoundation.org>
+Subject: [PATCH 6.12 220/354] btrfs: fix leaf leak in an error path in btrfs_del_items()
+Date: Tue, 16 Dec 2025 12:13:07 +0100
+Message-ID: <20251216111328.889272661@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
+[ Upstream commit e7dd1182fcedee7c6097c9f49eba8de94a4364e3 ]
 
-Add a missing struct short description and a missing leading " *" to
-lp855x.h to avoid kernel-doc warnings:
+If the call to btrfs_del_leaf() fails we return without decrementing the
+extra ref we took on the leaf, therefore leaking it. Fix this by ensuring
+we drop the ref count before returning the error.
 
-Warning: include/linux/platform_data/lp855x.h:126 missing initial short
- description on line:
- * struct lp855x_platform_data
-Warning: include/linux/platform_data/lp855x.h:131 bad line:
-   Only valid when mode is PWM_BASED.
-
-Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 751a27615dda ("btrfs: do not BUG_ON() on tree mod log failures at btrfs_del_ptr()")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/lp855x.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
-index ab222dd05bbc2..3b4a891acefe9 100644
---- a/include/linux/platform_data/lp855x.h
-+++ b/include/linux/platform_data/lp855x.h
-@@ -124,12 +124,12 @@ struct lp855x_rom_data {
- };
- 
- /**
-- * struct lp855x_platform_data
-+ * struct lp855x_platform_data - lp855 platform-specific data
-  * @name : Backlight driver name. If it is not defined, default name is set.
-  * @device_control : value of DEVICE CONTROL register
-  * @initial_brightness : initial value of backlight brightness
-  * @period_ns : platform specific pwm period value. unit is nano.
--		Only valid when mode is PWM_BASED.
-+ *		Only valid when mode is PWM_BASED.
-  * @size_program : total size of lp855x_rom_data
-  * @rom_data : list of new eeprom/eprom registers
-  */
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 81735d19feff5..362df6e96717c 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -4599,9 +4599,9 @@ int btrfs_del_items(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+ 			if (btrfs_header_nritems(leaf) == 0) {
+ 				path->slots[1] = slot;
+ 				ret = btrfs_del_leaf(trans, root, path, leaf);
++				free_extent_buffer(leaf);
+ 				if (ret < 0)
+ 					return ret;
+-				free_extent_buffer(leaf);
+ 				ret = 0;
+ 			} else {
+ 				/* if we're still in the path, make sure
 -- 
 2.51.0
 
