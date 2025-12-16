@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F4CC2289
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4A0CC2F0E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E6E23000959
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55E0B310D71F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D467341AD6;
-	Tue, 16 Dec 2025 11:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ED2346A0E;
+	Tue, 16 Dec 2025 12:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwDzfvAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD9GEkSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2C1341645;
-	Tue, 16 Dec 2025 11:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDA32143E;
+	Tue, 16 Dec 2025 12:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884192; cv=none; b=O5vQyUaqF+J1E/lHadiWi2DQlSVhSWxwOf7LTmjKKIBwf1puSOvn2UnTBckUJ5Y++rxbnmGaktFrwTAHel44TBdPdytgggWAI/xPRD8ViaNY9bjUY9S1v2zTXCA3Y71v2JH/21VrfhfV+KG1DJ2hWEvShvPXGduLcZ+AIt37Q4s=
+	t=1765887836; cv=none; b=N7dugZalxeRQ+uYFL02lvNukGF0+LHNoFBz4D3Arz96YFh+d11thxTdoLYvoea8jKUHPrYGtJhp9dhYp9I2kxc1rB0avQANH9Xu7qZ+E4J04zoZHBQTBJqJ9Y5UQSnBetuPALeI+bJJUH2q61BarimI5TcHgIxhfmA1U8677n+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884192; c=relaxed/simple;
-	bh=lKXSLTgqfl7cx4hsY+zttnqVnDhGmZQTcZAt35X+PtI=;
+	s=arc-20240116; t=1765887836; c=relaxed/simple;
+	bh=5iUqACtaUvZQDK5c3kqaMoPhtr8lhX9lrfdngXY3Z0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrFOee1eyR0btaoA/iM9amQFO7/5Dt6ssvdaiWPR+d2kSIx6HeNAKmahRm/vLmLE06f+NYcT4cxHF6GMsMDqc5OZrOQ6s717wwEAzp5C1lOSHoFylJ+ywRwW0f2AWqYbY/OsgevccVmL0z46ps/NwR/hTG7QYtVU5F0e+9MjT/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwDzfvAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AE8C4CEF1;
-	Tue, 16 Dec 2025 11:23:11 +0000 (UTC)
+	 MIME-Version; b=FQu2SaLOLXTB3L1SBW/nb/baZCf6wr98sDy/LpkgMLvOrbq4GvJYbPDEJxqWN0zijw3VnufFh43NjTgytDerslP9YACVkNclXrcV2pbLTDhT1akbdwb2b1tHN4CZEf0TP4nEEBZWyytA6jze+JgvprIqXzBHr9mZtl3xI0eZPv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD9GEkSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4280CC4CEF1;
+	Tue, 16 Dec 2025 12:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884191;
-	bh=lKXSLTgqfl7cx4hsY+zttnqVnDhGmZQTcZAt35X+PtI=;
+	s=korg; t=1765887836;
+	bh=5iUqACtaUvZQDK5c3kqaMoPhtr8lhX9lrfdngXY3Z0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwDzfvAyzrKq6vQkTnzkAeKF7FEuoxHLC7H8py7UKvVSWGmTzqDRf4r8VquDdK2Y6
-	 frwQrQKTwJBwIqkO+tLTlcVIX7mHDvledZ4CQ7QusekfZrsX/IGK7+EUp6SGc82Jo0
-	 2E9T+vttHNsRqlX4ZN6mfWrED+o7Q1XWwJ1UO8ug=
+	b=QD9GEkSD/8NeCHj3rOt7qvoFHtbkv7sh5b18HxXcBI9H2wFgFSLc5h9AcHZPGDFaX
+	 MFMxifMLlKcc+gLdYzLUYSvRX7uKw1DfPbNftEcZX3a+xNM0mBkNSi0bibrPKtkUBU
+	 gI2EtGqmwtE9MD4ag/AGLLN0BkLKdUcPV2YCEPcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yegor Yefremov <yegorslists@googlemail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/354] ARM: dts: am335x-netcom-plus-2xx: add missing GPIO labels
+Subject: [PATCH 6.18 319/614] fs/ntfs3: out1 also needs to put mi
 Date: Tue, 16 Dec 2025 12:11:26 +0100
-Message-ID: <20251216111325.236966136@linuxfoundation.org>
+Message-ID: <20251216111412.922507011@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit d0c4b1723c419a18cb434903c7754954ecb51d35 ]
+[ Upstream commit 4d78d1173a653acdaf7500a32b8dc530ca4ad075 ]
 
-Fixes: 8e9d75fd2ec2 ("ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 2-port devices")
+After ntfs_look_free_mft() executes successfully, all subsequent code
+that fails to execute must put mi.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-Link: https://lore.kernel.org/r/20251007103851.3765678-1-yegorslists@googlemail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ntfs3/frecord.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
-index f66d57bb685ee..f0519ab301416 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
-@@ -222,10 +222,10 @@ &gpio3 {
- 		"ModeA1",
- 		"ModeA2",
- 		"ModeA3",
--		"NC",
--		"NC",
--		"NC",
--		"NC",
-+		"ModeB0",
-+		"ModeB1",
-+		"ModeB2",
-+		"ModeB3",
- 		"NC",
- 		"NC",
- 		"NC",
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 8f9fe1d7a6908..a557e3ec0d4c4 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1015,9 +1015,9 @@ static int ni_ins_attr_ext(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le,
+ 
+ out2:
+ 	ni_remove_mi(ni, mi);
+-	mi_put(mi);
+ 
+ out1:
++	mi_put(mi);
+ 	ntfs_mark_rec_free(sbi, rno, is_mft);
+ 
+ out:
 -- 
 2.51.0
 
