@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-202310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EB4CC2D97
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9278CC3137
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 363073191A5E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F54A303D267
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0FD36D4F5;
-	Tue, 16 Dec 2025 12:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4506136923B;
+	Tue, 16 Dec 2025 12:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5sVbEqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of78d9WM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C4236D4F0;
-	Tue, 16 Dec 2025 12:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B1C36922D;
+	Tue, 16 Dec 2025 12:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887486; cv=none; b=fjVZY5QHJ/8UlaedtVpqlcJoY1pGgXhI9bI32U510UJLgTGNzoCvxtHKM7jIjNKx7SPtt0Pp356IdZAYZROCDPPYkx0+o2gsy/OFaMURB8EVTojZVuUoVo2Q/+56J114dJRatOOBj7zqqcZwGmrMoAmrUn0tT2FAgDDjZi9EmA4=
+	t=1765887381; cv=none; b=GfVq4iF5VDwP0cFzsTZ9CPBt/lI7PAsdNJWvKX/vAws5MWwox2unoZ8b7dQwUM6cFfQD7qUBcz5HOy973PjqrjSyflMcf1lIT4WBdr6k1/gdvqr4TLpegF7kuhNE8isSo7SOu5p8b3P0rPkxR/riZhgTzREXdwZsE2nBqVNhSzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887486; c=relaxed/simple;
-	bh=7aPp2UTEyqNL3DjrLKNb+lwy9o48Ad2hDQtnmRhmiD4=;
+	s=arc-20240116; t=1765887381; c=relaxed/simple;
+	bh=fAsSxmlGKU0ds9PssQKL53/GxZlS5nzqn2elMf2OVIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCmEn1atFXNtyWHhUEAn+DsbC58Sxmn8WPVkS8P/K/HGWFMv0XvxlyJPkMSCcDJ6cDj/chTw90vjuHbXuoHVm10/9Lsc92G1NhAvroC0DmTA1Iiuz9juZNYq6+0FfpfFPrkiKQR8m2gHzwPqiZyu1pA4lt6EpRp39EUGPADb+us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5sVbEqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B532C4CEF1;
-	Tue, 16 Dec 2025 12:18:05 +0000 (UTC)
+	 MIME-Version; b=GV+P6LJNDKAtKTQlGPpjkvguv98SAqhE6jZTVUUw/XT/NDXAw0Xaocx0G8U8KBFKM2q+Mpx902Ct/iifrpI6NuqiwhwEgGsd/3nuXRlwPx18Duhw3wrsWnZAJvvE9GfZGJ+KnnGT8QYOZuRrU1dc1boxyQf95gEEi4KA+QWVfCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of78d9WM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FE9C16AAE;
+	Tue, 16 Dec 2025 12:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887486;
-	bh=7aPp2UTEyqNL3DjrLKNb+lwy9o48Ad2hDQtnmRhmiD4=;
+	s=korg; t=1765887380;
+	bh=fAsSxmlGKU0ds9PssQKL53/GxZlS5nzqn2elMf2OVIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5sVbEqMVa6Vb/veDFP3e7awmPb//TnaAWc2CmSPNJOte3VymhXzltkd0LaU0oDMB
-	 QIdszMndSo34nw45AwgTqBeYaxdacqodRxxTpvvL1/fVwrzQLr9o+vbdD0/nGmqfQQ
-	 HAGR7/7rKasaDBCoNmjpcA6qAFyE40g1Qp3X9FkM=
+	b=of78d9WMmUFfcG/5dJFKpP+aFx+bDITbqK4tbOgqT8Jv9sa0K4uNvBDAITCw2RPry
+	 ZMTparyc8PkvF1ej/2mzPNYIMoKAeNDs6uakbLDoVLxayN34u2u8v2aow9fpLju8Sz
+	 WsissbHiJ7SgVfqYvHAz9CXBweCPkCPy9d7BXjNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Changzhong <zhangchangzhong@huawei.com>,
-	Wang Liang <wangliang74@huawei.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 212/614] locktorture: Fix memory leak in param_set_cpumask()
-Date: Tue, 16 Dec 2025 12:09:39 +0100
-Message-ID: <20251216111409.056142223@linuxfoundation.org>
+Subject: [PATCH 6.18 213/614] wifi: rtw89: usb: use common error path for skbs in rtw89_usb_rx_handler()
+Date: Tue, 16 Dec 2025 12:09:40 +0100
+Message-ID: <20251216111409.094110884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -66,82 +64,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit e52b43883d084a9af263c573f2a1bd1ca5088389 ]
+[ Upstream commit 28a45575289f3292aa9cb7bacae18ba3ee7a6adf ]
 
-With CONFIG_CPUMASK_OFFSTACK=y, the 'bind_writers' buffer is allocated via
-alloc_cpumask_var() in param_set_cpumask(). But it is not freed, when
-setting the module parameter multiple times by sysfs interface or removing
-module.
+Allow adding rx_skb to rx_free_queue for later reuse on the common error
+handling path, otherwise free it.
 
-Below kmemleak trace is seen for this issue:
+Found by Linux Verification Center (linuxtesting.org).
 
-unreferenced object 0xffff888100aabff8 (size 8):
-  comm "bash", pid 323, jiffies 4295059233
-  hex dump (first 8 bytes):
-    07 00 00 00 00 00 00 00                          ........
-  backtrace (crc ac50919):
-    __kmalloc_node_noprof+0x2e5/0x420
-    alloc_cpumask_var_node+0x1f/0x30
-    param_set_cpumask+0x26/0xb0 [locktorture]
-    param_attr_store+0x93/0x100
-    module_attr_store+0x1b/0x30
-    kernfs_fop_write_iter+0x114/0x1b0
-    vfs_write+0x300/0x410
-    ksys_write+0x60/0xd0
-    do_syscall_64+0xa4/0x260
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This issue can be reproduced by:
-  insmod locktorture.ko bind_writers=1
-  rmmod locktorture
-
-or:
-  insmod locktorture.ko bind_writers=1
-  echo 2 > /sys/module/locktorture/parameters/bind_writers
-
-Considering that setting the module parameter 'bind_writers' or
-'bind_readers' by sysfs interface has no real effect, set the parameter
-permissions to 0444. To fix the memory leak when removing module, free
-'bind_writers' and 'bind_readers' memory in lock_torture_cleanup().
-
-Fixes: 73e341242483 ("locktorture: Add readers_bind and writers_bind module parameters")
-Suggested-by: Zhang Changzhong <zhangchangzhong@huawei.com>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: 2135c28be6a8 ("wifi: rtw89: Add usb.{c,h}")
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251104135720.321110-2-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/locktorture.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/usb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
-index ce0362f0a8719..6567e5eeacc0e 100644
---- a/kernel/locking/locktorture.c
-+++ b/kernel/locking/locktorture.c
-@@ -103,8 +103,8 @@ static const struct kernel_param_ops lt_bind_ops = {
- 	.get = param_get_cpumask,
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index 6cf89aee252ed..e8e064cf7e0ad 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -410,8 +410,7 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
  
--module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0644);
--module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0644);
-+module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0444);
-+module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0444);
+ 		if (skb_queue_len(&rtwusb->rx_queue) >= RTW89_USB_MAX_RXQ_LEN) {
+ 			rtw89_warn(rtwdev, "rx_queue overflow\n");
+-			dev_kfree_skb_any(rx_skb);
+-			continue;
++			goto free_or_reuse;
+ 		}
  
- long torture_sched_setaffinity(pid_t pid, const struct cpumask *in_mask, bool dowarn);
+ 		memset(&desc_info, 0, sizeof(desc_info));
+@@ -422,7 +421,7 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
+ 			rtw89_debug(rtwdev, RTW89_DBG_HCI,
+ 				    "failed to allocate RX skb of size %u\n",
+ 				    desc_info.pkt_size);
+-			continue;
++			goto free_or_reuse;
+ 		}
  
-@@ -1211,6 +1211,10 @@ static void lock_torture_cleanup(void)
- 			cxt.cur_ops->exit();
- 		cxt.init_called = false;
- 	}
-+
-+	free_cpumask_var(bind_readers);
-+	free_cpumask_var(bind_writers);
-+
- 	torture_cleanup_end();
- }
+ 		pkt_offset = desc_info.offset + desc_info.rxd_len;
+@@ -432,6 +431,7 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
  
+ 		rtw89_core_rx(rtwdev, &desc_info, skb);
+ 
++free_or_reuse:
+ 		if (skb_queue_len(&rtwusb->rx_free_queue) >= RTW89_USB_RX_SKB_NUM)
+ 			dev_kfree_skb_any(rx_skb);
+ 		else
 -- 
 2.51.0
 
