@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F09CC37A4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2DDCC227E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB79B307DA58
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C43304AC88
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE05A34FF49;
-	Tue, 16 Dec 2025 11:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8C433DED4;
+	Tue, 16 Dec 2025 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNfd54QY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhZaTviQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B9B34F49A;
-	Tue, 16 Dec 2025 11:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF99033B961;
+	Tue, 16 Dec 2025 11:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885671; cv=none; b=EX3SNDxoUvx5NDRykE8mvPniGXjwu/VSyGeOWMaDO2Kv030hnYPjDDkWBtdF9UwCFHKTpZLjyHOYdNy2h8t3t6CYt8IvEGRoLSmMXvY+Wq5+muIZ6eCnKZm7UJUSbyjH71iC0RDv71W/dn+OH7XhyxePCa24gnO5+4vqKQIBheQ=
+	t=1765883961; cv=none; b=kPIZx/rJ6fqkUuaikCQb+CFUCJ/dwfNaXxoKDvrm1KLoMFwZTXK5PlKSRnmkp5ZQX5GKSCufU7xDmmIdznH2fhZzx9h33rkGPpIOtKTH7Sk60vMKPrQfSX/l3GxbznK4WccyHOab7zV/6XNRlWKMWiZuoabqV7XAZUjS0jb7U5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885671; c=relaxed/simple;
-	bh=ZFkjvYh+/vff6A4o1qAcrvbHt3EW/30zHXn4f21COss=;
+	s=arc-20240116; t=1765883961; c=relaxed/simple;
+	bh=NOwY75yUrXSjg+iFdp0ZiU9ir0ItlavmU75pVKdPpHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UygJv6yi4uepR1JTR7PyhhzWF9Xulw3dSr3jKnqdAvm3jeTUiUGNPrm9f1eYh6cds3rQF+u2FaFaksLuU60JMI3NTPxW+xYyMmaqMxMKgbK3q0hmURpHwVEkcQ763kvUBJ4wYKFsvP7Iwd/rYYG2PUU1Fh3KHTZ8DOUdval4BUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNfd54QY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A3CC4CEF1;
-	Tue, 16 Dec 2025 11:47:50 +0000 (UTC)
+	 MIME-Version; b=mNg/9uAHs9o/Vo1UqfK6QuN7O3EfLVa4//LkqHUJ0m26OazJArUvL8+W46TdqUcptyxetIwgIEg3gx2IxoJ/vW/VmH1DJPEwN/LMMq7mA7Uw9UcH5/B6g23TFgas6S0BGtUSeApy7cWYO+hif2y43eXuui0wOnHQZQd6i8t4yyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhZaTviQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC71C4CEF1;
+	Tue, 16 Dec 2025 11:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885671;
-	bh=ZFkjvYh+/vff6A4o1qAcrvbHt3EW/30zHXn4f21COss=;
+	s=korg; t=1765883961;
+	bh=NOwY75yUrXSjg+iFdp0ZiU9ir0ItlavmU75pVKdPpHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNfd54QYbkiMvAxLXoeMfbXUHA/D/bd+T1SNPOVceJPZ6hSecW1vQfmNwSLDjXXIp
-	 QIvkPhOoLzOQrzH6x/ABux/GpN4q/iktFEOcrLFsIO2syUcgSNgWpGLJ3y7YWiBosF
-	 sU6Qf9SnqxYcbcftyZAmcDvH3PNpeuec1GC/kq+U=
+	b=UhZaTviQ+kYJ/zo00SGo/Z7F5hD/8N38yMjOPpJhSgnmWCSHaDWwQFRJxCyZ+Z9dK
+	 /d7QnOWAJ6C39euawW9vJCReXQtcmabPt+98jn1tIKPcXbEsKxegwROdonqrreZKjN
+	 gDE9JyXQcat0GLypyAB0YgX8rJVQdxEHoIxV89CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 176/507] coresight: ETR: Fix ETR buffer use-after-free issue
+Subject: [PATCH 6.12 050/354] arm64: dts: freescale: imx8mp-venice-gw7905-2x: remove duplicate usdhc1 props
 Date: Tue, 16 Dec 2025 12:10:17 +0100
-Message-ID: <20251216111351.893023041@linuxfoundation.org>
+Message-ID: <20251216111322.729489503@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit 35501ac3c7d40a7bb9568c2f89d6b56beaf9bed3 ]
+[ Upstream commit 8b7e58ab4a02601a0e86e9f9701d4612038d8b29 ]
 
-When ETR is enabled as CS_MODE_SYSFS, if the buffer size is changed
-and enabled again, currently sysfs_buf will point to the newly
-allocated memory(buf_new) and free the old memory(buf_old). But the
-etr_buf that is being used by the ETR remains pointed to buf_old, not
-updated to buf_new. In this case, it will result in a memory
-use-after-free issue.
+Remove the un-intended duplicate properties from usdhc1.
 
-Fix this by checking ETR's mode before updating and releasing buf_old,
-if the mode is CS_MODE_SYSFS, then skip updating and releasing it.
-
-Fixes: bd2767ec3df2 ("coresight: Fix run time warnings while reusing ETR buffer")
-Signed-off-by: Xiaoqi Zhuang <xiaoqi.zhuang@oss.qualcomm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/20251021-fix_etr_issue-v3-1-99a2d066fee2@oss.qualcomm.com
+Fixes: 0d5b288c2110e ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-tmc-etr.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-index b07fcdb3fe1a8..800be06598c1b 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-@@ -1250,6 +1250,13 @@ static struct etr_buf *tmc_etr_get_sysfs_buffer(struct coresight_device *csdev)
- 	 * with the lock released.
- 	 */
- 	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
-+
-+	/*
-+	 * If the ETR is already enabled, continue with the existing buffer.
-+	 */
-+	if (coresight_get_mode(csdev) == CS_MODE_SYSFS)
-+		goto out;
-+
- 	sysfs_buf = READ_ONCE(drvdata->sysfs_buf);
- 	if (!sysfs_buf || (sysfs_buf->size != drvdata->size)) {
- 		raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index 6c75a5ecf56bb..45c7082c9df71 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -421,9 +421,6 @@ &usdhc1 {
+ 	bus-width = <4>;
+ 	non-removable;
+ 	status = "okay";
+-	bus-width = <4>;
+-	non-removable;
+-	status = "okay";
+ };
+ 
+ /* eMMC */
 -- 
 2.51.0
 
