@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86AAFCC29B4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC322CC21CD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA5EE3015D09
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 566E5302CAE9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F5736CDE6;
-	Tue, 16 Dec 2025 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147C533B6EA;
+	Tue, 16 Dec 2025 11:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCjj4lU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRtqtRkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CA736CE08;
-	Tue, 16 Dec 2025 12:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47F63358B0;
+	Tue, 16 Dec 2025 11:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887467; cv=none; b=l+kh8GEZBqAmsxP56AOvvaF62Y+ANvmuIGxc4FlEEG8FMgFTKnov70fV22xNSZXDzo/8jQ9dlqmtIpEJ6TZYsLvYI6/lR30iV8fTbSZApkYlJTavay9s1yvQfRzZZtwk8h8u/ZjUnbXyVyecN73cFjLYIK5pKZv3iiNrul46sIY=
+	t=1765883918; cv=none; b=BpDIROFEtchnRQzPoY+FaiDmBybv/J7NSKNhivxsjhdoAux2e01vkvQagm4bc/kdd8j4gBRnINB5zIJUBwUoXpr/sDQgvyYx1btZGLkDYaGSdb5zn2zfChu6nO7V+5YSDZ/eZeBU3IoQbON2zHexr8AdCPnYmS5tRSWcHvy4kK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887467; c=relaxed/simple;
-	bh=/he7d9Jm5/SbHqXBKlqJFtkzIRITiX79WLaDaKdapcc=;
+	s=arc-20240116; t=1765883918; c=relaxed/simple;
+	bh=RU5jHjNsplbT3KXwJBKCoOy9FklilujuUAyvv6KAgPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHVq49i930QI6PVK/BUMUadP7cHUYiNlo6E7SNJQul7F2vCROSmGaQVU0xpSAk/ilCWMqzCKUfhH/tbJaIVE9nWAgl0xVVO23ZFks/ZFMw3GAOD4h1HRlac22jm+95RPAy9TJNIdrOAK7gghowsbHvi0I/1giFnJPZKAq9IkBbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCjj4lU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E06C4CEF1;
-	Tue, 16 Dec 2025 12:17:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LGAxZBv48ZZp0ng+Fbrq7en5ZEjCz0j+FxhOIEFxtaXI5K641FiDl5/8tZRddvsPYvwDKMB8fbjLB1/qV2C65DXHFwB5V2ZhBsqT+Tv5WUigllfuHxbROu3aq56k4YzSZWfSp1fmhYnEpxMlKT1IzttADeHy+gZ6bV2NRJjjLmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRtqtRkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09463C4CEF1;
+	Tue, 16 Dec 2025 11:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887467;
-	bh=/he7d9Jm5/SbHqXBKlqJFtkzIRITiX79WLaDaKdapcc=;
+	s=korg; t=1765883918;
+	bh=RU5jHjNsplbT3KXwJBKCoOy9FklilujuUAyvv6KAgPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCjj4lU5y9Bqu+ASycUgMPpXgjV+czupcHZj4lnejMMIcfmJUCkpZRjLWMY4qLeLH
-	 tKv2YuXGvvlQ9MvMFB9AwaobWijjBqns+yj/3ptfKneo7WVWfqJm+s8Pe0fPQUs6ZG
-	 rdtlpohBSvsJmIX+5HsCSSTj6Y3v8hAC1E7EO76w=
+	b=oRtqtRkUDngJ25Rz7z7GRK4CFP7hEQ/wFRCxqg3mCyCD0A0DDejc529jZzaB70rhp
+	 jxO1UFHeo+OiV1BgDsbsZOj8NpMWeithe2zabux6/PWKPpceJWuv6rkIEnyn/qt2C0
+	 lbCUEfWX8Kcu+AXIsAa8ERJ8uTSnojEYO3FYb2eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 238/614] ntfs3: init run lock for extend inode
+Subject: [PATCH 6.12 038/354] ntfs3: fix uninit memory after failed mi_read in mi_format_new
 Date: Tue, 16 Dec 2025 12:10:05 +0100
-Message-ID: <20251216111409.990931186@linuxfoundation.org>
+Message-ID: <20251216111322.295188376@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
+[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
 
-After setting the inode mode of $Extend to a regular file, executing the
-truncate system call will enter the do_truncate() routine, causing the
-run_lock uninitialized error reported by syzbot.
+Fix a KMSAN un-init bug found by syzkaller.
 
-Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
-a regular file, the do_truncate() routine would not be entered.
+ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
+uptodate. We do not bring the buffer uptodate before setting it as
+uptodate. If the buffer were to not be uptodate, it could mean adding a
+buffer with un-init data to the mi record. Attempting to load that record
+will trigger KMSAN.
 
-Add the run_lock initialization when loading $Extend.
+Avoid this by setting the buffer as uptodate, if it’s not already, by
+overwriting it.
 
-syzbot reported:
-INFO: trying to register non-static key.
-Call Trace:
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
- register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
- __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
- ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
- ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
-
-Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
-Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
-Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
+Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/fsntfs.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 3a0676871bade..05004f8880ce6 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -472,6 +472,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
- 		mode = S_IFREG;
-+		init_rwsem(&ni->file.run_lock);
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 6c73e93afb478..57933576212bb 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1373,7 +1373,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
+ 				}
+ 				if (buffer_locked(bh))
+ 					__wait_on_buffer(bh);
+-				set_buffer_uptodate(bh);
++
++				lock_buffer(bh);
++				if (!buffer_uptodate(bh))
++				{
++					memset(bh->b_data, 0, blocksize);
++					set_buffer_uptodate(bh);
++				}
++				unlock_buffer(bh);
+ 			} else {
+ 				bh = ntfs_bread(sb, block);
+ 				if (!bh) {
 -- 
 2.51.0
 
