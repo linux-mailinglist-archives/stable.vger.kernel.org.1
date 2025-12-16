@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-202505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82575CC495B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:11:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BF7CC28B1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F084330216BE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D05C31A1E19
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCFC3557E5;
-	Tue, 16 Dec 2025 12:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E62734F24E;
+	Tue, 16 Dec 2025 11:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAgQ2M90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP31f4ah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EB5355041;
-	Tue, 16 Dec 2025 12:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416733502A4;
+	Tue, 16 Dec 2025 11:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888117; cv=none; b=ZUmwgH3F14Jgf9TKyjqtI+r0jSx40uKTq1GiiKaDwsT4XCALtRdL+IPebHB+0wWkWA0htjjmDTB5xTSZdHk1jY/Q9Mltthif8oSiFqduUM/6iML1IvM8BEpFQMK+UUJReFd08M1YbkFBNZjLdCm4/7K8MOtsg0p7PZMeh4ThsH8=
+	t=1765886186; cv=none; b=jTmOrquLkDrhBajJ+EuQd5prN+0S+VbGKIg7o29FisPvuOoBekDIh8Xg4PCdfaL/T/zgfkDYtiJO7ocHxt9GCbOKa6qOihVxHAlvd0wrZXlLcK03TdfwUJ7atF4MNO/MCWq43DFrN61jdXLFufs5KVxyUahOSpAd/483mR0fsKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888117; c=relaxed/simple;
-	bh=nJ/w4O/qsr5BMs8X05a/hdUYRO+kXYYGW4KVRPS58Lc=;
+	s=arc-20240116; t=1765886186; c=relaxed/simple;
+	bh=zTRnUs8LngfGLrUFkTGdw7ly1RSi2Rz7H3KC7TqshpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hllri71UKjE4D+uUzYuDIRKqfpjo216PDDwbIOqwoakPSJiK8gCv5Hzck7xKa6CquRsmckeYyS773wHpiJ+fojohvpVPc+QG0ElRud2bz2n1lsm9avmbMcd/4AjNPNj4lBhfL7d9PJwz4BhyZzG6A8mP3m09XdBLmr1qxTtZsrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAgQ2M90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB179C4CEF1;
-	Tue, 16 Dec 2025 12:28:36 +0000 (UTC)
+	 MIME-Version; b=D1XOgSPDfS0eIVoyNq1Wtu+3o9QHnWXKf4M0fiZ0mv/Sz5UkHgKfnnwgFGr36G3ikHbi6lKNsjGuOSSxplKO9cEjsBYkHBfiHp8RDAzt/mI16l+urFZYv6Zx3cJ0E9Rf1uMlJYzBLkq3P1s9LREiCrG3P9R0FSBDIjXeAJDyoxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP31f4ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C842C4CEF1;
+	Tue, 16 Dec 2025 11:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888117;
-	bh=nJ/w4O/qsr5BMs8X05a/hdUYRO+kXYYGW4KVRPS58Lc=;
+	s=korg; t=1765886186;
+	bh=zTRnUs8LngfGLrUFkTGdw7ly1RSi2Rz7H3KC7TqshpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAgQ2M900ZRL6Jo/0G0g9RywYXucujo2Wu7tflKu/E+gSycDUBv74jRqMNUdeHINN
-	 NFUastrAdLPu88GaQrBhR7PbaYGe/ilk3GNO6jdwLNVBs2ccsDMbpC8F1wYU/x+6Ed
-	 8Z1DfDt7sfJtGlywtQXC6wItw+aOsLc5XDJwr4sI=
+	b=MP31f4ah0eGIOZjH8U9tLBpl87cpliNOivqgFBFm+lA/AMCs76xnL8t9pP4E1ao3Q
+	 Ij4cJmCojGhpJQHvs8zbPpB5ec7aK5kE8q9mWvSClGyvkHoa0zbkaib56J++CtqOlZ
+	 3Pib9sAGTazCieSFfqEB/WenP2z8fNyeVKczjKaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 437/614] clocksource/drivers/nxp-stm: Prevent driver unbind
-Date: Tue, 16 Dec 2025 12:13:24 +0100
-Message-ID: <20251216111417.208220289@linuxfoundation.org>
+Subject: [PATCH 6.17 364/507] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS select FW_LOADER
+Date: Tue, 16 Dec 2025 12:13:25 +0100
+Message-ID: <20251216111358.646009876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alexandre Courbot <acourbot@nvidia.com>
 
-[ Upstream commit 6a2416892e8942f5e2bfe9b85c0164f410a53a2d ]
+[ Upstream commit 9906efa545d1d2cf25a614eeb219d3f8d5a302cd ]
 
-Clockevents cannot be deregistered so suppress the bind attributes to
-prevent the driver from being unbound and releasing the underlying
-resources after registration.
+The use of firmware_loader is an implementation detail of drivers rather
+than a dependency. FW_LOADER is typically selected rather than depended
+on; the Rust abstractions should do the same thing.
 
-Even if the driver can currently only be built-in, also switch to
-builtin_platform_driver() to prevent it from being unloaded should
-modular builds ever be enabled.
-
-Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20251111153226.579-4-johan@kernel.org
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Link: https://patch.msgid.link/20251106-b4-select-rust-fw-v3-1-771172257755@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-nxp-stm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/firmware_loader/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
-index c320d764b12e2..1ab907233f481 100644
---- a/drivers/clocksource/timer-nxp-stm.c
-+++ b/drivers/clocksource/timer-nxp-stm.c
-@@ -487,9 +487,10 @@ static struct platform_driver nxp_stm_driver = {
- 	.driver	= {
- 		.name		= "nxp-stm",
- 		.of_match_table	= nxp_stm_of_match,
-+		.suppress_bind_attrs = true,
- 	},
- };
--module_platform_driver(nxp_stm_driver);
-+builtin_platform_driver(nxp_stm_driver);
+diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+index 752b9a9bea038..15eff8a4b5053 100644
+--- a/drivers/base/firmware_loader/Kconfig
++++ b/drivers/base/firmware_loader/Kconfig
+@@ -38,7 +38,7 @@ config FW_LOADER_DEBUG
+ config RUST_FW_LOADER_ABSTRACTIONS
+ 	bool "Rust Firmware Loader abstractions"
+ 	depends on RUST
+-	depends on FW_LOADER=y
++	select FW_LOADER
+ 	help
+ 	  This enables the Rust abstractions for the firmware loader API.
  
- MODULE_DESCRIPTION("NXP System Timer Module driver");
- MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
