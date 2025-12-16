@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3484CCC21BD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECB9CC2CC2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 578083006734
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E5E63018324
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C35233DEE1;
-	Tue, 16 Dec 2025 11:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE82C34575D;
+	Tue, 16 Dec 2025 11:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enBpR8rB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuLdYcrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E492459D7;
-	Tue, 16 Dec 2025 11:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860423277AF;
+	Tue, 16 Dec 2025 11:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883928; cv=none; b=RKRZzf0LBNlspMXH1uhmzl3QnLcMx83OPIkczFwf0nRaCTqCmhtfAQINKojIQKcQjEq7LeX2knbKvGsyMxXRUTPZ684PX76lKE7bRQNx/6Cm1oQ/p9W+ORxbVS+sUNwpew0lIDtGGncq21lU+6mdnmwWWLnJZZhfcGQntXvbNmw=
+	t=1765885536; cv=none; b=Y/EopXaZuHM7M6LW1CAUS1vhAqNEV0zhHxj4JYFulyR0tc81eIdyifTGbEQDacL6iRz+PvpMt3KFIKOHIK4M+j3ilkXwC3+hFzSIIx94JRL4eiiM0r0eVvk8+ia64cxKCIKo5g8JkLUUKp7/EWu/6QxP5P6NkqvhJdP2FVfJYx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883928; c=relaxed/simple;
-	bh=vQ9vtFmQfdKsI6xfFhBLBililNiSyxrtPYJ8cA9ZR88=;
+	s=arc-20240116; t=1765885536; c=relaxed/simple;
+	bh=3XZwB1t+0GuyBIXRgnNUcAy834maW9B057xMI4DO9lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrDsSgYUYMRyLLU+MbEeIelUtVnfPk2h5m0fAVxOpfKwZHxAGaD3q9aRdcdfxzMEDCziX+qPic9I3ukJDbh3tTyOELH5R9i6iakXkrSeGbRUTO0bsSfHB+jR6WmfiWiBfpBVKX8KcR56rlfM1lygmMcJ7puahm4u9jJ+Y1nXbaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enBpR8rB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDD2C4CEF1;
-	Tue, 16 Dec 2025 11:18:47 +0000 (UTC)
+	 MIME-Version; b=O2NzOB2UzVz24V3tnVAFvVl2MZn0vy12KG/73Enjed7dkh4h7i2rWgjwGpJFmhsAIKf9lukufrXE4DnspRjqR40bmK/Cn7NB42YdbuKV+HE58MguReXnmeCLjoA+usu/r0lbrB1aLYrfu3f4RHJ/+V4vcl2x6cAClNBHEDSnLec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuLdYcrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD605C4CEF1;
+	Tue, 16 Dec 2025 11:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883928;
-	bh=vQ9vtFmQfdKsI6xfFhBLBililNiSyxrtPYJ8cA9ZR88=;
+	s=korg; t=1765885536;
+	bh=3XZwB1t+0GuyBIXRgnNUcAy834maW9B057xMI4DO9lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enBpR8rBVHu1S5c9gdS5NRGPX/jAqNSJaAOImN6es4L23k/rYCF4dc9XwG9UajSUU
-	 zWDaf133DUrhtas57wVFz4GlZMelr3+meHSoBMl5tcOYaJcHlkhrPahh9nCKLuotK8
-	 +Etg7C8qZsfQT3lTwozdLVMbijKMOQEJGfQK8yUQ=
+	b=wuLdYcrA1Ss8vlfmU5jRRZyW3tTylYfkPpQpwKmITT4nhaV8GxmzgbYYlUt09A06k
+	 k0IKg7lIRmg9CPcaKO/I9NJ3Yv5EnUDRJhPnqdAGu2MFT5LhXlBj2OjjuoapqgAWry
+	 eeOH2IwNYvTjCLWVoZaW+bqNZgDhkOwbSWerzAj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Thomas Richard (TI.com)" <thomas.richard@bootlin.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/354] dt-bindings: clock: qcom,x1e80100-gcc: Add missing USB4 clocks/resets
+Subject: [PATCH 6.17 167/507] firmware: ti_sci: Set IO Isolation only if the firmware is capable
 Date: Tue, 16 Dec 2025 12:10:08 +0100
-Message-ID: <20251216111322.402606432@linuxfoundation.org>
+Message-ID: <20251216111351.569176549@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,187 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
 
-[ Upstream commit e4c4f5a1ae18a7828c2bfaf9dfe2473632b92d1b ]
+[ Upstream commit 999e9bc953e321651d69556fdd5dfd178f96f128 ]
 
-Some of the USB4 muxes, RCGs and resets were not initially described.
+Prevent calling ti_sci_cmd_set_io_isolation() on firmware
+that does not support the IO_ISOLATION capability. Add the
+MSG_FLAG_CAPS_IO_ISOLATION capability flag and check it before
+attempting to set IO isolation during suspend/resume operations.
 
-Add indices for them to allow extending the driver.
+Without this check, systems with older firmware may experience
+undefined behavior or errors when entering/exiting suspend states.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251003-topic-hamoa_gcc_usb4-v2-1-61d27a14ee65@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 8abe970efea5 ("clk: qcom: gcc-x1e80100: Add missing USB4 clocks/resets")
+Fixes: ec24643bdd62 ("firmware: ti_sci: Add system suspend and resume call")
+Signed-off-by: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://patch.msgid.link/20251031-ti-sci-io-isolation-v2-1-60d826b65949@bootlin.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/clock/qcom,x1e80100-gcc.yaml     | 62 +++++++++++++++++--
- include/dt-bindings/clock/qcom,x1e80100-gcc.h | 61 ++++++++++++++++++
- 2 files changed, 119 insertions(+), 4 deletions(-)
+ drivers/firmware/ti_sci.c | 21 +++++++++++++--------
+ drivers/firmware/ti_sci.h |  2 ++
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,x1e80100-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,x1e80100-gcc.yaml
-index 5951a60ab0815..61ff277eae544 100644
---- a/Documentation/devicetree/bindings/clock/qcom,x1e80100-gcc.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,x1e80100-gcc.yaml
-@@ -28,9 +28,36 @@ properties:
-       - description: PCIe 5 pipe clock
-       - description: PCIe 6a pipe clock
-       - description: PCIe 6b pipe clock
--      - description: USB QMP Phy 0 clock source
--      - description: USB QMP Phy 1 clock source
--      - description: USB QMP Phy 2 clock source
-+      - description: USB4_0 QMPPHY clock source
-+      - description: USB4_1 QMPPHY clock source
-+      - description: USB4_2 QMPPHY clock source
-+      - description: USB4_0 PHY DP0 GMUX clock source
-+      - description: USB4_0 PHY DP1 GMUX clock source
-+      - description: USB4_0 PHY PCIE PIPEGMUX clock source
-+      - description: USB4_0 PHY PIPEGMUX clock source
-+      - description: USB4_0 PHY SYS PCIE PIPEGMUX clock source
-+      - description: USB4_1 PHY DP0 GMUX 2 clock source
-+      - description: USB4_1 PHY DP1 GMUX 2 clock source
-+      - description: USB4_1 PHY PCIE PIPEGMUX clock source
-+      - description: USB4_1 PHY PIPEGMUX clock source
-+      - description: USB4_1 PHY SYS PCIE PIPEGMUX clock source
-+      - description: USB4_2 PHY DP0 GMUX 2 clock source
-+      - description: USB4_2 PHY DP1 GMUX 2 clock source
-+      - description: USB4_2 PHY PCIE PIPEGMUX clock source
-+      - description: USB4_2 PHY PIPEGMUX clock source
-+      - description: USB4_2 PHY SYS PCIE PIPEGMUX clock source
-+      - description: USB4_0 PHY RX 0 clock source
-+      - description: USB4_0 PHY RX 1 clock source
-+      - description: USB4_1 PHY RX 0 clock source
-+      - description: USB4_1 PHY RX 1 clock source
-+      - description: USB4_2 PHY RX 0 clock source
-+      - description: USB4_2 PHY RX 1 clock source
-+      - description: USB4_0 PHY PCIE PIPE clock source
-+      - description: USB4_0 PHY max PIPE clock source
-+      - description: USB4_1 PHY PCIE PIPE clock source
-+      - description: USB4_1 PHY max PIPE clock source
-+      - description: USB4_2 PHY PCIE PIPE clock source
-+      - description: USB4_2 PHY max PIPE clock source
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index 49fd2ae01055d..8d96a3c12b36a 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -3751,9 +3751,11 @@ static int __maybe_unused ti_sci_suspend_noirq(struct device *dev)
+ 	struct ti_sci_info *info = dev_get_drvdata(dev);
+ 	int ret = 0;
  
-   power-domains:
-     description:
-@@ -63,7 +90,34 @@ examples:
-                <&pcie6b_phy>,
-                <&usb_1_ss0_qmpphy 0>,
-                <&usb_1_ss1_qmpphy 1>,
--               <&usb_1_ss2_qmpphy 2>;
-+               <&usb_1_ss2_qmpphy 2>,
-+               <&usb4_0_phy_dp0_gmux_clk>,
-+               <&usb4_0_phy_dp1_gmux_clk>,
-+               <&usb4_0_phy_pcie_pipegmux_clk>,
-+               <&usb4_0_phy_pipegmux_clk>,
-+               <&usb4_0_phy_sys_pcie_pipegmux_clk>,
-+               <&usb4_1_phy_dp0_gmux_2_clk>,
-+               <&usb4_1_phy_dp1_gmux_2_clk>,
-+               <&usb4_1_phy_pcie_pipegmux_clk>,
-+               <&usb4_1_phy_pipegmux_clk>,
-+               <&usb4_1_phy_sys_pcie_pipegmux_clk>,
-+               <&usb4_2_phy_dp0_gmux_2_clk>,
-+               <&usb4_2_phy_dp1_gmux_2_clk>,
-+               <&usb4_2_phy_pcie_pipegmux_clk>,
-+               <&usb4_2_phy_pipegmux_clk>,
-+               <&usb4_2_phy_sys_pcie_pipegmux_clk>,
-+               <&usb4_0_phy_rx_0_clk>,
-+               <&usb4_0_phy_rx_1_clk>,
-+               <&usb4_1_phy_rx_0_clk>,
-+               <&usb4_1_phy_rx_1_clk>,
-+               <&usb4_2_phy_rx_0_clk>,
-+               <&usb4_2_phy_rx_1_clk>,
-+               <&usb4_0_phy_pcie_pipe_clk>,
-+               <&usb4_0_phy_max_pipe_clk>,
-+               <&usb4_1_phy_pcie_pipe_clk>,
-+               <&usb4_1_phy_max_pipe_clk>,
-+               <&usb4_2_phy_pcie_pipe_clk>,
-+               <&usb4_2_phy_max_pipe_clk>;
-       power-domains = <&rpmhpd RPMHPD_CX>;
-       #clock-cells = <1>;
-       #reset-cells = <1>;
-diff --git a/include/dt-bindings/clock/qcom,x1e80100-gcc.h b/include/dt-bindings/clock/qcom,x1e80100-gcc.h
-index 710c340f24a57..62aa124255927 100644
---- a/include/dt-bindings/clock/qcom,x1e80100-gcc.h
-+++ b/include/dt-bindings/clock/qcom,x1e80100-gcc.h
-@@ -363,6 +363,30 @@
- #define GCC_USB3_PRIM_PHY_PIPE_CLK_SRC				353
- #define GCC_USB3_SEC_PHY_PIPE_CLK_SRC				354
- #define GCC_USB3_TERT_PHY_PIPE_CLK_SRC				355
-+#define GCC_USB34_PRIM_PHY_PIPE_CLK_SRC				356
-+#define GCC_USB34_SEC_PHY_PIPE_CLK_SRC				357
-+#define GCC_USB34_TERT_PHY_PIPE_CLK_SRC				358
-+#define GCC_USB4_0_PHY_DP0_CLK_SRC				359
-+#define GCC_USB4_0_PHY_DP1_CLK_SRC				360
-+#define GCC_USB4_0_PHY_P2RR2P_PIPE_CLK_SRC			361
-+#define GCC_USB4_0_PHY_PCIE_PIPE_MUX_CLK_SRC			362
-+#define GCC_USB4_0_PHY_RX0_CLK_SRC				363
-+#define GCC_USB4_0_PHY_RX1_CLK_SRC				364
-+#define GCC_USB4_0_PHY_SYS_CLK_SRC				365
-+#define GCC_USB4_1_PHY_DP0_CLK_SRC				366
-+#define GCC_USB4_1_PHY_DP1_CLK_SRC				367
-+#define GCC_USB4_1_PHY_P2RR2P_PIPE_CLK_SRC			368
-+#define GCC_USB4_1_PHY_PCIE_PIPE_MUX_CLK_SRC			369
-+#define GCC_USB4_1_PHY_RX0_CLK_SRC				370
-+#define GCC_USB4_1_PHY_RX1_CLK_SRC				371
-+#define GCC_USB4_1_PHY_SYS_CLK_SRC				372
-+#define GCC_USB4_2_PHY_DP0_CLK_SRC				373
-+#define GCC_USB4_2_PHY_DP1_CLK_SRC				374
-+#define GCC_USB4_2_PHY_P2RR2P_PIPE_CLK_SRC			375
-+#define GCC_USB4_2_PHY_PCIE_PIPE_MUX_CLK_SRC			376
-+#define GCC_USB4_2_PHY_RX0_CLK_SRC				377
-+#define GCC_USB4_2_PHY_RX1_CLK_SRC				378
-+#define GCC_USB4_2_PHY_SYS_CLK_SRC				379
+-	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
+-	if (ret)
+-		return ret;
++	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
++		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
++		if (ret)
++			return ret;
++	}
  
- /* GCC power domains */
- #define GCC_PCIE_0_TUNNEL_GDSC					0
-@@ -484,4 +508,41 @@
- #define GCC_VIDEO_BCR						87
- #define GCC_VIDEO_AXI0_CLK_ARES					88
- #define GCC_VIDEO_AXI1_CLK_ARES					89
-+#define GCC_USB4_0_MISC_USB4_SYS_BCR				90
-+#define GCC_USB4_0_MISC_RX_CLK_0_BCR				91
-+#define GCC_USB4_0_MISC_RX_CLK_1_BCR				92
-+#define GCC_USB4_0_MISC_USB_PIPE_BCR				93
-+#define GCC_USB4_0_MISC_PCIE_PIPE_BCR				94
-+#define GCC_USB4_0_MISC_TMU_BCR					95
-+#define GCC_USB4_0_MISC_SB_IF_BCR				96
-+#define GCC_USB4_0_MISC_HIA_MSTR_BCR				97
-+#define GCC_USB4_0_MISC_AHB_BCR					98
-+#define GCC_USB4_0_MISC_DP0_MAX_PCLK_BCR			99
-+#define GCC_USB4_0_MISC_DP1_MAX_PCLK_BCR			100
-+#define GCC_USB4_1_MISC_USB4_SYS_BCR				101
-+#define GCC_USB4_1_MISC_RX_CLK_0_BCR				102
-+#define GCC_USB4_1_MISC_RX_CLK_1_BCR				103
-+#define GCC_USB4_1_MISC_USB_PIPE_BCR				104
-+#define GCC_USB4_1_MISC_PCIE_PIPE_BCR				105
-+#define GCC_USB4_1_MISC_TMU_BCR					106
-+#define GCC_USB4_1_MISC_SB_IF_BCR				107
-+#define GCC_USB4_1_MISC_HIA_MSTR_BCR				108
-+#define GCC_USB4_1_MISC_AHB_BCR					109
-+#define GCC_USB4_1_MISC_DP0_MAX_PCLK_BCR			110
-+#define GCC_USB4_1_MISC_DP1_MAX_PCLK_BCR			111
-+#define GCC_USB4_2_MISC_USB4_SYS_BCR				112
-+#define GCC_USB4_2_MISC_RX_CLK_0_BCR				113
-+#define GCC_USB4_2_MISC_RX_CLK_1_BCR				114
-+#define GCC_USB4_2_MISC_USB_PIPE_BCR				115
-+#define GCC_USB4_2_MISC_PCIE_PIPE_BCR				116
-+#define GCC_USB4_2_MISC_TMU_BCR					117
-+#define GCC_USB4_2_MISC_SB_IF_BCR				118
-+#define GCC_USB4_2_MISC_HIA_MSTR_BCR				119
-+#define GCC_USB4_2_MISC_AHB_BCR					120
-+#define GCC_USB4_2_MISC_DP0_MAX_PCLK_BCR			121
-+#define GCC_USB4_2_MISC_DP1_MAX_PCLK_BCR			122
-+#define GCC_USB4PHY_PHY_PRIM_BCR				123
-+#define GCC_USB4PHY_PHY_SEC_BCR					124
-+#define GCC_USB4PHY_PHY_TERT_BCR				125
-+
- #endif
+ 	return 0;
+ }
+@@ -3767,9 +3769,11 @@ static int __maybe_unused ti_sci_resume_noirq(struct device *dev)
+ 	u8 pin;
+ 	u8 mode;
+ 
+-	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
+-	if (ret)
+-		return ret;
++	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
++		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ret = ti_sci_msg_cmd_lpm_wake_reason(&info->handle, &source, &time, &pin, &mode);
+ 	/* Do not fail to resume on error as the wake reason is not critical */
+@@ -3928,11 +3932,12 @@ static int ti_sci_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ti_sci_msg_cmd_query_fw_caps(&info->handle, &info->fw_caps);
+-	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s\n",
++	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s%s\n",
+ 		info->fw_caps & MSG_FLAG_CAPS_GENERIC ? "Generic" : "",
+ 		info->fw_caps & MSG_FLAG_CAPS_LPM_PARTIAL_IO ? " Partial-IO" : "",
+ 		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : "",
+-		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : ""
++		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : "",
++		info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION ? " IO-Isolation" : ""
+ 	);
+ 
+ 	ti_sci_setup_ops(info);
+diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
+index 701c416b2e78f..7559cde17b6cc 100644
+--- a/drivers/firmware/ti_sci.h
++++ b/drivers/firmware/ti_sci.h
+@@ -149,6 +149,7 @@ struct ti_sci_msg_req_reboot {
+  *		MSG_FLAG_CAPS_LPM_PARTIAL_IO: Partial IO in LPM
+  *		MSG_FLAG_CAPS_LPM_DM_MANAGED: LPM can be managed by DM
+  *		MSG_FLAG_CAPS_LPM_ABORT: Abort entry to LPM
++ *		MSG_FLAG_CAPS_IO_ISOLATION: IO Isolation support
+  *
+  * Response to a generic message with message type TI_SCI_MSG_QUERY_FW_CAPS
+  * providing currently available SOC/firmware capabilities. SoC that don't
+@@ -160,6 +161,7 @@ struct ti_sci_msg_resp_query_fw_caps {
+ #define MSG_FLAG_CAPS_LPM_PARTIAL_IO	TI_SCI_MSG_FLAG(4)
+ #define MSG_FLAG_CAPS_LPM_DM_MANAGED	TI_SCI_MSG_FLAG(5)
+ #define MSG_FLAG_CAPS_LPM_ABORT		TI_SCI_MSG_FLAG(9)
++#define MSG_FLAG_CAPS_IO_ISOLATION	TI_SCI_MSG_FLAG(7)
+ #define MSG_MASK_CAPS_LPM		GENMASK_ULL(4, 1)
+ 	u64 fw_caps;
+ } __packed;
 -- 
 2.51.0
 
