@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4297CC258C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32FDCC2E90
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70221304AC98
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 099B731B463D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13877344038;
-	Tue, 16 Dec 2025 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD761358D2C;
+	Tue, 16 Dec 2025 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1/QXEkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcsvH2r/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A70344030;
-	Tue, 16 Dec 2025 11:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886E035CBA8;
+	Tue, 16 Dec 2025 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884427; cv=none; b=bMYPWSo7gMOHeKt+LPeEdu51hFFbeHa0bX+e74WnyviGNCAjTZkS4Q8Pg4WVqdvopOwpAT7jOC2nWcYpBDLV+GGWn/1qgIYvtQY95yS+JQBGF8ZhcmwYn/cV0gkCKX5QIjzAIuSZGcZAQXlpJglvz9ZJTfy9pIigN8Trfd5bVGQ=
+	t=1765887905; cv=none; b=M5ce5KFu30EWTrNvRDoh79ukglfirHyENurjw5qZOLL5NtQ8uXe1BmIzKSmDz6n87ylTk7rjD8kVhxIKsQmAHb+N9VrqwSSUSXzs3bMA4kKQTuPECYOlQjYyGpnIUzEPrpl/t6bFS7nUnydS0dJfJAZwrubk2gqpDmy0hk0KGpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884427; c=relaxed/simple;
-	bh=sbJFWFZicc7sduDitVa0RLfS05kTfM2tKn+nC/CD16s=;
+	s=arc-20240116; t=1765887905; c=relaxed/simple;
+	bh=88C6ZN7lWZbdxwR7freLVB9Aune5NN5sSIhxYDkobn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDz8yFYnST94Uf4nsl7eThCQQLV1YEMmhLxePbFzhf5Q2onvaJkwnJFvUkGUQvQgAsBmHIP8OStV09Aw/gqz6bsIG6XK0eoLTHtB4iR5L88AcZrVEDiW8N75mKaDLOWS3CgLNgxH4RiKucrBMiFaXO8JBh6AVa2SOJc9fMb28+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1/QXEkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CBFC4CEF5;
-	Tue, 16 Dec 2025 11:27:07 +0000 (UTC)
+	 MIME-Version; b=AJZSk+dfnVizw/IL1gXoeSKD3xagj2w4zufTag077Gju7DAeRbVWcXfBQNA8oSmrzM4oeQCw5OrZyrrjMNkvd8owtrlPxnRwkZg7F+HXw+tk30VC12dLMzTlxDWIenZ4iTPXyi1Ou9J8zL/lrJhiYUvGe0xaL1nlImKpqF60x8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcsvH2r/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE4BC4CEF1;
+	Tue, 16 Dec 2025 12:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884427;
-	bh=sbJFWFZicc7sduDitVa0RLfS05kTfM2tKn+nC/CD16s=;
+	s=korg; t=1765887905;
+	bh=88C6ZN7lWZbdxwR7freLVB9Aune5NN5sSIhxYDkobn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1/QXEkDqSoR1ShJz4rwaoWVfNoCX454fBmsAFlMftJJcM7BKEkNwuyuSn+vSbGkH
-	 VrPme3br+TJbAm7mL8wR0PQgoc2avwEKAx8bXInPJywZyF8wFVyzy3dwzh6Te9A3G1
-	 l5zpbujsc7YY/TBJMpl9FE44BOn1STZ8nC2F97vU=
+	b=kcsvH2r/YcIukP2W4kQ+QxgTM3NI+SyDAPRMKjnFyM3XJ8qPAe+hpGOWCdAR/idTX
+	 EMSi0eNTSUGESXu7gv/pQJsa9toTkTuaxQ+Cp1s+D0wttfteUBNs1HN7ivaQWn674O
+	 U+Cq7Y/cXJ5NFDhnm/rC/5eYoJo3NamLjVWyZGtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/354] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
+Subject: [PATCH 6.18 373/614] PM / devfreq: hisi: Fix potential UAF in OPP handling
 Date: Tue, 16 Dec 2025 12:12:20 +0100
-Message-ID: <20251216111327.181977613@linuxfoundation.org>
+Message-ID: <20251216111414.876366113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
+[ Upstream commit 26dd44a40096468396b6438985d8e44e0743f64c ]
 
-In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
-allocations in a loop. When an allocation fails, the previously
-successful allocations are not freed on exit.
+Ensure all required data is acquired before calling dev_pm_opp_put(opp)
+to maintain correct resource acquisition and release order.
 
-Fix that by jumping to err_free_rings label on error, which calls
-rtl8180_free_rx_ring() to free the allocations. Remove the free of
-rx_ring in rtl8180_init_rx_ring() error path, and set the freed
-priv->rx_buf entry to null, to avoid double free.
-
-Fixes: f653211197f3 ("Add rtl8180 wireless driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
+Fixes: 7da2fdaaa1e6 ("PM / devfreq: Add HiSilicon uncore frequency scaling driver")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/20250915062135.748653-1-zhangpengjie2@huawei.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/devfreq/hisi_uncore_freq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index ded8d4d59289c..1b03310cf639a 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+diff --git a/drivers/devfreq/hisi_uncore_freq.c b/drivers/devfreq/hisi_uncore_freq.c
+index 96d1815059e32..c1ed70fa0a400 100644
+--- a/drivers/devfreq/hisi_uncore_freq.c
++++ b/drivers/devfreq/hisi_uncore_freq.c
+@@ -265,10 +265,11 @@ static int hisi_uncore_target(struct device *dev, unsigned long *freq,
+ 		dev_err(dev, "Failed to get opp for freq %lu hz\n", *freq);
+ 		return PTR_ERR(opp);
+ 	}
+-	dev_pm_opp_put(opp);
  
- 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
-+			priv->rx_buf[i] = NULL;
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+ 	data = (u32)(dev_pm_opp_get_freq(opp) / HZ_PER_MHZ);
  
- 	ret = rtl8180_init_rx_ring(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_rings;
++	dev_pm_opp_put(opp);
++
+ 	return hisi_uncore_cmd_send(uncore, HUCF_PCC_CMD_SET_FREQ, &data);
+ }
  
- 	for (i = 0; i < (dev->queues + 1); i++)
- 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
 -- 
 2.51.0
 
