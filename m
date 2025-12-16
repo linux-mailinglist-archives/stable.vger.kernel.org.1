@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA162CC2ECA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07C7CC2AAD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20EE2302A772
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC87C30BEA6E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B667C368289;
-	Tue, 16 Dec 2025 12:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B859D359704;
+	Tue, 16 Dec 2025 12:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdRK/0cb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ8koqCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626A536826A;
-	Tue, 16 Dec 2025 12:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C941359701;
+	Tue, 16 Dec 2025 12:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888575; cv=none; b=idYqsxhHfeXvMjJ8IwXm1bvDAUxOEl/o4WUj0lXuzIWFlWewKBsMaDXlgsWbHlvDiNbEzCjbGbvKxaXVbyfUMVS226iMy1cIybqH7MjQ+qg5M0zr2m5NILWQfFufD91D95s9T6LPu6aB3PNHPd/1wX24ePnKd74pZFisVSJzzzo=
+	t=1765886660; cv=none; b=pr7hpZ+F30redUxJ4udf3RrFnekt5NFjMYJr6fGIfxBcJcYxNOYG/WeG+LDKgcTYR8h5WFF1HF/DbCZ0eMtyx88oo2kFx41lrn7BZiXyWCRxP6sqCD0Un8tASJEYV72xc4K6meYQCFBylxwdwwsuRcDHX0pHJIJcJGucGg0ccqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888575; c=relaxed/simple;
-	bh=Q1WnqPG/jJhlMx/YP5QTZzlUmKvUNLxW4xmDbEimAGw=;
+	s=arc-20240116; t=1765886660; c=relaxed/simple;
+	bh=TwlqX//9DuVX/gRJOIml89Wwfndn7L7fLyvnDEYJUFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9/CPq5/EeHl6P9RgVFzwiURFJjHIqiDAHfllIQHQfnyunJAKkxfitn6VNixj7OdRbk1z2A+RBsaH9DyEmIiMCuEWWqxwOYCyd7Kav7Lj5AE4s/RCqFRDc8bXTDFxBJKHBoeBcWGZFBf9haBtEKYVHJKHl0bQGI73c4hzF4uv5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdRK/0cb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0133C4CEF1;
-	Tue, 16 Dec 2025 12:36:14 +0000 (UTC)
+	 MIME-Version; b=sCB6rXF0u7hkFZyyptVssQC6d6CfoQxaqpMYvNJOjqjew2KYhoPZDcHL5iVmiEL1fIDuk0JPRL+9oTIKKtrWW0IS9vh9yaMMrKUEpGPf3VFyUl2M6m6tJ316R4iB8VHnTcEEAMk6sjv87yBuq17QBN6qYJK5V/JtE45F2PxDd6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ8koqCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1E3C4CEF1;
+	Tue, 16 Dec 2025 12:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888575;
-	bh=Q1WnqPG/jJhlMx/YP5QTZzlUmKvUNLxW4xmDbEimAGw=;
+	s=korg; t=1765886660;
+	bh=TwlqX//9DuVX/gRJOIml89Wwfndn7L7fLyvnDEYJUFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdRK/0cbzX6hoEz/6TBK0b5ibT7D+IZa6Tm7T+ScKtdhN7/NdaRyWyu8G098m3TIz
-	 Ej8G67F0dqLThq+9JNFxw8pT108fbVlEmVf4g/63B6/SRvjTn87ZGD7RdR2IaUYURb
-	 qo3ZpfhDuAhe5b+ZQGGmfRkjj5ONgiDaQJzbcOw0=
+	b=KQ8koqCh0SLZBCUmbwoGQSnElA9wKYD2cnV71tz2NXJ8QRYP/k1J+xZNHX1a45jSi
+	 V3WY7Up5JEbggZNUEKdvRZ6Cm0vIm8ke/mqeTU+gx9/64Xgkj3TAPpj12cmGIfQ1U6
+	 1AOmk3QZRwI5rw50Wt/dXuiXyI6AkDG/4/HUNlUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Michael Opdenacker <michael.opdenacker@rootcommit.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 576/614] i2c: spacemit: fix detect issue
-Date: Tue, 16 Dec 2025 12:15:43 +0100
-Message-ID: <20251216111422.254440173@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 503/507] ALSA: dice: fix buffer overflow in detect_stream_formats()
+Date: Tue, 16 Dec 2025 12:15:44 +0100
+Message-ID: <20251216111403.660188858@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 25faa5364638b86ec0d0edb4486daa9d40a0be8f ]
+commit 324f3e03e8a85931ce0880654e3c3eb38b0f0bba upstream.
 
-This commit addresses two issues causing i2c detect to fail.
+The function detect_stream_formats() reads the stream_count value directly
+from a FireWire device without validating it. This can lead to
+out-of-bounds writes when a malicious device provides a stream_count value
+greater than MAX_STREAMS.
 
-The identified issues are:
+Fix by applying the same validation to both TX and RX stream counts in
+detect_stream_formats().
 
-1. Incorrect error handling for BED (Bus Error No ACK/NAK):
-   Before this commit, Both ALD (Arbitration Loss Detected) and
-   BED returned -EAGAIN.
-2. Missing interrupt status clear after initialization in xfer():
-   On the K1 SoC, simply fixing the first issue changed the error
-   from -EAGAIN to -ETIMEOUT. Through tracing, it was determined that
-   this is likely due to MSD (Master Stop Detected) latency issues.
-
-   That means the MSD bit in the ISR may still be set on the next transfer.
-   As a result, the controller won't work — we can see from the scope that
-   it doesn't issue any signal.
-   (This only occurs during rapid consecutive I2C transfers.
-   That explains why the issue only shows up with i2cdetect.)
-
-With these two fixes, i2c device detection now functions correctly on the K1 SoC.
-
-Fixes: 5ea558473fa31 ("i2c: spacemit: add support for SpacemiT K1 SoC")
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Signed-off-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
-Tested-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251113-fix-k1-detect-failure-v2-1-b02a9a74f65a@linux.spacemit.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 58579c056c1c ("ALSA: dice: use extended protocol to detect available stream formats")
+Cc: stable@vger.kernel.org
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881B043FC68B4C0DA40B73DAFDCA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-k1.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ sound/firewire/dice/dice-extension.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-k1.c b/drivers/i2c/busses/i2c-k1.c
-index 6b918770e612e..d42c03ef5db59 100644
---- a/drivers/i2c/busses/i2c-k1.c
-+++ b/drivers/i2c/busses/i2c-k1.c
-@@ -158,11 +158,16 @@ static int spacemit_i2c_handle_err(struct spacemit_i2c_dev *i2c)
- {
- 	dev_dbg(i2c->dev, "i2c error status: 0x%08x\n", i2c->status);
+--- a/sound/firewire/dice/dice-extension.c
++++ b/sound/firewire/dice/dice-extension.c
+@@ -116,7 +116,7 @@ static int detect_stream_formats(struct
+ 			break;
  
--	if (i2c->status & (SPACEMIT_SR_BED | SPACEMIT_SR_ALD)) {
-+	/* Arbitration Loss Detected */
-+	if (i2c->status & SPACEMIT_SR_ALD) {
- 		spacemit_i2c_reset(i2c);
- 		return -EAGAIN;
- 	}
+ 		base_offset += EXT_APP_STREAM_ENTRIES;
+-		stream_count = be32_to_cpu(reg[0]);
++		stream_count = min_t(unsigned int, be32_to_cpu(reg[0]), MAX_STREAMS);
+ 		err = read_stream_entries(dice, section_addr, base_offset,
+ 					  stream_count, mode,
+ 					  dice->tx_pcm_chs,
+@@ -125,7 +125,7 @@ static int detect_stream_formats(struct
+ 			break;
  
-+	/* Bus Error No ACK/NAK */
-+	if (i2c->status & SPACEMIT_SR_BED)
-+		spacemit_i2c_reset(i2c);
-+
- 	return i2c->status & SPACEMIT_SR_ACKNAK ? -ENXIO : -EIO;
- }
- 
-@@ -224,6 +229,12 @@ static void spacemit_i2c_check_bus_release(struct spacemit_i2c_dev *i2c)
- 	}
- }
- 
-+static inline void
-+spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
-+{
-+	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
-+}
-+
- static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
- {
- 	u32 val;
-@@ -267,12 +278,8 @@ static void spacemit_i2c_init(struct spacemit_i2c_dev *i2c)
- 	val = readl(i2c->base + SPACEMIT_IRCR);
- 	val |= SPACEMIT_RCR_SDA_GLITCH_NOFIX;
- 	writel(val, i2c->base + SPACEMIT_IRCR);
--}
- 
--static inline void
--spacemit_i2c_clear_int_status(struct spacemit_i2c_dev *i2c, u32 mask)
--{
--	writel(mask & SPACEMIT_I2C_INT_STATUS_MASK, i2c->base + SPACEMIT_ISR);
-+	spacemit_i2c_clear_int_status(i2c, SPACEMIT_I2C_INT_STATUS_MASK);
- }
- 
- static void spacemit_i2c_start(struct spacemit_i2c_dev *i2c)
--- 
-2.51.0
-
+ 		base_offset += stream_count * EXT_APP_STREAM_ENTRY_SIZE;
+-		stream_count = be32_to_cpu(reg[1]);
++		stream_count = min_t(unsigned int, be32_to_cpu(reg[1]), MAX_STREAMS);
+ 		err = read_stream_entries(dice, section_addr, base_offset,
+ 					  stream_count,
+ 					  mode, dice->rx_pcm_chs,
 
 
 
