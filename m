@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784F9CC3BEA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EB4CC2D97
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C02ED309CF79
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 363073191A5E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FBA34D4C0;
-	Tue, 16 Dec 2025 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0FD36D4F5;
+	Tue, 16 Dec 2025 12:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ifUYvzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5sVbEqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BD8346E70;
-	Tue, 16 Dec 2025 11:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C4236D4F0;
+	Tue, 16 Dec 2025 12:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885549; cv=none; b=AEYu4Eme7UN2EC2N3o03CP8q0QA0j2K+eb/Z8C2rVX+MbCPK3BzuMtbiRb4ligzSx/YdA3hGwzkn+mfUN7XxVKY80WwnTWp6YqdOjWdsVCdLRUWWCa0c9/Wno3XVaWqZH0Q2J9mlMvUVYPXnz51nqTHDgxiWlKU/BwUdIr65fr8=
+	t=1765887486; cv=none; b=fjVZY5QHJ/8UlaedtVpqlcJoY1pGgXhI9bI32U510UJLgTGNzoCvxtHKM7jIjNKx7SPtt0Pp356IdZAYZROCDPPYkx0+o2gsy/OFaMURB8EVTojZVuUoVo2Q/+56J114dJRatOOBj7zqqcZwGmrMoAmrUn0tT2FAgDDjZi9EmA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885549; c=relaxed/simple;
-	bh=NFQ6s6D31p5SI/UZhHRkjkUaPE2G3wKymd0WSGwASC4=;
+	s=arc-20240116; t=1765887486; c=relaxed/simple;
+	bh=7aPp2UTEyqNL3DjrLKNb+lwy9o48Ad2hDQtnmRhmiD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUSS7NhAUh+mLi13jO7oqoO+1zskq+qYCEkGEzR763vWbBhv583j9Kd2pbWlbfPnhFBphTeUKSlHV+aQfQQ3Q4RV4IjpQA8f/pB3KsT6zktJXtebWgWltFe4HCb6od/sRL8240sdwN7y8ewUHwGQrMT7jbwMAmywCZCkZ+QtZL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ifUYvzf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B9CC4CEF1;
-	Tue, 16 Dec 2025 11:45:49 +0000 (UTC)
+	 MIME-Version; b=nCmEn1atFXNtyWHhUEAn+DsbC58Sxmn8WPVkS8P/K/HGWFMv0XvxlyJPkMSCcDJ6cDj/chTw90vjuHbXuoHVm10/9Lsc92G1NhAvroC0DmTA1Iiuz9juZNYq6+0FfpfFPrkiKQR8m2gHzwPqiZyu1pA4lt6EpRp39EUGPADb+us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5sVbEqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B532C4CEF1;
+	Tue, 16 Dec 2025 12:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885549;
-	bh=NFQ6s6D31p5SI/UZhHRkjkUaPE2G3wKymd0WSGwASC4=;
+	s=korg; t=1765887486;
+	bh=7aPp2UTEyqNL3DjrLKNb+lwy9o48Ad2hDQtnmRhmiD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ifUYvzfMHTi50meXGULtxq4SYd6mtd3i4EAHrjGx7/RGUaw8Ubi6+dvHcx2dewSs
-	 jH+fh256DjiL2Tpw41qJpIIGYI370YSG2lZFMxQHUvWk0uyjwyulqmG+/Gra0tXCdR
-	 ZeOL0i+Qc6h0rmtGVhrvjizQ+T9w0iAdVrrtH7C8=
+	b=k5sVbEqMVa6Vb/veDFP3e7awmPb//TnaAWc2CmSPNJOte3VymhXzltkd0LaU0oDMB
+	 QIdszMndSo34nw45AwgTqBeYaxdacqodRxxTpvvL1/fVwrzQLr9o+vbdD0/nGmqfQQ
+	 HAGR7/7rKasaDBCoNmjpcA6qAFyE40g1Qp3X9FkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Zhang Changzhong <zhangchangzhong@huawei.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 138/507] wifi: ath12k: fix reusing m3 memory
+Subject: [PATCH 6.18 212/614] locktorture: Fix memory leak in param_set_cpumask()
 Date: Tue, 16 Dec 2025 12:09:39 +0100
-Message-ID: <20251216111350.528775220@linuxfoundation.org>
+Message-ID: <20251216111409.056142223@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 00575bb44b2c2aa53d0a768de2b80c9c1af0174d ]
+[ Upstream commit e52b43883d084a9af263c573f2a1bd1ca5088389 ]
 
-During firmware recovery or suspend/resume, m3 memory could be reused if
-the size of the new m3 binary is equal to or less than that of the
-existing memory. There will be issues for the latter case, since
-m3_mem->size will be updated with a smaller value and this value is
-eventually used in the free path, where the original total size should be
-used instead.
+With CONFIG_CPUMASK_OFFSTACK=y, the 'bind_writers' buffer is allocated via
+alloc_cpumask_var() in param_set_cpumask(). But it is not freed, when
+setting the module parameter multiple times by sysfs interface or removing
+module.
 
-To fix it, add a new member in m3_mem_region structure to track the original
-memory size and use it in free path.
+Below kmemleak trace is seen for this issue:
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+unreferenced object 0xffff888100aabff8 (size 8):
+  comm "bash", pid 323, jiffies 4295059233
+  hex dump (first 8 bytes):
+    07 00 00 00 00 00 00 00                          ........
+  backtrace (crc ac50919):
+    __kmalloc_node_noprof+0x2e5/0x420
+    alloc_cpumask_var_node+0x1f/0x30
+    param_set_cpumask+0x26/0xb0 [locktorture]
+    param_attr_store+0x93/0x100
+    module_attr_store+0x1b/0x30
+    kernfs_fop_write_iter+0x114/0x1b0
+    vfs_write+0x300/0x410
+    ksys_write+0x60/0xd0
+    do_syscall_64+0xa4/0x260
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 05090ae82f44 ("wifi: ath12k: check M3 buffer size as well whey trying to reuse it")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251029-ath12k-fix-m3-reuse-v1-1-69225bacfc5d@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+This issue can be reproduced by:
+  insmod locktorture.ko bind_writers=1
+  rmmod locktorture
+
+or:
+  insmod locktorture.ko bind_writers=1
+  echo 2 > /sys/module/locktorture/parameters/bind_writers
+
+Considering that setting the module parameter 'bind_writers' or
+'bind_readers' by sysfs interface has no real effect, set the parameter
+permissions to 0444. To fix the memory leak when removing module, free
+'bind_writers' and 'bind_readers' memory in lock_torture_cleanup().
+
+Fixes: 73e341242483 ("locktorture: Add readers_bind and writers_bind module parameters")
+Suggested-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++----
- drivers/net/wireless/ath/ath12k/qmi.h |  5 ++++-
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ kernel/locking/locktorture.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 7c611a1fd6d07..9c03a890e6cf2 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/elf.h>
-@@ -3114,9 +3114,10 @@ static void ath12k_qmi_m3_free(struct ath12k_base *ab)
- 	if (!m3_mem->vaddr)
- 		return;
- 
--	dma_free_coherent(ab->dev, m3_mem->size,
-+	dma_free_coherent(ab->dev, m3_mem->total_size,
- 			  m3_mem->vaddr, m3_mem->paddr);
- 	m3_mem->vaddr = NULL;
-+	m3_mem->total_size = 0;
- 	m3_mem->size = 0;
- }
- 
-@@ -3152,7 +3153,7 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 
- 	/* In recovery/resume cases, M3 buffer is not freed, try to reuse that */
- 	if (m3_mem->vaddr) {
--		if (m3_mem->size >= m3_len)
-+		if (m3_mem->total_size >= m3_len)
- 			goto skip_m3_alloc;
- 
- 		/* Old buffer is too small, free and reallocate */
-@@ -3164,11 +3165,13 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 					   GFP_KERNEL);
- 	if (!m3_mem->vaddr) {
- 		ath12k_err(ab, "failed to allocate memory for M3 with size %zu\n",
--			   fw->size);
-+			   m3_len);
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
-+	m3_mem->total_size = m3_len;
-+
- skip_m3_alloc:
- 	memcpy(m3_mem->vaddr, m3_data, m3_len);
- 	m3_mem->size = m3_len;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index abdaade3b542a..92962cd009ad5 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.h
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #ifndef ATH12K_QMI_H
-@@ -120,6 +120,9 @@ struct target_info {
+diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+index ce0362f0a8719..6567e5eeacc0e 100644
+--- a/kernel/locking/locktorture.c
++++ b/kernel/locking/locktorture.c
+@@ -103,8 +103,8 @@ static const struct kernel_param_ops lt_bind_ops = {
+ 	.get = param_get_cpumask,
  };
  
- struct m3_mem_region {
-+	/* total memory allocated */
-+	u32 total_size;
-+	/* actual memory being used */
- 	u32 size;
- 	dma_addr_t paddr;
- 	void *vaddr;
+-module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0644);
+-module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0644);
++module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0444);
++module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0444);
+ 
+ long torture_sched_setaffinity(pid_t pid, const struct cpumask *in_mask, bool dowarn);
+ 
+@@ -1211,6 +1211,10 @@ static void lock_torture_cleanup(void)
+ 			cxt.cur_ops->exit();
+ 		cxt.init_called = false;
+ 	}
++
++	free_cpumask_var(bind_readers);
++	free_cpumask_var(bind_writers);
++
+ 	torture_cleanup_end();
+ }
+ 
 -- 
 2.51.0
 
