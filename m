@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3031CC2C22
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52ECBCC2221
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 184EB3011F97
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 528063006DBE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF44334DB64;
-	Tue, 16 Dec 2025 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759CA33E340;
+	Tue, 16 Dec 2025 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtOYTcMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnREqrHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC126F2BD;
-	Tue, 16 Dec 2025 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316A533C1BD;
+	Tue, 16 Dec 2025 11:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887676; cv=none; b=lYLGHdIgQFCggdz/fyVDZmnqaLMP1JtKU+s9zn3jpf05KB38Dr8+H+9pFYazIk8QC8OQSN9zn0mYW/6fL05hzXcdMjavEdLu8V3t1MA8lbeVpqWF8Faa70Ls+Qpx2JUC5nyp0w5hnX4f0zL8oAiPzirJrbdWWQv+OsRNslA4Ygs=
+	t=1765884047; cv=none; b=peuqATWFalobELWKy61TujoGgqImK5IPkukoD+6jpI9vmhzHjqmE+15BKQ4U3mps384pfE4kRtaILI39gHkUKhnNq4G2QyvN2Nxgl6LhMOLWfVLyxhjEz73a4wiAF+gVLUYJQi6cRCtRZN5KJJ2DsKFVDga8F1SxTPxdxYBmkgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887676; c=relaxed/simple;
-	bh=pNHnxVF7qr9enlU9+hvX7kzvPdCCWFPJeDtTNB9oqxU=;
+	s=arc-20240116; t=1765884047; c=relaxed/simple;
+	bh=9Ju0dNszKvtpC9nRR+YjLYuCJxs3+h//Ct1WduCUwUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlUHtCYsCuARQ8RpfR8J+ARlb5SVqPhKE3NVVGzbCL6qOlziEabEj4EEG6tyhrxMCSDOsTDZTel4I3xepm7PtOtTCjqFtv3UWUp2q1bgBVb16AF5daNPuNKXlTHATsqIpjzvQfuWZRSrtPLZVYpyIg40I1xC0lCjm89ZVcsBoo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtOYTcMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE66C4CEF1;
-	Tue, 16 Dec 2025 12:21:15 +0000 (UTC)
+	 MIME-Version; b=rmmrhcbOnvIdqPiQTPH589Jou1JbtQiFc92ecEl4EV9k+84+0OEQdFHvXlaEZS4kHasigzO4AdzeyKwt7hHpEff20uEBft6YmhIso63FXTVpJ6y57O1m5a+2Dfx1xivUsFmqtHk3wYLKp6xRSTA+YWxcZviD5Fvlu2Bbh1xsDCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnREqrHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F38EC4CEF1;
+	Tue, 16 Dec 2025 11:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887676;
-	bh=pNHnxVF7qr9enlU9+hvX7kzvPdCCWFPJeDtTNB9oqxU=;
+	s=korg; t=1765884046;
+	bh=9Ju0dNszKvtpC9nRR+YjLYuCJxs3+h//Ct1WduCUwUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtOYTcMJfA1Y0Q0hDbHO00USvSCZq6nTnEgVKFJl2NNLNewld3hRfYqQsBgDRRgKO
-	 hMG3UXz4CU5Ve59j4W8ahSMBy/LQpnNSMA7OcJVnuYHSkyAgBcFTW53YmZ+FbEWrUt
-	 2HPVrE3bZa/eWZSVpvQ+asgBdqK0+Zv4A1/Eu8MI=
+	b=bnREqrHCffuIGANOBqU9QLbnKAJEmExFesYQ0uspk0ndWnFwgRE5mtaoIYx/rLc9E
+	 VSJ6Kare5Q5BjIAF2x3x9eqOpfjpTBWWTdaqFS5y4aHhCil03oLFTue3BgoetZ5BcR
+	 0A8X2pScQnQb1nGK7BqFtF+dC21TSLT/H9pu5zBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 277/614] arm64: dts: rockchip: Move the EEPROM to correct I2C bus on Radxa ROCK 5A
+Subject: [PATCH 6.12 077/354] phy: mscc: Fix PTP for VSC8574 and VSC8572
 Date: Tue, 16 Dec 2025 12:10:44 +0100
-Message-ID: <20251216111411.411695395@linuxfoundation.org>
+Message-ID: <20251216111323.714594515@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 92e6e0b0e595afdda6296c760551ad3ffe9d5231 ]
+[ Upstream commit ea5df88aeca112aac69e6c32e3dd1433a113b0c9 ]
 
-The BL24C16 EEPROM chip found on Radxa ROCK 5A is connected to the
-i2c0 bus, [1] so move the eeprom node from the i2c2 bus to the i2c0
-bus.
+The PTP initialization is two-step. First part are the function
+vsc8584_ptp_probe_once() and vsc8584_ptp_probe() at probe time which
+initialize the locks, queues, creates the PTP device. The second part is
+the function vsc8584_ptp_init() at config_init() time which initialize
+PTP in the HW.
 
-[1] Link: https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.19
+For VSC8574 and VSC8572, the PTP initialization is incomplete. It is
+missing the first part but it makes the second part. Meaning that the
+ptp_clock_register() is never called.
 
-Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://patch.msgid.link/20251112035133.28753-2-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+There is no crash without the first part when enabling PTP but this is
+unexpected because some PHys have PTP functionality exposed by the
+driver and some don't even though they share the same PTP clock PTP.
+
+Fixes: 774626fa440e ("net: phy: mscc: Add PTP support for 2 more VSC PHYs")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251023191350.190940-3-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/phy/mscc/mscc_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 19a08f7794e67..428c6f0232a34 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -228,6 +228,12 @@ regulator-state-mem {
- 			regulator-off-in-suspend;
- 		};
- 	};
-+
-+	eeprom: eeprom@50 {
-+		compatible = "belling,bl24c16a", "atmel,24c16";
-+		reg = <0x50>;
-+		pagesize = <16>;
-+	};
- };
- 
- &i2c2 {
-@@ -249,12 +255,6 @@ regulator-state-mem {
- 			regulator-off-in-suspend;
- 		};
- 	};
--
--	eeprom: eeprom@50 {
--		compatible = "belling,bl24c16a", "atmel,24c16";
--		reg = <0x50>;
--		pagesize = <16>;
--	};
- };
- 
- &i2c3 {
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 19983b206405c..a8e587dd96c5c 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2595,7 +2595,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
+ 	.remove		= &vsc85xx_remove,
+-	.probe		= &vsc8574_probe,
++	.probe		= &vsc8584_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+@@ -2616,12 +2616,12 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_aneg    = &vsc85xx_config_aneg,
+ 	.aneg_done	= &genphy_aneg_done,
+ 	.read_status	= &vsc85xx_read_status,
+-	.handle_interrupt = vsc85xx_handle_interrupt,
++	.handle_interrupt = vsc8584_handle_interrupt,
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
+ 	.remove		= &vsc85xx_remove,
+-	.probe		= &vsc8574_probe,
++	.probe		= &vsc8584_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+ 	.get_tunable	= &vsc85xx_get_tunable,
 -- 
 2.51.0
 
