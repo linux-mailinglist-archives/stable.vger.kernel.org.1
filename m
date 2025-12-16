@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48422CC4432
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:25:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A49FCC45D9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C06A73063844
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 140FB3003DAC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBBF342C8B;
-	Tue, 16 Dec 2025 12:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A8F357725;
+	Tue, 16 Dec 2025 12:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6WjXTeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txQsTMi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BADF266B6B;
-	Tue, 16 Dec 2025 12:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE97357718;
+	Tue, 16 Dec 2025 12:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888492; cv=none; b=rxzuxnnNEGVu9miu5ldwhYjMnPd7HiLolD/RVBMIzYuklCQggKZkU9QOzTLbX+g1y5Xh/DHdSOv55HqGaMjOEmpLupMx4HK2CwFH3to0p3JTIoGyYPWfw1WaDNb2meiyPglH8ZI4Zs+25TlZk2OL87mopEqfn4ptff75Mxa8qNY=
+	t=1765886572; cv=none; b=GsnUIObwvMpuBnjJ5fXYxrR4nQQBq5/HAPCKMALxIqW5LvcXwk4ANj25j5yrJSknRJykUwY72cuNxn7dR99NodHak7asu7mcVk831Vc0srPDFZdM+nxpgFogZn7E0L+GaP8JQccT+jQEcaxEc4qu9ItFvDvun9yrJoCHl2RwdL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888492; c=relaxed/simple;
-	bh=qshjZCUH55V12HUtGgrdvdNa7P1rE9T7a1tcFrstiWI=;
+	s=arc-20240116; t=1765886572; c=relaxed/simple;
+	bh=1eiIldV0LSdXIomS/UZPtDi+Wu21jWoLb7MZLbpdUTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUbLQbkIVODqXtLJZzDHKKr9j33nQKfbWu/6xzF+pebxOHMcJsK0JnoqZcKSRGmg0aKjyab+xDOEVxbqsbz+t+x1HAviGHvQd40XQsK8e6LEsNXQIm4SkNp8ZuUcKy2z2LIeD0s9ZiFtF00K9hpqg8K2EshWN9kEyFJdsINwGlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6WjXTeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB07C4CEF5;
-	Tue, 16 Dec 2025 12:34:51 +0000 (UTC)
+	 MIME-Version; b=pkGh5+PE1hZdsQje70veJ5P6Ed65aCw9HRpj0PFbW3j/Ra3MyajT+ZQAZBlQUaSMeNEE0T581IGUPKkZ3YdX5xfBJ9mHw6iM+6pYv+hZwPcZVC1DWsVmOpiMXrT6SHudsg2xNAy2PvL5PHXbbU3hysPI9vO2sCkgQJGBiebYdz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txQsTMi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0930C4CEF1;
+	Tue, 16 Dec 2025 12:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888492;
-	bh=qshjZCUH55V12HUtGgrdvdNa7P1rE9T7a1tcFrstiWI=;
+	s=korg; t=1765886572;
+	bh=1eiIldV0LSdXIomS/UZPtDi+Wu21jWoLb7MZLbpdUTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6WjXTeCDCIv/HnnA5SG31rgJ0VJd/FeFPU5gz2Ieyk2S1aZSEdRLoWFzkZU/Y0rC
-	 lJZRmairqskCAl9Aj8AOXoTCj0GjEWhPTycV02AE8oWwH/YE+81q/xamF/5rZYqheM
-	 PIB2F74wpkXMG9FMcWpKMRENWWhUT1rtnMgflLpY=
+	b=txQsTMi9FPLD/zCx2ATpUHR0lLWJWfoBHomLxuGMX0m8mqDgMT1oyHFLkJjPloov+
+	 wsEtfE1XYHcIs3QNfYOEXWnzmcFQI+pWiB2iEwlsRx1iXcDxHxHrAGGSlAgTuPSQE0
+	 VTNVvBGriJ+i6s/W/Gr1JSW4+WbpuKtIIFNnWs70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Link Mauve <kernel@linkmauve.fr>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 550/614] NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags
+Subject: [PATCH 6.17 476/507] rtc: gamecube: Check the return value of ioremap()
 Date: Tue, 16 Dec 2025 12:15:17 +0100
-Message-ID: <20251216111421.307391912@linuxfoundation.org>
+Message-ID: <20251216111402.687711729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8675c69816e4276b979ff475ee5fac4688f80125 ]
+[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
 
-When a filesystem is being automounted, it needs to preserve the
-user-set superblock mount options, such as the "ro" flag.
+The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
+and return NULL, which is dereferenced without checking, leading to a
+NULL pointer dereference.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Add a check for the return value of ioremap() and return -ENOMEM on
+failure.
+
+Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Link Mauve <kernel@linkmauve.fr>
+Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/namespace.c | 6 ++++++
- fs/nfs/super.c     | 4 ----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/rtc/rtc-gamecube.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 5a4d193da1a98..dca055676c4f3 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -149,6 +149,7 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	struct vfsmount *mnt = ERR_PTR(-ENOMEM);
- 	struct nfs_server *server = NFS_SB(path->dentry->d_sb);
- 	struct nfs_client *client = server->nfs_client;
-+	unsigned long s_flags = path->dentry->d_sb->s_flags;
- 	int timeout = READ_ONCE(nfs_mountpoint_expiry_timeout);
- 	int ret;
- 
-@@ -174,6 +175,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 		fc->net_ns = get_net(client->cl_net);
+diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
+index c828bc8e05b9c..045d5d45ab4b0 100644
+--- a/drivers/rtc/rtc-gamecube.c
++++ b/drivers/rtc/rtc-gamecube.c
+@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
  	}
  
-+	/* Inherit the flags covered by NFS_SB_MASK */
-+	fc->sb_flags_mask |= NFS_SB_MASK;
-+	fc->sb_flags &= ~NFS_SB_MASK;
-+	fc->sb_flags |= s_flags & NFS_SB_MASK;
-+
- 	/* for submounts we want the same server; referrals will reassign */
- 	memcpy(&ctx->nfs_server._address, &client->cl_addr, client->cl_addrlen);
- 	ctx->nfs_server.addrlen	= client->cl_addrlen;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 9b9464e70a7f0..66413133b43e3 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1315,10 +1315,6 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (server->flags & NFS_MOUNT_NOAC)
- 		fc->sb_flags |= SB_SYNCHRONOUS;
+ 	hw_srnprot = ioremap(res.start, resource_size(&res));
++	if (!hw_srnprot) {
++		pr_err("failed to ioremap hw_srnprot\n");
++		return -ENOMEM;
++	}
+ 	old = ioread32be(hw_srnprot);
  
--	if (ctx->clone_data.sb)
--		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
--			fc->sb_flags |= SB_SYNCHRONOUS;
--
- 	/* Get a superblock - note that we may end up sharing one that already exists */
- 	fc->s_fs_info = server;
- 	s = sget_fc(fc, compare_super, nfs_set_super);
+ 	/* TODO: figure out why we use this magic constant.  I obtained it by
 -- 
 2.51.0
 
