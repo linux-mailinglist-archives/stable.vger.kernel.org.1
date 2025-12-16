@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5934CC2FB6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:55:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7122DCC252F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E469B319F1AA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 295B0309EC18
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A6365A03;
-	Tue, 16 Dec 2025 12:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4DF33F378;
+	Tue, 16 Dec 2025 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InJ4sY07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAF+P5bQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23313644B3;
-	Tue, 16 Dec 2025 12:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F5633B966;
+	Tue, 16 Dec 2025 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888218; cv=none; b=r2KMXyEovRVQ3ZRE2qy30PqKX4kbik9BPzigNEG8OGp4n1dW7Q9njGdr2YmDTipEA1Pgm9VwsYUo2ZtTXxROx4RJD7a4xnRRXsA4LJJxspyU1dO/3aaGnv5L3pYGfWkTkHi8T6p/MqLuEqGf7wy02PU/00fobcUR0tiWOi90m1U=
+	t=1765884686; cv=none; b=TPnZRWPc+G8NdmDuwxcy7WzqvktbpAeROEwC+D1yB9ZMmTxolJOPHKahK4vKgFLZb29CoKeiClxQnXddxES72A4iLCAuiOd0wg6Z+AL0j+uc5Mp9T1/qxdwK0tk7Cnx4/cWaMOat+x1HHWM0zorGgW0SPcUIZpH+kIAaSsGH9Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888218; c=relaxed/simple;
-	bh=AZJvkBCNy4cnZtKpo7j+0JAxYn5g2ojg/3UjwWbjOL8=;
+	s=arc-20240116; t=1765884686; c=relaxed/simple;
+	bh=Dj6b/5lpHPzwjHLtXoWmMXqmfJsirs1G0iJw5EaR7bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldEIuL9/b28wIlVPilmhq5l4dJXwBikKM++4h5jEI3g6ZompFxXqqKnqfDeHns7QrV2awbWagUvVcnzX+bseSSqTWqqlGtzjzeJ2W8h7i+wfCBIH1JiF8xTX8galQX3qhLkjri5sHIrw2L8MJLi9/Ul1xCXkCmnRLzr/3ZJJQms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InJ4sY07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77408C16AAE;
-	Tue, 16 Dec 2025 12:30:17 +0000 (UTC)
+	 MIME-Version; b=A4tty9vJugj9i0vVFRMEzVaBAplaJ5zVmyIAGdQ0bxlL34eOEeyUUM2YDA5N/32K8HFEocyJ5kyKMtE+1/F0Su//DI3XwSS/xa8mDxMjPBj3GRw1SdScxhJuHH90nGWS2oqJ0oVHSzq6I4D7+ldUmZKv0Vp7bECJOdHutyQkDEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAF+P5bQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3FDC4CEF1;
+	Tue, 16 Dec 2025 11:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888217;
-	bh=AZJvkBCNy4cnZtKpo7j+0JAxYn5g2ojg/3UjwWbjOL8=;
+	s=korg; t=1765884686;
+	bh=Dj6b/5lpHPzwjHLtXoWmMXqmfJsirs1G0iJw5EaR7bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InJ4sY077uUDFVMcEfVrdP+bMZ436gnJbN2bjvEUSpsY7Ii1a9awaA7qiN9K1ZmSB
-	 Iya+yQruQQgG/UoqLkf+USND1ljPy317WnghckIgSAsBYjodVwgrkSq8iGFI+gDasm
-	 xye/KboVsVHI/cZb6o0bCqBOQvzMX/7T+VEAuf6o=
+	b=mAF+P5bQ05DoIsoqVVJ38Rg+2PxdiDOWipoh3uCRVRInpFE9PlzKWdNnqbIzJb59f
+	 TmtI0uxFS8inOrow19rA8CCp/2WM4zpFh/XetaFWznaQuLVs3O51+Vf5LJ0AymzM3H
+	 AEsz3tPD87mot4Bc8pyW9eKXCNEnp4Cpk5YZVlSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 468/614] vhost: Fix kthread worker cgroup failure handling
+Subject: [PATCH 6.12 268/354] net: stmmac: fix rx limit check in stmmac_rx_zc()
 Date: Tue, 16 Dec 2025 12:13:55 +0100
-Message-ID: <20251216111418.327428552@linuxfoundation.org>
+Message-ID: <20251216111330.625335168@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit f3f64c2eaffbc3169bbe1e5d1e897e6dacc839d1 ]
+[ Upstream commit 8048168df56e225c94e50b04cb7b0514135d7a1c ]
 
-If we fail to attach to a cgroup we are leaking the id. This adds
-a new goto to free the id.
+The extra "count >= limit" check in stmmac_rx_zc() is redundant and
+has no effect because the value of "count" doesn't change after the
+while condition at this point.
 
-Fixes: 7d9896e9f6d0 ("vhost: Reintroduce kthread API and add mode selection")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251101194358.13605-1-michael.christie@oracle.com>
+However, it can change after "read_again:" label:
+
+        while (count < limit) {
+            ...
+
+            if (count >= limit)
+                break;
+    read_again:
+            ...
+            /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+            if (likely(status & rx_not_ls)) {
+                xsk_buff_free(buf->xdp);
+                buf->xdp = NULL;
+                dirty++;
+                count++;
+                goto read_again;
+            }
+            ...
+
+This patch addresses the same issue previously resolved in stmmac_rx()
+by commit fa02de9e7588 ("net: stmmac: fix rx budget limit check").
+The fix is the same: move the check after the label to ensure that it
+bounds the goto loop.
+
+Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251126104327.175590-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index a78226b37739d..bccdc9eab267a 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -804,11 +804,13 @@ static int vhost_kthread_worker_create(struct vhost_worker *worker,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 04bacb04770fa..ce35a6f126793 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5268,10 +5268,10 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+ 			len = 0;
+ 		}
  
- 	ret = vhost_attach_task_to_cgroups(worker);
- 	if (ret)
--		goto stop_worker;
-+		goto free_id;
++read_again:
+ 		if (count >= limit)
+ 			break;
  
- 	worker->id = id;
- 	return 0;
- 
-+free_id:
-+	xa_erase(&dev->worker_xa, id);
- stop_worker:
- 	vhost_kthread_do_stop(worker);
- 	return ret;
+-read_again:
+ 		buf1_len = 0;
+ 		entry = next_entry;
+ 		buf = &rx_q->buf_pool[entry];
 -- 
 2.51.0
 
