@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF935CC23B5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733E8CC2FE0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA7B3064539
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 66AB8300A729
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989D2341ACA;
-	Tue, 16 Dec 2025 11:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4973A36C5BD;
+	Tue, 16 Dec 2025 12:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBzo+lMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfKCVEPu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D636341645;
-	Tue, 16 Dec 2025 11:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1C136C5A3;
+	Tue, 16 Dec 2025 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884303; cv=none; b=ACX3N9wA5MPmjMoItd/Gfft47RpRGjdoOMM/GdqtHdJzY/4bTrlm8S8qD9iU45AXrYLjrJdx4r2sZEj4U8YlZRMJFhadkpis3fOewlsga0bfXIO/Equ7aqDdn5F39gDeTJg4eM/CDrQpzxiFb76clwTCT/C3YEg47TGsaZ0QhgY=
+	t=1765887949; cv=none; b=KTC8PcZJ+QaWu4AAkv7k8daBUpqRdv+wYN36qbn0B30h6+VihAfQGlPlNSlNQRDm9qtV8tmoPk1qx9i9roa+B9O6Lg05OFxx8Y9k0H5fHDZHClIuV0QDe374sVLaoF4g5wyr0Wmyjt/O+VmYv5iQkxS8Vhc4b+mTfmWf+5srf70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884303; c=relaxed/simple;
-	bh=e0mwdu2FG0hidT9V+0TdPpF55iYWz6oupGKPwur8MO8=;
+	s=arc-20240116; t=1765887949; c=relaxed/simple;
+	bh=JjOY5AC4OjZcFwlN4C+N0fX5XrNMqYnv9SIvX1D8Vxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zkyu3Ue7Ue5SWHga/I7sEmrCii5TrZahQ/7YTUoTdHgVorFIROCec0G/NUO3J+pPV6Lx7Bh/wS+uzB5YHXpPM04BrOJQp8fpK2ZbAsGIzyO1PHnwDq0FLGfDQozt14d6wJ3yf2t9LEoTLQULmTTTb66zwb+WwH6uOMFC5DY2tV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBzo+lMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94E6C4CEF1;
-	Tue, 16 Dec 2025 11:25:02 +0000 (UTC)
+	 MIME-Version; b=JYrI1xG2ZcoLFK5BDEO6lsX47rSsuv0d2cfAWMblqM5anuBvTxSYQ2oJuKlG/5OEWhjfLppwoQgv+kTGs7/HZ51mt6u1Hebpc5y75Y7xUcb3Aiho43uXQOZpcVQ+RgmI/QnDcxKKaioEHGLVVLvfDzZMeMd5KrZ9spasvjVS8Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfKCVEPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C619CC4CEF1;
+	Tue, 16 Dec 2025 12:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884303;
-	bh=e0mwdu2FG0hidT9V+0TdPpF55iYWz6oupGKPwur8MO8=;
+	s=korg; t=1765887949;
+	bh=JjOY5AC4OjZcFwlN4C+N0fX5XrNMqYnv9SIvX1D8Vxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBzo+lMjlZc1UYA5E7TB0AgPonecMo1Nl2/iQiTYSS6u8oUA/PlY5S5KZxTvn962+
-	 YhsU5TSpg9kpEaMxtosXcNkuDo7RkNhp0f+Cjizwqn0+HKKR14hnbrvCl+AHa4P7mw
-	 buO+Xki0ERIlfE1cZjjo/I43a6VIyepoiIr+zNUM=
+	b=IfKCVEPuPjQuQlaTEeE//s0+jZmB5OPmY07uf3Mgg0mkXpnMLV2npH2NSRDvQcdoZ
+	 dzzhX1syb1LTfb6f/CTMNr54RnRArRj6CYMpxc4SuUrDFWiHzNOs8JPje161FupUUo
+	 hoQrjEM7QX1kdEhcrSfPpqPjbi8dXSX81Vyp5KoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/354] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
-Date: Tue, 16 Dec 2025 12:12:00 +0100
-Message-ID: <20251216111326.458163005@linuxfoundation.org>
+Subject: [PATCH 6.18 354/614] cpuset: Treat cpusets in attaching as populated
+Date: Tue, 16 Dec 2025 12:12:01 +0100
+Message-ID: <20251216111414.188059104@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
+[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
 
-The driver calls ioport_map() to map I/O ports in sim710_probe_common()
-but never calls ioport_unmap() to release the mapping. This causes
-resource leaks in both the error path when request_irq() fails and in
-the normal device removal path via sim710_device_remove().
+Currently, the check for whether a partition is populated does not
+account for tasks in the cpuset of attaching. This is a corner case
+that can leave a task stuck in a partition with no effective CPUs.
 
-Add ioport_unmap() calls in the out_release error path and in
-sim710_device_remove().
+The race condition occurs as follows:
 
-Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+cpu0				cpu1
+				//cpuset A  with cpu N
+migrate task p to A
+cpuset_can_attach
+// with effective cpus
+// check ok
+
+// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
+				// making effective cpus empty
+				update_exclusive_cpumask
+				// tasks_nocpu_error check ok
+				// empty effective cpus, partition valid
+cpuset_attach
+...
+// task p stays in A, with non-effective cpus.
+
+To fix this issue, this patch introduces cs_is_populated, which considers
+tasks in the attaching cpuset. This new helper is used in validate_change
+and partition_is_populated.
+
+Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sim710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
-index e519df68d603d..70c75ab1453a1 100644
---- a/drivers/scsi/sim710.c
-+++ b/drivers/scsi/sim710.c
-@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
-  out_put_host:
- 	scsi_host_put(host);
-  out_release:
-+	ioport_unmap(hostdata->base);
- 	release_region(base_addr, 64);
-  out_free:
- 	kfree(hostdata);
-@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 52468d2c178a3..4dcd633fd6df5 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -352,6 +352,15 @@ static inline bool is_in_v2_mode(void)
+ 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
+ }
  
- 	scsi_remove_host(host);
- 	NCR_700_release(host);
-+	ioport_unmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	release_region(host->base, 64);
++static inline bool cpuset_is_populated(struct cpuset *cs)
++{
++	lockdep_assert_held(&cpuset_mutex);
++
++	/* Cpusets in the process of attaching should be considered as populated */
++	return cgroup_is_populated(cs->css.cgroup) ||
++		cs->attach_in_progress;
++}
++
+ /**
+  * partition_is_populated - check if partition has tasks
+  * @cs: partition root to be checked
+@@ -364,21 +373,31 @@ static inline bool is_in_v2_mode(void)
+ static inline bool partition_is_populated(struct cpuset *cs,
+ 					  struct cpuset *excluded_child)
+ {
+-	struct cgroup_subsys_state *css;
+-	struct cpuset *child;
++	struct cpuset *cp;
++	struct cgroup_subsys_state *pos_css;
+ 
+-	if (cs->css.cgroup->nr_populated_csets)
++	/*
++	 * We cannot call cs_is_populated(cs) directly, as
++	 * nr_populated_domain_children may include populated
++	 * csets from descendants that are partitions.
++	 */
++	if (cs->css.cgroup->nr_populated_csets ||
++	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts)
+ 		return cgroup_is_populated(cs->css.cgroup);
+ 
+ 	rcu_read_lock();
+-	cpuset_for_each_child(child, css, cs) {
+-		if (child == excluded_child)
++	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
++		if (cp == cs || cp == excluded_child)
+ 			continue;
+-		if (is_partition_valid(child))
++
++		if (is_partition_valid(cp)) {
++			pos_css = css_rightmost_descendant(pos_css);
+ 			continue;
+-		if (cgroup_is_populated(child->css.cgroup)) {
++		}
++
++		if (cpuset_is_populated(cp)) {
+ 			rcu_read_unlock();
+ 			return true;
+ 		}
+@@ -663,7 +682,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
+ 	 * be changed to have empty cpus_allowed or mems_allowed.
+ 	 */
+ 	ret = -ENOSPC;
+-	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
++	if (cpuset_is_populated(cur)) {
+ 		if (!cpumask_empty(cur->cpus_allowed) &&
+ 		    cpumask_empty(trial->cpus_allowed))
+ 			goto out;
 -- 
 2.51.0
 
