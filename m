@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64318CC21D8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC7ACC4370
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE34D304FBB8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:17:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F19A9303E3C5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C27030DD09;
-	Tue, 16 Dec 2025 11:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FF236B05E;
+	Tue, 16 Dec 2025 12:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJMDQ2wb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFCGouWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FAC126C02;
-	Tue, 16 Dec 2025 11:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B946736A032;
+	Tue, 16 Dec 2025 12:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883865; cv=none; b=JRlXgCKTnAGepBoQTt/Za0NBQBvhsw5pp0uqVy5rDkJm3SdSJDk35geSjBUnICTdPf1XDP3a0Q5b/1raTF1UbaItp06XbkLLrFCC8FA66mOljargi/0QSjXMM3SpWKD2HmE2VtwmRvoXlgGyBUS0BwuWRELr4HC6/omb5DhsNdU=
+	t=1765887410; cv=none; b=axOskbs6vGFPNEQloPFbtg/o39ThDXbutoVO8sp3mg+RLAfQhl5BoGQbQXjMrCNl0uDWpzpy9p2R+pvgrE833k/EAfv22YNj0iVghXGdXe3Cef8EaIHKiF3hau19zxANlOICAdKfMM2dyrC4bT9JhFOKppYix4pS6PTduTLQW0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883865; c=relaxed/simple;
-	bh=hdI+/7HgyXv388L/gRLYsoL3U0OC0+lf8TnBAIS9NCk=;
+	s=arc-20240116; t=1765887410; c=relaxed/simple;
+	bh=xknIK75LFhSshsmJoSKP+5oT5sTmBlHExy6KsTeYPMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZFsVhnUBJLLuOm3hjb5Y9uQ3pVkj/wrgnz//Hx/RoclKyLH3C4oh1r1Pi2No2tlNVkUfiL0XfBmuODf8F+3Kej4SFvpNiaFZt+UxDbJOnndQdXE6FKfz/atlMAQVQq8LzwwMZuvRNxqCf+xbK5xi1dQe4I2CTD5x4l9JWss/Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJMDQ2wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E839CC4CEF1;
-	Tue, 16 Dec 2025 11:17:44 +0000 (UTC)
+	 MIME-Version; b=uhoTmEQzHb3NfLUwbyuumrekZpRf2exGbndSX2xLfT7WNL6Z/m2nCkosE72SKdaeqcNSXvC2VsULs9Mw7RL1FJ9XZIxqrzBPb8br1onuxQpXM1Inr6LsbhvFqLtv0boR6Tp7V4BZAjdRBLq98tE1fJMuAFTFQKvR2SeDtFCXjcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFCGouWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FD3C4CEF1;
+	Tue, 16 Dec 2025 12:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883865;
-	bh=hdI+/7HgyXv388L/gRLYsoL3U0OC0+lf8TnBAIS9NCk=;
+	s=korg; t=1765887410;
+	bh=xknIK75LFhSshsmJoSKP+5oT5sTmBlHExy6KsTeYPMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJMDQ2wbTaFwp8e8kWBWymPb8eZBVZN+7D58omb/dIn89c2FMzO3yQUkeLGM6QiAe
-	 C6nzww7+U9ATRffVObuijvs9iG7DXNDptiomdbkiC2CNjvDLz4C+tOQDVA4r+GfFrZ
-	 JXV17hU90dyF4bsXEixgUz1psmLL6BqYaISPUHnw=
+	b=kFCGouWa/te56lCf6bYp7Pqhutny4HUAhXqmd3k0udrsMDtOYDkVdfeWyqLIVh11o
+	 is5rGtiyIx5GfpD8OzBmyOzi4lPTXBtI/cYy1Ey0iAyNyf3A09r1QXEDsMkbH+twCa
+	 yNTv1f34uqgoVL8N6TT8kdmBmkV4I/fCH2/Hq+bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/354] HID: logitech-hidpp: Do not assume FAP in hidpp_send_message_sync()
+Subject: [PATCH 6.18 222/614] io_uring: use WRITE_ONCE for user shared memory
 Date: Tue, 16 Dec 2025 12:09:49 +0100
-Message-ID: <20251216111321.715152108@linuxfoundation.org>
+Message-ID: <20251216111409.417049379@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit aba7963544d47d82cdf36602a6678a093af0299d ]
+[ Upstream commit 93e197e524b14d185d011813b72773a1a49d932d ]
 
-Currently, hidpp_send_message_sync() retries sending the message when the
-device returns a busy error code, specifically HIDPP20_ERROR_BUSY, which
-has a different meaning under RAP. This ends up being a problem because
-this function is used for both FAP and RAP messages.
+IORING_SETUP_NO_MMAP rings remain user accessible even before the ctx
+setup is finalised, so use WRITE_ONCE consistently when initialising
+rings.
 
-This issue is not noticeable on older receivers with unreachable devices
-since they return HIDPP_ERROR_RESOURCE_ERROR (0x09), which is not equal to
-HIDPP20_ERROR_BUSY (0x08).
-
-However, newer receivers return HIDPP_ERROR_UNKNOWN_DEVICE (0x08) which
-happens to equal to HIDPP20_ERROR_BUSY, causing unnecessary retries when
-the device is not actually busy.
-
-This is resolved by checking if the error response is FAP or RAP and
-picking the respective ERROR_BUSY code.
-
-Fixes: 60165ab774cb ("HID: logitech-hidpp: rework one more time the retries attempts")
-Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
-Tested-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 03d89a2de25bb ("io_uring: support for user allocated memory for rings/sqes")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 2e72e8967e685..7d5bf5991fc6a 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -352,10 +352,15 @@ static int hidpp_send_message_sync(struct hidpp_device *hidpp,
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 02339b74ba8d4..765abec2571f0 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3623,10 +3623,6 @@ static __cold int io_allocate_scq_urings(struct io_ring_ctx *ctx,
  
- 	do {
- 		ret = __do_hidpp_send_message_sync(hidpp, message, response);
--		if (ret != HIDPP20_ERROR_BUSY)
-+		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
-+		    ret != HIDPP_ERROR_BUSY)
-+			break;
-+		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-+		     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
-+		    ret != HIDPP20_ERROR_BUSY)
- 			break;
+ 	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
+ 		ctx->sq_array = (u32 *)((char *)rings + sq_array_offset);
+-	rings->sq_ring_mask = p->sq_entries - 1;
+-	rings->cq_ring_mask = p->cq_entries - 1;
+-	rings->sq_ring_entries = p->sq_entries;
+-	rings->cq_ring_entries = p->cq_entries;
  
--		dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
-+		dbg_hid("%s:got busy hidpp error %02X, retrying\n", __func__, ret);
- 	} while (--max_retries);
+ 	if (p->flags & IORING_SETUP_SQE128)
+ 		size = array_size(2 * sizeof(struct io_uring_sqe), p->sq_entries);
+@@ -3649,6 +3645,12 @@ static __cold int io_allocate_scq_urings(struct io_ring_ctx *ctx,
+ 		return ret;
+ 	}
+ 	ctx->sq_sqes = io_region_get_ptr(&ctx->sq_region);
++
++	memset(rings, 0, sizeof(*rings));
++	WRITE_ONCE(rings->sq_ring_mask, ctx->sq_entries - 1);
++	WRITE_ONCE(rings->cq_ring_mask, ctx->cq_entries - 1);
++	WRITE_ONCE(rings->sq_ring_entries, ctx->sq_entries);
++	WRITE_ONCE(rings->cq_ring_entries, ctx->cq_entries);
+ 	return 0;
+ }
  
- 	mutex_unlock(&hidpp->send_mutex);
 -- 
 2.51.0
 
