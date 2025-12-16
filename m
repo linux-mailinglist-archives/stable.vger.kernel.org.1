@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B31CC220E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16E5CC42F1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 599083009FA5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:18:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56A7F3043051
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A0B33D6F5;
-	Tue, 16 Dec 2025 11:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4AD36B073;
+	Tue, 16 Dec 2025 12:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFVUecN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx9Blsh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFB233D6E8;
-	Tue, 16 Dec 2025 11:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EDD224AEF;
+	Tue, 16 Dec 2025 12:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883879; cv=none; b=ULYwndsVFi0b1zLdzygJp+3VvdErLUJW3O1dIN1nUnz+kO+Ooaz2rAnycSRManDXOoCNJEV2F0uTZqAj1BMCQWI2/QCmTC9g2Zzk1Rr3p/7Lo0ZnNvLKzQyQUt489iwkwrtwqTLKQribKMxec0eSZzhNc76ndUtPBHocvRLK11M=
+	t=1765887429; cv=none; b=sX2oAq8JCKBU7ZDC3emKWcRIU+5imYkHyrD0Z91OxIhL+BkNQBdOb9UUEqzjhg8IY1kL+UOMgMidin5imTq/uiQiL3aIaa4sLe7pCZGzdXIb9ZR5hfvDy6fj4bEcjsrHu2j6hUaqA0OhZPhtiFxcDbMM1g3qsfYijvsmVOHJ6ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883879; c=relaxed/simple;
-	bh=0ZYuTlHn0W5RwUkP1q3+G1V8IjhfGUx56P3Lex35QEo=;
+	s=arc-20240116; t=1765887429; c=relaxed/simple;
+	bh=Ri6dfGBzClu17ia9cEZzADDKotRJA0/n5PuBZS0shjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkdUry+qmLLlmc4HI3sOz+x8nqn+2USHaWZ5vrps+WhVXOfIcsGWnOEeeHo7SyvPaXA5O1oLRSDaTTxuuVMWDj/J4GMcRQSRsjUhwyvuPUGLjBjxqSqihFkij8oXomyGRUL/4ICT4SRPO1rs+w5fxxhiPq2OADD3A7rwvYyz0Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFVUecN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDD4C4CEF5;
-	Tue, 16 Dec 2025 11:17:58 +0000 (UTC)
+	 MIME-Version; b=fV3GrgnI8icnhDTKoNQvnn8tkO4Yk6lEoo2nHzov3od3fKep3pqJ1qSPL7RLaHb7iw4yWIg2BOgq0vSWry9dfAYV8qgqAmbx3WnTfWXmr/An+LIta21wSDuzCkRpcbtSy7sOzjeKXpdYXRaD55RBa1EGr+/J0l4K3IRSvt9une8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx9Blsh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE99C4CEF1;
+	Tue, 16 Dec 2025 12:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883879;
-	bh=0ZYuTlHn0W5RwUkP1q3+G1V8IjhfGUx56P3Lex35QEo=;
+	s=korg; t=1765887429;
+	bh=Ri6dfGBzClu17ia9cEZzADDKotRJA0/n5PuBZS0shjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFVUecN+agZlyS+j2WhagGxsLPvLzQFcC9yK17HljwqcaHWPrP+6E0o/bXwKp9q0X
-	 WjGvpdtiMTJU6nKf4TKtfzO1f7IR0Gd7ZmiPk6tLjrW0pGWRKPMEEf9gd+1+IOn58W
-	 N8Kj8j+WFZpWUaSho41S/Iej4XgCIe75LbgmsO3c=
+	b=Jx9Blsh0Z/bSwPxbdnZ8rc28k95+WDDMPWU/+MrtEmTT5Bc/h28ee9b19nhIzsYU4
+	 b3f/ewpT2ruNW3N6pHbQ47FyytHol1kh+stm/Eb5URVQQ4wR3C3YDvVNCKSdyMjoRe
+	 I6TK9K7bbVMahX6DoeDUArD1hI881Ad5R3lY4xRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Yun Zhou <yun.zhou@windriver.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/354] wifi: ath10k: Add missing include of export.h
-Date: Tue, 16 Dec 2025 12:09:53 +0100
-Message-ID: <20251216111321.858318208@linuxfoundation.org>
+Subject: [PATCH 6.18 227/614] md: fix rcu protection in md_wakeup_thread
+Date: Tue, 16 Dec 2025 12:09:54 +0100
+Message-ID: <20251216111409.597113634@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,203 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+From: Yun Zhou <yun.zhou@windriver.com>
 
-[ Upstream commit 32c3a0f8894311c743b2a6a15b50b13d01411ce1 ]
+[ Upstream commit 0dc76205549b4c25705e54345f211b9f66e018a0 ]
 
-Commit a934a57a42f6 ("scripts/misc-check: check missing #include
-<linux/export.h> when W=1") introduced a new check that is producing
-the following warnings:
+We attempted to use RCU to protect the pointer 'thread', but directly
+passed the value when calling md_wakeup_thread(). This means that the
+RCU pointer has been acquired before rcu_read_lock(), which renders
+rcu_read_lock() ineffective and could lead to a use-after-free.
 
-drivers/net/wireless/ath/ath10k/bmi.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/ce.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/core.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/coredump.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/debug.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/htc.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/htt_rx.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/htt_tx.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/mac.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath10k/trace.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-
-Add the missing #include to satisfy the check.
-
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250611-ath-unused-export-v1-3-c36819df7e7b@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Stable-dep-of: f35a07a4842a ("wifi: ath10k: move recovery check logic into a new work")
+Link: https://lore.kernel.org/linux-raid/20251015083227.1079009-1-yun.zhou@windriver.com
+Fixes: 446931543982 ("md: protect md_thread with rcu")
+Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/bmi.c      | 2 ++
- drivers/net/wireless/ath/ath10k/ce.c       | 2 ++
- drivers/net/wireless/ath/ath10k/core.c     | 2 ++
- drivers/net/wireless/ath/ath10k/coredump.c | 2 ++
- drivers/net/wireless/ath/ath10k/debug.c    | 2 ++
- drivers/net/wireless/ath/ath10k/htc.c      | 3 +++
- drivers/net/wireless/ath/ath10k/htt_rx.c   | 3 +++
- drivers/net/wireless/ath/ath10k/htt_tx.c   | 2 ++
- drivers/net/wireless/ath/ath10k/mac.c      | 1 +
- drivers/net/wireless/ath/ath10k/trace.c    | 2 ++
- 10 files changed, 21 insertions(+)
+ drivers/md/md.c | 14 ++++++--------
+ drivers/md/md.h |  8 +++++++-
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/bmi.c b/drivers/net/wireless/ath/ath10k/bmi.c
-index 9a4f8e815412c..6f4ac47d0e6f2 100644
---- a/drivers/net/wireless/ath/ath10k/bmi.c
-+++ b/drivers/net/wireless/ath/ath10k/bmi.c
-@@ -3,8 +3,10 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2014,2016-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 8128c8839a082..6062e0deb6160 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -99,7 +99,7 @@ static int remove_and_add_spares(struct mddev *mddev,
+ 				 struct md_rdev *this);
+ static void mddev_detach(struct mddev *mddev);
+ static void export_rdev(struct md_rdev *rdev, struct mddev *mddev);
+-static void md_wakeup_thread_directly(struct md_thread __rcu *thread);
++static void md_wakeup_thread_directly(struct md_thread __rcu **thread);
  
-+#include <linux/export.h>
- #include "bmi.h"
- #include "hif.h"
- #include "debug.h"
-diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
-index afae4a8027f83..ac7a470fc3e1f 100644
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -4,8 +4,10 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018 The Linux Foundation. All rights reserved.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/export.h>
- #include "hif.h"
- #include "ce.h"
- #include "debug.h"
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 7b6812909ab31..d13acb9e70009 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -4,8 +4,10 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/export.h>
- #include <linux/module.h>
- #include <linux/firmware.h>
- #include <linux/of.h>
-diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
-index bb3a276b7ed58..50d0c4213ecfd 100644
---- a/drivers/net/wireless/ath/ath10k/coredump.c
-+++ b/drivers/net/wireless/ath/ath10k/coredump.c
-@@ -3,11 +3,13 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include "coredump.h"
- 
- #include <linux/devcoredump.h>
-+#include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/utsname.h>
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 35bfe7232e95e..e45ea59e3e42d 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -4,10 +4,12 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/module.h>
- #include <linux/debugfs.h>
-+#include <linux/export.h>
- #include <linux/vmalloc.h>
- #include <linux/crc32.h>
- #include <linux/firmware.h>
-diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
-index a6e21ce90bad6..cd0917d3ef0e0 100644
---- a/drivers/net/wireless/ath/ath10k/htc.c
-+++ b/drivers/net/wireless/ath/ath10k/htc.c
-@@ -3,8 +3,11 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/export.h>
-+
- #include "core.h"
- #include "hif.h"
- #include "debug.h"
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 7d28ae5453cf8..42b75961cb962 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -4,8 +4,11 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/export.h>
-+
- #include "core.h"
- #include "htc.h"
- #include "htt.h"
-diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-index 9725feecefd6f..c1ddd761af3e9 100644
---- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-@@ -3,8 +3,10 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/export.h>
- #include <linux/etherdevice.h>
- #include "htt.h"
- #include "mac.h"
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 68d049289359b..935923c290e1f 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9,6 +9,7 @@
- 
- #include "mac.h"
- 
-+#include <linux/export.h>
- #include <net/cfg80211.h>
- #include <net/mac80211.h>
- #include <linux/etherdevice.h>
-diff --git a/drivers/net/wireless/ath/ath10k/trace.c b/drivers/net/wireless/ath/ath10k/trace.c
-index c7d4c97e6079f..421ec47c59bdf 100644
---- a/drivers/net/wireless/ath/ath10k/trace.c
-+++ b/drivers/net/wireless/ath/ath10k/trace.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: ISC
  /*
-  * Copyright (c) 2012 Qualcomm Atheros, Inc.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+  * Default number of read corrections we'll attempt on an rdev
+@@ -5136,7 +5136,7 @@ static void stop_sync_thread(struct mddev *mddev, bool locked)
+ 	 * Thread might be blocked waiting for metadata update which will now
+ 	 * never happen
+ 	 */
+-	md_wakeup_thread_directly(mddev->sync_thread);
++	md_wakeup_thread_directly(&mddev->sync_thread);
+ 	if (work_pending(&mddev->sync_work))
+ 		flush_work(&mddev->sync_work);
  
-+#include <linux/export.h>
- #include <linux/module.h>
+@@ -8375,22 +8375,21 @@ static int md_thread(void *arg)
+ 	return 0;
+ }
  
- #define CREATE_TRACE_POINTS
+-static void md_wakeup_thread_directly(struct md_thread __rcu *thread)
++static void md_wakeup_thread_directly(struct md_thread __rcu **thread)
+ {
+ 	struct md_thread *t;
+ 
+ 	rcu_read_lock();
+-	t = rcu_dereference(thread);
++	t = rcu_dereference(*thread);
+ 	if (t)
+ 		wake_up_process(t->tsk);
+ 	rcu_read_unlock();
+ }
+ 
+-void md_wakeup_thread(struct md_thread __rcu *thread)
++void __md_wakeup_thread(struct md_thread __rcu *thread)
+ {
+ 	struct md_thread *t;
+ 
+-	rcu_read_lock();
+ 	t = rcu_dereference(thread);
+ 	if (t) {
+ 		pr_debug("md: waking up MD thread %s.\n", t->tsk->comm);
+@@ -8398,9 +8397,8 @@ void md_wakeup_thread(struct md_thread __rcu *thread)
+ 		if (wq_has_sleeper(&t->wqueue))
+ 			wake_up(&t->wqueue);
+ 	}
+-	rcu_read_unlock();
+ }
+-EXPORT_SYMBOL(md_wakeup_thread);
++EXPORT_SYMBOL(__md_wakeup_thread);
+ 
+ struct md_thread *md_register_thread(void (*run) (struct md_thread *),
+ 		struct mddev *mddev, const char *name)
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index 1979c2d4fe89e..5d5f780b84477 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -882,6 +882,12 @@ struct md_io_clone {
+ 
+ #define THREAD_WAKEUP  0
+ 
++#define md_wakeup_thread(thread) do {   \
++	rcu_read_lock();                    \
++	__md_wakeup_thread(thread);         \
++	rcu_read_unlock();                  \
++} while (0)
++
+ static inline void safe_put_page(struct page *p)
+ {
+ 	if (p) put_page(p);
+@@ -895,7 +901,7 @@ extern struct md_thread *md_register_thread(
+ 	struct mddev *mddev,
+ 	const char *name);
+ extern void md_unregister_thread(struct mddev *mddev, struct md_thread __rcu **threadp);
+-extern void md_wakeup_thread(struct md_thread __rcu *thread);
++extern void __md_wakeup_thread(struct md_thread __rcu *thread);
+ extern void md_check_recovery(struct mddev *mddev);
+ extern void md_reap_sync_thread(struct mddev *mddev);
+ extern enum sync_action md_sync_action(struct mddev *mddev);
 -- 
 2.51.0
 
