@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-201268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C08CC2307
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE08CC34E0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3796230966B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0A6930C1286
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CFF341AAE;
-	Tue, 16 Dec 2025 11:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F676354AD3;
+	Tue, 16 Dec 2025 11:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHfrwzCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZReaoUTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DABB33DEE1;
-	Tue, 16 Dec 2025 11:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBD9354ACF;
+	Tue, 16 Dec 2025 11:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884079; cv=none; b=OtCBRd1BlGztbjyUUPw6ant4636o1JK/llrtJ6jAhxTTarJyEUuoOLA/FU6dse2irvs1g+WMOBLnw6AcEJ2nHnnvBM4Jrl151FCR+7D4qbg7qBDB/8EnnVH8RR0wy5fYeLGv7ZrQj7nyLbT4YJbrHnIIBbER8c7SuCTBLwnyNFc=
+	t=1765885791; cv=none; b=BhpoK5u5gVUh5rqtiKxK8ig/ewsEdMxOnBYYBlav+6LN1ymlDGQDS4XfRL6PmaHBtvkVpGb54NYoCA6qHSyVCKCgk3F6oRHITCgUWssCS+injpM1PRZR9cHpZKcCYkdEtp6dXqK7F7T90wOMlWfDyGb67W6v7WH/i8r5C6t8EHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884079; c=relaxed/simple;
-	bh=lqL0bJJR9bVlG8VLdrw1OZp4RbCGIsJhFh4VW6xkejU=;
+	s=arc-20240116; t=1765885791; c=relaxed/simple;
+	bh=/0TV/RWSK1uFq9xkToiJU9uonJsK5b2VFLpeHljE0FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRgOrNY0Q5t4k6KRRFn5XiBhwIIuYyVUI1YVDHCaniTD8zoZdQNA5pXLirlofo2gNle5YA2RMuO48xEDIUAk6kVgfd+NM9cAANwR1ThoWKUj3gKr+Ped9jyBx4wJCK3nag+KzyJprk1Z5aXWdc0PvehfiEITvRAcMSsWzpLKYXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHfrwzCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89736C4CEF1;
-	Tue, 16 Dec 2025 11:21:18 +0000 (UTC)
+	 MIME-Version; b=o7sRGk72Ovrb88uoG8FKN4bKIUyn6/fwN4msO06yBDWk54D5QmdrIGVXat0BekCVPReGXxSW4KrBrkJSUwwGHRB9ECVkEZuvG/kODz2KQIz8TVhy4qaxSlPy91AU1rHxXH5P2cyD+vTkRlBMroHQvjGe+dwI5VTeWOHKdqQTVQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZReaoUTj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13481C4CEF1;
+	Tue, 16 Dec 2025 11:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884079;
-	bh=lqL0bJJR9bVlG8VLdrw1OZp4RbCGIsJhFh4VW6xkejU=;
+	s=korg; t=1765885790;
+	bh=/0TV/RWSK1uFq9xkToiJU9uonJsK5b2VFLpeHljE0FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHfrwzCpMUndZmJmcxTwHwX0f0HVNQ4dD+b7rEUjlD8o+qwTfLVN9sefrebXaCwXC
-	 4VparbwnuOlk7wDn/dFeJO8DsTrYCEauqdnGLBaktuJi8sUsWUe2Sh7U38m4hLyksv
-	 fcsH2PwOgR72l8hqaMxY0zRRdubH7X3qEpkYJmOk=
+	b=ZReaoUTjHot9Bo6zqjdPoDFuVJVeIK6WwvE+L70p5+smJIF/D6puf1ZlBRVrYcDVZ
+	 9K7nikTwUGppagd3nhkayAQOFIKXmg3CRk5tMRCRWjWuiJmzYDsippxYwdbp9DuYrZ
+	 rwqMg5wOXRgAXSgGNc8QuyFXMl6ta2bopdb1L1Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Song Liu <song@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/354] bpf: Refactor stack map trace depth calculation into helper function
+Subject: [PATCH 6.17 212/507] coresight: Change device mode to atomic type
 Date: Tue, 16 Dec 2025 12:10:53 +0100
-Message-ID: <20251216111324.039483522@linuxfoundation.org>
+Message-ID: <20251216111353.188227513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit e17d62fedd10ae56e2426858bd0757da544dbc73 ]
+[ Upstream commit 693d1eaca940f277af24c74873ef2313816ff444 ]
 
-Extract the duplicated maximum allowed depth computation for stack
-traces stored in BPF stacks from bpf_get_stackid() and __bpf_get_stack()
-into a dedicated stack_map_calculate_max_depth() helper function.
+The device mode is defined as local type. This type cannot promise
+SMP-safe access.
 
-This unifies the logic for:
-- The max depth computation
-- Enforcing the sysctl_perf_event_max_stack limit
+Change to atomic type and impose relax ordering, which ensures the
+SMP-safe synchronisation and the ordering between the mode setting and
+relevant operations.
 
-No functional changes for existing code paths.
-
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/bpf/20251025192858.31424-1-contact@arnaud-lcm.com
-Stable-dep-of: 23f852daa4ba ("bpf: Fix stackmap overflow check in __bpf_get_stackid()")
+Fixes: 22fd532eaa0c ("coresight: etm3x: adding operation mode for etm_enable()")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-1-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/stackmap.c | 47 +++++++++++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 15 deletions(-)
+ include/linux/coresight.h | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index ec3a57a5fba1f..d6027bac61c35 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -42,6 +42,28 @@ static inline int stack_map_data_size(struct bpf_map *map)
- 		sizeof(struct bpf_stack_build_id) : sizeof(u64);
+diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+index ead03818d7d75..b2b7f09ac3823 100644
+--- a/include/linux/coresight.h
++++ b/include/linux/coresight.h
+@@ -252,15 +252,11 @@ struct coresight_trace_id_map {
+  *		by @coresight_ops.
+  * @access:	Device i/o access abstraction for this device.
+  * @dev:	The device entity associated to this component.
+- * @mode:	This tracer's mode, i.e sysFS, Perf or disabled. This is
+- *		actually an 'enum cs_mode', but is stored in an atomic type.
+- *		This is always accessed through local_read() and local_set(),
+- *		but wherever it's done from within the Coresight device's lock,
+- *		a non-atomic read would also work. This is the main point of
+- *		synchronisation between code happening inside the sysfs mode's
+- *		coresight_mutex and outside when running in Perf mode. A compare
+- *		and exchange swap is done to atomically claim one mode or the
+- *		other.
++ * @mode:	The device mode, i.e sysFS, Perf or disabled. This is actually
++ *		an 'enum cs_mode' but stored in an atomic type. Access is always
++ *		through atomic APIs, ensuring SMP-safe synchronisation between
++ *		racing from sysFS and Perf mode. A compare-and-exchange
++ *		operation is done to atomically claim one mode or the other.
+  * @refcnt:	keep track of what is in use. Only access this outside of the
+  *		device's spinlock when the coresight_mutex held and mode ==
+  *		CS_MODE_SYSFS. Otherwise it must be accessed from inside the
+@@ -289,7 +285,7 @@ struct coresight_device {
+ 	const struct coresight_ops *ops;
+ 	struct csdev_access access;
+ 	struct device dev;
+-	local_t	mode;
++	atomic_t mode;
+ 	int refcnt;
+ 	bool orphan;
+ 	/* sink specific fields */
+@@ -651,13 +647,14 @@ static inline bool coresight_is_percpu_sink(struct coresight_device *csdev)
+ static inline bool coresight_take_mode(struct coresight_device *csdev,
+ 				       enum cs_mode new_mode)
+ {
+-	return local_cmpxchg(&csdev->mode, CS_MODE_DISABLED, new_mode) ==
+-	       CS_MODE_DISABLED;
++	int curr = CS_MODE_DISABLED;
++
++	return atomic_try_cmpxchg_acquire(&csdev->mode, &curr, new_mode);
  }
  
-+/**
-+ * stack_map_calculate_max_depth - Calculate maximum allowed stack trace depth
-+ * @size:  Size of the buffer/map value in bytes
-+ * @elem_size:  Size of each stack trace element
-+ * @flags:  BPF stack trace flags (BPF_F_USER_STACK, BPF_F_USER_BUILD_ID, ...)
-+ *
-+ * Return: Maximum number of stack trace entries that can be safely stored
-+ */
-+static u32 stack_map_calculate_max_depth(u32 size, u32 elem_size, u64 flags)
-+{
-+	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-+	u32 max_depth;
-+	u32 curr_sysctl_max_stack = READ_ONCE(sysctl_perf_event_max_stack);
-+
-+	max_depth = size / elem_size;
-+	max_depth += skip;
-+	if (max_depth > curr_sysctl_max_stack)
-+		return curr_sysctl_max_stack;
-+
-+	return max_depth;
-+}
-+
- static int prealloc_elems_and_freelist(struct bpf_stack_map *smap)
+ static inline enum cs_mode coresight_get_mode(struct coresight_device *csdev)
  {
- 	u64 elem_size = sizeof(struct stack_map_bucket) +
-@@ -300,20 +322,17 @@ static long __bpf_get_stackid(struct bpf_map *map,
- BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
- 	   u64, flags)
- {
--	u32 max_depth = map->value_size / stack_map_data_size(map);
--	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-+	u32 elem_size = stack_map_data_size(map);
- 	bool user = flags & BPF_F_USER_STACK;
- 	struct perf_callchain_entry *trace;
- 	bool kernel = !user;
-+	u32 max_depth;
+-	return local_read(&csdev->mode);
++	return atomic_read_acquire(&csdev->mode);
+ }
  
- 	if (unlikely(flags & ~(BPF_F_SKIP_FIELD_MASK | BPF_F_USER_STACK |
- 			       BPF_F_FAST_STACK_CMP | BPF_F_REUSE_STACKID)))
- 		return -EINVAL;
+ static inline void coresight_set_mode(struct coresight_device *csdev,
+@@ -673,7 +670,7 @@ static inline void coresight_set_mode(struct coresight_device *csdev,
+ 	WARN(new_mode != CS_MODE_DISABLED && current_mode != CS_MODE_DISABLED &&
+ 	     current_mode != new_mode, "Device already in use\n");
  
--	max_depth += skip;
--	if (max_depth > sysctl_perf_event_max_stack)
--		max_depth = sysctl_perf_event_max_stack;
--
-+	max_depth = stack_map_calculate_max_depth(map->value_size, elem_size, flags);
- 	trace = get_perf_callchain(regs, kernel, user, max_depth,
- 				   false, false);
+-	local_set(&csdev->mode, new_mode);
++	atomic_set_release(&csdev->mode, new_mode);
+ }
  
-@@ -406,7 +425,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 			    struct perf_callchain_entry *trace_in,
- 			    void *buf, u32 size, u64 flags, bool may_fault)
- {
--	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
-+	u32 trace_nr, copy_len, elem_size, max_depth;
- 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
- 	bool crosstask = task && task != current;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-@@ -438,21 +457,20 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 		goto clear;
- 	}
- 
--	num_elem = size / elem_size;
--	max_depth = num_elem + skip;
--	if (sysctl_perf_event_max_stack < max_depth)
--		max_depth = sysctl_perf_event_max_stack;
-+	max_depth = stack_map_calculate_max_depth(size, elem_size, flags);
- 
- 	if (may_fault)
- 		rcu_read_lock(); /* need RCU for perf's callchain below */
- 
--	if (trace_in)
-+	if (trace_in) {
- 		trace = trace_in;
--	else if (kernel && task)
-+		trace->nr = min_t(u32, trace->nr, max_depth);
-+	} else if (kernel && task) {
- 		trace = get_callchain_entry_for_task(task, max_depth);
--	else
-+	} else {
- 		trace = get_perf_callchain(regs, kernel, user, max_depth,
- 					   crosstask, false);
-+	}
- 
- 	if (unlikely(!trace) || trace->nr < skip) {
- 		if (may_fault)
-@@ -461,7 +479,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	}
- 
- 	trace_nr = trace->nr - skip;
--	trace_nr = (trace_nr <= num_elem) ? trace_nr : num_elem;
- 	copy_len = trace_nr * elem_size;
- 
- 	ips = trace->ip + skip;
+ struct coresight_device *coresight_register(struct coresight_desc *desc);
 -- 
 2.51.0
 
