@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F38CC2839
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:01:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F26CC2FA4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01A6430C405F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:54:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0CF4C311CF5B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494D534EEEC;
-	Tue, 16 Dec 2025 11:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1BE347BCB;
+	Tue, 16 Dec 2025 12:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6FeNJVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUwlSHN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067C434EEE4;
-	Tue, 16 Dec 2025 11:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181153446D2;
+	Tue, 16 Dec 2025 12:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885613; cv=none; b=juHKOM+D3Wp2hICi+tQaBQo+E12onAd0X84NqNRlj0Zve3lANriytwvk3YGn/5fnLNYeXmU0OHIgWyl3Kcng6wy6bspCyHZO91XWkWa7yHVNfenipVxoLa8rM98/7CErWm5KMNwr89zvSlPNSteSCzmZN7osnzvZI16oaCwCZPU=
+	t=1765887557; cv=none; b=KDVieu3bWjLplyKmc1zVcJZjDNwI22lcMyBv81yA78OwWhRI5dW1FOnP3zvQ2TFw96H8UeKhwJOf0toCzmJo6MapwOp9EjAR+oCCVoYrreS5mqMjlSNEGM9BKQq1OAHw0SBFNCL7hXGpcqPbpSSdsHLatnYcNZuVWKTgNxq0K0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885613; c=relaxed/simple;
-	bh=yHk4urGp57CrnGj1viNWXTazc4tlcjVvW8IguAJNcDw=;
+	s=arc-20240116; t=1765887557; c=relaxed/simple;
+	bh=EcblMywMzXQI7p995g3pAXVCm9PFX9+1+CbRDqxdrb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzWGKSyBuZ/f75sr/zFop9KQXjsdVKSdE+mBlt6ocN0V1TxbrgDtn8G47X2mlCeZXHHNJ8WWs7C9U4EUuGhqe0HjNi+LUytMtzH52IlhxKjrkXDVAwFRMHVlssCgchQ+U3pBzTVyD//5q11+eJj2+AOLo3gHgBYx/47IbNtEftA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6FeNJVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5004CC4CEF1;
-	Tue, 16 Dec 2025 11:46:52 +0000 (UTC)
+	 MIME-Version; b=CUwAbKT/nWxuVdqFi82nFoLUHcPgwHIO1RrJFCT3XGfDDJsAaY9RNk+Nm476Q5idPGr/wb6kuNJYAZSCn/WJgxJv4wsrCArTi6SEUYIUmUbP/akSKSVKBBYkEixO13YELiFc8TdsPWxzqvaT/1777s34yKCYcoRFljcdS8vPt6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUwlSHN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1BBC4CEF1;
+	Tue, 16 Dec 2025 12:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885612;
-	bh=yHk4urGp57CrnGj1viNWXTazc4tlcjVvW8IguAJNcDw=;
+	s=korg; t=1765887557;
+	bh=EcblMywMzXQI7p995g3pAXVCm9PFX9+1+CbRDqxdrb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6FeNJVwJC63XvqvSXulKfl0bkEZhgl+RdiGSnCF+FJP+vrsCSGk9hmd7FteHmZ2G
-	 QAtAssO54i528lgE7VQdFxl2U/tGwojZhRjxEN7ay6u6h12SaxmKN5cVCnRChJEgAh
-	 eBd6uTSQKVB2mvRVJ8V36GHaLD0oxiwrg3FsVS/Y=
+	b=UUwlSHN5iaaPX8h3mP7rNIyEZ/wu4q6orZqKtN8m7V9gB3nWb4olYgGcMmidmJhiT
+	 TUyPOKVWKyS+UcvCSbeYurrnLDeSwad802oLb2fo9YvrAFcjmrlr78m3T7qJrDo2P2
+	 tdcwwe0qer52iANY2r6bwxtD5zMrhXhVUDZwJ8AM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Zhou <yun.zhou@windriver.com>,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 191/507] md: fix rcu protection in md_wakeup_thread
-Date: Tue, 16 Dec 2025 12:10:32 +0100
-Message-ID: <20251216111352.431484952@linuxfoundation.org>
+Subject: [PATCH 6.18 266/614] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
+Date: Tue, 16 Dec 2025 12:10:33 +0100
+Message-ID: <20251216111411.010356927@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Zhou <yun.zhou@windriver.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 0dc76205549b4c25705e54345f211b9f66e018a0 ]
+[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
 
-We attempted to use RCU to protect the pointer 'thread', but directly
-passed the value when calling md_wakeup_thread(). This means that the
-RCU pointer has been acquired before rcu_read_lock(), which renders
-rcu_read_lock() ineffective and could lead to a use-after-free.
+acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
+parent fwnode but returns without calling fwnode_handle_put() on it. This
+potentially leads to a fwnode refcount leak and prevents the parent node
+from being released properly.
 
-Link: https://lore.kernel.org/linux-raid/20251015083227.1079009-1-yun.zhou@windriver.com
-Fixes: 446931543982 ("md: protect md_thread with rcu")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Call fwnode_handle_put() on the parent fwnode before returning to prevent
+the leak from occurring.
+
+Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 14 ++++++--------
- drivers/md/md.h |  8 +++++++-
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/acpi/property.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 07e48faa87e0b..436aab6c5d3de 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -100,7 +100,7 @@ static int remove_and_add_spares(struct mddev *mddev,
- 				 struct md_rdev *this);
- static void mddev_detach(struct mddev *mddev);
- static void export_rdev(struct md_rdev *rdev, struct mddev *mddev);
--static void md_wakeup_thread_directly(struct md_thread __rcu *thread);
-+static void md_wakeup_thread_directly(struct md_thread __rcu **thread);
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 43d5e457814e1..b12057baaae7b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1714,6 +1714,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
+ 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
  
- /*
-  * Default number of read corrections we'll attempt on an rdev
-@@ -4984,7 +4984,7 @@ static void stop_sync_thread(struct mddev *mddev, bool locked)
- 	 * Thread might be blocked waiting for metadata update which will now
- 	 * never happen
- 	 */
--	md_wakeup_thread_directly(mddev->sync_thread);
-+	md_wakeup_thread_directly(&mddev->sync_thread);
- 	if (work_pending(&mddev->sync_work))
- 		flush_work(&mddev->sync_work);
- 
-@@ -8196,22 +8196,21 @@ static int md_thread(void *arg)
++	fwnode_handle_put(port_fwnode);
  	return 0;
  }
  
--static void md_wakeup_thread_directly(struct md_thread __rcu *thread)
-+static void md_wakeup_thread_directly(struct md_thread __rcu **thread)
- {
- 	struct md_thread *t;
- 
- 	rcu_read_lock();
--	t = rcu_dereference(thread);
-+	t = rcu_dereference(*thread);
- 	if (t)
- 		wake_up_process(t->tsk);
- 	rcu_read_unlock();
- }
- 
--void md_wakeup_thread(struct md_thread __rcu *thread)
-+void __md_wakeup_thread(struct md_thread __rcu *thread)
- {
- 	struct md_thread *t;
- 
--	rcu_read_lock();
- 	t = rcu_dereference(thread);
- 	if (t) {
- 		pr_debug("md: waking up MD thread %s.\n", t->tsk->comm);
-@@ -8219,9 +8218,8 @@ void md_wakeup_thread(struct md_thread __rcu *thread)
- 		if (wq_has_sleeper(&t->wqueue))
- 			wake_up(&t->wqueue);
- 	}
--	rcu_read_unlock();
- }
--EXPORT_SYMBOL(md_wakeup_thread);
-+EXPORT_SYMBOL(__md_wakeup_thread);
- 
- struct md_thread *md_register_thread(void (*run) (struct md_thread *),
- 		struct mddev *mddev, const char *name)
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index 51af29a030793..c989cc9f6216b 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -878,6 +878,12 @@ struct md_io_clone {
- 
- #define THREAD_WAKEUP  0
- 
-+#define md_wakeup_thread(thread) do {   \
-+	rcu_read_lock();                    \
-+	__md_wakeup_thread(thread);         \
-+	rcu_read_unlock();                  \
-+} while (0)
-+
- static inline void safe_put_page(struct page *p)
- {
- 	if (p) put_page(p);
-@@ -891,7 +897,7 @@ extern struct md_thread *md_register_thread(
- 	struct mddev *mddev,
- 	const char *name);
- extern void md_unregister_thread(struct mddev *mddev, struct md_thread __rcu **threadp);
--extern void md_wakeup_thread(struct md_thread __rcu *thread);
-+extern void __md_wakeup_thread(struct md_thread __rcu *thread);
- extern void md_check_recovery(struct mddev *mddev);
- extern void md_reap_sync_thread(struct mddev *mddev);
- extern enum sync_action md_sync_action(struct mddev *mddev);
 -- 
 2.51.0
 
