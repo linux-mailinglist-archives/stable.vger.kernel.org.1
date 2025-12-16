@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-201596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF48CCC3F9F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:35:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF79CC2D2E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 953CE304FEA9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1C6331057C5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9A03491C8;
-	Tue, 16 Dec 2025 11:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC7C3659F4;
+	Tue, 16 Dec 2025 12:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2xvi736"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBpscCtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5DB34888F;
-	Tue, 16 Dec 2025 11:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E55365A01;
+	Tue, 16 Dec 2025 12:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885158; cv=none; b=o0BGVr5092nMNRxodfHu8e+7CgO5aCyAI5AE5+sOd5U7EKUCbUmnX3WKz1Spw3xNG9ziFaXqMgveSfuGIpKgd9EmcPBGaIbKdUcuMke01ND3RAn6LhcMi7Dl1YK2yA0i6UStSx+v1h9ZMd8Ps6/OzpxdsaSF5oTontQVVENyUcA=
+	t=1765887129; cv=none; b=NDvFkPfpYGaF/qZvJWdJ58reZ1p4WKYPJ01lgekWNn0ubnC0MkB1J+naCptbHtRbr/yABCzDWEqXzBscgO1b4aIxvRzJVgN/ecf4pVm8Wo0pcqDn26xpdOBgz82xkJNfA38UQWys/M9pzyYH/rUsFghYO3Fn6tVZu7rbdi80HRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885158; c=relaxed/simple;
-	bh=oQTxL2ijJwtDjmvRWG1utDaVI//vy9yNohG7f5O5T1Q=;
+	s=arc-20240116; t=1765887129; c=relaxed/simple;
+	bh=vZvKB/DtzagWtsPWE/woWMsunhUEs2PvbBzrlv9eWiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtJzLzoUW3DEyECs88JIMVzP//ME/TRTls4mfPM0y9csJ7D2cjhqLirtxNaxGC7jmoHpWCRxZyLQc8uz+vDuXl8boML482tZ0OKfSSmKE02sEEo4ZgiEqlIYhplxE/oCKquBE/I/JZ8qR2GS2++DeMv6L3/R6qSxLgukvGDIWj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2xvi736; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23A8C4CEF1;
-	Tue, 16 Dec 2025 11:39:17 +0000 (UTC)
+	 MIME-Version; b=La/tfmRLCu8MTFNNKG2882KRe6Fs7S7441KLyyNWZRpxbiP8oUM+E+6HOKEP8zqtkCvUK/bagZ6Ny13HWcX1wO7/pMKqaXPYZFrNsRJfF9OQM6HV7mNdzaRGKkiAEDj+TGXRfaETs7cYvGEOf4DVecSzgF/yXE8hAEJCAxNnxPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBpscCtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BD5C4CEF1;
+	Tue, 16 Dec 2025 12:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885158;
-	bh=oQTxL2ijJwtDjmvRWG1utDaVI//vy9yNohG7f5O5T1Q=;
+	s=korg; t=1765887129;
+	bh=vZvKB/DtzagWtsPWE/woWMsunhUEs2PvbBzrlv9eWiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2xvi736WbklyDhV1tUT/iVtvQ1pi54rfzL4bOYjGVf7IcgyIVslv5tQfEn5M/UnW
-	 /IPu57Ix2fgkan+8tZvi+VQECxJXBp2r2834YkgTj+MWLl4zxtdHgHyz98nbJNt5Wr
-	 UJgNpXJPUTHCP9sSoGTPMgvgxAeUER1wW6dFpH9U=
+	b=bBpscCtCSJINsbscUZhGsQiQTOAn8UUNwaA7WJ1quIyD+ApL9lZwwY1bdCjTQDByH
+	 +7IJA/BfA3hCNnQuZrKv9wsbm052UkKWnjzBc3q/vlJMXwJ1TiohyOo8O7XAUMt0XX
+	 WSS+SzP9KGVQ5kDWggjDCnOHR3kTBT5Jke/Dd21U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dylan Hatch <dylanbhatch@google.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 028/507] objtool: Fix standalone --hacks=jump_label
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 102/614] ice: move ice_init_pf() out of ice_init_dev()
 Date: Tue, 16 Dec 2025 12:07:49 +0100
-Message-ID: <20251216111346.557894656@linuxfoundation.org>
+Message-ID: <20251216111405.023635161@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dylan Hatch <dylanbhatch@google.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit be8374a5ba7cbab6b97df94b4ffe0b92f5c8a6d2 ]
+[ Upstream commit ef825bdb4605742c4efc03f67d930e80c42f33cb ]
 
-The objtool command line 'objtool --hacks=jump_label foo.o' on its own
-should be expected to rewrite jump labels to NOPs. This means the
-add_special_section_alts() code path needs to run when only this option
-is provided.
+Move ice_init_pf() out of ice_init_dev().
+Do the same for deinit counterpart.
 
-This is mainly relevant in certain debugging situations, but could
-potentially also fix kernel builds in which objtool is run with
---hacks=jump_label but without --orc, --stackval, --uaccess, or
---hacks=noinstr.
-
-Fixes: de6fbcedf5ab ("objtool: Read special sections with alts only when specific options are selected")
-Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 1390b8b3d2be ("ice: remove duplicate call to ice_deinit_hw() on error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/intel/ice/devlink/devlink.c  | 16 ++++++++--
+ drivers/net/ethernet/intel/ice/ice.h          |  2 ++
+ drivers/net/ethernet/intel/ice/ice_main.c     | 32 +++++++++----------
+ 3 files changed, 31 insertions(+), 19 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index d23fefcb15d38..ac2b8813c4a0a 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2563,7 +2563,8 @@ static int decode_sections(struct objtool_file *file)
- 	 * Must be before add_jump_destinations(), which depends on 'func'
- 	 * being set for alternatives, to enable proper sibling call detection.
- 	 */
--	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr) {
-+	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr ||
-+	    opts.hack_jump_label) {
- 		ret = add_special_section_alts(file);
- 		if (ret)
- 			return ret;
+diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+index fb2de521731ae..c354a03c950cd 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+@@ -459,6 +459,7 @@ static void ice_devlink_reinit_down(struct ice_pf *pf)
+ 	rtnl_lock();
+ 	ice_vsi_decfg(ice_get_main_vsi(pf));
+ 	rtnl_unlock();
++	ice_deinit_pf(pf);
+ 	ice_deinit_dev(pf);
+ }
+ 
+@@ -1231,11 +1232,12 @@ static void ice_set_min_max_msix(struct ice_pf *pf)
+ static int ice_devlink_reinit_up(struct ice_pf *pf)
+ {
+ 	struct ice_vsi *vsi = ice_get_main_vsi(pf);
++	struct device *dev = ice_pf_to_dev(pf);
+ 	int err;
+ 
+ 	err = ice_init_hw(&pf->hw);
+ 	if (err) {
+-		dev_err(ice_pf_to_dev(pf), "ice_init_hw failed: %d\n", err);
++		dev_err(dev, "ice_init_hw failed: %d\n", err);
+ 		return err;
+ 	}
+ 
+@@ -1246,13 +1248,19 @@ static int ice_devlink_reinit_up(struct ice_pf *pf)
+ 	if (err)
+ 		goto unroll_hw_init;
+ 
++	err = ice_init_pf(pf);
++	if (err) {
++		dev_err(dev, "ice_init_pf failed: %d\n", err);
++		goto unroll_dev_init;
++	}
++
+ 	vsi->flags = ICE_VSI_FLAG_INIT;
+ 
+ 	rtnl_lock();
+ 	err = ice_vsi_cfg(vsi);
+ 	rtnl_unlock();
+ 	if (err)
+-		goto err_vsi_cfg;
++		goto unroll_pf_init;
+ 
+ 	/* No need to take devl_lock, it's already taken by devlink API */
+ 	err = ice_load(pf);
+@@ -1265,7 +1273,9 @@ static int ice_devlink_reinit_up(struct ice_pf *pf)
+ 	rtnl_lock();
+ 	ice_vsi_decfg(vsi);
+ 	rtnl_unlock();
+-err_vsi_cfg:
++unroll_pf_init:
++	ice_deinit_pf(pf);
++unroll_dev_init:
+ 	ice_deinit_dev(pf);
+ unroll_hw_init:
+ 	ice_deinit_hw(&pf->hw);
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 0e58a58c23eb3..9a1abd4573372 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -1035,6 +1035,8 @@ void ice_unload(struct ice_pf *pf);
+ void ice_adv_lnk_speed_maps_init(void);
+ int ice_init_dev(struct ice_pf *pf);
+ void ice_deinit_dev(struct ice_pf *pf);
++int ice_init_pf(struct ice_pf *pf);
++void ice_deinit_pf(struct ice_pf *pf);
+ int ice_change_mtu(struct net_device *netdev, int new_mtu);
+ void ice_tx_timeout(struct net_device *netdev, unsigned int txqueue);
+ int ice_xdp(struct net_device *dev, struct netdev_bpf *xdp);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 6773b918daffc..6b3d941f419b3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3949,7 +3949,7 @@ u16 ice_get_avail_rxq_count(struct ice_pf *pf)
+  * ice_deinit_pf - Unrolls initialziations done by ice_init_pf
+  * @pf: board private structure to initialize
+  */
+-static void ice_deinit_pf(struct ice_pf *pf)
++void ice_deinit_pf(struct ice_pf *pf)
+ {
+ 	/* note that we unroll also on ice_init_pf() failure here */
+ 
+@@ -4045,8 +4045,9 @@ void ice_start_service_task(struct ice_pf *pf)
+ /**
+  * ice_init_pf - Initialize general software structures (struct ice_pf)
+  * @pf: board private structure to initialize
++ * Return: 0 on success, negative errno otherwise.
+  */
+-static int ice_init_pf(struct ice_pf *pf)
++int ice_init_pf(struct ice_pf *pf)
+ {
+ 	struct udp_tunnel_nic_info *udp_tunnel_nic = &pf->hw.udp_tunnel_nic;
+ 	struct device *dev = ice_pf_to_dev(pf);
+@@ -4772,23 +4773,12 @@ int ice_init_dev(struct ice_pf *pf)
+ 	}
+ 
+ 	ice_start_service_task(pf);
+-	err = ice_init_pf(pf);
+-	if (err) {
+-		dev_err(dev, "ice_init_pf failed: %d\n", err);
+-		goto unroll_irq_scheme_init;
+-	}
+ 
+ 	return 0;
+-
+-unroll_irq_scheme_init:
+-	ice_service_task_stop(pf);
+-	ice_clear_interrupt_scheme(pf);
+-	return err;
+ }
+ 
+ void ice_deinit_dev(struct ice_pf *pf)
+ {
+-	ice_deinit_pf(pf);
+ 	ice_deinit_hw(&pf->hw);
+ 	ice_service_task_stop(pf);
+ 
+@@ -5030,21 +5020,28 @@ static void ice_deinit_devlink(struct ice_pf *pf)
+ 
+ static int ice_init(struct ice_pf *pf)
+ {
++	struct device *dev = ice_pf_to_dev(pf);
+ 	int err;
+ 
+ 	err = ice_init_dev(pf);
+ 	if (err)
+ 		return err;
+ 
++	err = ice_init_pf(pf);
++	if (err) {
++		dev_err(dev, "ice_init_pf failed: %d\n", err);
++		goto unroll_dev_init;
++	}
++
+ 	if (pf->hw.mac_type == ICE_MAC_E830) {
+ 		err = pci_enable_ptm(pf->pdev, NULL);
+ 		if (err)
+-			dev_dbg(ice_pf_to_dev(pf), "PCIe PTM not supported by PCIe bus/controller\n");
++			dev_dbg(dev, "PCIe PTM not supported by PCIe bus/controller\n");
+ 	}
+ 
+ 	err = ice_alloc_vsis(pf);
+ 	if (err)
+-		goto err_alloc_vsis;
++		goto unroll_pf_init;
+ 
+ 	err = ice_init_pf_sw(pf);
+ 	if (err)
+@@ -5081,7 +5078,9 @@ static int ice_init(struct ice_pf *pf)
+ 	ice_deinit_pf_sw(pf);
+ err_init_pf_sw:
+ 	ice_dealloc_vsis(pf);
+-err_alloc_vsis:
++unroll_pf_init:
++	ice_deinit_pf(pf);
++unroll_dev_init:
+ 	ice_deinit_dev(pf);
+ 	return err;
+ }
+@@ -5093,6 +5092,7 @@ static void ice_deinit(struct ice_pf *pf)
+ 
+ 	ice_deinit_pf_sw(pf);
+ 	ice_dealloc_vsis(pf);
++	ice_deinit_pf(pf);
+ 	ice_deinit_dev(pf);
+ }
+ 
 -- 
 2.51.0
 
