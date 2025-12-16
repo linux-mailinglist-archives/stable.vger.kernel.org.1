@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7593DCC3DCE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:18:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FADCC3F99
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4373008EEB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B25B304B397
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0397D35C18D;
-	Tue, 16 Dec 2025 12:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D965434D3AC;
+	Tue, 16 Dec 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/W87t+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1itA0VZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B464E35BDDE;
-	Tue, 16 Dec 2025 12:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9553434D3A8;
+	Tue, 16 Dec 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887294; cv=none; b=Li3D29BmHyJad1aiW1dlKhdwnyQajZYwe4XmB2eP8/gCdSApmNcnGYmh584p4tjCUf7OUzQtBwzHML0ejzfr5waCLoyENForFms8S489A62kPjluSCDSaYcBfUoiMUnFfr0EI4v/4iVeUEBQOh7kIMsOm5u9N0MFmF5nSQDEpsw=
+	t=1765885295; cv=none; b=h7tiHFAf7/ADMuFvubNfu6JWWyjaaObqmrjc5qY+90x4HyBrWtuI24Iq+1AkTErbhfUV/ZMjvwVPDZzuepu2Fwlz2UJSfMe0sQVK0fxiHJv+RHAJqYmxsCCUJgOiaFD3wj+rs0kXTNaydotEqlAJb2TZGEUdZV1I1YJ1VOoVEUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887294; c=relaxed/simple;
-	bh=fFvmQ0SbBVcZ2mzcBDLQheuaAmPfIhadTEu8OYsYJRw=;
+	s=arc-20240116; t=1765885295; c=relaxed/simple;
+	bh=m2FgzkKYYoruca/XHReQowmj2q7Nllhd9p5GTELfg0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VSzlC+Qa0j848VmkVp2NBQlE7e/AtBnaerlZ5BWtyec+pmEFm0QxVSgfHuQAiLZ2H6LSLpFWNiWtsRQFQ5cAOcH/3fJbXx2NmaFDQdbGZMCiDbL0vJNIcHjnrYaje+y594P+UM9Z2DpHvGD6bxq4++0sYyJsEdoMdV4TQjqhkRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/W87t+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342D5C4CEF1;
-	Tue, 16 Dec 2025 12:14:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hn73inYpCQsRPxla6zL1QfhVRwHKBIf1+Q4JJTsykkbtEt1VjMRIHOOKso+AVKxNki2zqWJfMEvvyD96Kh1vyUbwVjEiL7BOET5uCyVnbepzXckIcL855MKH7jNxC7tfLz9VV4oMNmejpq2bVTq3vg0c4L77KcsA6iA50CD3GFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1itA0VZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CBBC4CEF1;
+	Tue, 16 Dec 2025 11:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887294;
-	bh=fFvmQ0SbBVcZ2mzcBDLQheuaAmPfIhadTEu8OYsYJRw=;
+	s=korg; t=1765885295;
+	bh=m2FgzkKYYoruca/XHReQowmj2q7Nllhd9p5GTELfg0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/W87t+uoDKstrMnZjNY160rIbUotNW/cdl5p7xGv82uTGvPG1Z+wM99SkSz+C57Y
-	 oA1fuwPIjDWatDlI11LcMDhlL+9vPQyydndDjlIUeEWPhl+Qh25/yy5et8rGrbQZZ2
-	 /7fVjBNtxxV2E6VOuhTMvwAr96da1aO3w3i2ILr4=
+	b=1itA0VZVKVFww24sRooE2oHKJgwySot66Q1wSIeq6Yl7we4b4vbl8dA0hEQNswfhO
+	 JlAqtSHSi5BDfyH3w5riEuyIVZeLIIlD0B1JFP4b7uViJjnEmECZrlmxljgP0yScBR
+	 uLV5fd6kKnZAPQwZ3lLKte8VD3Lu6cBR+hOdksCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Eric=20Gon=C3=A7alves?= <ghatto404@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 169/614] arm64: dts: renesas: sparrow-hawk: Fix full-size DP connector node name and labels
+Subject: [PATCH 6.17 095/507] arm64: dts: qcom: starqltechn: remove extra empty line
 Date: Tue, 16 Dec 2025 12:08:56 +0100
-Message-ID: <20251216111407.472143440@linuxfoundation.org>
+Message-ID: <20251216111348.980009150@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Eric Gonçalves <ghatto404@gmail.com>
 
-[ Upstream commit 9d22a34a016313137b9e534a918f1f9aa790aa69 ]
+[ Upstream commit 6e71c5812856d67881572159098f701184c9356a ]
 
-The DisplayPort connector on Retronix R-Car V4H Sparrow Hawk board
-is a full-size DisplayPort connector. Fix the copy-paste error and
-update the DT node name and labels accordingly. No functional change.
+Remove empty white line ine starqltechn device tree at the end of
+max77705_charger node.
 
-Fixes: a719915e76f2 ("arm64: dts: renesas: r8a779g3: Add Retronix R-Car V4H Sparrow Hawk board support")
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251027184604.34550-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Eric Gonçalves <ghatto404@gmail.com>
+Link: https://lore.kernel.org/r/20250828204929.35402-1-ghatto404@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 4372b15d89e2 ("arm64: dts: qcom: sdm845-starqltechn: fix max77705 interrupts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-index 1da8e476b2193..ff07d984cbf29 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
-@@ -119,13 +119,13 @@ memory@600000000 {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+index 016a245a97c40..e0d83b6344215 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+@@ -631,7 +631,6 @@ max77705_charger: charger@69 {
+ 		monitored-battery = <&battery>;
+ 		interrupt-parent = <&pm8998_gpios>;
+ 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
+-
  	};
  
- 	/* Page 27 / DSI to Display */
--	mini-dp-con {
-+	dp-con {
- 		compatible = "dp-connector";
- 		label = "CN6";
- 		type = "full-size";
- 
- 		port {
--			mini_dp_con_in: endpoint {
-+			dp_con_in: endpoint {
- 				remote-endpoint = <&sn65dsi86_out>;
- 			};
- 		};
-@@ -407,7 +407,7 @@ sn65dsi86_in: endpoint {
- 					port@1 {
- 						reg = <1>;
- 						sn65dsi86_out: endpoint {
--							remote-endpoint = <&mini_dp_con_in>;
-+							remote-endpoint = <&dp_con_in>;
- 						};
- 					};
- 				};
+ 	fuel-gauge@36 {
 -- 
 2.51.0
 
