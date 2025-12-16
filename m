@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-202136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD31CC3A46
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CD8CC275C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFCE430D1946
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:31:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27345306AE2E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC523624B0;
-	Tue, 16 Dec 2025 12:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62976345CCC;
+	Tue, 16 Dec 2025 11:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYsg+i4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJBDxND+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395F03624A1;
-	Tue, 16 Dec 2025 12:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E64F345CC6;
+	Tue, 16 Dec 2025 11:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886932; cv=none; b=XDD59KgbI7TUDfSjvygA5H/qs/4SFA+wKEqOLxYXdEgUKCuaQ4oTxJln0Q6bMd69FesqGPQec5ALMUis1bRyq3gqEl6+ZQLwPyM9SNNGg1X6UfioR95sVmp1LpcWP762U6DTABNHjnrcGj8SlZHk4bE2bC2O5P3ifsppUebY7Zs=
+	t=1765885058; cv=none; b=PUuOa6/7faH8xRuacv80YMmfyMsISsl6Hw2hZ4AmjDcBN/dgfl91yF+zYLgn15Ksa7HGwlKO06meeSJl54aUeXuQQr4VFf+PQWOV5iUoycyPJNiYyZcAPIeikfaABI96dyfQPUXAQwRWGjetxy++Xm4TxKmJP7lVWJxN6XH3aec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886932; c=relaxed/simple;
-	bh=sPoiQuDLKUdP7CaCxxKrIRbfGRqlJgLIWSNLlWpcd/g=;
+	s=arc-20240116; t=1765885058; c=relaxed/simple;
+	bh=aW16dRfgNnIeewngR1fJ9BsfVA5yWbrQ2HSDAZhVQiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTswJyYF8sQSDhuYrx9l7hGbPo3y5+nRlv3ld+xuJFZhlJGq7t7Hj4lD0VBEIQNn4KzokuDqmWfJIqhVqurwZboPCbrvQ0ZHys6r5Nm5DsihOTVwfRPL458S2Q9ufWeY1zPBJsri54/+QWSoKitMAMjv7TQG+QplsqFRntjxA88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYsg+i4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5154C4CEF1;
-	Tue, 16 Dec 2025 12:08:51 +0000 (UTC)
+	 MIME-Version; b=fpizvq/C2s79Nl4QwwHOv9syEoPRD32NknmxAFEcI/N6m3h+hVRCoCpIMiuki6HglMNZgxEz9ol68ZaooaQ1i2qG4ZTj26FMLZ6TrsLzYoxH7PlZWcKVhCXZ9eaasJWV8BBuoUrfNsMjT8SlgGzBHXgTeKFFnMpSnqO3xgzGcNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJBDxND+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF61C4CEF1;
+	Tue, 16 Dec 2025 11:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886932;
-	bh=sPoiQuDLKUdP7CaCxxKrIRbfGRqlJgLIWSNLlWpcd/g=;
+	s=korg; t=1765885058;
+	bh=aW16dRfgNnIeewngR1fJ9BsfVA5yWbrQ2HSDAZhVQiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYsg+i4H2guBL6SzYibcTz/DyWO1fV6egi4ZbW6tlK4EJBvnDlOYNH1ABOtrda2Oi
-	 yXjwKGgiT7Fl4yDvn58UF8RNsclaC+IaPRTDlidx9K6RKXKCLjGPQ8iOj65ePsp37M
-	 F39P5dM5DKY/1aZ+x7LRF2JWmaRGyr8xPsyfQlGw=
+	b=jJBDxND+/vIgWBrOx/oO+pMK2JMAhy/gte5hXOByHhop+zxjxX2+jcEi9EmQNyZUR
+	 ZJbsPNdhvqPS1A9avF0uvTXjEeJvhuRZiGLld1kuKiQhsl+tAV1fgOdt4Z6RZRPsUZ
+	 0avB3vr1ki5ZU5E9Kuy1BPHFfmq0qkyX1igJxTlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 077/614] uio: uio_fsl_elbc_gpcm:: Add null pointer check to uio_fsl_elbc_gpcm_probe
+Subject: [PATCH 6.17 003/507] smack: deduplicate xattr setting in smack_inode_init_security()
 Date: Tue, 16 Dec 2025 12:07:24 +0100
-Message-ID: <20251216111404.106758072@linuxfoundation.org>
+Message-ID: <20251216111345.653131880@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +60,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit d48fb15e6ad142e0577428a8c5028136e10c7b3d ]
+[ Upstream commit 8e5d9f916a9678e2dcbed2289b87efd453e4e052 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
-
-Fixes: d57801c45f53e ("uio: uio_fsl_elbc_gpcm: use device-managed allocators")
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Link: https://patch.msgid.link/20251015064020.56589-1-liqiang01@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Stable-dep-of: 78fc6a94be25 ("smack: fix bug: invalid label of unix socket file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_fsl_elbc_gpcm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ security/smack/smack_lsm.c | 56 ++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/uio/uio_fsl_elbc_gpcm.c b/drivers/uio/uio_fsl_elbc_gpcm.c
-index 81454c3e2484c..338dd2aaabc87 100644
---- a/drivers/uio/uio_fsl_elbc_gpcm.c
-+++ b/drivers/uio/uio_fsl_elbc_gpcm.c
-@@ -384,6 +384,11 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
- 
- 	/* set all UIO data */
- 	info->mem[0].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOFn", node);
-+	if (!info->mem[0].name) {
-+		ret = -ENODEV;
-+		goto out_err3;
-+	}
-+
- 	info->mem[0].addr = res.start;
- 	info->mem[0].size = resource_size(&res);
- 	info->mem[0].memtype = UIO_MEM_PHYS;
-@@ -423,6 +428,8 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
- out_err2:
- 	if (priv->shutdown)
- 		priv->shutdown(info, true);
-+
-+out_err3:
- 	iounmap(info->mem[0].internal_addr);
- 	return ret;
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index d6f814aa15bae..8609ae26e365e 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -980,6 +980,24 @@ smk_rule_transmutes(struct smack_known *subject,
+ 	return (may > 0) && (may & MAY_TRANSMUTE);
  }
+ 
++static int
++xattr_dupval(struct xattr *xattrs, int *xattr_count,
++	     const char *name, const void *value, unsigned int vallen)
++{
++	struct xattr * const xattr = lsm_get_xattr_slot(xattrs, xattr_count);
++
++	if (!xattr)
++		return 0;
++
++	xattr->value = kmemdup(value, vallen, GFP_NOFS);
++	if (!xattr->value)
++		return -ENOMEM;
++
++	xattr->value_len = vallen;
++	xattr->name = name;
++	return 0;
++}
++
+ /**
+  * smack_inode_init_security - copy out the smack from an inode
+  * @inode: the newly created inode
+@@ -997,7 +1015,6 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 	struct task_smack *tsp = smack_cred(current_cred());
+ 	struct inode_smack * const issp = smack_inode(inode);
+ 	struct smack_known *dsp = smk_of_inode(dir);
+-	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
+ 	bool trans_cred;
+ 	bool trans_rule;
+ 
+@@ -1016,8 +1033,6 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 	 * Mark the inode as changed.
+ 	 */
+ 	if (trans_cred || (trans_rule && smk_inode_transmutable(dir))) {
+-		struct xattr *xattr_transmute;
+-
+ 		/*
+ 		 * The caller of smack_dentry_create_files_as()
+ 		 * should have overridden the current cred, so the
+@@ -1029,35 +1044,22 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
+ 
+ 		if (S_ISDIR(inode->i_mode)) {
+ 			issp->smk_flags |= SMK_INODE_TRANSMUTE;
+-			xattr_transmute = lsm_get_xattr_slot(xattrs,
+-							     xattr_count);
+-			if (xattr_transmute) {
+-				xattr_transmute->value = kmemdup(TRANS_TRUE,
+-								 TRANS_TRUE_SIZE,
+-								 GFP_NOFS);
+-				if (!xattr_transmute->value)
+-					return -ENOMEM;
+-
+-				xattr_transmute->value_len = TRANS_TRUE_SIZE;
+-				xattr_transmute->name = XATTR_SMACK_TRANSMUTE;
+-			}
++
++			if (xattr_dupval(xattrs, xattr_count,
++				XATTR_SMACK_TRANSMUTE,
++				TRANS_TRUE,
++				TRANS_TRUE_SIZE
++			))
++				return -ENOMEM;
+ 		}
+ 	}
+ 
+ 	issp->smk_flags |= SMK_INODE_INSTANT;
+ 
+-	if (xattr) {
+-		const char *inode_label = issp->smk_inode->smk_known;
+-
+-		xattr->value = kstrdup(inode_label, GFP_NOFS);
+-		if (!xattr->value)
+-			return -ENOMEM;
+-
+-		xattr->value_len = strlen(inode_label);
+-		xattr->name = XATTR_SMACK_SUFFIX;
+-	}
+-
+-	return 0;
++	return xattr_dupval(xattrs, xattr_count,
++			    XATTR_SMACK_SUFFIX,
++			    issp->smk_inode->smk_known,
++		     strlen(issp->smk_inode->smk_known));
+ }
+ 
+ /**
 -- 
 2.51.0
 
