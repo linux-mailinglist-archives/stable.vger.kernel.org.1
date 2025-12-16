@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C035CC3E91
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42D1CC2773
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1949C303EBA8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FE7B3023D52
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6985634405B;
-	Tue, 16 Dec 2025 12:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9944346E48;
+	Tue, 16 Dec 2025 11:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVyzY4QS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0ZFcvdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1618F3451A6;
-	Tue, 16 Dec 2025 12:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C9F33C524;
+	Tue, 16 Dec 2025 11:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887605; cv=none; b=MArjzSSBjFh9ZVFACCeBQIzr1a1htvx4xzZ+BJmIRQ0HnbAaz6UeGV4r5xVshG6ExHgCALOZv4k6KoHy4Wk2Si9OI249fkp9ARU4/K0hWIdW51QCIWjCVvgS8RCwH0/YmV0NODw4hnhUD8H1D+DQO1y7NqyLY3ooZmPmC0qZaug=
+	t=1765885530; cv=none; b=FHBVI7aDbbR96EiJ+F9Ky9gE95xt236bCtOElFIeMMnRz7Jdt+c+3c4iY9V78dH7H2VZkTr17uFBWtbACfp+uQH9XUlhAeRsf3pP6745KFsZTtKK/s6G/bACMa3fiWPX3Kb62fCxiGX1W0lfHXXld9DixZSB5vBlYUqWds+ceAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887605; c=relaxed/simple;
-	bh=+PkCffZ6hiJ3r+LlBKdNzVCib0rqxjrMQh1llP3g5p8=;
+	s=arc-20240116; t=1765885530; c=relaxed/simple;
+	bh=J56Wt3e1eZIzTuHsWqkvh8qNUqg9Tmp68GeNJjfg5Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHeCLdFfts7Kir58wNagNgxQ4FRkD0Row8hDE+CxHWjViWWKgu2KVkEIWfKjdxznvNH6+Qvj4ytRXFafj3FHm7/BOSlOUPafOz2MGK/OHpZ+k+Y1ncL6ffD0RkipekY1f9c/3xV8GKPELF0RvRE8Gmo5moU1VA1z4uXhpZxc3mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVyzY4QS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC7BC4CEF1;
-	Tue, 16 Dec 2025 12:20:04 +0000 (UTC)
+	 MIME-Version; b=utCcVpCE2Q5WFToqjk6UtxzFyEpkBHztnzXYbl0n8mbPoQcX/Bg22uIJU+Et4rZuhLC4XW407iyobyQkopZWEJoZDNqpgfA373v2x51RzroIVmxp1Cf5JugfD2oNHYDswbWBtIJGlRM8gfKXeWOKeieWVRuYhsxj3QU7Q9lxraY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0ZFcvdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E14C4CEF1;
+	Tue, 16 Dec 2025 11:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887605;
-	bh=+PkCffZ6hiJ3r+LlBKdNzVCib0rqxjrMQh1llP3g5p8=;
+	s=korg; t=1765885529;
+	bh=J56Wt3e1eZIzTuHsWqkvh8qNUqg9Tmp68GeNJjfg5Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVyzY4QSGrLIV7/EHjBF+78aNagx3skqZNfQNauq9q+37XKLxmyH6Ck7IyfHkvxqz
-	 4II2j8T7+I+yzxpLV4LozkFippBBAXlPc+9UwlTrYzN/Lnz5Tu3qkJGA/KKQdJZDRN
-	 +fEn+JaW6joqq5l1Wp/bkwKkg2S6G77l7DAzwZvE=
+	b=v0ZFcvdCtN+Y3n1JIc0IQKkBZSOcTtRQmE50r2juCMVWyGyaBiKUPxCNqNq5k7JG+
+	 i/bTcAECA3nLQzf+vRD86D69A6J1Gg1LN2FZ1iZfu0nSQg+fCnSmh9QOd06lTXEnlj
+	 0r1cj9NbaLp5vnV4BbVa0ChlONOxWvm9srbbUYQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akash Goel <akash.goel@arm.com>,
+	Ketil Johnsen <ketil.johnsen@arm.com>,
 	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 239/614] drm/panthor: Fix potential memleak of vma structure
+Subject: [PATCH 6.17 165/507] drm/panthor: Fix race with suspend during unplug
 Date: Tue, 16 Dec 2025 12:10:06 +0100
-Message-ID: <20251216111410.027178940@linuxfoundation.org>
+Message-ID: <20251216111351.496920362@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akash Goel <akash.goel@arm.com>
+From: Ketil Johnsen <ketil.johnsen@arm.com>
 
-[ Upstream commit 4492d54d59872bb72e119ff9f77969ab4d8a0e6b ]
+[ Upstream commit 08be57e6e8aa20ea5a6dd2552e38ac168d6a9b11 ]
 
-This commit addresses a memleak issue of panthor_vma (or drm_gpuva)
-structure in Panthor driver, that can happen if the GPU page table
-update operation to map the pages fail.
-The issue is very unlikely to occur in practice.
+There is a race between panthor_device_unplug() and
+panthor_device_suspend() which can lead to IRQ handlers running on a
+powered down GPU. This is how it can happen:
+- unplug routine calls drm_dev_unplug()
+- panthor_device_suspend() can now execute, and will skip a lot of
+  important work because the device is currently marked as unplugged.
+- IRQs will remain active in this case and IRQ handlers can therefore
+  try to access a powered down GPU.
 
-v2: Add panthor_vm_op_ctx_return_vma() helper (Boris)
+The fix is simply to take the PM ref in panthor_device_unplug() a
+little bit earlier, before drm_dev_unplug().
 
-v3: Add WARN_ON_ONCE (Boris)
-
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Signed-off-by: Akash Goel <akash.goel@arm.com>
+Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
+Fixes: 5fe909cae118a ("drm/panthor: Add the device logical block")
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251021081042.1377406-1-akash.goel@arm.com
+Link: https://patch.msgid.link/20251022103242.1083311-1-ketil.johnsen@arm.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 7870e7dbaa5d4..15961629872e1 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1146,6 +1146,20 @@ static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
+diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+index f0b2da5b2b967..1c0a9337404f2 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.c
++++ b/drivers/gpu/drm/panthor/panthor_device.c
+@@ -82,6 +82,8 @@ void panthor_device_unplug(struct panthor_device *ptdev)
+ 		return;
  	}
- }
  
-+static void
-+panthor_vm_op_ctx_return_vma(struct panthor_vm_op_ctx *op_ctx,
-+			     struct panthor_vma *vma)
-+{
-+	for (u32 i = 0; i < ARRAY_SIZE(op_ctx->preallocated_vmas); i++) {
-+		if (!op_ctx->preallocated_vmas[i]) {
-+			op_ctx->preallocated_vmas[i] = vma;
-+			return;
-+		}
-+	}
++	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
 +
-+	WARN_ON_ONCE(1);
-+}
-+
- static struct panthor_vma *
- panthor_vm_op_ctx_get_vma(struct panthor_vm_op_ctx *op_ctx)
- {
-@@ -2085,8 +2099,10 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
- 	ret = panthor_vm_map_pages(vm, op->map.va.addr, flags_to_prot(vma->flags),
- 				   op_ctx->map.sgt, op->map.gem.offset,
- 				   op->map.va.range);
--	if (ret)
-+	if (ret) {
-+		panthor_vm_op_ctx_return_vma(op_ctx, vma);
- 		return ret;
-+	}
+ 	/* Call drm_dev_unplug() so any access to HW blocks happening after
+ 	 * that point get rejected.
+ 	 */
+@@ -92,8 +94,6 @@ void panthor_device_unplug(struct panthor_device *ptdev)
+ 	 */
+ 	mutex_unlock(&ptdev->unplug.lock);
  
- 	/* Ref owned by the mapping now, clear the obj field so we don't release the
- 	 * pinning/obj ref behind GPUVA's back.
+-	drm_WARN_ON(&ptdev->base, pm_runtime_get_sync(ptdev->base.dev) < 0);
+-
+ 	/* Now, try to cleanly shutdown the GPU before the device resources
+ 	 * get reclaimed.
+ 	 */
 -- 
 2.51.0
 
