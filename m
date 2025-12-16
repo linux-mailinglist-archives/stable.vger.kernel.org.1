@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E37CC29CC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C86CC492E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A0973006D92
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4A4C3052D6A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4632F344028;
-	Tue, 16 Dec 2025 11:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948F836D51C;
+	Tue, 16 Dec 2025 12:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaZtzmMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm1ubgXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FDF343D8F;
-	Tue, 16 Dec 2025 11:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3FE36D518;
+	Tue, 16 Dec 2025 12:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886009; cv=none; b=DHEDjCIDR8LAMbZWbcpfRowiNdDVq7ApytWkK78nhuaJ2QhZd9IiAFbbrsSAzyOiA/ME5t1M2OHjpEm6gNqsv7xjvXoPuIuhVJAuKUkcnaY4SGNV/06ruaPLoc4ubQ3nJIvojQn0WJw8zFO20W1F/rUtb+F3WYrhgDz8mtk/m50=
+	t=1765888032; cv=none; b=lFUqbFQnBzNLyoBeKlfGyW7+hws5L2jEroeC2RTW1rPvTFNgarUYzSlJSn9xfHPfQzeYyzbybcTv3wVYyfXngXHmwyYOXb2cnB8JWRbNLbkRp4bPlNB2e44qLZRX7s3d/+xAHt42bcszhH1oygDIPzcl3orh8Ozy/1WhwExHCGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886009; c=relaxed/simple;
-	bh=p0+uQCoh4o/ICUKv/BlSCh19/IT38XnQe8npnKLAtMk=;
+	s=arc-20240116; t=1765888032; c=relaxed/simple;
+	bh=xVrJoLfAdElO4kuFJFm2Yg4NOV6/tV/n5njFFxl6NXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fAiA5t4zf3712ztw6PVtYWR3rU57YvuI4se+H3YNgG35Ftzq3FPsgMPfqgu1UhB2FvA1DQiPozb3Ehsf/j64X5NGFKfOkJikcqt9ojYHB7MYgLbCuYzPs6QBrJPuvh8LiHluCAWilzfs4B+pzL6vOnKB06TOraLwlFpIob/tU8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaZtzmMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63458C4CEF1;
-	Tue, 16 Dec 2025 11:53:28 +0000 (UTC)
+	 MIME-Version; b=CzGzU5mFasBSUFCLcp4Fis0lOv873JNcJUoLQWDKK1vDQHxabdXAqc2lOgylLTSGrEetkKIMOJ0P2fNOfpBJqFaqg21SQnpJZo5hr9ozzDYb9AKqbS1Z7E//qMwelvCig942h04teDCO4SumU/Kmoc4RdhTLq6JzncyUTkFboYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm1ubgXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7B1C4CEF1;
+	Tue, 16 Dec 2025 12:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886008;
-	bh=p0+uQCoh4o/ICUKv/BlSCh19/IT38XnQe8npnKLAtMk=;
+	s=korg; t=1765888032;
+	bh=xVrJoLfAdElO4kuFJFm2Yg4NOV6/tV/n5njFFxl6NXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaZtzmMSJH4wAW7cb87DUspWJZ8yx8pgr4yHbr3RWL68lTBoqPImSCs8Ymc7+M+i1
-	 TUPfNeLZB86A4u8UznfOSzFFHRXWd3fVf8Va1XGFFvQZnHXCn8XK3qhpx++Wo28s1H
-	 oIXEHhaLb/Mtv1gudRkbDD8sN8jb62/rC+jJYd44=
+	b=Rm1ubgXe6lq6z7f5ImT5ElVSsFgp7HHnx1pnhqxU+/BH+ocbi3e/zF6j/hiRE/wS0
+	 URGPa1/01veUh1GboKTF5bVW4FR68417fCB4JxM7oL5ZK1zfBBWsaBLzysdWbP2Qh9
+	 kdVOgKEcZ5mIfESgERTkcim6r8zx8CkyxDEJu00k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 309/507] selftests/bpf: skip test_perf_branches_hw() on unsupported platforms
-Date: Tue, 16 Dec 2025 12:12:30 +0100
-Message-ID: <20251216111356.664881392@linuxfoundation.org>
+Subject: [PATCH 6.18 384/614] wifi: mt76: mt7996: Remove unnecessary link_id checks in mt7996_tx
+Date: Tue, 16 Dec 2025 12:12:31 +0100
+Message-ID: <20251216111415.282302208@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 27746aaf1b20172f0859546c4a3e82eca459f680 ]
+[ Upstream commit 084922069ceac4d594c06b76a80352139fd15f4d ]
 
-Gracefully skip the test_perf_branches_hw subtest on platforms that
-do not support LBR or require specialized perf event attributes
-to enable branch sampling.
+Remove unnecessary link_id checks in mt7996_tx routine since if the link
+identifier provided by mac80211 is unspecified the value will be
+overwritten at the beginning on the function.
 
-For example, AMD's Milan (Zen 3) supports BRS rather than traditional
-LBR. This requires specific configurations (attr.type = PERF_TYPE_RAW,
-attr.config = RETIRED_TAKEN_BRANCH_INSTRUCTIONS) that differ from the
-generic setup used within this test. Notably, it also probably doesn't
-hold much value to special case perf event configurations for selected
-micro architectures.
-
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251120142059.2836181-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: f940c9b7aef6 ("wifi: mt76: mt7996: Set proper link destination address in mt7996_tx()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250924-mt76_tx_unnecessary-check-v1-1-e595930a5662@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/perf_branches.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index bc24f83339d64..06c7986131d96 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -116,11 +116,11 @@ static void test_perf_branches_hw(void)
- 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index b53ca702591c6..2b52d057287a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1339,12 +1339,10 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+ 	}
  
- 	/*
--	 * Some setups don't support branch records (virtual machines, !x86),
--	 * so skip test in this case.
-+	 * Some setups don't support LBR (virtual machines, !x86, AMD Milan Zen
-+	 * 3 which only supports BRS), so skip test in this case.
- 	 */
- 	if (pfd < 0) {
--		if (errno == ENOENT || errno == EOPNOTSUPP) {
-+		if (errno == ENOENT || errno == EOPNOTSUPP || errno == EINVAL) {
- 			printf("%s:SKIP:no PERF_SAMPLE_BRANCH_STACK\n",
- 			       __func__);
- 			test__skip();
+ 	if (mvif) {
+-		struct mt76_vif_link *mlink = &mvif->deflink.mt76;
++		struct mt76_vif_link *mlink;
+ 
+-		if (link_id < IEEE80211_LINK_UNSPECIFIED)
+-			mlink = rcu_dereference(mvif->mt76.link[link_id]);
+-
+-		if (mlink->wcid)
++		mlink = rcu_dereference(mvif->mt76.link[link_id]);
++		if (mlink && mlink->wcid)
+ 			wcid = mlink->wcid;
+ 
+ 		if (mvif->mt76.roc_phy &&
+@@ -1352,7 +1350,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+ 			mphy = mvif->mt76.roc_phy;
+ 			if (mphy->roc_link)
+ 				wcid = mphy->roc_link->wcid;
+-		} else {
++		} else if (mlink) {
+ 			mphy = mt76_vif_link_phy(mlink);
+ 		}
+ 	}
+@@ -1362,7 +1360,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+ 		goto unlock;
+ 	}
+ 
+-	if (msta && link_id < IEEE80211_LINK_UNSPECIFIED) {
++	if (msta) {
+ 		struct mt7996_sta_link *msta_link;
+ 
+ 		msta_link = rcu_dereference(msta->link[link_id]);
 -- 
 2.51.0
 
