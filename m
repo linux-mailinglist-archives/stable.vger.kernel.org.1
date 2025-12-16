@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC173CC2FF2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:59:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10406CC45CA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B963227FF0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 841443003846
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A910397D39;
-	Tue, 16 Dec 2025 12:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF7834AB07;
+	Tue, 16 Dec 2025 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IL57wjZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cgi455pB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2ED397D31;
-	Tue, 16 Dec 2025 12:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4847F34A76F;
+	Tue, 16 Dec 2025 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888348; cv=none; b=mFv1f+SKHuScvi1gwO2hkcReHlC6fYqqSQmG/qcijwafUgn43q4BP5L+RSffk78TiRnI10c1OlB3c7xCXWYE49nNJ38pVMAlXiMR4/Lr+VRaoiLE/JTwIX6CvALhjMbKidGjEtHvFzllCtSkCRTR8T3OqytMU7GZkiBDFu7PhCA=
+	t=1765886372; cv=none; b=lfGPAk4PG2yqSJOcsFpl2red6e7Q/8u4x6BWdD9njLQbhqiTHTJBX9obfdsZ9mSgELSl7hUQVdRiGax+3oPCYONpfSSFAAElusvuKvi6y8wUM861zBbXAT5SGlq8070uJBfeWPawQyVVkGchSvVlgSiFzVb+ymHln1V9joSnCH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888348; c=relaxed/simple;
-	bh=4CqzC5WXuRWn02irYAe2hDKDtB2pUOYFOR0nBQbCZpw=;
+	s=arc-20240116; t=1765886372; c=relaxed/simple;
+	bh=yZ/7Naoq9oiPKYEPijKPR03xwOg8eTz9OzKxSXij3E4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpMhGJ73nygnLYGgUZBnQrKAOGtm7uu5ag6NQ9Jl20LyIZHC0MgB7OcTW+TO/Ek9i8/PUhUWzZJ/DMWXmaW3b/Y0gLXMY0bDbmhW0XuF4GGIUgTw4g0TdHTXtcrRnnrVSL4zQS9wK5QmNA+z3faFK9OM+iMTtW5UsZTB200XMCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IL57wjZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A48CC4CEF5;
-	Tue, 16 Dec 2025 12:32:27 +0000 (UTC)
+	 MIME-Version; b=p0hlrM74MMfj6nkRMIt8G8C8MasCgAzckMAyfqRVg8krbceZbb8vUOJbvaLus/tXIeribPrCRnBUmxqeYdNuSfo+lz9IVqlWu43zvkQKBBEdZYtA465RsESzl0mCc1Adn3iyjUMDxwIhShgZf7ZbgZd436SB0PPr0flsB+bmzdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cgi455pB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3580C4CEF5;
+	Tue, 16 Dec 2025 11:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888347;
-	bh=4CqzC5WXuRWn02irYAe2hDKDtB2pUOYFOR0nBQbCZpw=;
+	s=korg; t=1765886372;
+	bh=yZ/7Naoq9oiPKYEPijKPR03xwOg8eTz9OzKxSXij3E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IL57wjZGESfh23RRouOKQCf1hYIzGWKL7F9xah8AMf4bgWJULN5goBIc5OyFX5yxm
-	 0fWexFcb0o7AhILJzDq1JQn1pvFE/6SoCiLKmk5F9JfsRNtvI+BGFA2PetKjiKujQk
-	 B9v3whRTbMeJQrT4PWLGNJ1SgQVZAQPrwxzXBAd4=
+	b=Cgi455pBeVZUew9bTclE+ncJrwCowEyhU2mDFaYdF0K1z2Ra8nJakJB8MM68mg/xM
+	 uPdgrJ6YuMDuB9x+mAJOs6gx7swOwigfthiucwSynpY0aCTJP6Qfy1BpgvIX9Iczrr
+	 zilmkMWSPW0xEcy50KnJNgXfzXe2+878uPHCb/rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Williamson <alex.williamson@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 490/614] vfio/pci: Use RCU for error/request triggers to avoid circular locking
+Subject: [PATCH 6.17 416/507] net: dsa: b53: move ARL entry functions into ops struct
 Date: Tue, 16 Dec 2025 12:14:17 +0100
-Message-ID: <20251216111419.123089704@linuxfoundation.org>
+Message-ID: <20251216111400.532922677@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,306 +61,363 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@nvidia.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 98693e0897f754e3f51ce6626ed5f785f625ba2b ]
+[ Upstream commit a7e73339ad46ade76d29fb6cc7d7854222608c26 ]
 
-Thanks to a device generating an ACS violation during bus reset,
-lockdep reported the following circular locking issue:
+Now that the differences in ARL entry formats are neatly contained into
+functions per chip family, wrap them into an ops struct and add wrapper
+functions to access them.
 
-CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
-CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
-CPU2: AER: holds pci_bus_sem, acquires igate
-
-This results in a potential 3-way deadlock.
-
-Remove the pci_bus_sem->igate leg of the triangle by using RCU
-to peek at the eventfd rather than locking it with igate.
-
-Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20251124223623.2770706-1-alex@shazbot.org
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-7-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
- drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
- drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
- include/linux/vfio_pci_core.h     | 10 ++++-
- 4 files changed, 93 insertions(+), 41 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 67 ++++++++++++++++++++++----------
+ drivers/net/dsa/b53/b53_priv.h   | 30 ++++++++++++++
+ 2 files changed, 76 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 7dcf5439dedc9..5efe7535f41ed 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -41,6 +41,40 @@ static bool nointxmask;
- static bool disable_vga;
- static bool disable_idle_d3;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 190eb11644917..50ed9b7157197 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1890,10 +1890,7 @@ static int b53_arl_read(struct b53_device *dev, const u8 *mac,
  
-+static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
-+{
-+	struct vfio_pci_eventfd *eventfd =
-+		container_of(rcu, struct vfio_pci_eventfd, rcu);
-+
-+	eventfd_ctx_put(eventfd->ctx);
-+	kfree(eventfd);
-+}
-+
-+int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
-+				    struct vfio_pci_eventfd __rcu **peventfd,
-+				    struct eventfd_ctx *ctx)
-+{
-+	struct vfio_pci_eventfd *new = NULL;
-+	struct vfio_pci_eventfd *old;
-+
-+	lockdep_assert_held(&vdev->igate);
-+
-+	if (ctx) {
-+		new = kzalloc(sizeof(*new), GFP_KERNEL_ACCOUNT);
-+		if (!new)
-+			return -ENOMEM;
-+
-+		new->ctx = ctx;
-+	}
-+
-+	old = rcu_replace_pointer(*peventfd, new,
-+				  lockdep_is_held(&vdev->igate));
-+	if (old)
-+		call_rcu(&old->rcu, vfio_pci_eventfd_rcu_free);
-+
-+	return 0;
-+}
-+
- /* List of PF's that vfio_pci_core_sriov_configure() has been called on */
- static DEFINE_MUTEX(vfio_pci_sriov_pfs_mutex);
- static LIST_HEAD(vfio_pci_sriov_pfs);
-@@ -696,14 +730,8 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
- 	vfio_pci_core_disable(vdev);
+ 	/* Read the bins */
+ 	for (i = 0; i < dev->num_arl_bins; i++) {
+-		if (is5325(dev) || is5365(dev))
+-			b53_arl_read_entry_25(dev, ent, i);
+-		else
+-			b53_arl_read_entry_95(dev, ent, i);
++		b53_arl_read_entry(dev, ent, i);
  
- 	mutex_lock(&vdev->igate);
--	if (vdev->err_trigger) {
--		eventfd_ctx_put(vdev->err_trigger);
--		vdev->err_trigger = NULL;
--	}
--	if (vdev->req_trigger) {
--		eventfd_ctx_put(vdev->req_trigger);
--		vdev->req_trigger = NULL;
--	}
-+	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
-+	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
- 	mutex_unlock(&vdev->igate);
+ 		if (!ent->is_valid) {
+ 			set_bit(i, free_bins);
+@@ -1979,10 +1976,7 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+ 	ent.is_static = true;
+ 	ent.is_age = false;
+ 	memcpy(ent.mac, addr, ETH_ALEN);
+-	if (is5325(dev) || is5365(dev))
+-		b53_arl_write_entry_25(dev, &ent, idx);
+-	else
+-		b53_arl_write_entry_95(dev, &ent, idx);
++	b53_arl_write_entry(dev, &ent, idx);
+ 
+ 	return b53_arl_rw_op(dev, 0);
  }
- EXPORT_SYMBOL_GPL(vfio_pci_core_close_device);
-@@ -1800,21 +1828,21 @@ void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count)
- 	struct vfio_pci_core_device *vdev =
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
- 	struct pci_dev *pdev = vdev->pdev;
-+	struct vfio_pci_eventfd *eventfd;
- 
--	mutex_lock(&vdev->igate);
--
--	if (vdev->req_trigger) {
-+	rcu_read_lock();
-+	eventfd = rcu_dereference(vdev->req_trigger);
-+	if (eventfd) {
- 		if (!(count % 10))
- 			pci_notice_ratelimited(pdev,
- 				"Relaying device request to user (#%u)\n",
- 				count);
--		eventfd_signal(vdev->req_trigger);
-+		eventfd_signal(eventfd->ctx);
- 	} else if (count == 0) {
- 		pci_warn(pdev,
- 			"No device request channel registered, blocked until released by user\n");
- 	}
--
--	mutex_unlock(&vdev->igate);
-+	rcu_read_unlock();
+@@ -2093,17 +2087,6 @@ static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry(ent, mac_vid, fwd_entry);
  }
- EXPORT_SYMBOL_GPL(vfio_pci_core_request);
  
-@@ -2227,13 +2255,13 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
- 						pci_channel_state_t state)
+-static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
+-			      struct b53_arl_entry *ent)
+-{
+-	if (is5325(dev))
+-		b53_arl_search_read_25(dev, idx, ent);
+-	else if (is5365(dev))
+-		b53_arl_search_read_65(dev, idx, ent);
+-	else
+-		b53_arl_search_read_95(dev, idx, ent);
+-}
+-
+ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 			dsa_fdb_dump_cb_t *cb, void *data)
  {
- 	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
-+	struct vfio_pci_eventfd *eventfd;
+@@ -2137,13 +2120,13 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 		if (ret)
+ 			break;
  
--	mutex_lock(&vdev->igate);
--
--	if (vdev->err_trigger)
--		eventfd_signal(vdev->err_trigger);
--
--	mutex_unlock(&vdev->igate);
-+	rcu_read_lock();
-+	eventfd = rcu_dereference(vdev->err_trigger);
-+	if (eventfd)
-+		eventfd_signal(eventfd->ctx);
-+	rcu_read_unlock();
+-		b53_arl_search_rd(priv, 0, &results[0]);
++		b53_arl_search_read(priv, 0, &results[0]);
+ 		ret = b53_fdb_copy(port, &results[0], cb, data);
+ 		if (ret)
+ 			break;
  
- 	return PCI_ERS_RESULT_CAN_RECOVER;
- }
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 30d3e921cb0de..c76e753b3cecd 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -731,21 +731,27 @@ static int vfio_pci_set_msi_trigger(struct vfio_pci_core_device *vdev,
- 	return 0;
- }
+ 		if (results_per_hit == 2) {
+-			b53_arl_search_rd(priv, 1, &results[1]);
++			b53_arl_search_read(priv, 1, &results[1]);
+ 			ret = b53_fdb_copy(port, &results[1], cb, data);
+ 			if (ret)
+ 				break;
+@@ -2669,6 +2652,24 @@ static const struct dsa_switch_ops b53_switch_ops = {
+ 	.port_change_mtu	= b53_change_mtu,
+ };
  
--static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
-+static int vfio_pci_set_ctx_trigger_single(struct vfio_pci_core_device *vdev,
-+					   struct vfio_pci_eventfd __rcu **peventfd,
- 					   unsigned int count, uint32_t flags,
- 					   void *data)
- {
- 	/* DATA_NONE/DATA_BOOL enables loopback testing */
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		if (*ctx) {
--			if (count) {
--				eventfd_signal(*ctx);
--			} else {
--				eventfd_ctx_put(*ctx);
--				*ctx = NULL;
--			}
-+		struct vfio_pci_eventfd *eventfd;
-+
-+		eventfd = rcu_dereference_protected(*peventfd,
-+						lockdep_is_held(&vdev->igate));
-+
-+		if (!eventfd)
-+			return -EINVAL;
-+
-+		if (count) {
-+			eventfd_signal(eventfd->ctx);
- 			return 0;
- 		}
-+
-+		return vfio_pci_eventfd_replace_locked(vdev, peventfd, NULL);
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		uint8_t trigger;
- 
-@@ -753,8 +759,15 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
- 			return -EINVAL;
- 
- 		trigger = *(uint8_t *)data;
--		if (trigger && *ctx)
--			eventfd_signal(*ctx);
-+
-+		if (trigger) {
-+			struct vfio_pci_eventfd *eventfd =
-+					rcu_dereference_protected(*peventfd,
-+					lockdep_is_held(&vdev->igate));
-+
-+			if (eventfd)
-+				eventfd_signal(eventfd->ctx);
-+		}
- 
- 		return 0;
- 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-@@ -765,22 +778,23 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
- 
- 		fd = *(int32_t *)data;
- 		if (fd == -1) {
--			if (*ctx)
--				eventfd_ctx_put(*ctx);
--			*ctx = NULL;
-+			return vfio_pci_eventfd_replace_locked(vdev,
-+							       peventfd, NULL);
- 		} else if (fd >= 0) {
- 			struct eventfd_ctx *efdctx;
-+			int ret;
- 
- 			efdctx = eventfd_ctx_fdget(fd);
- 			if (IS_ERR(efdctx))
- 				return PTR_ERR(efdctx);
- 
--			if (*ctx)
--				eventfd_ctx_put(*ctx);
-+			ret = vfio_pci_eventfd_replace_locked(vdev,
-+							      peventfd, efdctx);
-+			if (ret)
-+				eventfd_ctx_put(efdctx);
- 
--			*ctx = efdctx;
-+			return ret;
- 		}
--		return 0;
- 	}
- 
- 	return -EINVAL;
-@@ -793,7 +807,7 @@ static int vfio_pci_set_err_trigger(struct vfio_pci_core_device *vdev,
- 	if (index != VFIO_PCI_ERR_IRQ_INDEX || start != 0 || count > 1)
- 		return -EINVAL;
- 
--	return vfio_pci_set_ctx_trigger_single(&vdev->err_trigger,
-+	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->err_trigger,
- 					       count, flags, data);
- }
- 
-@@ -804,7 +818,7 @@ static int vfio_pci_set_req_trigger(struct vfio_pci_core_device *vdev,
- 	if (index != VFIO_PCI_REQ_IRQ_INDEX || start != 0 || count > 1)
- 		return -EINVAL;
- 
--	return vfio_pci_set_ctx_trigger_single(&vdev->req_trigger,
-+	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->req_trigger,
- 					       count, flags, data);
- }
- 
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index a9972eacb2936..97d992c063229 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -26,6 +26,10 @@ struct vfio_pci_ioeventfd {
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
- void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
- 
-+int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
-+				    struct vfio_pci_eventfd __rcu **peventfd,
-+				    struct eventfd_ctx *ctx);
-+
- int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
- 			    unsigned index, unsigned start, unsigned count,
- 			    void *data);
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index f541044e42a2a..f5c93787f8e0b 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -12,6 +12,7 @@
- #include <linux/pci.h>
- #include <linux/vfio.h>
- #include <linux/irqbypass.h>
-+#include <linux/rcupdate.h>
- #include <linux/types.h>
- #include <linux/uuid.h>
- #include <linux/notifier.h>
-@@ -27,6 +28,11 @@
- struct vfio_pci_core_device;
- struct vfio_pci_region;
- 
-+struct vfio_pci_eventfd {
-+	struct eventfd_ctx	*ctx;
-+	struct rcu_head		rcu;
++static const struct b53_arl_ops b53_arl_ops_25 = {
++	.arl_read_entry = b53_arl_read_entry_25,
++	.arl_write_entry = b53_arl_write_entry_25,
++	.arl_search_read = b53_arl_search_read_25,
 +};
 +
- struct vfio_pci_regops {
- 	ssize_t (*rw)(struct vfio_pci_core_device *vdev, char __user *buf,
- 		      size_t count, loff_t *ppos, bool iswrite);
-@@ -83,8 +89,8 @@ struct vfio_pci_core_device {
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
--	struct eventfd_ctx	*err_trigger;
--	struct eventfd_ctx	*req_trigger;
-+	struct vfio_pci_eventfd __rcu *err_trigger;
-+	struct vfio_pci_eventfd __rcu *req_trigger;
- 	struct eventfd_ctx	*pm_wake_eventfd_ctx;
- 	struct list_head	dummy_resources_list;
- 	struct mutex		ioeventfds_lock;
++static const struct b53_arl_ops b53_arl_ops_65 = {
++	.arl_read_entry = b53_arl_read_entry_25,
++	.arl_write_entry = b53_arl_write_entry_25,
++	.arl_search_read = b53_arl_search_read_65,
++};
++
++static const struct b53_arl_ops b53_arl_ops_95 = {
++	.arl_read_entry = b53_arl_read_entry_95,
++	.arl_write_entry = b53_arl_write_entry_95,
++	.arl_search_read = b53_arl_search_read_95,
++};
++
+ struct b53_chip_data {
+ 	u32 chip_id;
+ 	const char *dev_name;
+@@ -2682,6 +2683,7 @@ struct b53_chip_data {
+ 	u8 duplex_reg;
+ 	u8 jumbo_pm_reg;
+ 	u8 jumbo_size_reg;
++	const struct b53_arl_ops *arl_ops;
+ };
+ 
+ #define B53_VTA_REGS	\
+@@ -2701,6 +2703,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
++		.arl_ops = &b53_arl_ops_25,
+ 	},
+ 	{
+ 		.chip_id = BCM5365_DEVICE_ID,
+@@ -2711,6 +2714,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
++		.arl_ops = &b53_arl_ops_65,
+ 	},
+ 	{
+ 		.chip_id = BCM5389_DEVICE_ID,
+@@ -2724,6 +2728,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5395_DEVICE_ID,
+@@ -2737,6 +2742,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5397_DEVICE_ID,
+@@ -2750,6 +2756,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5398_DEVICE_ID,
+@@ -2763,6 +2770,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53101_DEVICE_ID,
+@@ -2776,6 +2784,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53115_DEVICE_ID,
+@@ -2789,6 +2798,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53125_DEVICE_ID,
+@@ -2802,6 +2812,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53128_DEVICE_ID,
+@@ -2815,6 +2826,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM63XX_DEVICE_ID,
+@@ -2828,6 +2840,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_63XX,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK_63XX,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE_63XX,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53010_DEVICE_ID,
+@@ -2841,6 +2854,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53011_DEVICE_ID,
+@@ -2854,6 +2868,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53012_DEVICE_ID,
+@@ -2867,6 +2882,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53018_DEVICE_ID,
+@@ -2880,6 +2896,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53019_DEVICE_ID,
+@@ -2893,6 +2910,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM58XX_DEVICE_ID,
+@@ -2906,6 +2924,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM583XX_DEVICE_ID,
+@@ -2919,6 +2938,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	/* Starfighter 2 */
+ 	{
+@@ -2933,6 +2953,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM7445_DEVICE_ID,
+@@ -2946,6 +2967,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM7278_DEVICE_ID,
+@@ -2959,6 +2981,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53134_DEVICE_ID,
+@@ -2973,6 +2996,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ };
+ 
+@@ -3001,6 +3025,7 @@ static int b53_switch_init(struct b53_device *dev)
+ 			dev->num_vlans = chip->vlans;
+ 			dev->num_arl_bins = chip->arl_bins;
+ 			dev->num_arl_buckets = chip->arl_buckets;
++			dev->arl_ops = chip->arl_ops;
+ 			break;
+ 		}
+ 	}
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index 2f44b3b6a0d9f..c6e2d5e41c758 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -58,6 +58,17 @@ struct b53_io_ops {
+ 				bool link_up);
+ };
+ 
++struct b53_arl_entry;
++
++struct b53_arl_ops {
++	void (*arl_read_entry)(struct b53_device *dev,
++			       struct b53_arl_entry *ent, u8 idx);
++	void (*arl_write_entry)(struct b53_device *dev,
++				const struct b53_arl_entry *ent, u8 idx);
++	void (*arl_search_read)(struct b53_device *dev, u8 idx,
++				struct b53_arl_entry *ent);
++};
++
+ #define B53_INVALID_LANE	0xff
+ 
+ enum {
+@@ -127,6 +138,7 @@ struct b53_device {
+ 	struct mutex stats_mutex;
+ 	struct mutex arl_mutex;
+ 	const struct b53_io_ops *ops;
++	const struct b53_arl_ops *arl_ops;
+ 
+ 	/* chip specific data */
+ 	u32 chip_id;
+@@ -371,6 +383,24 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
+ 		*mac_vid |= ARLTBL_AGE_25;
+ }
+ 
++static inline void b53_arl_read_entry(struct b53_device *dev,
++				      struct b53_arl_entry *ent, u8 idx)
++{
++	dev->arl_ops->arl_read_entry(dev, ent, idx);
++}
++
++static inline void b53_arl_write_entry(struct b53_device *dev,
++				       const struct b53_arl_entry *ent, u8 idx)
++{
++	dev->arl_ops->arl_write_entry(dev, ent, idx);
++}
++
++static inline void b53_arl_search_read(struct b53_device *dev, u8 idx,
++				       struct b53_arl_entry *ent)
++{
++	dev->arl_ops->arl_search_read(dev, idx, ent);
++}
++
+ #ifdef CONFIG_BCM47XX
+ 
+ #include <linux/bcm47xx_nvram.h>
 -- 
 2.51.0
 
