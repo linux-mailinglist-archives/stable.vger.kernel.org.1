@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220DDCC390B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37BD4CC3820
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D093C30982F4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88FE930D69F7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBB634C826;
-	Tue, 16 Dec 2025 11:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F77350D45;
+	Tue, 16 Dec 2025 12:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVMI4DHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vSGNLQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA5F34C81E;
-	Tue, 16 Dec 2025 11:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3864134F250;
+	Tue, 16 Dec 2025 12:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885282; cv=none; b=uxsIxDaIB31h5cxFo7HYXOmy+Bq1AhbZ4fl49ZCViRr7Ho7ee5OloEU5uheOCVW0T1CoU9lrVx/adejWiasyXuD5moWaoJDKxh1QR17XgrbuWhwhYgMtbMn5ueKlLWgrMnixPn2TraT6PL72fAb8C4tpQnfHPudOc5nH5a/67to=
+	t=1765887230; cv=none; b=CpzGwM3nNdoARDDzuGJRlTAqokgNFInEQfKALItLH7DGnSD4hkoaVtKuqoi6uWzkdLR1q+XgD8BEin/1Kd+1aitzLhha6FT/5DO6sMAIlfUVRlQbrwzQNxxYAH2y5R0pFp1fcd7ad1G3C02u9w4dxGixKALmJQorNiGnAR+6cxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885282; c=relaxed/simple;
-	bh=+yo+4E6UYQOl1J4NHb3LI09yFtLqKnLT2oYcA3ZSBRA=;
+	s=arc-20240116; t=1765887230; c=relaxed/simple;
+	bh=2cKg9UzWQrMZNNNkf7vewopmQWuGXo3QIXdRXuVEkrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbP1VxZp1nTfgX27uYKl3hrG7OqElSPRReGCjEOuMg/e6DW0ezlvzFu8DglGICsOo+wrFs3qrZrASDJZjX8L/DUuOIL76NQj14HuV6/USylQzYUInZl2PSsjDQ4WEWs/ivLDqX5yS6pMxM6H/Vd/T1cttlIzsaP1DnjiU43FZOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVMI4DHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1296EC4CEF1;
-	Tue, 16 Dec 2025 11:41:21 +0000 (UTC)
+	 MIME-Version; b=hWDI52SOGn++Bm/5Bt4dSuZgWvYZGQG2/cJqV+9jRKUhjPBeh9/lwZzgPbg9itkD/HQ9omnOjz+kal+vUZXCvLoAYw+X7GGGKU4HqaqvnAHai9T9zUeLXVUMCnh48RQdH+rA6sC/S9ooy+N6Y/UszXuzzETsaT9Eql6UV64TU6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vSGNLQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A90C4CEF1;
+	Tue, 16 Dec 2025 12:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885282;
-	bh=+yo+4E6UYQOl1J4NHb3LI09yFtLqKnLT2oYcA3ZSBRA=;
+	s=korg; t=1765887230;
+	bh=2cKg9UzWQrMZNNNkf7vewopmQWuGXo3QIXdRXuVEkrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVMI4DHWEhK7xo+1SboomLT5kt9XjNCEDl4qKHos4nXk1v43Ba/I2U0son/Wy20DQ
-	 FBQcORNWiFHiqeovJcVnr3HsEjcQHMEJuEeGnnsskexvzHu/NBXRvHfkwY/s0WWWTS
-	 6j8nDQaqvMnBSul9kgbSwgOavlOib0VqzO25EwzI=
+	b=2vSGNLQ5fiStXe43qgk2iJxNknWRnhRfAa3abPjZKNlbk7URkjXsOQPHyff2Ud97m
+	 xUPZQMze/CZxd5A9bpsIETxqhtcyNmIANb0viRSnMWLxvpLxOP9imlWFlQGHMrd/XZ
+	 aq3kkuGgoOmDfKN5pN2MvfgJ7IGVKShdOIiuedF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 091/507] firmware: imx: scu-irq: fix OF node leak in
-Date: Tue, 16 Dec 2025 12:08:52 +0100
-Message-ID: <20251216111348.835602385@linuxfoundation.org>
+Subject: [PATCH 6.18 166/614] arm64: dts: qcom: msm8996: add interconnect paths to USB2 controller
+Date: Tue, 16 Dec 2025 12:08:53 +0100
+Message-ID: <20251216111407.350581024@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
+[ Upstream commit 242f7558e7bf54cb63c06506f7b0630dd67d45a4 ]
 
-imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
-but does not release the OF node reference. Add a of_node_put() call
-to release the reference.
+Add the missing interconnects to the USB2 host. The Fixes tag points to
+the commit which broke probing of the USB host on that platform.
 
-Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 130733a10079 ("interconnect: qcom: msm8996: Promote to core_initcall")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Acked-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-2-a36a05d1f869@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu-irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
-index 6125cccc9ba79..f2b902e95b738 100644
---- a/drivers/firmware/imx/imx-scu-irq.c
-+++ b/drivers/firmware/imx/imx-scu-irq.c
-@@ -226,8 +226,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index c75b522f6eba6..33608b1d7d060 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3496,6 +3496,9 @@ usb2: usb@76f8800 {
+ 					  <&gcc GCC_USB20_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <60000000>;
  
- 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", 0, &spec))
-+				       "#mbox-cells", 0, &spec)) {
- 		i = of_alias_get_id(spec.np, "mu");
-+		of_node_put(spec.np);
-+	}
- 
- 	/* use mu1 as general mu irq channel if failed */
- 	if (i < 0)
++			interconnects = <&pnoc MASTER_USB_HS &bimc SLAVE_EBI_CH0>,
++					<&bimc MASTER_AMPSS_M0 &pnoc SLAVE_USB_HS>;
++			interconnect-names = "usb-ddr", "apps-usb";
+ 			power-domains = <&gcc USB30_GDSC>;
+ 			qcom,select-utmi-as-pipe-clk;
+ 			status = "disabled";
 -- 
 2.51.0
 
