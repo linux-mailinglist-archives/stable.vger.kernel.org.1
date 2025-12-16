@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E13CC2BAD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E31CC2A6E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28170309506A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 146483015968
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD583563C6;
-	Tue, 16 Dec 2025 12:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389ED35292C;
+	Tue, 16 Dec 2025 11:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmKqllS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOyPY9tB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E0835580A;
-	Tue, 16 Dec 2025 12:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF61A352925;
+	Tue, 16 Dec 2025 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887711; cv=none; b=IBps4WsTkH5uJbh7Ozfta3YjnKIjmJF11kE2EkIz/LomCLl3GibPwV98Rhg1zGqlF0IKCDl7Jyrwhg5uHzMws9rxdReUUcE6fNJfrbXIzzz6g5We1Enb46QJLpyNvEfoEF4XOQgs7+y0OoFYTM0XVCmFzEWpcSlI+hd+ogw4MVg=
+	t=1765885757; cv=none; b=Qbg7cJGAss2TrY1JOf7P1N/S4pSH8OYyASALF/i6G5hdONCSibgLY3rPUF4uHkaYwnFg7e+44at9e0aDLx+OedMfeXgPld3SmI+f8u3yHBnN7iHsrMZJOnupDlVgadKboQcFnQV4lOxJwM4gVS1+KQ6DU4Z3O98QlZ7TO9bnX1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887711; c=relaxed/simple;
-	bh=KKZE3T3XTFMGsmh9i0AIpbipDrxFXNNLqCJMxOgux70=;
+	s=arc-20240116; t=1765885757; c=relaxed/simple;
+	bh=mlhjpXjsKLpJAu6Yz3elNlYrTfaLPL3ltQFrKga2X4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1noedRfS+X4yo5FA4P5orUROK9n6oNuHQbHyiXfURb6kWfst9kmvKDPW5TrdFvIQz0ZgW+vbSf79XdQGor5hv6obZaNuzfnrHbBF6/ictVKLIizC+C4seczdkasHOYjNOMliTVTp/B/rtxPCWjjRrtwZ9VkjFvJaFfpJFBrA+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmKqllS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47FC4CEF1;
-	Tue, 16 Dec 2025 12:21:50 +0000 (UTC)
+	 MIME-Version; b=mNuhe+LcOkBAk2x2rhNN3ClHI0hMT+oYbVR6UtQ72WzhPm5eqdPWOJ+VAnuW6OE7I1wd99pJQIuhy2s2d1oSXpvSjjwO0Uvg/4G0sZcU2ksa/kc76rNMklwqYsxui7An0YxKSY4Zp2mjSECRVWV2Qp2CNq95bXNcYG/I/KrjD+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOyPY9tB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48012C4CEF1;
+	Tue, 16 Dec 2025 11:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887711;
-	bh=KKZE3T3XTFMGsmh9i0AIpbipDrxFXNNLqCJMxOgux70=;
+	s=korg; t=1765885756;
+	bh=mlhjpXjsKLpJAu6Yz3elNlYrTfaLPL3ltQFrKga2X4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmKqllS4gZPXBoCA6Gg+w7/oj3UTN0LFG/QcDChuTNmfxzs3Zh0/oaPii6NzKcVsk
-	 u/fH+10GJY9+fMtuf6+5222mjJzfKnh7irNz3iaq7ZwrghKaggylLEjm4Bq0KRXF3t
-	 DgDsvIvxgoBPaU6cUYeDaKu23NR3dL/ICv4DuRnk=
+	b=HOyPY9tBZyH+QKtbXMNj3qN1IJqwuHg4OB03d1mRcftgv5BE4CxfqZt/P0ii8WN+/
+	 0t8oEHRtD/JeK6L7XL3GV6g+W+1983L0anpwG+uKf1tOTpAKmOfn5amIDdCvwejrHs
+	 cNOZymOu6Trow4MAFltmq4sXXFVrNeFglAlHasNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 281/614] crypto: iaa - Fix incorrect return value in save_iaa_wq()
-Date: Tue, 16 Dec 2025 12:10:48 +0100
-Message-ID: <20251216111411.555156930@linuxfoundation.org>
+Subject: [PATCH 6.17 208/507] powerpc/32: Fix unpaired stwcx. on interrupt exit
+Date: Tue, 16 Dec 2025 12:10:49 +0100
+Message-ID: <20251216111353.045473886@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
+[ Upstream commit 10e1c77c3636d815db802ceef588522c2d2d947c ]
 
-The save_iaa_wq() function unconditionally returns 0, even when an error
-is encountered. This prevents the error code from being propagated to the
-caller.
+Commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
+exception exit from ppc64") erroneouly copied to powerpc/32 the logic
+from powerpc/64 based on feature CPU_FTR_STCX_CHECKS_ADDRESS which is
+always 0 on powerpc/32.
 
-Fix this by returning the 'ret' variable, which holds the actual status
-of the operations within the function.
+Re-instate the logic implemented by commit b64f87c16f3c ("[POWERPC]
+Avoid unpaired stwcx. on some processors") which is based on
+CPU_FTR_NEED_PAIRED_STWCX feature.
 
-Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C exception exit from ppc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/entry_32.S | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 23f585219fb4b..d0058757b0000 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -805,7 +805,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
- 	if (!cpus_per_iaa)
- 		cpus_per_iaa = 1;
- out:
--	return 0;
-+	return ret;
- }
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index f4a8c98772491..1beb578c64114 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -263,10 +263,9 @@ interrupt_return:
+ 	mtspr	SPRN_SRR1,r12
  
- static void remove_iaa_wq(struct idxd_wq *wq)
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 
+ 	lwz	r3,_CCR(r1)
+ 	lwz	r4,_LINK(r1)
+@@ -306,10 +305,9 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 	mtspr	SPRN_SRR1,r12
+ 
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 
+ 	lwz	r3,_LINK(r1)
+ 	lwz	r4,_CTR(r1)
 -- 
 2.51.0
 
