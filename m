@@ -1,100 +1,100 @@
-Return-Path: <stable+bounces-201155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EB8CC1D6D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:41:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2818ACC1F1C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF4373012DD2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 09:40:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2F6130073D9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275F5322B9B;
-	Tue, 16 Dec 2025 09:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C651332E143;
+	Tue, 16 Dec 2025 10:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjpeq8s7"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD16314B8E
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 09:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3E02BE043;
+	Tue, 16 Dec 2025 10:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765878037; cv=none; b=PlG/omiQa3Il+9KMjU2NJFbl8Y4Tu9uefpDlShUV+Zr+nweLfdM+hJC3+RZBf2cvDXMFELYTFsVoMqp+Wrsak3Ovun9MsRTLwLzs1aoSMnvOk/P93hHk0D5WlVks4+lT8PpyM3hdL/ojnuzMZZRLI9tAJKFyuMC0ZVXnnpBOKB4=
+	t=1765880452; cv=none; b=JLlnNAOeuvwDBx8pPgl4c4jWMmTob8GQztcGhZPVcyAEhOMPu/SenCf9z5Y2DXyYHiJWviEhe0KFmq908K7JsBBE71YDOpAj3c9hCfTY2VPeWf0kbUTLbQvLZDwN+qVgF2MoG9Fd39kFcn92tsLmaoWF3X2YMobKmhMU/0B4AaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765878037; c=relaxed/simple;
-	bh=7fibkRnT3uTJbI/x110mVkgIBmUgm6Y5BdYOBuTa6l4=;
+	s=arc-20240116; t=1765880452; c=relaxed/simple;
+	bh=/7iailjfqVha0sAMUUK8KXoQJSsNz3Yax9uU3E/foG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fr+xcv2wjRZchOlGcYMt6+pxalNr5AzZAh/LGYAbxX4/9EvwiGlXrzjLTH2V7yDGDRCJmpCNp9ynWV0XKqOSYuUYGX05A5mN9wflvcqhQ09ROs3c6o66Jcy51sTP/p1Wq/XJ/77mxAekrQ5vSuQPpyc63f+4jBvOzH+DZKuSDXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBDF5FEC;
-	Tue, 16 Dec 2025 01:40:28 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9EED3F73B;
-	Tue, 16 Dec 2025 01:40:34 -0800 (PST)
-Date: Tue, 16 Dec 2025 09:40:31 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Amitai Gottlieb <amitaig@hailo.ai>, <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>, <amitaigottlieb@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: Re: [PATCH] [STABLE ONLY] firmware: arm_scmi: Fix unused
- notifier-block in unregister
-Message-ID: <20251216-quantum-amazing-giraffe-fd9dfa@sudeepholla>
-References: <20251216090009.13435-1-amitaig@hailo.ai>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EP1fGVazW62SSrxdl2bge5Lb4QstjD1qv9lu6jmqFql8PhLHSbjo/bvi/atTTUdxAEB0rYUcAtx4SkOzj2s4wC8qJJCeyoPMCSYj8itpozCOh2qSO2SXxqPhLtmr2rPuh3s/5nhVA91UOvicy142NB149Klp4EFRsBlIbnpafcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjpeq8s7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64234C4CEF1;
+	Tue, 16 Dec 2025 10:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765880451;
+	bh=/7iailjfqVha0sAMUUK8KXoQJSsNz3Yax9uU3E/foG8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gjpeq8s73IZg4pA11EADsJsBLw9/dZ/crDElPQVIA48N3LCd0ygWRpcx08wxuQzrJ
+	 P1nMpa0F4FlbVY3ZrarSzk4pcCltqC7u3yDQyQw7qKlq6FkrenqZnc7p/i9Vl26Z/O
+	 gsi/oUKQKXSJb3C1SuX81KHv74kiIED6n5Zi+vTg=
+Date: Tue, 16 Dec 2025 11:20:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
+Message-ID: <2025121643-consuming-unusable-043b@gregkh>
+References: <20251210072948.125620687@linuxfoundation.org>
+ <35e3347a-198f-4143-b094-2d0feb8d6d50@roeck-us.net>
+ <CAAhV-H4tiTBqd7mUphq58KdUtvro9HPxZmComr6ku1Mcw6=+9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251216090009.13435-1-amitaig@hailo.ai>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhV-H4tiTBqd7mUphq58KdUtvro9HPxZmComr6ku1Mcw6=+9g@mail.gmail.com>
 
-Hi Amitai,
+On Sun, Dec 14, 2025 at 09:24:02AM +0800, Huacai Chen wrote:
+> On Sun, Dec 14, 2025 at 12:31 AM Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > On 12/9/25 23:29, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.12.62 release.
+> > > There are 49 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > >
+> > > Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
+> > > Anything received after that time might be too late.
+> > >
+> > ...
+> > > Huacai Chen <chenhuacai@kernel.org>
+> > >      LoongArch: Mask all interrupts during kexec/kdump
+> > >
+> >
+> > This results in:
+> >
+> > Building loongarch:defconfig ... failed
+> > --------------
+> > Error log:
+> > arch/loongarch/kernel/machine_kexec.c: In function 'machine_crash_shutdown':
+> > arch/loongarch/kernel/machine_kexec.c:252:9: error: implicit declaration of function 'machine_kexec_mask_interrupts' [-Wimplicit-function-declaration]
+> >    252 |         machine_kexec_mask_interrupts();
+> >
+> > ... because  there is no loongarch specific version of machine_kexec_mask_interrupts()
+> > in v6.12.y, and the function was generalized only with commit bad6722e478f5 ("kexec:
+> > Consolidate machine_kexec_mask_interrupts() implementation") in v6.14.
+> https://lore.kernel.org/loongarch/20251213094950.1068951-1-chenhuacai@loongson.cn/T/#u
 
-Not sure if you received my earlier reply as I can't find it on the list
-and not in sent box as well. But I do see you have cc-ed Greg as requested
-but didn't consider other requests, hence the confusion.
+Now queued up, thanks.
 
-Hi Greg,
-
-This is first time I am deal with such an issue which exist only in the
-stable tree as the upstream fixed it in some refactoring before the issue
-was reported/known. Let us know if this is correct way to add patch to
-stable tree only or is there something we are missing or need to take care of.
-
-On Tue, Dec 16, 2025 at 11:00:09AM +0200, Amitai Gottlieb wrote:
-> In function `scmi_devm_notifier_unregister` the notifier-block parameter
-> was unused and therefore never passed to `devres_release`. This causes
-> the function to always return -ENOENT and fail to unregister the
-> notifier.
-> 
-> In drivers that rely on this function for cleanup this causes
-> unexpected failures including kernel-panic.
-> 
-> This is not needed upstream becaues the bug was fixed
-> in a refactor by commit 264a2c520628 ("firmware: arm_scmi: Simplify
-> scmi_devm_notifier_unregister").  
-
-
-> It is needed for the 5.15, 6.1 and 6.6 kernels.
-
-I had given you reworded commit message and particularly the above text
-to be dropped. It makes no sense to add this say is v5.15 kernel e.g.
-
-> 
-> Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
-> Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
-> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-
-I had also asked you to add my
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
--- 
-Regards,
-Sudeep
+greg k-h
 
