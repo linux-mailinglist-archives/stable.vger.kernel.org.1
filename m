@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-201826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F76CC27DF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DB8CC22F5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D838E3064AF2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8425D3034AE5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85EE355029;
-	Tue, 16 Dec 2025 11:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A33341ACA;
+	Tue, 16 Dec 2025 11:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ+MRxHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q73+v2Lv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63051355026;
-	Tue, 16 Dec 2025 11:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E5B341069;
+	Tue, 16 Dec 2025 11:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885915; cv=none; b=MKa0YuQl3nqMQhPLPFuiTWHWftE/bbUDE7WSKf5+8llcBPeqZEjtYkqarJfykiYV4kz8vLLdSmtpdqlhBj6SGaP6wlNY/8zzbl9QBFuVvUjma1xEjZsV9+Hroq2Hnb8mMs0Lk2Bac3eIG53JB4p7BFOd/aVBx+4Lxc9SX2iAuzI=
+	t=1765884204; cv=none; b=LSpZpYqIdtVUfxDWuGhmsiT9pUQvY0znJXhrMxywpOiOq2ODewgX3UMiitWRWBjai1c9NNMOlsl46S5m5r9UfgRu/zYNvuHgCunxt/wu6SCdhpawn/cwNmcptmJEBLwSBjYvyv7sXZftAxyaTYlDwETSL4XwgI2pURJPU6eZSyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885915; c=relaxed/simple;
-	bh=CGRsz9c0j0fiw/czQRVnwcaZKMtVKlJwXcriLbkX/Y0=;
+	s=arc-20240116; t=1765884204; c=relaxed/simple;
+	bh=QQIF1ecm/72RJ4P0sP/ZScBrsbBGlYIrSWEQ/anc2ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAseitulXW8m6KfQEaV8Fey+z4ZfbEk+2+1f9/ZsMiabYEP8HG1CaenpqsNogVvc+oN82EApkaz2kci7tDNh3yjhxhW4ml3GMVOjK1CK3t4LxxSGO/cGPupY/LUkboKFbJclhtQc1Gp71jNpJ74cJjprYaOfnmfkcXB4C4ThTp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ+MRxHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E79C4CEF1;
-	Tue, 16 Dec 2025 11:51:54 +0000 (UTC)
+	 MIME-Version; b=tSFgheVfMTRgIzr4u7pAPVR5LzzaIMMPQW8EbpSjN1I+OynUtD6i1o/XVOm9K8mP14owMpGQq5FHnJ5ui+97KboS90jC/brD0ZUYhoCiQEtEExiU63G9AXSDkrv6/FPJGC7bNju3BJH9fJKDrrDUVq7c1GXCh6n4LbDNTCW1efs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q73+v2Lv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFA1C4CEF1;
+	Tue, 16 Dec 2025 11:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885915;
-	bh=CGRsz9c0j0fiw/czQRVnwcaZKMtVKlJwXcriLbkX/Y0=;
+	s=korg; t=1765884204;
+	bh=QQIF1ecm/72RJ4P0sP/ZScBrsbBGlYIrSWEQ/anc2ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQ+MRxHFTPz49gzho2tBD7yx2MCRuYWM/X9shV0iJev2T9UXo3pv542llw/SVuB3x
-	 0TtNE6vOb+ALwWuTYt4SYVSIQxy2A9ZyESRowHRCQ59NoE+mtNrfUCyfG077xN+qac
-	 D54LBeVuJkEy8v0DwgDLPWHnb67JhCrsrAVXUokY=
+	b=q73+v2LvNjGBLzU3VzBqKotJ1TIYO/XrFwL2q/a2AaKVwMyExfRbTwAYMT36mZJGL
+	 TEoFBYMhi5z+r7zmzODsFYbwHstDstnbEtTZ0Sg8pI7O0yRBwun/6pT63O6h/dksUF
+	 ToIsWgkhl8ryeDpUO+s6RD3wFW27zWieqGkS5MtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mkhlinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 249/507] Drivers: hv: Free msginfo when the buffer fails to decrypt
+Subject: [PATCH 6.12 123/354] efi/libstub: Fix page table access in 5-level to 4-level paging transition
 Date: Tue, 16 Dec 2025 12:11:30 +0100
-Message-ID: <20251216111354.515090883@linuxfoundation.org>
+Message-ID: <20251216111325.379987438@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Kisel <romank@linux.microsoft.com>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit 510164539f16062e842a9de762616b5008616fa1 ]
+[ Upstream commit 84361123413efc84b06f3441c6c827b95d902732 ]
 
-The early failure path in __vmbus_establish_gpadl() doesn't deallocate
-msginfo if the buffer fails to decrypt.
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-Fix the leak by breaking out the cleanup code into a separate function
-and calling it where required.
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags Bits above the
+  physical address width of the system (i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
 
-Fixes: d4dccf353db80 ("Drivers: hv: vmbus: Mark vmbus ring buffer visible to host in Isolation VM")
-Reported-by: Michael Kelley <mkhlinux@outlook.com>
-Closes: https://lore.kernel.org/linux-hyperv/SN6PR02MB41573796F9787F67E0E97049D472A@SN6PR02MB4157.namprd02.prod.outlook.com
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+- The pgd value is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
+
+Replace this with proper accessor functions:
+
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
+
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20251103141002.2280812-3-usamaarif642@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/channel.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/firmware/efi/libstub/x86-5lvl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-index 1621b95263a5b..70270202209b6 100644
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -410,6 +410,21 @@ static int create_gpadl_header(enum hv_gpadl_type type, void *kbuffer,
- 	return 0;
- }
+diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
+index 77359e802181f..c0f317b55c4bb 100644
+--- a/drivers/firmware/efi/libstub/x86-5lvl.c
++++ b/drivers/firmware/efi/libstub/x86-5lvl.c
+@@ -66,7 +66,7 @@ void efi_5level_switch(void)
+ 	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
+ 	bool need_toggle = want_la57 ^ have_la57;
+ 	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
+-	u64 *cr3 = (u64 *)__native_read_cr3();
++	pgd_t *cr3 = (pgd_t *)native_read_cr3_pa();
+ 	u64 *new_cr3;
  
-+static void vmbus_free_channel_msginfo(struct vmbus_channel_msginfo *msginfo)
-+{
-+	struct vmbus_channel_msginfo *submsginfo, *tmp;
-+
-+	if (!msginfo)
-+		return;
-+
-+	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
-+				 msglistentry) {
-+		kfree(submsginfo);
-+	}
-+
-+	kfree(msginfo);
-+}
-+
- /*
-  * __vmbus_establish_gpadl - Establish a GPADL for a buffer or ringbuffer
-  *
-@@ -429,7 +444,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 	struct vmbus_channel_gpadl_header *gpadlmsg;
- 	struct vmbus_channel_gpadl_body *gpadl_body;
- 	struct vmbus_channel_msginfo *msginfo = NULL;
--	struct vmbus_channel_msginfo *submsginfo, *tmp;
-+	struct vmbus_channel_msginfo *submsginfo;
- 	struct list_head *curr;
- 	u32 next_gpadl_handle;
- 	unsigned long flags;
-@@ -459,6 +474,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 			dev_warn(&channel->device_obj->device,
- 				"Failed to set host visibility for new GPADL %d.\n",
- 				ret);
-+			vmbus_free_channel_msginfo(msginfo);
- 			return ret;
- 		}
- 	}
-@@ -535,12 +551,8 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
- 	list_del(&msginfo->msglistentry);
- 	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
--	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
--				 msglistentry) {
--		kfree(submsginfo);
--	}
+ 	if (!la57_toggle || !need_toggle)
+@@ -82,7 +82,7 @@ void efi_5level_switch(void)
+ 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+ 	} else {
+ 		/* take the new root table pointer from the current entry #0 */
+-		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
++		new_cr3 = (u64 *)(native_pgd_val(cr3[0]) & PTE_PFN_MASK);
  
--	kfree(msginfo);
-+	vmbus_free_channel_msginfo(msginfo);
- 
- 	if (ret) {
- 		/*
+ 		/* copy the new root table if it is not 32-bit addressable */
+ 		if ((u64)new_cr3 > U32_MAX)
 -- 
 2.51.0
 
