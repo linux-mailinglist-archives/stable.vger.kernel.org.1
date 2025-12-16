@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-202162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D287CC2CDA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:35:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FDACC2DAC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A20730577EA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75D5531A9CF1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0312F3659E9;
-	Tue, 16 Dec 2025 12:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579AB346A10;
+	Tue, 16 Dec 2025 12:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQHzPIbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmwSZdI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B193659E6;
-	Tue, 16 Dec 2025 12:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149363469FA;
+	Tue, 16 Dec 2025 12:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887018; cv=none; b=nrD5ObOz8JLlvtYCEnwHA1VdEYhUVTwZHfAc2NxmiGJFdFnm6ONvYXv3/q+r1k7s5dyYxXHq0FKcgCRajvW0sAerueMBS/b3A3fbhWT3aMXjTzOkAf8Ebnf5ZxnktltEqDJs+38UmWshF41LX6xeGco22rECFTINSpHNGv1N2Vg=
+	t=1765886903; cv=none; b=pyzJLk6jKAL1IgXf29sMAYKoywD0PUJAyOJywYcCLHTdV2HzYVQ14UImxNNojRShfVqK/azXaWjr1mpukeDsccF7OPGDr8hireFUtIQIUFtIpai8PYcCasViF3e9RszDUbVr7+WIPfqgA4N2IR6W29fI1vV7+CrE+nLK9hBxqXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887018; c=relaxed/simple;
-	bh=gT7Y3/zXuacWk8vs8IuYk+/3JuzWKtZy4MBOsgMb80E=;
+	s=arc-20240116; t=1765886903; c=relaxed/simple;
+	bh=Fc59Jp9VtR2m5VeG4aaFDFBpLjbGaecUChy/btoUCe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmjMfABloN9RjyRVIqyNGoELlJv45MoGYAPErrmr9C6gjYVwtbMNxEicHi55Qaukjkn1cOHK2QL/+ZvGGcLYAkFrYxM42+b73x0uD54lQuNHGKbXsbaHKZ/SYHUromVkdkKQAYXLt/j22Fhgi9VGjsIdZaoM4lJqgomnYlRimlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQHzPIbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC4BC4CEF1;
-	Tue, 16 Dec 2025 12:10:17 +0000 (UTC)
+	 MIME-Version; b=C+JLhwGWP87kLecMNHmiswkr+202bX0Ex0k5BW8bufIMdPt3L4UT6cQ7nW2QaBd/yruD5zP9LA2G+TGMjwiUFJR1WNivRVYT5SCs+D0AWWFc5kno08Dj8ctiC/3AWRFRD4t/xUbYl+8xyhEfBKcJxDZYtWIl7bjb0BhhtcrUfGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmwSZdI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEB9C4CEF1;
+	Tue, 16 Dec 2025 12:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887018;
-	bh=gT7Y3/zXuacWk8vs8IuYk+/3JuzWKtZy4MBOsgMb80E=;
+	s=korg; t=1765886902;
+	bh=Fc59Jp9VtR2m5VeG4aaFDFBpLjbGaecUChy/btoUCe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQHzPIbSoUl3vs278OtVHy9mx7DpS2FxPS/7/3pSHLgXwG+H6J9ge0quTnq2Pp2AS
-	 UnyDL0jOQBr2Z7F3U+Sc93m7cKpbajimifQJ1lcJ6e+wUfvq09XVeY0EjbkxoelqnO
-	 OjFqr2Wn0rcAGcgprypdFL2HTkA29HmIqLtoICFE=
+	b=HmwSZdI2LfFBLoipOeXUrxbfyifayxjnVCETCz7cKtSieiGm5mlgBbD46qw3KFcmc
+	 YajyAauXQK1hT/iv6QiURduBTNvv39ZPrGJ1PJWER4Qc+BXq5lPJFpy3DFs+4uirzD
+	 R7hZwNTC3fRBgNfU+VewwHEXv5sf28vRSTIbGwHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 059/614] arm64: dts: qcom: ipq5424: correct the TF-A reserved memory to 512K
-Date: Tue, 16 Dec 2025 12:07:06 +0100
-Message-ID: <20251216111403.449763758@linuxfoundation.org>
+Subject: [PATCH 6.18 060/614] iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member
+Date: Tue, 16 Dec 2025 12:07:07 +0100
+Message-ID: <20251216111403.486509558@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -64,35 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit 28803705b552a0a711fa849490f14dca2bc5296e ]
+[ Upstream commit c6d702f2b77194b62fb2098c63bb7f2a87da142d ]
 
-Correct the reserved memory size for TF-A to 512K, as it was mistakenly
-marked as 500K. Update the reserved memory node accordingly.
+The `odr` field in struct st_lsm6dsx_sensor contains a data rate
+value expressed in mHz, not in Hz.
 
-Fixes: 8517204c982b ("arm64: dts: qcom: ipq5424: Add reserved memory for TF-A")
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251014-tfa-reserved-mem-v1-1-48c82033c8a7@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: f8710f0357bc3 ("iio: imu: st_lsm6dsx: express odr in mHZ")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq5424.dtsi | 2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq5424.dtsi b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-index ef2b52f3597d9..227d5ce297515 100644
---- a/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-@@ -213,7 +213,7 @@ smem@8a800000 {
- 		};
- 
- 		tfa@8a832000 {
--			reg = <0x0 0x8a832000 0x0 0x7d000>;
-+			reg = <0x0 0x8a832000 0x0 0x80000>;
- 			no-map;
- 			status = "disabled";
- 		};
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 381b016fa5243..56244d49ab2fc 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -383,7 +383,7 @@ enum st_lsm6dsx_fifo_mode {
+  * @id: Sensor identifier.
+  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+  * @gain: Configured sensor sensitivity.
+- * @odr: Output data rate of the sensor [Hz].
++ * @odr: Output data rate of the sensor [mHz].
+  * @samples_to_discard: Number of samples to discard for filters settling time.
+  * @watermark: Sensor watermark level.
+  * @decimator: Sensor decimation factor.
 -- 
 2.51.0
 
