@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A897DCC3498
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01900CC2373
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80C3B307477A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 626B83041B1F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A780350A3D;
-	Tue, 16 Dec 2025 11:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C9F342160;
+	Tue, 16 Dec 2025 11:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrpZULCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAo8ZydB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E69350A38;
-	Tue, 16 Dec 2025 11:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61413313E13;
+	Tue, 16 Dec 2025 11:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885747; cv=none; b=MyD+NJbHsiCme3CyxlXXA4e+X+oRpGyZ4y5FxrTB05z5Zv+9oN7ZCZfJubMIlfg28/P+flUyy0Uo84nEbqRCKv3iQFEhT2XndGpNcXDn5D1GKRQ492doVDGOPLj5bDfZVJjWrKJKMmmexCRhpkawbxjoNcs3+NsluxFJ93tLHPI=
+	t=1765884261; cv=none; b=p2WbG9GHZNAtYtXcmEuL0Jl2J5Aw1pR191lJyDEy6FLGQb8OhzPEPZqk/6zlpy5zDemu/fz887pWOqwVQIe8nMILw13E/cefv6ctSmRMOV/8wAmzb0RJ1VxdxH+OW9VlLMe6PAy20A0DoqsPj3XdZ0ytctfqB2Ek32dLbckFSY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885747; c=relaxed/simple;
-	bh=w2rIzQaaapwesd3gLaz47DBv24p4L63MgFDq9zAAnjE=;
+	s=arc-20240116; t=1765884261; c=relaxed/simple;
+	bh=YOeAFGXyG+5MLfPUpXCCiTn7a1FyGIONDm+IDmacO1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0CXVPlqanbj6chsARw9nbjJuzMP9U5yUoA+pt2FiTyMEchxUI3DY8L1XoF3coUY9x8x1MjhszO7bstQvVK/zU5qkfOIGmvff6Ge06L88S1Z2CUdUQrxbTWuSIYtxxOWy0kHTiMVEcANVNGjG+lR5K/Qz3JHwoCwtpHxwOjUxtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrpZULCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D990C4CEF1;
-	Tue, 16 Dec 2025 11:49:06 +0000 (UTC)
+	 MIME-Version; b=QJOWb1Tv3/r7bjjZv9rATuvz+I3E2CjsqO+MPDGJz3bJeqv7RUgxUjBJKRPxonWlbXTy5nNGyXEW/PmiJohaUPRr2tozjktbZOUox9jbPdlzS24Zu5CSBwcbEN9nvqa4xTg/41UHFQXOAVRc2AfyfHRpGEmWEvog42rd3Dri628=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAo8ZydB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D604FC4CEF1;
+	Tue, 16 Dec 2025 11:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885746;
-	bh=w2rIzQaaapwesd3gLaz47DBv24p4L63MgFDq9zAAnjE=;
+	s=korg; t=1765884261;
+	bh=YOeAFGXyG+5MLfPUpXCCiTn7a1FyGIONDm+IDmacO1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NrpZULCC4SmjRNqp3qWPRSZk33WWfUQzSHQMjrklZCzE0VPX+3AF5LHxwA7T90ryd
-	 txKHrJA2NnCybrVbodS3lzlk1Kjcgp+pbUR6oEERAF9ePRQjQspU0IOV0TCSWbQWQ/
-	 rtBIsSIaUHupSJEr8cMoU7n0oiDVUDA5tVa0W8hw=
+	b=SAo8ZydB2/SI+Q1vd3T3EB5i4ORFkE9l30mQNLlUDhFvVb9z1JEhKvnw1185YSFSD
+	 lGv9JGqjvrWtsV+1qGP8mOFdlYbUygTXRqspC/XjvYCpTtssB68g9gVFfp+GNkHsbM
+	 9aXyFWsL8wV2efAEX0wj3tgStziTjcCtXbXAY+pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 232/507] PCI: keystone: Exit ks_pcie_probe() for invalid mode
-Date: Tue, 16 Dec 2025 12:11:13 +0100
-Message-ID: <20251216111353.907604131@linuxfoundation.org>
+Subject: [PATCH 6.12 107/354] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Date: Tue, 16 Dec 2025 12:11:14 +0100
+Message-ID: <20251216111324.795971618@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
+[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
 
-Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
-When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
-the PCIe Controller is configured accordingly. However, when the mode is
-neither of them, an error message is displayed, but the driver probe
-succeeds. Since this "invalid" mode is not associated with a functional
-PCIe Controller, the probe should fail.
+There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
+variable sel with an undefined value which is then used in regmap_field_write().
 
-Fix the behavior by exiting "ks_pcie_probe()" with the return value of
-"-EINVAL" in addition to displaying the existing error message when the
-mode is invalid.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
+Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/rt9467-charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 21808a9e51586..ed0f6cf3df6b2 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1338,6 +1338,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", mode);
-+		ret = -EINVAL;
-+		goto err_get_sync;
+diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
+index faa5de2857ea0..be65b0f517210 100644
+--- a/drivers/power/supply/rt9467-charger.c
++++ b/drivers/power/supply/rt9467-charger.c
+@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
+ 	if (rsel == RT9467_RANGE_VMIVR) {
+ 		ret = linear_range_get_selector_high(range, value, &sel, &found);
+ 		if (ret)
+-			value = range->max_sel;
++			sel = range->max_sel;
+ 	} else {
+ 		linear_range_get_selector_within(range, value, &sel);
  	}
- 
- 	ks_pcie_enable_error_irq(ks_pcie);
 -- 
 2.51.0
 
