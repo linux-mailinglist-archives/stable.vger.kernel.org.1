@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE004CC234F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA072CC461E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F147304D55A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8F42304249B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4C6341ACA;
-	Tue, 16 Dec 2025 11:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D1634E774;
+	Tue, 16 Dec 2025 11:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gO3V+Jkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeMbpKrY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26714341AD7;
-	Tue, 16 Dec 2025 11:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9FC34E76A;
+	Tue, 16 Dec 2025 11:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884150; cv=none; b=nZNNw3tN4oZTc8CSy3EDaR4zxyfR36xRq4EzBYFnnLKrWqnjI2WAXA3BmOHpyfChou537jEPVR5q8WfWWU1xR3FjH3YcCdodfZn8zmyIDUUfweXFlprD31iNgNv0I2pi9yI6hftZtFRRRJiQIl0PAiQZQbFF9pSinNy1D96/IQA=
+	t=1765885606; cv=none; b=W2s9/u4T+gUvD+p8cXzTWIbUthiKXAvHNuGbIyi5BZuyP3xd57xjQ1DQ6FkAkmWPRkvQQ5eUZmTZhtcCCEQMDKAq3dVn5CShaALcmi7Pu54Pt3Dl9fIM75cBF/5DdYbC/jlbhnCw8dNsS0GbIug+I2+tOIl7BeXdXwJUMn6fwv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884150; c=relaxed/simple;
-	bh=1ZCRWvZOPQ+/6BLNgUpYLKvktERM3pXlVjko89a6M1k=;
+	s=arc-20240116; t=1765885606; c=relaxed/simple;
+	bh=DywOI/VO29UZ0ppLlpYUYDu6qFWvyuNxp0TPJi2xOzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3ElnkaMFpeq6zPADAlY2funPvu9Xp+pIcv9HKakdVw6HEEvZ1JLfg15Ag/TZ1/BgUrLrSlJawUmRi1Ibvwx7KVj9mQC/lvDppBxIXlh0ffBtC6i2cVPTACQVr30Ojc2cU9VF0R5QWLPD/Q8Xb1t7rofaX+7/DQfF+qXZJ+YVss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO3V+Jkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9609BC4CEF1;
-	Tue, 16 Dec 2025 11:22:29 +0000 (UTC)
+	 MIME-Version; b=VzC2UKSrER0+/lE3tsVwnRsVB3GQ1Eu9to7NKFGwwTH/Fqkg3WTP0MwDuj75id+byRW3N4LJx0OzVk6auDNLIse8UKOr+UMz2dquClL62jz1KC2pHqXNum38gdzMqTjQTTApVz4Lpph8InpduC9D97SAPRh84YOaVmyehzFHgro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeMbpKrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67C4C4CEF1;
+	Tue, 16 Dec 2025 11:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884150;
-	bh=1ZCRWvZOPQ+/6BLNgUpYLKvktERM3pXlVjko89a6M1k=;
+	s=korg; t=1765885606;
+	bh=DywOI/VO29UZ0ppLlpYUYDu6qFWvyuNxp0TPJi2xOzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gO3V+JktR7CuO/+/Sn/75bx39kipLaWSzFGX0gxKv5XXv6uiJsEzq7b3C6PJ2HlRu
-	 CXBsk341cyRdIpCz7rXeK5AT91NPUy2wacV3SCZnC82/sO+9PlkgC3enKnIdoQK2CF
-	 VhgLaJZUkARHog+XimGUGfBj44GSDFNaHASB04dU=
+	b=AeMbpKrYvc0zrNt4B3bt2a0b2BlkGyaZNv3nZs5PWYSr/Gdv0Hbdmz+cdk4fz2eTz
+	 0bSDjZPTBme4xe38xLl95DCe6qoT5RRh7QRMlEFeva/4f3CISliOT4/AqzELAbKhmH
+	 qZEyMRpD+E7rU8/HjETl/LXX7SMEJ9zGEkkpIADQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/354] soc: qcom: gsbi: fix double disable caused by devm
+Subject: [PATCH 6.17 189/507] regulator: core: disable supply if enabling main regulator fails
 Date: Tue, 16 Dec 2025 12:10:30 +0100
-Message-ID: <20251216111323.209876239@linuxfoundation.org>
+Message-ID: <20251216111352.359506713@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 2286e18e3937c69cc103308a8c1d4898d8a7b04f ]
+[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
 
-In the commit referenced by the Fixes tag, devm_clk_get_enabled() was
-introduced to replace devm_clk_get() and clk_prepare_enable(). While
-the clk_disable_unprepare() call in the error path was correctly
-removed, the one in the remove function was overlooked, leading to a
-double disable issue.
+For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
+may enable supply before enabling the main regulator, however if the
+latter fails, the function returns with an error but the supply remains
+enabled.
 
-Remove the redundant clk_disable_unprepare() call from gsbi_remove()
-to fix this issue. Since all resources are now managed by devres
-and will be automatically released, the remove function serves no purpose
-and can be deleted entirely.
+When this happens, the regulator_register() function continues on the
+error path where it puts the supply regulator. Since enabling the supply
+is not balanced with a disable call, a warning similar to the following
+gets issued from _regulator_put():
 
-Fixes: 489d7a8cc286 ("soc: qcom: use devm_clk_get_enabled() in gsbi_probe()")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/stable/20251020160215.523-1-vulab%40iscas.ac.cn
-Link: https://lore.kernel.org/r/20251020160215.523-1-vulab@iscas.ac.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
+    [    1.603908] Modules linked in:
+    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
+    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
+    [    1.603945] Workqueue: async async_run_entry_fn
+    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    [    1.603967] pc : _regulator_put+0x8c/0xa0
+    [    1.603976] lr : _regulator_put+0x7c/0xa0
+    ...
+    [    1.604140] Call trace:
+    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
+    [    1.604156]  regulator_register+0x2ec/0xbf0
+    [    1.604166]  devm_regulator_register+0x60/0xb0
+    [    1.604178]  rpm_reg_probe+0x120/0x208
+    [    1.604187]  platform_probe+0x64/0xa8
+    ...
+
+In order to avoid this, change the set_machine_constraints() function to
+disable the supply if enabling the main regulator fails.
+
+Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom_gsbi.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/regulator/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/soc/qcom/qcom_gsbi.c b/drivers/soc/qcom/qcom_gsbi.c
-index 8f1158e0c6313..a25d1de592f06 100644
---- a/drivers/soc/qcom/qcom_gsbi.c
-+++ b/drivers/soc/qcom/qcom_gsbi.c
-@@ -212,13 +212,6 @@ static int gsbi_probe(struct platform_device *pdev)
- 	return of_platform_populate(node, NULL, NULL, &pdev->dev);
- }
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 554d83c4af0c1..80d3e7dbe4bc3 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1618,6 +1618,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 	 * and we have control then make sure it is enabled.
+ 	 */
+ 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
++		bool supply_enabled = false;
++
+ 		/* If we want to enable this regulator, make sure that we know
+ 		 * the supplying regulator.
+ 		 */
+@@ -1637,11 +1639,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 				rdev->supply = NULL;
+ 				return ret;
+ 			}
++			supply_enabled = true;
+ 		}
  
--static void gsbi_remove(struct platform_device *pdev)
--{
--	struct gsbi_info *gsbi = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(gsbi->hclk);
--}
--
- static const struct of_device_id gsbi_dt_match[] = {
- 	{ .compatible = "qcom,gsbi-v1.0.0", },
- 	{ },
-@@ -232,7 +225,6 @@ static struct platform_driver gsbi_driver = {
- 		.of_match_table	= gsbi_dt_match,
- 	},
- 	.probe = gsbi_probe,
--	.remove = gsbi_remove,
- };
+ 		ret = _regulator_do_enable(rdev);
+ 		if (ret < 0 && ret != -EINVAL) {
+ 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
++			if (supply_enabled)
++				regulator_disable(rdev->supply);
+ 			return ret;
+ 		}
  
- module_platform_driver(gsbi_driver);
 -- 
 2.51.0
 
