@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C6DCC2310
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A811ACC26E3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31D4B3035D94
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41E6E302CAC0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEAD342177;
-	Tue, 16 Dec 2025 11:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D9335502B;
+	Tue, 16 Dec 2025 11:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+UkwhhW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bU+hjrUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3754C341069;
-	Tue, 16 Dec 2025 11:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C0D355026;
+	Tue, 16 Dec 2025 11:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884221; cv=none; b=umqe4V/pizjoKh0wKQLjxF2pgOHO9ewP+pOxR9782gJysLJOp44ZKJqxS4iDfAY+kF26P94SdVMnsnAdjYoGQBsuenl5M2k1X26EOuUmQiDIwKjyK0VWbrmtziENZMNJczHofL4D8OGeZzcuZKPvankS+46ItDzLUOvwH2MJS6c=
+	t=1765885820; cv=none; b=fmvtHme3b+E2wwWQvsY/Ya76z1a7UyOqCEnok7ckjsXjc3l8UwM4HtNruX1GRm6y57EXyWlf5EH52JrmbPyitZxFezVbjzlRJxmXI19CzZD11ekWl074Iw0Dr7mZ4nqx5I2wRI8Yj7SmdUAJnPHkC5AN1AlJK2SbYYNcmmE0+qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884221; c=relaxed/simple;
-	bh=B7QpSf+zqVXPnSgZsAOpidHYhVjwbVk++Gwq0xtfrnc=;
+	s=arc-20240116; t=1765885820; c=relaxed/simple;
+	bh=6dISjpMt4D24aWgahCr7UnIvdOBBE6Cr+CSfvs0tSuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOmUew3XV6AVy8Wty9AC2fHZyCi5BYz/jsMIMJaV3oi5h5G/IRa2lIrChzbPLWhI7X7u50+D2ap+YkKhYm+ke3kFwUpgP0BJbpvWbArYUcPjow61pLrzHfm/dhitzefsacV+d704tgqAYoSswLwE6kiCLUWXl4sYYzLzZ0K7XlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+UkwhhW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BE7C4CEF1;
-	Tue, 16 Dec 2025 11:23:40 +0000 (UTC)
+	 MIME-Version; b=iByd2tc/+5rS8LPVdOjWChI8svVLIHZvphKupRpgqParMGlIOxsLDrSJvHH5C4UbQ2PoKmVqr1Gb1T9s2qLuj7uHpy3ylkD6cSXZCChd+w/ZCOjzmewf/VR3R0ZWuxf4BaRPPnTmfch5NjnSAB+Y/KTdiBA24i5Yr4ldycdxTvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bU+hjrUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F4FC4CEF1;
+	Tue, 16 Dec 2025 11:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884220;
-	bh=B7QpSf+zqVXPnSgZsAOpidHYhVjwbVk++Gwq0xtfrnc=;
+	s=korg; t=1765885820;
+	bh=6dISjpMt4D24aWgahCr7UnIvdOBBE6Cr+CSfvs0tSuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+UkwhhWZs0suGXam72+toAJYwbLldZOLIOkj66R0tHcNuLm0EsR1np7bp9neXd1Y
-	 ZwJEv8MwEbfpvgAmxkwc5JR/6yxfW/D52aVUfCY0L/rl0nI0kUd2ELbfbgaeTyFhkH
-	 3GDH6HSooXmJeQtpL7tCcO2aVQ3AOrNIDbUZn6fw=
+	b=bU+hjrUhm/F+HvVMmB4WpABreLF7xUN5eADaTpw47TtSflKoI4l3l8lhAUcALnydw
+	 9o4gGEJMu6a5O+1PkA2rfNbp1MNNC6L91gb0SNHk9k7YubUIUcjnogkUVB2/LK37vs
+	 Btl+4oYmiiLs6snWctxqoZCh7kI36xkBGv1JMB9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/354] regulator: core: disable supply if enabling main regulator fails
-Date: Tue, 16 Dec 2025 12:11:35 +0100
-Message-ID: <20251216111325.560005626@linuxfoundation.org>
+Subject: [PATCH 6.17 255/507] NFSD/blocklayout: Fix minlength check in proc_layoutget
+Date: Tue, 16 Dec 2025 12:11:36 +0100
+Message-ID: <20251216111354.729193475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
+[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
 
-For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
-may enable supply before enabling the main regulator, however if the
-latter fails, the function returns with an error but the supply remains
-enabled.
+The extent returned by the file system may have a smaller offset than
+the segment offset requested by the client. In this case, the minimum
+segment length must be checked against the requested range. Otherwise,
+the client may not be able to continue the read/write operation.
 
-When this happens, the regulator_register() function continues on the
-error path where it puts the supply regulator. Since enabling the supply
-is not balanced with a disable call, a warning similar to the following
-gets issued from _regulator_put():
-
-    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
-    [    1.603908] Modules linked in:
-    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
-    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
-    [    1.603945] Workqueue: async async_run_entry_fn
-    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    [    1.603967] pc : _regulator_put+0x8c/0xa0
-    [    1.603976] lr : _regulator_put+0x7c/0xa0
-    ...
-    [    1.604140] Call trace:
-    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
-    [    1.604156]  regulator_register+0x2ec/0xbf0
-    [    1.604166]  devm_regulator_register+0x60/0xb0
-    [    1.604178]  rpm_reg_probe+0x120/0x208
-    [    1.604187]  platform_probe+0x64/0xa8
-    ...
-
-In order to avoid this, change the set_machine_constraints() function to
-disable the supply if enabling the main regulator fails.
-
-Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/blocklayout.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index e7f2a8b659477..be9704d34c015 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1593,6 +1593,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 	 * and we have control then make sure it is enabled.
- 	 */
- 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
-+		bool supply_enabled = false;
-+
- 		/* If we want to enable this regulator, make sure that we know
- 		 * the supplying regulator.
- 		 */
-@@ -1612,11 +1614,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 				rdev->supply = NULL;
- 				return ret;
- 			}
-+			supply_enabled = true;
- 		}
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index 0822d8a119c6f..eefe50a17c4a0 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ {
+ 	struct nfsd4_layout_seg *seg = &args->lg_seg;
+ 	struct super_block *sb = inode->i_sb;
++	u64 length;
+ 	u32 block_size = i_blocksize(inode);
+ 	struct pnfs_block_extent *bex;
+ 	struct iomap iomap;
+@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ 		goto out_error;
+ 	}
  
- 		ret = _regulator_do_enable(rdev);
- 		if (ret < 0 && ret != -EINVAL) {
- 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
-+			if (supply_enabled)
-+				regulator_disable(rdev->supply);
- 			return ret;
- 		}
- 
+-	if (iomap.length < args->lg_minlength) {
++	length = iomap.offset + iomap.length - seg->offset;
++	if (length < args->lg_minlength) {
+ 		dprintk("pnfsd: extent smaller than minlength\n");
+ 		goto out_layoutunavailable;
+ 	}
 -- 
 2.51.0
 
