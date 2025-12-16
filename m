@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677D9CC25DD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A43CC3246
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8219A30B0DBB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43C093020DD1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D79341071;
-	Tue, 16 Dec 2025 11:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B912A368287;
+	Tue, 16 Dec 2025 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EETS0gas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2iRysj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A3233B966;
-	Tue, 16 Dec 2025 11:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C4D36656B;
+	Tue, 16 Dec 2025 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884720; cv=none; b=uopB2oF3VAgW2AAJPIosA6DX7HzlPNpJvK2jGHco8+WS0UVaQGauDR3oXnriYdsrEGKi3zkG48szyROHOWCgkVW0Wp/pjTLaGQqtvywoInadm8Y2IB8tRq1j59nTlW2MtUH1MJNO3fWltl4ByLuTOpOQLnzvnRxsj8FMxdpRHP8=
+	t=1765888250; cv=none; b=ix/evFSq3hPtCKbYICRGuNTUmCOgiSOwCfh7D9UtheDy4WhnvoNRy1BTRuDokM2mFG1B+4pp7S/JUi3A4COPNlW/mwezFpbx0uomOqIbfxwzIgVg5yVfTtoDoGPrg2nF9mORv1Wb7EFb5zO1FSk6vMtVLopIenK/5Uv0jb04zIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884720; c=relaxed/simple;
-	bh=aI35feNjIjT/zOF1PWU/fn4W1bDmhw5vNFWxaK/SNvk=;
+	s=arc-20240116; t=1765888250; c=relaxed/simple;
+	bh=qsWgy/IKvmGMPtFzB5c/NGqLyQBaGhcTdH89/L3ICOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgekrSEzIcHWs7dZuDSKls4wj1P2W4GWTqdinErq/ywXR6WPJS+xB845X7aKPyRC4eIcmy4JJ4WFglZxvl8G5+7pPoItiJ8ZlgxvqADH2VesjcffW7dgWkZR4eHgtf3SxHl+yU7AM6JjsTJACNUxxGHo+OxrCz9a3Mf/2fhbBQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EETS0gas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE92FC4CEF1;
-	Tue, 16 Dec 2025 11:31:59 +0000 (UTC)
+	 MIME-Version; b=HfCRwZ5UOQX4paVfhNlRM+m/czjnlklsJUylyTLe848ULOXzcEPgSIKjx+25qTtnRwSfbwGGQqU1CgqvG/txkDlGreBTpBmsz1m3PCDf3losEgxSar1q/knCgYkUtymGHdMvxkgLfF2612CekR2RnlEnPi3Bbrf3QAXge7gGBvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2iRysj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6277C19425;
+	Tue, 16 Dec 2025 12:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884720;
-	bh=aI35feNjIjT/zOF1PWU/fn4W1bDmhw5vNFWxaK/SNvk=;
+	s=korg; t=1765888250;
+	bh=qsWgy/IKvmGMPtFzB5c/NGqLyQBaGhcTdH89/L3ICOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EETS0gasEj9M8fyJsMWpmEnp6NagkybQ//2hFGvnt25rmu/Vk8K90/RYmy8wnPTTU
-	 mTwuN7k8VjPRMeATgutjUVbkMEC5VAmptnrpn6oXwRgF8c81tfTzAdvyU78dkgufbg
-	 WT+L6ueAI8Ipapu0HCUHtGpUkca/V8YurWFtXQko=
+	b=H2iRysj1+JRIKF5x1zAyjOH0Gf7MQmUrfhEaFju2AFtOgi9bwk1gMausXBm53LnQA
+	 0RDLG0LBSD3KmlFkXLl9VMcPSqbINnsIlDUMFmoRQ3Eb80YD8pZcDxMqEJBPQNspg3
+	 2L8HafML5jEtNs+De+HkHPZCs57BAdMR3qhZfYU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/354] md/raid5: fix IO hang when array is broken with IO inflight
+Subject: [PATCH 6.18 477/614] ARM: dts: samsung: exynos4412-midas: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:14:04 +0100
-Message-ID: <20251216111330.951594646@linuxfoundation.org>
+Message-ID: <20251216111418.652428793@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
+[ Upstream commit 2ff147fdfa99b8cbb8c2833e685fde7c42580ae6 ]
 
-Following test can cause IO hang:
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
-sleep 5
-echo 1 > /sys/block/sda/device/delete
-echo 1 > /sys/block/sdb/device/delete
-echo 1 > /sys/block/sdc/device/delete
-echo 1 > /sys/block/sdd/device/delete
-
-dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
-
-Root cause:
-
-1) all disks removed, however all rdevs in the array is still in sync,
-IO will be issued normally.
-
-2) IO failure from sda, and set badblocks failed, sda will be faulty
-and MD_SB_CHANGING_PENDING will be set.
-
-3) error recovery try to recover this IO from other disks, IO will be
-issued to sdb, sdc, and sdd.
-
-4) IO failure from sdb, and set badblocks failed again, now array is
-broken and will become read-only.
-
-5) IO failure from sdc and sdd, however, stripe can't be handled anymore
-because MD_SB_CHANGING_PENDING is set:
-
-handle_stripe
- handle_stripe
- if (test_bit MD_SB_CHANGING_PENDING)
-  set_bit STRIPE_HANDLE
-  goto finish
-  // skip handling failed stripe
-
-release_stripe
- if (test_bit STRIPE_HANDLE)
-  list_add_tail conf->hand_list
-
-6) later raid5d can't handle failed stripe as well:
-
-raid5d
- md_check_recovery
-  md_update_sb
-   if (!md_is_rdwr())
-    // can't clear pending bit
-    return
- if (test_bit MD_SB_CHANGING_PENDING)
-  break;
-  // can't handle failed stripe
-
-Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
-fix this problem by skip this checking for read-only array.
-
-Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
-Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
+Fixes: f77cbb9a3e5d ("ARM: dts: exynos: Add bcm4334 device node to Trats2")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-5-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4412-midas.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 4fae8ade24090..8e5ccca3b68b8 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -4947,7 +4947,8 @@ static void handle_stripe(struct stripe_head *sh)
- 		goto finish;
+diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+index 05ddddb565ee3..48245b1665a69 100644
+--- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+@@ -1440,6 +1440,7 @@ &sdhci_3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
  
- 	if (s.handle_bad_blocks ||
--	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
-+	    (md_is_rdwr(conf->mddev) &&
-+	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
- 		set_bit(STRIPE_HANDLE, &sh->state);
- 		goto finish;
- 	}
-@@ -6763,7 +6764,8 @@ static void raid5d(struct md_thread *thread)
- 		int batch_size, released;
- 		unsigned int offset;
- 
--		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		if (md_is_rdwr(mddev) &&
-+		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
- 			break;
- 
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 	mmc-pwrseq = <&wlan_pwrseq>;
 -- 
 2.51.0
 
