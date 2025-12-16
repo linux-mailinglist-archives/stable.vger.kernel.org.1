@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD49CC296E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:15:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B8ACC3D0F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F2FD3005F22
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8C193114F3F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D3F3612D6;
-	Tue, 16 Dec 2025 12:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFBF315D48;
+	Tue, 16 Dec 2025 11:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWHLFRIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCLJ3MMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579B13612C3;
-	Tue, 16 Dec 2025 12:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53E330EF80;
+	Tue, 16 Dec 2025 11:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887351; cv=none; b=jai3yRA4zngqqOIq/KT2zC5514SSTYYb44T0Hz92xhuxrIuBKGMGSm1N6zDlgzHhQjgIIQdcmtp2ABzdQu+7CpLMdAiFyD5V5gHoIAOLK08bsWMJw9UngcYTyvRGKyyRJMTrhQ0B//l+IgL8GzHNMDqjbgnhIBgMpac8+Ll91ew=
+	t=1765885404; cv=none; b=YlAc5pZF3LFO+FKLULBtt8WaCDZt8eSio1UYhEyB3Pn+L9Vws0teQjYYtr/aesa76mig9IQWehti0kstRU0iwloe53QzYcSluNQsjlt34jFbl5D5fl5L1vxl9sBEpWZ5ytI5DetPxeqxUaAOoLdHARvQTJbBi1IoaBdK38myZPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887351; c=relaxed/simple;
-	bh=W9daYxmC5ZnB3zk7zQ8V5IvG70Kut7maljihI3ZpPvo=;
+	s=arc-20240116; t=1765885404; c=relaxed/simple;
+	bh=BM8c+ZWpf5Si8yAUDMFKIPbvVYwu+GlHd8JEVvw3Cmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2VKqCqBEJGtLfcV0CjtDRiuv6ZVh/WY9Z/eEU5UXf9fcSnAWCWMo4IVQa9q9oiwVwuwwt/TRUFH22iXcNGFGRzn91uMCqc/f97xzWmbID9vNQS+NMexBFawd262pHg8Kf30VywyUUyO4duzk7wCaZKA5Er6PFptjtFABVqiiqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWHLFRIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8975BC4CEF1;
-	Tue, 16 Dec 2025 12:15:50 +0000 (UTC)
+	 MIME-Version; b=daSS1I+eTW/cMpYmizRYWkN2XzC2aP+6iwkP+YbLni2KBS2dQhuc56iX3rdM7pr4QnXfH/JGdnwP76b9Xy6rzcPQyYOxYhMwnf7g0jAMA3fmcO7iNkRfKnw25p+ydUpi7bih1YxRNHd+n4Mb5LIO0M06ljTcGWIh9zBZAIBUTmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCLJ3MMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E9DC4CEF1;
+	Tue, 16 Dec 2025 11:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887351;
-	bh=W9daYxmC5ZnB3zk7zQ8V5IvG70Kut7maljihI3ZpPvo=;
+	s=korg; t=1765885404;
+	bh=BM8c+ZWpf5Si8yAUDMFKIPbvVYwu+GlHd8JEVvw3Cmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWHLFRIYD3bo73u/s5KCuDVZxM5PlGrvdkAOKTsjRArehySBGak/NwS8mg4xTuQCv
-	 I8Z+BkI7NlFK3bvXii83AG/Yj0+d5GsWzN+OHYq1H5Max/JE0K6h9cocOKesTE8Qtb
-	 8okIWWhlpnKbjRr9MBKTks8pTCePLs7c3f3G3Ud4=
+	b=MCLJ3MMf1q076qXrgkMyiufmA8QiQ+FECZoU54vc2/mQD/1V/jI9vp90TyXTK4uWc
+	 IsvAPhuQd7S0N3BCU/o/rnhwCYyD8dgG06041t5oJOqJnpMOwi9FAcIcIMQYDWmR39
+	 CzYZt+wsHlthn94zPL+f/5aA1qfvQAsbuG6jno6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 202/614] libbpf: Fix parsing of multi-split BTF
+Subject: [PATCH 6.17 128/507] pinctrl: stm32: fix hwspinlock resource leak in probe function
 Date: Tue, 16 Dec 2025 12:09:29 +0100
-Message-ID: <20251216111408.697435313@linuxfoundation.org>
+Message-ID: <20251216111350.168478286@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4f596acc260e691a2e348f64230392f3472feea3 ]
+[ Upstream commit 002679f79ed605e543fbace465557317cd307c9a ]
 
-When creating multi-split BTF we correctly set the start string offset
-to be the size of the base string section plus the base BTF start
-string offset; the latter is needed for multi-split BTF since the
-offset is non-zero there.
+In stm32_pctl_probe(), hwspin_lock_request_specific() is called to
+request a hwspinlock, but the acquired lock is not freed on multiple
+error paths after this call. This causes resource leakage when the
+function fails to initialize properly.
 
-Unfortunately the BTF parsing case needed that logic and it was
-missed.
+Use devm_hwspin_lock_request_specific() instead of
+hwspin_lock_request_specific() to automatically manage the hwspinlock
+resource lifecycle.
 
-Fixes: 4e29128a9ace ("libbpf/btf: Fix string handling to support multi-split BTF")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20251104203309.318429-2-alan.maguire@oracle.com
+Fixes: 97cfb6cd34f2 ("pinctrl: stm32: protect configuration registers with a hwspinlock")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index 18907f0fcf9f0..9f141395c074e 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -1061,7 +1061,7 @@ static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf, b
- 	if (base_btf) {
- 		btf->base_btf = base_btf;
- 		btf->start_id = btf__type_cnt(base_btf);
--		btf->start_str_off = base_btf->hdr->str_len;
-+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index 823c8fe758e2c..d9a2d20a7e6b2 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1671,7 +1671,7 @@ int stm32_pctl_probe(struct platform_device *pdev)
+ 		if (hwlock_id == -EPROBE_DEFER)
+ 			return hwlock_id;
+ 	} else {
+-		pctl->hwlock = hwspin_lock_request_specific(hwlock_id);
++		pctl->hwlock = devm_hwspin_lock_request_specific(dev, hwlock_id);
  	}
  
- 	if (is_mmap) {
-@@ -5818,7 +5818,7 @@ void btf_set_base_btf(struct btf *btf, const struct btf *base_btf)
- {
- 	btf->base_btf = (struct btf *)base_btf;
- 	btf->start_id = btf__type_cnt(base_btf);
--	btf->start_str_off = base_btf->hdr->str_len;
-+	btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
- }
- 
- int btf__relocate(struct btf *btf, const struct btf *base_btf)
+ 	spin_lock_init(&pctl->irqmux_lock);
 -- 
 2.51.0
 
