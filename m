@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834BECC2902
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:11:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E768BCC303E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C12A83020597
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2404B316526F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4BA35CB7D;
-	Tue, 16 Dec 2025 12:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD25C347FE3;
+	Tue, 16 Dec 2025 11:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wILheR1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltq8bQoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EC731A7F5;
-	Tue, 16 Dec 2025 12:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E83341666;
+	Tue, 16 Dec 2025 11:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887069; cv=none; b=sehnzppB6zsNHAF7Iv8o7owex2oBicIBS0xzqjXWbgyUvB8S7lc42awVnDXp0Tsk9jpERT7o4Vcq6qYdpj9VndGc6iEK2gZtXlVjJnDDlvupQaU/gQ11+sl3sdEBTTLcnMaWwIvNvMm2BgjfsipR6i6eq1clPH8SAd8MYhwHEHE=
+	t=1765885114; cv=none; b=mHzAHrBociM2rdiH9c2izHUVo8QbgDWy+gcMEZalL6XhjkI2FtA1mw2/WZkojSk178G1F3eEHq6SRzc8gy1Fv8RUQkzGqZ6aHsj2w1AQ/M2UBqIBe4XOGpmnE1JApLRM9Txt9rHF7MNyAqR/f4Qg++D6tohR3BdcKam1jma0vKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887069; c=relaxed/simple;
-	bh=sZ+3EwiW0ROiatbwtbsawFtpPcB0FDIQU0lJ2LnUmqQ=;
+	s=arc-20240116; t=1765885114; c=relaxed/simple;
+	bh=Oc7aCkeo5YKagqTarL5C3axZuhCwEKMeHO9j0tupZk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WharFmke/V8whqNFaBW9PQi5k9BWopZg9/BuNU4ByGkHNqGDUPHz6+fpSqmxNW/jcl7zMv+QYVTZLg87sibKy4TLNDHAz4WP/fAvKGsYOywEk4HPqtfpbUzUytJteSzCcQ45CdyoWUOiiisbs9Cc+nlSPnmraO/6/KGQpM7BVg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wILheR1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13250C4CEF1;
-	Tue, 16 Dec 2025 12:11:08 +0000 (UTC)
+	 MIME-Version; b=q2J2oqpMOGL2JJM7G+y9L/cnOd6lIWut07NETumtvnswUMvue88tO0k1Z38Lgm9ybSHBN+QrhVDPJS7V3HJ3+W3Kws1curR5aU55x8mVYGw9VS2ZzgWRNGAdv9ygRccjBgp/SpD0kia3+vr0qWubPxUcW4IC8WWQR57NFhrcyFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltq8bQoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C4AC19422;
+	Tue, 16 Dec 2025 11:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887069;
-	bh=sZ+3EwiW0ROiatbwtbsawFtpPcB0FDIQU0lJ2LnUmqQ=;
+	s=korg; t=1765885114;
+	bh=Oc7aCkeo5YKagqTarL5C3axZuhCwEKMeHO9j0tupZk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wILheR1P4OOYvWSrh4vsY9Doa1+3ZGAFrLUBM+eXHybpjujdyBkQn51J4/+eNFHkM
-	 BhWLmuSSb1/0JYu39Z88NNsG8SxOkbs9tKHfyWE1aMJbIGjB/jVOU9FrmxMKtoaEUu
-	 tEazBkhwg43fkVVEf/52X2fTLFBq/rqchZQkNsY8=
+	b=ltq8bQoRkJy0zTywhBNbuThij/aaw7/wkgvcqdiATtoPYF7G8AvriX3LyIqXfAGya
+	 vT9XCMEDj+/Pf7jJ0Wo03XIqP/r88RddCvI1e16jrb8uJt5x4gqG6DtdPnaEYXHrDj
+	 OHcxZUWccNAnqWiqkZMNiHxDGuYNVGaINu1V3KCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 117/614] arm64: dts: qcom: qcm6490-fairphone-fp5: Add supplies to simple-fb node
+Subject: [PATCH 6.17 043/507] irqchip/imx-mu-msi: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:08:04 +0100
-Message-ID: <20251216111405.576637341@linuxfoundation.org>
+Message-ID: <20251216111347.103509711@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 3d4142cac46b4dde4e60908c509c4cf107067114 ]
+[ Upstream commit 64acfd8e680ff8992c101fe19aadb112ce551072 ]
 
-Add the OLED power supplies to the simple-framebuffer node, so that
-the regulators don't get turned off while the simple-fb is being used.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callbacks must not live in init.
 
-Fixes: c365a026155c ("arm64: dts: qcom: qcm6490-fairphone-fp5: Enable display")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250930-sc7280-dts-misc-v1-1-5a45923ef705@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 70afdab904d2 ("irqchip: Add IMX MU MSI controller driver")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-imx-mu-msi.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 519e458e1a890..36d5750584831 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -47,6 +47,8 @@ framebuffer0: framebuffer@a000000 {
- 			stride = <(1224 * 4)>;
- 			format = "a8r8g8b8";
- 			clocks = <&gcc GCC_DISP_HF_AXI_CLK>;
-+			vci-supply = <&vreg_oled_vci>;
-+			dvdd-supply = <&vreg_oled_dvdd>;
- 		};
- 	};
+diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
+index d2a4e8a61a42b..41df168aa7da2 100644
+--- a/drivers/irqchip/irq-imx-mu-msi.c
++++ b/drivers/irqchip/irq-imx-mu-msi.c
+@@ -296,9 +296,8 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
+ 		  },
+ };
  
+-static int __init imx_mu_of_init(struct device_node *dn,
+-				 struct device_node *parent,
+-				 const struct imx_mu_dcfg *cfg)
++static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
++			  const struct imx_mu_dcfg *cfg)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(dn);
+ 	struct device_link *pd_link_a;
+@@ -416,20 +415,17 @@ static const struct dev_pm_ops imx_mu_pm_ops = {
+ 			   imx_mu_runtime_resume, NULL)
+ };
+ 
+-static int __init imx_mu_imx7ulp_of_init(struct device_node *dn,
+-					 struct device_node *parent)
++static int imx_mu_imx7ulp_of_init(struct device_node *dn, struct device_node *parent)
+ {
+ 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx7ulp);
+ }
+ 
+-static int __init imx_mu_imx6sx_of_init(struct device_node *dn,
+-					struct device_node *parent)
++static int imx_mu_imx6sx_of_init(struct device_node *dn, struct device_node *parent)
+ {
+ 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx6sx);
+ }
+ 
+-static int __init imx_mu_imx8ulp_of_init(struct device_node *dn,
+-					 struct device_node *parent)
++static int imx_mu_imx8ulp_of_init(struct device_node *dn, struct device_node *parent)
+ {
+ 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx8ulp);
+ }
 -- 
 2.51.0
 
