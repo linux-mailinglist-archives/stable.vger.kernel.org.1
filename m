@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CE7CC2FA1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A01ECC4367
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B935231C6A5E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D7F43048D8D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2643A1D18;
-	Tue, 16 Dec 2025 12:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C8A340DA1;
+	Tue, 16 Dec 2025 11:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Deeh6v72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDzcdhr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139EE3A1D11;
-	Tue, 16 Dec 2025 12:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18E1315786;
+	Tue, 16 Dec 2025 11:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888235; cv=none; b=nl+/w7peIMsy19C+EULPoMxb9qxrUOOhNyC60sdcRAYa2HHjK/x92ktwzInq6pTEk19bBrEIVCRBaS4p2O2WY5eS5hpDdJnxw1u/dXc0JRAqN3EblE0BedW9sPdStH7oRh8UjPFRFPqtJxT8sDSDE6VOI9bCAhRuQcee31DipGQ=
+	t=1765886306; cv=none; b=Pzz74T+X4zZtKBWcdBDlDIzAqQrkMgyZzU2hA7KklOYXKJ3PQMsZV8aoEm7wz+uHFZLmT2W0dNSMGzoYnUbd/FS/jhw+nacXftnqIfGLg8AU7gCNGl/MJDfl8SmypgRkIqgpinyj08PUwNzGTvQQph185GlfmZB+Fcq822Nb6Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888235; c=relaxed/simple;
-	bh=AM7XI49U12kr7oIvZ/Kb9Y6KM72jCpxhQ6LYFJDoHxw=;
+	s=arc-20240116; t=1765886306; c=relaxed/simple;
+	bh=aN9QVzocaRR1Nzp4qj/RQxEpBAmd43Wldr6yCs6Dsj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jv6irmJc9vE+G+zZ2Vyyk0VxZaekqRU7EdBD4LKVFxltwGIKhwTnoqdAgIsOa5OyVGQPqRw7Uuokwb1VDc3JLOSRdLhWxCsZOgHiL8OpcObzdtcREGXXcgOsyrwAKuWik+i5RLp/ESk0AZPBx1a6Smi9Rhz1Laj5f5J0/nQ8qSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Deeh6v72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5455BC19425;
-	Tue, 16 Dec 2025 12:30:34 +0000 (UTC)
+	 MIME-Version; b=sLstV63Trgws+2VV9XRdI+I5nzFeqyUt4GALEF6NNq9FPB00pDuNwQVVzJxHaug3QxmvmUFTKl3jkkBImRimpHChq89ctep/Pw/38R2A5h0tw3dHC20NWkV4T8iBkElqmx686zCJ3iHMdhwZYEVBRttr8kCBlBzOZyLv2ytgty0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDzcdhr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C1CC4CEF1;
+	Tue, 16 Dec 2025 11:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888234;
-	bh=AM7XI49U12kr7oIvZ/Kb9Y6KM72jCpxhQ6LYFJDoHxw=;
+	s=korg; t=1765886306;
+	bh=aN9QVzocaRR1Nzp4qj/RQxEpBAmd43Wldr6yCs6Dsj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Deeh6v72tGYsNzKKqpMG+qQptTpGRL9YqvHxezeO6kVzmdyb3SKYyAK4ooKfa8MxU
-	 88xjNZzuBGUqRyxVYBJPbh4p5rk6orUBk5vAnPaiDtgEVUpOzF/eh8WpN/xBk6mEMy
-	 bXgowK6wus6125ktpNi/RBJ9ONseQ0cQSU6huqhU=
+	b=WDzcdhr3MYpVXrEQjSKvGLi0fDPM3Ft/ZYfhChrmvo/Eifgtt9UsYIw+gUHOpQWjr
+	 kRP34gLmkW6jlbqsyP7Mtq/O6nM3AaPz8t1czF3D+8/+3/YzpyrRhKOuo1pAxDk2No
+	 6bLHyRVWeyoZDQLjjtml8bohxNGjba2vpVJ9AF4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Williamson <alex.williamson@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 472/614] spi: airoha-snfi: en7523: workaround flash damaging if UART_TXD was short to GND
-Date: Tue, 16 Dec 2025 12:13:59 +0100
-Message-ID: <20251216111418.471761501@linuxfoundation.org>
+Subject: [PATCH 6.17 399/507] vfio/pci: Use RCU for error/request triggers to avoid circular locking
+Date: Tue, 16 Dec 2025 12:14:00 +0100
+Message-ID: <20251216111359.909070721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +61,306 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+From: Alex Williamson <alex.williamson@nvidia.com>
 
-[ Upstream commit 061795b345aff371df8f71d54ae7c7dc8ae630d0 ]
+[ Upstream commit 98693e0897f754e3f51ce6626ed5f785f625ba2b ]
 
-Airoha EN7523 specific bug
---------------------------
-We found that some serial console may pull TX line to GROUND during board
-boot time. Airoha uses TX line as one of its bootstrap pins. On the EN7523
-SoC this may lead to booting in RESERVED boot mode.
+Thanks to a device generating an ACS violation during bus reset,
+lockdep reported the following circular locking issue:
 
-It was found that some flashes operates incorrectly in RESERVED mode.
-Micron and Skyhigh flashes are definitely affected by the issue,
-Winbond flashes are not affected.
+CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
+CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
+CPU2: AER: holds pci_bus_sem, acquires igate
 
-Details:
---------
-DMA reading of odd pages on affected flashes operates incorrectly. Page
-reading offset (start of the page) on hardware level is replaced by 0x10.
-Thus results in incorrect data reading. As result OS loading becomes
-impossible.
+This results in a potential 3-way deadlock.
 
-Usage of UBI make things even worse. On attaching, UBI will detects
-corruptions (because of wrong reading of odd pages) and will try to
-recover. For recovering UBI will erase and write 'damaged' blocks with
-a valid information. This will destroy all UBI data.
+Remove the pci_bus_sem->igate leg of the triangle by using RCU
+to peek at the eventfd rather than locking it with igate.
 
-Non-DMA reading is OK.
-
-This patch detects booting in reserved mode, turn off DMA and print big
-fat warning.
-
-It's worth noting that the boot configuration is preserved across reboots.
-Therefore, to boot normally, you should do the following:
-- disconnect the serial console from the board,
-- power cycle the board.
-
-Fixes: a403997c12019 ("spi: airoha: add SPI-NAND Flash controller driver")
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20251125234047.1101985-2-mikhail.kshevetskiy@iopsys.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20251124223623.2770706-1-alex@shazbot.org
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-airoha-snfi.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
+ drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
+ drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
+ include/linux/vfio_pci_core.h     | 10 ++++-
+ 4 files changed, 93 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index b78163eaed61d..20b5d469d519a 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -1030,6 +1030,11 @@ static const struct spi_controller_mem_ops airoha_snand_mem_ops = {
- 	.dirmap_write = airoha_snand_dirmap_write,
- };
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 7dcf5439dedc9..5efe7535f41ed 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -41,6 +41,40 @@ static bool nointxmask;
+ static bool disable_vga;
+ static bool disable_idle_d3;
  
-+static const struct spi_controller_mem_ops airoha_snand_nodma_mem_ops = {
-+	.supports_op = airoha_snand_supports_op,
-+	.exec_op = airoha_snand_exec_op,
-+};
++static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
++{
++	struct vfio_pci_eventfd *eventfd =
++		container_of(rcu, struct vfio_pci_eventfd, rcu);
 +
- static int airoha_snand_setup(struct spi_device *spi)
- {
- 	struct airoha_snand_ctrl *as_ctrl;
-@@ -1104,7 +1109,9 @@ static int airoha_snand_probe(struct platform_device *pdev)
- 	struct airoha_snand_ctrl *as_ctrl;
- 	struct device *dev = &pdev->dev;
- 	struct spi_controller *ctrl;
-+	bool dma_enable = true;
- 	void __iomem *base;
-+	u32 sfc_strap;
- 	int err;
- 
- 	ctrl = devm_spi_alloc_host(dev, sizeof(*as_ctrl));
-@@ -1139,12 +1146,28 @@ static int airoha_snand_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(as_ctrl->spi_clk),
- 				     "unable to get spi clk\n");
- 
-+	if (device_is_compatible(dev, "airoha,en7523-snand")) {
-+		err = regmap_read(as_ctrl->regmap_ctrl,
-+				  REG_SPI_CTRL_SFC_STRAP, &sfc_strap);
-+		if (err)
-+			return err;
++	eventfd_ctx_put(eventfd->ctx);
++	kfree(eventfd);
++}
 +
-+		if (!(sfc_strap & 0x04)) {
-+			dma_enable = false;
-+			dev_warn(dev, "Detected booting in RESERVED mode (UART_TXD was short to GND).\n");
-+			dev_warn(dev, "This mode is known for incorrect DMA reading of some flashes.\n");
-+			dev_warn(dev, "Much slower PIO mode will be used to prevent flash data damage.\n");
-+			dev_warn(dev, "Unplug UART cable and power cycle board to get full performance.\n");
-+		}
++int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
++				    struct vfio_pci_eventfd __rcu **peventfd,
++				    struct eventfd_ctx *ctx)
++{
++	struct vfio_pci_eventfd *new = NULL;
++	struct vfio_pci_eventfd *old;
++
++	lockdep_assert_held(&vdev->igate);
++
++	if (ctx) {
++		new = kzalloc(sizeof(*new), GFP_KERNEL_ACCOUNT);
++		if (!new)
++			return -ENOMEM;
++
++		new->ctx = ctx;
 +	}
 +
- 	err = dma_set_mask(as_ctrl->dev, DMA_BIT_MASK(32));
- 	if (err)
- 		return err;
++	old = rcu_replace_pointer(*peventfd, new,
++				  lockdep_is_held(&vdev->igate));
++	if (old)
++		call_rcu(&old->rcu, vfio_pci_eventfd_rcu_free);
++
++	return 0;
++}
++
+ /* List of PF's that vfio_pci_core_sriov_configure() has been called on */
+ static DEFINE_MUTEX(vfio_pci_sriov_pfs_mutex);
+ static LIST_HEAD(vfio_pci_sriov_pfs);
+@@ -696,14 +730,8 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+ 	vfio_pci_core_disable(vdev);
  
- 	ctrl->num_chipselect = 2;
--	ctrl->mem_ops = &airoha_snand_mem_ops;
-+	ctrl->mem_ops = dma_enable ? &airoha_snand_mem_ops
-+				   : &airoha_snand_nodma_mem_ops;
- 	ctrl->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctrl->mode_bits = SPI_RX_DUAL;
- 	ctrl->setup = airoha_snand_setup;
+ 	mutex_lock(&vdev->igate);
+-	if (vdev->err_trigger) {
+-		eventfd_ctx_put(vdev->err_trigger);
+-		vdev->err_trigger = NULL;
+-	}
+-	if (vdev->req_trigger) {
+-		eventfd_ctx_put(vdev->req_trigger);
+-		vdev->req_trigger = NULL;
+-	}
++	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
++	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
+ 	mutex_unlock(&vdev->igate);
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_close_device);
+@@ -1800,21 +1828,21 @@ void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count)
+ 	struct vfio_pci_core_device *vdev =
+ 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+ 	struct pci_dev *pdev = vdev->pdev;
++	struct vfio_pci_eventfd *eventfd;
+ 
+-	mutex_lock(&vdev->igate);
+-
+-	if (vdev->req_trigger) {
++	rcu_read_lock();
++	eventfd = rcu_dereference(vdev->req_trigger);
++	if (eventfd) {
+ 		if (!(count % 10))
+ 			pci_notice_ratelimited(pdev,
+ 				"Relaying device request to user (#%u)\n",
+ 				count);
+-		eventfd_signal(vdev->req_trigger);
++		eventfd_signal(eventfd->ctx);
+ 	} else if (count == 0) {
+ 		pci_warn(pdev,
+ 			"No device request channel registered, blocked until released by user\n");
+ 	}
+-
+-	mutex_unlock(&vdev->igate);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_request);
+ 
+@@ -2227,13 +2255,13 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
+ 						pci_channel_state_t state)
+ {
+ 	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
++	struct vfio_pci_eventfd *eventfd;
+ 
+-	mutex_lock(&vdev->igate);
+-
+-	if (vdev->err_trigger)
+-		eventfd_signal(vdev->err_trigger);
+-
+-	mutex_unlock(&vdev->igate);
++	rcu_read_lock();
++	eventfd = rcu_dereference(vdev->err_trigger);
++	if (eventfd)
++		eventfd_signal(eventfd->ctx);
++	rcu_read_unlock();
+ 
+ 	return PCI_ERS_RESULT_CAN_RECOVER;
+ }
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 61d29f6b3730c..969e9342f9b1f 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -731,21 +731,27 @@ static int vfio_pci_set_msi_trigger(struct vfio_pci_core_device *vdev,
+ 	return 0;
+ }
+ 
+-static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
++static int vfio_pci_set_ctx_trigger_single(struct vfio_pci_core_device *vdev,
++					   struct vfio_pci_eventfd __rcu **peventfd,
+ 					   unsigned int count, uint32_t flags,
+ 					   void *data)
+ {
+ 	/* DATA_NONE/DATA_BOOL enables loopback testing */
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		if (*ctx) {
+-			if (count) {
+-				eventfd_signal(*ctx);
+-			} else {
+-				eventfd_ctx_put(*ctx);
+-				*ctx = NULL;
+-			}
++		struct vfio_pci_eventfd *eventfd;
++
++		eventfd = rcu_dereference_protected(*peventfd,
++						lockdep_is_held(&vdev->igate));
++
++		if (!eventfd)
++			return -EINVAL;
++
++		if (count) {
++			eventfd_signal(eventfd->ctx);
+ 			return 0;
+ 		}
++
++		return vfio_pci_eventfd_replace_locked(vdev, peventfd, NULL);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t trigger;
+ 
+@@ -753,8 +759,15 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
+ 			return -EINVAL;
+ 
+ 		trigger = *(uint8_t *)data;
+-		if (trigger && *ctx)
+-			eventfd_signal(*ctx);
++
++		if (trigger) {
++			struct vfio_pci_eventfd *eventfd =
++					rcu_dereference_protected(*peventfd,
++					lockdep_is_held(&vdev->igate));
++
++			if (eventfd)
++				eventfd_signal(eventfd->ctx);
++		}
+ 
+ 		return 0;
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+@@ -765,22 +778,23 @@ static int vfio_pci_set_ctx_trigger_single(struct eventfd_ctx **ctx,
+ 
+ 		fd = *(int32_t *)data;
+ 		if (fd == -1) {
+-			if (*ctx)
+-				eventfd_ctx_put(*ctx);
+-			*ctx = NULL;
++			return vfio_pci_eventfd_replace_locked(vdev,
++							       peventfd, NULL);
+ 		} else if (fd >= 0) {
+ 			struct eventfd_ctx *efdctx;
++			int ret;
+ 
+ 			efdctx = eventfd_ctx_fdget(fd);
+ 			if (IS_ERR(efdctx))
+ 				return PTR_ERR(efdctx);
+ 
+-			if (*ctx)
+-				eventfd_ctx_put(*ctx);
++			ret = vfio_pci_eventfd_replace_locked(vdev,
++							      peventfd, efdctx);
++			if (ret)
++				eventfd_ctx_put(efdctx);
+ 
+-			*ctx = efdctx;
++			return ret;
+ 		}
+-		return 0;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -793,7 +807,7 @@ static int vfio_pci_set_err_trigger(struct vfio_pci_core_device *vdev,
+ 	if (index != VFIO_PCI_ERR_IRQ_INDEX || start != 0 || count > 1)
+ 		return -EINVAL;
+ 
+-	return vfio_pci_set_ctx_trigger_single(&vdev->err_trigger,
++	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->err_trigger,
+ 					       count, flags, data);
+ }
+ 
+@@ -804,7 +818,7 @@ static int vfio_pci_set_req_trigger(struct vfio_pci_core_device *vdev,
+ 	if (index != VFIO_PCI_REQ_IRQ_INDEX || start != 0 || count > 1)
+ 		return -EINVAL;
+ 
+-	return vfio_pci_set_ctx_trigger_single(&vdev->req_trigger,
++	return vfio_pci_set_ctx_trigger_single(vdev, &vdev->req_trigger,
+ 					       count, flags, data);
+ }
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index a9972eacb2936..97d992c063229 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -26,6 +26,10 @@ struct vfio_pci_ioeventfd {
+ bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
+ void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
+ 
++int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
++				    struct vfio_pci_eventfd __rcu **peventfd,
++				    struct eventfd_ctx *ctx);
++
+ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
+ 			    unsigned index, unsigned start, unsigned count,
+ 			    void *data);
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index f541044e42a2a..f5c93787f8e0b 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -12,6 +12,7 @@
+ #include <linux/pci.h>
+ #include <linux/vfio.h>
+ #include <linux/irqbypass.h>
++#include <linux/rcupdate.h>
+ #include <linux/types.h>
+ #include <linux/uuid.h>
+ #include <linux/notifier.h>
+@@ -27,6 +28,11 @@
+ struct vfio_pci_core_device;
+ struct vfio_pci_region;
+ 
++struct vfio_pci_eventfd {
++	struct eventfd_ctx	*ctx;
++	struct rcu_head		rcu;
++};
++
+ struct vfio_pci_regops {
+ 	ssize_t (*rw)(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		      size_t count, loff_t *ppos, bool iswrite);
+@@ -83,8 +89,8 @@ struct vfio_pci_core_device {
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
+ 	int			ioeventfds_nr;
+-	struct eventfd_ctx	*err_trigger;
+-	struct eventfd_ctx	*req_trigger;
++	struct vfio_pci_eventfd __rcu *err_trigger;
++	struct vfio_pci_eventfd __rcu *req_trigger;
+ 	struct eventfd_ctx	*pm_wake_eventfd_ctx;
+ 	struct list_head	dummy_resources_list;
+ 	struct mutex		ioeventfds_lock;
 -- 
 2.51.0
 
