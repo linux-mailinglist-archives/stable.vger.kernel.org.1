@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75270CC38FC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:27:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418E6CC2E60
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A59743092F08
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C950431F981A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAED34B67F;
-	Tue, 16 Dec 2025 11:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE3C34DB52;
+	Tue, 16 Dec 2025 12:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtG2d45p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSwvqu9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B5534B434;
-	Tue, 16 Dec 2025 11:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2734E750;
+	Tue, 16 Dec 2025 12:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885262; cv=none; b=G8fX+LOTYlE96bjC9HUZl9iXhWNOrhYTm1fre4dl0i//2rBeqFuQZmgfsICfqjou9mRyEKj6jB+DPNUITe3oNu7Zgvh61/cI9WDm3JW5tLTj468oGFZm9Zgq6NcZtrdQqmVt7oXdPVwRe3++OLg3ABw0ZwTy88bNXOXdaAKbIso=
+	t=1765887211; cv=none; b=Pt3JWXXxvLdJariX6Zh7Mfd3jWUsTboFl56d7ZnUvYnddTxtYHGiqw4C0u7IgjAMJTXiCarWf/y5qpuJ3ZUe6JDAXBgHPuxcX+9S8bGdOEh2ZzdpsTxJY9Fkk+8eIdArvpFDWoxPFxn/zqWb1tnYQTFRSqtMD0i1bWpgZkA/HE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885262; c=relaxed/simple;
-	bh=mAX2t1LpXlYXBWxvdOE2MCz4qpD5/4WIRSk4INdNXCg=;
+	s=arc-20240116; t=1765887211; c=relaxed/simple;
+	bh=OK+M5LYWpSppujutDjK/iTZD9+T3B33uCotgEple5a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5Q8aoO/U08XGD9wDiHwtbcj/Iyw9bXMVbjGgsq6drDboZTdMivzkIBl2Kwuyb1LJZmoePsaUY86sXa75hHSvBzLj+fhaxyFHuvzSFLG//spL6EI3a9qr+EwI+0zauk0+yc0Pe3npuh+7e64rIMGS5ByeYLkstXrmJcMW9p4LPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtG2d45p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165B4C4CEF1;
-	Tue, 16 Dec 2025 11:41:01 +0000 (UTC)
+	 MIME-Version; b=JAwpbfz4haNgSQ4EQTeJ9IODB7MZ7tIIxAvNAhEzhDhddGF1+729pb04N21LetyPjTBlniQ5ZNqW5l2EEajmBWW2c6oRvD8LjDtnmVRT3T7/CXZNJL37iqX8LYg7wJwdKytXnJIP7trwOYgdXuQYfbF/32gpjbtl3UFOPliWlqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSwvqu9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804F0C4CEF5;
+	Tue, 16 Dec 2025 12:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885262;
-	bh=mAX2t1LpXlYXBWxvdOE2MCz4qpD5/4WIRSk4INdNXCg=;
+	s=korg; t=1765887210;
+	bh=OK+M5LYWpSppujutDjK/iTZD9+T3B33uCotgEple5a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtG2d45p5dQd4OJR5zmvuUS/dbO428fhThaxgiw24E7i5S27m1gVaWga1hR6GZ9+Q
-	 ZOU0Vzp2daYFvjO+bjLsuBbm1dw1nDcVOwlESz0k2iuZ895yNzS+/YocinSznBQaMr
-	 aFoQnyi24fECNrkDcUe+FD6fMKagyzj7zACdRrRU=
+	b=vSwvqu9Lnal2DTHsBpjYKAcbgivua+18c5rNZhZE3ntQ+HOAjjYZesm9COG4B6XKu
+	 YQMPAZycDwdfPDvrtCjfCRnJNXd9dp6gml5R7zOO+BvFwNzBQUONkRa8LFVkg4c6is
+	 KKcS6BUXW0imuZB5iiM/6XTCPIrCr7pVdzim/H6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrej Tkalcec <andrej.tkalcec@intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 086/507] tools/power turbostat: Regression fix Uncore MHz printed in hex
+Subject: [PATCH 6.18 160/614] wifi: ath12k: fix potential memory leak in ath12k_wow_arp_ns_offload()
 Date: Tue, 16 Dec 2025 12:08:47 +0100
-Message-ID: <20251216111348.654695240@linuxfoundation.org>
+Message-ID: <20251216111407.134254497@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 92664f2e6ab2228a3330734fc72dabeaf8a49ee1 ]
+[ Upstream commit be5febd51c478bc8e24ad3480435f2754a403b14 ]
 
-A patch to allow specifying FORMAT_AVERAGE to added counters...
-broke the internally added counter for Cluster Uncore MHz -- printing it in HEX.
+When the call to ath12k_wmi_arp_ns_offload() fails, the temporary memory
+allocation for offload is not freed before returning. Fix that by
+freeing offload in the error path.
 
-Fixes: dcd1c379b0f1 ("tools/power turbostat: add format "average" for external attributes")
-Reported-by: Andrej Tkalcec <andrej.tkalcec@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 1666108c74c4 ("wifi: ath12k: support ARP and NS offload")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251028170457.134608-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/wow.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 931bad99277fe..405b13b690ba5 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -3285,13 +3285,13 @@ int format_counters(PER_THREAD_PARAMS)
- 
- 	/* Added counters */
- 	for (i = 0, mp = sys.tp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
-+		if (mp->format == FORMAT_RAW) {
- 			if (mp->width == 32)
- 				outp +=
- 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)t->counter[i]);
- 			else
- 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), t->counter[i]);
--		} else if (mp->format == FORMAT_DELTA) {
-+		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
- 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
- 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), t->counter[i]);
- 			else
-@@ -3382,13 +3382,13 @@ int format_counters(PER_THREAD_PARAMS)
- 		outp += sprintf(outp, "%s%lld", (printed++ ? delim : ""), c->core_throt_cnt);
- 
- 	for (i = 0, mp = sys.cp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
-+		if (mp->format == FORMAT_RAW) {
- 			if (mp->width == 32)
- 				outp +=
- 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)c->counter[i]);
- 			else
- 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), c->counter[i]);
--		} else if (mp->format == FORMAT_DELTA) {
-+		} else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE) {
- 			if ((mp->type == COUNTER_ITEMS) && sums_need_wide_columns)
- 				outp += sprintf(outp, "%s%8lld", (printed++ ? delim : ""), c->counter[i]);
- 			else
-@@ -3581,7 +3581,7 @@ int format_counters(PER_THREAD_PARAMS)
- 		outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), p->uncore_mhz);
- 
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE) {
-+		if (mp->format == FORMAT_RAW) {
- 			if (mp->width == 32)
- 				outp +=
- 				    sprintf(outp, "%s0x%08x", (printed++ ? delim : ""), (unsigned int)p->counter[i]);
-@@ -3758,7 +3758,7 @@ int delta_package(struct pkg_data *new, struct pkg_data *old)
- 	    new->rapl_dram_perf_status.raw_value - old->rapl_dram_perf_status.raw_value;
- 
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW || mp->format == FORMAT_AVERAGE)
-+		if (mp->format == FORMAT_RAW)
- 			old->counter[i] = new->counter[i];
- 		else if (mp->format == FORMAT_AVERAGE)
- 			old->counter[i] = new->counter[i];
+diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+index dce9bd0bcaefb..e8481626f1940 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
++++ b/drivers/net/wireless/ath/ath12k/wow.c
+@@ -758,6 +758,7 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
+ 		if (ret) {
+ 			ath12k_warn(ar->ab, "failed to set arp ns offload vdev %i: enable %d, ret %d\n",
+ 				    arvif->vdev_id, enable, ret);
++			kfree(offload);
+ 			return ret;
+ 		}
+ 	}
 -- 
 2.51.0
 
