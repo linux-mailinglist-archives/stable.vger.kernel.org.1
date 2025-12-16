@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-201424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58589CC2403
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F92CCC3E1E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC6FA30214D6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 311883007AB1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B10333D6F5;
-	Tue, 16 Dec 2025 11:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D283502BD;
+	Tue, 16 Dec 2025 11:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LY20gW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLsDPSMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF2233A019;
-	Tue, 16 Dec 2025 11:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463CA3502A4;
+	Tue, 16 Dec 2025 11:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884593; cv=none; b=JyU08PZ2lnvWB+6vt6jTAsd/eQdkZ8l9jPReqCrD8JRRwpHFj5XRiRIVplczFfVJKCEunBXx12tlS9K0s5W7BSde7DmicPPvzrBXXCnNktRXREFInllfSzXBItY1Iq9KgRgpHc/02Gi1yEUA5zCzlB1ZkY5jKHBTY1Za2y+EEjM=
+	t=1765886190; cv=none; b=AOv3zz5dljbsljVVewA93UmR0djI+kIPPXaEFtWQ8dTeY67ijcmxGOEiYFJM7cON6yxoro/mWV3S2No7GIbdux7qfIw+eFNLyes68WDzF+cJw/6UrKZnhhL0yIC6+Tzx15TfawsV+F302LU7fPUKplB8dNk3sWvVEXN9yGaOTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884593; c=relaxed/simple;
-	bh=ZQlon/xVCcUik2LEBu9EN8Irfpl2/h9YzEWGfB4v+VM=;
+	s=arc-20240116; t=1765886190; c=relaxed/simple;
+	bh=vzTv4DixdcYit6bVUJhHvsADrPGzq/fhPj1ZXcQcURE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epG8vCE1zByG0qQMDW11LCkGoS+B0w6jb91/JcL8O91qbRKzVMKWeBATI324eftWtkoMwlS6/GEiRXC4xn0dfw8ZiPajfdTHHTpppwvgf9dhuassa/AACsvrmcKresE7zIwibiWN1iE2h1j4TWVWKh0bWpAlkh/lIKcanfR63NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LY20gW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162CAC4CEF1;
-	Tue, 16 Dec 2025 11:29:51 +0000 (UTC)
+	 MIME-Version; b=qewo/TWYCU/gBjhH6qBrmDRbPADeu9MOcJpw7q+PJuOkB5bpfVyqwwOWdT7QZ+ydVqA/aEV8XRuGGGpW16nXj8IWYyuaQwPHrx3BAnRw3OXNpAh2Gn61MfCB+WxrewTT7BQwx9rgVCxkUDFfa0gFKHiY7CoAwFUUcySRBhpwYGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLsDPSMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23DEC4CEF1;
+	Tue, 16 Dec 2025 11:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884592;
-	bh=ZQlon/xVCcUik2LEBu9EN8Irfpl2/h9YzEWGfB4v+VM=;
+	s=korg; t=1765886190;
+	bh=vzTv4DixdcYit6bVUJhHvsADrPGzq/fhPj1ZXcQcURE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LY20gW0braOXLOiPFtSUgxBeqw2AIR0oIHLoYTZBUv2WBPXY9Qlstm1dgZSD0ASe
-	 j7DUhA+d4eqpIsIOnvFV92OekJJwWrClPtHlU+e0R7Co/ObmYhqtHMjnoWDh4ic/qB
-	 8NMBbaOjjqaA1sn/ZVI/IlavPl3iW6INvn5Vlrm4=
+	b=qLsDPSMlT7E3kD4TpKKMwrEy4Op2rIX8rR9KibQz5RY18Zk1MzdiXgRxqY3a8vizZ
+	 5YH721spem9KAA7fE0FybzSJynfP2AGAqVtmH2Xle7n+HY79uR262qQl+jpVp7xZQn
+	 x59UPY3udia45AhrE6Tvgug4PVIQRS+cjdQBCMVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Haotian Zhang <vulab@iscas.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/354] greybus: gb-beagleplay: Fix timeout handling in bootloader functions
+Subject: [PATCH 6.17 365/507] greybus: gb-beagleplay: Fix timeout handling in bootloader functions
 Date: Tue, 16 Dec 2025 12:13:26 +0100
-Message-ID: <20251216111329.573551562@linuxfoundation.org>
+Message-ID: <20251216111358.682387018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
-index da31f1131afca..2a207eab40452 100644
+index 9610f878da1b6..87186f891a6ac 100644
 --- a/drivers/greybus/gb-beagleplay.c
 +++ b/drivers/greybus/gb-beagleplay.c
 @@ -644,8 +644,8 @@ static int cc1352_bootloader_wait_for_ack(struct gb_beagleplay *bg)
