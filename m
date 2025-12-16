@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC60CC255C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E94CC334B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FC2E308E4AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B5CC30387A1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3321F3164C3;
-	Tue, 16 Dec 2025 11:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D6435A940;
+	Tue, 16 Dec 2025 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDt4KVgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uH23GF7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E404F2BE7B2;
-	Tue, 16 Dec 2025 11:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802CE2D8782;
+	Tue, 16 Dec 2025 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884659; cv=none; b=u7xWEnRP0x9So7z1SzuIuX6W8o/Tvkh35auR480OhpmV3gB4ATa7h6p+ssUgV+jsa5ebsKIXyyF1Jx/SJbTJjzfyTJxu64Gdrv9KBB58gOzSBx2gzIx/WPTBt+6zqn1Gtb2b1Ai5X2LSFf6+LRjYPeiIbPNDa0fKQt6dWSD1qxI=
+	t=1765888197; cv=none; b=Ha0BxARylNvYYy3SA/4Ubbmy7GnnFNhhqtEGC3i+zT3bMagRG/cmTGw1flYPBRJhnybWDOb8Ue0K30tIhPWB1PgX0M2gS2hsVoCeTCGmZWYtltA9qrbDD/s1t1ptooE4iz4/Z9ZsXkP1fFt+JEyUZ7Pa2zUp8DGb06r1l+cYSww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884659; c=relaxed/simple;
-	bh=f8YMryeWm4FNPFr3v6drlCo+OcgIOiN6fHtlX39qKw0=;
+	s=arc-20240116; t=1765888197; c=relaxed/simple;
+	bh=H2NUDktfKzHcEGnGedtQZtHBCIQM+eU4PdItUUPsBNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwCZTODxDhv95Wf5bJBTIee8pM1XU+jyqgZJSi+Nu3CmbT1OW58kr10YQje8Vg62czyjdXkI5U6ZJ1PZs1ZjZTCL/5JpbS4oE14NtgWIkukJonmOfjRZNOkoNm1+e6DuHVHq78m7aOk3wJ4cbcCW7MujRsL5q7jGCVBndj9CAzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDt4KVgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69591C4CEF1;
-	Tue, 16 Dec 2025 11:30:58 +0000 (UTC)
+	 MIME-Version; b=BL1+DqqcdxyycUiC6s6eVuA2By7bZUZAo2MTbDc1iMVAamcDRVJfDu5Cf09G7xzG02N8Ik3a2tj+x+weJbCm096d92YqG8HYmIuYOfL92e06vHttxJPkEVeMyAw6yLQ0WoSGlr9pN8HhHAsqQvtZpC85Mr83RdaSc2/KyZZZ8ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uH23GF7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4451C4CEF1;
+	Tue, 16 Dec 2025 12:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884658;
-	bh=f8YMryeWm4FNPFr3v6drlCo+OcgIOiN6fHtlX39qKw0=;
+	s=korg; t=1765888197;
+	bh=H2NUDktfKzHcEGnGedtQZtHBCIQM+eU4PdItUUPsBNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDt4KVgIcYZhjA4yGHb+vKzSUsU0jHCnY+CaFQY/AI67iymKOHXIR8PSsSBZUWq53
-	 YE7ADNEzHdeIcQYN9g9DUJPQXfNobhIOCP4M2aCJtX4IbfJKc6XJVCqBDRGlVvO33s
-	 E8HFJNFPtersWz6xJ8dyoS2BhN8sGlnm/9kzguME=
+	b=uH23GF7TGAGjPp14YGWV9CTPpVk0drcaWX+IhL5eQSFW0t50FEUkE+GM8k9k34o68
+	 KBOLRilcn3qi6TKP+aNej3mfd7ShA2S7LHt4OpCXaZN6f1PH6Fs4KdTz3dLiEQB4lo
+	 F76QO0833xAa38pOPb9yR2PZyHaNEPRbTKw62lVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sparkhuang <huangshaobo3@xiaomi.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/354] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
-Date: Tue, 16 Dec 2025 12:13:48 +0100
-Message-ID: <20251216111330.373661149@linuxfoundation.org>
+Subject: [PATCH 6.18 462/614] virtio: fix grammar in virtio_queue_info docs
+Date: Tue, 16 Dec 2025 12:13:49 +0100
+Message-ID: <20251216111418.107632677@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sparkhuang <huangshaobo3@xiaomi.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
+[ Upstream commit 63598fba55ab9d384818fed48dc04006cecf7be4 ]
 
-regulator_supply_alias_list was accessed without any locking in
-regulator_supply_alias(), regulator_register_supply_alias(), and
-regulator_unregister_supply_alias(). Concurrent registration,
-unregistration and lookups can race, leading to:
+Fix grammar in the description of @ctx
 
-1 use-after-free if an alias entry is removed while being read,
-2 duplicate entries when two threads register the same alias,
-3 inconsistent alias mappings observed by consumers.
-
-Protect all traversals, insertions and deletions on
-regulator_supply_alias_list with the existing regulator_list_mutex.
-
-Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c502eb85c34e ("virtio: introduce virtio_queue_info struct and find_vqs_info() config op")
+Message-Id: <a5cf2b92573200bdb1c1927e559d3930d61a4af2.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index be9704d34c015..1c0748fee6846 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1914,6 +1914,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(*dev, *supply);
- 	if (map) {
- 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
-@@ -1922,6 +1923,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- 		*dev = map->alias_dev;
- 		*supply = map->alias_supply;
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- 
- static int regulator_match(struct device *dev, const void *data)
-@@ -2442,22 +2444,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
- 				    const char *alias_id)
- {
- 	struct regulator_supply_alias *map;
-+	struct regulator_supply_alias *new_map;
- 
--	map = regulator_find_supply_alias(dev, id);
--	if (map)
--		return -EEXIST;
--
--	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
--	if (!map)
-+	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
-+	if (!new_map)
- 		return -ENOMEM;
- 
--	map->src_dev = dev;
--	map->src_supply = id;
--	map->alias_dev = alias_dev;
--	map->alias_supply = alias_id;
--
--	list_add(&map->list, &regulator_supply_alias_list);
-+	mutex_lock(&regulator_list_mutex);
-+	map = regulator_find_supply_alias(dev, id);
-+	if (map) {
-+		mutex_unlock(&regulator_list_mutex);
-+		kfree(new_map);
-+		return -EEXIST;
-+	}
- 
-+	new_map->src_dev = dev;
-+	new_map->src_supply = id;
-+	new_map->alias_dev = alias_dev;
-+	new_map->alias_supply = alias_id;
-+	list_add(&new_map->list, &regulator_supply_alias_list);
-+	mutex_unlock(&regulator_list_mutex);
- 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
- 		id, dev_name(dev), alias_id, dev_name(alias_dev));
- 
-@@ -2477,11 +2483,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(dev, id);
- 	if (map) {
- 		list_del(&map->list);
- 		kfree(map);
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
- 
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index dbc7eff1f101f..78cf4119f5674 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -24,7 +24,7 @@ typedef void vq_callback_t(struct virtqueue *);
+  *        a virtqueue unused by the driver.
+  * @callback: A callback to invoke on a used buffer notification.
+  *            NULL for a virtqueue that does not need a callback.
+- * @ctx: A flag to indicate to maintain an extra context per virtqueue.
++ * @ctx: whether to maintain an extra context per virtqueue.
+  */
+ struct virtqueue_info {
+ 	const char *name;
 -- 
 2.51.0
 
