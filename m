@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82153CC2565
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:39:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753B9CC4651
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF00E309504E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:31:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD41030985ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABABD327219;
-	Tue, 16 Dec 2025 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E14534B402;
+	Tue, 16 Dec 2025 11:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZ9ttM3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhpPu7jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672A526A08F;
-	Tue, 16 Dec 2025 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224A296BDB;
+	Tue, 16 Dec 2025 11:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884669; cv=none; b=mCedA+4k8EftkMd8VUyewE/m97UtHBqJbrNzFbAZuwdLw8WVHkRkbn14GkXf3wRScPq/puckL+WtRl+NNQBKcvTZ6N9aMcgcbKefgQdd9y5seNNkGi9hHXEPNA0SJhysE30Rsj+Jic7p0tolLm3algHb2uBRGXETxzc8EVNC5Tc=
+	t=1765886390; cv=none; b=SWPloVSihlxKisyYTfuDKoOveWnbtRmL0bPsmEuwz4TQWhcqP3tC4jguqA/89a9tCyGVf4bZWat2v5uvLwHpoEYV0L4bJPFdWuqUIdh2E1M9ChcqvSjtPE79xS2gPDB6EqFA8jW9Xgm8muI/YNjzRYaOXZ3n2C3DBeq/u3jYI5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884669; c=relaxed/simple;
-	bh=Cpqs6HUB8xHDsCfUV10H+vyd5Z3uZJka+b9F4qYnWi8=;
+	s=arc-20240116; t=1765886390; c=relaxed/simple;
+	bh=OMsjjE7zTKenF8X+nV1MEl4wy0eVqqTcsiC++sl9T7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHrrC7Zn4FwG739wPJNGhMhMHhhf0BK6VdSNR0sPhT3TZZiZkZ6xzjuI1SX1D7J1rsXNc5DubzJMeNYdqyAEbU6hQzKcK4Hn6uH465tecE6WITy24gTTUgINCSd/H7PhdCMn3JlIbOQiIHVnHVO/b44G5ooC2y1VMxhA2jENWwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZ9ttM3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6285C4CEF1;
-	Tue, 16 Dec 2025 11:31:08 +0000 (UTC)
+	 MIME-Version; b=XfLS/ALH9QXJWrbQ791NdyGHZQvWuiD/fC5WYbPUiSfiawwWV+SXYiWsPj4r9oviRzJCYdHdcIpXECPOoNEDMXYqJNAPRPpAtaI30hiUGhgyx1n5tiifx7SlsDkV2hmci/5ZtdSknlJSnhG0pEnHilLkPcFXbUQ1REhwNv3KfmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhpPu7jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669A3C4CEF1;
+	Tue, 16 Dec 2025 11:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884669;
-	bh=Cpqs6HUB8xHDsCfUV10H+vyd5Z3uZJka+b9F4qYnWi8=;
+	s=korg; t=1765886390;
+	bh=OMsjjE7zTKenF8X+nV1MEl4wy0eVqqTcsiC++sl9T7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZ9ttM3yOPo4v/ke8P1BXs3S+VOs75o9g7S0t9aAINwMxO0PA8BugSaZ+cioMDjAe
-	 QZmsLwQR+RpDPs3tLAgKNKs0oXbIw+b1Oj8RPVXhZaETfZ38F+7caIPKPlMMSj8ZAS
-	 K67jD0vPRrm6omTfp0AWdzeMUwaWP/dhkuth6Yr0=
+	b=bhpPu7jHMwyikZrmQ6mem4UzPo+tobNDDbFH0sTJmEJ9aaoHNTcqeptEfwbiBv6v9
+	 9yCy4M3CfwmPJ68zCffV+7nqCPm3U/seffBlspVR7UfYR9bKAEog1WPGnpoaoUqT3Z
+	 f+u8vYWVoY2m7i064ommIviHhqvpOvZlDqCKCZgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/354] resource: introduce is_type_match() helper and use it
+Subject: [PATCH 6.17 389/507] ARM: dts: samsung: exynos4412-midas: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:13:50 +0100
-Message-ID: <20251216111330.445504297@linuxfoundation.org>
+Message-ID: <20251216111359.548724056@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit ba1eccc114ffc62c4495a5e15659190fa2c42308 ]
+[ Upstream commit 2ff147fdfa99b8cbb8c2833e685fde7c42580ae6 ]
 
-There are already a couple of places where we may replace a few lines of
-code by calling a helper, which increases readability while deduplicating
-the code.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Introduce is_type_match() helper and use it.
-
-Link: https://lkml.kernel.org/r/20240925154355.1170859-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
+Fixes: f77cbb9a3e5d ("ARM: dts: exynos: Add bcm4334 device node to Trats2")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-5-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4412-midas.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index c3e00365f8e37..03b6b8de58bfb 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -297,6 +297,11 @@ int release_resource(struct resource *old)
+diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+index 05ddddb565ee3..48245b1665a69 100644
+--- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+@@ -1440,6 +1440,7 @@ &sdhci_3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
  
- EXPORT_SYMBOL(release_resource);
- 
-+static bool is_type_match(struct resource *p, unsigned long flags, unsigned long desc)
-+{
-+	return (p->flags & flags) == flags && (desc == IORES_DESC_NONE || desc == p->desc);
-+}
-+
- /**
-  * find_next_iomem_res - Finds the lowest iomem resource that covers part of
-  *			 [@start..@end].
-@@ -339,13 +344,9 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
- 		if (p->end < start)
- 			continue;
- 
--		if ((p->flags & flags) != flags)
--			continue;
--		if ((desc != IORES_DESC_NONE) && (desc != p->desc))
--			continue;
--
- 		/* Found a match, break */
--		break;
-+		if (is_type_match(p, flags, desc))
-+			break;
- 	}
- 
- 	if (p) {
-@@ -540,7 +541,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	int type = 0; int other = 0;
- 	struct resource *p, *dp;
- 	struct resource res, o;
--	bool is_type, covered;
-+	bool covered;
- 
- 	res.start = start;
- 	res.end = start + size - 1;
-@@ -548,9 +549,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	for (p = parent->child; p ; p = p->sibling) {
- 		if (!resource_intersection(p, &res, &o))
- 			continue;
--		is_type = (p->flags & flags) == flags &&
--			(desc == IORES_DESC_NONE || desc == p->desc);
--		if (is_type) {
-+		if (is_type_match(p, flags, desc)) {
- 			type++;
- 			continue;
- 		}
-@@ -570,9 +569,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 		for_each_resource(p, dp, false) {
- 			if (!resource_overlaps(dp, &res))
- 				continue;
--			is_type = (dp->flags & flags) == flags &&
--				(desc == IORES_DESC_NONE || desc == dp->desc);
--			if (is_type) {
-+			if (is_type_match(dp, flags, desc)) {
- 				type++;
- 				/*
- 				 * Range from 'o.start' to 'dp->start'
+ 	mmc-pwrseq = <&wlan_pwrseq>;
 -- 
 2.51.0
 
