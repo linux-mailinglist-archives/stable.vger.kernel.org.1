@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01900CC2373
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B613DCC2A1E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 626B83041B1F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1AD643021453
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C9F342160;
-	Tue, 16 Dec 2025 11:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D88350D4F;
+	Tue, 16 Dec 2025 11:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAo8ZydB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYrK8goR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61413313E13;
-	Tue, 16 Dec 2025 11:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D93D350D49;
+	Tue, 16 Dec 2025 11:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884261; cv=none; b=p2WbG9GHZNAtYtXcmEuL0Jl2J5Aw1pR191lJyDEy6FLGQb8OhzPEPZqk/6zlpy5zDemu/fz887pWOqwVQIe8nMILw13E/cefv6ctSmRMOV/8wAmzb0RJ1VxdxH+OW9VlLMe6PAy20A0DoqsPj3XdZ0ytctfqB2Ek32dLbckFSY8=
+	t=1765885750; cv=none; b=aa+kqDQqeRerfJp4YIWrvqn+NtGd79rt5mIcYsKjHm1B/ddA+c5wP7mL3T5PC3KLowibkbCCchhhhvxtIpV0qWnk7CEyk/5KtI2GOyVM7+v8bbcTuZr+uUeLpU/qWpbcaezXh+pK61K8ufU8ZCZqBGHH4l5sD+GSygLpZaqbDgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884261; c=relaxed/simple;
-	bh=YOeAFGXyG+5MLfPUpXCCiTn7a1FyGIONDm+IDmacO1Q=;
+	s=arc-20240116; t=1765885750; c=relaxed/simple;
+	bh=al96CQu/Gln0pbmKdwv3jFM3ygV5TZMqPlc/qxMaB+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJOWb1Tv3/r7bjjZv9rATuvz+I3E2CjsqO+MPDGJz3bJeqv7RUgxUjBJKRPxonWlbXTy5nNGyXEW/PmiJohaUPRr2tozjktbZOUox9jbPdlzS24Zu5CSBwcbEN9nvqa4xTg/41UHFQXOAVRc2AfyfHRpGEmWEvog42rd3Dri628=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAo8ZydB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D604FC4CEF1;
-	Tue, 16 Dec 2025 11:24:20 +0000 (UTC)
+	 MIME-Version; b=MiqyTdLCkdjPTlVLzCwh1JtjcAfLB5BY5qGBkVfk71CkruakY18P3kaxE5y9iLERBFTbvyxkxBDyQonARIAt4O7Ic2D457MGCt330+J68UAVgKRs4X/OfT0JCzfXEJhrYn1HajDUIBFkBXYVAKJZPeoKxhZk/QdQl66HQQfDV7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYrK8goR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9813CC4CEF1;
+	Tue, 16 Dec 2025 11:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884261;
-	bh=YOeAFGXyG+5MLfPUpXCCiTn7a1FyGIONDm+IDmacO1Q=;
+	s=korg; t=1765885750;
+	bh=al96CQu/Gln0pbmKdwv3jFM3ygV5TZMqPlc/qxMaB+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAo8ZydB2/SI+Q1vd3T3EB5i4ORFkE9l30mQNLlUDhFvVb9z1JEhKvnw1185YSFSD
-	 lGv9JGqjvrWtsV+1qGP8mOFdlYbUygTXRqspC/XjvYCpTtssB68g9gVFfp+GNkHsbM
-	 9aXyFWsL8wV2efAEX0wj3tgStziTjcCtXbXAY+pY=
+	b=CYrK8goRf8k3SeyQ1eEt+t6b5bucNpHVekYDsiB0OdBJsna8cGpBppkF4Fc8okgCd
+	 H0QCbR+hYStrd+Usxc7wD+XAgJl3axdGU3c4ylgyvzq4AkHvITtb4mMTkMfs5EJOjo
+	 SZldJfHctnbD3s33eAUefQ6rqbCX/MTgABp2z4pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/354] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
+Subject: [PATCH 6.17 233/507] arm64: dts: rockchip: Move the EEPROM to correct I2C bus on Radxa ROCK 5A
 Date: Tue, 16 Dec 2025 12:11:14 +0100
-Message-ID: <20251216111324.795971618@linuxfoundation.org>
+Message-ID: <20251216111353.943486266@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
+[ Upstream commit 92e6e0b0e595afdda6296c760551ad3ffe9d5231 ]
 
-There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
-variable sel with an undefined value which is then used in regmap_field_write().
+The BL24C16 EEPROM chip found on Radxa ROCK 5A is connected to the
+i2c0 bus, [1] so move the eeprom node from the i2c2 bus to the i2c0
+bus.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[1] Link: https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.19
 
-Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-2-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9467-charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
-index faa5de2857ea0..be65b0f517210 100644
---- a/drivers/power/supply/rt9467-charger.c
-+++ b/drivers/power/supply/rt9467-charger.c
-@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
- 	if (rsel == RT9467_RANGE_VMIVR) {
- 		ret = linear_range_get_selector_high(range, value, &sel, &found);
- 		if (ret)
--			value = range->max_sel;
-+			sel = range->max_sel;
- 	} else {
- 		linear_range_get_selector_within(range, value, &sel);
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index f894742b1ebef..53df90b0eed16 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -221,6 +221,12 @@ regulator-state-mem {
+ 			regulator-off-in-suspend;
+ 		};
+ 	};
++
++	eeprom: eeprom@50 {
++		compatible = "belling,bl24c16a", "atmel,24c16";
++		reg = <0x50>;
++		pagesize = <16>;
++	};
+ };
+ 
+ &i2c2 {
+@@ -242,12 +248,6 @@ regulator-state-mem {
+ 			regulator-off-in-suspend;
+ 		};
+ 	};
+-
+-	eeprom: eeprom@50 {
+-		compatible = "belling,bl24c16a", "atmel,24c16";
+-		reg = <0x50>;
+-		pagesize = <16>;
+-	};
+ };
+ 
+ &i2c3 {
 -- 
 2.51.0
 
