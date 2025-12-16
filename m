@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E0DCC230A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:26:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB6DCC2DC1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97A8E303E1FB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBFE8309EC5F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3376C341ACA;
-	Tue, 16 Dec 2025 11:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95996355023;
+	Tue, 16 Dec 2025 11:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7/a5Veq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBiYSUOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E0A313E13;
-	Tue, 16 Dec 2025 11:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51300355020;
+	Tue, 16 Dec 2025 11:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884218; cv=none; b=YK8bNlTMNbjB2kNlFN7UcNroON5ZyNrP7VYMkzbJudsQLsMQlE7B1BCZ3M38uyFzE3BpLcX394HKfPsf6ceWV0rlNtTUGR7lm+T71lraYmYjrf3/f03gsmCcDU6zRkp0hBg3Y54Sr8d7P5+GluJQwqPK+pWRSNkGJqNfdHm0O8k=
+	t=1765885814; cv=none; b=bYDfPGp6gIxTn9iAMvtcnGOYfe7mT4k/WhBxglg2rBI8FI3sWZNh/A+kQz8laT6B9xoGCWvYj6OWGxqqME2RYx/jGl3GC6P64FOUV9Sl2IX06YLQYc9V1MNftikKXEhc9ygzlsXcKK7xHFdIiloNREjYQIpaPejGk3Qh6eZk8yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884218; c=relaxed/simple;
-	bh=dMLyxi3ZFHmlLzLLkoXrBjDFb2GdfgpeuKUhO3gyMfA=;
+	s=arc-20240116; t=1765885814; c=relaxed/simple;
+	bh=i/bhMN3c2YAWcI8oXCJNGWZra2IShMthmG4YiWSBT7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IW03uHnNU/2NOyUothCGcB7qau8ByNaEN6s9j4SMg58BZ3MXAZNDVvlh37dngip4HJqpM5gk5sCEn11IqqujgYHQox2ecQmLFyXISYD6k28Tt6X3Iyl35AqTqoIY6Xk5mcRmDTdOKodd5NXLOUULd5eMSj3EZwmYZPG3MpXMmb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7/a5Veq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6677EC4CEF1;
-	Tue, 16 Dec 2025 11:23:37 +0000 (UTC)
+	 MIME-Version; b=ZAyA8+xAbfcyRMzLKrNslevx72OWez07vzhySPCxZZ7Gshr7/+m0TpihKdcLHsYWpavH/G77+rtih9izzQ8fBxDIdsnOeioi0WyXe3Znv5wWMFKDW+WivIGW+bLXaAkoJ20FKmSiHxa9kwe+2LxU1/AarZlXzhVT+oNg1MuSi0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBiYSUOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B15EC4CEF1;
+	Tue, 16 Dec 2025 11:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884217;
-	bh=dMLyxi3ZFHmlLzLLkoXrBjDFb2GdfgpeuKUhO3gyMfA=;
+	s=korg; t=1765885814;
+	bh=i/bhMN3c2YAWcI8oXCJNGWZra2IShMthmG4YiWSBT7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7/a5VeqWTg/+q/vIPAZc+2ouE8jv+SS1Y47U+zBI7f9fxNyakeRIKPEZeuknS6Po
-	 lcsy0E+8OLnLKIYZ9mhYmb0HRpk4SMF+gh+uGXcVUsMjH2YZc/OhWJkxlAT4tEQVcx
-	 S/3tSAuDeMQDRAmDnRueISOh/hlMS2EDKql/pils=
+	b=zBiYSUOykKAczFDEK0U53oy/nLs57haHKh+OknfKH2Unhm4hjk4QudRlWW79PL+4m
+	 bTO1hnIaNUjnI47YOhhI0bi8c4OOL19qYKl99+SscMGHG3dKIcFZr1tNcy0sdmosgX
+	 Fcb/CLxaLU+vINbF9Ip/f2ZWeAYMOBTSHyW5Jtcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/354] perf/x86/intel: Correct large PEBS flag check
+Subject: [PATCH 6.17 253/507] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
 Date: Tue, 16 Dec 2025 12:11:34 +0100
-Message-ID: <20251216111325.523759924@linuxfoundation.org>
+Message-ID: <20251216111354.657895061@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 5e4e355ae7cdeb0fef5dbe908866e1f895abfacc ]
+[ Upstream commit c460192aae197df1b4db1dca493c35ad529f1b64 ]
 
-current large PEBS flag check only checks if sample_regs_user contains
-unsupported GPRs but doesn't check if sample_regs_intr contains
-unsupported GPRs.
+fuse_ctl_remove_conn() used to decrement the link count of root
+manually; that got subsumed by simple_recursive_removal(), but
+in case when subdirectory creation has failed the latter won't
+get called.
 
-Of course, currently PEBS HW supports to sample all perf supported GPRs,
-the missed check doesn't cause real issue. But it won't be true any more
-after the subsequent patches support to sample SSP register. SSP
-sampling is not supported by adaptive PEBS HW and it would be supported
-until arch-PEBS HW. So correct this issue.
+Just move the modification of parent's link count into
+fuse_ctl_add_dentry() to keep the things simple.  Allows to
+get rid of the nlink argument as well...
 
-Fixes: a47ba4d77e12 ("perf/x86: Enable free running PEBS for REGS_USER/INTR")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251029102136.61364-5-dapeng1.mi@linux.intel.com
+Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/fuse/control.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index acc0774519ce2..4a57a9948c745 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3872,7 +3872,9 @@ static unsigned long intel_pmu_large_pebs_flags(struct perf_event *event)
- 	if (!event->attr.exclude_kernel)
- 		flags &= ~PERF_SAMPLE_REGS_USER;
- 	if (event->attr.sample_regs_user & ~PEBS_GP_REGS)
--		flags &= ~(PERF_SAMPLE_REGS_USER | PERF_SAMPLE_REGS_INTR);
-+		flags &= ~PERF_SAMPLE_REGS_USER;
-+	if (event->attr.sample_regs_intr & ~PEBS_GP_REGS)
-+		flags &= ~PERF_SAMPLE_REGS_INTR;
- 	return flags;
- }
+diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+index bb407705603c2..5247df896c5d0 100644
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
+ 
+ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 					  struct fuse_conn *fc,
+-					  const char *name,
+-					  int mode, int nlink,
++					  const char *name, int mode,
+ 					  const struct inode_operations *iop,
+ 					  const struct file_operations *fop)
+ {
+@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 	if (iop)
+ 		inode->i_op = iop;
+ 	inode->i_fop = fop;
+-	set_nlink(inode, nlink);
++	if (S_ISDIR(mode)) {
++		inc_nlink(d_inode(parent));
++		inc_nlink(inode);
++	}
+ 	inode->i_private = fc;
+ 	d_add(dentry, inode);
+ 
+@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
+ 		return 0;
+ 
+ 	parent = fuse_control_sb->s_root;
+-	inc_nlink(d_inode(parent));
+ 	sprintf(name, "%u", fc->dev);
+-	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
++	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
+ 				     &simple_dir_inode_operations,
+ 				     &simple_dir_operations);
+ 	if (!parent)
+ 		goto err;
+ 
+-	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
++	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
+ 				 NULL, &fuse_ctl_waiting_ops) ||
+-	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
++	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
+ 				 NULL, &fuse_ctl_abort_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
+-				 1, NULL, &fuse_conn_max_background_ops) ||
++				 NULL, &fuse_conn_max_background_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
+-				 S_IFREG | 0600, 1, NULL,
++				 S_IFREG | 0600, NULL,
+ 				 &fuse_conn_congestion_threshold_ops))
+ 		goto err;
  
 -- 
 2.51.0
