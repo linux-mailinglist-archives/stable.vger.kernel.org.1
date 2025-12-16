@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7885CC24EA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 994F2CC298C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A22B7305A812
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABC631872C4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CEA31ED9A;
-	Tue, 16 Dec 2025 11:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451E934F24D;
+	Tue, 16 Dec 2025 11:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afpq0XTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UntyU1gK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DB431B10B;
-	Tue, 16 Dec 2025 11:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011F234E74D;
+	Tue, 16 Dec 2025 11:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884523; cv=none; b=cSrwN44j+jMmFdk9tfFu78o+jHvLDGTCFACfUJ5ol8o2ntOMl7Fo9OnLbzLBsy9jWtL/T/PHTexq0cho7H9jrdOO2ltwhKiTZDKmXE0uVSVlg0/2BDfAulbkAaFXBz3Slw5R7m+qhROl+jvp7/Gic4X6zgcgghDa0smjPM9mlwc=
+	t=1765886133; cv=none; b=l9DBayfiSiTiroHQ2YzJPQ5JjV/mAhSuUn2IeA/cosF7Re+6iufQhqGKwrIht9w093oS8GLBmdhQnNwwIGIZsXOWqAACVhXEmksNLnWVn+eEc+ial0VDRvHNBVLYCGsJzBZBnbKtx1vVqeb4ga/BEAA9BSv8Xtmn9AWbMXMqaBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884523; c=relaxed/simple;
-	bh=u/lkwx6QeH+y9seLWfic8c1kUFyWRjR6/fQrjhejFF8=;
+	s=arc-20240116; t=1765886133; c=relaxed/simple;
+	bh=m1SCMItgHMIjkMVkMfu42YBELuVMTbH+iWIaVF3sQB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RliGehBk+KFAIsNbtFgbz6NMOmMza0kusCuPXXvs/SMKyY8xQw5rTJVvsdt5LwJ3S2bN/FlZ7qSprTNEhH0HLxcHAbgFPdIodfkfQTZiH7MTH15SdNjatw3oI4LMd0ISI7JLGKfP1/qRl+XnVnah4F2P8F4tI/md3HKhQlifU+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afpq0XTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258FEC4CEF1;
-	Tue, 16 Dec 2025 11:28:41 +0000 (UTC)
+	 MIME-Version; b=Nep1LUGe/twNmTMhG+z4pSEhTUXOqx7GncS/lcyfbsuOyDqarKWW/YJyGjgNHZ6tYgkfM8gbQ1hm16inTXf9ngzccV089diaoZouPYKhDUJ7jpICeJKE/omwy5cfH1Qg+coEgx+KYYdIiMEdAGrcs0/cd5N3MLIjNV2PEuYUn6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UntyU1gK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B479C4CEF1;
+	Tue, 16 Dec 2025 11:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884522;
-	bh=u/lkwx6QeH+y9seLWfic8c1kUFyWRjR6/fQrjhejFF8=;
+	s=korg; t=1765886132;
+	bh=m1SCMItgHMIjkMVkMfu42YBELuVMTbH+iWIaVF3sQB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afpq0XTQoZXKUgnPmcL4GYJDCmT7BLI8FsXlXFLo8HXUn4USrdq9RmNf8fEXVE1W3
-	 XB4a8siso4SZBdpQ+ZtW+0eJLfnE4GiTwbEfs56wvpYA5gPjB0L+h94LvYM6vhhUos
-	 Ul4H2q1a9hCSkcmPw1t70GRi5IlJvizFp2n0QI1k=
+	b=UntyU1gKI2uUIEWS2UdHmCveICAZ/MPLTGDFIrReCBaOZHE74AMHbDt/7hUXg/DsF
+	 cRFfjXaJDMsEC7cx+yxtAYed6GwnqjoVrCpXeVfc8b3xMIpVWuKkzLrhosuF2F3tEb
+	 UH89dLV9/MITt1YdM0rTRDiP9BPBEvTS5O1FSn/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	David Gow <davidgow@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 220/354] btrfs: fix leaf leak in an error path in btrfs_del_items()
+Subject: [PATCH 6.17 346/507] um: Dont rename vmap to kernel_vmap
 Date: Tue, 16 Dec 2025 12:13:07 +0100
-Message-ID: <20251216111328.889272661@linuxfoundation.org>
+Message-ID: <20251216111357.995309639@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Gow <davidgow@google.com>
 
-[ Upstream commit e7dd1182fcedee7c6097c9f49eba8de94a4364e3 ]
+[ Upstream commit a74b6c0e53a6df8e8a096b50c06c4f872906368a ]
 
-If the call to btrfs_del_leaf() fails we return without decrementing the
-extra ref we took on the leaf, therefore leaking it. Fix this by ensuring
-we drop the ref count before returning the error.
+In order to work around the existence of a vmap symbol in libpcap, the
+UML makefile unconditionally redefines vmap to kernel_vmap. However,
+this not only affects the actual vmap symbol, but also anything else
+named vmap, including a number of struct members in DRM.
 
-Fixes: 751a27615dda ("btrfs: do not BUG_ON() on tree mod log failures at btrfs_del_ptr()")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This would not be too much of a problem, since all uses are also
+updated, except we now have Rust DRM bindings, which expect the
+corresponding Rust structs to have 'vmap' names. Since the redefinition
+applies in bindgen, but not to Rust code, we end up with errors such as:
+
+error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
+  --> rust/kernel/drm/gem/mod.rs:210:9
+
+Since libpcap support was removed in commit 12b8e7e69aa7 ("um: Remove
+obsolete pcap driver"), remove the, now unnecessary, define as well.
+
+We also take this opportunity to update the comment.
+
+Signed-off-by: David Gow <davidgow@google.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://patch.msgid.link/20251122083213.3996586-1-davidgow@google.com
+Fixes: 12b8e7e69aa7 ("um: Remove obsolete pcap driver")
+[adjust commmit message a bit]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/um/Makefile | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 81735d19feff5..362df6e96717c 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -4599,9 +4599,9 @@ int btrfs_del_items(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 			if (btrfs_header_nritems(leaf) == 0) {
- 				path->slots[1] = slot;
- 				ret = btrfs_del_leaf(trans, root, path, leaf);
-+				free_extent_buffer(leaf);
- 				if (ret < 0)
- 					return ret;
--				free_extent_buffer(leaf);
- 				ret = 0;
- 			} else {
- 				/* if we're still in the path, make sure
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 7be0143b5ba35..721b652ffb658 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
+ ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
+ KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
+ 
+-# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
+-# named - it's a common symbol in libpcap, so we get a binary which crashes.
+-#
+-# Same things for in6addr_loopback and mktime - found in libc. For these two we
+-# only get link-time error, luckily.
++# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
++#  anything from referencing
++# libc symbols with the same name, which can cause a linker error.
+ #
+ # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
+ # embedded copy of longjmp, same thing for setjmp.
+ #
+-# These apply to USER_CFLAGS to.
++# These apply to USER_CFLAGS too.
+ 
+ KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
+-	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
++	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
+ 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
+ 	-Din6addr_loopback=kernel_in6addr_loopback \
+ 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
 -- 
 2.51.0
 
