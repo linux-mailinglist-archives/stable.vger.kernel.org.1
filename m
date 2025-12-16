@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CB1CC2FDA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:58:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5C3CC293E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0581330A1CAB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACCE0302ED95
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CEB396DDB;
-	Tue, 16 Dec 2025 12:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD64632824A;
+	Tue, 16 Dec 2025 12:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWzDoPfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKGBnxxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD5387B37;
-	Tue, 16 Dec 2025 12:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79884299924;
+	Tue, 16 Dec 2025 12:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888341; cv=none; b=RlPvWkl7wkVwZEMsSEnWBiIHg0Rxm1Jr5azCvQ5HFa3LjDYquGVI2BGRpS3jnNecDF00lAerKhPuF63d0jeT/1Q96w1tp4KJFaDzUdPyiKYWQJiRBLNP5Qc1fV+Qm9zOxsUh+Nia7NG+frFB89OWk0cPkRISke2McqO3P/WHIQc=
+	t=1765886421; cv=none; b=qeo1PxIBirufQJCwiknUvVrptJbwcIdF0RbnyhbUMVpW/S3d/5I/k0b3inEGE3gG0M5qtxFyvzjY/vAAfWv7ydhEZ/Kep3CI6SZomf1rebW915CsU5k9ajHtPoaH2jHvEuCBuJLt2vxx3lP9pnz1J0Rbbw9ZKk+U5SDiHbWAKqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888341; c=relaxed/simple;
-	bh=zu70LZ4wsmGi5C/ZhhAwD8l19j7CEG6jZTCjXww2GxQ=;
+	s=arc-20240116; t=1765886421; c=relaxed/simple;
+	bh=vuiah4HXM923FYPg5KdN/V3QouTFYkQ3C410sWSysQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCIxOyjC9cGQnlUSsq05vDd0Hmj3jHcCAVW8grKIWEWK/z2I8BIspulTPflzI4RYptDuSRTS7ByyuZC90CakLDtW/95t0givLMjUDvQhiBsYiju0yUZk9U0GZcEyZtM3KKhidbPrhe/raSEUvGPgFjjzmeVZjWeNkPgo92PnYiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWzDoPfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93600C4CEF1;
-	Tue, 16 Dec 2025 12:32:20 +0000 (UTC)
+	 MIME-Version; b=TYdhYCPfDxLI7nQarCxYaezq+kmATxOQ6uvNte69uyxcUPikRIsj7QmW+VVb5yf5j0LIulyPinXDNUN81k2QEEXiIFXkZxtwsjj4T2Vugh7DsgOq4eWU8D6JcEBQggqocAGlRo8S+TNtje+V5DOrEuUOEGDnz7TnLs5KozEjR08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKGBnxxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D05C4CEF1;
+	Tue, 16 Dec 2025 12:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888341;
-	bh=zu70LZ4wsmGi5C/ZhhAwD8l19j7CEG6jZTCjXww2GxQ=;
+	s=korg; t=1765886421;
+	bh=vuiah4HXM923FYPg5KdN/V3QouTFYkQ3C410sWSysQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWzDoPfj/+4zh7jq1Io1syKg/7SVRr0blIEvb0qNO6cgC8wabkaKMF/Y/Df4AASRn
-	 bWAs8U6Z64BBXTQb47eUCV8RTc+h7Z6TXiAUtb7Ub/cFFRaGw8kOWqQGJXCiqSTycZ
-	 EuvPW7i+o0Abbj201/b6ROmpRWlhkLMejeswbQwk=
+	b=TKGBnxxfFkaBzotvj2IdOcxo3KxiHa8EmePZplAQjo4DPLCpdDS7KauyyAEQ2ywwL
+	 Pu529WFQBLWgcV3krJEE7q1/Xht8gh+0x9IsEb6jT8wQ4LmtatyHgiWmwTuvQum5rk
+	 aQylC+ONPptHsiAK5vyWUlHOft8ktkQ3Jxyah/bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 506/614] net: dsa: b53: fix VLAN_ID_IDX write size for BCM5325/65
+Subject: [PATCH 6.17 432/507] 9p: fix cache/debug options printing in v9fs_show_options
 Date: Tue, 16 Dec 2025 12:14:33 +0100
-Message-ID: <20251216111419.703226490@linuxfoundation.org>
+Message-ID: <20251216111401.110259035@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 6f268e275c74dae0536e0b61982a8db25bcf4f16 ]
+[ Upstream commit f0445613314f474c1a0ec6fa8a5cd153a618f1b6 ]
 
-Since BCM5325 and BCM5365 only support up to 256 VLANs, the VLAN_ID_IDX
-register is only 8 bit wide, not 16 bit, so use an appropriate accessor.
+commit 4eb3117888a92 changed the cache= option to accept either string
+shortcuts or bitfield values. It also changed /proc/mounts to emit the
+option as the hexadecimal numeric value rather than the shortcut string.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, by printing "cache=%x" without the leading 0x, shortcuts such
+as "cache=loose" will emit "cache=f" and 'f' is not a string that is
+parseable by kstrtoint(), so remounting may fail if a remount with
+"cache=f" is attempted.
+
+debug=%x has had the same problem since options have been displayed in
+c4fac9100456 ("9p: Implement show_options")
+
+Fix these by adding the 0x prefix to the hexadecimal value shown in
+/proc/mounts.
+
+Fixes: 4eb3117888a92 ("fs/9p: Rework cache modes and add new options to Documentation")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Message-ID: <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
+[Dominique: use %#x at Al Viro's suggestion, also handle debug]
+Tested-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/9p/v9fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index eb767edc4c135..a09ed32dccc07 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1924,8 +1924,12 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index a59c26cc3c7d9..9e2f8f0f82644 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -101,7 +101,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
+ 	struct v9fs_session_info *v9ses = root->d_sb->s_fs_info;
  
- 	/* Perform a read for the given MAC and VID */
- 	b53_write48(dev, B53_ARLIO_PAGE, B53_MAC_ADDR_IDX, mac);
--	if (!is5325m(dev))
--		b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+	if (!is5325m(dev)) {
-+		if (is5325(dev) || is5365(dev))
-+			b53_write8(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+		else
-+			b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
-+	}
- 
- 	/* Issue a read operation for this MAC */
- 	ret = b53_arl_rw_op(dev, 1);
+ 	if (v9ses->debug)
+-		seq_printf(m, ",debug=%x", v9ses->debug);
++		seq_printf(m, ",debug=%#x", v9ses->debug);
+ 	if (!uid_eq(v9ses->dfltuid, V9FS_DEFUID))
+ 		seq_printf(m, ",dfltuid=%u",
+ 			   from_kuid_munged(&init_user_ns, v9ses->dfltuid));
+@@ -117,7 +117,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
+ 	if (v9ses->nodev)
+ 		seq_puts(m, ",nodevmap");
+ 	if (v9ses->cache)
+-		seq_printf(m, ",cache=%x", v9ses->cache);
++		seq_printf(m, ",cache=%#x", v9ses->cache);
+ #ifdef CONFIG_9P_FSCACHE
+ 	if (v9ses->cachetag && (v9ses->cache & CACHE_FSCACHE))
+ 		seq_printf(m, ",cachetag=%s", v9ses->cachetag);
 -- 
 2.51.0
 
