@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733E8CC2FE0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:58:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D59CC23BE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66AB8300A729
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F3573064AF9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4973A36C5BD;
-	Tue, 16 Dec 2025 12:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D39341645;
+	Tue, 16 Dec 2025 11:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfKCVEPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4PXsZQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1C136C5A3;
-	Tue, 16 Dec 2025 12:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C3313E13;
+	Tue, 16 Dec 2025 11:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887949; cv=none; b=KTC8PcZJ+QaWu4AAkv7k8daBUpqRdv+wYN36qbn0B30h6+VihAfQGlPlNSlNQRDm9qtV8tmoPk1qx9i9roa+B9O6Lg05OFxx8Y9k0H5fHDZHClIuV0QDe374sVLaoF4g5wyr0Wmyjt/O+VmYv5iQkxS8Vhc4b+mTfmWf+5srf70=
+	t=1765884306; cv=none; b=AEvrJSopAziuQVGkiI2HAef4zrVylN3QE56l8v0an27VGdEcSNTP/48bKHlSU8cwIDYbEGye5xcZUOSqh8Ar2qCOsIRKfXFoXvzwzauQnEfotigTEdRBrMtOB9yygclgfLFMFi2XDzZu9MYiKlsI5Be6fE++IuRgiDulioeknFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887949; c=relaxed/simple;
-	bh=JjOY5AC4OjZcFwlN4C+N0fX5XrNMqYnv9SIvX1D8Vxo=;
+	s=arc-20240116; t=1765884306; c=relaxed/simple;
+	bh=p26RxpBDNsCtv64jBDw5tu+RX3oorAaYZN1W4iw+X24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYrI1xG2ZcoLFK5BDEO6lsX47rSsuv0d2cfAWMblqM5anuBvTxSYQ2oJuKlG/5OEWhjfLppwoQgv+kTGs7/HZ51mt6u1Hebpc5y75Y7xUcb3Aiho43uXQOZpcVQ+RgmI/QnDcxKKaioEHGLVVLvfDzZMeMd5KrZ9spasvjVS8Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfKCVEPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C619CC4CEF1;
-	Tue, 16 Dec 2025 12:25:48 +0000 (UTC)
+	 MIME-Version; b=Vx7WCAyb3EpUmVTl7MJJxlVBowy7S1/rRd/iWQmBXS5VuUjKLVXLnQBziNXbFeVPhokeW+1uGX/WhDlIep6zjhvg4dkPSQ29y4dEBREcAcsb0GhI6WXX6ScUHEmWRRLfgG8SiZW9OeDr5GdRwaJCJN9XHRj2StKKdykKFJdAN0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4PXsZQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3BAC4CEF1;
+	Tue, 16 Dec 2025 11:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887949;
-	bh=JjOY5AC4OjZcFwlN4C+N0fX5XrNMqYnv9SIvX1D8Vxo=;
+	s=korg; t=1765884306;
+	bh=p26RxpBDNsCtv64jBDw5tu+RX3oorAaYZN1W4iw+X24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfKCVEPuPjQuQlaTEeE//s0+jZmB5OPmY07uf3Mgg0mkXpnMLV2npH2NSRDvQcdoZ
-	 dzzhX1syb1LTfb6f/CTMNr54RnRArRj6CYMpxc4SuUrDFWiHzNOs8JPje161FupUUo
-	 hoQrjEM7QX1kdEhcrSfPpqPjbi8dXSX81Vyp5KoM=
+	b=i4PXsZQMQG29Mi2zRWnvR8D9Zk8/CWKhZ8EuF7DKTACb1ukMdymnDYOLG9206XQ/T
+	 HSYVetCgbgdiCls4UIFTiHVXb6/hVJ2PZ3TG4alKpF40vWvuxpK4oStKuYN/ABtZ1/
+	 U1CofIKwzfXZA8ZYdY3UxZnPBlOTRKpn4Q1tHTOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Markus Elfring <Markus.Elfring@web.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 354/614] cpuset: Treat cpusets in attaching as populated
+Subject: [PATCH 6.12 154/354] leds: netxbig: Fix GPIO descriptor leak in error paths
 Date: Tue, 16 Dec 2025 12:12:01 +0100
-Message-ID: <20251216111414.188059104@linuxfoundation.org>
+Message-ID: <20251216111326.494431357@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
+[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
 
-Currently, the check for whether a partition is populated does not
-account for tasks in the cpuset of attaching. This is a corner case
-that can leave a task stuck in a partition with no effective CPUs.
+The function netxbig_gpio_ext_get() acquires GPIO descriptors but
+fails to release them when errors occur mid-way through initialization.
+The cleanup callback registered by devm_add_action_or_reset() only
+runs on success, leaving acquired GPIOs leaked on error paths.
 
-The race condition occurs as follows:
+Add goto-based error handling to release all acquired GPIOs before
+returning errors.
 
-cpu0				cpu1
-				//cpuset A  with cpu N
-migrate task p to A
-cpuset_can_attach
-// with effective cpus
-// check ok
-
-// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
-				// making effective cpus empty
-				update_exclusive_cpumask
-				// tasks_nocpu_error check ok
-				// empty effective cpus, partition valid
-cpuset_attach
-...
-// task p stays in A, with non-effective cpus.
-
-To fix this issue, this patch introduces cs_is_populated, which considers
-tasks in the attaching cpuset. This new helper is used in validate_change
-and partition_is_populated.
-
-Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
+Suggested-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+ drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 52468d2c178a3..4dcd633fd6df5 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -352,6 +352,15 @@ static inline bool is_in_v2_mode(void)
- 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
+diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
+index e95287416ef87..99df46f2d9f52 100644
+--- a/drivers/leds/leds-netxbig.c
++++ b/drivers/leds/leds-netxbig.c
+@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 	if (!addr)
+ 		return -ENOMEM;
+ 
++	gpio_ext->addr = addr;
++	gpio_ext->num_addr = 0;
++
+ 	/*
+ 	 * We cannot use devm_ managed resources with these GPIO descriptors
+ 	 * since they are associated with the "GPIO extension device" which
+@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_set_code;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
+ 		addr[i] = gpiod;
++		gpio_ext->num_addr++;
+ 	}
+-	gpio_ext->addr = addr;
+-	gpio_ext->num_addr = num_addr;
+ 
+ 	ret = gpiod_count(gpio_ext_dev, "data");
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed to count GPIOs in DT property data-gpios\n");
+-		return ret;
++		goto err_free_addr;
+ 	}
+ 	num_data = ret;
+ 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_free_addr;
++	}
++
++	gpio_ext->data = data;
++	gpio_ext->num_data = 0;
+ 
+ 	for (i = 0; i < num_data; i++) {
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_free_data;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
+ 		data[i] = gpiod;
++		gpio_ext->num_data++;
+ 	}
+-	gpio_ext->data = data;
+-	gpio_ext->num_data = num_data;
+ 
+ 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		dev_err(dev,
+ 			"Failed to get GPIO from DT property enable-gpio\n");
+-		return PTR_ERR(gpiod);
++		goto err_free_data;
+ 	}
+ 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
+ 	gpio_ext->enable = gpiod;
+ 
+ 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
++
++err_free_data:
++	for (i = 0; i < gpio_ext->num_data; i++)
++		gpiod_put(gpio_ext->data[i]);
++err_set_code:
++	ret = PTR_ERR(gpiod);
++err_free_addr:
++	for (i = 0; i < gpio_ext->num_addr; i++)
++		gpiod_put(gpio_ext->addr[i]);
++	return ret;
  }
  
-+static inline bool cpuset_is_populated(struct cpuset *cs)
-+{
-+	lockdep_assert_held(&cpuset_mutex);
-+
-+	/* Cpusets in the process of attaching should be considered as populated */
-+	return cgroup_is_populated(cs->css.cgroup) ||
-+		cs->attach_in_progress;
-+}
-+
- /**
-  * partition_is_populated - check if partition has tasks
-  * @cs: partition root to be checked
-@@ -364,21 +373,31 @@ static inline bool is_in_v2_mode(void)
- static inline bool partition_is_populated(struct cpuset *cs,
- 					  struct cpuset *excluded_child)
- {
--	struct cgroup_subsys_state *css;
--	struct cpuset *child;
-+	struct cpuset *cp;
-+	struct cgroup_subsys_state *pos_css;
- 
--	if (cs->css.cgroup->nr_populated_csets)
-+	/*
-+	 * We cannot call cs_is_populated(cs) directly, as
-+	 * nr_populated_domain_children may include populated
-+	 * csets from descendants that are partitions.
-+	 */
-+	if (cs->css.cgroup->nr_populated_csets ||
-+	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts)
- 		return cgroup_is_populated(cs->css.cgroup);
- 
- 	rcu_read_lock();
--	cpuset_for_each_child(child, css, cs) {
--		if (child == excluded_child)
-+	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
-+		if (cp == cs || cp == excluded_child)
- 			continue;
--		if (is_partition_valid(child))
-+
-+		if (is_partition_valid(cp)) {
-+			pos_css = css_rightmost_descendant(pos_css);
- 			continue;
--		if (cgroup_is_populated(child->css.cgroup)) {
-+		}
-+
-+		if (cpuset_is_populated(cp)) {
- 			rcu_read_unlock();
- 			return true;
- 		}
-@@ -663,7 +682,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
- 	 * be changed to have empty cpus_allowed or mems_allowed.
- 	 */
- 	ret = -ENOSPC;
--	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
-+	if (cpuset_is_populated(cur)) {
- 		if (!cpumask_empty(cur->cpus_allowed) &&
- 		    cpumask_empty(trial->cpus_allowed))
- 			goto out;
+ static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
