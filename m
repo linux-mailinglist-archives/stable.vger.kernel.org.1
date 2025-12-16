@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-202699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D573ACC31F4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA80ECC3219
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5EAED302EDB9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:16:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 601063031682
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63BC3BE559;
-	Tue, 16 Dec 2025 13:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD183BF02B;
+	Tue, 16 Dec 2025 13:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C31bi5xv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jv+AxyKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894763BE54A;
-	Tue, 16 Dec 2025 13:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6313BF037;
+	Tue, 16 Dec 2025 13:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765890976; cv=none; b=R5kzp6DCO0G3Oim0Zt9gqSa6xLqz8iCSD5BY6/eCkvW+lwX1eU2M78Nemmsytnt5HBacVilUgJ/acG/q1DCb0f4qKjE/On4Jb1up4gyqjQcYRcVDwjjhKbMjNRayeQbelGf5CP71cjyeo/aJ3DD6f/mr+MOAAlQ8iAxbebEygPA=
+	t=1765891039; cv=none; b=GYRLEBtCleE4rn+BhoJ+MK5aKQUIOhgFASvWL5DPC4Aa0FZWhQQ92CV4olpaOZGH0Hp3Wq/nVXhG6b7Tt69XmWTsY6dcdxnHSuce+zTeU2KREpumdgJEVUGbf+MLCmstqkF2UL/jIuC353VJuDS5PCUVRZaNpYzC2OFUjQ5NVD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765890976; c=relaxed/simple;
-	bh=2qLm7qLP78yIq98BOJp7Lpf5E6IukjXo8jHsSvSSKms=;
+	s=arc-20240116; t=1765891039; c=relaxed/simple;
+	bh=Uzy0fgkcQX6f9t0271Mwmb8XTbZ+/4XqFmPzVEey6CI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORh7yiyU/lwOZxtvg3dpzizeqNJbTqb84ggTklS2Q+Uq+3Np3+llrZl3oQHPyx49F0y8ysZyd9VyamChprbRncyFvt5XxE3IMBnBMciGjZmjFKBaZmsB5GqXuI4TmL85xwoOD1LaZ13YHxHwTQMCFR3AOhDbX9jAx9eKX6Y4lCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C31bi5xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB61C4CEF1;
-	Tue, 16 Dec 2025 13:16:13 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=gMYfUEcj1RpLFbvXa206MQ0bNy5OEneB3ABZ3rh69JVVPJPnKrJw7nLJs5eoO35/f5vVIsFyu1BN/JhNFUL8Bs1hzaWWWF0q4frENWQgXh7kgFDFi/NdoUXRg9dizzFTKqSYf0gkBr2lkRcVGfL7Ex5SYUSmgfYnQriOevYTiHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jv+AxyKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38472C4CEF1;
+	Tue, 16 Dec 2025 13:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765890975;
-	bh=2qLm7qLP78yIq98BOJp7Lpf5E6IukjXo8jHsSvSSKms=;
+	s=k20201202; t=1765891038;
+	bh=Uzy0fgkcQX6f9t0271Mwmb8XTbZ+/4XqFmPzVEey6CI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C31bi5xvG825o6nobsWDqZtAW94+2GEfq0tFJAY4/IUJ66prEIEsReaxEZpTyeHYd
-	 C3GI8SrEXQGf4QSar6YHgI7lSEdjzQR4w4bobdILk9cEXyn66yJaHasPTTWqBsUjYl
-	 d+U70VhhjCu3cbKzb+bNrbnVybzjglkIQYI/5wQqeoISeY5Op5vW6h8V+xWS2lNIv6
-	 HGFowuDbT5FFgSRrJpu/6BTqhSPfq1gZotRgYZ1mFrAhSPcUOkxM2R+ey0S3/vJnoD
-	 H7FhB/XI9iPgVM6PHIl35evOYIay3hVAzKHRH0JiGrC0uji9msAiNMfYusWvZkRCQM
-	 KvFUhq4kBN3zw==
-Message-ID: <6d4b05af-40ec-4bbf-9045-f259315e5332@kernel.org>
-Date: Tue, 16 Dec 2025 14:16:11 +0100
+	b=Jv+AxyKxxfDwbbrc2i7GVrbe7mDxAji4gm5OsvxDzAMDAPJ7zD3lLGU7rsiVvxBIa
+	 B7nuRyum+JV6tgIoNGYbJpq6FgjxybHvUl6IEmSLrLkXdo8ddGmf4hoKvcdp+Zgn89
+	 /NOJnmAxCqR7X/lsV1+YDnPdxj4E/vQk3V3kkUo52aZ7HZ6Qr40JnAQjR0cmdxJwTm
+	 rnZOQWjm3JPpd9NtTqj0hVW3v5jy3h0zFrjq0tde1jgHwpPZf2VAFgkd0JfKRQhoUv
+	 Ocvi/wH97J01bRzqXOPDQW/fiGz3Kub60dCNFjDY+mHECat4k1vWeE2iFfzaT743dW
+	 zEKuZEee8ABYw==
+Message-ID: <1f17a863-20c9-4004-ae8a-08cab5bde237@kernel.org>
+Date: Tue, 16 Dec 2025 14:17:15 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in
  alarms_store
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>, Huisong Li
- <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: David Laight <david.laight.linux@gmail.com>,
+ Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20251111204422.41993-2-thorsten.blum@linux.dev>
  <243ec26f-1fe1-4b3c-ab24-a6ebab163cde@kernel.org>
- <20251216092809.2e9b153d@pumpkin>
+ <2434C572-231F-416D-AE42-BAE8AA86B52E@linux.dev>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,14 +103,12 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251216092809.2e9b153d@pumpkin>
+In-Reply-To: <2434C572-231F-416D-AE42-BAE8AA86B52E@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/12/2025 10:28, David Laight wrote:
-> On Tue, 16 Dec 2025 08:11:13 +0100
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
+On 16/12/2025 13:30, Thorsten Blum wrote:
+> On 16. Dec 2025, at 08:11, Krzysztof Kozlowski wrote:
 >> On 11/11/2025 21:44, Thorsten Blum wrote:
 >>> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
 >>> bytes and a NUL terminator is appended. However, the 'size' argument
@@ -127,83 +125,26 @@ On 16/12/2025 10:28, David Laight wrote:
 >>> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
 >>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 >>> ---
->>> Compile-tested only.
+>>> [...]
 >>>
->>> Changes in v4:
->>> - Use simple_strtoll because kstrtoint also parses long long internally
->>> - Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
->>> - Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
->>>   while maintaining the same behavior and return values as before
->>> - Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
->>>
->>> Changes in v3:
->>> - Add integer range check for 'temp' to match kstrtoint() behavior
->>> - Explicitly cast 'temp' to int when calling int_to_short()
->>> - Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
->>>
->>> Changes in v2:
->>> - Fix buffer overflow instead of truncating the copy using strscpy()
->>> - Parse buffer directly using simple_strtol() as suggested by David
->>> - Update patch subject and description
->>> - Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
->>> ---
->>>  drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
->>>  1 file changed, 21 insertions(+), 43 deletions(-)
->>>
->>> diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
->>> index 9ccedb3264fb..5707fa34e804 100644
->>> --- a/drivers/w1/slaves/w1_therm.c
->>> +++ b/drivers/w1/slaves/w1_therm.c
->>> @@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
->>>  	struct w1_slave *sl = dev_to_w1_slave(device);
->>>  	struct therm_info info;
->>>  	u8 new_config_register[3];	/* array of data to be written */
->>> -	int temp, ret;
->>> -	char *token = NULL;
->>> +	long long temp;
->>> +	int ret = 0;
->>>  	s8 tl, th;	/* 1 byte per value + temp ring order */
->>> -	char *p_args, *orig;
->>> -
->>> -	p_args = orig = kmalloc(size, GFP_KERNEL);
->>> -	/* Safe string copys as buf is const */
->>> -	if (!p_args) {
->>> -		dev_warn(device,
->>> -			"%s: error unable to allocate memory %d\n",
->>> -			__func__, -ENOMEM);
->>> -		return size;
->>> -	}
->>> -	strcpy(p_args, buf);
->>> -
->>> -	/* Split string using space char */
->>> -	token = strsep(&p_args, " ");
->>> -
->>> -	if (!token)	{
->>> -		dev_info(device,
->>> -			"%s: error parsing args %d\n", __func__, -EINVAL);
+>>> +	if (p == endp || *endp != ' ')
+>>> +		ret = -EINVAL;
+>>> +	else if (temp < INT_MIN || temp > INT_MAX)
+>>> +		ret = -ERANGE;
+>>> 	if (ret) {
+>>> 		dev_info(device,
+>>> 			"%s: error parsing args %d\n", __func__, ret);
 >>> -		goto free_m;
->>> -	}
->>> -
->>> -	/* Convert 1st entry to int */
->>> -	ret = kstrtoint (token, 10, &temp);
->>> +	const char *p = buf;
->>> +	char *endp;
->>> +
->>> +	temp = simple_strtoll(p, &endp, 10);  
+>>> +		goto err;
 >>
->> Why using this, instead of explicitly encouraged kstrtoll()?
+>> So this is just return size.
 > 
-> Because the code needs to look at the terminating character.
-> The kstrtoxxx() family only support buffers that contain a single value.
-> While they return an indication of 'overflow' they are useless for
-> more general parameter parsing.
-> 
-> The simple_strtoxxx() could detect overflow and then set 'endp'
-> to the digit that make the value too big - which should give an
-> error provided the callers checks the separator.
+> Yes, all 'goto err' could be replaced with 'return size'. I only renamed
+> the label to keep the changes minimal.
 
-
-Yes, there are two values here, so obviously this is right.
+You do not write commits to have minimal changes. That's not the goal.
+You organize commits in logical chunks doing one thing and doing it
+correctly. Empty goto label is not correct, thus should not stay.
 
 Best regards,
 Krzysztof
