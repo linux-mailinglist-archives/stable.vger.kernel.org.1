@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353A5CC2B04
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97142CC2463
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D90353019374
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0B00302717B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B723596F7;
-	Tue, 16 Dec 2025 12:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4702343204;
+	Tue, 16 Dec 2025 11:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk9iXZPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBPuM6bB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436E5358D2A;
-	Tue, 16 Dec 2025 12:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7052134251D;
+	Tue, 16 Dec 2025 11:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887902; cv=none; b=l0M2ywzkO7oW58RPffE66ow6lS70jUAgR/tHjNQFtDmvx6Fn+4gtJCEC2rCCYcJamqc21uzD5kKzw1FU3Iamtn8ADggXSeFMP12X/m0IB7yGUUJEF950eyKVhucCobbi61Qpkk0ySazDegAbUd58dkExFEWNVsmc25/mqHozAC4=
+	t=1765884392; cv=none; b=R+aoSIbgjA6PypFGvOPW+hoQYXUoZM/EzDbxQEGVpG8I14OgdJUZuin1lVtDzCYs+vZwpCayTWL4OqMkBB7mnG6UrT/L1kXzTo7SE0szhqNIePb4Xo7bwy9xvPhd4kN9LBdofYjdrpOKi6kU+VXRbXoChwUWf7FSzIU4ICbYgvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887902; c=relaxed/simple;
-	bh=HXt7Vum7lRgDj8Mxj8VW5e6gC3WCEkx8VNz7/h1s5QE=;
+	s=arc-20240116; t=1765884392; c=relaxed/simple;
+	bh=PDH60vx+Sp36RQ27USId3ZTjx6m4edFBrVQ/Yf4kVm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFyOuvUIQZHSdjp9ENY/CDHtl+5T9PPkizR2nHuTi3WvR84craYD57iSLc4xIxttOO/UAGc6kPmhM+TQ52gge8iQW2bw6qNQawMZNwi5mLq/Ss2CjOVsMiOize1bhMKEzAb7LE+D3edEF3RJ7yM5OIuJcs8KBvPqQL7uqiVAkwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk9iXZPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0735C4CEF1;
-	Tue, 16 Dec 2025 12:25:01 +0000 (UTC)
+	 MIME-Version; b=JErPu2+0rsvV4PcvvTqY+ma3m9CmYNN43+18OpX52r1lTZZEbKxOHayOPRiAet/T1CfTUhVjgYE+kZWKxtTRTceu6XzWTZJwcOPlmCqZpioPKCdgqCMOfwchn2/Lro5k4kIbuaIVOv0o0T7grHvavPN7AT6l7MEtif2OYxTudFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBPuM6bB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB75CC19422;
+	Tue, 16 Dec 2025 11:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887902;
-	bh=HXt7Vum7lRgDj8Mxj8VW5e6gC3WCEkx8VNz7/h1s5QE=;
+	s=korg; t=1765884392;
+	bh=PDH60vx+Sp36RQ27USId3ZTjx6m4edFBrVQ/Yf4kVm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bk9iXZPR9pnUOKxrwuNQuA2AK8VOY9AVEqOBjx+L8H/OGsaLAEPUEke99g/P4Enox
-	 TDuWlybesRLr+2stMiAxPWG/g1YX7Mk2xmTe/X0ZMcoT/OygxJugWWimPml7wuD4C6
-	 PLM7siXsy8f1jBSf/yMDh7EL3FNIFMTschMhXaVg=
+	b=uBPuM6bB1HLuYUq7cn6LrQ/BJTS/QMV1YGOeaOQ2zIWPVhH1L/Or+tTq0R0/9nw9L
+	 Ekxo7IksPORelRs5c1bnQHjEuGbTCKA5aEpY334np9V2ZLmr1zEEHT7Fo1IZ4Lz6e8
+	 cIT5bZvORb68TIxBrbd5Y86GQ6+qsI7P+VAnzU+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 372/614] crypto: ccree - Correctly handle return of sg_nents_for_len
+Subject: [PATCH 6.12 172/354] drm/msm/a2xx: stop over-complaining about the legacy firmware
 Date: Tue, 16 Dec 2025 12:12:19 +0100
-Message-ID: <20251216111414.840485037@linuxfoundation.org>
+Message-ID: <20251216111327.145634011@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
+[ Upstream commit a3a22373fce576560757f5616eb48dbf85891d9c ]
 
-Fix error handling in cc_map_hash_request_update where sg_nents_for_len
-return value was assigned to u32, converting negative errors to large
-positive values before passing to sg_copy_to_buffer.
+If the rootfs have a legacy A200 firmware, currently the driver will
+complain each time the hw is reinited (which can happen a lot). E.g.
+with GL testsuite the hw is reinited after each test, spamming the
+console.
 
-Check sg_nents_for_len return value and propagate errors before
-assigning to areq_ctx->in_nents.
+Make sure that the message is printed only once: when we detect the
+firmware that doesn't support protection.
 
-Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 302295070d3c ("drm/msm/a2xx: support loading legacy (iMX) firmware")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688098/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
-index 3963bb91321fc..dc7e0cd51c259 100644
---- a/drivers/crypto/ccree/cc_buffer_mgr.c
-+++ b/drivers/crypto/ccree/cc_buffer_mgr.c
-@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	int rc = 0;
- 	u32 dummy = 0;
- 	u32 mapped_nents = 0;
-+	int sg_nents;
- 
- 	dev_dbg(dev, " update params : curr_buff=%p curr_buff_cnt=0x%X nbytes=0x%X src=%p curr_index=%u\n",
- 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
-@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	if (total_in_len < block_size) {
- 		dev_dbg(dev, " less than one block: curr_buff=%p *curr_buff_cnt=0x%X copy_to=%p\n",
- 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
--		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
-+		sg_nents = sg_nents_for_len(src, nbytes);
-+		if (sg_nents < 0)
-+			return sg_nents;
-+		areq_ctx->in_nents = sg_nents;
- 		sg_copy_to_buffer(src, areq_ctx->in_nents,
- 				  &curr_buff[*curr_buff_cnt], nbytes);
- 		*curr_buff_cnt += nbytes;
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index 0dc255ddf5ceb..2e25af3462ab6 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -234,7 +234,7 @@ static int a2xx_hw_init(struct msm_gpu *gpu)
+ 	 * word (0x20xxxx for A200, 0x220xxx for A220, 0x225xxx for A225).
+ 	 * Older firmware files, which lack protection support, have 0 instead.
+ 	 */
+-	if (ptr[1] == 0) {
++	if (ptr[1] == 0 && !a2xx_gpu->protection_disabled) {
+ 		dev_warn(gpu->dev->dev,
+ 			 "Legacy firmware detected, disabling protection support\n");
+ 		a2xx_gpu->protection_disabled = true;
 -- 
 2.51.0
 
