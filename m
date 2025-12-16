@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-201406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698F1CC24F6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB29ACC27EE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DE2C305EC06
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4ED093003F9E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9689932C309;
-	Tue, 16 Dec 2025 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479D328466D;
+	Tue, 16 Dec 2025 11:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rreGp+AC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbCCvpum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF613233EE;
-	Tue, 16 Dec 2025 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF40634FF51;
+	Tue, 16 Dec 2025 11:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884532; cv=none; b=Ygwh95AWRykJp/1r8MDOQ93d44hUvurgxE9cj/n8+aAed4F71eoKIr2a4CO7/8J/Xx2lDYsWgyBrqwOV127zcUnM0ouXll4YDtJr1Hmzj1cphFaPUclxsNYPzud1jFlD8jRNy756FDV9yz/rqJlQ9NhJ8O4+imBPYOyxMg5fVFc=
+	t=1765886163; cv=none; b=npqtuu6bkNn9mCjlamY33ZpqhGZF4XNVua5YjcVd/96nIQONQh1ibCwkC1pRmBiNFeITALdOEtPl7j2Z3IY5tR4bhTXge+vFVLRdif2eh69l2eAyOX9Mf7BzK2M8Yt4MiyRjAbnWtDkpqlxypjnMgvFJj5uWZ54gZubb2QrPd+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884532; c=relaxed/simple;
-	bh=wCbht/00n0WYcxdOCLW7kM5vwm1KhzyPAL50c4d7xkA=;
+	s=arc-20240116; t=1765886163; c=relaxed/simple;
+	bh=ffd3jKagTdQqk+ounn9DDhvWxO4qVJCuebKOK8vEkJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCbhlFfwR3/UqKgKQZK++GkSYIaL5o/uRZuHQJ8j27cXnm5pECyK+ayUjPpjfzHMXg6z4WduzId3Ylaiw8oryetPmaKjtGmbzjfua+YKZiEzzfjXhcIfe7Wvl4EAMQiujx1WThqhxA4reg2gUsX+Zfm/yRiIPskn8nL9OCW7D30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rreGp+AC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B79C4CEF1;
-	Tue, 16 Dec 2025 11:28:51 +0000 (UTC)
+	 MIME-Version; b=IrQ5zWtPp+G9kr3dTl4rDqimo/eGzUe24QuaNs+F6RhvIOGO2qROpjiRR9LlGjnTfd7o64cfenTjNApS/XBkxL/ON1riLlIomV/eLfpsc8pON4+614a6CpiH7Hn3DX5UMl23k8usKMlBOjyv7qTg06bKkB/wTZ3VNrG7G9OgKSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbCCvpum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5FFC4CEF1;
+	Tue, 16 Dec 2025 11:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884532;
-	bh=wCbht/00n0WYcxdOCLW7kM5vwm1KhzyPAL50c4d7xkA=;
+	s=korg; t=1765886162;
+	bh=ffd3jKagTdQqk+ounn9DDhvWxO4qVJCuebKOK8vEkJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rreGp+ACHkTfL8UDdL+jmv0JhYQ/9anfBuJAFUaS3r2Vk+9n9nJKe1elp2092dYwo
-	 mMIDl6egXcK1NQkZg9lLVU/rmnIr/rjAOCKwDn1N65L0zimNZVyEzxmitrgsq+ToBe
-	 J/D8IVsqazmy7hdS0hWbgP/3CjnVuj5OfGoNDG8g=
+	b=xbCCvpumj4m9MDmYZZ/J4sDxoyLAG1F1QKu7mgeDJ4vDt6qwGq+BPOtVtpRlWhnK1
+	 g3zzDX30lW1qpBsR9MEAVBKccNuTyZYZVYP/QVrIebfEoXFI6LeYNTqvoyUjomoylB
+	 3znvTH5hcEkmxfxDF29F2B0XEg0qu/KKEsmze7gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/354] um: Dont rename vmap to kernel_vmap
+Subject: [PATCH 6.17 349/507] backlight: led-bl: Add devlink to supplier LEDs
 Date: Tue, 16 Dec 2025 12:13:10 +0100
-Message-ID: <20251216111328.997422081@linuxfoundation.org>
+Message-ID: <20251216111358.102995306@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit a74b6c0e53a6df8e8a096b50c06c4f872906368a ]
+[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
 
-In order to work around the existence of a vmap symbol in libpcap, the
-UML makefile unconditionally redefines vmap to kernel_vmap. However,
-this not only affects the actual vmap symbol, but also anything else
-named vmap, including a number of struct members in DRM.
+LED Backlight is a consumer of one or multiple LED class devices, but
+devlink is currently unable to create correct supplier-producer links when
+the supplier is a class device. It creates instead a link where the
+supplier is the parent of the expected device.
 
-This would not be too much of a problem, since all uses are also
-updated, except we now have Rust DRM bindings, which expect the
-corresponding Rust structs to have 'vmap' names. Since the redefinition
-applies in bindgen, but not to Rust code, we end up with errors such as:
+One consequence is that removal order is not correctly enforced.
 
-error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
-  --> rust/kernel/drm/gem/mod.rs:210:9
+Issues happen for example with the following sections in a device tree
+overlay:
 
-Since libpcap support was removed in commit 12b8e7e69aa7 ("um: Remove
-obsolete pcap driver"), remove the, now unnecessary, define as well.
+    // An LED driver chip
+    pca9632@62 {
+        compatible = "nxp,pca9632";
+        reg = <0x62>;
 
-We also take this opportunity to update the comment.
+	// ...
 
-Signed-off-by: David Gow <davidgow@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://patch.msgid.link/20251122083213.3996586-1-davidgow@google.com
-Fixes: 12b8e7e69aa7 ("um: Remove obsolete pcap driver")
-[adjust commmit message a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+        addon_led_pwm: led-pwm@3 {
+            reg = <3>;
+            label = "addon:led:pwm";
+        };
+    };
+
+    backlight-addon {
+        compatible = "led-backlight";
+        leds = <&addon_led_pwm>;
+        brightness-levels = <255>;
+        default-brightness-level = <255>;
+    };
+
+In this example, the devlink should be created between the backlight-addon
+(consumer) and the pca9632@62 (supplier). Instead it is created between the
+backlight-addon (consumer) and the parent of the pca9632@62, which is
+typically the I2C bus adapter.
+
+On removal of the above overlay, the LED driver can be removed before the
+backlight device, resulting in:
+
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+    ...
+    Call trace:
+     led_put+0xe0/0x140
+     devm_led_release+0x6c/0x98
+
+Another way to reproduce the bug without any device tree overlays is
+unbinding the LED class device (pca9632@62) before unbinding the consumer
+(backlight-addon):
+
+  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
+  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
+
+Fix by adding a devlink between the consuming led-backlight device and the
+supplying LED device, as other drivers and subsystems do as well.
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/video/backlight/led_bl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 3317d87e20920..f3f8c3ab4bfb6 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
- ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
- KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index d2db157b2c290..0ed585eb27903 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -209,6 +209,19 @@ static int led_bl_probe(struct platform_device *pdev)
+ 		return PTR_ERR(priv->bl_dev);
+ 	}
  
--# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
--# named - it's a common symbol in libpcap, so we get a binary which crashes.
--#
--# Same things for in6addr_loopback and mktime - found in libc. For these two we
--# only get link-time error, luckily.
-+# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
-+#  anything from referencing
-+# libc symbols with the same name, which can cause a linker error.
- #
- # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
- # embedded copy of longjmp, same thing for setjmp.
- #
--# These apply to USER_CFLAGS to.
-+# These apply to USER_CFLAGS too.
- 
- KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
--	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
-+	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
- 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
- 	-Din6addr_loopback=kernel_in6addr_loopback \
- 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr
++	for (i = 0; i < priv->nb_leds; i++) {
++		struct device_link *link;
++
++		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
++				       DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!link) {
++			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
++				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
++			backlight_device_unregister(priv->bl_dev);
++			return -EINVAL;
++		}
++	}
++
+ 	for (i = 0; i < priv->nb_leds; i++) {
+ 		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_disable(priv->leds[i]);
 -- 
 2.51.0
 
