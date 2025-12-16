@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-202725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2198CC4AF4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5ACCC4D0B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 19:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05F01304FB87
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C9E63010FD1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B2E331217;
-	Tue, 16 Dec 2025 17:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB308349B1D;
+	Tue, 16 Dec 2025 18:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="uqOJClMo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kffuiUvV"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB41239E79;
-	Tue, 16 Dec 2025 17:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2BB349B10
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 18:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765906232; cv=none; b=Xu+9CwFr0avdRXN2iMtPDh7fwlqPxqhWzZaRDxwsGOqNxzoNUhyD9+uqqQUkGJtwS2Sh2XRrJ7fM4t04IxZCdmR5l0Q0jKoRGt7rbWtv93uYIA1x3GkzELOs/Lahg7r71Hw+NsuQoUa2F8Cnq4oFU5UaKfph4oX2vhYNMK98xDY=
+	t=1765908602; cv=none; b=pA/kn1iC+RpZW1BsLJPLTuFCH8sBhqsgWhJoVY7vBLvdNQM7f7uv5GSYPLrAmYLSqMENzmvHnWbPScxscKIOrpfgye07s1tw1H4UKaRTJ++pDvsp/B4fQEWihDXelK5rhlRNjJqnedB4VAj0e9757X+bmtASYlmeWj5DuFrWZfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765906232; c=relaxed/simple;
-	bh=61Lwl7zv4haxPqHfSqiilbhWMNHGecr1ePxw9uQzKOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeVOXlTfPtwpcfk6YI/EN86vuStZXv2ib6JXgwhO9u9AB6DF3xeFw7V/BUZzm1geW55ErfB63NmeN90kr9wY/3ZqPx0CVYU9pBhdzKV4k7A1ZAVbMaoR7v6vgK1fIpWmQH44018dr/6/x932LlfjgP/CUhAKQPfXi4ZLTHty3Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=uqOJClMo; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=SdXPrR69PiW1QRePlnjbjr3is4+sa0ZSjp8rFZYxSTs=; b=uqOJClMoEr6DuCRkSS/Mqp64HB
-	vKlbKweACwbPVG7NdDwQsGWAwCUOYiGCuNN88a5dlGneCi4GCnugk9Gk1m5NK1CElc/896LlI8ov3
-	bPa0Nd5MIiZoiz9iAoF60xcI8w7u9SbzdK2c4Q1fuPP21GbKoWiB8MgbMKVw/mRJOfPtZ4gNfa6wM
-	JmlUDyk/+q3jzAPmVhms3P3LWDLWVXu9piesk+BpCE/8/v9CpHvGydyN8E8CRM7M8/EJ9VUDMsJCx
-	ZDTdOfW0JUbC2ja+xBGkwNSOp47NmEBZXmG3oTa9xxCRGyRESl/iFsJde9vPHg27Wr6z1In51eh6U
-	0Rjg4qgg==;
-Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vVYsY-00000005cDG-1OuB;
-	Tue, 16 Dec 2025 17:30:30 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Carlos Maiolino <cem@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] xfs: fix the zoned RT growfs check for zone alignment
-Date: Tue, 16 Dec 2025 18:30:09 +0100
-Message-ID: <20251216173014.844835-3-hch@lst.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251216173014.844835-1-hch@lst.de>
-References: <20251216173014.844835-1-hch@lst.de>
+	s=arc-20240116; t=1765908602; c=relaxed/simple;
+	bh=n/zCGn8MSpbsfzlqfdAPcwcnS+dhp1/iQD+17iYwvlQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XhdLAW7hKtVca6SrDnkgWhSTAS4OVXbg5vVXvDvTrCEnHfQvGS7641yjnKs+iCgajqhbzmcWTRXVQahCI9n3/RFzU7zSEwoH4m1+uz8dWV0gVU98WXD2yVIHAyEkE4xpJJMU1CdHl6ik04QGgaMPf/JXLqLC7h/iUe7B76VsgQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kffuiUvV; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765908600; x=1797444600;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=n/zCGn8MSpbsfzlqfdAPcwcnS+dhp1/iQD+17iYwvlQ=;
+  b=kffuiUvVhld6djEtobEyWszGTsXqBf7DxHeAWNMrb3lbuJAA6IYaMGKo
+   MizefhbbntMaU6uQKkd/FiXskdB35PTDscc8ybJ4yYIiBnZ+vNDCmxnSV
+   WPONAY7JAYPWSSseJjGq3gWK7jQssAJQkIscMJUceDiQLMOcNO3doXck/
+   GqWCGUK9Yq6ioszuDOoG217fR9UzePGTVRGH4IB10jW47F6KfG9xItIMQ
+   q6/ckjw6HN4t84ZOQcWLvTvSm9OA/N41wV16uD3RO6M4pUJcGaqPr4Z6t
+   H2OCIyIqd9uWFlck9ChN9ui8/f3bbyfjuiIu9l2ZgUrr3eJsbE7Q6h8KO
+   w==;
+X-CSE-ConnectionGUID: O8HRaFunQrStnT3cpoaQyQ==
+X-CSE-MsgGUID: FgOGonaPQAajQbRtTWaaGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="79204038"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="79204038"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 10:09:59 -0800
+X-CSE-ConnectionGUID: qIzyxcT8QjONRAaX08Cfrg==
+X-CSE-MsgGUID: HIzCeAVZTFmE1iQJrJFhWw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="203198583"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.161])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 10:09:55 -0800
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	=?UTF-8?q?=EA=B9=80=EA=B0=95=EB=AF=BC?= <km.kim1503@gmail.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH v5] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer
+Date: Tue, 16 Dec 2025 19:09:01 +0100
+Message-ID: <20251216180900.54294-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,63 +79,162 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-The grofs code for zoned RT subvolums already tries to check for zone
-alignment, but gets it wrong by using the old instead of the new mount
-structure.
+Initialize the eb.vma array with values of 0 when the eb structure is
+first set up. In particular, this sets the eb->vma[i].vma pointers to
+NULL, simplifying cleanup and getting rid of the bug described below.
 
-Fixes: 01b71e64bb87 ("xfs: support growfs on zoned file systems")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.15
+During the execution of eb_lookup_vmas(), the eb->vma array is
+successively filled up with struct eb_vma objects. This process includes
+calling eb_add_vma(), which might fail; however, even in the event of
+failure, eb->vma[i].vma is set for the currently processed buffer.
+
+If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+prompts a call to eb_release_vmas() to clean up the mess. Since
+eb_lookup_vmas() might fail during processing any (possibly not first)
+buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+at what point did the lookup function fail.
+
+In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+current one needs to be cleaned up by eb_release_vmas() at this point,
+so the next one is set. If eb_add_vma() fails, neither the current nor
+the next vma is set to NULL, which is a source of a NULL deref bug
+described in the issue linked in the Closes tag.
+
+When entering eb_lookup_vmas(), the vma pointers are set to the slab
+poison value, instead of NULL. This doesn't matter for the actual
+lookup, since it gets overwritten anyway, however the eb_release_vmas()
+function only recognizes NULL as the stopping value, hence the pointers
+are being set to NULL as they go in case of intermediate failure. This
+patch changes the approach to filling them all with NULL at the start
+instead, rather than handling that manually during failure.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
+Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+Reported-by: Gangmin Kim <km.kim1503@gmail.com>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 ---
- fs/xfs/xfs_rtalloc.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+I messed up the continuity in previous revisions; the original patch
+was sent as [1], and the first revision (which I didn't mark as v2 due
+to the title change) was sent as [2].
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 6907e871fa15..e063f4f2f2e6 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -1255,12 +1255,10 @@ xfs_growfs_check_rtgeom(
- 	min_logfsbs = min_t(xfs_extlen_t, xfs_log_calc_minimum_size(nmp),
- 			nmp->m_rsumblocks * 2);
- 
--	kfree(nmp);
--
- 	trace_xfs_growfs_check_rtgeom(mp, min_logfsbs);
- 
- 	if (min_logfsbs > mp->m_sb.sb_logblocks)
--		return -EINVAL;
-+		goto out_inval;
- 
- 	if (xfs_has_zoned(mp)) {
- 		uint32_t	gblocks = mp->m_groups[XG_TYPE_RTG].blocks;
-@@ -1268,16 +1266,20 @@ xfs_growfs_check_rtgeom(
- 
- 		if (rextsize != 1)
- 			return -EINVAL;
--		div_u64_rem(mp->m_sb.sb_rblocks, gblocks, &rem);
-+		div_u64_rem(nmp->m_sb.sb_rblocks, gblocks, &rem);
- 		if (rem) {
- 			xfs_warn(mp,
- "new RT volume size (%lld) not aligned to RT group size (%d)",
--				mp->m_sb.sb_rblocks, gblocks);
--			return -EINVAL;
-+				nmp->m_sb.sb_rblocks, gblocks);
-+			goto out_inval;
+This is the full current changelog:
+
+v5:
+   - improve style and fix nits in commit log (Andi)
+   - fix typos and style in the code and comments (Andi)
+   - set args->buffer_count + 1 values to 0 instead of just
+     args->buffer_count (Andi)
+v4:
+   - delete an empty line (Janusz), reword the comment a bit (Krzysztof,
+     Janusz)
+v3:
+   - use memset() to fill the entire eb.vma array with zeros instead of
+   looping through the elements (Janusz)
+   - add a comment clarifying the mechanism of the initial allocation (Janusz)
+   - change the commit log again, including title
+   - rearrange the tags to keep checkpatch happy
+v2:
+   - set the eb->vma[i].vma pointers to NULL during setup instead of
+     ad-hoc at failure (Janusz)
+   - romanize the reporter's name (Andi, offline)
+   - change the commit log, including title
+
+[1] https://patchwork.freedesktop.org/series/156832/
+[2] https://patchwork.freedesktop.org/series/158036/
+
+ .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 37 +++++++++----------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index b057c2fa03a4..d49e96f9be51 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
+ 		if (IS_ERR(vma)) {
+ 			err = PTR_ERR(vma);
+-			goto err;
++			return err;
  		}
+ 
+ 		err = eb_validate_vma(eb, &eb->exec[i], vma);
+ 		if (unlikely(err)) {
+ 			i915_vma_put(vma);
+-			goto err;
++			return err;
+ 		}
+ 
+ 		err = eb_add_vma(eb, &current_batch, i, vma);
+@@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 
+ 		if (i915_gem_object_is_userptr(vma->obj)) {
+ 			err = i915_gem_object_userptr_submit_init(vma->obj);
+-			if (err) {
+-				if (i + 1 < eb->buffer_count) {
+-					/*
+-					 * Execbuffer code expects last vma entry to be NULL,
+-					 * since we already initialized this entry,
+-					 * set the next value to NULL or we mess up
+-					 * cleanup handling.
+-					 */
+-					eb->vma[i + 1].vma = NULL;
+-				}
+-
++			if (err)
+ 				return err;
+-			}
+ 
+ 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
+ 			eb->args->flags |= __EXEC_USERPTR_USED;
+@@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
  	}
  
-+	kfree(nmp);
  	return 0;
-+out_inval:
-+	kfree(nmp);
-+	return -EINVAL;
+-
+-err:
+-	eb->vma[i].vma = NULL;
+-	return err;
  }
  
- /*
+ static int eb_lock_vmas(struct i915_execbuffer *eb)
+@@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
+ 
+ 	eb.exec = exec;
+ 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+-	eb.vma[0].vma = NULL;
++	memset(eb.vma, 0, (args->buffer_count + 1) * sizeof(struct eb_vma));
++
+ 	eb.batch_pool = NULL;
+ 
+ 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+@@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
+ 	if (err)
+ 		return err;
+ 
+-	/* Allocate extra slots for use by the command parser */
++	/*
++	 * Allocate extra slots for use by the command parser.
++	 *
++	 * Note that this allocation handles two different arrays (the
++	 * exec2_list array, and the eventual eb.vma array introduced in
++	 * i915_gem_do_execbuffer()), that reside in virtually contiguous
++	 * memory. Also note that the allocation intentionally doesn't fill the
++	 * area with zeros, because the exec2_list part doesn't need to be, as
++	 * it's immediately overwritten by user data a few lines below.
++	 * However, the eb.vma part is explicitly zeroed later in
++	 * i915_gem_do_execbuffer().
++	 */
+ 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+ 				    __GFP_NOWARN | GFP_KERNEL);
+ 	if (exec2_list == NULL) {
 -- 
-2.47.3
+2.45.2
 
 
