@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C52CC4A07
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E51CC2990
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B14F308F78B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28DEA30652ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E263563DF;
-	Tue, 16 Dec 2025 12:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8413D34F254;
+	Tue, 16 Dec 2025 11:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea6COSOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c00wTjaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FC234844D;
-	Tue, 16 Dec 2025 12:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403CA34E74D;
+	Tue, 16 Dec 2025 11:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888169; cv=none; b=Cmt5kk5hIwykJMn6M+8hymUJm7FU0i1f+0IMe4o2a75puDx4GA8Zue9jRT2ZiLVQz49v15E2EKw9nxowAvEDI01RSLDIFMtulDEp6F8xfA4qLj+djIwjisrHkBq9AVpzeZpt8Tscf4iIZO2eyU2RuPxuGCATq48RurJPD3y6dh8=
+	t=1765886136; cv=none; b=STnxPISHwKYW+qlU8LWrf6pTao8gS0xXFUwyGcLC7DlVtKBuO/kuE0BaPmEJxcsWpsdeqONN+OdWMySs+SkGzabABSJyUT/1Cebscffn5TjKT1OT67J4Po8AhR50sBeVGtFMSAH4Jc9tDkI9xQ6qFbGaFS7l8ySy5xAO1/qLeg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888169; c=relaxed/simple;
-	bh=FX9GDEEEBVORWPSfRHxlh4atdYnYVAgmkK5MflrN2eM=;
+	s=arc-20240116; t=1765886136; c=relaxed/simple;
+	bh=yCQTXJbDMT6shHYGVJd9Ak5PP9eTZBnZl8rhHnBj0Wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fq0lnJSB35jQ/EyGVuLEwsjmRaCcCVmYSRdwa9gyT8flBls79uulAXABkXAFmHQUtNcnOIzofFj3vpEjM3J6YRwHghRUVg+oq6Ob/FaKU99DWPO5wJnwTJqRFqUnhU+ni8xJ+WL1E51CdT7mjrFLR8fdPw8vm76Ibhi3uwYtFFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea6COSOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC36BC4CEF1;
-	Tue, 16 Dec 2025 12:29:28 +0000 (UTC)
+	 MIME-Version; b=pVDTWhvLy2loiIetVOmkjTEf21gnkDekb9Jpr4Ehq8w64uNtneOTLPfZVfchcPCZipQRjaCbhcyAGMFQM7dl4/uUYSA54ymI52qvik0mNYveZX0ovucz5h/eNVEmd9A8heD048oUMIWwHzBkvwqoINDhesC3Iwl6rfUYbZoZbsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c00wTjaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF609C4CEF1;
+	Tue, 16 Dec 2025 11:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888169;
-	bh=FX9GDEEEBVORWPSfRHxlh4atdYnYVAgmkK5MflrN2eM=;
+	s=korg; t=1765886136;
+	bh=yCQTXJbDMT6shHYGVJd9Ak5PP9eTZBnZl8rhHnBj0Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ea6COSOjZMunqMfJ7qvjn3IP3XcBlqSEhGRfb3TJlVsOnQX8JkRX87fcFRdctjZTl
-	 UeYARdz1JCFiCROTq7X0On/iS4gsDsvU4OuxSYp+X/1pjfuRpcGal0kZAj2wNJXwgY
-	 YbdDG9YzE64t4qY/OWnk9+wFrB05AyFoA2ggNCis=
+	b=c00wTjaKg6Dtty9tBCcWEi5bwfdyW/4wPe++W7+ri0+u0ykIxJRxtCk/KvJP27ei5
+	 JkhP/E2UcrQpfcTf9KZNO29aAhy6dmQfALwZZvPhoE+Mvhu3/X6zl11Tjw+nChLKZE
+	 crq+lGnNTM3JevCfHQ+ZCHthKQIXToHQM2PWIJg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jan Kara <jack@suse.cz>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 420/614] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
-Date: Tue, 16 Dec 2025 12:13:07 +0100
-Message-ID: <20251216111416.588037678@linuxfoundation.org>
+Subject: [PATCH 6.17 347/507] iomap: always run error completions in user context
+Date: Tue, 16 Dec 2025 12:13:08 +0100
+Message-ID: <20251216111358.031523432@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
+[ Upstream commit ddb4873286e03e193c5a3bebb5fc6fa820e9ee3a ]
 
-Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
-matching groups. This is more than what is defined as maximum by the ARM
-SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
-Limit the SMR groups to 128") disabled use of the additional groups because
-they don't exhibit the same behavior as the architecture supported ones.
+At least zonefs expects error completions to be able to sleep.  Because
+error completions aren't performance critical, just defer them to workqueue
+context unconditionally.
 
-It seems like this is just another quirk of the hypervisor: When running
-bare-metal without the hypervisor, the additional groups appear to behave
-just like all others. The boot firmware uses some of the additional groups,
-so ignoring them in this situation leads to stream match conflicts whenever
-we allocate a new SMR group for the same SID.
-
-The workaround exists primarily because the bypass quirk detection fails
-when using a S2CR register from the additional matching groups, so let's
-perform the test with the last reliable S2CR (127) and then limit the
-number of SMR groups only if we detect that we are running below the
-hypervisor (because of the bypass quirk).
-
-Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 8dcc1a9d90c1 ("fs: New zonefs file system")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251113170633.1453259-3-hch@lst.de
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ fs/iomap/direct-io.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 57c097e876130..c939d0856b719 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -431,17 +431,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
+index 46aa85af13dc5..97c40e7df7215 100644
+--- a/fs/iomap/direct-io.c
++++ b/fs/iomap/direct-io.c
+@@ -179,7 +179,18 @@ static void iomap_dio_done(struct iomap_dio *dio)
  
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
--	 * 128 stream matching groups. For unknown reasons, the additional
--	 * groups don't exhibit the same behavior as the architected registers,
--	 * so limit the groups to 128 until the behavior is fixed for the other
--	 * groups.
-+	 * 128 stream matching groups. The additional registers appear to have
-+	 * the same behavior as the architected registers in the hardware.
-+	 * However, on some firmware versions, the hypervisor does not
-+	 * correctly trap and emulate accesses to the additional registers,
-+	 * resulting in unexpected behavior.
-+	 *
-+	 * If there are more than 128 groups, use the last reliable group to
-+	 * detect if we need to apply the bypass quirk.
- 	 */
--	if (smmu->num_mapping_groups > 128) {
--		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
--		smmu->num_mapping_groups = 128;
--	}
--
--	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+	if (smmu->num_mapping_groups > 128)
-+		last_s2cr = ARM_SMMU_GR0_S2CR(127);
-+	else
-+		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
- 
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
-@@ -464,6 +466,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 
- 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
- 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
+ 		WRITE_ONCE(dio->submit.waiter, NULL);
+ 		blk_wake_io_task(waiter);
+-	} else if (dio->flags & IOMAP_DIO_INLINE_COMP) {
++		return;
++	}
 +
-+		if (smmu->num_mapping_groups > 128) {
-+			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+			smmu->num_mapping_groups = 128;
-+		}
- 	}
- 
- 	for (i = 0; i < smmu->num_mapping_groups; i++) {
++	/*
++	 * Always run error completions in user context.  These are not
++	 * performance critical and some code relies on taking sleeping locks
++	 * for error handling.
++	 */
++	if (dio->error)
++		dio->flags &= ~IOMAP_DIO_INLINE_COMP;
++
++	if (dio->flags & IOMAP_DIO_INLINE_COMP) {
+ 		WRITE_ONCE(iocb->private, NULL);
+ 		iomap_dio_complete_work(&dio->aio.work);
+ 	} else if (dio->flags & IOMAP_DIO_CALLER_COMP) {
 -- 
 2.51.0
 
