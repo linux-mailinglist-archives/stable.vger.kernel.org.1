@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-202471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CFDCC4904
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AD7CC2586
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 465DE300FB39
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C144E30DF4B9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD1336D4E0;
-	Tue, 16 Dec 2025 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35A7343D88;
+	Tue, 16 Dec 2025 11:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxV2kLhn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjDLUp2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6188C36CE11;
-	Tue, 16 Dec 2025 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1913446A2;
+	Tue, 16 Dec 2025 11:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888009; cv=none; b=I1Zetnb+Ck/vJrK3vU8GEfJCVVSJDTBQu0CI+13FkvZteSinDAlNECvjlXW4STKrO4MShSqaD0eHJmO9/AMpOeVexZFlx57E+Tfmu8Yp+2q12S54rqefuZl2xrYWRKf2Uz9HNU+0SU7WBNi8eb+U2gbTNKSslOnPQftY7/hboOU=
+	t=1765884476; cv=none; b=LTV+C823fEanrgXRN10/xo1zMHDGUl9H5nFKT1GQnGBFY9UXhSNsLL/myJMv44U7zzDX9+w0/gKpAqtuwY2zMEyCEweJ7OczjLB7IE5+9f8npVfLbEOiyZuhcKAcdrpKcGCNXb2M9w+ABwwaWIhjSY7kRwnsICY3B0MlXz35iM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888009; c=relaxed/simple;
-	bh=ne8G44BwdBCyrGSVXIfuWljBDLtcNqPdCiAV8LNrWIs=;
+	s=arc-20240116; t=1765884476; c=relaxed/simple;
+	bh=HZ0EpgFptG2R6qHTl05zfiLjL6M8KvyZNZz5QNh5y+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsTn4JjTRcZhLZX6UwocPmmu/5n68Z5+AX/otiIQnxclrCoLxojkyK/1UmAXeXSuLfdTp3ptosqekKrYWJ2MMycNpT+FN6huBFKPlZiqgWOh5h7dhze/7lyKiHU0jbCkJZHziSdEcWYlKI4lLH7xFawZRI0vqzR2aOgvPq5gpVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxV2kLhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6A0C4CEF1;
-	Tue, 16 Dec 2025 12:26:48 +0000 (UTC)
+	 MIME-Version; b=ptem7wtHevwvAFbJ7EuRYOFZ4kOYH9m4FNwK0oicJGbyjxmzknlj3Grn3YqIcQwOi8vKLZRXre4JL52JZFNsyngS9tfWniVbV/9uJYWyQnUMoQHbfmg6Ff0lettdH6sgyap8khbuxp0H7b1R0ALV0uzjT9RoshS5HHdUzcdeCFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjDLUp2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1F5C4CEF1;
+	Tue, 16 Dec 2025 11:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888009;
-	bh=ne8G44BwdBCyrGSVXIfuWljBDLtcNqPdCiAV8LNrWIs=;
+	s=korg; t=1765884476;
+	bh=HZ0EpgFptG2R6qHTl05zfiLjL6M8KvyZNZz5QNh5y+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxV2kLhnGTGWm+YskHMsEyCx3oDkkeCKHvntrrcNos5z1m43AnM8zS5+4HEg9IegG
-	 Q4KgqxSl0InkpTeGDyziTsxNzSSYliGuvBiMZ0dVXrCRhNpTNLeTRUi/OAm3qIQnfp
-	 ame5T/QAmvjjj0zfle+bp5dDZXJHuHc2Hg1EvwfM=
+	b=CjDLUp2altoWo4UM4NjgQxq3L3+clL7nqGFxlBhZLX0XQp6gTn9LKYBM/4S7I5Ghv
+	 beIYQ/JmXU8DM2WeEL6nlJFALm9pCtcBdlnV3SII4Ab2eblTJNAD68WN1BAgj8xKfU
+	 xQx6eETDdusOiqS6hmxm/HVgCdO7UqBaIsFfFT1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianglei Nie <niejianglei2021@163.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 404/614] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
+Subject: [PATCH 6.12 204/354] usb: dwc2: fix hang during shutdown if set as peripheral
 Date: Tue, 16 Dec 2025 12:12:51 +0100
-Message-ID: <20251216111416.013193615@linuxfoundation.org>
+Message-ID: <20251216111328.310853537@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianglei Nie <niejianglei2021@163.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
+[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
 
-fbtft_probe_common() allocates a memory chunk for "info" with
-fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
-function returns without releasing the "info", which will lead to a
-memory leak.
+dwc2 on most platforms needs phy controller, clock and power supply.
+All of them must be enabled/activated to properly operate. If dwc2
+is configured as peripheral mode, then all the above three hardware
+resources are disabled at the end of the probe:
 
-Fix it by calling fbtft_framebuffer_release() when "display->buswidth
-== 0" is true.
+	/* Gadget code manages lowlevel hw on its own */
+	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc2_lowlevel_hw_disable(hsotg);
 
-Fixes: c296d5f9957c ("staging: fbtft: core support")
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
+But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
+level. This would result in hang during shutdown if dwc2 is configured
+as peripheral mode.
+
+Fix this hang by only disable and sync irq when lowlevel hw is enabled.
+
+Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/fbtft/fbtft-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/platform.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 9e7b84071174c..8a5ccc8ae0a18 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -1171,8 +1171,8 @@ int fbtft_probe_common(struct fbtft_display *display,
- 	par->pdev = pdev;
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 79ce88b5f07d9..fad6f68f86bd6 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -369,11 +369,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
+ {
+ 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
  
- 	if (display->buswidth == 0) {
--		dev_err(dev, "buswidth is not set\n");
--		return -EINVAL;
-+		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
-+		goto out_release;
- 	}
+-	dwc2_disable_global_interrupts(hsotg);
+-	synchronize_irq(hsotg->irq);
+-
+-	if (hsotg->ll_hw_enabled)
++	if (hsotg->ll_hw_enabled) {
++		dwc2_disable_global_interrupts(hsotg);
++		synchronize_irq(hsotg->irq);
+ 		dwc2_lowlevel_hw_disable(hsotg);
++	}
+ }
  
- 	/* write register functions */
+ /**
 -- 
 2.51.0
 
