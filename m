@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735C7CC23C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F112CC2893
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B100E3028306
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E5A53168793
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965432860D;
-	Tue, 16 Dec 2025 11:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE49345CBA;
+	Tue, 16 Dec 2025 11:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZBvtdNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8LeH2iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF72E54AA;
-	Tue, 16 Dec 2025 11:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CA9345CAB;
+	Tue, 16 Dec 2025 11:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884545; cv=none; b=PYDESC13thhG6YDZxaMyj+2azxKjP82jLp7nF0EpZ3kBugFZ5rMMusy5SQ4mqpJiuVYCxY8DE2a7i4p2YRIfWV7ElqNVbK2spBgDmkqE05HFCnlT7ur+ifh0vuITphnzYmzod+lnMtDTo1Dq8PbfFOj8m2BK6gSXQQeW11Vav2M=
+	t=1765886092; cv=none; b=INIgli7gTzMSZbIBOIs1xKAjloQACyKZNraoAQEq1tbwNoTcf9B9GFF2eVS9OXu97/xWTVd19dIJ/kc6eIpIhDlF+yPEWGRMSm31ihBl1cZJaqmFh93L+3b3juqD07b6XKhCvEQlPCIKuS3Fds9CC4Gi8cYVEwbsMx5Bn8YaKQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884545; c=relaxed/simple;
-	bh=JTBnZmwqCGMqdHTy5IJjV3iu9DYyTWN8FKJcHJ9SQ/8=;
+	s=arc-20240116; t=1765886092; c=relaxed/simple;
+	bh=+IPoJbWpHFDJCtW/DtCNwLlwTYLUynfPL91LrRe2vm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eakQ/o3WSjhxXP0nh4Dn/Cue+dCu7db4hKKUJCFCRSmQf3ZVGJdL3yAXKDsUFqzyckFAoolkK8rd08ewwiEg6clXEHR6ZOlDWf9LMgAUNVbfw6bvNelVD8jVtO9t+i3bHc/xKJ86L8l2VwzZznn1VowddmdtCY9zTAdnnT3rsgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZBvtdNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9AAC4CEF1;
-	Tue, 16 Dec 2025 11:29:04 +0000 (UTC)
+	 MIME-Version; b=MWPPOYbsnQtQO4EGVbo9Gnk0gVjIIQuMyVib8iMxUhMYrk3WV4wTVu73Z2fvdJaPf9FQQ3SfcDjlKGV4MbPZyQTKt7UmKpKkuHyFeAVf16Ye2Dvzu1dA0j8DcKnHSO6gd/G9cCoo+07fHyqurqBiekgpQcjipGSZyDn9qKLtwTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8LeH2iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A051C4CEF1;
+	Tue, 16 Dec 2025 11:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884544;
-	bh=JTBnZmwqCGMqdHTy5IJjV3iu9DYyTWN8FKJcHJ9SQ/8=;
+	s=korg; t=1765886092;
+	bh=+IPoJbWpHFDJCtW/DtCNwLlwTYLUynfPL91LrRe2vm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZBvtdNnXtOs3IJwhD96nAlEre8G43PUUzqTJqv2bYN2hp7M8Wt46Q04cYnQ4vTMr
-	 CbwVlU4Xbx37FHzPbzbnAY4BzYmXWiA05iAaw1rShETLDem76ciN9P/hIssxA/MKlc
-	 TWUJX4TnHEsjJhOC9VkxRRXpcR/c7Ad4xh96M7CU=
+	b=Z8LeH2iytm51FvJBQltS+cx3O2+sOcATQMdk1UCdi2/5283B/tH83Ipw0jZenVLys
+	 ihHZYjXgaDT/BymFsn0w1naFc/NdTvP82Es2wIxjCYRuw7KWPsXSjk75GFKnV+qDTJ
+	 pipeVyDNWKdJOcaYFn/5sVfP2RMr4uy7abtg7VFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ben Greear <greearb@candelatech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/354] crypto: starfive - Correctly handle return of sg_nents_for_len
+Subject: [PATCH 6.17 335/507] wifi: mt76: mt7996: skip deflink accounting for offchannel links
 Date: Tue, 16 Dec 2025 12:12:56 +0100
-Message-ID: <20251216111328.493308068@linuxfoundation.org>
+Message-ID: <20251216111357.600657756@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit e9eb52037a529fbb307c290e9951a62dd728b03d ]
+[ Upstream commit 4fe823b9ee0317b04ddc6d9e00fea892498aa0f2 ]
 
-The return value of sg_nents_for_len was assigned to an unsigned long
-in starfive_hash_digest, causing negative error codes to be converted
-to large positive integers.
+Do not take into account offchannel links for deflink accounting.
 
-Add error checking for sg_nents_for_len and return immediately on
-failure to prevent potential buffer overflows.
-
-Fixes: 7883d1b28a2b ("crypto: starfive - Add hash and HMAC support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a3316d2fc669f ("wifi: mt76: mt7996: set vif default link_id adding/removing vif links")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-4-259ebf11f654@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-hash.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-hash.c b/drivers/crypto/starfive/jh7110-hash.c
-index 2c60a1047bc39..c0b09ca1cc2ed 100644
---- a/drivers/crypto/starfive/jh7110-hash.c
-+++ b/drivers/crypto/starfive/jh7110-hash.c
-@@ -326,6 +326,7 @@ static int starfive_hash_digest(struct ahash_request *req)
- 	struct starfive_cryp_ctx *ctx = crypto_ahash_ctx(tfm);
- 	struct starfive_cryp_request_ctx *rctx = ahash_request_ctx(req);
- 	struct starfive_cryp_dev *cryp = ctx->cryp;
-+	int sg_len;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 04b1d5f871376..1bd0214a01b0e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -372,7 +372,8 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
  
- 	memset(rctx, 0, sizeof(struct starfive_cryp_request_ctx));
+ 	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, NULL);
  
-@@ -334,7 +335,10 @@ static int starfive_hash_digest(struct ahash_request *req)
- 	rctx->in_sg = req->src;
- 	rctx->blksize = crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
- 	rctx->digsize = crypto_ahash_digestsize(tfm);
--	rctx->in_sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
-+	sg_len = sg_nents_for_len(rctx->in_sg, rctx->total);
-+	if (sg_len < 0)
-+		return sg_len;
-+	rctx->in_sg_len = sg_len;
- 	ctx->rctx = rctx;
+-	if (mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
++	if (!mlink->wcid->offchannel &&
++	    mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
+ 		mvif->mt76.deflink_id = link_conf->link_id;
  
- 	return crypto_transfer_hash_request_to_engine(cryp->engine, req);
+ 	return 0;
+@@ -397,7 +398,8 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
+ 
+-	if (mvif->mt76.deflink_id == link_conf->link_id) {
++	if (!mlink->wcid->offchannel &&
++	    mvif->mt76.deflink_id == link_conf->link_id) {
+ 		struct ieee80211_bss_conf *iter;
+ 		unsigned int link_id;
+ 
 -- 
 2.51.0
 
