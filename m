@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C93CC257D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3ACC3A34
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:37:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D58F030B8C33
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D61EE30C68CD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D659F34165F;
-	Tue, 16 Dec 2025 11:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9304234B185;
+	Tue, 16 Dec 2025 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL56lVV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D25hMXdY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B5C340DB7;
-	Tue, 16 Dec 2025 11:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA534A76F;
+	Tue, 16 Dec 2025 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884763; cv=none; b=ogcZUguEG86lw5jeUdkPZzrMKpOmrBAGQykFl02U8wqUskSeNWIJXV4B8DwsbMpUNPsUIvZ11+7dy4M67ErdHwIrL4cXFMswkhfEO7m0LtPsoKuUJPWzIY0tilQaXnWp/BLz9GflqkoSV9kJ8EUsYEoCuEcRF59mrG73VaHXUQU=
+	t=1765886379; cv=none; b=reoTc7uoenesV/5f71xJJuQyibvyIT70sz2ve7k+H9zJ7QtG0LOIhcd8UPTRSw5oJOx/YkTSN5faVgrNEgsu79uVFVCPRGGI6NAdhc64a5a2xcL1HOO9Uk8Y8D0AX71J1MRnsY3ZZcMugG1Xc+uwrIlZTxcg7wRoJ7WTGbFMYCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884763; c=relaxed/simple;
-	bh=O3R3/0wjEwqQ2PBqcl7Nxlo2VamNyXSV6+hsWuYj7h4=;
+	s=arc-20240116; t=1765886379; c=relaxed/simple;
+	bh=Fr1QEZwFbQLRtk0w3g/dh5gFTcLXsq5y077fyPEGdpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qWzjbmCb76WBFiuqtp1FStECgqfwtaS2hOF8j1g3v9mFopXEEXJnxGIf7dlfc8VC1XMzpeYsgbHYHsrBrspYy0fS9kPLGQQT8ylDi9EBG4/oAyawD1CyCO+fCLc2rrZkEkSgCulBbvTH+Ex9vk+TRooRLGfmLSmICG6WtVv2CZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL56lVV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002CDC4CEF1;
-	Tue, 16 Dec 2025 11:32:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iLYbSSOlZGKXMBEHbYT0n6xb5kX5JZmdrJn2YmW3982hG61rF/j+raTT6x173p1qBjjEJbtnMbbSQBJZV1x3aHGUWCw7zoGOJj/aP03gTQvsALS5N20L28zL10U3dN8OAB/L9YAh4Fwr4GrCj3NByF57xpmFRKVAB6WEwuKxZYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D25hMXdY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E5C16AAE;
+	Tue, 16 Dec 2025 11:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884763;
-	bh=O3R3/0wjEwqQ2PBqcl7Nxlo2VamNyXSV6+hsWuYj7h4=;
+	s=korg; t=1765886379;
+	bh=Fr1QEZwFbQLRtk0w3g/dh5gFTcLXsq5y077fyPEGdpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mL56lVV6N//P5O2gA2GmAekX6xS8CthmrXPjWlj55zx7Vcs75ksr4yk/uUPf7kqII
-	 8YAiBdWjkA7j5Cgqq7+Vv+y2t2KZjaau3ZTEwgr6GoIfPY5Yx+qXq6jPGFuimC4N2R
-	 froQiydZ1zicuQ8o/7sSahiLaznaCQTgdoeh8d1k=
+	b=D25hMXdYS5jAYDXPR8UIyroZBh5S8NHuY2neYW9DZacY77XFESjxSxAJYHd6PucWm
+	 hgQf05NJujmQ8KcBkmTsAdozAz1nIFo/NVlkLU8ILDWmU5q2IrGdusCVGwNWpsK4gm
+	 o3fqF5+P6wbO3SVFRImgG94aWRKOjd3M/4dvdM3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Xi Pardee <xi.pardee@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/354] platform/x86:intel/pmc: Update Arrow Lake telemetry GUID
+Subject: [PATCH 6.17 418/507] net: dsa: b53: use same ARL search result offset for BCM5325/65
 Date: Tue, 16 Dec 2025 12:14:19 +0100
-Message-ID: <20251216111331.490813612@linuxfoundation.org>
+Message-ID: <20251216111400.605149435@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Pardee <xi.pardee@linux.intel.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 644ab3bc98ee386f178d5209ae8170b3fac591aa ]
+[ Upstream commit 8e46aacea4264bcb8d4265fb07577afff58ae78d ]
 
-Update ARL_PMT_DMU_GUID value. Arrow Lake PMT DMU GUID has been updated
-after it was add to the driver. This updates ensures that the die C6
-value is available in the debug filesystem.
+BCM5365's search result is at the same offset as BCM5325's search
+result, and they (mostly) share the same format, so switch BCM5365 to
+BCM5325's arl ops.
 
-Bugzilla Link: https://bugzilla.kernel.org/show_bug.cgi?id=220421
-Fixes: 83f168a1a437 ("platform/x86/intel/pmc: Add Arrow Lake S support to intel_pmc_core driver")
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Xi Pardee <xi.pardee@linux.intel.com>
-Link: https://patch.msgid.link/20251014214548.629023-2-xi.pardee@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20251128080625.27181-4-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 18 +-----------------
+ drivers/net/dsa/b53/b53_regs.h   |  4 +---
+ 2 files changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
-index b9d3291d0bf2c..afc07427e39ef 100644
---- a/drivers/platform/x86/intel/pmc/core.h
-+++ b/drivers/platform/x86/intel/pmc/core.h
-@@ -277,7 +277,7 @@ enum ppfear_regs {
- /* Die C6 from PUNIT telemetry */
- #define MTL_PMT_DMU_DIE_C6_OFFSET		15
- #define MTL_PMT_DMU_GUID			0x1A067102
--#define ARL_PMT_DMU_GUID			0x1A06A000
-+#define ARL_PMT_DMU_GUID			0x1A06A102
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index dedbd53412871..68e9162087ab4 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2093,16 +2093,6 @@ static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry_25(ent, mac_vid);
+ }
  
- #define LNL_PMC_MMIO_REG_LEN			0x2708
- #define LNL_PMC_LTR_OSSE			0x1B88
+-static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
+-				   struct b53_arl_entry *ent)
+-{
+-	u64 mac_vid;
+-
+-	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
+-		   &mac_vid);
+-	b53_arl_to_entry_25(ent, mac_vid);
+-}
+-
+ static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
+ 				   struct b53_arl_entry *ent)
+ {
+@@ -2699,12 +2689,6 @@ static const struct b53_arl_ops b53_arl_ops_25 = {
+ 	.arl_search_read = b53_arl_search_read_25,
+ };
+ 
+-static const struct b53_arl_ops b53_arl_ops_65 = {
+-	.arl_read_entry = b53_arl_read_entry_25,
+-	.arl_write_entry = b53_arl_write_entry_25,
+-	.arl_search_read = b53_arl_search_read_65,
+-};
+-
+ static const struct b53_arl_ops b53_arl_ops_89 = {
+ 	.arl_read_entry = b53_arl_read_entry_89,
+ 	.arl_write_entry = b53_arl_write_entry_89,
+@@ -2761,7 +2745,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
+-		.arl_ops = &b53_arl_ops_65,
++		.arl_ops = &b53_arl_ops_25,
+ 	},
+ 	{
+ 		.chip_id = BCM5389_DEVICE_ID,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index d9026cf865549..f2a3696d122fa 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -370,10 +370,8 @@
+ #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
+ #define B53_ARL_SRCH_RSLT_MACVID_89	0x33
+ 
+-/* Single register search result on 5325 */
++/* Single register search result on 5325/5365 */
+ #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
+-/* Single register search result on 5365 */
+-#define B53_ARL_SRCH_RSTL_0_MACVID_65	0x30
+ 
+ /* ARL Search Data Result (32 bit) */
+ #define B53_ARL_SRCH_RSTL_0		0x68
 -- 
 2.51.0
 
