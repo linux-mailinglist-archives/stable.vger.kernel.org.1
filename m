@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF70FCC3222
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D89CCC245D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 500B230073CA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE5C0302FB53
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5E939A127;
-	Tue, 16 Dec 2025 12:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07999341AC1;
+	Tue, 16 Dec 2025 11:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXBZD1yf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg9x3lpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886D4338F26;
-	Tue, 16 Dec 2025 12:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C4D34167A;
+	Tue, 16 Dec 2025 11:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888416; cv=none; b=CK3FLdjJkXGXZFPao76PhTQOsiWM9jRtXEnbSpEZihCkoVtbm8GZKW1osixTJORQ7upQ4huEQKkLTS+LpN7BPk1535SEsv3kh/lwBNv3WutY9DOImM+8/a6d+c44Mq8+mpEB5RL4Q6nzK9SHT+3u3aHyjs2mk6chk0BwFeKIsns=
+	t=1765884776; cv=none; b=OAnR5hLP2HU9TWAomWEOzpmhvfKDmDGF2Oqkw0gjhMy7qXo17A3kbUlb7SHsE0MyETFG1mCM3s9+9S14mcmd7U6Yb7fJD4p9xkJLfmFJBxWNXs66ELo2pNuWz2HJ3XDcm2W1NfQrSMf0GBcfz2Mo0RzGGccYr7ObCDQvIwhSKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888416; c=relaxed/simple;
-	bh=UKitMWhUsgzOFoNZ93HxCOFyo4JspOqSnvF3riNMz/U=;
+	s=arc-20240116; t=1765884776; c=relaxed/simple;
+	bh=y3FIiBMbQmxa1DO7ScvzZ7VhCUFcSfGijobdIcI5YwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoqL19JO+Rex0KcXBA1lV8NCfgpi23J1UsFrppdZ0eJYSK9rgLsPUQl3SY9KemNBEel81UheizZmwj1iLtMxpY4AiC1ppGdnem+gq/IgQI0CaQiAacZGOoHKFnTB5brzAksfhrzcU04UlvEoj9nrUCBXGVT4lO4VNG7r+yVooYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXBZD1yf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F01C4CEF1;
-	Tue, 16 Dec 2025 12:33:35 +0000 (UTC)
+	 MIME-Version; b=LoWxgU0m+C/tjxiR5nBDFFrhXwpvDO99J4Esoewf50oJvs2pOYEjXyPCaHbPxE3DxdEIpbbu9JWysBfnRlbPwbBLLc+4ktOI3SJbyQcHDhDrk/9iIrYJLKd+5nzlvtLGr4aBecJ6WiVXyAAUqh0uYuQalcQiw1/oJgHrpeLzZI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg9x3lpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B114C4CEF1;
+	Tue, 16 Dec 2025 11:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888416;
-	bh=UKitMWhUsgzOFoNZ93HxCOFyo4JspOqSnvF3riNMz/U=;
+	s=korg; t=1765884776;
+	bh=y3FIiBMbQmxa1DO7ScvzZ7VhCUFcSfGijobdIcI5YwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXBZD1yfCG9StO5BOK2wcVV+FmFvmFv+sc+4plBRshF1kJrPPT4zdYTT5rV/ymLZU
-	 lYJEndJcCyRav39Y5IvSE7rP9o/dMxHjw31BhtaAaURS7Co1iNxW1DDUjj8TYFNB9H
-	 Z3bfyz9ftzkX2XlQPnG8wEvP26twdQ0EvE0FboQI=
+	b=rg9x3lpN9z0YptaxvAcCEjuDTZEh5rPltBRHP5cHAqdLa02gZCNRnhTK4EnXptbfc
+	 aMM8aUzhQ4Zkwg9mJOIZU58Wa7vTo9Wqbn5CdCX3Y6/I8x1Njia6BotHnf0LWonpLa
+	 W17XpH4ycHRIZ3ADKbI/9ewwFT+jizLqNQOUUa0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 495/614] mtd: lpddr_cmds: fix signed shifts in lpddr_cmds
-Date: Tue, 16 Dec 2025 12:14:22 +0100
-Message-ID: <20251216111419.305352124@linuxfoundation.org>
+Subject: [PATCH 6.12 296/354] f2fs: add carve_out sysfs node
+Date: Tue, 16 Dec 2025 12:14:23 +0100
+Message-ID: <20251216111331.635684902@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit c909fec69f84b39e63876c69b9df2c178c6b76ba ]
+[ Upstream commit d7b549def0eb42a950eebd3bd5343f5c8088c305 ]
 
-There are several places where a value of type 'int' is shifted by
-lpddr->chipshift. lpddr->chipshift is derived from QINFO geometry and
-might reach 31 when QINFO reports a 2 GiB size - the maximum supported by
-LPDDR(1) compliant chips. This may cause unexpected sign-extensions when
-casting the integer value to the type of 'unsigned long'.
+For several zoned storage devices, vendors will provide extra space
+which was used for device level GC than specs and F2FS can use this
+space for filesystem level GC. To do that, we can reserve the space
+using reserved_blocks. However, it is not enough, since this extra
+space should not be shown to users. So, with this new sysfs node,
+we can hide the space by substracting reserved_blocks from total
+bytes.
 
-Use '1UL << lpddr->chipshift' and cast 'j' to unsigned long before
-shifting so the computation is performed at the destination width.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c68264711ca6 ("[MTD] LPDDR Command set driver")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/lpddr/lpddr_cmds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-f2fs | 10 ++++++++++
+ fs/f2fs/f2fs.h                          |  3 +++
+ fs/f2fs/super.c                         |  3 ++-
+ fs/f2fs/sysfs.c                         |  2 ++
+ 4 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/lpddr/lpddr_cmds.c b/drivers/mtd/lpddr/lpddr_cmds.c
-index 290fd0119e984..cd37d58abacb7 100644
---- a/drivers/mtd/lpddr/lpddr_cmds.c
-+++ b/drivers/mtd/lpddr/lpddr_cmds.c
-@@ -79,7 +79,7 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
- 		mutex_init(&shared[i].lock);
- 		for (j = 0; j < lpddr->qinfo->HWPartsNum; j++) {
- 			*chip = lpddr->chips[i];
--			chip->start += j << lpddr->chipshift;
-+			chip->start += (unsigned long)j << lpddr->chipshift;
- 			chip->oldstate = chip->state = FL_READY;
- 			chip->priv = &shared[i];
- 			/* those should be reset too since
-@@ -559,7 +559,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 			break;
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index 81deae2af84d2..c7ebda8c677e5 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -835,3 +835,13 @@ Contact:	"Jaegeuk Kim" <jaegeuk@kernel.org>
+ Description:	It reclaims the given KBs of file-backed pages registered by
+ 		ioctl(F2FS_IOC_DONATE_RANGE).
+ 		For example, writing N tries to drop N KBs spaces in LRU.
++
++What:		/sys/fs/f2fs/<disk>/carve_out
++Date:		March 2025
++Contact:	"Daeho Jeong" <daehojeong@google.com>
++Description:	For several zoned storage devices, vendors will provide extra space which
++		was used for device level GC than specs and F2FS can use this space for
++		filesystem level GC. To do that, we can reserve the space using
++		reserved_blocks. However, it is not enough, since this extra space should
++		not be shown to users. So, with this new sysfs node, we can hide the space
++		by substracting reserved_blocks from total bytes.
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index f2f3e02b6fd4c..08bab3de5c50d 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1813,6 +1813,9 @@ struct f2fs_sb_info {
+ 	u64 committed_atomic_block;
+ 	u64 revoked_atomic_block;
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 		/* get the chip */
-@@ -575,7 +575,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 		len -= thislen;
++	/* carve out reserved_blocks from total blocks */
++	bool carve_out;
++
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+ 	struct kmem_cache *page_array_slab;	/* page array entry */
+ 	unsigned int page_array_slab_size;	/* default page array slab size */
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 3be4e8bcbd138..ee8352246ce47 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1839,7 +1839,8 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	buf->f_blocks = total_count - start_count;
  
- 		ofs = 0;
--		last_end += 1 << lpddr->chipshift;
-+		last_end += 1UL << lpddr->chipshift;
- 		chipnum++;
- 		chip = &lpddr->chips[chipnum];
- 	}
-@@ -601,7 +601,7 @@ static int lpddr_unpoint (struct mtd_info *mtd, loff_t adr, size_t len)
- 			break;
+ 	spin_lock(&sbi->stat_lock);
+-
++	if (sbi->carve_out)
++		buf->f_blocks -= sbi->current_reserved_blocks;
+ 	user_block_count = sbi->user_block_count;
+ 	total_valid_node_count = valid_node_count(sbi);
+ 	avail_node_count = sbi->total_node_count - F2FS_RESERVED_NODE_NUM;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 5c4fd0f3acab7..9b4768b1efac5 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -1145,6 +1145,7 @@ F2FS_SBI_GENERAL_RW_ATTR(max_read_extent_count);
+ F2FS_SBI_GENERAL_RO_ATTR(unusable_blocks_per_sec);
+ F2FS_SBI_GENERAL_RW_ATTR(blkzone_alloc_policy);
+ #endif
++F2FS_SBI_GENERAL_RW_ATTR(carve_out);
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 
+ /* STAT_INFO ATTR */
+ #ifdef CONFIG_F2FS_STAT_FS
+@@ -1332,6 +1333,7 @@ static struct attribute *f2fs_attrs[] = {
+ 	ATTR_LIST(warm_data_age_threshold),
+ 	ATTR_LIST(last_age_weight),
+ 	ATTR_LIST(max_read_extent_count),
++	ATTR_LIST(carve_out),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs);
 -- 
 2.51.0
 
