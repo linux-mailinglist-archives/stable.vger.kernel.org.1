@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CCFCC3537
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:47:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56764CC2481
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E3E33066DBE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55AA730214D5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD3936CDFD;
-	Tue, 16 Dec 2025 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A3A343D7D;
+	Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5U2XV1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCycpwaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF93A1E0E14;
-	Tue, 16 Dec 2025 12:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2C632B9A5;
+	Tue, 16 Dec 2025 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887985; cv=none; b=Omm5Y26lIr7E05OMWz+pqneH6iRLAnT/JdpI0GYG1N1ZYa3M+IkLjwShjuG75MbS5XzicnQRTMWUTcB4Z2omLfUr+KFKJpaGwfB5bI7vM2DwVsWciaOSUA/qtb6bZHJbBVl2i0KMTrPA0JZwFTBCrcKCwynsjoyEBt09F3lOims=
+	t=1765884453; cv=none; b=a6xCFnWnV1jgn+enIalL9rUcJcaOsnvMAOs74BUmL24+l1XmVzKmrz3WGTVFkdS3dcdoP6DeJsJLnumRHYGJkH0fY4MOsLYiz04MDItzHTXE3O9RSdLsBP3EYp4PEfANdPEPYpDtRj1RtVXb97bL17AfW7UZrPIjBEnOCcUb7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887985; c=relaxed/simple;
-	bh=BEz0JI1/QY2MgBOx1XI/XhZgwoWrrnA5IT7ki4tFq2o=;
+	s=arc-20240116; t=1765884453; c=relaxed/simple;
+	bh=TbfwnoM2N7NyBsZP++GwSxWSZULzNFwHuJGcdVbsjgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3tBXDjRiceCE56XojC+0xpGpNSOW/cHAs4dQ1SM4yg1Rkwn2S4KEyTLobiqks8riRFP/REtqxD+Yq578NcOgydb/Dno5cxgNpkNwOWO6Sl6bba7NjX+U4FZhXjQBSskWzcK18mOOBgxvZWSIE8ikQL5lXfeFqoT2tJJ2zKbDzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5U2XV1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6D0C4CEF1;
-	Tue, 16 Dec 2025 12:26:25 +0000 (UTC)
+	 MIME-Version; b=RBO1vAL8nw5z9/LTTRCX6feVdmFf5BgCMO+14eCpLpeTAAlN3CN04rfpyFkIjgLAkNvjrMA/9yy7OADMdKQUxbnIO0bD0cAwKiH1jQ3M/lJccHD3gssvGDB/qAB+wefQrPyXSIkPei6chxv0Ngo4xqRH25BHzXtXztFiZvmbvhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCycpwaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F5FC4CEF1;
+	Tue, 16 Dec 2025 11:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887985;
-	bh=BEz0JI1/QY2MgBOx1XI/XhZgwoWrrnA5IT7ki4tFq2o=;
+	s=korg; t=1765884453;
+	bh=TbfwnoM2N7NyBsZP++GwSxWSZULzNFwHuJGcdVbsjgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5U2XV1KP+uXnjRhPr6I8Oi7QfFmjTOg/yDeIwO/1LOXmE/cHV8KpVP5LLs9QnJ6/
-	 /H3zu5dIkuhj13gD4RHC/fw6Kv8iL97x1uwArfkBeSRTSmQvR18ip66PbZerVukmuc
-	 3lcLDteaUBlL2beIBXAmxaet1nm9ozWcpKYRRtOw=
+	b=mCycpwaW2p4i0e4QJNjHQGw1fI77szWiv44aZmbIeoXEoJoFJk9HzihPhzN9dLt9N
+	 78Ri2VSSlfyjmTM5zYciXBiMEeIFQvABZObf+YnBDp+rsKa9HOEbvnFgxfO/0n4OtJ
+	 A2z+kyZKk3TOYIPj/CKQz/wVpwbYMc2f0MLWoFLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ben Greear <greearb@candelatech.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 398/614] wifi: mt76: Move mt76_abort_scan out of mt76_reset_device()
+Subject: [PATCH 6.12 198/354] cpuset: Treat cpusets in attaching as populated
 Date: Tue, 16 Dec 2025 12:12:45 +0100
-Message-ID: <20251216111415.794692751@linuxfoundation.org>
+Message-ID: <20251216111328.085848860@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 6aaaaeacf18b2dc2b0f78f241800e0ea680938c7 ]
+[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
 
-Move mt76_abort_scan routine out of mt76_reset_device() in order to
-avoid a possible deadlock since mt76_reset_device routine is running
-with mt76 mutex help and mt76_abort_scan_complete() can grab mt76 mutex
-in some cases.
+Currently, the check for whether a partition is populated does not
+account for tasks in the cpuset of attaching. This is a corner case
+that can leave a task stuck in a partition with no effective CPUs.
 
-Fixes: b36d55610215a ("wifi: mt76: abort scan/roc on hw restart")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-3-259ebf11f654@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The race condition occurs as follows:
+
+cpu0				cpu1
+				//cpuset A  with cpu N
+migrate task p to A
+cpuset_can_attach
+// with effective cpus
+// check ok
+
+// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
+				// making effective cpus empty
+				update_exclusive_cpumask
+				// tasks_nocpu_error check ok
+				// empty effective cpus, partition valid
+cpuset_attach
+...
+// task p stays in A, with non-effective cpus.
+
+To fix this issue, this patch introduces cs_is_populated, which considers
+tasks in the attaching cpuset. This new helper is used in validate_change
+and partition_is_populated.
+
+Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c   | 2 --
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 5ceaf78c9ea06..5e75861bf6f99 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -847,8 +847,6 @@ void mt76_reset_device(struct mt76_dev *dev)
- 	}
- 	rcu_read_unlock();
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 13eb986172499..4bb7ad4479e43 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -314,6 +314,15 @@ static inline bool is_in_v2_mode(void)
+ 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
+ }
  
--	mt76_abort_scan(dev);
--
- 	INIT_LIST_HEAD(&dev->wcid_list);
- 	INIT_LIST_HEAD(&dev->sta_poll_list);
- 	dev->vif_mask = 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 1c0d310146d63..5caf818e82834 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1451,6 +1451,8 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
- 	if (ext_phy)
- 		cancel_delayed_work_sync(&ext_phy->mac_work);
- 
-+	mt76_abort_scan(&dev->mt76);
++static inline bool cpuset_is_populated(struct cpuset *cs)
++{
++	lockdep_assert_held(&cpuset_mutex);
 +
- 	mutex_lock(&dev->mt76.mutex);
- 	for (i = 0; i < 10; i++) {
- 		if (!mt7915_mac_restart(dev))
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index b06728a98a691..cfad46a532bb7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2424,6 +2424,8 @@ mt7996_mac_full_reset(struct mt7996_dev *dev)
- 	mt7996_for_each_phy(dev, phy)
- 		cancel_delayed_work_sync(&phy->mt76->mac_work);
- 
-+	mt76_abort_scan(&dev->mt76);
++	/* Cpusets in the process of attaching should be considered as populated */
++	return cgroup_is_populated(cs->css.cgroup) ||
++		cs->attach_in_progress;
++}
 +
- 	mutex_lock(&dev->mt76.mutex);
- 	for (i = 0; i < 10; i++) {
- 		if (!mt7996_mac_restart(dev))
+ /**
+  * partition_is_populated - check if partition has tasks
+  * @cs: partition root to be checked
+@@ -326,21 +335,31 @@ static inline bool is_in_v2_mode(void)
+ static inline bool partition_is_populated(struct cpuset *cs,
+ 					  struct cpuset *excluded_child)
+ {
+-	struct cgroup_subsys_state *css;
+-	struct cpuset *child;
++	struct cpuset *cp;
++	struct cgroup_subsys_state *pos_css;
+ 
+-	if (cs->css.cgroup->nr_populated_csets)
++	/*
++	 * We cannot call cs_is_populated(cs) directly, as
++	 * nr_populated_domain_children may include populated
++	 * csets from descendants that are partitions.
++	 */
++	if (cs->css.cgroup->nr_populated_csets ||
++	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts)
+ 		return cgroup_is_populated(cs->css.cgroup);
+ 
+ 	rcu_read_lock();
+-	cpuset_for_each_child(child, css, cs) {
+-		if (child == excluded_child)
++	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
++		if (cp == cs || cp == excluded_child)
+ 			continue;
+-		if (is_partition_valid(child))
++
++		if (is_partition_valid(cp)) {
++			pos_css = css_rightmost_descendant(pos_css);
+ 			continue;
+-		if (cgroup_is_populated(child->css.cgroup)) {
++		}
++
++		if (cpuset_is_populated(cp)) {
+ 			rcu_read_unlock();
+ 			return true;
+ 		}
+@@ -571,7 +590,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
+ 	 * be changed to have empty cpus_allowed or mems_allowed.
+ 	 */
+ 	ret = -ENOSPC;
+-	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
++	if (cpuset_is_populated(cur)) {
+ 		if (!cpumask_empty(cur->cpus_allowed) &&
+ 		    cpumask_empty(trial->cpus_allowed))
+ 			goto out;
 -- 
 2.51.0
 
