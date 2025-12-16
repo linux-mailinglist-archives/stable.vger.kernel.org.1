@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38471CC3CFD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:05:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5011CCC22B3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D30A30A7A2B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EC4CC3038247
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D69352947;
-	Tue, 16 Dec 2025 11:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836D2341645;
+	Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAezPo1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGjJpX/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB5D352941;
-	Tue, 16 Dec 2025 11:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202CD341069;
+	Tue, 16 Dec 2025 11:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885767; cv=none; b=DRtORuK2fHfG8j9HBfwwHx3qQVKW03No/mNZhqnzqdPs18lQgppv3N+2HY74orKw3lZeQaVyF3rUV4beRl69IYNaL9QUDzgjndGPgUOUQdDWGqC0y+ds0EZQ3Yu0n9KE87wdtLWPK2M8BPBp44CDlxGldDdPJdsXWFF8v2XDtvs=
+	t=1765884163; cv=none; b=PPMMUxsQgahGSWNHeJ6n7JJrYxSF0HbeA5PiWwYFde8FZd6lGx+PHbWCFVXYPaSNJpk8x0ZUh5euh/r8hwCS2LMN9Zx0SPSsIVTZ7/UfpQJm8xQP2IpcnYlXV1pe2n/iVqUmdPA2/7JC4FNDmEAZqjKlCrm5BYN06hooTmdQ66k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885767; c=relaxed/simple;
-	bh=56Q+quhnkKKng8bIPdZ7hsXvmHsKQzw4IXC4w2Nql1I=;
+	s=arc-20240116; t=1765884163; c=relaxed/simple;
+	bh=HV1IKTN2kp9cvZMZWlqjS59mZBdt2t6iD/LIeIkAcHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1ledUkaefjn6QduZeTJp2Mnikj+iWXfjXY+s/XA6u/2BYrhqPzRHUFOJN3Vqc3W2bwRI7upbot9mGiOqhFLrjsjkJuQv/dQpbdomcVaSA1MJASBOxIgJ/mkkVVaRFGpqwe3WcYui0ihEr864jNNfzut/6Q6/V4i7db1tfEjI1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAezPo1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D39C16AAE;
-	Tue, 16 Dec 2025 11:49:26 +0000 (UTC)
+	 MIME-Version; b=kgtosshWgq4XXwMpPulLlDh4Q+IS70Vahfzs461zIbiq2MLB804BUi9rEpBxejzzFEcoByfScbS7QJaIFwhkB5ZODeZPTY1ozE0qD5CAw0S3+nnhM7xyz5QUVdzTr5iEwkTPuD9RpDnMDTMr6Y1FBed5B9N8QYKLJzo8rEDT5NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGjJpX/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98746C4CEF1;
+	Tue, 16 Dec 2025 11:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885767;
-	bh=56Q+quhnkKKng8bIPdZ7hsXvmHsKQzw4IXC4w2Nql1I=;
+	s=korg; t=1765884163;
+	bh=HV1IKTN2kp9cvZMZWlqjS59mZBdt2t6iD/LIeIkAcHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAezPo1yW2Em+OiZBdYe0Uk5AMvSDDX7c4S2NE77DcwtqR9lqi37i3aPa9nCkPYiX
-	 oM0kvYX4cxntZPlZVcR1qJ/8InTvRBgGpUYaz4P1Z8Vnk3NSXgm0k7kkOpDuFXF/FQ
-	 JVdeDFnZ8kZbE1lPUUZhczHJ9oBRp4X0D/ymxQko=
+	b=rGjJpX/oMYF54w3uQqKPCBi0dUUodNLIcDpPfIsXlUubdgQph5BgFamtgZMawKVuA
+	 5PDlWohy10B3GM4wVCULDZayGTt4AOFHGhpeGCdDjPvNu6BisTf62ATqf37bYXPilz
+	 e09i6GP9/HsZa7vgbLtfzvExAO5n27WOdokdmAPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Tingmao Wang <m@maowtm.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 237/507] s390/fpu: Fix false-positive kmsan report in fpu_vstl()
+Subject: [PATCH 6.12 111/354] fs/9p: Dont open remote file with APPEND mode when writeback cache is used
 Date: Tue, 16 Dec 2025 12:11:18 +0100
-Message-ID: <20251216111354.085687888@linuxfoundation.org>
+Message-ID: <20251216111324.944560058@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,162 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+From: Tingmao Wang <m@maowtm.org>
 
-[ Upstream commit 14e4e4175b64dd9216b522f6ece8af6997d063b2 ]
+[ Upstream commit a63dd8fd137933551bfd9aeeeaa942f04c7aad65 ]
 
-A false-positive kmsan report is detected when running ping command.
+When page cache is used, writebacks are done on a page granularity, and it
+is expected that the underlying filesystem (such as v9fs) should respect
+the write position.  However, currently v9fs will passthrough O_APPEND to
+the server even on cached mode.  This causes data corruption if a sync or
+fstat gets between two writes to the same file.
 
-An inline assembly instruction 'vstl' can write varied amount of bytes
-depending on value of 'index' argument. If 'index' > 0, 'vstl' writes
-at least 2 bytes.
+This patch removes the APPEND flag from the open request we send to the
+server when writeback caching is involved.  I believe keeping server-side
+APPEND is probably fine for uncached mode (even if two fds are opened, one
+without O_APPEND and one with it, this should still be fine since they
+would use separate fid for the writes).
 
-clang generates kmsan write helper call depending on inline assembly
-constraints. Constraints are evaluated compile-time, but value of
-'index' argument is known only at runtime.
-
-clang currently generates call to __msan_instrument_asm_store with 1 byte
-as size. Manually call kmsan function to indicate correct amount of bytes
-written and fix false-positive report.
-
-This change fixes following kmsan reports:
-
-[   36.563119] =====================================================
-[   36.563594] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   36.563852]  virtqueue_add+0x35c6/0x7c70
-[   36.564016]  virtqueue_add_outbuf+0xa0/0xb0
-[   36.564266]  start_xmit+0x288c/0x4a20
-[   36.564460]  dev_hard_start_xmit+0x302/0x900
-[   36.564649]  sch_direct_xmit+0x340/0xea0
-[   36.564894]  __dev_queue_xmit+0x2e94/0x59b0
-[   36.565058]  neigh_resolve_output+0x936/0xb40
-[   36.565278]  __neigh_update+0x2f66/0x3a60
-[   36.565499]  neigh_update+0x52/0x60
-[   36.565683]  arp_process+0x1588/0x2de0
-[   36.565916]  NF_HOOK+0x1da/0x240
-[   36.566087]  arp_rcv+0x3e4/0x6e0
-[   36.566306]  __netif_receive_skb_list_core+0x1374/0x15a0
-[   36.566527]  netif_receive_skb_list_internal+0x1116/0x17d0
-[   36.566710]  napi_complete_done+0x376/0x740
-[   36.566918]  virtnet_poll+0x1bae/0x2910
-[   36.567130]  __napi_poll+0xf4/0x830
-[   36.567294]  net_rx_action+0x97c/0x1ed0
-[   36.567556]  handle_softirqs+0x306/0xe10
-[   36.567731]  irq_exit_rcu+0x14c/0x2e0
-[   36.567910]  do_io_irq+0xd4/0x120
-[   36.568139]  io_int_handler+0xc2/0xe8
-[   36.568299]  arch_cpu_idle+0xb0/0xc0
-[   36.568540]  arch_cpu_idle+0x76/0xc0
-[   36.568726]  default_idle_call+0x40/0x70
-[   36.568953]  do_idle+0x1d6/0x390
-[   36.569486]  cpu_startup_entry+0x9a/0xb0
-[   36.569745]  rest_init+0x1ea/0x290
-[   36.570029]  start_kernel+0x95e/0xb90
-[   36.570348]  startup_continue+0x2e/0x40
-[   36.570703]
-[   36.570798] Uninit was created at:
-[   36.571002]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   36.571261]  kmalloc_reserve+0x12a/0x470
-[   36.571553]  __alloc_skb+0x310/0x860
-[   36.571844]  __ip_append_data+0x483e/0x6a30
-[   36.572170]  ip_append_data+0x11c/0x1e0
-[   36.572477]  raw_sendmsg+0x1c8c/0x2180
-[   36.572818]  inet_sendmsg+0xe6/0x190
-[   36.573142]  __sys_sendto+0x55e/0x8e0
-[   36.573392]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   36.573571]  __do_syscall+0x12e/0x240
-[   36.573823]  system_call+0x6e/0x90
-[   36.573976]
-[   36.574017] Byte 35 of 98 is uninitialized
-[   36.574082] Memory access of size 98 starts at 0000000007aa0012
-[   36.574218]
-[   36.574325] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   36.574541] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   36.574617] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   36.574755] =====================================================
-
-[   63.532541] =====================================================
-[   63.533639] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   63.533989]  virtqueue_add+0x35c6/0x7c70
-[   63.534940]  virtqueue_add_outbuf+0xa0/0xb0
-[   63.535861]  start_xmit+0x288c/0x4a20
-[   63.536708]  dev_hard_start_xmit+0x302/0x900
-[   63.537020]  sch_direct_xmit+0x340/0xea0
-[   63.537997]  __dev_queue_xmit+0x2e94/0x59b0
-[   63.538819]  neigh_resolve_output+0x936/0xb40
-[   63.539793]  ip_finish_output2+0x1ee2/0x2200
-[   63.540784]  __ip_finish_output+0x272/0x7a0
-[   63.541765]  ip_finish_output+0x4e/0x5e0
-[   63.542791]  ip_output+0x166/0x410
-[   63.543771]  ip_push_pending_frames+0x1a2/0x470
-[   63.544753]  raw_sendmsg+0x1f06/0x2180
-[   63.545033]  inet_sendmsg+0xe6/0x190
-[   63.546006]  __sys_sendto+0x55e/0x8e0
-[   63.546859]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.547730]  __do_syscall+0x12e/0x240
-[   63.548019]  system_call+0x6e/0x90
-[   63.548989]
-[   63.549779] Uninit was created at:
-[   63.550691]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   63.550975]  kmalloc_reserve+0x12a/0x470
-[   63.551969]  __alloc_skb+0x310/0x860
-[   63.552949]  __ip_append_data+0x483e/0x6a30
-[   63.553902]  ip_append_data+0x11c/0x1e0
-[   63.554912]  raw_sendmsg+0x1c8c/0x2180
-[   63.556719]  inet_sendmsg+0xe6/0x190
-[   63.557534]  __sys_sendto+0x55e/0x8e0
-[   63.557875]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.558869]  __do_syscall+0x12e/0x240
-[   63.559832]  system_call+0x6e/0x90
-[   63.560780]
-[   63.560972] Byte 35 of 98 is uninitialized
-[   63.561741] Memory access of size 98 starts at 0000000005704312
-[   63.561950]
-[   63.562824] CPU: 3 UID: 0 PID: 192 Comm: ping Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   63.563868] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   63.564751] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   63.564986] =====================================================
-
-Fixes: dcd3e1de9d17 ("s390/checksum: provide csum_partial_copy_nocheck()")
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Tingmao Wang <m@maowtm.org>
+Fixes: 4eb3117888a9 ("fs/9p: Rework cache modes and add new options to Documentation")
+Message-ID: <20251102235631.8724-1-m@maowtm.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/fpu-insn.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/9p/vfs_file.c       | 11 ++++++++---
+ fs/9p/vfs_inode.c      |  3 +--
+ fs/9p/vfs_inode_dotl.c |  2 +-
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
-index 135bb89c0a893..8f2dd6e879ff6 100644
---- a/arch/s390/include/asm/fpu-insn.h
-+++ b/arch/s390/include/asm/fpu-insn.h
-@@ -12,6 +12,7 @@
- #ifndef __ASSEMBLER__
+diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
+index 348cc90bf9c56..de0d1f74de46c 100644
+--- a/fs/9p/vfs_file.c
++++ b/fs/9p/vfs_file.c
+@@ -43,14 +43,18 @@ int v9fs_file_open(struct inode *inode, struct file *file)
+ 	struct v9fs_session_info *v9ses;
+ 	struct p9_fid *fid;
+ 	int omode;
++	int o_append;
  
- #include <linux/instrumented.h>
-+#include <linux/kmsan.h>
- #include <asm/asm-extable.h>
+ 	p9_debug(P9_DEBUG_VFS, "inode: %p file: %p\n", inode, file);
+ 	v9ses = v9fs_inode2v9ses(inode);
+-	if (v9fs_proto_dotl(v9ses))
++	if (v9fs_proto_dotl(v9ses)) {
+ 		omode = v9fs_open_to_dotl_flags(file->f_flags);
+-	else
++		o_append = P9_DOTL_APPEND;
++	} else {
+ 		omode = v9fs_uflags2omode(file->f_flags,
+ 					v9fs_proto_dotu(v9ses));
++		o_append = P9_OAPPEND;
++	}
+ 	fid = file->private_data;
+ 	if (!fid) {
+ 		fid = v9fs_fid_clone(file_dentry(file));
+@@ -58,9 +62,10 @@ int v9fs_file_open(struct inode *inode, struct file *file)
+ 			return PTR_ERR(fid);
  
- asm(".include \"asm/fpu-insn-asm.h\"\n");
-@@ -393,6 +394,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
- 		     : [vxr] "=Q" (*(u8 *)vxr)
- 		     : [index] "d" (index), [v1] "I" (v1)
- 		     : "memory");
-+	kmsan_unpoison_memory(vxr, size);
- }
+ 		if ((v9ses->cache & CACHE_WRITEBACK) && (omode & P9_OWRITE)) {
+-			int writeback_omode = (omode & ~P9_OWRITE) | P9_ORDWR;
++			int writeback_omode = (omode & ~(P9_OWRITE | o_append)) | P9_ORDWR;
  
- #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
-@@ -409,6 +411,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
- 		: [vxr] "=R" (*(u8 *)vxr)
- 		: [index] "d" (index), [v1] "I" (v1)
- 		: "memory", "1");
-+	kmsan_unpoison_memory(vxr, size);
- }
+ 			p9_debug(P9_DEBUG_CACHE, "write-only file with writeback enabled, try opening O_RDWR\n");
++
+ 			err = p9_client_open(fid, writeback_omode);
+ 			if (err < 0) {
+ 				p9_debug(P9_DEBUG_CACHE, "could not open O_RDWR, disabling caches\n");
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 3e68521f4e2f9..1723a37d1846e 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -791,7 +791,7 @@ v9fs_vfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 	p9_omode = v9fs_uflags2omode(flags, v9fs_proto_dotu(v9ses));
  
- #endif /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
+ 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
+-		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
++		p9_omode = (p9_omode & ~(P9_OWRITE | P9_OAPPEND)) | P9_ORDWR;
+ 		p9_debug(P9_DEBUG_CACHE,
+ 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
+ 	}
+@@ -1404,4 +1404,3 @@ static const struct inode_operations v9fs_symlink_inode_operations = {
+ 	.getattr = v9fs_vfs_getattr,
+ 	.setattr = v9fs_vfs_setattr,
+ };
+-
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 3397939fd2d5a..40a4fc65a5441 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -286,7 +286,7 @@ v9fs_vfs_atomic_open_dotl(struct inode *dir, struct dentry *dentry,
+ 	}
+ 
+ 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
+-		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
++		p9_omode = (p9_omode & ~(P9_OWRITE | P9_DOTL_APPEND)) | P9_ORDWR;
+ 		p9_debug(P9_DEBUG_CACHE,
+ 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
+ 	}
 -- 
 2.51.0
 
