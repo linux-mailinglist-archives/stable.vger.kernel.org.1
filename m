@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-202261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57EFCC2968
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:15:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8F2CC3714
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2CB4301F016
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29D8330EB4EC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D64735CB7A;
-	Tue, 16 Dec 2025 12:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AE8342512;
+	Tue, 16 Dec 2025 11:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MT7QcEA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrmbNrrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F6935F8A3;
-	Tue, 16 Dec 2025 12:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286232FB632;
+	Tue, 16 Dec 2025 11:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887331; cv=none; b=ReXOBrkwN/MkyEoQ1w8l6kXzgY0s31IvEz8vTRj769LbFMFMpaA4Ct1fa2wveyZXPuPfCnLyJ7qB0ZTlqsqHGU0k2ElK1ZXV2lyBLSojrGusSj0jmgiOq3RXnz+Q6ZqW+si0mOe9cOg8Ewf7X0FlhCceDthiqXFdj1vaxN/dguo=
+	t=1765885439; cv=none; b=YzYkzg0/rtdAh15doyJGrvmIwfps2utLIQbGGKhwt6so3cF7J6uiMFlVwZ0AgINEN0QEzp/otd+ULELC/WskuFa/BL/zCbBWFgv1O5JYBiM0U8Ze4BBGdZeYHUuifKPuKLs3vCFf15nbPs2avAy1YN2p6NTkYOGwJVb2VZcv7iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887331; c=relaxed/simple;
-	bh=WTkHMGCouxfVCFy/tTV7PQRWhjJAQqaaIinBf7KrM9E=;
+	s=arc-20240116; t=1765885439; c=relaxed/simple;
+	bh=F7m5GFVSL20kYCSviSLlcDw1M6m5lmeDDMCUflzCFnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+501pTUP4C4lrBKer8n2TQk6PZGUkM4rIUXRO8NWku+4ZwBECWobjN536/KuNhWhaUJPrJtAdIVoL53RTYdYcqFH1gJSjYodMrzSHr3BYrS0pjwAxAnxx3AiMexsXG5M8ku6mrPK/h00sVzKNNWrgAs25xIgOetB4t46SJsWMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MT7QcEA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB53AC4CEF5;
-	Tue, 16 Dec 2025 12:15:30 +0000 (UTC)
+	 MIME-Version; b=p16c8G34rAyfo2dpAknJC0XHye5nZD5pH8E00i+0sjICAEtPmpkoZ4V+2MJVhH+iOx1k4pcs6LLH/Jbne91t+1FkprMNjdhv2MAt/Eq4eRbGkprMb8Pa+DTKuP1pDeXNvHnRxgdMPJODT7bUodh7STyYpn6AblgyjybCre1dpF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrmbNrrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2239DC4CEF1;
+	Tue, 16 Dec 2025 11:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887331;
-	bh=WTkHMGCouxfVCFy/tTV7PQRWhjJAQqaaIinBf7KrM9E=;
+	s=korg; t=1765885438;
+	bh=F7m5GFVSL20kYCSviSLlcDw1M6m5lmeDDMCUflzCFnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MT7QcEA+Tyd+pC91NwYbcE3yujnKE9sQLTXpVfjKAYXJy3I3Vdr9mQJEhkglS26HP
-	 tIu9gvzBUmWhFUjdG/TFZWUY79B2tDjkirz79NjGwvaYGna1u4gzN+OgkjR1bcrwhO
-	 PFTIw5oEREmNxktRgcK+oHhEjUDtEcA/FGfgWe0Y=
+	b=OrmbNrrzq5/eBNnK3242e/pccjAMcLz1x90dvbJEhifAdHOjbasWs+uvJRoli5fXN
+	 KJq7pEWB9Ivqfo1hVQxYpzxHwguc7KmOi5WNH1mUhjv9zYcCEN9tDeH4tkUWnlMVux
+	 Pya9BFsM8HtAbFTwObXW6bcHPgvG3w/lIC3lYtIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot@syzkaller.appspotmail.com,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 170/614] cgroup: add cgroup namespace to tree after owner is set
+Subject: [PATCH 6.17 096/507] arm64: dts: qcom: sdm845-starqltechn: fix max77705 interrupts
 Date: Tue, 16 Dec 2025 12:08:57 +0100
-Message-ID: <20251216111407.508992138@linuxfoundation.org>
+Message-ID: <20251216111349.016115944@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit 768b1565d9d1e1eebf7567f477f7f46c05a98a4d ]
+[ Upstream commit 4372b15d89e253e40816f0bde100890cddd25a81 ]
 
-Otherwise we trip VFS_WARN_ON_ONC() in __ns_tree_add_raw().
+Since max77705 has a register, which indicates interrupt source, it acts
+as an interrupt controller.
 
-Link: https://patch.msgid.link/20251029-work-namespace-nstree-listns-v4-6-2e6f823ebdc0@kernel.org
-Fixes: 7c6059398533 ("cgroup: support ns lookup")
-Tested-by: syzbot@syzkaller.appspotmail.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Direct MAX77705's subdevices to use the IC's internal interrupt
+controller, instead of listening to every interrupt fired by the
+chip towards the host device.
+
+Fixes: 7a88a931d095 ("arm64: dts: qcom: sdm845-starqltechn: add max77705 PMIC")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250926-starqltechn-correct_max77705_nodes-v5-2-c6ab35165534@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/namespace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/qcom/sdm845-samsung-starqltechn.dts     | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
-index fdbe57578e688..db9617556dd70 100644
---- a/kernel/cgroup/namespace.c
-+++ b/kernel/cgroup/namespace.c
-@@ -30,7 +30,6 @@ static struct cgroup_namespace *alloc_cgroup_ns(void)
- 	ret = ns_common_init(new_ns);
- 	if (ret)
- 		return ERR_PTR(ret);
--	ns_tree_add(new_ns);
- 	return no_free_ptr(new_ns);
- }
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+index e0d83b6344215..1807e65621ef8 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+@@ -584,11 +584,13 @@ &uart9 {
+ &i2c14 {
+ 	status = "okay";
  
-@@ -86,6 +85,7 @@ struct cgroup_namespace *copy_cgroup_ns(u64 flags,
- 	new_ns->ucounts = ucounts;
- 	new_ns->root_cset = cset;
+-	pmic@66 {
++	max77705: pmic@66 {
+ 		compatible = "maxim,max77705";
+ 		reg = <0x66>;
++		#interrupt-cells = <1>;
+ 		interrupt-parent = <&pm8998_gpios>;
+ 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-controller;
+ 		pinctrl-0 = <&pmic_int_default>;
+ 		pinctrl-names = "default";
  
-+	ns_tree_add(new_ns);
- 	return new_ns;
- }
+@@ -629,8 +631,8 @@ max77705_charger: charger@69 {
+ 		reg = <0x69>;
+ 		compatible = "maxim,max77705-charger";
+ 		monitored-battery = <&battery>;
+-		interrupt-parent = <&pm8998_gpios>;
+-		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&max77705>;
++		interrupts = <0>;
+ 	};
+ 
+ 	fuel-gauge@36 {
+@@ -638,8 +640,8 @@ fuel-gauge@36 {
+ 		compatible = "maxim,max77705-battery";
+ 		power-supplies = <&max77705_charger>;
+ 		maxim,rsns-microohm = <5000>;
+-		interrupt-parent = <&pm8998_gpios>;
+-		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&max77705>;
++		interrupts = <2>;
+ 	};
+ };
  
 -- 
 2.51.0
