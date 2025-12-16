@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342F4CC4390
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A548CC30AA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3284330EA2B6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D13043045F35
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEA4363C4F;
-	Tue, 16 Dec 2025 12:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E5934EEF9;
+	Tue, 16 Dec 2025 12:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGVFcKJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2kWJKs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5612F347BB8;
-	Tue, 16 Dec 2025 12:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01DF34EEF1;
+	Tue, 16 Dec 2025 12:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888552; cv=none; b=e72o/fThNbzxb967Yhxo6v/n0l3zXhjIenhg4s0AOJWUTYzIT3JI2Pc9+NiNIbruf0HZ8E2qbUxp2KZ5zGUR5rAkG3QxV37I1XvSlSQYRiAHVvpF6vR/BJoUjtGOXoYRWyLICI7I2hslemDEIrlE5z8WbarYvSEwG2KtHWdcylo=
+	t=1765886612; cv=none; b=BUNsQoUK6zJhZ5gWNWrKDIM74/k1/YPXLcNwU86/C38/8xyX/LKkqdBdGizMZj61TvPcX5BDPsmBU2Ug/3Lv4a99pnsztr1xa+V0RoEigAvPus0wZE1dyqoX9HyBQ8DXGArZfZMaf7jHulk+w8898N8PJSfiK2dI2rZHYpG9Xdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888552; c=relaxed/simple;
-	bh=PsPbuP5LNpXhMQjHp1mFQHPSKRSUABMP2CRkdUb19/s=;
+	s=arc-20240116; t=1765886612; c=relaxed/simple;
+	bh=nEqQSEosbszJnD1hKT/qgBC5HP1sCrT2Uzdur/vrgfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJGENAtOZ9yyT9M9EvIuaLFhLmL8OO8gHinMVbXMUU2U7WNhF0/32P3MPCajP30YEaufZScgL1OqA0+okk98JVnGHCk2bJPVt9vp/hNdXXsWodlb7kFP1EDvRO3w+/1T+R3tDf8aw8N5VxKrCtjgfAH0Ftjz4AfRX/ZaZeFgGQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGVFcKJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43BDC4CEF1;
-	Tue, 16 Dec 2025 12:35:51 +0000 (UTC)
+	 MIME-Version; b=N2AlDp3ojZlAqakM5Nx+FdSYhGEShncWQmu+dMF7ULnb/lxfTnKD+w+Jw/WoFjAt9GJgXh1jwGmsRqzmtFXrTEwhsTCxK9MaMVtFSTY1GVdkgyEjBx9pB5jGiJaANwuy0DcFE2pAMW7nCtNKhRTqkISUEtyINlgT7lW8+IlgFso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2kWJKs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E26EC4CEF1;
+	Tue, 16 Dec 2025 12:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888552;
-	bh=PsPbuP5LNpXhMQjHp1mFQHPSKRSUABMP2CRkdUb19/s=;
+	s=korg; t=1765886612;
+	bh=nEqQSEosbszJnD1hKT/qgBC5HP1sCrT2Uzdur/vrgfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGVFcKJ1ZA7Ji6dY6Z3hnU06y7vzf1fPPxS8d/LQEoyxcwyw8sMhLBQxLl8AvtTws
-	 7X0cK3dUpn8g7bv7MgmGTtMia+GNTtDK2VhSRz/4u3hm2D46oZZbYOwsu7ydDy0YhW
-	 1ng7Wp2p3rBxY78/yDLL8P427tRMXnsWA9h16wpc=
+	b=l2kWJKs1TgEoNyuT/YeSlb+4j4WnavvkfYk6v3HQ9RF7BxaCgxipqDDq+k8VGWS1B
+	 giStCAZUMBHmX3GaiWkShSNimcGY3DD51jXbv4Sq1oVrQLNdNaR+xtokodEtY6jH0b
+	 hNKXI1c9q+deEgsU1UNdhzzaXqGRWMLEqGkfPwXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shechenglong <shechenglong@xfusion.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 561/614] block: fix comment for op_is_zone_mgmt() to include RESET_ALL
+Subject: [PATCH 6.17 487/507] dm-raid: fix possible NULL dereference with undefined raid type
 Date: Tue, 16 Dec 2025 12:15:28 +0100
-Message-ID: <20251216111421.707477642@linuxfoundation.org>
+Message-ID: <20251216111403.083550314@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: shechenglong <shechenglong@xfusion.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 8a32282175c964eb15638e8dfe199fc13c060f67 ]
+[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
 
-REQ_OP_ZONE_RESET_ALL is a zone management request, and op_is_zone_mgmt()
-has returned true for it.
+rs->raid_type is assigned from get_raid_type_by_ll(), which may return
+NULL. This NULL value could be dereferenced later in the condition
+'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
 
-Update the comment to remove the misleading exception note so
-the documentation matches the implementation.
+Add a fail-fast check to return early with an error if raid_type is NULL,
+similar to other uses of this function.
 
-Fixes: 12a1c9353c47 ("block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL")
-Signed-off-by: shechenglong <shechenglong@xfusion.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blk_types.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-index 44c30183ecc34..4e2e3aed32f5f 100644
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -469,10 +469,7 @@ static inline bool op_is_discard(blk_opf_t op)
- }
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index f4b904e243285..0d2e1c5eee92a 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2287,6 +2287,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
  
- /*
-- * Check if a bio or request operation is a zone management operation, with
-- * the exception of REQ_OP_ZONE_RESET_ALL which is treated as a special case
-- * due to its different handling in the block layer and device response in
-- * case of command failure.
-+ * Check if a bio or request operation is a zone management operation.
-  */
- static inline bool op_is_zone_mgmt(enum req_op op)
- {
+ 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
+ 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
++			if (!rs->raid_type)
++				return -EINVAL;
+ 		}
+ 
+ 	} else {
 -- 
 2.51.0
 
