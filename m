@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAF8CC2740
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A372DCC2D19
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C37B230AECB9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1625130C19CA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA257345CC5;
-	Tue, 16 Dec 2025 11:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E0C3659E7;
+	Tue, 16 Dec 2025 12:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiXHO97q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDsRQq/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2E345730;
-	Tue, 16 Dec 2025 11:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DF31A7F5;
+	Tue, 16 Dec 2025 12:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885054; cv=none; b=JYEHXOrPv89j+FRPjk/hXLtMZBhiRUfbeci2eNv8J3o1nw2nxboOAj/3892mRGSNdTuPr/vq1C+ISOnVFMEZHkHOk+V8SBatnbxm6a9ouez0BkBfSihH38LcYEhNCl+/bdcN/fxbX9UmBYQN+JxTb1ZU5DUoVg/uHECwvPQTZfo=
+	t=1765887096; cv=none; b=jggiohUFBakkorvc0Dmc5rO3NV43K8sR7McOILke9AWGrfrMPOAnBHwlThv7BErrt7QA4Y9yH8aKI2jvgDlcSJm/PZu1ok7Fpao/mQy5QcE/6VCvybp3oVIlLQgbU/rRfTw6JV6cuZEBtgy1s726Xm7JpqEU87n2nYnGff+abaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885054; c=relaxed/simple;
-	bh=JGh4wGjwtbFJzLpsR76dS0qQRsVJ7tGbqH0kji8zaRM=;
+	s=arc-20240116; t=1765887096; c=relaxed/simple;
+	bh=ns/g47w/kKA0obY2s4oVE/s1jfDCo0oyk0xbQ7Wx3KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMfVPKow6DR71LFSj2DkD5J46NCrq6L1tYD0pCpt8hhtWRz3OECOCh4KpqF+AdYz34ooilnz/9WbheRDTBw+WhkNKYueZA0tFTxasbgKzQirLtVn82MwLn6FVHusJVTbM9jKb//4ualfd0650BOf4D/cu48UOIBCmUuNPJLjeys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiXHO97q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4BAC4CEF1;
-	Tue, 16 Dec 2025 11:37:33 +0000 (UTC)
+	 MIME-Version; b=XUWyCbKDKjDMfdNArfhT4Ie/1KhtEL/2zvT2f8c/fBn2YxbQwHrPkFJaD6ukZk6Vn+BGyRdKbQLuJIPRTGFurmL/c+n1NbIf6wYvLOM68GJsanbSZJobdslv9/nLiFNB1WVIazPxoElVYgXsfXXJGFD/KkPfRfoCXbTWtiMevYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDsRQq/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34128C4CEF1;
+	Tue, 16 Dec 2025 12:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885054;
-	bh=JGh4wGjwtbFJzLpsR76dS0qQRsVJ7tGbqH0kji8zaRM=;
+	s=korg; t=1765887096;
+	bh=ns/g47w/kKA0obY2s4oVE/s1jfDCo0oyk0xbQ7Wx3KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiXHO97qcSaqAKtG7sosf3HPhLXk/VSnhiGVnnIZkPdgdQWcEMu5Z4BiSDzcp5KOa
-	 mIZIzaAZmFL0zvOTQ98dW2ga45GDn3kpfNmY2rzdioiDewTyXs+zjwacbd6+wj2MIH
-	 nlUGgDISdPss1ZrOT4rmxfu2FiazFJSDo01KYyos=
+	b=RDsRQq/BbaZ9bp81hIqnH3KwGLxR6qbSoM9hU3mTSyQqrUvPbwuh1aDNIUkN0E1sW
+	 /J2/og8CkQy5oQTJqsS469TabLX6AZZXE2lu7Xftuq9DoceyiqVbe7i/fIJQ4jEcMa
+	 Yr2UiD2DrNKIcrJ/qYmeTkDPH6Dc9CxD+2PZI+TI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 024/507] clk: renesas: cpg-mssr: Read back reset registers to assure values latched
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 098/614] ice: move service task start out of ice_init_pf()
 Date: Tue, 16 Dec 2025 12:07:45 +0100
-Message-ID: <20251216111346.413110404@linuxfoundation.org>
+Message-ID: <20251216111404.868619632@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit b91401af6c00ffab003698bfabd4c166df30748b ]
+[ Upstream commit 806c4f32a80627f8977fda53520afc41491d162f ]
 
-On R-Car V4H, the PCIEC controller DBI read would generate an SError in
-case the controller reset is released by writing SRSTCLR register first,
-and immediately afterward reading some PCIEC controller DBI register.
-The issue triggers in rcar_gen4_pcie_additional_common_init() on
-dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW), which on V4H is the first
-read after reset_control_deassert(dw->core_rsts[DW_PCIE_PWR_RST].rstc).
+Move service task start out of ice_init_pf(). Do analogous with deinit.
+Service task is needed up to the very end of driver removal, later commit
+of the series will move it later on execution timeline.
 
-The reset controller which contains the SRSTCLR register and the PCIEC
-controller which contains the DBI register share the same root access
-bus, but the bus then splits into separate segments before reaching each
-IP.  Even if the SRSTCLR write access was posted on the bus before the
-DBI read access, it seems the DBI read access may reach the PCIEC
-controller before the SRSTCLR write completed, and trigger the SError.
-
-Mitigate the issue by adding a dummy SRSTCLR read, which assures the
-SRSTCLR write completes fully and is latched into the reset controller,
-before the PCIEC DBI read access can occur.
-
-Fixes: 0ab55cf18341 ("clk: renesas: cpg-mssr: Add support for R-Car V4H")
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250922162113.113223-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 1390b8b3d2be ("ice: remove duplicate call to ice_deinit_hw() on error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/renesas-cpg-mssr.c | 46 ++++++++++++--------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h      |  1 +
+ drivers/net/ethernet/intel/ice/ice_main.c | 18 +++++++++++-------
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index 7063d896249ea..a0a68ec0490f7 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -676,18 +676,32 @@ static int __init cpg_mssr_add_clk_domain(struct device *dev,
- 
- #define rcdev_to_priv(x)	container_of(x, struct cpg_mssr_priv, rcdev)
- 
--static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
--			  unsigned long id)
-+static int cpg_mssr_reset_operate(struct reset_controller_dev *rcdev,
-+				  const char *func, bool set, unsigned long id)
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 22b8323ff0d0e..0e58a58c23eb3 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -1029,6 +1029,7 @@ int ice_open(struct net_device *netdev);
+ int ice_open_internal(struct net_device *netdev);
+ int ice_stop(struct net_device *netdev);
+ void ice_service_task_schedule(struct ice_pf *pf);
++void ice_start_service_task(struct ice_pf *pf);
+ int ice_load(struct ice_pf *pf);
+ void ice_unload(struct ice_pf *pf);
+ void ice_adv_lnk_speed_maps_init(void);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 86f5859e88ef5..41c2f0d52ce0d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3951,7 +3951,6 @@ u16 ice_get_avail_rxq_count(struct ice_pf *pf)
+  */
+ static void ice_deinit_pf(struct ice_pf *pf)
  {
- 	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
- 	unsigned int reg = id / 32;
- 	unsigned int bit = id % 32;
-+	const u16 off = set ? priv->reset_regs[reg] : priv->reset_clear_regs[reg];
- 	u32 bitmask = BIT(bit);
+-	ice_service_task_stop(pf);
+ 	mutex_destroy(&pf->lag_mutex);
+ 	mutex_destroy(&pf->adev_mutex);
+ 	mutex_destroy(&pf->sw_mutex);
+@@ -4030,6 +4029,14 @@ static void ice_set_pf_caps(struct ice_pf *pf)
+ 	pf->max_pf_rxqs = func_caps->common_cap.num_rxq;
+ }
  
--	dev_dbg(priv->dev, "reset %u%02u\n", reg, bit);
-+	if (func)
-+		dev_dbg(priv->dev, "%s %u%02u\n", func, reg, bit);
-+
-+	writel(bitmask, priv->pub.base0 + off);
-+	readl(priv->pub.base0 + off);
-+	barrier_data(priv->pub.base0 + off);
-+
-+	return 0;
++void ice_start_service_task(struct ice_pf *pf)
++{
++	timer_setup(&pf->serv_tmr, ice_service_timer, 0);
++	pf->serv_tmr_period = HZ;
++	INIT_WORK(&pf->serv_task, ice_service_task);
++	clear_bit(ICE_SERVICE_SCHED, pf->state);
 +}
 +
-+static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
-+			  unsigned long id)
-+{
-+	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
+ /**
+  * ice_init_pf - Initialize general software structures (struct ice_pf)
+  * @pf: board private structure to initialize
+@@ -4049,12 +4056,6 @@ static int ice_init_pf(struct ice_pf *pf)
  
- 	/* Reset module */
--	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
-+	cpg_mssr_reset_operate(rcdev, "reset", true, id);
+ 	init_waitqueue_head(&pf->reset_wait_queue);
  
- 	/*
- 	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
-@@ -700,36 +714,18 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
- 		usleep_range(35, 1000);
- 
- 	/* Release module from reset state */
--	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
+-	/* setup service timer and periodic service task */
+-	timer_setup(&pf->serv_tmr, ice_service_timer, 0);
+-	pf->serv_tmr_period = HZ;
+-	INIT_WORK(&pf->serv_task, ice_service_task);
+-	clear_bit(ICE_SERVICE_SCHED, pf->state);
 -
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, NULL, false, id);
+ 	mutex_init(&pf->avail_q_mutex);
+ 	pf->avail_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
+ 	if (!pf->avail_txqs)
+@@ -4745,6 +4746,7 @@ int ice_init_dev(struct ice_pf *pf)
+ 		ice_set_safe_mode_caps(hw);
+ 	}
+ 
++	ice_start_service_task(pf);
+ 	err = ice_init_pf(pf);
+ 	if (err) {
+ 		dev_err(dev, "ice_init_pf failed: %d\n", err);
+@@ -4791,6 +4793,7 @@ int ice_init_dev(struct ice_pf *pf)
+ 	ice_clear_interrupt_scheme(pf);
+ unroll_pf_init:
+ 	ice_deinit_pf(pf);
++	ice_service_task_stop(pf);
+ 	return err;
  }
  
- static int cpg_mssr_assert(struct reset_controller_dev *rcdev, unsigned long id)
- {
--	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
--	unsigned int reg = id / 32;
--	unsigned int bit = id % 32;
--	u32 bitmask = BIT(bit);
--
--	dev_dbg(priv->dev, "assert %u%02u\n", reg, bit);
--
--	writel(bitmask, priv->pub.base0 + priv->reset_regs[reg]);
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, "assert", true, id);
- }
+@@ -4799,6 +4802,7 @@ void ice_deinit_dev(struct ice_pf *pf)
+ 	ice_free_irq_msix_misc(pf);
+ 	ice_deinit_pf(pf);
+ 	ice_deinit_hw(&pf->hw);
++	ice_service_task_stop(pf);
  
- static int cpg_mssr_deassert(struct reset_controller_dev *rcdev,
- 			     unsigned long id)
- {
--	struct cpg_mssr_priv *priv = rcdev_to_priv(rcdev);
--	unsigned int reg = id / 32;
--	unsigned int bit = id % 32;
--	u32 bitmask = BIT(bit);
--
--	dev_dbg(priv->dev, "deassert %u%02u\n", reg, bit);
--
--	writel(bitmask, priv->pub.base0 + priv->reset_clear_regs[reg]);
--	return 0;
-+	return cpg_mssr_reset_operate(rcdev, "deassert", false, id);
- }
- 
- static int cpg_mssr_status(struct reset_controller_dev *rcdev,
+ 	/* Service task is already stopped, so call reset directly. */
+ 	ice_reset(&pf->hw, ICE_RESET_PFR);
 -- 
 2.51.0
 
