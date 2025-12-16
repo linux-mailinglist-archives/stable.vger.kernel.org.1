@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-201469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A80CC25F5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2142ECC243C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49F9330D0E1F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FB55302DA78
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E385434107E;
-	Tue, 16 Dec 2025 11:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F985314B91;
+	Tue, 16 Dec 2025 11:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Payccz9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GBhguzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F64234029C;
-	Tue, 16 Dec 2025 11:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE7257AD1;
+	Tue, 16 Dec 2025 11:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884740; cv=none; b=GHwHBsk9zN4pldnZ3XkDWHWdl/j611QXcp+FXZxW6fcC/7I7j6Lp+6ZEcTl+1EFjGOFR+av+kV1X2GFwcpGqVQahGsjraOsWBq1W10VUCt18TuSXoNZFklORiAViNFxFdklPc9E2wOJAdt4/0HTKYvRMkH1lsWBKOQbLEaE/sxw=
+	t=1765884628; cv=none; b=Slzr924OVf8xTL/ufqmhn3/sKPjq7NFFBGEOGPsOY2eoSwKrwT6EaBeYJkuzePXZx0MEnLitkNWVMDN3diLHWNpgoKRhQDo0aFXr+qzK8tKFLKpypKFePaj/XUcC9MOVpre6VppVBsn08pAXHnTaIy5n43YdItKLVXj/Km7CU6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884740; c=relaxed/simple;
-	bh=8vsJKrdCM2scu/GOnY8mQo6+JlILvrB83G1Az9LC8zU=;
+	s=arc-20240116; t=1765884628; c=relaxed/simple;
+	bh=ayVKR268dzAzsjoQR2DJd+JShSZrfokO4SCgkhtFApo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyvdCYFeBwFjdv1sgoUv144dWOnixrB4mQJKgNWJllPlg72dOnrN2P/sQWoWgBVXyhus+bzSyUo7HNbg+VX46f68azSxvjqOQR7egFIz0/8GsMyNgVfiwvWvaMrSOCBGPyx9zVZiB/nDiu2L2n0PyPPRLuebge/Ofc3ITs3so0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Payccz9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E573C4CEF1;
-	Tue, 16 Dec 2025 11:32:19 +0000 (UTC)
+	 MIME-Version; b=Fm1LqMwsTYx8kbMZqOaDH2tlkihSQVtuwGZ0184QF+KVROYBe0CYFbOq/JnxuA8bTr4FX45+v6kzbMSHkc62vWkaXmejAtd8mTR4USEPWnFawUG+jxMgLoqDxOXivxJ7JwGlTRtQNGVlFNMMJ+T0E9Ij2FhX2/BHofyF/yUu0vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GBhguzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9547EC4CEF1;
+	Tue, 16 Dec 2025 11:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884740;
-	bh=8vsJKrdCM2scu/GOnY8mQo6+JlILvrB83G1Az9LC8zU=;
+	s=korg; t=1765884628;
+	bh=ayVKR268dzAzsjoQR2DJd+JShSZrfokO4SCgkhtFApo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Payccz9hMxsSwYkVyeEbNsi8/SEgp8Ym47B8+DhAwHI46TlPoUn8w+SBVexQu6Pc3
-	 N5XWYXtleqYZiVTh13jEU4rFyAfYvUE6C2VqCZzwBVLU07577vTd4K+jW5+K8q1xk9
-	 7lgoxaZpj1RXtl1eYwde0yW23LJDbEPfOiAdxkmw=
+	b=2GBhguzxpUctydfRerDT4PqJ/hMohEiyb0oN+uPPiruOqpHF5GZlCTJEw0AiysuSO
+	 HhjvPaL6hHOk2LVwbAJINIwI4sjUkm9b1r+BaUnmvuZql35/8+bkR3QsCyqsrcb6SY
+	 TOnFAn+y4o326Ky3ofLHNgHlv79WPYTaYFnBH2NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Jason Wang <jasowang@redhat.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/354] virtio: fix virtqueue_set_affinity() docs
-Date: Tue, 16 Dec 2025 12:13:38 +0100
-Message-ID: <20251216111330.009278862@linuxfoundation.org>
+Subject: [PATCH 6.12 252/354] vdpa/mlx5: Fix incorrect error code reporting in query_virtqueues
+Date: Tue, 16 Dec 2025 12:13:39 +0100
+Message-ID: <20251216111330.045225366@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
 References: <20251216111320.896758933@linuxfoundation.org>
@@ -64,34 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
+[ Upstream commit f0ea2e91093ac979d07ebd033e0f45869b1d2608 ]
 
-Rewrite the comment for better grammar and clarity.
+When query_virtqueues() fails, the error log prints the variable err
+instead of cmd->err. Since err may still be zero at this point, the
+log message can misleadingly report a success value 0 even though the
+command actually failed.
 
-Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
-Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
+Even worse, once err is set to the first failure, subsequent logs
+print that same stale value. This makes the error reporting appear
+one step behind the actual failing queue index, which is confusing
+and misleading.
+
+Fix the log to report cmd->err, which reflects the real failure code
+returned by the firmware.
+
+Fixes: 1fcdf43ea69e ("vdpa/mlx5: Use async API for vq query command")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20250929134258.80956-1-alok.a.tiwari@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 1255493b7f377..94b3adc7c2dbf 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -312,7 +312,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
-  * @vq: the virtqueue
-  * @cpu_mask: the cpu mask
-  *
-- * Pay attention the function are best-effort: the affinity hint may not be set
-+ * Note that this function is best-effort: the affinity hint may not be set
-  * due to config support, irq type and sharing.
-  *
-  */
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index 2e0b8c5bec8d2..51b2485e874f4 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -1258,7 +1258,7 @@ static int query_virtqueues(struct mlx5_vdpa_net *ndev,
+ 		int vq_idx = start_vq + i;
+ 
+ 		if (cmd->err) {
+-			mlx5_vdpa_err(mvdev, "query vq %d failed, err: %d\n", vq_idx, err);
++			mlx5_vdpa_err(mvdev, "query vq %d failed, err: %d\n", vq_idx, cmd->err);
+ 			if (!err)
+ 				err = cmd->err;
+ 			continue;
 -- 
 2.51.0
 
