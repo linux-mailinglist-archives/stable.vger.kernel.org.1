@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F29CCC259E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A491CC2EFA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6694D308AB8E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 044B6322F9A4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7444A342CB8;
-	Tue, 16 Dec 2025 11:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137DE398B8A;
+	Tue, 16 Dec 2025 12:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjSdN/TL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py6FVXfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F96C341648;
-	Tue, 16 Dec 2025 11:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FF1398B85;
+	Tue, 16 Dec 2025 12:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884835; cv=none; b=e0nN6fmhdgQqLRx+JbAtvWtk/OExCj8IgQE3epNbJCZ7Yx67IgTtJeptTAKpfO04ee7bpQaNrQ40kG6h0XlZplRqEdfLlQzweK1pmAYBmmSWfMl32MXdAf53ls9j0xKePejAKejsWOs34/BA28kJTG/zFIbwo85P2pRstlZjJ6k=
+	t=1765888367; cv=none; b=XX8VmCb0bdoaI6OOzTKjYLK8KAhQtesyKf4+RR5TZqm+iCc68XdcPOFxYZgyqT8xwmUEAszVNKxOzBhTTZ7i9IPmXp7UeGV/6ZJ/0r0x6X9OTJT5YR2UccZWRh3NGergDI9ZiUuZEqlkNTik0HM+dTqKyo5CnuiWfhuQjmShclw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884835; c=relaxed/simple;
-	bh=wfbg7346MpM7DkZoU6xZnedzXMTnITo34wFjO6WfXGc=;
+	s=arc-20240116; t=1765888367; c=relaxed/simple;
+	bh=6iWdaX0yyuWzGwuj2WihmhTIwbpLCHG6qnO9MPlF718=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8M9lDNj3LSWWgUdxt0ZhOSrF7FWOsRpdSY7WDB3Bu5J5K91CG46cn1t5ajeGidPdjrhojPzJn79fzgDDSxHPNyWy1WfVz6S1/TkhGGDY98/WbvXWiQGP8ziF6nEUoTKJCwyb7XrG8ANMaYFDIfx+HqbA0X7OzXEGWFY3Eo6LXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjSdN/TL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880BFC4CEF1;
-	Tue, 16 Dec 2025 11:33:54 +0000 (UTC)
+	 MIME-Version; b=tRg++cmLHcMJCgvXyE1MSWZ5U9MtXSznNVDWrvhs5sxo1EkMAHrQE2BcaRSZdoUT5pheoB8aJK/jRSfeV7kvRQSdxug9ywfRupFP/7hdpkyY06OQhir5bh6MXlaBhlLxt3Dusi3G+3/qcPDicR9S5KQBUls4petAoR846nq9kx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py6FVXfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC31C4CEF1;
+	Tue, 16 Dec 2025 12:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884835;
-	bh=wfbg7346MpM7DkZoU6xZnedzXMTnITo34wFjO6WfXGc=;
+	s=korg; t=1765888367;
+	bh=6iWdaX0yyuWzGwuj2WihmhTIwbpLCHG6qnO9MPlF718=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjSdN/TLoj3TTQEgHWO1rqz2PWAc+Vcjz/mYnzDMXdbdbZ91s3Pu5jvru4jXWs87N
-	 adipc88gqJuD22o5fnUyG5dCvu31nPJvHeeagPPiKXEDyGSvCzvok6A+z1/y8FCUkT
-	 zvQm3iHUFTRQIqIj5LJ5KOY7hsCoNGntBbX2hF4k=
+	b=py6FVXfvkLgnRQWoRjU7VMliz7pK5hBcFry352moIjni9gZu2YqbF0oJ+EHUXEn4Z
+	 anICTJdfhOg6rPrsUorJzKN6xCtT+tar1vNDOOfpCxCgcPFKo5iC1BtSm63T993H+F
+	 lLBMgSsar1NQBuKidf9nBAxRQKxp3vpXq3bXLE58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/354] NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags
-Date: Tue, 16 Dec 2025 12:14:39 +0100
-Message-ID: <20251216111332.214647493@linuxfoundation.org>
+Subject: [PATCH 6.18 513/614] net: dsa: b53: move ARL entry functions into ops struct
+Date: Tue, 16 Dec 2025 12:14:40 +0100
+Message-ID: <20251216111419.955788313@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,363 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 8675c69816e4276b979ff475ee5fac4688f80125 ]
+[ Upstream commit a7e73339ad46ade76d29fb6cc7d7854222608c26 ]
 
-When a filesystem is being automounted, it needs to preserve the
-user-set superblock mount options, such as the "ro" flag.
+Now that the differences in ARL entry formats are neatly contained into
+functions per chip family, wrap them into an ops struct and add wrapper
+functions to access them.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-7-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/namespace.c | 6 ++++++
- fs/nfs/super.c     | 4 ----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 67 ++++++++++++++++++++++----------
+ drivers/net/dsa/b53/b53_priv.h   | 30 ++++++++++++++
+ 2 files changed, 76 insertions(+), 21 deletions(-)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index e7494cdd957e5..40d7163bca870 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -149,6 +149,7 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	struct vfsmount *mnt = ERR_PTR(-ENOMEM);
- 	struct nfs_server *server = NFS_SB(path->dentry->d_sb);
- 	struct nfs_client *client = server->nfs_client;
-+	unsigned long s_flags = path->dentry->d_sb->s_flags;
- 	int timeout = READ_ONCE(nfs_mountpoint_expiry_timeout);
- 	int ret;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 190eb11644917..50ed9b7157197 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1890,10 +1890,7 @@ static int b53_arl_read(struct b53_device *dev, const u8 *mac,
  
-@@ -174,6 +175,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 		fc->net_ns = get_net(client->cl_net);
- 	}
+ 	/* Read the bins */
+ 	for (i = 0; i < dev->num_arl_bins; i++) {
+-		if (is5325(dev) || is5365(dev))
+-			b53_arl_read_entry_25(dev, ent, i);
+-		else
+-			b53_arl_read_entry_95(dev, ent, i);
++		b53_arl_read_entry(dev, ent, i);
  
-+	/* Inherit the flags covered by NFS_SB_MASK */
-+	fc->sb_flags_mask |= NFS_SB_MASK;
-+	fc->sb_flags &= ~NFS_SB_MASK;
-+	fc->sb_flags |= s_flags & NFS_SB_MASK;
-+
- 	/* for submounts we want the same server; referrals will reassign */
- 	memcpy(&ctx->nfs_server._address, &client->cl_addr, client->cl_addrlen);
- 	ctx->nfs_server.addrlen	= client->cl_addrlen;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index ae5c5e39afa03..fbd5ed4639862 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1310,10 +1310,6 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (server->flags & NFS_MOUNT_NOAC)
- 		fc->sb_flags |= SB_SYNCHRONOUS;
+ 		if (!ent->is_valid) {
+ 			set_bit(i, free_bins);
+@@ -1979,10 +1976,7 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+ 	ent.is_static = true;
+ 	ent.is_age = false;
+ 	memcpy(ent.mac, addr, ETH_ALEN);
+-	if (is5325(dev) || is5365(dev))
+-		b53_arl_write_entry_25(dev, &ent, idx);
+-	else
+-		b53_arl_write_entry_95(dev, &ent, idx);
++	b53_arl_write_entry(dev, &ent, idx);
  
--	if (ctx->clone_data.sb)
--		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
--			fc->sb_flags |= SB_SYNCHRONOUS;
+ 	return b53_arl_rw_op(dev, 0);
+ }
+@@ -2093,17 +2087,6 @@ static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
+ 	b53_arl_to_entry(ent, mac_vid, fwd_entry);
+ }
+ 
+-static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
+-			      struct b53_arl_entry *ent)
+-{
+-	if (is5325(dev))
+-		b53_arl_search_read_25(dev, idx, ent);
+-	else if (is5365(dev))
+-		b53_arl_search_read_65(dev, idx, ent);
+-	else
+-		b53_arl_search_read_95(dev, idx, ent);
+-}
 -
- 	/* Get a superblock - note that we may end up sharing one that already exists */
- 	fc->s_fs_info = server;
- 	s = sget_fc(fc, compare_super, nfs_set_super);
+ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 			dsa_fdb_dump_cb_t *cb, void *data)
+ {
+@@ -2137,13 +2120,13 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 		if (ret)
+ 			break;
+ 
+-		b53_arl_search_rd(priv, 0, &results[0]);
++		b53_arl_search_read(priv, 0, &results[0]);
+ 		ret = b53_fdb_copy(port, &results[0], cb, data);
+ 		if (ret)
+ 			break;
+ 
+ 		if (results_per_hit == 2) {
+-			b53_arl_search_rd(priv, 1, &results[1]);
++			b53_arl_search_read(priv, 1, &results[1]);
+ 			ret = b53_fdb_copy(port, &results[1], cb, data);
+ 			if (ret)
+ 				break;
+@@ -2669,6 +2652,24 @@ static const struct dsa_switch_ops b53_switch_ops = {
+ 	.port_change_mtu	= b53_change_mtu,
+ };
+ 
++static const struct b53_arl_ops b53_arl_ops_25 = {
++	.arl_read_entry = b53_arl_read_entry_25,
++	.arl_write_entry = b53_arl_write_entry_25,
++	.arl_search_read = b53_arl_search_read_25,
++};
++
++static const struct b53_arl_ops b53_arl_ops_65 = {
++	.arl_read_entry = b53_arl_read_entry_25,
++	.arl_write_entry = b53_arl_write_entry_25,
++	.arl_search_read = b53_arl_search_read_65,
++};
++
++static const struct b53_arl_ops b53_arl_ops_95 = {
++	.arl_read_entry = b53_arl_read_entry_95,
++	.arl_write_entry = b53_arl_write_entry_95,
++	.arl_search_read = b53_arl_search_read_95,
++};
++
+ struct b53_chip_data {
+ 	u32 chip_id;
+ 	const char *dev_name;
+@@ -2682,6 +2683,7 @@ struct b53_chip_data {
+ 	u8 duplex_reg;
+ 	u8 jumbo_pm_reg;
+ 	u8 jumbo_size_reg;
++	const struct b53_arl_ops *arl_ops;
+ };
+ 
+ #define B53_VTA_REGS	\
+@@ -2701,6 +2703,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
++		.arl_ops = &b53_arl_ops_25,
+ 	},
+ 	{
+ 		.chip_id = BCM5365_DEVICE_ID,
+@@ -2711,6 +2714,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.arl_buckets = 1024,
+ 		.imp_port = 5,
+ 		.duplex_reg = B53_DUPLEX_STAT_FE,
++		.arl_ops = &b53_arl_ops_65,
+ 	},
+ 	{
+ 		.chip_id = BCM5389_DEVICE_ID,
+@@ -2724,6 +2728,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5395_DEVICE_ID,
+@@ -2737,6 +2742,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5397_DEVICE_ID,
+@@ -2750,6 +2756,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM5398_DEVICE_ID,
+@@ -2763,6 +2770,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53101_DEVICE_ID,
+@@ -2776,6 +2784,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53115_DEVICE_ID,
+@@ -2789,6 +2798,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53125_DEVICE_ID,
+@@ -2802,6 +2812,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53128_DEVICE_ID,
+@@ -2815,6 +2826,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM63XX_DEVICE_ID,
+@@ -2828,6 +2840,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_63XX,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK_63XX,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE_63XX,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53010_DEVICE_ID,
+@@ -2841,6 +2854,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53011_DEVICE_ID,
+@@ -2854,6 +2868,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53012_DEVICE_ID,
+@@ -2867,6 +2882,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53018_DEVICE_ID,
+@@ -2880,6 +2896,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53019_DEVICE_ID,
+@@ -2893,6 +2910,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM58XX_DEVICE_ID,
+@@ -2906,6 +2924,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM583XX_DEVICE_ID,
+@@ -2919,6 +2938,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	/* Starfighter 2 */
+ 	{
+@@ -2933,6 +2953,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM7445_DEVICE_ID,
+@@ -2946,6 +2967,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM7278_DEVICE_ID,
+@@ -2959,6 +2981,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ 	{
+ 		.chip_id = BCM53134_DEVICE_ID,
+@@ -2973,6 +2996,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
+ 		.duplex_reg = B53_DUPLEX_STAT_GE,
+ 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
+ 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
++		.arl_ops = &b53_arl_ops_95,
+ 	},
+ };
+ 
+@@ -3001,6 +3025,7 @@ static int b53_switch_init(struct b53_device *dev)
+ 			dev->num_vlans = chip->vlans;
+ 			dev->num_arl_bins = chip->arl_bins;
+ 			dev->num_arl_buckets = chip->arl_buckets;
++			dev->arl_ops = chip->arl_ops;
+ 			break;
+ 		}
+ 	}
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index 2f44b3b6a0d9f..c6e2d5e41c758 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -58,6 +58,17 @@ struct b53_io_ops {
+ 				bool link_up);
+ };
+ 
++struct b53_arl_entry;
++
++struct b53_arl_ops {
++	void (*arl_read_entry)(struct b53_device *dev,
++			       struct b53_arl_entry *ent, u8 idx);
++	void (*arl_write_entry)(struct b53_device *dev,
++				const struct b53_arl_entry *ent, u8 idx);
++	void (*arl_search_read)(struct b53_device *dev, u8 idx,
++				struct b53_arl_entry *ent);
++};
++
+ #define B53_INVALID_LANE	0xff
+ 
+ enum {
+@@ -127,6 +138,7 @@ struct b53_device {
+ 	struct mutex stats_mutex;
+ 	struct mutex arl_mutex;
+ 	const struct b53_io_ops *ops;
++	const struct b53_arl_ops *arl_ops;
+ 
+ 	/* chip specific data */
+ 	u32 chip_id;
+@@ -371,6 +383,24 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
+ 		*mac_vid |= ARLTBL_AGE_25;
+ }
+ 
++static inline void b53_arl_read_entry(struct b53_device *dev,
++				      struct b53_arl_entry *ent, u8 idx)
++{
++	dev->arl_ops->arl_read_entry(dev, ent, idx);
++}
++
++static inline void b53_arl_write_entry(struct b53_device *dev,
++				       const struct b53_arl_entry *ent, u8 idx)
++{
++	dev->arl_ops->arl_write_entry(dev, ent, idx);
++}
++
++static inline void b53_arl_search_read(struct b53_device *dev, u8 idx,
++				       struct b53_arl_entry *ent)
++{
++	dev->arl_ops->arl_search_read(dev, idx, ent);
++}
++
+ #ifdef CONFIG_BCM47XX
+ 
+ #include <linux/bcm47xx_nvram.h>
 -- 
 2.51.0
 
