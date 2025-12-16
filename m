@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-202211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88358CC2D3D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4F6CC3911
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 862C7308FBD0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B22B0309B15C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580CF35CB7D;
-	Tue, 16 Dec 2025 12:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE14349B19;
+	Tue, 16 Dec 2025 11:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfrR2iFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVpVUq1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F2A2BD5A2;
-	Tue, 16 Dec 2025 12:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0643D349B16;
+	Tue, 16 Dec 2025 11:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887179; cv=none; b=gprpTI7tB0y1luWSaLtVVAt+s9ixxJkY1kuE87wiPNsVGKYvfHOHqUIGUgl1d3JgOEmGSOJW0hRfg4ObIKR3OApOsuWdyDhyfxyvrxqMN+eayJEbCbWKSW6lXLD912D+Lm67/fBIvQvlOvdqyuSvVhwN9UjeQi9AiJxzp5Zc1DI=
+	t=1765885175; cv=none; b=slqs8+eQzCLNWTZBi8yu8SCAOZjzzmvaZATpcMbwkUOgl/OWPPlgzX1Pvjr3DkaEESxFjr+fz//VoPPjbJyBo1iTsqEQEBCr2QeF/aNVZzbBnc9KezbLAzFccs9MUlVf+c/S+DyP1QNrcMKYTRB1pm4fz0vRSYo3t6wCkgapnVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887179; c=relaxed/simple;
-	bh=gfn7gD1QVJxr680YbH6TjVvS2RAVI8UxevGb9FEqO8k=;
+	s=arc-20240116; t=1765885175; c=relaxed/simple;
+	bh=o969EbC6k9nk2xrlNsWGr8+H2WKX+Ey6x9EELBysqbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Adymh+MxXA8tuS6W1O1tV0JF7GAIdpUI9YVb1QWjMqekr+nMFgIjNYu6MTS4uhn+pJE4YuE+FQwWKaov/kiuG5zwQF8EuqWJBHxDDUQmJuiwETsdq2is3RlxCp746vwFSjZ3iCTfspc53dR5SQpUy8IyCZax69dADuRzP84sC4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfrR2iFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E786C4CEF1;
-	Tue, 16 Dec 2025 12:12:58 +0000 (UTC)
+	 MIME-Version; b=ZX4zz/DRzSQGi/ZX8A8QIVg++dApEpIQQeImgA8PXkPK2f5tVLPpvHgsthHeRod81B0IjqPFKCzIU14p6xolpjZyjsyIX6gpoCtIpi2x5j9E3OeelnRucRUFxI4rHRI0EftqxVM9BddjdEFlSGd5R2WjoCoxKddoD34I4fm73TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVpVUq1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB0AC4CEF1;
+	Tue, 16 Dec 2025 11:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887178;
-	bh=gfn7gD1QVJxr680YbH6TjVvS2RAVI8UxevGb9FEqO8k=;
+	s=korg; t=1765885174;
+	bh=o969EbC6k9nk2xrlNsWGr8+H2WKX+Ey6x9EELBysqbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfrR2iFICsKoe4yC/+pMN+fpwOHLMwnhPntYI6nRcs6LKEM2Hih4uN27A5s+9a1+v
-	 08CaessZE9fRjqPSdma/pvTqOIbj3ZACaGDnwUPesazEZMvgZRWB8BywYiBl+hvvqM
-	 OWu8p6UFsKoH49hHbzknSMzxQfX0coZsG4m9NcxQ=
+	b=VVpVUq1jLQSo0zYNM0z9tPHFq08QqMbYbKPyBF+pCIu0hiISELNrhwEcaVxPjQrSO
+	 +X8PwuwcyJ2xqf7pO/W6y69Z1uSdvANtKjZUXoqgD5iDnIOMOgg1E1qI851jhDI4It
+	 XzNWlWqnLIMd3aIHXJ3IZIx6QIH2yzGc2VfA4nBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yu Kuai <yukuai@kernel.org>,
+	chengkaitao <chengkaitao@kylinos.cn>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 133/614] drm/amdgpu: add userq object va track helpers
+Subject: [PATCH 6.17 059/507] block/mq-deadline: Switch back to a single dispatch list
 Date: Tue, 16 Dec 2025 12:08:20 +0100
-Message-ID: <20251216111406.153591054@linuxfoundation.org>
+Message-ID: <20251216111347.680444255@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,209 +63,229 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 5cfa33fabf01f2cc0af6b1feed6e65cb81806a37 ]
+[ Upstream commit d60055cf52703a705b86fb25b9b7931ec7ee399c ]
 
-Add the userq object virtual address list_add() helpers
-for tracking the userq obj va address usage.
+Commit c807ab520fc3 ("block/mq-deadline: Add I/O priority support")
+modified the behavior of request flag BLK_MQ_INSERT_AT_HEAD from
+dispatching a request before other requests into dispatching a request
+before other requests with the same I/O priority. This is not correct since
+BLK_MQ_INSERT_AT_HEAD is used when requeuing requests and also when a flush
+request is inserted.  Both types of requests should be dispatched as soon
+as possible. Hence, make the mq-deadline I/O scheduler again ignore the I/O
+priority for BLK_MQ_INSERT_AT_HEAD requests.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: a0559012a18a ("drm/amdgpu/userq: fix SDMA and compute validation")
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Yu Kuai <yukuai@kernel.org>
+Reported-by: chengkaitao <chengkaitao@kylinos.cn>
+Closes: https://lore.kernel.org/linux-block/20251009155253.14611-1-pilgrimtao@gmail.com/
+Fixes: c807ab520fc3 ("block/mq-deadline: Add I/O priority support")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moalv <dlemoal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c  | 44 ++++++++++++++++------
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h  | 12 ++++--
- drivers/gpu/drm/amd/amdgpu/mes_userqueue.c | 16 ++++----
- 4 files changed, 52 insertions(+), 21 deletions(-)
+ block/mq-deadline.c | 107 +++++++++++++++++++-------------------------
+ 1 file changed, 47 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index 656b8a931dae8..52c2d1731aabf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -96,6 +96,7 @@ struct amdgpu_bo_va {
- 	 * if non-zero, cannot unmap from GPU because user queues may still access it
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 9d449503613d6..77250fcecb545 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -71,7 +71,6 @@ struct io_stats_per_prio {
+  * present on both sort_list[] and fifo_list[].
+  */
+ struct dd_per_prio {
+-	struct list_head dispatch;
+ 	struct rb_root sort_list[DD_DIR_COUNT];
+ 	struct list_head fifo_list[DD_DIR_COUNT];
+ 	/* Position of the most recently dispatched request. */
+@@ -84,6 +83,7 @@ struct deadline_data {
+ 	 * run time data
  	 */
- 	unsigned int			queue_refcount;
-+	atomic_t			userq_va_mapped;
- };
  
- struct amdgpu_bo {
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-index 1add21160d218..79c7fa0a9ff7b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -44,10 +44,29 @@ u32 amdgpu_userq_get_supported_ip_mask(struct amdgpu_device *adev)
- 	return userq_ip_mask;
- }
++	struct list_head dispatch;
+ 	struct dd_per_prio per_prio[DD_PRIO_COUNT];
  
--int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
--				   u64 expected_size)
-+static int amdgpu_userq_buffer_va_list_add(struct amdgpu_usermode_queue *queue,
-+					   struct amdgpu_bo_va_mapping *va_map, u64 addr)
-+{
-+	struct amdgpu_userq_va_cursor *va_cursor;
-+	struct userq_va_list;
-+
-+	va_cursor = kzalloc(sizeof(*va_cursor), GFP_KERNEL);
-+	if (!va_cursor)
-+		return -ENOMEM;
-+
-+	INIT_LIST_HEAD(&va_cursor->list);
-+	va_cursor->gpu_addr = addr;
-+	atomic_set(&va_map->bo_va->userq_va_mapped, 1);
-+	list_add(&va_cursor->list, &queue->userq_va_list);
-+
-+	return 0;
-+}
-+
-+int amdgpu_userq_input_va_validate(struct amdgpu_usermode_queue *queue,
-+				   u64 addr, u64 expected_size)
- {
- 	struct amdgpu_bo_va_mapping *va_map;
-+	struct amdgpu_vm *vm = queue->vm;
- 	u64 user_addr;
- 	u64 size;
- 	int r = 0;
-@@ -67,6 +86,7 @@ int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
- 	/* Only validate the userq whether resident in the VM mapping range */
- 	if (user_addr >= va_map->start  &&
- 	    va_map->last - user_addr + 1 >= size) {
-+		amdgpu_userq_buffer_va_list_add(queue, va_map, user_addr);
- 		amdgpu_bo_unreserve(vm->root.bo);
- 		return 0;
- 	}
-@@ -185,6 +205,7 @@ amdgpu_userq_cleanup(struct amdgpu_userq_mgr *uq_mgr,
- 	uq_funcs->mqd_destroy(uq_mgr, queue);
- 	amdgpu_userq_fence_driver_free(queue);
- 	idr_remove(&uq_mgr->userq_idr, queue_id);
-+	list_del(&queue->userq_va_list);
- 	kfree(queue);
- }
+ 	/* Data direction of latest dispatched request. */
+@@ -336,16 +336,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
  
-@@ -505,14 +526,7 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
- 		goto unlock;
- 	}
+ 	lockdep_assert_held(&dd->lock);
  
--	/* Validate the userq virtual address.*/
--	if (amdgpu_userq_input_va_validate(&fpriv->vm, args->in.queue_va, args->in.queue_size) ||
--	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
--	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
--		r = -EINVAL;
--		kfree(queue);
--		goto unlock;
+-	if (!list_empty(&per_prio->dispatch)) {
+-		rq = list_first_entry(&per_prio->dispatch, struct request,
+-				      queuelist);
+-		if (started_after(dd, rq, latest_start))
+-			return NULL;
+-		list_del_init(&rq->queuelist);
+-		data_dir = rq_data_dir(rq);
+-		goto done;
 -	}
-+	INIT_LIST_HEAD(&queue->userq_va_list);
- 	queue->doorbell_handle = args->in.doorbell_handle;
- 	queue->queue_type = args->in.ip_type;
- 	queue->vm = &fpriv->vm;
-@@ -523,6 +537,15 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
- 	db_info.db_obj = &queue->db_obj;
- 	db_info.doorbell_offset = args->in.doorbell_offset;
+-
+ 	/*
+ 	 * batches are currently reads XOR writes
+ 	 */
+@@ -425,7 +415,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
+ 	 */
+ 	dd->batching++;
+ 	deadline_move_request(dd, per_prio, rq);
+-done:
+ 	return dd_start_request(dd, data_dir, rq);
+ }
  
-+	/* Validate the userq virtual address.*/
-+	if (amdgpu_userq_input_va_validate(queue, args->in.queue_va, args->in.queue_size) ||
-+	    amdgpu_userq_input_va_validate(queue, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
-+	    amdgpu_userq_input_va_validate(queue, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
-+		r = -EINVAL;
-+		kfree(queue);
+@@ -473,6 +462,14 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
+ 	enum dd_prio prio;
+ 
+ 	spin_lock(&dd->lock);
++
++	if (!list_empty(&dd->dispatch)) {
++		rq = list_first_entry(&dd->dispatch, struct request, queuelist);
++		list_del_init(&rq->queuelist);
++		dd_start_request(dd, rq_data_dir(rq), rq);
 +		goto unlock;
 +	}
 +
- 	/* Convert relative doorbell offset into absolute doorbell index */
- 	index = amdgpu_userq_get_doorbell_index(uq_mgr, &db_info, filp);
- 	if (index == (uint64_t)-EINVAL) {
-@@ -548,7 +571,6 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
+ 	rq = dd_dispatch_prio_aged_requests(dd, now);
+ 	if (rq)
  		goto unlock;
- 	}
+@@ -561,10 +558,10 @@ static int dd_init_sched(struct request_queue *q, struct elevator_queue *eq)
  
--
- 	qid = idr_alloc(&uq_mgr->userq_idr, queue, 1, AMDGPU_MAX_USERQ_COUNT, GFP_KERNEL);
- 	if (qid < 0) {
- 		drm_file_err(uq_mgr->file, "Failed to allocate a queue id\n");
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-index c027dd9166727..dbc13a807ca82 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-@@ -47,6 +47,11 @@ struct amdgpu_userq_obj {
- 	struct amdgpu_bo *obj;
- };
+ 	eq->elevator_data = dd;
  
-+struct amdgpu_userq_va_cursor {
-+	u64			gpu_addr;
-+	struct list_head	list;
++	INIT_LIST_HEAD(&dd->dispatch);
+ 	for (prio = 0; prio <= DD_PRIO_MAX; prio++) {
+ 		struct dd_per_prio *per_prio = &dd->per_prio[prio];
+ 
+-		INIT_LIST_HEAD(&per_prio->dispatch);
+ 		INIT_LIST_HEAD(&per_prio->fifo_list[DD_READ]);
+ 		INIT_LIST_HEAD(&per_prio->fifo_list[DD_WRITE]);
+ 		per_prio->sort_list[DD_READ] = RB_ROOT;
+@@ -668,7 +665,7 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
+ 	trace_block_rq_insert(rq);
+ 
+ 	if (flags & BLK_MQ_INSERT_AT_HEAD) {
+-		list_add(&rq->queuelist, &per_prio->dispatch);
++		list_add(&rq->queuelist, &dd->dispatch);
+ 		rq->fifo_time = jiffies;
+ 	} else {
+ 		deadline_add_rq_rb(per_prio, rq);
+@@ -735,8 +732,7 @@ static void dd_finish_request(struct request *rq)
+ 
+ static bool dd_has_work_for_prio(struct dd_per_prio *per_prio)
+ {
+-	return !list_empty_careful(&per_prio->dispatch) ||
+-		!list_empty_careful(&per_prio->fifo_list[DD_READ]) ||
++	return !list_empty_careful(&per_prio->fifo_list[DD_READ]) ||
+ 		!list_empty_careful(&per_prio->fifo_list[DD_WRITE]);
+ }
+ 
+@@ -745,6 +741,9 @@ static bool dd_has_work(struct blk_mq_hw_ctx *hctx)
+ 	struct deadline_data *dd = hctx->queue->elevator->elevator_data;
+ 	enum dd_prio prio;
+ 
++	if (!list_empty_careful(&dd->dispatch))
++		return true;
++
+ 	for (prio = 0; prio <= DD_PRIO_MAX; prio++)
+ 		if (dd_has_work_for_prio(&dd->per_prio[prio]))
+ 			return true;
+@@ -953,49 +952,39 @@ static int dd_owned_by_driver_show(void *data, struct seq_file *m)
+ 	return 0;
+ }
+ 
+-#define DEADLINE_DISPATCH_ATTR(prio)					\
+-static void *deadline_dispatch##prio##_start(struct seq_file *m,	\
+-					     loff_t *pos)		\
+-	__acquires(&dd->lock)						\
+-{									\
+-	struct request_queue *q = m->private;				\
+-	struct deadline_data *dd = q->elevator->elevator_data;		\
+-	struct dd_per_prio *per_prio = &dd->per_prio[prio];		\
+-									\
+-	spin_lock(&dd->lock);						\
+-	return seq_list_start(&per_prio->dispatch, *pos);		\
+-}									\
+-									\
+-static void *deadline_dispatch##prio##_next(struct seq_file *m,		\
+-					    void *v, loff_t *pos)	\
+-{									\
+-	struct request_queue *q = m->private;				\
+-	struct deadline_data *dd = q->elevator->elevator_data;		\
+-	struct dd_per_prio *per_prio = &dd->per_prio[prio];		\
+-									\
+-	return seq_list_next(v, &per_prio->dispatch, pos);		\
+-}									\
+-									\
+-static void deadline_dispatch##prio##_stop(struct seq_file *m, void *v)	\
+-	__releases(&dd->lock)						\
+-{									\
+-	struct request_queue *q = m->private;				\
+-	struct deadline_data *dd = q->elevator->elevator_data;		\
+-									\
+-	spin_unlock(&dd->lock);						\
+-}									\
+-									\
+-static const struct seq_operations deadline_dispatch##prio##_seq_ops = { \
+-	.start	= deadline_dispatch##prio##_start,			\
+-	.next	= deadline_dispatch##prio##_next,			\
+-	.stop	= deadline_dispatch##prio##_stop,			\
+-	.show	= blk_mq_debugfs_rq_show,				\
++static void *deadline_dispatch_start(struct seq_file *m, loff_t *pos)
++	__acquires(&dd->lock)
++{
++	struct request_queue *q = m->private;
++	struct deadline_data *dd = q->elevator->elevator_data;
++
++	spin_lock(&dd->lock);
++	return seq_list_start(&dd->dispatch, *pos);
+ }
+ 
+-DEADLINE_DISPATCH_ATTR(0);
+-DEADLINE_DISPATCH_ATTR(1);
+-DEADLINE_DISPATCH_ATTR(2);
+-#undef DEADLINE_DISPATCH_ATTR
++static void *deadline_dispatch_next(struct seq_file *m, void *v, loff_t *pos)
++{
++	struct request_queue *q = m->private;
++	struct deadline_data *dd = q->elevator->elevator_data;
++
++	return seq_list_next(v, &dd->dispatch, pos);
++}
++
++static void deadline_dispatch_stop(struct seq_file *m, void *v)
++	__releases(&dd->lock)
++{
++	struct request_queue *q = m->private;
++	struct deadline_data *dd = q->elevator->elevator_data;
++
++	spin_unlock(&dd->lock);
++}
++
++static const struct seq_operations deadline_dispatch_seq_ops = {
++	.start	= deadline_dispatch_start,
++	.next	= deadline_dispatch_next,
++	.stop	= deadline_dispatch_stop,
++	.show	= blk_mq_debugfs_rq_show,
 +};
-+
- struct amdgpu_usermode_queue {
- 	int			queue_type;
- 	enum amdgpu_userq_state state;
-@@ -66,6 +71,8 @@ struct amdgpu_usermode_queue {
- 	u32			xcp_id;
- 	int			priority;
- 	struct dentry		*debugfs_queue;
-+
-+	struct list_head	userq_va_list;
- };
  
- struct amdgpu_userq_funcs {
-@@ -136,7 +143,6 @@ int amdgpu_userq_stop_sched_for_enforce_isolation(struct amdgpu_device *adev,
- 						  u32 idx);
- int amdgpu_userq_start_sched_for_enforce_isolation(struct amdgpu_device *adev,
- 						   u32 idx);
--
--int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
--				   u64 expected_size);
-+int amdgpu_userq_input_va_validate(struct amdgpu_usermode_queue *queue,
-+				   u64 addr, u64 expected_size);
- #endif
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-index 1cd9eaeef38f9..5c63480dda9c4 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-@@ -298,8 +298,9 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			goto free_mqd;
- 		}
- 
--		if (amdgpu_userq_input_va_validate(queue->vm, compute_mqd->eop_va,
--		    max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE)))
-+		r = amdgpu_userq_input_va_validate(queue, compute_mqd->eop_va,
-+						   max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE));
-+		if (r)
- 			goto free_mqd;
- 
- 		userq_props->eop_gpu_addr = compute_mqd->eop_va;
-@@ -330,8 +331,9 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		userq_props->tmz_queue =
- 			mqd_user->flags & AMDGPU_USERQ_CREATE_FLAGS_QUEUE_SECURE;
- 
--		if (amdgpu_userq_input_va_validate(queue->vm, mqd_gfx_v11->shadow_va,
--		    shadow_info.shadow_size))
-+		r = amdgpu_userq_input_va_validate(queue, mqd_gfx_v11->shadow_va,
-+						   shadow_info.shadow_size);
-+		if (r)
- 			goto free_mqd;
- 
- 		kfree(mqd_gfx_v11);
-@@ -350,9 +352,9 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			r = -ENOMEM;
- 			goto free_mqd;
- 		}
--
--		if (amdgpu_userq_input_va_validate(queue->vm, mqd_sdma_v11->csa_va,
--		    shadow_info.csa_size))
-+		r = amdgpu_userq_input_va_validate(queue, mqd_sdma_v11->csa_va,
-+						   shadow_info.csa_size);
-+		if (r)
- 			goto free_mqd;
- 
- 		userq_props->csa_addr = mqd_sdma_v11->csa_va;
+ #define DEADLINE_QUEUE_DDIR_ATTRS(name)					\
+ 	{#name "_fifo_list", 0400,					\
+@@ -1018,9 +1007,7 @@ static const struct blk_mq_debugfs_attr deadline_queue_debugfs_attrs[] = {
+ 	{"batching", 0400, deadline_batching_show},
+ 	{"starved", 0400, deadline_starved_show},
+ 	{"async_depth", 0400, dd_async_depth_show},
+-	{"dispatch0", 0400, .seq_ops = &deadline_dispatch0_seq_ops},
+-	{"dispatch1", 0400, .seq_ops = &deadline_dispatch1_seq_ops},
+-	{"dispatch2", 0400, .seq_ops = &deadline_dispatch2_seq_ops},
++	{"dispatch", 0400, .seq_ops = &deadline_dispatch_seq_ops},
+ 	{"owned_by_driver", 0400, dd_owned_by_driver_show},
+ 	{"queued", 0400, dd_queued_show},
+ 	{},
 -- 
 2.51.0
 
