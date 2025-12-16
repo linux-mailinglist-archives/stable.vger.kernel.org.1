@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9BACC25E7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43FFCC2D5E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEC20301FF34
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C207C31D4A99
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6D34D4C2;
-	Tue, 16 Dec 2025 11:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7D935CBDD;
+	Tue, 16 Dec 2025 12:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH5zGWzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5gO3ZvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD51A34D3B8;
-	Tue, 16 Dec 2025 11:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB235CBCF;
+	Tue, 16 Dec 2025 12:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885377; cv=none; b=T4lpWmzPgunHWY3N09lxMXm+WvoLqbwHP2I+ooAgKHW2xTWmKZnx0YFux+lhga3WkM4iHgJQ5EcHf0E098XjK4X2JDMinFadG9qomc1AOeh9YNPD+m+k03cPgGtbe4duxyYeNjQyIpEk5tIAS3dHD1DwC+AqV9YPTKQ++5fwrw0=
+	t=1765887325; cv=none; b=NZlx8sF0Sgpdh6GMhKH4pgK0CbrkNJxwmwgzx9mWB68UGQ1K9jD7tc0AOwVmJtTUExQJBI6G7u341zHBzWZlISwHPJKG9W6CgckJGXz70huZKM5ugd927jxHxRpoYaVoPwL/bXBAm/01bKUWf1+lTyMLrSNW6gWMbu8h/7bh4jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885377; c=relaxed/simple;
-	bh=va6neb/QgmqkcpvMi27UD9xBjZWyIP7THwi8HADA3uY=;
+	s=arc-20240116; t=1765887325; c=relaxed/simple;
+	bh=k1gm23oBa45U3/QtLmX+ThVse+3mnzUm9B/p1Eqhn2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1DMvz9NHkl54Dx6PLGjlBYikM+ZENLeB6m3Za4sPBmsQUQ0krhxpuvQ0qOadodM1lOWawJUcuZW6H1iqLY3+3OuDWNYWnPCe3EWhWKslKcKynOtbP+oku3BeGodud6URko27pCnQsMolnYUDbpHsiClPJSBMqJJtQ9yCiuF6Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH5zGWzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A5EC4CEF1;
-	Tue, 16 Dec 2025 11:42:56 +0000 (UTC)
+	 MIME-Version; b=NtyCc6G//YRzE4H0h2fCHEdLQBpz3J3Z2dtz8BIMyjwG6xsCG1o920+vmhL7ZuawzgfPrZT0s0tJ9l3sSk24FqvnRUaXD+klDUeuTHA4uBRBgb5jBkZanuszjhYLfCoKe4QqgI1ltIk3YqYB58GyPYuuSpIGPyFqDtFKFD7Izo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5gO3ZvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40739C4CEF1;
+	Tue, 16 Dec 2025 12:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885377;
-	bh=va6neb/QgmqkcpvMi27UD9xBjZWyIP7THwi8HADA3uY=;
+	s=korg; t=1765887324;
+	bh=k1gm23oBa45U3/QtLmX+ThVse+3mnzUm9B/p1Eqhn2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH5zGWzLvqZEcUp+j7xCtfHNPVukUveqE3TFkja0KMEY09nv1iFXQ8idaKKL6e2kL
-	 5hCeo2PRK/l2Kuk46cKdV538wiVh+4uZHaUu+yCZkVUo5l4gk/XmLYCBBCwH/GEa3M
-	 ufdvCvAqFBh3AAJyKgCMNrfwIFIbdU+tLaqrihwY=
+	b=p5gO3ZvLHIKqjeBPL9kCmYQrdEzCfof2+YyRfI/wDA4LHm0Z2v+vj0aAyMLdCqQTa
+	 oCie8FrYaWJK+6lYH3xYcHGYzASgf7K8HXRvVTgvYmgNWwZQfs0NC8B0TP41zW3Di3
+	 Anmh3w3TsB62C53g7MlkKjt7POEyo1VoD1Y8xJBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Thomas Richard (TI.com)" <thomas.richard@bootlin.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 121/507] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
+Subject: [PATCH 6.18 195/614] firmware: ti_sci: Set IO Isolation only if the firmware is capable
 Date: Tue, 16 Dec 2025 12:09:22 +0100
-Message-ID: <20251216111349.916938371@linuxfoundation.org>
+Message-ID: <20251216111408.442328570@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
 
-[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
+[ Upstream commit 999e9bc953e321651d69556fdd5dfd178f96f128 ]
 
-When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
-KASAN may report false-positive out-of-bounds access:
+Prevent calling ti_sci_cmd_set_io_isolation() on firmware
+that does not support the IO_ISOLATION capability. Add the
+MSG_FLAG_CAPS_IO_ISOLATION capability flag and check it before
+attempting to set IO isolation during suspend/resume operations.
 
-  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
-  Call Trace:
-    dump_stack_lvl
-    print_address_description.constprop.0
-    print_report
-    __show_regs
-    show_trace_log_lvl
-    sched_show_task
-    show_state_filter
-    sysrq_handle_showstate
-    __handle_sysrq
-    write_sysrq_trigger
-    proc_reg_write
-    vfs_write
-    ksys_write
-    do_syscall_64
-    entry_SYSCALL_64_after_hwframe
+Without this check, systems with older firmware may experience
+undefined behavior or errors when entering/exiting suspend states.
 
-The issue occurs as follows:
-
-  Task A (walk other tasks' stacks)           Task B (running)
-  1. echo t > /proc/sysrq-trigger
-  show_trace_log_lvl
-    regs = unwind_get_entry_regs()
-    show_regs_if_on_stack(regs)
-                                              2. The stack value pointed by
-                                                 `regs` keeps changing, and
-                                                 so are the tags in its
-                                                 KASAN shadow region.
-      __show_regs(regs)
-        regs->ax, regs->bx, ...
-          3. hit KASAN redzones, OOB
-
-When task A walks task B's stack without suspending it, the continuous changes
-in task B's stack (and corresponding KASAN shadow tags) may cause task A to
-hit KASAN redzones when accessing obsolete values on the stack, resulting in
-false positive reports.
-
-Simply stopping the task before unwinding is not a viable fix, as it would
-alter the state intended to inspect. This is especially true for diagnosing
-misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
-the root cause by changing the call stack.
-
-Therefore, fix this by disabling KASAN checks during asynchronous stack
-unwinding, which is identified when the unwinding task does not match the
-current task (task != current).
-
-  [ bp: Align arguments on function's opening brace. ]
-
-Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
+Fixes: ec24643bdd62 ("firmware: ti_sci: Add system suspend and resume call")
+Signed-off-by: Thomas Richard (TI.com) <thomas.richard@bootlin.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://patch.msgid.link/20251031-ti-sci-io-isolation-v2-1-60d826b65949@bootlin.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/firmware/ti_sci.c | 21 +++++++++++++--------
+ drivers/firmware/ti_sci.h |  2 ++
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 71ee20102a8af..b10684dedc589 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -181,8 +181,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
-  * in false positive reports. Disable instrumentation to avoid those.
-  */
- __no_kmsan_checks
--static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
--			unsigned long *stack, const char *log_lvl)
-+static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
-+				 unsigned long *stack, const char *log_lvl)
- {
- 	struct unwind_state state;
- 	struct stack_info stack_info = {0};
-@@ -303,6 +303,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
- 	}
- }
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index 49fd2ae01055d..8d96a3c12b36a 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -3751,9 +3751,11 @@ static int __maybe_unused ti_sci_suspend_noirq(struct device *dev)
+ 	struct ti_sci_info *info = dev_get_drvdata(dev);
+ 	int ret = 0;
  
-+static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
-+			       unsigned long *stack, const char *log_lvl)
-+{
-+	/*
-+	 * Disable KASAN to avoid false positives during walking another
-+	 * task's stacks, as values on these stacks may change concurrently
-+	 * with task execution.
-+	 */
-+	bool disable_kasan = task && task != current;
-+
-+	if (disable_kasan)
-+		kasan_disable_current();
-+
-+	__show_trace_log_lvl(task, regs, stack, log_lvl);
-+
-+	if (disable_kasan)
-+		kasan_enable_current();
-+}
-+
- void show_stack(struct task_struct *task, unsigned long *sp,
- 		       const char *loglvl)
- {
+-	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
+-	if (ret)
+-		return ret;
++	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
++		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_ENABLE);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
+ }
+@@ -3767,9 +3769,11 @@ static int __maybe_unused ti_sci_resume_noirq(struct device *dev)
+ 	u8 pin;
+ 	u8 mode;
+ 
+-	ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
+-	if (ret)
+-		return ret;
++	if (info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION) {
++		ret = ti_sci_cmd_set_io_isolation(&info->handle, TISCI_MSG_VALUE_IO_DISABLE);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ret = ti_sci_msg_cmd_lpm_wake_reason(&info->handle, &source, &time, &pin, &mode);
+ 	/* Do not fail to resume on error as the wake reason is not critical */
+@@ -3928,11 +3932,12 @@ static int ti_sci_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ti_sci_msg_cmd_query_fw_caps(&info->handle, &info->fw_caps);
+-	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s\n",
++	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s%s\n",
+ 		info->fw_caps & MSG_FLAG_CAPS_GENERIC ? "Generic" : "",
+ 		info->fw_caps & MSG_FLAG_CAPS_LPM_PARTIAL_IO ? " Partial-IO" : "",
+ 		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : "",
+-		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : ""
++		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : "",
++		info->fw_caps & MSG_FLAG_CAPS_IO_ISOLATION ? " IO-Isolation" : ""
+ 	);
+ 
+ 	ti_sci_setup_ops(info);
+diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
+index 701c416b2e78f..7559cde17b6cc 100644
+--- a/drivers/firmware/ti_sci.h
++++ b/drivers/firmware/ti_sci.h
+@@ -149,6 +149,7 @@ struct ti_sci_msg_req_reboot {
+  *		MSG_FLAG_CAPS_LPM_PARTIAL_IO: Partial IO in LPM
+  *		MSG_FLAG_CAPS_LPM_DM_MANAGED: LPM can be managed by DM
+  *		MSG_FLAG_CAPS_LPM_ABORT: Abort entry to LPM
++ *		MSG_FLAG_CAPS_IO_ISOLATION: IO Isolation support
+  *
+  * Response to a generic message with message type TI_SCI_MSG_QUERY_FW_CAPS
+  * providing currently available SOC/firmware capabilities. SoC that don't
+@@ -160,6 +161,7 @@ struct ti_sci_msg_resp_query_fw_caps {
+ #define MSG_FLAG_CAPS_LPM_PARTIAL_IO	TI_SCI_MSG_FLAG(4)
+ #define MSG_FLAG_CAPS_LPM_DM_MANAGED	TI_SCI_MSG_FLAG(5)
+ #define MSG_FLAG_CAPS_LPM_ABORT		TI_SCI_MSG_FLAG(9)
++#define MSG_FLAG_CAPS_IO_ISOLATION	TI_SCI_MSG_FLAG(7)
+ #define MSG_MASK_CAPS_LPM		GENMASK_ULL(4, 1)
+ 	u64 fw_caps;
+ } __packed;
 -- 
 2.51.0
 
