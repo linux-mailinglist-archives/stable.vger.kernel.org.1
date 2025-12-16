@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC5CCC23F4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5345CC4128
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 323913002FFD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E88D303EA1A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD33F33EB1A;
-	Tue, 16 Dec 2025 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B43358D0C;
+	Tue, 16 Dec 2025 12:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7klKwiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhIQAOpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9044139FD9;
-	Tue, 16 Dec 2025 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EC4358D02;
+	Tue, 16 Dec 2025 12:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884599; cv=none; b=ELl2woSyc8Iz7wMkdI49KzCDRzxqDbsSsPoGKLT9QgrJ2j0nttNnMoLYriLZ6BG/m9p5/J/se6Av1DQKN2ZHoyBqZ9TRzjaXNpJdQPRFN3nboylSmrqwoxDq5T6FazoeAY8K8tsinFe85YTX2S+nYVBXycJqtnhj+90nL6u6Atw=
+	t=1765888131; cv=none; b=sACakPJ95lGdr0D/FG1uOVgn8IMp9J8/sNtHRPc/BMeiU90HlzW33Q5wFHxVl3PNHtpFniLK1y8XYaUFQyCaJnfiH6a7PEf3lyZp2fdmv9xP0zIPti2y0kGvclcItKBOXUuatDE8WudMbCmjOX8LqkDLeXWkm6dzFh8Eku+L1gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884599; c=relaxed/simple;
-	bh=nhiq8mq81KxW0RUDVx5F4iLCwaRubqSvIqq+OCplH0o=;
+	s=arc-20240116; t=1765888131; c=relaxed/simple;
+	bh=DaT+H4WO65guA/rUoJ6NlojCyOgnhts2xY/HwDsANLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W986F/z2ZvXNb9wd8lH2RzO1KIDI02x7dfIdCWlpvipGMFZSJF5BMWXNv/sxuRQZg4zjY56jG241lNyARXqn/yRWic9AtDETt+JZ/hGMze1+DFWcQyusyJq+tMS1UItAtnQBaLsx8Vt1KZfZKcGwAs7au1u4zmQOKqlJgwr/BR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7klKwiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E832DC4CEF1;
-	Tue, 16 Dec 2025 11:29:58 +0000 (UTC)
+	 MIME-Version; b=MGlg2Aew0cjLZvLjb79VPhv2XL1w7HW6HWqTo0MITFViyPxDAHDnUWu+jeM5OolIepxT8aBXn7Fr39Vrktu1STOiSa9P6g0C75t7aOcfICMZhcTulDL+xSFuvdggDiEIjQJe7/woAB7itB6t7lysIPEZfMk5T01shCXYPSIaUsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhIQAOpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DCAC4CEF1;
+	Tue, 16 Dec 2025 12:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884599;
-	bh=nhiq8mq81KxW0RUDVx5F4iLCwaRubqSvIqq+OCplH0o=;
+	s=korg; t=1765888131;
+	bh=DaT+H4WO65guA/rUoJ6NlojCyOgnhts2xY/HwDsANLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7klKwiLCe5FVom8TrkCthikHBvLfs08FXuaLlDcCM1zOCvUQryKQzY1APLMyw3LU
-	 UQbcMwpz9JZBwjhBJ5Vka3qljOuCg6ExNSHARwZpv1f2vgUSj1d20rZURsN/X6fdVw
-	 cfq5YS42YhU//OphSOW3rtyFPTw57hEQON9XyZuc=
+	b=RhIQAOpW6yJ7N+qBotPWdf2W0e+xeO6VR05+GzWpyGQBhKeamiVtHei0JoSN+c73U
+	 MmLg38ZknkFIThG+QRGAGpzi/DjNC5qBZVYGkvu56TwZcDG9af0kWp1rJIR8B4Pzmz
+	 rB+c85i9vi3uvdOfO2jylrATKINY36eLEYWeU2sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 241/354] drm/amd/display: Fix logical vs bitwise bug in get_embedded_panel_info_v2_1()
+Subject: [PATCH 6.18 441/614] ASoC: fsl_xcvr: clear the channel status control memory
 Date: Tue, 16 Dec 2025 12:13:28 +0100
-Message-ID: <20251216111329.644811605@linuxfoundation.org>
+Message-ID: <20251216111417.350792641@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 1a79482699b4d1e43948d14f0c7193dc1dcad858 ]
+[ Upstream commit 73b97d46dde64fa184d47865d4a532d818c3a007 ]
 
-The .H_SYNC_POLARITY and .V_SYNC_POLARITY variables are 1 bit bitfields
-of a u32.  The ATOM_HSYNC_POLARITY define is 0x2 and the
-ATOM_VSYNC_POLARITY is 0x4.  When we do a bitwise negate of 0, 2, or 4
-then the last bit is always 1 so this code always sets .H_SYNC_POLARITY
-and .V_SYNC_POLARITY to true.
+memset_io() writes memory byte by byte with __raw_writeb() on the arm
+platform if the size is word. but XCVR data RAM memory can't be accessed
+with byte address, so with memset_io() the channel status control memory
+is not really cleared, use writel_relaxed() instead.
 
-This code is instead intended to check if the ATOM_HSYNC_POLARITY or
-ATOM_VSYNC_POLARITY flags are set and reverse the result.  In other
-words, it's supposed to be a logical negate instead of a bitwise negate.
-
-Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 28564486866f ("ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251126064509.1900974-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index c9a6de110b742..af31fddb47db1 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1480,10 +1480,10 @@ static enum bp_result get_embedded_panel_info_v2_1(
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.HORIZONTAL_CUT_OFF = 0;
- 
--	info->lcd_timing.misc_info.H_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_HSYNC_POLARITY);
--	info->lcd_timing.misc_info.V_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_VSYNC_POLARITY);
-+	info->lcd_timing.misc_info.H_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_HSYNC_POLARITY);
-+	info->lcd_timing.misc_info.V_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_VSYNC_POLARITY);
- 
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.VERTICAL_CUT_OFF = 0;
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 5d804860f7d8c..58db4906a01d5 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1421,7 +1421,7 @@ static irqreturn_t irq0_isr(int irq, void *devid)
+ 						bitrev32(val);
+ 				}
+ 				/* clear CS control register */
+-				memset_io(reg_ctrl, 0, sizeof(val));
++				writel_relaxed(0, reg_ctrl);
+ 			}
+ 		} else {
+ 			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_0,
 -- 
 2.51.0
 
