@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C867CC21F0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF329CC264C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:45:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 59B693004625
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35AFC3002E90
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967F933B961;
-	Tue, 16 Dec 2025 11:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCD3446DE;
+	Tue, 16 Dec 2025 11:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AnKSC5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI5fL5ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5147F2459D7;
-	Tue, 16 Dec 2025 11:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BF73446C4;
+	Tue, 16 Dec 2025 11:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883988; cv=none; b=gqNtyPNi9odQa8MEFIl3ApvTh8/M3qxwUtcK1PAXPmPqVZL2Dqg1+YYyopqlpUJnnti6PxqVdqMq7l3BSbLSIjeCM0tyeZLzSaa1sh2s71UkT0yz0l7l7kmPzKwtZkYTydb7o4KaKjzEssOkqZhtBM5gQgjU6XvwIUJsVWFxWuQ=
+	t=1765885499; cv=none; b=cA/imEH9sLtQbCHzRbMHfdPRQFFTn1mviznp7PLJC6OIGDqCfyJpvgFMW7ETQ/59LblWhF815WG3x4hcUzuvDdFJPlvR/03tv0NLf3EeOBPsbfotP4U8RXv+cmrmE2MKZhsB3IP9HquRFrVolUn3Ub+Y2pAtjky7NTdpyle084A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883988; c=relaxed/simple;
-	bh=nfjhxd4AG3FFO3E6eacNEH6XEjTDDfqEuS0U09K5xgU=;
+	s=arc-20240116; t=1765885499; c=relaxed/simple;
+	bh=WLVv8oXSqKz5C48l6C6cm8K7MzWkbBws/37/y+Mnr+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6cW9Bec2QdftzUXWk1iXvU7IGlyKSvIBHs7XS8pvW8pdGOHKGsU80dft14VYEL2KHi0hVTbg8+l5hhU6WO6u1bzyzCgo3xnyx5kwltqArW4P0W/f+/pvUB7icQwM6pWGVLF+ybtRZtWxVkBa8yWex4NHfbfQGdJLm38fr7Qk78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AnKSC5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DFAC4CEF1;
-	Tue, 16 Dec 2025 11:19:47 +0000 (UTC)
+	 MIME-Version; b=fGz5nSEif9IjfsSTr3d3ZzcTNmQ+fznA7Wv+zBeuNzAZfqeY6R0KGDeycJLTag7nwgRXYfoUtBQn2ght1s4lvC0pI/dtbw0VVH1tpDHsqERVgnl8pAv6u0jnfb9gpbEuFtmWR873H5eSOAksgI2Lc8DcEAZpOcoLVIQ2umrSr2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI5fL5ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C94C4CEF1;
+	Tue, 16 Dec 2025 11:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883988;
-	bh=nfjhxd4AG3FFO3E6eacNEH6XEjTDDfqEuS0U09K5xgU=;
+	s=korg; t=1765885499;
+	bh=WLVv8oXSqKz5C48l6C6cm8K7MzWkbBws/37/y+Mnr+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AnKSC5OvHT3ve4qg5fFvVquaUdFXSNtAISu1Pvf7hDk7wChEQyNq0910WskcZTfQ
-	 wVbFOvhR+smjvSED1rJxEzFK+V1JNoeM/Y1Ze4wqLw1iv3t3/1w3z+cft4wemqcsiY
-	 VchGQ0FWtEn9zmF+ndrHV76aBETbhvUjNXV+6f5E=
+	b=XI5fL5agV4y7Mok4eXBzi31TjbgmKO1FZVlDco4v1Zg1+oxDrtcupvOgMSEpOLBAC
+	 NXjsgMZWow+bptF31cFSxMsh2ZMVtg4ixwsVJfK1NBGBCocc06qTujrSoQQt8oXqfH
+	 gNI8fNAcbDCFJMD3pRM5y79BW28Uya3DFAAHe2SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/354] irqchip/irq-bcm7120-l2: Fix section mismatch
+Subject: [PATCH 6.17 157/507] power: supply: wm831x: Check wm831x_set_bits() return value
 Date: Tue, 16 Dec 2025 12:09:58 +0100
-Message-ID: <20251216111322.039422987@linuxfoundation.org>
+Message-ID: <20251216111351.211236688@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit bfc0c5beab1fde843677923cf008f41d583c980a ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
-Fixes: 3ac268d5ed22 ("irqchip/irq-bcm7120-l2: Switch to IRQCHIP_PLATFORM_DRIVER")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm7120-l2.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 1e9dab6e0d86f..bb6e56629e532 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -147,8 +147,7 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index 6acdba7885ca5..78fa0573ef25c 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
+ 
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ 
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
++	}
+ 
  	return 0;
  }
- 
--static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
--					     struct bcm7120_l2_intc_data *data)
-+static int bcm7120_l2_intc_iomap_7120(struct device_node *dn, struct bcm7120_l2_intc_data *data)
- {
- 	int ret;
- 
-@@ -181,8 +180,7 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
- 	return 0;
- }
- 
--static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
--					     struct bcm7120_l2_intc_data *data)
-+static int bcm7120_l2_intc_iomap_3380(struct device_node *dn, struct bcm7120_l2_intc_data *data)
- {
- 	unsigned int gc_idx;
- 
-@@ -212,10 +210,9 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
- 	return 0;
- }
- 
--static int __init bcm7120_l2_intc_probe(struct device_node *dn,
--				 struct device_node *parent,
-+static int bcm7120_l2_intc_probe(struct device_node *dn, struct device_node *parent,
- 				 int (*iomap_regs_fn)(struct device_node *,
--					struct bcm7120_l2_intc_data *),
-+						      struct bcm7120_l2_intc_data *),
- 				 const char *intc_name)
- {
- 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
-@@ -343,15 +340,13 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
- 	return ret;
- }
- 
--static int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
--					     struct device_node *parent)
-+static int bcm7120_l2_intc_probe_7120(struct device_node *dn, struct device_node *parent)
- {
- 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
- 				     "BCM7120 L2");
- }
- 
--static int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
--					     struct device_node *parent)
-+static int bcm7120_l2_intc_probe_3380(struct device_node *dn, struct device_node *parent)
- {
- 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
- 				     "BCM3380 L2");
 -- 
 2.51.0
 
