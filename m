@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-202533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429FBCC38F3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:27:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3377CC4603
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57A143030146
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:23:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E92E3022B74
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2405A35CBD3;
-	Tue, 16 Dec 2025 12:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D26296BDB;
+	Tue, 16 Dec 2025 11:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdQmGoSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcsEf1Yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D392635E540;
-	Tue, 16 Dec 2025 12:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2102F34B424;
+	Tue, 16 Dec 2025 11:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888207; cv=none; b=PWQ/K+UaHJ9uF1rRbWNcJ01NF3dOMATyWi5tTGyn7awXM+NTZbQ/G25Dpr86dwBu7vh6+SdjRvNAxXnjSPDzBX44kymp6HpzK9XkUJZ1qPu66V33yNL4a9tIZ1x50kPQdfyp+XS36xSj+t7yGiqZpWeIWAVoqAjOL5As2ZPSrMw=
+	t=1765886397; cv=none; b=iQvKl67nXBGoJOnK8kpAlFCsNfnbBsNwcp4THCsL+932bvPweNZDOU2zoQFkxB3rx2XOX7ltRUotdS6WrhwJbIWNXO1H08zJdQswpwSaHOZBYxvKwy/ZEbmjb6vj0k0W2UIOKMzV6DTFMw06uT2Q8NA88hkCGdgEyiDmsd7XGLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888207; c=relaxed/simple;
-	bh=6cqnZc2oeet89SrUVJPdk51xn895QPcAE2oXBZmwQ1E=;
+	s=arc-20240116; t=1765886397; c=relaxed/simple;
+	bh=kCMBEz/zifnymArVKK7DVJYnN0hfvrl84aZFA1IJUIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTTH68waamXD8e0m3o6kFJtYDuH7CQQGAzxCMrzSN38jImb2zDYcb8V2/YRbgllqORAQJgmW603qeECTdUhjwY/1HHPcjMvOU7OPv1VcIUzhwRg1pJu3LBJDrPC2ULs8OTP+L3TAkg3x2GAUPIgU/GTDNzLX++QjOoR9475nSu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdQmGoSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589BFC4CEF5;
-	Tue, 16 Dec 2025 12:30:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dLARqkyC7pw0pbWLDLbsTIAWbRj18jhZpK3aL3yL5gdNchPkzJ38bhXAY0g1ZFf9RIBd5XeQxyNEY/SHNQBqdQ+HDHGT6+UOepcrpYjBVXNMQ3uY/pwxo3Pxviz+ToSIFf/UhnzxDdLkGbHfoeP1sLN8ZOre8iUVpZuXIwJvBmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcsEf1Yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B885C4CEF1;
+	Tue, 16 Dec 2025 11:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888207;
-	bh=6cqnZc2oeet89SrUVJPdk51xn895QPcAE2oXBZmwQ1E=;
+	s=korg; t=1765886397;
+	bh=kCMBEz/zifnymArVKK7DVJYnN0hfvrl84aZFA1IJUIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdQmGoSloLmjvMdQZ7Abo8xVX5Ob0+DtZZlAQHqqsgtwOdqcajYxr4+Gxm+0MSfR5
-	 xWUls4sPxlKllsjf74NnnCWRde/Hp/U2Wmv/iflnHm0G5vaXUrdGeF5dyKwCJ+EMco
-	 1ftc1DdCdEbQUmR3lkfdoRANggV1c6+KYKwY5A2w=
+	b=dcsEf1Yvu7sAolL5Oa1CkQNI55u8fSpg8ngubqduJU+7tq8njhhhh+jblD2Te/RXf
+	 FpLV+QYGIX+xBOZo+OFtHI3vvClFkCOnjzaT8QJEWc8+qDWatureSv4xVb+VwaYBSi
+	 rk3wMaPrUmmgHJFEAz6NPoci/WnBWVVMrJDC3F30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ilias Stamatis <ilstam@amazon.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Huang, Ying" <huang.ying.caritas@gmail.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 465/614] virtio: fix virtqueue_set_affinity() docs
+Subject: [PATCH 6.17 391/507] Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"
 Date: Tue, 16 Dec 2025 12:13:52 +0100
-Message-ID: <20251216111418.216847025@linuxfoundation.org>
+Message-ID: <20251216111359.619860822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Ilias Stamatis <ilstam@amazon.com>
 
-[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
+[ Upstream commit 6fb3acdebf65a72df0a95f9fd2c901ff2bc9a3a2 ]
 
-Rewrite the comment for better grammar and clarity.
+Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+logic") removed an optimization introduced by commit 756398750e11
+("resource: avoid unnecessary lookups in find_next_iomem_res()").  That
+was not called out in the message of the first commit explicitly so it's
+not entirely clear whether removing the optimization happened
+inadvertently or not.
 
-Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
-Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+As the original commit message of the optimization explains there is no
+point considering the children of a subtree in find_next_iomem_res() if
+the top level range does not match.
+
+Reinstating the optimization results in performance improvements in
+systems where /proc/iomem is ~5k lines long.  Calling mmap() on /dev/mem
+in such platforms takes 700-1500μs without the optimisation and 10-50μs
+with the optimisation.
+
+Note that even though commit 97523a4edb7b removed the 'sibling_only'
+parameter from next_resource(), newer kernels have basically reinstated it
+under the name 'skip_children'.
+
+Link: https://lore.kernel.org/all/20251124165349.3377826-1-ilstam@amazon.com/T/#u
+Fixes: 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only logic")
+Signed-off-by: Ilias Stamatis <ilstam@amazon.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/resource.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index e231147ff92db..1a019a1f168d5 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -384,7 +384,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
-  * @vq: the virtqueue
-  * @cpu_mask: the cpu mask
-  *
-- * Pay attention the function are best-effort: the affinity hint may not be set
-+ * Note that this function is best-effort: the affinity hint may not be set
-  * due to config support, irq type and sharing.
-  *
-  */
+diff --git a/kernel/resource.c b/kernel/resource.c
+index f9bb5481501a3..ff00e563ecead 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -341,6 +341,8 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 			       unsigned long flags, unsigned long desc,
+ 			       struct resource *res)
+ {
++	/* Skip children until we find a top level range that matches */
++	bool skip_children = true;
+ 	struct resource *p;
+ 
+ 	if (!res)
+@@ -351,7 +353,7 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 
+ 	read_lock(&resource_lock);
+ 
+-	for_each_resource(&iomem_resource, p, false) {
++	for_each_resource(&iomem_resource, p, skip_children) {
+ 		/* If we passed the resource we are looking for, stop */
+ 		if (p->start > end) {
+ 			p = NULL;
+@@ -362,6 +364,12 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 		if (p->end < start)
+ 			continue;
+ 
++		/*
++		 * We found a top level range that matches what we are looking
++		 * for. Time to start checking children too.
++		 */
++		skip_children = false;
++
+ 		/* Found a match, break */
+ 		if (is_type_match(p, flags, desc))
+ 			break;
 -- 
 2.51.0
 
