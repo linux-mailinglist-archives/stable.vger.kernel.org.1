@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8B3CC4928
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:10:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276C7CC24D5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B557302E5A4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD3C9305A3F9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F68636D50A;
-	Tue, 16 Dec 2025 12:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE552E54AA;
+	Tue, 16 Dec 2025 11:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyJ+t99Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuQULDht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E96B36D501;
-	Tue, 16 Dec 2025 12:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0A62367D5;
+	Tue, 16 Dec 2025 11:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888023; cv=none; b=VW+4EpOUoKyNvtijahUabi2pCPYJP7L70amyt+/KOlJx4bpzpys7ymTbBOrvyJcQQfsJyqmUakihmbs1Jd4EmY+WZOk3q7ZtgZ0Om+2b3xq8oAUFzrApHjA44fCo/pv0Ut0WjS6tWQm+q5GqEZXw0IwqtO9ACArd/o/O8+Dg6JM=
+	t=1765884509; cv=none; b=kLjONggmSa8zMCNYSkYT7QNgjQLWmQ8cOtNufS7tVKh5ti0bzppbY2SkYoZc4kcwpjqwPCq7XqzHITNhichxTnowi6b2azN4Y4VQFBRua2hkjDnxhP9u06d2dpfo2975kZytrRgu6XGzYrRPxN4+1/kpaJZZwJVCvCT2swW+hN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888023; c=relaxed/simple;
-	bh=HqnciSoGH1P+DTSrv2J0jwuc0VO2hOtwrYUKD4PTr18=;
+	s=arc-20240116; t=1765884509; c=relaxed/simple;
+	bh=tl9b+UHK9lbEqX+8KQXW5P06n/3T4aJpCD7+jfLV0Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DlHrLw7NUxcTl+PhcHYxBzvwNeGu/4vyPIs7SXd8LKmhaLCpCVnCeFzU0A6ZBUrFl6aw7tJXPhayLED0i5o+HePZIIiQXOz+50j+qshUHYEQaU8pP0Ya1uz7yNhqweqcL+Z82IE844GVXSAyRbvjjXpuBfxLvMhf3hheBPyxOos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyJ+t99Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F9CC4CEF1;
-	Tue, 16 Dec 2025 12:27:02 +0000 (UTC)
+	 MIME-Version; b=YF8vMtKYwSjZZzb4KHqdBuybo2XHtc8FCvyhvy504sNlXFktVQXi1OmMRPK5qyu22Nj5w5kYm7gFw0jTHSfSgYTpCN93NslCrj89zoaBYqYR27BdrqToQcoMFBZcmfowMpqbzHqoWpzQMCQLLXJKNulmCbvihBtwrwv+MpxeY5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuQULDht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA48C4CEF1;
+	Tue, 16 Dec 2025 11:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888023;
-	bh=HqnciSoGH1P+DTSrv2J0jwuc0VO2hOtwrYUKD4PTr18=;
+	s=korg; t=1765884509;
+	bh=tl9b+UHK9lbEqX+8KQXW5P06n/3T4aJpCD7+jfLV0Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyJ+t99YD2K9TnyUC9cFQNBtdnvdRrRdtAFeGOSfmEWi9D6WRst4jN2Yi2aI8oHUQ
-	 9XB4jL2OJK3FDOEQG8kn6+DYy8sV6EPv0hGDblUXIrTd8evV9smE9B00b660X+grv/
-	 3DNE36XVd7qfkZvl+9IBdSIGpT3zv+3kdbRYyoA8=
+	b=XuQULDht4RTqtS5BFTb+rdmz6i5q/w0Ffy1FThT5Eurawomr+zTrKPidLxoT9+YJd
+	 kuKcdirSB7hli30O3l0p1NEGEGBm3FsBKt3ollOQ8SkAI6hwKCtF5gMPgo2JICm/7a
+	 D6i7y65Nsee/fBRYnPIwL9jozlF10FpH6BCjfW2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mssola@mssola.com>,
-	David Sterba <dsterba@suse.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 408/614] btrfs: fix double free of qgroup record after failure to add delayed ref head
+Subject: [PATCH 6.12 208/354] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
 Date: Tue, 16 Dec 2025 12:12:55 +0100
-Message-ID: <20251216111416.155821526@linuxfoundation.org>
+Message-ID: <20251216111328.457001456@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,156 +59,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Sabaté Solà <mssola@mssola.com>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 725e46298876a2cc1f1c3fb22ba69d29102c3ddf ]
+[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
 
-In the previous code it was possible to incur into a double kfree()
-scenario when calling add_delayed_ref_head(). This could happen if the
-record was reported to already exist in the
-btrfs_qgroup_trace_extent_nolock() call, but then there was an error
-later on add_delayed_ref_head(). In this case, since
-add_delayed_ref_head() returned an error, the caller went to free the
-record. Since add_delayed_ref_head() couldn't set this kfree'd pointer
-to NULL, then kfree() would have acted on a non-NULL 'record' object
-which was pointing to memory already freed by the callee.
+Currently, test_perf_branches_no_hw() relies on the busy loop within
+test_perf_branches_common() being slow enough to allow at least one
+perf event sample tick to occur before starting to tear down the
+backing perf event BPF program. With a relatively small fixed
+iteration count of 1,000,000, this is not guaranteed on modern fast
+CPUs, resulting in the test run to subsequently fail with the
+following:
 
-The problem comes from the fact that the responsibility to kfree the
-object is on both the caller and the callee at the same time. Hence, the
-fix for this is to shift the ownership of the 'qrecord' object out of
-the add_delayed_ref_head(). That is, we will never attempt to kfree()
-the given object inside of this function, and will expect the caller to
-act on the 'qrecord' object on its own. The only exception where the
-'qrecord' object cannot be kfree'd is if it was inserted into the
-tracing logic, for which we already have the 'qrecord_inserted_ret'
-boolean to account for this. Hence, the caller has to kfree the object
-only if add_delayed_ref_head() reports not to have inserted it on the
-tracing logic.
+bpf_testmod.ko is already unloaded.
+Loading bpf_testmod.ko...
+Successfully loaded bpf_testmod.ko.
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:PASS:output not valid 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_bad_sample:FAIL:output not valid no valid sample from prog
+Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
+Successfully unloaded bpf_testmod.ko.
 
-As a side-effect of the above, we must guarantee that
-'qrecord_inserted_ret' is properly initialized at the start of the
-function, not at the end, and then set when an actual insert
-happens. This way we avoid 'qrecord_inserted_ret' having an invalid
-value on an early exit.
+On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
+million increments of a volatile integer can take significantly less
+than 1 millisecond. If the spin loop and detachment of the perf event
+BPF program elapses before the first 1 ms sampling interval elapses,
+the perf event will never end up firing. Fix this by bumping the loop
+iteration counter a little within test_perf_branches_common(), along
+with ensuring adding another loop termination condition which is
+directly influenced by the backing perf event BPF program
+executing. Notably, a concious decision was made to not adjust the
+sample_freq value as that is just not a reliable way to go about
+fixing the problem. It effectively still leaves the race window open.
 
-The documentation from the add_delayed_ref_head() has also been updated
-to reflect on the exact ownership of the 'qrecord' object.
-
-Fixes: 6ef8fbce0104 ("btrfs: fix missing error handling when adding delayed ref with qgroups enabled")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Miquel Sabaté Solà <mssola@mssola.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-ref.c | 43 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
+ .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
-index 481802efaa143..f8fc26272f76c 100644
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -798,9 +798,13 @@ static void init_delayed_ref_head(struct btrfs_delayed_ref_head *head_ref,
- }
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index 06c7986131d96..0a7ef770c487c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
+ 	int pbe_size = sizeof(struct perf_branch_entry);
+ 	int duration = 0;
  
- /*
-- * helper function to actually insert a head node into the rbtree.
-- * this does all the dirty work in terms of maintaining the correct
-- * overall modification count.
-+ * Helper function to actually insert a head node into the xarray. This does all
-+ * the dirty work in terms of maintaining the correct overall modification
-+ * count.
-+ *
-+ * The caller is responsible for calling kfree() on @qrecord. More specifically,
-+ * if this function reports that it did not insert it as noted in
-+ * @qrecord_inserted_ret, then it's safe to call kfree() on it.
-  *
-  * Returns an error pointer in case of an error.
-  */
-@@ -814,7 +818,14 @@ add_delayed_ref_head(struct btrfs_trans_handle *trans,
- 	struct btrfs_delayed_ref_head *existing;
- 	struct btrfs_delayed_ref_root *delayed_refs;
- 	const unsigned long index = (head_ref->bytenr >> fs_info->sectorsize_bits);
--	bool qrecord_inserted = false;
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
 +
-+	/*
-+	 * If 'qrecord_inserted_ret' is provided, then the first thing we need
-+	 * to do is to initialize it to false just in case we have an exit
-+	 * before trying to insert the record.
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
+ 	int written_stack = skel->bss->written_stack_out;
+ 	int duration = 0;
+ 
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
+ 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
+ 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
+ 		goto out_destroy;
+-	/* spin the loop for a while (random high number) */
+-	for (i = 0; i < 1000000; ++i)
++
++	/* Spin the loop for a while by using a high iteration count, and by
++	 * checking whether the specific run count marker has been explicitly
++	 * incremented at least once by the backing perf_event BPF program.
 +	 */
-+	if (qrecord_inserted_ret)
-+		*qrecord_inserted_ret = false;
++	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
+ 		++j;
  
- 	delayed_refs = &trans->transaction->delayed_refs;
- 	lockdep_assert_held(&delayed_refs->lock);
-@@ -833,6 +844,12 @@ add_delayed_ref_head(struct btrfs_trans_handle *trans,
+ 	test_perf_branches__detach(skel);
+diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+index a1ccc831c882f..05ac9410cd68c 100644
+--- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
++++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+@@ -8,6 +8,7 @@
+ #include <bpf/bpf_tracing.h>
  
- 	/* Record qgroup extent info if provided */
- 	if (qrecord) {
-+		/*
-+		 * Setting 'qrecord' but not 'qrecord_inserted_ret' will likely
-+		 * result in a memory leakage.
-+		 */
-+		ASSERT(qrecord_inserted_ret != NULL);
+ int valid = 0;
++int run_cnt = 0;
+ int required_size_out = 0;
+ int written_stack_out = 0;
+ int written_global_out = 0;
+@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
+ 	__u64 entries[4 * 3] = {0};
+ 	int required_size, written_stack, written_global;
+ 
++	++run_cnt;
 +
- 		int ret;
- 
- 		ret = btrfs_qgroup_trace_extent_nolock(fs_info, delayed_refs, qrecord,
-@@ -840,12 +857,10 @@ add_delayed_ref_head(struct btrfs_trans_handle *trans,
- 		if (ret) {
- 			/* Clean up if insertion fails or item exists. */
- 			xa_release(&delayed_refs->dirty_extents, index);
--			/* Caller responsible for freeing qrecord on error. */
- 			if (ret < 0)
- 				return ERR_PTR(ret);
--			kfree(qrecord);
--		} else {
--			qrecord_inserted = true;
-+		} else if (qrecord_inserted_ret) {
-+			*qrecord_inserted_ret = true;
- 		}
- 	}
- 
-@@ -888,8 +903,6 @@ add_delayed_ref_head(struct btrfs_trans_handle *trans,
- 		delayed_refs->num_heads++;
- 		delayed_refs->num_heads_ready++;
- 	}
--	if (qrecord_inserted_ret)
--		*qrecord_inserted_ret = qrecord_inserted;
- 
- 	return head_ref;
- }
-@@ -1049,6 +1062,14 @@ static int add_delayed_ref(struct btrfs_trans_handle *trans,
- 		xa_release(&delayed_refs->head_refs, index);
- 		spin_unlock(&delayed_refs->lock);
- 		ret = PTR_ERR(new_head_ref);
-+
-+		/*
-+		 * It's only safe to call kfree() on 'qrecord' if
-+		 * add_delayed_ref_head() has _not_ inserted it for
-+		 * tracing. Otherwise we need to handle this here.
-+		 */
-+		if (!qrecord_reserved || qrecord_inserted)
-+			goto free_head_ref;
- 		goto free_record;
- 	}
- 	head_ref = new_head_ref;
-@@ -1071,6 +1092,8 @@ static int add_delayed_ref(struct btrfs_trans_handle *trans,
- 
- 	if (qrecord_inserted)
- 		return btrfs_qgroup_trace_extent_post(trans, record, generic_ref->bytenr);
-+
-+	kfree(record);
- 	return 0;
- 
- free_record:
+ 	/* write to stack */
+ 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
+ 	/* ignore spurious events */
 -- 
 2.51.0
 
