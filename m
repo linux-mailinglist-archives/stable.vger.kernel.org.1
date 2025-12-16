@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F2ECC244E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD00CC27B2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C26D30B7FBF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:26:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B30793054C99
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AF6342529;
-	Tue, 16 Dec 2025 11:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526C2355029;
+	Tue, 16 Dec 2025 11:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSKKvX6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPjw03N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DBE342526;
-	Tue, 16 Dec 2025 11:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED72355026;
+	Tue, 16 Dec 2025 11:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884385; cv=none; b=JMDEKMkM56chILil4aYoJ3qPgMHBp8AjuWhdeR3BMQNqB3sCXES53hzsy9c4HzEP3Z8pL5w4pRNW9CW2DSsB4K+ZOFAYAHA1DQJpgatuX9YuUPGToZ89NWPqF7wPS92IvVletihKOm+cy9Yfcm4Rr8kNpjcoc7bK/6ZwLwkpqow=
+	t=1765885882; cv=none; b=RVr3KG78Np1UDypsk7RGxFVZUN+W39SyxamwBbtRtsQ+vmtpoK/B/YUIERCZaXP0N87/oVijZqzphJb2Bm/douj/FMiOxgqkMAuXkB+8A/AwLFenoZRKNCKv6QKQcS0t/mPvAOFwqmK3ntCkc3XTZYSOrEcs8AjKJm0vvsTvNGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884385; c=relaxed/simple;
-	bh=zVjDF2gWWXusloLV1kTdu0bSnNXEBirHExkdyTIFbnU=;
+	s=arc-20240116; t=1765885882; c=relaxed/simple;
+	bh=9cVnKIMInvE4M0CGzHrKKCgx13U3fH9fj53cx+BL4oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5o00fWWFbZlISJVZwLTslE6zZT4m1Ax389b9LqksbsEvb5lcqMMj1tfqa4aIQDCyylcCNnrdnsLfK9j3rE/0CbMfhIGgaxxwjegHaC+VqJxCRJqD7pcy0xcfFE4soCH+EoIiENwnYdX7Ky0I6jui0fhOusS5uwbE44IqiQhqdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSKKvX6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B4BC4CEF5;
-	Tue, 16 Dec 2025 11:26:24 +0000 (UTC)
+	 MIME-Version; b=qTUVmM5vMHCwNNqg4GYrlIQCHdeY/EwPwu8APcTYHe87vIOTfF7V3jkTdsE+WBIVqp3vVPfatxHOXCLP9Fgxk0b20oFEk3MsbfATwvX8Np4x/wQQRoTOJYk8Yu1r6dPSp8TrtFldEn7LA/A04QnBHYfawgBmXh7ZTaaaFqW2AUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPjw03N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B20EC4CEF1;
+	Tue, 16 Dec 2025 11:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884385;
-	bh=zVjDF2gWWXusloLV1kTdu0bSnNXEBirHExkdyTIFbnU=;
+	s=korg; t=1765885881;
+	bh=9cVnKIMInvE4M0CGzHrKKCgx13U3fH9fj53cx+BL4oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSKKvX6D3eQwysONO3D0+v/ersXKQPF7MWuJ8LD7W+e4fQo/V8ddbiOazHUW07i9A
-	 1UD95TFuBueDGCVzmqTS6KQvXzsp2eet7NpT8vynKSXrXkTNltZAKNXVfiqDqsCRi/
-	 MwmnRjleToSk/W/lei7py4KXArb4HFh2sZ1pH9mc=
+	b=CPjw03N54Sgupjmj9scbQDjjVawydv6XeNXMI6qlvKrbSVQX3YyiBj8k+r9+nvHc2
+	 b0x1DX/JJ/L2n+TAWpzsMrq1qzVdioMlfI+MU7qAxbiOPo1PpxNt3NCa4Df6Nk5ILr
+	 18vZFPXWldw0UbuRTr+yiWpzGMOxO5SUzjx8apKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jay Liu <jay.liu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/354] nbd: defer config unlock in nbd_genl_connect
-Date: Tue, 16 Dec 2025 12:11:51 +0100
-Message-ID: <20251216111326.133454326@linuxfoundation.org>
+Subject: [PATCH 6.17 271/507] drm/mediatek: Fix CCORR mtk_ctm_s31_32_to_s1_n function issue
+Date: Tue, 16 Dec 2025 12:11:52 +0100
+Message-ID: <20251216111355.303196775@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Jay Liu <jay.liu@mediatek.com>
 
-[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
+[ Upstream commit 20ac36b71c53b8c36c6903b5ca87c75226700a97 ]
 
-There is one use-after-free warning when running NBD_CMD_CONNECT and
-NBD_CLEAR_SOCK:
+if matrixbit is 11,
+The range of color matrix is from 0 to (BIT(12) - 1).
+Values from 0 to (BIT(11) - 1) represent positive numbers,
+values from BIT(11) to (BIT(12) - 1) represent negative numbers.
+For example, -1 need converted to 8191.
+so convert S31.32 to HW Q2.11 format by drm_color_ctm_s31_32_to_qm_n,
+and set int_bits to 2.
 
-nbd_genl_connect
-  nbd_alloc_and_init_config // config_refs=1
-  nbd_start_device // config_refs=2
-  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
-  recv_work done // config_refs=2
-						NBD_CLEAR_SOCK // config_refs=1
-						close nbd // config_refs=0
-  refcount_inc -> uaf
-
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
- nbd_genl_connect+0x16d0/0x1ab0
- genl_family_rcv_msg_doit+0x1f3/0x310
- genl_rcv_msg+0x44a/0x790
-
-The issue can be easily reproduced by adding a small delay before
-refcount_inc(&nbd->config_refs) in nbd_genl_connect():
-
-        mutex_unlock(&nbd->config_lock);
-        if (!ret) {
-                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
-+               printk("before sleep\n");
-+               mdelay(5 * 1000);
-+               printk("after sleep\n");
-                refcount_inc(&nbd->config_refs);
-                nbd_connect_reply(info, nbd->index);
-        }
-
-Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 738ed4156fba ("drm/mediatek: Add matrix_bits private data for ccorr")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jay Liu <jay.liu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250921055416.25588-2-jay.liu@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ccorr.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index e6b756c475cde..958bd115a3417 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2169,12 +2169,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+index 10d60d2c2a568..6d7bf4afa78d3 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+@@ -80,27 +80,6 @@ void mtk_ccorr_stop(struct device *dev)
+ 	writel_relaxed(0x0, ccorr->regs + DISP_CCORR_EN);
+ }
  
- 	ret = nbd_start_device(nbd);
- out:
--	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
- 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
- 		refcount_inc(&nbd->config_refs);
- 		nbd_connect_reply(info, nbd->index);
- 	}
-+	mutex_unlock(&nbd->config_lock);
-+
- 	nbd_config_put(nbd);
- 	if (put_dev)
- 		nbd_put(nbd);
+-/* Converts a DRM S31.32 value to the HW S1.n format. */
+-static u16 mtk_ctm_s31_32_to_s1_n(u64 in, u32 n)
+-{
+-	u16 r;
+-
+-	/* Sign bit. */
+-	r = in & BIT_ULL(63) ? BIT(n + 1) : 0;
+-
+-	if ((in & GENMASK_ULL(62, 33)) > 0) {
+-		/* identity value 0x100000000 -> 0x400(mt8183), */
+-		/* identity value 0x100000000 -> 0x800(mt8192), */
+-		/* if bigger this, set it to max 0x7ff. */
+-		r |= GENMASK(n, 0);
+-	} else {
+-		/* take the n+1 most important bits. */
+-		r |= (in >> (32 - n)) & GENMASK(n, 0);
+-	}
+-
+-	return r;
+-}
+-
+ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ {
+ 	struct mtk_disp_ccorr *ccorr = dev_get_drvdata(dev);
+@@ -119,7 +98,7 @@ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ 	input = ctm->matrix;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(coeffs); i++)
+-		coeffs[i] = mtk_ctm_s31_32_to_s1_n(input[i], matrix_bits);
++		coeffs[i] = drm_color_ctm_s31_32_to_qm_n(input[i], 2, matrix_bits);
+ 
+ 	mtk_ddp_write(cmdq_pkt, coeffs[0] << 16 | coeffs[1],
+ 		      &ccorr->cmdq_reg, ccorr->regs, DISP_CCORR_COEF_0);
 -- 
 2.51.0
 
