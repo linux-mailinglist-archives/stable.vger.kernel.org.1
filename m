@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E94CC334B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:27:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB94BCC2C1C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B5CC30387A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E3F9B303D5D1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D6435A940;
-	Tue, 16 Dec 2025 12:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA4934A76F;
+	Tue, 16 Dec 2025 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uH23GF7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmmZNPB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802CE2D8782;
-	Tue, 16 Dec 2025 12:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E53296BDB;
+	Tue, 16 Dec 2025 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888197; cv=none; b=Ha0BxARylNvYYy3SA/4Ubbmy7GnnFNhhqtEGC3i+zT3bMagRG/cmTGw1flYPBRJhnybWDOb8Ue0K30tIhPWB1PgX0M2gS2hsVoCeTCGmZWYtltA9qrbDD/s1t1ptooE4iz4/Z9ZsXkP1fFt+JEyUZ7Pa2zUp8DGb06r1l+cYSww=
+	t=1765886386; cv=none; b=oD8w2t7PMJIPAc9mBof68pHf+COMIfdesf2uZKulBEvT0Q030ISskHrLwnm6zrZw+nYBruZw7Ioxgotj4QE2Gv9edTgUMTU/VmpvZjiTs8zf0tkvJ8olNVKwGEZ6hArLJ54tOxPEWn7JfV238pUl2OS36hpnDr+MxA2b4N2db/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888197; c=relaxed/simple;
-	bh=H2NUDktfKzHcEGnGedtQZtHBCIQM+eU4PdItUUPsBNc=;
+	s=arc-20240116; t=1765886386; c=relaxed/simple;
+	bh=R+Ts2fMn+n67AAOsbT0hL8hUXDzRCWK+drUUaBS0Gec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL1+DqqcdxyycUiC6s6eVuA2By7bZUZAo2MTbDc1iMVAamcDRVJfDu5Cf09G7xzG02N8Ik3a2tj+x+weJbCm096d92YqG8HYmIuYOfL92e06vHttxJPkEVeMyAw6yLQ0WoSGlr9pN8HhHAsqQvtZpC85Mr83RdaSc2/KyZZZ8ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uH23GF7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4451C4CEF1;
-	Tue, 16 Dec 2025 12:29:56 +0000 (UTC)
+	 MIME-Version; b=R/uztWsFQQ9qaqiDMPOlTkI7aJJ7clN97+9NiL1Kc5Z2k33IBc6Cqt6c2peICGhCrbHmHg2FCS7t4o/pTshH6VRRFLKX4BKNB3a4qf8Gs66QmjU051gThc58zf1/BPujUuBI8og+DlmxDiKE16nLH9VfDPrVYbbfZTcTYtS2NjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmmZNPB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B6AC4CEF1;
+	Tue, 16 Dec 2025 11:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888197;
-	bh=H2NUDktfKzHcEGnGedtQZtHBCIQM+eU4PdItUUPsBNc=;
+	s=korg; t=1765886386;
+	bh=R+Ts2fMn+n67AAOsbT0hL8hUXDzRCWK+drUUaBS0Gec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uH23GF7TGAGjPp14YGWV9CTPpVk0drcaWX+IhL5eQSFW0t50FEUkE+GM8k9k34o68
-	 KBOLRilcn3qi6TKP+aNej3mfd7ShA2S7LHt4OpCXaZN6f1PH6Fs4KdTz3dLiEQB4lo
-	 F76QO0833xAa38pOPb9yR2PZyHaNEPRbTKw62lVs=
+	b=SmmZNPB9AHJmYEXTRzQE44LzeQAZWWj1pZJn6pJSz4TWpZ6D9gP79Vkg0GvZ+ekjt
+	 5VwVhgdsnShVIrlu80rsLigTXLcheD2orzIWCs2wSBVzvhsUr+IqEv8MvtsGbkVYCj
+	 NE1nnIwcaDQRJ/5pO6n/xec5hJa8bBGQMujSYcF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 462/614] virtio: fix grammar in virtio_queue_info docs
+Subject: [PATCH 6.17 388/507] ARM: dts: samsung: exynos4210-trats: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:13:49 +0100
-Message-ID: <20251216111418.107632677@linuxfoundation.org>
+Message-ID: <20251216111359.513159578@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 63598fba55ab9d384818fed48dc04006cecf7be4 ]
+[ Upstream commit 97cc9c346b2c9cde075b9420fc172137d2427711 ]
 
-Fix grammar in the description of @ctx
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Fixes: c502eb85c34e ("virtio: introduce virtio_queue_info struct and find_vqs_info() config op")
-Message-Id: <a5cf2b92573200bdb1c1927e559d3930d61a4af2.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: a19f6efc01df ("ARM: dts: exynos: Enable WLAN support for the Trats board")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-4-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/samsung/exynos4210-trats.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index dbc7eff1f101f..78cf4119f5674 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -24,7 +24,7 @@ typedef void vq_callback_t(struct virtqueue *);
-  *        a virtqueue unused by the driver.
-  * @callback: A callback to invoke on a used buffer notification.
-  *            NULL for a virtqueue that does not need a callback.
-- * @ctx: A flag to indicate to maintain an extra context per virtqueue.
-+ * @ctx: whether to maintain an extra context per virtqueue.
-  */
- struct virtqueue_info {
- 	const char *name;
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-trats.dts b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+index 95e0e01b6ff6b..6bd902cb8f4ad 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-trats.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-trats.dts
+@@ -518,6 +518,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
+ 
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&tflash_reg>;
 -- 
 2.51.0
 
