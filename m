@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27F6CC49FE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:18:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD378CC3EA0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5163E303105B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D547B30D21C4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF6C376BF2;
-	Tue, 16 Dec 2025 12:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173EB3559FD;
+	Tue, 16 Dec 2025 11:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+cvsPI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1GmAe+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EB2376BED;
-	Tue, 16 Dec 2025 12:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8431315783;
+	Tue, 16 Dec 2025 11:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888082; cv=none; b=j+KiLckfllltgHynXzJ/XQ8nz6HDtd0jZGvB9q0P9QssVfyvc/JEd2hyy+MtbbZQbvm5QIJuyU0Vgha9fdtUoMUtyonTTo2m4qIAGzMfAKYrX2nYkYbNJZ8OEZt3gQ6fVKPYldh+hXTiQ5wIPn7uE5RG2J9N8aSaNW4Rw3SbgOI=
+	t=1765886265; cv=none; b=CuXrHmkr1EG11PWB0SpgP4XE14lxTqEILRPbNQXLHsvTHaMamQeVFYleajx+jNVBpG2FwLklQJwMF9moCvo7bekfGF9PgMWZNIS5DVAon/NdAf4ztHJlNsAdXcw7Vl47+cPaAawpM8Dcm4B8lLieDiycwlXoTC3hAKck+PNEgdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888082; c=relaxed/simple;
-	bh=qGVSBLFwLpAwowDFSAKonXo4CgaeAAFbC6o0qA2Y26o=;
+	s=arc-20240116; t=1765886265; c=relaxed/simple;
+	bh=BCl9WP/Oksec75Pi8p7eRtvDpwJ+k9vYnL/Qw9J7izM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OA+2fMGDaiQ0FscfXKCIQ/PgqaUXZ1t0mMvJa3NVnN8UhVW/5QipkvYSkxpm7kzNRVZWqyDJ1IwJPw5O46vRsz8RxJM2M10SI3qv4w3BmG8bQiyYuPiyK5YhSeJS1VCyaI3NwEgw3154UVwPnoJ5GdAtFieUd1ZCrWhXo6rFUfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+cvsPI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD76C4CEF1;
-	Tue, 16 Dec 2025 12:28:01 +0000 (UTC)
+	 MIME-Version; b=MDGAAYmws5xx2i7ebW6XmjeEZJYb3irzRFRd8LSmR+POul2cG9Zb+jfT1YAf73jDgCQ+kKg/JpFzskpDjDTrIFwZyKKzc/NGoylIWNF89voYoIbWAoQ4nzT9IKvlBlEilReFslNHpcFmJuc5QXlutg5BjsKnfToV5J78D/5mre8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1GmAe+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CB5C4CEF1;
+	Tue, 16 Dec 2025 11:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888082;
-	bh=qGVSBLFwLpAwowDFSAKonXo4CgaeAAFbC6o0qA2Y26o=;
+	s=korg; t=1765886265;
+	bh=BCl9WP/Oksec75Pi8p7eRtvDpwJ+k9vYnL/Qw9J7izM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+cvsPI54aytJNgbYbTQq+JLUnD/rcAKGtyRZXbQ9znDfI762H7TBQgkPDeeRQ4Gr
-	 lv/V82rLesCOKolOxuOU0Q6/QK6gNVQlo1jLAGnEyt8Z7+hRnatJnRb8lg7XcX470R
-	 9KMTRYGZiosoF9amvYrdH7ouEgwNJoYIol2YXJWU=
+	b=Q1GmAe+I2+8nECy/LDW6wCQRoobp18Gr6cvJy6q2zahw2MlZ6IV2v0bVGmWglFIdT
+	 UzwEMmKha18SxGaiwZlBnWeIioiu+ej+4O7Ke3HC4J8JobGc6c0rDAmgjq+6LYcp9B
+	 HaGMCVvaDFkfC/EOAmRIReRvh7LPIoa9QcX8dCTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
+	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
 	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 427/614] RDMA/irdma: Do not set IBK_LOCAL_DMA_LKEY for GEN3+
+Subject: [PATCH 6.17 353/507] RDMA/irdma: Fix data race in irdma_free_pble
 Date: Tue, 16 Dec 2025 12:13:14 +0100
-Message-ID: <20251216111416.844187425@linuxfoundation.org>
+Message-ID: <20251216111358.246515049@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
 
-[ Upstream commit eef3ad030b08c0f100cb18de7f604442a1adb8c7 ]
+[ Upstream commit 81f44409fb4f027d1e6d54edbeba5156ad94b214 ]
 
-The GEN3 hardware does not appear to support IBK_LOCAL_DMA_LKEY. Attempts
-to use it will result in an AE.
+Protects pble_rsrc counters with mutex to prevent data race.
+Fixes the following data race in irdma_free_pble reported by KCSAN:
 
-Fixes: eb31dfc2b41a ("RDMA/irdma: Restrict Memory Window and CQE Timestamping to GEN3")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
+BUG: KCSAN: data-race in irdma_free_pble [irdma] / irdma_free_pble [irdma]
+
+write to 0xffff91430baa0078 of 8 bytes by task 16956 on cpu 5:
+ irdma_free_pble+0x3b/0xb0 [irdma]
+ irdma_dereg_mr+0x108/0x110 [irdma]
+ ib_dereg_mr_user+0x74/0x160 [ib_core]
+ uverbs_free_mr+0x26/0x30 [ib_uverbs]
+ destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
+ uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
+ uobj_destroy+0x61/0xb0 [ib_uverbs]
+ ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
+ ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
+ ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
+ __x64_sys_ioctl+0xc9/0x100
+ do_syscall_64+0x44/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffff91430baa0078 of 8 bytes by task 16953 on cpu 2:
+ irdma_free_pble+0x23/0xb0 [irdma]
+ irdma_dereg_mr+0x108/0x110 [irdma]
+ ib_dereg_mr_user+0x74/0x160 [ib_core]
+ uverbs_free_mr+0x26/0x30 [ib_uverbs]
+ destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
+ uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
+ uobj_destroy+0x61/0xb0 [ib_uverbs]
+ ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
+ ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
+ ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
+ __x64_sys_ioctl+0xc9/0x100
+ do_syscall_64+0x44/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x0000000000005a62 -> 0x0000000000005a68
+
+Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
+Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
 Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-8-tatyana.e.nikolova@intel.com
+Link: https://patch.msgid.link/20251125025350.180-3-tatyana.e.nikolova@intel.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/pble.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 8c44c3fcf9731..afccd9f08b8a5 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -27,7 +27,8 @@ static int irdma_query_device(struct ib_device *ibdev,
- 			irdma_fw_minor_ver(&rf->sc_dev);
- 	props->device_cap_flags = IB_DEVICE_MEM_WINDOW |
- 				  IB_DEVICE_MEM_MGT_EXTENSIONS;
--	props->kernel_cap_flags = IBK_LOCAL_DMA_LKEY;
-+	if (hw_attrs->uk_attrs.hw_rev < IRDMA_GEN_3)
-+		props->kernel_cap_flags = IBK_LOCAL_DMA_LKEY;
- 	props->vendor_id = pcidev->vendor;
- 	props->vendor_part_id = pcidev->device;
- 
+diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
+index 24f455e6dbbc8..42d61b17e6761 100644
+--- a/drivers/infiniband/hw/irdma/pble.c
++++ b/drivers/infiniband/hw/irdma/pble.c
+@@ -498,12 +498,14 @@ int irdma_get_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
+ void irdma_free_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
+ 		     struct irdma_pble_alloc *palloc)
+ {
+-	pble_rsrc->freedpbles += palloc->total_cnt;
+-
+ 	if (palloc->level == PBLE_LEVEL_2)
+ 		free_lvl2(pble_rsrc, palloc);
+ 	else
+ 		irdma_prm_return_pbles(&pble_rsrc->pinfo,
+ 				       &palloc->level1.chunkinfo);
++
++	mutex_lock(&pble_rsrc->pble_mutex_lock);
++	pble_rsrc->freedpbles += palloc->total_cnt;
+ 	pble_rsrc->stats_alloc_freed++;
++	mutex_unlock(&pble_rsrc->pble_mutex_lock);
+ }
 -- 
 2.51.0
 
