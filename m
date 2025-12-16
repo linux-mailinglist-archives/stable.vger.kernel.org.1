@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D7DCC2B5F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15FFCC23A0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9E7D313D58D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0572B3030BBF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29C3446B7;
-	Tue, 16 Dec 2025 11:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D7832BF22;
+	Tue, 16 Dec 2025 11:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NChqFZPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqEZXAYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC963314AC;
-	Tue, 16 Dec 2025 11:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D8C341AD6;
+	Tue, 16 Dec 2025 11:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886035; cv=none; b=Vdmi/ZH6zrRM+i6ZiqbbgeBJ9QjIGHynNGN7XE0XJhPJygg/PJw6EURS2lJ8DWvMMwrokAPg2kcfZaMpZjO3ekaqfMSbnv5RV59tBFQE4oCvVXoug85Xhro297+iSo/l2SDhP4Dlgly5R/9X0m7wMWjDHRrcVp11mAkg8kXvhng=
+	t=1765884326; cv=none; b=D9fjYew2Gi/sggJ+6TpQ6ap4Q8bIOYTeXNDf+16fHrKI3p3mNz7nQv2oTXofjhlJ1Ac92jNGy2JeJzEQ8L/k2xnIEkNOztcyMNLKl3XLINzgBJT+MZGbxmLqWDTDiz9Eolb5kyI6OfedRRwqqfaV/sZXM8ZWr667cFyGOSAVego=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886035; c=relaxed/simple;
-	bh=aneJxBffyeFNtSH8RRHCZRzuoskX6sQ3DIS0gzc33v8=;
+	s=arc-20240116; t=1765884326; c=relaxed/simple;
+	bh=5PvlkougN758/dYBdm5o2yEi9FnTOwgZ4vOy0gGAPIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKGr5wYNYySLd/SvNFVg7eS7LrlKHj9g6tXVY9yRo3MfbNvOYI72i7lu7Dn003pP10YSZr50RpKkqFUpmkO3HGvbUjXZBOA+GGhQ4EjPJyztbj1QUOb0YsaK0R7+5nSHA2OrSEa2WI+mpsZa1dRYeyMGaCgi7XrDiY4uF04uCZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NChqFZPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05314C4CEF5;
-	Tue, 16 Dec 2025 11:53:54 +0000 (UTC)
+	 MIME-Version; b=hnkmeRI+6vyeBl7AfcLAMLEpfTwQoKy2ABQpujEFoKZfk9Vrm6dNLTOlGFi5f1bifzxIY/4mDvclFSSazpkWLAKHDn6L9gDzWEav/NxkL9d6JAncMrEixH0ZVRo9a74RTI5lFpifot4g+aMuGTg+vKrr9JE1JjP7dohW2bwcdv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqEZXAYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF50C4CEF5;
+	Tue, 16 Dec 2025 11:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886035;
-	bh=aneJxBffyeFNtSH8RRHCZRzuoskX6sQ3DIS0gzc33v8=;
+	s=korg; t=1765884326;
+	bh=5PvlkougN758/dYBdm5o2yEi9FnTOwgZ4vOy0gGAPIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NChqFZPXgQhDcdc6allNByO43qVBBbSjJbpjlpXD00Umv8aUkBLOe4u1bX7p6HX/T
-	 1Wh+TkfXYuxjru+Oi+V1zgFlA2MzjCtI5I8Qn5S1heja9kJDWQekBhEVVtHFVoFUGQ
-	 PC0WMz2b7Tie50XyeFuKJv6zsoz7F8dJhrzsubsY=
+	b=HqEZXAYJKMUJ1yZh/QuakyGXNVmJMVe0eyxNLdydZcaY8uonef+ppnybW4n5OuP68
+	 MAQKJT7ABjvdwvBcEOJcKzeY8KIKRDxf7OCLpCCUFZ44wNLtD6gIPLp2WI88FjXm2+
+	 jmi1ZN9TePe0kPyTepLlOJsxrxJdezXuKi5KjDyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 285/507] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Subject: [PATCH 6.12 159/354] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 3C
 Date: Tue, 16 Dec 2025 12:12:06 +0100
-Message-ID: <20251216111355.803859376@linuxfoundation.org>
+Message-ID: <20251216111326.674332587@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
+[ Upstream commit 260316d35cf8f8606c5ed7a349cc92e1e71d8150 ]
 
-If devm_request_threaded_irq() fails after irq_domain_add_linear()
-succeeds in mt6358_irq_init(), the function returns without removing
-the created IRQ domain, leading to a resource leak.
+The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 3C is
+vcca1v8_pmu. [1] Describe this supply.
 
-Call irq_domain_remove() in the error path after a successful
-irq_domain_add_linear() to properly release the IRQ domain.
+[1] https://dl.radxa.com/rock3/docs/hw/3c/v1400/radxa_rock_3c_v1400_schematic.pdf p.13
 
-Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ee219017ddb50 ("arm64: dts: rockchip: Add Radxa ROCK 3C")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-4-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mt6358-irq.c | 1 +
+ arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
-index f467b00d23660..74cf208430440 100644
---- a/drivers/mfd/mt6358-irq.c
-+++ b/drivers/mfd/mt6358-irq.c
-@@ -285,6 +285,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
- 	if (ret) {
- 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
- 			chip->irq, ret);
-+		irq_domain_remove(chip->irq_domain);
- 		return ret;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+index 887c9be1b4100..0649812765900 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+@@ -466,6 +466,7 @@ eeprom: eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		vcc-supply = <&vcca1v8_pmu>;
+ 	};
+ };
  
 -- 
 2.51.0
