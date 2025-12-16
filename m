@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-201966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3ACC3A34
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:37:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C899CCC39DD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D61EE30C68CD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:31:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 469E6309A446
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9304234B185;
-	Tue, 16 Dec 2025 11:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBDE3242B4;
+	Tue, 16 Dec 2025 12:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D25hMXdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eql+BfnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA534A76F;
-	Tue, 16 Dec 2025 11:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEAF2367D5;
+	Tue, 16 Dec 2025 12:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886379; cv=none; b=reoTc7uoenesV/5f71xJJuQyibvyIT70sz2ve7k+H9zJ7QtG0LOIhcd8UPTRSw5oJOx/YkTSN5faVgrNEgsu79uVFVCPRGGI6NAdhc64a5a2xcL1HOO9Uk8Y8D0AX71J1MRnsY3ZZcMugG1Xc+uwrIlZTxcg7wRoJ7WTGbFMYCc=
+	t=1765888407; cv=none; b=FQ35oXRf14KU74hViiRTvtT2ApG44AHgVuJzzIml+zo9+M+1YyfmBiTi6G1ysH8EySSQmbZUbGqCXbEhVB9e88RrGdQiFyRRmUUucYlG1QMQ9Kb/iU26v/1Gc7HELAyOtGSFvWueAYgwZaP7FBVW8X0NxC3XpOQ651ohs50/270=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886379; c=relaxed/simple;
-	bh=Fr1QEZwFbQLRtk0w3g/dh5gFTcLXsq5y077fyPEGdpE=;
+	s=arc-20240116; t=1765888407; c=relaxed/simple;
+	bh=BmKYnkQGGYe1q64FVBR1Rxx1p9ZMVUqGyYHUOjlvN8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLYbSSOlZGKXMBEHbYT0n6xb5kX5JZmdrJn2YmW3982hG61rF/j+raTT6x173p1qBjjEJbtnMbbSQBJZV1x3aHGUWCw7zoGOJj/aP03gTQvsALS5N20L28zL10U3dN8OAB/L9YAh4Fwr4GrCj3NByF57xpmFRKVAB6WEwuKxZYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D25hMXdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E5C16AAE;
-	Tue, 16 Dec 2025 11:59:38 +0000 (UTC)
+	 MIME-Version; b=pKFufJOTJhGaZur761fRSIqWukpD34Kpz3D7PwCN+tvBjBEDmL3iMfoO4utgImg+XfU/nQRXiRIleRzk5L1txeSBc0NMyIjw6O1Rwk1Jtoyqg51eDhpELWeeBM7TQJRqBg1hdB3nO9oHJygxODyNGFCdzDU5iMZlvct+SUPESaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eql+BfnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4AFC4CEF1;
+	Tue, 16 Dec 2025 12:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886379;
-	bh=Fr1QEZwFbQLRtk0w3g/dh5gFTcLXsq5y077fyPEGdpE=;
+	s=korg; t=1765888406;
+	bh=BmKYnkQGGYe1q64FVBR1Rxx1p9ZMVUqGyYHUOjlvN8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D25hMXdYS5jAYDXPR8UIyroZBh5S8NHuY2neYW9DZacY77XFESjxSxAJYHd6PucWm
-	 hgQf05NJujmQ8KcBkmTsAdozAz1nIFo/NVlkLU8ILDWmU5q2IrGdusCVGwNWpsK4gm
-	 o3fqF5+P6wbO3SVFRImgG94aWRKOjd3M/4dvdM3g=
+	b=eql+BfnSIQZnNWqYixWhmRhWz/6u6MEyYhUY1wBVeA/z4xdxxQ7u4oExvOusP/aD1
+	 zU0INpATZKnTFZb3YEvqdhBn0GoSVrsbPiP/GyUDuSPbr9JmTgxLfOv4mRgE9vfKYg
+	 /HKYniySkjen49/Ppd8u7Ed9ibivvEMA03fk4xmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+	Robert Marko <robimarko@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 418/507] net: dsa: b53: use same ARL search result offset for BCM5325/65
+Subject: [PATCH 6.18 492/614] net: phy: aquantia: check for NVMEM deferral
 Date: Tue, 16 Dec 2025 12:14:19 +0100
-Message-ID: <20251216111400.605149435@linuxfoundation.org>
+Message-ID: <20251216111419.197792825@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit 8e46aacea4264bcb8d4265fb07577afff58ae78d ]
+[ Upstream commit a6c121a2432eee2c4ebceb1483ccd4a50a52983d ]
 
-BCM5365's search result is at the same offset as BCM5325's search
-result, and they (mostly) share the same format, so switch BCM5365 to
-BCM5325's arl ops.
+Currently, if NVMEM provider is probed later than Aquantia, loading the
+firmware will fail with -EINVAL.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-4-jonas.gorski@gmail.com
+To fix this, simply check for -EPROBE_DEFER when NVMEM is attempted and
+return it.
+
+Fixes: e93984ebc1c8 ("net: phy: aquantia: add firmware load support")
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251127114514.460924-1-robimarko@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +-----------------
- drivers/net/dsa/b53/b53_regs.h   |  4 +---
- 2 files changed, 2 insertions(+), 20 deletions(-)
+ drivers/net/phy/aquantia/aquantia_firmware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index dedbd53412871..68e9162087ab4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2093,16 +2093,6 @@ static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
- 	b53_arl_to_entry_25(ent, mac_vid);
- }
+diff --git a/drivers/net/phy/aquantia/aquantia_firmware.c b/drivers/net/phy/aquantia/aquantia_firmware.c
+index bbbcc9736b00e..569256152689f 100644
+--- a/drivers/net/phy/aquantia/aquantia_firmware.c
++++ b/drivers/net/phy/aquantia/aquantia_firmware.c
+@@ -369,7 +369,7 @@ int aqr_firmware_load(struct phy_device *phydev)
+ 		 * assume that, and load a new image.
+ 		 */
+ 		ret = aqr_firmware_load_nvmem(phydev);
+-		if (!ret)
++		if (ret == -EPROBE_DEFER || !ret)
+ 			return ret;
  
--static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
--				   struct b53_arl_entry *ent)
--{
--	u64 mac_vid;
--
--	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
--		   &mac_vid);
--	b53_arl_to_entry_25(ent, mac_vid);
--}
--
- static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
- 				   struct b53_arl_entry *ent)
- {
-@@ -2699,12 +2689,6 @@ static const struct b53_arl_ops b53_arl_ops_25 = {
- 	.arl_search_read = b53_arl_search_read_25,
- };
- 
--static const struct b53_arl_ops b53_arl_ops_65 = {
--	.arl_read_entry = b53_arl_read_entry_25,
--	.arl_write_entry = b53_arl_write_entry_25,
--	.arl_search_read = b53_arl_search_read_65,
--};
--
- static const struct b53_arl_ops b53_arl_ops_89 = {
- 	.arl_read_entry = b53_arl_read_entry_89,
- 	.arl_write_entry = b53_arl_write_entry_89,
-@@ -2761,7 +2745,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.arl_buckets = 1024,
- 		.imp_port = 5,
- 		.duplex_reg = B53_DUPLEX_STAT_FE,
--		.arl_ops = &b53_arl_ops_65,
-+		.arl_ops = &b53_arl_ops_25,
- 	},
- 	{
- 		.chip_id = BCM5389_DEVICE_ID,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index d9026cf865549..f2a3696d122fa 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -370,10 +370,8 @@
- #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
- #define B53_ARL_SRCH_RSLT_MACVID_89	0x33
- 
--/* Single register search result on 5325 */
-+/* Single register search result on 5325/5365 */
- #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
--/* Single register search result on 5365 */
--#define B53_ARL_SRCH_RSTL_0_MACVID_65	0x30
- 
- /* ARL Search Data Result (32 bit) */
- #define B53_ARL_SRCH_RSTL_0		0x68
+ 		ret = aqr_firmware_load_fs(phydev);
 -- 
 2.51.0
 
