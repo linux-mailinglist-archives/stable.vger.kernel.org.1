@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E9CC306E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFCBCC27F1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BFFE3036595
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1085D3078C9A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD34368288;
-	Tue, 16 Dec 2025 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53735504A;
+	Tue, 16 Dec 2025 11:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCIzDCRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgACkCwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866CE366555;
-	Tue, 16 Dec 2025 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F14A355045;
+	Tue, 16 Dec 2025 11:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887942; cv=none; b=GAOUBSjclNqFGhcPuCvJNoWoc45aO13RJ9O8010EnKzXiGQ2euOjFb/uIx/PU8flOH7LNpbriDR3lSZRiQNqfQvGyi2AgeBHmrgZiOksd29Q1rvLL8b72CcffkX14hxpwhdVAeA2m0m4eC3JtqvvTm+rvbb/fG7A7S2qfDYWGgA=
+	t=1765885926; cv=none; b=XmdZctfLa5gVPPaYvtK+2sBbc6wZ+CdzFn5Z7w4T14RGgxvNfOEkDTFqGe6ztp270ctwVx/ihKYnZY8mHUHKyIzRqIHGDU95Xr/lH/MjYWRuDo040a+U2wcH/cPk8RjaQfeh93j3/WoyVEIHjcdWj1yg5Ykr7Ls7wDvE7HA+AfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887942; c=relaxed/simple;
-	bh=eyXZHeLc3lX9/TjVSqW/g8NwTGiCofEMmEtTDlCyLsI=;
+	s=arc-20240116; t=1765885926; c=relaxed/simple;
+	bh=uCCzhD+yyjGCNmblAaSpwwOrV9LV91q6JiYvg7rKWu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tw6hDJXEktR5aoBgrd2Y3cBZrifrrC3bnj6dl2l1J2cSp1HC34tF2Vn+/T7YxcVGWzv40MsUankvQsLR8SbuwDbSu1N3VUuUM2q/7/QwWbA1x2Rp4Av4PqxQagqtgzYKJtiaLLogd9uhw+obHC9QuIqTiJH/cqu9PldQe0MjCn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCIzDCRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75EAC16AAE;
-	Tue, 16 Dec 2025 12:25:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r6p/c+gc9VwPeEM3+qRvnUc7ewZr8IcrgulGSfSpjcgr+TWJu92aKbhNu43E806eK7H4HN5ilpmS1i5G7dffcRyR3QCFBM9Upjn2EAXeDt+AxsYDo26DcrGGGbkMFcq+fmBcKl1MeT5xHOruQjFfeMkTrj5d6wgcEZTf3bUYXsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgACkCwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE22C16AAE;
+	Tue, 16 Dec 2025 11:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887942;
-	bh=eyXZHeLc3lX9/TjVSqW/g8NwTGiCofEMmEtTDlCyLsI=;
+	s=korg; t=1765885926;
+	bh=uCCzhD+yyjGCNmblAaSpwwOrV9LV91q6JiYvg7rKWu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCIzDCRO28NCQcc1cuWFo7dTJjBLPYQd/N+iSv2YgNjz+PV9yMf81WGJjFvi3fkcd
-	 eqSOFFksyG6bYmFFB4FiqzBITEmqei2fxYoiZQMLCgT08D3sTBzORfhL3pQdPKYpn0
-	 Km0zNsheWsxfzHgqSi4pWDE7IxGhYe+rcyza+S1U=
+	b=cgACkCweB+ryghh6qFDXKfEKnC0QLJwahXUWjgua5Dc0noXhwk2DIU1TfsVS+M6Ee
+	 i8d2+RlRQ4BZHnhv9HbGSdwO3iliXM4WP37vdj4nzTurEwXvmflIVItTUk3bwt8u3I
+	 STB3Wj8cbmM9rDP22iJv7ZwrRjyqRl3NnY1v5FDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 352/614] selftests/bpf: Use ASSERT_STRNEQ to factor in long slab cache names
+Subject: [PATCH 6.17 278/507] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
 Date: Tue, 16 Dec 2025 12:11:59 +0100
-Message-ID: <20251216111414.116567450@linuxfoundation.org>
+Message-ID: <20251216111355.553651210@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit d088da904223e8f5e19c6d156cf372d5baec1a7c ]
+[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
 
-subtest_kmem_cache_iter_check_slabinfo() fundamentally compares slab
-cache names parsed out from /proc/slabinfo against those stored within
-struct kmem_cache_result. The current problem is that the slab cache
-name within struct kmem_cache_result is stored within a bounded
-fixed-length array (sized to SLAB_NAME_MAX(32)), whereas the name
-parsed out from /proc/slabinfo is not. Meaning, using ASSERT_STREQ()
-can certainly lead to test failures, particularly when dealing with
-slab cache names that are longer than SLAB_NAME_MAX(32)
-bytes. Notably, kmem_cache_create() allows callers to create slab
-caches with somewhat arbitrarily sized names via its __name identifier
-argument, so exceeding the SLAB_NAME_MAX(32) limit that is in place
-now can certainly happen.
+The .free callback cleared among others the enable bit PWENx in the
+control register. When the PWM is requested later again this bit isn't
+restored but the core assumes the PWM is enabled and thus skips a
+request to configure the same state as before.
 
-Make subtest_kmem_cache_iter_check_slabinfo() more reliable by only
-checking up to sizeof(struct kmem_cache_result.name) - 1 using
-ASSERT_STRNEQ().
+To fix that don't touch the hardware configuration in .free(). For
+symmetry also drop .request() and configure the mode completely in
+.apply().
 
-Fixes: a496d0cdc84d ("selftests/bpf: Add a test for kmem_cache_iter")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://patch.msgid.link/20251118073734.4188710-1-mattbobrowski@google.com
+Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
+ 1 file changed, 3 insertions(+), 25 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-index 1de14b111931a..6e35e13c20220 100644
---- a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-@@ -57,7 +57,8 @@ static void subtest_kmem_cache_iter_check_slabinfo(struct kmem_cache_iter *skel)
- 		if (!ASSERT_OK(ret, "kmem_cache_lookup"))
- 			break;
+diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
+index 578e95e0296c6..532903da521fd 100644
+--- a/drivers/pwm/pwm-bcm2835.c
++++ b/drivers/pwm/pwm-bcm2835.c
+@@ -34,29 +34,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
+ 	return pwmchip_get_drvdata(chip);
+ }
  
--		ASSERT_STREQ(r.name, name, "kmem_cache_name");
-+		ASSERT_STRNEQ(r.name, name, sizeof(r.name) - 1,
-+			      "kmem_cache_name");
- 		ASSERT_EQ(r.obj_size, objsize, "kmem_cache_objsize");
+-static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-
+-	return 0;
+-}
+-
+-static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-}
+-
+ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			     const struct pwm_state *state)
+ {
+@@ -102,6 +79,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	/* set polarity */
+ 	val = readl(pc->base + PWM_CONTROL);
  
- 		seen++;
++	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
++	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
++
+ 	if (state->polarity == PWM_POLARITY_NORMAL)
+ 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
+ 	else
+@@ -119,8 +99,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ }
+ 
+ static const struct pwm_ops bcm2835_pwm_ops = {
+-	.request = bcm2835_pwm_request,
+-	.free = bcm2835_pwm_free,
+ 	.apply = bcm2835_pwm_apply,
+ };
+ 
 -- 
 2.51.0
 
