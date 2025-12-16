@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5BACC23C4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EA9CC3385
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04F613020818
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D6CC304EDB7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A7B32860D;
-	Tue, 16 Dec 2025 11:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02B376BFC;
+	Tue, 16 Dec 2025 12:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQpvZQv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raLvK3ZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB0B313530;
-	Tue, 16 Dec 2025 11:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76928376BE9;
+	Tue, 16 Dec 2025 12:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884548; cv=none; b=htk6p7qYxXEPUqG2S5MqjRFt9sXi3lfsbkMo54iB7NN5UqZ99DxgFKHJsxEOuyLyGI2NybfHhMC9jog+0QQ32ws5aYY7gBpDzNLQrDlT+RFkib8nyhUbgqcn8V+eFMN2WARNH2QlYaPIDlRfOEnaF5BCMdMpLkXqinWMqRbT3Qg=
+	t=1765888085; cv=none; b=bVbRyysaHQTQxgDI3MjyfeLScuuxT5D75VyIvnXGUd+44CSqtq8mDF5/guy1raoPJlu0cqmxePYiioE7/ZoJJKbvxzxeRSgMhbiPSWiD0HIhs6qkdglp9pilowvOdp+9ZVCuNPqpPx+/wlcVHzYHnMaNtuvlGjQenzWj0Rho9qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884548; c=relaxed/simple;
-	bh=m6bmjwXsVFhic/IImVzTD/qw7jsrLe3LgRMdwEMTfDM=;
+	s=arc-20240116; t=1765888085; c=relaxed/simple;
+	bh=uK2/gvRRL0b4c2WMGGsIoEdHm9yUn3Q5FZDSBHx24KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvUi63U3ojJ2B/aysqU11T99pUNSw5LEXOKPqbqXw9Kywf8RwiTPRiC+xa7rmf7VWUNh2PSUcioeyhhMsYcfblX5Ng9ZhF+fi6O7DUEej7R4rCAchcHkY5edj2aTAcabfDUqrOcUFweBB6V00rxZ3r3HIUGsWj9NhTCKNdQTtQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQpvZQv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90B4C4CEF1;
-	Tue, 16 Dec 2025 11:29:07 +0000 (UTC)
+	 MIME-Version; b=MJzilQM+rHpSbqZhod9se0lBeZd7XCm4HgKRqoMIHR/Kd7wxUI833aohyCiYwX3sT42wA1oEINpEL3svj+1M1e1ZWzay4ktIUZfI1Qws7askx+C4qCSYdOtD5GCQIgSSFEIBr4+tq67VSmEGDjJ9ANHn+Zu4LF8f0nHRZpgqmI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raLvK3ZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9590C4CEF1;
+	Tue, 16 Dec 2025 12:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884548;
-	bh=m6bmjwXsVFhic/IImVzTD/qw7jsrLe3LgRMdwEMTfDM=;
+	s=korg; t=1765888085;
+	bh=uK2/gvRRL0b4c2WMGGsIoEdHm9yUn3Q5FZDSBHx24KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQpvZQv6ufplasbRvmHqC0mhmvms3Ki2XjpjzK5bcHHavPIe5nxs87ixG7cJS3mhP
-	 Xu/6JmEqfEOccSyyNrht3Baxn6GP88FPwIaKM4LW0ZX1iXIMq3Vlu7y2w16YSyQiv5
-	 FTQkDb5Q1GM69brjZ0qXpiRRVoRwabu1UxI/Q5+c=
+	b=raLvK3ZPgGpnNCZSAVf8o29aIBFDvse09I+MCxPH0HqemCyTugVumxTryq0EofbB1
+	 2NZQenuT/CV6p4fm2IqOXBoZK6CQ9liu9U6VWZklSQH84mQ3VZpAzCqVoubKJhTaVx
+	 rMLa1C+atgCGu2ndIiEDypC7rW/TRfQxBi4weWXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/354] backlight: led-bl: Add devlink to supplier LEDs
-Date: Tue, 16 Dec 2025 12:13:14 +0100
-Message-ID: <20251216111329.141893823@linuxfoundation.org>
+Subject: [PATCH 6.18 428/614] RDMA/irdma: Remove doorbell elision logic
+Date: Tue, 16 Dec 2025 12:13:15 +0100
+Message-ID: <20251216111416.880944925@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
+[ Upstream commit 62356fccb195f83d2ceafc787c5ba87ebbe5edfe ]
 
-LED Backlight is a consumer of one or multiple LED class devices, but
-devlink is currently unable to create correct supplier-producer links when
-the supplier is a class device. It creates instead a link where the
-supplier is the parent of the expected device.
+In some cases, this logic can result in doorbell writes being
+skipped when they should not have been (at least on GEN3 HW),
+so remove it. This also means that the mb() can be safely
+downgraded to dma_wmb().
 
-One consequence is that removal order is not correctly enforced.
-
-Issues happen for example with the following sections in a device tree
-overlay:
-
-    // An LED driver chip
-    pca9632@62 {
-        compatible = "nxp,pca9632";
-        reg = <0x62>;
-
-	// ...
-
-        addon_led_pwm: led-pwm@3 {
-            reg = <3>;
-            label = "addon:led:pwm";
-        };
-    };
-
-    backlight-addon {
-        compatible = "led-backlight";
-        leds = <&addon_led_pwm>;
-        brightness-levels = <255>;
-        default-brightness-level = <255>;
-    };
-
-In this example, the devlink should be created between the backlight-addon
-(consumer) and the pca9632@62 (supplier). Instead it is created between the
-backlight-addon (consumer) and the parent of the pca9632@62, which is
-typically the I2C bus adapter.
-
-On removal of the above overlay, the LED driver can be removed before the
-backlight device, resulting in:
-
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-    ...
-    Call trace:
-     led_put+0xe0/0x140
-     devm_led_release+0x6c/0x98
-
-Another way to reproduce the bug without any device tree overlays is
-unbinding the LED class device (pca9632@62) before unbinding the consumer
-(backlight-addon):
-
-  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
-  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
-
-Fix by adding a devlink between the consuming led-backlight device and the
-supplying LED device, as other drivers and subsystems do as well.
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 551c46edc769 ("RDMA/irdma: Add user/kernel shared libraries")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20251125025350.180-9-tatyana.e.nikolova@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/led_bl.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/infiniband/hw/irdma/puda.c |  1 -
+ drivers/infiniband/hw/irdma/uk.c   | 31 ++----------------------------
+ drivers/infiniband/hw/irdma/user.h |  1 -
+ 3 files changed, 2 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 7826006018457..f0c7e25537d1f 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -209,6 +209,19 @@ static int led_bl_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->bl_dev);
- 	}
+diff --git a/drivers/infiniband/hw/irdma/puda.c b/drivers/infiniband/hw/irdma/puda.c
+index 694e5a9ed15d0..9cd14a50f1a93 100644
+--- a/drivers/infiniband/hw/irdma/puda.c
++++ b/drivers/infiniband/hw/irdma/puda.c
+@@ -685,7 +685,6 @@ static int irdma_puda_qp_create(struct irdma_puda_rsrc *rsrc)
+ 	ukqp->rq_size = rsrc->rq_size;
  
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		struct device_link *link;
-+
-+		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!link) {
-+			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
-+				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
-+			backlight_device_unregister(priv->bl_dev);
-+			return -EINVAL;
-+		}
-+	}
-+
- 	for (i = 0; i < priv->nb_leds; i++) {
- 		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_disable(priv->leds[i]);
+ 	IRDMA_RING_INIT(ukqp->sq_ring, ukqp->sq_size);
+-	IRDMA_RING_INIT(ukqp->initial_ring, ukqp->sq_size);
+ 	IRDMA_RING_INIT(ukqp->rq_ring, ukqp->rq_size);
+ 	ukqp->wqe_alloc_db = qp->pd->dev->wqe_alloc_db;
+ 
+diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
+index ce1ae10c30fca..d5568584ad5e3 100644
+--- a/drivers/infiniband/hw/irdma/uk.c
++++ b/drivers/infiniband/hw/irdma/uk.c
+@@ -114,33 +114,8 @@ void irdma_clr_wqes(struct irdma_qp_uk *qp, u32 qp_wqe_idx)
+  */
+ void irdma_uk_qp_post_wr(struct irdma_qp_uk *qp)
+ {
+-	u64 temp;
+-	u32 hw_sq_tail;
+-	u32 sw_sq_head;
+-
+-	/* valid bit is written and loads completed before reading shadow */
+-	mb();
+-
+-	/* read the doorbell shadow area */
+-	get_64bit_val(qp->shadow_area, 0, &temp);
+-
+-	hw_sq_tail = (u32)FIELD_GET(IRDMA_QP_DBSA_HW_SQ_TAIL, temp);
+-	sw_sq_head = IRDMA_RING_CURRENT_HEAD(qp->sq_ring);
+-	if (sw_sq_head != qp->initial_ring.head) {
+-		if (sw_sq_head != hw_sq_tail) {
+-			if (sw_sq_head > qp->initial_ring.head) {
+-				if (hw_sq_tail >= qp->initial_ring.head &&
+-				    hw_sq_tail < sw_sq_head)
+-					writel(qp->qp_id, qp->wqe_alloc_db);
+-			} else {
+-				if (hw_sq_tail >= qp->initial_ring.head ||
+-				    hw_sq_tail < sw_sq_head)
+-					writel(qp->qp_id, qp->wqe_alloc_db);
+-			}
+-		}
+-	}
+-
+-	qp->initial_ring.head = qp->sq_ring.head;
++	dma_wmb();
++	writel(qp->qp_id, qp->wqe_alloc_db);
+ }
+ 
+ /**
+@@ -1574,7 +1549,6 @@ static void irdma_setup_connection_wqes(struct irdma_qp_uk *qp,
+ 	qp->conn_wqes = move_cnt;
+ 	IRDMA_RING_MOVE_HEAD_BY_COUNT_NOCHECK(qp->sq_ring, move_cnt);
+ 	IRDMA_RING_MOVE_TAIL_BY_COUNT(qp->sq_ring, move_cnt);
+-	IRDMA_RING_MOVE_HEAD_BY_COUNT_NOCHECK(qp->initial_ring, move_cnt);
+ }
+ 
+ /**
+@@ -1719,7 +1693,6 @@ int irdma_uk_qp_init(struct irdma_qp_uk *qp, struct irdma_qp_uk_init_info *info)
+ 	qp->max_sq_frag_cnt = info->max_sq_frag_cnt;
+ 	sq_ring_size = qp->sq_size << info->sq_shift;
+ 	IRDMA_RING_INIT(qp->sq_ring, sq_ring_size);
+-	IRDMA_RING_INIT(qp->initial_ring, sq_ring_size);
+ 	if (info->first_sq_wq) {
+ 		irdma_setup_connection_wqes(qp, info);
+ 		qp->swqe_polarity = 1;
+diff --git a/drivers/infiniband/hw/irdma/user.h b/drivers/infiniband/hw/irdma/user.h
+index ab57f689827a0..aeebf768174ab 100644
+--- a/drivers/infiniband/hw/irdma/user.h
++++ b/drivers/infiniband/hw/irdma/user.h
+@@ -456,7 +456,6 @@ struct irdma_srq_uk {
+ 	struct irdma_uk_attrs *uk_attrs;
+ 	__le64 *shadow_area;
+ 	struct irdma_ring srq_ring;
+-	struct irdma_ring initial_ring;
+ 	u32 srq_id;
+ 	u32 srq_size;
+ 	u32 max_srq_frag_cnt;
 -- 
 2.51.0
 
