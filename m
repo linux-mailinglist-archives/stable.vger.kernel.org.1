@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A876CCC2B65
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:27:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD7ECC31D6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2576C31BBF75
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D49C3307A8DF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAA734BA49;
-	Tue, 16 Dec 2025 11:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAD5345CAA;
+	Tue, 16 Dec 2025 12:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q32GM/vu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enCTc3Fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A893534B68F;
-	Tue, 16 Dec 2025 11:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AE9346796;
+	Tue, 16 Dec 2025 12:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885730; cv=none; b=TvVA0mcfqE4C84FzDaiE7d9a/jOi/gpMK3YhzzHzYzlGbtqMnnCGvcAwOUfsrS0oSWscTnSpIgndEeAA9xXAvYu7Zt1v8IVvoP5QlCdI59X3M/ckr26El/MIjFjXAMucg0siQYuM9ffknfWbwcohwAaTqaqF6aKJTfPr2uK2oDw=
+	t=1765887669; cv=none; b=iIRCyYxx3oUeGsldHvUrLbc+DMS5gjCR+tz80oVG8Bd6DFY+CvUFDJpY+5zAHQJop9MkURx7hVBgknlEV9jJm4hjw6DjKNYvc+vfAkWeBcPadRtSgYKZPIMyS8rEyvi83sWEREkwyHt6no7E8Y/gi6g3vqEPFJcauZYQBeJvNGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885730; c=relaxed/simple;
-	bh=9pcNIg26ycquaPA15fMlnRPzB1UnkvJRXNQmIn4uyYA=;
+	s=arc-20240116; t=1765887669; c=relaxed/simple;
+	bh=23iTpyDcwykQ5XimzKapTmJi1iWAynlSd3dtrhcKwFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kW+sZ8ngwmroHBUsnczckNdYY259L8XEYP8iQYDjNjoITOnFhAGcXiYa6yrgOW4fcEd9e8kzs6eNnHfl0UPjjz9TBGb3Unte3CTxR3JUyKvaYOVQIePC0VbMPHHLdLgy21L2rnE0nGzo6jXPwwOH1Pk0Y75djGzKJmO8VFBdi6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q32GM/vu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1087BC4CEF1;
-	Tue, 16 Dec 2025 11:48:49 +0000 (UTC)
+	 MIME-Version; b=AruJmKXnR+aPlY6BMlBs1WFrV/YaQwnvW4m4FjmYkV/tN3ZHLID1WSsdtM1tooPWjKCFIWOzioFKBq6jPHUTfLFvktQxciEGJAr71oGU3mL8sf5zZ9nVYWADut2jZNx+RsZjA4KPThVvehSONqx26sYx2wz4PUJGLUZpda38+n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enCTc3Fc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3448BC4CEF1;
+	Tue, 16 Dec 2025 12:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885730;
-	bh=9pcNIg26ycquaPA15fMlnRPzB1UnkvJRXNQmIn4uyYA=;
+	s=korg; t=1765887669;
+	bh=23iTpyDcwykQ5XimzKapTmJi1iWAynlSd3dtrhcKwFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q32GM/vu95wgIuN7j7tQ9HXsZFeF5Z3qREqIrTjGtpcdUZercD3GmVKDbr5g+7myf
-	 moC2HdT1WTpjsubVghrXm1zuQW4y7ItGm4Kmqc89pdbsDTrOZoU6jHEXg7AC8fFWHS
-	 L+6lJzkDZdnbMJ3bCL3iB7mha0r3HFScY4TrulmI=
+	b=enCTc3FcUzuc8YQSpCfGY0WyAAKb2m7fI3C3Un/hY/Ti5h93G9G+PxelkEprbSEUN
+	 w9C9/CfxoRQAFrl2uhITwypOeTkVJJybwGQCfgkrXpT03fn3oKRxNoqLXFULqrdnyg
+	 l6W0sRYM1WCgDX652fALlPHauAS5QfwmRVwWueck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 227/507] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
-Date: Tue, 16 Dec 2025 12:11:08 +0100
-Message-ID: <20251216111353.729314805@linuxfoundation.org>
+Subject: [PATCH 6.18 302/614] tracefs: fix a leak in eventfs_create_events_dir()
+Date: Tue, 16 Dec 2025 12:11:09 +0100
+Message-ID: <20251216111412.311295317@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
+[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
 
-The driver calls ioport_map() to map I/O ports in sim710_probe_common()
-but never calls ioport_unmap() to release the mapping. This causes
-resource leaks in both the error path when request_irq() fails and in
-the normal device removal path via sim710_device_remove().
+If we have LOCKDOWN_TRACEFS, the function bails out - *after*
+having locked the parent directory and without bothering to
+undo that.  Just check it before tracefs_start_creating()...
 
-Add ioport_unmap() calls in the out_release error path and in
-sim710_device_remove().
-
-Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sim710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/tracefs/event_inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
-index e519df68d603d..70c75ab1453a1 100644
---- a/drivers/scsi/sim710.c
-+++ b/drivers/scsi/sim710.c
-@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
-  out_put_host:
- 	scsi_host_put(host);
-  out_release:
-+	ioport_unmap(hostdata->base);
- 	release_region(base_addr, 64);
-  out_free:
- 	kfree(hostdata);
-@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 8705c77a9e75a..93c231601c8e2 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -757,7 +757,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 						const struct eventfs_entry *entries,
+ 						int size, void *data)
+ {
+-	struct dentry *dentry = tracefs_start_creating(name, parent);
++	struct dentry *dentry;
+ 	struct eventfs_root_inode *rei;
+ 	struct eventfs_inode *ei;
+ 	struct tracefs_inode *ti;
+@@ -768,6 +768,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 	if (security_locked_down(LOCKDOWN_TRACEFS))
+ 		return NULL;
  
- 	scsi_remove_host(host);
- 	NCR_700_release(host);
-+	ioport_unmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	release_region(host->base, 64);
++	dentry = tracefs_start_creating(name, parent);
+ 	if (IS_ERR(dentry))
+ 		return ERR_CAST(dentry);
+ 
 -- 
 2.51.0
 
