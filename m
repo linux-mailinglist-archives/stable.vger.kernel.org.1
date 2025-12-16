@@ -1,62 +1,54 @@
-Return-Path: <stable+bounces-201532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B65CC269E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB5CC42EE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 885F4312DAAA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BBA03042B13
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029342135B8;
-	Tue, 16 Dec 2025 11:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F94358D39;
+	Tue, 16 Dec 2025 12:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+++pIr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFUTh/Mi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4B53314B4;
-	Tue, 16 Dec 2025 11:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F44358D27;
+	Tue, 16 Dec 2025 12:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884945; cv=none; b=XrbKrT01Kg3zBzFSnLmKhRm38Hy7GwdveflF/WgqYWTgjM2ubMB9bIKuoRhwGCz18R/kNOHxL1Bu8nWlaNdK7uKGO0MQQNKAzQ6UJVka/h5iyeKTYdeEWxNcidYI6GjTpLr10+StVVTn+CEc8aOfbKkMAz0vch9L2KBJRX+roiU=
+	t=1765888475; cv=none; b=mjzY8B0j6LGknR1Byg67xwNObaxtIHu5indRaUL2GzsM6Zh59KLgVMGE8gku6yQo1iGsyYtK4gKYZERMZ5Zo/gTd8qoSlWRSvrgkGloqOoctGcszhXWp/ANy1M9eqFPcNzkrxqGgdogl40jsIkEUtZxpkzzUtkEo/yEgO67BHmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884945; c=relaxed/simple;
-	bh=v1bCXdX+msZZWEl+X5v5ObQyBYc/qu/c9N3969KJFQw=;
+	s=arc-20240116; t=1765888475; c=relaxed/simple;
+	bh=rWqH1bnjbUqPDLluTzVmXWbthumyKSL4DhJEX528tZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrzYH35YqQ8J1wSq6BmHnCaIBaf5nyJnzt6vUtEIg/6gkr6aJb2iLPaV12QfyrNcM/jW8PD+M+7JmW4YHb0m9MhGHZwsiuzpT7s3LVo91AUyb7uEjHDrBpU0jEHjvlpRlNjLsFXi4RQuPP79kSv5pLuU0ageOpOzPDPYdNe0YxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+++pIr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9D4C4CEF1;
-	Tue, 16 Dec 2025 11:35:45 +0000 (UTC)
+	 MIME-Version; b=YIQyAjIM3tb3whhn6ibYLsSaFzeHwr9ewcxWhqXsIMtSDgdNrQzcZPb94fkdy69X4yp4Thgz24K/75L0s0IgudFXMyETHV2jANu/nNBdEaXS1bM6K+WUO/RlaBzybEYUsJXqKt5O3mTo/wgOhasiVhqnO36UML4DW5h20KUUlaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFUTh/Mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332D0C4CEF1;
+	Tue, 16 Dec 2025 12:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884945;
-	bh=v1bCXdX+msZZWEl+X5v5ObQyBYc/qu/c9N3969KJFQw=;
+	s=korg; t=1765888475;
+	bh=rWqH1bnjbUqPDLluTzVmXWbthumyKSL4DhJEX528tZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+++pIr5MV/PwuegDEos/GELQZ0gY3fgmIkYmIeTAmPapcBgXrn6304zS9H43dFZx
-	 Gcv2VPM+mwmcJSsosjdmFZL7QZXjM9d7Sm4dI5TvaxqfCeDPMWPkjDRXlFCyPrz60U
-	 3kZ4rImOcLVGmkdICOCpmoPb3X9sWPsEU15a7TNY=
+	b=ZFUTh/Miyp7e6QhX7EkquB7hZjLynutepiFqZpBa0ngk+4vJaTA83HkSj9yKrIkIl
+	 4ECcx+YJX4KVph0KNE19ePP5PVK8TTi/ufvvCdQKU62bGQX78R2lA5xvWPQF2cFIKE
+	 VtiP08teJmMPk+H7CjjOcDLtWS/Y9P0LNKC94YiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 345/354] ocfs2: fix memory leak in ocfs2_merge_rec_left()
+Subject: [PATCH 6.18 545/614] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
 Date: Tue, 16 Dec 2025 12:15:12 +0100
-Message-ID: <20251216111333.404716560@linuxfoundation.org>
+Message-ID: <20251216111421.126609590@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,47 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
+[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
 
-In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
-move, thus allowing 'ocfs2_free_path()' to free it before return.
+Fixes a crash when layout is null during this call stack:
 
-Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
-Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+write_inode
+    -> nfs4_write_inode
+        -> pnfs_layoutcommit_inode
+
+pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
+around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
+to reference a null layout.
+
+Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/alloc.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/nfs/pnfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-index 5d9388b44e5be..f8025433ce3bf 100644
---- a/fs/ocfs2/alloc.c
-+++ b/fs/ocfs2/alloc.c
-@@ -3654,7 +3654,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
- 			 * So we use the new rightmost path.
- 			 */
- 			ocfs2_mv_path(right_path, left_path);
--			left_path = NULL;
- 		} else
- 			ocfs2_complete_edge_insert(handle, left_path,
- 						   right_path, subtree_index);
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index a3135b5af7eec..7ce2e840217cf 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -464,6 +464,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 	struct pnfs_layout_segment *lseg, *next;
+ 
+ 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
++	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
+ 		pnfs_clear_lseg_state(lseg, lseg_list);
+ 	pnfs_clear_layoutreturn_info(lo);
 -- 
 2.51.0
 
