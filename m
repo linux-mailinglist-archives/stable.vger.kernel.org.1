@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B39BCC2EFB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13EACC2D1F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 074C83109880
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4301F301496E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D71A398B95;
-	Tue, 16 Dec 2025 12:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B6834F49F;
+	Tue, 16 Dec 2025 12:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmjXSm+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDaaz8KA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFBE398B90;
-	Tue, 16 Dec 2025 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25F834F482;
+	Tue, 16 Dec 2025 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888371; cv=none; b=r/PzqY+15IhLHUzStJc0SYsM0ocL6i02SuiHag4H6SL9i5STmkvZo0JWDr6bJrahoFYWAJxZof6y4u0EKsnPbf3UFrWrDmXncddhEN0ss7xIkVNvsoIRbTnJ6tPR9EA4rngPJDVNnccmm1XGwIDWHDI+IxrP/3dMNJmuCV0vlTw=
+	t=1765886451; cv=none; b=KKZl/xQkqnTtEExIEMhZRbPsZqjr7Rv857lpS/+7N8q5zhZWltPhws71lQzA+bNWDyMVQGSDRMtYKYl4qn991uP6NxUH1VPmnDRGVBdEKUuP8dnQzxprBnho3WRB2L2fEx73hSnyXAr5B6QEd9QyGwJ7GyTxgWkPJu8kIPXJ3AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888371; c=relaxed/simple;
-	bh=3A3n/kdJhZC4C5fDgfcf15u1eO1AijWl/SlV9MyPXIA=;
+	s=arc-20240116; t=1765886451; c=relaxed/simple;
+	bh=4VnRLhcwrxgfhT1hUNAMjHATcl7PdDLV1TQ4vWArz4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXYwBY84IzMPQUmp+L6k1KV3IWZ3uMJs+SXPEbcP18lNf425fJ1klmQsX7+wDeoR4V7cuvJ40P6yOOaaO98wsvGKghOY1ZpohWLiXiPBAfUDaNx+vdwLdslETawJ1jVU8TJb+nVN/dpYwT2JYu/t0jTgboQeCBTVx4MpFjVtwCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmjXSm+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623C3C4CEF1;
-	Tue, 16 Dec 2025 12:32:50 +0000 (UTC)
+	 MIME-Version; b=tqeRrztagKe+/KXExWeECgJIVbZas5aZDeCMdR/QaIQZ2CC61+Vxja6Pn+LDnb6PKC85yvwT0BCoOAmIo0073JOXMLaPOv3eE9dYemw86GovAmMpzluklPw5NA23AP67N2fWvhClIfow8lsXrnE8ZHtD07Fb/ILFJys17DUhv6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDaaz8KA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6933C4CEF1;
+	Tue, 16 Dec 2025 12:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888370;
-	bh=3A3n/kdJhZC4C5fDgfcf15u1eO1AijWl/SlV9MyPXIA=;
+	s=korg; t=1765886451;
+	bh=4VnRLhcwrxgfhT1hUNAMjHATcl7PdDLV1TQ4vWArz4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmjXSm+QhIRdDAJr9rO4evcZmnDFe6bjaI74Og52YjAHwRGy1kDQmaYjYIPxuuIcG
-	 zCX4deu4HH5Z3bYrAh3nuUrPMquwypDQAFiVOYoOBmPy6F8IlU8kWKyYISocGxIhAt
-	 ZU74nE7+u3xvQwMI3GsgeTAEgfe6coFcRGkTIN1Q=
+	b=GDaaz8KA4Sui+G9Bjg+KElQf/sOpaTfk8BhdIl8n0ugR55YsfVSxcIEFYMKoQUEtR
+	 iapoS7/PA+sP3TynhNkKa95HdCu2g0mJLFq8uF1j9SI5+SFvKacu0VN5PCY1O5GePs
+	 BLCZ6lFWiiDy7l5aFH5BLFESr0ZIqiebguBUBTOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aiden Lambert <alambert48@gatech.edu>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 514/614] net: dsa: b53: add support for 5389/5397/5398 ARL entry format
+Subject: [PATCH 6.17 440/507] NFS: Avoid changing nlink when file removes and attribute updates race
 Date: Tue, 16 Dec 2025 12:14:41 +0100
-Message-ID: <20251216111419.991434692@linuxfoundation.org>
+Message-ID: <20251216111401.398007516@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,237 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 300f78e8b6b7be17c2c78afeded75be68acb1aa7 ]
+[ Upstream commit bd4928ec799b31c492eb63f9f4a0c1e0bb4bb3f7 ]
 
-BCM5389, BCM5397 and BCM5398 use a different ARL entry format with just
-a 16 bit fwdentry register, as well as different search control and data
-offsets.
+If a file removal races with another operation that updates its
+attributes, then skip the change to nlink, and just mark the attributes
+as being stale.
 
-So add appropriate ops for them and switch those chips to use them.
-
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-8-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Reported-by: Aiden Lambert <alambert48@gatech.edu>
+Fixes: 59a707b0d42e ("NFS: Ensure we revalidate the inode correctly after remove or rename")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 53 ++++++++++++++++++++++++++++++--
- drivers/net/dsa/b53/b53_priv.h   | 26 ++++++++++++++++
- drivers/net/dsa/b53/b53_regs.h   | 13 ++++++++
- 3 files changed, 89 insertions(+), 3 deletions(-)
+ fs/nfs/dir.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 50ed9b7157197..dedbd53412871 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1850,6 +1850,31 @@ static void b53_arl_write_entry_25(struct b53_device *dev,
- 		    mac_vid);
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 82ef36cc9ceec..a2ca8d53d9f59 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1894,13 +1894,15 @@ static int nfs_dentry_delete(const struct dentry *dentry)
  }
  
-+static void b53_arl_read_entry_89(struct b53_device *dev,
-+				  struct b53_arl_entry *ent, u8 idx)
-+{
-+	u64 mac_vid;
-+	u16 fwd_entry;
-+
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		   &mac_vid);
-+	b53_read16(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx), &fwd_entry);
-+	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
-+}
-+
-+static void b53_arl_write_entry_89(struct b53_device *dev,
-+				   const struct b53_arl_entry *ent, u8 idx)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
-+
-+	b53_arl_from_entry_89(&mac_vid, &fwd_entry, ent);
-+	b53_write64(dev, B53_ARLIO_PAGE,
-+		    B53_ARLTBL_MAC_VID_ENTRY(idx), mac_vid);
-+	b53_write16(dev, B53_ARLIO_PAGE,
-+		    B53_ARLTBL_DATA_ENTRY(idx), fwd_entry);
-+}
-+
- static void b53_arl_read_entry_95(struct b53_device *dev,
- 				  struct b53_arl_entry *ent, u8 idx)
+ /* Ensure that we revalidate inode->i_nlink */
+-static void nfs_drop_nlink(struct inode *inode)
++static void nfs_drop_nlink(struct inode *inode, unsigned long gencount)
  {
-@@ -2017,6 +2042,8 @@ static void b53_read_arl_srch_ctl(struct b53_device *dev, u8 *val)
- 
- 	if (is5325(dev) || is5365(dev))
- 		offset = B53_ARL_SRCH_CTL_25;
-+	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
-+		offset = B53_ARL_SRCH_CTL_89;
- 	else
- 		offset = B53_ARL_SRCH_CTL;
- 
-@@ -2029,6 +2056,8 @@ static void b53_write_arl_srch_ctl(struct b53_device *dev, u8 val)
- 
- 	if (is5325(dev) || is5365(dev))
- 		offset = B53_ARL_SRCH_CTL_25;
-+	else if (dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev))
-+		offset = B53_ARL_SRCH_CTL_89;
- 	else
- 		offset = B53_ARL_SRCH_CTL;
- 
-@@ -2074,6 +2103,18 @@ static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
- 	b53_arl_to_entry_25(ent, mac_vid);
++	struct nfs_inode *nfsi = NFS_I(inode);
++
+ 	spin_lock(&inode->i_lock);
+ 	/* drop the inode if we're reasonably sure this is the last link */
+-	if (inode->i_nlink > 0)
++	if (inode->i_nlink > 0 && gencount == nfsi->attr_gencount)
+ 		drop_nlink(inode);
+-	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
++	nfsi->attr_gencount = nfs_inc_attr_generation_counter();
+ 	nfs_set_cache_invalid(
+ 		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
+ 			       NFS_INO_INVALID_NLINK);
+@@ -1914,8 +1916,9 @@ static void nfs_drop_nlink(struct inode *inode)
+ static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
+ {
+ 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
+ 		nfs_complete_unlink(dentry, inode);
+-		nfs_drop_nlink(inode);
++		nfs_drop_nlink(inode, gencount);
+ 	}
+ 	iput(inode);
  }
+@@ -2509,9 +2512,11 @@ static int nfs_safe_remove(struct dentry *dentry)
  
-+static void b53_arl_search_read_89(struct b53_device *dev, u8 idx,
-+				   struct b53_arl_entry *ent)
-+{
-+	u16 fwd_entry;
-+	u64 mac_vid;
+ 	trace_nfs_remove_enter(dir, dentry);
+ 	if (inode != NULL) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
 +
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_MACVID_89,
-+		   &mac_vid);
-+	b53_read16(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSLT_89, &fwd_entry);
-+	b53_arl_to_entry_89(ent, mac_vid, fwd_entry);
-+}
-+
- static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
- 				   struct b53_arl_entry *ent)
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 		if (error == 0)
+-			nfs_drop_nlink(inode);
++			nfs_drop_nlink(inode, gencount);
+ 	} else
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 	if (error == -ENOENT)
+@@ -2711,6 +2716,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
  {
-@@ -2664,6 +2705,12 @@ static const struct b53_arl_ops b53_arl_ops_65 = {
- 	.arl_search_read = b53_arl_search_read_65,
- };
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
++	unsigned long new_gencount = 0;
+ 	struct dentry *dentry = NULL;
+ 	struct rpc_task *task;
+ 	bool must_unblock = false;
+@@ -2763,6 +2769,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 		} else {
+ 			block_revalidate(new_dentry);
+ 			must_unblock = true;
++			new_gencount = NFS_I(new_inode)->attr_gencount;
+ 			spin_unlock(&new_dentry->d_lock);
+ 		}
  
-+static const struct b53_arl_ops b53_arl_ops_89 = {
-+	.arl_read_entry = b53_arl_read_entry_89,
-+	.arl_write_entry = b53_arl_write_entry_89,
-+	.arl_search_read = b53_arl_search_read_89,
-+};
-+
- static const struct b53_arl_ops b53_arl_ops_95 = {
- 	.arl_read_entry = b53_arl_read_entry_95,
- 	.arl_write_entry = b53_arl_write_entry_95,
-@@ -2728,7 +2775,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
--		.arl_ops = &b53_arl_ops_95,
-+		.arl_ops = &b53_arl_ops_89,
- 	},
- 	{
- 		.chip_id = BCM5395_DEVICE_ID,
-@@ -2756,7 +2803,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
--		.arl_ops = &b53_arl_ops_95,
-+		.arl_ops = &b53_arl_ops_89,
- 	},
- 	{
- 		.chip_id = BCM5398_DEVICE_ID,
-@@ -2770,7 +2817,7 @@ static const struct b53_chip_data b53_switch_chips[] = {
- 		.duplex_reg = B53_DUPLEX_STAT_GE,
- 		.jumbo_pm_reg = B53_JUMBO_PORT_MASK,
- 		.jumbo_size_reg = B53_JUMBO_MAX_SIZE,
--		.arl_ops = &b53_arl_ops_95,
-+		.arl_ops = &b53_arl_ops_89,
- 	},
- 	{
- 		.chip_id = BCM53101_DEVICE_ID,
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index c6e2d5e41c758..127ce7f6b16ba 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -353,6 +353,18 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
- 	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
- }
- 
-+static inline void b53_arl_to_entry_89(struct b53_arl_entry *ent,
-+				       u64 mac_vid, u16 fwd_entry)
-+{
-+	memset(ent, 0, sizeof(*ent));
-+	ent->port = fwd_entry & ARLTBL_DATA_PORT_ID_MASK_89;
-+	ent->is_valid = !!(fwd_entry & ARLTBL_VALID_89);
-+	ent->is_age = !!(fwd_entry & ARLTBL_AGE_89);
-+	ent->is_static = !!(fwd_entry & ARLTBL_STATIC_89);
-+	u64_to_ether_addr(mac_vid, ent->mac);
-+	ent->vid = mac_vid >> ARLTBL_VID_S;
-+}
-+
- static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
- 				      const struct b53_arl_entry *ent)
- {
-@@ -383,6 +395,20 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
- 		*mac_vid |= ARLTBL_AGE_25;
- }
- 
-+static inline void b53_arl_from_entry_89(u64 *mac_vid, u32 *fwd_entry,
-+					 const struct b53_arl_entry *ent)
-+{
-+	*mac_vid = ether_addr_to_u64(ent->mac);
-+	*mac_vid |= (u64)(ent->vid & ARLTBL_VID_MASK) << ARLTBL_VID_S;
-+	*fwd_entry = ent->port & ARLTBL_DATA_PORT_ID_MASK_89;
-+	if (ent->is_valid)
-+		*fwd_entry |= ARLTBL_VALID_89;
-+	if (ent->is_static)
-+		*fwd_entry |= ARLTBL_STATIC_89;
-+	if (ent->is_age)
-+		*fwd_entry |= ARLTBL_AGE_89;
-+}
-+
- static inline void b53_arl_read_entry(struct b53_device *dev,
- 				      struct b53_arl_entry *ent, u8 idx)
- {
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 8ce1ce72e9385..d9026cf865549 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -342,12 +342,20 @@
- #define   ARLTBL_STATIC			BIT(15)
- #define   ARLTBL_VALID			BIT(16)
- 
-+/* BCM5389 ARL Table Data Entry N Register format (16 bit) */
-+#define   ARLTBL_DATA_PORT_ID_MASK_89	GENMASK(8, 0)
-+#define   ARLTBL_TC_MASK_89		GENMASK(12, 10)
-+#define   ARLTBL_AGE_89			BIT(13)
-+#define   ARLTBL_STATIC_89		BIT(14)
-+#define   ARLTBL_VALID_89		BIT(15)
-+
- /* Maximum number of bin entries in the ARL for all switches */
- #define B53_ARLTBL_MAX_BIN_ENTRIES	4
- 
- /* ARL Search Control Register (8 bit) */
- #define B53_ARL_SRCH_CTL		0x50
- #define B53_ARL_SRCH_CTL_25		0x20
-+#define B53_ARL_SRCH_CTL_89		0x30
- #define   ARL_SRCH_VLID			BIT(0)
- #define   ARL_SRCH_STDN			BIT(7)
- 
-@@ -355,10 +363,12 @@
- #define B53_ARL_SRCH_ADDR		0x51
- #define B53_ARL_SRCH_ADDR_25		0x22
- #define B53_ARL_SRCH_ADDR_65		0x24
-+#define B53_ARL_SRCH_ADDR_89		0x31
- #define  ARL_ADDR_MASK			GENMASK(14, 0)
- 
- /* ARL Search MAC/VID Result (64 bit) */
- #define B53_ARL_SRCH_RSTL_0_MACVID	0x60
-+#define B53_ARL_SRCH_RSLT_MACVID_89	0x33
- 
- /* Single register search result on 5325 */
- #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
-@@ -368,6 +378,9 @@
- /* ARL Search Data Result (32 bit) */
- #define B53_ARL_SRCH_RSTL_0		0x68
- 
-+/* BCM5389 ARL Search Data Result (16 bit) */
-+#define B53_ARL_SRCH_RSLT_89		0x3b
-+
- #define B53_ARL_SRCH_RSTL_MACVID(x)	(B53_ARL_SRCH_RSTL_0_MACVID + ((x) * 0x10))
- #define B53_ARL_SRCH_RSTL(x)		(B53_ARL_SRCH_RSTL_0 + ((x) * 0x10))
- 
+@@ -2802,7 +2809,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 			new_dir, new_dentry, error);
+ 	if (!error) {
+ 		if (new_inode != NULL)
+-			nfs_drop_nlink(new_inode);
++			nfs_drop_nlink(new_inode, new_gencount);
+ 		/*
+ 		 * The d_move() should be here instead of in an async RPC completion
+ 		 * handler because we need the proper locks to move the dentry.  If
 -- 
 2.51.0
 
