@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AD9CC25A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37B6CC3C2C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32F81311228F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF4DA3057391
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CF342CB1;
-	Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27393A1CF2;
+	Tue, 16 Dec 2025 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElOouqUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYVmdXVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D5C342C8E;
-	Tue, 16 Dec 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE43A3A1CED;
+	Tue, 16 Dec 2025 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884845; cv=none; b=R7B9HvlEFQ5yeoIQyn07sTZ8o9avUardyuID7LjfLxC2ogic9dTjJHA+mcWYCZ9YTq4jHhObBDUKFMp/Rv4zr6uaGo9JIoyudfAiEjFos53+WIUFxNqnyZ0uq9CgQ019OfI+DIOobZHn/oveIaUoteCPZZn0k+VNZf1D/Y1USJk=
+	t=1765888272; cv=none; b=K5gYTT4yqqOdmW4r96VLWqoONTBa/NJgoGfIUmX0Ut+dRuWc8DwqVpSTQea4CGdoMSz3AKxgEQJxHLO4kHmwMaWJrws2ipcmY6q55ji4BLh5e4hbVvXlr3qHrRj9s13Q5l76mMk8p0mN13Il6NWFvs8XAmIpQv5nBkD/OwkHqDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884845; c=relaxed/simple;
-	bh=05Z5NdcpsOgarlo/3/v7DA6Nd2C0gOEH7uPw/kyHLUs=;
+	s=arc-20240116; t=1765888272; c=relaxed/simple;
+	bh=ztlWkT668GpNT2LkMuU0NsxuxMYbilzn5mKko7PL4aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mS2qJFFsCCIuCQVowOR+gNPpGQZ5jqsrTWpPc6XhdcfSQaIeHcYFi8p/Gbj+IhjYEpRXctaaMtUIWzyVj7WadfVNTfokapqTMBVyDJ7khaFUIAureWOON05GHUDwfcRJQw4OfnKojTh8nffNBHYmD04X69PQ7CeR13jsqKUQnos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElOouqUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C938AC4CEF1;
-	Tue, 16 Dec 2025 11:34:04 +0000 (UTC)
+	 MIME-Version; b=V+yGFWLrWlfo9KkXpaWdabPfrYuSihcFR62b5zfZ0yKuQ/vEvB7CyhRHYCR0MhNQZ5ttTJ4cHe8Px+wbl9Z1ACNFI3ZzLbcHmT8G3mpMEj4g7H4EzRf9vtb4PsOZBEEDCTSmTuhHnFGH4oJ1rXr1R+mor3u8XRmALuOtay+Q81Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYVmdXVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226E0C4CEF1;
+	Tue, 16 Dec 2025 12:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884845;
-	bh=05Z5NdcpsOgarlo/3/v7DA6Nd2C0gOEH7uPw/kyHLUs=;
+	s=korg; t=1765888272;
+	bh=ztlWkT668GpNT2LkMuU0NsxuxMYbilzn5mKko7PL4aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElOouqUlQfHzqoqN4/EjgPY+E0iTwuvivYxHU1wf2Wr91qxZ2sDFejxxyLC5zpmKI
-	 KsfcmY93naU/bLxZNNQrAfIRHvQQnKqlf2hshdvvtxdrLXM3yiHKo8H6ajf2KJ23lT
-	 mm3Evd/fOqyFEHI3MkBOON8LrVv7hVa4dTySNPrQ=
+	b=ZYVmdXVcjR29iVJG1C76gyIWaKA5pjbf3opqfgputJ/o3X5RBoUnPsVqfVd7ywjsC
+	 OPXgTLleVueXcWgJITpKtegIiIsyrpmRlXWs1JhFOuKIlQNDXgNuTpNOP50pbqZJIN
+	 Md7oovlIdOXZN0AwjBU2D5hMBL8P/dZ3tapmT7LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	George McCollister <george.mccollister@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/354] net: dsa: xrs700x: reject unsupported HSR configurations
+Subject: [PATCH 6.18 483/614] netfilter: nft_connlimit: update the count if add was skipped
 Date: Tue, 16 Dec 2025 12:14:10 +0100
-Message-ID: <20251216111331.166738557@linuxfoundation.org>
+Message-ID: <20251216111418.870510041@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 30296ac7642652428396222e720718f2661e9425 ]
+[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
 
-As discussed here:
-https://lore.kernel.org/netdev/20240620090210.drop6jwh7e5qw556@skbuf/
+Connlimit expression can be used for all kind of packets and not only
+for packets with connection state new. See this ruleset as example:
 
-the fact is that the xrs700x.c driver only supports offloading
-HSR_PT_SLAVE_A and HSR_PT_SLAVE_B (which were the only port types at the
-time the offload was written, _for this driver_).
+table ip filter {
+        chain input {
+                type filter hook input priority filter; policy accept;
+                tcp dport 22 ct count over 4 counter
+        }
+}
 
-Up until now, the API did not explicitly tell offloading drivers what
-port has what role. So xrs700x can get confused and think that it can
-support a configuration which it actually can't. There was a table in
-the attached link which gave an example:
+Currently, if the connection count goes over the limit the counter will
+count the packets. When a connection is closed, the connection count
+won't decrement as it should because it is only updated for new
+connections due to an optimization on __nf_conncount_add() that prevents
+updating the list if the connection is duplicated.
 
-$ ip link add name hsr0 type hsr slave1 swp0 slave2 swp1 \
-	interlink swp2 supervision 45 version 1
+To solve this problem, check whether the connection was skipped and if
+so, update the list. Adjust count_tree() too so the same fix is applied
+for xt_connlimit.
 
-        HSR_PT_SLAVE_A    HSR_PT_SLAVE_B      HSR_PT_INTERLINK
- ----------------------------------------------------------------
- user
- space        0                 1                   2
- requests
- ----------------------------------------------------------------
- XRS700X
- driver       1                 2                   -
- understands
-
-The switch would act as if the ring ports were swp1 and swp2.
-
-Now that we have explicit hsr_get_port_type() API, let's use that to
-work around the unintended semantical changes of the offloading API
-brought by the introduction of interlink ports in HSR.
-
-Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
-Cc: Lukasz Majewski <lukma@denx.de>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: George McCollister <george.mccollister@gmail.com>
-Link: https://patch.msgid.link/20251130131657.65080-5-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
+Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/xrs700x/xrs700x.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/netfilter/nf_conncount.c  | 12 ++++++++----
+ net/netfilter/nft_connlimit.c | 13 +++++++++++--
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/xrs700x/xrs700x.c b/drivers/net/dsa/xrs700x/xrs700x.c
-index de3b768f2ff9c..7e9a2ba6bfd95 100644
---- a/drivers/net/dsa/xrs700x/xrs700x.c
-+++ b/drivers/net/dsa/xrs700x/xrs700x.c
-@@ -568,6 +568,7 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 	struct xrs700x *priv = ds->priv;
- 	struct net_device *user;
- 	int ret, i, hsr_pair[2];
-+	enum hsr_port_type type;
- 	enum hsr_version ver;
- 	bool fwd = false;
- 
-@@ -591,6 +592,16 @@ static int xrs700x_hsr_join(struct dsa_switch *ds, int port,
- 		return -EOPNOTSUPP;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 0ffc5ff78a714..b84cfb5616df4 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
+ 	if (ct && nf_ct_is_confirmed(ct)) {
+ 		if (refcounted)
+ 			nf_ct_put(ct);
+-		return 0;
++		return -EEXIST;
  	}
  
-+	ret = hsr_get_port_type(hsr, dsa_to_port(ds, port)->user, &type);
-+	if (ret)
-+		return ret;
-+
-+	if (type != HSR_PT_SLAVE_A && type != HSR_PT_SLAVE_B) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Only HSR slave ports can be offloaded");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	dsa_hsr_foreach_port(dp, ds, hsr) {
- 		if (dp->index != port) {
- 			partner = dp;
+ 	if ((u32)jiffies == list->last_gc)
+@@ -398,7 +398,7 @@ insert_tree(struct net *net,
+ 			int ret;
+ 
+ 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
+-			if (ret)
++			if (ret && ret != -EEXIST)
+ 				count = 0; /* hotdrop */
+ 			else
+ 				count = rbconn->list.count;
+@@ -501,10 +501,14 @@ count_tree(struct net *net,
+ 			/* same source network -> be counted! */
+ 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
+ 			spin_unlock_bh(&rbconn->list.list_lock);
+-			if (ret)
++			if (ret && ret != -EEXIST) {
+ 				return 0; /* hotdrop */
+-			else
++			} else {
++				/* -EEXIST means add was skipped, update the list */
++				if (ret == -EEXIST)
++					nf_conncount_gc_list(net, &rbconn->list);
+ 				return rbconn->list.count;
++			}
+ 		}
+ 	}
+ 
+diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
+index 5df7134131d29..d4964087bbc5e 100644
+--- a/net/netfilter/nft_connlimit.c
++++ b/net/netfilter/nft_connlimit.c
+@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
+ 
+ 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
+ 	if (err) {
+-		regs->verdict.code = NF_DROP;
+-		return;
++		if (err == -EEXIST) {
++			/* Call gc to update the list count if any connection has
++			 * been closed already. This is useful for softlimit
++			 * connections like limiting bandwidth based on a number
++			 * of open connections.
++			 */
++			nf_conncount_gc_list(nft_net(pkt), priv->list);
++		} else {
++			regs->verdict.code = NF_DROP;
++			return;
++		}
+ 	}
+ 
+ 	count = READ_ONCE(priv->list->count);
 -- 
 2.51.0
 
