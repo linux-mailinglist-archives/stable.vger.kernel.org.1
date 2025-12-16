@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37B6CC3C2C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:54:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74672CC29D8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF4DA3057391
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34338302ED98
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27393A1CF2;
-	Tue, 16 Dec 2025 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FD9347FEA;
+	Tue, 16 Dec 2025 11:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYVmdXVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc8P/RfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE43A3A1CED;
-	Tue, 16 Dec 2025 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FE534844C;
+	Tue, 16 Dec 2025 11:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888272; cv=none; b=K5gYTT4yqqOdmW4r96VLWqoONTBa/NJgoGfIUmX0Ut+dRuWc8DwqVpSTQea4CGdoMSz3AKxgEQJxHLO4kHmwMaWJrws2ipcmY6q55ji4BLh5e4hbVvXlr3qHrRj9s13Q5l76mMk8p0mN13Il6NWFvs8XAmIpQv5nBkD/OwkHqDc=
+	t=1765886345; cv=none; b=tJvbQJ6roa7Eq/eqEjCGl4stW8ImYvM/IyLBiOXFca9I3M8yJb4Wy/soI1ugkMQ1ha6OqWUw+CvZ4UeIU8WCUjxQ3G1wdpGyZqZAOQFT3SEinHCAH2zRf5hYg6Z+zHZG0P25Ne+JYs+FfCLpWZJ6w6nTNVa3UWS6arhjRA01kpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888272; c=relaxed/simple;
-	bh=ztlWkT668GpNT2LkMuU0NsxuxMYbilzn5mKko7PL4aI=;
+	s=arc-20240116; t=1765886345; c=relaxed/simple;
+	bh=jUAiEzkrjiD3BNAm4S5toS2wLLstAQl8nnBq7iFP+DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+yGFWLrWlfo9KkXpaWdabPfrYuSihcFR62b5zfZ0yKuQ/vEvB7CyhRHYCR0MhNQZ5ttTJ4cHe8Px+wbl9Z1ACNFI3ZzLbcHmT8G3mpMEj4g7H4EzRf9vtb4PsOZBEEDCTSmTuhHnFGH4oJ1rXr1R+mor3u8XRmALuOtay+Q81Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYVmdXVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226E0C4CEF1;
-	Tue, 16 Dec 2025 12:31:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WvdWJTLK8buf0mNnJuO/dMOOcIiTuJ2h0ROuCKrdSW7Ka1ec47YT3V2QEhl44M/wp9GghzGdLOVheDh70QP3TY/EAUpM265BzNEbIrMNuJRoArsh2xAYzbM38sL+XUqwcZV3cNUDi2FEEKi71cEHxUd6WhFIsVVdZIKVw+xLLa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc8P/RfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F648C4CEF5;
+	Tue, 16 Dec 2025 11:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888272;
-	bh=ztlWkT668GpNT2LkMuU0NsxuxMYbilzn5mKko7PL4aI=;
+	s=korg; t=1765886344;
+	bh=jUAiEzkrjiD3BNAm4S5toS2wLLstAQl8nnBq7iFP+DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYVmdXVcjR29iVJG1C76gyIWaKA5pjbf3opqfgputJ/o3X5RBoUnPsVqfVd7ywjsC
-	 OPXgTLleVueXcWgJITpKtegIiIsyrpmRlXWs1JhFOuKIlQNDXgNuTpNOP50pbqZJIN
-	 Md7oovlIdOXZN0AwjBU2D5hMBL8P/dZ3tapmT7LY=
+	b=bc8P/RfOeqUhRxyLHaRE1Lm71hkrykntUpuFk38tRLhHCAOVLt2z35Yf4mr8BcgsO
+	 6Fu6sGSqraVUw1lHJyR5J93XPeLBAZy4t16OV6p/W0fdknjVmZXQNsAWJOHRLEKKH6
+	 XdwB0mguv8vkD3sKZGRJviP8dT/U4JjmZ6BuZwCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 483/614] netfilter: nft_connlimit: update the count if add was skipped
+Subject: [PATCH 6.17 409/507] net: dsa: b53: fix VLAN_ID_IDX write size for BCM5325/65
 Date: Tue, 16 Dec 2025 12:14:10 +0100
-Message-ID: <20251216111418.870510041@linuxfoundation.org>
+Message-ID: <20251216111400.281046213@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,109 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
+[ Upstream commit 6f268e275c74dae0536e0b61982a8db25bcf4f16 ]
 
-Connlimit expression can be used for all kind of packets and not only
-for packets with connection state new. See this ruleset as example:
+Since BCM5325 and BCM5365 only support up to 256 VLANs, the VLAN_ID_IDX
+register is only 8 bit wide, not 16 bit, so use an appropriate accessor.
 
-table ip filter {
-        chain input {
-                type filter hook input priority filter; policy accept;
-                tcp dport 22 ct count over 4 counter
-        }
-}
-
-Currently, if the connection count goes over the limit the counter will
-count the packets. When a connection is closed, the connection count
-won't decrement as it should because it is only updated for new
-connections due to an optimization on __nf_conncount_add() that prevents
-updating the list if the connection is duplicated.
-
-To solve this problem, check whether the connection was skipped and if
-so, update the list. Adjust count_tree() too so the same fix is applied
-for xt_connlimit.
-
-Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
-Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20251128080625.27181-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c  | 12 ++++++++----
- net/netfilter/nft_connlimit.c | 13 +++++++++++--
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 0ffc5ff78a714..b84cfb5616df4 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
- 	if (ct && nf_ct_is_confirmed(ct)) {
- 		if (refcounted)
- 			nf_ct_put(ct);
--		return 0;
-+		return -EEXIST;
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index eb767edc4c135..a09ed32dccc07 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1924,8 +1924,12 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
  
- 	if ((u32)jiffies == list->last_gc)
-@@ -398,7 +398,7 @@ insert_tree(struct net *net,
- 			int ret;
+ 	/* Perform a read for the given MAC and VID */
+ 	b53_write48(dev, B53_ARLIO_PAGE, B53_MAC_ADDR_IDX, mac);
+-	if (!is5325m(dev))
+-		b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++	if (!is5325m(dev)) {
++		if (is5325(dev) || is5365(dev))
++			b53_write8(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++		else
++			b53_write16(dev, B53_ARLIO_PAGE, B53_VLAN_ID_IDX, vid);
++	}
  
- 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
--			if (ret)
-+			if (ret && ret != -EEXIST)
- 				count = 0; /* hotdrop */
- 			else
- 				count = rbconn->list.count;
-@@ -501,10 +501,14 @@ count_tree(struct net *net,
- 			/* same source network -> be counted! */
- 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
- 			spin_unlock_bh(&rbconn->list.list_lock);
--			if (ret)
-+			if (ret && ret != -EEXIST) {
- 				return 0; /* hotdrop */
--			else
-+			} else {
-+				/* -EEXIST means add was skipped, update the list */
-+				if (ret == -EEXIST)
-+					nf_conncount_gc_list(net, &rbconn->list);
- 				return rbconn->list.count;
-+			}
- 		}
- 	}
- 
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index 5df7134131d29..d4964087bbc5e 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 
- 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
- 	if (err) {
--		regs->verdict.code = NF_DROP;
--		return;
-+		if (err == -EEXIST) {
-+			/* Call gc to update the list count if any connection has
-+			 * been closed already. This is useful for softlimit
-+			 * connections like limiting bandwidth based on a number
-+			 * of open connections.
-+			 */
-+			nf_conncount_gc_list(nft_net(pkt), priv->list);
-+		} else {
-+			regs->verdict.code = NF_DROP;
-+			return;
-+		}
- 	}
- 
- 	count = READ_ONCE(priv->list->count);
+ 	/* Issue a read operation for this MAC */
+ 	ret = b53_arl_rw_op(dev, 1);
 -- 
 2.51.0
 
