@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF7ACC2370
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A435ECC2D7C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DD0F301DE2B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFF793073FEF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD23E340A47;
-	Tue, 16 Dec 2025 11:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCE424E4C6;
+	Tue, 16 Dec 2025 12:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvMS5Wno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEuYl2lr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A713233EE;
-	Tue, 16 Dec 2025 11:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCE036CE03;
+	Tue, 16 Dec 2025 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884024; cv=none; b=h+bT01h850rZZmnfW0NDuQ40JwpJYmb+ibqBBHA8yH3Yp5U8iTkges8IYXRx20J4I3DYGYoFZ06ZhukTVgzsvWZw1fqLnJUM3QKeQGo7sOaS7z2C1vcjrvWM9t2sR2D54kH1Fg/h289hrS/V3UyfjJ+Wguutrq+jgW8MR1Gxke0=
+	t=1765887465; cv=none; b=m0rPVbwlwhPiD7mOmG1aUK9Q/06L8rK4cKsOdIKiZS7WSt1Ew7Na6AZeUq57XAM9/PsJE4f8YQCYTZIuzufluuae7evqR16aPUO5Bg4qwWC6dNR/RWP3HsQbyXMZ5zMaY1ZSuwbw/gWIt/qRx354iNySn0GSWaCoR4bCDl1dtp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884024; c=relaxed/simple;
-	bh=nrOBy62UfLKyao3ZbtZnJWYDlb8C5bHSDekGN6Dy/nc=;
+	s=arc-20240116; t=1765887465; c=relaxed/simple;
+	bh=6p0a1W9JORVob8v5k4A/0IImOTsK45I3NLOdgVVBPis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iR2OIYe0KtsEzAMCI5W/L17T4AKrefa6M1RIhgdAX5ZpGt3JXuZw7VVEKl/BV63O0MhIYZTy73bcNYlvZVm2wl5yW1ec0EgYL6+JFLnuzUTPmOLRDou6/Vn3oyPwWVuE6sSMwPXxULcub5wtpHTCOOvfSVrgJvVhBvv/+V9VgMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvMS5Wno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF238C19424;
-	Tue, 16 Dec 2025 11:20:23 +0000 (UTC)
+	 MIME-Version; b=E4Kw1/+iAPcLgZ9adRqYKhVvZ6dqmOOQywxQZVv1DrGEnMcRiFFuAnTjtMomtDr9Yx1GiX+byzQGY+qdnU/z2Vr/77BgBSmgjrrNjKFQwshMuzzXIfaCmOt1ZsYcpvuHWfLfUl7U7pJvHxoPJxj+PLYYhwfNvZefz9ndWXkYdiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEuYl2lr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D3FC4CEF1;
+	Tue, 16 Dec 2025 12:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884024;
-	bh=nrOBy62UfLKyao3ZbtZnJWYDlb8C5bHSDekGN6Dy/nc=;
+	s=korg; t=1765887464;
+	bh=6p0a1W9JORVob8v5k4A/0IImOTsK45I3NLOdgVVBPis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvMS5Wno2fPQIlyiG0WnaLDw1AY+VsVpf+6YqpslZCAuqno1lz5vpHLVxseVPCfIJ
-	 ywM0+FJ3za4BAiefIvHkLMMjFSu4LFI3UYHolRApv5S4vdXlwSUSEDpU7HPG/IR3ms
-	 V5Kl+ZTOEE0pgoYGTp4daEqPp8HF1pO+pucCcACE=
+	b=QEuYl2lrFAXksTZWioB6FHDAYjSjdUdKpyAXV91ePXKrwPzFlWfJO4ieWuszEKE6w
+	 ryw/PRT2GP+JSQgJsXW3xYCKYPXeeexofR/gu93eHCMk+TuO/pfmApY4H8UWqUxXUH
+	 J5Xot65JOFtXIzLrYrhcGdzP/t8YBW4XXkC65jzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Carl Worth <carl@os.amperecomputing.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Jie Gan <jie.gan@oss.qualcomm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/354] crypto: authenc - Correctly pass EINPROGRESS back up to the caller
+Subject: [PATCH 6.18 237/614] coresight: tmc: add the handle of the event to the path
 Date: Tue, 16 Dec 2025 12:10:04 +0100
-Message-ID: <20251216111322.259409481@linuxfoundation.org>
+Message-ID: <20251216111409.954975230@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,204 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Carl Worth <carl@os.amperecomputing.com>
 
-[ Upstream commit 96feb73def02d175850daa0e7c2c90c876681b5c ]
+[ Upstream commit aaa5abcc9d44d2c8484f779ab46d242d774cabcb ]
 
-When authenc is invoked with MAY_BACKLOG, it needs to pass EINPROGRESS
-notifications back up to the caller when the underlying algorithm
-returns EBUSY synchronously.
+The handle is essential for retrieving the AUX_EVENT of each CPU and is
+required in perf mode. It has been added to the coresight_path so that
+dependent devices can access it from the path when needed.
 
-However, if the EBUSY comes from the second part of an authenc call,
-i.e., it is asynchronous, both the EBUSY and the subsequent EINPROGRESS
-notification must not be passed to the caller.
+The existing bug can be reproduced with:
+perf record -e cs_etm//k -C 0-9 dd if=/dev/zero of=/dev/null
 
-Implement this by passing a mask to the function that starts the
-second half of authenc and using it to determine whether EBUSY
-and EINPROGRESS should be passed to the caller.
+Showing an oops as follows:
+Unable to handle kernel paging request at virtual address 000f6e84934ed19e
 
-This was a deficiency in the original implementation of authenc
-because it was not expected to be used with MAY_BACKLOG.
+Call trace:
+ tmc_etr_get_buffer+0x30/0x80 [coresight_tmc] (P)
+ catu_enable_hw+0xbc/0x3d0 [coresight_catu]
+ catu_enable+0x70/0xe0 [coresight_catu]
+ coresight_enable_path+0xb0/0x258 [coresight]
 
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 180ce7e81030 ("crypto: authenc - Add EINPROGRESS check")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 080ee83cc361 ("Coresight: Change functions to accept the coresight_path")
+Signed-off-by: Carl Worth <carl@os.amperecomputing.com>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Co-developed-by: Jie Gan <jie.gan@oss.qualcomm.com>
+Signed-off-by: Jie Gan <jie.gan@oss.qualcomm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250925-fix_helper_data-v2-1-edd8a07c1646@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authenc.c | 75 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 50 insertions(+), 25 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm-perf.c |  1 +
+ drivers/hwtracing/coresight/coresight-tmc-etr.c  |  3 ++-
+ include/linux/coresight.h                        | 10 ++++++----
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/authenc.c b/crypto/authenc.c
-index 3aaf3ab4e360f..d04068af9833e 100644
---- a/crypto/authenc.c
-+++ b/crypto/authenc.c
-@@ -39,7 +39,7 @@ struct authenc_request_ctx {
+diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
+index f677c08233ba1..5c256af6e54af 100644
+--- a/drivers/hwtracing/coresight/coresight-etm-perf.c
++++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
+@@ -520,6 +520,7 @@ static void etm_event_start(struct perf_event *event, int flags)
+ 		goto out;
  
- static void authenc_request_complete(struct aead_request *req, int err)
+ 	path = etm_event_cpu_path(event_data, cpu);
++	path->handle = handle;
+ 	/* We need a sink, no need to continue without one */
+ 	sink = coresight_get_sink(path);
+ 	if (WARN_ON_ONCE(!sink))
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+index 800be06598c1b..60b0e0a6da057 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -1334,7 +1334,8 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
+ struct etr_buf *tmc_etr_get_buffer(struct coresight_device *csdev,
+ 				   enum cs_mode mode, void *data)
  {
--	if (err != -EINPROGRESS)
-+	if (err != -EINPROGRESS && err != -EBUSY)
- 		aead_request_complete(req, err);
- }
+-	struct perf_output_handle *handle = data;
++	struct coresight_path *path = data;
++	struct perf_output_handle *handle = path->handle;
+ 	struct etr_perf_buffer *etr_perf;
  
-@@ -109,27 +109,42 @@ static int crypto_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 	return err;
- }
+ 	switch (mode) {
+diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+index 6de59ce8ef8ca..2626105e37191 100644
+--- a/include/linux/coresight.h
++++ b/include/linux/coresight.h
+@@ -332,12 +332,14 @@ static struct coresight_dev_list (var) = {				\
  
--static void authenc_geniv_ahash_done(void *data, int err)
-+static void authenc_geniv_ahash_finish(struct aead_request *req)
- {
--	struct aead_request *req = data;
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
- 	struct authenc_instance_ctx *ictx = aead_instance_ctx(inst);
- 	struct authenc_request_ctx *areq_ctx = aead_request_ctx(req);
- 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
+ /**
+  * struct coresight_path - data needed by enable/disable path
+- * @path_list:              path from source to sink.
+- * @trace_id:          trace_id of the whole path.
++ * @path_list:		path from source to sink.
++ * @trace_id:		trace_id of the whole path.
++ * @handle:		handle of the aux_event.
+  */
+ struct coresight_path {
+-	struct list_head	path_list;
+-	u8			trace_id;
++	struct list_head		path_list;
++	u8				trace_id;
++	struct perf_output_handle	*handle;
+ };
  
--	if (err)
--		goto out;
--
- 	scatterwalk_map_and_copy(ahreq->result, req->dst,
- 				 req->assoclen + req->cryptlen,
- 				 crypto_aead_authsize(authenc), 1);
-+}
- 
--out:
-+static void authenc_geniv_ahash_done(void *data, int err)
-+{
-+	struct aead_request *req = data;
-+
-+	if (!err)
-+		authenc_geniv_ahash_finish(req);
- 	aead_request_complete(req, err);
- }
- 
--static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
-+/*
-+ * Used when the ahash request was invoked in the async callback context
-+ * of the previous skcipher request.  Eat any EINPROGRESS notifications.
-+ */
-+static void authenc_geniv_ahash_done2(void *data, int err)
-+{
-+	struct aead_request *req = data;
-+
-+	if (!err)
-+		authenc_geniv_ahash_finish(req);
-+	authenc_request_complete(req, err);
-+}
-+
-+static int crypto_authenc_genicv(struct aead_request *req, unsigned int mask)
- {
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
-@@ -138,6 +153,7 @@ static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
- 	struct crypto_ahash *auth = ctx->auth;
- 	struct authenc_request_ctx *areq_ctx = aead_request_ctx(req);
- 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
-+	unsigned int flags = aead_request_flags(req) & ~mask;
- 	u8 *hash = areq_ctx->tail;
- 	int err;
- 
-@@ -145,7 +161,8 @@ static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
- 	ahash_request_set_crypt(ahreq, req->dst, hash,
- 				req->assoclen + req->cryptlen);
- 	ahash_request_set_callback(ahreq, flags,
--				   authenc_geniv_ahash_done, req);
-+				   mask ? authenc_geniv_ahash_done2 :
-+					  authenc_geniv_ahash_done, req);
- 
- 	err = crypto_ahash_digest(ahreq);
- 	if (err)
-@@ -161,12 +178,11 @@ static void crypto_authenc_encrypt_done(void *data, int err)
- {
- 	struct aead_request *areq = data;
- 
--	if (err)
--		goto out;
--
--	err = crypto_authenc_genicv(areq, 0);
--
--out:
-+	if (err) {
-+		aead_request_complete(areq, err);
-+		return;
-+	}
-+	err = crypto_authenc_genicv(areq, CRYPTO_TFM_REQ_MAY_SLEEP);
- 	authenc_request_complete(areq, err);
- }
- 
-@@ -219,11 +235,18 @@ static int crypto_authenc_encrypt(struct aead_request *req)
- 	if (err)
- 		return err;
- 
--	return crypto_authenc_genicv(req, aead_request_flags(req));
-+	return crypto_authenc_genicv(req, 0);
-+}
-+
-+static void authenc_decrypt_tail_done(void *data, int err)
-+{
-+	struct aead_request *req = data;
-+
-+	authenc_request_complete(req, err);
- }
- 
- static int crypto_authenc_decrypt_tail(struct aead_request *req,
--				       unsigned int flags)
-+				       unsigned int mask)
- {
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
-@@ -234,6 +257,7 @@ static int crypto_authenc_decrypt_tail(struct aead_request *req,
- 	struct skcipher_request *skreq = (void *)(areq_ctx->tail +
- 						  ictx->reqoff);
- 	unsigned int authsize = crypto_aead_authsize(authenc);
-+	unsigned int flags = aead_request_flags(req) & ~mask;
- 	u8 *ihash = ahreq->result + authsize;
- 	struct scatterlist *src, *dst;
- 
-@@ -250,7 +274,9 @@ static int crypto_authenc_decrypt_tail(struct aead_request *req,
- 
- 	skcipher_request_set_tfm(skreq, ctx->enc);
- 	skcipher_request_set_callback(skreq, flags,
--				      req->base.complete, req->base.data);
-+				      mask ? authenc_decrypt_tail_done :
-+					     req->base.complete,
-+				      mask ? req : req->base.data);
- 	skcipher_request_set_crypt(skreq, src, dst,
- 				   req->cryptlen - authsize, req->iv);
- 
-@@ -261,12 +287,11 @@ static void authenc_verify_ahash_done(void *data, int err)
- {
- 	struct aead_request *req = data;
- 
--	if (err)
--		goto out;
--
--	err = crypto_authenc_decrypt_tail(req, 0);
--
--out:
-+	if (err) {
-+		aead_request_complete(req, err);
-+		return;
-+	}
-+	err = crypto_authenc_decrypt_tail(req, CRYPTO_TFM_REQ_MAY_SLEEP);
- 	authenc_request_complete(req, err);
- }
- 
-@@ -293,7 +318,7 @@ static int crypto_authenc_decrypt(struct aead_request *req)
- 	if (err)
- 		return err;
- 
--	return crypto_authenc_decrypt_tail(req, aead_request_flags(req));
-+	return crypto_authenc_decrypt_tail(req, 0);
- }
- 
- static int crypto_authenc_init_tfm(struct crypto_aead *tfm)
+ enum cs_mode {
 -- 
 2.51.0
 
