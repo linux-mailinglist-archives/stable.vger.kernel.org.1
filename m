@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-202315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394D4CC2E03
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:45:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787B0CC3857
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:22:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5624F31774B0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D33CA3093F87
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62962313E0F;
-	Tue, 16 Dec 2025 12:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3757834FF50;
+	Tue, 16 Dec 2025 11:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTXxvS+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQTlEnCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB2C749C;
-	Tue, 16 Dec 2025 12:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAE34FF4B;
+	Tue, 16 Dec 2025 11:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887504; cv=none; b=emoCjGNjeAn8yaDNtyAV3kN2SQpkEGZ1wB/XItvCRhpai4QF3xt8/O6jFI1AjsisK9TcA1Hw8WEZmx/SYA0c/DOAEjd82hDyvZMZJJsWYGNBLJpFg7+Vktw8HMYhyvbK1Nx5o2zBr9ItPpE38KOACHuj+QFDtHQcHKCsr8ynlEo=
+	t=1765885675; cv=none; b=d8mjFfHikbRjOXnQudiQT/v/i/4MZh9XqDM4tNLanvqqaPeAUmZ10+rVvew/+fDBQ4m/3L4K/fUR6UKrCZV/8m8Toi3Vf76yLKUcp81fr4oohjIHsYNg/3J/HUUtnlon3YbzCu/9gYKouX6YWOWgiSP8mXfoBlFKAbuh0wWFQcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887504; c=relaxed/simple;
-	bh=izu7TkPY/RjXCT0lBtjrWi0jMH3TfWfTRdmiwXP2qic=;
+	s=arc-20240116; t=1765885675; c=relaxed/simple;
+	bh=3T1jpHFvlSeXTRILvT7QTLcD7fTpRysRqhYIjUixr6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hikh3ZT7p8rAR+3P7xYkwVfpAlj1bH08GmuD+r7nsZXIVWRiq2L9Jee+ZfK+IwuyF1lkEtar+ZHwie5QYsyjDHL4yk7vEcgLq9hXBXLGzYVqIOjKJkm7+liDLuXO8bXbLs9IhyfY/yXktm1jkizwyZKUN1vmMrnrqglIUF/nqQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTXxvS+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971AFC4CEF1;
-	Tue, 16 Dec 2025 12:18:23 +0000 (UTC)
+	 MIME-Version; b=ehylsM005/iDcZocaSS1H1mg9d3uv8FEeWa0/mcVWEZGC+eSVcvokL3lnYdCV4FXOy8Le+HpcKlAhIGViwie6HXgP2nwyLXhBqAaMUVlqwl1yWtAGZAZfF21t8Wkvrj1w0yOay3WA43sVwZXY4erT7by//tR6xbM2xrOjG4OPa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQTlEnCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58091C4CEF1;
+	Tue, 16 Dec 2025 11:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887504;
-	bh=izu7TkPY/RjXCT0lBtjrWi0jMH3TfWfTRdmiwXP2qic=;
+	s=korg; t=1765885674;
+	bh=3T1jpHFvlSeXTRILvT7QTLcD7fTpRysRqhYIjUixr6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTXxvS+KpAys/k/yNqAqfGSnSCjIm2vGSOkJSmbcW2HKon+YX5GVrf+0cq11/Oj9u
-	 zEe6YsVmw54Chuz7aOTfM627Wwa3RfbD6EmEbbJuk1eyO6v6qQzS9Vw0TuwSHH7nQz
-	 VSneqdFYSAU7bILFMd/zlsYcWTEyptp2UwUf5QCo=
+	b=SQTlEnCc/SVF5WM/XEqeMH9fwXF1W0lgYEYxauQP7xH17+DxFlKffEAr0pDaX5UEM
+	 eTcn/n7HSFVWPz7Cq96kU1uOSHkqmcXNvBEK3y1PV4WqO5V1hYwCM51Q/J9ZqDqClV
+	 iVU0cqNNhZA1XfTo2vzAEmjnA/qm+I9cmDCHqnGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
-	syzbot+0399100e525dd9696764@syzkaller.appspotmail.com,
-	Khalid Aziz <khalid@kernel.org>,
-	Bartlomiej Kubik <kubik.bartlomiej@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 251/614] fs/ntfs3: Initialize allocated memory before use
+Subject: [PATCH 6.17 177/507] x86/boot: Fix page table access in 5-level to 4-level paging transition
 Date: Tue, 16 Dec 2025 12:10:18 +0100
-Message-ID: <20251216111410.469424356@linuxfoundation.org>
+Message-ID: <20251216111351.928911587@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
+[ Upstream commit eb2266312507d7b757859e2227aa5c4ba6280ebe ]
 
-KMSAN reports: Multiple uninitialized values detected:
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-- KMSAN: uninit-value in ntfs_read_hdr (3)
-- KMSAN: uninit-value in bcmp (3)
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags. Bits above the
+  physical address width of the system i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
 
-Memory is allocated by __getname(), which is a wrapper for
-kmem_cache_alloc(). This memory is used before being properly
-cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
-properly allocate and clear memory before use.
+- The PGD entry is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
+Replace this with proper accessor functions:
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
 
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: e9d0e6330eb8 ("x86/boot/compressed/64: Prepare new top-level page table for trampoline")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/a482fd68-ce54-472d-8df1-33d6ac9f6bb5@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/boot/compressed/pgtable_64.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 05004f8880ce6..164fd63dff40d 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1279,7 +1279,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 		fa |= FILE_ATTRIBUTE_READONLY;
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index bdd26050dff77..0e89e197e1126 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -3,6 +3,7 @@
+ #include <asm/bootparam.h>
+ #include <asm/bootparam_utils.h>
+ #include <asm/e820/types.h>
++#include <asm/pgtable.h>
+ #include <asm/processor.h>
+ #include "../string.h"
+ #include "efi.h"
+@@ -168,9 +169,10 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 		 * For 4- to 5-level paging transition, set up current CR3 as
+ 		 * the first and the only entry in a new top-level page table.
+ 		 */
+-		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
++		*trampoline_32bit = native_read_cr3_pa() | _PAGE_TABLE_NOENC;
+ 	} else {
+-		unsigned long src;
++		u64 *new_cr3;
++		pgd_t *pgdp;
  
- 	/* Allocate PATH_MAX bytes. */
--	new_de = __getname();
-+	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1720,10 +1720,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct NTFS_DE *de;
+ 		/*
+ 		 * For 5- to 4-level paging transition, copy page table pointed
+@@ -180,8 +182,9 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 		 * We cannot just point to the page table from trampoline as it
+ 		 * may be above 4G.
+ 		 */
+-		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
+-		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
++		pgdp = (pgd_t *)native_read_cr3_pa();
++		new_cr3 = (u64 *)(native_pgd_val(pgdp[0]) & PTE_PFN_MASK);
++		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
+ 	}
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
--	memset(de, 0, PATH_MAX);
- 
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1759,7 +1758,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 		return -EINVAL;
- 
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
+ 	toggle_la57(trampoline_32bit);
 -- 
 2.51.0
 
