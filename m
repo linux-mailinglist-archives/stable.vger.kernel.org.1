@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6024BCC4612
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:45:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18273CC292C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14F7A30322B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8084830047F2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1890B34B1AC;
-	Tue, 16 Dec 2025 11:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4873659E7;
+	Tue, 16 Dec 2025 12:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8g4vicW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkSIAm7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C715234B197;
-	Tue, 16 Dec 2025 11:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD4D355802;
+	Tue, 16 Dec 2025 12:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885235; cv=none; b=BSXFZ1BHIg34VN5kQkSULLPlkLAF5qmB3Cg0VPBDhjKlAIq60CFGMn4hFWHt0gwm/WpOpt0YdNjpeFDzqjY3+DoW4K4I9BWxXJGEOzguO5bWQYgUuNU5EEfHJcm4HNTij1Z1jv9MbiAJXVGDZ3Jd6EsYRuArLEEhocRU/hbO7/U=
+	t=1765887188; cv=none; b=jwiN9WcKoW1VeRSFYdfp9UBE8oAl2effg4gys6OkTn9me0JWp/AXc5Vvqv5mTT55Qt2AAws6Heb1W9JumabkZ4mjaR86wPgb873sUiPrHZDvEuPINaJGUQDp0WEtudfflla1Oq9iSlhbdQ1HkKuEwyiAJ71IsmouGEKtpFtKUnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885235; c=relaxed/simple;
-	bh=W+y4C1srKr9Cq/KjFjV3P0FGiUiRkXCYhYazVkek7/0=;
+	s=arc-20240116; t=1765887188; c=relaxed/simple;
+	bh=WNLhLZgW1VUICaf21upFeqJHToOD3fkNMp/cwCYSOqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjgU6Iqc5vYoZp3e1Ubjy8clO/TU8XHuiJKbsdq/LJ3snMbVYz6bWnJ5jrDzUG/+uPrN0O+p2dojviAQOtusMgfvS0fHohRtXSFUD4uPypemMd9M94JNWNTmZC1Aoy4Y6haO4XXVVbrglBQI7X3FxvfrAgwzedwmRdgG6sMUMvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8g4vicW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2991FC16AAE;
-	Tue, 16 Dec 2025 11:40:34 +0000 (UTC)
+	 MIME-Version; b=joHjzewPGbRSs3cVL4KTPxDrYzi3zpYQWkkjG3C9KV3dLOBqDFgL77lkrYB4TGh/S5K3tJ9j8HPwH40IEAcAiadQ72rHfrW4w4M54axpnu57DyjYJCFR3LC+JBLjZi/3MKY05bh8T2n39FseGGvvzse8445S1J9L/X6v0uReet8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkSIAm7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55CEC4CEF1;
+	Tue, 16 Dec 2025 12:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885235;
-	bh=W+y4C1srKr9Cq/KjFjV3P0FGiUiRkXCYhYazVkek7/0=;
+	s=korg; t=1765887188;
+	bh=WNLhLZgW1VUICaf21upFeqJHToOD3fkNMp/cwCYSOqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8g4vicWE7sD7XoRPihlsld3U/aNPO27wflAJgvNC0rSQysgX758EL7HtpgO+Bdkh
-	 Q96yXGvfRbkDUF2ofba+hOWHcCT6Qs7YoSlBvnaO18O6RdL9bREVFSQtCrvZMaQVyh
-	 SzMUojkymHwg+T+Mj8Q47pY6U1bfxs51U0GHn0pc=
+	b=YkSIAm7rlhKElJsW6J42ZQndJ3/NktJRA3GpU2Ggv4N2NiFiO2GUZfb8ZLbCTYPK+
+	 McvOKLm8xVhGe47xwqtdvpyIAQPbOVGvnjgv8aHJrl4uuJrDBZe9h/u5ukW+seHLD4
+	 57JCZxdGEIbLslkEdBi00pcwlv823vMf1zwwyhrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lukas Wunner <lukas@wunner.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 079/507] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
+Subject: [PATCH 6.18 153/614] pidfs: add missing PIDFD_INFO_SIZE_VER1
 Date: Tue, 16 Dec 2025 12:08:40 +0100
-Message-ID: <20251216111348.404321946@linuxfoundation.org>
+Message-ID: <20251216111406.878228230@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
+[ Upstream commit 4061c43a99772c66c378cfacaa71550ab3b35909 ]
 
-Use check_add_overflow() to guard against potential integer overflows
-when adding the binary blob lengths and the size of an asymmetric_key_id
-structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
-possible buffer overflow when copying data from potentially malicious
-X.509 certificate fields that can be arbitrarily large, such as ASN.1
-INTEGER serial numbers, issuer names, etc.
+We grew struct pidfd_info not too long ago.
 
-Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://patch.msgid.link/20251028-work-coredump-signal-v1-3-ca449b7b7aa0@kernel.org
+Fixes: 1d8db6fd698d ("pidfs, coredump: add PIDFD_INFO_COREDUMP")
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/uapi/linux/pidfd.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index ba2d9d1ea235a..348966ea2175c 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -11,6 +11,7 @@
- #include <crypto/public_key.h>
- #include <linux/seq_file.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <keys/system_keyring.h>
-@@ -141,12 +142,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
- 						     size_t len_2)
- {
- 	struct asymmetric_key_id *kid;
--
--	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
--		      GFP_KERNEL);
-+	size_t kid_sz;
-+	size_t len;
-+
-+	if (check_add_overflow(len_1, len_2, &len))
-+		return ERR_PTR(-EOVERFLOW);
-+	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
-+		return ERR_PTR(-EOVERFLOW);
-+	kid = kmalloc(kid_sz, GFP_KERNEL);
- 	if (!kid)
- 		return ERR_PTR(-ENOMEM);
--	kid->len = len_1 + len_2;
-+	kid->len = len;
- 	memcpy(kid->data, val_1, len_1);
- 	memcpy(kid->data + len_1, val_2, len_2);
- 	return kid;
+diff --git a/include/uapi/linux/pidfd.h b/include/uapi/linux/pidfd.h
+index 957db425d459a..6ccbabd9a68d8 100644
+--- a/include/uapi/linux/pidfd.h
++++ b/include/uapi/linux/pidfd.h
+@@ -28,6 +28,7 @@
+ #define PIDFD_INFO_COREDUMP		(1UL << 4) /* Only returned if requested. */
+ 
+ #define PIDFD_INFO_SIZE_VER0		64 /* sizeof first published struct */
++#define PIDFD_INFO_SIZE_VER1		72 /* sizeof second published struct */
+ 
+ /*
+  * Values for @coredump_mask in pidfd_info.
 -- 
 2.51.0
 
