@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0ACCC3792
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:15:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1889FCC25BF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D24B304CBAB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 79805300311F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF3234D4D2;
-	Tue, 16 Dec 2025 12:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF8434D3BE;
+	Tue, 16 Dec 2025 11:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD+Ddi6o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvoECqBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C807934EEF0;
-	Tue, 16 Dec 2025 12:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B57834D3BB;
+	Tue, 16 Dec 2025 11:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887213; cv=none; b=uc0r18hxLxCEpqh7SlS92Gyjm8RFYaDgXxnu7zgj5CImEvg1D27V9gbwDf3E3V+/nZzGc8BHXbAIITg6dBxXNjG4XBga7rupquYmZfEuA+0GHKdgC02pvspiMJ66iA1UF6KYNYOOttb9z96qRqZwgJ9JZwbOJM/qJNtZ0nXgXik=
+	t=1765885319; cv=none; b=PhNFc0DRQ8X3Nnsydb6kT2RKt7BNoWKffRit3C8iZM1IQx0SLegLcZ8IcJYjyAl3VH25h6S/rtJ/1YAFk79U6R1f9OJ2tS1dlg7J8s+GaQQS3v2K/YxShl7P4mH0amG+57rBeyJTT+dBktpqmXFuVEV+/Frna1Ri6+J9KMIg4Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887213; c=relaxed/simple;
-	bh=8bigxs6OLyZ3Mb+IJbvCXshuYhPPs5o9O84ImqFnGxw=;
+	s=arc-20240116; t=1765885319; c=relaxed/simple;
+	bh=gXhJ5NC2wX6o50hcvU40kpt37gzgD6Bv9FLBsVMq+js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaHKoLzDvm8dkaOJ91SLSNdprbTE2KEu7bIKWnyWhGXh0UdbB72nRQyLOjfuzwAJIWYVhUzC4jD/cUTF+Ui8k69Z3tjCSfRQ8XqO77l+RBHqPEvvcOsVn7oCLSNn8pp00FjGABeqz0FK8nhBwETWj513yIjwMshM4Pm4pSwQWnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD+Ddi6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4785CC4CEF5;
-	Tue, 16 Dec 2025 12:13:33 +0000 (UTC)
+	 MIME-Version; b=nCF4/ZeXerawSDMCDpoAY9wrSsvC+2yAyXNJL7b4tO8ok2luPFghqYcS4XQZ2U/HG3fzkbVTtoelIljQJbkIJ/KJmFsOYPOZTFauetYl/VKouKxjv1cdsHCWrvDVVB4lAU31Da+dxYFCRXSdcZMS+7YUDxP3upw9gpiIj72ZArs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvoECqBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35457C4CEF1;
+	Tue, 16 Dec 2025 11:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887213;
-	bh=8bigxs6OLyZ3Mb+IJbvCXshuYhPPs5o9O84ImqFnGxw=;
+	s=korg; t=1765885318;
+	bh=gXhJ5NC2wX6o50hcvU40kpt37gzgD6Bv9FLBsVMq+js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD+Ddi6o0bMlrs6u2xRl/2lGvxwlhnnNTMIwDaIvd7Tre4+vk68oVX30b/MJbeANj
-	 Owwp8Xcjjf5flR7PFLOTZ91yHCKVViJPOkz3wJYtqDA0PvQ0rYMqFxWnz1V9GhRd3y
-	 J4y1PhvqqzEnczfwvoXCuE01MN6owdOh99aRxhN0=
+	b=OvoECqBcMXA+ySSRbLePwwy1WDi4ULJ/FZp2e983WFRYx5koHVcVMrI1aJvUBsIS8
+	 Va1GClNZT8sozPLqWKPa0nT50SWxXlcpHF07eSbdf2VEVEUB0d32tTgFVyxUWNd0Xb
+	 wMR03ruv+ZKbEPLihpu/A2KK+xpnJVh95Xg3/MRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 134/614] drm/amdgpu/userq: fix SDMA and compute validation
+Subject: [PATCH 6.17 060/507] arm64: dts: freescale: imx8mp-venice-gw7905-2x: remove duplicate usdhc1 props
 Date: Tue, 16 Dec 2025 12:08:21 +0100
-Message-ID: <20251216111406.191486876@linuxfoundation.org>
+Message-ID: <20251216111347.717409563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit a0559012a18a5a6ad87516e982892765a403b8ab ]
+[ Upstream commit 8b7e58ab4a02601a0e86e9f9701d4612038d8b29 ]
 
-The CSA and EOP buffers have different alignement requirements.
-Hardcode them for now as a bug fix.  A proper query will be added in
-a subsequent patch.
+Remove the un-intended duplicate properties from usdhc1.
 
-v2: verify gfx shadow helper callback (Prike)
-
-Fixes: 9e46b8bb0539 ("drm/amdgpu: validate userq buffer virtual address and size")
-Reviewed-by: Prike Liang <Prike.Liang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0d5b288c2110e ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_userqueue.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-index 5c63480dda9c4..f5aa83ff57f35 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-@@ -254,7 +254,6 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	struct amdgpu_mqd *mqd_hw_default = &adev->mqds[queue->queue_type];
- 	struct drm_amdgpu_userq_in *mqd_user = args_in;
- 	struct amdgpu_mqd_prop *userq_props;
--	struct amdgpu_gfx_shadow_info shadow_info;
- 	int r;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index cbf0c9a740faa..303995a8adce8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -423,9 +423,6 @@ &usdhc1 {
+ 	bus-width = <4>;
+ 	non-removable;
+ 	status = "okay";
+-	bus-width = <4>;
+-	non-removable;
+-	status = "okay";
+ };
  
- 	/* Structure to initialize MQD for userqueue using generic MQD init function */
-@@ -280,8 +279,6 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	userq_props->doorbell_index = queue->doorbell_index;
- 	userq_props->fence_address = queue->fence_drv->gpu_addr;
- 
--	if (adev->gfx.funcs->get_gfx_shadow_info)
--		adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
- 	if (queue->queue_type == AMDGPU_HW_IP_COMPUTE) {
- 		struct drm_amdgpu_userq_mqd_compute_gfx11 *compute_mqd;
- 
-@@ -299,7 +296,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		}
- 
- 		r = amdgpu_userq_input_va_validate(queue, compute_mqd->eop_va,
--						   max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE));
-+						   2048);
- 		if (r)
- 			goto free_mqd;
- 
-@@ -312,6 +309,14 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		kfree(compute_mqd);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_GFX) {
- 		struct drm_amdgpu_userq_mqd_gfx11 *mqd_gfx_v11;
-+		struct amdgpu_gfx_shadow_info shadow_info;
-+
-+		if (adev->gfx.funcs->get_gfx_shadow_info) {
-+			adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
-+		} else {
-+			r = -EINVAL;
-+			goto free_mqd;
-+		}
- 
- 		if (mqd_user->mqd_size != sizeof(*mqd_gfx_v11) || !mqd_user->mqd) {
- 			DRM_ERROR("Invalid GFX MQD\n");
-@@ -335,6 +340,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 						   shadow_info.shadow_size);
- 		if (r)
- 			goto free_mqd;
-+		r = amdgpu_userq_input_va_validate(queue, mqd_gfx_v11->csa_va,
-+						   shadow_info.csa_size);
-+		if (r)
-+			goto free_mqd;
- 
- 		kfree(mqd_gfx_v11);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
-@@ -353,7 +362,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			goto free_mqd;
- 		}
- 		r = amdgpu_userq_input_va_validate(queue, mqd_sdma_v11->csa_va,
--						   shadow_info.csa_size);
-+						   32);
- 		if (r)
- 			goto free_mqd;
- 
+ /* eMMC */
 -- 
 2.51.0
 
