@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F981CC24D2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1C8CC2F20
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F7EF30184A3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF2C23238330
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E766342CA1;
-	Tue, 16 Dec 2025 11:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A654350A23;
+	Tue, 16 Dec 2025 12:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsRdj1Lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msiim1Hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4D034106D;
-	Tue, 16 Dec 2025 11:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B8433D6F5;
+	Tue, 16 Dec 2025 12:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884902; cv=none; b=jm/s6eqAj7DlBH8ttNvez6PF3Hpy+PwqzOtA9WuTgn70eUOKpj6OXKaS5SbtiAJL1lYsS174osb7TYuFXTlww8g4AN+FvNGcz+JKxipWW0Qq1Bi1b1CD9lwpFSp1iWm2Np08RAYOoljgjWEvV2PsWDzhduV4BmcDtwZ0SoSe0J0=
+	t=1765886458; cv=none; b=hnYua964Ik+AD6wYwBB0dm9fjVRGDHPcrMmgGbykmUS4tIizAGcUWpdrgSKj5TSaDOTn3R6BnsGZbzIlbZRNzjTtPpwYJAGMGx3Q6HS9lSmVMvtMqtufMWi/wYn/LBmmocgPDPWXo+7xsz64BaDTaH88H+qOXVY6aY3g8t9KM8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884902; c=relaxed/simple;
-	bh=hlXrOqk8dI2jUMV7CrY5HMkCZsxnjE4fm3HI+C4bMrI=;
+	s=arc-20240116; t=1765886458; c=relaxed/simple;
+	bh=gVD6k9sKFXAscmf7i6eXSfOftfNRfsVx7e76UWFFU5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FgBPTJXq3aVhjH89jn1reoJRyOpe5YBL77pIXv/UNOE83cTnydQVBHILtkFEbGiPNXbB5QI/oLDBMCimU1PSlW7soI6UGEp1eMs7nPygIVLej863G7BycDrLrCTaBDRWzY0ahp1DXgAYNi7NbnlN0Q/sbxQfFxgYa6Qz2L3pvrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsRdj1Lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CE8C4CEF1;
-	Tue, 16 Dec 2025 11:35:01 +0000 (UTC)
+	 MIME-Version; b=GcpXMIofFSBECAZ78MW/VBElXXNqcOBLDUPYZ24hBcQje3SBl0F3fK7qaRle7yeVtoVVQK2zvHAtX0A7EggojCC/X+fSwGZVaDVGfQqFEB2TqNa5l4XTylstyz/U3hAWxdhNcUfqbvvtfa4KjCnSNV3Sjd0BgmrFP9PRiT9ZZ+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msiim1Hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3700AC4CEF1;
+	Tue, 16 Dec 2025 12:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884902;
-	bh=hlXrOqk8dI2jUMV7CrY5HMkCZsxnjE4fm3HI+C4bMrI=;
+	s=korg; t=1765886457;
+	bh=gVD6k9sKFXAscmf7i6eXSfOftfNRfsVx7e76UWFFU5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsRdj1LkoBp1srvr8VWPzY8C/Pm33WaIOCuN3jnRjH+IQ4vQQQjhBmKhhS2bGGGsF
-	 t9NEEZUuYkzCWmOHpClhRsjHF3S+tv2xEHMGkYcCW64H1rtgfXIhC/Zw7wO+EMIyUl
-	 E4sqrSX2ohPB16N+b685bmiwsEN7WyJo7yjav4qs=
+	b=msiim1HjF+8DJryCp5Cd1E96NSp222Q8/1dWINbkb67P+6wDLHdQBCh/GajomLkpc
+	 P5tlHDpCUvOyiEBxZ434uO9l7k6BeTcnSp74yDRixk0jOtgba9NC0+393bp4PMFtoo
+	 DkjuT8yG5iUwSUBlDyJUYSLtbqU1aRYZr2P1YYLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Khirnov <anton@khirnov.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 316/354] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Subject: [PATCH 6.17 442/507] NFS: Initialise verifiers for visible dentries in readdir and lookup
 Date: Tue, 16 Dec 2025 12:14:43 +0100
-Message-ID: <20251216111332.359305385@linuxfoundation.org>
+Message-ID: <20251216111401.469719447@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +58,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Khirnov <anton@khirnov.net>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
+[ Upstream commit 9bd545539b233725a3416801f7c374bff0327d6e ]
 
-kbd_led_set() can sleep, and so may not be used as the brightness_set()
-callback.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in both nfs_prime_dcache() and nfs_lookup().
 
-Otherwise using this led with a trigger leads to system hangs
-accompanied by:
-BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
-CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
-Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
-Call Trace:
- <TASK>
- [...]
- schedule_timeout+0xbd/0x100
- __down_common+0x175/0x290
- down_timeout+0x67/0x70
- acpi_os_wait_semaphore+0x57/0x90
- [...]
- asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
- led_trigger_event+0x3f/0x60
- [...]
-
-Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
-Signed-off-by: Anton Khirnov <anton@khirnov.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Denis Benato <benato.denis96@gmail.com>
-Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: a1147b8281bd ("NFS: Fix up directory verifier races")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfs/dir.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 9d79c5ea8b495..92ce975d900d0 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -1577,14 +1577,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
- 	kbd_led_update(asus);
- }
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index a2ca8d53d9f59..4f93c3059c566 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -789,16 +789,17 @@ void nfs_prime_dcache(struct dentry *parent, struct nfs_entry *entry,
+ 		goto out;
+ 	}
  
--static void kbd_led_set(struct led_classdev *led_cdev,
--			enum led_brightness value)
-+static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
- {
- 	/* Prevent disabling keyboard backlight on module unregister */
- 	if (led_cdev->flags & LED_UNREGISTERING)
--		return;
-+		return 0;
++	nfs_set_verifier(dentry, dir_verifier);
+ 	inode = nfs_fhget(dentry->d_sb, entry->fh, entry->fattr);
+ 	alias = d_splice_alias(inode, dentry);
+ 	d_lookup_done(dentry);
+ 	if (alias) {
+ 		if (IS_ERR(alias))
+ 			goto out;
++		nfs_set_verifier(alias, dir_verifier);
+ 		dput(dentry);
+ 		dentry = alias;
+ 	}
+-	nfs_set_verifier(dentry, dir_verifier);
+ 	trace_nfs_readdir_lookup(d_inode(parent), dentry, 0);
+ out:
+ 	dput(dentry);
+@@ -1994,13 +1995,14 @@ struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, unsigned in
+ 	nfs_lookup_advise_force_readdirplus(dir, flags);
  
- 	do_kbd_led_set(led_cdev, value);
-+	return 0;
- }
- 
- static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
-@@ -1760,7 +1760,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
- 		asus->kbd_led_wk = led_val;
- 		asus->kbd_led.name = "asus::kbd_backlight";
- 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
--		asus->kbd_led.brightness_set = kbd_led_set;
-+		asus->kbd_led.brightness_set_blocking = kbd_led_set;
- 		asus->kbd_led.brightness_get = kbd_led_get;
- 		asus->kbd_led.max_brightness = 3;
- 
+ no_entry:
++	nfs_set_verifier(dentry, dir_verifier);
+ 	res = d_splice_alias(inode, dentry);
+ 	if (res != NULL) {
+ 		if (IS_ERR(res))
+ 			goto out;
++		nfs_set_verifier(res, dir_verifier);
+ 		dentry = res;
+ 	}
+-	nfs_set_verifier(dentry, dir_verifier);
+ out:
+ 	trace_nfs_lookup_exit(dir, dentry, flags, PTR_ERR_OR_ZERO(res));
+ 	nfs_free_fattr(fattr);
 -- 
 2.51.0
 
