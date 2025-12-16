@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6D2CC3472
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F26CC31C4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B73BF3030CA5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 382E030735ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0198F352FB5;
-	Tue, 16 Dec 2025 11:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D460634A3CB;
+	Tue, 16 Dec 2025 12:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1tBsEUE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPbZKKb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CAE352FB1;
-	Tue, 16 Dec 2025 11:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BEB3491E8;
+	Tue, 16 Dec 2025 12:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885783; cv=none; b=HJi80VI7PkWhyVJow3EBB7mqBSf0pfOFTNdfIZOQlPXqpErSLn2xHC7YTJ/CvgSQ13n3IW2xX18rvdb4DOoxFsD7xRTmPDEgyliRQ/wZQ5qyxDZt+WgRZkahBmbYFZC6kCkYY/LnwscNvhuwqOvTUgXq1mPBH+mqZw5BhQBcvDA=
+	t=1765887613; cv=none; b=fyjBrLP0ZL5+RsbjtDjNO+iloUgMG659CuX10mx7DqjBfIVBCQCw/jCRAw3QPjovrdjBlOjolDtBY6y1mkLibqSJHY0iB1vR6lvM4AWLuIt6UWrBfL+9vDMXwvMVc9GWsJq0HknUnuqx3VfGpRV0AsPOfqb2i79T/zZN0zUN6BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885783; c=relaxed/simple;
-	bh=ZpQTLbKNNU8tWCWXeG+VyFctLnuNUsUgZYW23CER9jM=;
+	s=arc-20240116; t=1765887613; c=relaxed/simple;
+	bh=kZvw99Sk4PyskrjGBmMuwytjlLlvQDBKhA1fswpPaBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaiPy0HEHharagPQJr7ZXt3KSeDUMPEG/Pf7GmkJF2DaAjWUno7EscX9Wi8WZt5+GeKywtxN+ehbfHu3yhoBe8F9+8zjzGhQQsDNefpQ1gIjEhJhf6fr37ZhdVn6nQJI+qeZKZayMrJOLxeFxuKd/B1O6kx3kGCYXnj8l0dWF1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1tBsEUE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADF5C4CEF1;
-	Tue, 16 Dec 2025 11:49:42 +0000 (UTC)
+	 MIME-Version; b=GD07pKgkx2nv3WhGfRXE1dfSyiJM6ffWmnZXv6ToKKRFY1J/RILzGeDAVtweq1n2IDkCPZ156nbn7NgGjRU+MZoERs+YHkVQC4kuv6RnGLHYKPio9QXPJ9QpbbA40C2EJ2ixC11MiDxD4bMtJ2FeXMhrmZg97YRDNUHHQsM6n6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPbZKKb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6BC4CEF1;
+	Tue, 16 Dec 2025 12:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885783;
-	bh=ZpQTLbKNNU8tWCWXeG+VyFctLnuNUsUgZYW23CER9jM=;
+	s=korg; t=1765887613;
+	bh=kZvw99Sk4PyskrjGBmMuwytjlLlvQDBKhA1fswpPaBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1tBsEUEoJvnDnxZp2yLBNDhJNMxAYAGRfMOkG6AVNgZqJylJ7WS4GH/NXx0U0dTz
-	 a375Gokd6L8iC6/i/T3TPVpgzxVyhWoGbaUPDBEFJjQ8af+WpYpWW7jYOH1IJ8v0iN
-	 lpYsBWAV/pzzGYq3XhXv476zoocHcoDhbBISkyq4=
+	b=KPbZKKb4qHmOjBQfNhUu0PyxI25DZfKZhYVl7arG36e/3wtrp3InqddoneKF6ST3K
+	 hZJkQZKImR+YhGEqwQhLztfdSv09M8JUZsh/h6CzC9ojdPBOn4efmYgKzIE2wXW+qY
+	 Jcm0GNZ2ySCDlKp9H6qO/n7NM1QoV3UEghPAzUkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 210/507] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
-Date: Tue, 16 Dec 2025 12:10:51 +0100
-Message-ID: <20251216111353.116451683@linuxfoundation.org>
+Subject: [PATCH 6.18 285/614] arm64: dts: qcom: qrb2210-rb1: Fix UART3 wakeup IRQ storm
+Date: Tue, 16 Dec 2025 12:10:52 +0100
+Message-ID: <20251216111411.698102848@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
+[ Upstream commit 9c92d36b0b1ea8b2a19dbe0416434f3491dbfaaf ]
 
-In one of the error paths, the memory allocated for skb_rx is not freed.
-Fix that by freeing it before returning.
+For BT use cases, pins are configured with pull-up state in sleep state
+to avoid noise. If IRQ type is configured as level high and the GPIO line
+is also in a high state, it causes continuous interrupt assertions leading
+to an IRQ storm when wakeup irq enables at system suspend/runtime suspend.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Switching to edge-triggered interrupt (IRQ_TYPE_EDGE_FALLING) resolves
+this by only triggering on state transitions (high-to-low) rather than
+maintaining sensitivity to the static level state, effectively preventing
+the continuous interrupt condition and eliminating the wakeup IRQ storm.
+
+Fixes: 9380e0a1d449 ("arm64: dts: qcom: qrb2210-rb1: add Bluetooth support")
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251110101043.2108414-2-praveen.talari@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
-index 3b4ded2ac801c..37232ee220375 100644
---- a/drivers/net/wireless/st/cw1200/bh.c
-+++ b/drivers/net/wireless/st/cw1200/bh.c
-@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
- 
- 	if (wsm_id & 0x0400) {
- 		int rc = wsm_release_tx_buffer(priv, 1);
--		if (WARN_ON(rc < 0))
-+		if (WARN_ON(rc < 0)) {
-+			dev_kfree_skb(skb_rx);
- 			return rc;
--		else if (rc > 0)
-+		} else if (rc > 0) {
- 			*tx = 1;
-+		}
- 	}
- 
- 	/* cw1200_wsm_rx takes care on SKB livetime */
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index 67ba508e92ba1..3eedfb2cf4799 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -649,7 +649,7 @@ key_volp_n: key-volp-n-state {
+ &uart3 {
+ 	/delete-property/ interrupts;
+ 	interrupts-extended = <&intc GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
+-			      <&tlmm 11 IRQ_TYPE_LEVEL_HIGH>;
++			      <&tlmm 11 IRQ_TYPE_EDGE_FALLING>;
+ 	pinctrl-0 = <&uart3_default>;
+ 	pinctrl-1 = <&uart3_sleep>;
+ 	pinctrl-names = "default", "sleep";
 -- 
 2.51.0
 
