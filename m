@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6970CCC2A2F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:19:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C58CC2BC2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA73C3026FA2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B214530A3235
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E6035295E;
-	Tue, 16 Dec 2025 11:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A675F363C7D;
+	Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY3k09Il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNxG0djY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BBE35295A;
-	Tue, 16 Dec 2025 11:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B047363C79;
+	Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885770; cv=none; b=Ah4XTQdv2Jpsi/2gMUFbcQAZo+ppQrore55QBpmqM0+D3U+3XMpbykQ/BBRjIkHbkUwVoHS+g8LEJyNtnmAsgvDPCQoxMcKbhJcWCvGrxsoU6dzqqOxYRhoPS6F1IehxPN/ljQEUQgA0Ww0i0kSqD44Su4ChfemvQpuQpJabnwQ=
+	t=1765887760; cv=none; b=bfgjrW2TlGMmj88A1MhYAAScjuaxNfVrpb0MVPwhC1s4Wc4RqS7zeNeFveQ9TYLUrbfcvZY3vZk/ZFPojYyZODGNfZb0wJ1iV1L3DpOcIVu+lXC+RUcRVo3g0PCmlxcmVfbxOme10C356H/02kbheQplIYEjIDviHOQWPR/MDjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885770; c=relaxed/simple;
-	bh=uyHaDDVNbp6ua8sgwA6qksAxPO9PnBkck9Tr3obqhCc=;
+	s=arc-20240116; t=1765887760; c=relaxed/simple;
+	bh=hw9XPCFc8aLgL+4qr2CUuj9XVWEa4sfDMBR6BfL9yG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQ8I7IzkKdpNJcBENGCl9IAZLYfV49kK1eioQ4kgHcoIvxIkNFUh1ateqgDeVs0HcHy3B09KiRBRFOLPBmw6dOoAiCdY90vZVRnlRFnwJS1pNqikaekhrQFPZ02lT6WowolAxrb0Uv5Tm9Xf5LldX/4qA9TIT1gcaF3rY0H3iiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jY3k09Il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F11C19422;
-	Tue, 16 Dec 2025 11:49:29 +0000 (UTC)
+	 MIME-Version; b=qxt24/DQZTPGfyHykksFdveObPYlAlawoZJk3uBRSzrYvT2gJ4u/r9T+bNcIlpg4qNzTHo0AcEF8BhdFQCTDyG2rqXhOgiZU/O0TneDN59UMczsPTnCJ4f16qGZCobjLNhAbdsdHviaTiUXZ3yMfJvD9dWRTh7kEJ3EpWpgDYwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNxG0djY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB950C4CEF1;
+	Tue, 16 Dec 2025 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885770;
-	bh=uyHaDDVNbp6ua8sgwA6qksAxPO9PnBkck9Tr3obqhCc=;
+	s=korg; t=1765887760;
+	bh=hw9XPCFc8aLgL+4qr2CUuj9XVWEa4sfDMBR6BfL9yG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jY3k09Ilvwb25s1rkh+Yv45SS6NK3f9OU8darL5H9GQtFLfiKEXdIAUrhenvadtSI
-	 GiBoTkQpa5pRU7/5Q4JxySu3/ONLjxNFff3zFgD7eCdUvnIQzp/TtG+BRgFNbMQGRT
-	 oJ2vT4qYwVmdj1Ffg+fedPwm4UeUeS4FUpLrcB/U=
+	b=bNxG0djYUWuXcFvWRjf3q9IzkUCWrgntU1tZVl3EiREyN4NAjuJemNpf8dlFIxwsj
+	 gFy3St2QIiAOFml2eggSLG7saZD5QFN0zbp/hdbXxmUZdTwmPFtDBT3VBis0kF2fnu
+	 5b0mm0ddp3JNDA2nQT/Y+TV7mmGiLbnxGw/2zWqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 238/507] arm64: dts: qcom: qrb2210-rb1: Fix UART3 wakeup IRQ storm
+Subject: [PATCH 6.18 312/614] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
 Date: Tue, 16 Dec 2025 12:11:19 +0100
-Message-ID: <20251216111354.121346135@linuxfoundation.org>
+Message-ID: <20251216111412.672098134@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 9c92d36b0b1ea8b2a19dbe0416434f3491dbfaaf ]
+[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
 
-For BT use cases, pins are configured with pull-up state in sleep state
-to avoid noise. If IRQ type is configured as level high and the GPIO line
-is also in a high state, it causes continuous interrupt assertions leading
-to an IRQ storm when wakeup irq enables at system suspend/runtime suspend.
+In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
+allocations in a loop. When an allocation fails, the previously
+successful allocations are not freed on exit.
 
-Switching to edge-triggered interrupt (IRQ_TYPE_EDGE_FALLING) resolves
-this by only triggering on state transitions (high-to-low) rather than
-maintaining sensitivity to the static level state, effectively preventing
-the continuous interrupt condition and eliminating the wakeup IRQ storm.
+Fix that by jumping to err_free_rings label on error, which calls
+rtl8180_free_rx_ring() to free the allocations. Remove the free of
+rx_ring in rtl8180_init_rx_ring() error path, and set the freed
+priv->rx_buf entry to null, to avoid double free.
 
-Fixes: 9380e0a1d449 ("arm64: dts: qcom: qrb2210-rb1: add Bluetooth support")
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251110101043.2108414-2-praveen.talari@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: f653211197f3 ("Add rtl8180 wireless driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-index b2e0fc5501c1e..af29c7ed7a685 100644
---- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
-@@ -648,7 +648,7 @@ key_volp_n: key-volp-n-state {
- &uart3 {
- 	/delete-property/ interrupts;
- 	interrupts-extended = <&intc GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
--			      <&tlmm 11 IRQ_TYPE_LEVEL_HIGH>;
-+			      <&tlmm 11 IRQ_TYPE_EDGE_FALLING>;
- 	pinctrl-0 = <&uart3_default>;
- 	pinctrl-1 = <&uart3_sleep>;
- 	pinctrl-names = "default", "sleep";
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index 2905baea62390..070c0431c4821 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 
+ 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
++			priv->rx_buf[i] = NULL;
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+ 
+ 	ret = rtl8180_init_rx_ring(dev);
+ 	if (ret)
+-		return ret;
++		goto err_free_rings;
+ 
+ 	for (i = 0; i < (dev->queues + 1); i++)
+ 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
 -- 
 2.51.0
 
