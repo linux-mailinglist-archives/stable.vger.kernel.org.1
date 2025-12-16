@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9144CC2932
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:13:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F080DCC24F3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 95AFA3023EB3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB281301E218
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DCF3587C9;
-	Tue, 16 Dec 2025 12:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEF333FE30;
+	Tue, 16 Dec 2025 11:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4qWlR1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqRdcRL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A883587CE;
-	Tue, 16 Dec 2025 12:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BB13314B4;
+	Tue, 16 Dec 2025 11:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886643; cv=none; b=HvA+eOYn5VmEhnryNp1EHZubM2ynlx6TGY3+lS6fG0DkNYpfuNHbMsbD0gFCGmH4z95pcjQ63srrReLSOAqB0JXPOZM/FbWQPjawMBsB2Czk1iux0m+vCBjRcrtqqf+ZSiCcA8OtXy8D3xVcFK8v1BHsOWVJHFncOO1NYiFOQXY=
+	t=1765884919; cv=none; b=rawZ1hFq5CQogqyWT+ymF9ApqfGoGHw+BmO5XCKmJdEocaLGDzacFMN6VkSgspvFXuABLAo6TUXek0+nAdF+d8Hyh8L7yP12g7tEcYOkXptQhoaMorMkiPd65xfbr/spYRgD7KXrkOlXPfuuz/DkQ/KZ6iaOFXExQsh8eo0zTv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886643; c=relaxed/simple;
-	bh=Eek1ollwa8aqIeGtISGOZ5pxi+Bp1+kMvFDWa5trPlM=;
+	s=arc-20240116; t=1765884919; c=relaxed/simple;
+	bh=MNi5h2zP5b2DIHtPlEPS8GFZU91RxEZY9E4BugzNGxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mk6Z2Qq0vtR86GmsM6KDafc7ngOmueEna7vza7P4E0/hw1lC54K0Gk8PdGBjDdTFO0500iQlTLR5KW74yKP0pkoU7Il6lV0Ka9ONRqiV7oQNDGiNZ6TH2O92nvB72Kxfud/q7+/hiRGtbNP+cEgQt07mzBFRlw0fMMO1HRes41o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4qWlR1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA730C4CEF1;
-	Tue, 16 Dec 2025 12:04:02 +0000 (UTC)
+	 MIME-Version; b=swUjtByYWdrqZj1IyXpjyJudo7B8yFbQBsAefQKfXz3m4zuou60aqZn09IjKO6iJrOqr1RVBqLr2tVRNSWJOhNH8qaeVx4ytluhGB9/9ntxKyu2pjkmARspKG1iWVwDEM6PpHJWekcbsPILsQpc6uAwBnFlIYIVVxxXFViqPjpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqRdcRL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF51C4CEF1;
+	Tue, 16 Dec 2025 11:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886643;
-	bh=Eek1ollwa8aqIeGtISGOZ5pxi+Bp1+kMvFDWa5trPlM=;
+	s=korg; t=1765884918;
+	bh=MNi5h2zP5b2DIHtPlEPS8GFZU91RxEZY9E4BugzNGxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4qWlR1zN7wkq3tni0EMyJNCzZlAFwFEx33clFaXgbAaJuXsQEMDHZg1TXRCrtOB6
-	 mAWgyXfTnV4Jm8UD8NmUQxuUOWRrvgkyRXY04B96JjfH9Zj0dxfiPbBxpPcmUe4LXV
-	 m7I81HKDMGnCivVkseC0Ztrc5NaPgDoUmW9qLtMI=
+	b=ZqRdcRL3jIXoyFXP91J7Kh/JXucpxQOICxMfQdTmXkR5ZTr5jZxeZvdmd17SNp5kF
+	 YDDK4/zGxYK7U4geEeikdm2Cv1L1opfDRaio2NbjRW+GEtewz9qn/dWNXhReybOOj6
+	 YhrvIZLhIM5ViuM6/kjDrqfGjDw+PfH1sXfwXiso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 464/507] drm/plane: Fix IS_ERR() vs NULL check in drm_plane_create_hotspot_properties()
+Subject: [PATCH 6.12 338/354] dm-raid: fix possible NULL dereference with undefined raid type
 Date: Tue, 16 Dec 2025 12:15:05 +0100
-Message-ID: <20251216111402.256383465@linuxfoundation.org>
+Message-ID: <20251216111333.153513336@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 479acb9db3199cdb70e5478a6f633b5f20c7d8df ]
+[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
 
-The drm_property_create_signed_range() function doesn't return error
-pointers it returns NULL on error.  Fix the error checking to match.
+rs->raid_type is assigned from get_raid_type_by_ll(), which may return
+NULL. This NULL value could be dereferenced later in the condition
+'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
 
-Fixes: 8f7179a1027d ("drm/atomic: Add support for mouse hotspots")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/aTB023cfcIPkCsFS@stanley.mountain
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Add a fail-fast check to return early with an error if raid_type is NULL,
+similar to other uses of this function.
+
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-index a30493ed97157..4cadea997129d 100644
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -338,14 +338,14 @@ static int drm_plane_create_hotspot_properties(struct drm_plane *plane)
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index c69696d2540ab..b7f1cd81ab056 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2291,6 +2291,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
  
- 	prop_x = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_X",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_x))
--		return PTR_ERR(prop_x);
-+	if (!prop_x)
-+		return -ENOMEM;
+ 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
+ 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
++			if (!rs->raid_type)
++				return -EINVAL;
+ 		}
  
- 	prop_y = drm_property_create_signed_range(plane->dev, 0, "HOTSPOT_Y",
- 						  INT_MIN, INT_MAX);
--	if (IS_ERR(prop_y)) {
-+	if (!prop_y) {
- 		drm_property_destroy(plane->dev, prop_x);
--		return PTR_ERR(prop_y);
-+		return -ENOMEM;
- 	}
- 
- 	drm_object_attach_property(&plane->base, prop_x, 0);
+ 	} else {
 -- 
 2.51.0
 
