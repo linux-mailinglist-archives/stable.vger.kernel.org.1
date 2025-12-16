@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-201576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242CCCC271D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8EDCC28E4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BFD930B0DBD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7C7C30047F2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1139346E4E;
-	Tue, 16 Dec 2025 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4853659FB;
+	Tue, 16 Dec 2025 12:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peleyFnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4jrYTpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E31A346E48;
-	Tue, 16 Dec 2025 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ACB3659F3;
+	Tue, 16 Dec 2025 12:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885091; cv=none; b=eFXb1XVcmb65QQqSMQp5Qdpf+TJjNbddg4I8K4HiimqsGf/YX6dxSbwIvmKC/6GM0R/WikqpBaAS+8uUqk3nKFU7OhKq1t0rIiiIHarDEof5snqyJ1m7uM/s18bqOGObV6wdTuwnygSEnswqe+oa1VK7C7N71AiRbJabli9Px3g=
+	t=1765887042; cv=none; b=fnCux+RJMwFvYqYvhXowvrDgPhzsV9Jn+JG6S5QUMvKVfWTS15g5JK+yuQ3eeyAc6YwLC22T0kyqyxFHSOHPH6gt4zJdDuLI+bRlEy6XyJ0jLVoXWTYy0IFIjQfk4H3+utG+qgvtlsrOKcFFwMNAKLBG4IxqsvN/gtfSH8vjO2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885091; c=relaxed/simple;
-	bh=XJOI8peay1KOgs5u8BWk44UdnyIiuwolB5AzFplJLi8=;
+	s=arc-20240116; t=1765887042; c=relaxed/simple;
+	bh=AVmou3YSRsHxDtzG2T34R//oWQKD2+ZuSydFWXpMbzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uF2Ghoexa9dUW9PM5ICD3vxswL9X1Iok3lRY5fJoaNXF27KVodimIuqQBAHnEOZY9P9e1i8zjEh75SHmAdEZLIO3eSb+SeotJ09wPhDl2o5/AASvwCYlp88UPymgAaJYghTCCB9A9i5wf/xXq1BDpNXEsok7zxCIGeyrWew7Qio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peleyFnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8499C4CEF5;
-	Tue, 16 Dec 2025 11:38:10 +0000 (UTC)
+	 MIME-Version; b=nEo9CghnILlXIYLmM8oyXCTg4yNRiE/+PEZ0SSMRic7RAZLZeUlVVstFrhTakj3MkgKi4RQIBC9z6cmEHpQX3LELxQNkqyQmVLk3W7wyvqTg7uA8XuQBxIHX0tGf3yFDNJRV5H+e7zlhd+sU8K/NxFAJ9iOVcbfh8iROaGGGnF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4jrYTpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF75C16AAE;
+	Tue, 16 Dec 2025 12:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885091;
-	bh=XJOI8peay1KOgs5u8BWk44UdnyIiuwolB5AzFplJLi8=;
+	s=korg; t=1765887042;
+	bh=AVmou3YSRsHxDtzG2T34R//oWQKD2+ZuSydFWXpMbzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peleyFnzqIbk3ZM9GUEwgkqQZmr7mi2mcLWel442Dg4Gx0AH8a2CQCzlk3ha9ObOp
-	 ebN/v58b5NY1I9lt+8oemhUHfBrFO8tMrx0lglgmPwY3y3qF497wRZR/EkZYo643yD
-	 ffa4aaHbqiZh1tOLqryswI4WRfzy/d5JKh97I1LU=
+	b=t4jrYTpKOsMZ+ReomBtjR8j7qPpK1I8vEMznzwMsgb9KloeuD18ekHst1JRbkQRg6
+	 gsR1P3l6+S0yWFG4otKtEbdQs4AlY9zqTJP09D3BbKyzApWJd8wkg7k+pdDuX+4exE
+	 3tnvrYyqTsLj5AWkgerKMJPfjWjfIEYheAZq7IS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 036/507] wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
+Subject: [PATCH 6.18 110/614] arm64: dts: qcom: x1e80100: Fix compile warnings for USB HS controller
 Date: Tue, 16 Dec 2025 12:07:57 +0100
-Message-ID: <20251216111346.849225536@linuxfoundation.org>
+Message-ID: <20251216111405.321566008@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-[ Upstream commit 9c5f229b1312a31aff762b2111f6751e4e3722fe ]
+[ Upstream commit 0dab10c38282e6ef87ef88efb99d4106cce7ed33 ]
 
-Currently, the TX and RX MCS rate configurations per peer are
-reversed when sent to the firmware. As a result, RX MCS rates
-are configured for TX, and vice versa. This commit rectifies
-the configuration to match what the firmware expects.
+With W=1, the following error comes up:
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Warning (graph_child_address): /soc@0/usb@a2f8800/usb@a200000/ports: graph node has single child node 'port@0', #address-cells/#size-cells are not necessary
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251009211656.2386085-3-quic_pradeepc@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+This could be since the controller is only HS capable and only one port
+node is added.
+
+Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251019115630.2222720-1-krishna.kurapati@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 828abccda125a..98b684b27566a 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2638,9 +2638,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	switch (link_sta->bandwidth) {
- 	case IEEE80211_STA_RX_BW_160:
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
-+		v = ath12k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 51576d9c935de..6beef835c33ad 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -4939,15 +4939,8 @@ usb_2_dwc3: usb@a200000 {
  
--		v = ath12k_peer_assoc_h_he_limit(v, he_mcs_mask);
-+		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
+ 				dma-coherent;
  
- 		arg->peer_he_mcs_count++;
-@@ -2650,10 +2651,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 
- 	default:
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
-+		v = ath12k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
--		v = ath12k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		arg->peer_he_mcs_count++;
+-				ports {
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					port@0 {
+-						reg = <0>;
+-
+-						usb_2_dwc3_hs: endpoint {
+-						};
++				port {
++					usb_2_dwc3_hs: endpoint {
+ 					};
+ 				};
+ 			};
 -- 
 2.51.0
 
