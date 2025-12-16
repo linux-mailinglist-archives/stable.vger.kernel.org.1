@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECA5CC34EF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:44:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE6BCC22AD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EB3B30D12A8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B60F3037BB6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011D4352934;
-	Tue, 16 Dec 2025 11:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB70341AD6;
+	Tue, 16 Dec 2025 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+KCiMkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNG4Q/vo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D02352926;
-	Tue, 16 Dec 2025 11:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA203341069;
+	Tue, 16 Dec 2025 11:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885763; cv=none; b=CJAKW0JdiBnjIt3cT0DzEKWW+gPRrcJoRYtBBsCKMEKO3+GZ6yo38HcPGdrLe/FM46i/w99UiAeAdISLDi1hl7r14XtamOtotR06lmfhOaYSRE8BTu9VFKJz869IB9lqJvVtjqG5E9wxcDZpjkherik6vvPNP8Lzuezn2GUBnx0=
+	t=1765884159; cv=none; b=GJfVuBqwbpbNzLXI1IVNu4qnzN3dwNg5AyEYXx5F7OshrmE3ETJz+vTngFSxFQuNkRhO9ArbV+OoRR1e+D3lIUw5V30Bg2FIW9nmFScV+0j33sU+3BPI+JOlsab1VNkvHhQeS0KJjNugteYcQpDkVXzt0sl5cyCHYQB6PfqAplM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885763; c=relaxed/simple;
-	bh=GsVXgOcazjaJcff6x9/KM5NPGCiiEw/U2RiUFta+SdA=;
+	s=arc-20240116; t=1765884159; c=relaxed/simple;
+	bh=sB/+SAmZjpz45agXHcKBDhsj7XEgxs6lebnj6bVqQWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhPYZBSBneIIaJbkH3C+CknFV3IZVQ6422CoY3Fd6/Llj3ZrFakt2bF4/EoNXCTVGm13IPsNwYxzL9s7Wj3zIaJgdjwVDe3JwTibEJ4tyIG2uqMXuVaw6iI+ApsjOmTyW7V/xHRJZdO4A4UTcbA4j7SM2fnE3UBkY70sN4J75wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+KCiMkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AF8C4CEF1;
-	Tue, 16 Dec 2025 11:49:22 +0000 (UTC)
+	 MIME-Version; b=Mr9Kq/brefwyMsQul1Jy4k6y1NURBPP34iqUuRF96GCMSMY9PGtOGxUCZozAT/SQjcNTjcaNaqvlqbLo6Zcq18rqhjUuHcsttEOF6qyRToMOhshK8PV4UtU4Vm5/mJaR5W2Wdi0OLvyaUAmig0DIDwbNGHLXGYNxoujJP/GQgsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNG4Q/vo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B434C4CEF1;
+	Tue, 16 Dec 2025 11:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885763;
-	bh=GsVXgOcazjaJcff6x9/KM5NPGCiiEw/U2RiUFta+SdA=;
+	s=korg; t=1765884159;
+	bh=sB/+SAmZjpz45agXHcKBDhsj7XEgxs6lebnj6bVqQWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+KCiMkMZQXNO+OPXDfvEmL4+A7aGsyHchDxaN1X8u0RZnt80zahWRIHAKauhEzqd
-	 QYOcNd9RzvraKNnNFdXlt/mlE6mi+MMdOdUuyfClC6S1RX8+CeniX+y4bvSztGuDJR
-	 FE2oric6bAiHZ+EdcbqUXSGzzvqK4zgdfty6x8Eo=
+	b=LNG4Q/voaNtuxuvXhOzPsqzapk1LDem90gmyNTnTaAYwO2NxvU9j/rJHdX496P7jD
+	 rpM/aldXRkyBLjNTNaS3cyKUkE6B4ixmYwI7meWGgFhGem/ISFZV4oseZAcSaI+y4g
+	 pg7v3coS/og2iSnlE20coVZ294f8YcMmq2EhNXac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 236/507] crypto: iaa - Fix incorrect return value in save_iaa_wq()
+Subject: [PATCH 6.12 110/354] scsi: target: Do not write NUL characters into ASCII configfs output
 Date: Tue, 16 Dec 2025 12:11:17 +0100
-Message-ID: <20251216111354.050170330@linuxfoundation.org>
+Message-ID: <20251216111324.906804947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
+[ Upstream commit c03b55f235e283cae49c88b9602fd11096b92eba ]
 
-The save_iaa_wq() function unconditionally returns 0, even when an error
-is encountered. This prevents the error code from being propagated to the
-caller.
+NUL characters are not allowed in ASCII configfs output. Hence this
+patch.
 
-Fix this by returning the 'ret' variable, which holds the actual status
-of the operations within the function.
-
-Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251027184639.3501254-2-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_configfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 23f585219fb4b..d0058757b0000 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -805,7 +805,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
- 	if (!cpus_per_iaa)
- 		cpus_per_iaa = 1;
- out:
--	return 0;
-+	return ret;
- }
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 3188bca17e1b9..68b40e01d5a09 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2774,7 +2774,6 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
+ 		cur_len = snprintf(buf, LU_GROUP_NAME_BUF, "%s/%s\n",
+ 			config_item_name(&hba->hba_group.cg_item),
+ 			config_item_name(&dev->dev_group.cg_item));
+-		cur_len++; /* Extra byte for NULL terminator */
  
- static void remove_iaa_wq(struct idxd_wq *wq)
+ 		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
 -- 
 2.51.0
 
