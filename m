@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24645CC30CB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:05:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A0DCC286F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:04:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53D6C30E8A74
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2B17302CD59
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D015237C0EE;
-	Tue, 16 Dec 2025 12:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3197D359700;
+	Tue, 16 Dec 2025 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/Tu0LPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvSTAWil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0F537C111;
-	Tue, 16 Dec 2025 12:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A8A3596F7;
+	Tue, 16 Dec 2025 12:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888594; cv=none; b=PTvbLFmQ981r9Fys0BRkfoDSrWbZar11RrLIFgoxPxbSdzfHRQg3XrJAulDzsPRQHCLV39ukN9eV4WB5mRfs+KBtjZqPByxrhL4TNrq1lH+rqn4vh391NQTqbajEIgylDwV3tZYcnnQhHd0t6CfEpSOpgostjW9vv+Xl0pw2YKQ=
+	t=1765886670; cv=none; b=t1oGhVuj1rH8llIOWy98eYD9s2teilmEz0+7IDGS41LhGZlkX4DeMqox4U+fx+8QwX0F+/gFYx/mCfqsrLUQaD65wynwUyf6NHpx3Clg3PEC4aJw+9DZtHufsOmyRBZCXwHmjhvanOQblyTWhuiWbcydkQssevv4Po8FX41sgTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888594; c=relaxed/simple;
-	bh=Kd1XcAArrzD/2yqQAcYPvMcdQ+iZeJ7LcAjzivmXDlE=;
+	s=arc-20240116; t=1765886670; c=relaxed/simple;
+	bh=nIexgY3FuhayDnfbOhLnSvOiwgENZRciWSeqroNnIBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5BY0wS/RZalGAfbbWY32SruddyPKeKXzWzVW/cccOqCMYYa1Dr7KF5isroYfxcO324s8fgdHpBTyHrCSkaXlisOYMiJVz25FuczNCDj34OyVvJsh0IsSAoLiZz1qkfpuW4iz+wMXw0tttlcSEnF/VXIL6Xl5utnNBt7qlO2RdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/Tu0LPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D72C4CEF1;
-	Tue, 16 Dec 2025 12:36:32 +0000 (UTC)
+	 MIME-Version; b=OZM/F2LrxQKv5WwaRWVHivvUh5InycykCdi9B4kqSaiQAsIk6+q9FSi3U9jx+ONH3/qc6wWibIANThcGeGqVqV7IjgSMrBu+sQfz4/5CLGMJLjpNlYtessQw1K/GDb/DrnUDRSYwG2HgGHIXmYqrA+6rDzfr/N2MOlxBmIJr5lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvSTAWil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B26C4CEF1;
+	Tue, 16 Dec 2025 12:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888593;
-	bh=Kd1XcAArrzD/2yqQAcYPvMcdQ+iZeJ7LcAjzivmXDlE=;
+	s=korg; t=1765886669;
+	bh=nIexgY3FuhayDnfbOhLnSvOiwgENZRciWSeqroNnIBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/Tu0LPvWp6SVW7AYX8azrdNw1CZlV59/ifGZVI80I3ediHhATf9vmpEjZYXHR+/4
-	 G6plpB/ZM1sST1PIe6tSsSXCnJQ2eXgXjoNi+EOIiO6ibHR8bRccLSQYvujm9dSCvj
-	 7S0K4GlXABNATpclXZbJEFr0ttDl5pHy6+RJHP1w=
+	b=AvSTAWil9NQVBhasmePKHhoahyTOEpvBA25Il4RCw0Jg9wV+iQmSnskFk2oudfw7y
+	 6lrXlJT50YcaWFzv9mnthse4clE6DfqQiVBAkPinpE67BmSC8KsASIoqDDcoe6c4na
+	 v0wlCUQSdeSO9nhSxAbQdgwbfgQlUOFq7UmAMdl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Link Mauve <kernel@linkmauve.fr>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 580/614] rtc: gamecube: Check the return value of ioremap()
+	Denis Arefev <arefev@swemel.ru>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 506/507] ALSA: hda: cs35l41: Fix NULL pointer dereference in cs35l41_hda_read_acpi()
 Date: Tue, 16 Dec 2025 12:15:47 +0100
-Message-ID: <20251216111422.401292624@linuxfoundation.org>
+Message-ID: <20251216111403.769380095@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
+commit c34b04cc6178f33c08331568c7fd25c5b9a39f66 upstream.
 
-The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
-and return NULL, which is dereferenced without checking, leading to a
-NULL pointer dereference.
+The acpi_get_first_physical_node() function can return NULL, in which
+case the get_device() function also returns NULL, but this value is
+then dereferenced without checking,so add a check to prevent a crash.
 
-Add a check for the return value of ioremap() and return -ENOMEM on
-failure.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Link Mauve <kernel@linkmauve.fr>
-Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b2f3eb492da ("ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251202101338.11437-1-arefev@swemel.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-gamecube.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/hda/codecs/side-codecs/cs35l41_hda.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
-index c828bc8e05b9c..045d5d45ab4b0 100644
---- a/drivers/rtc/rtc-gamecube.c
-+++ b/drivers/rtc/rtc-gamecube.c
-@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
- 	}
+--- a/sound/hda/codecs/side-codecs/cs35l41_hda.c
++++ b/sound/hda/codecs/side-codecs/cs35l41_hda.c
+@@ -1917,6 +1917,8 @@ static int cs35l41_hda_read_acpi(struct
  
- 	hw_srnprot = ioremap(res.start, resource_size(&res));
-+	if (!hw_srnprot) {
-+		pr_err("failed to ioremap hw_srnprot\n");
-+		return -ENOMEM;
-+	}
- 	old = ioread32be(hw_srnprot);
+ 	cs35l41->dacpi = adev;
+ 	physdev = get_device(acpi_get_first_physical_node(adev));
++	if (!physdev)
++		return -ENODEV;
  
- 	/* TODO: figure out why we use this magic constant.  I obtained it by
--- 
-2.51.0
-
+ 	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+ 	if (IS_ERR(sub))
 
 
 
