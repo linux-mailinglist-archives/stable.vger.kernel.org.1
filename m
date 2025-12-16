@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A579FCC2AFE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E753CC26C8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F8E23119E1F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53EC0306C2C3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B83935B15D;
-	Tue, 16 Dec 2025 12:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F5934D3B8;
+	Tue, 16 Dec 2025 11:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEOGCv37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGQkhpNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0280335A930;
-	Tue, 16 Dec 2025 12:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DE134D3B9;
+	Tue, 16 Dec 2025 11:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887292; cv=none; b=E5ehLZHLIxvEGgeBhZ0/8pnTJv0PbCMhcsH0+oiQGukT1vFGyKFVlNb6xeJx6zZvetavm3jUQP2cnE3VX9+ojh6J0KLtNNLpgknvlL2YDyrl9aUDu+C2LkNCmCG2PmExKv9Wunss56GBr6+XTtEOVUANiIjl36gpS0gK8RQBo3c=
+	t=1765885345; cv=none; b=ZqQIgRxk98okaMAin5aJtHdneSGcJ5n/TbS4fzDF70fDo8BT/oDw0I6RJB3xmzZQjp+SqB258ZStXckc/z7j+vh/oixLP772S89wKtR975aBCwv+hNTPYZfLt8XkeDjyMRZy8fCkrmi11xKg8Jj+2Tx7EB+moM/VjNFmOVkRmwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887292; c=relaxed/simple;
-	bh=zli94L4yEkYoyfZMuvGlGB/V2JC0MsXp1bTjgaeZP6k=;
+	s=arc-20240116; t=1765885345; c=relaxed/simple;
+	bh=8kSV2/TkAIYeuPKIF4YKa7MyRezeJBKNuB2R11b/yr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GjEQpNw7oCPo0yUJfb01TMmJMgKJ/kMer1oAQn1nMby1iNTM2hTmFLjTrpbMUkhI3Fc5JoejqFlNYn2xMipd4TrI/4sgdAD7Ph+N9tvAadpDWTJXx157n3n3NQaw3QLu2Ph1CqCTcdXHpfoGptCQVhJHwJ1+EGj04NeCIWiDM34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEOGCv37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272EEC4CEF1;
-	Tue, 16 Dec 2025 12:14:50 +0000 (UTC)
+	 MIME-Version; b=Lbmg0Ia5GvTaKYgk5Wd4CVHY3mmHk9Ugw12DR25/VYJJOhRdpovigEG6U9JDvqW9Su37Lrk6beOV2Ezxepk22emjnAsnHENoufm2MfTfDrvbAovv54QNyEuy4mLLfxr0xsP0viRrds4eNoly23/H8Uhlw4X4mTLV76wjfXYypi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGQkhpNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26FDC4CEF1;
+	Tue, 16 Dec 2025 11:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887291;
-	bh=zli94L4yEkYoyfZMuvGlGB/V2JC0MsXp1bTjgaeZP6k=;
+	s=korg; t=1765885345;
+	bh=8kSV2/TkAIYeuPKIF4YKa7MyRezeJBKNuB2R11b/yr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEOGCv371bGK58IymvHnXo3dyULMWpQ5zhJL2aZKVMsJvUqukjy400RgSP+tEX4z5
-	 fdG8WOx9lLBCh4nGetvbaAo1Gt3Ql8Z4RkumVfNxmc58WiQqPzEME6gHud+YBfvVVp
-	 E/1a2GLx/tZrsfgHrfydrFBdR7v9XZdZr6BjiQrU=
+	b=xGQkhpNrm1j99ofef4uCOlrhs2rl5j4NJ7+n0gASrVQzUbd9YvFyU3PjIyeCFXXSK
+	 Ma8sMSlc9P8qOo/Siq9fcFykM8GHe9kjUzCYE2s5K8HlKXHuspw4oU0HobU/ZhbvQG
+	 5mIEMmsYi0EtJdZFdg5fvBJ5V0wFiGhJfYlnlKJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Li Qiang <liqiang01@kylinos.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 186/614] power: supply: apm_power: only unset own apm_get_power_status
+Subject: [PATCH 6.17 112/507] wifi: iwlwifi: mld: add null check for kzalloc() in iwl_mld_send_proto_offload()
 Date: Tue, 16 Dec 2025 12:09:13 +0100
-Message-ID: <20251216111408.112902634@linuxfoundation.org>
+Message-ID: <20251216111349.592704902@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,44 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-[ Upstream commit bd44ea12919ac4e83c9f3997240fe58266aa8799 ]
+[ Upstream commit 3df28496673bd8009f1cd3a85a63650c96e369f4 ]
 
-Mirroring drivers/macintosh/apm_emu.c, this means that
-  modprobe apm_power && modprobe $anotherdriver && modprobe -r apm_power
-leaves $anotherdriver's apm_get_power_status instead of deleting it.
+Add a missing NULL pointer check after kzalloc() in
+iwl_mld_send_proto_offload(). Without this check, a failed
+allocation could lead to a NULL dereference.
 
-Fixes: 3788ec932bfd ("[BATTERY] APM emulation driver for class batteries")
-Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
-Link: https://patch.msgid.link/xczpgox57hxbunkcbdl5fxhc4gnsajsipldfidi7355afezk64@tarta.nabijaczleweli.xyz
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: d1e879ec600f9 ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Link: https://patch.msgid.link/20251017041128.1379715-1-liqiang01@kylinos.cn
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/apm_power.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/power/supply/apm_power.c b/drivers/power/supply/apm_power.c
-index 9236e00785786..9933cdc5c387a 100644
---- a/drivers/power/supply/apm_power.c
-+++ b/drivers/power/supply/apm_power.c
-@@ -364,7 +364,8 @@ static int __init apm_battery_init(void)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index ed0a0f76f1c51..de669e9ae55a5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1632,6 +1632,10 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+ 	u32 enabled = 0;
  
- static void __exit apm_battery_exit(void)
- {
--	apm_get_power_status = NULL;
-+	if (apm_get_power_status == apm_battery_apm_get_power_status)
-+		apm_get_power_status = NULL;
- }
+ 	cmd = kzalloc(hcmd.len[0], GFP_KERNEL);
++	if (!cmd) {
++		IWL_DEBUG_WOWLAN(mld, "Failed to allocate proto offload cmd\n");
++		return -ENOMEM;
++	}
  
- module_init(apm_battery_init);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
 -- 
 2.51.0
 
