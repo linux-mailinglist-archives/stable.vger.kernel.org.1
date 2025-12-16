@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A50CC23AF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27F6CC49FE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D14083027A04
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:29:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5163E303105B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BADF3233EE;
-	Tue, 16 Dec 2025 11:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF6C376BF2;
+	Tue, 16 Dec 2025 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGmesfmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+cvsPI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD07F2E54AA;
-	Tue, 16 Dec 2025 11:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EB2376BED;
+	Tue, 16 Dec 2025 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884542; cv=none; b=mPh3ZpzJsiFcJjxBjoX7fEUx47G+d33hctDuhHDNRT5v94z2tnwZgsAj5+uJfiyP+vONhM+eyXXCPtxW4DJhyFkJiPqOS4wQA14DVdBKfJxozRckhajuTlU5Qk6omAZbApx0q+O3A63Ic6jRJ9Rh2DaEGwVoISdqOWM/rWptZvg=
+	t=1765888082; cv=none; b=j+KiLckfllltgHynXzJ/XQ8nz6HDtd0jZGvB9q0P9QssVfyvc/JEd2hyy+MtbbZQbvm5QIJuyU0Vgha9fdtUoMUtyonTTo2m4qIAGzMfAKYrX2nYkYbNJZ8OEZt3gQ6fVKPYldh+hXTiQ5wIPn7uE5RG2J9N8aSaNW4Rw3SbgOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884542; c=relaxed/simple;
-	bh=F6U/dEBl+2NTD6z2zLukw4CTjyrj9Kno1LORl4/mDv0=;
+	s=arc-20240116; t=1765888082; c=relaxed/simple;
+	bh=qGVSBLFwLpAwowDFSAKonXo4CgaeAAFbC6o0qA2Y26o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9X98FXuNOSNHaIEeOXNoZOC3J7zETux/rgsVOIgzo1q7R3wrFZZCYFLxX9Wj1fqgfnWCV/Vu+pM3A6QWnhwXNNeKjvPtKl/fIs0Vc819JNpJNka1S+GAvB9+aQ+jutpRkoB+Vm+kWvBEk3+ncpVF6LPxnp3rm/cvYnNiIzlqjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGmesfmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62843C4CEF1;
-	Tue, 16 Dec 2025 11:29:01 +0000 (UTC)
+	 MIME-Version; b=OA+2fMGDaiQ0FscfXKCIQ/PgqaUXZ1t0mMvJa3NVnN8UhVW/5QipkvYSkxpm7kzNRVZWqyDJ1IwJPw5O46vRsz8RxJM2M10SI3qv4w3BmG8bQiyYuPiyK5YhSeJS1VCyaI3NwEgw3154UVwPnoJ5GdAtFieUd1ZCrWhXo6rFUfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+cvsPI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD76C4CEF1;
+	Tue, 16 Dec 2025 12:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884541;
-	bh=F6U/dEBl+2NTD6z2zLukw4CTjyrj9Kno1LORl4/mDv0=;
+	s=korg; t=1765888082;
+	bh=qGVSBLFwLpAwowDFSAKonXo4CgaeAAFbC6o0qA2Y26o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGmesfmPPPLZJstLro+t1BmyoCG/RNQwNwv4HaabrlguqwYmz5O1mmfj70QUtmD3H
-	 QTrCgD9o1A6/Khz8lfjKvZevr5YvNKq/hpPF+ThFFfX6bFHFPax0FpsU4N32D0ehRQ
-	 CIXtI6R8X6GwLt/awkdgyuy+gQYSbN0xKFjYmQU4=
+	b=l+cvsPI54aytJNgbYbTQq+JLUnD/rcAKGtyRZXbQ9znDfI762H7TBQgkPDeeRQ4Gr
+	 lv/V82rLesCOKolOxuOU0Q6/QK6gNVQlo1jLAGnEyt8Z7+hRnatJnRb8lg7XcX470R
+	 9KMTRYGZiosoF9amvYrdH7ouEgwNJoYIol2YXJWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ria Thomas <ria.thomas@morsemicro.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/354] wifi: ieee80211: correct FILS status codes
-Date: Tue, 16 Dec 2025 12:13:13 +0100
-Message-ID: <20251216111329.105160524@linuxfoundation.org>
+Subject: [PATCH 6.18 427/614] RDMA/irdma: Do not set IBK_LOCAL_DMA_LKEY for GEN3+
+Date: Tue, 16 Dec 2025 12:13:14 +0100
+Message-ID: <20251216111416.844187425@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ria Thomas <ria.thomas@morsemicro.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
+[ Upstream commit eef3ad030b08c0f100cb18de7f604442a1adb8c7 ]
 
-The FILS status codes are set to 108/109, but the IEEE 802.11-2020
-spec defines them as 112/113. Update the enum so it matches the
-specification and keeps the kernel consistent with standard values.
+The GEN3 hardware does not appear to support IBK_LOCAL_DMA_LKEY. Attempts
+to use it will result in an AE.
 
-Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
-Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
-Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: eb31dfc2b41a ("RDMA/irdma: Restrict Memory Window and CQE Timestamping to GEN3")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20251125025350.180-8-tatyana.e.nikolova@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 7ecdde54e1edd..abb069aa5fa54 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -3528,8 +3528,8 @@ enum ieee80211_statuscode {
- 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
- 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
- 	/* 802.11ai */
--	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
--	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
-+	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
-+	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
- 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
- 	WLAN_STATUS_SAE_PK = 127,
- 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 8c44c3fcf9731..afccd9f08b8a5 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -27,7 +27,8 @@ static int irdma_query_device(struct ib_device *ibdev,
+ 			irdma_fw_minor_ver(&rf->sc_dev);
+ 	props->device_cap_flags = IB_DEVICE_MEM_WINDOW |
+ 				  IB_DEVICE_MEM_MGT_EXTENSIONS;
+-	props->kernel_cap_flags = IBK_LOCAL_DMA_LKEY;
++	if (hw_attrs->uk_attrs.hw_rev < IRDMA_GEN_3)
++		props->kernel_cap_flags = IBK_LOCAL_DMA_LKEY;
+ 	props->vendor_id = pcidev->vendor;
+ 	props->vendor_part_id = pcidev->device;
+ 
 -- 
 2.51.0
 
