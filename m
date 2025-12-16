@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-202113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758CBCC4AAC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F240CC4480
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D000B3027A7F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:28:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 251CB31373F6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161C935FF48;
-	Tue, 16 Dec 2025 12:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA6835FF54;
+	Tue, 16 Dec 2025 12:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8vfjVGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to2PMzKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68D135FF45;
-	Tue, 16 Dec 2025 12:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0BF35F8D7;
+	Tue, 16 Dec 2025 12:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886857; cv=none; b=t6tBNvjmOvNQm7sHMZp2CqdfmGJKvFW6uaSnZgGybzA6RVPuumdbMosz04+d3y4KoctFO5Oddjs0drq0MIE6/UmTbtldNIWA/FekhOkApuvU5B/GI8Fm6+aSvkJtmyR+sGqOHhr/FoMnQhke+1C+9oqzlUXNRcNeg4aRCy0H2N8=
+	t=1765886864; cv=none; b=MP6Ea8uzJCLCge3YrpZyKw3J5kBHOzEZwuablZySBllCNVYZtywdtffh4if/sMJe03ubrb4oPLtai3HMZHPSPDnhQkMH4lflkSDDgffel2lKJu1HduMo2KBhVvt6lfzvW+e3NoT3JhKAYX8pQPNt6geEGPDatWC3xfLIMibWWlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886857; c=relaxed/simple;
-	bh=25yRLFdU0yHTTEIW6+iDPHBU1khl68qWRHBkklBTfoI=;
+	s=arc-20240116; t=1765886864; c=relaxed/simple;
+	bh=W+z/8EITrAaRVXjIZ5iGbyN6OnqpM7kCehx4j2YU1gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FR9zUI+dPw5arAOPVOl8jQwHuksJrV0uweAHwWAq8CptC5F52kXfGRj/y2igDJjWmbyeFBisnJcJh7wgHzXVsN3/5iFVacB87j5cn4bc4Ebd67Y/rMLnQRUjrEZglLzWTXEDoOa+/yM/5fLJjl3nxBI+V8KrzzpUCUoypKrrYQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8vfjVGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332B8C4CEF1;
-	Tue, 16 Dec 2025 12:07:36 +0000 (UTC)
+	 MIME-Version; b=Zj/+bVxvTsGJQ6A0HnGlOPg36OVvhj2LFBzl72oJtaze920ZMF/mN3TUBNOgiGaGmkYZup+j12wwrXIYoC8f+RMDZiFRBCyNZjr+F6h0lPBGMSs0go6VjmOvtqenpg0gu0861ISLgE9kpqTnu5wIsUfmuIsoWjXWg3UY5wnT2uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to2PMzKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D52C4CEF1;
+	Tue, 16 Dec 2025 12:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886857;
-	bh=25yRLFdU0yHTTEIW6+iDPHBU1khl68qWRHBkklBTfoI=;
+	s=korg; t=1765886864;
+	bh=W+z/8EITrAaRVXjIZ5iGbyN6OnqpM7kCehx4j2YU1gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8vfjVGz/O6MwtvCcyxNV38pVF8vPDEW6KObOjgBGCVYUNOVQbYuzukOW2OMdzXZU
-	 9x5N61pH/NDZUOvcDpwAgrPm+KERa3cExouK7cvDlH0JpTVwRH4vJa1ufluInDpebZ
-	 oaCPt58Z/Apsru2MNYLnQM+s7hA89NXgwb8/9SMM=
+	b=to2PMzKKRubRg8j41T2ofCm8038ooUgRInm6Aw24vh5dd9zkXfIhYRUtlR/AG3TCc
+	 HfoXrajXUGcXnvVTNC0EKWmqNChoUASl6vZCfgC4GEU0QIrvexH62Uenh0W6lVKatO
+	 2crAdDKxzTAwGCFruRPii8NJmy94pWOsJhd/BE04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johan Hovold <johan@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/614] irqchip/qcom-irq-combiner: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:07:00 +0100
-Message-ID: <20251216111403.230037296@linuxfoundation.org>
+Subject: [PATCH 6.18 054/614] irqchip: Drop leftover brackets
+Date: Tue, 16 Dec 2025 12:07:01 +0100
+Message-ID: <20251216111403.266400338@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -66,32 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 9b685058ca936752285c5520d351b828312ac965 ]
+[ Upstream commit 3540d99c03a88d4ebf65026f1f1926d3af658fb1 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the probe callback must not live in init.
+Drop some unnecessary brackets in platform_irqchip_probe() mistakenly
+left by commit 9322d1915f9d ("irqchip: Plug a OF node reference leak in
+platform_irqchip_probe()").
 
-Fixes: f20cc9b00c7b ("irqchip/qcom: Add IRQ combiner driver")
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: 1e3e330c0707 ("irqchip: Pass platform device to platform drivers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/qcom-irq-combiner.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irqchip.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/qcom-irq-combiner.c b/drivers/irqchip/qcom-irq-combiner.c
-index 18e696dc7f4d6..9308088773be7 100644
---- a/drivers/irqchip/qcom-irq-combiner.c
-+++ b/drivers/irqchip/qcom-irq-combiner.c
-@@ -222,7 +222,7 @@ static int get_registers(struct platform_device *pdev, struct combiner *comb)
- 	return 0;
- }
+diff --git a/drivers/irqchip/irqchip.c b/drivers/irqchip/irqchip.c
+index 0ee7b6b71f5fa..652d20d2b07f1 100644
+--- a/drivers/irqchip/irqchip.c
++++ b/drivers/irqchip/irqchip.c
+@@ -38,9 +38,8 @@ int platform_irqchip_probe(struct platform_device *pdev)
+ 	struct device_node *par_np __free(device_node) = of_irq_find_parent(np);
+ 	of_irq_init_cb_t irq_init_cb = of_device_get_match_data(&pdev->dev);
  
--static int __init combiner_probe(struct platform_device *pdev)
-+static int combiner_probe(struct platform_device *pdev)
- {
- 	struct combiner *combiner;
- 	int nregs;
+-	if (!irq_init_cb) {
++	if (!irq_init_cb)
+ 		return -EINVAL;
+-	}
+ 
+ 	if (par_np == np)
+ 		par_np = NULL;
+@@ -53,9 +52,8 @@ int platform_irqchip_probe(struct platform_device *pdev)
+ 	 * interrupt controller. The actual initialization callback of this
+ 	 * interrupt controller can check for specific domains as necessary.
+ 	 */
+-	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY)) {
++	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY))
+ 		return -EPROBE_DEFER;
+-	}
+ 
+ 	return irq_init_cb(np, par_np);
+ }
 -- 
 2.51.0
 
