@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDDDCC2D79
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C2DCC3519
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 368073090DDC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3F4E3068026
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDFB36CDF2;
-	Tue, 16 Dec 2025 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2C434251F;
+	Tue, 16 Dec 2025 11:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3cKtQrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiCvhOxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C6A24E4C6;
-	Tue, 16 Dec 2025 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AFC2135B8;
+	Tue, 16 Dec 2025 11:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887470; cv=none; b=Q1mCrwloqW+h9DxNy5EalHFLx76S0Ak1jEOKi4rZsPZtQDXHImSXxFC6BK6MEbs5D14K0GqW54les6xVoN6gKOV4dEi7m+xYNUPz44ISFnZEplfzuf5dwA/Sz1jMyykPbxMRcbXrJTk61Xe1wsbG98VuayhTMRx8uySnNmj7VV4=
+	t=1765885442; cv=none; b=dZyvwB3/0e9fMZp7Jo81G/QkDTdXr9GDjQOokBEqaY6udwv3wVDzfwsINPGxDp3qvcczl1Py/XLblUG8KNce26QYIbZOpuft+3nKg1Jr8lriKJGOtnem7O8GLtDdKCRatCLHj6ogYZd61XeGq7/XR7ZWTKFqnrYcXx0HY8Djnu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887470; c=relaxed/simple;
-	bh=S96FJ54ZeYGGfVIxvfL8cGFuOTGMzGy/ohpOUOypMK0=;
+	s=arc-20240116; t=1765885442; c=relaxed/simple;
+	bh=gEgUT6PJpv4kmGxyUUoScG0zLUHJ/HBtwPlaGm2aNC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4LNX0TcV6qZxHFdvLqe3/HuEDYAGzjdfCH4IAuy2xMT69ziZq+DEe9sl4WcMLwz0QKKpvi265EkfQkvagSw55JanBud9LjnC9oQY0JZWek/z35Hb5BzDu7bdHhH6t7lFi9VzKArYHG0tkEtqVzPYZ4d9MsBOeGcZ16KW8SaGpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3cKtQrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35361C4CEF1;
-	Tue, 16 Dec 2025 12:17:50 +0000 (UTC)
+	 MIME-Version; b=MSojgxHQ+FmgcsR3+h5aXL0hQI4u4eTHaq6M9JoMrVaVRxPeitD+CJ3gq+E64dgw92Y8oGP1Vq/B+hiVm+bGRARNVzkQEah3oP8UYCoIGOhG09Ny1e859y4nY5J5XROv7Tm0iJFRkSrZaXLfe6PgFzzXhe5Fy3bSopxqN8zGu+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiCvhOxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79D9C4CEF1;
+	Tue, 16 Dec 2025 11:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887470;
-	bh=S96FJ54ZeYGGfVIxvfL8cGFuOTGMzGy/ohpOUOypMK0=;
+	s=korg; t=1765885442;
+	bh=gEgUT6PJpv4kmGxyUUoScG0zLUHJ/HBtwPlaGm2aNC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3cKtQrzHr/geu9b7t7YBdLn0Sv2pwGP7SkBjeUtSTutdzgOYVuTB3MWg1s6mstXQ
-	 o+hEwq7m2C6tbFNFkt2ZIcwXRJGWFlTuO5joR7GUbqOVvFIGe0DxfaFZgscyfEbTzZ
-	 OkmoJGh1baAw4sjLiXfgnT8xg6V4d/yeCej9D8hU=
+	b=XiCvhOxw8K0LWHebZKYnXq2f28kveFtgFdIIGQ35bP3Rj54gzG8D5Ud/qzMQFgH5u
+	 u3cYqFN1+VQhg5bCwTXkxr9B8+i8czBzlybsx+8BhEaT7pWqiPjkh6fK+r6z6+/gUs
+	 CjSZlVUwEYqd5pcwaF7ld7UtWLiTcp7Z2VfYWw/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 207/614] entry,unwind/deferred: Fix unwind_reset_info() placement
+Subject: [PATCH 6.17 133/507] i3c: fix refcount inconsistency in i3c_master_register
 Date: Tue, 16 Dec 2025 12:09:34 +0100
-Message-ID: <20251216111408.875727821@linuxfoundation.org>
+Message-ID: <20251216111350.348475759@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit cf76553aaa363620f58a6b6409bf544f4bcfa8de ]
+[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
 
-Stephen reported that on KASAN builds he's seeing:
+In `i3c_master_register`, a possible refcount inconsistency has been
+identified, causing possible resource leak.
 
-vmlinux.o: warning: objtool: user_exc_vmm_communication+0x15a: call to __kasan_check_read() leaves .noinstr.text section
-vmlinux.o: warning: objtool: exc_debug_user+0x182: call to __kasan_check_read() leaves .noinstr.text section
-vmlinux.o: warning: objtool: exc_int3+0x123: call to __kasan_check_read() leaves .noinstr.text section
-vmlinux.o: warning: objtool: noist_exc_machine_check+0x17a: call to __kasan_check_read() leaves .noinstr.text section
-vmlinux.o: warning: objtool: fred_exc_machine_check+0x17e: call to __kasan_check_read() leaves .noinstr.text section
+Function `of_node_get` increases the refcount of `parent->of_node`. If
+function `i3c_bus_init` fails, the function returns immediately without
+a corresponding decrease, resulting in an inconsistent refcounter.
 
-This turns out to be atomic ops from unwind_reset_info() that have
-explicit instrumentation. Place unwind_reset_info() in the preceding
-instrumentation_begin() section.
+Move call i3c_bus_init() after device_initialize() to let callback
+i3c_masterdev_release() release of_node.
 
-Fixes: c6439bfaabf2 ("Merge tag 'trace-deferred-unwind-v6.17' of git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251105100014.GY4068168@noisy.programming.kicks-ass.net
+Reported-by: Shuhao Fu <sfual@cse.ust.hk>
+Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/irq-entry-common.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/irq-entry-common.h b/include/linux/irq-entry-common.h
-index d643c7c87822e..ba1ed42f8a1c2 100644
---- a/include/linux/irq-entry-common.h
-+++ b/include/linux/irq-entry-common.h
-@@ -253,11 +253,11 @@ static __always_inline void exit_to_user_mode_prepare(struct pt_regs *regs)
- static __always_inline void exit_to_user_mode(void)
- {
- 	instrumentation_begin();
-+	unwind_reset_info();
- 	trace_hardirqs_on_prepare();
- 	lockdep_hardirqs_on_prepare();
- 	instrumentation_end();
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 67a18e437f831..08caaad195d59 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2811,10 +2811,6 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	INIT_LIST_HEAD(&master->boardinfo.i2c);
+ 	INIT_LIST_HEAD(&master->boardinfo.i3c);
  
--	unwind_reset_info();
- 	user_enter_irqoff();
- 	arch_exit_to_user_mode();
- 	lockdep_hardirqs_on(CALLER_ADDR0);
+-	ret = i3c_bus_init(i3cbus, master->dev.of_node);
+-	if (ret)
+-		return ret;
+-
+ 	device_initialize(&master->dev);
+ 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+ 
+@@ -2822,6 +2818,10 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
+ 	master->dev.dma_parms = parent->dma_parms;
+ 
++	ret = i3c_bus_init(i3cbus, master->dev.of_node);
++	if (ret)
++		goto err_put_dev;
++
+ 	ret = of_populate_i3c_bus(master);
+ 	if (ret)
+ 		goto err_put_dev;
 -- 
 2.51.0
 
