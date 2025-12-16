@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6161CC35B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5544DCC2ABF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4CBC30B11B2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 251C230CBF79
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6998A39B6D8;
-	Tue, 16 Dec 2025 12:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2883596F0;
+	Tue, 16 Dec 2025 12:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTjn94Ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/J+Vce5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2813739B6AA;
-	Tue, 16 Dec 2025 12:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771AE3596E6;
+	Tue, 16 Dec 2025 12:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888665; cv=none; b=bs6zP379jzk8uSRvw+vmDzI+9OjzwjHrSG7LMBYGE8WMAB3KGEb+7jYNW6H+xstJNVxV64Xz+o3pQ4zNAz2wpUw88wbsmqOYv/jqgM/19+Zjowcq0s9ZtH0qnLJOh73HeAXxP3eevgnuwbJrdHsi6LXPGVqekh7UNRCLylED5V0=
+	t=1765886680; cv=none; b=Zw76HPRhewZlAs6ij8ABw5rBiT0myI6rLXTfXVlTBFa80+lJa2eyM7ZiJEjPuJhtyPyqroKWaSgvtT+FaTQohc5JuZwceQxNU5TGstosj79j8/PBIXh3oTYLJOasZNVthjsfuswVg9317wMUVTvjUJxPxzbjhbQV2Bgixxs3qlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888665; c=relaxed/simple;
-	bh=XAqe8G9i0i+c5fpAhZDe7ITHHLF+4zez6Lx3h6wQj4w=;
+	s=arc-20240116; t=1765886680; c=relaxed/simple;
+	bh=Gl5Vc1GKFDMTAqErdhDChfrOnDCZxOjgbhyekghnK+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxoI/ovjvCBwhdd/BVT2kKGaSD3rSfKFF08b1aIVh5it7Nv0mFr0AA3FeTBHMrtpPXX70YLxKOcr/y9MrOOyp9PKDqhDNEfXg3upVw18KlY/XQhrBt3D9MkXA5HUxBMDx4s1DkzgbNyjiLggmFCnree0sa7CL1CqTas454Iwbq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTjn94Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84E9C4CEF1;
-	Tue, 16 Dec 2025 12:37:44 +0000 (UTC)
+	 MIME-Version; b=K02VxvNXkwTk0SaSWTt/XuCzUn4QbxVEX8mjwFGxN5yng+fAq5nUl/9mceLUfdp87L6G+1oalOuIm9uS8eyifc4EZgK4G83/nfDQ5E5mejZEyMYJN2N+7kN0WujG/j0V/PjHP64blu1JZ7M2lzKd/vwm7wgAjbjzAJnAtRfyFVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/J+Vce5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0167AC4CEF1;
+	Tue, 16 Dec 2025 12:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888665;
-	bh=XAqe8G9i0i+c5fpAhZDe7ITHHLF+4zez6Lx3h6wQj4w=;
+	s=korg; t=1765886680;
+	bh=Gl5Vc1GKFDMTAqErdhDChfrOnDCZxOjgbhyekghnK+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTjn94AiuteJdJcXG8+X/duqy6oRsYqfm2X1fc7gz5PYefyomfrGbBKXav/vN9mnW
-	 Ul5x4h8NIZpAILg47WU+gDP0eoXCFQJ3c0Fe0EhSfMPkwN/J2nH8RXx/O+rNDRluux
-	 RIjRP2JJ1n+VOfDIOZXNTzDA/HtNKwNlLS8wYYaw=
+	b=i/J+Vce5Sh3OYllkNWTK7T3g5LisCKt4XWX1foqnu4A2hyBwSC1BlchaQgpQ8u+d4
+	 peLW7x1HhRfvRrIqyopO915siebVoKhVa4+R+ASApYgO151ywjjfKC7Qfk5lEZVMRS
+	 OvQCBWA2iYRygmTLtZGqdtk7yCnU8aIJtY7+JAHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhur Kumar <madhurkumar004@gmail.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 568/614] drm/nouveau: refactor deprecated strcpy
-Date: Tue, 16 Dec 2025 12:15:35 +0100
-Message-ID: <20251216111421.964352544@linuxfoundation.org>
+Subject: [PATCH 6.17 495/507] cpu: Make atomic hotplug callbacks run with interrupts disabled on UP
+Date: Tue, 16 Dec 2025 12:15:36 +0100
+Message-ID: <20251216111403.372397208@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhur Kumar <madhurkumar004@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 2bdc2c0e12fac56e41ec05fb771ead986ea6dac0 ]
+[ Upstream commit c94291914b200e10c72cef23c8e4c67eb4fdbcd9 ]
 
-strcpy() has been deprecated because it performs no bounds checking on the
-destination buffer, which can lead to buffer overflows. Use the safer
-strscpy() instead.
+On SMP systems the CPU hotplug callbacks in the "starting" range are
+invoked while the CPU is brought up and interrupts are still
+disabled. Callbacks which are added later are invoked via the
+hotplug-thread on the target CPU and interrupts are explicitly disabled.
 
-Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Fixes: 15a996bbb697 ("drm/nouveau: assign fence_chan->name correctly")
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251204120822.17502-1-madhurkumar004@gmail.com
+In the UP case callbacks which are added later are invoked directly without
+the thread indirection. This is in principle okay since there is just one
+CPU but those callbacks are invoked with interrupt disabled code. That's
+incorrect as those callbacks assume interrupt disabled context.
+
+Disable interrupts before invoking the callbacks on UP if the state is
+atomic and interrupts are expected to be disabled.  The "save" part is
+required because this is also invoked early in the boot process while
+interrupts are disabled and must not be enabled prematurely.
+
+Fixes: 06ddd17521bf1 ("sched/smp: Always define is_percpu_thread() and scheduler_ipi()")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251127144723.ev9DuXXR@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/cpu.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c b/drivers/gpu/drm/nouveau/nouveau_fence.c
-index 869d4335c0f45..4a193b7d6d9e4 100644
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -183,11 +183,11 @@ nouveau_fence_context_new(struct nouveau_channel *chan, struct nouveau_fence_cha
- 	fctx->context = drm->runl[chan->runlist].context_base + chan->chid;
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index db9f6c539b28c..15000c7abc659 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -249,6 +249,14 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 	return ret;
+ }
  
- 	if (chan == drm->cechan)
--		strcpy(fctx->name, "copy engine channel");
-+		strscpy(fctx->name, "copy engine channel");
- 	else if (chan == drm->channel)
--		strcpy(fctx->name, "generic kernel channel");
-+		strscpy(fctx->name, "generic kernel channel");
++/*
++ * The former STARTING/DYING states, ran with IRQs disabled and must not fail.
++ */
++static bool cpuhp_is_atomic_state(enum cpuhp_state state)
++{
++	return CPUHP_AP_IDLE_DEAD <= state && state < CPUHP_AP_ONLINE;
++}
++
+ #ifdef CONFIG_SMP
+ static bool cpuhp_is_ap_state(enum cpuhp_state state)
+ {
+@@ -271,14 +279,6 @@ static inline void complete_ap_thread(struct cpuhp_cpu_state *st, bool bringup)
+ 	complete(done);
+ }
+ 
+-/*
+- * The former STARTING/DYING states, ran with IRQs disabled and must not fail.
+- */
+-static bool cpuhp_is_atomic_state(enum cpuhp_state state)
+-{
+-	return CPUHP_AP_IDLE_DEAD <= state && state < CPUHP_AP_ONLINE;
+-}
+-
+ /* Synchronization state management */
+ enum cpuhp_sync_state {
+ 	SYNC_STATE_DEAD,
+@@ -2364,7 +2364,14 @@ static int cpuhp_issue_call(int cpu, enum cpuhp_state state, bool bringup,
  	else
--		strcpy(fctx->name, cli->name);
-+		strscpy(fctx->name, cli->name);
- 
- 	kref_init(&fctx->fence_ref);
- 	if (!priv->uevent)
+ 		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
+ #else
+-	ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	if (cpuhp_is_atomic_state(state)) {
++		guard(irqsave)();
++		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++		/* STARTING/DYING must not fail! */
++		WARN_ON_ONCE(ret);
++	} else {
++		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	}
+ #endif
+ 	BUG_ON(ret && !bringup);
+ 	return ret;
 -- 
 2.51.0
 
