@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09564CC220B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:20:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEC4CC2D8B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B37D13022224
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D49A306C177
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6A23358A8;
-	Tue, 16 Dec 2025 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BBA36CDEA;
+	Tue, 16 Dec 2025 12:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQGD1IUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jee9M8H2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A316532862F;
-	Tue, 16 Dec 2025 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2087B36CDE3;
+	Tue, 16 Dec 2025 12:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884021; cv=none; b=p+3wIApEGITxsUdZef+TMPiWt6ViVvyZGS6bz76J/Snr/kPOOdLrH5e1Ce68FxsuDce/LLzQ4LYj86qHAMSG9G0dSDedJeVywcCw5lBgkQjsGcG3HRnrFMWV9HC5HbUnBuXjQ9yesK08c/JpkEbM6rdt2lk/Cz8VMp9jO15tFOk=
+	t=1765887462; cv=none; b=eQrW0/N5Va76Kf0kjl3YU6gGBD9mRMGXroeU1Blph8VcNRHKWB64/golrM68TrwpJV0KeVdi0yWjZ9ovwIesZLHYWDYDg8Aez4dJXbN2xYUrQiiDtGr0Qmd+IXe/uQmZO9vmc1M9WMM0h8KCPCKj9sXNNdIpExP06CebXayb6a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884021; c=relaxed/simple;
-	bh=O7s4efUYCypIMA7icb7gcVutYcQjNyBuL1P7fEJrPlU=;
+	s=arc-20240116; t=1765887462; c=relaxed/simple;
+	bh=PuB4G7ltf4tGGJSbgHLbjj3WtAph3mdDuY757hes2Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvqBJeAly7lbiG+QNdXfvh5L2kDjtAL8yrJqvEg8E5qn9oTwE08jI3aite3fKeZzz0FBMwtCdb6mk5dbjrJi9ETPI6MtZdy3QM02PNluwirALZ11Zk29gzugz5tQLased6EQlg01kF3IDz5T5BbUBgeO2HhbbmLergVNQn03cQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQGD1IUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19CCC4CEF1;
-	Tue, 16 Dec 2025 11:20:20 +0000 (UTC)
+	 MIME-Version; b=ssfr8nRx4JkyZ6i18I5DUoVxp1tOUU8iICrgF229OCY0zkgvA8IngGKhrNR1ue7L/fiLJIfsKtZyi2R1EB+boWBCUXTJdWEljE2u0Tzu+Tu46n6EpIBH+6qnP1fYRT6BoiQOD87mBbKUfxngiup+nlFjrJZW1jGXLKBwkHOdHUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jee9M8H2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BA4C4CEF1;
+	Tue, 16 Dec 2025 12:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884021;
-	bh=O7s4efUYCypIMA7icb7gcVutYcQjNyBuL1P7fEJrPlU=;
+	s=korg; t=1765887461;
+	bh=PuB4G7ltf4tGGJSbgHLbjj3WtAph3mdDuY757hes2Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQGD1IUZSaaeu5IpcKhqpHqGgpMxgg4ylsonqgGrU+7LVBEXkC+9AwAStNFc2zn+2
-	 Efy2C3lutT4gie2D2P1/U1u5PO+y574HoaOnByF245X1lUSwdZedMYP3E7WuG68smQ
-	 xM5eL4mby48Nh1/Vc+XYaEy+SNuAx0DBZt9t8nho=
+	b=Jee9M8H262rrtMxgv2XJ+qNwLoddnCdLPkQZiNblTboZV682HFs4roo5+7II/3qpq
+	 VzyFo5utYvX8XtZ14Br+gEm5IZ9rUyACskBlvmyYCkQ7kD4/jUypWsNopQ493yffdO
+	 VpHIfGKxBfgs2dRwWXFALags9GlAhmZVEZE9+Lcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/354] irqchip/qcom-irq-combiner: Fix section mismatch
+Subject: [PATCH 6.18 236/614] ARM: dts: stm32: stm32mp157c-phycore: Fix STMPE811 touchscreen node properties
 Date: Tue, 16 Dec 2025 12:10:03 +0100
-Message-ID: <20251216111322.222700812@linuxfoundation.org>
+Message-ID: <20251216111409.919205914@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 9b685058ca936752285c5520d351b828312ac965 ]
+[ Upstream commit e40b061cd379f4897e705d17cf1b4572ad0f3963 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the probe callback must not live in init.
+Move st,adc-freq, st,mod-12b, st,ref-sel, and st,sample-time properties
+from the touchscreen subnode to the parent touch@44 node. These properties
+are defined in the st,stmpe.yaml schema for the parent node, not the
+touchscreen subnode, resolving the validation error about unevaluated
+properties.
 
-Fixes: f20cc9b00c7b ("irqchip/qcom: Add IRQ combiner driver")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 27538a18a4fcc ("ARM: dts: stm32: add STM32MP1-based Phytec SoM")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/r/20250915224611.169980-1-jihed.chaibi.dev@gmail.com
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/qcom-irq-combiner.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi    | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/qcom-irq-combiner.c b/drivers/irqchip/qcom-irq-combiner.c
-index 18e696dc7f4d6..9308088773be7 100644
---- a/drivers/irqchip/qcom-irq-combiner.c
-+++ b/drivers/irqchip/qcom-irq-combiner.c
-@@ -222,7 +222,7 @@ static int get_registers(struct platform_device *pdev, struct combiner *comb)
- 	return 0;
- }
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
+index bf0c32027baf7..370b2afbf15bf 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp157c-phycore-stm32mp15-som.dtsi
+@@ -185,13 +185,13 @@ touch@44 {
+ 		interrupt-parent = <&gpioi>;
+ 		vio-supply = <&v3v3>;
+ 		vcc-supply = <&v3v3>;
++		st,sample-time = <4>;
++		st,mod-12b = <1>;
++		st,ref-sel = <0>;
++		st,adc-freq = <1>;
  
--static int __init combiner_probe(struct platform_device *pdev)
-+static int combiner_probe(struct platform_device *pdev)
- {
- 	struct combiner *combiner;
- 	int nregs;
+ 		touchscreen {
+ 			compatible = "st,stmpe-ts";
+-			st,sample-time = <4>;
+-			st,mod-12b = <1>;
+-			st,ref-sel = <0>;
+-			st,adc-freq = <1>;
+ 			st,ave-ctrl = <1>;
+ 			st,touch-det-delay = <2>;
+ 			st,settling = <2>;
 -- 
 2.51.0
 
