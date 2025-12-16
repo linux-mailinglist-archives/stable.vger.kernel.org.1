@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-201732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395ACCC4113
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:52:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C504CC31A0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9746830C8AE3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:48:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7B1E303CCCC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0970F34EEE1;
-	Tue, 16 Dec 2025 11:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4537346E51;
+	Tue, 16 Dec 2025 12:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFmoAnxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho6DZ7vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE4C34E779;
-	Tue, 16 Dec 2025 11:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9042B346FB6;
+	Tue, 16 Dec 2025 12:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885609; cv=none; b=sbNVxF2AbIfFcmFasixAL35twrRvi0OQtkOa+GPKmgGuPZtm2HmVIvI+3614GlqP8dDdnc+PWGlMEAHbSa8wXs9FLq21yeviek/bbsfiebVZX4+PDA2OPl6GgpgS0ag/R5pD0vVX+aeGdS4DRDf9EE/LVqiWDm2OC9sT2IXyTGM=
+	t=1765887553; cv=none; b=cIhVGlqf4AZvi2/JD+ATiObzWCH5kYLl3w4Zreep0D4NUoWchrZP24TYZQPGMkRMkOpiaYy+OCmppL4ABLJDkNdrmNer84erD4hEXV0duaw4er39zuG4h2NcmlhRIziROcFLDYIgcQ4THNOOAgQAo3PYeZlaXzQYPRjgs4PkQfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885609; c=relaxed/simple;
-	bh=9oEkU3ua0R4xbSocXnKhRT2fEC9h1en037XXxr+6oUo=;
+	s=arc-20240116; t=1765887553; c=relaxed/simple;
+	bh=AySm7zN8pGrXLcbOqrfyqmCVacQfYDIxZrok8CP9BUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1VZ747wK7Qe+QFnVeiV8jfae4qfOODLoYTwmQ8m37tLidSVsRbG/oI9C1cb/UC24yBh3Zn+ech+1KIrCV4qIzRbwSiecYCSzHotg7+AxzY0hkBavXlW0WFDJqvYQHdO3khr0agmSe8JrKafT9GiseaAcuBK+6xI3UEXst+b+To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFmoAnxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18D3C4CEF1;
-	Tue, 16 Dec 2025 11:46:48 +0000 (UTC)
+	 MIME-Version; b=P3j7GrdXCwc7690l7utKiWYQI7iIQS9L5PY2sj4WUDGrb/8w+fMiJWwew+L1AiJdPQoh02PK9l+oRNp9nSnG2Mm03+u9762VEAN/8b9+1G89536NUKXqzKA9QbQN/aftn6WB0Gx2oI1L13/cYrV3Rd4GE48Dv2mEZ4cu8+pNsj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho6DZ7vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18357C4CEF1;
+	Tue, 16 Dec 2025 12:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885609;
-	bh=9oEkU3ua0R4xbSocXnKhRT2fEC9h1en037XXxr+6oUo=;
+	s=korg; t=1765887553;
+	bh=AySm7zN8pGrXLcbOqrfyqmCVacQfYDIxZrok8CP9BUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFmoAnxQvcrn3tFJLWUi1HpVWWGzBvKk5bci/K/8bb/rzpIMPVhNur6Iw0QQMDeyU
-	 Oc8P7zUkmbGCV1Ame15bmJSaZYZlrBr5HoT2K+46RM2HSQ6jeBQ7ZPPu7qrakqyPgG
-	 JhIvSfgennJ8E7lIbFlRbLzDTSfodMnvA/klvNgg=
+	b=ho6DZ7vnK7mvMMOZxwcCLBkUEkx0tJCqADExc9/g87dM0wuz/tnWKPn1pHPozTUfR
+	 g6abZ6Q/xmNSAIj4PKpAwb+crWWVJsz6AFlCTDkCo6Ms2/Hzp0q56wRiHqzKusSHFY
+	 cZZcm9DiFtZkh4Ihry8pAmKMQxOHi1wvnlFntLcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Ni <xni@redhat.com>,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 190/507] md: delete mddev kobj before deleting gendisk kobj
-Date: Tue, 16 Dec 2025 12:10:31 +0100
-Message-ID: <20251216111352.395465597@linuxfoundation.org>
+Subject: [PATCH 6.18 265/614] ocfs2: use correct endian in ocfs2_dinode_has_extents
+Date: Tue, 16 Dec 2025 12:10:32 +0100
+Message-ID: <20251216111410.974470210@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit cc394b94dc40b661efc9895665abf03640ffff2d ]
+[ Upstream commit c9dff86eb78a4b6b02b1e407993c946ccaf9bfb4 ]
 
-In sync del gendisk path, it deletes gendisk first and the directory
-/sys/block/md is removed. Then it releases mddev kobj in a delayed work.
-If we enable debug log in sysfs_remove_group, we can see the debug log
-'sysfs group bitmap not found for kobject md'. It's the reason that the
-parent kobj has been deleted, so it can't find parent directory.
+Fields in ocfs2_dinode is little endian, covert to host endian when
+checking those contents.
 
-In creating path, it allocs gendisk first, then adds mddev kobj. So it
-should delete mddev kobj before deleting gendisk.
-
-Before commit 9e59d609763f ("md: call del_gendisk in control path"), it
-releases mddev kobj first. If the kobj hasn't been deleted, it does clean
-job and deletes the kobj. Then it calls del_gendisk and releases gendisk
-kobj. So it doesn't need to call kobject_del to delete mddev kobj. After
-this patch, in sync del gendisk path, the sequence changes. So it needs
-to call kobject_del to delete mddev kobj.
-
-After this patch, the sequence is:
-1. kobject del mddev kobj
-2. del_gendisk deletes gendisk kobj
-3. mddev_delayed_delete releases mddev kobj
-4. md_kobj_release releases gendisk kobj
-
-Link: https://lore.kernel.org/linux-raid/20250928012424.61370-1-xni@redhat.com
-Fixes: 9e59d609763f ("md: call del_gendisk in control path")
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Link: https://lkml.kernel.org/r/20251025123218.3997866-1-joseph.qi@linux.alibaba.com
+Fixes: fdbb6cd96ed5 ("ocfs2: correct l_next_free_rec in online check")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ocfs2/inode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 4e033c26fdd46..07e48faa87e0b 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -887,8 +887,10 @@ void mddev_unlock(struct mddev *mddev)
- 		 * do_md_stop. dm raid only uses md_stop to stop. So dm raid
- 		 * doesn't need to check MD_DELETED when getting reconfig lock
- 		 */
--		if (test_bit(MD_DELETED, &mddev->flags))
-+		if (test_bit(MD_DELETED, &mddev->flags)) {
-+			kobject_del(&mddev->kobj);
- 			del_gendisk(mddev->gendisk);
-+		}
- 	}
- }
- EXPORT_SYMBOL_GPL(mddev_unlock);
+diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+index fcc89856ab95b..0a0a96054bfec 100644
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -201,13 +201,15 @@ struct inode *ocfs2_iget(struct ocfs2_super *osb, u64 blkno, unsigned flags,
+ static int ocfs2_dinode_has_extents(struct ocfs2_dinode *di)
+ {
+ 	/* inodes flagged with other stuff in id2 */
+-	if (di->i_flags & (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL |
+-			   OCFS2_CHAIN_FL | OCFS2_DEALLOC_FL))
++	if (le32_to_cpu(di->i_flags) &
++	    (OCFS2_SUPER_BLOCK_FL | OCFS2_LOCAL_ALLOC_FL | OCFS2_CHAIN_FL |
++	     OCFS2_DEALLOC_FL))
+ 		return 0;
+ 	/* i_flags doesn't indicate when id2 is a fast symlink */
+-	if (S_ISLNK(di->i_mode) && di->i_size && di->i_clusters == 0)
++	if (S_ISLNK(le16_to_cpu(di->i_mode)) && le64_to_cpu(di->i_size) &&
++	    !le32_to_cpu(di->i_clusters))
+ 		return 0;
+-	if (di->i_dyn_features & OCFS2_INLINE_DATA_FL)
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL)
+ 		return 0;
+ 
+ 	return 1;
 -- 
 2.51.0
 
