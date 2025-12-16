@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85AECCC2607
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25056CC2B3A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 79DD7302C5EB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 205E03130E31
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1019D34D3BF;
-	Tue, 16 Dec 2025 11:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D25435F8D7;
+	Tue, 16 Dec 2025 12:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2ifyC+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iUo2ase"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F8E322B83;
-	Tue, 16 Dec 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521F35F8D4;
+	Tue, 16 Dec 2025 12:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885397; cv=none; b=inirnYh+TQTGW0JX0ywqxBDdyUWcq2QVn+eYwv/rHNVD8JFQNaJ6fkKnyF3q/psV4sNWb1aYSUrPlCWArlCwxoxsuvaTg7uu1iTJZo+sbFUBm43UXTRHbBB1puRZ3MuLjX+wUg/xRxfWCewTHXdngZhY28NXXupofXlqoNt1hd0=
+	t=1765887344; cv=none; b=st5j/sH2dpAVkCZbIZYLwLodsLYaqRkXmcPrr916helHo5+AsRzJpOLbnW92NUNKkdjfW9wqLvLfbGEjwTiZN6wnlFrNBL8UEZfNjUhEWEs098Emj99ftVlVJ/BXRD6M7Mbz4KPnNMjB3SieV4NqpNWsYwqnDWrxh83Yk4ET7hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885397; c=relaxed/simple;
-	bh=HVhOFsKZvPxQNA+MsuUYiLy8A5fW6LFN1s63ZDwl/gw=;
+	s=arc-20240116; t=1765887344; c=relaxed/simple;
+	bh=ogPPyU9qZrWfV9sKIJXlYzYTi5S0nXkdrNXZYaSHH94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxChiI22t6KtMc87cd/DZQ6B4sAnZpnd898LaPRIf7Eb6EkWPXcnv+qGdWNTMplh5Ab50DAGFUIQSbiAaTB5XYXbjuZJmmHUiVmMbnrKaHaxNhSmRBvoNsoK6a45EuXg9SxmjP+jc8F0NDtO56G01TpIaC+ThYr2NPkt0InU608=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2ifyC+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8A6C4CEF1;
-	Tue, 16 Dec 2025 11:43:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VvBnyfKHyipoLQ1gS2nktjTasToQCGYzheVB25AekqGT0g9yQ9r97geJjHemV7+CKVkWfaoZjNGtUKiAO+N+/zszO905QtgDO0BTufLdvhGaqmkhcDskHBaDljSrqCEzijFgzNaW8uX/wowTbp0yaJ0WQT13/Uk3h0XdKeb+h0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iUo2ase; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED6DC4CEF1;
+	Tue, 16 Dec 2025 12:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885397;
-	bh=HVhOFsKZvPxQNA+MsuUYiLy8A5fW6LFN1s63ZDwl/gw=;
+	s=korg; t=1765887343;
+	bh=ogPPyU9qZrWfV9sKIJXlYzYTi5S0nXkdrNXZYaSHH94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2ifyC+p0xtjjHkBzNJHn03lP5+u0XOGwJ+caXChjGO+OgnWJpE/mEWeNWpAArIPh
-	 lo1ZBJiErJwgB7srymzy5daLbNyn62ypJwscWntZiR/KKSi4ydqnzfArheX7FffO1D
-	 CdSCxZkg0fJ9dG11LX9mv03AvZP3OJ6Uum2qkFFU=
+	b=0iUo2asepqdown2SOLvWdN+bs9YL0bUZ69Sqc5X5vQjh6Pef+3cNX6CB/HnRaBWuB
+	 QKTC1vV1aR2tGzkPsN++rRmTizCQxYDit1X7niglJqmi87NvF6inqYW44kkppStU0R
+	 G78Bm58gLituKJOKYfDghhxBaNaJQN4kMrj5wmmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 126/507] clk: qcom: gcc-qcs615: Update the SDCC clock to use shared_floor_ops
+Subject: [PATCH 6.18 200/614] drm/xe: Enforce correct user fence signaling order using
 Date: Tue, 16 Dec 2025 12:09:27 +0100
-Message-ID: <20251216111350.096552297@linuxfoundation.org>
+Message-ID: <20251216111408.624748288@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +58,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <taniya.das@oss.qualcomm.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 0820c9373369c83de5202871d02682d583a91a9c ]
+[ Upstream commit adda4e855ab6409a3edaa585293f1f2069ab7299 ]
 
-Fix "gcc_sdcc2_apps_clk_src: rcg didn't update its configuration" during
-boot. This happens due to the floor_ops tries to update the rcg
-configuration even if the clock is not enabled.
-The shared_floor_ops ensures that the RCG is safely parked and the new
-parent configuration is cached in the parked_cfg when the clock is off.
+Prevent application hangs caused by out-of-order fence signaling when
+user fences are attached. Use drm_syncobj (via dma-fence-chain) to
+guarantee that each user fence signals in order, regardless of the
+signaling order of the attached fences. Ensure user fence writebacks to
+user space occur in the correct sequence.
 
-Ensure to use the ops for the other SDCC clock instances as well.
+v7:
+ - Skip drm_syncbj create of error (CI)
 
-Fixes: 39d6dcf67fe9 ("clk: qcom: gcc: Add support for QCS615 GCC clocks")
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251029-sdcc_rcg2_shared_ops-v3-1-ecf47d9601d1@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20251031234050.3043507-2-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcs615.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-qcs615.c b/drivers/clk/qcom/gcc-qcs615.c
-index 9695446bc2a3c..5b3b8dd4f114b 100644
---- a/drivers/clk/qcom/gcc-qcs615.c
-+++ b/drivers/clk/qcom/gcc-qcs615.c
-@@ -784,7 +784,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
- 		.name = "gcc_sdcc1_apps_clk_src",
- 		.parent_data = gcc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_1),
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index cb5f204c08ed6..a6efe4e8ab556 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -344,6 +344,9 @@ void xe_exec_queue_destroy(struct kref *ref)
+ 	struct xe_exec_queue *q = container_of(ref, struct xe_exec_queue, refcount);
+ 	struct xe_exec_queue *eq, *next;
  
-@@ -806,7 +806,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
- 		.name = "gcc_sdcc1_ice_core_clk_src",
- 		.parent_data = gcc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
- 
-@@ -830,7 +830,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_8,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
++	if (q->ufence_syncobj)
++		drm_syncobj_put(q->ufence_syncobj);
++
+ 	if (q->ufence_syncobj)
+ 		drm_syncobj_put(q->ufence_syncobj);
  
 -- 
 2.51.0
