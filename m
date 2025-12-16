@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C4ECC3A49
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:38:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED283CC268C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3116304C66D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C974312A87B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CF5335092;
-	Tue, 16 Dec 2025 12:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFD332C925;
+	Tue, 16 Dec 2025 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1kuJ51r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaHoLxqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8AB1DF73A;
-	Tue, 16 Dec 2025 12:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FB63314B4;
+	Tue, 16 Dec 2025 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888455; cv=none; b=BAk7ChASVjqvy03U+pVadM8sjGdE7XUSs27e+fKa4C1lBiTCyzHZWaxPzMmYb+yc5MjDkuPtMn+bArYm92c4nslpbesNBVEwhST/OthKjIQ/ChxRtApWYBxJlkDN+pLcM0hb81//mI4JD4Bhcc+8cftLGEA3LhY6cOLTstkPoAQ=
+	t=1765884929; cv=none; b=m09LEDmqPaNvCXb9gRAm1Ug0C/3hOCObaLeR64U6tSuzWDQl1ePl47vA3H1zkoOT0NwKzk9upxPWqXOc794xlbFYcAQMY8nSOx9JQr3aVpE/HcDIrNzl5wG2Msp0Naz8pPh3qrUixhYkEbDRvtRktW2U1/ex2R8Icjw14fGESAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888455; c=relaxed/simple;
-	bh=WxSvuakGbQmRebLVzO3sj7NImoR/7K4jZ4nJ+iYT8HA=;
+	s=arc-20240116; t=1765884929; c=relaxed/simple;
+	bh=qcCA7QgOG9ZRnKm34GSbxtUaBii+tRnO4vpkNoz2zLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U99q5CRQhlPx3joHy4/YDTESq3r62KDg75TFGhOsgYib79v6YP+tcM2fDUHCCZz9KxrpIcl7tgg9n6oH3OPDJGQl5ntiBWvFnXNRYh+AEK/oj6OjWVgJsgB2XDyRh7CUYzkl9Gmt87MlF7T+HfcqlZJywgwRq2EpeZHL6+AoIZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1kuJ51r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4D0C4CEF1;
-	Tue, 16 Dec 2025 12:34:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eST1HJt8Ru+eOQWlGhodB6jMmmbJ+sB1trXyB4MYTrYJ+CWV+nHsDPf9bj6E5k3tJjuqKhn4yDoj25k9wOXVjWoxn4kFxjyCGdbwMn1OwmXx1DQr9nS0LkTULM44hoIdMoMFDNMANKGNTZpTZJOGisXBddYDzd13eKyeaOajyjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaHoLxqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A01C4CEF1;
+	Tue, 16 Dec 2025 11:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888455;
-	bh=WxSvuakGbQmRebLVzO3sj7NImoR/7K4jZ4nJ+iYT8HA=;
+	s=korg; t=1765884928;
+	bh=qcCA7QgOG9ZRnKm34GSbxtUaBii+tRnO4vpkNoz2zLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1kuJ51rk5m50BCVWkB3n9dJKnrQ/Lbs+uSTVQ30IQP7E3jYJlQQjEiOc6/McKVaz
-	 oREbTbOmzwOj1w2ahzbmtc5nm+kZuY2FptY+HQ73NRbKfem6EIwjsoDpv+mav2vO4s
-	 u4j4yjrqJiPJxeVOJZZU48oDHfyvkRWYXCwZeumg=
+	b=HaHoLxqy4jjpZerYF8V9E8icGTvnEKRGrEo29kDgPe/0peTqINhSW1XBQITvT5Xyw
+	 vtoEJgqUfmzaFnurxDUbyaJ8XcbPA+lpsCHNVzYwwYuTK8zib1T2C2iS6elD7zPLSX
+	 SqKuWzowMgYsKgK2whk7Sx5tJ1x9xB2qCsy3FGT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aiden Lambert <alambert48@gatech.edu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 540/614] NFS: Avoid changing nlink when file removes and attribute updates race
-Date: Tue, 16 Dec 2025 12:15:07 +0100
-Message-ID: <20251216111420.944084862@linuxfoundation.org>
+Subject: [PATCH 6.12 341/354] efi/cper: Adjust infopfx size to accept an extra space
+Date: Tue, 16 Dec 2025 12:15:08 +0100
+Message-ID: <20251216111333.259729881@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,100 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit bd4928ec799b31c492eb63f9f4a0c1e0bb4bb3f7 ]
+[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
 
-If a file removal races with another operation that updates its
-attributes, then skip the change to nlink, and just mark the attributes
-as being stale.
+Compiling with W=1 with werror enabled produces an error:
 
-Reported-by: Aiden Lambert <alambert48@gatech.edu>
-Fixes: 59a707b0d42e ("NFS: Ensure we revalidate the inode correctly after remove or rename")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
+drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                                                                ^
+drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As the logic there adds an space at the end of infopx buffer.
+Add an extra space to avoid such warning.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/firmware/efi/cper-arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index ea9f6ca8f30fa..d557b0443e8b0 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1894,13 +1894,15 @@ static int nfs_dentry_delete(const struct dentry *dentry)
- }
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index fa9c1c3bf168b..eb7ee6af55f23 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -240,7 +240,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	int i, len, max_ctx_type;
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+-	char newpfx[64], infopfx[64];
++	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
  
- /* Ensure that we revalidate inode->i_nlink */
--static void nfs_drop_nlink(struct inode *inode)
-+static void nfs_drop_nlink(struct inode *inode, unsigned long gencount)
- {
-+	struct nfs_inode *nfsi = NFS_I(inode);
-+
- 	spin_lock(&inode->i_lock);
- 	/* drop the inode if we're reasonably sure this is the last link */
--	if (inode->i_nlink > 0)
-+	if (inode->i_nlink > 0 && gencount == nfsi->attr_gencount)
- 		drop_nlink(inode);
--	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
-+	nfsi->attr_gencount = nfs_inc_attr_generation_counter();
- 	nfs_set_cache_invalid(
- 		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
- 			       NFS_INO_INVALID_NLINK);
-@@ -1914,8 +1916,9 @@ static void nfs_drop_nlink(struct inode *inode)
- static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
- {
- 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
-+		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
- 		nfs_complete_unlink(dentry, inode);
--		nfs_drop_nlink(inode);
-+		nfs_drop_nlink(inode, gencount);
- 	}
- 	iput(inode);
- }
-@@ -2507,9 +2510,11 @@ static int nfs_safe_remove(struct dentry *dentry)
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
  
- 	trace_nfs_remove_enter(dir, dentry);
- 	if (inode != NULL) {
-+		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
-+
- 		error = NFS_PROTO(dir)->remove(dir, dentry);
- 		if (error == 0)
--			nfs_drop_nlink(inode);
-+			nfs_drop_nlink(inode, gencount);
- 	} else
- 		error = NFS_PROTO(dir)->remove(dir, dentry);
- 	if (error == -ENOENT)
-@@ -2709,6 +2714,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- {
- 	struct inode *old_inode = d_inode(old_dentry);
- 	struct inode *new_inode = d_inode(new_dentry);
-+	unsigned long new_gencount = 0;
- 	struct dentry *dentry = NULL;
- 	struct rpc_task *task;
- 	bool must_unblock = false;
-@@ -2761,6 +2767,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 		} else {
- 			block_revalidate(new_dentry);
- 			must_unblock = true;
-+			new_gencount = NFS_I(new_inode)->attr_gencount;
- 			spin_unlock(&new_dentry->d_lock);
- 		}
- 
-@@ -2800,7 +2807,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 			new_dir, new_dentry, error);
- 	if (!error) {
- 		if (new_inode != NULL)
--			nfs_drop_nlink(new_inode);
-+			nfs_drop_nlink(new_inode, new_gencount);
- 		/*
- 		 * The d_move() should be here instead of in an async RPC completion
- 		 * handler because we need the proper locks to move the dentry.  If
 -- 
 2.51.0
 
