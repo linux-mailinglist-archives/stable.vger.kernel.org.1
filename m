@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD37CC2953
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA17CC3A3D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEF033022800
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 419FC30B5ED0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5344A34D3B6;
-	Tue, 16 Dec 2025 12:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BD13358B5;
+	Tue, 16 Dec 2025 12:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSpLdOoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XikO7Ci8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9C134D3A9;
-	Tue, 16 Dec 2025 12:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D92338F26;
+	Tue, 16 Dec 2025 12:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886448; cv=none; b=bUlATpVSQl6+vh1ijTckqCMBh48bWjzKynUCxd8fBg7BzcZ6msVlkcfXgXljoMM/qHNaDAuv40m+jlZZfdmrw/Pe+hwITkJPixLQlwE6gfMw03D4tNGARCKnGcHUoQQdaEFmT5XW9pZf4Rp7+f5WcQlZbYsMDb/5HLqfOqF+B3g=
+	t=1765888419; cv=none; b=fYqNG2lcZt2divsXdbhVJ1kz4cOVhRvq7tQt5XGV1myWSjR90+kANZNnXdWpMYPaZ0LfiFGHU+xsCdM4AONt0atZFoz3ANzF8lhtbWtOpIH5yisbHy/TrZvt04eIRNbBRKX/EtV/CU8KyNjizB4b5YDOdTg4jQKG9pjkZIXH9xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886448; c=relaxed/simple;
-	bh=buE5xxSXQ5mHn7q88oS7FweCkHNoeWnxkYMeQWz7JeU=;
+	s=arc-20240116; t=1765888419; c=relaxed/simple;
+	bh=B/4D/G5LN+ufiP4zG4OncUmjhqP/ec7mIQNPvPd9YUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqCI3mzS1ZCNCKYNiv9pJ/suoVKX8ei7ECZoRNriIdBrcH2IwmBRO2Okfv6E9Y6cVrN9bpu97UbrNF7nBCK4h6y/OPbTB7fSK5GpwXoQT0Fqt3tDZ0OHwJ1IPsEdzAlSU9cUkKAduy/4m8CvyipWoGIYXzzZ7fWiANklbsTeIgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSpLdOoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774CDC4CEF1;
-	Tue, 16 Dec 2025 12:00:47 +0000 (UTC)
+	 MIME-Version; b=MsAx/8WIrJKolWLoZ/LVx6nZr9aSRKFjoUvYLHU7TvWo1MmXyKxt3RsVJK6UnV7cvR6tWv1X8UeZ6SBbrYVstT/Tz7QjdnAeJ8U1z1kdrXOksN+27kvPJVXsq4Oz6ulDzJGlTXIAIJwifFUqnPn5208FgBSydq5XEKzT15dKiOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XikO7Ci8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EACC4CEF1;
+	Tue, 16 Dec 2025 12:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886447;
-	bh=buE5xxSXQ5mHn7q88oS7FweCkHNoeWnxkYMeQWz7JeU=;
+	s=korg; t=1765888419;
+	bh=B/4D/G5LN+ufiP4zG4OncUmjhqP/ec7mIQNPvPd9YUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSpLdOoSbFFEKUcDnIIiraME0cc8RCABjmke3otAh/Fv/pqXearehY2K8mAX+XNkI
-	 S/E6Fqhz0ZKz5DH+AnQwqmBN3bvLMOiw/Wcdo5cHkpGu9Wjd+1jzYVsHzniCEOfTro
-	 sPCXi8B+nvND/hXe67PCGUWuLOXYeF9ZHsxRRJKQ=
+	b=XikO7Ci8cM+YLEguEa6heFykUrn/m+VQ0NV8JNtjJv95KzMrOuijEXsmyEXgU66JW
+	 IIX9XEK+vjDWFglnmdSPxfyTam8XQotb+PW6v5rEysIMsrJiGhQOLl2q827ZGqftoH
+	 xN73M4MISDN022r49i4LubrcMB8ayDfynjqZ9icQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ritesh Oedayrajsingh Varma <ritesh@superluminal.eu>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 422/507] net: dsa: b53: fix BCM5325/65 ARL entry VIDs
+Subject: [PATCH 6.18 496/614] rqspinlock: Enclose lock/unlock within lock entry acquisitions
 Date: Tue, 16 Dec 2025 12:14:23 +0100
-Message-ID: <20251216111400.749824850@linuxfoundation.org>
+Message-ID: <20251216111419.340663795@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,156 +61,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit d39514e6a2d14f57830d649e2bf03b49612c2f73 ]
+[ Upstream commit beb7021a6003d9c6a463fffca0d6311efb8e0e66 ]
 
-BCM5325/65's ARL entry registers do not contain the VID, only the search
-result register does. ARL entries have a separate VID entry register for
-the index into the VLAN table.
+Ritesh reported that timeouts occurred frequently for rqspinlock despite
+reentrancy on the same lock on the same CPU in [0]. This patch closes
+one of the races leading to this behavior, and reduces the frequency of
+timeouts.
 
-So make ARL entry accessors use the VID entry registers instead, and
-move the VLAN ID field definition to the search register definition.
+We currently have a tiny window between the fast-path cmpxchg and the
+grabbing of the lock entry where an NMI could land, attempt the same
+lock that was just acquired, and end up timing out. This is not ideal.
+Instead, move the lock entry acquisition from the fast path to before
+the cmpxchg, and remove the grabbing of the lock entry in the slow path,
+assuming it was already taken by the fast path. The TAS fallback is
+invoked directly without being preceded by the typical fast path,
+therefore we must continue to grab the deadlock detection entry in that
+case.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251128080625.27181-7-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Case on lock leading to missed AA:
+
+cmpxchg lock A
+<NMI>
+... rqspinlock acquisition of A
+... timeout
+</NMI>
+grab_held_lock_entry(A)
+
+There is a similar case when unlocking the lock. If the NMI lands
+between the WRITE_ONCE and smp_store_release, it is possible that we end
+up in a situation where the NMI fails to diagnose the AA condition,
+leading to a timeout.
+
+Case on unlock leading to missed AA:
+
+WRITE_ONCE(rqh->locks[rqh->cnt - 1], NULL)
+<NMI>
+... rqspinlock acquisition of A
+... timeout
+</NMI>
+smp_store_release(A->locked, 0)
+
+The patch changes the order on unlock to smp_store_release() succeeded
+by WRITE_ONCE() of NULL. This avoids the missed AA detection described
+above, but may lead to a false positive if the NMI lands between these
+two statements, which is acceptable (and preferred over a timeout).
+
+The original intention of the reverse order on unlock was to prevent the
+following possible misdiagnosis of an ABBA scenario:
+
+grab entry A
+lock A
+grab entry B
+lock B
+unlock B
+   smp_store_release(B->locked, 0)
+							grab entry B
+							lock B
+							grab entry A
+							lock A
+							! <detect ABBA>
+   WRITE_ONCE(rqh->locks[rqh->cnt - 1], NULL)
+
+If the store release were is after the WRITE_ONCE, the other CPU would
+not observe B in the table of the CPU unlocking the lock B.  However,
+since the threads are obviously participating in an ABBA deadlock, it
+is no longer appealing to use the order above since it may lead to a
+250 ms timeout due to missed AA detection.
+
+  [0]: https://lore.kernel.org/bpf/CAH6OuBTjG+N=+GGwcpOUbeDN563oz4iVcU3rbse68egp9wj9_A@mail.gmail.com
+
+Fixes: 0d80e7f951be ("rqspinlock: Choose trylock fallback for NMI waiters")
+Reported-by: Ritesh Oedayrajsingh Varma <ritesh@superluminal.eu>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20251128232802.1031906-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c |  9 +++++++--
- drivers/net/dsa/b53/b53_priv.h   | 12 ++++++------
- drivers/net/dsa/b53/b53_regs.h   |  7 +++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ include/asm-generic/rqspinlock.h | 60 +++++++++++++++++---------------
+ kernel/bpf/rqspinlock.c          | 15 ++++----
+ 2 files changed, 38 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 5544e8e9c6446..62cafced758e7 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1833,19 +1833,24 @@ static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
- static void b53_arl_read_entry_25(struct b53_device *dev,
- 				  struct b53_arl_entry *ent, u8 idx)
+diff --git a/include/asm-generic/rqspinlock.h b/include/asm-generic/rqspinlock.h
+index 6d4244d643df3..0f2dcbbfee2f0 100644
+--- a/include/asm-generic/rqspinlock.h
++++ b/include/asm-generic/rqspinlock.h
+@@ -129,8 +129,8 @@ static __always_inline void release_held_lock_entry(void)
+ 	 * <error> for lock B
+ 	 * release_held_lock_entry
+ 	 *
+-	 * try_cmpxchg_acquire for lock A
+ 	 * grab_held_lock_entry
++	 * try_cmpxchg_acquire for lock A
+ 	 *
+ 	 * Lack of any ordering means reordering may occur such that dec, inc
+ 	 * are done before entry is overwritten. This permits a remote lock
+@@ -139,13 +139,8 @@ static __always_inline void release_held_lock_entry(void)
+ 	 * CPU holds a lock it is attempting to acquire, leading to false ABBA
+ 	 * diagnosis).
+ 	 *
+-	 * In case of unlock, we will always do a release on the lock word after
+-	 * releasing the entry, ensuring that other CPUs cannot hold the lock
+-	 * (and make conclusions about deadlocks) until the entry has been
+-	 * cleared on the local CPU, preventing any anomalies. Reordering is
+-	 * still possible there, but a remote CPU cannot observe a lock in our
+-	 * table which it is already holding, since visibility entails our
+-	 * release store for the said lock has not retired.
++	 * The case of unlock is treated differently due to NMI reentrancy, see
++	 * comments in res_spin_unlock.
+ 	 *
+ 	 * In theory we don't have a problem if the dec and WRITE_ONCE above get
+ 	 * reordered with each other, we either notice an empty NULL entry on
+@@ -175,10 +170,22 @@ static __always_inline int res_spin_lock(rqspinlock_t *lock)
  {
-+	u8 vid_entry;
- 	u64 mac_vid;
+ 	int val = 0;
  
-+	b53_read8(dev, B53_ARLIO_PAGE, B53_ARLTBL_VID_ENTRY_25(idx),
-+		  &vid_entry);
- 	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
- 		   &mac_vid);
--	b53_arl_to_entry_25(ent, mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid, vid_entry);
- }
- 
- static void b53_arl_write_entry_25(struct b53_device *dev,
- 				   const struct b53_arl_entry *ent, u8 idx)
- {
-+	u8 vid_entry;
- 	u64 mac_vid;
- 
--	b53_arl_from_entry_25(&mac_vid, ent);
-+	b53_arl_from_entry_25(&mac_vid, &vid_entry, ent);
-+	b53_write8(dev, B53_ARLIO_PAGE, B53_ARLTBL_VID_ENTRY_25(idx), vid_entry);
- 	b53_write64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
- 		    mac_vid);
- }
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index f4afbfcc345e6..bd6849e5bb939 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -341,7 +341,7 @@ static inline void b53_arl_to_entry(struct b53_arl_entry *ent,
- }
- 
- static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
--				       u64 mac_vid)
-+				       u64 mac_vid, u8 vid_entry)
- {
- 	memset(ent, 0, sizeof(*ent));
- 	ent->is_valid = !!(mac_vid & ARLTBL_VALID_25);
-@@ -352,7 +352,7 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
- 		     ARLTBL_DATA_PORT_ID_S_25;
- 	if (is_unicast_ether_addr(ent->mac) && ent->port == B53_CPU_PORT)
- 		ent->port = B53_CPU_PORT_25;
--	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
-+	ent->vid = vid_entry;
- }
- 
- static inline void b53_arl_to_entry_89(struct b53_arl_entry *ent,
-@@ -381,7 +381,7 @@ static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
- 		*fwd_entry |= ARLTBL_AGE;
- }
- 
--static inline void b53_arl_from_entry_25(u64 *mac_vid,
-+static inline void b53_arl_from_entry_25(u64 *mac_vid, u8 *vid_entry,
- 					 const struct b53_arl_entry *ent)
- {
- 	*mac_vid = ether_addr_to_u64(ent->mac);
-@@ -390,14 +390,13 @@ static inline void b53_arl_from_entry_25(u64 *mac_vid,
- 	else
- 		*mac_vid |= ((u64)ent->port << ARLTBL_DATA_PORT_ID_S_25) &
- 			    ARLTBL_DATA_PORT_ID_MASK_25;
--	*mac_vid |= (u64)(ent->vid & ARLTBL_VID_MASK_25) <<
--			  ARLTBL_VID_S_65;
- 	if (ent->is_valid)
- 		*mac_vid |= ARLTBL_VALID_25;
- 	if (ent->is_static)
- 		*mac_vid |= ARLTBL_STATIC_25;
- 	if (ent->is_age)
- 		*mac_vid |= ARLTBL_AGE_25;
-+	*vid_entry = ent->vid;
- }
- 
- static inline void b53_arl_from_entry_89(u64 *mac_vid, u32 *fwd_entry,
-@@ -422,7 +421,8 @@ static inline void b53_arl_search_to_entry_25(struct b53_arl_entry *ent,
- 	ent->is_age = !!(mac_vid & ARLTBL_AGE_25);
- 	ent->is_static = !!(mac_vid & ARLTBL_STATIC_25);
- 	u64_to_ether_addr(mac_vid, ent->mac);
--	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
-+	ent->vid = (mac_vid & ARL_SRCH_RSLT_VID_MASK_25) >>
-+		   ARL_SRCH_RSLT_VID_S_25;
- 	ent->port = (mac_vid & ARL_SRCH_RSLT_PORT_ID_MASK_25) >>
- 		    ARL_SRCH_RSLT_PORT_ID_S_25;
- 	if (is_multicast_ether_addr(ent->mac) && (ext & ARL_SRCH_RSLT_EXT_MC_MII))
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index e0379e70900b7..b6fe7d207a2c1 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -325,11 +325,9 @@
- #define B53_ARLTBL_MAC_VID_ENTRY(n)	((0x10 * (n)) + 0x10)
- #define   ARLTBL_MAC_MASK		0xffffffffffffULL
- #define   ARLTBL_VID_S			48
--#define   ARLTBL_VID_MASK_25		0xff
- #define   ARLTBL_VID_MASK		0xfff
- #define   ARLTBL_DATA_PORT_ID_S_25	48
- #define   ARLTBL_DATA_PORT_ID_MASK_25	GENMASK_ULL(53, 48)
--#define   ARLTBL_VID_S_65		53
- #define   ARLTBL_AGE_25			BIT_ULL(61)
- #define   ARLTBL_STATIC_25		BIT_ULL(62)
- #define   ARLTBL_VALID_25		BIT_ULL(63)
-@@ -349,6 +347,9 @@
- #define   ARLTBL_STATIC_89		BIT(14)
- #define   ARLTBL_VALID_89		BIT(15)
- 
-+/* BCM5325/BCM565 ARL Table VID Entry N Registers (8 bit) */
-+#define B53_ARLTBL_VID_ENTRY_25(n)	((0x2 * (n)) + 0x30)
+-	if (likely(atomic_try_cmpxchg_acquire(&lock->val, &val, _Q_LOCKED_VAL))) {
+-		grab_held_lock_entry(lock);
++	/*
++	 * Grab the deadlock detection entry before doing the cmpxchg, so that
++	 * reentrancy due to NMIs between the succeeding cmpxchg and creation of
++	 * held lock entry can correctly detect an acquisition attempt in the
++	 * interrupted context.
++	 *
++	 * cmpxchg lock A
++	 * <NMI>
++	 * res_spin_lock(A) --> missed AA, leads to timeout
++	 * </NMI>
++	 * grab_held_lock_entry(A)
++	 */
++	grab_held_lock_entry(lock);
 +
- /* Maximum number of bin entries in the ARL for all switches */
- #define B53_ARLTBL_MAX_BIN_ENTRIES	4
++	if (likely(atomic_try_cmpxchg_acquire(&lock->val, &val, _Q_LOCKED_VAL)))
+ 		return 0;
+-	}
+ 	return resilient_queued_spin_lock_slowpath(lock, val);
+ }
  
-@@ -376,6 +377,8 @@
- #define B53_ARL_SRCH_RSTL_0_MACVID_25	0x24
- #define   ARL_SRCH_RSLT_PORT_ID_S_25	48
- #define   ARL_SRCH_RSLT_PORT_ID_MASK_25	GENMASK_ULL(52, 48)
-+#define   ARL_SRCH_RSLT_VID_S_25	53
-+#define   ARL_SRCH_RSLT_VID_MASK_25	GENMASK_ULL(60, 53)
+@@ -192,28 +199,25 @@ static __always_inline void res_spin_unlock(rqspinlock_t *lock)
+ {
+ 	struct rqspinlock_held *rqh = this_cpu_ptr(&rqspinlock_held_locks);
  
- /* BCM5325/5365 Search result extend register (8 bit) */
- #define B53_ARL_SRCH_RSLT_EXT_25	0x2c
+-	if (unlikely(rqh->cnt > RES_NR_HELD))
+-		goto unlock;
+-	WRITE_ONCE(rqh->locks[rqh->cnt - 1], NULL);
+-unlock:
+ 	/*
+-	 * Release barrier, ensures correct ordering. See release_held_lock_entry
+-	 * for details.  Perform release store instead of queued_spin_unlock,
+-	 * since we use this function for test-and-set fallback as well. When we
+-	 * have CONFIG_QUEUED_SPINLOCKS=n, we clear the full 4-byte lockword.
++	 * Release barrier, ensures correct ordering. Perform release store
++	 * instead of queued_spin_unlock, since we use this function for the TAS
++	 * fallback as well. When we have CONFIG_QUEUED_SPINLOCKS=n, we clear
++	 * the full 4-byte lockword.
+ 	 *
+-	 * Like release_held_lock_entry, we can do the release before the dec.
+-	 * We simply care about not seeing the 'lock' in our table from a remote
+-	 * CPU once the lock has been released, which doesn't rely on the dec.
++	 * Perform the smp_store_release before clearing the lock entry so that
++	 * NMIs landing in the unlock path can correctly detect AA issues. The
++	 * opposite order shown below may lead to missed AA checks:
+ 	 *
+-	 * Unlike smp_wmb(), release is not a two way fence, hence it is
+-	 * possible for a inc to move up and reorder with our clearing of the
+-	 * entry. This isn't a problem however, as for a misdiagnosis of ABBA,
+-	 * the remote CPU needs to hold this lock, which won't be released until
+-	 * the store below is done, which would ensure the entry is overwritten
+-	 * to NULL, etc.
++	 * WRITE_ONCE(rqh->locks[rqh->cnt - 1], NULL)
++	 * <NMI>
++	 * res_spin_lock(A) --> missed AA, leads to timeout
++	 * </NMI>
++	 * smp_store_release(A->locked, 0)
+ 	 */
+ 	smp_store_release(&lock->locked, 0);
++	if (likely(rqh->cnt <= RES_NR_HELD))
++		WRITE_ONCE(rqh->locks[rqh->cnt - 1], NULL);
+ 	this_cpu_dec(rqspinlock_held_locks.cnt);
+ }
+ 
+diff --git a/kernel/bpf/rqspinlock.c b/kernel/bpf/rqspinlock.c
+index 21be48108e962..f4c534fa4e87b 100644
+--- a/kernel/bpf/rqspinlock.c
++++ b/kernel/bpf/rqspinlock.c
+@@ -275,6 +275,10 @@ int __lockfunc resilient_tas_spin_lock(rqspinlock_t *lock)
+ 	int val, ret = 0;
+ 
+ 	RES_INIT_TIMEOUT(ts);
++	/*
++	 * The fast path is not invoked for the TAS fallback, so we must grab
++	 * the deadlock detection entry here.
++	 */
+ 	grab_held_lock_entry(lock);
+ 
+ 	/*
+@@ -397,10 +401,7 @@ int __lockfunc resilient_queued_spin_lock_slowpath(rqspinlock_t *lock, u32 val)
+ 		goto queue;
+ 	}
+ 
+-	/*
+-	 * Grab an entry in the held locks array, to enable deadlock detection.
+-	 */
+-	grab_held_lock_entry(lock);
++	/* Deadlock detection entry already held after failing fast path. */
+ 
+ 	/*
+ 	 * We're pending, wait for the owner to go away.
+@@ -448,11 +449,7 @@ int __lockfunc resilient_queued_spin_lock_slowpath(rqspinlock_t *lock, u32 val)
+ 	 */
+ queue:
+ 	lockevent_inc(lock_slowpath);
+-	/*
+-	 * Grab deadlock detection entry for the queue path.
+-	 */
+-	grab_held_lock_entry(lock);
+-
++	/* Deadlock detection entry already held after failing fast path. */
+ 	node = this_cpu_ptr(&rqnodes[0].mcs);
+ 	idx = node->count++;
+ 	tail = encode_tail(smp_processor_id(), idx);
 -- 
 2.51.0
 
