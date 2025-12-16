@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1CACC29CF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014A9CC430C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EEB13005F0B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B60BC30D1295
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F355341069;
-	Tue, 16 Dec 2025 11:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C186364024;
+	Tue, 16 Dec 2025 12:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV5O6eaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imVxRqdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C733A6F4;
-	Tue, 16 Dec 2025 11:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0636C5BF;
+	Tue, 16 Dec 2025 12:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886002; cv=none; b=tkLf1rGyFwkHYN5lZ2JaJWk3r8QbCbBgoSPA6c/262XQu1u3f8AlEzcRMcWIagSROk095kKKSdHBbSz7vlrON/9o51iV46irKfSrpAYd2UrAqH9vMrX02NAm6Dxd3ZRUfbgG0wyGO3ajTOLxALangPt1Yja+xubsnPO1+9rM1JM=
+	t=1765887959; cv=none; b=Qfzo3a53GDkzdiw7gGU7362W8eUNMLwBS0J7ooWh2QxZwgEGCrRApooBjtwWksqjCCoziTKXYtuSnG01lFvn38jKEyn81fhKx2J8bEfQvSB1+BT/3+dwZBH+nV6hdrv0ifsThdPL/arunS6RMezdJ7IU1K7xkaL8OnZeuBWnLRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886002; c=relaxed/simple;
-	bh=SDAoNiBYHK1K6MzLIWjRoNFdGvNOSopBTRoQpP5z+3E=;
+	s=arc-20240116; t=1765887959; c=relaxed/simple;
+	bh=0QSPqEnwteLrTWuyJVBM4mEVEAVkjccNeo6kFPecHaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czSU2Tyiq035nfR2QuVtTWvBOlSEZEtSN67v5m0aDeNHfmAkLnWucHIfuB2mDfNKpoXQkXI9PCi87pD2XNC8bgAfbPdaqmhf1+JBnHGSgN7wlQjiIFeOzMA+TRN0lUMY7DOvttRqFIHLx5FnDRWxm0rs0lGLCbDZxe1HBHvTNrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV5O6eaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8149CC4CEF1;
-	Tue, 16 Dec 2025 11:53:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ncpfSu62ZjPmph4XkI/3+lBWdgr5PgJJbrIIga1tGuKb9iP/Dsm9IW3N7KcnQIP/QxWQpaY3Qx+blvzo3o7N0zQEkTnd9HQxySW64GTdZuXgqG7eW6C2AQItTVSa2PQoF5XMvT2QteKJ8VAsJTYfU/GUrF/PBTyGonpVf++WWjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imVxRqdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA3DC4CEF1;
+	Tue, 16 Dec 2025 12:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886001;
-	bh=SDAoNiBYHK1K6MzLIWjRoNFdGvNOSopBTRoQpP5z+3E=;
+	s=korg; t=1765887959;
+	bh=0QSPqEnwteLrTWuyJVBM4mEVEAVkjccNeo6kFPecHaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VV5O6eaAjQIiYrvqHZE3+E03SjbdOzmcOc7ebsoGGXyLzd4L2K5bDpmp9XbuRaGtU
-	 R5DtGziWvAz7OEQvWHDOM7GT6Ggz1fiuqyrvgxL+zz93asJZs7Vq6UHsZeWYyPFSm0
-	 IoARerDVWUbuPpEkDlBebSYENaGw2UrUZnkUG4do=
+	b=imVxRqdvSah4R808r9pqRMNS6pGYq32r4pgyy8rb9x0bgVS+4us8UzgOwfO6Siru1
+	 qQzaT8T5lTyi5Z60na7BAykFLyvK48eA7gv6pFOCEinVXFNgt77fqo234n40T8nZUX
+	 wQWAHp/VW/q3S304n8XKCDsdiWZjG73Cel/grtuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 307/507] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
-Date: Tue, 16 Dec 2025 12:12:28 +0100
-Message-ID: <20251216111356.593425498@linuxfoundation.org>
+Subject: [PATCH 6.18 382/614] ASoC: tas2781: correct the wrong period
+Date: Tue, 16 Dec 2025 12:12:29 +0100
+Message-ID: <20251216111415.201823300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
+[ Upstream commit 950167a99dfd27eeaf177092908c598a31c79a7e ]
 
-The previous commit removed the PAGE_SIZE limit on transfer length of
-raw_io buffer in order to avoid any problems with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length. However
-this also removes the upperbound on user supplied length, allowing very
-large values to be passed to the allocator.
+A wrong preiod at the end of the sentence was reported by one of my
+customers. Their thorough code review is greatly appreciated.
 
-syzbot on fuzzing the transfer length with very large value (1.81GB)
-results in kmalloc() to fall back to the page allocator, which triggers
-a kernel warning as the page allocator cannot handle allocations more
-than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
-
-Since there is no limit imposed on the size of buffer for both control
-and non control transfers, cap the raw_io transfer length to
-KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
-prevent any warnings from the page allocator.
-
-Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
-Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 49e2e353fb0d ("ASoC: tas2781: Add Calibration Kcontrols for Chromebook")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20251121234427.402-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/tas2781-i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
-index b71680c58de6c..46f343ba48b3d 100644
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 8f37aa00e62ee..a3b4d2c3b4789 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -1391,7 +1391,7 @@ static int tasdevice_create_cali_ctrls(struct tasdevice_priv *priv)
  
- static DEFINE_IDA(driver_id_numbers);
- #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
-+#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
- 
- #define RAW_EVENT_QUEUE_SIZE	16
- 
-@@ -667,6 +668,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
-+	if (io->length > USB_RAW_IO_LENGTH_MAX)
-+		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+ 	/*
+ 	 * Alloc kcontrol via devm_kzalloc(), which don't manually
+-	 * free the kcontrol。
++	 * free the kcontrol.
+ 	 */
+ 	cali_ctrls = devm_kcalloc(priv->dev, nctrls,
+ 		sizeof(cali_ctrls[0]), GFP_KERNEL);
 -- 
 2.51.0
 
