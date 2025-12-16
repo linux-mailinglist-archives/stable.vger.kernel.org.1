@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E245ECC2F92
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:53:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7BACC2674
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB1473044A62
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48E5430577C5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC04345CDC;
-	Tue, 16 Dec 2025 12:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1DB341AC5;
+	Tue, 16 Dec 2025 11:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJLV0GJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztqofUyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DF1342C8F;
-	Tue, 16 Dec 2025 12:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D28F343D77;
+	Tue, 16 Dec 2025 11:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888532; cv=none; b=kOqLvyDmLk+rLa1dFm7u5lA2SxWVZxs5dN7Le8aXuwYJSg9QPf6wlLEOSVxukC1ORZyvOpZSN42KqFU5RCGAFL0mgP++SYWjD0lLtW8GO4SPclzI1TPksBCMmLZ6Lv63dRxmPhNmWHcjNFtGX1prWaKK5LhKk5LZe4kWaTZvOks=
+	t=1765884886; cv=none; b=HrsXlLkNjD1kb69CLETSHSTq9tDwRMweh+WENjr/uQrIW6wlaN04rqgmwV0V4sDJ6yRyhvdg7ly5GMk+25Tbh1a33p7OMYSh5oKG3Rk7QGQ0ArMDN2F5bX8VHC0JmiNWa5EGgfiyfsMAwmJKrhhtXEFAnIgaytKriGvVDgmf4Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888532; c=relaxed/simple;
-	bh=MVuMmjOWEbMOfNZg5T1CK9NvKaS6ZUCC8wpO5PSw5lg=;
+	s=arc-20240116; t=1765884886; c=relaxed/simple;
+	bh=ZLysyEpGGiL94v1UgxY8U18rXPp20TTeJd/YP0jB8b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9WycfIEJmrxsfruPQh9ZOn+GL4OV6hfxVZy1evfz8DTWzhqQ2Rpr07ctk46KYWkMQQ3+wFBadKly8iKwkWoH5ECDAqQNDl958NX6BB+Jso49CHX9C9/aejwLA9/PEFh5oLauJM3CjCKghaLp46P4gQwbWvZCQhC4rhMr0wLrio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJLV0GJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09180C4CEF1;
-	Tue, 16 Dec 2025 12:35:31 +0000 (UTC)
+	 MIME-Version; b=Fsd+krZKKQQQkZdBZDfJAvhkjkzb2Naf/wSaaJu9AJNbW8Q6/Fo5x+qdTClSIbNpWoA+kStpv05P+O6PI+fkaXIFNOvUnTR0EoN3jQc4VDxAxr+OP56qIVz/vzIS00XRmLRwROHgmrJhDRonwK+OOWgB026cvulv0lM/FZlBUdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztqofUyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F25BC4CEF1;
+	Tue, 16 Dec 2025 11:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888532;
-	bh=MVuMmjOWEbMOfNZg5T1CK9NvKaS6ZUCC8wpO5PSw5lg=;
+	s=korg; t=1765884886;
+	bh=ZLysyEpGGiL94v1UgxY8U18rXPp20TTeJd/YP0jB8b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJLV0GJL9hhJzX26FLNZD89+NLaYxna+5afZGCjSifto/INJxQfJxcIisw2+FOh4q
-	 DvMEwpUDy6AG15fqkE4WSCXIg5dH/rgzXY56WBJ0x0IgrBKYoEfeY7mMg4QiwAHH4c
-	 1iG4Vu8r9NUh3a998TNCl/YBHAFxfj5Tbf3eJc4I=
+	b=ztqofUyM8alK1n2XUaRZXQnc9BQrM7dlc7Uc1417ZwPCbQMFMyAM1uUa/YXkB3T9E
+	 SUt93K3gZ/4bXOS5bUdJL1NLd/XSDAkdwnxX7MooQpoMIFeEcgFS35/cPA2q3Ru+gV
+	 m3SX4+eoSNQWBNt5VealSrkJqCaSeL/F/1AfCSQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Kathara Sasikumar <katharasasikumar007@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 529/614] perf hist: In init, ensure mem_info is put on error paths
+Subject: [PATCH 6.12 329/354] docs: hwmon: fix link to g762 devicetree binding
 Date: Tue, 16 Dec 2025 12:14:56 +0100
-Message-ID: <20251216111420.544605607@linuxfoundation.org>
+Message-ID: <20251216111332.829111773@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Kathara Sasikumar <katharasasikumar007@gmail.com>
 
-[ Upstream commit f60efb4454b24cc944ff3eac164bb9dce9169f71 ]
+[ Upstream commit 08bfcf4ff9d39228150a757803fc02dffce84ab0 ]
 
-Rather than exit the internal map_symbols directly, put the mem-info
-that does this and also lowers the reference count on the mem-info
-itself otherwise the mem-info is being leaked.
+The devicetree binding for g762 was converted to YAML to match vendor
+prefix conventions. Update the reference accordingly.
 
-Fixes: 56e144fe98260a0f ("perf mem_info: Add and use map_symbol__exit and addr_map_symbol__exit")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Kathara Sasikumar <katharasasikumar007@gmail.com>
+Link: https://lore.kernel.org/r/20251205215835.783273-1-katharasasikumar007@gmail.com
+Fixes: 3d8e25372417 ("dt-bindings: hwmon: g762: Convert to yaml schema")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ Documentation/hwmon/g762.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index 64ff427040c34..ef4b569f7df46 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -608,10 +608,8 @@ static int hist_entry__init(struct hist_entry *he,
- 		map_symbol__exit(&he->branch_info->to.ms);
- 		zfree(&he->branch_info);
- 	}
--	if (he->mem_info) {
--		map_symbol__exit(&mem_info__iaddr(he->mem_info)->ms);
--		map_symbol__exit(&mem_info__daddr(he->mem_info)->ms);
--	}
-+	if (he->mem_info)
-+		mem_info__zput(he->mem_info);
- err:
- 	map_symbol__exit(&he->ms);
- 	zfree(&he->stat_acc);
+diff --git a/Documentation/hwmon/g762.rst b/Documentation/hwmon/g762.rst
+index 0371b3365c48c..f224552a2d3cc 100644
+--- a/Documentation/hwmon/g762.rst
++++ b/Documentation/hwmon/g762.rst
+@@ -17,7 +17,7 @@ done via a userland daemon like fancontrol.
+ Note that those entries do not provide ways to setup the specific
+ hardware characteristics of the system (reference clock, pulses per
+ fan revolution, ...); Those can be modified via devicetree bindings
+-documented in Documentation/devicetree/bindings/hwmon/g762.txt or
++documented in Documentation/devicetree/bindings/hwmon/gmt,g762.yaml or
+ using a specific platform_data structure in board initialization
+ file (see include/linux/platform_data/g762.h).
+ 
 -- 
 2.51.0
 
