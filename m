@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ECDCC22A1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A89CC29AE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58321305A3EF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A7B33020CF9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3169B3233EE;
-	Tue, 16 Dec 2025 11:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA84436C5B8;
+	Tue, 16 Dec 2025 12:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV8lUPPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrkzaYJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D853358A8;
-	Tue, 16 Dec 2025 11:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9136C5BE;
+	Tue, 16 Dec 2025 12:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884015; cv=none; b=HmWf39Eqf1slOicS77aLfxHxhfuDRzxI+0GmWTYRqlCjmkJrhB1o0nwh1H7BL/4mT6HUhhCIYp3ev8750PtRcAoyssNb1fle8N4UaYyKIfYeatSunl0hIoAyJbMR1YGKfMorV25tihEEPnkS5gaYZEeEat7N82k00HvwPcFiadM=
+	t=1765887458; cv=none; b=OgiCE6VjojcQlbGZol5QLm7n+sxpWzs01BWBcldd7Bgi8uYMnbK9IBxmKrjElkhCUZVA6vHeAoT0FW9+cHloBwWt8iR5Imvsl7j2an3uuNdi+4Mj+6Ho10CQTgk8pw1WhD2VQqwwCSu4uH+IkCXbhO7Ycmrs+kUrOu59p3faGwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884015; c=relaxed/simple;
-	bh=U+46lR4LBPHA5uEgxk0y5ukYx/VgjemVyOk5W6Z6POU=;
+	s=arc-20240116; t=1765887458; c=relaxed/simple;
+	bh=7S8JDw5CeS20vwzOjhwQuTqCGY8KwiJilGCnJ/Bnqz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Riym9zh5Pilrx7kGr4JV0Pc1vEQtb60c8NUuQzc1DBzs5/4mnZ2CLu5LO4Vb4qaPJ3EYf2curKfhVJFKJyu86ChI9DwwXq4aFY3BrgGk6/BKt9jpzaTJa17D7OM9gE8c9KTWcpQCpbf0x6Tbw5lJKEPKQ6ArOyYIjUtX0CBV4LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV8lUPPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8C2C4CEF1;
-	Tue, 16 Dec 2025 11:20:14 +0000 (UTC)
+	 MIME-Version; b=T9NsmHFAttrZzJayMLVt5fMCd/1ccrjsTHzNfkeyecnQA15mrejGB12v4el791oJLwG6mmxWh4LvcKgz5rBkWlZ7sbtCMqoWsdONsqIcN5uks6AyIFsxjQ9HuuO1g+qBj5I/9KxfaQVXKkgPi9bf9/NfT2EwrKusjC3Z4AF7coo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrkzaYJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C26C4CEF1;
+	Tue, 16 Dec 2025 12:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884014;
-	bh=U+46lR4LBPHA5uEgxk0y5ukYx/VgjemVyOk5W6Z6POU=;
+	s=korg; t=1765887458;
+	bh=7S8JDw5CeS20vwzOjhwQuTqCGY8KwiJilGCnJ/Bnqz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV8lUPPh9TvPjWZ3/BZvCEhHOt1hG8fydfCAXyBpA9hW9zQOkfgPyeKk4yP2rUptY
-	 /O61P7US5tF9GsehOCkW7LIAoCdmgu0d+6aZyBA3cNRIh/5A2aJutrTj0Sn+KeT936
-	 UYnCxoGX/zZpS9Nc9ROS0AHybLN7cSbYKInoyzTI=
+	b=BrkzaYJoGNzF2FlS0OVAR1smdB8dtC8TMikXd8TeTLrwtWFL4O9XXBzA8QLJDQAKb
+	 27k1QeqkWLLjaq3B9pQUTUn7Qe7LVPSwKzxMH2kNwdE66Xg228YsL8vMk3ryDZaXh6
+	 NOFuhPdv50Q1vqudjs9EV1p0p895gEAFjcpcayCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/354] irqchip/renesas-rzg2l: Fix section mismatch
-Date: Tue, 16 Dec 2025 12:10:01 +0100
-Message-ID: <20251216111322.149082177@linuxfoundation.org>
+Subject: [PATCH 6.18 235/614] RDMA/rtrs: server: Fix error handling in get_or_create_srv
+Date: Tue, 16 Dec 2025 12:10:02 +0100
+Message-ID: <20251216111409.883353348@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 5b338fbb2b5b21d61a9eaba14dcf43108de30258 ]
+[ Upstream commit a338d6e849ab31f32c08b4fcac11c0c72afbb150 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+After device_initialize() is called, use put_device() to release the
+device according to kernel device management rules. While direct
+kfree() work in this case, using put_device() is more correct.
 
-Fixes: d011c022efe27579 ("irqchip/renesas-rzg2l: Add support for RZ/Five SoC")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Found by code review.
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251110005158.13394-1-make24@iscas.ac.cn
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 99e27e01b0b19..d83dfc10ff49e 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -613,14 +613,12 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
- 	return ret;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index ef4abdea3c2d2..9ecc6343455d6 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1450,7 +1450,7 @@ static struct rtrs_srv_sess *get_or_create_srv(struct rtrs_srv_ctx *ctx,
+ 	kfree(srv->chunks);
+ 
+ err_free_srv:
+-	kfree(srv);
++	put_device(&srv->dev);
+ 	return ERR_PTR(-ENOMEM);
  }
  
--static int __init rzg2l_irqc_init(struct device_node *node,
--				  struct device_node *parent)
-+static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- {
- 	return rzg2l_irqc_common_init(node, parent, &rzg2l_irqc_chip);
- }
- 
--static int __init rzfive_irqc_init(struct device_node *node,
--				   struct device_node *parent)
-+static int rzfive_irqc_init(struct device_node *node, struct device_node *parent)
- {
- 	return rzg2l_irqc_common_init(node, parent, &rzfive_irqc_chip);
- }
 -- 
 2.51.0
 
