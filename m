@@ -1,121 +1,113 @@
-Return-Path: <stable+bounces-201118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238EDCC02DD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 00:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B465CC04A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 01:02:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E23DE30115FF
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 23:29:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85EB230145AD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 00:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE54279DC2;
-	Mon, 15 Dec 2025 23:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DDD33EC;
+	Tue, 16 Dec 2025 00:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eUklajie"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V4jxy5Kw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565EE286D5C
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 23:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B0F3B8D52
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 00:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765841393; cv=none; b=kncUEXO6U393iQY9oPUzFzIYchURiUL0BvwxrJeuNmzVzLOLyzfHWGptTwv201ZOdnZIgkDgshjQfkz0MYbb0sEc+n6SnqsiKOXuH8ru+t5quCdF3YtyuSFG5on0bH6Ac+OHk+UZ0Bgco3AF7ChPqLLM41bpflkreTLcCwoLOXo=
+	t=1765843349; cv=none; b=E5S21B4UdiAD+tmYgPlZI8YF9DPrAzOcgsytb/zCgG1uwB0sf+gtzv79wFiiWur6Pk5I1SmaI1q3Zz9qlmlyK5xajI+plkS5mDMi+eq9qsTnR7AUcOkjEeIlAeMJolvyFjdRwOiwL4QCi6PafTGCL/e1o1W9iGPszMNvqOe1Nog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765841393; c=relaxed/simple;
-	bh=XOoPPexklsz7SvupO8sfvwY9ZiR6aEvcYtpvbQTfdQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c7VeVb5PdeSyaSX5za92t8FUKd/sVcTr2q8JbCd0RQfD49MaimJ2zAIopPg+IU9eZmhDnKK4mBsR76wwhVj/wtjFQoIWsaSuZxEfDlvtlAX0z3N7XulqZL+liWE54uZHlbUFVYiqk5nMcTQj0Q08bRcS3Y8yQ5z8s/h+wcQzjqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eUklajie; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-78c5b5c1eccso54096857b3.1
-        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 15:29:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765841391; x=1766446191; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XOoPPexklsz7SvupO8sfvwY9ZiR6aEvcYtpvbQTfdQY=;
-        b=eUklajietZuZppPAGM2ri9GnM0Sy/7Zm5ZtoA6Abd/OUPyvJ5zztm66iVEaBklhEka
-         NG7lQSI5j6oVsiWg9r8IQkVAo9Ec6SEHHXEVjzFyVhMCmWZ+5JbTuzONcefRqXol7YIo
-         jgc5dxCwiIGtkW0juQ8joSwbkAq1/jHdd3DTAvmesnK9bpVX8A6qdWuEbfkJLkYBkPEM
-         y8BryzYTJyB1FZHJ6E5KtaBYvkrqBg9yWyADHWh/UTHAxz2jrkzZ14A+Ra167/qV9TBq
-         KBYXuhZpUpqi7B/c/9pig0zpFxS5KlM0VcA/MTjvFKDo9SMGEPBJjA5zRZfVfNOeBx+X
-         EF0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765841391; x=1766446191;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XOoPPexklsz7SvupO8sfvwY9ZiR6aEvcYtpvbQTfdQY=;
-        b=pID4xewVsOpRXlLUGwl2mE71rgsQznXgaFvwgKS6iOBEQc/oIXKYo2nY75UX9d4nxP
-         6bD2j0yqfo4FGwBiKS1yfzpO3O/6IM9IfwSqdRW97gjxOWyEvZkBk9bejqAZriG+GEQF
-         b5XgW6Bv3IFdOLbxD1mN3TgUAgygOwCB6F6M8ZZGGBrw6xNamCjUSyEfIAuJsAYKtzEu
-         TDvm/E9MVMb25KAYbO3M8t4QV5zWvuNBCVxLjilw9/+xuG1Syc2eHHbEtiCFinVyLUkf
-         N84WFnsiOZUIzVl7BMcgZgR/64cM8w2/GYt8YYSOGy3h6qDjs9vd0i78Lr/FOoY8J+UR
-         scmg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+cQFFR3d4Y0c1nMH9h/yzuFIs5EiXrCyyO/VlrelcCraT9L8FXAuUhGnbagmc+N9wRxWChZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt23Ix7wUHzZiJCXGYra0u+KdmRsAWY4msivnkd11N99L/TJRO
-	prc1gOF0QDfs2Kg2/IDyy2x50yUodUvhzpTdRYw+hIY500Xi+hi2pMWYwW+ZjqKsgeFskFQamky
-	CQJ6oof/uoHooevggMEcW4xd6i5d0JhE=
-X-Gm-Gg: AY/fxX7vbFbgoheiA5Rmp8dNfDjiXkicwG803buVEDngf6T2fP3kyfEx0P9gtNi5yCy
-	NK/hcAm52AplWqU7W5H9UPPASnu6S10mJPOPAPywVs36Mrd4NimsHhmXuEHVBxdiB/TQ8eCEafw
-	uHTGSARnjLm62U2lIOfSeL0Tl3AtuWMBbAxEM0LfjsRfF+6W6IdufKnVWxshwcyhuB6IXSZGf9H
-	Zdc6ARyOkS/mN5GBv5qAdITslWcRki2vSO1JQR3+DVzndhZ1S+ArqyoxGtg2MO9vNqui8QJ
-X-Google-Smtp-Source: AGHT+IFXQr+WLdQ1LBgwmIwfs8QhQuZ97Em1dNVvE3JkMPBG6CA9xvDlyU87aqQvCFKYiFCctQjC/F8Jd4LH9bQoF0w=
-X-Received: by 2002:a05:690c:385:b0:78c:4f8:f4f3 with SMTP id
- 00721157ae682-78d6dfdfd98mr135081087b3.32.1765841391153; Mon, 15 Dec 2025
- 15:29:51 -0800 (PST)
+	s=arc-20240116; t=1765843349; c=relaxed/simple;
+	bh=IfxLDcruypX4wrf69FrOY+iSzEbJu1dEvy47POZPvko=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EvaK2af0tVZWQrYUKxVIXepmpdTbWdZliOziWI0Mvt0MixnJbHzguXqHLQ4gKKTiPLtMTkSo00LXeC2Pg2/L/d1WpSoeD/Z1vL5fi27FM3aB6Tn9HMyo4a2MFqocm/Bpah2RK+Ld6fbQCa1IsIjhU/FI4Q6cdIKCexFB6v+dLrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V4jxy5Kw; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765843348; x=1797379348;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IfxLDcruypX4wrf69FrOY+iSzEbJu1dEvy47POZPvko=;
+  b=V4jxy5KwP5mN1rsMxEF2XOpzInDfy0mnw/7u7u/pVjzYtAGOOBReEo1M
+   BZ9oT2kmQZchWNpXpD6XNaiooWkzvNRpWZjY6mxZgIX0f5BCQtkN9PdKh
+   COT4MdfGUycM19w5Q5mLWy/23TYb335/HX+BABgy2w7ZjLPBRI6rM19dY
+   trLlb3C0r1lK4hFTxjdR7MRQjr0KpsxRB7epogFzIpaxzx4m009XxqIYX
+   JOh2HW3gwMsIOhnH9UFmXHX9p9Ye8l8zuv/FYotT9vGAaa9bcnlv7okyj
+   X5KdUyDuBJErpauudzj4kBbDbxWLLOOudvH7R/kzXwc48LfgW84FAktnG
+   w==;
+X-CSE-ConnectionGUID: CGK9Rh33SciBZAjq6EBCxw==
+X-CSE-MsgGUID: xwvutMmxQ7qhGTd0e2/eJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="55320810"
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
+   d="scan'208";a="55320810"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 16:02:27 -0800
+X-CSE-ConnectionGUID: SqFQLMMHTAeD3CSw9PoXHg==
+X-CSE-MsgGUID: s7AnXEPZQiCYtX0dvz3b+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; 
+   d="scan'208";a="228521060"
+Received: from osgcshtiger.sh.intel.com ([10.239.70.161])
+  by orviesa002.jf.intel.com with ESMTP; 15 Dec 2025 16:02:25 -0800
+From: Jia Yao <jia.yao@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>,
+	Alex Zuo <alex.zuo@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Xin Wang <x.wang@intel.com>,
+	stable@vger.kernel.org,
+	Matt Roper <matthew.d.roper@intel.com>
+Subject: [PATCH] drm/i915/dg2: Update workaround 22013059131
+Date: Tue, 16 Dec 2025 00:02:21 +0000
+Message-Id: <20251216000221.3496541-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215004145.2760442-1-sashal@kernel.org> <20251215004145.2760442-3-sashal@kernel.org>
-In-Reply-To: <20251215004145.2760442-3-sashal@kernel.org>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Tue, 16 Dec 2025 02:29:14 +0300
-X-Gm-Features: AQt7F2othRtJTu3qTB-suXBFqWXz6gMb9saSL-bJoPW27po55zjiWbgVkURPqXs
-Message-ID: <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
- legacy driver as fallback
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-	Takashi Iwai <tiwai@suse.de>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com, 
-	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com, 
-	bradynorander@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 15, 2025 at 3:41=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Takashi Iwai <tiwai@suse.de>
->
-> [ Upstream commit 161a0c617ab172bbcda7ce61803addeb2124dbff ]
->
-> When config table entries don't match with the device to be probed,
-> currently we fall back to SND_INTEL_DSP_DRIVER_ANY, which means to
-> allow any drivers to bind with it.
->
-[...]
->
-> Reported-by: Askar Safin <safinaskar@gmail.com>
-> Closes: https://lore.kernel.org/all/20251014034156.4480-1-safinaskar@gmai=
-l.com/
-> Tested-by: Askar Safin <safinaskar@gmail.com>
-> Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> Link: https://patch.msgid.link/20251210131553.184404-1-tiwai@suse.de
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+Previous fix enabled LSC chicken bit FORCE_1_SUB_MESSAGE_PER_FRAGMENT.
+This caused side effects on 128EU SKUs. Updated solution limits SLM
+allocation to 96KB which is done at UMD to avoid these issues and
+ensure stable behavior.
 
-Please, backport this to 82d9d54a6c0e .
-82d9d54a6c0e is commit, which introduced "intel-dsp-config.c".
+Bspec: 54833
+Fixes: 645cc0b9d972 ("drm/i915/dg2: Add initial gt/ctx/engine workarounds")
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+Cc: Alex Zuo <alex.zuo@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Xin Wang  <x.wang@intel.com>
+Cc: stable@vger.kernel.org
+Cc: Matt Roper <matthew.d.roper@intel.com>
+---
+ drivers/gpu/drm/i915/gt/intel_workarounds.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---=20
-Askar Safin
+diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+index ece88c612e27..abb47c65f43a 100644
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -2866,10 +2866,6 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
+ 				     MAXREQS_PER_BANK,
+ 				     REG_FIELD_PREP(MAXREQS_PER_BANK, 2));
+ 
+-		/* Wa_22013059131:dg2 */
+-		wa_mcr_write_or(wal, LSC_CHICKEN_BIT_0,
+-				FORCE_1_SUB_MESSAGE_PER_FRAGMENT);
+-
+ 		/*
+ 		 * Wa_22012654132
+ 		 *
+-- 
+2.34.1
+
 
