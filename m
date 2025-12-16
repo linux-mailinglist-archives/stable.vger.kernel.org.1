@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-202003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFCECC4681
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E25BCC2878
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FE7E30CAC91
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 278EA30335B5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4CD3563C1;
-	Tue, 16 Dec 2025 12:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614023596EE;
+	Tue, 16 Dec 2025 12:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWaMjFjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVj/TS6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED35A3563C4;
-	Tue, 16 Dec 2025 12:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7B23596EA;
+	Tue, 16 Dec 2025 12:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886506; cv=none; b=iAncj9jaqf3XSZZcvz9UFe18uqc5s+qtSyLphtZe3zfFgEmpc2u5YSH0heg2llLXVSpKQwiGHA630h/pwjsIOy1PvjjBu992fbjR4ktberQul6at2WK7jlN5kk2MQ9e0D639qR1+yDcMpFt70qgm1PZBZ9PNMCEQMQ9IKd/GvoE=
+	t=1765886650; cv=none; b=mk32zBv9QH2Ia0U4RP9/w4xLqtKekUmWmB7pd+xFpUxRzzjkQ4pCEyS6we0zlI5ZiKG1c4XH3a5s0cpeI+af7GDTTDHTZVgOfEDJGfVlQMa8bH4b+cp1juod6T1iLylDAkNPFadjoOTNtm21AbgvIs16I5+noQEAkVtEGvc/S6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886506; c=relaxed/simple;
-	bh=f0p3m4Bgthzly0S2dUFHfWtlP3ZCcxP5Cd3l04HnWzY=;
+	s=arc-20240116; t=1765886650; c=relaxed/simple;
+	bh=N1WGvSNvC2lLoaoE85ZBECTcZjA8SJaIatstdNckKF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGA/n5ynVrcdCQc0H64/WnrER24wgSWoxDKCQD+6DnEJIoHzrf8o7nfOhFCZMvTiKdk9XKh96fRfbnWLq+2/pAlONFocswHklz2R7isE4Z8qsmT3C2mu95ozIRXveGUPILc1IDU/BAe38ugn6CSn9CKcOeuKB7tYkl0f96frGJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWaMjFjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08024C4CEF1;
-	Tue, 16 Dec 2025 12:01:44 +0000 (UTC)
+	 MIME-Version; b=rZxSgMo8YpAMmlupcxuyGLct5oPIROQZM4drnjoBjAs4IiAmyvaTBt1XfC6hFzeP+CcDAIqkrgprCAvEnJUgEMxC2d2/6C5t5+X+ltACAd9lTQpng22Y0CAbZcShUrozrJIXeMCFVXSTPNc6qhRPnLi4AYJc4vWmUX7N3/dQJ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVj/TS6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D00C4CEF5;
+	Tue, 16 Dec 2025 12:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886505;
-	bh=f0p3m4Bgthzly0S2dUFHfWtlP3ZCcxP5Cd3l04HnWzY=;
+	s=korg; t=1765886650;
+	bh=N1WGvSNvC2lLoaoE85ZBECTcZjA8SJaIatstdNckKF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWaMjFjWynyiG2C4pAl1QaxbbpXThFvCF4eWbbzC/CngMoP4jO6z+K5orXgURMY+s
-	 bp8u8Gc76iVYFEs2kWerxnbluHgJdO3tIm8mr5Hdbw8uIt5VRTIdcXST7NtymTKiyB
-	 TZtbNAmo+xDX6P+jXdj7eI6VLjXMV5fH6RXh/rqE=
+	b=GVj/TS6AFoDbpAn0dT1fyP08VyWcuo/deOESRpGUTtD9XSG7dNrkXKDU4+BU1mGcO
+	 Z/VX+LkRGz6Yg4ytj34s9dqc2iNQaBMMXD93h1sbaNh/iIDzPAXNRAZQ0HXpVLjL+d
+	 YqcIOxq2xdwWIE7AU7OQjb9jkpRsK3azhMiYAK5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
+	Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>,
+	Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 455/507] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
-Date: Tue, 16 Dec 2025 12:14:56 +0100
-Message-ID: <20251216111401.933667541@linuxfoundation.org>
+Subject: [PATCH 6.17 456/507] ASoC: amd: acp: Audio is not resuming after s0ix
+Date: Tue, 16 Dec 2025 12:14:57 +0100
+Message-ID: <20251216111401.969167240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
 References: <20251216111345.522190956@linuxfoundation.org>
@@ -64,41 +66,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 3ee257aba1d56c3f0f1028669a8ad0f1a477f05b ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+Audio fails to resume after system exits suspend mode
+due to accessing incorrect ring buffer address during
+resume. This patch resolves issue by selecting correct
+address based on the ACP version.
 
-Add error checking for of_dma_configure() and return on failure.
-
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
+Fixes: f6f7d25b11033 ("ASoC: amd: acp: Add pte configuration for ACP7.0 platform")
+Signed-off-by: Hemalatha Pinnamreddy <hemalatha.pinnamreddy2@amd.com>
+Signed-off-by: Raghavendra Prasad Mallela <raghavendraprasad.mallela@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20251203064650.2554625-1-raghavendraprasad.mallela@amd.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-legacy-common.c | 30 +++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index e3a4fcc63a56d..efeb06ddabeb3 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -358,7 +358,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
- 
- 	i2s_priv = dev_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0)->dev);
- 
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
+diff --git a/sound/soc/amd/acp/acp-legacy-common.c b/sound/soc/amd/acp/acp-legacy-common.c
+index 3078f459e0050..4e477c48d4bdd 100644
+--- a/sound/soc/amd/acp/acp-legacy-common.c
++++ b/sound/soc/amd/acp/acp-legacy-common.c
+@@ -219,7 +219,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					SP_PB_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_I2S_TX_FIFOADDR(chip);
+ 			reg_fifo_size = ACP_I2S_TX_FIFOSIZE(chip);
+-			phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_SP_TX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_I2S_TX_RINGBUFADDR(chip));
+ 		} else {
+ 			reg_dma_size = ACP_I2S_RX_DMA_SIZE(chip);
+@@ -227,7 +230,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					SP_CAPT_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_I2S_RX_FIFOADDR(chip);
+ 			reg_fifo_size = ACP_I2S_RX_FIFOSIZE(chip);
+-			phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_SP_RX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_I2S_RX_RINGBUFADDR(chip));
+ 		}
+ 		break;
+@@ -238,7 +244,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					BT_PB_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_BT_TX_FIFOADDR(chip);
+ 			reg_fifo_size = ACP_BT_TX_FIFOSIZE(chip);
+-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_BT_TX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_BT_TX_RINGBUFADDR(chip));
+ 		} else {
+ 			reg_dma_size = ACP_BT_RX_DMA_SIZE(chip);
+@@ -246,7 +255,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					BT_CAPT_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_BT_RX_FIFOADDR(chip);
+ 			reg_fifo_size = ACP_BT_RX_FIFOSIZE(chip);
+-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_BT_RX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_BT_RX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_BT_RX_RINGBUFADDR(chip));
+ 		}
+ 		break;
+@@ -257,7 +269,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					HS_PB_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_HS_TX_FIFOADDR;
+ 			reg_fifo_size = ACP_HS_TX_FIFOSIZE;
+-			phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_HS_TX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_HS_TX_RINGBUFADDR);
+ 		} else {
+ 			reg_dma_size = ACP_HS_RX_DMA_SIZE;
+@@ -265,7 +280,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
+ 					HS_CAPT_FIFO_ADDR_OFFSET;
+ 			reg_fifo_addr = ACP_HS_RX_FIFOADDR;
+ 			reg_fifo_size = ACP_HS_RX_FIFOSIZE;
+-			phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
++			if (chip->acp_rev >= ACP70_PCI_ID)
++				phy_addr = ACP7x_I2S_HS_RX_MEM_WINDOW_START;
++			else
++				phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
+ 			writel(phy_addr, chip->base + ACP_HS_RX_RINGBUFADDR);
+ 		}
+ 		break;
 -- 
 2.51.0
 
