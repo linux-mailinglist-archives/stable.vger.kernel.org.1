@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-202674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D466CC2F0B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:50:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAE6CC426F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA782302EE55
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD684303937B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F81A39BEA0;
-	Tue, 16 Dec 2025 12:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7661425CC40;
+	Tue, 16 Dec 2025 12:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzl48i0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keytWIMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40C63845C4;
-	Tue, 16 Dec 2025 12:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3183317BA2;
+	Tue, 16 Dec 2025 12:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888674; cv=none; b=biafvQkRCz0aW8/dKBInIcS5q502YJiWidTL8iBTTmtjKvsfFnBz+EOYFtcpARfg32uBJcFqQnnJyEgxOKYjgM4Eav/0InCqf1dwO6s9wJCR/qXkN7z2l87v/LcjxCK1Du8++xk7SbaTlnLJIDyGYRVHlPHW8L4HFVeiZWBmbUM=
+	t=1765888708; cv=none; b=eOR8eeYloYIjsVAj9qrFrHwWqHkYwhkTSjCKrzBZePT2EhNQ2E3JGJEAZG41TCLXLpK+kX34LqY+xDF+dpYjWliFwiRqMCbNFiURx6Mr4F1iQCIHV+Y360RoLr5WQWORrDr4f+Z7Fc2PbSBgg6RIzw6PBGLXvZ6e0c+vABfisLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888674; c=relaxed/simple;
-	bh=+Ud7VeeukAHNJuxkM7GLYEA6sLbFAlGRgpKJRZaCrfQ=;
+	s=arc-20240116; t=1765888708; c=relaxed/simple;
+	bh=C3fVHQmxD9g144v0RGe7rMLZyfFn4Fy7XM5C3roGk2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FycIAyiElzSJKo0Di7pzykWl4pqNAAgZ14KWFksEJOL++LI6JKae9XyQibuQ1P1zgKFEdire/7YXSIFpVHAkJWvyNaNn6ZKQiBWjX+rQblOG/A0ymRIIblOV4hYGDfPvXzlsd4xgmin7lT5HqEnuFFCiHf6xHTuV4wr1pmGR5KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzl48i0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184B1C4CEF1;
-	Tue, 16 Dec 2025 12:37:53 +0000 (UTC)
+	 MIME-Version; b=oaWLF2sKes3aKi857sgpkW3Xf8Kk7K7285KZYEESkRDVTIZFUqogG1y74b0EaygFW00TpMoL6XFBa5T1iDbTyGZA5tfrgXFKX5/MHq9ThCKnP5idPSuAPJl+rZH6hgN30L0ptN+9i8fQTI0znuToELj1J9Sy2dXCUvTbqZqz/fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keytWIMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49190C4CEF1;
+	Tue, 16 Dec 2025 12:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888674;
-	bh=+Ud7VeeukAHNJuxkM7GLYEA6sLbFAlGRgpKJRZaCrfQ=;
+	s=korg; t=1765888707;
+	bh=C3fVHQmxD9g144v0RGe7rMLZyfFn4Fy7XM5C3roGk2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wzl48i0eSj9Avv9sP/huJBVVnzyg3f25IDQVWrfCYUJ4MFcVTPkIRZxbKvvjwH8p9
-	 lurvvJW+vUqquLk+Rr59cQrSWgzNAlo5VoRBpaRgDU/IByFI/bXu5tbfVs8LMNF2Hp
-	 Z9wBy/Ylhuf8mU6VT7Qr62VKONw8BpQqrSBccnGM=
+	b=keytWIMASnm4/aDFeYV6iQr4OE/qHvSDlcdVVlP6pjfwmelZzCNRAHahyonGYIgQK
+	 oXjAcDLx/WwdMeP4f4jHQHUMHllDIkHa0yChJiHU8IluhcqxLqFFG4O6b96hrGqZ2z
+	 xxMYA0HOIWYozqVIMlm/Sqtp+MeCT86n5GupoVFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 597/614] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
-Date: Tue, 16 Dec 2025 12:16:04 +0100
-Message-ID: <20251216111423.023052227@linuxfoundation.org>
+Subject: [PATCH 6.18 598/614] cpu: Make atomic hotplug callbacks run with interrupts disabled on UP
+Date: Tue, 16 Dec 2025 12:16:05 +0100
+Message-ID: <20251216111423.059845366@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -65,39 +64,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
+[ Upstream commit c94291914b200e10c72cef23c8e4c67eb4fdbcd9 ]
 
-If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
-it results in an out of bounds access.
+On SMP systems the CPU hotplug callbacks in the "starting" range are
+invoked while the CPU is brought up and interrupts are still
+disabled. Callbacks which are added later are invoked via the
+hotplug-thread on the target CPU and interrupts are explicitly disabled.
 
-The code checks for invalid values, but doesn't set the error code.  Return
--EINVAL in that case, instead of returning success.
+In the UP case callbacks which are added later are invoked directly without
+the thread indirection. This is in principle okay since there is just one
+CPU but those callbacks are invoked with interrupt disabled code. That's
+incorrect as those callbacks assume interrupt disabled context.
 
-Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Disable interrupts before invoking the callbacks on UP if the state is
+atomic and interrupts are expected to be disabled.  The "save" part is
+required because this is also invoked early in the boot process while
+interrupts are disabled and must not be enabled prematurely.
+
+Fixes: 06ddd17521bf1 ("sched/smp: Always define is_percpu_thread() and scheduler_ipi()")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
+Link: https://patch.msgid.link/20251127144723.ev9DuXXR@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mchp-eic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cpu.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
-index b513a899c0853..979bb86929f8e 100644
---- a/drivers/irqchip/irq-mchp-eic.c
-+++ b/drivers/irqchip/irq-mchp-eic.c
-@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index db9f6c539b28c..15000c7abc659 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -249,6 +249,14 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 	return ret;
+ }
  
- 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
- 	if (ret || hwirq >= MCHP_EIC_NIRQ)
--		return ret;
-+		return ret ?: -EINVAL;
++/*
++ * The former STARTING/DYING states, ran with IRQs disabled and must not fail.
++ */
++static bool cpuhp_is_atomic_state(enum cpuhp_state state)
++{
++	return CPUHP_AP_IDLE_DEAD <= state && state < CPUHP_AP_ONLINE;
++}
++
+ #ifdef CONFIG_SMP
+ static bool cpuhp_is_ap_state(enum cpuhp_state state)
+ {
+@@ -271,14 +279,6 @@ static inline void complete_ap_thread(struct cpuhp_cpu_state *st, bool bringup)
+ 	complete(done);
+ }
  
- 	switch (type) {
- 	case IRQ_TYPE_EDGE_RISING:
+-/*
+- * The former STARTING/DYING states, ran with IRQs disabled and must not fail.
+- */
+-static bool cpuhp_is_atomic_state(enum cpuhp_state state)
+-{
+-	return CPUHP_AP_IDLE_DEAD <= state && state < CPUHP_AP_ONLINE;
+-}
+-
+ /* Synchronization state management */
+ enum cpuhp_sync_state {
+ 	SYNC_STATE_DEAD,
+@@ -2364,7 +2364,14 @@ static int cpuhp_issue_call(int cpu, enum cpuhp_state state, bool bringup,
+ 	else
+ 		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
+ #else
+-	ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	if (cpuhp_is_atomic_state(state)) {
++		guard(irqsave)();
++		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++		/* STARTING/DYING must not fail! */
++		WARN_ON_ONCE(ret);
++	} else {
++		ret = cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	}
+ #endif
+ 	BUG_ON(ret && !bringup);
+ 	return ret;
 -- 
 2.51.0
 
