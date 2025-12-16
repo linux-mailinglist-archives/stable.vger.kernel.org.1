@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311C6CC2DBE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:43:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5BBCC2A86
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2181308CF8D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7013F3024257
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969E3354AED;
-	Tue, 16 Dec 2025 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B49355026;
+	Tue, 16 Dec 2025 12:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyhvaSmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksf9XyNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52390354AE5;
-	Tue, 16 Dec 2025 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4E346790;
+	Tue, 16 Dec 2025 12:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885801; cv=none; b=mSg0UY6hpXmTv8zQsNggmNAyOPGf/YCuE2eGomjpkxXQA57grZFr//BIcpDWTfbrNUkknkmVmbpOj0sWvXK7/wrygCUBqMpA8whVK8wm8KTIY893CXCLBFcNXFi9VTIeCh11kWZyUi0hTkpNVxbmPyL8HLJR66RrucOyKJ9x8tE=
+	t=1765887704; cv=none; b=fsOwIzYpFSDDNbrBbsnR48lR8+CwQqOsql3aaHN1iGXrUZj0rGyP1lBXQ1i6FZQHzT88bs60ORJF5rwXmJ05lhPvCqMAf1Q1Xys1C20ma1KjWAt6f4p5y38Op0qNz/MsoqDcKmx+4qygIUQ6addRQCpK7ha7Ng4SyjaDnbzgNA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885801; c=relaxed/simple;
-	bh=VAilaR8j69FOwIWcCulwM8ZF1tQMzxAgtczS+tGwtuU=;
+	s=arc-20240116; t=1765887704; c=relaxed/simple;
+	bh=3dyb/gjf9kcTVsg/+NKA9uUmFqfEAx0/1NsuCP5+8g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYoU1zstZO+cVUCtjgyP6+4tLyFbNn09X/HPhLKg4kmEHerZ+CJxBLpI0zNeoFhqXa7W8A0/ZS9Ljgj5ZpS5D8FR8sgqHD8qaLwVbtCoANtLw/R8K/QaXIL0rXmOG0hRLePrwGf02fEmM3RCLR/LoLUeBSp/IAzTNgkgGXfiZGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyhvaSmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFFAC4CEF1;
-	Tue, 16 Dec 2025 11:50:00 +0000 (UTC)
+	 MIME-Version; b=qoSxeikK9Qr87jzYjekNnqnTqk5ADxrTA2AJR4ns8ZYYtngM+xrfx8DmmauTuEF20um+lZbC06N0qfSFN8Lo141tz0e6LYTWd588r9q+X5BCm8x3fETIlP+nRPTHwfDXOez6GbpQ3c+dBlW9Xf7yzbl3ZSONE4Cjo9hD3m7FOPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksf9XyNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE45C4CEF1;
+	Tue, 16 Dec 2025 12:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885801;
-	bh=VAilaR8j69FOwIWcCulwM8ZF1tQMzxAgtczS+tGwtuU=;
+	s=korg; t=1765887704;
+	bh=3dyb/gjf9kcTVsg/+NKA9uUmFqfEAx0/1NsuCP5+8g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OyhvaSmIFQA2PU3OR/m+2uq/ECBQm9R8qNrpPrCXRcLJ8E3CKzkEvgbvgeErTEZqo
-	 XKKv2BvycyiBvnquG8mMEnJ9KLF6c7ZcyVQqVVVpT7xx/G49WAzf6UDbN6sR+F/99b
-	 eTkMI31xv1REsLlfRJWFLAPIxTm4+dOM1Qljvo4M=
+	b=ksf9XyNnTj0jw8OJ1KXOveSC+pNXNXXI4lv3oSAQCpPew7bv4QgCy/FnhMz0eCHBY
+	 CW1wXKqfLq5+0+bT5H7r/huZklNbbpNTUCX59mYm82cV/7LfakfFSjPKI5PE8cH6eS
+	 qWJGXucnSPl/EXlgpLfD8+lfPVK3jZULVzdPe7Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 205/507] md: delete md_redundancy_group when array is becoming inactive
+Subject: [PATCH 6.18 279/614] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 3C
 Date: Tue, 16 Dec 2025 12:10:46 +0100
-Message-ID: <20251216111352.938547974@linuxfoundation.org>
+Message-ID: <20251216111411.483940233@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 0ce112d9171ad766d4c6716951e73f91a0bfc184 ]
+[ Upstream commit 260316d35cf8f8606c5ed7a349cc92e1e71d8150 ]
 
-'md_redundancy_group' are created in md_run() and deleted in del_gendisk(),
-but these are not paired. Writing inactive/active to sysfs array_state can
-trigger md_run() multiple times without del_gendisk(), leading to
-duplicate creation as below:
+The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 3C is
+vcca1v8_pmu. [1] Describe this supply.
 
- sysfs: cannot create duplicate filename '/devices/virtual/block/md0/md/sync_action'
- Call Trace:
-  dump_stack_lvl+0x9f/0x120
-  dump_stack+0x14/0x20
-  sysfs_warn_dup+0x96/0xc0
-  sysfs_add_file_mode_ns+0x19c/0x1b0
-  internal_create_group+0x213/0x830
-  sysfs_create_group+0x17/0x20
-  md_run+0x856/0xe60
-  ? __x64_sys_openat+0x23/0x30
-  do_md_run+0x26/0x1d0
-  array_state_store+0x559/0x760
-  md_attr_store+0xc9/0x1e0
-  sysfs_kf_write+0x6f/0xa0
-  kernfs_fop_write_iter+0x141/0x2a0
-  vfs_write+0x1fc/0x5a0
-  ksys_write+0x79/0x180
-  __x64_sys_write+0x1d/0x30
-  x64_sys_call+0x2818/0x2880
-  do_syscall_64+0xa9/0x580
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- md: cannot register extra attributes for md0
+[1] https://dl.radxa.com/rock3/docs/hw/3c/v1400/radxa_rock_3c_v1400_schematic.pdf p.13
 
-Creation of it depends on 'pers', its lifecycle cannot be aligned with
-gendisk. So fix this issue by triggering 'md_redundancy_group' deletion
-when the array is becoming inactive.
-
-Link: https://lore.kernel.org/linux-raid/20251103125757.1405796-2-linan666@huaweicloud.com
-Fixes: 790abe4d77af ("md: remove/add redundancy group only in level change")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Fixes: ee219017ddb50 ("arm64: dts: rockchip: Add Radxa ROCK 3C")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-4-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 209ca3eade260..48345082d2eb3 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6696,6 +6696,10 @@ static int do_md_stop(struct mddev *mddev, int mode)
- 		if (!md_is_rdwr(mddev))
- 			set_disk_ro(disk, 0);
- 
-+		if (mode == 2 && mddev->pers->sync_request &&
-+		    mddev->to_remove == NULL)
-+			mddev->to_remove = &md_redundancy_group;
-+
- 		__md_stop_writes(mddev);
- 		__md_stop(mddev);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+index 6224d72813e59..80ac40555e023 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
+@@ -466,6 +466,7 @@ eeprom: eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		vcc-supply = <&vcca1v8_pmu>;
+ 	};
+ };
  
 -- 
 2.51.0
