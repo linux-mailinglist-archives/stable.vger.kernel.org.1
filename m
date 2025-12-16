@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-202576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16207CC2C3E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D41DCC465A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3538A302E7D3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:32:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0058630A051E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DC0397D09;
-	Tue, 16 Dec 2025 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4D033DEC5;
+	Tue, 16 Dec 2025 12:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frvz05h/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtWhnpuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D27397D06;
-	Tue, 16 Dec 2025 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABD41991B6;
+	Tue, 16 Dec 2025 12:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888344; cv=none; b=o/yOguOzNO0C7ZaEqcFU51m8F9AtQ5MkorGlclWcdfFxPMT3/T3dm6khhtLJafxLDj1Wm2sgqCK4CkGXShZ50U4nmVMuz578hjo/fxs6U8iz0eI+FuDhxLntcPkRytrJOrigmot49+frm/RjPQa4fG0Fiq8VnhzfDbv1fsg7kZM=
+	t=1765886428; cv=none; b=D1IryPxDGWIssjMNM2VpAi3lDmbQOmU0W0fX/OK/C37S+L7umKJtygV46z2L4vbGPUlSmwAQaEI54ct/Np9zr21az6MKeyH0j+vzmFCQ4/3sPq2cAmhO2/YYhlMAwbV5AjIKyy/MFkIEEQMke/qc3SBUW4MayA55ESQzZJS+uPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888344; c=relaxed/simple;
-	bh=5CXCpobsb0CPotwCt/Ty9MwBVPiSJCy3PT2aIpVb1WI=;
+	s=arc-20240116; t=1765886428; c=relaxed/simple;
+	bh=kvvWt6GuhVzw8fzTPQMJG9qYxIhrHvcKZrWjN+Alwiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HsvP/ciwbTa5cQPSBGZMK7aG2NAYUpVCrJra6cDG1gUFptn/BBrtpVSjBTqO3Ui+D11kyzlsquSID+h9xVgSEZAUslvVdv6LxOpkMgXAbx972SNlz9gsLOUcEizj4/rpGo1yLtMRvEa4alHL4uWYYU4DdKxtlQbtMzKyqPkNg4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frvz05h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D157FC4CEF1;
-	Tue, 16 Dec 2025 12:32:23 +0000 (UTC)
+	 MIME-Version; b=rNxXEod0JJXphc8Ttb9ZFe/2t6Jpe2A2ZFBIMCcGL+LsEXz/Nr/PS7F0fXsyYLpA8FTpWN4ln15qiKyfMGWEeDgg7/XwXavGJ7VfaE0eGKnxueuMIKlfuqxFI/jMbGmN0M/CAjh0wJFGkARb2luxnA/DQMH6R6ZVL1q2kliFkfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtWhnpuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AD2C4CEF1;
+	Tue, 16 Dec 2025 12:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888344;
-	bh=5CXCpobsb0CPotwCt/Ty9MwBVPiSJCy3PT2aIpVb1WI=;
+	s=korg; t=1765886427;
+	bh=kvvWt6GuhVzw8fzTPQMJG9qYxIhrHvcKZrWjN+Alwiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frvz05h/n0JOX3Xk4rmAinQS3aV+nUNiLFyGikRNWwH3XWODmN1q2LSh7xFS5PL3V
-	 TXRw6oaSJ867s12rEVPZchDdubDEoXjWM03hqQxpzwQ1NHYTxPd6kgD3cI0C2RQFys
-	 vJMpmjOHie5NAv+YAkLor9Fd/uCS3dcaH92NmV0g=
+	b=dtWhnpuXwXZhCDLhMSWmFrpmGCrlNNT0F3ExvK1/expjbiUfhsz+tGOm2BGRObfDK
+	 FqYK/M31dRP6hBThIpAFpESCqJH1+7l8mWYbonWlHJoDkyNbaUL1HFn7QTd9VSwBwm
+	 5uP30nRJfYMFK8GKa1TeIagvl/m2iLCf9vfncjNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	John Stultz <jstultz@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Haiyue Wang <haiyuewa@163.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 507/614] net: dsa: b53: fix extracting VID from entry for BCM5325/65
-Date: Tue, 16 Dec 2025 12:14:34 +0100
-Message-ID: <20251216111419.740192939@linuxfoundation.org>
+Subject: [PATCH 6.17 434/507] sched/core: Fix psi_dequeue() for Proxy Execution
+Date: Tue, 16 Dec 2025 12:14:35 +0100
+Message-ID: <20251216111401.181915087@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 9316012dd01952f75e37035360138ccc786ef727 ]
+[ Upstream commit c2ae8b0df2d1bb7a063f9e356e4e9a06cd4afe11 ]
 
-BCM5325/65's Entry register uses the highest three bits for
-VALID/STATIC/AGE, so shifting by 53 only will add these to
-b53_arl_entry::vid.
+Currently, if the sleep flag is set, psi_dequeue() doesn't
+change any of the psi_flags.
 
-So make sure to mask the vid value as well, to not get invalid VIDs.
+This is because psi_task_switch() will clear TSK_ONCPU as well
+as other potential flags (TSK_RUNNING), and the assumption is
+that a voluntary sleep always consists of a task being dequeued
+followed shortly there after with a psi_sched_switch() call.
 
-Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20251128080625.27181-3-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Proxy Execution changes this expectation, as mutex-blocked tasks
+that would normally sleep stay on the runqueue. But in the case
+where the mutex-owning task goes to sleep, or the owner is on a
+remote cpu, we will then deactivate the blocked task shortly
+after.
+
+In that situation, the mutex-blocked task will have had its
+TSK_ONCPU cleared when it was switched off the cpu, but it will
+stay TSK_RUNNING. Then if we later dequeue it (as currently done
+if we hit a case find_proxy_task() can't yet handle, such as the
+case of the owner being on another rq or a sleeping owner)
+psi_dequeue() won't change any state (leaving it TSK_RUNNING),
+as it incorrectly expects a psi_task_switch() call to
+immediately follow.
+
+Later on when the task get woken/re-enqueued, and psi_flags are
+set for TSK_RUNNING, we hit an error as the task is already
+TSK_RUNNING:
+
+  psi: inconsistent task state! task=188:kworker/28:0 cpu=28 psi_flags=4 clear=0 set=4
+
+To resolve this, extend the logic in psi_dequeue() so that
+if the sleep flag is set, we also check if psi_flags have
+TSK_ONCPU set (meaning the psi_task_switch is imminent) before
+we do the shortcut return.
+
+If TSK_ONCPU is not set, that means we've already switched away,
+and this psi_dequeue call needs to clear the flags.
+
+Fixes: be41bde4c3a8 ("sched: Add an initial sketch of the find_proxy_task() function")
+Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Haiyue Wang <haiyuewa@163.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://patch.msgid.link/20251205012721.756394-1-jstultz@google.com
+Closes: https://lore.kernel.org/lkml/20251117185550.365156-1-kprateek.nayak@amd.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_priv.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/stats.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index 458775f951643..2f44b3b6a0d9f 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -338,7 +338,7 @@ static inline void b53_arl_to_entry_25(struct b53_arl_entry *ent,
- 	ent->is_age = !!(mac_vid & ARLTBL_AGE_25);
- 	ent->is_static = !!(mac_vid & ARLTBL_STATIC_25);
- 	u64_to_ether_addr(mac_vid, ent->mac);
--	ent->vid = mac_vid >> ARLTBL_VID_S_65;
-+	ent->vid = (mac_vid >> ARLTBL_VID_S_65) & ARLTBL_VID_MASK_25;
- }
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 26f3fd4d34cea..73bd6bca4d310 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -180,8 +180,13 @@ static inline void psi_dequeue(struct task_struct *p, int flags)
+ 	 * avoid walking all ancestors twice, psi_task_switch() handles
+ 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
+ 	 * Do nothing here.
++	 *
++	 * In the SCHED_PROXY_EXECUTION case we may do sleeping
++	 * dequeues that are not followed by a task switch, so check
++	 * TSK_ONCPU is set to ensure the task switch is imminent.
++	 * Otherwise clear the flags as usual.
+ 	 */
+-	if (flags & DEQUEUE_SLEEP)
++	if ((flags & DEQUEUE_SLEEP) && (p->psi_flags & TSK_ONCPU))
+ 		return;
  
- static inline void b53_arl_from_entry(u64 *mac_vid, u32 *fwd_entry,
+ 	/*
 -- 
 2.51.0
 
