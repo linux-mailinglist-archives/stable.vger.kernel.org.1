@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-202002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9207FCC4023
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:40:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0ECCC43B4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64827308012B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:35:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3794309E8C4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AADF3563C7;
-	Tue, 16 Dec 2025 12:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE85836214D;
+	Tue, 16 Dec 2025 12:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgrC1v4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8urwqN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1B3563C1;
-	Tue, 16 Dec 2025 12:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619CF3612EE;
+	Tue, 16 Dec 2025 12:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886502; cv=none; b=jm6UOx+XhiTId2ydo0Pi7GHXnVN+1EQJjiYE2bhkU4cHLQjZWnniLdJbNi3Er2e61PRP8ZRVFAJUttdDOzp4wk6UH/IadkUSRnDr6t9GlHJt4SYMBv3QiJ061wmVHH4mSlJicpe8AaF3V1OJz2Q9ZY/S4uLsT0eJDcwL3lgNFUI=
+	t=1765888529; cv=none; b=Zpsxei7ADUDBImzBNTViDwlJCpn4t4S3ZPZnHA5IRV3ZBliF4pmr8NcpppQWEx3Lzb18kGACXuSI/FV8hBPm1HA+Q6aqseSbOPe6jtZLON8nb+w0o8fHNSma2Qp4Vzed9TOMZVTZNBObuAnPXtARxVh/qJXj1eDNLxzGSk5EXZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886502; c=relaxed/simple;
-	bh=dARL9Gh+Wjafu5EynDxSiVDWSLYgWn014Qic7J0GlO0=;
+	s=arc-20240116; t=1765888529; c=relaxed/simple;
+	bh=D+XLK5oz1R+g1QpxJNobX9cYLe2t/0mD/8CncoJG2pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nHPrqiND/QiR1OUM58T4vtTAVjnfTTHgzLEPG8bzqrL+Fh2thNMlCEAwfbyNI2i6rZa46lxT4Hfkpn6RHEOPMYTcEYxuthBvqMPhlIPAa4OOCuGZnTF8AyNAQbg1vW1HxQGtXTc9mgXsB3LPNiJBi/O5xxslVrNKXoKjKJOxRVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgrC1v4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9F4C4CEF1;
-	Tue, 16 Dec 2025 12:01:41 +0000 (UTC)
+	 MIME-Version; b=KQhj1fGAz9z3OPGk/E5blNmc2WAckjEwol0outp0HF9vQ/l4pNc0jVfV6qv9oxdkNCPaOHzS8fzxcuetoDFIULrT9ikK/fsrZtEORlHlfFPq5oSA2lCJB+FNl35jR5VkCVMQgLbLWsMfVpDyWPVXfcn8q4iAzMVgTi+uOLSDb6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8urwqN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32EBC4CEF1;
+	Tue, 16 Dec 2025 12:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886502;
-	bh=dARL9Gh+Wjafu5EynDxSiVDWSLYgWn014Qic7J0GlO0=;
+	s=korg; t=1765888529;
+	bh=D+XLK5oz1R+g1QpxJNobX9cYLe2t/0mD/8CncoJG2pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgrC1v4I3GocI1PDwlfaZXlAZ2o6UO0NrgsX2tZqIS+GrsCcB8EpeotN5nPe2USEt
-	 7U2vFI+HhbvOM3fE3jHF5NRUWB887CX6MgcTH503ftzX2UKtRKbq6dE8dcB3ajRjGI
-	 iapj5znQNHYWsQsnwpKDrO3SrvdUarHgwlg6sFS8=
+	b=H8urwqN2IWpEInMSEUEhMc7yXsKJoBVVZL90UpvL/aYxeR1iK232TbCKWTZjoTXHm
+	 EY7MjSTpvV2PyO0WGHSWrYz4O7KZsYVvXG9AoMdWAhgq5jLmTgks3iiS500Tzy6GyN
+	 JA5bmq83ewM3yMdZX3RW0lWau5KLQOpl38swVgwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Khirnov <anton@khirnov.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 454/507] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Subject: [PATCH 6.18 528/614] perf kvm: Fix debug assertion
 Date: Tue, 16 Dec 2025 12:14:55 +0100
-Message-ID: <20251216111401.897696876@linuxfoundation.org>
+Message-ID: <20251216111420.508202394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +58,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Khirnov <anton@khirnov.net>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
+[ Upstream commit 27e711257902475097dea3f79cbdf241fe37ec00 ]
 
-kbd_led_set() can sleep, and so may not be used as the brightness_set()
-callback.
+There are 2 slots left for kvm_add_default_arch_event, fix the
+assertion so that debug builds don't fail the assert and to agree with
+the comment.
 
-Otherwise using this led with a trigger leads to system hangs
-accompanied by:
-BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
-CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
-Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
-Call Trace:
- <TASK>
- [...]
- schedule_timeout+0xbd/0x100
- __down_common+0x175/0x290
- down_timeout+0x67/0x70
- acpi_os_wait_semaphore+0x57/0x90
- [...]
- asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
- led_trigger_event+0x3f/0x60
- [...]
-
-Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
-Signed-off-by: Anton Khirnov <anton@khirnov.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Denis Benato <benato.denis96@gmail.com>
-Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 45ff39f6e70aa55d0 ("perf tools kvm: Fix the potential out of range memory access issue")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index e72a2b5d158e9..8e3300f5c2943 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -1619,14 +1619,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
- 	kbd_led_update(asus);
- }
+diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
+index f0f285763f190..c61369d54dd9d 100644
+--- a/tools/perf/builtin-kvm.c
++++ b/tools/perf/builtin-kvm.c
+@@ -2014,7 +2014,7 @@ static int __cmd_record(const char *file_name, int argc, const char **argv)
+ 	for (j = 1; j < argc; j++, i++)
+ 		rec_argv[i] = STRDUP_FAIL_EXIT(argv[j]);
  
--static void kbd_led_set(struct led_classdev *led_cdev,
--			enum led_brightness value)
-+static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
- {
- 	/* Prevent disabling keyboard backlight on module unregister */
- 	if (led_cdev->flags & LED_UNREGISTERING)
--		return;
-+		return 0;
+-	BUG_ON(i != rec_argc);
++	BUG_ON(i + 2 != rec_argc);
  
- 	do_kbd_led_set(led_cdev, value);
-+	return 0;
- }
- 
- static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
-@@ -1802,7 +1802,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
- 		asus->kbd_led_wk = led_val;
- 		asus->kbd_led.name = "asus::kbd_backlight";
- 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
--		asus->kbd_led.brightness_set = kbd_led_set;
-+		asus->kbd_led.brightness_set_blocking = kbd_led_set;
- 		asus->kbd_led.brightness_get = kbd_led_get;
- 		asus->kbd_led.max_brightness = 3;
- 
+ 	ret = kvm_add_default_arch_event(&i, rec_argv);
+ 	if (ret)
 -- 
 2.51.0
 
