@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7CCCC2B07
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:25:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387BECC2653
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10C7930161EE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3755430F9AB6
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7485364055;
-	Tue, 16 Dec 2025 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F5D3431E6;
+	Tue, 16 Dec 2025 11:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Gbbt6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0G18Oza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618443624D5;
-	Tue, 16 Dec 2025 12:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BFC342513;
+	Tue, 16 Dec 2025 11:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887910; cv=none; b=iHiP278aEfrcct6KdwFpx0MfpqmTl/uLGb70I/E7n0AsQ7MCg9sjy02lWquhJQPSoaWIZE9sPJD4EEH/MEtBUYVqmEK4dp+tKI/UWxcJUMi3dp1yPpU5VqyXcsbbiN3zHG+lE2yizugayqoxNRic7gMWNs5k2m5NBmmrOQBsYNk=
+	t=1765884463; cv=none; b=jEEecNY+S80f2FgF/jBK/ULsPTrDAdwuhZL9I0TSeCAQ7oOi3Otx7JGHZtRsWgm5yOmq4mfk3+h2YIOkZtu/0GSh84IZXH7SZgM132AFQKgTjQKPb9c6W78g/IwtkdP25cZ0yZJzNKpKSleiU+RwS1BYL8XXdcgRbX4zhI2B+Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887910; c=relaxed/simple;
-	bh=zdqThhQWEuWhWbslfNt009orzcqRBFoGp8OGsPIcrTY=;
+	s=arc-20240116; t=1765884463; c=relaxed/simple;
+	bh=DR8RChKvj5S1zu31xHlgqK/SncfdVBk8sNmGoi7ecLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oq4mhJtn4JZe0ILAvlSgRKsgJrv8Oe75tIIP3WqZ034tWOOhy3PgXgKZJ/LGbxT9xPWH+ViF1ahKfjejjIw4OFsJ/sf+sXldD4cQSdY3wg9fnuH5MHMggEKtElWM18OIL2ZMFmyHWOXqjBZD5l3P9vs/c4X1/cy6N3tVzl6VsC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Gbbt6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A21BC4CEF1;
-	Tue, 16 Dec 2025 12:25:08 +0000 (UTC)
+	 MIME-Version; b=uFIuYwREvGAQ3m6IU1GL5fTrT+/CcZLFHzpggjUSfNZpjnNrQuwXfX1o3cja7mfJ4csCEpchE9PUU1wGygQR09wEhErSRj7agxHZyICzDy3RiB/yFg6z5hPCnbTYWIwZTWy2VhhVVoXBnQ6c70hpX52lTMZ9HKIdMr8V6jLQFyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0G18Oza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EE8C4CEF1;
+	Tue, 16 Dec 2025 11:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887908;
-	bh=zdqThhQWEuWhWbslfNt009orzcqRBFoGp8OGsPIcrTY=;
+	s=korg; t=1765884463;
+	bh=DR8RChKvj5S1zu31xHlgqK/SncfdVBk8sNmGoi7ecLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5Gbbt6/xuOtQJOqy9dyMcBHSsWcx22JF27nlsagIZUUPTPv8byMSBhKCUPDpbuzA
-	 CNjPu91uNf59kQyMUt0miUWZ9+wsG5OjUiOsUe6yVTjwGgVLWCiY9VzOFiOtbRMtQn
-	 6z+pY/S9cb4sS31BfgMaCiVKoNYtjCEooRAjOnxU=
+	b=E0G18OzaVtxnOViETFQ5m0jMul2r7nhdQgBLqoINTzxX7Fmo0pHDF+nu1TItyXcS+
+	 HWNCNH+WBiDiAniF/Dc/7fRA6pYv+xbReox38cmp6+dLa7CCScurMU4vwTqLn+98NQ
+	 81sjy+sZEimW5rouzrTmEAX/JXKxCrDr9ttDprJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Anup Patel <anup@brainfault.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 374/614] RISC-V: KVM: Fix guest page fault within HLV* instructions
+Subject: [PATCH 6.12 174/354] bpf: Fix invalid prog->stats access when update_effective_progs fails
 Date: Tue, 16 Dec 2025 12:12:21 +0100
-Message-ID: <20251216111414.912834165@linuxfoundation.org>
+Message-ID: <20251216111327.217715648@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 974555d6e417974e63444266e495a06d06c23af5 ]
+[ Upstream commit 7dc211c1159d991db609bdf4b0fb9033c04adcbc ]
 
-When executing HLV* instructions at the HS mode, a guest page fault
-may occur when a g-stage page table migration between triggering the
-virtual instruction exception and executing the HLV* instruction.
+Syzkaller triggers an invalid memory access issue following fault
+injection in update_effective_progs. The issue can be described as
+follows:
 
-This may be a corner case, and one simpler way to handle this is to
-re-execute the instruction where the virtual  instruction exception
-occurred, and the guest page fault will be automatically handled.
+__cgroup_bpf_detach
+  update_effective_progs
+    compute_effective_progs
+      bpf_prog_array_alloc <-- fault inject
+  purge_effective_progs
+    /* change to dummy_bpf_prog */
+    array->items[index] = &dummy_bpf_prog.prog
 
-Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into separate sources")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20251121133543.46822-1-fangyu.yu@linux.alibaba.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+---softirq start---
+__do_softirq
+  ...
+    __cgroup_bpf_run_filter_skb
+      __bpf_prog_run_save_cb
+        bpf_prog_run
+          stats = this_cpu_ptr(prog->stats)
+          /* invalid memory access */
+          flags = u64_stats_update_begin_irqsave(&stats->syncp)
+---softirq end---
+
+  static_branch_dec(&cgroup_bpf_enabled_key[atype])
+
+The reason is that fault injection caused update_effective_progs to fail
+and then changed the original prog into dummy_bpf_prog.prog in
+purge_effective_progs. Then a softirq came, and accessing the members of
+dummy_bpf_prog.prog in the softirq triggers invalid mem access.
+
+To fix it, skip updating stats when stats is NULL.
+
+Fixes: 492ecee892c2 ("bpf: enable program stats")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Link: https://lore.kernel.org/r/20251115102343.2200727-1-pulehui@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_insn.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ include/linux/filter.h | 12 +++++++-----
+ kernel/bpf/syscall.c   |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-index de1f96ea62251..4d89b94128aea 100644
---- a/arch/riscv/kvm/vcpu_insn.c
-+++ b/arch/riscv/kvm/vcpu_insn.c
-@@ -298,6 +298,22 @@ static int system_opcode_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 	return (rc <= 0) ? rc : 1;
- }
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 9b6908291de7c..a91f2babf4253 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -692,11 +692,13 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
  
-+static bool is_load_guest_page_fault(unsigned long scause)
-+{
-+	/**
-+	 * If a g-stage page fault occurs, the direct approach
-+	 * is to let the g-stage page fault handler handle it
-+	 * naturally, however, calling the g-stage page fault
-+	 * handler here seems rather strange.
-+	 * Considering this is a corner case, we can directly
-+	 * return to the guest and re-execute the same PC, this
-+	 * will trigger a g-stage page fault again and then the
-+	 * regular g-stage page fault handler will populate
-+	 * g-stage page table.
-+	 */
-+	return (scause == EXC_LOAD_GUEST_PAGE_FAULT);
-+}
+ 		duration = sched_clock() - start;
+-		stats = this_cpu_ptr(prog->stats);
+-		flags = u64_stats_update_begin_irqsave(&stats->syncp);
+-		u64_stats_inc(&stats->cnt);
+-		u64_stats_add(&stats->nsecs, duration);
+-		u64_stats_update_end_irqrestore(&stats->syncp, flags);
++		if (likely(prog->stats)) {
++			stats = this_cpu_ptr(prog->stats);
++			flags = u64_stats_update_begin_irqsave(&stats->syncp);
++			u64_stats_inc(&stats->cnt);
++			u64_stats_add(&stats->nsecs, duration);
++			u64_stats_update_end_irqrestore(&stats->syncp, flags);
++		}
+ 	} else {
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
+ 	}
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index ba4543e771a6e..04c8755c0b951 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2281,6 +2281,9 @@ void notrace bpf_prog_inc_misses_counter(struct bpf_prog *prog)
+ 	struct bpf_prog_stats *stats;
+ 	unsigned int flags;
+ 
++	if (unlikely(!prog->stats))
++		return;
 +
- /**
-  * kvm_riscv_vcpu_virtual_insn -- Handle virtual instruction trap
-  *
-@@ -323,6 +339,8 @@ int kvm_riscv_vcpu_virtual_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 							  ct->sepc,
- 							  &utrap);
- 			if (utrap.scause) {
-+				if (is_load_guest_page_fault(utrap.scause))
-+					return 1;
- 				utrap.sepc = ct->sepc;
- 				kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
- 				return 1;
-@@ -378,6 +396,8 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
- 						  &utrap);
- 		if (utrap.scause) {
-+			if (is_load_guest_page_fault(utrap.scause))
-+				return 1;
- 			/* Redirect trap if we failed to read instruction */
- 			utrap.sepc = ct->sepc;
- 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
-@@ -504,6 +524,8 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
- 						  &utrap);
- 		if (utrap.scause) {
-+			if (is_load_guest_page_fault(utrap.scause))
-+				return 1;
- 			/* Redirect trap if we failed to read instruction */
- 			utrap.sepc = ct->sepc;
- 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
+ 	stats = this_cpu_ptr(prog->stats);
+ 	flags = u64_stats_update_begin_irqsave(&stats->syncp);
+ 	u64_stats_inc(&stats->misses);
 -- 
 2.51.0
 
