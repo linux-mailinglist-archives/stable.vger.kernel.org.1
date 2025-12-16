@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-202440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32FDCC2E90
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5272CC2818
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 099B731B463D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C86A3093F80
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD761358D2C;
-	Tue, 16 Dec 2025 12:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF0835502E;
+	Tue, 16 Dec 2025 11:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcsvH2r/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qaJmH58Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886E035CBA8;
-	Tue, 16 Dec 2025 12:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA833355029;
+	Tue, 16 Dec 2025 11:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887905; cv=none; b=M5ce5KFu30EWTrNvRDoh79ukglfirHyENurjw5qZOLL5NtQ8uXe1BmIzKSmDz6n87ylTk7rjD8kVhxIKsQmAHb+N9VrqwSSUSXzs3bMA4kKQTuPECYOlQjYyGpnIUzEPrpl/t6bFS7nUnydS0dJfJAZwrubk2gqpDmy0hk0KGpw=
+	t=1765885974; cv=none; b=JTGzxYhP8oL0u1e1zcu+VxoSH8OWlge3VjQw7PXKp4itlOl+1CsG5gW+Vm6xLONC04JyAyScyw2DEc0o9TPRaX0c1ysqRJWczBUNVzk7tOScLrVsTaA+7PA8i5eJhMCEgJH6qIWpeERFP+Q88h6/45uSBvoR0Sf6vsSXlZHG2EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887905; c=relaxed/simple;
-	bh=88C6ZN7lWZbdxwR7freLVB9Aune5NN5sSIhxYDkobn0=;
+	s=arc-20240116; t=1765885974; c=relaxed/simple;
+	bh=PX+Nkm7CigZ17+pV8O2pVMRIBNe2tloOhIL5dh9WNcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJZSk+dfnVizw/IL1gXoeSKD3xagj2w4zufTag077Gju7DAeRbVWcXfBQNA8oSmrzM4oeQCw5OrZyrrjMNkvd8owtrlPxnRwkZg7F+HXw+tk30VC12dLMzTlxDWIenZ4iTPXyi1Ou9J8zL/lrJhiYUvGe0xaL1nlImKpqF60x8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcsvH2r/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE4BC4CEF1;
-	Tue, 16 Dec 2025 12:25:04 +0000 (UTC)
+	 MIME-Version; b=RZ2E2E2xN8Z4HZ2kWi8h2LU6GnCbIqMugZss3+LNFkVjztVsq7umnAZJXQ4j7P/qnw4Ol4C0nXajPBeb0BEXq3uk7epl0e1hiHLtkrB55NY9N+8TrDCRd0i21UfhNqvCUOUaIjWNUFBhplqGfFkgqIYRhLLEBU7kZH0HjDTeuSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaJmH58Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E04BC4CEF1;
+	Tue, 16 Dec 2025 11:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887905;
-	bh=88C6ZN7lWZbdxwR7freLVB9Aune5NN5sSIhxYDkobn0=;
+	s=korg; t=1765885974;
+	bh=PX+Nkm7CigZ17+pV8O2pVMRIBNe2tloOhIL5dh9WNcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcsvH2r/YcIukP2W4kQ+QxgTM3NI+SyDAPRMKjnFyM3XJ8qPAe+hpGOWCdAR/idTX
-	 EMSi0eNTSUGESXu7gv/pQJsa9toTkTuaxQ+Cp1s+D0wttfteUBNs1HN7ivaQWn674O
-	 U+Cq7Y/cXJ5NFDhnm/rC/5eYoJo3NamLjVWyZGtM=
+	b=qaJmH58Y2PODFYXbX/ggP7HQi2ibjX5D9dy2cbqJI7OjPGxe+gTU5DiNW1UxL1dFy
+	 46ADD5CX/oDZ2um74xe2+FtGebTeId8lR0Lr8qdrTfR4xDEjyb6Ie/yOYIdFeBCA5b
+	 A5zdH90hd0eka7cTNhOFh1OWegwxv+Rr+aE1qwAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengjie Zhang <zhangpengjie2@huawei.com>,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Yanko Kaneti <yaneti@declera.com>,
+	Charles Mirabile <cmirabil@redhat.com>,
+	Alex Elder <elder@riscstar.com>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Yixun Lan <dlan@gentoo.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 373/614] PM / devfreq: hisi: Fix potential UAF in OPP handling
-Date: Tue, 16 Dec 2025 12:12:20 +0100
-Message-ID: <20251216111414.876366113@linuxfoundation.org>
+Subject: [PATCH 6.17 300/507] clk: spacemit: Set clk_hw_onecell_data::num before using flex array
+Date: Tue, 16 Dec 2025 12:12:21 +0100
+Message-ID: <20251216111356.342639446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengjie Zhang <zhangpengjie2@huawei.com>
+From: Charles Mirabile <cmirabil@redhat.com>
 
-[ Upstream commit 26dd44a40096468396b6438985d8e44e0743f64c ]
+[ Upstream commit 23b2d2fb136959fd0a8e309c70be83d9b8841c7e ]
 
-Ensure all required data is acquired before calling dev_pm_opp_put(opp)
-to maintain correct resource acquisition and release order.
+When booting with KASAN enabled the following splat is
+encountered during probe of the k1 clock driver:
 
-Fixes: 7da2fdaaa1e6 ("PM / devfreq: Add HiSilicon uncore frequency scaling driver")
-Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Link: https://patchwork.kernel.org/project/linux-pm/patch/20250915062135.748653-1-zhangpengjie2@huawei.com/
+UBSAN: array-index-out-of-bounds in drivers/clk/spacemit/ccu-k1.c:1044:16
+index 0 is out of range for type 'clk_hw *[*]'
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc5+ #1 PREEMPT(lazy)
+Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2022.10spacemit 10/01/2022
+Call Trace:
+[<ffffffff8002b628>] dump_backtrace+0x28/0x38
+[<ffffffff800027d2>] show_stack+0x3a/0x50
+[<ffffffff800220c2>] dump_stack_lvl+0x5a/0x80
+[<ffffffff80022100>] dump_stack+0x18/0x20
+[<ffffffff800164b8>] ubsan_epilogue+0x10/0x48
+[<ffffffff8099034e>] __ubsan_handle_out_of_bounds+0xa6/0xa8
+[<ffffffff80acbfa6>] k1_ccu_probe+0x37e/0x420
+[<ffffffff80b79e6e>] platform_probe+0x56/0x98
+[<ffffffff80b76a7e>] really_probe+0x9e/0x350
+[<ffffffff80b76db0>] __driver_probe_device+0x80/0x138
+[<ffffffff80b76f52>] driver_probe_device+0x3a/0xd0
+[<ffffffff80b771c4>] __driver_attach+0xac/0x1b8
+[<ffffffff80b742fc>] bus_for_each_dev+0x6c/0xc8
+[<ffffffff80b76296>] driver_attach+0x26/0x38
+[<ffffffff80b759ae>] bus_add_driver+0x13e/0x268
+[<ffffffff80b7836a>] driver_register+0x52/0x100
+[<ffffffff80b79a78>] __platform_driver_register+0x28/0x38
+[<ffffffff814585da>] k1_ccu_driver_init+0x22/0x38
+[<ffffffff80023a8a>] do_one_initcall+0x62/0x2a0
+[<ffffffff81401c60>] do_initcalls+0x170/0x1a8
+[<ffffffff81401e7a>] kernel_init_freeable+0x16a/0x1e0
+[<ffffffff811f7534>] kernel_init+0x2c/0x180
+[<ffffffff80025f56>] ret_from_fork_kernel+0x16/0x1d8
+[<ffffffff81205336>] ret_from_fork_kernel_asm+0x16/0x18
+---[ end trace ]---
+
+This is bogus and is simply a result of KASAN consulting the
+`.num` member of the struct for bounds information (as it should
+due to `__counted_by`) and finding 0 set by kzalloc() because it
+has not been initialized before the loop that fills in the array.
+The easy fix is to just move the line that sets `num` to before
+the loop that fills the array so that KASAN has the information
+it needs to accurately conclude that the access is valid.
+
+Fixes: 1b72c59db0add ("clk: spacemit: Add clock support for SpacemiT K1 SoC")
+Tested-by: Yanko Kaneti <yaneti@declera.com>
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+Reviewed-by: Yixun Lan <dlan@gentoo.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/hisi_uncore_freq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/spacemit/ccu-k1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/devfreq/hisi_uncore_freq.c b/drivers/devfreq/hisi_uncore_freq.c
-index 96d1815059e32..c1ed70fa0a400 100644
---- a/drivers/devfreq/hisi_uncore_freq.c
-+++ b/drivers/devfreq/hisi_uncore_freq.c
-@@ -265,10 +265,11 @@ static int hisi_uncore_target(struct device *dev, unsigned long *freq,
- 		dev_err(dev, "Failed to get opp for freq %lu hz\n", *freq);
- 		return PTR_ERR(opp);
- 	}
--	dev_pm_opp_put(opp);
+diff --git a/drivers/clk/spacemit/ccu-k1.c b/drivers/clk/spacemit/ccu-k1.c
+index 65e6de030717a..7c9585c9359de 100644
+--- a/drivers/clk/spacemit/ccu-k1.c
++++ b/drivers/clk/spacemit/ccu-k1.c
+@@ -973,6 +973,8 @@ static int spacemit_ccu_register(struct device *dev,
+ 	if (!clk_data)
+ 		return -ENOMEM;
  
- 	data = (u32)(dev_pm_opp_get_freq(opp) / HZ_PER_MHZ);
- 
-+	dev_pm_opp_put(opp);
++	clk_data->num = data->num;
 +
- 	return hisi_uncore_cmd_send(uncore, HUCF_PCC_CMD_SET_FREQ, &data);
- }
+ 	for (i = 0; i < data->num; i++) {
+ 		struct clk_hw *hw = data->hws[i];
+ 		struct ccu_common *common;
+@@ -999,8 +1001,6 @@ static int spacemit_ccu_register(struct device *dev,
+ 		clk_data->hws[i] = hw;
+ 	}
  
+-	clk_data->num = data->num;
+-
+ 	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get, clk_data);
+ 	if (ret)
+ 		dev_err(dev, "failed to add clock hardware provider (%d)\n", ret);
 -- 
 2.51.0
 
