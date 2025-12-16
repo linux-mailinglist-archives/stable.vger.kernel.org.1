@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F316BCC29F6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A9CCC23E5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A0CB302C46D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D0F73077E40
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C48C3254B6;
-	Tue, 16 Dec 2025 11:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047C3341AD6;
+	Tue, 16 Dec 2025 11:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sy3KlP4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9E75WrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB5E34405B;
-	Tue, 16 Dec 2025 11:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A47313E13;
+	Tue, 16 Dec 2025 11:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886032; cv=none; b=Zn547YJChf8PHVWXfyldMF++RpGF+y5fFakY0S3FkEEM5uO2XAy5KFhgetprvkSzWQE0NSp94CHgHTyu09EL+h6xAiG4Z28B7yJwPHVTvVCfzc0RlO7LcDAVVDNGl4WoL4QIClx2joDncCLiM8SKe1L8NneNcgT86mE7ORLLfw4=
+	t=1765884322; cv=none; b=KN4oxI7jgopCaVyXWBhU1eD6y+R2kIKPxiJhcdLRtIeWwrwEZrbAnH8bukCKYeFwzh4nk52yy9QJXU2wqolKTCW/rw63RS7TuCfiYds5LL65PoUdsscjJgWN8DY7sPw6WrJzMYCjAMYlec9wCUJXYGWe/St+nCQja7lSMQnR9UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886032; c=relaxed/simple;
-	bh=TvGLya+bm7KjeuOxF8kag/wQgbT/RpA/fgVpIRtb4rg=;
+	s=arc-20240116; t=1765884322; c=relaxed/simple;
+	bh=rXq35SCMhtFNeRsHN2Zj0RHSBFRw55xHp9tlzLmvjKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPs+0/IW2K8pkOkJOJgBsHiSE3Ypsj30NlAjJfbDJ+f7nzehrk7kZPZpX/a4W4W3nE5c7g5VylNTpcGQkjZICFy1UiqGLP39XqTzECU0fg5q8jojASvmgaCqvJRuZtRLRitdX/UN2DYv2I284j3RnXiGtatsOVT/Up4mC4vCXaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sy3KlP4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3D4C4CEF1;
-	Tue, 16 Dec 2025 11:53:51 +0000 (UTC)
+	 MIME-Version; b=PoWjqaKYM3STHQc6XRD5O1F058oJiB9UcND+w/6fYlV+x6c4bZWY/aq+dzEDZYsrFSZgx+ymv4h9dGph08H48y58/kbV+qFmywwYF3//by8U5EC0OwatUUDC0B+77Z4L+NOHZCcZRQYaKqiEPJWPjIiVldI2nayfLmKXjQfU+2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9E75WrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245DBC4CEF1;
+	Tue, 16 Dec 2025 11:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886032;
-	bh=TvGLya+bm7KjeuOxF8kag/wQgbT/RpA/fgVpIRtb4rg=;
+	s=korg; t=1765884322;
+	bh=rXq35SCMhtFNeRsHN2Zj0RHSBFRw55xHp9tlzLmvjKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sy3KlP4lymTfyqx/C+fnsqfHtQg8P9cydHqzPNhpLlnxJQO87OLvjvcF6WGqVj4O7
-	 +J15wZEbTlKCJD8ika1BiRq2nqalAPsj2WSTlq99IQOpAZYbJDU0WtmVHGxhlwnk1Z
-	 NCYMPhOfNk/vBBkP+IJlrLqCaPoD97ZK86D/U3sQ=
+	b=D9E75WrTvetMj619/C37wApN90yKEr/BAjeWtNm1m8Vr4J6QZ+rVkXgMShLsj8/55
+	 IQ53sdCfUObdBLjOsyrrKnPYni1wYrAOyo+d9bwz904B0xr6t+4+wFaVFp5iEfB4gQ
+	 pARAl9zqXxdmBVweEKgPcTmIFZuZ0DT8vOO66F3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 284/507] mfd: mt6397-irq: Fix missing irq_domain_remove() in error path
+Subject: [PATCH 6.12 158/354] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 5A
 Date: Tue, 16 Dec 2025 12:12:05 +0100
-Message-ID: <20251216111355.768198199@linuxfoundation.org>
+Message-ID: <20251216111326.638374682@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit b4b1bd1f330fdd13706382be6c90ce9f58cee3f5 ]
+[ Upstream commit 3069ff1930aa71e125874c780ffaa6caeda5800a ]
 
-If devm_request_threaded_irq() fails after irq_domain_create_linear()
-succeeds in mt6397_irq_init(), the function returns without removing
-the created IRQ domain, leading to a resource leak.
+The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 5A is
+vcc_3v3_pmu, which is routed to vcc_3v3_s3 via a zero-ohm resistor. [1]
+Describe this supply.
 
-Call irq_domain_remove() in the error path after a successful
-irq_domain_create_linear() to properly release the IRQ domain.
+[1] https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.4, p.19
 
-Fixes: a4872e80ce7d ("mfd: mt6397: Extract IRQ related code from core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251118121500.605-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-3-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mt6397-irq.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
-index 0e463026c5a91..5d2e5459f7444 100644
---- a/drivers/mfd/mt6397-irq.c
-+++ b/drivers/mfd/mt6397-irq.c
-@@ -229,6 +229,7 @@ int mt6397_irq_init(struct mt6397_chip *chip)
- 	if (ret) {
- 		dev_err(chip->dev, "failed to register irq=%d; err: %d\n",
- 			chip->irq, ret);
-+		irq_domain_remove(chip->irq_domain);
- 		return ret;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index 7813984086b38..eeb3e84deec9f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -209,6 +209,7 @@ eeprom: eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		vcc-supply = <&vcc_3v3_pmu>;
+ 	};
+ };
  
+@@ -543,7 +544,7 @@ regulator-state-mem {
+ 				};
+ 			};
+ 
+-			vcc_3v3_s3: dcdc-reg8 {
++			vcc_3v3_pmu: vcc_3v3_s3: dcdc-reg8 {
+ 				regulator-name = "vcc_3v3_s3";
+ 				regulator-always-on;
+ 				regulator-boot-on;
 -- 
 2.51.0
 
