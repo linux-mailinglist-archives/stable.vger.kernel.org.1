@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622CBCC34DA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:43:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F924CC2DB5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C491B30B429B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BB9E3085CB2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6E636CE0E;
-	Tue, 16 Dec 2025 12:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F9E344039;
+	Tue, 16 Dec 2025 11:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTG13Uor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrIb2ArC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE561E0E14;
-	Tue, 16 Dec 2025 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4D5314B6D;
+	Tue, 16 Dec 2025 11:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887993; cv=none; b=ltGZfhgQOIfEiNifaKsCmcKbM6Os3DlzaJ2Z1eFS34Tqp9AqyytG6EzAMpYKi+fd+KmAWimTSbkQUraYkzik7taNQtMiUcSjxWg55ZZaz9LBFyMnkkdD6BqWLk5E0yx18QweaVvykrY9h1DHgs4ZTaPMHfjzm3B4VcqX2jnV6kg=
+	t=1765886058; cv=none; b=uBpH6zOngq8YHYK3KacXwifB1glz4six0V9wjJQtDLDinjsYu7G1tNrENxLqbWcxlli+WwkQE3TJo/m+nxu0jFvYQmPYVj9G1nlxbZ7iLMxGEkniyXWKQo0PmttlC/7QTQzvUBHcNqTvbOfBw2IV1WDvaB7GAnRbZJqKPOSc9YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887993; c=relaxed/simple;
-	bh=4AYeTEg7EfM9Eb60ecIXb84DqyHC5Cv9XG1w8Xhhw5s=;
+	s=arc-20240116; t=1765886058; c=relaxed/simple;
+	bh=AOlUm4fwgjWkVQUL068sCKDHWVxaryVbgNMQkidx3ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDvAlweeaF4jHEQCOAzDDZOeuA9JCizbCdH94+7xTrikx3iq+Mz4mMjs5A+fQ5+GXmja3Gfc3IJRo7vgF+9AlTDdKVTJzM9T9E48JeUpg33WNyzBkfCRiaVGAXAjsMSBG3tMj/UNyDR67Iqyrjr3b+zRPIt7veyiNQWcXKM5bGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTG13Uor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD9BC4CEF1;
-	Tue, 16 Dec 2025 12:26:31 +0000 (UTC)
+	 MIME-Version; b=h3Na1weN7Q4yzNUL+ADOq2VWcCAvdQHZtxK787dOV5VySsBU95cK3B/WstbDZ256bv8wdbJ6AqELK6o0rNgtJe1Jph6HOBVbnTJN5dN1zEqN4vZqrtpepdsPxLQ1A/m+00HaISHT8JKpyDfod0r/D3NSxDIh9OtXZjT8WYBf37w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrIb2ArC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2C7C4CEF1;
+	Tue, 16 Dec 2025 11:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887992;
-	bh=4AYeTEg7EfM9Eb60ecIXb84DqyHC5Cv9XG1w8Xhhw5s=;
+	s=korg; t=1765886058;
+	bh=AOlUm4fwgjWkVQUL068sCKDHWVxaryVbgNMQkidx3ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTG13UorLjixuhRIsvgrSo+vpUAGpPb4J0JRcTxxtHdAYzJYt5EyGukTbEXpb8jKv
-	 qDGJKW/LSpPIcAZuOP5mwXrHR+X5dmkcExnY/H7n7b5HboDPzFtFgmK+feT7Jzt7xG
-	 8RZXBLxGdM8jaoHIFszKPdpQBEbhlXdNTTbw8sK0=
+	b=vrIb2ArCmPoYrLxgEP/xPifOVwZz3S3JcohG/Jc6jHMzk0hdNKBDJ9rJLeuFmgHVN
+	 iLOKmNYMrP9Z4usLfcSNP5ZZF61ljOEuF/RmU1sbDXxX56HJQGRMQNTQ7Wtc/o6cyc
+	 5XsSUl1gfDXhIaNZnwlKXRKmZUiFmViIWn+rdaBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ben Greear <greearb@candelatech.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 400/614] wifi: mt76: mt7996: skip ieee80211_iter_keys() on scanning link remove
+Subject: [PATCH 6.17 326/507] Revert "wifi: mt76: mt792x: improve monitor interface handling"
 Date: Tue, 16 Dec 2025 12:12:47 +0100
-Message-ID: <20251216111415.867308407@linuxfoundation.org>
+Message-ID: <20251216111357.276380936@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 2a432a6d0066d4ce05a2d0eec1da9e061eb70c49 ]
+[ Upstream commit cdb2941a516cf06929293604e2e0f4c1d6f3541e ]
 
-mt7996_vif_link_remove routine is executed by mt76_scan_complete()
-without holding the wiphy mutex triggering the following lockdep warning.
+This reverts commit 55e95ce469d0c61041bae48b2ebb7fcbf6d1ba7f.
 
- WARNING: CPU: 0 PID: 72 at net/mac80211/key.c:1029 ieee80211_iter_keys+0xe4/0x1a0 [mac80211]
- CPU: 0 UID: 0 PID: 72 Comm: kworker/u32:2 Tainted: G S                  6.18.0-rc5+ #27 PREEMPT(full)
- Tainted: [S]=CPU_OUT_OF_SPEC
- Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/15/2023
- Workqueue: phy3 mt76_scan_work [mt76]
- RIP: 0010:ieee80211_iter_keys+0xe4/0x1a0 [mac80211]
- Code: 4c 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f c3 48 8b 47 48 be ff ff ff ff 48 8d 78 68 e8 b4 eb 1e e1 85 c0 0f 85 49
-ff ff ff 4c 8b ab 90 1a 00 00 48 8d 83 90
- RSP: 0018:ffffc900002f7cb0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff888127e00ee0 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffff888127e00788 RDI: ffff88811132b5c8
- RBP: ffffffffa0ddf400 R08: 0000000000000001 R09: 000000009dcc1dac
- R10: 0000000000000001 R11: ffff88811132b5a0 R12: ffffc900002f7d00
- R13: ffff8882581e6a80 R14: ffff888127e0afc8 R15: ffff888158832038
- FS:  0000000000000000(0000) GS:ffff8884da486000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000030a0fd90 CR3: 0000000002c52004 CR4: 00000000003706f0
- Call Trace:
-  <TASK>
-  ? lock_acquire+0xc2/0x2c0
-  mt7996_vif_link_remove+0x64/0x2b0 [mt7996e]
-  mt76_put_vif_phy_link+0x41/0x50 [mt76]
-  mt76_scan_complete+0x77/0x100 [mt76]
-  mt76_scan_work+0x2eb/0x3f0 [mt76]
-  ? process_one_work+0x1e5/0x6d0
-  process_one_work+0x221/0x6d0
-  worker_thread+0x19a/0x340
-  ? rescuer_thread+0x450/0x450
-  kthread+0x108/0x220
-  ? kthreads_online_cpu+0x110/0x110
-  ret_from_fork+0x1c6/0x220
-  ? kthreads_online_cpu+0x110/0x110
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
- irq event stamp: 45471
- hardirqs last  enabled at (45477): [<ffffffff813d446e>] __up_console_sem+0x5e/0x70
- hardirqs last disabled at (45482): [<ffffffff813d4453>] __up_console_sem+0x43/0x70
- softirqs last  enabled at (44500): [<ffffffff81f2ae0c>] napi_pp_put_page+0xac/0xd0
- softirqs last disabled at (44498): [<ffffffff81fa32a0>] page_pool_put_unrefed_netmem+0x290/0x3d0
- ---[ end trace 0000000000000000 ]---
+mt792x drivers don't seem to support multi-radio devices yet.  At least
+they don't mess with `struct wiphy_radio` at the moment.
 
-Fix the issue skipping ieee80211_iter_keys() for scanning links in
-mt7996_vif_link_remove routine since we have not uploaded any hw keys
-for these links.
+Packet capturing on monitor interface doesn't work after the blamed patch:
 
-Fixes: 04414d7bba78 ("wifi: mt76: mt7996: delete vif keys when requested")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20251115-mt7996-key-iter-link-remove-fix-v1-1-4f3f4e1eaa78@kernel.org
+  tcpdump -i wls6mon -n -vvv
+
+Revert the NO_VIRTUAL_MONITOR feature for now to resolve the issue.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 55e95ce469d0 ("wifi: mt76: mt792x: improve monitor interface handling")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20251027111843.38975-1-pchelkin@ispras.ru
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 5ff7ab596f88c..2ad52ae2c5f55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -392,7 +392,8 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	};
- 	int idx = msta_link->wcid.idx;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index c0e56541a9547..9cad572c34a38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -688,7 +688,6 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+-	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
  
--	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
-+	if (!mlink->wcid->offchannel)
-+		ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
- 
- 	mt7996_mcu_add_sta(dev, link_conf, NULL, link, NULL,
- 			   CONN_STATE_DISCONNECT, false);
 -- 
 2.51.0
 
