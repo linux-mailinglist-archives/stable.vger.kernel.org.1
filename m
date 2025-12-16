@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132F6CC3AB8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3031CC2C22
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84F8A3007AA2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 184EB3011F97
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8634F48A;
-	Tue, 16 Dec 2025 11:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF44334DB64;
+	Tue, 16 Dec 2025 12:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYyMVF/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtOYTcMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6306834F270;
-	Tue, 16 Dec 2025 11:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC126F2BD;
+	Tue, 16 Dec 2025 12:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885655; cv=none; b=IgAAnaeD71QbBXuOtI9Ycwbx0416YQ2U1D+gYVgU12/qeIrxmVErgGSOrExxTQh8c9aJwIvuqr/pApZjZiYHokvhRJeeOwGqskkE5cWBG9y55u/IRRSG3BmpeGU+CZ9yCqOudK/uAlY+ZrLZzi047S5FlFBGfVEjjGYms/JIP0g=
+	t=1765887676; cv=none; b=lYLGHdIgQFCggdz/fyVDZmnqaLMP1JtKU+s9zn3jpf05KB38Dr8+H+9pFYazIk8QC8OQSN9zn0mYW/6fL05hzXcdMjavEdLu8V3t1MA8lbeVpqWF8Faa70Ls+Qpx2JUC5nyp0w5hnX4f0zL8oAiPzirJrbdWWQv+OsRNslA4Ygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885655; c=relaxed/simple;
-	bh=z0+xDRTkrBLxdRi+Ujk7E7a5Vx1MNhmn6WqfkWcm3QU=;
+	s=arc-20240116; t=1765887676; c=relaxed/simple;
+	bh=pNHnxVF7qr9enlU9+hvX7kzvPdCCWFPJeDtTNB9oqxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kkg7D4ZUyvNtRg9exJo6jPDp2sH+DIUPun9/Dc6detpbZCs07N+FylHVAS6oJgrGPcocVKQeWN4ztrKImSoSnDKz5GtUxvw7ZCkVWRk5NjKGKmh5RuLlg06ExXC+9lD9Ly8XcEwr0+/mJQKOunrPClJFF36KGmspHZu46eC8e6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYyMVF/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3000C4CEF1;
-	Tue, 16 Dec 2025 11:47:34 +0000 (UTC)
+	 MIME-Version; b=UlUHtCYsCuARQ8RpfR8J+ARlb5SVqPhKE3NVVGzbCL6qOlziEabEj4EEG6tyhrxMCSDOsTDZTel4I3xepm7PtOtTCjqFtv3UWUp2q1bgBVb16AF5daNPuNKXlTHATsqIpjzvQfuWZRSrtPLZVYpyIg40I1xC0lCjm89ZVcsBoo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtOYTcMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE66C4CEF1;
+	Tue, 16 Dec 2025 12:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885655;
-	bh=z0+xDRTkrBLxdRi+Ujk7E7a5Vx1MNhmn6WqfkWcm3QU=;
+	s=korg; t=1765887676;
+	bh=pNHnxVF7qr9enlU9+hvX7kzvPdCCWFPJeDtTNB9oqxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYyMVF/A56cyUgmynDBQsJlfH0CXVS9vIRl9U4BDuIMfu9tXYZCfvMd0Y17aMPPcu
-	 zbTzp52G6UwaClcIH+cdaJG3iA69LpqR3uhlJf7MkN5nlvOu6i8X3l9BDOypY+IZaB
-	 yEDu+OEKw2JJOryAorcN7wx2sF8x6IZsWEgBD+m0=
+	b=JtOYTcMJfA1Y0Q0hDbHO00USvSCZq6nTnEgVKFJl2NNLNewld3hRfYqQsBgDRRgKO
+	 hMG3UXz4CU5Ve59j4W8ahSMBy/LQpnNSMA7OcJVnuYHSkyAgBcFTW53YmZ+FbEWrUt
+	 2HPVrE3bZa/eWZSVpvQ+asgBdqK0+Zv4A1/Eu8MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akash Goel <akash.goel@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 203/507] drm/panthor: Fix potential memleak of vma structure
+Subject: [PATCH 6.18 277/614] arm64: dts: rockchip: Move the EEPROM to correct I2C bus on Radxa ROCK 5A
 Date: Tue, 16 Dec 2025 12:10:44 +0100
-Message-ID: <20251216111352.866683634@linuxfoundation.org>
+Message-ID: <20251216111411.411695395@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akash Goel <akash.goel@arm.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 4492d54d59872bb72e119ff9f77969ab4d8a0e6b ]
+[ Upstream commit 92e6e0b0e595afdda6296c760551ad3ffe9d5231 ]
 
-This commit addresses a memleak issue of panthor_vma (or drm_gpuva)
-structure in Panthor driver, that can happen if the GPU page table
-update operation to map the pages fail.
-The issue is very unlikely to occur in practice.
+The BL24C16 EEPROM chip found on Radxa ROCK 5A is connected to the
+i2c0 bus, [1] so move the eeprom node from the i2c2 bus to the i2c0
+bus.
 
-v2: Add panthor_vm_op_ctx_return_vma() helper (Boris)
+[1] Link: https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.19
 
-v3: Add WARN_ON_ONCE (Boris)
-
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Signed-off-by: Akash Goel <akash.goel@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251021081042.1377406-1-akash.goel@arm.com
+Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-2-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index de6ec324c8efc..3d356a08695ab 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1118,6 +1118,20 @@ static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
- 	}
- }
- 
-+static void
-+panthor_vm_op_ctx_return_vma(struct panthor_vm_op_ctx *op_ctx,
-+			     struct panthor_vma *vma)
-+{
-+	for (u32 i = 0; i < ARRAY_SIZE(op_ctx->preallocated_vmas); i++) {
-+		if (!op_ctx->preallocated_vmas[i]) {
-+			op_ctx->preallocated_vmas[i] = vma;
-+			return;
-+		}
-+	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index 19a08f7794e67..428c6f0232a34 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -228,6 +228,12 @@ regulator-state-mem {
+ 			regulator-off-in-suspend;
+ 		};
+ 	};
 +
-+	WARN_ON_ONCE(1);
-+}
-+
- static struct panthor_vma *
- panthor_vm_op_ctx_get_vma(struct panthor_vm_op_ctx *op_ctx)
- {
-@@ -2057,8 +2071,10 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
- 	ret = panthor_vm_map_pages(vm, op->map.va.addr, flags_to_prot(vma->flags),
- 				   op_ctx->map.sgt, op->map.gem.offset,
- 				   op->map.va.range);
--	if (ret)
-+	if (ret) {
-+		panthor_vm_op_ctx_return_vma(op_ctx, vma);
- 		return ret;
-+	}
++	eeprom: eeprom@50 {
++		compatible = "belling,bl24c16a", "atmel,24c16";
++		reg = <0x50>;
++		pagesize = <16>;
++	};
+ };
  
- 	/* Ref owned by the mapping now, clear the obj field so we don't release the
- 	 * pinning/obj ref behind GPUVA's back.
+ &i2c2 {
+@@ -249,12 +255,6 @@ regulator-state-mem {
+ 			regulator-off-in-suspend;
+ 		};
+ 	};
+-
+-	eeprom: eeprom@50 {
+-		compatible = "belling,bl24c16a", "atmel,24c16";
+-		reg = <0x50>;
+-		pagesize = <16>;
+-	};
+ };
+ 
+ &i2c3 {
 -- 
 2.51.0
 
