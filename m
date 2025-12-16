@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F67CC2E63
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4776ACC25CB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53E6330ACB5D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDA643026FBE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B401359702;
-	Tue, 16 Dec 2025 12:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEAB34D4CE;
+	Tue, 16 Dec 2025 11:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtIGzcgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZh5J5vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3A35503A;
-	Tue, 16 Dec 2025 12:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A80034D3B8;
+	Tue, 16 Dec 2025 11:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887282; cv=none; b=bRz6qQucsrgqXeid5khqrzjgQZTlrG/626//92L81ueHrCSncfGlOni1bxBFEasBiMQPNP0RXLlTyt3WP7jdX4IKSaUhT1k1PJNBE9b1qMczTVahL2QZ30FZ89yJX+vCLqWxgjtF46ERJG+S5xNLl1e9J3qx6PmCURi8Nlv/UZk=
+	t=1765885335; cv=none; b=XKQP0JWQzm57AVIKWGzqSQa/TK2CjXVQ019G0IJ/6i5A8YABgveiWbTPyYTTEAAB5utV+W1lKTK+JNyTABjTXNMqPqxWwOKMYlxpPmBTsbpLJqTBipX7/oEBO7JajNklB5xOeXj+5nUWqC6aVbTCYuuNCo/8jIyKMDt38bhS/L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887282; c=relaxed/simple;
-	bh=QnplSGF5q2bmvtRviEvPoMAakfxQRCRnuwZJ1oPpc/8=;
+	s=arc-20240116; t=1765885335; c=relaxed/simple;
+	bh=Ilx46gPIEWQBey9U3a/jLVoUdLXNW718Fo0NbyaPmkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAuOzFAi64S63a+mDvr7Ou+3MlYsEzfm7in1bLPKzJz+yOJqHcCZV/glIRuxnDFeR+0iZTjE5VEtUQSFD8o5AR2/oj9gzZXbZRpUgdc9R/ZGHFnacgcNYqLEckoOZg/UwpUh9px9C3HPl3dUVFYDjOrPHSHsBxm1c+5yNeqPcbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtIGzcgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B70C4CEF5;
-	Tue, 16 Dec 2025 12:14:41 +0000 (UTC)
+	 MIME-Version; b=hFx+YLNH2MEcm286JruEnO4dwtsg9Y/IgH7De3uJ8UsxkOtg+VlUprKlKVB+bb4KQW7yEgTxR+E9RkeqyVTTOEwbETQxoo/CzstBzMWssusstsjKqo0WxtP+1xQNqU8SRTgO8MF1xcBji757igTar4BnoCleaSTVygHNrFUeH1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZh5J5vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A75EC16AAE;
+	Tue, 16 Dec 2025 11:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887282;
-	bh=QnplSGF5q2bmvtRviEvPoMAakfxQRCRnuwZJ1oPpc/8=;
+	s=korg; t=1765885334;
+	bh=Ilx46gPIEWQBey9U3a/jLVoUdLXNW718Fo0NbyaPmkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtIGzcgLtDR2U+BulBlYIqnHXoqZ9KC6Hr+YwH2vqAJngcvXLYfqg0aSkyADlU699
-	 OJDGYYS1oq6v7evd3Wc818GRn/dCg60vVW0VQgMx0Y72tzjv+103Zfv6XuSLEsJltn
-	 jMTxKTactole6Lc0ZxJQ6Pmd4Lrnd7p5JSnohZXo=
+	b=GZh5J5vFNi96RlKKEDx94iR/RJmenwjNWa/Xr8N/Jfwbn8z5ozw8HmAxs/oEVoGUu
+	 9IvabII1TpPJ1dULOuzgzwdyJfznXzufblDYvfrzqlLBdKwjNhpUDE7j/oQQI8cIJb
+	 Wev97GMgmWLAU+9LK3gFOylWkHcTZoFuz0nqHIoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 183/614] power: supply: wm831x: Check wm831x_set_bits() return value
+Subject: [PATCH 6.17 109/507] ARM: dts: renesas: r9a06g032-rzn1d400-db: Drop invalid #cells properties
 Date: Tue, 16 Dec 2025 12:09:10 +0100
-Message-ID: <20251216111408.003968026@linuxfoundation.org>
+Message-ID: <20251216111349.485390703@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
+[ Upstream commit ca7fffb6e92a7c93604ea2bae0e1c89b20750937 ]
 
-Since wm831x_set_bits() may return error, log failure and exit from
-wm831x_usb_limit_change() in such case.
+The 'ethernet-ports' node in the SoC DTSI handles them already. Fixes:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+    arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dtb: switch@44050000 (renesas,r9a06g032-a5psw): Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
+	    from schema $id: http://devicetree.org/schemas/net/dsa/renesas,rzn1-a5psw.yaml#
 
-Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 5b6d7c3c5861ad4a ("ARM: dts: r9a06g032-rzn1d400-db: Add switch description")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251007104624.19786-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/wm831x_power.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
-index 6acdba7885ca5..78fa0573ef25c 100644
---- a/drivers/power/supply/wm831x_power.c
-+++ b/drivers/power/supply/wm831x_power.c
-@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 							 struct wm831x_power,
- 							 usb_notify);
- 	unsigned int i, best;
-+	int ret;
+diff --git a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
+index 3258b2e274346..4a72aa7663f25 100644
+--- a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
++++ b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
+@@ -308,8 +308,6 @@ &rtc0 {
  
- 	/* Find the highest supported limit */
- 	best = 0;
-@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 	dev_dbg(wm831x_power->wm831x->dev,
- 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ &switch {
+ 	status = "okay";
+-	#address-cells = <1>;
+-	#size-cells = <0>;
  
--	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
--		        WM831X_USB_ILIM_MASK, best);
-+	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
-+			      WM831X_USB_ILIM_MASK, best);
-+	if (ret < 0) {
-+		dev_err(wm831x_power->wm831x->dev,
-+			"Failed to set USB current limit: %d\n", ret);
-+		return ret;
-+	}
- 
- 	return 0;
- }
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pins_eth3>, <&pins_eth4>, <&pins_mdio1>;
 -- 
 2.51.0
 
