@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CACACC2583
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B77CC4624
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54A8430C44E4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C81B30442B8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC674341AD0;
-	Tue, 16 Dec 2025 11:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9B73563D3;
+	Tue, 16 Dec 2025 12:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjrIBSi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6F2ee1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9125E341AC3;
-	Tue, 16 Dec 2025 11:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6605E3563D7;
+	Tue, 16 Dec 2025 12:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884793; cv=none; b=cA6CImOrcOJM9SlvkToxFLaQFzJVxQ3uxh62rMSjLSnE7rQN2GRfP7194eqjITM01cWutZvxew1cChgdRLvgAs0oIal36pI4CW3Gck8N66aklPNG7fI/qRJb4ChtQpoVARosth8lvShJ69LE/q0m+7RWLEbl15Y4oNtyb3UWlio=
+	t=1765886520; cv=none; b=ENJviuC2LiGWR/dB+uT70+mGuSZP0jID7xuTIysbddc+Q5X0WuWsEMtVKyspzLlv7JOokAboccdOQ1BHLfD2B8ia+Q1VRIfOStOLB47tqlEluH6MWqvY1Khoq5bYEicRVoVHrWr0WxBe7w6skHNZZtcYdXyWzQhlxS0oTPU2x/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884793; c=relaxed/simple;
-	bh=lNKtSKzk9KyHRS2fmeREY/YypbQ1MOOrPfuLAwdCNAo=;
+	s=arc-20240116; t=1765886520; c=relaxed/simple;
+	bh=b7k8OZRtY5yg9oCssVCDB3/fvqKa45ae9jVK/ziCwVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpdOJK7i6X2J5WZBNKoMqmjSIoTWCGhjEAc4VFpEqtkZjqjP4iWINXVuT8woQZqzKQsO1pq3w3kRiZnda2sGCEBXvP4QkMWg+B7Rgc7bXssXE0pMx1hN5vFt5ed3o7Pfli76OtXs9nWslae48gOponD9m8qQfwOAXA+b6bri8A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjrIBSi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A32C4CEF5;
-	Tue, 16 Dec 2025 11:33:12 +0000 (UTC)
+	 MIME-Version; b=c7co+3T2ZR5cZBAKTQn15VpXlQT0ZQlc2i4L2EPrL8r1FUUcUC/DkwqDMwViGql3DVhOMY+HyxgvYtyKdkLdQ0UID2+sg3PvgfFbPkIGof+/1wPJlwHq204lAr2WIqkLNCpIHCRLW+WSsfDMBaQOPahll92nyPs98P7Cg4cGCic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6F2ee1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7194AC4CEF5;
+	Tue, 16 Dec 2025 12:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884793;
-	bh=lNKtSKzk9KyHRS2fmeREY/YypbQ1MOOrPfuLAwdCNAo=;
+	s=korg; t=1765886518;
+	bh=b7k8OZRtY5yg9oCssVCDB3/fvqKa45ae9jVK/ziCwVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjrIBSi4vLC9PZ4qzf12JjWgDDF2fuEFONgTU72fPPsatkJNlWgUDqMVhCZNfrOJd
-	 Sm8qdnm9ewEAC8mBs2qtoECORE61d3hP5fukaP8CVddy35Vq6hy7VghkXtin4nAuQe
-	 ZgMhTIQol4knoYZ++Lg96wN9yvhCu3/H6acVufNg=
+	b=Q6F2ee1n9WJ+diNck+zlTdhnJMrAmH/G7SB2MmkkTtmUt409kLEtsmvX+fLZXqAvz
+	 uhHeiOO3NJ2c2Ki3wFTx5Soy0AHmmwJsKhskMupejcrz++Aa1vlNkThbqj45x6H1H6
+	 K9fQ3ubigBZn6d7atYOzr+An9fBDi/hnLxzh9XaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/354] f2fs: add gc_boost_gc_greedy sysfs node
-Date: Tue, 16 Dec 2025 12:14:27 +0100
-Message-ID: <20251216111331.780427602@linuxfoundation.org>
+Subject: [PATCH 6.17 427/507] perf tools: Mark split kallsyms DSOs as loaded
+Date: Tue, 16 Dec 2025 12:14:28 +0100
+Message-ID: <20251216111400.931059745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit c8705cefce44fbe85ca3b180dee0e0b5f3d51dc5 ]
+[ Upstream commit 7da4d60db33cccd8f4c445ab20bba71531435ee5 ]
 
-Add this to control GC algorithm for boost GC.
+The maps__split_kallsyms() will split symbols to module DSOs if it comes
+from a module.  It also handled some unusual kernel symbols after modules
+by creating new kernel maps like "[kernel].0".
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
+But they are pseudo DSOs to have those unexpected symbols.  They should
+not be considered as unloaded kernel DSOs.  Otherwise the dso__load()
+for them will end up calling dso__load_kallsyms() and then
+maps__split_kallsyms() again and again.
+
+Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 6 ++++++
- fs/f2fs/gc.c                            | 3 ++-
- fs/f2fs/gc.h                            | 1 +
- fs/f2fs/sysfs.c                         | 9 +++++++++
- 4 files changed, 18 insertions(+), 1 deletion(-)
+ tools/perf/util/symbol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index e5ec2a7982eef..912d6e8628081 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -874,3 +874,9 @@ Contact:	"Daeho Jeong" <daehojeong@google.com>
- Description:	Set a multiplier for the background GC migration window when F2FS GC is
- 		boosted. The range should be from 1 to the segment count in a section.
- 		Default: 5
-+
-+What:		/sys/fs/f2fs/<disk>/gc_boost_gc_greedy
-+Date:		June 2025
-+Contact:	"Daeho Jeong" <daehojeong@google.com>
-+Description:	Control GC algorithm for boost GC. 0: cost benefit, 1: greedy
-+		Default: 1
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 2cc7e16f76659..12737dfba5efb 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -141,7 +141,7 @@ static int gc_thread_func(void *data)
- 					FOREGROUND : BACKGROUND);
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 3fed54de54016..93c81c65b6c40 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -967,6 +967,7 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
+ 				return -1;
  
- 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
--				gc_control.one_time;
-+			(gc_control.one_time && gc_th->boost_gc_greedy);
+ 			dso__set_kernel(ndso, dso__kernel(dso));
++			dso__set_loaded(ndso);
  
- 		/* foreground GC was been triggered via f2fs_balance_fs() */
- 		if (foreground)
-@@ -198,6 +198,7 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
- 	gc_th->urgent_sleep_time = DEF_GC_THREAD_URGENT_SLEEP_TIME;
- 	gc_th->valid_thresh_ratio = DEF_GC_THREAD_VALID_THRESH_RATIO;
- 	gc_th->boost_gc_multiple = BOOST_GC_MULTIPLE;
-+	gc_th->boost_gc_greedy = GC_GREEDY;
- 
- 	if (f2fs_sb_has_blkzoned(sbi)) {
- 		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED;
-diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
-index efa1968810a06..1a2e7a84b59f1 100644
---- a/fs/f2fs/gc.h
-+++ b/fs/f2fs/gc.h
-@@ -69,6 +69,7 @@ struct f2fs_gc_kthread {
- 	unsigned int boost_zoned_gc_percent;
- 	unsigned int valid_thresh_ratio;
- 	unsigned int boost_gc_multiple;
-+	unsigned int boost_gc_greedy;
- };
- 
- struct gc_inode_list {
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index dce3ef405832e..0c1e9683316e6 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -861,6 +861,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
- 	}
- 
-+	if (!strcmp(a->attr.name, "gc_boost_gc_greedy")) {
-+		if (t > GC_GREEDY)
-+			return -EINVAL;
-+		sbi->gc_thread->boost_gc_greedy = (unsigned int)t;
-+		return count;
-+	}
-+
- 	*ui = (unsigned int)t;
- 
- 	return count;
-@@ -1088,6 +1095,7 @@ GC_THREAD_RW_ATTR(gc_no_zoned_gc_percent, no_zoned_gc_percent);
- GC_THREAD_RW_ATTR(gc_boost_zoned_gc_percent, boost_zoned_gc_percent);
- GC_THREAD_RW_ATTR(gc_valid_thresh_ratio, valid_thresh_ratio);
- GC_THREAD_RW_ATTR(gc_boost_gc_multiple, boost_gc_multiple);
-+GC_THREAD_RW_ATTR(gc_boost_gc_greedy, boost_gc_greedy);
- 
- /* SM_INFO ATTR */
- SM_INFO_RW_ATTR(reclaim_segments, rec_prefree_segments);
-@@ -1257,6 +1265,7 @@ static struct attribute *f2fs_attrs[] = {
- 	ATTR_LIST(gc_boost_zoned_gc_percent),
- 	ATTR_LIST(gc_valid_thresh_ratio),
- 	ATTR_LIST(gc_boost_gc_multiple),
-+	ATTR_LIST(gc_boost_gc_greedy),
- 	ATTR_LIST(gc_idle),
- 	ATTR_LIST(gc_urgent),
- 	ATTR_LIST(reclaim_segments),
+ 			curr_map = map__new2(pos->start, ndso);
+ 			if (curr_map == NULL) {
 -- 
 2.51.0
 
