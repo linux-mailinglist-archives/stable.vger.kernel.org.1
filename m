@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7038ECC2FB9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF03CC43AE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B253730D08C6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8C67309E8E9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F19359716;
-	Tue, 16 Dec 2025 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77802364045;
+	Tue, 16 Dec 2025 12:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIdWoVoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOZ9o2yi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F421835970D;
-	Tue, 16 Dec 2025 12:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B37363C6A;
+	Tue, 16 Dec 2025 12:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886687; cv=none; b=P6DBbLQyYXkmpcGk7Oq67UqTEmYhClztLXDBunUV2bhvRI/hLPCmDBN6w5SBmMR6JE8jjd214xn0kvW3epEV/6KrE1dBqgIqbDh5/4jByk4UALEBPGof0ajGhP3DRtBbzkshj8M0r3AK1BZ7EI0wEdaLuHIp49w5c1kZ0ocNa44=
+	t=1765888563; cv=none; b=dzeL8NImjSV0blPFcb8J6ZmP+YHAf3hyjbnH+ah/B9hibVr8VJAGKhHqIVPm4t1iCcILn9yKN7nbgiWOLJaO54EZ/0Hh7JfwY3/3Y/Cjdn1kQ/RGhHjAwD68FOngoUKsf51wgXOVzLbPAB8PeWjswFPEyVTo5GI5b6NAzsse5FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886687; c=relaxed/simple;
-	bh=gvx3IIxl54o/IK2IjtWIy2KvCEgiFwvGmk8bG5qmhF8=;
+	s=arc-20240116; t=1765888563; c=relaxed/simple;
+	bh=qcpWD3B5Rfw0gEiucNMaav2ZCLLqFHpX4tEdXmJfLIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogqka+SgLOVNMaSUAT4n5IePuWFljCT1S9c4I9b6RrWfEanrXpN65ehvLCQP8svA5bqqF7GYPWmNRDz/Ts4Bo5DojP6KLm0R/l4wFlVnsMOzV4HceVidFIVqILovBLLJz6Ca5gemLFYkTvHSU/Ht2Dk/Wf7ggjFND/43+2ThtTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIdWoVoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60132C4CEF5;
-	Tue, 16 Dec 2025 12:04:46 +0000 (UTC)
+	 MIME-Version; b=Nelut5E1F+6IkapfWJq/A574pkjPZUyizXt51ukWuTK2zJaHciHsIsbDVRl0TMTc/ks7rKtF45ZqZPLJwNNO/JaZjnLTKLu6DKkLR7l2RH1rcqsLf08cxTSRyguRbw3Mz2bfrIsJ8GSjdMiyNZKJacoMnPJKYys5yv7RKGsCr9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOZ9o2yi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EBCC4CEF1;
+	Tue, 16 Dec 2025 12:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886686;
-	bh=gvx3IIxl54o/IK2IjtWIy2KvCEgiFwvGmk8bG5qmhF8=;
+	s=korg; t=1765888562;
+	bh=qcpWD3B5Rfw0gEiucNMaav2ZCLLqFHpX4tEdXmJfLIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIdWoVoGeG1q/fAchq6XyzMwtHuWXVcQV9YF0ogNqlvjfWxgqzI0+N0a5vxGOS8WU
-	 JpDRpBuW98U2a/NL3HsA0vDKD7jnbDd+Ju5Mb3Tz2yOQQFo2r7/YhOYvoNCkhwDSvI
-	 4GY1tIRI34wjz7hiJuxpFsvRu0Bk0C+psDsrFENY=
+	b=ZOZ9o2yi32GRgU+o1wHsL7OvS+k8va4QY9vLs4etmCKgWpeLXp19jx4XO8/czK8Gz
+	 TqY2NePAB7ooup2ujTTzTBnw7DytI+dTJHDkU1DCF2qQdlXY+gNn+QeIej8XAoc9m6
+	 VGmgFr7zRJItwKVx4gPaKglSnbGiW7V85DFmfbt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kitta <kitta@linux.alibaba.com>,
-	Evan Li <evan.li@linux.alibaba.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 497/507] perf/x86/intel: Fix NULL event dereference crash in handle_pmi_common()
-Date: Tue, 16 Dec 2025 12:15:38 +0100
-Message-ID: <20251216111403.445060892@linuxfoundation.org>
+Subject: [PATCH 6.18 572/614] nfs/localio: remove alignment size checking in nfs_is_local_dio_possible
+Date: Tue, 16 Dec 2025 12:15:39 +0100
+Message-ID: <20251216111422.108170448@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evan Li <evan.li@linux.alibaba.com>
+From: Mike Snitzer <snitzer@hammerspace.com>
 
-[ Upstream commit 9415f749d34b926b9e4853da1462f4d941f89a0d ]
+[ Upstream commit f50d0328d02fe38ba196a73c143e5d87e341d4f7 ]
 
-handle_pmi_common() may observe an active bit set in cpuc->active_mask
-while the corresponding cpuc->events[] entry has already been cleared,
-which leads to a NULL pointer dereference.
+This check to ensure dio_offset_align isn't larger than PAGE_SIZE is
+no longer relevant (older iterations of NFS Direct was allocating
+misaligned head and tail pages but no longer does, so this check isn't
+needed).
 
-This can happen when interrupt throttling stops all events in a group
-while PEBS processing is still in progress. perf_event_overflow() can
-trigger perf_event_throttle_group(), which stops the group and clears
-the cpuc->events[] entry, but the active bit may still be set when
-handle_pmi_common() iterates over the events.
-
-The following recent fix:
-
-  7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
-
-moved the cpuc->events[] clearing from x86_pmu_stop() to x86_pmu_del() and
-relied on cpuc->active_mask/pebs_enabled checks. However,
-handle_pmi_common() can still encounter a NULL cpuc->events[] entry
-despite the active bit being set.
-
-Add an explicit NULL check on the event pointer before using it,
-to cover this legitimate scenario and avoid the NULL dereference crash.
-
-Fixes: 7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
-Reported-by: kitta <kitta@linux.alibaba.com>
-Co-developed-by: kitta <kitta@linux.alibaba.com>
-Signed-off-by: Evan Li <evan.li@linux.alibaba.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20251212084943.2124787-1-evan.li@linux.alibaba.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220855
+Fixes: c817248fc831 ("nfs/localio: add proper O_DIRECT support for READ and WRITE")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfs/localio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 52270268144c2..76cd840e33e30 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3249,6 +3249,9 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 656976b4f42ce..512d9c5ff608a 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -339,8 +339,6 @@ nfs_is_local_dio_possible(struct nfs_local_kiocb *iocb, int rw,
  
- 		if (!test_bit(bit, cpuc->active_mask))
- 			continue;
-+		/* Event may have already been cleared: */
-+		if (!event)
-+			continue;
+ 	if (unlikely(!nf_dio_mem_align || !nf_dio_offset_align))
+ 		return false;
+-	if (unlikely(nf_dio_offset_align > PAGE_SIZE))
+-		return false;
+ 	if (unlikely(len < nf_dio_offset_align))
+ 		return false;
  
- 		/*
- 		 * There may be unprocessed PEBS records in the PEBS buffer,
 -- 
 2.51.0
 
