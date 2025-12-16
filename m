@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-202643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AE6CC35BE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38957CC3738
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EF3630237BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 067CB30B0277
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148EA364051;
-	Tue, 16 Dec 2025 12:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9748E359703;
+	Tue, 16 Dec 2025 12:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot+lzW3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qon+ysE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BC8364042;
-	Tue, 16 Dec 2025 12:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515E6359710;
+	Tue, 16 Dec 2025 12:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888568; cv=none; b=cdt477qmAHt9pLX30KtZx8Jbc1vcb4c3zubIBB6obXeECAVFYQaJeBPzr20AewpkROJL/nkR1HUPPoSTedjtbBFyPgjV8cnMRBMbGCVEA9rkl0YnuJTFseQQh2zK0q+gwPjZ1EXphlxAmVC0cwi/7phNxpOu3UD8L1pW6AstTp4=
+	t=1765886697; cv=none; b=CtSB8cvqZxpcOB7X/fm1D7L3Jxdk9O6CJN8MH+XBiVgfJnlQ2n1HHIC3+yjOA+bnQstfAM3eeWLnnBTRQ0lKiDKkUiihc80TY+/x1ZgXNodNHyyMif9Cg6xC2U56GJkwZGYHrnBevu8ymoE4A4YtIoZvhwcMHGqZ1eoGIyNb3Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888568; c=relaxed/simple;
-	bh=/9y1G9mD9ZNQ39rpRXBsfwFQmBusJbeTlJ6R1VFZyuc=;
+	s=arc-20240116; t=1765886697; c=relaxed/simple;
+	bh=KYbSwHbSysJdXFS/zP8WSe/n2KAiDC9CrcFrDkinC5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJtKN+TDyS/8fIVbcjGrh7fcFaRaV09pMJjSdFEyRhQk+SViF3lHYU7SwNqLSNVJ8D54IKxu9+bBbD5YT9IpLYvJCaRuIi7M7Y+Q2LrbRMthme7abqxdB+VzqnA4uF+HdwkTFX+v7Tv2DdEaJJ7ZtJ7Sy+mG62ZLUInyDkWPAKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot+lzW3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3738BC4CEF5;
-	Tue, 16 Dec 2025 12:36:08 +0000 (UTC)
+	 MIME-Version; b=m8FiRvt4K4iBEd6R/+bbaco4oIVjx+HmikgmM9x1oAb4e+XjPHltdcndpBYuRR3A/X7puxXyuX2VFiOC3gbnbnaIpKYEGfuJVGqLakKX7MtInm8tImm1spC0iPn7grIG3BbdAPhJ6ric24pTwR1Ww05KX9YsZirWIQs7S30uOAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qon+ysE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AB5C4CEF5;
+	Tue, 16 Dec 2025 12:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888568;
-	bh=/9y1G9mD9ZNQ39rpRXBsfwFQmBusJbeTlJ6R1VFZyuc=;
+	s=korg; t=1765886697;
+	bh=KYbSwHbSysJdXFS/zP8WSe/n2KAiDC9CrcFrDkinC5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ot+lzW3sq9m0VOOjnz8I0mHv4NE6aUOy+791Rk4d67qEFQZDGN6wB82GfouMA8EiY
-	 IyLzXFwMP97ZnZ5k2UZn960bsbTaiQ6n/4MjcSXN3ibJXosUT0wEQAVDcuWCrE51nd
-	 SBsRYnEoCLYIU8WozfoBuyaZcSQ++fo2t1xA2Ft8=
+	b=qon+ysE/Y6FYxEZuNNU5vCUM5hEC3j/vd+X4MtIfyyBKyQyntMLLLuTG44/nbKw0l
+	 OQMPJxMzwWr0tECVEqqOLmkmpNm+DqnzDfOH0MqmpZDuKCt3LeYSHNGs+DaPOvi8Yz
+	 S1HHSmCIcz8YTddYJkzJC0Fbm/Ci8m4QddcS40K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 574/614] gpio: tb10x: fix OF_GPIO dependency
+	stable <stable@kernel.org>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH 6.17 500/507] usb: phy: Initialize struct usb_phy list_head
 Date: Tue, 16 Dec 2025 12:15:41 +0100
-Message-ID: <20251216111422.181772538@linuxfoundation.org>
+Message-ID: <20251216111403.553352345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit dd44d4d0c55a4ecf5eabf7856f96ed47e0684780 ]
+commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
 
-Selecting OF_GPIO is generally not allowed, it always gets enabled
-when both GPIOLIB and OF are turned on.
+As part of the registration of a new 'struct usb_phy' with the USB PHY core
+via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
+usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
+order for the new instance x to be stored in phy_list, a static list
+kept internally by the core.
 
-The tb10x driver now warns about this after it was enabled for
-compile-testing:
+After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+when executing either of the registration functions above it is possible
+that usb_add_extcon() fails, leading to either function returning before
+the call to list_add_tail(), leaving x->head uninitialized.
 
-WARNING: unmet direct dependencies detected for OF_GPIO
-  Depends on [n]: GPIOLIB [=y] && OF [=n] && HAS_IOMEM [=y]
-  Selected by [y]:
-  - GPIO_TB10X [=y] && GPIOLIB [=y] && HAS_IOMEM [=y] && (ARC_PLAT_TB10X || COMPILE_TEST [=y])
+Then, when a driver tries to undo the failed registration by calling
+usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
+list_del(&x->head) acting on an uninitialized variable, and thus a
+possible NULL pointer dereference.
 
-OF_GPIO is not required for compile-testing and is already enabled
-when the driver is usable, so just drop the 'select' line.
+Fix this by initializing x->head before usb_add_extcon() has a
+chance to fail. Note that this was not needed before 7d21114dc6a2 since
+list_add_phy() was executed unconditionally and it guaranteed that x->head
+was initialized.
 
-Fixes: 682fbb18e14c ("gpio: tb10x: allow building the module with COMPILE_TEST=y")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20251205095429.1291866-1-arnd@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 7ee3afbc2b05d..e053524c5e35f 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -738,7 +738,6 @@ config GPIO_TB10X
- 	depends on ARC_PLAT_TB10X || COMPILE_TEST
- 	select GPIO_GENERIC
- 	select GENERIC_IRQ_CHIP
--	select OF_GPIO
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum
+ 		return -EINVAL;
+ 	}
  
- config GPIO_TEGRA
- 	tristate "NVIDIA Tegra GPIO support"
--- 
-2.51.0
-
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
+@@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+ 		return -EINVAL;
+ 	}
+ 
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
 
 
 
