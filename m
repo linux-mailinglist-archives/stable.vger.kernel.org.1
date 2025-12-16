@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C8DCC3E6D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:25:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F3ACC2352
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66ABA3015AA9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:19:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E6BD3037B8E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA043352941;
-	Tue, 16 Dec 2025 12:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E1342160;
+	Tue, 16 Dec 2025 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVCaAEyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5vDViJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5E434F241;
-	Tue, 16 Dec 2025 12:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830232BF22;
+	Tue, 16 Dec 2025 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887673; cv=none; b=hUbVMeBOWNTbQ2ahsJi32+nBMG55TtZxGbCrw1HfparjWIk0fwCfAfQGv+GxQ+UieWzpUaxCtL4ejfxmdM8LQ8h23ei9ps/wsmCXNIaTEJxpWi+camuc7aIHsKrLAisoeRoqa5luWaySJBnIlaAMPiBdWyTASCs8NCpH2lU1zE8=
+	t=1765884248; cv=none; b=nZjkK4ifiT0Ble4vVMwJMy6jZ2BeC3StdmlfWC9QRzmA3SdL/F4qXhh1HXMfADY49loDYjM8BnrRr3ppuu9O0zK4XSru6EOB3XIRHlNinmtqVX1Icbq4TBbDrQI4+TyDIwcR1KlpyE2BUbRdQ8zgv7vUHrcyCXUUjuFqDF7A4lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887673; c=relaxed/simple;
-	bh=0lt8nPQVfpRCEVP2VCLXC9zrrptl78NycX7ZCWXFXlQ=;
+	s=arc-20240116; t=1765884248; c=relaxed/simple;
+	bh=REe75RiLyAjE5TkeXT6ojpsyMS34Ub1qubO2gy7GWA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgYdrlORmaEg/n3HwSv/xET7u4AzMivO85mlJeDy2F++DkuNlZ5eFM8bcmMN+AuV12YosieGdKGX7CGs5DnDgg8RKpA3disTt446pJTu9OXSDYCh6p1F0ABi163l1oT9G8uX2w43Cl2tGBptjTpyCXvCxM4LaThHpEN/kBVeg4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVCaAEyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFB2C4CEF1;
-	Tue, 16 Dec 2025 12:21:12 +0000 (UTC)
+	 MIME-Version; b=gV03s1/1UBOvReSGGR1YAbN7+DQer+vEzoSw7pyvGhQmXsDYOYLtRhRL5IiT8OuqrnhcqOBaEPX3lsZngtwCm2Y88jVpyrmX8xtABQdpLT2LGrd5AA85pu3cEVG/Bsz9xFhJfL2HNEH8B0QrELS36181GsTIQfkozDHcKidJppY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5vDViJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F17C4CEF1;
+	Tue, 16 Dec 2025 11:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887672;
-	bh=0lt8nPQVfpRCEVP2VCLXC9zrrptl78NycX7ZCWXFXlQ=;
+	s=korg; t=1765884248;
+	bh=REe75RiLyAjE5TkeXT6ojpsyMS34Ub1qubO2gy7GWA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVCaAEyE2dM608Jf+x9Dxy2YEKmGocPDqv5Uj6AHrE8bgZ/je5dUfsGnTQZl0lssz
-	 uxUoChmWahLWCfc/Ip4Xipg9ldueJJsAgfcwio7jhiLuwVh6q6dPAY9ImoHFvk780e
-	 lJ0N0L9H2CqjxTaIf8yZ4SEiPVkaEwBRFhjG4H1M=
+	b=A5vDViJOMhhVHHDuDXKAwYGkI7pUFfA80YQ+57k/ZXWzURrB2iLMvINktvemA1/Fj
+	 TpGGoVO7vwBMMz14MYrtYE5QqgoL6KRdxUqV5tu4AqZtAxJWEPLUWMjRyuYoxXgfJ7
+	 E88WBAUq2UQKj5DLcBMM3yD7Nzik6r5D2SQyQj20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 303/614] NFSD/blocklayout: Fix minlength check in proc_layoutget
+Subject: [PATCH 6.12 103/354] power: supply: rt5033_charger: Fix device node reference leaks
 Date: Tue, 16 Dec 2025 12:11:10 +0100
-Message-ID: <20251216111412.347028804@linuxfoundation.org>
+Message-ID: <20251216111324.651691165@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
+[ Upstream commit 6cdc4d488c2f3a61174bfba4e8cc4ac92c219258 ]
 
-The extent returned by the file system may have a smaller offset than
-the segment offset requested by the client. In this case, the minimum
-segment length must be checked against the requested range. Otherwise,
-the client may not be able to continue the read/write operation.
+The device node pointers `np_conn` and `np_edev`, obtained from
+of_parse_phandle() and of_get_parent() respectively, are not released.
+This results in a reference count leak.
 
-Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Add of_node_put() calls after the last use of these device nodes to
+properly release their references and fix the leaks.
+
+Fixes: 8242336dc8a8 ("power: supply: rt5033_charger: Add cable detection and USB OTG supply")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250929113234.1726-1-vulab@iscas.ac.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/power/supply/rt5033_charger.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index fde5539cf6a69..425648565ab2d 100644
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct svc_rqst *rqstp, struct inode *inode,
- {
- 	struct nfsd4_layout_seg *seg = &args->lg_seg;
- 	struct super_block *sb = inode->i_sb;
-+	u64 length;
- 	u32 block_size = i_blocksize(inode);
- 	struct pnfs_block_extent *bex;
- 	struct iomap iomap;
-@@ -56,7 +57,8 @@ nfsd4_block_proc_layoutget(struct svc_rqst *rqstp, struct inode *inode,
- 		goto out_error;
- 	}
- 
--	if (iomap.length < args->lg_minlength) {
-+	length = iomap.offset + iomap.length - seg->offset;
-+	if (length < args->lg_minlength) {
- 		dprintk("pnfsd: extent smaller than minlength\n");
- 		goto out_layoutunavailable;
- 	}
+diff --git a/drivers/power/supply/rt5033_charger.c b/drivers/power/supply/rt5033_charger.c
+index d19c7e80a92aa..c7d82a8065917 100644
+--- a/drivers/power/supply/rt5033_charger.c
++++ b/drivers/power/supply/rt5033_charger.c
+@@ -700,6 +700,8 @@ static int rt5033_charger_probe(struct platform_device *pdev)
+ 	np_conn = of_parse_phandle(pdev->dev.of_node, "richtek,usb-connector", 0);
+ 	np_edev = of_get_parent(np_conn);
+ 	charger->edev = extcon_find_edev_by_node(np_edev);
++	of_node_put(np_edev);
++	of_node_put(np_conn);
+ 	if (IS_ERR(charger->edev)) {
+ 		dev_warn(charger->dev, "no extcon device found in device-tree\n");
+ 		goto out;
 -- 
 2.51.0
 
