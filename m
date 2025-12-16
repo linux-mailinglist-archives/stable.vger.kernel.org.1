@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016BBCC3B5A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D47CC2F9B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7BE930ECB6F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D573315A300
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3859334D4F0;
-	Tue, 16 Dec 2025 11:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B430A34253D;
+	Tue, 16 Dec 2025 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLEg2Dj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTxrY/gC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E834D4E4;
-	Tue, 16 Dec 2025 11:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D76933A00F;
+	Tue, 16 Dec 2025 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885580; cv=none; b=oyXUcbPUG+cBZrR/D/qHzhPR794Z5v6H4HH93az/11XGrsUlpTwoVZUOfCckQJKYSQOfU8IIIFcuVnZRHDPjuV+aTPF+s/7MfiCsOn1mR+FSla9r5LSkGBq/tAAIagrsJdyQrEiNBzVmMOvdvIflfM+plxncuovzqnNMDKViQ6I=
+	t=1765887520; cv=none; b=YwxotNeH4gZ4r8UNizP4j76/BIQ3ztvxKOFH3QveKTX6MsBkHWpqdzkDo3fJW61Gv7DZXhnklhJ4eLSyfTQQK+4hf1SWuAvM07UjFuF7aWfPyTlFDJZmAoQqUBNrRjubycQFaAEvN2ybv2TSA4Ma4+wPLUYa7O7eOPzrfSBwphg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885580; c=relaxed/simple;
-	bh=cJCBAu4Xsd7YHC3MdAhW40lmf8oOS+ely9pbpFVahLY=;
+	s=arc-20240116; t=1765887520; c=relaxed/simple;
+	bh=cgvGWMorD5UoWkPBNwQrZDPuYmK3Au6mbL5D69b/BKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC8OZ+U6z/iHgakiACrR5EXiRU21FvFy50Dp7/DNAwbOG1ApL0HmN3vggJc2ihCyzZpNY4aobynU45/QaJzDwl458ZBQTG7xUlxJMuDe5vhvPTCFAL4n7uAf5aZlr/5Ej3I07B+MS+7T7K5eEUq8WjbqOvmgwbXKJtAS02hsFsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLEg2Dj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F25C4CEF1;
-	Tue, 16 Dec 2025 11:46:19 +0000 (UTC)
+	 MIME-Version; b=T88Shn2qtlQDJk63LEXCMfIFrfVEIehFd/pWH2q4EBAj3pMyQzHi4AqhuU0Kkn3MUYZadsma1LLrzXdqCUkRntQJQzHmJpEW/ygJx7ZIeWQ5EQnkM8Ed7zLp+BvDtEiButLVZ3IB+cXsPNMkHc5QYCiYO5tMQjE9tL2fS3wpVCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTxrY/gC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABB5C4CEF1;
+	Tue, 16 Dec 2025 12:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885579;
-	bh=cJCBAu4Xsd7YHC3MdAhW40lmf8oOS+ely9pbpFVahLY=;
+	s=korg; t=1765887520;
+	bh=cgvGWMorD5UoWkPBNwQrZDPuYmK3Au6mbL5D69b/BKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLEg2Dj/OY8ZE1DmTS7LoZLLcAThhcgHG8DV70uknHulfABpcBi1mHJ1TGvCur2Fe
-	 6UejrWOaBa1XYJvkyqNG+U928hSfucOfRSYbz8cQ7eVUDhpnFdkGklfbOtRbWhtf7E
-	 K2OglUcY+eYqk11HQafoshTk9c6foOZIIrEnfdOI=
+	b=UTxrY/gCLRNB7n2b64ijUmAkFTwZjmNhNXrq6V8N9Sfb/A9Qvhr/eYryWer3HqAsz
+	 H8PJJgmqxF8QUWXWaHk9UIrar3L/NZhZy1iANv1GtrX5D4IDIx4uy59f6D1QcPiowk
+	 3CEbbdIuoC5DKGuHDBS8PX3D1QFMNdBTzRXcB7qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 182/507] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Subject: [PATCH 6.18 256/614] coresight: etm4x: Add context synchronization before enabling trace
 Date: Tue, 16 Dec 2025 12:10:23 +0100
-Message-ID: <20251216111352.109505105@linuxfoundation.org>
+Message-ID: <20251216111410.649185513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-When da9055_device_init() fails after regmap_add_irq_chip()
-succeeds but mfd_add_devices() fails, the error handling path
-only calls mfd_remove_devices() but forgets to call
-regmap_del_irq_chip(). This results in a resource leak.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Fix this by adding regmap_del_irq_chip() to the error path so
-that resources are released properly.
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
 
-Fixes: 2896434cf272 ("mfd: DA9055 core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+
+Improved the barrier comments to provide more accurate information.
+
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9055-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
-index 1f727ef60d638..8c989b74f924e 100644
---- a/drivers/mfd/da9055-core.c
-+++ b/drivers/mfd/da9055-core.c
-@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index c562f82985192..5e707d082537a 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -446,10 +446,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
  
- err:
- 	mfd_remove_devices(da9055->dev);
-+	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
- 	return ret;
- }
+ 	etm4x_allow_trace(drvdata);
++
++	/*
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
  
+-	/* Synchronize the register updates for sysreg access */
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
+ 
+@@ -931,11 +945,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	 */
+ 	etm4x_prohibit_trace(drvdata);
+ 	/*
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
+ 	isb();
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
 -- 
 2.51.0
 
