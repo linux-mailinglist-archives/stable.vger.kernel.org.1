@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-202092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43C2CC442F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:25:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B41CC436D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13265305D1CF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E1E6300289E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFCC341AAF;
-	Tue, 16 Dec 2025 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999A535E55B;
+	Tue, 16 Dec 2025 12:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhfBfgwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yodoQ8YX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1A535CBB7;
-	Tue, 16 Dec 2025 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5716435E550;
+	Tue, 16 Dec 2025 12:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886788; cv=none; b=HLBKR7/257qZ48N1bxtBUmyTVUVASOXOYlROIG8EVqmcPBrkOLXzK1bZ55muColw+ikg7ciVnTw/ONsEWJFgaGs4aPFRvU2xJYKpYKI+yX6ThxRvMUq/1cXm00VOmbr5RcYbzQRBzVvok2EZhHxTKQsfEF7CVlT78YFxUXM5bcQ=
+	t=1765886824; cv=none; b=Vqu7AZzyNrfpfs3b4VX+AioROPJHISHpEruiPA/NznuJdqABfV0EB0wtZTzXT5vj8JhEZu3fFCD6NWdXY5KotTY9KAtb716VCZTv6+oOPIJk+PfeIOtXuSQ6rT1BIkGGK2+Xzay4RdsXuHb56f+tFuSz0124EQxBRX41KpUUpvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886788; c=relaxed/simple;
-	bh=SkBRQCB/Qhf9OBw/d9zzle+SbFRlhMtm01xBEEom5nc=;
+	s=arc-20240116; t=1765886824; c=relaxed/simple;
+	bh=zqHBMXnlaVsa5E8/INlTnxZmpHaICEdMVw+L0N2FEEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqdajqTgqQWgHaVTsaTCijyxnEv+EJeYMkUDu+aR+FMu+TML0CMRT9op0fqdCjEZupp9JXh0D5sc6lTUgtTCLR30CfodXlskKjdYYfxw3Z4JQ430M0pMDWCNdbBr2jZLKKqLBXj6zxVF7KgFUTgGDYnv3yT4hG8++iQKPeKC5TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhfBfgwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF332C4CEF1;
-	Tue, 16 Dec 2025 12:06:27 +0000 (UTC)
+	 MIME-Version; b=EincW2kXqsLu1MDK8SnCKyrVk8jsgTdd2qZMbNa2b6rkEPrBTlmizRRAS/pKAAg7v3lpnWiQGDvgsfyVtsW+GKTyuXkLyuWsUjs5vMlhBN4TMEPmgauuuJelVDB/xx435nfgDx+MslxoUptBR9V3l1ZSUUCGchUlAmKdLu6ffuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yodoQ8YX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728D3C4CEF1;
+	Tue, 16 Dec 2025 12:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886788;
-	bh=SkBRQCB/Qhf9OBw/d9zzle+SbFRlhMtm01xBEEom5nc=;
+	s=korg; t=1765886823;
+	bh=zqHBMXnlaVsa5E8/INlTnxZmpHaICEdMVw+L0N2FEEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhfBfgwdrZwg4dcoyU6zAhssYI5/uvZNXKYFCXp6/b95GKeOFLNTtEKTLrAWfOReC
-	 Dxr/euzGBoBe6AHVKVJXcZJc/tyFfoR37t7HtITS1rY0tV+EZL3KCdaVDCQnFwZOKg
-	 wDDswmtvDuEToSIah1k8bv4i9Dm/xoMfLeCn9pj0=
+	b=yodoQ8YXCMejbeDlaRZZzkShpU4VA4PlrFw5ud7HVAnMRa+7Kvm+u2SNY4T3k7Kcb
+	 C9NXRVAUXCvg4F0ABDNizfE0lJFhoi1t2crDjppk2H2oP1qV3zxT0555vPYExgRGwW
+	 tM2UUwVcbFXVjzI3/Nispg99XwNlIvWN9hrHUZt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Matthew Garrett <mjg59@srcf.ucam.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/614] pinctrl: qcom: glymur: Fix the gpio and egpio pin functions
-Date: Tue, 16 Dec 2025 12:06:32 +0100
-Message-ID: <20251216111402.218065527@linuxfoundation.org>
+Subject: [PATCH 6.18 026/614] ima: Attach CREDS_CHECK IMA hook to bprm_creds_from_file LSM hook
+Date: Tue, 16 Dec 2025 12:06:33 +0100
+Message-ID: <20251216111402.256055747@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -66,46 +70,132 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit e73fda2dcb0bad6650e654556c5242b773707257 ]
+[ Upstream commit 8f3fc4f3f8aa6e99266c69cc78bdaa58379e65fc ]
 
-Mark the gpio/egpio as GPIO specific pin functions, othewise
-the pin muxing generic framework will complain about the gpio
-being already requested by a different owner.
+Since commit 56305aa9b6fa ("exec: Compute file based creds only once"), the
+credentials to be applied to the process after execution are not calculated
+anymore for each step of finding intermediate interpreters (including the
+final binary), but only after the final binary to be executed without
+interpreter has been found.
 
-Fixes: 87ebcd8baebf ("pinctrl: qcom: Add glymur pinctrl driver")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+In particular, that means that the bprm_check_security LSM hook will not
+see the updated cred->e[ug]id for the intermediate and for the final binary
+to be executed, since the function doing this task has been moved from
+prepare_binprm(), which calls the bprm_check_security hook, to
+bprm_creds_from_file().
+
+This breaks the IMA expectation for the CREDS_CHECK hook, introduced with
+commit d906c10d8a31 ("IMA: Support using new creds in appraisal policy"),
+which expects to evaluate "the credentials that will be committed when the
+new process is started". This is clearly not the case for the CREDS_CHECK
+IMA hook, which is attached to bprm_check_security.
+
+This issue does not affect systems which load a policy with the BPRM_CHECK
+hook with no other criteria, as is the case with the built-in "tcb" and/or
+"appraise_tcb" IMA policies. The "tcb" built-in policy measures all
+executions regardless of the new credentials, and the "appraise_tcb" policy
+is written in terms of the file owner, rather than IMA hooks.
+
+However, it does affect systems without a BPRM_CHECK policy rule or with a
+BPRM_CHECK policy rule that does not include what CREDS_CHECK evaluates. As
+an extreme example, taking a standalone rule like:
+
+measure func=CREDS_CHECK euid=0
+
+This will not measure for example sudo (because CREDS_CHECK still sees the
+bprm->cred->euid set to the regular user UID), but only the subsequent
+commands after the euid was applied to the children.
+
+Make set[ug]id programs measured/appraised again by splitting
+ima_bprm_check() in two separate hook implementations (CREDS_CHECK now
+being implemented by ima_creds_check()), and by attaching CREDS_CHECK to
+the bprm_creds_from_file LSM hook.
+
+The limitation of this approach is that CREDS_CHECK will not be invoked
+anymore for the intermediate interpreters, like it was before, but only for
+the final binary. This limitation can be removed only by reverting commit
+56305aa9b6fa ("exec: Compute file based creds only once").
+
+Link: https://github.com/linux-integrity/linux/issues/3
+Fixes: 56305aa9b6fa ("exec: Compute file based creds only once")
+Cc: Serge E. Hallyn <serge@hallyn.com>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-glymur.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/integrity/ima/ima_main.c | 42 ++++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-glymur.c b/drivers/pinctrl/qcom/pinctrl-glymur.c
-index 9781e7fcb3a11..335005084b6bc 100644
---- a/drivers/pinctrl/qcom/pinctrl-glymur.c
-+++ b/drivers/pinctrl/qcom/pinctrl-glymur.c
-@@ -1316,7 +1316,7 @@ static const char *const wcn_sw_ctrl_groups[] = {
- };
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index cdd225f65a629..ebaebccfbe9ab 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -573,18 +573,41 @@ static int ima_file_mprotect(struct vm_area_struct *vma, unsigned long reqprot,
+  */
+ static int ima_bprm_check(struct linux_binprm *bprm)
+ {
+-	int ret;
+ 	struct lsm_prop prop;
  
- static const struct pinfunction glymur_functions[] = {
--	MSM_PIN_FUNCTION(gpio),
-+	MSM_GPIO_PIN_FUNCTION(gpio),
- 	MSM_PIN_FUNCTION(resout_gpio_n),
- 	MSM_PIN_FUNCTION(aoss_cti),
- 	MSM_PIN_FUNCTION(asc_cci),
-@@ -1342,7 +1342,7 @@ static const struct pinfunction glymur_functions[] = {
- 	MSM_PIN_FUNCTION(edp0_hot),
- 	MSM_PIN_FUNCTION(edp0_lcd),
- 	MSM_PIN_FUNCTION(edp1_lcd),
--	MSM_PIN_FUNCTION(egpio),
-+	MSM_GPIO_PIN_FUNCTION(egpio),
- 	MSM_PIN_FUNCTION(eusb_ac_en),
- 	MSM_PIN_FUNCTION(gcc_gp1),
- 	MSM_PIN_FUNCTION(gcc_gp2),
+ 	security_current_getlsmprop_subj(&prop);
+-	ret = process_measurement(bprm->file, current_cred(),
+-				  &prop, NULL, 0, MAY_EXEC, BPRM_CHECK);
+-	if (ret)
+-		return ret;
+-
+-	security_cred_getlsmprop(bprm->cred, &prop);
+-	return process_measurement(bprm->file, bprm->cred, &prop, NULL, 0,
+-				   MAY_EXEC, CREDS_CHECK);
++	return process_measurement(bprm->file, current_cred(),
++				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK);
++}
++
++/**
++ * ima_creds_check - based on policy, collect/store measurement.
++ * @bprm: contains the linux_binprm structure
++ * @file: contains the file descriptor of the binary being executed
++ *
++ * The OS protects against an executable file, already open for write,
++ * from being executed in deny_write_access() and an executable file,
++ * already open for execute, from being modified in get_write_access().
++ * So we can be certain that what we verify and measure here is actually
++ * what is being executed.
++ *
++ * The difference from ima_bprm_check() is that ima_creds_check() is invoked
++ * only after determining the final binary to be executed without interpreter,
++ * and not when searching for intermediate binaries. The reason is that since
++ * commit 56305aa9b6fab ("exec: Compute file based creds only once"), the
++ * credentials to be applied to the process are calculated only at that stage
++ * (bprm_creds_from_file security hook instead of bprm_check_security).
++ *
++ * On success return 0.  On integrity appraisal error, assuming the file
++ * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
++ */
++static int ima_creds_check(struct linux_binprm *bprm, const struct file *file)
++{
++	struct lsm_prop prop;
++
++	security_current_getlsmprop_subj(&prop);
++	return process_measurement((struct file *)file, bprm->cred, &prop, NULL,
++				   0, MAY_EXEC, CREDS_CHECK);
+ }
+ 
+ /**
+@@ -1242,6 +1265,7 @@ static int __init init_ima(void)
+ static struct security_hook_list ima_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(bprm_check_security, ima_bprm_check),
+ 	LSM_HOOK_INIT(bprm_creds_for_exec, ima_bprm_creds_for_exec),
++	LSM_HOOK_INIT(bprm_creds_from_file, ima_creds_check),
+ 	LSM_HOOK_INIT(file_post_open, ima_file_check),
+ 	LSM_HOOK_INIT(inode_post_create_tmpfile, ima_post_create_tmpfile),
+ 	LSM_HOOK_INIT(file_release, ima_file_free),
 -- 
 2.51.0
 
