@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-202484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601F7CC3059
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:01:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C1CCC249C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00B22301DE39
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35AE330D9532
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F89376BCC;
-	Tue, 16 Dec 2025 12:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F468342C9A;
+	Tue, 16 Dec 2025 11:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsYNOH6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y2DJlui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8358136D51F;
-	Tue, 16 Dec 2025 12:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E069026F2BD;
+	Tue, 16 Dec 2025 11:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888052; cv=none; b=HsPksCtlqjM5DkArvcjqebqKoWfcWn4Q8gZleNlzqzFlyAxtr2Z3m9B5ZvO9Z+i4Ucy1qO85K4ChLSllgF3Joxxw1vfRzdL7Dus7viei/69PRnLyzWvcCUo3GwfNYYYhrRhVD53Fy5UZx8n8O2YuNWp7bgQiMqnBqVhpJSwOOwQ=
+	t=1765884409; cv=none; b=KHRvuB5UL3cc7kVZfPz8zx6W3nUaXb1gP1ZIe+1q0YbqSACua/7IVsHK33NhYJh8SRaSif5wA6NQ4UnTSMWGrwrjkZ2d+A97IHR7JCG2pUkrzCj6V/mtb6uDS2VbmixKWD3J/4dzgdnfJqv7aJPz85vFjVqNFWWCDFGLrZK79AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888052; c=relaxed/simple;
-	bh=cIig+Hzp9ffc3M/hrlOfLSOweYWwz5fXx3HVSHtqlGY=;
+	s=arc-20240116; t=1765884409; c=relaxed/simple;
+	bh=mANL74stjkyWp7FAUJ3pZbO5BC5yTWSZgMJzM9oC0Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQPlgiCU74+01kdGEhMZuT1lGLz6VVwmXs/+3S+CiG87NoN0CE8MNHPmfVDcuDASFhmwnJH+A0YhbpL+DVvw3JJ0u2wl1E3h0y4DuZ6mHQsLoyb/KoPf55TFP3gIm/B/TDg9h0azRisuPDViolnNyPB/KsYfKjGBCf5UGqnQC98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsYNOH6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F104C4CEF1;
-	Tue, 16 Dec 2025 12:27:31 +0000 (UTC)
+	 MIME-Version; b=azFFgf+z6lTwK+qUn2S4SqRfQvLqBjEW9Rpc6c7f+1IrQCWa9gzl+Vl7ooS/Tgu2C6bG6DonkZylXYncs9xTlB+j1/3qOpgLla4rcKzIKu4roqcm//wAgcs6UVvkTPzjjUoPFgtpI+vW1rgnXjZEGbQVh4U3fdu8kCYyE4vVdLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y2DJlui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AA8C19422;
+	Tue, 16 Dec 2025 11:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888052;
-	bh=cIig+Hzp9ffc3M/hrlOfLSOweYWwz5fXx3HVSHtqlGY=;
+	s=korg; t=1765884408;
+	bh=mANL74stjkyWp7FAUJ3pZbO5BC5yTWSZgMJzM9oC0Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsYNOH6IAV++hqxOXsPtTfzn1+x7ZIyh+6fja+jpJYVf88D8O9rP7KFL4TiUJj8dn
-	 e7FkB3YggyEt22y4FfHCUHkbG908LzdSbwfenenhFPQld94M17GBZaFnyPZFwGoeDh
-	 u4AqYf6amTJpB+vo9cMhRVYoZCR+rFy4anKzMF38=
+	b=2Y2DJluixpcF18k2vSFDW7o5PuNA7O9wV1BEjaSQbVRh/d6eBS5MfSeeaSb690c7V
+	 wrxhziECYsorpZowrn+o9FJa4/boJWwZoHdaScGTnuYoPLMnrAROlt//rfmaadaXss
+	 L+XU+62+O6/eo+uQCrddCJ5tCH9YMLs0VjD8EOrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Pawlik <pawlik.dan@gmail.com>,
-	Matteo Croce <teknoraver@meta.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 385/614] wifi: mt76: wed: use proper wed reference in mt76 wed driver callabacks
+Subject: [PATCH 6.12 185/354] perf arm_spe: Fix memset subclass in operation
 Date: Tue, 16 Dec 2025 12:12:32 +0100
-Message-ID: <20251216111415.318717261@linuxfoundation.org>
+Message-ID: <20251216111327.616060043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,176 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 385aab8fccd7a8746b9f1a17f3c1e38498a14bc7 ]
+[ Upstream commit 33e1fffea492b7158a168914dc0da6aedf78d08e ]
 
-MT7996 driver can use both wed and wed_hif2 devices to offload traffic
-from/to the wireless NIC. In the current codebase we assume to always
-use the primary wed device in wed callbacks resulting in the following
-crash if the hw runs wed_hif2 (e.g. 6GHz link).
+The operation subclass is extracted from bits [7..1] of the payload.
+Since bit [0] is not parsed, there is no chance to match the memset type
+(0x25). As a result, the memset payload is never parsed successfully.
 
-[  297.455876] Unable to handle kernel read from unreadable memory at virtual address 000000000000080a
-[  297.464928] Mem abort info:
-[  297.467722]   ESR = 0x0000000096000005
-[  297.471461]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  297.476766]   SET = 0, FnV = 0
-[  297.479809]   EA = 0, S1PTW = 0
-[  297.482940]   FSC = 0x05: level 1 translation fault
-[  297.487809] Data abort info:
-[  297.490679]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[  297.496156]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  297.501196]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  297.506500] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000107480000
-[  297.512927] [000000000000080a] pgd=08000001097fb003, p4d=08000001097fb003, pud=08000001097fb003, pmd=0000000000000000
-[  297.523532] Internal error: Oops: 0000000096000005 [#1] SMP
-[  297.715393] CPU: 2 UID: 0 PID: 45 Comm: kworker/u16:2 Tainted: G           O       6.12.50 #0
-[  297.723908] Tainted: [O]=OOT_MODULE
-[  297.727384] Hardware name: Banana Pi BPI-R4 (2x SFP+) (DT)
-[  297.732857] Workqueue: nf_ft_offload_del nf_flow_rule_route_ipv6 [nf_flow_table]
-[  297.740254] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  297.747205] pc : mt76_wed_offload_disable+0x64/0xa0 [mt76]
-[  297.752688] lr : mtk_wed_flow_remove+0x58/0x80
-[  297.757126] sp : ffffffc080fe3ae0
-[  297.760430] x29: ffffffc080fe3ae0 x28: ffffffc080fe3be0 x27: 00000000deadbef7
-[  297.767557] x26: ffffff80c5ebca00 x25: 0000000000000001 x24: ffffff80c85f4c00
-[  297.774683] x23: ffffff80c1875b78 x22: ffffffc080d42cd0 x21: ffffffc080660018
-[  297.781809] x20: ffffff80c6a076d0 x19: ffffff80c6a043c8 x18: 0000000000000000
-[  297.788935] x17: 0000000000000000 x16: 0000000000000001 x15: 0000000000000000
-[  297.796060] x14: 0000000000000019 x13: ffffff80c0ad8ec0 x12: 00000000fa83b2da
-[  297.803185] x11: ffffff80c02700c0 x10: ffffff80c0ad8ec0 x9 : ffffff81fef96200
-[  297.810311] x8 : ffffff80c02700c0 x7 : ffffff80c02700d0 x6 : 0000000000000002
-[  297.817435] x5 : 0000000000000400 x4 : 0000000000000000 x3 : 0000000000000000
-[  297.824561] x2 : 0000000000000001 x1 : 0000000000000800 x0 : ffffff80c6a063c8
-[  297.831686] Call trace:
-[  297.834123]  mt76_wed_offload_disable+0x64/0xa0 [mt76]
-[  297.839254]  mtk_wed_flow_remove+0x58/0x80
-[  297.843342]  mtk_flow_offload_cmd+0x434/0x574
-[  297.847689]  mtk_wed_setup_tc_block_cb+0x30/0x40
-[  297.852295]  nf_flow_offload_ipv6_hook+0x7f4/0x964 [nf_flow_table]
-[  297.858466]  nf_flow_rule_route_ipv6+0x438/0x4a4 [nf_flow_table]
-[  297.864463]  process_one_work+0x174/0x300
-[  297.868465]  worker_thread+0x278/0x430
-[  297.872204]  kthread+0xd8/0xdc
-[  297.875251]  ret_from_fork+0x10/0x20
-[  297.878820] Code: 928b5ae0 8b000273 91400a60 f943fa61 (79401421)
-[  297.884901] ---[ end trace 0000000000000000 ]---
+Instead of extracting a unified bit field, change to extract the
+specific bits for each operation subclass.
 
-Fix the issue detecting the proper wed reference to use running wed
-callabacks.
-
-Fixes: 83eafc9251d6 ("wifi: mt76: mt7996: add wed tx support")
-Tested-by: Daniel Pawlik <pawlik.dan@gmail.com>
-Tested-by: Matteo Croce <teknoraver@meta.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251008-wed-fixes-v1-1-8f7678583385@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 34fb60400e32 ("perf arm-spe: Add raw decoding for SPEv1.3 MTE and MOPS load/store")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h        |  9 +++++++++
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c |  1 +
- drivers/net/wireless/mediatek/mt76/wed.c         | 10 +++++-----
- include/linux/soc/mediatek/mtk_wed.h             |  1 +
- 4 files changed, 16 insertions(+), 5 deletions(-)
+ .../arm-spe-decoder/arm-spe-pkt-decoder.c     | 25 ++++++-------------
+ .../arm-spe-decoder/arm-spe-pkt-decoder.h     | 15 ++++++-----
+ 2 files changed, 14 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e0d50b58cd012..7753afa3d883d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1252,6 +1252,15 @@ static inline int mt76_wed_dma_setup(struct mt76_dev *dev, struct mt76_queue *q,
- #define mt76_dereference(p, dev) \
- 	rcu_dereference_protected(p, lockdep_is_held(&(dev)->mutex))
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
+index 625834da7e20e..a0a9b9cd13875 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
+@@ -355,31 +355,20 @@ static int arm_spe_pkt_desc_op_type(const struct arm_spe_pkt *packet,
+ 				arm_spe_pkt_out_string(&err, &buf, &buf_len, " AR");
+ 		}
  
-+static inline struct mt76_dev *mt76_wed_to_dev(struct mtk_wed_device *wed)
-+{
-+#ifdef CONFIG_NET_MEDIATEK_SOC_WED
-+	if (wed->wlan.hif2)
-+		return container_of(wed, struct mt76_dev, mmio.wed_hif2);
-+#endif /* CONFIG_NET_MEDIATEK_SOC_WED */
-+	return container_of(wed, struct mt76_dev, mmio.wed);
-+}
-+
- static inline struct mt76_wcid *
- __mt76_wcid_ptr(struct mt76_dev *dev, u16 idx)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index d14b626ee5115..80db102ed809c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -595,6 +595,7 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+-		switch (SPE_OP_PKT_LDST_SUBCLASS_GET(payload)) {
+-		case SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP:
++		if (SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " SIMD-FP");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_GP_REG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_GP_REG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " GP-REG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " UNSPEC-REG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " NV-SYSREG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MTE-TAG");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MEMCPY:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MEMCPY(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MEMCPY");
+-			break;
+-		case SPE_OP_PKT_LDST_SUBCLASS_MEMSET:
++		else if (SPE_OP_PKT_LDST_SUBCLASS_MEMSET(payload))
+ 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " MEMSET");
+-			break;
+-		default:
+-			break;
+-		}
  
- 	wed->wlan.nbuf = MT7996_HW_TOKEN_SIZE;
- 	wed->wlan.token_start = MT7996_TOKEN_SIZE - wed->wlan.nbuf;
-+	wed->wlan.hif2 = hif2;
+ 		if (SPE_OP_PKT_IS_LDST_SVE(payload)) {
+ 			/* SVE effective vector length */
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+index 32d760ede7013..0d947df9dd6ec 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+@@ -117,14 +117,13 @@ enum arm_spe_events {
  
- 	wed->wlan.amsdu_max_subframes = 8;
- 	wed->wlan.amsdu_max_len = 1536;
-diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wireless/mediatek/mt76/wed.c
-index 907a8e43e72ad..fbd7e59c73aaf 100644
---- a/drivers/net/wireless/mediatek/mt76/wed.c
-+++ b/drivers/net/wireless/mediatek/mt76/wed.c
-@@ -8,7 +8,7 @@
+ #define SPE_OP_PKT_IS_OTHER_SVE_OP(v)		(((v) & (BIT(7) | BIT(3) | BIT(0))) == 0x8)
  
- void mt76_wed_release_rx_buf(struct mtk_wed_device *wed)
- {
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
-+	struct mt76_dev *dev = mt76_wed_to_dev(wed);
- 	int i;
+-#define SPE_OP_PKT_LDST_SUBCLASS_GET(v)		((v) & GENMASK_ULL(7, 1))
+-#define SPE_OP_PKT_LDST_SUBCLASS_GP_REG		0x0
+-#define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP	0x4
+-#define SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG	0x10
+-#define SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG	0x30
+-#define SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG	0x14
+-#define SPE_OP_PKT_LDST_SUBCLASS_MEMCPY		0x20
+-#define SPE_OP_PKT_LDST_SUBCLASS_MEMSET		0x25
++#define SPE_OP_PKT_LDST_SUBCLASS_GP_REG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x0)
++#define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP(v)	(((v) & GENMASK_ULL(7, 1)) == 0x4)
++#define SPE_OP_PKT_LDST_SUBCLASS_UNSPEC_REG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x10)
++#define SPE_OP_PKT_LDST_SUBCLASS_NV_SYSREG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x30)
++#define SPE_OP_PKT_LDST_SUBCLASS_MTE_TAG(v)	(((v) & GENMASK_ULL(7, 1)) == 0x14)
++#define SPE_OP_PKT_LDST_SUBCLASS_MEMCPY(v)	(((v) & GENMASK_ULL(7, 1)) == 0x20)
++#define SPE_OP_PKT_LDST_SUBCLASS_MEMSET(v)	(((v) & GENMASK_ULL(7, 0)) == 0x25)
  
- 	for (i = 0; i < dev->rx_token_size; i++) {
-@@ -31,8 +31,8 @@ EXPORT_SYMBOL_GPL(mt76_wed_release_rx_buf);
- #ifdef CONFIG_NET_MEDIATEK_SOC_WED
- u32 mt76_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- {
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
- 	struct mtk_wed_bm_desc *desc = wed->rx_buf_ring.desc;
-+	struct mt76_dev *dev = mt76_wed_to_dev(wed);
- 	struct mt76_queue *q = &dev->q_rx[MT_RXQ_MAIN];
- 	struct mt76_txwi_cache *t = NULL;
- 	int i;
-@@ -80,7 +80,7 @@ EXPORT_SYMBOL_GPL(mt76_wed_init_rx_buf);
+ #define SPE_OP_PKT_IS_LDST_ATOMIC(v)		(((v) & (GENMASK_ULL(7, 5) | BIT(1))) == 0x2)
  
- int mt76_wed_offload_enable(struct mtk_wed_device *wed)
- {
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
-+	struct mt76_dev *dev = mt76_wed_to_dev(wed);
- 
- 	spin_lock_bh(&dev->token_lock);
- 	dev->token_size = wed->wlan.token_start;
-@@ -164,7 +164,7 @@ EXPORT_SYMBOL_GPL(mt76_wed_dma_setup);
- 
- void mt76_wed_offload_disable(struct mtk_wed_device *wed)
- {
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
-+	struct mt76_dev *dev = mt76_wed_to_dev(wed);
- 
- 	spin_lock_bh(&dev->token_lock);
- 	dev->token_size = dev->drv->token_size;
-@@ -174,7 +174,7 @@ EXPORT_SYMBOL_GPL(mt76_wed_offload_disable);
- 
- void mt76_wed_reset_complete(struct mtk_wed_device *wed)
- {
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
-+	struct mt76_dev *dev = mt76_wed_to_dev(wed);
- 
- 	complete(&dev->mmio.wed_reset_complete);
- }
-diff --git a/include/linux/soc/mediatek/mtk_wed.h b/include/linux/soc/mediatek/mtk_wed.h
-index c4ff6bab176db..3fa93bd650044 100644
---- a/include/linux/soc/mediatek/mtk_wed.h
-+++ b/include/linux/soc/mediatek/mtk_wed.h
-@@ -154,6 +154,7 @@ struct mtk_wed_device {
- 		bool wcid_512;
- 		bool hw_rro;
- 		bool msi;
-+		bool hif2;
- 
- 		u16 token_start;
- 		unsigned int nbuf;
 -- 
 2.51.0
 
