@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1767CCC3F8A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:34:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1656CCC2E64
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB68D3045CEF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B87D31FA3FE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF4F34BA42;
-	Tue, 16 Dec 2025 11:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517EE350D74;
+	Tue, 16 Dec 2025 12:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXPF0FQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHGgCNLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE2634BA34;
-	Tue, 16 Dec 2025 11:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A467355025;
+	Tue, 16 Dec 2025 12:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885276; cv=none; b=q3KjShsmTZNhKVC7+guDr4N9nFZCxg/GYiIXKaNow6xFxEsDePndA00BBJoSbNBdUb5M8pbnYIY3aL00Jtn7kwxcPatKtF+Mj3apOszq9ma13RhnRIBI+YCxecspg3GA1uamawaLxaXpRwSeDegOFJ67VAsZy3lkJvhD+Z6efbI=
+	t=1765887242; cv=none; b=R2Co0lcMk+59DQY+ETAN0kcCoGtCCsRVAT+wG1Rhigeowo6BCqKjKHlS5aTzEz4hrFDA0XWL+5vfPjQM5LmtCUobEoaVbhLsfGjR56VoFkkbJFP5ADXXJ6RTw92GXZuLg2Xv3xu5ncBOO1h/rhINkz368Is053uhbMbA6T+E9qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885276; c=relaxed/simple;
-	bh=0rDGy4OuHk1Xt+bdmbX02o01lMU4fC9tV2CwtoiCVSM=;
+	s=arc-20240116; t=1765887242; c=relaxed/simple;
+	bh=hZG7nOhRnu4tYOQdBki9BENSledmgAqy8C8xzoR2oDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAeALyqJbgAiaPl7pstuBUyqNCLm/icWLv1ydCzpjT/YLZxGcii9BuyTmDHS2irX6UCGAjTzCDIYMGtI+ryZt+XRcwI8aVrCT3bWtMr4yTRvsIshoWWWzbT5P85EtiXOhmU2kzIqWFTPP0IEZ/4aZKcpwdGz/j5AerqWU361+os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXPF0FQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E997C4CEF1;
-	Tue, 16 Dec 2025 11:41:15 +0000 (UTC)
+	 MIME-Version; b=UJIumi0j/87iko1jvKbVTEoU79jWyoj6Qh/pv68VTTFnzryXVEx6BixHmwqeQzusS8Isq4y1jO1Yvs9gAZC6iqatL40cSK6JuAockEWcJ+BNMhYTtcmipgnaAak/gT2MAE/MPxVZIYkzTtIvGIb1IFQYv+rqw/1dKZWs2fJlrf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHGgCNLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FFEC4CEF1;
+	Tue, 16 Dec 2025 12:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885275;
-	bh=0rDGy4OuHk1Xt+bdmbX02o01lMU4fC9tV2CwtoiCVSM=;
+	s=korg; t=1765887241;
+	bh=hZG7nOhRnu4tYOQdBki9BENSledmgAqy8C8xzoR2oDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXPF0FQq3nKkWaAw2qdRb1JR4R/PSWwiC7mO1asBpUoftTrBlH16vDJMW2Lh8Cz/u
-	 EeUjb0fB7RexS4WPzfmShS/CBjHwWwhYf8FjG4NxLbGPtqJKlbriFn/0ud6bvnRoB0
-	 yChZO7+jhI3/SfRzTOIVpGYYbw2fJ24jVP//ouqI=
+	b=VHGgCNLXN8ZUrQbDf0ESDEnYKOKacRlYtVirTwtAntctXSIuAC2F8/yzyRPlcy3sp
+	 fMFSxd/FIvwEdDWP0P+9u4xdd9AEKEKoUp0iuMmp3dSPsD+Z37ZsW9MHuVvoO3RGhK
+	 Lczur4+UbPlFPawVeeNNpn2lws/nHYyMuv0Tam7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 063/507] arm64: dts: imx8mp-venice-gw702x: remove off-board sdhc1
+Subject: [PATCH 6.18 137/614] mtd: nand: relax ECC parameter validation check
 Date: Tue, 16 Dec 2025 12:08:24 +0100
-Message-ID: <20251216111347.825731663@linuxfoundation.org>
+Message-ID: <20251216111406.297505745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
 
-[ Upstream commit 9db04b310ef99b546e4240c55842e81b06b78579 ]
+[ Upstream commit 050553c683f21eebd7d1020df9b2ec852e2a9e4e ]
 
-SDHC1 on the GW702x SOM routes to a connector for use on a baseboard
-and as such are defined in the baseboard device-trees.
+Due to the custom handling and layouts of certain nand controllers this
+validity check will always fail for certain layouts. The check
+inherently depends on even chunk sizing and this is not always the
+case.
 
-Remove it from the gw702x SOM device-tree.
+Modify the check to only print a warning, instead of failing to
+init the attached NAND. This allows various 8 bit and 12 ECC strength
+layouts to be used.
 
-Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
+Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 20 -------------------
- .../dts/freescale/imx8mp-venice-gw72xx.dtsi   | 11 ----------
- 2 files changed, 31 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-index 086ee4510cd83..fb159199b39de 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-@@ -402,15 +402,6 @@ &uart2 {
- 	status = "okay";
- };
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index c7d9501f646b3..ad6d66309597b 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -6338,11 +6338,14 @@ static int nand_scan_tail(struct nand_chip *chip)
+ 		ecc->steps = mtd->writesize / ecc->size;
+ 	if (!base->ecc.ctx.nsteps)
+ 		base->ecc.ctx.nsteps = ecc->steps;
+-	if (ecc->steps * ecc->size != mtd->writesize) {
+-		WARN(1, "Invalid ECC parameters\n");
+-		ret = -EINVAL;
+-		goto err_nand_manuf_cleanup;
+-	}
++
++	/*
++	 * Validity check: Warn if ECC parameters are not compatible with page size.
++	 * Due to the custom handling of ECC blocks in certain controllers the check
++	 * may result in an expected failure.
++	 */
++	if (ecc->steps * ecc->size != mtd->writesize)
++		pr_warn("ECC parameters may be invalid in reference to underlying NAND chip\n");
  
--/* off-board */
--&usdhc1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_usdhc1>;
--	bus-width = <4>;
--	non-removable;
--	status = "okay";
--};
--
- /* eMMC */
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-@@ -513,17 +504,6 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
- 		>;
- 	};
- 
--	pinctrl_usdhc1: usdhc1grp {
--		fsl,pins = <
--			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
--			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0
--			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0
--			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0
--			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0
--			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0
--		>;
--	};
--
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x190
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-index cf747ec6fa16e..76020ef89bf3e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-@@ -365,17 +365,6 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX	0x140
- 		>;
- 	};
- 
--	pinctrl_usdhc1: usdhc1grp {
--		fsl,pins = <
--			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
--			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0
--			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0
--			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0
--			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0
--			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0
--		>;
--	};
--
- 	pinctrl_usdhc2: usdhc2grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x190
+ 	if (!ecc->total) {
+ 		ecc->total = ecc->steps * ecc->bytes;
 -- 
 2.51.0
 
