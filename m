@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0495CC30BC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6794CC25CE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EB983117224
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA42A305F641
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F93352F83;
-	Tue, 16 Dec 2025 12:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BD03431E3;
+	Tue, 16 Dec 2025 11:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reQb7ZuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6DhGvkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD59350D62;
-	Tue, 16 Dec 2025 12:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555B3342CB8;
+	Tue, 16 Dec 2025 11:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888462; cv=none; b=QPlW2XV9wKTNlzz6VAIippHPKARUKRdIvQYmA20cVvWjY/AIX1P/5k/y23GQuyK1v78ph4IMAEOncJ1Ka2mMr3Jsg/0NTw96Tepcbu2096RivEjolxPEf5PBe1r/TjgVrGqLR3vvi1X0wSuqTE3w6Jufo/2mBS2aSQ8uCbJRVhQ=
+	t=1765884932; cv=none; b=eYqsQEgf8j/to9NqvtXeGsUKnr+JxUHMP8pQGCvSMSPcAaf7fEeEfcDYlv99pAXMguLOiudIFyVenoZGdfqN3D7zICK6CUVKJiXbcRM9wZkXQ8exyGr2APFK6g002yDRQ9uRWVLWQv/V7aEky8K5ZT0T6mApolGxtMA+sy4cvkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888462; c=relaxed/simple;
-	bh=0OEH73+eVlBW6WnBpzCcRodTGCL5+NvhQzFvhJ8p6rk=;
+	s=arc-20240116; t=1765884932; c=relaxed/simple;
+	bh=CGVKAsJFakRoDI4mDjLx+WqZmn1t8a9j7K7/Q2n8Mxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cy67j8R/eHvIiy/rBTacDdW/EIGFcgTowvQO66pXXuGwpbuUrThhnI1/SEjZvAp2poQ7f0w+jNRtUElgbI6Zvq1u5XY9F7PA4klzI7vTnRNu67hz55Id2Lx5A+o9D8eEi7/6R/0DnKuFtzCKFFOoFtm2K0XmELFWdzp/8akLGRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reQb7ZuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A32C16AAE;
-	Tue, 16 Dec 2025 12:34:21 +0000 (UTC)
+	 MIME-Version; b=bKkNYvUkClEEDUIFfGU4uXUi53r1Rpt8jnYehAGBHxsfhe2DzYpjTtAboCAqulVCBIjwnGwfKZ6iyUENd7yfErqxNq8NVa+frUTgtXyjnrcPc2dwpRXnQP6hl2TFBsSv3zBeaWN/n41mhAENTIyoba6V5gXWIkDlVV1A5HWptlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6DhGvkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0577C4CEF1;
+	Tue, 16 Dec 2025 11:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888462;
-	bh=0OEH73+eVlBW6WnBpzCcRodTGCL5+NvhQzFvhJ8p6rk=;
+	s=korg; t=1765884932;
+	bh=CGVKAsJFakRoDI4mDjLx+WqZmn1t8a9j7K7/Q2n8Mxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reQb7ZuJTNXmWTrPCl8EOVC1XlS4Fd2BOjKYeXhxCbH20PIm820xjq5p68wV/8q6y
-	 7Bvb9eji5kZJac5ftjUIX25v/t//D3qtduXKbnipJ0qSVJY7F0k+Sf1GRmofTAFdzn
-	 j8oHQ6Dp+MCOn9L+Usp6zu4Z63ygc4b6V/KjsYCU=
+	b=S6DhGvkdogSo0GtXfTRk2FL2xnxCZFTDJc3m/FJvuNCXbipdVs87DKUpkKFlOafdw
+	 LZgAj9NTucIaUgPc75VCoHKOy/imjgcyr6ULdjUUTZpaN/ml4T/kSHjPQnTOLsfr1V
+	 V5Cm1x9Bur1tKvtcRGI0Dm04Rd8SAVUX8Xk3YaR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stoler <michael.stoler@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 542/614] NFS: Initialise verifiers for visible dentries in readdir and lookup
+Subject: [PATCH 6.12 342/354] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
 Date: Tue, 16 Dec 2025 12:15:09 +0100
-Message-ID: <20251216111421.017091365@linuxfoundation.org>
+Message-ID: <20251216111333.295718905@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 9bd545539b233725a3416801f7c374bff0327d6e ]
+[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
 
-Ensure that the verifiers are initialised before calling
-d_splice_alias() in both nfs_prime_dcache() and nfs_lookup().
+Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
+was defined simply as:
 
-Reported-by: Michael Stoler <michael.stoler@vastdata.com>
-Fixes: a1147b8281bd ("NFS: Fix up directory verifier races")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Type at byte offset 4:
+
+	- Cache error
+	- TLB Error
+	- Bus Error
+	- Micro-architectural Error
+	All other values are reserved
+
+Yet, there was no information about how this would be encoded.
+
+Spec 2.9A errata corrected it by defining:
+
+	- Bit 1 - Cache Error
+	- Bit 2 - TLB Error
+	- Bit 3 - Bus Error
+	- Bit 4 - Micro-architectural Error
+	All other values are reserved
+
+That actually aligns with the values already defined on older
+versions at N.2.4.1. Generic Processor Error Section.
+
+Spec 2.10 also preserve the same encoding as 2.9A.
+
+Adjust CPER and GHES handling code for both generic and ARM
+processors to properly handle UEFI 2.9A and 2.10 encoding.
+
+Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/ghes.c        | 16 +++++++----
+ drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
+ include/linux/cper.h            | 10 +++----
+ 3 files changed, 39 insertions(+), 37 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index d557b0443e8b0..2eead7e85be5b 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -789,16 +789,17 @@ void nfs_prime_dcache(struct dentry *parent, struct nfs_entry *entry,
- 		goto out;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 99659478e0bd0..45fa2510e4cf5 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -22,6 +22,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/init.h>
+ #include <linux/acpi.h>
++#include <linux/bitfield.h>
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+ #include <linux/timer.h>
+@@ -531,6 +532,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+ 	int flags = sync ? MF_ACTION_REQUIRED : 0;
++	char error_type[120];
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+@@ -543,9 +545,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 	p = (char *)(err + 1);
+ 	for (i = 0; i < err->err_info_num; i++) {
+ 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+-		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
++		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
+ 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+-		const char *error_type = "unknown error";
+ 
+ 		/*
+ 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
+@@ -559,12 +560,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 			continue;
+ 		}
+ 
+-		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
+-			error_type = cper_proc_error_type_strs[err_info->type];
++		cper_bits_to_str(error_type, sizeof(error_type),
++				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
++				 cper_proc_error_type_strs,
++				 ARRAY_SIZE(cper_proc_error_type_strs));
+ 
+ 		pr_warn_ratelimited(FW_WARN GHES_PFX
+-				    "Unhandled processor error type: %s\n",
+-				    error_type);
++				    "Unhandled processor error type 0x%02x: %s%s\n",
++				    err_info->type, error_type,
++				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
+ 		p += err_info->length;
  	}
  
-+	nfs_set_verifier(dentry, dir_verifier);
- 	inode = nfs_fhget(dentry->d_sb, entry->fh, entry->fattr);
- 	alias = d_splice_alias(inode, dentry);
- 	d_lookup_done(dentry);
- 	if (alias) {
- 		if (IS_ERR(alias))
- 			goto out;
-+		nfs_set_verifier(alias, dir_verifier);
- 		dput(dentry);
- 		dentry = alias;
- 	}
--	nfs_set_verifier(dentry, dir_verifier);
- 	trace_nfs_readdir_lookup(d_inode(parent), dentry, 0);
- out:
- 	dput(dentry);
-@@ -1994,13 +1995,14 @@ struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, unsigned in
- 	nfs_lookup_advise_force_readdirplus(dir, flags);
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index eb7ee6af55f23..52d18490b59e3 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -93,15 +93,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+ 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
+ 	bool time_out, access_mode;
  
- no_entry:
-+	nfs_set_verifier(dentry, dir_verifier);
- 	res = d_splice_alias(inode, dentry);
- 	if (res != NULL) {
- 		if (IS_ERR(res))
- 			goto out;
-+		nfs_set_verifier(res, dir_verifier);
- 		dentry = res;
+-	/* If the type is unknown, bail. */
+-	if (type > CPER_ARM_MAX_TYPE)
+-		return;
+-
+ 	/*
+ 	 * Vendor type errors have error information values that are vendor
+ 	 * specific.
+ 	 */
+-	if (type == CPER_ARM_VENDOR_ERROR)
++	if (type & CPER_ARM_VENDOR_ERROR)
+ 		return;
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
+@@ -116,43 +112,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+ 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
+ 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
+ 			   & CPER_ARM_ERR_OPERATION_MASK);
+-		switch (type) {
+-		case CPER_ARM_CACHE_ERROR:
++		if (type & CPER_ARM_CACHE_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%scache error, operation type: %s\n", pfx,
+ 				       arm_cache_err_op_strs[op_type]);
+ 			}
+-			break;
+-		case CPER_ARM_TLB_ERROR:
++		}
++		if (type & CPER_ARM_TLB_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%sTLB error, operation type: %s\n", pfx,
+ 				       arm_tlb_err_op_strs[op_type]);
+ 			}
+-			break;
+-		case CPER_ARM_BUS_ERROR:
++		}
++		if (type & CPER_ARM_BUS_ERROR) {
+ 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
+-				printk("%soperation type: %s\n", pfx,
++				printk("%sbus error, operation type: %s\n", pfx,
+ 				       arm_bus_err_op_strs[op_type]);
+ 			}
+-			break;
+ 		}
  	}
--	nfs_set_verifier(dentry, dir_verifier);
- out:
- 	trace_nfs_lookup_exit(dir, dentry, flags, PTR_ERR_OR_ZERO(res));
- 	nfs_free_fattr(fattr);
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
+ 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
+ 			 & CPER_ARM_ERR_LEVEL_MASK);
+-		switch (type) {
+-		case CPER_ARM_CACHE_ERROR:
++		if (type & CPER_ARM_CACHE_ERROR)
+ 			printk("%scache level: %d\n", pfx, level);
+-			break;
+-		case CPER_ARM_TLB_ERROR:
++
++		if (type & CPER_ARM_TLB_ERROR)
+ 			printk("%sTLB level: %d\n", pfx, level);
+-			break;
+-		case CPER_ARM_BUS_ERROR:
++
++		if (type & CPER_ARM_BUS_ERROR)
+ 			printk("%saffinity level at which the bus error occurred: %d\n",
+ 			       pfx, level);
+-			break;
+-		}
+ 	}
+ 
+ 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
+@@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+ 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
++	char error_type[120];
+ 
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+ 
+@@ -289,9 +281,15 @@ void cper_print_proc_arm(const char *pfx,
+ 				       newpfx);
+ 		}
+ 
+-		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
+-			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
+-			cper_proc_error_type_strs[err_info->type] : "unknown");
++		cper_bits_to_str(error_type, sizeof(error_type),
++				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
++				 cper_proc_error_type_strs,
++				 ARRAY_SIZE(cper_proc_error_type_strs));
++
++		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
++		       error_type,
++		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
++
+ 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
+ 			printk("%serror_info: 0x%016llx\n", newpfx,
+ 			       err_info->error_info);
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 25858a7608b7d..3670b866ac119 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -293,11 +293,11 @@ enum {
+ #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
+ #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
+ 
+-#define CPER_ARM_CACHE_ERROR			0
+-#define CPER_ARM_TLB_ERROR			1
+-#define CPER_ARM_BUS_ERROR			2
+-#define CPER_ARM_VENDOR_ERROR			3
+-#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
++#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
++#define CPER_ARM_CACHE_ERROR			BIT(1)
++#define CPER_ARM_TLB_ERROR			BIT(2)
++#define CPER_ARM_BUS_ERROR			BIT(3)
++#define CPER_ARM_VENDOR_ERROR			BIT(4)
+ 
+ #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
+ #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
 -- 
 2.51.0
 
