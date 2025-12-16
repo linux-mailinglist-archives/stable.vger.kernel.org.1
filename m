@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD70CC2E5D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB7FCC246F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F67531F8758
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCC9A30E1203
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4562344058;
-	Tue, 16 Dec 2025 11:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCF0342CB3;
+	Tue, 16 Dec 2025 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8aTNRPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4WEnjVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABDA314B6D;
-	Tue, 16 Dec 2025 11:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974B7342513;
+	Tue, 16 Dec 2025 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886045; cv=none; b=eg0M+LhxtNAMM5JYXCjvNpFqi8hNETOwLdZErXb3Cvv86SA7PrIo53Yj7698I9QirEkDNP3VDxhjhRGG1wIRRQtX5RskmHEKWJ68oCCHeaob9NekSs+a2Q1QQtwdr+/wQA3iNTJy1AL8iy7D69ZLzcND/+ttOlFyFdRCILhzJQs=
+	t=1765884418; cv=none; b=r73BfKel6YUkvMga5mJgX792vPwd3Xe1aqsSrCDEI5xBaygTAXxcxwhctPae5ZxCZJUmo6SpxOyBFcOytf7beJIANXffsebnV6+DBiz3tU1KWGrrnX61o+gXN702RsdOx+V6xgsi3UaXCgQ/WyZSmQaCL/1SCt7YC61LqPs6IuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886045; c=relaxed/simple;
-	bh=XSJdBnwQEhHVDyeR1j/qOzDaxPrA1/hNnPEApXngFJ0=;
+	s=arc-20240116; t=1765884418; c=relaxed/simple;
+	bh=LKT5eb4VpfryV5tkY5URNaiWcD+ssFgjhGo4JAKHkr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVJqdSMfSgx9uPA4Yv81N7mHFoWPsoodIH5xMw9sltH7wHK8j1dp8YlQm+67Xz7fDsis5HW0lqVjAUN6NIFcHgjtlufhPqJj12tkbQR/QwJa4LsebP7Su7Akf38eOI1OjZcDRPW1IwWogKKjVNpRHeNrBVLAYWO2YggwruUYYUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8aTNRPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF9CC4CEF1;
-	Tue, 16 Dec 2025 11:54:04 +0000 (UTC)
+	 MIME-Version; b=lNUstUT0QnhGDt2v9wQYOHWeBRDdTAMa3HzYaeTtOrXSJqU8pjF2GG7rWMWhnq+vhNHYh3N+p1JnV/oewnpohnxq1R+cniL+/G1Utyqs6pyy758+EuBojPYmOG2WNTcAgUCJ2uJGzP35sM6M4ZIu2wZrHA34CZKuyyfK+EUq4rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4WEnjVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199C4C4CEF1;
+	Tue, 16 Dec 2025 11:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886045;
-	bh=XSJdBnwQEhHVDyeR1j/qOzDaxPrA1/hNnPEApXngFJ0=;
+	s=korg; t=1765884418;
+	bh=LKT5eb4VpfryV5tkY5URNaiWcD+ssFgjhGo4JAKHkr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8aTNRPCjuenjbLs41TL2MduRNISXbjrLJ+QTINs9lGeZk0CiF1qOyUxxnHu8EmOM
-	 6Nuao46O/qdPZBzRExIwTMK9IOKQTrOIRVw2ox6ktePZ5MrATHISnm1zk2rV6bibbA
-	 Il2Hf8k7lUnjdz0TbopBiZOcKORNMLCVd35S41RY=
+	b=O4WEnjVBtwSxpGrGZ+epGEUfNi2B/oZd6t8co2jOoOUYcQjn+gi/kSZAc5ansamZp
+	 3TaCpnYklb6GdV6/t96umUH24eoTIQmJiW0LOEQQFNcnBq6nzEqdfdqyumL7dfGN0R
+	 hyleMqTfNLLBWMVJHCRoaC/pVD9O0zk7FBGIRhzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Anup Patel <anup@brainfault.org>,
+	Aashish Sharma <aashish@aashishsharma.net>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 314/507] RISC-V: KVM: Fix guest page fault within HLV* instructions
+Subject: [PATCH 6.12 188/354] iommu/vt-d: Fix unused invalidation hint in qi_desc_iotlb
 Date: Tue, 16 Dec 2025 12:12:35 +0100
-Message-ID: <20251216111356.843998592@linuxfoundation.org>
+Message-ID: <20251216111327.724600031@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: Aashish Sharma <aashish@aashishsharma.net>
 
-[ Upstream commit 974555d6e417974e63444266e495a06d06c23af5 ]
+[ Upstream commit 6b38a108eeb3936b21643191db535a35dd7c890b ]
 
-When executing HLV* instructions at the HS mode, a guest page fault
-may occur when a g-stage page table migration between triggering the
-virtual instruction exception and executing the HLV* instruction.
+Invalidation hint (ih) in the function 'qi_desc_iotlb' is initialized
+to zero and never used. It is embedded in the 0th bit of the 'addr'
+parameter. Get the correct 'ih' value from there.
 
-This may be a corner case, and one simpler way to handle this is to
-re-execute the instruction where the virtual  instruction exception
-occurred, and the guest page fault will be automatically handled.
-
-Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into separate sources")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20251121133543.46822-1-fangyu.yu@linux.alibaba.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Fixes: f701c9f36bcb ("iommu/vt-d: Factor out invalidation descriptor composition")
+Signed-off-by: Aashish Sharma <aashish@aashishsharma.net>
+Link: https://lore.kernel.org/r/20251009010903.1323979-1-aashish@aashishsharma.net
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_insn.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/iommu/intel/iommu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-index 97dec18e69892..3dbd6a09d4825 100644
---- a/arch/riscv/kvm/vcpu_insn.c
-+++ b/arch/riscv/kvm/vcpu_insn.c
-@@ -424,6 +424,22 @@ static int system_opcode_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 	return (rc <= 0) ? rc : 1;
- }
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index df24a62e8ca40..5b5f57d694afd 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -1088,7 +1088,7 @@ static inline void qi_desc_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
+ 				 struct qi_desc *desc)
+ {
+ 	u8 dw = 0, dr = 0;
+-	int ih = 0;
++	int ih = addr & 1;
  
-+static bool is_load_guest_page_fault(unsigned long scause)
-+{
-+	/**
-+	 * If a g-stage page fault occurs, the direct approach
-+	 * is to let the g-stage page fault handler handle it
-+	 * naturally, however, calling the g-stage page fault
-+	 * handler here seems rather strange.
-+	 * Considering this is a corner case, we can directly
-+	 * return to the guest and re-execute the same PC, this
-+	 * will trigger a g-stage page fault again and then the
-+	 * regular g-stage page fault handler will populate
-+	 * g-stage page table.
-+	 */
-+	return (scause == EXC_LOAD_GUEST_PAGE_FAULT);
-+}
-+
- /**
-  * kvm_riscv_vcpu_virtual_insn -- Handle virtual instruction trap
-  *
-@@ -449,6 +465,8 @@ int kvm_riscv_vcpu_virtual_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 							  ct->sepc,
- 							  &utrap);
- 			if (utrap.scause) {
-+				if (is_load_guest_page_fault(utrap.scause))
-+					return 1;
- 				utrap.sepc = ct->sepc;
- 				kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
- 				return 1;
-@@ -504,6 +522,8 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
- 						  &utrap);
- 		if (utrap.scause) {
-+			if (is_load_guest_page_fault(utrap.scause))
-+				return 1;
- 			/* Redirect trap if we failed to read instruction */
- 			utrap.sepc = ct->sepc;
- 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
-@@ -630,6 +650,8 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
- 						  &utrap);
- 		if (utrap.scause) {
-+			if (is_load_guest_page_fault(utrap.scause))
-+				return 1;
- 			/* Redirect trap if we failed to read instruction */
- 			utrap.sepc = ct->sepc;
- 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
+ 	if (cap_write_drain(iommu->cap))
+ 		dw = 1;
 -- 
 2.51.0
 
