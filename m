@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D65ACC22DD
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC77CC3BF7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ACC71303AA9A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:23:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 371EF3121CD7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC689341ACA;
-	Tue, 16 Dec 2025 11:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A559C346778;
+	Tue, 16 Dec 2025 12:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiMmMJhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi9gLJtI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FC8341645;
-	Tue, 16 Dec 2025 11:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA1133ADAD;
+	Tue, 16 Dec 2025 12:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884185; cv=none; b=q8O06LGF2L1lMnw0Z8NgP6UAASSIbGsSjTJC/c8ksy9G48KBf1IGTMeUzHbO7sHQOx6uAUJcRhCyrMEX2SPMHbyp4TX3WboXr+vgv2nVKaLNoftxcRagID6jroyUMFOXoqCkPRUoZGGVerWrfzpgSqHqkBTFh/QPvBzBtv3YA7I=
+	t=1765887833; cv=none; b=XtbNJkoRwo34w4w1McEJy6gGlTxwUyKBFcY9Hg6UGm9aanAP9hpsGPbiw2zW1eFv/CaFN/h3iUdpeDj+ACfBdg82A/NndwGLxS8W8lTBPUsrbWMa3wB7Yh7Iv5PrODOzwd/KlwYMqxcJf7wnTuSJVnJhXqY3wAVEOB0i1nO+Gv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884185; c=relaxed/simple;
-	bh=cyVAnYmDIt/py3x+dWB1bx8Y+lCe68jIR6zJJd4RIrE=;
+	s=arc-20240116; t=1765887833; c=relaxed/simple;
+	bh=+ETTEnlZCu1HOFhZRpiFbjjJm83d3r0dXMcgrnhZemk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GslIKlKrZQeafAUv92Z1jhyAsKdOtH/Okg1gy6eqGTiN2yvCA2ws4KphHJ5OB7R8O6Pvw9LrTpnJFmReATes3hwe3S+ElxToWwzOSGsya41FP+XqQwPZA5roOp4LSQo++/8EaID60Fq99hbmLNKDY51hOQf0ucX3Fz7U3Hc8obY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiMmMJhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B255C4CEF1;
-	Tue, 16 Dec 2025 11:23:04 +0000 (UTC)
+	 MIME-Version; b=gtN0v/kFvg7I4mYWsYsYYgjY2eZEuAeXrgNNKy3Z/s4vf4XKdYTo8bJcL/BuubEh2Cvv6rJA9kAhbI2Sr3MAhol8pGpObo8pP+9ZmQ9MxDgfrbEbwVRjRrlOBXaowM3dx8jDcZ9ctmvqYpCNS6GZn5AUW1NgcX2YIzkl/dKej/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi9gLJtI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D08C4CEF1;
+	Tue, 16 Dec 2025 12:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884185;
-	bh=cyVAnYmDIt/py3x+dWB1bx8Y+lCe68jIR6zJJd4RIrE=;
+	s=korg; t=1765887833;
+	bh=+ETTEnlZCu1HOFhZRpiFbjjJm83d3r0dXMcgrnhZemk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiMmMJhUw3KEZ0XL7c8gBUTYrE7vjfx82WFo7F4TqM/MR0PiklxA70QdR+IUNKbH7
-	 16Dw/3l/HLd85Pn8YVjiExkV58uExIvfBh8DNweyUN9DRjVTy6GdbBoCmBObe1SFgp
-	 3isuR1hLJ7Kfzl5uAsfVFJk/nOMgjBhrloqmWFis=
+	b=Bi9gLJtIkK/TjFf+InM39YePTFYcgwczS3azJ/REOlsJ4C93yPRdFw8QkwehdN+Hv
+	 QprIflL3aIlBbzqRuqckBx9qs2SH7gNLNyvGzn0egneaYLlba33wcMGOhKaW1Wtv+p
+	 qwfrrQgrS5CuCXhglPLHHJr6H0ifYLbbnEsEJNtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/354] libbpf: Fix parsing of multi-split BTF
+Subject: [PATCH 6.18 318/614] net: stmmac: Fix VLAN 0 deletion in vlan_del_hw_rx_fltr()
 Date: Tue, 16 Dec 2025 12:11:25 +0100
-Message-ID: <20251216111325.199049046@linuxfoundation.org>
+Message-ID: <20251216111412.886731025@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-[ Upstream commit 4f596acc260e691a2e348f64230392f3472feea3 ]
+[ Upstream commit d9db25723677c3741a0cf3643f7f7429fc983921 ]
 
-When creating multi-split BTF we correctly set the start string offset
-to be the size of the base string section plus the base BTF start
-string offset; the latter is needed for multi-split BTF since the
-offset is non-zero there.
+When the "rx-vlan-filter" feature is enabled on a network device, the 8021q
+module automatically adds a VLAN 0 hardware filter when the device is
+brought administratively up.
 
-Unfortunately the BTF parsing case needed that logic and it was
-missed.
+For stmmac, this causes vlan_add_hw_rx_fltr() to create a new entry for
+VID 0 in the mac_device_info->vlan_filter array, in the following format:
 
-Fixes: 4e29128a9ace ("libbpf/btf: Fix string handling to support multi-split BTF")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20251104203309.318429-2-alan.maguire@oracle.com
+    VLAN_TAG_DATA_ETV | VLAN_TAG_DATA_VEN | vid
+
+Here, VLAN_TAG_DATA_VEN indicates that the hardware filter is enabled for
+that VID.
+
+However, on the delete path, vlan_del_hw_rx_fltr() searches the vlan_filter
+array by VID only, without verifying whether a VLAN entry is enabled. As a
+result, when the 8021q module attempts to remove VLAN 0, the function may
+mistakenly match a zero-initialized slot rather than the actual VLAN 0
+entry, causing incorrect deletions and leaving stale entries in the
+hardware table.
+
+Fix this by verifying that the VLAN entry's enable bit (VLAN_TAG_DATA_VEN)
+is set before matching and deleting by VID. This ensures only active VLAN
+entries are removed and avoids leaving stale entries in the VLAN filter
+table, particularly for VLAN ID 0.
+
+Fixes: ed64639bc1e08 ("net: stmmac: Add support for VLAN Rx filtering")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20251113112721.70500-2-ovidiu.panait.rb@renesas.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index b770702dab372..56935f86a6963 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -1046,7 +1046,7 @@ static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf)
- 	if (base_btf) {
- 		btf->base_btf = base_btf;
- 		btf->start_id = btf__type_cnt(base_btf);
--		btf->start_str_off = base_btf->hdr->str_len;
-+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+index ff02a79c00d4f..b18404dd5a8be 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+@@ -122,7 +122,8 @@ static int vlan_del_hw_rx_fltr(struct net_device *dev,
  
- 	btf->raw_data = malloc(size);
-@@ -5504,7 +5504,7 @@ void btf_set_base_btf(struct btf *btf, const struct btf *base_btf)
- {
- 	btf->base_btf = (struct btf *)base_btf;
- 	btf->start_id = btf__type_cnt(base_btf);
--	btf->start_str_off = base_btf->hdr->str_len;
-+	btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
- }
+ 	/* Extended Rx VLAN Filter Enable */
+ 	for (i = 0; i < hw->num_vlan; i++) {
+-		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid) {
++		if ((hw->vlan_filter[i] & VLAN_TAG_DATA_VEN) &&
++		    ((hw->vlan_filter[i] & VLAN_TAG_DATA_VID) == vid)) {
+ 			ret = vlan_write_filter(dev, hw, i, 0);
  
- int btf__relocate(struct btf *btf, const struct btf *base_btf)
+ 			if (!ret)
 -- 
 2.51.0
 
