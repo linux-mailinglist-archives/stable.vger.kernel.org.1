@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6834CC2854
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4297CC258C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B6FC300DA5D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:52:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70221304AC98
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3080355035;
-	Tue, 16 Dec 2025 11:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13877344038;
+	Tue, 16 Dec 2025 11:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtEAl+lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1/QXEkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900DC35502F;
-	Tue, 16 Dec 2025 11:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A70344030;
+	Tue, 16 Dec 2025 11:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885971; cv=none; b=lU3h9a5eOYBZQ6+YU0FvnZaMQH8HdhcMqV0Ml0CdMkikcoke/Ym9kgzIhuL0qProaTlLOpqP/W2NQ29Nacc/VzoJsuEQBGR9DCxzUKyecZQLDdUhUuxtPkY8TbI0CLzPWXk579onciSgElcKCOPrdgjvp7zJ6bs2+dLNRRBhT78=
+	t=1765884427; cv=none; b=bMYPWSo7gMOHeKt+LPeEdu51hFFbeHa0bX+e74WnyviGNCAjTZkS4Q8Pg4WVqdvopOwpAT7jOC2nWcYpBDLV+GGWn/1qgIYvtQY95yS+JQBGF8ZhcmwYn/cV0gkCKX5QIjzAIuSZGcZAQXlpJglvz9ZJTfy9pIigN8Trfd5bVGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885971; c=relaxed/simple;
-	bh=wTmyDeEiDvXNSdK8TlfUfgvpUPmkm8/v8OX/e8Y0Hsw=;
+	s=arc-20240116; t=1765884427; c=relaxed/simple;
+	bh=sbJFWFZicc7sduDitVa0RLfS05kTfM2tKn+nC/CD16s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvGXECCKaCb3jAJ7MgMXKAGVMYPbKIhS/zReYg8pXfIpG+Sd4Jv9zFsrwLsRKd/A5uYuVFbTXYbT15fPwoy1xHuj1zkr/6P/eXk+XSKUSZzlxu4yGkZAWd2FLUzOyIjhpQYoMH32IW6O7SFAGEPMWSGWQFb0z5MozbKBwba1f/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtEAl+lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9D8C4CEF1;
-	Tue, 16 Dec 2025 11:52:50 +0000 (UTC)
+	 MIME-Version; b=bDz8yFYnST94Uf4nsl7eThCQQLV1YEMmhLxePbFzhf5Q2onvaJkwnJFvUkGUQvQgAsBmHIP8OStV09Aw/gqz6bsIG6XK0eoLTHtB4iR5L88AcZrVEDiW8N75mKaDLOWS3CgLNgxH4RiKucrBMiFaXO8JBh6AVa2SOJc9fMb28+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1/QXEkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CBFC4CEF5;
+	Tue, 16 Dec 2025 11:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885971;
-	bh=wTmyDeEiDvXNSdK8TlfUfgvpUPmkm8/v8OX/e8Y0Hsw=;
+	s=korg; t=1765884427;
+	bh=sbJFWFZicc7sduDitVa0RLfS05kTfM2tKn+nC/CD16s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtEAl+lhECT0ayIJ1jo+PBa8JDBgdXOTadnEqYvbIMRBEuOu778cyHn0TuoxH4hOF
-	 Di8jH/95u9pjyWKWc5t1jsX5oC0KWKghqdwz4FZTBpOrH8rgR6nQbDsPwjPxScOFp9
-	 frZA9zhPVyJ8eRdS1TWcwABDDRN+R2pLvEXqx4dA=
+	b=Y1/QXEkDqSoR1ShJz4rwaoWVfNoCX454fBmsAFlMftJJcM7BKEkNwuyuSn+vSbGkH
+	 VrPme3br+TJbAm7mL8wR0PQgoc2avwEKAx8bXInPJywZyF8wFVyzy3dwzh6Te9A3G1
+	 l5zpbujsc7YY/TBJMpl9FE44BOn1STZ8nC2F97vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 299/507] cpuset: Treat cpusets in attaching as populated
+Subject: [PATCH 6.12 173/354] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
 Date: Tue, 16 Dec 2025 12:12:20 +0100
-Message-ID: <20251216111356.306602722@linuxfoundation.org>
+Message-ID: <20251216111327.181977613@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
+[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
 
-Currently, the check for whether a partition is populated does not
-account for tasks in the cpuset of attaching. This is a corner case
-that can leave a task stuck in a partition with no effective CPUs.
+In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
+allocations in a loop. When an allocation fails, the previously
+successful allocations are not freed on exit.
 
-The race condition occurs as follows:
+Fix that by jumping to err_free_rings label on error, which calls
+rtl8180_free_rx_ring() to free the allocations. Remove the free of
+rx_ring in rtl8180_init_rx_ring() error path, and set the freed
+priv->rx_buf entry to null, to avoid double free.
 
-cpu0				cpu1
-				//cpuset A  with cpu N
-migrate task p to A
-cpuset_can_attach
-// with effective cpus
-// check ok
-
-// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
-				// making effective cpus empty
-				update_exclusive_cpumask
-				// tasks_nocpu_error check ok
-				// empty effective cpus, partition valid
-cpuset_attach
-...
-// task p stays in A, with non-effective cpus.
-
-To fix this issue, this patch introduces cs_is_populated, which considers
-tasks in the attaching cpuset. This new helper is used in validate_change
-and partition_is_populated.
-
-Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: f653211197f3 ("Add rtl8180 wireless driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index fd890b34a8403..06a58f62be58c 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -327,6 +327,15 @@ static inline bool is_in_v2_mode(void)
- 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
- }
- 
-+static inline bool cpuset_is_populated(struct cpuset *cs)
-+{
-+	lockdep_assert_held(&cpuset_mutex);
-+
-+	/* Cpusets in the process of attaching should be considered as populated */
-+	return cgroup_is_populated(cs->css.cgroup) ||
-+		cs->attach_in_progress;
-+}
-+
- /**
-  * partition_is_populated - check if partition has tasks
-  * @cs: partition root to be checked
-@@ -339,21 +348,31 @@ static inline bool is_in_v2_mode(void)
- static inline bool partition_is_populated(struct cpuset *cs,
- 					  struct cpuset *excluded_child)
- {
--	struct cgroup_subsys_state *css;
--	struct cpuset *child;
-+	struct cpuset *cp;
-+	struct cgroup_subsys_state *pos_css;
- 
--	if (cs->css.cgroup->nr_populated_csets)
-+	/*
-+	 * We cannot call cs_is_populated(cs) directly, as
-+	 * nr_populated_domain_children may include populated
-+	 * csets from descendants that are partitions.
-+	 */
-+	if (cs->css.cgroup->nr_populated_csets ||
-+	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts)
- 		return cgroup_is_populated(cs->css.cgroup);
- 
- 	rcu_read_lock();
--	cpuset_for_each_child(child, css, cs) {
--		if (child == excluded_child)
-+	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
-+		if (cp == cs || cp == excluded_child)
- 			continue;
--		if (is_partition_valid(child))
-+
-+		if (is_partition_valid(cp)) {
-+			pos_css = css_rightmost_descendant(pos_css);
- 			continue;
--		if (cgroup_is_populated(child->css.cgroup)) {
-+		}
-+
-+		if (cpuset_is_populated(cp)) {
- 			rcu_read_unlock();
- 			return true;
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index ded8d4d59289c..1b03310cf639a 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
  		}
-@@ -584,7 +603,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
- 	 * be changed to have empty cpus_allowed or mems_allowed.
- 	 */
- 	ret = -ENOSPC;
--	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
-+	if (cpuset_is_populated(cur)) {
- 		if (!cpumask_empty(cur->cpus_allowed) &&
- 		    cpumask_empty(trial->cpus_allowed))
- 			goto out;
+@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 
+ 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			dma_free_coherent(&priv->pdev->dev,
+-					  priv->rx_ring_sz * 32,
+-					  priv->rx_ring, priv->rx_ring_dma);
++			priv->rx_buf[i] = NULL;
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+ 
+ 	ret = rtl8180_init_rx_ring(dev);
+ 	if (ret)
+-		return ret;
++		goto err_free_rings;
+ 
+ 	for (i = 0; i < (dev->queues + 1); i++)
+ 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
 -- 
 2.51.0
 
