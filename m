@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-202414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FDCCC3C11
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:53:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F8BCC2355
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C241B300BAF7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:53:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EA3B304EB42
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF533344058;
-	Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C8B342160;
+	Tue, 16 Dec 2025 11:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKXGylxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5VHH1V+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C569224AEF;
-	Tue, 16 Dec 2025 12:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1919341645;
+	Tue, 16 Dec 2025 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887819; cv=none; b=qdMoqHe5rv6/oMvF018Y5du4e8yiD8OSbYFhC0OC3YnwoPY38Rtc3eOLTsh0RbM+SUh5Dyvv45hL3nGyhqCmSQ9rZ1Sr4WFHBaoDLYi1uNGoW3HhgP76b2xzGts+GAQq78CiXUFONXul2yJAw7Of4Sh4aDbCOCNbOhHb33NMIbQ=
+	t=1765884172; cv=none; b=A+xShAyk5lmWymhm0nKc3iFh8B/nIl0/+PlSh8UzVZniORhTUDVBlN8zWjUB+CtMUy9F02ddyXWBZdF1oRXk/sPli3o5iSK9x485H8H3MHsU/wdN1G/CXLBiwyROTxpsOiiy2T+jARFdX0aQ8XEQTVgwaJjR92fPfBsivsteSaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887819; c=relaxed/simple;
-	bh=Ina31AgzcHiMlT+S3nIMCUjTNvcKK2fJ8YHMGuRSGps=;
+	s=arc-20240116; t=1765884172; c=relaxed/simple;
+	bh=pwg9a82r1JMdAnpe2Ypq45Tz9u5IwXVB+ZT/E+O9lsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7w882fUddx47+PhoPTSRkvZUlgVm9xai8QjxlyIpej0iFXFaMLYCFZwM6nUfKD8euAvthR4F8mN9cfeg3ESErcW3oREopFVtkh5hW5v+m9NcwpLc267gmBN59ZVxBOefY6J5ZNSFs+QQEtv1bUeSCC6NbE+amKP7xNtFJbcjXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKXGylxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CFFC4CEF1;
-	Tue, 16 Dec 2025 12:23:38 +0000 (UTC)
+	 MIME-Version; b=gepszHM0LQXUz34denMjtE9fUVCzdpW+QnEfE3rP9nMsSKW6KkTeVHsBBN6xgiQPyKJ598n4ykkF4EayjECWdgzukR67VH22yoG1/Hoc/bwITLt9V/SW1MehUSEOpE8zMtnq0I+oxhcTm/yqt41aulGGmGLF79iyI3AOBjAZZGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5VHH1V+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1E4C4CEF5;
+	Tue, 16 Dec 2025 11:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887819;
-	bh=Ina31AgzcHiMlT+S3nIMCUjTNvcKK2fJ8YHMGuRSGps=;
+	s=korg; t=1765884172;
+	bh=pwg9a82r1JMdAnpe2Ypq45Tz9u5IwXVB+ZT/E+O9lsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKXGylxvf9FH563EnyxqWAhCbbZYhYbx74bsMkAbHIGYg2mh1ZTy/dMmx6cRdqtjg
-	 Ji4KPMggB3Qg/tlGUIuR6yDNttM07AIaJRPD+y3/VDEcFGecNSbxUyUb5K4xlZ+dHi
-	 ZNqjfqF0NABx/pSK14OCGIjW2FbwmqKSFV8qzHYA=
+	b=h5VHH1V+i4OT+7riqhM2yy6EeUMmEyRBBJvcOwu1VKzuVVZNvOziSdGbc4/9PF2xX
+	 8BgQ+VhaLbEtAdgQZ6ARtf5P1r3oxxTAPpZFlzk5Wd+ioD2cDvpoJKvZaF3XV0RTb6
+	 fYYLoWUl9fnyfnFTrKsg1V7/PBZ2JUBXi+aUXT5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Han Gao <rabenda.cn@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ketil Johnsen <ketil.johnsen@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 314/614] net: stmmac: dwmac-sophgo: Add phy interface filter
+Subject: [PATCH 6.12 114/354] drm/panthor: Fix UAF race between device unplug and FW event processing
 Date: Tue, 16 Dec 2025 12:11:21 +0100
-Message-ID: <20251216111412.743769877@linuxfoundation.org>
+Message-ID: <20251216111325.053094475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Ketil Johnsen <ketil.johnsen@arm.com>
 
-[ Upstream commit db37c6e510deabc9b0ee27c08f1c5aaa19f2e8ef ]
+[ Upstream commit 7051f6ba968fa69918d72cc26de4d6cf7ea05b90 ]
 
-As the SG2042 has an internal rx delay, the delay should be removed
-when initializing the mac, otherwise the phy will be misconfigurated.
+The function panthor_fw_unplug() will free the FW memory sections.
+The problem is that there could still be pending FW events which are yet
+not handled at this point. process_fw_events_work() can in this case try
+to access said freed memory.
 
-Fixes: 543009e2d4cd ("net: stmmac: dwmac-sophgo: Add support for Sophgo SG2042 SoC")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Tested-by: Han Gao <rabenda.cn@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251114003805.494387-4-inochiama@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Simply call disable_work_sync() to both drain and prevent future
+invocation of process_fw_events_work().
+
+Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
+Fixes: de85488138247 ("drm/panthor: Add the scheduler logical block")
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patch.msgid.link/20251027140217.121274-1-ketil.johnsen@arm.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/stmicro/stmmac/dwmac-sophgo.c    | 20 ++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-index 3b7947a7a7ba7..fcdda2401968b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-@@ -7,11 +7,16 @@
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 81ea3a79ab49c..1d95decddc273 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -3696,6 +3696,7 @@ void panthor_sched_unplug(struct panthor_device *ptdev)
+ 	struct panthor_scheduler *sched = ptdev->scheduler;
  
- #include <linux/clk.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
+ 	cancel_delayed_work_sync(&sched->tick_work);
++	disable_work_sync(&sched->fw_events_work);
  
- #include "stmmac_platform.h"
- 
-+struct sophgo_dwmac_data {
-+	bool has_internal_rx_delay;
-+};
-+
- static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
- 				    struct plat_stmmacenet_data *plat_dat,
- 				    struct stmmac_resources *stmmac_res)
-@@ -32,6 +37,7 @@ static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
- static int sophgo_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat_dat;
-+	const struct sophgo_dwmac_data *data;
- 	struct stmmac_resources stmmac_res;
- 	struct device *dev = &pdev->dev;
- 	int ret;
-@@ -50,11 +56,23 @@ static int sophgo_dwmac_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	data = device_get_match_data(&pdev->dev);
-+	if (data && data->has_internal_rx_delay) {
-+		plat_dat->phy_interface = phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface,
-+									  false, true);
-+		if (plat_dat->phy_interface == PHY_INTERFACE_MODE_NA)
-+			return -EINVAL;
-+	}
-+
- 	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
- }
- 
-+static const struct sophgo_dwmac_data sg2042_dwmac_data = {
-+	.has_internal_rx_delay = true,
-+};
-+
- static const struct of_device_id sophgo_dwmac_match[] = {
--	{ .compatible = "sophgo,sg2042-dwmac" },
-+	{ .compatible = "sophgo,sg2042-dwmac", .data = &sg2042_dwmac_data },
- 	{ .compatible = "sophgo,sg2044-dwmac" },
- 	{ /* sentinel */ }
- };
+ 	mutex_lock(&sched->lock);
+ 	if (sched->pm.has_ref) {
 -- 
 2.51.0
 
