@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-201467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6480CCC25EC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E1ACC3BD3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E7883009F8A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C82E530802E9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFBB34106D;
-	Tue, 16 Dec 2025 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAB03590CD;
+	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDyj2u3O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvAAT7So"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072A4340DBF;
-	Tue, 16 Dec 2025 11:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C54358D38;
+	Tue, 16 Dec 2025 12:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884735; cv=none; b=C/lAuw27XzjspJ3KSnYHefB6s74CWsBGF50/UUzg0JZ05B5lGO97iH/OqCmngvyuQME0xPVndrAcQirHoyEbH11SeCcE1oJVbCiXwGNMuSCEKu+T6dpIdbhfyR2ic8muaXINlAfPRohiqwf/ZgE+jLmwzHTTqmzcyE0zqEwnMr8=
+	t=1765888159; cv=none; b=RxR/IGw1lCgIyEtBDQqkXb8sU/TSfyL0cI88gCUbsQJe81RA01yLO7EFnlyhwdyLTjjn4/TFcyfwj0lxaWHdFQDyb6jtH13r8lp5vPbUXrQqbYnZ+YsFAC541AOMdt7DwgAqnI6KwOKb7moHeFBp/zCvvOZXn4kx4kISoGOgHLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884735; c=relaxed/simple;
-	bh=ltanIlqv7j3i8Yj1gjFo8UJqKWEef5NT7e04TmvhexI=;
+	s=arc-20240116; t=1765888159; c=relaxed/simple;
+	bh=TaRDtmoi91IKI+dVjVCezzXpzhM1kLhNjgtI9PPnsa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IA+HJuizeydVx0KnLCQIHFZpHp3g56ppUL8Q1bBMJdwrvcR9jRUey8j0bvRiIqYxsltbIrlq8ToGEth+DYNvyf+K6jrCbggFCj+HtI4ZwDNxAm1HcSMZm2LPQPdfOhieFllgTG2ckR6IY5nN9ok/FxFJm8XpSwVNaVswXiuF19Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDyj2u3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180EAC4CEF1;
-	Tue, 16 Dec 2025 11:32:12 +0000 (UTC)
+	 MIME-Version; b=OJZh5o3VqUEZQHfOOA37lua9v1cp/9FNqjzeLkF6umBWU9IU2buGYf8u/2dSqI4VkCF04twgzXOIXjH9KVzhhhAodFfWXUJ2YxDgSsPJ9rDSVONQ+BrOspcP+iQI8CGA+DZVKv6J0DGgw78c0gIhIGO40sFcef/H/oP9zVU3s1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvAAT7So; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6DAC4CEF5;
+	Tue, 16 Dec 2025 12:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884733;
-	bh=ltanIlqv7j3i8Yj1gjFo8UJqKWEef5NT7e04TmvhexI=;
+	s=korg; t=1765888159;
+	bh=TaRDtmoi91IKI+dVjVCezzXpzhM1kLhNjgtI9PPnsa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDyj2u3O39sYEPg+fxfaaNgCxyWKalRxhrqbUSxpDwt4xgBcEHk0J8JLwX9IopMvs
-	 w2x1uVISs015q5M6pjX2l0lYRUokNSp4niXU1jTOvDQB08B8pZK+H4PxOpLazle4bE
-	 fduq2IQFwnt2q/E/tB1e9FGa+KWG3LJfqvKFHMUA=
+	b=UvAAT7SovkJmBebWvilg9UQ3k60cQbqBxXxk4c01NVkJMGaM/xQBuRakfDDl2kWfn
+	 VCvq3lxEUq4TtkgZlSK1o8kACe/I7mM2pmkxAPkYAnaKZV3Pjx4VLPdA0zMWjbhA4k
+	 7W72r0XhAkXEsfh/7cN0H9Mq0MAf99y3r2uaUG6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/354] virtio: fix whitespace in virtio_config_ops
+Subject: [PATCH 6.18 449/614] drm/amdkfd: assign AID to uuid in topology for SPX mode
 Date: Tue, 16 Dec 2025 12:13:36 +0100
-Message-ID: <20251216111329.934890701@linuxfoundation.org>
+Message-ID: <20251216111417.638619314@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-[ Upstream commit 7831791e77a1cd29528d4dc336ce14466aef5ba6 ]
+[ Upstream commit 089702632f1dd38fadc9af13816485d6aa518dbb ]
 
-The finalize_features documentation uses a tab between words.
-Use space instead.
+XCD id is assigned to uuid, which causes some performance
+drop in SPX mode, assigning AID back will resolve the
+issue.
 
-Fixes: d16c0cd27331 ("docs: driver-api: virtio: virtio on Linux")
-Message-Id: <39d7685c82848dc6a876d175e33a1407f6ab3fc1.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 3a75edf93aae ("drm/amdkfd: set uuid for each partition in topology")
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 165f71635cb99..8189f859231cc 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -82,7 +82,7 @@ struct virtqueue_info {
-  *	vdev: the virtio_device
-  *	This sends the driver feature bits to the device: it can change
-  *	the dev->feature bits if it wants.
-- *	Note that despite the name this	can be called any number of
-+ *	Note that despite the name this can be called any number of
-  *	times.
-  *	Returns 0 on success or error status
-  * @bus_name: return the bus name associated with the device (optional)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 5c98746eb72df..811636af14eaa 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -530,7 +530,9 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
+ 		sysfs_show_32bit_prop(buffer, offs, "sdma_fw_version",
+ 				      dev->gpu->kfd->sdma_fw_version);
+ 		sysfs_show_64bit_prop(buffer, offs, "unique_id",
+-				      dev->gpu->xcp ?
++				      dev->gpu->xcp &&
++				      (dev->gpu->xcp->xcp_mgr->mode !=
++				       AMDGPU_SPX_PARTITION_MODE) ?
+ 				      dev->gpu->xcp->unique_id :
+ 				      dev->gpu->adev->unique_id);
+ 		sysfs_show_32bit_prop(buffer, offs, "num_xcc",
 -- 
 2.51.0
 
