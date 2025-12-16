@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0794CC25D1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:42:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3493CC42E5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0D7D30C6218
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:32:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85C87303D3CB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CCD341062;
-	Tue, 16 Dec 2025 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B64834251E;
+	Tue, 16 Dec 2025 11:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm1v+DhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrAzqc7f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA1D338F25;
-	Tue, 16 Dec 2025 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F60341648;
+	Tue, 16 Dec 2025 11:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884710; cv=none; b=SkAvypQEYnpiuVhMFUPnnHfjGo1tfeUXKDcoJOfl4yqDuRpXK4KKFGBH39Av87JzGKGMwJkuY0Aj8x9fNEPkCjyTFbIwnRI0w6mHj+mnzTM5N5ZgzXbmt1F76AeYc5kFhGGa1xexqdkg5+4JkBwgix4wqYGcGZaTCRT40kWbv58=
+	t=1765886313; cv=none; b=uVTcjchnV9tNPQJSnl71lSCPmDWkn44udOYvFIVMZiQ71U7qHMmqtzebgAytCR0k1Cl0smOED6noKmqn8ti7rTBv1ypjQAHqZAbEjb7LlWU79x+i8oZpJQMnDO9Wa/c9049R2cy33XnZ8/pPlf0OaTjqxcbeA8DUaCyfmtCUZIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884710; c=relaxed/simple;
-	bh=dGnYxn3cedpRzfOXW6BCSee+I+LcvXP/Cm/BY2+QbwY=;
+	s=arc-20240116; t=1765886313; c=relaxed/simple;
+	bh=ZtRi+Tr1jD3zDSqjTai1j/SRKa1h5gPk4l2afZKkRKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kj4sMYtD/xttM9Kt/RE/yfrmcHAWvXdkDeiiPvWojBtbhyUDPr2Te9hjZKyxsrPi59pKhGrzweSNNDX3+yPtw+aHPmXHOKroBZBwtjnXeMXLSruHue2OdWoiESKBTzYbMQcUZigo535mN0bXoYQS60yWq2O/GEyz165wibOrKq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm1v+DhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA44DC4CEF1;
-	Tue, 16 Dec 2025 11:31:49 +0000 (UTC)
+	 MIME-Version; b=WMNs/OH/tjj3UIEUllfeaMb/M+mz1VhfV0QPHtEdOwxV6UIw1FVkteDXkEOkLJ2bV3AL/POOEDi9vF/roft0Fu0ZFfWjdKmT+937O3n0LCpPARstx0y2Pn3wloy5egDYpGjdU8PuB/wHYh5sFa+VbxQsBHM5MTMVOAdY8YDqItc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrAzqc7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06BCC4CEF1;
+	Tue, 16 Dec 2025 11:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884710;
-	bh=dGnYxn3cedpRzfOXW6BCSee+I+LcvXP/Cm/BY2+QbwY=;
+	s=korg; t=1765886313;
+	bh=ZtRi+Tr1jD3zDSqjTai1j/SRKa1h5gPk4l2afZKkRKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jm1v+DhTmI2Y1aoQxKSnV+L6MYHzR37/wzkOY4qzi+oqd7wa5nDzx/aIrytbSv9to
-	 NC34D2SQhIeAx/c7bNJWNUS38wLnNcpqTcD9XdaAHxp47MuT5XDMXS0Ux54OI09SEn
-	 dGkoHM4Wyn+n0Bc02tOW7ZoeBE3YtO0MUU7sD1DE=
+	b=PrAzqc7fM1mqR+8YPzlTnuljinIYhGA52CEKTtMP+Jt8WOHHJsT2fCZKfZY6gaOt9
+	 /EVviOyt0/vj3e2OHLvf0vzsYs98bntxcju6HkPtX1ixUDqOeByxHUJ7Z1Ib+/Qv54
+	 8zaqLZTYU/MDIhEsKRijb2zyNoekBTaUU1304y5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/354] selftests: bonding: add delay before each xvlan_over_bond connectivity check
-Date: Tue, 16 Dec 2025 12:14:01 +0100
-Message-ID: <20251216111330.842154226@linuxfoundation.org>
+Subject: [PATCH 6.17 401/507] selftests: bonding: add delay before each xvlan_over_bond connectivity check
+Date: Tue, 16 Dec 2025 12:14:02 +0100
+Message-ID: <20251216111359.981257250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
