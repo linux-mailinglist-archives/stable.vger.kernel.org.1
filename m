@@ -1,119 +1,164 @@
-Return-Path: <stable+bounces-201187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F73CC2186
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:14:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3368BCC2580
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B26C0301C084
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:14:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43B6030C5C4D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51836338F26;
-	Tue, 16 Dec 2025 11:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2BB341674;
+	Tue, 16 Dec 2025 11:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="DMDWbhLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM7XIfno"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50912322B87;
-	Tue, 16 Dec 2025 11:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52E340DB7;
+	Tue, 16 Dec 2025 11:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883669; cv=none; b=DVUp56R5VUjjb4HEG9MElklwFdwEGXiNV5GDZXZ8fAce+tMWhaDHsyP/egP2B7oi48CopRkqcKNf7iaJKZ+T2vtwpWicsrnFhL0TogzAP6V5eTxqLSsUUjvJltvz8ZbNFSy9m/rEuGuohAEtbkn0JktOTlT0GI2KXN2a6yNM/5Y=
+	t=1765884780; cv=none; b=WhzQHfFuud/khxiqPQZcWcwGavfeH9tTQ4EYg+xS6tM/BAMGIQ2oa0pedUe1p55HclXPpeTuJGoOQEAIZJ2Z5wxR1FP1qmJgdzWEoRJig4H0eFNO0YoWQBB//d3JHRZ2JPx9eoLZarIwXB72P4OoeeBMO+vZz0qRqVgwifR58yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883669; c=relaxed/simple;
-	bh=dpp6+Z8LI71qGUsKIStI6p2X88snoNJJvG9sdwDlSU4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=dVhUp5yM/wOKmJFzP/1CRypOSPjSEPaaKCKOGPNFErRKtW7ywlFfISJvIgPZFjTGHt0luuh8ikVmgNcMjdjWx/1x+2CaV8mooFv+zfZrqMo/Mbpfh97zoL5MGA8hOkjwv4JBZst8rNEVvBHK4DIuFq8gYeOJjCWVRcJZ+AyyE5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=DMDWbhLl; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=hcOZHU4AjsImOlEkkB2FropA9abtiHcxsWirl15m64U=; t=1765883667;
-	x=1766315667; b=DMDWbhLlHZE+dHnkHOZmWKZ10fsaOp43v4VFNIyUJP2fqYSAGO0Dgfxa1VKuS
-	KJINp4I24VqbeXIkFsuqKaCSuXgcLBMdNqIemJwcVRy6qrJ61csw2t6njaULp1NK9h2DoL0BEZ6BE
-	3p8lTd9ZqtpELQe6eIEIERD5ruowHDN4rlK2Dr++InkKbTf59IoswAJCusQ4OnvZZ8+AOjQxI+GLz
-	EFH2D69L2JP32BKp8kmLYdXZ7URN3rt5nkAE+LRI9ld3bVm/D2FKNouY4MmWMx6K4I4Pi7NRzwCz9
-	K0hOl3C2ba/+xKMwkk2B5mc5I5fxkCpgw1xbx3Alwew8LiJNTw==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vVT0a-00C6Gm-1W;
-	Tue, 16 Dec 2025 12:14:24 +0100
-Message-ID: <c7bec14b-ee8b-448f-a7ad-a741ff974ea9@leemhuis.info>
-Date: Tue, 16 Dec 2025 12:14:23 +0100
+	s=arc-20240116; t=1765884780; c=relaxed/simple;
+	bh=YuAoCR/eSOhn8IVUYeVCzQ3hHLaU1Rj3XRpQje7f9BI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Usy9zvyuElyg5wlDH1iidwV58+os1CRnMg/SuEA4aJPGEdl+7VU5lwVVPRCGt1GRDhhudmEMPieasThYvCejLRxud+P7QaW+sXSRo125JtUifgLQyzOY998XAqPMSbOZPj63rWoec10DgrQbJ4Mv1Y7JJ6mufcAxpenqU2blXdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM7XIfno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA054C4CEF1;
+	Tue, 16 Dec 2025 11:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765884780;
+	bh=YuAoCR/eSOhn8IVUYeVCzQ3hHLaU1Rj3XRpQje7f9BI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cM7XIfnoYR9/lTwIAG3l4Sl6IMTygxkWnXDz4e2GSXgynlqZpMHwvcUAL+zk6loQ9
+	 u74Ja08eNJFaGSQAVWVxipLUhBQ4OrCT//k3yOmAKYh1vjjuAKDaRBCUofECZOrhkl
+	 gMDG06FygWXmS93cM3tBA20xtELHjiSz+1wrqXVE=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 297/354] f2fs: sysfs: add encoding_flags entry
+Date: Tue, 16 Dec 2025 12:14:24 +0100
+Message-ID: <20251216111331.671360478@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [6.12.61 lts] [amdgpu]: regression: broken multi-monitor USB4
- dock on Ryzen 7840U
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-References: <9444c2d3-2aaf-4982-9f75-23dc814c3885@student.kit.edu>
- <ea735f1a-04c3-42dc-9e4c-4dc26659834f@oracle.com>
- <b1b8fc3b-6e80-403b-a1a0-726cc935fd2e@student.kit.edu>
- <bfb82a48-ebe3-4dc0-97e2-7cbf9d1e84ed@oracle.com>
- <7817ae7c-72d3-470d-b043-51bcfbee31b1@student.kit.edu>
- <d5664e24-71a1-4d46-96ad-979b15f97df9@student.kit.edu>
- <ee6e0b89-c3d0-4579-9c26-a9a980775e55@leemhuis.info>
- <24e5cb3b-73dd-43d3-9d35-b29d1d18340a@amd.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-Cc: amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com,
- ivan.lipski@amd.com, Jerry.Zuo@amd.com, bugs@lists.linux.dev,
- regressions@lists.linux.dev, daniel.wheeler@amd.com,
- Mario Limonciello <mario.limonciello@amd.com>,
- =?UTF-8?Q?P=C3=A9ter_Bohner?= <peter.bohner@student.kit.edu>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- aurabindo.pillai@amd.com
-In-Reply-To: <24e5cb3b-73dd-43d3-9d35-b29d1d18340a@amd.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1765883667;71ede340;
-X-HE-SMSGID: 1vVT0a-00C6Gm-1W
 
-Greg, Sasha, could you please pick up 72e24456a54fe0 ("Revert
-"drm/amd/display: Fix pbn to kbps Conversion"") [v6.19-rc1] for 6.12.y
-and 6.17.y (if there is another 6.17.y version), as it fixes a a
-regression there? See below for details.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Note, the mentioned patch contains "Cc:stable@vger.kernel.org # 6.17+",
-but needs to go to 6.12.y, too: the culprit was backported there and
-causes problems there, too.
+------------------
 
-Ciao, Thorsten
+From: Chao Yu <chao@kernel.org>
 
-On 12/12/25 14:49, Mario Limonciello wrote:
-> On 12/12/25 7:19 AM, Thorsten Leemhuis wrote:
->> On 12/9/25 16:50, Péter Bohner wrote:
->>> note: reverting ded77c1209169bd40996caf5c5dfe1a228a587ab fixes the issue
->>> on the latest 6.12.y (6.12.61) tag.
->>
->> That is 1788ef30725da5 ("drm/amd/display: Fix pbn to kbps Conversion")
->> [v6.18-rc7, v6.17.10, v6.12.60 (ded77c1209169b)] – and Mario (now among
->> the recipients) submitted a patch to revert in in mainline:
->>
->> [PATCH] Revert "drm/amd/display: Fix pbn to kbps Conversion"
->> https://lore.kernel.org/all/20251209171810.2514240-1-
->> mario.limonciello@amd.com/
->>
->> But it has "Cc: stable@vger.kernel.org # 6.17+", so that revert won't
->> make it to 6.12.y; I wonder if that is just an accident or if there is
->> some good reason for that.
->>
->> Ciao, Thorsten
-> 
-> It is just I didn't realize that it backported to 6.12.y.
-> 
-> So after this lands can you manually apply it there too?
-> 
-> 
+[ Upstream commit 3fea0641b06ff4e53d95d07a96764d8951d4ced6 ]
+
+This patch adds a new sysfs entry /sys/fs/f2fs/<disk>/encoding_flags,
+it is a read-only entry to show the value of sb.s_encoding_flags, the
+value is hexadecimal.
+
+============================     ==========
+Flag_Name                        Flag_Value
+============================     ==========
+SB_ENC_STRICT_MODE_FL            0x00000001
+SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
+============================     ==========
+
+case#1
+mkfs.f2fs -f -O casefold -C utf8:strict /dev/vda
+mount /dev/vda /mnt/f2fs
+cat /sys/fs/f2fs/vda/encoding_flags
+1
+
+case#2
+mkfs.f2fs -f -O casefold -C utf8 /dev/vda
+fsck.f2fs --nolinear-lookup=1 /dev/vda
+mount /dev/vda /mnt/f2fs
+cat /sys/fs/f2fs/vda/encoding_flags
+2
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: e462fc48ceb8 ("f2fs: maintain one time GC mode is enabled during whole zoned GC cycle")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ Documentation/ABI/testing/sysfs-fs-f2fs | 13 +++++++++++++
+ fs/f2fs/sysfs.c                         |  9 +++++++++
+ 2 files changed, 22 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index c7ebda8c677e5..87b32ca7f3a46 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -845,3 +845,16 @@ Description:	For several zoned storage devices, vendors will provide extra space
+ 		reserved_blocks. However, it is not enough, since this extra space should
+ 		not be shown to users. So, with this new sysfs node, we can hide the space
+ 		by substracting reserved_blocks from total bytes.
++
++What:		/sys/fs/f2fs/<disk>/encoding_flags
++Date:		April 2025
++Contact:	"Chao Yu" <chao@kernel.org>
++Description:	This is a read-only entry to show the value of sb.s_encoding_flags, the
++		value is hexadecimal.
++
++		============================     ==========
++		Flag_Name                        Flag_Value
++		============================     ==========
++		SB_ENC_STRICT_MODE_FL            0x00000001
++		SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
++		============================     ==========
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 9b4768b1efac5..309b73421dd92 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -274,6 +274,13 @@ static ssize_t encoding_show(struct f2fs_attr *a,
+ 	return sysfs_emit(buf, "(none)\n");
+ }
+ 
++static ssize_t encoding_flags_show(struct f2fs_attr *a,
++		struct f2fs_sb_info *sbi, char *buf)
++{
++	return sysfs_emit(buf, "%x\n",
++		le16_to_cpu(F2FS_RAW_SUPER(sbi)->s_encoding_flags));
++}
++
+ static ssize_t mounted_time_sec_show(struct f2fs_attr *a,
+ 		struct f2fs_sb_info *sbi, char *buf)
+ {
+@@ -1181,6 +1188,7 @@ F2FS_GENERAL_RO_ATTR(features);
+ F2FS_GENERAL_RO_ATTR(current_reserved_blocks);
+ F2FS_GENERAL_RO_ATTR(unusable);
+ F2FS_GENERAL_RO_ATTR(encoding);
++F2FS_GENERAL_RO_ATTR(encoding_flags);
+ F2FS_GENERAL_RO_ATTR(mounted_time_sec);
+ F2FS_GENERAL_RO_ATTR(main_blkaddr);
+ F2FS_GENERAL_RO_ATTR(pending_discard);
+@@ -1293,6 +1301,7 @@ static struct attribute *f2fs_attrs[] = {
+ 	ATTR_LIST(reserved_blocks),
+ 	ATTR_LIST(current_reserved_blocks),
+ 	ATTR_LIST(encoding),
++	ATTR_LIST(encoding_flags),
+ 	ATTR_LIST(mounted_time_sec),
+ #ifdef CONFIG_F2FS_STAT_FS
+ 	ATTR_LIST(cp_foreground_calls),
+-- 
+2.51.0
+
+
 
 
