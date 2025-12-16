@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-201284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B784CC2328
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42120CC4450
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52D2D3041998
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9339312BC51
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC44341648;
-	Tue, 16 Dec 2025 11:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9373334EF05;
+	Tue, 16 Dec 2025 11:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi/1rRlY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2DQ975G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF94756B81;
-	Tue, 16 Dec 2025 11:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D034EEEE;
+	Tue, 16 Dec 2025 11:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884137; cv=none; b=U1Ove/EGPis57GCIxUEz+OCbiMrKFY7zUhR4Lv3lDQ5pwjcQC6OhCXT4VrNX5lfCJ3WEnFM5uTl44kfVjsA+8o8CwVFyN2J4F0RFwKq64ow2yW6zyKeKtR1SQDnhpEQ71beWgdjO6uTO2cx3O7y0ebTPMn5ydapJzTcnPJ798Hw=
+	t=1765885626; cv=none; b=WgdgxDVs5Wx/e4KurSZhhgW5AQ0wK6hBQ+o46UWS99k+m83bDXmyQZcNPh6FbcW5zj4q70FGQSKdroBmWiWzk2hR9l/UwGOYLrzvVpi6ehs1Kq2CVIc8HzBrovwopsdcEr4rX8F4bY6reZDK3X1D4tZC01uJv0oHN045x3mQT30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884137; c=relaxed/simple;
-	bh=EvKJUxun6mAhRzfnazPrIyVHUqvgsMj0xzIHyWGyjZs=;
+	s=arc-20240116; t=1765885626; c=relaxed/simple;
+	bh=7IPIlzPYMh6lmc5boU6X2He+9MsExdAqaCUXxU53Pmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4Tipjf2kKtlyhGOafkv3gnG6gvQr5wlhgWhO3nYvarLoLRdl917eT78udj3PA3lCJsPcRpdX8EbvX5AUdP2l5Ln0wj56BSso1W3v7MzwFseF+y4Z725Tg51ggwpj/B3m9a0UzBGDz7CVZqJuAeaYYJQd8RAPRYjZiZHniKXJv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi/1rRlY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C261C4CEF1;
-	Tue, 16 Dec 2025 11:22:16 +0000 (UTC)
+	 MIME-Version; b=aWsy5Mc3nvgapaL+g6DPn1aChXVjtytVs1YjfXSuFxp0W55fJj3B4/wm1ZTpDz74B7CLuRLBzHFRAjyutHhNUU59Mi6dreptP0XrxYrGupyM7oRO7DlgONyXWhZ29JUIbQ8xGrG0TU87MJweZ1ZOioo3kLA2K1vFiD568dICC9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2DQ975G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA52C4CEF1;
+	Tue, 16 Dec 2025 11:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884137;
-	bh=EvKJUxun6mAhRzfnazPrIyVHUqvgsMj0xzIHyWGyjZs=;
+	s=korg; t=1765885626;
+	bh=7IPIlzPYMh6lmc5boU6X2He+9MsExdAqaCUXxU53Pmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fi/1rRlYJ3JORdat+zuqTXm9ZHtpoJd+IBn4zwAyQGz5QZYYUIg53qZSidBUC6XIA
-	 uwIAfUNzsZHAuY6pQmbOt26yhxpq4QsXrcJmTl7fhaqMGQ794VCtsiPn1WaUkHop9m
-	 aEw83s2WG0zLiLvouVX1DHSEOU4yCFLaTZqaiVvA=
+	b=I2DQ975Gz8ZkKNSLEYRb6BrWj6Io58zsod3XHHxk2CqOZ+DPgf5DTKuiLlvVoNYN4
+	 rTtrDmtEF1oKU+PKDZWy0lRo1Ltxl9pAvx2yrgCJ02hBR1omVLYaG8AiLXUhJMGA2r
+	 mjrcLg7+hoT+zbgoo6S5VFKZA7YR8L96YpV6JcDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/354] s390/ap: Dont leak debug feature files if AP instructions are not available
+Subject: [PATCH 6.17 195/507] scsi: smartpqi: Fix device resources accessed after device removal
 Date: Tue, 16 Dec 2025 12:10:36 +0100
-Message-ID: <20251216111323.425705012@linuxfoundation.org>
+Message-ID: <20251216111352.574473947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Mike McGowen <mike.mcgowen@microchip.com>
 
-[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
+[ Upstream commit b518e86d1a70a88f6592a7c396cf1b93493d1aab ]
 
-If no AP instructions are available the AP bus module leaks registered
-debug feature files. Change function call order to fix this.
+Correct possible race conditions during device removal.
 
-Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Previously, a scheduled work item to reset a LUN could still execute
+after the device was removed, leading to use-after-free and other
+resource access issues.
+
+This race condition occurs because the abort handler may schedule a LUN
+reset concurrently with device removal via sdev_destroy(), leading to
+use-after-free and improper access to freed resources.
+
+  - Check in the device reset handler if the device is still present in
+    the controller's SCSI device list before running; if not, the reset
+    is skipped.
+
+  - Cancel any pending TMF work that has not started in sdev_destroy().
+
+  - Ensure device freeing in sdev_destroy() is done while holding the
+    LUN reset mutex to avoid races with ongoing resets.
+
+Fixes: 2d80f4054f7f ("scsi: smartpqi: Update deleting a LUN via sysfs")
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Signed-off-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://patch.msgid.link/20251106163823.786828-3-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/ap_bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-index e14638936de6b..e7068016a9868 100644
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -2419,15 +2419,15 @@ static int __init ap_module_init(void)
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 125944941601e..9f4f6e74f3e38 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -6409,10 +6409,22 @@ static int pqi_device_reset(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev
+ 
+ static int pqi_device_reset_handler(struct pqi_ctrl_info *ctrl_info, struct pqi_scsi_dev *device, u8 lun, struct scsi_cmnd *scmd, u8 scsi_opcode)
  {
++	unsigned long flags;
  	int rc;
  
--	rc = ap_debug_init();
--	if (rc)
--		return rc;
--
- 	if (!ap_instructions_available()) {
- 		pr_warn("The hardware system does not support AP instructions\n");
- 		return -ENODEV;
- 	}
+ 	mutex_lock(&ctrl_info->lun_reset_mutex);
  
-+	rc = ap_debug_init();
-+	if (rc)
-+		return rc;
++	spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
++	if (pqi_find_scsi_dev(ctrl_info, device->bus, device->target, device->lun) == NULL) {
++		dev_warn(&ctrl_info->pci_dev->dev,
++			"skipping reset of scsi %d:%d:%d:%u, device has been removed\n",
++			ctrl_info->scsi_host->host_no, device->bus, device->target, device->lun);
++		spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
++		mutex_unlock(&ctrl_info->lun_reset_mutex);
++		return 0;
++	}
++	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
 +
- 	/* init ap_queue hashtable */
- 	hash_init(ap_queues);
+ 	dev_err(&ctrl_info->pci_dev->dev,
+ 		"resetting scsi %d:%d:%d:%u SCSI cmd at %p due to cmd opcode 0x%02x\n",
+ 		ctrl_info->scsi_host->host_no, device->bus, device->target, lun, scmd, scsi_opcode);
+@@ -6593,7 +6605,9 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ {
+ 	struct pqi_ctrl_info *ctrl_info;
+ 	struct pqi_scsi_dev *device;
++	struct pqi_tmf_work *tmf_work;
+ 	int mutex_acquired;
++	unsigned int lun;
+ 	unsigned long flags;
  
+ 	ctrl_info = shost_to_hba(sdev->host);
+@@ -6620,8 +6634,13 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ 
+ 	mutex_unlock(&ctrl_info->scan_mutex);
+ 
++	for (lun = 0, tmf_work = device->tmf_work; lun < PQI_MAX_LUNS_PER_DEVICE; lun++, tmf_work++)
++		cancel_work_sync(&tmf_work->work_struct);
++
++	mutex_lock(&ctrl_info->lun_reset_mutex);
+ 	pqi_dev_info(ctrl_info, "removed", device);
+ 	pqi_free_device(device);
++	mutex_unlock(&ctrl_info->lun_reset_mutex);
+ }
+ 
+ static int pqi_getpciinfo_ioctl(struct pqi_ctrl_info *ctrl_info, void __user *arg)
 -- 
 2.51.0
 
