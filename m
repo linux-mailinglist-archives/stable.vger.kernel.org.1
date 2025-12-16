@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF3ACC2D24
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:37:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26677CC3378
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B48130D396C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE97130797EC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CBE34253D;
-	Tue, 16 Dec 2025 12:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66AA3491D5;
+	Tue, 16 Dec 2025 11:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClZh5jev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEcq0o1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB10365A02;
-	Tue, 16 Dec 2025 12:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A201A3491CF;
+	Tue, 16 Dec 2025 11:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887109; cv=none; b=oxB7jFnV+tjOpbkGngNCbUXp5gh1eAPXwG2EiZuukk5wH/2i8KjCFFmocNtug+SFI1rgzxjHk12nUVIVbverBei27Kz5GKMU+6PrM3LEOASs846SflaRCqjQDFYjg8l1Eumnq/xjCmY1pbG5CGK9OIJchbSySkckJAI6hI15Dy8=
+	t=1765885161; cv=none; b=m64cxVT4exrrabzonBemfpy+a7TsF48ze9UDyqC/qwrMOApMfL13Qw+8APda5L0ajz4jOAtncFPAA1ws9EL40nOt7Lwslvy2lkoa2aMg4wViU6YW/CT7Wjza+qSNiz/orcYBCPPKdRZIF/ewa3tLZoi0Ql51X1du9szhu3R3NLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887109; c=relaxed/simple;
-	bh=CJ91sMMbbx2Ot6BmhHJwBzWz3XXoL2I/rBBsyAdgb9A=;
+	s=arc-20240116; t=1765885161; c=relaxed/simple;
+	bh=xmJcuaMufgc3GYvM+u3Xey4Yc7N2xXBeRLpEikD0cHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbDWlwZA0tioI3x8jhsrBtFTMklGmBk9jMLvOlOEwANEtnJS/qv/41i4ob0V310rqX0Fw5MoVoZmcIITJqAfhYeVJNCm9ibahY/igE8GXDJIjovKCxMEe459Jd3kfevgIGXSTczpHX0LVvCFqPVRTB9fAgHLxDnCxcLHREtnZ2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClZh5jev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA14C4CEF1;
-	Tue, 16 Dec 2025 12:11:49 +0000 (UTC)
+	 MIME-Version; b=cFAxVRgmnIGJDuGsZ/zB4dd/+rW7MB+vIFIuIIEMwBk/8FROZa+otj9HpyZP8cJLXpxs2sP3r9xTXrrDBtfBaFZ4UyeS1yaauoqGbH/p58zoeYPS7NVMxcPih4DQE5Nte7Fb+5yRnJYY9DgjsmWrqW9FhHd0ogUkei4BfcieYuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEcq0o1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9586C4CEF1;
+	Tue, 16 Dec 2025 11:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887109;
-	bh=CJ91sMMbbx2Ot6BmhHJwBzWz3XXoL2I/rBBsyAdgb9A=;
+	s=korg; t=1765885161;
+	bh=xmJcuaMufgc3GYvM+u3Xey4Yc7N2xXBeRLpEikD0cHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClZh5jeviw/KQUlFlP2gf+nUm4ASqfIW8rQo3qqtXgKBO8O/kn1Za3T58cV8szUmM
-	 bT/EYfGiw2rdMPVnpAXeunFFE2x/UdcsLkPcjZD7eU7OaMAEQ/CIOCFwrC6JcsciJV
-	 sT5R+/2U1uNfKkxF8twTXa/4Bbi9d9RxaUY+ewUo=
+	b=QEcq0o1EwdFWBTRgD9LR3eK2oWaQkCfu3uSzmrlSdvwZITVda3gFuKl9a74SgqTsx
+	 yWesfs5djEGheMydAmEzEHl7wC9Dv2WP1faj/MwX9Viyd3KH12S+6whC5FM2iQnbA9
+	 dLZYwhm0kMdj34AYHIJeaveKSo8GYqJLhY31ELbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 128/614] sctp: Defer SCTP_DBG_OBJCNT_DEC() to sctp_destroy_sock().
-Date: Tue, 16 Dec 2025 12:08:15 +0100
-Message-ID: <20251216111405.974427633@linuxfoundation.org>
+Subject: [PATCH 6.17 055/507] iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member
+Date: Tue, 16 Dec 2025 12:08:16 +0100
+Message-ID: <20251216111347.537063043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit 622e8838a29845316668ec2e7648428878df7f9a ]
+[ Upstream commit c6d702f2b77194b62fb2098c63bb7f2a87da142d ]
 
-SCTP_DBG_OBJCNT_INC() is called only when sctp_init_sock()
-returns 0 after successfully allocating sctp_sk(sk)->ep.
+The `odr` field in struct st_lsm6dsx_sensor contains a data rate
+value expressed in mHz, not in Hz.
 
-OTOH, SCTP_DBG_OBJCNT_DEC() is called in sctp_close().
-
-The code seems to expect that the socket is always exposed
-to userspace once SCTP_DBG_OBJCNT_INC() is incremented, but
-there is a path where the assumption is not true.
-
-In sctp_accept(), sctp_sock_migrate() could fail after
-sctp_init_sock().
-
-Then, sk_common_release() does not call inet_release() nor
-sctp_close().  Instead, it calls sk->sk_prot->destroy().
-
-Let's move SCTP_DBG_OBJCNT_DEC() from sctp_close() to
-sctp_destroy_sock().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251023231751.4168390-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f8710f0357bc3 ("iio: imu: st_lsm6dsx: express odr in mHZ")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index ed8293a342402..d190e75e46454 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -1553,8 +1553,6 @@ static void sctp_close(struct sock *sk, long timeout)
- 	spin_unlock_bh(&net->sctp.addr_wq_lock);
- 
- 	sock_put(sk);
--
--	SCTP_DBG_OBJCNT_DEC(sock);
- }
- 
- /* Handle EPIPE error. */
-@@ -5109,9 +5107,12 @@ static void sctp_destroy_sock(struct sock *sk)
- 		sp->do_auto_asconf = 0;
- 		list_del(&sp->auto_asconf_list);
- 	}
-+
- 	sctp_endpoint_free(sp->ep);
-+
- 	sk_sockets_allocated_dec(sk);
- 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
-+	SCTP_DBG_OBJCNT_DEC(sock);
- }
- 
- static void sctp_destruct_sock(struct sock *sk)
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 381b016fa5243..56244d49ab2fc 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -383,7 +383,7 @@ enum st_lsm6dsx_fifo_mode {
+  * @id: Sensor identifier.
+  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+  * @gain: Configured sensor sensitivity.
+- * @odr: Output data rate of the sensor [Hz].
++ * @odr: Output data rate of the sensor [mHz].
+  * @samples_to_discard: Number of samples to discard for filters settling time.
+  * @watermark: Sensor watermark level.
+  * @decimator: Sensor decimation factor.
 -- 
 2.51.0
 
