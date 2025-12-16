@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64556CC39BC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:33:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6655CC2CB8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A42BD300C24A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:33:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9F5031527E5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACCD34B1A6;
-	Tue, 16 Dec 2025 11:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0453659ED;
+	Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRJrJA4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ4MaIlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566E534B191;
-	Tue, 16 Dec 2025 11:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C20749C;
+	Tue, 16 Dec 2025 12:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885232; cv=none; b=QDlWonpgHiZRmjHlbbhEwjloA8xVmu4mcqlzX5LuG5pskbzUdo5v81P6wYuT4o9ti9aoguCYArrnHRokKs2EoPP93ILscO4liMMHSCPViKU9UKCRZW9Hc5GLu7HDjaWmPf9xUZ/l4HUgxEY7wRbDUWAB/cBnC/3gxcchGwkN2mk=
+	t=1765887185; cv=none; b=rg6/CSQwlcO5Wt9UYY2OrZHwm8NlyAtoVrsy6VEA++UXaT/8yHqT0Ajn9ip9rZQJmKZJ95txpPq0rpzGgWJkltZtN4Sc5WAqXP3nKGoIJMdV4AF0N60GX/pHOCzbpTbCZ8GHN99IeVF7KfesoaScpS8va2dZR02PqUjeyMr9ysE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885232; c=relaxed/simple;
-	bh=O2RvOqVAFylLdn1xUlsE4TG1Eoz3b9dTi5fJhpA9gf8=;
+	s=arc-20240116; t=1765887185; c=relaxed/simple;
+	bh=apt+mGEHvPBCCag+/kTv3DChvCf/i6wi1/4Kr3EBP8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7Z3U3VrYgnnRX+OBptuqTKxNHXmamRRceFB0E1ob7jTGBgfgdP/NnjOgxqwAkkhqMKZx6SESuENjYdRils5ZlgGFI5KQOkxzDzB7fQSCWRrnkggrN4k94dqXavz/kahca2RxRrc07YyqyaQAKj3GLDWi6BLp02wCRTw6JKDccE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRJrJA4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B17C4CEF5;
-	Tue, 16 Dec 2025 11:40:31 +0000 (UTC)
+	 MIME-Version; b=nGe1HVvgmrrcADNAdpD+Er4/SEhC0wkzXNmYSxmRWZJnIANImpcFmO773BBlrWXuJUCQG3Jrxw56ap3b0eAdizMcmtai9ktCiSqHXG4bAy6kbZznqwFqDY5F1vDckSqyV0k01XOKx0oG7kVpqQ2mrLYyxonuPApEmwJ+OqPr2/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ4MaIlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1826C4CEF1;
+	Tue, 16 Dec 2025 12:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885232;
-	bh=O2RvOqVAFylLdn1xUlsE4TG1Eoz3b9dTi5fJhpA9gf8=;
+	s=korg; t=1765887185;
+	bh=apt+mGEHvPBCCag+/kTv3DChvCf/i6wi1/4Kr3EBP8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRJrJA4RtxM3mz7qcTIEXCaHOb7NJXiZX2dwCr5ZFzdsbFVpmpln9JROrhSP8TdLV
-	 1mfMXcB2vHiheStoWkjUtbp4lrD3tnhx+ETWKQkIKdFyNAl1zQ16B3na2L2kqUHbPB
-	 yZwIt6iWgqJEI0q/rJT09YM5LfBK92RakpTTRlqE=
+	b=MZ4MaIljLqT+yxuo20zbjOYX4cuGOXi/Zaj3eF9FeN59L/pgw5+bkUkpkTpLx6MGJ
+	 VU2AbCzNbq9klqS6h2ePSdXz8A3oGagM6AH+9k6JnCGfMZInSdgwkafYWskFduWslS
+	 lsrLqxBJBn+lI4ree8CI4I8YQQxqyMWZX0LpEYmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 078/507] soc: qcom: gsbi: fix double disable caused by devm
+Subject: [PATCH 6.18 152/614] accel/ivpu: Fix race condition when unbinding BOs
 Date: Tue, 16 Dec 2025 12:08:39 +0100
-Message-ID: <20251216111348.368771699@linuxfoundation.org>
+Message-ID: <20251216111406.841662090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
 
-[ Upstream commit 2286e18e3937c69cc103308a8c1d4898d8a7b04f ]
+[ Upstream commit 00812636df370bedf4e44a0c81b86ea96bca8628 ]
 
-In the commit referenced by the Fixes tag, devm_clk_get_enabled() was
-introduced to replace devm_clk_get() and clk_prepare_enable(). While
-the clk_disable_unprepare() call in the error path was correctly
-removed, the one in the remove function was overlooked, leading to a
-double disable issue.
+Fix 'Memory manager not clean during takedown' warning that occurs
+when ivpu_gem_bo_free() removes the BO from the BOs list before it
+gets unmapped. Then file_priv_unbind() triggers a warning in
+drm_mm_takedown() during context teardown.
 
-Remove the redundant clk_disable_unprepare() call from gsbi_remove()
-to fix this issue. Since all resources are now managed by devres
-and will be automatically released, the remove function serves no purpose
-and can be deleted entirely.
+Protect the unmapping sequence with bo_list_lock to ensure the BO is
+always fully unmapped when removed from the list. This ensures the BO
+is either fully unmapped at context teardown time or present on the
+list and unmapped by file_priv_unbind().
 
-Fixes: 489d7a8cc286 ("soc: qcom: use devm_clk_get_enabled() in gsbi_probe()")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/stable/20251020160215.523-1-vulab%40iscas.ac.cn
-Link: https://lore.kernel.org/r/20251020160215.523-1-vulab@iscas.ac.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 48aea7f2a2ef ("accel/ivpu: Fix locking in ivpu_bo_remove_all_bos_from_context()")
+Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://patch.msgid.link/20251029071451.184243-1-karol.wachowski@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom_gsbi.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/accel/ivpu/ivpu_gem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/qcom_gsbi.c b/drivers/soc/qcom/qcom_gsbi.c
-index 8f1158e0c6313..a25d1de592f06 100644
---- a/drivers/soc/qcom/qcom_gsbi.c
-+++ b/drivers/soc/qcom/qcom_gsbi.c
-@@ -212,13 +212,6 @@ static int gsbi_probe(struct platform_device *pdev)
- 	return of_platform_populate(node, NULL, NULL, &pdev->dev);
- }
+diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+index a38e41f9c7123..fda0a18e6d639 100644
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -314,7 +314,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
  
--static void gsbi_remove(struct platform_device *pdev)
--{
--	struct gsbi_info *gsbi = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(gsbi->hclk);
--}
--
- static const struct of_device_id gsbi_dt_match[] = {
- 	{ .compatible = "qcom,gsbi-v1.0.0", },
- 	{ },
-@@ -232,7 +225,6 @@ static struct platform_driver gsbi_driver = {
- 		.of_match_table	= gsbi_dt_match,
- 	},
- 	.probe = gsbi_probe,
--	.remove = gsbi_remove,
- };
+ 	mutex_lock(&vdev->bo_list_lock);
+ 	list_del(&bo->bo_list_node);
+-	mutex_unlock(&vdev->bo_list_lock);
  
- module_platform_driver(gsbi_driver);
+ 	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
+ 		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
+@@ -325,6 +324,8 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
+ 	ivpu_bo_unbind_locked(bo);
+ 	ivpu_bo_unlock(bo);
+ 
++	mutex_unlock(&vdev->bo_list_lock);
++
+ 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
+ 	drm_WARN_ON(&vdev->drm, bo->ctx);
+ 
 -- 
 2.51.0
 
