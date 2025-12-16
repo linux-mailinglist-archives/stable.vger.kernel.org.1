@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFCACC3185
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:12:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B2ECC3BF5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CF1C3036DA5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:09:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 749BE312AB29
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27568350D78;
-	Tue, 16 Dec 2025 12:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E97E34B1BB;
+	Tue, 16 Dec 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uISM0pLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHH6s+Am"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87D4350D48;
-	Tue, 16 Dec 2025 12:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9F434B1B4;
+	Tue, 16 Dec 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887237; cv=none; b=LYkzGhKmH/zFXw4dWD2gpUFnyFVHGVFwrFnVdtPl9GTYsm8UAg/k66w06OOUfAweXmSR80xbcmGhZd0zvK6vSZ1xhYUBdpDbHoCIE98NV7roplij/Qyfevr/5dFgiV4Bxdt9ZRrdXGunTke1d2CP/IOVzJ1ZixM/aTWQvCwIRi0=
+	t=1765885239; cv=none; b=XgCOmffySqhvvv1GH7YhYJb+KyOPIGB+WVZDwtf9mUdciLHeJv4/1q8VD8EWaRc4/nN4dqAceWPmq1ikSIhCIlumNJ9Q5ctXlmmWGtEAaEoUBj/qD1u0b5fYkjiSa8yVUQdKm2e1etO1XV1su8EEo4Rx/zLnySswYTou3QR6D4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887237; c=relaxed/simple;
-	bh=6FqwwX8zHiO8O1gUmHeW1KdG03z9xegg5PsyPRcHxOU=;
+	s=arc-20240116; t=1765885239; c=relaxed/simple;
+	bh=/ZYo1U1Yb1GuDgIc0Dz8iOoyM5BvkxIdQcPI8CuSUmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrgiSIpTqvjOZI6B8ZNoXaXfRX37S22rIzmvAtLYCuDpTlVDV9abR8Dy2hkk2vIqZZfkk5BMKPdIfjJi2pE/MPhWK/ZlshCB8X/0rGQK4vcq3JFUoEZeD/AiFe3hZ0k5khlO70gRVypV7Vz8yAO9bZDSVrXrOWaxeVR6UaqXyt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uISM0pLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD97C4CEF1;
-	Tue, 16 Dec 2025 12:13:56 +0000 (UTC)
+	 MIME-Version; b=sOvAEQyDy5rglQsxhcWuY8kXn8soHTa7Y1Hm9qXisTq1PDSesgMx8TcW7HaAo702FPy/ETxe2edcSCiL03N//chOi1QPLn3SMwshphVuRxLvGijODyv+65LxBXA0rQ1xkj2HPJawbTPKdf9aryLG9KVQWFLgLp/wxuFZiCq7cFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHH6s+Am; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A071FC4CEF5;
+	Tue, 16 Dec 2025 11:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887237;
-	bh=6FqwwX8zHiO8O1gUmHeW1KdG03z9xegg5PsyPRcHxOU=;
+	s=korg; t=1765885239;
+	bh=/ZYo1U1Yb1GuDgIc0Dz8iOoyM5BvkxIdQcPI8CuSUmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uISM0pLwWzgIgscHtodp4N4ATw5Mb+V0S4Ll+B4ItxF7GBeBuNuJA5/buWCqgoDZ+
-	 ZA2uBdn1n259i8eBpaNIwxvkMlNCiAww/cOGaDwkHtzJfchnstpxImQZZRXAi3EQdz
-	 QsjBqX5nciaD2TXqQbZBhcch3wd0hginHdKRmLjE=
+	b=EHH6s+AmCJxkS44tcIy85eC0z0s8z65bDWW9AR3YehQqUVoii9YML8V6/yLXrPdpc
+	 588MpnXHPTREANeM2iLs7Lz/Rp99yYdMvOyJn88BVQcChP2QLi6K5FeF02GyU7v7HZ
+	 XldiioPyz9t+Z2dasIDhpGxrmf8kcJwi7EGuKlGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 136/614] Revert "mtd: rawnand: marvell: fix layouts"
+Subject: [PATCH 6.17 062/507] arm64: dts: imx8mp-venice-gw702x: remove off-board uart
 Date: Tue, 16 Dec 2025 12:08:23 +0100
-Message-ID: <20251216111406.262463842@linuxfoundation.org>
+Message-ID: <20251216111347.789813288@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit fbd72cb463fdea3a0c900dd5d6e813cdebc3a73c ]
+[ Upstream commit effe98060f70eb96e142f656e750d6af275ceac3 ]
 
-This reverts commit e6a30d0c48a1e8a68f1cc413bee65302ab03ddfb.
+UART1 and UART3 go to a connector for use on a baseboard and as such are
+defined in the baseboard device-trees. Remove them from the gw702x SOM
+device-tree.
 
-This change resulted in the 8bit ECC layouts having the incorrect amount
-of read/write chunks, the last spare bytes chunk would always be missed.
-
-Fixes: e6a30d0c48a1 ("mtd: rawnand: marvell: fix layouts")
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 28 -------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 303b3016a070b..38b7eb5b992c8 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -290,13 +290,16 @@ static const struct marvell_hw_ecc_layout marvell_nfc_layouts[] = {
- 	MARVELL_LAYOUT( 2048,   512,  4,  1,  1, 2048, 32, 30,  0,  0,  0),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,32, 30),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,64, 30),
--	MARVELL_LAYOUT( 2048,   512,  16, 4,  4, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 2048,   512,  12, 3,  2, 704,   0, 30,640,  0, 30),
-+	MARVELL_LAYOUT( 2048,   512,  16, 5,  4, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 4096,   512,  4,  2,  2, 2048, 32, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 4096,   512,  8,  4,  4, 1024,  0, 30,  0, 64, 30),
--	MARVELL_LAYOUT( 4096,   512,  16, 8,  8, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 4096,   512,  8,  5,  4, 1024,  0, 30,  0, 64, 30),
-+	MARVELL_LAYOUT( 4096,   512,  12, 6,  5, 704,   0, 30,576, 32, 30),
-+	MARVELL_LAYOUT( 4096,   512,  16, 9,  8, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 8192,   512,  4,  4,  4, 2048,  0, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 8192,   512,  8,  8,  8, 1024,  0, 30,  0, 160, 30),
--	MARVELL_LAYOUT( 8192,   512,  16, 16, 16, 512,  0, 30,  0,  32, 30),
-+	MARVELL_LAYOUT( 8192,   512,  8,  9,  8, 1024,  0, 30,  0, 160, 30),
-+	MARVELL_LAYOUT( 8192,   512,  12, 12, 11, 704,  0, 30,448,  64, 30),
-+	MARVELL_LAYOUT( 8192,   512,  16, 17, 16, 512,  0, 30,  0,  32, 30),
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index 303995a8adce8..086ee4510cd83 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -395,13 +395,6 @@ &i2c3 {
+ 	status = "okay";
  };
  
- /**
+-/* off-board header */
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1>;
+-	status = "okay";
+-};
+-
+ /* console */
+ &uart2 {
+ 	pinctrl-names = "default";
+@@ -409,13 +402,6 @@ &uart2 {
+ 	status = "okay";
+ };
+ 
+-/* off-board header */
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+ /* off-board */
+ &usdhc1 {
+ 	pinctrl-names = "default";
+@@ -520,13 +506,6 @@ MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19	0x400001c2
+ 		>;
+ 	};
+ 
+-	pinctrl_uart1: uart1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
+@@ -534,13 +513,6 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
+ 		>;
+ 	};
+ 
+-	pinctrl_uart3: uart3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
 -- 
 2.51.0
 
