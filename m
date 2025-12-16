@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-201181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA53CC20D5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:01:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B5FCC20F0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9C2A304FE91
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 10:59:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA4E301A71B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4BD338F26;
-	Tue, 16 Dec 2025 10:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F3833C197;
+	Tue, 16 Dec 2025 11:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B05NzsBL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CB9PaIH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA03322B6B
-	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 10:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0F1313E00
+	for <stable@vger.kernel.org>; Tue, 16 Dec 2025 11:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765882791; cv=none; b=NltC9ZsQJQKtejYVrmTEn3VsDO5GDLHNb1VAWR+L4+BAaSpRpHtqz9uzCKUGMCgmYQOX/s/tOoFUbnOsu7ieiReYZy4XR7RWt07PV66z9Ek34AuNgSMpisBQ9czX8SopMCy4Xj8lNiGBJzs6dCi6XzVsO0bsYypqilCU4mPQMQ8=
+	t=1765882852; cv=none; b=rPyxXX2RAB+qg0vUGgIRo6qi4N/azzwnCP5/myA4aPWtvl9zLdveEajoEB1mgGssbvrutD2Y6b1Kd+QxXNXml62ktlOjay394M9LcmuGJV9DkF1dg/EkJNR+KaGJpnHSI9TV3/pC2J4pvBP3mOlWQ7bR0ML9V/5SjQyYNHSBUTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765882791; c=relaxed/simple;
-	bh=4JaI6KhjGxLeVD6p4P8otb8uRYmW4K/R4wAMrOVwGAY=;
+	s=arc-20240116; t=1765882852; c=relaxed/simple;
+	bh=Yn6lYQl0rWFkJCGXzq6ONBi2K6B/jsaXflWNHIiTsIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlIsO6nbxqF1Bq0LLTAKf9C975Qt+I0PheCdjZwxJXOej1kUyUrHsdby23HcRCLx6n5iPK+Zn/7w3YPyAjPloXT7XGec2FX4eMKXd7x5g8v+N/IZ45nZkm+fE77yaqLATtgOnzs0WpYCybQeV5OxYsxij15pMcsp36R3fZRZCfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B05NzsBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF999C4CEF5;
-	Tue, 16 Dec 2025 10:59:41 +0000 (UTC)
+	 MIME-Version; b=Y4HlvKICaU/LT/+FUOjQEgaPAo3cbaopAWHT/FC+ZrXO7jjOdAq6UdrcomrBaHVTSQZvqDqOq7jyzbo8YGLk2chJfF2yKgnvCPf1YAdPhjxQ5Oy565xT3QRnrCvta0miEbruhcFNflDZvAcZakKoXuCbi6haHm/jy59WF1dd/MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CB9PaIH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99612C4CEF1;
+	Tue, 16 Dec 2025 11:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765882791;
-	bh=4JaI6KhjGxLeVD6p4P8otb8uRYmW4K/R4wAMrOVwGAY=;
+	s=k20201202; t=1765882852;
+	bh=Yn6lYQl0rWFkJCGXzq6ONBi2K6B/jsaXflWNHIiTsIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B05NzsBLsRAiy5nz0yLPGDmXxRHGszo28loeHwbgjtI3KeO/tQKfpAf5YeXyXU0kc
-	 yjvy+d/6RT/zYTTXhUwKGlKZwyYIDn/tkuOvoBT+RIRfpn8FXy4qQoUtgcBMg7QYMz
-	 Edw1Ts0tvagTSO60ZQAcUNsRyMUphXflJ6K3R6QeqQfgMcDMPp9TBcJaaOAs7cEMEy
-	 bBPmjYFZi0QEOw2CsNy6TVAvfln2LGrqlTyycUFho91JtzT8cbHOR6nACTJ4Rz1M02
-	 Dv/br6q3j4BvRopM5WhUdW39js/aY2Hz0nHUZ51V5CdCFAbfz7T7qUnGGxGtPqFe3K
-	 toM3RZBXwiGgQ==
+	b=CB9PaIH6W6wFafAF24dD2G9F9sKgFmheouozmnG5HX82jXHN5bFW8obXIxi+zk/Qd
+	 kAGvzLjRv4tunD2CahXXuNWFQobYon68Ar2iQQ1rKrM9eSKYYh5ZE4orhedIm+cEhR
+	 BbDvp6ZX3GFLh/mu70oiOXT5oSytpdyazvzHiveFXwUXSuk8x7wx1zM/Om+GUCDbly
+	 UQjlFW1NJKg1bSkYCZ+YSBSaF5b3pC8OtWbJAj2qSTHayE14UlBTrpogWNJierdjqV
+	 hztK4PXKl3Pc80Ni1+wjeS7noHoy0JumADOpyrl8/QhY1hGKfBSUpfUsqod9o2E0Dp
+	 ha/RmXNVfkbPw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
+Cc: Denis Arefev <arefev@swemel.ru>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] ALSA: wavefront: Clear substream pointers on close
-Date: Tue, 16 Dec 2025 05:59:26 -0500
-Message-ID: <20251216105926.2751412-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] ALSA: hda: cs35l41: Fix NULL pointer dereference in cs35l41_hda_read_acpi()
+Date: Tue, 16 Dec 2025 06:00:34 -0500
+Message-ID: <20251216110034.2752519-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251216105926.2751412-1-sashal@kernel.org>
-References: <2025121659-cornflake-fragrance-62b4@gregkh>
- <20251216105926.2751412-1-sashal@kernel.org>
+In-Reply-To: <2025121643-outspoken-twerp-16be@gregkh>
+References: <2025121643-outspoken-twerp-16be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,46 +59,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
+[ Upstream commit c34b04cc6178f33c08331568c7fd25c5b9a39f66 ]
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+The acpi_get_first_physical_node() function can return NULL, in which
+case the get_device() function also returns NULL, but this value is
+then dereferenced without checking,so add a check to prevent a crash.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 7b2f3eb492da ("ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251202101338.11437-1-arefev@swemel.ru
+[ sound/hda/codecs/side-codecs/ -> sound/pci/hda/ ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/wavefront/wavefront_midi.c | 2 ++
+ sound/pci/hda/cs35l41_hda.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/sound/isa/wavefront/wavefront_midi.c b/sound/isa/wavefront/wavefront_midi.c
-index caa3b82f73f58..b9593b4813965 100644
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -278,6 +278,7 @@ static int snd_wavefront_midi_input_close(struct snd_rawmidi_substream *substrea
- 	        return -EIO;
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index d68bf7591d90c..e115b9bd7ce3d 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1865,6 +1865,8 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
  
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
+ 	cs35l41->dacpi = adev;
+ 	physdev = get_device(acpi_get_first_physical_node(adev));
++	if (!physdev)
++		return -ENODEV;
  
- 	return 0;
-@@ -300,6 +301,7 @@ static int snd_wavefront_midi_output_close(struct snd_rawmidi_substream *substre
- 	        return -EIO;
- 
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	return 0;
- }
+ 	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+ 	if (IS_ERR(sub))
 -- 
 2.51.0
 
