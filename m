@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D5ACC307A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:02:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45DACC3D36
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C190305FB76
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:58:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 917F4313A6D0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A17263F52;
-	Tue, 16 Dec 2025 12:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3953A39B6D5;
+	Tue, 16 Dec 2025 12:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3d7z8IH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOam3A4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A4359F9D;
-	Tue, 16 Dec 2025 12:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E1939B6C7;
+	Tue, 16 Dec 2025 12:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886704; cv=none; b=CBo2SfKogGdITzgo9yA5XP+CjiAwZHzVd+ALEs50RGgfdvjUoh5iQwETOI2YsWshbLOjsi7OmXu8PhcLXg03dV/SlkJfQl1xSR/dNiOMey9gk1PlcKEjmQON9T+hMYOzbNfNT9jxTKRQsc32hO7op0OL4mCU6K1IuDFrSpu9QZo=
+	t=1765888659; cv=none; b=u8hPoPly3OYDiIafC+vEwUYe9ntOQmH/s9A875stzgLLGli4tvwtA8zvZb0/zR/yf7GhrvT8wK5phtpMfoJJCblSpW+ds0bWQ6j8kvplRVloOS76SaxgWJlQ8ypKTGCAkBGmvvKIACMlj7oZ18xqw0e3Oz1FaRrokbOmL+tA23o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886704; c=relaxed/simple;
-	bh=gHQHSIRIuXx4IUX+aDkJm27DJE5yW7qTPfX2USZBRq0=;
+	s=arc-20240116; t=1765888659; c=relaxed/simple;
+	bh=tYUnqeE3h8aeikiSAs3UdYVMfnJR5kh7RVXG/73JrLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=my3NZjbuUuD/xgPhcg242k6QUvySw2PmrCSPLEPxT8VqwAjFv+F06WmK6q/b4AibKsnjaaibUdLvYad8pLsPnzTZACfTAfJF0Juf4ktdUeLKcABTcuLUY+TZ+hI6MSmF6D1sS0X0qWzJjBHICCVT+HtmWxF9/Qs1EVlKJYcvwfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3d7z8IH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4BCC4CEF5;
-	Tue, 16 Dec 2025 12:05:03 +0000 (UTC)
+	 MIME-Version; b=ZABdr0cqR8mXxX7oTrddDMZ8K85CB+rzxiTe2JSUXUqWyE4VyQVu1FxzjClyPzHo/PhC3Vq0w3PCs/EAHT5dV1Mby3iR6vsh0mhiCIhuZFR9SEGBEyLRYqTsg4K3MofA5Cbj5at05/StLbrkRt1DXAOYQGHMLkNxP3RKmnTeglc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOam3A4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D549C19423;
+	Tue, 16 Dec 2025 12:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886704;
-	bh=gHQHSIRIuXx4IUX+aDkJm27DJE5yW7qTPfX2USZBRq0=;
+	s=korg; t=1765888658;
+	bh=tYUnqeE3h8aeikiSAs3UdYVMfnJR5kh7RVXG/73JrLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3d7z8IHaP99r2ln/CvcvaJxhj6J+8a3+O8cPrlpiM/pJDCtEF18udDZFYYGK5OIu
-	 5k0jDR7ZU9TAgbO5/ZCmxtewTt1br8lVPSCYO/3yo18JtTDX5snvIh77DJ6P1WyCUq
-	 FNPYUIZdOwzWoBGIgkeUdBPq4VDFs6xJScpqoKJI=
+	b=yOam3A4ryh0Pp/9AoVaby4k/h9is/b139mwS37NMsemLYXogxo0kMZ0GEvLhWvtmP
+	 2pRI/PbrrcIJN0SaSX5yT6S90IigzsTIHRFCxyTaXeOUUXkDzsBHuRDaa1iHP90Blu
+	 TzeP7+oSiIxXPUuvmcgmFwmWs4RIj9hSsKFQboF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Diederik de Haas <diederik@cknow-tech.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 492/507] scsi: imm: Fix use-after-free bug caused by unfinished delayed work
+Subject: [PATCH 6.18 566/614] regulator: fixed: Rely on the core freeing the enable GPIO
 Date: Tue, 16 Dec 2025 12:15:33 +0100
-Message-ID: <20251216111403.264133605@linuxfoundation.org>
+Message-ID: <20251216111421.892654541@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit ab58153ec64fa3fc9aea09ca09dc9322e0b54a7c ]
+[ Upstream commit 79a45ddcdbba330f5139c7c7ff7042d69cf147b2 ]
 
-The delayed work item 'imm_tq' is initialized in imm_attach() and
-scheduled via imm_queuecommand() for processing SCSI commands.  When the
-IMM parallel port SCSI host adapter is detached through imm_detach(),
-the imm_struct device instance is deallocated.
+In order to simplify ownership rules for enable GPIOs supplied by drivers
+regulator_register() always takes ownership of them, even if it ends up
+failing for some other reason. We therefore should not free the GPIO if
+registration fails but just let the core worry about things.
 
-However, the delayed work might still be pending or executing
-when imm_detach() is called, leading to use-after-free bugs
-when the work function imm_interrupt() accesses the already
-freed imm_struct memory.
-
-The race condition can occur as follows:
-
-CPU 0(detach thread)   | CPU 1
-                       | imm_queuecommand()
-                       |   imm_queuecommand_lck()
-imm_detach()           |     schedule_delayed_work()
-  kfree(dev) //FREE    | imm_interrupt()
-                       |   dev = container_of(...) //USE
-                           dev-> //USE
-
-Add disable_delayed_work_sync() in imm_detach() to guarantee proper
-cancellation of the delayed work item before imm_struct is deallocated.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20251028100149.40721-1-duoming@zju.edu.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 636f4618b1cd (regulator: fixed: fix GPIO descriptor leak on register failure)
+Reported-by: Diederik de Haas <diederik@cknow-tech.com>
+Closes: https://lore.kernel.org/r/DEPEYUF5BRGY.UKFBWRRE8HNP@cknow-tech.com
+Tested-by: Diederik de Haas <diederik@cknow-tech.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20251204-regulator-fixed-fix-gpiod-leak-v1-1-48efea5b82c2@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/imm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/regulator/fixed.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/imm.c b/drivers/scsi/imm.c
-index 0821cf994b986..8a099bc27e06c 100644
---- a/drivers/scsi/imm.c
-+++ b/drivers/scsi/imm.c
-@@ -1260,6 +1260,7 @@ static void imm_detach(struct parport *pb)
- 	imm_struct *dev;
- 	list_for_each_entry(dev, &imm_hosts, list) {
- 		if (dev->dev->port == pb) {
-+			disable_delayed_work_sync(&dev->imm_tq);
- 			list_del_init(&dev->list);
- 			scsi_remove_host(dev->host);
- 			scsi_host_put(dev->host);
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index a2d16e9abfb58..254c0a8a45559 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -330,13 +330,10 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
+ 
+ 	drvdata->dev = devm_regulator_register(&pdev->dev, &drvdata->desc,
+ 					       &cfg);
+-	if (IS_ERR(drvdata->dev)) {
+-		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
+-				    "Failed to register regulator: %ld\n",
+-				    PTR_ERR(drvdata->dev));
+-		gpiod_put(cfg.ena_gpiod);
+-		return ret;
+-	}
++	if (IS_ERR(drvdata->dev))
++		return dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
++				     "Failed to register regulator: %ld\n",
++				     PTR_ERR(drvdata->dev));
+ 
+ 	platform_set_drvdata(pdev, drvdata);
+ 
 -- 
 2.51.0
 
