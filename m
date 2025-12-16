@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A98CC4696
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F4CCC43C0
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D7AC30CC550
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDD08308F796
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F4937830E;
-	Tue, 16 Dec 2025 12:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6C0340DB7;
+	Tue, 16 Dec 2025 11:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLb2ainr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShNn/N26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8A0378302;
-	Tue, 16 Dec 2025 12:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC5F315786;
+	Tue, 16 Dec 2025 11:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888242; cv=none; b=AJfGp10dBrNbqHJuceZdrSq8LIhhTAGAiCpQuTE2lensaj3N1x0tUvrT3qAR9Rvi6ihuYhP5vamGTDfEtBdApr8qfOzjFURSKFEr9ZnQMcSa/cg4fPnecWU7HTmOb65O0dSWLv9XFRDPt/Thanwaw9QrP5JRrb5+Zk13sChHQZM=
+	t=1765886310; cv=none; b=mJzo0hvAvQkr48Dx9GKYaBkkWaeTwRpzyh7jS010i29igEJavv42ez56aY0E3o2d2ibUM5GtKyTZolVGlyi1rlaHzjvStnAHfr3zVvhmi8kS5JXfi6QXgnkIfjVDe/MkZ+N4UGD15eOogfAE7LSIDxbVsSWDKwTGFWzxnD/HhFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888242; c=relaxed/simple;
-	bh=GMAVTshxLwT9FDwRkCWkO95rFidctVXNHrg/tIidjJg=;
+	s=arc-20240116; t=1765886310; c=relaxed/simple;
+	bh=NeDPqkM85q1JhMpKYGttHBoUYwrcOhccW7UbieIasPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fD2plJWF2DKha/1SzjrQA/dUNN3SnVW/EbOP0agPpisEtTLtUfbMjKtehRq7qyrca4/l95KxV/9+ahjeeRqSMNcIBHs5R+EVBh28i5Z/+1xjGZcwkwhXzaH2K1k+sa6oGelJtM1fglNhUs1uaAZTpbEq6e5V5/u2GC4cg4eCXYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLb2ainr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3254AC4CEF1;
-	Tue, 16 Dec 2025 12:30:41 +0000 (UTC)
+	 MIME-Version; b=mgbPq1S0vPTZJvaWk2sM92LUJpw3aXdA1og3fOZDcWqwro+6wCx3VQokY1KD9PrnKue+3j2aEPbbrELYCBn1JuXNVyYN21nlhZ2Cvs42rjWKisTDvCYKFUw0lAxs/OxgQtnGWuu8k25EbMkQfVoF0v+t5WlDeBbt/EBRPc7H6ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShNn/N26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A150CC4CEF1;
+	Tue, 16 Dec 2025 11:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888241;
-	bh=GMAVTshxLwT9FDwRkCWkO95rFidctVXNHrg/tIidjJg=;
+	s=korg; t=1765886310;
+	bh=NeDPqkM85q1JhMpKYGttHBoUYwrcOhccW7UbieIasPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLb2ainrGvonEO1A1CSvp0/fFsdeKvEMpdam01YoRMRbgRINitPdcNPyWIj1FQI28
-	 87/BHFbWnadc+ENw80dQ/Sqraj2raDuZcA/hu9gwwRBGgwlRpPoHJqnAFPrME4JWDa
-	 CcUPvpwJNZPdy9ONG6Qd6e9aSW5hadGaTnwWQD7Q=
+	b=ShNn/N26CRF86f5cj5mQhteFQdQP9pv5MmMGUlFCNMPP3AEEZaL6JowexIFhENUVW
+	 ETKZcQed5nApHsFknm09io6uaPltg8eds4DDCGkH46EsMr8YbTlIw734GA1KTh6x1Z
+	 IcMFHO5pbHzkE84Fgpj4oF1d4NqapzMjImyLX+hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Robert Marko <robimarko@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 474/614] ARM: dts: samsung: universal_c210: turn off SDIO WLAN chip during system suspend
+Subject: [PATCH 6.17 400/507] net: phy: aquantia: check for NVMEM deferral
 Date: Tue, 16 Dec 2025 12:14:01 +0100
-Message-ID: <20251216111418.543253435@linuxfoundation.org>
+Message-ID: <20251216111359.944614621@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit 97aee67e2406ea381408915e606c5f86448f3949 ]
+[ Upstream commit a6c121a2432eee2c4ebceb1483ccd4a50a52983d ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+Currently, if NVMEM provider is probed later than Aquantia, loading the
+firmware will fail with -EINVAL.
 
-Fixes: f1b0ffaa686f ("ARM: dts: exynos: Enable WLAN support for the UniversalC210 board")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-2-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+To fix this, simply check for -EPROBE_DEFER when NVMEM is attempted and
+return it.
+
+Fixes: e93984ebc1c8 ("net: phy: aquantia: add firmware load support")
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251127114514.460924-1-robimarko@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/aquantia/aquantia_firmware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
-index bdc30f8cf748f..91490693432b6 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
-@@ -610,6 +610,7 @@ &sdhci_3 {
- 	#size-cells = <0>;
+diff --git a/drivers/net/phy/aquantia/aquantia_firmware.c b/drivers/net/phy/aquantia/aquantia_firmware.c
+index bbbcc9736b00e..569256152689f 100644
+--- a/drivers/net/phy/aquantia/aquantia_firmware.c
++++ b/drivers/net/phy/aquantia/aquantia_firmware.c
+@@ -369,7 +369,7 @@ int aqr_firmware_load(struct phy_device *phydev)
+ 		 * assume that, and load a new image.
+ 		 */
+ 		ret = aqr_firmware_load_nvmem(phydev);
+-		if (!ret)
++		if (ret == -EPROBE_DEFER || !ret)
+ 			return ret;
  
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 	mmc-pwrseq = <&wlan_pwrseq>;
- 	vmmc-supply = <&ldo5_reg>;
+ 		ret = aqr_firmware_load_fs(phydev);
 -- 
 2.51.0
 
