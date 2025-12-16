@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19C0CC2E9F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17343CC2DE2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2E983010E4C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD7E830BC52B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FCB396568;
-	Tue, 16 Dec 2025 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048F734A3D9;
+	Tue, 16 Dec 2025 11:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYerjaXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqvYrxFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A2739655A;
-	Tue, 16 Dec 2025 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B417334A3BF;
+	Tue, 16 Dec 2025 11:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888312; cv=none; b=WiZIukLGrOqiHsQpuP4JqZkV4+1zrFOX3SeFaJyHXWvPkNhS0qhZdnMiCo+T+e6XSxunzSN1NK0jNH/w5Ec0brdHGoBRSiFNto4JGWIYwSOv9Uh/4AaStOCXuqHItiKo+hGheqw502Z+E3Z+mEMCZBnfAskwZLzbXa3KKlpwZyo=
+	t=1765886368; cv=none; b=gzlCtg/5uPZ2LvUX/ek3haz/B91F8LxM9NqUVGCEpfZfavuQSMvQL9ZAKfpbN+R7GD32ZhyHMGAz/WbJcoGYWHx2DZc1LhNzuOqqUPfwiGl5b2rMtJbWM9n52hGyvHOmuXZuUYpfO3AK9G9Bd8NGm4pm0VLPGsPv1iznFSIJauI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888312; c=relaxed/simple;
-	bh=7nIhkmuRxgU/wsUtJJw2HQfqJY+CYfG8sLq+v1fKNbQ=;
+	s=arc-20240116; t=1765886368; c=relaxed/simple;
+	bh=J0Vpr1lSzESiReWImJIzHuBQ2qbp46pVm/AWx0msAGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qajboWm+DIIG3y/Gu3SuNOC59QHNJI+7Vv/b28IxCXnEwE6XraZDj282VAkochecb6C0EoU5HftmJDnpOZW+kpGOYsrcwKoy6+2SAzC1fag1DFIki+VEDVivftw61KWsu5C4ypFdG0M2jEJhxaNanmsYHUjjcRaqBJ2Fy6Ufhb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYerjaXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E7EC4CEF1;
-	Tue, 16 Dec 2025 12:31:51 +0000 (UTC)
+	 MIME-Version; b=p8yTL85tB1APmW02MdZxNtXTUO7S01z414wjINLUKIvwf/z7Hk3H0UfBDLFUbc5MoDaLHYdq98IT2EKU9L1UfPlC5HrM399TKf7dBEYVXVylLN4Sv68T6deaSwOidbRZjNeE0McC2hQt76Z5NOUDfMYQjRn+dnaegJndI5gqA2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqvYrxFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09698C4CEF1;
+	Tue, 16 Dec 2025 11:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888311;
-	bh=7nIhkmuRxgU/wsUtJJw2HQfqJY+CYfG8sLq+v1fKNbQ=;
+	s=korg; t=1765886368;
+	bh=J0Vpr1lSzESiReWImJIzHuBQ2qbp46pVm/AWx0msAGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYerjaXfuDn+l9SNz94Jd5zrNiAISS6RnlIECkKbfsDnO41ArKVrd1/mXvCOp7oCC
-	 4YMKNIGAtPdQFnIYtYFek4Jr5z0zapb6fXfBSAiSud6uT69QRVBXCjepcmAdQhlHvN
-	 YwfOChqSKJ2lQTk8dVxgD/0iUh5cjUF2/zmMf7RY=
+	b=mqvYrxFucQSFdvDYBtrKbI2uIvGC+ajgG+M0wggClnj7Ixy5xOslB4U44N9qrxUo0
+	 oabpHE6ig/yXq4eRYouJbUCgvmy1EMw6yl2oRrqLdpsX35naAjUfpEDp2Lg+vnFcO8
+	 v+6rPn2ihiUK1Vujr73wT8d0XygKZHFHLZpMGXqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 489/614] arm64/pageattr: Propagate return value from __change_memory_common
+Subject: [PATCH 6.17 415/507] net: dsa: b53: split reading search entry into their own functions
 Date: Tue, 16 Dec 2025 12:14:16 +0100
-Message-ID: <20251216111419.086460633@linuxfoundation.org>
+Message-ID: <20251216111400.496414626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit e5efd56fa157d2e7d789949d1d64eccbac18a897 ]
+[ Upstream commit e0c476f325a8c9b961a3d446c24d3c8ecae7d186 ]
 
-The rodata=on security measure requires that any code path which does
-vmalloc -> set_memory_ro/set_memory_rox must protect the linear map alias
-too. Therefore, if such a call fails, we must abort set_memory_* and caller
-must take appropriate action; currently we are suppressing the error, and
-there is a real chance of such an error arising post commit a166563e7ec3
-("arm64: mm: support large block mapping when rodata=full"). Therefore,
-propagate any error to the caller.
+Split reading search entries into a function for each format.
 
-Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251107080749.26936-6-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/pageattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 56 ++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 5135f2d66958d..b4ea86cd3a719 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -148,6 +148,7 @@ static int change_memory_common(unsigned long addr, int numpages,
- 	unsigned long size = PAGE_SIZE * numpages;
- 	unsigned long end = start + size;
- 	struct vm_struct *area;
-+	int ret;
- 	int i;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 38e6fa05042ca..190eb11644917 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2060,28 +2060,48 @@ static int b53_arl_search_wait(struct b53_device *dev)
+ 	return -ETIMEDOUT;
+ }
  
- 	if (!PAGE_ALIGNED(addr)) {
-@@ -185,8 +186,10 @@ static int change_memory_common(unsigned long addr, int numpages,
- 	if (rodata_full && (pgprot_val(set_mask) == PTE_RDONLY ||
- 			    pgprot_val(clear_mask) == PTE_RDONLY)) {
- 		for (i = 0; i < area->nr_pages; i++) {
--			__change_memory_common((u64)page_address(area->pages[i]),
-+			ret = __change_memory_common((u64)page_address(area->pages[i]),
- 					       PAGE_SIZE, set_mask, clear_mask);
-+			if (ret)
-+				return ret;
- 		}
- 	}
+-static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
+-			      struct b53_arl_entry *ent)
++static void b53_arl_search_read_25(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
+ {
+ 	u64 mac_vid;
  
+-	if (is5325(dev)) {
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
+-			   &mac_vid);
+-		b53_arl_to_entry_25(ent, mac_vid);
+-	} else if (is5365(dev)) {
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
+-			   &mac_vid);
+-		b53_arl_to_entry_25(ent, mac_vid);
+-	} else {
+-		u32 fwd_entry;
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_25,
++		   &mac_vid);
++	b53_arl_to_entry_25(ent, mac_vid);
++}
+ 
+-		b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
+-			   &mac_vid);
+-		b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
+-			   &fwd_entry);
+-		b53_arl_to_entry(ent, mac_vid, fwd_entry);
+-	}
++static void b53_arl_search_read_65(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_0_MACVID_65,
++		   &mac_vid);
++	b53_arl_to_entry_25(ent, mac_vid);
++}
++
++static void b53_arl_search_read_95(struct b53_device *dev, u8 idx,
++				   struct b53_arl_entry *ent)
++{
++	u32 fwd_entry;
++	u64 mac_vid;
++
++	b53_read64(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL_MACVID(idx),
++		   &mac_vid);
++	b53_read32(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_RSTL(idx),
++		   &fwd_entry);
++	b53_arl_to_entry(ent, mac_vid, fwd_entry);
++}
++
++static void b53_arl_search_rd(struct b53_device *dev, u8 idx,
++			      struct b53_arl_entry *ent)
++{
++	if (is5325(dev))
++		b53_arl_search_read_25(dev, idx, ent);
++	else if (is5365(dev))
++		b53_arl_search_read_65(dev, idx, ent);
++	else
++		b53_arl_search_read_95(dev, idx, ent);
+ }
+ 
+ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
 -- 
 2.51.0
 
