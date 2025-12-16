@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B9ACC3C05
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2816CC438D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63535310D700
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E015F30E92A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DA9393DF9;
-	Tue, 16 Dec 2025 12:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9669633A038;
+	Tue, 16 Dec 2025 11:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pijJswye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj1K+qc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E22393DF3;
-	Tue, 16 Dec 2025 12:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E01728CF5E;
+	Tue, 16 Dec 2025 11:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888227; cv=none; b=O7KpLjURI6CFUJwhcuKDc08gneW+WjmrdktPpN3ha4hWcmo2D6dy8yhzP7yi6vJEKi/TJCRDbK1O6BEHQtWHlEgKeh4u6xPNPAfJ91cVlBUnptaewNmGPaonEK3E1Ctv3P3Kv6LP+EsulgSoRGUsVWm2K81eq+qoJ2Nn6lUXBJo=
+	t=1765886299; cv=none; b=FJdM4nTvdqLDGe9jWXzVTJD9thuOPDsVvd03LjbVdt7NTztGMQMk3dpqO53lXPu5c4uesqXnMnaE3d+rde6p8YLl0ZfsX0AXxknONx5aRt1s7bUrbB6zfN0H0VFyD3H2dfENPUJc3gw/oJW+XoFmzPz0jhRcrYC8IRCBDPxDkVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888227; c=relaxed/simple;
-	bh=uPZGInyT0uZW64pRZxRTW1COsiV9BaF4QjXSEj54JY8=;
+	s=arc-20240116; t=1765886299; c=relaxed/simple;
+	bh=zsb9Rze3uScWubT7VssUk5+HRl/NgjPyMLG49KCOJAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZpqf7UMMRPGnm5+kQQhbj2A2rcCYmB462W8uoulxSfZKnJz8xTl+qMHYji6pUXtyLWOzWA0x3EZTqMxv4Hw3mHnkIslmmQKogaoUnNZw3ZFuc77afpPSXrO4P5ucGeJDmdhc+KngpcK3Ou4uWBYIkz0TO1sut+rV7jklhqT0Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pijJswye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A8C4CEF1;
-	Tue, 16 Dec 2025 12:30:26 +0000 (UTC)
+	 MIME-Version; b=WSoomXh64JQJixFdy1V5Q/yOEQsS3dE/sKWdCoUOs0CGOJ/zLKl4izWz/QSz3UXlx7kvNejS5TLPIEjqnVj7C+gZ4tcdLiy7oU68CVvrsXfkp2+HDlbyO7ETChFpHvWBC80vKnW2b87gJeTLScdSzMv+VLZyx4upR75jXzULGcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj1K+qc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF20FC4CEF1;
+	Tue, 16 Dec 2025 11:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888226;
-	bh=uPZGInyT0uZW64pRZxRTW1COsiV9BaF4QjXSEj54JY8=;
+	s=korg; t=1765886299;
+	bh=zsb9Rze3uScWubT7VssUk5+HRl/NgjPyMLG49KCOJAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pijJswyeZI1jsdVzhiJAySBtLeihbXt4LNd5uS0pV3fSTnZTnx/5wA0zvHpCzJUOf
-	 xePRihej7YySRpv+sbMrSrkabGTYfQ5XISXThvjr4Z5L1wJQUfjrBSm71Zd7+lpngs
-	 OWNK+hEN0hgy21SC0I72EL7fvkQpDQlPcju6jBxI=
+	b=Uj1K+qc3ZgJ+x9weTAhHGWLN8uBeKx1K6m7QyQ2K1LvYm/MBRte9kNY0yWBzc3JNT
+	 uNfobOXdPYLicHkez7GL/mL5xbuMI3wObcZgj8X5UAdaWmSqq1Ah9rNxUOJdhZsxBo
+	 R/nEnDHzapOVayJp40SkWksfQXeFXiL06kBD/NjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 471/614] ASoC: Intel: catpt: Fix error path in hw_params()
+Subject: [PATCH 6.17 397/507] mtd: rawnand: renesas: Handle devm_pm_runtime_enable() errors
 Date: Tue, 16 Dec 2025 12:13:58 +0100
-Message-ID: <20251216111418.435516278@linuxfoundation.org>
+Message-ID: <20251216111359.835720392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 86a5b621be658fc8fe594ca6db317d64de30cce1 ]
+[ Upstream commit a3623e1ae1ed6be4d49b2ccb9996a9d2b65c1828 ]
 
-Do not leave any resources hanging on the DSP side if
-applying user settings fails.
+devm_pm_runtime_enable() can fail due to memory allocation failures.
+The current code ignores its return value and proceeds with
+pm_runtime_resume_and_get(), which may operate on incorrectly
+initialized runtime PM state.
 
-Fixes: 768a3a3b327d ("ASoC: Intel: catpt: Optimize applying user settings")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251126095523.3925364-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Check the return value of devm_pm_runtime_enable() and return the
+error code if it fails.
+
+Fixes: 6a2277a0ebe7 ("mtd: rawnand: renesas: Use runtime PM instead of the raw clock API")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/pcm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/renesas-nand-controller.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
-index bf734c69c4e09..eb03cecdee281 100644
---- a/sound/soc/intel/catpt/pcm.c
-+++ b/sound/soc/intel/catpt/pcm.c
-@@ -417,8 +417,10 @@ static int catpt_dai_hw_params(struct snd_pcm_substream *substream,
- 		return CATPT_IPC_ERROR(ret);
+diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
+index ac8c1b80d7be9..201dd62b99905 100644
+--- a/drivers/mtd/nand/raw/renesas-nand-controller.c
++++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
+@@ -1336,7 +1336,10 @@ static int rnandc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(rnandc->regs))
+ 		return PTR_ERR(rnandc->regs);
  
- 	ret = catpt_dai_apply_usettings(dai, stream);
--	if (ret)
-+	if (ret) {
-+		catpt_ipc_free_stream(cdev, stream->info.stream_hw_id);
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0)
  		return ret;
-+	}
- 
- 	stream->allocated = true;
- 	return 0;
 -- 
 2.51.0
 
