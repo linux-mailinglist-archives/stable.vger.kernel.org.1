@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50CBCC4633
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B268CC2550
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5642E3045562
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D605306CF7B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7D5387B12;
-	Tue, 16 Dec 2025 12:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CADE3164C3;
+	Tue, 16 Dec 2025 11:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XkdtH1I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmhBRLOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395C1387B06;
-	Tue, 16 Dec 2025 12:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED61826A08F;
+	Tue, 16 Dec 2025 11:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888289; cv=none; b=hjMgninm8+b4z3E9m1pA+DkinyBdDiMGMN9MxdXk4yTxsnKRgNXkj34YLPLOQmTojnTvNzCaw919lmQoOyye3nWvHUAxDfyjwZjyCwKyrAco+5pZvxlM8w9sK+Hdcc1CIxPbIssO3HzQlGA+ZEG6aDbp6nPmJ2/9E1CrLsX9+jE=
+	t=1765884645; cv=none; b=NfA1Y8K4yW4mDVRDVeWZA+z86/Mqe09BDX4cabTP8nit/MHjjv+QqTlriCF6/Sw26OcvtwUPZM0mUlgd0WJ7Lt4xB96jNmROJKTMepwoAODo3n2+BbAM3zPIS6winL0+jRHwMbTNesYHwNvY0If8MDUVSAhBLnqU0OMybSFGOz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888289; c=relaxed/simple;
-	bh=yj7X2ux9j0nOQuqhSUaqLMlVFpSMTYmwHnTR27NOku0=;
+	s=arc-20240116; t=1765884645; c=relaxed/simple;
+	bh=1Rkr/mho8EF8vnrGVhUn3Rot1uU/hkgaKIs1GQruulM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJg1raYvzjMxgdlQWgKrG8NflrjmzviWFDncVEPrJ+hfna8zvvI3ztg8x3Ym+KJ0yVAEjo2wsMLhjX28Oa9bktmdQSImfT+7SxHk7pYmku/ZBzfsrmU9bS+GJ1cbkk50nLMvIkEoCzOCSvLCzuL44Z35ZjOdTmzlLwBQILmZnxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XkdtH1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94425C4CEF1;
-	Tue, 16 Dec 2025 12:31:28 +0000 (UTC)
+	 MIME-Version; b=ig5QJ9CRYi3doqrhfsqnumZhB7k8vS/PyPjslSfE/T4dDD8GEbbq5cpkwHnDjuFCBes68KedUgz/Qi2SENCs2dmzeCIUuY4Oy5hX6BDysKrpleBWB9o2NATy04mvwnDxLJNQ/9pAANpfBpJhhFoNCPpLJ+ojwHBsPbQDj5IpGyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmhBRLOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0676AC4CEF1;
+	Tue, 16 Dec 2025 11:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888289;
-	bh=yj7X2ux9j0nOQuqhSUaqLMlVFpSMTYmwHnTR27NOku0=;
+	s=korg; t=1765884644;
+	bh=1Rkr/mho8EF8vnrGVhUn3Rot1uU/hkgaKIs1GQruulM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XkdtH1IJ+l473bFQ9eMNh4sJ/uytiFFBoLADgpFdkgMIWirrQHzXszfV3jrP8c/c
-	 wlBdfmbDVvy+WY5Xw/Z2ewgbwxhmfJ0V374KSTqS2xVXtqRwGlXMRkJ3NmkXwNoVU/
-	 x1he9dDKXCHtvJbQNvoYDDaXLOKgfMk4+6NVD0Pg=
+	b=JmhBRLOX/ygJoa9LNGTWyBChYzYLLygNJv0iXL1yzUT32cLOvJdYHeYcwzU82mDdj
+	 BHyG51h7TZKShiTUYAMeJxF6ZA+7pqtxqKrsz+F0wkAzWJjypYYY9hxEafzembaLOr
+	 UqHdslaPD0QKzB1dwHin1T+We+njkSp4bKqMA8+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 456/614] selftests/net: packetdrill: pass send_omit_free to MSG_ZEROCOPY tests
-Date: Tue, 16 Dec 2025 12:13:43 +0100
-Message-ID: <20251216111417.889323242@linuxfoundation.org>
+Subject: [PATCH 6.12 257/354] ARM: dts: samsung: universal_c210: turn off SDIO WLAN chip during system suspend
+Date: Tue, 16 Dec 2025 12:13:44 +0100
+Message-ID: <20251216111330.229046397@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,200 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit c01a6e5b2e4f21d31cf725b9f3803cb0280b1b8d ]
+[ Upstream commit 97aee67e2406ea381408915e606c5f86448f3949 ]
 
-The --send_omit_free flag is needed for TCP zero copy tests, to ensure
-that packetdrill doesn't free the send() buffer after the send() call.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Fixes: 1e42f73fd3c2 ("selftests/net: packetdrill: import tcp/zerocopy")
-Closes: https://lore.kernel.org/netdev/20251124071831.4cbbf412@kernel.org/
-Suggested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20251125234029.1320984-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f1b0ffaa686f ("ARM: dts: exynos: Enable WLAN support for the UniversalC210 board")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-2-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/packetdrill/tcp_syscall_bad_arg_sendmsg-empty-iov.pkt | 4 ++++
- .../testing/selftests/net/packetdrill/tcp_zerocopy_basic.pkt  | 2 ++
- .../testing/selftests/net/packetdrill/tcp_zerocopy_batch.pkt  | 2 ++
- .../testing/selftests/net/packetdrill/tcp_zerocopy_client.pkt | 2 ++
- .../testing/selftests/net/packetdrill/tcp_zerocopy_closed.pkt | 2 ++
- .../selftests/net/packetdrill/tcp_zerocopy_epoll_edge.pkt     | 3 +++
- .../net/packetdrill/tcp_zerocopy_epoll_exclusive.pkt          | 3 +++
- .../selftests/net/packetdrill/tcp_zerocopy_epoll_oneshot.pkt  | 3 +++
- .../net/packetdrill/tcp_zerocopy_fastopen-client.pkt          | 2 ++
- .../net/packetdrill/tcp_zerocopy_fastopen-server.pkt          | 2 ++
- .../selftests/net/packetdrill/tcp_zerocopy_maxfrags.pkt       | 2 ++
- .../testing/selftests/net/packetdrill/tcp_zerocopy_small.pkt  | 2 ++
- 12 files changed, 29 insertions(+)
+ arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_syscall_bad_arg_sendmsg-empty-iov.pkt b/tools/testing/selftests/net/packetdrill/tcp_syscall_bad_arg_sendmsg-empty-iov.pkt
-index b2b2cdf27e20f..454441e7ecff6 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_syscall_bad_arg_sendmsg-empty-iov.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_syscall_bad_arg_sendmsg-empty-iov.pkt
-@@ -1,6 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
- // Test that we correctly skip zero-length IOVs.
-+
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
-+
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-    +0 setsockopt(3, SOL_SOCKET, SO_ZEROCOPY, [1], 4) = 0
-    +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_basic.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_basic.pkt
-index a82c8899d36bf..0a0700afdaa38 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_basic.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_basic.pkt
-@@ -4,6 +4,8 @@
- // send a packet with MSG_ZEROCOPY and receive the notification ID
- // repeat and verify IDs are consecutive
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
+index bdc30f8cf748f..91490693432b6 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
+@@ -610,6 +610,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_batch.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_batch.pkt
-index c01915e7f4a15..df91675d2991c 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_batch.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_batch.pkt
-@@ -3,6 +3,8 @@
- //
- // send multiple packets, then read one range of all notifications.
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_client.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_client.pkt
-index 6509882932e91..2963cfcb14dfd 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_client.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_client.pkt
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- // Minimal client-side zerocopy test
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 4
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_closed.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_closed.pkt
-index 2cd78755cb2ac..ea0c2fa73c2d6 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_closed.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_closed.pkt
-@@ -7,6 +7,8 @@
- // First send on a closed socket and wait for (absent) notification.
- // Then connect and send and verify that notification nr. is zero.
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 4
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_edge.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_edge.pkt
-index 7671c20e01cf6..4df978a9b82e7 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_edge.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_edge.pkt
-@@ -7,6 +7,9 @@
- // fire two sends with MSG_ZEROCOPY and receive the acks. confirm that EPOLLERR
- // is correctly fired only once, when EPOLLET is set. send another packet with
- // MSG_ZEROCOPY. confirm that EPOLLERR is correctly fired again only once.
-+
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_exclusive.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_exclusive.pkt
-index fadc480fdb7fe..36b6edc4858c4 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_exclusive.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_exclusive.pkt
-@@ -8,6 +8,9 @@
- // fire two sends with MSG_ZEROCOPY and receive the acks. confirm that EPOLLERR
- // is correctly fired only once, when EPOLLET is set. send another packet with
- // MSG_ZEROCOPY. confirm that EPOLLERR is correctly fired again only once.
-+
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_oneshot.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_oneshot.pkt
-index 5bfa0d1d2f4a3..1bea6f3b4558d 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_oneshot.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_epoll_oneshot.pkt
-@@ -8,6 +8,9 @@
- // is correctly fired only once, when EPOLLONESHOT is set. send another packet
- // with MSG_ZEROCOPY. confirm that EPOLLERR is not fired. Rearm the FD and
- // confirm that EPOLLERR is correctly set.
-+
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-client.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-client.pkt
-index 4a73bbf469610..e27c21ff5d18d 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-client.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-client.pkt
-@@ -8,6 +8,8 @@
- // one will have no data in the initial send. On return 0 the
- // zerocopy notification counter is not incremented. Verify this too.
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
- // Send a FastOpen request, no cookie yet so no data in SYN
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-server.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-server.pkt
-index 36086c5877ce7..b1fa77c77dfa7 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-server.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_fastopen-server.pkt
-@@ -4,6 +4,8 @@
- // send data with MSG_FASTOPEN | MSG_ZEROCOPY and verify that the
- // kernel returns the notification ID.
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh
-  ./set_sysctls.py /proc/sys/net/ipv4/tcp_fastopen=0x207`
- 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_maxfrags.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_maxfrags.pkt
-index 672f817faca0d..2f5317d0a9fab 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_maxfrags.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_maxfrags.pkt
-@@ -7,6 +7,8 @@
- //    because each iovec element becomes a frag
- // 3) the PSH bit is set on an skb when it runs out of fragments
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_small.pkt b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_small.pkt
-index a9a1ac0aea4f4..9d5272c6b2079 100644
---- a/tools/testing/selftests/net/packetdrill/tcp_zerocopy_small.pkt
-+++ b/tools/testing/selftests/net/packetdrill/tcp_zerocopy_small.pkt
-@@ -4,6 +4,8 @@
- // verify that SO_EE_CODE_ZEROCOPY_COPIED is set on zerocopy
- // packets of all sizes, including the smallest payload, 1B.
- 
-+--send_omit_free	// do not reuse send buffers with zerocopy
-+
- `./defaults.sh`
- 
-     0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&ldo5_reg>;
 -- 
 2.51.0
 
