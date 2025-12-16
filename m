@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2858ACC2AE6
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F7CC2716
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B338630DF9D1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:13:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEC0930A24A3
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3812357733;
-	Tue, 16 Dec 2025 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448173446A7;
+	Tue, 16 Dec 2025 11:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpCa3qOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sW/yAbfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763D4357730;
-	Tue, 16 Dec 2025 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4973446A2;
+	Tue, 16 Dec 2025 11:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886583; cv=none; b=l36j4NvHu2kmi5bz2WTp5RBBXDUMGgXNb3SKj/l+gC4VqLZdGQ+1uiFKAU+8fyqlzX8RS19feV1ou9YxGtMRZsgIaU3ykg8lU0EqNzZfd3v/oST4XdBecm/mRkxtwU2+TPLvoo0rx6Enk4ki+YR6zS4oVdsJL5WoVUSpgQ/AVIc=
+	t=1765884991; cv=none; b=L9h0RbTVLkLNWBvQaljlj2w0/Q1TrmG6gTQa7CUK1q9gFys6sW1dfQsbnfhHPg0JYUFVFdykgPBkgLzQMCTMjyx5PH6pT1tcLqpcxXTGWG8AHJpPeYKhukisTLiAaNkxkkw7uCqMEbxHeb1l3luE4mQ3IYd0yl9RlNLiYyieaIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886583; c=relaxed/simple;
-	bh=8m/Lp7WMArd8SqoUNpBiw/dX7Wnq4E9gWam1GlGk+u4=;
+	s=arc-20240116; t=1765884991; c=relaxed/simple;
+	bh=vkm+nx5Q0UhSu90bQYqHgYg79cfk1b7WSmewZ/tMEuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yo93RcqywTiE2d6qk6aY47uv1NleDftFGmGPYZ6TRmVihM3QZdKhhzk4zIaTos0m0FP/7AS/wxzl5O1NukE4ppg5stROPUl1hZG+sWcNzmYgcVpRP1bGtLq7c5edOlXR1cxllHumhbJGu1NSYR0QwT8h56twQ+3i9w+gESNs/q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpCa3qOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF34C19422;
-	Tue, 16 Dec 2025 12:03:02 +0000 (UTC)
+	 MIME-Version; b=e3qG6Pb5O9xfMdJJRGrrDQ522IaubsW+R34HJO31WhNFgwj/aL34/APuEnm8Q9i7JcAgU46JM5lCt/zcht3QTSeuu9vpRRCkezYbZrEaNbh3kImSe6f8Nsp7WHdTOZywcr30XtiU7u7DDH3iq4BqFWx1be8ROKCJBrs6qhuWzWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sW/yAbfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F039C4CEF5;
+	Tue, 16 Dec 2025 11:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886583;
-	bh=8m/Lp7WMArd8SqoUNpBiw/dX7Wnq4E9gWam1GlGk+u4=;
+	s=korg; t=1765884991;
+	bh=vkm+nx5Q0UhSu90bQYqHgYg79cfk1b7WSmewZ/tMEuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpCa3qOm4m9Yp5xOI9voCilcyydFRtly/+Gy2wzygZBSBMXQxDQfcHRukmww8zE9B
-	 i905oBtto8pYAtvXUb9+P4PQx8yNEdcRRTGxOabcz+Ghcm+FWTidu7Fj9Rl51V1jlj
-	 7in2advQKu+d0QR6e3e6DKoDrKUT9GrbKo4n80WM=
+	b=sW/yAbfpdPXIe6sLiITIEfy8P7WbTCCUM/MH1qbskBW1o2XduvKwynM+EJkd0zlQG
+	 OSNe+cvfrADrz5h3x1g2sZPEhEF7m2mF7H8yv4FGBWIv6zxrIntTmrNM/lFpLwYMu+
+	 VB9jtqwElvWVbY5IT7yxUMOs0STOmxCEBtubQxYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	Liyuan Pang <pangliyuan1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 479/507] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 353/354] ALSA: dice: fix buffer overflow in detect_stream_formats()
 Date: Tue, 16 Dec 2025 12:15:20 +0100
-Message-ID: <20251216111402.796220420@linuxfoundation.org>
+Message-ID: <20251216111333.698643429@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liyuan Pang <pangliyuan1@huawei.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
+commit 324f3e03e8a85931ce0880654e3c3eb38b0f0bba upstream.
 
-In the inline assembly inside load_unaligned_zeropad(), the "addr" is
-constrained as input-only operand. The compiler assumes that on exit
-from the asm statement these operands contain the same values as they
-had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
+The function detect_stream_formats() reads the stream_count value directly
+from a FireWire device without validating it. This can lead to
+out-of-bounds writes when a malicious device provides a stream_count value
+greater than MAX_STREAMS.
 
-Use a temporary variable "tmp" to handle it, instead of modifying the
-input-only operand, just like what arm64's load_unaligned_zeropad()
-does.
+Fix by applying the same validation to both TX and RX stream counts in
+detect_stream_formats().
 
-Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
-Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 58579c056c1c ("ALSA: dice: use extended protocol to detect available stream formats")
+Cc: stable@vger.kernel.org
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881B043FC68B4C0DA40B73DAFDCA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/firewire/dice/dice-extension.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
-index f9a3897b06e7f..5023f98d8293d 100644
---- a/arch/arm/include/asm/word-at-a-time.h
-+++ b/arch/arm/include/asm/word-at-a-time.h
-@@ -67,7 +67,7 @@ static inline unsigned long find_zero(unsigned long mask)
-  */
- static inline unsigned long load_unaligned_zeropad(const void *addr)
- {
--	unsigned long ret, offset;
-+	unsigned long ret, tmp;
+--- a/sound/firewire/dice/dice-extension.c
++++ b/sound/firewire/dice/dice-extension.c
+@@ -116,7 +116,7 @@ static int detect_stream_formats(struct
+ 			break;
  
- 	/* Load word from unaligned pointer addr */
- 	asm(
-@@ -75,9 +75,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"2:\n"
- 	"	.pushsection .text.fixup,\"ax\"\n"
- 	"	.align 2\n"
--	"3:	and	%1, %2, #0x3\n"
--	"	bic	%2, %2, #0x3\n"
--	"	ldr	%0, [%2]\n"
-+	"3:	bic	%1, %2, #0x3\n"
-+	"	ldr	%0, [%1]\n"
-+	"	and	%1, %2, #0x3\n"
- 	"	lsl	%1, %1, #0x3\n"
- #ifndef __ARMEB__
- 	"	lsr	%0, %0, %1\n"
-@@ -90,7 +90,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"	.align	3\n"
- 	"	.long	1b, 3b\n"
- 	"	.popsection"
--	: "=&r" (ret), "=&r" (offset)
-+	: "=&r" (ret), "=&r" (tmp)
- 	: "r" (addr), "Qo" (*(unsigned long *)addr));
+ 		base_offset += EXT_APP_STREAM_ENTRIES;
+-		stream_count = be32_to_cpu(reg[0]);
++		stream_count = min_t(unsigned int, be32_to_cpu(reg[0]), MAX_STREAMS);
+ 		err = read_stream_entries(dice, section_addr, base_offset,
+ 					  stream_count, mode,
+ 					  dice->tx_pcm_chs,
+@@ -125,7 +125,7 @@ static int detect_stream_formats(struct
+ 			break;
  
- 	return ret;
--- 
-2.51.0
-
+ 		base_offset += stream_count * EXT_APP_STREAM_ENTRY_SIZE;
+-		stream_count = be32_to_cpu(reg[1]);
++		stream_count = min_t(unsigned int, be32_to_cpu(reg[1]), MAX_STREAMS);
+ 		err = read_stream_entries(dice, section_addr, base_offset,
+ 					  stream_count,
+ 					  mode, dice->rx_pcm_chs,
 
 
 
