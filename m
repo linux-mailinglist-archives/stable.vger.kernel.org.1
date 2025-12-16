@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B146CC3A37
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:37:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A152ECC2689
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B426130329ED
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C7643129778
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DED34C98A;
-	Tue, 16 Dec 2025 12:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BDC342504;
+	Tue, 16 Dec 2025 11:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEHGQAKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cl7Afu6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACCF39A119;
-	Tue, 16 Dec 2025 12:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645CE3314B4;
+	Tue, 16 Dec 2025 11:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888451; cv=none; b=D1DTV6kW0eMLunw+ZAXwMHFOHCpJT6w2rSWn+ZhPGmoJ1Ksie/UNvrAcdrQP75+mffX+Qd4OzrTOCQfvmoKfEHqWVu/PdPDNJulhLw9X5/TOuuYI7KTyTcI4VE9hZevMgIL01J7gUb61neSSYcjN/orj1/YnoKP47fU4tmtRaz0=
+	t=1765884922; cv=none; b=rKUS2QJo80DhFz2kQbXFeUw7AsrXfIPWA5ch+lIYat/v/uKlHHmaYQk1D2B/4TOwt6sZDb9y1VN6WFHscG+VS26DzQgULsRtodo5l35WIy7wOVzpZe9Tq5G4dYNgnHyzgXKL3j5/oVh4DyH5m4hPXHRkpgleb/+Dc92s/Pe40f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888451; c=relaxed/simple;
-	bh=JUgW9MKGaQbd08BlMW+VkxFR7b7EsVRFwJqaP8UNWYo=;
+	s=arc-20240116; t=1765884922; c=relaxed/simple;
+	bh=wUU/oz+FS3i/gUCcBa3fd+FtnEwKxlICEBIXccn2q+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDATrkabyI8o780SGbwnzz6oqJX2d276+JWDDKuo9tjueyQB79QfYaGPWMmQYC0X/zbtKknrvbbthgXpld8FqxdQrgpzD+iUW8kErhQGVl+46Q2m/4CdvzEHfaAKiTPq9+PUmk3ie67H5FT7Pl6SF36l7/zMp7EvfL0dsmMKG9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEHGQAKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447ADC4CEF1;
-	Tue, 16 Dec 2025 12:34:11 +0000 (UTC)
+	 MIME-Version; b=cSHaCB2TsQ+jaJfZTEgiNeUlTZGrEOgsY6cFSftBu5GoHn2NSZJ30cUPibxRAnx4CLnZ0v7eVQXwU1zyXVQ0VcrvWzqdJsqN5ef4TSkt+RlXZUVHkvUsSUh9O5ncYUSGK0Z8Qffm+2LByi3eDeodpEr2T2ubAQeJ7POHnfQlcsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cl7Afu6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FE6C4CEF1;
+	Tue, 16 Dec 2025 11:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888451;
-	bh=JUgW9MKGaQbd08BlMW+VkxFR7b7EsVRFwJqaP8UNWYo=;
+	s=korg; t=1765884922;
+	bh=wUU/oz+FS3i/gUCcBa3fd+FtnEwKxlICEBIXccn2q+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEHGQAKQNQpRr299Qkhirt05UgBCndu6Mu6hxrdwdI0FqGAXJDqxo2RwZjCGYS8kJ
-	 s7tDp4pzn5ZWqTPRlumN7FY6noT/WfkFY9Sxvog21t++gGsfaDXXoiYS+9RfLvBYnE
-	 lTIAGVsWvXXsFEqs8VAGcRl5ZzR4zRU1atJD6i7A=
+	b=Cl7Afu6S9isxYHAbLN7B2kUxSkLgmuNVAOITE9K5nPUrjJ8Yn1l73rHWFi+5HwKBo
+	 l7Gu5ZqCLgLUJ7ra6AlTusdzP7MltagZkGWD/GVb8oTVWE8th/OCSITVQjyV8I/NIh
+	 kATAN941n356m6f3LUL3+PDpl7u1DqLjHZZhx+4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 539/614] kbuild: install-extmod-build: Properly fix CC expansion when ccache is used
+Subject: [PATCH 6.12 339/354] dm log-writes: Add missing set_freezable() for freezable kthread
 Date: Tue, 16 Dec 2025 12:15:06 +0100
-Message-ID: <20251216111420.908218575@linuxfoundation.org>
+Message-ID: <20251216111333.189129123@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4ab2ee307983548b29ddaab0ecaef82d526cf4c9 ]
+[ Upstream commit ab08f9c8b363297cafaf45475b08f78bf19b88ef ]
 
-Currently, when cross-compiling and ccache is used, the expanding of CC
-turns out to be without any quotes, leading to the following error:
+The log_writes_kthread() calls try_to_freeze() but lacks set_freezable(),
+rendering the freeze attempt ineffective since kernel threads are
+non-freezable by default. This prevents proper thread suspension during
+system suspend/hibernate.
 
-make[4]: *** No rule to make target 'aarch64-linux-gnu-gcc'.  Stop.
-make[3]: *** [Makefile:2164: run-command] Error 2
+Add set_freezable() to explicitly mark the thread as freezable.
 
-And it makes sense, because after expansion it ends up like this:
-
-make run-command KBUILD_RUN_COMMAND=+$(MAKE) \
-HOSTCC=ccache aarch64-linux-gnu-gcc VPATH= srcroot=. $(build)= ...
-
-So add another set of double quotes to surround whatever CC expands to
-to make sure the aarch64-linux-gnu-gcc isn't expanded to something that
-looks like an entirely separate target.
-
-Fixes: 140332b6ed72 ("kbuild: fix linux-headers package build when $(CC) cannot link userspace")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251111-kbuild-install-extmod-build-fix-cc-expand-third-try-v2-1-15ba1b37e71a@linaro.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 0e9cebe72459 ("dm: add log writes target")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/install-extmod-build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-log-writes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/package/install-extmod-build b/scripts/package/install-extmod-build
-index 054fdf45cc37a..2576cf7902dbb 100755
---- a/scripts/package/install-extmod-build
-+++ b/scripts/package/install-extmod-build
-@@ -63,7 +63,7 @@ if [ "${CC}" != "${HOSTCC}" ]; then
- 	# Clear VPATH and srcroot because the source files reside in the output
- 	# directory.
- 	# shellcheck disable=SC2016 # $(MAKE) and $(build) will be expanded by Make
--	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC='"${CC}"' VPATH= srcroot=. $(build)='"$(realpath --relative-to=. "${destdir}")"/scripts
-+	"${MAKE}" run-command KBUILD_RUN_COMMAND='+$(MAKE) HOSTCC="'"${CC}"'" VPATH= srcroot=. $(build)='"$(realpath --relative-to=. "${destdir}")"/scripts
+diff --git a/drivers/md/dm-log-writes.c b/drivers/md/dm-log-writes.c
+index 8d7df8303d0a1..6272c77184200 100644
+--- a/drivers/md/dm-log-writes.c
++++ b/drivers/md/dm-log-writes.c
+@@ -432,6 +432,7 @@ static int log_writes_kthread(void *arg)
+ 	struct log_writes_c *lc = arg;
+ 	sector_t sector = 0;
  
- 	rm -f "${destdir}/scripts/Kbuild"
- fi
++	set_freezable();
+ 	while (!kthread_should_stop()) {
+ 		bool super = false;
+ 		bool logging_enabled;
 -- 
 2.51.0
 
