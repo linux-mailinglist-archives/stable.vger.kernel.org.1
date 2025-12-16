@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-201902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DACCC29A8
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:17:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2F6CC3A0D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F42C3195B71
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:58:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2693C30B3F02
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941A034FF7B;
-	Tue, 16 Dec 2025 11:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868EA328638;
+	Tue, 16 Dec 2025 12:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9blAew0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACoho7Yn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D72234FF44;
-	Tue, 16 Dec 2025 11:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429D0314A74;
+	Tue, 16 Dec 2025 12:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886169; cv=none; b=KaYOmYPy+L/8GB+ZxbREhiT39D/89ys0Fw0KP2J80rb4nDOTHLy7rXJyVFvdZxDKjtdfKugisCcNqnVcBSEjKZRvjoh3IFjwp4ROOKH9OVwBxXkMHdi87t2jTMMJtsZRLz0a1wQmur93HeH6XRf5k/H7RAS7ZR8J7NxTGxWIxG8=
+	t=1765888101; cv=none; b=fG8UkXJO+bdRX785uwfWw8QRmhN6kuYWXewksq86yJCJNtVkfyJqBANgOUy0iR/KL1qLB64u//T649SKTCJh3DEqFodamjYZzO6jy3yTopPuDb18p/kl2SivmoeVMyPbN7c3F4n5WOuLGVERZ3MON+76D0TpB2yFMtpsxYsXvnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886169; c=relaxed/simple;
-	bh=sW8GVmnk0eXRchEV0EkOxg+cmW1oqZDhqXJ/OQyOMhI=;
+	s=arc-20240116; t=1765888101; c=relaxed/simple;
+	bh=yztUb649o0Mqd+a12EeRKeCaszznhmi+Wv+FvxB5HNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmZTNU5wtpLuMuqDvSwB/mvgEXCyaFN5sx7w7lFEc2tmBM+xQiDtJIFSVSevjlqATPjK7I23By314AHeeNe1uzo4qUFsJB91MMP/cVFGWH3e2etnoXWYY2XWKaH9XyBDw37PY5h+fM0h/fqA6n544pY+UXd8WPvsgc/J6uQD9a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9blAew0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED74C4CEF1;
-	Tue, 16 Dec 2025 11:56:08 +0000 (UTC)
+	 MIME-Version; b=UPU5XiTGyWvEJeH17hWimhsfE6Recv27TSTxyu6SNnUD50fueSfsnxZoLFHC0aojOQSU/weTvV/NkxN2CWW4+7VkxwBO1yxRnbclBttozoTmf2cDg1C81eALn7HNTbbGsv63c4aeWy6H4Ky41UHmOYKW+BkbIRXItRTW5Swhi84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACoho7Yn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DAAC4CEF1;
+	Tue, 16 Dec 2025 12:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886169;
-	bh=sW8GVmnk0eXRchEV0EkOxg+cmW1oqZDhqXJ/OQyOMhI=;
+	s=korg; t=1765888101;
+	bh=yztUb649o0Mqd+a12EeRKeCaszznhmi+Wv+FvxB5HNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9blAew0Q/4egVr+2pyqThr/93UUlpMZmeg42Z3jpLd5AMXlCBsUGQnzGAPjqR1i+
-	 SbshDg/zs129AlkDwwKhVMjqLkFPXNIAxa9MESvEdvX9eAUw29ez/ZWQ9ZoHpASINh
-	 N+52fQci0+VGM1xRGd7cTQmeFh3nQ2CowkXtH/Jo=
+	b=ACoho7YnpGResg70NKQ9YUSWQm4a9ddzN7plpQEAzykfIJePKZVDBggEjbYe5HuRA
+	 jv0Jv9E8UlU9UJj/LRo3TdIf5J6g+vNfgnNeDag3sbD7p3t0kaXZOq/gSPdRmKTZHE
+	 YIsqilkKkIv8GoP6VFHYlZnWW1dSHVMJjNTYVAw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan@kernel.org>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 359/507] clocksource/drivers/nxp-stm: Prevent driver unbind
+Subject: [PATCH 6.18 433/614] clocksource/drivers/stm: Fix double deregistration on probe failure
 Date: Tue, 16 Dec 2025 12:13:20 +0100
-Message-ID: <20251216111358.463864488@linuxfoundation.org>
+Message-ID: <20251216111417.062352691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 6a2416892e8942f5e2bfe9b85c0164f410a53a2d ]
+[ Upstream commit 6b38a8b31e2c5c2c3fd5f9848850788c190f216d ]
 
-Clockevents cannot be deregistered so suppress the bind attributes to
-prevent the driver from being unbound and releasing the underlying
-resources after registration.
-
-Even if the driver can currently only be built-in, also switch to
-builtin_platform_driver() to prevent it from being unloaded should
-modular builds ever be enabled.
+The purpose of the devm_add_action_or_reset() helper is to call the
+action function in case adding an action ever fails so drop the clock
+source deregistration from the error path to avoid deregistering twice.
 
 Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20251111153226.579-4-johan@kernel.org
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20251017055039.7307-1-johan@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-nxp-stm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-nxp-stm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
-index bbb671b6e0284..b0cd3bc7b096d 100644
+index bbc40623728fa..16d52167e949b 100644
 --- a/drivers/clocksource/timer-nxp-stm.c
 +++ b/drivers/clocksource/timer-nxp-stm.c
-@@ -485,9 +485,10 @@ static struct platform_driver nxp_stm_driver = {
- 	.driver	= {
- 		.name		= "nxp-stm",
- 		.of_match_table	= nxp_stm_of_match,
-+		.suppress_bind_attrs = true,
- 	},
- };
--module_platform_driver(nxp_stm_driver);
-+builtin_platform_driver(nxp_stm_driver);
+@@ -208,10 +208,8 @@ static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_timer
+ 		return ret;
  
- MODULE_DESCRIPTION("NXP System Timer Module driver");
- MODULE_LICENSE("GPL");
+ 	ret = devm_add_action_or_reset(dev, devm_clocksource_unregister, stm_timer);
+-	if (ret) {
+-		clocksource_unregister(&stm_timer->cs);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	stm_sched_clock = stm_timer;
+ 
 -- 
 2.51.0
 
