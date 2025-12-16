@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A06ECC32BB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB28CC25AA
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D81D30652DC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3E60308810D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461F2387B0E;
-	Tue, 16 Dec 2025 12:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB26315D48;
+	Tue, 16 Dec 2025 11:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOuXzbS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcQrVVPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0291F387B02;
-	Tue, 16 Dec 2025 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FC2343D77;
+	Tue, 16 Dec 2025 11:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888286; cv=none; b=dYHBsgZUsnM9g6ONhnNOOyta7Rvdh1MD0Zyj5gseVBkiTgIk23E58557nkV3YKM4HChQawAVjAWaaBligNZS1yrW1+QxlJh2OWQaOOE1kEt8maz3KOYaHHbhNLAQNB24XqslErRJc0YhKO3MT5SVJEeH0Q5u4nfkzCl1/q9DpkQ=
+	t=1765884859; cv=none; b=lmR+QxTOMKy5j0zNFteW97mXOn5ZLN1pQJjEO9LrAiMSbAjtAJbhzdIycogxjcOvDZLpEnq6PSYOrL/7MtME89SyWfuBHh7kWGbUA1wtUGPAR0zO9Pw2eZxL9v+JBM3FrBtI7Eb92qlTuHlQnyoCp9bJiYsm/jEtWRYF6bM7SYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888286; c=relaxed/simple;
-	bh=FIGCN32s25vrVG5KIwkB3aevETDKh9Cf8xR0gjVK8i0=;
+	s=arc-20240116; t=1765884859; c=relaxed/simple;
+	bh=HjTHhYAYBb9XjnuwJrdFpsBc0hIRuPhmmqaXjZh/bbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8mnh1z50qvhsEG54GtR2p5wuUetWHrwhv7ap98ik0tJ+izKB8BQ8hS8maWSlf0IOd+mmNbI2+tTgAQhzBMJOczVFjVoPshg3fhZKJWzh9xkUX2/b0STnc+FuF+koiYB3raQhOUdRSCA8ePfwCoAGR1U1kGIrQbb4TCO59wze+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOuXzbS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C90C4CEF1;
-	Tue, 16 Dec 2025 12:31:25 +0000 (UTC)
+	 MIME-Version; b=VNf/OZB0dowlQtpwNgpXViqYKIUWERnLFCdpy7xIi9DBDlh5eZnUblRjn3TTnNumrgg9oqWGJO50uKkWD4Kb7OswLNw3GKORF8pS3TIkfvyI5gMZeeCsiIZmhDkPr3P/yzaEOIa4UhmHWTQyWfMMHPomLODoiHB8xJYyCoCSHB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcQrVVPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D2AC4CEF1;
+	Tue, 16 Dec 2025 11:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888285;
-	bh=FIGCN32s25vrVG5KIwkB3aevETDKh9Cf8xR0gjVK8i0=;
+	s=korg; t=1765884859;
+	bh=HjTHhYAYBb9XjnuwJrdFpsBc0hIRuPhmmqaXjZh/bbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOuXzbS41tOU73JEu06ksV6TNU0XxwjL7nTkwzGSKW4qK/ZW8RFZheAarxY04wCN7
-	 dowmN8gg9Q2u+EEex0vdNR5EXsIA0PEKk4vlMYyux7aUwHPYo5iZIGGpt/HBdsHAEY
-	 WInfFk13u2iaBjH1ab7Y+VS9Ry6w3sPPrkA/WceY=
+	b=RcQrVVPDoX8pvqDdAD3H2U2u8tJPysRdfOkHZDQA51XaO5X++TVgrF4cFAxlpX3v5
+	 iMSoITb6kzCDCrfYSsOT/kikTBjLZC+lwXcQ3wucKzt7xqxjC/0PLN9D5XrHnBcu/G
+	 BLy8+3syO+MS9DnJwZb3IHIErlNxD8Obc/z4PhRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 487/614] mtd: rawnand: renesas: Handle devm_pm_runtime_enable() errors
+Subject: [PATCH 6.12 287/354] perf hist: In init, ensure mem_info is put on error paths
 Date: Tue, 16 Dec 2025 12:14:14 +0100
-Message-ID: <20251216111419.015112417@linuxfoundation.org>
+Message-ID: <20251216111331.310418575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a3623e1ae1ed6be4d49b2ccb9996a9d2b65c1828 ]
+[ Upstream commit f60efb4454b24cc944ff3eac164bb9dce9169f71 ]
 
-devm_pm_runtime_enable() can fail due to memory allocation failures.
-The current code ignores its return value and proceeds with
-pm_runtime_resume_and_get(), which may operate on incorrectly
-initialized runtime PM state.
+Rather than exit the internal map_symbols directly, put the mem-info
+that does this and also lowers the reference count on the mem-info
+itself otherwise the mem-info is being leaked.
 
-Check the return value of devm_pm_runtime_enable() and return the
-error code if it fails.
-
-Fixes: 6a2277a0ebe7 ("mtd: rawnand: renesas: Use runtime PM instead of the raw clock API")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 56e144fe98260a0f ("perf mem_info: Add and use map_symbol__exit and addr_map_symbol__exit")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/renesas-nand-controller.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/perf/util/hist.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
-index ac8c1b80d7be9..201dd62b99905 100644
---- a/drivers/mtd/nand/raw/renesas-nand-controller.c
-+++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
-@@ -1336,7 +1336,10 @@ static int rnandc_probe(struct platform_device *pdev)
- 	if (IS_ERR(rnandc->regs))
- 		return PTR_ERR(rnandc->regs);
- 
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0)
- 		return ret;
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index f387e85a00873..694faf405e11c 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -528,10 +528,8 @@ static int hist_entry__init(struct hist_entry *he,
+ 		map_symbol__exit(&he->branch_info->to.ms);
+ 		zfree(&he->branch_info);
+ 	}
+-	if (he->mem_info) {
+-		map_symbol__exit(&mem_info__iaddr(he->mem_info)->ms);
+-		map_symbol__exit(&mem_info__daddr(he->mem_info)->ms);
+-	}
++	if (he->mem_info)
++		mem_info__zput(he->mem_info);
+ err:
+ 	map_symbol__exit(&he->ms);
+ 	zfree(&he->stat_acc);
 -- 
 2.51.0
 
