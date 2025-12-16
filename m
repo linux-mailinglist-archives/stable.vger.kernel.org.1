@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-201228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547E1CC227D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:23:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0ABCC3B60
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A0D43029D17
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5DD63079281
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC07F33C1BD;
-	Tue, 16 Dec 2025 11:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9197434FF41;
+	Tue, 16 Dec 2025 11:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEsdnxNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUZ2yX88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8810332862F;
-	Tue, 16 Dec 2025 11:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F35734F49E;
+	Tue, 16 Dec 2025 11:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883955; cv=none; b=ZS3FeaJUVLka3vxi2tTi6rWM9cxK5+8vd960Domc0uNddNwT/UchVprWr6bgyQkmYZu3ML/VC+c7OcP+A1baCVwkNCPj4R91DFrPzLmcx74ex1cDCCqNxyS3d3Igtv/VpH4ylRuKnNVoAM8hXzWfyx8or+/UCfowy3+aKcxMBkE=
+	t=1765885665; cv=none; b=ptIZyrRlJZQH3PXKu1/PdHRolbK6lJ9OygCdzvGfpFHHVJz2HEym3p6EZUCpglR5YsBGOgk8BDYgLjudOdeZKrQ4BkyA1Gk94oc0EBwV1EOCaJ2RvoBd9WHehOkPSLjrt+wW8QPXbkv5M0pw/HsH3x/+7WtbLZmuIk7Qh9ZiDyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883955; c=relaxed/simple;
-	bh=/zW/neIqwbJ1ZLSfB/tiQjASYBar30J5SRbPMkUBKz4=;
+	s=arc-20240116; t=1765885665; c=relaxed/simple;
+	bh=/uJHLEZvK3a5p3fdtai5ekxwF9p3iFa8GZv2Ug9s8ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiPJyvUgKeJoWh8xY6Qbc7JmhYS07rpaMjph8lMrJNHo8Rumy5QbbJr6MG6QRf6V8buhEgFpg533948/26KithltT0KxONPq21D4Tj9mBS5062Bt3kwyKuEXvo7dCgasN7j85HQR9elpwNS6x+/XbjEI5ELiU5wt02ifI+u7mOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEsdnxNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A60CC4CEF1;
-	Tue, 16 Dec 2025 11:19:14 +0000 (UTC)
+	 MIME-Version; b=g9WR499zttwcUlmjX9hm8ITljEPpC9kdEcHvtBt8p/jWaheCgXh3yuXMfe3pzh0ziBUpiDoUem1lBzcPpGvJYIPngDyJn+HTPGkyrtFqwxNuHtUe6gvWiVBOT0nQx+h0mnS4NomNFufkQbuLd9n+jiV3XrxDAjZ3wv8UFERdtzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUZ2yX88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B78C4CEF1;
+	Tue, 16 Dec 2025 11:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883955;
-	bh=/zW/neIqwbJ1ZLSfB/tiQjASYBar30J5SRbPMkUBKz4=;
+	s=korg; t=1765885665;
+	bh=/uJHLEZvK3a5p3fdtai5ekxwF9p3iFa8GZv2Ug9s8ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEsdnxNyrkVQ9V/33UBin+GubuX3kZz2xt3kB+pJTAydUOipxIC+lSOmTFX72lrDT
-	 9P1cHB+YdNWEZbAfiFcBreFiLrNH2WI/qUFAgw0DWYmUXtFzu0qrL1YvtzWV0p59Eh
-	 1UN/nhdHTZgD3ms0PxPPsg9/8TkbgjZrkiM/apWQ=
+	b=fUZ2yX88R2tEc3YAVfkjZbIOFYJemdfS4SkOB0v55lJ+i3DXi/88EpoKXRzVNyAbK
+	 Czw7lEEWbimCFd9XvDvY3K+GGjwecyBEQ7H2n3nJgAtYotHlXX9RvLazBquawsVyv/
+	 zlbIShBunsCmwzdKMjwNcFnNFxv2VhjqtXtwnQeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yu Kuai <yukuai@kernel.org>,
-	chengkaitao <chengkaitao@kylinos.cn>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/354] block/mq-deadline: Introduce dd_start_request()
+Subject: [PATCH 6.17 174/507] ARM: dts: omap3: n900: Correct obsolete TWL4030 power compatible
 Date: Tue, 16 Dec 2025 12:10:15 +0100
-Message-ID: <20251216111322.657588344@linuxfoundation.org>
+Message-ID: <20251216111351.821583898@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 93a358af59c6e8ab00b57cfdb1c437516a4948ca ]
+[ Upstream commit 3862123e9b56663c7a3e4a308e6e65bffe44f646 ]
 
-Prepare for adding a second caller of this function. No functionality
-has been changed.
+The "ti,twl4030-power-n900" compatible string is obsolete and is not
+supported by any in-kernel driver. Currently, the kernel falls back to
+the second entry, "ti,twl4030-power-idle-osc-off", to bind a driver to
+this node.
 
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Yu Kuai <yukuai@kernel.org>
-Cc: chengkaitao <chengkaitao@kylinos.cn>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: d60055cf5270 ("block/mq-deadline: Switch back to a single dispatch list")
+Make this fallback explicit by removing the obsolete board-specific
+compatible. This preserves the existing functionality while making the
+DTS compliant with the new, stricter 'ti,twl.yaml' binding.
+
+Fixes: daebabd578647 ("mfd: twl4030-power: Fix PM idle pin configuration to not conflict with regulators")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/r/20250914192516.164629-4-jihed.chaibi.dev@gmail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 19473a9b50440..690b51587301d 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -310,6 +310,19 @@ static bool started_after(struct deadline_data *dd, struct request *rq,
- 	return time_after(start_time, latest_start);
- }
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
+index c50ca572d1b9b..7db73d9bed9e4 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
++++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
+@@ -508,7 +508,7 @@ twl_audio: audio {
+ 	};
  
-+static struct request *dd_start_request(struct deadline_data *dd,
-+					enum dd_data_dir data_dir,
-+					struct request *rq)
-+{
-+	u8 ioprio_class = dd_rq_ioclass(rq);
-+	enum dd_prio prio = ioprio_class_to_prio[ioprio_class];
-+
-+	dd->per_prio[prio].latest_pos[data_dir] = blk_rq_pos(rq);
-+	dd->per_prio[prio].stats.dispatched++;
-+	rq->rq_flags |= RQF_STARTED;
-+	return rq;
-+}
-+
- /*
-  * deadline_dispatch_requests selects the best request according to
-  * read/write expire, fifo_batch, etc and with a start time <= @latest_start.
-@@ -320,8 +333,6 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- {
- 	struct request *rq, *next_rq;
- 	enum dd_data_dir data_dir;
--	enum dd_prio prio;
--	u8 ioprio_class;
- 
- 	lockdep_assert_held(&dd->lock);
- 
-@@ -415,12 +426,7 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd,
- 	dd->batching++;
- 	deadline_move_request(dd, per_prio, rq);
- done:
--	ioprio_class = dd_rq_ioclass(rq);
--	prio = ioprio_class_to_prio[ioprio_class];
--	dd->per_prio[prio].latest_pos[data_dir] = blk_rq_pos(rq);
--	dd->per_prio[prio].stats.dispatched++;
--	rq->rq_flags |= RQF_STARTED;
--	return rq;
-+	return dd_start_request(dd, data_dir, rq);
- }
- 
- /*
+ 	twl_power: power {
+-		compatible = "ti,twl4030-power-n900", "ti,twl4030-power-idle-osc-off";
++		compatible = "ti,twl4030-power-idle-osc-off";
+ 		ti,use_poweroff;
+ 	};
+ };
 -- 
 2.51.0
 
