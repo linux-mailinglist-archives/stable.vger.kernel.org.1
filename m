@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA32BCC4693
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36A4CC2553
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45F2130CBE7D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 853513089000
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FC134D386;
-	Tue, 16 Dec 2025 12:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56602327219;
+	Tue, 16 Dec 2025 11:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSsHrq/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5DQo3bz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E100934CFB9;
-	Tue, 16 Dec 2025 12:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BA726A08F;
+	Tue, 16 Dec 2025 11:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886408; cv=none; b=lj9omd2lNXbHb0K5fA8e2ZECAp06DS0g6sDGRjUyiXaFKlK5Y0XVQEXf5XVu2cmlEM5qW2/nFM7McxRKakyVqtmiyVvQVku2LgtJYQJ8JzlCOFc1h/P3PHT42MGflNb7vSNPl9J8VGovgjuyM2anBhAkxCXd/9vcB74JVsWWOAU=
+	t=1765884648; cv=none; b=M+Hgg16UKj+xw1AUeKkl/u73MUMAHg3bmyob5XVJK0luWZKXyCjhsoM57DlUJdQdu3GJGrRh29kL/j4YmLlPASwEUefT0wbYXqOwwzUtL0BcY3qUZ89FvIJdddsTQSkhvm+kOfP+BrZBcY0WvekBOiFNlUZcwjYfOX6NUFlSjJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886408; c=relaxed/simple;
-	bh=R4rkeoRRit9PnLFk4VJk3JPrZEJ2af/nC9daRPTcth8=;
+	s=arc-20240116; t=1765884648; c=relaxed/simple;
+	bh=xdbWwxOCt6VEYahmOeOtBYH/PVHgZR4M8OetVfhoRcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2AkBR5OHgBJu3aySzwXJrPDpCjxn5mbCT5cffieLIqa+HhXPXtok5eTewCLV9Kb4SVJ9a51YAaggnCwAgkt4Dnq1nKN9oJJpRV1kf+XJVF9pzx6ONRdZzNmf1aVapRuKPnHilR1rqlkufr6xfaaEbKlPUDZVr8WZtxaonfGuCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSsHrq/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DA0C16AAE;
-	Tue, 16 Dec 2025 12:00:07 +0000 (UTC)
+	 MIME-Version; b=NJDHVn4GJLAA0h7CynbinjJxL+tgSDxLpeUF3lME3N8smXW4Q8sMWyM3ZtcejgpQgwtfVTCzRjnQz1WDDk1a9dFx+fozc18W6BzZSFSN77eVRR9LDWUajJXr6Q4DAAxZuYPqJpI1hNYF2OIahCtzmOpAehsb/3ZfO0XsLTlFEx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5DQo3bz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732FCC4CEF1;
+	Tue, 16 Dec 2025 11:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886407;
-	bh=R4rkeoRRit9PnLFk4VJk3JPrZEJ2af/nC9daRPTcth8=;
+	s=korg; t=1765884647;
+	bh=xdbWwxOCt6VEYahmOeOtBYH/PVHgZR4M8OetVfhoRcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSsHrq/+1Z33qI5Yf1cbLGWRYRmvI4G9KNBtIBGtKGlPIb0Hfjrtbr9ZhKipc5BrL
-	 6B3dwyInAfr4p1ivTe6gQCEKCopMvp/S/6GKefBl0zrAXFCg7vbLFT6gRncfhUgHrR
-	 2BJn+1qVVXXDMl3IlZZVgGCTKlsxiIgZ9ry3Njbs=
+	b=h5DQo3bzMBeGiPWCl7Qf8DD/KgcNtzD66NTkPBaExKp9n9RIiqUkGdavviy48aNKG
+	 EYB1JtkrUueymuaLT0vVH+DCjzI9wN+AnxN4YJwck3jS4yNzdL3rAnoUWsoBggNKTg
+	 L1L+6W1VTPgX8QG4jUa/1S/y0VNrULDz9JnSEMfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 384/507] ASoC: Intel: catpt: Fix error path in hw_params()
+Subject: [PATCH 6.12 258/354] ARM: dts: samsung: exynos4210-i9100: turn off SDIO WLAN chip during system suspend
 Date: Tue, 16 Dec 2025 12:13:45 +0100
-Message-ID: <20251216111359.370811626@linuxfoundation.org>
+Message-ID: <20251216111330.265321639@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 86a5b621be658fc8fe594ca6db317d64de30cce1 ]
+[ Upstream commit 863d69923bdb6f414d0a3f504f1dfaeacbc00b09 ]
 
-Do not leave any resources hanging on the DSP side if
-applying user settings fails.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Fixes: 768a3a3b327d ("ASoC: Intel: catpt: Optimize applying user settings")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251126095523.3925364-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-3-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/pcm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
-index bf734c69c4e09..eb03cecdee281 100644
---- a/sound/soc/intel/catpt/pcm.c
-+++ b/sound/soc/intel/catpt/pcm.c
-@@ -417,8 +417,10 @@ static int catpt_dai_hw_params(struct snd_pcm_substream *substream,
- 		return CATPT_IPC_ERROR(ret);
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+index 0d8495792a702..0394b948443b3 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+@@ -853,6 +853,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
- 	ret = catpt_dai_apply_usettings(dai, stream);
--	if (ret)
-+	if (ret) {
-+		catpt_ipc_free_stream(cdev, stream->info.stream_hw_id);
- 		return ret;
-+	}
- 
- 	stream->allocated = true;
- 	return 0;
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&vtf_reg>;
 -- 
 2.51.0
 
