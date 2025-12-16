@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1635FCC3711
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:10:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8324ACC2244
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FCED3087F60
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF3B830004ED
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FFF345CA1;
-	Tue, 16 Dec 2025 12:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D631341AD7;
+	Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w010EPeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Tbb8yQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEC034847B;
-	Tue, 16 Dec 2025 12:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B76341645;
+	Tue, 16 Dec 2025 11:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887638; cv=none; b=ePMrCGhBnFohn07QG/4ycSifNu0/WzWp0/D2plz43guu5FIIbc7zB0OO7Wa76IRE4owD4tBVh6I0sEVT1R1zZZfAgkWCoBzix0DiLnmRLPrimUl+jPaC8+s53yFJL0hDLRMxlhwliFxIlOAwGfj+FjzHJarXDnRh80q+R/9Dl6I=
+	t=1765884114; cv=none; b=OWF08pzyt4CQy4ASYUMXugOUpd8l+cUoACN30Q7DlLs8SxjmU3/EnpVfJSOitZiqM1yOoF9BmqTa88TZj5o9wyk0o6uFKCcdygxwXmvtVSwRG9SDNvESV2mQUtQArXp3sWxkSVsLUAQnumGmzN5hJzXDaxOzDr/5wLpwkhMp56g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887638; c=relaxed/simple;
-	bh=46kzOCd74n4XWJYdNMcGm2F00ebjC49UA1S0zEG0DAE=;
+	s=arc-20240116; t=1765884114; c=relaxed/simple;
+	bh=WphDHT85EP62IXvxFq+5GOUjL8JVYB4bjuYPy8nZRJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM+8K2qaNTkRRdSsy0qTBDQXPDy+zcSnPm0sqHGcCkmjehU3nFx2bbZSTTZD2qydYQfcm5RzqY58xEhKzTZNRyVPClJP2mCTplt1cc+jx/PbnfFy1L+WmgML3H77Nr2DzfxkQJguT16sulwaZEJlAZlCxwskBAw0g0kzqOcnON4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w010EPeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DA6C4CEF1;
-	Tue, 16 Dec 2025 12:20:37 +0000 (UTC)
+	 MIME-Version; b=VO0GcHbJtOdqvxiEN/M/2ZMxJQ9XI2yptb85lxJG3aYAlKQFmij8ehnK0Esh57j4jG1wSZkZ8whd09gnyl/qpwy1LpDBd9bpvpVrOQ4FDUio7B9ZR/GCYf4OP1L888ryCdfHi3Todias9mQbbDZ9ExCUs3hkMMYmK4HkX6fnfc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Tbb8yQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E0FC19422;
+	Tue, 16 Dec 2025 11:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887638;
-	bh=46kzOCd74n4XWJYdNMcGm2F00ebjC49UA1S0zEG0DAE=;
+	s=korg; t=1765884114;
+	bh=WphDHT85EP62IXvxFq+5GOUjL8JVYB4bjuYPy8nZRJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w010EPeAlDQHyuR+rQPbXU/bu4TqFDoVKRETKgpmGJZlsRfgOs6SFfE9s76RUa7+y
-	 BEgJY3UI41VS5O+akr+fBhrCJpeRC2535/9SkDKEZdwcGeORHS7yryu79RKywCtTAq
-	 razqpdZPB5xayofhkOD9IK9N/h4uiPvvNnqnW55M=
+	b=1Tbb8yQ9cNqhIqZPEJYOUgqbVKyPPhw7IYuwegnoFJ+8YB6GWJpoPyUjrGsX0aCxM
+	 OhL6fVg6lUob62SJNa/Ik//q0/GctkQQIk87i2qEiloDY7FhAOpiVjp6psQw7WNNWS
+	 efTBPYKrO83+9PmmXc5HxXWLaOQDZFWemWErdYDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 293/614] selftests/bpf: Fix failure paths in send_signal test
-Date: Tue, 16 Dec 2025 12:11:00 +0100
-Message-ID: <20251216111411.987394119@linuxfoundation.org>
+Subject: [PATCH 6.12 094/354] i3c: fix refcount inconsistency in i3c_master_register
+Date: Tue, 16 Dec 2025 12:11:01 +0100
+Message-ID: <20251216111324.327199934@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit c13339039891dbdfa6c1972f0483bd07f610b776 ]
+[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
 
-When test_send_signal_kern__open_and_load() fails parent closes the
-pipe which cases ASSERT_EQ(read(pipe_p2c...)) to fail, but child
-continues and enters infinite loop, while parent is stuck in wait(NULL).
-Other error paths have similar issue, so kill the child before waiting on it.
+In `i3c_master_register`, a possible refcount inconsistency has been
+identified, causing possible resource leak.
 
-The bug was discovered while compiling all of selftests with -O1 instead of -O2
-which caused progs/test_send_signal_kern.c to fail to load.
+Function `of_node_get` increases the refcount of `parent->of_node`. If
+function `i3c_bus_init` fails, the function returns immediately without
+a corresponding decrease, resulting in an inconsistent refcounter.
 
-Fixes: ab8b7f0cb358 ("tools/bpf: Add self tests for bpf_send_signal_thread()")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20251113171153.2583-1-alexei.starovoitov@gmail.com
+Move call i3c_bus_init() after device_initialize() to let callback
+i3c_masterdev_release() release of_node.
+
+Reported-by: Shuhao Fu <sfual@cse.ust.hk>
+Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/i3c/master.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index 1702aa592c2c2..7ac4d5a488aa5 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -206,6 +206,11 @@ static void test_send_signal_common(struct perf_event_attr *attr,
- skel_open_load_failure:
- 	close(pipe_c2p[0]);
- 	close(pipe_p2c[1]);
-+	/*
-+	 * Child is either about to exit cleanly or stuck in case of errors.
-+	 * Nudge it to exit.
-+	 */
-+	kill(pid, SIGKILL);
- 	wait(NULL);
- }
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index c8e5c9291ea43..6eb779affaba8 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2809,10 +2809,6 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	INIT_LIST_HEAD(&master->boardinfo.i2c);
+ 	INIT_LIST_HEAD(&master->boardinfo.i3c);
  
+-	ret = i3c_bus_init(i3cbus, master->dev.of_node);
+-	if (ret)
+-		return ret;
+-
+ 	device_initialize(&master->dev);
+ 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+ 
+@@ -2820,6 +2816,10 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
+ 	master->dev.dma_parms = parent->dma_parms;
+ 
++	ret = i3c_bus_init(i3cbus, master->dev.of_node);
++	if (ret)
++		goto err_put_dev;
++
+ 	ret = of_populate_i3c_bus(master);
+ 	if (ret)
+ 		goto err_put_dev;
 -- 
 2.51.0
 
