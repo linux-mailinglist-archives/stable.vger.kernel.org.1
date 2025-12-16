@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3630CC22E0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E13CC2BAD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92743301618C
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:21:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28170309506A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C830734106A;
-	Tue, 16 Dec 2025 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD583563C6;
+	Tue, 16 Dec 2025 12:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYGjEqav"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmKqllS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77329340DB7;
-	Tue, 16 Dec 2025 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E0835580A;
+	Tue, 16 Dec 2025 12:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884059; cv=none; b=kJ+ZSHGZTXnKbGuBSat6vAjIeFZ210NVwiaYsR0Hzr0cZ4EKZq2MmC9AJ+0v7qqRGg3i1BuKoaCY6Zaw009Om+lxoGVTW11vOHo1keLcVbQgyEXitEzqhbqwfkbR4Itqck4RdXMe+BCbAOehSg9UCXif0rL0hD4t4Zgdqt2MbzE=
+	t=1765887711; cv=none; b=IBps4WsTkH5uJbh7Ozfta3YjnKIjmJF11kE2EkIz/LomCLl3GibPwV98Rhg1zGqlF0IKCDl7Jyrwhg5uHzMws9rxdReUUcE6fNJfrbXIzzz6g5We1Enb46QJLpyNvEfoEF4XOQgs7+y0OoFYTM0XVCmFzEWpcSlI+hd+ogw4MVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884059; c=relaxed/simple;
-	bh=I1IL/GHyjsREwf9GgtRZyvPXhg0ttMze6t6fI1CR8IM=;
+	s=arc-20240116; t=1765887711; c=relaxed/simple;
+	bh=KKZE3T3XTFMGsmh9i0AIpbipDrxFXNNLqCJMxOgux70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpYbOwGivHWbfbZRuPLklUJNNzpWL9tCpVZr2Y9jqJrfRkclSuqZI8RQ6fWwbIrapBOHpA8cEA7sFMn6U0f8gKQYWfeO+PTDIJYs62jSyA+0CdLzOzG9pyikkcFZ69KcjtfTGzqSvCzebtJlXofnDodktoPT5At7cBBquebMbRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYGjEqav; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE7CC4CEF1;
-	Tue, 16 Dec 2025 11:20:58 +0000 (UTC)
+	 MIME-Version; b=r1noedRfS+X4yo5FA4P5orUROK9n6oNuHQbHyiXfURb6kWfst9kmvKDPW5TrdFvIQz0ZgW+vbSf79XdQGor5hv6obZaNuzfnrHbBF6/ictVKLIizC+C4seczdkasHOYjNOMliTVTp/B/rtxPCWjjRrtwZ9VkjFvJaFfpJFBrA+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmKqllS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47FC4CEF1;
+	Tue, 16 Dec 2025 12:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884059;
-	bh=I1IL/GHyjsREwf9GgtRZyvPXhg0ttMze6t6fI1CR8IM=;
+	s=korg; t=1765887711;
+	bh=KKZE3T3XTFMGsmh9i0AIpbipDrxFXNNLqCJMxOgux70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYGjEqav4C0GIMpiHizLsrH8ec9VNx6LoBcCxmyDwg6912qpCUm0iFesabveac84g
-	 +kyuqhZSIxnvRV1yg2CBF3i/VPtGT+C0++Dw9pw3x7VLdqlL6eOr9HQP4zbo0uHa8j
-	 qeVnYP9LPunwFYjFHasq2S/gZVmeaAZQJ7M2Kz6k=
+	b=gmKqllS4gZPXBoCA6Gg+w7/oj3UTN0LFG/QcDChuTNmfxzs3Zh0/oaPii6NzKcVsk
+	 u/fH+10GJY9+fMtuf6+5222mjJzfKnh7irNz3iaq7ZwrghKaggylLEjm4Bq0KRXF3t
+	 DgDsvIvxgoBPaU6cUYeDaKu23NR3dL/ICv4DuRnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/354] ARM: dts: renesas: r9a06g032-rzn1d400-db: Drop invalid #cells properties
+Subject: [PATCH 6.18 281/614] crypto: iaa - Fix incorrect return value in save_iaa_wq()
 Date: Tue, 16 Dec 2025 12:10:48 +0100
-Message-ID: <20251216111323.859198886@linuxfoundation.org>
+Message-ID: <20251216111411.555156930@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit ca7fffb6e92a7c93604ea2bae0e1c89b20750937 ]
+[ Upstream commit 76ce17f6f7f78ab79b9741388bdb4dafa985b4e9 ]
 
-The 'ethernet-ports' node in the SoC DTSI handles them already. Fixes:
+The save_iaa_wq() function unconditionally returns 0, even when an error
+is encountered. This prevents the error code from being propagated to the
+caller.
 
-    arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dtb: switch@44050000 (renesas,r9a06g032-a5psw): Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
-	    from schema $id: http://devicetree.org/schemas/net/dsa/renesas,rzn1-a5psw.yaml#
+Fix this by returning the 'ret' variable, which holds the actual status
+of the operations within the function.
 
-Fixes: 5b6d7c3c5861ad4a ("ARM: dts: r9a06g032-rzn1d400-db: Add switch description")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251007104624.19786-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: ea7a5cbb43696 ("crypto: iaa - Add Intel IAA Compression Accelerator crypto driver core")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
-index 31cdca3e623cd..5fa7acce47149 100644
---- a/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
-+++ b/arch/arm/boot/dts/renesas/r9a06g032-rzn1d400-db.dts
-@@ -126,8 +126,6 @@ &rtc0 {
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 23f585219fb4b..d0058757b0000 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -805,7 +805,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 	if (!cpus_per_iaa)
+ 		cpus_per_iaa = 1;
+ out:
+-	return 0;
++	return ret;
+ }
  
- &switch {
- 	status = "okay";
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pins_eth3>, <&pins_eth4>, <&pins_mdio1>;
+ static void remove_iaa_wq(struct idxd_wq *wq)
 -- 
 2.51.0
 
