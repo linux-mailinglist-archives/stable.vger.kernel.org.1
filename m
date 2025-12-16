@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8C1CC32AC
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:24:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87ED2CC2E72
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1320E303BDC7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 263B03204446
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E2D376BF1;
-	Tue, 16 Dec 2025 12:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC95B345CB1;
+	Tue, 16 Dec 2025 11:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GR/RuSgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEBnaRy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E639393DC5;
-	Tue, 16 Dec 2025 12:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D2B3451BF;
+	Tue, 16 Dec 2025 11:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888088; cv=none; b=VDKoLUkzdEQMI6VVjUK3Qtlbo0BqAZLa8IErmdPuISoMyO+6BJSIGEykhCPpGltGk3obTGv7HVbAbcgjmC23jzTSktKiG07885ne92c0fP4c2xzzdIAXmHmIucrY7krcbCE4YE7qrs0BuvbWAOavqlZTiR7O0eyk2d1NdEyUmmY=
+	t=1765886272; cv=none; b=HtCDJwdYUxXVSc+isRXMoKOY1D2Mawut8n8jsNBt4WlsfmfnB5lCiBVG4YhkDhRCojtC3eTGJR4hFnv3zR7TaWvx1SQxdm9dP+esRVaw86YJsjsn2q4YonA/cSflFzwfe3RRLhytRMMJbn+yBSAyIpe1esN0QZMatv0CaAOpBY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888088; c=relaxed/simple;
-	bh=Kolbi0F/hwU2Sh2aDHXG+0/g7gZRjThHcPV0GbvxeQU=;
+	s=arc-20240116; t=1765886272; c=relaxed/simple;
+	bh=EyRCKv2NApV1PQLD6KgCY4F4cZu0xbRRWn1g6uBc1KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCvhNw6sMcqtN+LR5uj4PPcDgIT7OjQf+bmi91Hpy2hAF712WEW809XtH8cbiWZt4+kwDmR3jjK8DCXRTKnzsXACh+ev0poDZvVa5hGnQWR71BtRJbgzncpIbCH+9A3eTB3C/5vR+aIrJY2zoALeD0etIiignaxcruY726ZacGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GR/RuSgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013B5C4CEF1;
-	Tue, 16 Dec 2025 12:28:07 +0000 (UTC)
+	 MIME-Version; b=iYcL87YBt1niL3FFvGw30zW809zhMrDQcLrlsLFKXZzeX39MwVE9U/uuHAyHdMOuSUxnu5ZH6iBhAHcOFGH/NT5Rn/xz4LeqcAuLHpkGBtRmX00bsk8KS87J9CedREkHdUmReWOYvCZWyiodtJqgtr5+Q2gwmv3W3/+3t6dW7uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEBnaRy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE14DC4CEF1;
+	Tue, 16 Dec 2025 11:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888088;
-	bh=Kolbi0F/hwU2Sh2aDHXG+0/g7gZRjThHcPV0GbvxeQU=;
+	s=korg; t=1765886272;
+	bh=EyRCKv2NApV1PQLD6KgCY4F4cZu0xbRRWn1g6uBc1KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GR/RuSgEcStbAXOGCsWwpZ/5If2gvkaayw4lktADMnMIfxnYjDMthr1n5PuCGz/tw
-	 o/MTM7N3mDaN1NpvzBUfKXd02p/KtgMwTVL7j/GYIjglaQFbErSNzB+1B+KD57mgvp
-	 DVT8VMQSkUAxFJDllsV0yV3vtSGTcHVFF2hdv24w=
+	b=LEBnaRy8iZZ9yjhs5aigBn1QkCxrWXaQscgKULUxvKEPs0iP1iZ8ptLehex5ScIwH
+	 ICTWd+g4J3uglu3NzMppxCtc5ix3h1LReuofKjDQnU5EIW+smfLHATOMGc/q8+w4Qa
+	 nOu8pvNG/Md+Xt7U/I1+lPKbrdvqY3+3MZCsJMtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijun Wang <jijun.wang@intel.com>,
-	Jay Bhat <jay.bhat@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Akash Goel <akash.goel@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 429/614] RDMA/irdma: Fix SRQ shadow area address initialization
+Subject: [PATCH 6.17 355/507] drm/panthor: Avoid adding of kernel BOs to extobj list
 Date: Tue, 16 Dec 2025 12:13:16 +0100
-Message-ID: <20251216111416.918770056@linuxfoundation.org>
+Message-ID: <20251216111358.318068712@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijun Wang <jijun.wang@intel.com>
+From: Akash Goel <akash.goel@arm.com>
 
-[ Upstream commit 01dad9ca37c60d08f71e2ef639875ae895deede6 ]
+[ Upstream commit ce04ec03a9c2c4f3e60e26f21311b25d5a478208 ]
 
-Fix SRQ shadow area address initialization.
+The kernel BOs unnecessarily got added to the external objects list
+of drm_gpuvm, when mapping to GPU, which would have resulted in few
+extra CPU cycles being spent at the time of job submission as
+drm_exec_until_all_locked() loop iterates over all external objects.
 
-Fixes: 563e1feb5f6e ("RDMA/irdma: Add SRQ support")
-Signed-off-by: Jijun Wang <jijun.wang@intel.com>
-Signed-off-by: Jay Bhat <jay.bhat@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-10-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Kernel BOs are private to a VM and so they share the dma_resv object of
+the dummy GEM object created for a VM. Use of DRM_EXEC_IGNORE_DUPLICATES
+flag ensured the recursive locking of the dummy GEM object was ignored.
+Also no extra space got allocated to add fences to the dma_resv object
+of dummy GEM object. So no other impact apart from few extra CPU cycles.
+
+This commit sets the pointer to dma_resv object of GEM object of
+kernel BOs before they are mapped to GPU, to prevent them from
+being added to external objects list.
+
+v2: Add R-bs and fixes tags
+
+Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251120172118.2741724-1-akash.goel@arm.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_gem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index afccd9f08b8a5..b8655504da290 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2307,8 +2307,8 @@ static int irdma_setup_kmode_srq(struct irdma_device *iwdev,
- 	ukinfo->srq_size = depth >> shift;
- 	ukinfo->shadow_area = mem->va + ring_size;
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index 6830a89a7c10b..aca09bc449fc1 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -145,6 +145,9 @@ panthor_kernel_bo_create(struct panthor_device *ptdev, struct panthor_vm *vm,
+ 	bo = to_panthor_bo(&obj->base);
+ 	kbo->obj = &obj->base;
+ 	bo->flags = bo_flags;
++	bo->exclusive_vm_root_gem = panthor_vm_root_gem(vm);
++	drm_gem_object_get(bo->exclusive_vm_root_gem);
++	bo->base.base.resv = bo->exclusive_vm_root_gem->resv;
  
--	info->shadow_area_pa = info->srq_pa + ring_size;
- 	info->srq_pa = mem->pa;
-+	info->shadow_area_pa = info->srq_pa + ring_size;
+ 	if (vm == panthor_fw_vm(ptdev))
+ 		debug_flags |= PANTHOR_DEBUGFS_GEM_USAGE_FLAG_FW_MAPPED;
+@@ -168,9 +171,6 @@ panthor_kernel_bo_create(struct panthor_device *ptdev, struct panthor_vm *vm,
+ 		goto err_free_va;
  
- 	return 0;
- }
+ 	kbo->vm = panthor_vm_get(vm);
+-	bo->exclusive_vm_root_gem = panthor_vm_root_gem(vm);
+-	drm_gem_object_get(bo->exclusive_vm_root_gem);
+-	bo->base.base.resv = bo->exclusive_vm_root_gem->resv;
+ 	return kbo;
+ 
+ err_free_va:
 -- 
 2.51.0
 
