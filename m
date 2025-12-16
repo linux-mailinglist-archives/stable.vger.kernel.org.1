@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-202489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86679CC4A0A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:19:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7814FCC34B9
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7BDD3086355
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9852C305BEC5
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374F8376BE3;
-	Tue, 16 Dec 2025 12:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D79B36CE01;
+	Tue, 16 Dec 2025 12:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSN2v9/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdXYCA4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3751376BDD;
-	Tue, 16 Dec 2025 12:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F1836CDFA;
+	Tue, 16 Dec 2025 12:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888069; cv=none; b=rZ6rHD5qB0xNZTGdcZtSUIMtUy7kkiWkpkdF2XkCDinOG5ZC4ugs6TtajyVTSLHnI83aGAIEEkiPQDiCd0DtZPC3OYlbX4AzN9KJovVXHCyuqdp96Nm5kkK+nY1Q50iCuAgcR5FOOQtqo0X+WK5U8dkBDPP56GP5L0PtBDlJVDk=
+	t=1765887963; cv=none; b=nMN/67bda9IZkg0QnNnaDfVJeYWfvTqEAAPXXRMZ83QRT16DcED7eHoe7u2aFSaBfYBuDkPO/lKd3WbL7e0Xbh+xgoWscmaCV6aIwyFsKCc538jUkuSZC5uz1IHFEWzx2SdLYgyGgftYhslD3dcunJNtYqMqlzjIuRdn1EO5ago=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888069; c=relaxed/simple;
-	bh=aW/QI9BHT/aQPopGr6c+3EltXseIbcPNV6WJ1kuAHBI=;
+	s=arc-20240116; t=1765887963; c=relaxed/simple;
+	bh=YI58U6olesAR1YqwGa3MC7P0ORY46LyqXApz4Os1d6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2jrgzWiEh0VqzMvIiKJEkYPY0Yv4VOBQihlhWgL9ZqcBxLN32qUpkgVfpDOHddhMtF94xb0DpVYLNkBRCZC+WU4+9wEzv53s/AMh7U35pbtMLSrNMh3QgvYi0fxxKi1uSr2SlB167ZIp9OiWKYFq2UXmVJnXnnz1OsUEXrAAwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSN2v9/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6684AC4CEF1;
-	Tue, 16 Dec 2025 12:27:48 +0000 (UTC)
+	 MIME-Version; b=NAhbcpucYrrQlYPej+/zXdnRs2O9SqYitKR9LZiYR3pwuN6Gs3Dnhoa8kxorKb7waIFrXbNRU21Ijpuo8LSdVx4F7pHoyicT2GSf3iidXJAWK3igQNWt45Ch7gGBBofllsbQXbJo8PgygwCEh+o+0RRWJubSx7/AtWStX2ZdhhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdXYCA4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5FDC4CEF1;
+	Tue, 16 Dec 2025 12:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888068;
-	bh=aW/QI9BHT/aQPopGr6c+3EltXseIbcPNV6WJ1kuAHBI=;
+	s=korg; t=1765887962;
+	bh=YI58U6olesAR1YqwGa3MC7P0ORY46LyqXApz4Os1d6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSN2v9/wKzVFpRXw5LjmKmo30AARec2Hg/fEMve2KBN1TNUSRkAuXCl2PzjkGQB7S
-	 AqAZRxQsnrFWHI6wIOjQ01puD96C+4zOpzvrzzv2B6knr++tlA1Q33hxHXI7qHIRmU
-	 Pb6A0/qcG/8jAvN3uiyQlzGdUVoQB2JXXPwrqXVE=
+	b=OdXYCA4zcTpwsQmOG6f+n/w4VwueqIpU7nqTlZkY/iTALt78stqyEGcEWNKuS3mbY
+	 yvqN1txJUaLAxQq5K9lZpfcaMSo9ZJTyxqBN3JLlQZwSnwv+RIzwOANKhtFgp31nbL
+	 3kDgxO7WXhKXcS1/pmFSAD9IGpGU1MmTsWtnzn4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,9 +44,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 390/614] wifi: mt76: mt7996: fix several fields in mt7996_mcu_bss_basic_tlv()
-Date: Tue, 16 Dec 2025 12:12:37 +0100
-Message-ID: <20251216111415.502628858@linuxfoundation.org>
+Subject: [PATCH 6.18 391/614] wifi: mt76: mt7996: fix teardown command for an MLD peer
+Date: Tue, 16 Dec 2025 12:12:38 +0100
+Message-ID: <20251216111415.538788103@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -67,80 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit bb705a606734e1ce0ff17a4f368a896757ba686d ]
+[ Upstream commit e077071e7ac48d5453072f615d51629891c5b90d ]
 
-Fix several fields in mt7996_mcu_bss_basic_tlv() that were not obtained
-from the correct link. Without this patch, the MLD station interface
-does not function properly.
+For an MLD peer, we only need to call the teardown command when removing
+the last link, and there's no need to call mt7996_mcu_add_sta() for the
+earlier links.
 
-Fixes: 34a41bfbcb71 ("wifi: mt76: mt7996: prepare mt7996_mcu_add_dev/bss_info for MLO support")
+Fixes: c1d6dd5d03eb ("wifi: mt76: mt7996: Add mt7996_mcu_teardown_mld_sta rouine")
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-5-shayne.chen@mediatek.com
+Link: https://patch.msgid.link/20251106064203.1000505-6-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 21 ++++++++++---------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 9af3c48707ab7..21be88e76c655 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1034,7 +1034,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	struct mt76_connac_bss_basic_tlv *bss;
- 	u32 type = CONNECTION_INFRA_AP;
- 	u16 sta_wlan_idx = wlan_idx;
--	struct ieee80211_sta *sta;
- 	struct tlv *tlv;
- 	int idx;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 2b52d057287a1..aa46ea707b406 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1206,13 +1206,13 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 				mt7996_mac_twt_teardown_flow(dev, link,
+ 							     msta_link, i);
  
-@@ -1045,14 +1044,18 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 		break;
- 	case NL80211_IFTYPE_STATION:
- 		if (enable) {
-+			struct ieee80211_sta *sta;
-+
- 			rcu_read_lock();
--			sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
--			/* TODO: enable BSS_INFO_UAPSD & BSS_INFO_PM */
-+			sta = ieee80211_find_sta(vif, link_conf->bssid);
- 			if (sta) {
--				struct mt76_wcid *wcid;
-+				struct mt7996_sta *msta = (void *)sta->drv_priv;
-+				struct mt7996_sta_link *msta_link;
-+				int link_id = link_conf->link_id;
- 
--				wcid = (struct mt76_wcid *)sta->drv_priv;
--				sta_wlan_idx = wcid->idx;
-+				msta_link = rcu_dereference(msta->link[link_id]);
-+				if (msta_link)
-+					sta_wlan_idx = msta_link->wcid.idx;
- 			}
- 			rcu_read_unlock();
- 		}
-@@ -1069,8 +1072,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_BASIC, sizeof(*bss));
- 
- 	bss = (struct mt76_connac_bss_basic_tlv *)tlv;
--	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
--	bss->dtim_period = link_conf->dtim_period;
- 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
- 	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
- 	bss->conn_type = cpu_to_le32(type);
-@@ -1090,10 +1091,10 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 
- 	memcpy(bss->bssid, link_conf->bssid, ETH_ALEN);
- 	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
--	bss->dtim_period = vif->bss_conf.dtim_period;
-+	bss->dtim_period = link_conf->dtim_period;
- 	bss->phymode = mt76_connac_get_phy_mode(phy, vif,
- 						chandef->chan->band, NULL);
--	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, &vif->bss_conf,
-+	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, link_conf,
- 							chandef->chan->band);
- 
- 	return 0;
+-			if (sta->mlo && links == BIT(link_id)) /* last link */
+-				mt7996_mcu_teardown_mld_sta(dev, link,
+-							    msta_link);
+-			else
++			if (!sta->mlo)
+ 				mt7996_mcu_add_sta(dev, link_conf, link_sta,
+ 						   link, msta_link,
+ 						   CONN_STATE_DISCONNECT, false);
++			else if (sta->mlo && links == BIT(link_id)) /* last link */
++				mt7996_mcu_teardown_mld_sta(dev, link,
++							    msta_link);
+ 			msta_link->wcid.sta_disabled = 1;
+ 			msta_link->wcid.sta = 0;
+ 			links = links & ~BIT(link_id);
 -- 
 2.51.0
 
