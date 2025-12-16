@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-202236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877C1CC2E7B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:47:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65285CC25B7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3144730EF5BA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A159302C70F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ECB3559E4;
-	Tue, 16 Dec 2025 12:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBE234D4C0;
+	Tue, 16 Dec 2025 11:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfi0pZk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvgK7XgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF63357704;
-	Tue, 16 Dec 2025 12:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD95D34D3B8;
+	Tue, 16 Dec 2025 11:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887252; cv=none; b=hf4NogCxLY0UFzSD1+iM4zAJXgsrnCJaQpMsieSIh8v2zCpcQpVjtP9nfICO0XgiJIrBMC0E1wAtyaseGXg/d6byYTJ7a0E0lGzApq775ollIbiRDzKUT4wfdAJVmeaccHTop8cQH8JBMoWQmJy1O9vESIqNJfzV0ubP9UFwWfM=
+	t=1765885305; cv=none; b=qHA3F4nDvXBVDA+i6M/RpEFbiyKvyRsT8to1cq8veGaqe4OaTAPq+khNOUwFwuO12mMO2bBEVd1evRagbaN6ggWW1AO7I7NtVgqVOQ7zwnK2sXqe3LZxcWwND4XSphF3dtEVL5uQrJwynRX60Ts5wy2Ss0isuLEPlouXwmaDpd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887252; c=relaxed/simple;
-	bh=dB5Yuubj1APxhSpU1LFd1fF+EUDym56HDgsO9HMjLK4=;
+	s=arc-20240116; t=1765885305; c=relaxed/simple;
+	bh=UQSx2RLzo/BMvMGicWMS08D7S1LMfnNH4EYpfAnBwwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ej+LzQOIL7QjJkic7VvLkoR6fcT8NJhsUDUXTN3BbWA0okp5lcyh4mfS6XIP/skVSJKzcp1MnwRvuH1cBQYCg2p0zZWZO4ZLTVaPNrTmDduyvsKGA9Rg7jqPR0Zur9n08pARj9IqB/S5GiXqS2n9/cRFtfQaLIArylEDE4YP6FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfi0pZk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B13C4CEF1;
-	Tue, 16 Dec 2025 12:14:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dBkaQ45+w5JC3bLY7aBTR3nu5xsmJ5gw1V6t6bkvpkLjpgP8Yjc2oh8v+0j2rehhDAxqxzO2hqrVpBvJ6nnV35HKdNsNP/JpGyYoicfXm4X/lMPVf2EY7Rp+57E0VRglpt9p1tOKyg+jWOiddHCuApeKliqaJ8onZfbYqk0/Hdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvgK7XgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C29C4CEF1;
+	Tue, 16 Dec 2025 11:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887252;
-	bh=dB5Yuubj1APxhSpU1LFd1fF+EUDym56HDgsO9HMjLK4=;
+	s=korg; t=1765885305;
+	bh=UQSx2RLzo/BMvMGicWMS08D7S1LMfnNH4EYpfAnBwwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfi0pZk11KI0osRLNCDYkx+yQWuiDlO1W8Qiw/7pSPHLLZtY9wECFrIBLZ16KwnoF
-	 9k6FOERfai0BMovLbFqG+enGpgH5sCaQt3pzeK3ZmVod0sp/iP1ijAtXbik0lMclnm
-	 Klw+EydZl21hAT28JzVMGuEA9iEISrTmoUD2MkKo=
+	b=PvgK7XgCM5EVadx76/YiwSEpYgTcGXim7JvVwHl6pHGg7/u2dRBhxuFX9X1Vk8zsf
+	 16W8FRgGLVPei/NSvDGDpKFqUtUVI8SAiJOBMrlEEKDwxmHXC1ZRE+z1146MM1BwUc
+	 /S1zBJRPfvzqdQB+KQS3h4am35QkP6vNPb7DKHhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Song Liu <song@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 140/614] bpf: Fix stackmap overflow check in __bpf_get_stackid()
+Subject: [PATCH 6.17 066/507] arm64: dts: exynos: gs101: fix sysreg_apm reg property
 Date: Tue, 16 Dec 2025 12:08:27 +0100
-Message-ID: <20251216111406.406397404@linuxfoundation.org>
+Message-ID: <20251216111347.935123947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 23f852daa4bab4d579110e034e4d513f7d490846 ]
+[ Upstream commit 4348c22a4f15dbef1314f1a353d7f053b24e9ace ]
 
-Syzkaller reported a KASAN slab-out-of-bounds write in __bpf_get_stackid()
-when copying stack trace data. The issue occurs when the perf trace
- contains more stack entries than the stack map bucket can hold,
- leading to an out-of-bounds write in the bucket's data array.
+Both the start address and size are incorrect for the apm_sysreg DT
+node. Update to match the TRM (rather than how it was defined
+downstream).
 
-Fixes: ee2a098851bf ("bpf: Adjust BPF stack helper functions to accommodate skip > 0")
-Reported-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/bpf/20251025192941.1500-1-contact@arnaud-lcm.com
-
-Closes: https://syzkaller.appspot.com/bug?extid=c9b724fbb41cf2538b7b
+Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20251013-automatic-clocks-v1-5-72851ee00300@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/stackmap.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/exynos/google/gs101.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 5e9ad050333c2..2365541c81dd1 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -251,8 +251,8 @@ static long __bpf_get_stackid(struct bpf_map *map,
- {
- 	struct bpf_stack_map *smap = container_of(map, struct bpf_stack_map, map);
- 	struct stack_map_bucket *bucket, *new_bucket, *old_bucket;
-+	u32 hash, id, trace_nr, trace_len, i, max_depth;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
--	u32 hash, id, trace_nr, trace_len, i;
- 	bool user = flags & BPF_F_USER_STACK;
- 	u64 *ips;
- 	bool hash_matches;
-@@ -261,7 +261,8 @@ static long __bpf_get_stackid(struct bpf_map *map,
- 		/* skipping more than usable stack trace */
- 		return -EFAULT;
+diff --git a/arch/arm64/boot/dts/exynos/google/gs101.dtsi b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+index c0f8c25861a9d..668de6b2b9def 100644
+--- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
++++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+@@ -1401,9 +1401,9 @@ cmu_apm: clock-controller@17400000 {
+ 			clock-names = "oscclk";
+ 		};
  
--	trace_nr = trace->nr - skip;
-+	max_depth = stack_map_calculate_max_depth(map->value_size, stack_map_data_size(map), flags);
-+	trace_nr = min_t(u32, trace->nr - skip, max_depth - skip);
- 	trace_len = trace_nr * sizeof(u64);
- 	ips = trace->ip + skip;
- 	hash = jhash2((u32 *)ips, trace_len / sizeof(u32), 0);
-@@ -390,15 +391,11 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
- 		return -EFAULT;
+-		sysreg_apm: syscon@174204e0 {
++		sysreg_apm: syscon@17420000 {
+ 			compatible = "google,gs101-apm-sysreg", "syscon";
+-			reg = <0x174204e0 0x1000>;
++			reg = <0x17420000 0x10000>;
+ 		};
  
- 	nr_kernel = count_kernel_ip(trace);
-+	__u64 nr = trace->nr; /* save original */
- 
- 	if (kernel) {
--		__u64 nr = trace->nr;
--
- 		trace->nr = nr_kernel;
- 		ret = __bpf_get_stackid(map, trace, flags);
--
--		/* restore nr */
--		trace->nr = nr;
- 	} else { /* user */
- 		u64 skip = flags & BPF_F_SKIP_FIELD_MASK;
- 
-@@ -409,6 +406,10 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
- 		flags = (flags & ~BPF_F_SKIP_FIELD_MASK) | skip;
- 		ret = __bpf_get_stackid(map, trace, flags);
- 	}
-+
-+	/* restore nr */
-+	trace->nr = nr;
-+
- 	return ret;
- }
- 
+ 		pmu_system_controller: system-controller@17460000 {
 -- 
 2.51.0
 
