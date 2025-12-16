@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-202274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5154DCC3DF7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:20:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5185DCC316D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBD40304557A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0EE0B3054C25
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C44536828C;
-	Tue, 16 Dec 2025 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C907D357A4D;
+	Tue, 16 Dec 2025 12:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVMetHUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW64TyQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA595368289;
-	Tue, 16 Dec 2025 12:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845A9355808;
+	Tue, 16 Dec 2025 12:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887374; cv=none; b=EQAWmuCv6Dx2tAgV4PmHAf0wejNooU4RlNeeK9NHySEsXYiWyZsKsOzSFkPv8hq5sAbZeljzT02aAkfOutPf22E3NoBanzfoGZ1Nu/WyAu7bxKQMy66AxId/TFnmbhWyfZrMknMX/+AzJgOaudysohZyP231tJzbiUoMmnP1RPM=
+	t=1765887258; cv=none; b=cLfhHEgm77CZLaXDN74X76VvWTTvOeW0JaRF28mKKziJ/6/c0c0WBFiCf+PdtpUAZy5fZeW3MJH1M9VeZcylHQkWbrpoqEL46oZy4EhY5nXlh8IOXZlr8n6LuwI0rSXCHjklwgG0kxM8aGEJ1ekZfGj0KCAS6wGqFLrEPvpQQ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887374; c=relaxed/simple;
-	bh=k31IFOoRKxtc8pLlet0xN4ukyiTxiNvYjvsX6nb7Ycs=;
+	s=arc-20240116; t=1765887258; c=relaxed/simple;
+	bh=4ZNb+gOF025MZr9gPbktjoE0fteH/nBRF2p5x+5vK64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNONvHBWIhxpJpNzbpayvtlcGyLEQL+aVlypmHHaZ3qGqylURpsb9C48rwF0MCm001qsjEG21m4NMt2+8U3w+m04HXuI07uiVVwbrHpf79aatyLR8LflBoTVd3cnnXEaJGouOsAywIqDEk+1FmHG73h4c9e8MqMGPNS/e7WpQNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVMetHUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F03C4CEF5;
-	Tue, 16 Dec 2025 12:16:13 +0000 (UTC)
+	 MIME-Version; b=OOPlcg3/91FHHv4mYZvZytv8UQUoYK8FBrpEvFoaMbbwdCdhICXCi3OAL4nkqSyusJGjfmqBgClrMJWfQTl8Vvio5ffnnQDTSDOtNj8ROTpUvnM3kZtJI0uCv4Q8CUeLCVaX4eo35lk7iyS11re8SEF+X5gnZzXyqhF1MMrhWZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW64TyQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB3BC4CEF1;
+	Tue, 16 Dec 2025 12:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887374;
-	bh=k31IFOoRKxtc8pLlet0xN4ukyiTxiNvYjvsX6nb7Ycs=;
+	s=korg; t=1765887258;
+	bh=4ZNb+gOF025MZr9gPbktjoE0fteH/nBRF2p5x+5vK64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVMetHUCyztYrOQ9MkHTPmEs0BkYvpOH00gqhauc07mNIxaP/MhSkAzc1+JswkQLT
-	 2qoDWiRTQ6OVowKVn2P8Bv0ZLQt4pD/0KteQVfBW53kd4ueoH0dth5dkoCcCZvZx2h
-	 9cbwOK6nTHF4IMg8KcG0gCZodUzoDTRwmLXh7Kx4=
+	b=zW64TyQ/jCsLA/zfkde3gSvJfeeWc9Q2w0Xorvh0qDyBaVZy4KAz68mPw73lWFRFo
+	 CH2JV8XiVHnPVrys4Mi1LABQNdRlbQh6H6a9mgit942shihWUxxSn+oC8MiTG7ufOs
+	 cUvw/KNhew44FXOD3Pc4H2tw5i+HsEVy7oCA92oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 167/614] accel/amdxdna: Fix incorrect command state for timed out job
-Date: Tue, 16 Dec 2025 12:08:54 +0100
-Message-ID: <20251216111407.387740631@linuxfoundation.org>
+Subject: [PATCH 6.18 168/614] interconnect: debugfs: Fix incorrect error handling for NULL path
+Date: Tue, 16 Dec 2025 12:08:55 +0100
+Message-ID: <20251216111407.424642090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -64,78 +64,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 6fb7f298883246e21f60f971065adcb789ae6eba ]
+[ Upstream commit 6bfe104fd0f94d0248af22c256ce725ee087157b ]
 
-When a command times out, mark it as ERT_CMD_STATE_TIMEOUT. Any other
-commands that are canceled due to this timeout should be marked as
-ERT_CMD_STATE_ABORT.
+The icc_commit_set() function, used by the debugfs interface, checks
+the validity of the global cur_path pointer using IS_ERR_OR_NULL().
+However, in the specific case where cur_path is NULL, while
+IS_ERR_OR_NULL(NULL) correctly evaluates to true, the subsequent call
+to PTR_ERR(NULL) returns 0.
 
-Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251029193423.2430463-1-lizhi.hou@amd.com
+This causes the function to return a success code (0) instead of an
+error, misleading the user into believing their bandwidth request was
+successfully committed when, in fact, no operation was performed.
+
+Fix this by adding an explicit check to return -EINVAL if cur_path is
+NULL. This prevents silent failures and ensures that an invalid
+operational sequence is immediately and clearly reported as an error.
+
+Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20251010151447.2289779-1-visitorckw@gmail.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c    | 15 +++++++++++++--
- drivers/accel/amdxdna/amdxdna_ctx.h |  1 +
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/interconnect/debugfs-client.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index e9f9b1fa5dc1b..c9f712f0ec00c 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -204,10 +204,13 @@ aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
+diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
+index bc3fd8a7b9eb4..778deeb4a7e8a 100644
+--- a/drivers/interconnect/debugfs-client.c
++++ b/drivers/interconnect/debugfs-client.c
+@@ -117,7 +117,12 @@ static int icc_commit_set(void *data, u64 val)
  
- 	cmd_abo = job->cmd_bo;
+ 	mutex_lock(&debugfs_lock);
  
--	if (unlikely(!data))
-+	if (unlikely(job->job_timeout)) {
-+		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_TIMEOUT);
-+		ret = -EINVAL;
- 		goto out;
-+	}
- 
--	if (unlikely(size != sizeof(u32))) {
-+	if (unlikely(!data) || unlikely(size != sizeof(u32))) {
- 		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_ABORT);
- 		ret = -EINVAL;
- 		goto out;
-@@ -260,6 +263,13 @@ aie2_sched_cmdlist_resp_handler(void *handle, void __iomem *data, size_t size)
- 	int ret = 0;
- 
- 	cmd_abo = job->cmd_bo;
-+
-+	if (unlikely(job->job_timeout)) {
-+		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_TIMEOUT);
+-	if (IS_ERR_OR_NULL(cur_path)) {
++	if (!cur_path) {
 +		ret = -EINVAL;
 +		goto out;
 +	}
 +
- 	if (unlikely(!data) || unlikely(size != sizeof(u32) * 3)) {
- 		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_ABORT);
- 		ret = -EINVAL;
-@@ -362,6 +372,7 @@ aie2_sched_job_timedout(struct drm_sched_job *sched_job)
- 
- 	xdna = hwctx->client->xdna;
- 	trace_xdna_job(sched_job, hwctx->name, "job timedout", job->seq);
-+	job->job_timeout = true;
- 	mutex_lock(&xdna->dev_lock);
- 	aie2_hwctx_stop(xdna, hwctx, sched_job);
- 
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
-index 7cd7a55936f09..8c1d181df6e79 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.h
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.h
-@@ -105,6 +105,7 @@ struct amdxdna_sched_job {
- 	/* user can wait on this fence */
- 	struct dma_fence	*out_fence;
- 	bool			job_done;
-+	bool			job_timeout;
- 	u64			seq;
- 	struct amdxdna_gem_obj	*cmd_bo;
- 	size_t			bo_cnt;
++	if (IS_ERR(cur_path)) {
+ 		ret = PTR_ERR(cur_path);
+ 		goto out;
+ 	}
 -- 
 2.51.0
 
