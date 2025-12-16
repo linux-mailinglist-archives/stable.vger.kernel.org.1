@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-202377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20FBCC2F3B
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24328CC3759
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C1B53164C19
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98B8F300DE80
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C4F352F9E;
-	Tue, 16 Dec 2025 12:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070F734F48E;
+	Tue, 16 Dec 2025 11:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeMhMRim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2xF2xY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20694352F8C;
-	Tue, 16 Dec 2025 12:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C5334F270;
+	Tue, 16 Dec 2025 11:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887701; cv=none; b=eWEw4Z2UiQ5NFKnuhuJ+qGI9kthIuvURdKi6GohG1azyhakesHAwkqhwoKGbV37F0OM2jxSsvGcTXzc2LRQ3PXFtRL0BcbCckHK1Dg302ebbdiLI42IK12i/pMFZ/jsEN9TD3wA3ezAF0FGk8fVG4QqksGmlweMLnRBaa1rclG4=
+	t=1765885658; cv=none; b=pg1e8iuYN7PafxY7xHDKBaeSc9TpsmIcuNRn+MOeFvqKC1ceHhohFBtB7bSnef0dAfLhoKBOhUkZJuKQ3k7W9OA7D16kdE+0/ONE8TUg9+SKlrE1JWLwvNdtLyo72wCgeEXQpe9UwvnbcnzIv/AtU2W9Q8Lefm6IRdpHhdmAofA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887701; c=relaxed/simple;
-	bh=QTpoUfkHvWK6VVzrgYmFSjMCCfjEPRzyVqR27fVpgf4=;
+	s=arc-20240116; t=1765885658; c=relaxed/simple;
+	bh=YuUQnVRQ0Lxzm9jwmr+SwL8Rkg2VgKl86RAeBjK2aXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOXVzVTr1hl3Jz8r00bwUxeRTWrfeAD4DBZZYJO4aecJ5UYfhLvQcAgLuO9jLZC07dh4ROeWzrAcl8QU4Dn5yXRgx2CMgQkNqnXyulZ/xWtmbQeYesE5CWJNhs+8pgUTAz9E4mbV8LwEKKSGJEv4q4fRrYj18sNq/KyRD4Ofd/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeMhMRim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AF2C4CEF1;
-	Tue, 16 Dec 2025 12:21:39 +0000 (UTC)
+	 MIME-Version; b=CfEUNgKtvyN1gff1rubKVS4X9NDPnGZe/HsC53hA+lNaBdpxJXMeWLmIj/mPTJCP+I/5SMzbAHKGget7HGxPKoDNMogTDz8okqjlm+BF6TSWBCxJaQHl/iK4ujLSkIwpnMKqt+SXjna2rTlNIR/+Eup8aBqNKBC+LH7Xn+FWocs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2xF2xY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0BBC4CEF1;
+	Tue, 16 Dec 2025 11:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887701;
-	bh=QTpoUfkHvWK6VVzrgYmFSjMCCfjEPRzyVqR27fVpgf4=;
+	s=korg; t=1765885658;
+	bh=YuUQnVRQ0Lxzm9jwmr+SwL8Rkg2VgKl86RAeBjK2aXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeMhMRimgKWPcN8MeQ+82rnp/IcBnCH+axx1455JjBWyCV91eBv6H/QYVmWCYETbS
-	 vI7cyjwF1yRlJRl9sy1XOy0LRoDHYSCSMlKvGWX9wQns2MTHKpExbglokCh2pjDIwI
-	 rJTdopzZjaTpM9O4eMKr5EWRk2qGG2G4PyRb+PH8=
+	b=W2xF2xY/7FxtS/JHnTUU+HYkvm8sZtpJlZlyHYHVNXUCMyCAr2mXsA/qWOKLyNmBe
+	 PsUsuSgNkaH8A1dL0HsOai+47tA8RysmGKF+A3JrwNCAtpyuFDh0nHOhXwjECueJ7f
+	 czV5Kr05Zc18FTFX/LSe83/1UBo6PMi35IS1Ehk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Avri Altman <avri.altman@sandisk.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Bean Huo <beanhuo@micron.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 278/614] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 5A
+Subject: [PATCH 6.17 204/507] scsi: ufs: core: fix incorrect buffer duplication in ufshcd_read_string_desc()
 Date: Tue, 16 Dec 2025 12:10:45 +0100
-Message-ID: <20251216111411.447450831@linuxfoundation.org>
+Message-ID: <20251216111352.902503290@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Bean Huo <beanhuo@micron.com>
 
-[ Upstream commit 3069ff1930aa71e125874c780ffaa6caeda5800a ]
+[ Upstream commit d794b499f948801f54d67ddbc34a6eac5a6d150a ]
 
-The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 5A is
-vcc_3v3_pmu, which is routed to vcc_3v3_s3 via a zero-ohm resistor. [1]
-Describe this supply.
+The function ufshcd_read_string_desc() was duplicating memory starting
+from the beginning of struct uc_string_id, which included the length and
+type fields. As a result, the allocated buffer contained unwanted
+metadata in addition to the string itself.
 
-[1] https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.4, p.19
+The correct behavior is to duplicate only the Unicode character array in
+the structure. Update the code so that only the actual string content is
+copied into the new buffer.
 
-Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://patch.msgid.link/20251112035133.28753-3-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 5f57704dbcfe ("scsi: ufs: Use kmemdup in ufshcd_read_string_desc()")
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Bean Huo <beanhuo@micron.com>
+Link: https://patch.msgid.link/20251107230518.4060231-3-beanhuo@iokpp.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 428c6f0232a34..041a0fff22ccb 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -233,6 +233,7 @@ eeprom: eeprom@50 {
- 		compatible = "belling,bl24c16a", "atmel,24c16";
- 		reg = <0x50>;
- 		pagesize = <16>;
-+		vcc-supply = <&vcc_3v3_pmu>;
- 	};
- };
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index f69a237262353..9331ee3599050 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3831,7 +3831,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
+ 		str[ret++] = '\0';
  
-@@ -600,7 +601,7 @@ regulator-state-mem {
- 				};
- 			};
- 
--			vcc_3v3_s3: dcdc-reg8 {
-+			vcc_3v3_pmu: vcc_3v3_s3: dcdc-reg8 {
- 				regulator-name = "vcc_3v3_s3";
- 				regulator-always-on;
- 				regulator-boot-on;
+ 	} else {
+-		str = kmemdup(uc_str, uc_str->len, GFP_KERNEL);
++		str = kmemdup(uc_str->uc, uc_str->len, GFP_KERNEL);
+ 		if (!str) {
+ 			ret = -ENOMEM;
+ 			goto out;
 -- 
 2.51.0
 
