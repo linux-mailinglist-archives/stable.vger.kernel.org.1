@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-201436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6E9CC2547
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:38:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539C0CC331B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2B8630819CE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:30:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6CE163055E02
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF51314B91;
-	Tue, 16 Dec 2025 11:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B706357709;
+	Tue, 16 Dec 2025 12:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATR5LgE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxvyCruA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D5E2BE7B2;
-	Tue, 16 Dec 2025 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077AE2D8782;
+	Tue, 16 Dec 2025 12:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884631; cv=none; b=Uj8Qy+bxafXjF/ba2zq0wj8dn9FkrtNYcsG+54IE1UJYkxzmJ8iQRSTeHrINLnTG7dPbXbA8F+Q8k9isdf4CSZfcBOgvO9vlfpCsf+xB+E9j8GW/dLA2fmA+D0NlkDD9oWGn/k2az1Vm/vxrV4/EsF/bz549JldGAM6XlQUGEaw=
+	t=1765888194; cv=none; b=OP/9M0T/SEgU71BsFQH1ZJcTihMQQbGnS5T1AX0F15y2Y/D6lUE3Qps6hRldPBPYT3+WwLeWGHgqpxjiZl/Bl+Hf78DFAKL2Wm1zQw21WTsHEN/R4G3xhSI86pjCJEJ6wfmg2uQxNwf7b3ROPsDiNzeualVxl5am2HRHqayIPQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884631; c=relaxed/simple;
-	bh=wAQeFYIia22l5aaaH6mfNnE4ZZPsDN56IEYbR2Hu4fQ=;
+	s=arc-20240116; t=1765888194; c=relaxed/simple;
+	bh=Ox2eQ77NBe5Bjpa6ijwuhM/aKlRidGvxgTV9tNj4qP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtLYJOXnXYjZjDbposXhPuYEHRZLh6xHNFhGhERq9jbThtmnOjt4uPADLd5sNDcYhiyQjS7LovqJ9a4NtCKWff44Kv8LHca7G2mM619Xh+bdRGNeQsahZiQGu4axR2EOJkJc+T3QPwHu4LqpORZrqrrebHYJ4H7oIxKphqidzKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATR5LgE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7EC4CEF1;
-	Tue, 16 Dec 2025 11:30:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k/R6+RyH2rswLsU3nenLugW3k0TDsOXWt8Ka8Z5dqK9EKRuiAinZfP/ZabBrq4VbZWi1lgNxEE0NIFZXKMdI541s70Ct7tauEQ9Qp1T/w6TxAZAUfG9d/Iw1Q7fC5QjheceJyXU/pwuKUxK/rJudUNdFIrf1/TAVGSdzcwrzln8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxvyCruA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BC9C4CEF1;
+	Tue, 16 Dec 2025 12:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884631;
-	bh=wAQeFYIia22l5aaaH6mfNnE4ZZPsDN56IEYbR2Hu4fQ=;
+	s=korg; t=1765888193;
+	bh=Ox2eQ77NBe5Bjpa6ijwuhM/aKlRidGvxgTV9tNj4qP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATR5LgE6EfZdNpCtcP1TtVUA2HjxeDbdfRGGbe1Z1ZIrenDRTyzFHsP8XmBgLKlOz
-	 On/QahDfduRmph0aH1Yaqe4A2SXcuJJA2yVZdIqj/yL8mRAJLRzA7+Y7rE1QNR6ieH
-	 R/9ESG1o+t8uAN0lYZxEB6q1RRaqLH5+sfiE3ZN4=
+	b=nxvyCruALQRfwQ5R00sm5klRJjJpYWQBr6NJmGpCOJ7Glkd68RUaYhzPe4k41/MgA
+	 aVt/Bd+u5e18zqb8muYT5LCkvtLmcc653Tuz8t0Qh/lPJBGcPxnO8/gwasoXMnuuB7
+	 rkv1fG7M0hqS8u4ur28o8rcI3WMMv8nMYjYkKCo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/354] vhost: Fix kthread worker cgroup failure handling
+Subject: [PATCH 6.18 453/614] selftests/landlock: Fix makefile header list
 Date: Tue, 16 Dec 2025 12:13:40 +0100
-Message-ID: <20251216111330.082780818@linuxfoundation.org>
+Message-ID: <20251216111417.781370366@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Matthieu Buffet <matthieu@buffet.re>
 
-[ Upstream commit f3f64c2eaffbc3169bbe1e5d1e897e6dacc839d1 ]
+[ Upstream commit e61462232a58bddd818fa6a913a9a2e76fd3634f ]
 
-If we fail to attach to a cgroup we are leaking the id. This adds
-a new goto to free the id.
+Make all headers part of make's dependencies computations.
+Otherwise, updating audit.h, common.h, scoped_base_variants.h,
+scoped_common.h, scoped_multiple_domain_variants.h, or wrappers.h,
+re-running make and running selftests could lead to testing stale headers.
 
-Fixes: 7d9896e9f6d0 ("vhost: Reintroduce kthread API and add mode selection")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251101194358.13605-1-michael.christie@oracle.com>
+Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
+Fixes: fefcf0f7cf47 ("selftests/landlock: Test abstract UNIX socket scoping")
+Fixes: 5147779d5e1b ("selftests/landlock: Add wrappers.h")
+Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+Link: https://lore.kernel.org/r/20251027011440.1838514-1-matthieu@buffet.re
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/landlock/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 71604668e53f6..276dded52212c 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -798,11 +798,13 @@ static int vhost_kthread_worker_create(struct vhost_worker *worker,
+diff --git a/tools/testing/selftests/landlock/Makefile b/tools/testing/selftests/landlock/Makefile
+index a3f449914bf93..044b83bde16eb 100644
+--- a/tools/testing/selftests/landlock/Makefile
++++ b/tools/testing/selftests/landlock/Makefile
+@@ -4,7 +4,7 @@
  
- 	ret = vhost_attach_task_to_cgroups(worker);
- 	if (ret)
--		goto stop_worker;
-+		goto free_id;
+ CFLAGS += -Wall -O2 $(KHDR_INCLUDES)
  
- 	worker->id = id;
- 	return 0;
+-LOCAL_HDRS += common.h
++LOCAL_HDRS += $(wildcard *.h)
  
-+free_id:
-+	xa_erase(&dev->worker_xa, id);
- stop_worker:
- 	vhost_kthread_do_stop(worker);
- 	return ret;
+ src_test := $(wildcard *_test.c)
+ 
 -- 
 2.51.0
 
