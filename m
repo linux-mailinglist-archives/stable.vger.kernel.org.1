@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B52ECC22DA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20FBCC2F3B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6F63308634A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C1B53164C19
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDC834105B;
-	Tue, 16 Dec 2025 11:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C4F352F9E;
+	Tue, 16 Dec 2025 12:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUpzpHDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeMhMRim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8C534104B;
-	Tue, 16 Dec 2025 11:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20694352F8C;
+	Tue, 16 Dec 2025 12:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884049; cv=none; b=VNdu/tyR8yxA7ygjnywBz6gGTPZ5oJqX2uaS3EJByhMXk1Zzt6yTvSfSG7HeAGNilaEJVhATqoIhrUW9WCwiyv0bYS9NXq1tvI6IUI0tDqR+yd1/W/rDQvpChqxZIiNi14eTAJt/VVKEWsq257gMbN+UbvxEiD2R7Fyu/UZ/5bA=
+	t=1765887701; cv=none; b=eWEw4Z2UiQ5NFKnuhuJ+qGI9kthIuvURdKi6GohG1azyhakesHAwkqhwoKGbV37F0OM2jxSsvGcTXzc2LRQ3PXFtRL0BcbCckHK1Dg302ebbdiLI42IK12i/pMFZ/jsEN9TD3wA3ezAF0FGk8fVG4QqksGmlweMLnRBaa1rclG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884049; c=relaxed/simple;
-	bh=yavK9OLnosTymexrC0YSQiNr/n75mRmOeN3e2+q7L9s=;
+	s=arc-20240116; t=1765887701; c=relaxed/simple;
+	bh=QTpoUfkHvWK6VVzrgYmFSjMCCfjEPRzyVqR27fVpgf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVEB9cjnhK7C2SQzCRz9LYpJJL+dozo2+pix8jdk9+Et4SChymAb4PcE2PpNdJUos76ynZcl+mA498LUQYaKixvRGjWptV6PzSNhwKU6akWkJxG58svJPH1dH0mDLBz5VcyaLdcFtlTAUI1q6v/a3Y6o7AQVIKJAO5G2iye+Kgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUpzpHDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F11C4CEF1;
-	Tue, 16 Dec 2025 11:20:49 +0000 (UTC)
+	 MIME-Version; b=NOXVzVTr1hl3Jz8r00bwUxeRTWrfeAD4DBZZYJO4aecJ5UYfhLvQcAgLuO9jLZC07dh4ROeWzrAcl8QU4Dn5yXRgx2CMgQkNqnXyulZ/xWtmbQeYesE5CWJNhs+8pgUTAz9E4mbV8LwEKKSGJEv4q4fRrYj18sNq/KyRD4Ofd/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeMhMRim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AF2C4CEF1;
+	Tue, 16 Dec 2025 12:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884049;
-	bh=yavK9OLnosTymexrC0YSQiNr/n75mRmOeN3e2+q7L9s=;
+	s=korg; t=1765887701;
+	bh=QTpoUfkHvWK6VVzrgYmFSjMCCfjEPRzyVqR27fVpgf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUpzpHDSI9ZLDkZfQmGPwU2d+2U32F5JopK1MYYMKY4Di9a3Y6WOCXe7JvoWtQyHb
-	 cenx0yORStnPCNgs3+nOt7EwRTKrt4Ic/StZYnAMwuHheRCmLlW1f016pA2lQj8rtC
-	 XL1xCMzr7nlWQJNuLhYTn1PVj9l4Cw76BI6tM07s=
+	b=zeMhMRimgKWPcN8MeQ+82rnp/IcBnCH+axx1455JjBWyCV91eBv6H/QYVmWCYETbS
+	 vI7cyjwF1yRlJRl9sy1XOy0LRoDHYSCSMlKvGWX9wQns2MTHKpExbglokCh2pjDIwI
+	 rJTdopzZjaTpM9O4eMKr5EWRk2qGG2G4PyRb+PH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/354] sctp: Defer SCTP_DBG_OBJCNT_DEC() to sctp_destroy_sock().
+Subject: [PATCH 6.18 278/614] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 5A
 Date: Tue, 16 Dec 2025 12:10:45 +0100
-Message-ID: <20251216111323.750767958@linuxfoundation.org>
+Message-ID: <20251216111411.447450831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 622e8838a29845316668ec2e7648428878df7f9a ]
+[ Upstream commit 3069ff1930aa71e125874c780ffaa6caeda5800a ]
 
-SCTP_DBG_OBJCNT_INC() is called only when sctp_init_sock()
-returns 0 after successfully allocating sctp_sk(sk)->ep.
+The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 5A is
+vcc_3v3_pmu, which is routed to vcc_3v3_s3 via a zero-ohm resistor. [1]
+Describe this supply.
 
-OTOH, SCTP_DBG_OBJCNT_DEC() is called in sctp_close().
+[1] https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.4, p.19
 
-The code seems to expect that the socket is always exposed
-to userspace once SCTP_DBG_OBJCNT_INC() is incremented, but
-there is a path where the assumption is not true.
-
-In sctp_accept(), sctp_sock_migrate() could fail after
-sctp_init_sock().
-
-Then, sk_common_release() does not call inet_release() nor
-sctp_close().  Instead, it calls sk->sk_prot->destroy().
-
-Let's move SCTP_DBG_OBJCNT_DEC() from sctp_close() to
-sctp_destroy_sock().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251023231751.4168390-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://patch.msgid.link/20251112035133.28753-3-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index b301d64d9d80f..b6956b25b33d3 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -1554,8 +1554,6 @@ static void sctp_close(struct sock *sk, long timeout)
- 	spin_unlock_bh(&net->sctp.addr_wq_lock);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index 428c6f0232a34..041a0fff22ccb 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -233,6 +233,7 @@ eeprom: eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		vcc-supply = <&vcc_3v3_pmu>;
+ 	};
+ };
  
- 	sock_put(sk);
--
--	SCTP_DBG_OBJCNT_DEC(sock);
- }
+@@ -600,7 +601,7 @@ regulator-state-mem {
+ 				};
+ 			};
  
- /* Handle EPIPE error. */
-@@ -5112,9 +5110,12 @@ static void sctp_destroy_sock(struct sock *sk)
- 		sp->do_auto_asconf = 0;
- 		list_del(&sp->auto_asconf_list);
- 	}
-+
- 	sctp_endpoint_free(sp->ep);
-+
- 	sk_sockets_allocated_dec(sk);
- 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
-+	SCTP_DBG_OBJCNT_DEC(sock);
- }
- 
- /* Triggered when there are no references on the socket anymore */
+-			vcc_3v3_s3: dcdc-reg8 {
++			vcc_3v3_pmu: vcc_3v3_s3: dcdc-reg8 {
+ 				regulator-name = "vcc_3v3_s3";
+ 				regulator-always-on;
+ 				regulator-boot-on;
 -- 
 2.51.0
 
