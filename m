@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53CECC3B6F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:47:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434A0CC37D8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 392FE31122AA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28524306B178
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD77034D4D3;
-	Tue, 16 Dec 2025 11:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB6F36A002;
+	Tue, 16 Dec 2025 12:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfNBHXHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axw7/jnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4DE346E51;
-	Tue, 16 Dec 2025 11:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B30D343D9B;
+	Tue, 16 Dec 2025 12:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885560; cv=none; b=dXZXSB5e9ntAxAgEJ+54bs4SBiOBgfE53kFUX/3cejTTffYjvEY9+510cHCGkIuhukagK10tMIGANWvFIBEwpxmp3i6jOjubDgDTgyw03U12FaIsHmjyI9Dj4ZAg0Xzp+lhUrpdZrmRR+VIhADcDIQrOd79C1tGUU05WN+Rwjf0=
+	t=1765887387; cv=none; b=JHuGhy+bHA1OV55vmxDk0njKGTPi6uvUHYDBbmG3y1KrNdkRGduOqNVtxCMnsNTu8xrrCXgdxC2OQLfOP8J2UBazlykYi+VlireTCAQgdGAtKJOXW1O/W2/IDfI6r6LrNedOjIuQvh5794Vu16mfQ9eYkbbe+Shkh2enKsexuks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885560; c=relaxed/simple;
-	bh=39r28uBKbV/x6z0AhJkCwiZyjEIEqs8Y3efm5vKQmhw=;
+	s=arc-20240116; t=1765887387; c=relaxed/simple;
+	bh=pW+b8Mp74PCgbvJvm/3SzhrcpNCKNCRCa0XL7bPbqS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEno4d7o3w+OKPWVzDk3Si5+VrYYlao0QlCfGOzXaSBpwhTTpsKjr9GQ3AzrBo/40EBGhvKESn/z9PRKKKxbCIRt4mhsNmFuIIWnDEPBEKmrMsMVW4ndgHjBulVquE3xnMXQrff0cy4xWmfsxcOUyZNtWlmrDEKZFlb/ady3h7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfNBHXHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C8EC4CEF1;
-	Tue, 16 Dec 2025 11:45:59 +0000 (UTC)
+	 MIME-Version; b=ENaBwOfbJ2I6bT38t7Z68FXiFSRJxkv9POtHPJKuogm4W8TIE8Xz99eokkd7bE/tfNXhAVGg3tDIyIXY9/mE5+7dCeWwFAR65yTHa2suDHq45Yk/+DvyYcZyjIm59q2RxZw8VUlcM4CJ+KYqg/KDgK+oY0Vgg4vwA+Wm+rceazA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axw7/jnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE02EC4CEF1;
+	Tue, 16 Dec 2025 12:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885559;
-	bh=39r28uBKbV/x6z0AhJkCwiZyjEIEqs8Y3efm5vKQmhw=;
+	s=korg; t=1765887387;
+	bh=pW+b8Mp74PCgbvJvm/3SzhrcpNCKNCRCa0XL7bPbqS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfNBHXHVS1Bz/wHPFWhAjaCTa/n1UKw9EfUfEQGrYFbjZI8T2TnRUy9eUSGN7M9kK
-	 GfUs5w6Zp4qjMur/siIh6eQzIfjX6Lbfi69Kj4zgeyO1z8z8aw2Y9r31b0a524pmRL
-	 6QSA0jSY/f5poEjizjzh1PfLrAJ82CYqhFWu5PnM=
+	b=Axw7/jnvuuDIxIYRXaTjPDquwZ8Pl4Ut1wNaLZX01LJJepWaSj763S1LVuasUywob
+	 vC6Z8zIgqEzrVjTLypLWg55wdSc96CUXaOMXvQtze+4MHToybh8B9C4nnYPeIur9TD
+	 yX56WWvnmXKUXtwlIfrZHudze5Imgx9W1ItoH4GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Tianyou Li <tianyou.li@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 141/507] interconnect: qcom: msm8996: add missing link to SLAVE_USB_HS
+Subject: [PATCH 6.18 215/614] perf annotate: Fix build with NO_SLANG=1
 Date: Tue, 16 Dec 2025 12:09:42 +0100
-Message-ID: <20251216111350.636242357@linuxfoundation.org>
+Message-ID: <20251216111409.165603959@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 8cf9b43f6b4d90e19a9341edefdd46842d4adb55 ]
+[ Upstream commit 0e6c07a3c30cdc4509fc5e7dc490d4cc6e5c241a ]
 
->From the initial submission the interconnect driver missed the link from
-SNOC_PNOC to the USB 2 configuration space. Add missing link in order to
-let the platform configure and utilize this path.
+The recent change for perf c2c annotate broke build without slang
+support like below.
 
-Fixes: 7add937f5222 ("interconnect: qcom: Add MSM8996 interconnect provider driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-1-a36a05d1f869@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+  builtin-annotate.c: In function 'hists__find_annotations':
+  builtin-annotate.c:522:73: error: 'NO_ADDR' undeclared (first use in this function); did you mean 'NR_ADDR'?
+    522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
+        |                                                                         ^~~~~~~
+        |                                                                         NR_ADDR
+  builtin-annotate.c:522:73: note: each undeclared identifier is reported only once for each function it appears in
+
+  builtin-annotate.c:522:31: error: too many arguments to function 'hist_entry__tui_annotate'
+    522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
+        |                               ^~~~~~~~~~~~~~~~~~~~~~~~
+  In file included from util/sort.h:6,
+                   from builtin-annotate.c:28:
+  util/hist.h:756:19: note: declared here
+    756 | static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+
+And I noticed that it missed to update the other side of #ifdef
+HAVE_SLANG_SUPPORT.  Let's fix it.
+
+Cc: Tianyou Li <tianyou.li@intel.com>
+Fixes: cd3466cd2639783d ("perf c2c: Add annotation support to perf c2c report")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/msm8996.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/hist.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/msm8996.c b/drivers/interconnect/qcom/msm8996.c
-index b73566c9b21f9..84cfafb22aa17 100644
---- a/drivers/interconnect/qcom/msm8996.c
-+++ b/drivers/interconnect/qcom/msm8996.c
-@@ -552,6 +552,7 @@ static struct qcom_icc_node mas_venus_vmem = {
- static const u16 mas_snoc_pnoc_links[] = {
- 	MSM8996_SLAVE_BLSP_1,
- 	MSM8996_SLAVE_BLSP_2,
-+	MSM8996_SLAVE_USB_HS,
- 	MSM8996_SLAVE_SDCC_1,
- 	MSM8996_SLAVE_SDCC_2,
- 	MSM8996_SLAVE_SDCC_4,
+diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
+index c64005278687c..a4f244a046866 100644
+--- a/tools/perf/util/hist.h
++++ b/tools/perf/util/hist.h
+@@ -709,6 +709,8 @@ struct block_hist {
+ 	struct hist_entry	he;
+ };
+ 
++#define NO_ADDR 0
++
+ #ifdef HAVE_SLANG_SUPPORT
+ #include "../ui/keysyms.h"
+ void attr_to_script(char *buf, struct perf_event_attr *attr);
+@@ -746,14 +748,16 @@ int evlist__tui_browse_hists(struct evlist *evlist __maybe_unused,
+ static inline int __hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+ 					     struct map_symbol *ms __maybe_unused,
+ 					     struct evsel *evsel __maybe_unused,
+-					     struct hist_browser_timer *hbt __maybe_unused)
++					     struct hist_browser_timer *hbt __maybe_unused,
++					     u64 al_addr __maybe_unused)
+ {
+ 	return 0;
+ }
+ 
+ static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+ 					   struct evsel *evsel __maybe_unused,
+-					   struct hist_browser_timer *hbt __maybe_unused)
++					   struct hist_browser_timer *hbt __maybe_unused,
++					   u64 al_addr __maybe_unused)
+ {
+ 	return 0;
+ }
 -- 
 2.51.0
 
