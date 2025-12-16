@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736F9CC3EB5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:27:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EC5CC3B2D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD97730DEE40
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:20:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 629833054F41
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FEA3093BC;
-	Tue, 16 Dec 2025 12:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3390D34F495;
+	Tue, 16 Dec 2025 11:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdXfMS0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVOCGzGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6453446BC;
-	Tue, 16 Dec 2025 12:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E545534F491;
+	Tue, 16 Dec 2025 11:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887595; cv=none; b=mhHEm/pw04ZbovdGFiHrhcKrOTLzkW3QD1SfCMlNx550I4fHdMziKyz0lQZDDmE0P+caIFjxpvRX82bogl0/uL0bzuIDpXy4ae2bIbmZyw81f+BBydh4wLGQ+60ROkBZU9RVCJFtknEcRLuvn7jOPaR36LcXx8FqY88/7ddQEj0=
+	t=1765885662; cv=none; b=LmC05HYzuNOhK49Z+Issv4Fp9UrCjIKlN9ai+kHLb0/CDMa5d+9AxWN9fupavRKUpakbcpfugEzGJfOZdw+zhwQbzbFMkWXh9eGVTUjfRMMdIBJCLa3dQ4OZWsO2VSxbo9CLQ5k5qoRv2IUD7SR2jRyYGywXLwYhz2sku+BTaZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887595; c=relaxed/simple;
-	bh=GZ8TFfdKNKtJpRHsWldOA0EtJkaCAby1WjYHYLRpTeg=;
+	s=arc-20240116; t=1765885662; c=relaxed/simple;
+	bh=ttr2rVh15JazMUSuKKfOyUrSOc1MnNqo7QtrjrSa8gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oybTjnSHQvgh2pcgfickNaYeJ2P6QXHZRbtnueUV/SnLqybhqfcMVxMIvzVNe8bIUKwGoWD6zvaPFCwN3Jsx5DNrhniuBOnBA1a5kWfPzJfp3ur0MJNWhWQBWbC6SVMrLkmNGNWncuiZyJvhCseU4yij84hNVREkpfAbtScwiFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdXfMS0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB09C4CEF1;
-	Tue, 16 Dec 2025 12:19:54 +0000 (UTC)
+	 MIME-Version; b=smGCNnVc+UxuTYd2ZT5CYiHhy0MNct951Cl+8P89pAHqU5iaE38VWfogO+9OCxdymBx6HVRQvv6JnJmMGwx/RBP/EtLXERKNy8lwxRbkiuEHNsjceafW2lojt6y/v0EZCd+WjITYi65I/v4i30YNtmVbKXtFV8kg1oPdj3lN5zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVOCGzGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2ECC4CEF1;
+	Tue, 16 Dec 2025 11:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887595;
-	bh=GZ8TFfdKNKtJpRHsWldOA0EtJkaCAby1WjYHYLRpTeg=;
+	s=korg; t=1765885661;
+	bh=ttr2rVh15JazMUSuKKfOyUrSOc1MnNqo7QtrjrSa8gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdXfMS0l/2fJDBGe2Fx/sYczaI8pOdwno60dhXV3bAyezgkUvqXwbd2XygIKEidWI
-	 shwrWKq9Ay0oZ7OqaF9oVFM121IMo2nU0LgaMB5ZHpAqlAkSFH9w4kVrqTAPWGxyEw
-	 Dvm4U0HVahYAxac1vXKT3mpzUStl2Mj93ID5a8mc=
+	b=uVOCGzGcUFgKRwQHMzmsMnA8OuR8fJ/qTzVwVaQUWvsh7kOL/qCDg91RiX/9Lv1pt
+	 OLZS6wKDbLRmsDhF6+oB5Ejvsf8DvRbBUcN3mHHc/kCU2y02JAW5+ZT2d5Lpsnyxzk
+	 F+2rGsRZw81klEetcda95YF17meSmKIX7kvV/6PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 246/614] macintosh/mac_hid: fix race condition in mac_hid_toggle_emumouse
-Date: Tue, 16 Dec 2025 12:10:13 +0100
-Message-ID: <20251216111410.287656374@linuxfoundation.org>
+Subject: [PATCH 6.17 173/507] ARM: dts: omap3: beagle-xm: Correct obsolete TWL4030 power compatible
+Date: Tue, 16 Dec 2025 12:10:14 +0100
+Message-ID: <20251216111351.785661022@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 1e4b207ffe54cf33a4b7a2912c4110f89c73bf3f ]
+[ Upstream commit f7f3bc18300a230e0f1bfb17fc8889435c1e47f5 ]
 
-The following warning appears when running syzkaller, and this issue also
-exists in the mainline code.
+The "ti,twl4030-power-beagleboard-xm" compatible string is obsolete and
+is not supported by any in-kernel driver. Currently, the kernel falls
+back to the second entry, "ti,twl4030-power-idle-osc-off", to bind a
+driver to this node.
 
- ------------[ cut here ]------------
- list_add double add: new=ffffffffa57eee28, prev=ffffffffa57eee28, next=ffffffffa5e63100.
- WARNING: CPU: 0 PID: 1491 at lib/list_debug.c:35 __list_add_valid_or_report+0xf7/0x130
- Modules linked in:
- CPU: 0 PID: 1491 Comm: syz.1.28 Not tainted 6.6.0+ #3
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__list_add_valid_or_report+0xf7/0x130
- RSP: 0018:ff1100010dfb7b78 EFLAGS: 00010282
- RAX: 0000000000000000 RBX: ffffffffa57eee18 RCX: ffffffff97fc9817
- RDX: 0000000000040000 RSI: ffa0000002383000 RDI: 0000000000000001
- RBP: ffffffffa57eee28 R08: 0000000000000001 R09: ffe21c0021bf6f2c
- R10: 0000000000000001 R11: 6464615f7473696c R12: ffffffffa5e63100
- R13: ffffffffa57eee28 R14: ffffffffa57eee28 R15: ff1100010dfb7d48
- FS:  00007fb14398b640(0000) GS:ff11000119600000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 000000010d096005 CR4: 0000000000773ef0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 80000000
- Call Trace:
-  <TASK>
-  input_register_handler+0xb3/0x210
-  mac_hid_start_emulation+0x1c5/0x290
-  mac_hid_toggle_emumouse+0x20a/0x240
-  proc_sys_call_handler+0x4c2/0x6e0
-  new_sync_write+0x1b1/0x2d0
-  vfs_write+0x709/0x950
-  ksys_write+0x12a/0x250
-  do_syscall_64+0x5a/0x110
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+Make this fallback explicit by removing the obsolete board-specific
+compatible. This preserves the existing functionality while making the
+DTS compliant with the new, stricter 'ti,twl.yaml' binding.
 
-The WARNING occurs when two processes concurrently write to the mac-hid
-emulation sysctl, causing a race condition in mac_hid_toggle_emumouse().
-Both processes read old_val=0, then both try to register the input handler,
-leading to a double list_add of the same handler.
-
-  CPU0                             CPU1
-  -------------------------        -------------------------
-  vfs_write() //write 1            vfs_write()  //write 1
-    proc_sys_write()                 proc_sys_write()
-      mac_hid_toggle_emumouse()          mac_hid_toggle_emumouse()
-        old_val = *valp // old_val=0
-                                           old_val = *valp // old_val=0
-                                           mutex_lock_killable()
-                                           proc_dointvec() // *valp=1
-                                           mac_hid_start_emulation()
-                                             input_register_handler()
-                                           mutex_unlock()
-        mutex_lock_killable()
-        proc_dointvec()
-        mac_hid_start_emulation()
-          input_register_handler() //Trigger Warning
-        mutex_unlock()
-
-Fix this by moving the old_val read inside the mutex lock region.
-
-Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250819091035.2263329-1-leo.lilong@huaweicloud.com
+Fixes: 9188883fd66e9 ("ARM: dts: Enable twl4030 off-idle configuration for selected omaps")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/r/20250914192516.164629-3-jihed.chaibi.dev@gmail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/mac_hid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/ti/omap/omap3-beagle-xm.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
-index 369d72f59b3c1..06fd910b3fd1a 100644
---- a/drivers/macintosh/mac_hid.c
-+++ b/drivers/macintosh/mac_hid.c
-@@ -187,13 +187,14 @@ static int mac_hid_toggle_emumouse(const struct ctl_table *table, int write,
- 				   void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int *valp = table->data;
--	int old_val = *valp;
-+	int old_val;
- 	int rc;
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-beagle-xm.dts b/arch/arm/boot/dts/ti/omap/omap3-beagle-xm.dts
+index 08ee0f8ea68fd..71b39a923d37c 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-beagle-xm.dts
++++ b/arch/arm/boot/dts/ti/omap/omap3-beagle-xm.dts
+@@ -291,7 +291,7 @@ codec {
+ 		};
  
- 	rc = mutex_lock_killable(&mac_hid_emumouse_mutex);
- 	if (rc)
- 		return rc;
- 
-+	old_val = *valp;
- 	rc = proc_dointvec(table, write, buffer, lenp, ppos);
- 
- 	if (rc == 0 && write && *valp != old_val) {
+ 		twl_power: power {
+-			compatible = "ti,twl4030-power-beagleboard-xm", "ti,twl4030-power-idle-osc-off";
++			compatible = "ti,twl4030-power-idle-osc-off";
+ 			ti,use_poweroff;
+ 		};
+ 	};
 -- 
 2.51.0
 
