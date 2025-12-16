@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-202283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A35CC37DB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:17:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FAFCC2CBC
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3AF83306B4E2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B1F9230133FD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9526336A018;
-	Tue, 16 Dec 2025 12:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C964D342C8B;
+	Tue, 16 Dec 2025 11:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPOb5dVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2egLPxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9236A028;
-	Tue, 16 Dec 2025 12:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DB7342506;
+	Tue, 16 Dec 2025 11:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887401; cv=none; b=DfJhFp8pgX2LVykurblmPnu7ptGai8NQeQlkIP967Nedm7msfVmIT/y9abhtQxE0ZF2WbJtAh0e+APtWAAV9Lnowz6vuzgRp4XOPF6b0DFmG2i871fBw4mrnql9et6wMDPcGzrCtXpT756M1qXSECxRhsftQnFs7gNFDOnunJJk=
+	t=1765885456; cv=none; b=KKwf6N6P58lGbwxKjVk9L+LJxZvPsUxj5gn1+i4g64pNIcEZKLJ2H44stmahwt2D685MVptazdcQcR4gxWY+DhnLwQqcpubfUCxZqxOzHVJzkpzD55LaWt2HwegWCjzyQ45xLu0oN1m98inKQ/y5MJniBwHT+/mptw5yW5Z0ecU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887401; c=relaxed/simple;
-	bh=pUjdAUOt5Mm6tx1gG6Wb8vOV2mCY2aUcPKuCalxMYig=;
+	s=arc-20240116; t=1765885456; c=relaxed/simple;
+	bh=xndQ/YOX0plBQvNZX18nyUP/zV4L5abIeIHY55v1ERI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9SHguuuCpsPc0/XLdGCvcC59VlsbL+y2cZCONTnGIp14UQ4Dfof8XVdoSqMCX9C5VU25jc8QZlim0mI1Xt3fHsBgi2OsUdpsEvWXbuN76oJJmo+DTVKT5wp1oNT2bOYN+IJ4/VpqSaI9sOmaSI67CQRUkRqAHQLEw3hl/6gS0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPOb5dVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A0BC4CEF1;
-	Tue, 16 Dec 2025 12:16:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z/gsi+V6notCiCUt0YwLMKXwlKmq/uJksfqwDXXhOv3uPuV6Glzl+RmSrJy5RQowOc42lATiLsNbOejBVxAxVNAwcQoBN8BeUYjXePCb77yHrc/Zz4xlr7aUlpGbCKrYkXIMwB7qlSxnIMr2SRhX1vBOD93S5ylJ1hsLnUa49l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2egLPxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97ACC4CEF1;
+	Tue, 16 Dec 2025 11:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887401;
-	bh=pUjdAUOt5Mm6tx1gG6Wb8vOV2mCY2aUcPKuCalxMYig=;
+	s=korg; t=1765885456;
+	bh=xndQ/YOX0plBQvNZX18nyUP/zV4L5abIeIHY55v1ERI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPOb5dVek2O0Y/5ge1wcTtz3kXsk/6faCFqDUkDzdPdYZ0YHqy5QKbxOe36VSHjiJ
-	 4Zpuz+DUzgoLetsrHtySMCX5e7SJ9Bqmn9E+EU1pG+dMtac23oXUTVTxdL4N4pRLME
-	 nKGNaA05W9PzGTQq+q96tkYAzcMAEpcOuSX1h12s=
+	b=i2egLPxcM55eoHZhuJUnFMcSs910Ni09R5mSMKJi1YmTp4vVMm6zhiITi+Q3CdkcO
+	 j4oDQyDkRnVnMAEU5jGB4xaDz6AbzwCcLSLq0TS6VkVSg47R2ZrSYJL1gCSGmE5DtJ
+	 e6bBo03bUvsNnQUs8HnSgq3sA24G2ncByYUMvU64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 219/614] accel/amdxdna: Fix dma_fence leak when job is canceled
+Subject: [PATCH 6.17 145/507] arm64: dts: renesas: sparrow-hawk: Fix full-size DP connector node name and labels
 Date: Tue, 16 Dec 2025 12:09:46 +0100
-Message-ID: <20251216111409.309150132@linuxfoundation.org>
+Message-ID: <20251216111350.780989260@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,55 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit dea9f84776b96a703f504631ebe9fea07bd2c181 ]
+[ Upstream commit 9d22a34a016313137b9e534a918f1f9aa790aa69 ]
 
-Currently, dma_fence_put(job->fence) is called in job notification
-callback. However, if a job is canceled, the notification callback is never
-invoked, leading to a memory leak. Move dma_fence_put(job->fence)
-to the job cleanup function to ensure the fence is always released.
+The DisplayPort connector on Retronix R-Car V4H Sparrow Hawk board
+is a full-size DisplayPort connector. Fix the copy-paste error and
+update the DT node name and labels accordingly. No functional change.
 
-Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251105194140.1004314-1-lizhi.hou@amd.com
+Fixes: a719915e76f2 ("arm64: dts: renesas: r8a779g3: Add Retronix R-Car V4H Sparrow Hawk board support")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251027184604.34550-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c    | 1 -
- drivers/accel/amdxdna/amdxdna_ctx.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index c9f712f0ec00c..2e479a8d86c31 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -189,7 +189,6 @@ aie2_sched_notify(struct amdxdna_sched_job *job)
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+index 2c1ab75e4d910..e5af9c056ac97 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
++++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+@@ -118,13 +118,13 @@ memory@600000000 {
+ 	};
  
- 	up(&job->hwctx->priv->job_sem);
- 	job->job_done = true;
--	dma_fence_put(fence);
- 	mmput_async(job->mm);
- 	aie2_job_put(job);
- }
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
-index 4bfe4ef20550f..856fb25086f12 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.c
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.c
-@@ -389,6 +389,7 @@ void amdxdna_sched_job_cleanup(struct amdxdna_sched_job *job)
- 	trace_amdxdna_debug_point(job->hwctx->name, job->seq, "job release");
- 	amdxdna_arg_bos_put(job);
- 	amdxdna_gem_put_obj(job->cmd_bo);
-+	dma_fence_put(job->fence);
- }
+ 	/* Page 27 / DSI to Display */
+-	mini-dp-con {
++	dp-con {
+ 		compatible = "dp-connector";
+ 		label = "CN6";
+ 		type = "full-size";
  
- int amdxdna_cmd_submit(struct amdxdna_client *client,
+ 		port {
+-			mini_dp_con_in: endpoint {
++			dp_con_in: endpoint {
+ 				remote-endpoint = <&sn65dsi86_out>;
+ 			};
+ 		};
+@@ -371,7 +371,7 @@ sn65dsi86_in: endpoint {
+ 					port@1 {
+ 						reg = <1>;
+ 						sn65dsi86_out: endpoint {
+-							remote-endpoint = <&mini_dp_con_in>;
++							remote-endpoint = <&dp_con_in>;
+ 						};
+ 					};
+ 				};
 -- 
 2.51.0
 
