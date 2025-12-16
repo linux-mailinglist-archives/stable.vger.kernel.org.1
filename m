@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-202031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29588CC4621
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:46:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A939CC2EDE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3F4B304383D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E412D303B660
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978A73451A3;
-	Tue, 16 Dec 2025 12:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B049D345CB2;
+	Tue, 16 Dec 2025 12:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGyYQhR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0OZiXPU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE95342504;
-	Tue, 16 Dec 2025 12:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6512C36214C;
+	Tue, 16 Dec 2025 12:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886599; cv=none; b=c1VMrN6VFvueBCUEDhSqNrPLevfctgFbdynyrnzp8LNvmN8O5Bphzgp0aV27GKeGQ7EgkheG97jCxAXwXw/ClOR9jJCeK3MMBYkg3BDyEe332ipjvFsjdM3/sxMLL0ULnF6W9RFnxc859ArcLmsdkObm3tKRDnKGwx4RSILGgyU=
+	t=1765888526; cv=none; b=LgbXXHKkwnxHeP7qZQAfZDqIJOvRv00GwONhS3OIjmqn9+eLK7E/wVPso7MKv+jqtWH4TO9JcIKx3CyYxB8snWfOY2Mh/tFv17BI4YQK1SXfbwNjVHw+Q9MjzotNTk8OZdvayNfnGJjd4jvDZTjkEtfyYOQBDa4ZrXuEtDzNRJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886599; c=relaxed/simple;
-	bh=yOUIMrl2DnRkauqI5/rgnLWQ5S0g419h8HzavEi6Mok=;
+	s=arc-20240116; t=1765888526; c=relaxed/simple;
+	bh=BV2xmtabrf586P8PYiOEVUcQvlLfNznoeJg8iPcevWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KMHXavhGaCxsfb1/ZGw4ug04YODmILxvIKgY9mwVTnqk0gotx0N6rhOoK1PaphYLywjvc6rhQBCKL8Z7UjYKo7XVPsss5jnYavA/g9v9CIP/XSX8e1oEvfiouZ89OM4AzRYoZmfq2VkvAf8vVfAHwuh21noJDCEfdzYIJqd74G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGyYQhR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BCBC4CEF5;
-	Tue, 16 Dec 2025 12:03:18 +0000 (UTC)
+	 MIME-Version; b=StweRcEtGbKVroFtsVrv/ZDq7i6zEfxNA5dvcqg9SryqICKtb8nJiZgtl2ZfMQ/STmqDChwynO+aKi4AO5stJK01vBCxqDOHDnL/QBz35op4WQ41mtD18OgcwoELLBJvIoPr48BzhU7h+TretcTe4xg9862i1D87IyA2BSJESB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0OZiXPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F62C4CEF1;
+	Tue, 16 Dec 2025 12:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886599;
-	bh=yOUIMrl2DnRkauqI5/rgnLWQ5S0g419h8HzavEi6Mok=;
+	s=korg; t=1765888526;
+	bh=BV2xmtabrf586P8PYiOEVUcQvlLfNznoeJg8iPcevWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGyYQhR7Am5bQ3xXOyI1GTRDdg6Armylh2p9dQ+CtVWGHbz4bP679GILgU62h4CQ+
-	 3V6OSz6+NFTIAtM2ZMpnYU05xZsQXhJvPVkjvXbcyxbFYRBIIAWe9Qrx9LSkSPc//S
-	 vWvXACzQabEVDZ95PuySR3pStdGAaGJe7KS8jS7Q=
+	b=g0OZiXPUWTfTZmblHk7t+LUHkJAiIIT4FkWTmScIC68j6JUQZj51M7ylaoV4mh4/L
+	 wPD5+ai8qzqkqpDHbAreg3HV1pJZ3rx/eAVtBEdhEMwnrKjSAEyDOsaD4Ecx1Sl6hM
+	 T3v63WnPRfhBIKNVeg0RGm5X2ciDkG4/pIBWHjyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Dibin Moolakadan Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Cong Zhang <cong.zhang@oss.qualcomm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 484/507] drm/i915/fbdev: Hold runtime PM ref during fbdev BO creation
-Date: Tue, 16 Dec 2025 12:15:25 +0100
-Message-ID: <20251216111402.975514799@linuxfoundation.org>
+Subject: [PATCH 6.18 559/614] blk-mq: Abort suspend when wakeup events are pending
+Date: Tue, 16 Dec 2025 12:15:26 +0100
+Message-ID: <20251216111421.634015562@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +58,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dibin Moolakadan Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>
+From: Cong Zhang <cong.zhang@oss.qualcomm.com>
 
-[ Upstream commit 460b31720369fc77c23301708641cfa1bf2fcb8f ]
+[ Upstream commit c196bf43d706592d8801a7513603765080e495fb ]
 
-During fbdev probe, the xe driver allocates and pins a framebuffer
-BO (via xe_bo_create_pin_map_novm() → xe_ggtt_insert_bo()).
+During system suspend, wakeup capable IRQs for block device can be
+delayed, which can cause blk_mq_hctx_notify_offline() to hang
+indefinitely while waiting for pending request to complete.
+Skip the request waiting loop and abort suspend when wakeup events are
+pending to prevent the deadlock.
 
-Without a runtime PM reference, xe_pm_runtime_get_noresume() warns about
-missing outer PM protection as below:
-
-	xe 0000:03:00.0: [drm] Missing outer runtime PM protection
-
-Acquire a runtime PM reference before framebuffer allocation to ensure
-xe_ggtt_insert_bo()  executes  under active runtime PM context.
-
-Changes in v2:
- - Update commit message to add Fixes tag (Jani Nikula)
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6350
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Signed-off-by: Dibin Moolakadan Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patch.msgid.link/20251111135403.3415947-1-dibin.moolakadan.subrahmanian@intel.com
-(cherry picked from commit 37fc7b7b3ab0e3bb900657199cd3770a4fda03fb)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
+Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_fbdev.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ block/blk-mq.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_fbdev.c b/drivers/gpu/drm/i915/display/intel_fbdev.c
-index e46c08762b847..7daf72b69bae4 100644
---- a/drivers/gpu/drm/i915/display/intel_fbdev.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbdev.c
-@@ -263,13 +263,18 @@ int intel_fbdev_driver_fbdev_probe(struct drm_fb_helper *helper,
- 		drm_framebuffer_put(&fb->base);
- 		fb = NULL;
- 	}
-+
-+	wakeref = intel_display_rpm_get(display);
-+
- 	if (!fb || drm_WARN_ON(display->drm, !intel_fb_bo(&fb->base))) {
- 		drm_dbg_kms(display->drm,
- 			    "no BIOS fb, allocating a new one\n");
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index d626d32f6e576..33a0062f9e56d 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -23,6 +23,7 @@
+ #include <linux/cache.h>
+ #include <linux/sched/topology.h>
+ #include <linux/sched/signal.h>
++#include <linux/suspend.h>
+ #include <linux/delay.h>
+ #include <linux/crash_dump.h>
+ #include <linux/prefetch.h>
+@@ -3707,6 +3708,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
+ 			struct blk_mq_hw_ctx, cpuhp_online);
++	int ret = 0;
  
- 		fb = __intel_fbdev_fb_alloc(display, sizes);
--		if (IS_ERR(fb))
--			return PTR_ERR(fb);
-+		if (IS_ERR(fb)) {
-+			ret = PTR_ERR(fb);
-+			goto out_unlock;
+ 	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
+ 		return 0;
+@@ -3727,12 +3729,24 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ 	 * frozen and there are no requests.
+ 	 */
+ 	if (percpu_ref_tryget(&hctx->queue->q_usage_counter)) {
+-		while (blk_mq_hctx_has_requests(hctx))
++		while (blk_mq_hctx_has_requests(hctx)) {
++			/*
++			 * The wakeup capable IRQ handler of block device is
++			 * not called during suspend. Skip the loop by checking
++			 * pm_wakeup_pending to prevent the deadlock and improve
++			 * suspend latency.
++			 */
++			if (pm_wakeup_pending()) {
++				clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
++				ret = -EBUSY;
++				break;
++			}
+ 			msleep(5);
 +		}
- 	} else {
- 		drm_dbg_kms(display->drm, "re-using BIOS fb\n");
- 		prealloc = true;
-@@ -277,8 +282,6 @@ int intel_fbdev_driver_fbdev_probe(struct drm_fb_helper *helper,
- 		sizes->fb_height = fb->base.height;
+ 		percpu_ref_put(&hctx->queue->q_usage_counter);
  	}
  
--	wakeref = intel_display_rpm_get(display);
--
- 	/* Pin the GGTT vma for our access via info->screen_base.
- 	 * This also validates that any existing fb inherited from the
- 	 * BIOS is suitable for own access.
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 -- 
 2.51.0
 
