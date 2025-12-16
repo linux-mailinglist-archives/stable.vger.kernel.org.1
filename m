@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC1ACC30B9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE428CC469D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 156253117C27
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2965830CDFDE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C583446D8;
-	Tue, 16 Dec 2025 12:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969E6357721;
+	Tue, 16 Dec 2025 12:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqIwyphI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/ZI9YaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F0033E37B;
-	Tue, 16 Dec 2025 12:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52374357718;
+	Tue, 16 Dec 2025 12:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888542; cv=none; b=aOjpk3HePDzELz85jMwIIdibUMW5lOtM1jClbVmdxF3xrP7QXEhkjw9B35+NI0BWkbj2ePYHOWs+GnhA4S8oeWC4j2yhRgIwh6tOIvVGc4AaWESkaHmmaj2XdF/3z4SZGsHQ10P3+TwK+NN8G96kpl+2XAt7N8mUHB5b2NkC07w=
+	t=1765886569; cv=none; b=L2WU9PCXybBpH5zWaX4rRokcXASzNE2nW953wvvqnS6Y0pjRJMWEzonrsFKcpC9oV3vp7N1fUocN/KMMUaYv0LOjrwi1LX4IbimYWB37KGrQ929DEIkKikdfQM02xGxK8TTfF1+3VH7O+qKHHN95r7jM3POkaKLez4CR/ENPlIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888542; c=relaxed/simple;
-	bh=8cfP0QoNQhiF53nWzpaecTvo0pxuL1+yrtsZXhvnwFU=;
+	s=arc-20240116; t=1765886569; c=relaxed/simple;
+	bh=vfaxwEYcu5mzAiik++Fs9VZNe9r0FHR/ARcmE1sKMYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zgye/rKXI1cuvLOVow08Oo9gphN7Mtx6WDcUPIYkeYE8naKm98r/j/suCiyGrRa5+emeFf6pqAjYW1nKq2EKdXRT4siC2A7sPsfGURn94NgsFPjZP93L5PaOXCrWsh5waXtSNTHmwBAKgGNW+W5EVW2OB/gBqnpPeA/ThEJ3vqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqIwyphI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5399C4CEF1;
-	Tue, 16 Dec 2025 12:35:41 +0000 (UTC)
+	 MIME-Version; b=ZyyDAaOq4AAm+XLq1NfOejeQuASCinc9Vwspe2S89b67rKD5Ez9mrz9QwyYl2qIMHXA4YzfUzoE6GCYcPTwcfAQ5lZHUHkIMFqq2Z9HbP/71FH4P1UL+Pulq8+sJGD1J9IO5D8znJW0U+9SO26hi2cMGi9vdZckQtZLBgnIMfwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/ZI9YaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834E9C4CEF1;
+	Tue, 16 Dec 2025 12:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888542;
-	bh=8cfP0QoNQhiF53nWzpaecTvo0pxuL1+yrtsZXhvnwFU=;
+	s=korg; t=1765886568;
+	bh=vfaxwEYcu5mzAiik++Fs9VZNe9r0FHR/ARcmE1sKMYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqIwyphISzxND5LmTzOwP0BI8DDuLu9UoylXA9x1qO8tkp8UWoYLDTXnoVWVJBUS2
-	 gMIePKZPZoxMZK4uREELdyUgPS5HxrEwkRa7IW020RKYbD9VyQtAKt0ncQ3gpYC0nX
-	 C+d5e9DKtWhKWM274nk6a9K5gh3eUOKGgpB4bgsk=
+	b=b/ZI9YaLk2h9yM7tI+G0hz4KormhUvY50KAu30iLgrn3aNt7ifcUpSRAcwEdBdLni
+	 PSLEWN4sfj5vtwMIGxY0h8kE+9oQurfsBLsVBP41+yZ7juOJ+qJw3iTouHHj335P8F
+	 C7ifss7FPNFzmVYSmGcXpEtKsbaV3RKsgpkZr+YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Helge Deller <deller@gmx.de>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 532/614] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
+Subject: [PATCH 6.17 458/507] ASoC: ak5558: Disable regulator when error happens
 Date: Tue, 16 Dec 2025 12:14:59 +0100
-Message-ID: <20251216111420.653313378@linuxfoundation.org>
+Message-ID: <20251216111402.041733685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
+[ Upstream commit 1f8f726a2a29c28f65b30880335a1610c5e63594 ]
 
-The page allocated for vmem using __get_free_pages() is not freed on the
-error paths after it. Fix that by adding a corresponding __free_pages()
-call to the error path.
+Disable regulator in runtime resume when error happens to balance
+the reference count of regulator.
 
-Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 2ff6d5a108c6 ("ASoC: ak5558: Add regulator support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251203100529.3841203-3-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/ssd1307fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/codecs/ak5558.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index aa6cc0a8151ac..83dd31fa1fab5 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -680,7 +680,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	if (!ssd1307fb_defio) {
- 		dev_err(dev, "Couldn't allocate deferred io.\n");
- 		ret = -ENOMEM;
--		goto fb_alloc_error;
-+		goto fb_defio_error;
- 	}
+diff --git a/sound/soc/codecs/ak5558.c b/sound/soc/codecs/ak5558.c
+index 683f3e472f500..73684fc5beb1a 100644
+--- a/sound/soc/codecs/ak5558.c
++++ b/sound/soc/codecs/ak5558.c
+@@ -372,7 +372,15 @@ static int ak5558_runtime_resume(struct device *dev)
+ 	regcache_cache_only(ak5558->regmap, false);
+ 	regcache_mark_dirty(ak5558->regmap);
  
- 	ssd1307fb_defio->delay = HZ / refreshrate;
-@@ -757,6 +757,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 		regulator_disable(par->vbat_reg);
- reset_oled_error:
- 	fb_deferred_io_cleanup(info);
-+fb_defio_error:
-+	__free_pages(vmem, get_order(vmem_size));
- fb_alloc_error:
- 	framebuffer_release(info);
- 	return ret;
+-	return regcache_sync(ak5558->regmap);
++	ret = regcache_sync(ak5558->regmap);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	regcache_cache_only(ak5558->regmap, true);
++	regulator_bulk_disable(ARRAY_SIZE(ak5558->supplies), ak5558->supplies);
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops ak5558_pm = {
 -- 
 2.51.0
 
