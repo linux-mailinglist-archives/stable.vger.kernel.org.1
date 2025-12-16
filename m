@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-202374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7984BCC371E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:11:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E53CC2379
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC9CD30F014F
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:04:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A55B73058E50
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100DB35293A;
-	Tue, 16 Dec 2025 12:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CF4341645;
+	Tue, 16 Dec 2025 11:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/hdI717"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmuiSRvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02DC30DEA6;
-	Tue, 16 Dec 2025 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3485313E13;
+	Tue, 16 Dec 2025 11:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887689; cv=none; b=kmvwSDfQtBI6a+kF64ZJ8qrwt97tg996Y7NDYfs0d3SeYbgUF6pRWCJDaIfiG11vtZKjtrB1rX4QIiHbbyj/HQ68BSc2gnsKR5k6ZPtbJUqeE7nykvxB6nSXI80iQj9XX+tNiXTirSIATcBEoVp7yvPwKg456agyM2V3BeMNNKI=
+	t=1765884264; cv=none; b=qE4DHauyRavu47HK4mpazo/wlrLntVYWsGQayNuKyXx8201f6esq8g7bcv4KFuxTi49/AMCvjo18rjVTakIRiVZ+52TgoY6LktARdPzagK5H3seYLKzYnHOLMzwgsoyeZnw+ccm06BMEWs0wUriBOqhvFWpS9AIXQdTAfsWuu+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887689; c=relaxed/simple;
-	bh=s2lAjG99hkMOYtOR1p/kRIOxduP+UMnlJqyyTJAzUEY=;
+	s=arc-20240116; t=1765884264; c=relaxed/simple;
+	bh=ojWLpQ83jMabkdQLt3S63K598NmSZL1k2qJUDdE66dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pq8zVhxxTtlU6Cx+y9eWLTAIsldjbZaLszfiwWyfl9u9fXqe1cTZWVoX2GoJXdzPo3RnJigxcKOa5UB73z8KEbnHzGftUrmvL+LPYlZWnVKRKTYtukAPFZ4AvJ6YGzoQZ/1UXexo3fuiUq7Q/X4SvnDtp8qiRdKgrGaMj5BaMQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/hdI717; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335A4C4CEF1;
-	Tue, 16 Dec 2025 12:21:28 +0000 (UTC)
+	 MIME-Version; b=WgLwc2Gh60q0kxaa2gDdtOAo0jYoPfdobg1Ib+qbLGf6ha1PCl9mvZmKvSvGuWm59XF9zj8rmhioljYoLyih+frjupmo6T3oQ4ExK7dwEU0zn2RLSfk1xEK0QbwotLQ2WiGaKtMX1Imq1Z2JhRNkwYhbtL4pIGM1z0DgOiYQyxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmuiSRvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE559C4CEF1;
+	Tue, 16 Dec 2025 11:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887689;
-	bh=s2lAjG99hkMOYtOR1p/kRIOxduP+UMnlJqyyTJAzUEY=;
+	s=korg; t=1765884264;
+	bh=ojWLpQ83jMabkdQLt3S63K598NmSZL1k2qJUDdE66dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/hdI717j9aJpfa2JED//WbNLqs8fM0UO4pG0Gk6Cfq1kKftwaDPiY6mLSd954Cul
-	 SntJRorEaAn1XQdUbtSKrnHEUPGL6YpvL9nvA3aCi9qlDczqUDV3j1ByT0cw97kkvz
-	 LnRkrqbpFtIGMnDe9tNU8f53Wxp6xMjHiZ4IF3bA=
+	b=gmuiSRvmnfWrKp4cJmpZ3nKSFoYTU3lzOcwTOEoTnf2oGswvLRtrrZbyQ4IZ3Z8QZ
+	 GGTnW2wx2VHlJr4pnuLBaWuP1sRtzhOLLRZOlqAS3N/5YhQ5/+nXl/nCMAwW+O51sB
+	 q6DfKaGT4F7SNqRQ/15DuBn6yw2LThNoEZmJRweM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 307/614] drm/msm: Fix NULL pointer dereference in crashstate_get_vm_logs()
-Date: Tue, 16 Dec 2025 12:11:14 +0100
-Message-ID: <20251216111412.491779379@linuxfoundation.org>
+Subject: [PATCH 6.12 108/354] power: supply: wm831x: Check wm831x_set_bits() return value
+Date: Tue, 16 Dec 2025 12:11:15 +0100
+Message-ID: <20251216111324.832571577@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huiwen He <hehuiwen@kylinos.cn>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 3099e0247e3217e1b39c1c61766e06ec3d13835f ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-crashstate_get_vm_logs() did not check the return value of
-kmalloc_array(). In low-memory situations, kmalloc_array() may return
-NULL, leading to a NULL pointer dereference when the function later
-accesses state->vm_logs.
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
-Fix this by checking the return value of kmalloc_array() and setting
-state->nr_vm_logs to 0 if allocation fails.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9edc52967cc7 ("drm/msm: Add VM logging for VM_BIND updates")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Patchwork: https://patchwork.freedesktop.org/patch/687555/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 17759abc46d7d..e23f70fbc8cb2 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -348,6 +348,10 @@ static void crashstate_get_vm_logs(struct msm_gpu_state *state, struct msm_gem_v
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index d56e499ac59fb..10f3ecf5af72f 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
  
- 	state->vm_logs = kmalloc_array(
- 		state->nr_vm_logs, sizeof(vm->log[0]), GFP_KERNEL);
-+	if (!state->vm_logs) {
-+		state->nr_vm_logs = 0;
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ 
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
 +	}
-+
- 	for (int i = 0; i < state->nr_vm_logs; i++) {
- 		int idx = (i + first) & vm_log_mask;
  
+ 	return 0;
+ }
 -- 
 2.51.0
 
