@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-202666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6907ECC3552
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:48:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC70FCC3D16
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:07:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5AF10301D305
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:48:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43C57314753D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8008339B6A2;
-	Tue, 16 Dec 2025 12:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5D234A3BC;
+	Tue, 16 Dec 2025 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQCdk+0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5I0tCSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5903845C4;
-	Tue, 16 Dec 2025 12:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E190F32BF21;
+	Tue, 16 Dec 2025 12:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888650; cv=none; b=N+/x12fsw7e3088To5lvgl6y/GUVEzMY+6iqMDX9ukGQuoQ8agZZ+giGFxGo0b6330E9pLi+nRkRjiXAKkF6c1UPZZcG939S6GV9xMslJ0QPRnNqmw4TRVW+5ewGIOvO8O29qd8rqOuVshPNDsjmuHeAyfX+kC+lM5K9WhHxG1c=
+	t=1765888736; cv=none; b=Ja5wnGSSvNaQXtcSWNY7AxM7iUgJCuQ+KEeOV9f7j+Yx97mPyIW0GTxBPOVJ3hrJIHNByfgCYMGiKQg2b4zPEAiV7yC8RSehHKfdX5nFLdZwh/H+cxl5HW7fngP3u+J1i/YesKhfGuomsAHURh3uKu/8YDD6wi4ekwO3qgLg1UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888650; c=relaxed/simple;
-	bh=Wwzx13Q+qzm43yl6jA4HDDDmuFMHU8SFzx/an8AJjfI=;
+	s=arc-20240116; t=1765888736; c=relaxed/simple;
+	bh=qylOcx0uj2v9vyRh/chQWHdchdbU5Ji/I5K0zblQJgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MR9QM29Hm67O2fWW1n0/pR3NW7Ohvzu6L3EPaX3QlI+idvbYEpWYnNYSyxBxrF6EyAcYgbHsa3t+EaqQiFr92E03FKez3/IHOdj+hUWIIoRvv/hM71nfH4Rfvs4wocaLNsP2V41MGb25LH2xLalKV2l2EYxL0W83Eag/AmOOJdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQCdk+0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50751C4CEF5;
-	Tue, 16 Dec 2025 12:37:29 +0000 (UTC)
+	 MIME-Version; b=ev2BM9VhAhjsmtnXYYRWbhuVz5RCiufl6ujlOKzQTGtbVeEttlb9BW31zPTPNc6eIAaU9kA/3CtRdkKjVP/ECyCeuow38jMqd/kbS8+vFHoX4vJ4qxjdDEAxEhOkJWRf6zedgc0z4E7N6j/rf4A+nLODAFr0eSCaHv2o7RI4rT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5I0tCSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B2EC16AAE;
+	Tue, 16 Dec 2025 12:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888649;
-	bh=Wwzx13Q+qzm43yl6jA4HDDDmuFMHU8SFzx/an8AJjfI=;
+	s=korg; t=1765888735;
+	bh=qylOcx0uj2v9vyRh/chQWHdchdbU5Ji/I5K0zblQJgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQCdk+0R0jQzcm7TmcsAFqVdegZK7SoFhSH91QijkhMUc5vPyi1VmWml00o05CN5d
-	 TEG6vZxXPU7L5REv4SFp4Q6ZWrs9u0Fw5RvZw0zSY5xmlRdy5n77bYkuFRzMj4ZvEv
-	 y+Eit2V1OazaxBZMyCuO7wNCMaci4rt/Qa7rqTQA=
+	b=Y5I0tCSVaTTqLYjK/yu4SlogGm6g2onpJgRaraNN5MSb6kW6CGROPuQS9rC/l2YJx
+	 Q180LPHRZL5ENAzl9oQ8TPolpmW785jfr69+9Ut2tlg7i89h1ZGXirPbf0/NA2Rt6u
+	 9iZq7tnKpm+gQ+7N2tXYnVnM9R4I6EDEYvCIogTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Thaumy Cheng <thaumy.love@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	linux-perf-users@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 595/614] scsi: ufs: core: Fix an error handler crash
-Date: Tue, 16 Dec 2025 12:16:02 +0100
-Message-ID: <20251216111422.949196879@linuxfoundation.org>
+Subject: [PATCH 6.18 596/614] perf/core: Fix missing read event generation on task exit
+Date: Tue, 16 Dec 2025 12:16:03 +0100
+Message-ID: <20251216111422.986793433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
 References: <20251216111401.280873349@linuxfoundation.org>
@@ -66,67 +74,160 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Thaumy Cheng <thaumy.love@gmail.com>
 
-[ Upstream commit 14be351e5cd07349377010e457a58fac99201832 ]
+[ Upstream commit c418d8b4d7a43a86b82ee39cb52ece3034383530 ]
 
-The UFS error handler may be activated before SCSI scanning has started
-and hence before hba->ufs_device_wlun has been set. Check the
-hba->ufs_device_wlun pointer before using it.
+For events with inherit_stat enabled, a "read" event will be generated
+to collect per task event counts on task exit.
 
-Cc: Peter Wang <peter.wang@mediatek.com>
-Cc: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Fixes: e23ef4f22db3 ("scsi: ufs: core: Fix error handler host_sem issue")
-Fixes: f966e02ae521 ("scsi: ufs: core: Fix runtime suspend error deadlock")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Tested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com> #SM8750
-Link: https://patch.msgid.link/20251204170457.994851-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The call chain is as follows:
+
+do_exit
+  -> perf_event_exit_task
+    -> perf_event_exit_task_context
+      -> perf_event_exit_event
+        -> perf_remove_from_context
+          -> perf_child_detach
+            -> sync_child_event
+              -> perf_event_read_event
+
+However, the child event context detaches the task too early in
+perf_event_exit_task_context, which causes sync_child_event to never
+generate the read event in this case, since child_event->ctx->task is
+always set to TASK_TOMBSTONE. Fix that by moving context lock section
+backward to ensure ctx->task is not set to TASK_TOMBSTONE before
+generating the read event.
+
+Because perf_event_free_task calls perf_event_exit_task_context with
+exit = false to tear down all child events from the context, and the
+task never lived, accessing the task PID can lead to a use-after-free.
+
+To fix that, let sync_child_event read task from argument and move the
+call to the only place it should be triggered to avoid the effect of
+setting ctx->task to TASK_TOMESTONE, and add a task parameter to
+perf_event_exit_event to trigger the sync_child_event properly when
+needed.
+
+This bug can be reproduced by running "perf record -s" and attaching to
+any program that generates perf events in its child tasks. If we check
+the result with "perf report -T", the last line of the report will leave
+an empty table like "# PID  TID", which is expected to contain the
+per-task event counts by design.
+
+Fixes: ef54c1a476ae ("perf: Rework perf_event_exit_event()")
+Signed-off-by: Thaumy Cheng <thaumy.love@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: linux-perf-users@vger.kernel.org
+Link: https://patch.msgid.link/20251209041600.963586-1-thaumy.love@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ kernel/events/core.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 12f5a7a973128..a921a9098a291 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6670,19 +6670,22 @@ static void ufshcd_err_handler(struct work_struct *work)
- 		 hba->saved_uic_err, hba->force_reset,
- 		 ufshcd_is_link_broken(hba) ? "; link is broken" : "");
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2c35acc2722b0..413b88a4e00fb 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2316,8 +2316,6 @@ static void perf_group_detach(struct perf_event *event)
+ 	perf_event__header_size(leader);
+ }
  
--	/*
--	 * Use ufshcd_rpm_get_noresume() here to safely perform link recovery
--	 * even if an error occurs during runtime suspend or runtime resume.
--	 * This avoids potential deadlocks that could happen if we tried to
--	 * resume the device while a PM operation is already in progress.
--	 */
--	ufshcd_rpm_get_noresume(hba);
--	if (hba->pm_op_in_progress) {
--		ufshcd_link_recovery(hba);
-+	if (hba->ufs_device_wlun) {
-+		/*
-+		 * Use ufshcd_rpm_get_noresume() here to safely perform link
-+		 * recovery even if an error occurs during runtime suspend or
-+		 * runtime resume. This avoids potential deadlocks that could
-+		 * happen if we tried to resume the device while a PM operation
-+		 * is already in progress.
-+		 */
-+		ufshcd_rpm_get_noresume(hba);
-+		if (hba->pm_op_in_progress) {
-+			ufshcd_link_recovery(hba);
-+			ufshcd_rpm_put(hba);
-+			return;
-+		}
- 		ufshcd_rpm_put(hba);
--		return;
+-static void sync_child_event(struct perf_event *child_event);
+-
+ static void perf_child_detach(struct perf_event *event)
+ {
+ 	struct perf_event *parent_event = event->parent;
+@@ -2336,7 +2334,6 @@ static void perf_child_detach(struct perf_event *event)
+ 	lockdep_assert_held(&parent_event->child_mutex);
+ 	 */
+ 
+-	sync_child_event(event);
+ 	list_del_init(&event->child_list);
+ }
+ 
+@@ -4587,6 +4584,7 @@ static void perf_event_enable_on_exec(struct perf_event_context *ctx)
+ static void perf_remove_from_owner(struct perf_event *event);
+ static void perf_event_exit_event(struct perf_event *event,
+ 				  struct perf_event_context *ctx,
++				  struct task_struct *task,
+ 				  bool revoke);
+ 
+ /*
+@@ -4614,7 +4612,7 @@ static void perf_event_remove_on_exec(struct perf_event_context *ctx)
+ 
+ 		modified = true;
+ 
+-		perf_event_exit_event(event, ctx, false);
++		perf_event_exit_event(event, ctx, ctx->task, false);
  	}
--	ufshcd_rpm_put(hba);
  
- 	down(&hba->host_sem);
- 	spin_lock_irqsave(hba->host->host_lock, flags);
+ 	raw_spin_lock_irqsave(&ctx->lock, flags);
+@@ -12447,7 +12445,7 @@ static void __pmu_detach_event(struct pmu *pmu, struct perf_event *event,
+ 	/*
+ 	 * De-schedule the event and mark it REVOKED.
+ 	 */
+-	perf_event_exit_event(event, ctx, true);
++	perf_event_exit_event(event, ctx, ctx->task, true);
+ 
+ 	/*
+ 	 * All _free_event() bits that rely on event->pmu:
+@@ -14004,14 +14002,13 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
+ }
+ EXPORT_SYMBOL_GPL(perf_pmu_migrate_context);
+ 
+-static void sync_child_event(struct perf_event *child_event)
++static void sync_child_event(struct perf_event *child_event,
++			     struct task_struct *task)
+ {
+ 	struct perf_event *parent_event = child_event->parent;
+ 	u64 child_val;
+ 
+ 	if (child_event->attr.inherit_stat) {
+-		struct task_struct *task = child_event->ctx->task;
+-
+ 		if (task && task != TASK_TOMBSTONE)
+ 			perf_event_read_event(child_event, task);
+ 	}
+@@ -14030,7 +14027,9 @@ static void sync_child_event(struct perf_event *child_event)
+ 
+ static void
+ perf_event_exit_event(struct perf_event *event,
+-		      struct perf_event_context *ctx, bool revoke)
++		      struct perf_event_context *ctx,
++		      struct task_struct *task,
++		      bool revoke)
+ {
+ 	struct perf_event *parent_event = event->parent;
+ 	unsigned long detach_flags = DETACH_EXIT;
+@@ -14053,6 +14052,9 @@ perf_event_exit_event(struct perf_event *event,
+ 		mutex_lock(&parent_event->child_mutex);
+ 		/* PERF_ATTACH_ITRACE might be set concurrently */
+ 		attach_state = READ_ONCE(event->attach_state);
++
++		if (attach_state & PERF_ATTACH_CHILD)
++			sync_child_event(event, task);
+ 	}
+ 
+ 	if (revoke)
+@@ -14144,7 +14146,7 @@ static void perf_event_exit_task_context(struct task_struct *task, bool exit)
+ 		perf_event_task(task, ctx, 0);
+ 
+ 	list_for_each_entry_safe(child_event, next, &ctx->event_list, event_entry)
+-		perf_event_exit_event(child_event, ctx, false);
++		perf_event_exit_event(child_event, ctx, exit ? task : NULL, false);
+ 
+ 	mutex_unlock(&ctx->mutex);
+ 
 -- 
 2.51.0
 
