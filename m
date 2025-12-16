@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D698CC23DF
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D94CC29DD
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2F423076A24
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2B6E3005F0B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D465342160;
-	Tue, 16 Dec 2025 11:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD3B3446A4;
+	Tue, 16 Dec 2025 11:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRZQWMCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vvNe+1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFB732BF22;
-	Tue, 16 Dec 2025 11:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D37328604;
+	Tue, 16 Dec 2025 11:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884319; cv=none; b=k+waP3pcTOnsGMgLAEyd44bJNyu6UDou3UgyJnbD6cJrAaaZ8KKAbcGdi+fsIK8MfdTJvsiH0WrAIWgaxiAEUpqfjc8Ec5b25WiXuO3I2lVO042BhLyTq1BZdMBy9Y/IynvgwUxccYSC+5EdJV0vlWfoz5IuNDcds9Me/wrjCzQ=
+	t=1765886029; cv=none; b=tfszfWe71SRqeVS/nPFxZlNMN58sF7wk0p/rQ0ioH6Yyfc1ZAivJE7supGm9tYcgRSqNtPc7I50fIJUo1mt4v01dkFokzQLJnqWBsRgwSSBwuER3Vid4GNIx6TZcX8QdXBlnk95LPMcrb+D02AjsLdKHKR1KfmADIyCTPgZ2a88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884319; c=relaxed/simple;
-	bh=NnT67Ls8N+b6FQeBFsKmzyzk4gzg48XynVeC5gYPjWo=;
+	s=arc-20240116; t=1765886029; c=relaxed/simple;
+	bh=f78bF29XqgTcsivlfKOVXPRfs0DDAhaz6GRKmrAaQDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhokb93ZmWsN3h9CKOWcdjHwR/UDmRB8SHsML6aUheHY6iygdzlANa/VY112kx/sQ22L3XmfhJH6XZzdLIzTPfLlvwe0ILDQj5vG/ylMapo8X6f48cvnxGCTRhrJQRaNrrc9ux7tJ3Mr04Qv2R81s++wn1ZB/YULacdRe/I9ys8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRZQWMCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3BBC4CEF5;
-	Tue, 16 Dec 2025 11:25:18 +0000 (UTC)
+	 MIME-Version; b=YQCLbAPphv/nHo9iXeCXh5I4Hby6QMBPBmI1d0E2gFgZSB+PT39fOQ/AKcm/vj2GH53iMcp5lehcIDQF02hfyL7vYildwdQqZfgkihrQYuE4O6PN3Rx6YKFRBJApv/YkP0VeGMtz14jMsIhBp06wEGO0wjBUU0NhOTk61j8FKN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vvNe+1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCCBC4CEF1;
+	Tue, 16 Dec 2025 11:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884319;
-	bh=NnT67Ls8N+b6FQeBFsKmzyzk4gzg48XynVeC5gYPjWo=;
+	s=korg; t=1765886029;
+	bh=f78bF29XqgTcsivlfKOVXPRfs0DDAhaz6GRKmrAaQDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRZQWMCQ5Xh6qKu101HCCaBgMUe9yFUJiZUpQOF9455xbUY/qUXPCRO5TmbeGqcYe
-	 DkibGWpjC88ZMmjXew1IIBPhp5Fx7hGZ9WgpX6YY9W+Y1ABA9pN1QAjTu6AUVQ0++A
-	 EZL/531voHPQbSi7+eYcNEMV0n6U/yDb53EaMdgs=
+	b=0vvNe+1Y0wEtOlDXRPRoKfLeVuTTkm+eBYPFg+X7ezSOTv7FjwIKwG+O18qmazUFp
+	 YrGFyC7/jiZtKMppY9scPfkxnbeGJNq9p/FPwREjmLmvMRzu48U515LheZsr1Tu0gC
+	 kqjLAq+3W+7+46bDDUWtOh5218anKfaBurQro6yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Chien Wong <m@xv97.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/354] arm64: dts: rockchip: Move the EEPROM to correct I2C bus on Radxa ROCK 5A
+Subject: [PATCH 6.17 283/507] wifi: mac80211: fix CMAC functions not handling errors
 Date: Tue, 16 Dec 2025 12:12:04 +0100
-Message-ID: <20251216111326.602982644@linuxfoundation.org>
+Message-ID: <20251216111355.732233704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Chien Wong <m@xv97.com>
 
-[ Upstream commit 92e6e0b0e595afdda6296c760551ad3ffe9d5231 ]
+[ Upstream commit 353cda30d30e5dc7cacf8de5d2546724708ae3bb ]
 
-The BL24C16 EEPROM chip found on Radxa ROCK 5A is connected to the
-i2c0 bus, [1] so move the eeprom node from the i2c2 bus to the i2c0
-bus.
+The called hash functions could fail thus we should check return values.
 
-[1] Link: https://dl.radxa.com/rock5/5a/docs/hw/radxa_rock5a_V1.1_sch.pdf p.19
-
-Fixes: 89c880808cff8 ("arm64: dts: rockchip: add I2C EEPROM to rock-5a")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://patch.msgid.link/20251112035133.28753-2-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 26717828b75d ("mac80211: aes-cmac: switch to shash CMAC driver")
+Signed-off-by: Chien Wong <m@xv97.com>
+Link: https://patch.msgid.link/20251113140511.48658-2-m@xv97.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/mac80211/aes_cmac.c | 63 +++++++++++++++++++++++++++++------------
+ net/mac80211/aes_cmac.h |  8 +++---
+ net/mac80211/wpa.c      | 20 +++++++------
+ 3 files changed, 61 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 294b99dd50da2..7813984086b38 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -204,6 +204,12 @@ regulator-state-mem {
- 			regulator-off-in-suspend;
- 		};
- 	};
-+
-+	eeprom: eeprom@50 {
-+		compatible = "belling,bl24c16a", "atmel,24c16";
-+		reg = <0x50>;
-+		pagesize = <16>;
-+	};
- };
+diff --git a/net/mac80211/aes_cmac.c b/net/mac80211/aes_cmac.c
+index 48c04f89de20a..65989c7dfc680 100644
+--- a/net/mac80211/aes_cmac.c
++++ b/net/mac80211/aes_cmac.c
+@@ -22,50 +22,77 @@
  
- &i2c2 {
-@@ -225,12 +231,6 @@ regulator-state-mem {
- 			regulator-off-in-suspend;
- 		};
- 	};
+ static const u8 zero[CMAC_TLEN_256];
+ 
+-void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+-			const u8 *data, size_t data_len, u8 *mic)
++int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
++		       const u8 *data, size_t data_len, u8 *mic)
+ {
++	int err;
+ 	SHASH_DESC_ON_STACK(desc, tfm);
+ 	u8 out[AES_BLOCK_SIZE];
+ 	const __le16 *fc;
+ 
+ 	desc->tfm = tfm;
+ 
+-	crypto_shash_init(desc);
+-	crypto_shash_update(desc, aad, AAD_LEN);
++	err = crypto_shash_init(desc);
++	if (err)
++		return err;
++	err = crypto_shash_update(desc, aad, AAD_LEN);
++	if (err)
++		return err;
+ 	fc = (const __le16 *)aad;
+ 	if (ieee80211_is_beacon(*fc)) {
+ 		/* mask Timestamp field to zero */
+-		crypto_shash_update(desc, zero, 8);
+-		crypto_shash_update(desc, data + 8, data_len - 8 - CMAC_TLEN);
++		err = crypto_shash_update(desc, zero, 8);
++		if (err)
++			return err;
++		err = crypto_shash_update(desc, data + 8,
++					  data_len - 8 - CMAC_TLEN);
++		if (err)
++			return err;
+ 	} else {
+-		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
++		err = crypto_shash_update(desc, data,
++					  data_len - CMAC_TLEN);
++		if (err)
++			return err;
+ 	}
+-	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
 -
--	eeprom: eeprom@50 {
--		compatible = "belling,bl24c16a", "atmel,24c16";
--		reg = <0x50>;
--		pagesize = <16>;
--	};
- };
++	err = crypto_shash_finup(desc, zero, CMAC_TLEN, out);
++	if (err)
++		return err;
+ 	memcpy(mic, out, CMAC_TLEN);
++
++	return 0;
+ }
  
- &i2c3 {
+-void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
+-			    const u8 *data, size_t data_len, u8 *mic)
++int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
++			   const u8 *data, size_t data_len, u8 *mic)
+ {
++	int err;
+ 	SHASH_DESC_ON_STACK(desc, tfm);
+ 	const __le16 *fc;
+ 
+ 	desc->tfm = tfm;
+ 
+-	crypto_shash_init(desc);
+-	crypto_shash_update(desc, aad, AAD_LEN);
++	err = crypto_shash_init(desc);
++	if (err)
++		return err;
++	err = crypto_shash_update(desc, aad, AAD_LEN);
++	if (err)
++		return err;
+ 	fc = (const __le16 *)aad;
+ 	if (ieee80211_is_beacon(*fc)) {
+ 		/* mask Timestamp field to zero */
+-		crypto_shash_update(desc, zero, 8);
+-		crypto_shash_update(desc, data + 8,
+-				    data_len - 8 - CMAC_TLEN_256);
++		err = crypto_shash_update(desc, zero, 8);
++		if (err)
++			return err;
++		err = crypto_shash_update(desc, data + 8,
++					  data_len - 8 - CMAC_TLEN_256);
++		if (err)
++			return err;
+ 	} else {
+-		crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
++		err = crypto_shash_update(desc, data, data_len - CMAC_TLEN_256);
++		if (err)
++			return err;
+ 	}
+-	crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
++	return crypto_shash_finup(desc, zero, CMAC_TLEN_256, mic);
+ }
+ 
+ struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
+diff --git a/net/mac80211/aes_cmac.h b/net/mac80211/aes_cmac.h
+index 76817446fb838..f74150542142a 100644
+--- a/net/mac80211/aes_cmac.h
++++ b/net/mac80211/aes_cmac.h
+@@ -11,10 +11,10 @@
+ 
+ struct crypto_shash *ieee80211_aes_cmac_key_setup(const u8 key[],
+ 						  size_t key_len);
+-void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+-			const u8 *data, size_t data_len, u8 *mic);
+-void ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
+-			    const u8 *data, size_t data_len, u8 *mic);
++int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
++		       const u8 *data, size_t data_len, u8 *mic);
++int ieee80211_aes_cmac_256(struct crypto_shash *tfm, const u8 *aad,
++			   const u8 *data, size_t data_len, u8 *mic);
+ void ieee80211_aes_cmac_key_free(struct crypto_shash *tfm);
+ 
+ #endif /* AES_CMAC_H */
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index 40d5d9e484791..bb0fa505cdcae 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -869,8 +869,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
+ 	/*
+ 	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
+ 	 */
+-	ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+-			   skb->data + 24, skb->len - 24, mmie->mic);
++	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
++			       skb->data + 24, skb->len - 24, mmie->mic))
++		return TX_DROP;
+ 
+ 	return TX_CONTINUE;
+ }
+@@ -916,8 +917,9 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
+ 
+ 	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
+ 	 */
+-	ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
+-			       skb->data + 24, skb->len - 24, mmie->mic);
++	if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
++				   skb->data + 24, skb->len - 24, mmie->mic))
++		return TX_DROP;
+ 
+ 	return TX_CONTINUE;
+ }
+@@ -956,8 +958,9 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
+ 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
+ 		/* hardware didn't decrypt/verify MIC */
+ 		bip_aad(skb, aad);
+-		ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+-				   skb->data + 24, skb->len - 24, mic);
++		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
++				       skb->data + 24, skb->len - 24, mic))
++			return RX_DROP_U_DECRYPT_FAIL;
+ 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
+ 			key->u.aes_cmac.icverrors++;
+ 			return RX_DROP_U_MIC_FAIL;
+@@ -1006,8 +1009,9 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
+ 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
+ 		/* hardware didn't decrypt/verify MIC */
+ 		bip_aad(skb, aad);
+-		ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
+-				       skb->data + 24, skb->len - 24, mic);
++		if (ieee80211_aes_cmac_256(key->u.aes_cmac.tfm, aad,
++					   skb->data + 24, skb->len - 24, mic))
++			return RX_DROP_U_DECRYPT_FAIL;
+ 		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
+ 			key->u.aes_cmac.icverrors++;
+ 			return RX_DROP_U_MIC_FAIL;
 -- 
 2.51.0
 
