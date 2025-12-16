@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6500ECC3516
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:46:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC61CC2C37
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83C673065AD7
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77963309B340
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F27347FC7;
-	Tue, 16 Dec 2025 11:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472013659E9;
+	Tue, 16 Dec 2025 12:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYt9rqG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR85d3Fb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D04347BD2;
-	Tue, 16 Dec 2025 11:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FA8355802;
+	Tue, 16 Dec 2025 12:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885107; cv=none; b=dWVkEwaaw07968xN9kQNKX3ymF0ICGulQ33/V5qVdy9pfzXht5Ih2Mq3hpmjTckqq6g8IDEeg5uYIg5mfIn78K+KfcgJ4u9AR5sqlHfNZLDWdDddHSiDXZdqYiumNYg/4Xl3vYk9lqluGYokdr8in+LIXHSAVIat4pN0RTBZBEw=
+	t=1765887063; cv=none; b=YK5ByUZhQ5QZBNr54n9gmd/Mw1nN2W+/wvSvUffDXQFma+OIws6xffodkCpY4uKCjDw/8sQ7ym0OTa+mLCCx9GTLN7AIdCWjQeEzoORXxk2ZqbjLLEWhoMOLuCX7ikQ2JN92utVm5quUS+YLEO8qgvqtE6yiuaz2RQv99HPXNmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885107; c=relaxed/simple;
-	bh=awoWkjzibFG4Cu7qZE2MXZdPvCI4mVYQHlndme2JH3o=;
+	s=arc-20240116; t=1765887063; c=relaxed/simple;
+	bh=KM6HbfHJEI6YL0uEuXuTWxuhLH5SPrdYAJev0F+tfuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leB8Dnj0jxaTDW3NfgxOjvRWaIBrmUZrtvK6mfs2ejAW58/PJ+/qyq7EIrQ4HmL8gfRoaF4AdCAmu51oEtp601ilBtl8BNc6iIhdONbVJoTocFFLlBXjERTfiIAdeMse1BSSjQby3+6C/2Yxj9mgtUVEdvSk4QmN2bkYKOmkUmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYt9rqG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD1BC4CEF1;
-	Tue, 16 Dec 2025 11:38:27 +0000 (UTC)
+	 MIME-Version; b=eiLvXzovKqYo0Hbh4cg1YLQ354JrH2j2B7y9VZDpqKTklEzjYDzrXxsmoEGMIwI1njuciqGOuWmYwj/J3Fy5LJAyhA/9TU23nFI47JYUM0Ge+vuLMTBUeExGw6wBeQCoGDko2H7J+VVTejiERcpQga16tLsEcaBqHK1O73b/Les=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR85d3Fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD3CC4CEF1;
+	Tue, 16 Dec 2025 12:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885107;
-	bh=awoWkjzibFG4Cu7qZE2MXZdPvCI4mVYQHlndme2JH3o=;
+	s=korg; t=1765887062;
+	bh=KM6HbfHJEI6YL0uEuXuTWxuhLH5SPrdYAJev0F+tfuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYt9rqG5L8gl7+uvtQqzJ7JiOErdQV+4niFpqJIg2o6HYEQy3mFp8eIHYdstYbrJt
-	 5SsH7FGmQCqrrVIHrh24gnt1q55sNTTOZvxg5RFe/yOusXdtcZaeXZBw3olGGnY9MB
-	 REBXY0rTHRcdiPT04nw5y0cvGonaRAn72CrHms8E=
+	b=pR85d3Fbog29SKAR8SipDzqAS7TZP9+pAAlHuQ9NqwYHGpZ66Z+DvGodCq3S86Jm9
+	 VzAKE2nNalCiE2Mmm2/5DCchfYsvB8vTRDzorGjdmhhqgzFXse2lJNEwMOKvm6EYMW
+	 lMg3wLhQjMFjmYEkQH7919633LU/WkBdsvs86kpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 041/507] irqchip/irq-bcm7120-l2: Fix section mismatch
+Subject: [PATCH 6.18 115/614] arm64: dts: qcom: sdm845-starqltechn: fix max77705 interrupts
 Date: Tue, 16 Dec 2025 12:08:02 +0100
-Message-ID: <20251216111347.031712211@linuxfoundation.org>
+Message-ID: <20251216111405.503322000@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit bfc0c5beab1fde843677923cf008f41d583c980a ]
+[ Upstream commit 4372b15d89e253e40816f0bde100890cddd25a81 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+Since max77705 has a register, which indicates interrupt source, it acts
+as an interrupt controller.
 
-Fixes: 3ac268d5ed22 ("irqchip/irq-bcm7120-l2: Switch to IRQCHIP_PLATFORM_DRIVER")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Direct MAX77705's subdevices to use the IC's internal interrupt
+controller, instead of listening to every interrupt fired by the
+chip towards the host device.
+
+Fixes: 7a88a931d095 ("arm64: dts: qcom: sdm845-starqltechn: add max77705 PMIC")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250926-starqltechn-correct_max77705_nodes-v5-2-c6ab35165534@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm7120-l2.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ .../boot/dts/qcom/sdm845-samsung-starqltechn.dts     | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index ff22c31044018..b6c85560c42ea 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -143,8 +143,7 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+index 45c7aa0f602d8..215e1491f3e9a 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
+@@ -599,11 +599,13 @@ &uart9 {
+ &i2c14 {
+ 	status = "okay";
  
--static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
--					     struct bcm7120_l2_intc_data *data)
-+static int bcm7120_l2_intc_iomap_7120(struct device_node *dn, struct bcm7120_l2_intc_data *data)
- {
- 	int ret;
+-	pmic@66 {
++	max77705: pmic@66 {
+ 		compatible = "maxim,max77705";
+ 		reg = <0x66>;
++		#interrupt-cells = <1>;
+ 		interrupt-parent = <&pm8998_gpios>;
+ 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-controller;
+ 		pinctrl-0 = <&pmic_int_default>;
+ 		pinctrl-names = "default";
  
-@@ -177,8 +176,7 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
- 	return 0;
- }
+@@ -644,8 +646,8 @@ max77705_charger: charger@69 {
+ 		reg = <0x69>;
+ 		compatible = "maxim,max77705-charger";
+ 		monitored-battery = <&battery>;
+-		interrupt-parent = <&pm8998_gpios>;
+-		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&max77705>;
++		interrupts = <0>;
+ 	};
  
--static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
--					     struct bcm7120_l2_intc_data *data)
-+static int bcm7120_l2_intc_iomap_3380(struct device_node *dn, struct bcm7120_l2_intc_data *data)
- {
- 	unsigned int gc_idx;
+ 	fuel-gauge@36 {
+@@ -653,8 +655,8 @@ fuel-gauge@36 {
+ 		compatible = "maxim,max77705-battery";
+ 		power-supplies = <&max77705_charger>;
+ 		maxim,rsns-microohm = <5000>;
+-		interrupt-parent = <&pm8998_gpios>;
+-		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&max77705>;
++		interrupts = <2>;
+ 	};
+ };
  
-@@ -208,10 +206,9 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
- 	return 0;
- }
- 
--static int __init bcm7120_l2_intc_probe(struct device_node *dn,
--				 struct device_node *parent,
-+static int bcm7120_l2_intc_probe(struct device_node *dn, struct device_node *parent,
- 				 int (*iomap_regs_fn)(struct device_node *,
--					struct bcm7120_l2_intc_data *),
-+						      struct bcm7120_l2_intc_data *),
- 				 const char *intc_name)
- {
- 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
-@@ -339,15 +336,13 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
- 	return ret;
- }
- 
--static int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
--					     struct device_node *parent)
-+static int bcm7120_l2_intc_probe_7120(struct device_node *dn, struct device_node *parent)
- {
- 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
- 				     "BCM7120 L2");
- }
- 
--static int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
--					     struct device_node *parent)
-+static int bcm7120_l2_intc_probe_3380(struct device_node *dn, struct device_node *parent)
- {
- 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
- 				     "BCM3380 L2");
 -- 
 2.51.0
 
