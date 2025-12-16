@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C2CCC27C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFC7CC48FB
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 801E6302CD6E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D8C5B300DE95
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F011346A05;
-	Tue, 16 Dec 2025 11:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE40636D504;
+	Tue, 16 Dec 2025 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bujSgNGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR+G7LpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3483469F6;
-	Tue, 16 Dec 2025 11:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6740236D51E;
+	Tue, 16 Dec 2025 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886098; cv=none; b=CyAHmhFKKIn203WXgeabQQ0DHA4g780A/D5RSXRt6bwtC/Rk/rwAIUier8pMzSBnHruuH4Nn2QM6n1WcpCao4aYfjE0dtZ3sSrddXeNmgNiUNmAFPZ5p+Rnywi/g5Yw069z0aISSjqGURVAYojTRr1P7jGp6oVzTRqaxz3SxeTU=
+	t=1765888039; cv=none; b=QUqKiC8ZsPGmJJq6Uey2CGy++de7bXzvwRJwKaTU4/LCjV3x8bm4qz5l5v5RZa4GDFvsFxRRXZT0qIpcZvomYiB2iD1OzYeYQDSmEebeUuzn0ga8wCEFSUhLAIBlbfXKd042JBKtKQsuGbwj+2KuLDjX4vdXJYztgnQmGfhl/0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886098; c=relaxed/simple;
-	bh=gL835c/mOLa4sQ76Fv2v9EUSf2BMbAATHZjUQ7M6dlg=;
+	s=arc-20240116; t=1765888039; c=relaxed/simple;
+	bh=VyMypjLkpxS5SIHYp9cYQeXJ2GazU6wgnS5pIcYLzJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDPSSM+zXJK2aBvADGJd0zJQMwXeLVh8wSZHRywRsIvtiztiTFKIiFLSI+iwHH68pMSUQF7ZHVxxZGR5O+yCaWqcqWKcZZ2bMWAsPoR4IjrU1x4Wx9T+l6d0AAFq4P6OFWROtfAHvRjhlMuDzsuMcA4EOB2Cja6qxBS50v7aqRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bujSgNGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B143C4CEF1;
-	Tue, 16 Dec 2025 11:54:58 +0000 (UTC)
+	 MIME-Version; b=lBERjIKs/OmOXFf/SpH/aR9xorJhhttxkZ3xYaXFCodGXRH+plTbF5ruL4zc54t/aDoxP4ug+jlAPKaMM88AJ2fBSU/rHvxqSwFjQ5hKFkPGfPWF4R7I3m/kDvQoUBFm5Gu1QDCRb8msGwzRzZtAXmVsyBoRzxrd/2MfuqvqEVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR+G7LpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3642C4CEF1;
+	Tue, 16 Dec 2025 12:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765886098;
-	bh=gL835c/mOLa4sQ76Fv2v9EUSf2BMbAATHZjUQ7M6dlg=;
+	s=korg; t=1765888039;
+	bh=VyMypjLkpxS5SIHYp9cYQeXJ2GazU6wgnS5pIcYLzJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bujSgNGMnWi5aLbJ3T9tlh13vfLALHfqafYSpf8/mI67rW9YKuu1WxvYfBtQnUzKd
-	 EDJazhRHPZ8kT7hNjc9o02dHCrbGQm0pS95cYSD80veuHD1BthuA9iO0gIpSxHFRYG
-	 DCsF8+eMZcHBB4Ndj+WfK9KTbw+JhnvGr3ZbpZqo=
+	b=YR+G7LpJrc3H8MdCQ2ZNXLPSI9HHeUr67t926r5h4cmKWPWJrji+9b/c1GX1MHxGt
+	 /MFmFJrSPNAq7zqUvxeL8ez2ZabHK2PNt+23ZJuITTQ7P6S59iur5Cjy3yn/zimB/x
+	 G9NlF4tgnrjDvBILf3Peb2erSwevvV7tlPlYOrmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 337/507] mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
-Date: Tue, 16 Dec 2025 12:12:58 +0100
-Message-ID: <20251216111357.672228109@linuxfoundation.org>
+Subject: [PATCH 6.18 412/614] PCI: dwc: Fix wrong PORT_LOGIC_LTSSM_STATE_MASK definition
+Date: Tue, 16 Dec 2025 12:12:59 +0100
+Message-ID: <20251216111416.299271861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 53d1548612670aa8b5d89745116cc33d9d172863 ]
+[ Upstream commit bcc9a4a0bca3aee4303fa4a20302e57b24ac8f68 ]
 
-In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
-subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
-returns an error without freeing sskb, leading to a memory leak.
+As per DesignWare Cores PCI Express Controller Databook, section 5.50,
+SII: Debug Signals, cxpl_debug_info[63:0]:
 
-Fix this by calling dev_kfree_skb() on sskb in the error handling path
-to ensure it is properly released.
+  [5:0] smlh_ltssm_state: LTSSM current state. Encoding is same as the
+  dedicated smlh_ltssm_state output.
 
-Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The mask should be 6 bits, from 0 to 5. Hence, fix the mask definition.
+
+Fixes: 23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/1763122140-203068-1-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 4064e193d4dec..08ee2e861c4e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -874,8 +874,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
- 						  WTBL_RESET_AND_SET, NULL,
- 						  &wskb);
--	if (IS_ERR(wtbl_hdr))
-+	if (IS_ERR(wtbl_hdr)) {
-+		dev_kfree_skb(sskb);
- 		return PTR_ERR(wtbl_hdr);
-+	}
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index e995f692a1ecd..24bfa5231923a 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -97,7 +97,7 @@
+ #define PORT_LANE_SKEW_INSERT_MASK	GENMASK(23, 0)
  
- 	if (enable) {
- 		mt76_connac_mcu_wtbl_generic_tlv(&dev->mt76, wskb, vif, sta,
+ #define PCIE_PORT_DEBUG0		0x728
+-#define PORT_LOGIC_LTSSM_STATE_MASK	0x1f
++#define PORT_LOGIC_LTSSM_STATE_MASK	0x3f
+ #define PORT_LOGIC_LTSSM_STATE_L0	0x11
+ #define PCIE_PORT_DEBUG1		0x72C
+ #define PCIE_PORT_DEBUG1_LINK_UP		BIT(4)
 -- 
 2.51.0
 
