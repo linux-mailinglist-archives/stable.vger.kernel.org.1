@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-201779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D44FCC2A56
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:20:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F072CC36E1
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44A21302C466
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BE3C33079D0E
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF08352930;
-	Tue, 16 Dec 2025 11:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0974E352F92;
+	Tue, 16 Dec 2025 12:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK7wWt2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPRBLHaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A455352926;
-	Tue, 16 Dec 2025 11:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA19931355F;
+	Tue, 16 Dec 2025 12:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885760; cv=none; b=bwRrQt604ckA+7jv1MI0SHyHbjt05aRO0jUyNBYYV9iTQ2MUno5kbB+Sh09D/OY4pC+IvRqNLQzlyH7C2f+boAbFpZZ35lgP7w1FwbJbZ1D5IgB2WXne/TrWZbQvgtVNrajhoBDHvZVyiDA2LSyEVrTWquFcPeUaNHzOwdqoX/M=
+	t=1765887696; cv=none; b=RqSy1XK5cpWqUHEq95hEYTKTqZGBj7mfRKGyibqOW1Oc4wVXWBZNH2bvtHdj4YWiyf7HnbzrrQtN1qX0IXTfszsKBR1fNWg7rCtct/l7UahWMtZQcGEkv3/kyCvs1ZoHNAWSggVNQySS4dEY1/qZHYnY1zZi+jF1bqTk50WeBGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885760; c=relaxed/simple;
-	bh=bZuCIEpTWTDL53zxA1UNHsAah/Us6nUybDJGzuZ0R+8=;
+	s=arc-20240116; t=1765887696; c=relaxed/simple;
+	bh=ZFSRKF/jdwrhgDXxZZxKwLptg75ajHnb3EvACxReFhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReiA7aqwdofg7y5CYfhQoqbSx7gJc63MUmMjHFCkigTZNEZgmnLDPah0J8LGabkYnLW+07TZyyKudlnd1i2sOoj3OLh9Q8RhZwY1O/kEbEbYMjavqJIPtunQMrRD3IWsj9nDVx2vPegKgpA8n8Da6N/mo+4QYFtvrEJ6bG3GxYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK7wWt2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF329C4CEF1;
-	Tue, 16 Dec 2025 11:49:19 +0000 (UTC)
+	 MIME-Version; b=iCh3uWGOgMnQS0j5/kFuQ3MxFjH8mjSexUcg8A2UYvY+TgVWzvk1FWrwqfFKaCdvGzJvqN3SU5W0w6R58H3VmuB2w5aTnm2Vgw7GlhT6vDz9jJ8kbhLVBBa4KsW5nHFMYC/x3NnrgPnqMW+Om+xhPTIw2zs+73jEpSc1dSBcDZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPRBLHaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB22C4CEF5;
+	Tue, 16 Dec 2025 12:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885760;
-	bh=bZuCIEpTWTDL53zxA1UNHsAah/Us6nUybDJGzuZ0R+8=;
+	s=korg; t=1765887696;
+	bh=ZFSRKF/jdwrhgDXxZZxKwLptg75ajHnb3EvACxReFhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sK7wWt2KuhVPU4musdIW5tEArHgZWb1wF1bnSsqL028qNTARnnejDZjyuTU80bE7Q
-	 4BSo3yLiel+e8+GrPNuJqSlb4qAhxLqTg+0re9ElDMitGdM9WsAIUQujY5wXSmKy+z
-	 tRVItq7ByeBMvKoWexLREOeicKw1XWtfenbQUGIs=
+	b=fPRBLHaMH63GSNE2F00zoxryqVOGu0bXs2gexCSyEQRkojX4NpCcwMJ4pp/5FKNsh
+	 WW1t3P3g8IkRsZopfEwByGpqkhsIZMYbqC0N9LhbrnG/jVaY3F7nZRko68qKYLxupD
+	 B0bZuD0pCYigwD7jK3vmvFo7uXXTEJEoBCXvEEAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 235/507] arm64: dts: rockchip: Add eeprom vcc-supply for Radxa ROCK 3C
+Subject: [PATCH 6.18 309/614] drm/msm/a2xx: stop over-complaining about the legacy firmware
 Date: Tue, 16 Dec 2025 12:11:16 +0100
-Message-ID: <20251216111354.014789541@linuxfoundation.org>
+Message-ID: <20251216111412.563901329@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 260316d35cf8f8606c5ed7a349cc92e1e71d8150 ]
+[ Upstream commit a3a22373fce576560757f5616eb48dbf85891d9c ]
 
-The VCC supply for the BL24C16 EEPROM chip found on Radxa ROCK 3C is
-vcca1v8_pmu. [1] Describe this supply.
+If the rootfs have a legacy A200 firmware, currently the driver will
+complain each time the hw is reinited (which can happen a lot). E.g.
+with GL testsuite the hw is reinited after each test, spamming the
+console.
 
-[1] https://dl.radxa.com/rock3/docs/hw/3c/v1400/radxa_rock_3c_v1400_schematic.pdf p.13
+Make sure that the message is printed only once: when we detect the
+firmware that doesn't support protection.
 
-Fixes: ee219017ddb50 ("arm64: dts: rockchip: Add Radxa ROCK 3C")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://patch.msgid.link/20251112035133.28753-4-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 302295070d3c ("drm/msm/a2xx: support loading legacy (iMX) firmware")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688098/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-index 6224d72813e59..80ac40555e023 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-@@ -466,6 +466,7 @@ eeprom: eeprom@50 {
- 		compatible = "belling,bl24c16a", "atmel,24c16";
- 		reg = <0x50>;
- 		pagesize = <16>;
-+		vcc-supply = <&vcca1v8_pmu>;
- 	};
- };
- 
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index ec38db45d8a36..963c0f669ee50 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -234,7 +234,7 @@ static int a2xx_hw_init(struct msm_gpu *gpu)
+ 	 * word (0x20xxxx for A200, 0x220xxx for A220, 0x225xxx for A225).
+ 	 * Older firmware files, which lack protection support, have 0 instead.
+ 	 */
+-	if (ptr[1] == 0) {
++	if (ptr[1] == 0 && !a2xx_gpu->protection_disabled) {
+ 		dev_warn(gpu->dev->dev,
+ 			 "Legacy firmware detected, disabling protection support\n");
+ 		a2xx_gpu->protection_disabled = true;
 -- 
 2.51.0
 
