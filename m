@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-201233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27006CC21DE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:19:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A5CCC3C02
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:52:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03E7E3029FC4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:19:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A002312C2F8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA733B961;
-	Tue, 16 Dec 2025 11:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CD334D4E1;
+	Tue, 16 Dec 2025 11:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JubuZG3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xua7ruSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFBC2459D7;
-	Tue, 16 Dec 2025 11:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335A4346E51;
+	Tue, 16 Dec 2025 11:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765883969; cv=none; b=EmBn/VLDiOihQQ3YDySkxzsEfrpywLu1yy5dnDlCFeHECVAMZ2948MwgDYlJKOohV4cRMBXHxQwsK/9l/a6tUS2Zk3UzGUeOYoK2O/HVPLx6Xfu6/hLSjKwvU5aZRgCmeha5Pq48rP1juROhPYRKXQJjk+ULNaWp+6mANekrJbE=
+	t=1765885571; cv=none; b=E2WXpJT37MOFCwGZjdN2ZGx7iIYFt4JuRQlzUf8LZpuDB9/V010bS5ws0FUkl+CFLdOBKf8d0F8bhLyIe/gRuI78dN2xNeVele4Vo3YqfIhXtzgjv0JwyQbfOG2T8K3cE7zdrFxo9X6sT26Ksl8RaeKzCQ4LOj7RmW9BItZvXM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765883969; c=relaxed/simple;
-	bh=k7UqO9ZI0GcdJ6fzjxI1yzMXEZVkghOuSYeV1Wxm15w=;
+	s=arc-20240116; t=1765885571; c=relaxed/simple;
+	bh=L6ukmDBDI2DkpyMuNFMg/KxOtLkMxtPEwjrTsJOsRj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2m6dP/fxEOpmaCEZGUZ5XC607HicsYlwyl9DyY+r+vKOIkwk4qlzCwUR9ozmrGmu8Ku6RKetIZy5WHjB2fcxvZi+4dYE0ov0smB4caliXbfThVvV4U3fCyvO1xMdcskHQRjXUFjZaFLP5nYUdSeylbsjzcPIWxQMFiyHjuoOeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JubuZG3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54866C4CEF1;
-	Tue, 16 Dec 2025 11:19:28 +0000 (UTC)
+	 MIME-Version; b=mz0IMBgbf7nSQ5hf0Xi7E1RN6cWIJ4x9ut2+zJkkEUfAJED9i+hUETLkPtfw6jUhtdNoM2X8k0MGHuD+/POWODC/tralUA1FkwKuNYTJd75ze2+6NyuoA0Pq7wuaoau3Kv9QSGagH/DNhX8VbwmuHlRvNlYP/05UfrP+HYcOcB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xua7ruSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CB5C4CEF1;
+	Tue, 16 Dec 2025 11:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765883968;
-	bh=k7UqO9ZI0GcdJ6fzjxI1yzMXEZVkghOuSYeV1Wxm15w=;
+	s=korg; t=1765885570;
+	bh=L6ukmDBDI2DkpyMuNFMg/KxOtLkMxtPEwjrTsJOsRj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JubuZG3SVTF4OX2nERSdGcut5Mvfhs0xv6POlLc7tSIgzkzxw80fngxudzHAB3Cmm
-	 swlqUiHG4YfgAqEgV36prfjW2GC4OYG/wSsomr4rNLErSIBU6Eh0aLd13g7XqMCgDR
-	 OxRrHRYbg9iy/owdicyXpYJKq3Bcp171SgLp4ZlA=
+	b=Xua7ruSP4L+71E9zV9vh6FZr+D1gDHIBjlHGp81ktHBIup3nQCr6AvQeMMJWRGJ1Z
+	 PqDMQZufHah7B8tnIweCq+I28OUUZoWldepLqrJBeKfVsGqPjcNuTWGjGrEDiSvzQ6
+	 4aQGhRi4D9MAe5gDA2eBNBqXVrP5rLxe4H2n5Yy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zhang Changzhong <zhangchangzhong@huawei.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/354] arm64: dts: imx8mp-venice-gw702x: remove off-board uart
-Date: Tue, 16 Dec 2025 12:10:19 +0100
-Message-ID: <20251216111322.803557535@linuxfoundation.org>
+Subject: [PATCH 6.17 179/507] locktorture: Fix memory leak in param_set_cpumask()
+Date: Tue, 16 Dec 2025 12:10:20 +0100
+Message-ID: <20251216111352.001094335@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit effe98060f70eb96e142f656e750d6af275ceac3 ]
+[ Upstream commit e52b43883d084a9af263c573f2a1bd1ca5088389 ]
 
-UART1 and UART3 go to a connector for use on a baseboard and as such are
-defined in the baseboard device-trees. Remove them from the gw702x SOM
-device-tree.
+With CONFIG_CPUMASK_OFFSTACK=y, the 'bind_writers' buffer is allocated via
+alloc_cpumask_var() in param_set_cpumask(). But it is not freed, when
+setting the module parameter multiple times by sysfs interface or removing
+module.
 
-Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Below kmemleak trace is seen for this issue:
+
+unreferenced object 0xffff888100aabff8 (size 8):
+  comm "bash", pid 323, jiffies 4295059233
+  hex dump (first 8 bytes):
+    07 00 00 00 00 00 00 00                          ........
+  backtrace (crc ac50919):
+    __kmalloc_node_noprof+0x2e5/0x420
+    alloc_cpumask_var_node+0x1f/0x30
+    param_set_cpumask+0x26/0xb0 [locktorture]
+    param_attr_store+0x93/0x100
+    module_attr_store+0x1b/0x30
+    kernfs_fop_write_iter+0x114/0x1b0
+    vfs_write+0x300/0x410
+    ksys_write+0x60/0xd0
+    do_syscall_64+0xa4/0x260
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+This issue can be reproduced by:
+  insmod locktorture.ko bind_writers=1
+  rmmod locktorture
+
+or:
+  insmod locktorture.ko bind_writers=1
+  echo 2 > /sys/module/locktorture/parameters/bind_writers
+
+Considering that setting the module parameter 'bind_writers' or
+'bind_readers' by sysfs interface has no real effect, set the parameter
+permissions to 0444. To fix the memory leak when removing module, free
+'bind_writers' and 'bind_readers' memory in lock_torture_cleanup().
+
+Fixes: 73e341242483 ("locktorture: Add readers_bind and writers_bind module parameters")
+Suggested-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 28 -------------------
- 1 file changed, 28 deletions(-)
+ kernel/locking/locktorture.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-index 45c7082c9df71..e8688695df780 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-@@ -393,13 +393,6 @@ &i2c3 {
- 	status = "okay";
+diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+index ce0362f0a8719..6567e5eeacc0e 100644
+--- a/kernel/locking/locktorture.c
++++ b/kernel/locking/locktorture.c
+@@ -103,8 +103,8 @@ static const struct kernel_param_ops lt_bind_ops = {
+ 	.get = param_get_cpumask,
  };
  
--/* off-board header */
--&uart1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart1>;
--	status = "okay";
--};
--
- /* console */
- &uart2 {
- 	pinctrl-names = "default";
-@@ -407,13 +400,6 @@ &uart2 {
- 	status = "okay";
- };
+-module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0644);
+-module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0644);
++module_param_cb(bind_readers, &lt_bind_ops, &bind_readers, 0444);
++module_param_cb(bind_writers, &lt_bind_ops, &bind_writers, 0444);
  
--/* off-board header */
--&uart3 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart3>;
--	status = "okay";
--};
--
- /* off-board */
- &usdhc1 {
- 	pinctrl-names = "default";
-@@ -516,13 +502,6 @@ MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19	0x400001c2
- 		>;
- 	};
+ long torture_sched_setaffinity(pid_t pid, const struct cpumask *in_mask, bool dowarn);
  
--	pinctrl_uart1: uart1grp {
--		fsl,pins = <
--			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
--			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
--		>;
--	};
--
- 	pinctrl_uart2: uart2grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
-@@ -530,13 +509,6 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
- 		>;
- 	};
+@@ -1211,6 +1211,10 @@ static void lock_torture_cleanup(void)
+ 			cxt.cur_ops->exit();
+ 		cxt.init_called = false;
+ 	}
++
++	free_cpumask_var(bind_readers);
++	free_cpumask_var(bind_writers);
++
+ 	torture_cleanup_end();
+ }
  
--	pinctrl_uart3: uart3grp {
--		fsl,pins = <
--			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX	0x140
--			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX	0x140
--		>;
--	};
--
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
 -- 
 2.51.0
 
