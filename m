@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-201821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC12CC2719
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:51:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BF7CC23A7
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 46C49300444D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:51:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A95983062214
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB81435502C;
-	Tue, 16 Dec 2025 11:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A09D34214A;
+	Tue, 16 Dec 2025 11:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QP+9KXj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1S2dT4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90295355028;
-	Tue, 16 Dec 2025 11:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3538E32BF22;
+	Tue, 16 Dec 2025 11:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885898; cv=none; b=XFFW+PAI+ypAlcKWVWzelFvP9Gey4ebo3gUfyI2BFeYHYvm2N6h+WvY0aF6iayp64aKs/GCC7T3yOgOzwlV2Qgu4zFv/ruwezfp+52H8i4xNjMRGOZsJOXzRMVjRtizNKc+dRQ0d2+ql9bGjkwAb8iOy/h/bIHcyB7b9JkpoZVI=
+	t=1765884296; cv=none; b=ZyogFSvbFwbXkQnphODXIttXp8KZbk4ZeX6rcHaK9Q/h1i/asdSE1K4X4u3hEtYkbhSsZfFRWZgbAGtPtFg5TwHVTkDHtyv5ykauosrKxy47FYhJjDaLEFpk7MkgjJckopauk/LZTDJ3kO90s0Mx90WSa2E5speOwoGephvIQ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885898; c=relaxed/simple;
-	bh=9tuuFtxkDxY0Ik+QEGBuNQYGxgyBkcGtvwt65om3zkM=;
+	s=arc-20240116; t=1765884296; c=relaxed/simple;
+	bh=fs9kGNy6z3fZxu1KDFy0sBDNELh9n2jZCZT3sRHOpnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjtOe2YodmEUOFSWiSJg2YZN5BzhroHDzKyTQEOb6wH4XTUjfymkCKmIo8Wd9d3q8pVVaO555uLsjM5h+XzMmPCvP9MdV1gsVdQQ0tjfNu6srw1YWUwglY1DO0JZaBuaVpXPZ/EtEj24pgEZuPf13xFw/auS0J+j9zJHZtNiUHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QP+9KXj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E35C4CEF1;
-	Tue, 16 Dec 2025 11:51:37 +0000 (UTC)
+	 MIME-Version; b=fMi9WgiEni0PA1iC8oFe6Rhd8BQz2V2SGg/Q9+NxoGxNGb4FncVrQztu9OAg8aI3nfWzU2KtC2S5e13mbPmhe6IxGN9nqVDuoHKuyiu7tl/vxYb4n4LFM6XU4rIlNTUSIpd1FigtFBXGYGZp7eEhzqHt9RVMBzkmGnkIvpYomg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1S2dT4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8572FC4CEF1;
+	Tue, 16 Dec 2025 11:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885898;
-	bh=9tuuFtxkDxY0Ik+QEGBuNQYGxgyBkcGtvwt65om3zkM=;
+	s=korg; t=1765884296;
+	bh=fs9kGNy6z3fZxu1KDFy0sBDNELh9n2jZCZT3sRHOpnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QP+9KXj9PxqHR8Jml5rdhqWsXuwfJ6qfGj4sAhbhF3wlsCmQAMR3TeV8x2IwRkOuW
-	 LnMC8ecG0IH9M0m9mOYU5cvMv0aAaGP7VemRmFLZLhYHI56Fp0fL7hdq44+WQa1Noi
-	 R2ot9IS9ZKAvvDaDOR8cxa0rk7546DkjoHy2Al+4=
+	b=Z1S2dT4O52rwHJroTMyVH84+GXP9rA2ICVYl6AvKeWT3gad99mGvjxsW5gkgnOZDZ
+	 IG/GSTjkUW6y/H5r2X0yBmg8JsLBXi8O9iRssRcyrY1sEIRjbIQLizKz8bYlXrEiiO
+	 4lfeyIva1NJkt0oWZimMZ+0df+qW6lggDAWZf0IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Garri Djavadyan <g.djavadyan@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 276/507] ipv6: clear RA flags when adding a static route
-Date: Tue, 16 Dec 2025 12:11:57 +0100
-Message-ID: <20251216111355.482396765@linuxfoundation.org>
+Subject: [PATCH 6.12 151/354] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
+Date: Tue, 16 Dec 2025 12:11:58 +0100
+Message-ID: <20251216111326.386599904@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +67,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit f72514b3c5698e4b900b25345e09f9ed33123de6 ]
+[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
 
-When an IPv6 Router Advertisement (RA) is received for a prefix, the
-kernel creates the corresponding on-link route with flags RTF_ADDRCONF
-and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
+In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
+to avoid crashing the whole kernel due to a filesystem corruption.
 
-If later a user configures a static IPv6 address on the same prefix the
-kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
-and RTF_PREFIX_RT. When the next RA for that prefix is received, the
-kernel sees the route as RA-learned and wrongly configures back the
-lifetime. This is problematic because if the route expires, the static
-address won't have the corresponding on-link route.
-
-This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
-the lifetime is configured when the next RA arrives. If the static
-address is deleted, the route becomes RA-learned again.
-
-Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
-Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
-Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20251115095939.6967-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
+Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
+Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ocfs2/move_extents.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 02c16909f6182..2111af022d946 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1138,6 +1138,10 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 					fib6_set_expires(iter, rt->expires);
- 					fib6_add_gc_list(iter);
- 				}
-+				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
-+					iter->fib6_flags &= ~RTF_ADDRCONF;
-+					iter->fib6_flags &= ~RTF_PREFIX_RT;
-+				}
+diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
+index aa595cd1ab6fe..6fcaaeece6666 100644
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
  
- 				if (rt->fib6_pmtu)
- 					fib6_metric_set(iter, RTAX_MTU,
+ 	rec = &el->l_recs[index];
+ 
+-	BUG_ON(ext_flags != rec->e_flags);
++	if (ext_flags != rec->e_flags) {
++		ret = ocfs2_error(inode->i_sb,
++				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
++				  (unsigned long long)ino, index, rec->e_flags, cpos);
++		goto out;
++	}
++
+ 	/*
+ 	 * after moving/defraging to new location, the extent is not going
+ 	 * to be refcounted anymore.
 -- 
 2.51.0
 
