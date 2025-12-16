@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-201399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276C7CC24D5
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:35:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8810CC27C4
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD3C9305A3F9
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:28:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B776A30210DE
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE552E54AA;
-	Tue, 16 Dec 2025 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35793451CD;
+	Tue, 16 Dec 2025 11:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuQULDht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfs5vFSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0A62367D5;
-	Tue, 16 Dec 2025 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6D03451BA;
+	Tue, 16 Dec 2025 11:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884509; cv=none; b=kLjONggmSa8zMCNYSkYT7QNgjQLWmQ8cOtNufS7tVKh5ti0bzppbY2SkYoZc4kcwpjqwPCq7XqzHITNhichxTnowi6b2azN4Y4VQFBRua2hkjDnxhP9u06d2dpfo2975kZytrRgu6XGzYrRPxN4+1/kpaJZZwJVCvCT2swW+hN4=
+	t=1765886088; cv=none; b=MfVoTeUzmEq62VCjjTuJXEcxaBXcbLkS8QD9DOr5CG6pM2bc+NmAebmOYJHndmHEN9PY94n/u5LtpPh8HvOdboZgSfsMXI5lZLDgBBioM6rf/fbbA6HjXiqeO+yTEiXjqqtf0aD9Gm39YTi1enCXAKeqMxKmNArGTxlswoDixaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884509; c=relaxed/simple;
-	bh=tl9b+UHK9lbEqX+8KQXW5P06n/3T4aJpCD7+jfLV0Dw=;
+	s=arc-20240116; t=1765886088; c=relaxed/simple;
+	bh=duwXP/iEnGDM8uPqsR3Po7pueXK78VvgjUvqFnup3FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YF8vMtKYwSjZZzb4KHqdBuybo2XHtc8FCvyhvy504sNlXFktVQXi1OmMRPK5qyu22Nj5w5kYm7gFw0jTHSfSgYTpCN93NslCrj89zoaBYqYR27BdrqToQcoMFBZcmfowMpqbzHqoWpzQMCQLLXJKNulmCbvihBtwrwv+MpxeY5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuQULDht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA48C4CEF1;
-	Tue, 16 Dec 2025 11:28:28 +0000 (UTC)
+	 MIME-Version; b=sBhiErLQ2KExcmHKCVK7rz6TKFCUB0/Yuh1cmgM+jkuMOuAuOGqWNg4yS3JQoMAZgvN3Uh4Dh57Mg5vZ+qi/6USrlCyA9ecniGgsE6L3uwGgSzh2uqo+vl91eso64i5mCU7OLZqYrUSLDgUrKpwkvGB5djrkdXNFv1jFGok8k/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfs5vFSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EEFC4CEF1;
+	Tue, 16 Dec 2025 11:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884509;
-	bh=tl9b+UHK9lbEqX+8KQXW5P06n/3T4aJpCD7+jfLV0Dw=;
+	s=korg; t=1765886088;
+	bh=duwXP/iEnGDM8uPqsR3Po7pueXK78VvgjUvqFnup3FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuQULDht4RTqtS5BFTb+rdmz6i5q/w0Ffy1FThT5Eurawomr+zTrKPidLxoT9+YJd
-	 kuKcdirSB7hli30O3l0p1NEGEGBm3FsBKt3ollOQ8SkAI6hwKCtF5gMPgo2JICm/7a
-	 D6i7y65Nsee/fBRYnPIwL9jozlF10FpH6BCjfW2o=
+	b=Yfs5vFSE5LTxYLaUG+I1D2bIc5GYXxEjuZFo2yFLa7xukqr+mUmEZrw5dwBbwf9uW
+	 uFKlJIyliLCV97GXLJQbjTfeEETlhSXm1uLPtyy0Lm0k4B5O2ByawhXNEgmico4GN2
+	 C1QfANJmHnxShvlcxEr3du3Tt3Cuj84b3PHl0f3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ben Greear <greearb@candelatech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 208/354] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
+Subject: [PATCH 6.17 334/507] wifi: mt76: mt7996: grab mt76 mutex in mt7996_mac_sta_event()
 Date: Tue, 16 Dec 2025 12:12:55 +0100
-Message-ID: <20251216111328.457001456@linuxfoundation.org>
+Message-ID: <20251216111357.564801081@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
+[ Upstream commit 5a4bcba26e9fbea87507a81ad891e70bb525014f ]
 
-Currently, test_perf_branches_no_hw() relies on the busy loop within
-test_perf_branches_common() being slow enough to allow at least one
-perf event sample tick to occur before starting to tear down the
-backing perf event BPF program. With a relatively small fixed
-iteration count of 1,000,000, this is not guaranteed on modern fast
-CPUs, resulting in the test run to subsequently fail with the
-following:
+Grab mt76 mutex in mt7996_mac_sta_event routine in order to rely on
+mt76_dereference() utility macro.
 
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:PASS:output not valid 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_bad_sample:FAIL:output not valid no valid sample from prog
-Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
-
-On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
-million increments of a volatile integer can take significantly less
-than 1 millisecond. If the spin loop and detachment of the perf event
-BPF program elapses before the first 1 ms sampling interval elapses,
-the perf event will never end up firing. Fix this by bumping the loop
-iteration counter a little within test_perf_branches_common(), along
-with ensuring adding another loop termination condition which is
-directly influenced by the backing perf event BPF program
-executing. Notably, a concious decision was made to not adjust the
-sample_freq value as that is just not a reliable way to go about
-fixing the problem. It effectively still leaves the race window open.
-
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: ecd72f9695e7e ("wifi: mt76: mt7996: Support MLO in mt7996_mac_sta_event()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20251114-mt76-fix-missing-mtx-v1-1-259ebf11f654@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
- .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index 06c7986131d96..0a7ef770c487c 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
- 	int pbe_size = sizeof(struct perf_branch_entry);
- 	int duration = 0;
- 
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 14e90ecf925e1..04b1d5f871376 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1140,12 +1140,15 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 	unsigned long links = sta->valid_links;
+ 	struct ieee80211_link_sta *link_sta;
+ 	unsigned int link_id;
++	int err = 0;
 +
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
- 	int written_stack = skel->bss->written_stack_out;
- 	int duration = 0;
++	mutex_lock(&dev->mt76.mutex);
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
- 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
- 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
- 		goto out_destroy;
--	/* spin the loop for a while (random high number) */
--	for (i = 0; i < 1000000; ++i)
-+
-+	/* Spin the loop for a while by using a high iteration count, and by
-+	 * checking whether the specific run count marker has been explicitly
-+	 * incremented at least once by the backing perf_event BPF program.
-+	 */
-+	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
- 		++j;
+ 	for_each_sta_active_link(vif, sta, link_sta, link_id) {
+ 		struct ieee80211_bss_conf *link_conf;
+ 		struct mt7996_sta_link *msta_link;
+ 		struct mt7996_vif_link *link;
+-		int i, err;
++		int i;
  
- 	test_perf_branches__detach(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-index a1ccc831c882f..05ac9410cd68c 100644
---- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
-+++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-@@ -8,6 +8,7 @@
- #include <bpf/bpf_tracing.h>
+ 		link_conf = link_conf_dereference_protected(vif, link_id);
+ 		if (!link_conf)
+@@ -1165,12 +1168,12 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 						 link, msta_link,
+ 						 CONN_STATE_CONNECT, true);
+ 			if (err)
+-				return err;
++				goto unlock;
  
- int valid = 0;
-+int run_cnt = 0;
- int required_size_out = 0;
- int written_stack_out = 0;
- int written_global_out = 0;
-@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
- 	__u64 entries[4 * 3] = {0};
- 	int required_size, written_stack, written_global;
+ 			err = mt7996_mcu_add_rate_ctrl(dev, msta_link->sta, vif,
+ 						       link_id, false);
+ 			if (err)
+-				return err;
++				goto unlock;
  
-+	++run_cnt;
-+
- 	/* write to stack */
- 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
- 	/* ignore spurious events */
+ 			msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 			break;
+@@ -1179,7 +1182,7 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 						 link, msta_link,
+ 						 CONN_STATE_PORT_SECURE, false);
+ 			if (err)
+-				return err;
++				goto unlock;
+ 			break;
+ 		case MT76_STA_EVENT_DISASSOC:
+ 			for (i = 0; i < ARRAY_SIZE(msta_link->twt.flow); i++)
+@@ -1199,8 +1202,10 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 			break;
+ 		}
+ 	}
++unlock:
++	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static void
 -- 
 2.51.0
 
