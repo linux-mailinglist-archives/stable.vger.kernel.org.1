@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB6CC2C76
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:33:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3784CCC2665
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33FDB30185DB
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:33:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41A5A3071AA2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D3C398B6B;
-	Tue, 16 Dec 2025 12:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CA342CA1;
+	Tue, 16 Dec 2025 11:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhEoyI3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u09MYKI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2B6398B68;
-	Tue, 16 Dec 2025 12:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6161C219A8E;
+	Tue, 16 Dec 2025 11:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888354; cv=none; b=VOtnecPOOoeB9my0DW4Hgj6M996fOV2BXb0/O1EDmrk2YNt/nTD0+WfNRm2o+ZzHiL8oocvYLFiI7ohBuGXnRebzonrTbvMthJUHo7ZOO+ly1wPUnOD7uug5tP888jEWigmVEAErdea2rxiVNg+eFsI2J0ussUKNqQC0NnZkmW4=
+	t=1765884828; cv=none; b=BRC82IoP+QESCvy8akhHdhuTS8r/tejWzEnDcHwnIS60qBwTxYNrvxIf8i9JwGaNMarnkrnhfmb5e8ztRREDe+eTC4A4wHcoN9akih+waN2bQp2vi+Y+XHT2oquUNy3M6IIdWp75vTtMViODw+k27iFgZgg51/Be4UK0KPwaxuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888354; c=relaxed/simple;
-	bh=+oj4QKzHVmt+RFWMddCaodgW14+KrbwIHdc6uIl2lzE=;
+	s=arc-20240116; t=1765884828; c=relaxed/simple;
+	bh=xYjsP45h2wYkxbfxthsYVrsgz7JlWat7AiOs4Rhp/VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbjfbnl6kgO9G1htuVD1NMWkTXn+rWrPu6Yoh453VgX4dc1b38NLb1ETSYN4efNWVrALZY736w4ZwHcgIMY35okALbsZzMn9oAJLzxh7srYA3ISRWLvE+2qbxrfjQfuBRNDfKcJTcfnQtwQ0+BldzHc0WXB+DAU7UQbJZaP/LRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhEoyI3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10125C4CEF1;
-	Tue, 16 Dec 2025 12:32:33 +0000 (UTC)
+	 MIME-Version; b=iXfcPZ6QbpEk2j0hyaHgCVQa8J1w0eNxpQWfugjrAf0P+KA0WvMDOWNR1x0/bCKO8mN5px2KQGlrFcZhNDaCR5ubw455mInZgdjCOP78WxGfGE4TB1gDyh5x0THX3lB+v36JwQE1X13DMaQZvdOKiulVIoGy2HMCRcXfyyHRYMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u09MYKI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EFDC4CEF1;
+	Tue, 16 Dec 2025 11:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888354;
-	bh=+oj4QKzHVmt+RFWMddCaodgW14+KrbwIHdc6uIl2lzE=;
+	s=korg; t=1765884828;
+	bh=xYjsP45h2wYkxbfxthsYVrsgz7JlWat7AiOs4Rhp/VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhEoyI3hgGctIZoTkKxXMGSW9JpvXKk7S0t6ZilK+eY150Q3zJMRJ7NwtwDuzvGz0
-	 fpWFd7FrF5EXTTWbyxgBoVQa0OojSEq5fgPeLBf5ipC1Y6ZiHAOwHsjhRMeXGnGAkB
-	 MEORZ/PthEaqYzoysbZYdF+u0rDjKAlC3l50Z2vg=
+	b=u09MYKI0V9Fk8RhHdKJCX4ojMdO5VDuiD4IcYJWwCCltvev0DI8GENv3FHFR/j/9S
+	 MVxZBPhnZm1v35WLOXleQm3ej/7XS7Pe6ZBDImqfFJMNf2ZddfSPTo5Wa7zdhC3WSL
+	 8ZJNeCLsYzs2OSYD0/8IBx+rn5ZjMGj+MZj25vjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 509/614] net: dsa: b53: move reading ARL entries into their own function
-Date: Tue, 16 Dec 2025 12:14:36 +0100
-Message-ID: <20251216111419.811549984@linuxfoundation.org>
+Subject: [PATCH 6.12 310/354] Revert "nfs: clear SB_RDONLY before getting superblock"
+Date: Tue, 16 Dec 2025 12:14:37 +0100
+Message-ID: <20251216111332.142757795@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,129 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 4a291fe7226736a465ddb3fa93c21fcef7162ec7 ]
+[ Upstream commit d216b698d44e33417ad4cc796cb04ccddbb8c0ee ]
 
-Instead of duplicating the whole code iterating over all bins for
-BCM5325, factor out reading and parsing the entry into its own
-functions, and name it the modern one after the first chip with that ARL
-format, (BCM53)95.
+This reverts commit 8cd9b785943c57a136536250da80ba1eb6f8eb18.
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251107080749.26936-3-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e46aacea426 ("net: dsa: b53: use same ARL search result offset for BCM5325/65")
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
+
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 8cd9b785943c ("nfs: clear SB_RDONLY before getting superblock")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 69 +++++++++++---------------------
- 1 file changed, 23 insertions(+), 46 deletions(-)
+ fs/nfs/super.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 4d8de90fb4ab8..41dcd2d03230d 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1830,48 +1830,30 @@ static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
- 	return b53_arl_op_wait(dev);
- }
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 44e5cb00e2ccf..ae5c5e39afa03 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1303,17 +1303,8 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (IS_ERR(server))
+ 		return PTR_ERR(server);
  
--static int b53_arl_read(struct b53_device *dev, const u8 *mac,
--			u16 vid, struct b53_arl_entry *ent, u8 *idx)
-+static void b53_arl_read_entry_25(struct b53_device *dev,
-+				  struct b53_arl_entry *ent, u8 idx)
- {
--	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
--	unsigned int i;
--	int ret;
--
--	ret = b53_arl_op_wait(dev);
--	if (ret)
--		return ret;
--
--	bitmap_zero(free_bins, dev->num_arl_bins);
--
--	/* Read the bins */
--	for (i = 0; i < dev->num_arl_bins; i++) {
--		u64 mac_vid;
--		u32 fwd_entry;
-+	u64 mac_vid;
- 
--		b53_read64(dev, B53_ARLIO_PAGE,
--			   B53_ARLTBL_MAC_VID_ENTRY(i), &mac_vid);
--		b53_read32(dev, B53_ARLIO_PAGE,
--			   B53_ARLTBL_DATA_ENTRY(i), &fwd_entry);
--		b53_arl_to_entry(ent, mac_vid, fwd_entry);
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		   &mac_vid);
-+	b53_arl_to_entry_25(ent, mac_vid);
-+}
- 
--		if (!ent->is_valid) {
--			set_bit(i, free_bins);
--			continue;
--		}
--		if (!ether_addr_equal(ent->mac, mac))
--			continue;
--		if (dev->vlan_enabled && ent->vid != vid)
--			continue;
--		*idx = i;
--		return 0;
--	}
-+static void b53_arl_read_entry_95(struct b53_device *dev,
-+				  struct b53_arl_entry *ent, u8 idx)
-+{
-+	u32 fwd_entry;
-+	u64 mac_vid;
- 
--	*idx = find_first_bit(free_bins, dev->num_arl_bins);
--	return *idx >= dev->num_arl_bins ? -ENOSPC : -ENOENT;
-+	b53_read64(dev, B53_ARLIO_PAGE, B53_ARLTBL_MAC_VID_ENTRY(idx),
-+		   &mac_vid);
-+	b53_read32(dev, B53_ARLIO_PAGE, B53_ARLTBL_DATA_ENTRY(idx), &fwd_entry);
-+	b53_arl_to_entry(ent, mac_vid, fwd_entry);
- }
- 
--static int b53_arl_read_25(struct b53_device *dev, const u8 *mac,
--			   u16 vid, struct b53_arl_entry *ent, u8 *idx)
-+static int b53_arl_read(struct b53_device *dev, const u8 *mac,
-+			u16 vid, struct b53_arl_entry *ent, u8 *idx)
- {
- 	DECLARE_BITMAP(free_bins, B53_ARLTBL_MAX_BIN_ENTRIES);
- 	unsigned int i;
-@@ -1885,12 +1867,10 @@ static int b53_arl_read_25(struct b53_device *dev, const u8 *mac,
- 
- 	/* Read the bins */
- 	for (i = 0; i < dev->num_arl_bins; i++) {
--		u64 mac_vid;
--
--		b53_read64(dev, B53_ARLIO_PAGE,
--			   B53_ARLTBL_MAC_VID_ENTRY(i), &mac_vid);
--
--		b53_arl_to_entry_25(ent, mac_vid);
-+		if (is5325(dev) || is5365(dev))
-+			b53_arl_read_entry_25(dev, ent, i);
-+		else
-+			b53_arl_read_entry_95(dev, ent, i);
- 
- 		if (!ent->is_valid) {
- 			set_bit(i, free_bins);
-@@ -1934,10 +1914,7 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
- 	if (ret)
- 		return ret;
- 
--	if (is5325(dev) || is5365(dev))
--		ret = b53_arl_read_25(dev, addr, vid, &ent, &idx);
+-	/*
+-	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
+-	 * superblock among each filesystem that mounts sub-directories
+-	 * belonging to a single exported root path.
+-	 * To prevent interference between different filesystems, the
+-	 * SB_RDONLY flag should be removed from the superblock.
+-	 */
+ 	if (server->flags & NFS_MOUNT_UNSHARED)
+ 		compare_super = NULL;
 -	else
--		ret = b53_arl_read(dev, addr, vid, &ent, &idx);
-+	ret = b53_arl_read(dev, addr, vid, &ent, &idx);
+-		fc->sb_flags &= ~SB_RDONLY;
  
- 	/* If this is a read, just finish now */
- 	if (op)
+ 	/* -o noac implies -o sync */
+ 	if (server->flags & NFS_MOUNT_NOAC)
 -- 
 2.51.0
 
