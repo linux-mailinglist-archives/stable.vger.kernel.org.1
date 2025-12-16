@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-202570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BC5CC30CE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46D0CC2637
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:44:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FB6F30E81C1
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:49:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41C6930C9E5C
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05283344041;
-	Tue, 16 Dec 2025 12:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAA5342169;
+	Tue, 16 Dec 2025 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwjRHzBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrLutzD+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAB6396579;
-	Tue, 16 Dec 2025 12:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ADB341AD7;
+	Tue, 16 Dec 2025 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765888325; cv=none; b=CWRpf9r59C9XTUIB85xwy9M5V39sI0sTfwWusaRM24B6ugC9U1WA59tnvp3WC+39FU0cfl8ScCmTi8bdcFi9xzJOlPjuGETu0Ylqc6l6UM2DRO1Z0cBcE12UpAVAYxv77pWhwQXkUuLJVOHGI830AYuY0Vr6SPJpaxNUy3nCIe0=
+	t=1765884796; cv=none; b=j9ndqDCCE3dc9Oq7Ub8DtZ0jjGkVDqI6YEMMFwGK7+Oq2qzTNs+JEALer+wfRwo1ZX7QI3UVKqiCrXHxvfQgw6Fd1YJq6YXScKYyQrZPkJBOmGZh8xtLy6blkKcw4DaHSJsXx4KU1gJViunFeTSYF2W1YoUX3KPxwPlu57qKIdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765888325; c=relaxed/simple;
-	bh=F0E8z3YJS7za89WtMyi2ZHrRlSWo61zD/M21UzUw104=;
+	s=arc-20240116; t=1765884796; c=relaxed/simple;
+	bh=LbH3yyFUdl2meuW0YEkkg+DprbsOJ8URSAAl+ZmHC7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HePL37YdaRRVRiCGaQ3cAwqG88/1p96YVYvYyMM03KeZqgBINmTtrHpDa8IxkyFvneeSWrFM4rIFyd9CxOrjruc+v37Jjqx2al2g8DWzmY5IjXomwDHUx9A4NtJgRnQ3AgCnJrdyFpOWt9AUn1x9dFBuDrugRN3G5ZECzkj2rCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwjRHzBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CDAC4CEF1;
-	Tue, 16 Dec 2025 12:32:04 +0000 (UTC)
+	 MIME-Version; b=RtbuKHLXUi8Sx+sJT7B/gYG645OTv4wNbX1DbjGd8XPW+LStoTDFw+npTMANIicC/6uUpfkHjG++KJtiDLIC98WM94MUZKbRQed/PvxGk3Xc3Sd+gsxgBHBMmPOvM7jr3ZxH3sefU+ZZ9dVz8sMJ9p3DlytBM3n47d3T5hGYbAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrLutzD+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED11BC4CEF1;
+	Tue, 16 Dec 2025 11:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765888325;
-	bh=F0E8z3YJS7za89WtMyi2ZHrRlSWo61zD/M21UzUw104=;
+	s=korg; t=1765884796;
+	bh=LbH3yyFUdl2meuW0YEkkg+DprbsOJ8URSAAl+ZmHC7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwjRHzBSrjwfPm7KOrzdRSxhBpsdJ7D2vgisduC/0lCwzA4XhCGhw1nl8seDQsrkY
-	 BlhgLhr2DgeMV5W//f+pdIQKHF1qFnybPkec1uYcAxK7vEXxJ7eB5g3iHxy5kd3hNl
-	 CE7ZJS3ubtkOOxjHhOYsY5ch1MOY+71sAOUHlXxQ=
+	b=TrLutzD+E2BhokVBd57pdJ/fo1bCBZgNR4b2m9VzSq9oeiBe/Pu03zofD4BibSeSF
+	 qM4d0Ms1oyV4XZITIWtpZR0yWd+JIrLbY09GvmU/0/LkhHT1p/9nZd+j6WYvIBv1uk
+	 s4CY+0gVJkou8uYTJPIWgerAMP1C18iksiZuDkbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 501/614] smb: smbdirect: introduce SMBDIRECT_DEBUG_ERR_PTR() helper
+Subject: [PATCH 6.12 301/354] f2fs: maintain one time GC mode is enabled during whole zoned GC cycle
 Date: Tue, 16 Dec 2025 12:14:28 +0100
-Message-ID: <20251216111419.521874013@linuxfoundation.org>
+Message-ID: <20251216111331.816743824@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,63 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit 1f3fd108c5c5a9885c6c276a2489c49b60a6b90d ]
+[ Upstream commit e462fc48ceb8224811c3224650afed05cb7f0872 ]
 
-This can be used like this:
+The current version missed setting one time GC for normal zoned GC
+cycle. So, valid threshold control is not working. Need to fix it to
+prevent excessive GC for zoned devices.
 
-  int err = somefunc();
-  pr_warn("err=%1pe\n", SMBDIRECT_DEBUG_ERR_PTR(err));
-
-This will be used in the following fixes in order
-to be prepared to identify real world problems
-more easily.
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Paulo Alcantara <pc@manguebit.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 425c32750b48 ("smb: server: relax WARN_ON_ONCE(SMBDIRECT_SOCKET_*) checks in recv_done() and smb_direct_cm_handler()")
+Fixes: e791d00bd06c ("f2fs: add valid block ratio not to do excessive GC for one time GC")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smbdirect/smbdirect_socket.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/f2fs/gc.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
-index ee5a90d691c89..611986827a5e2 100644
---- a/fs/smb/common/smbdirect/smbdirect_socket.h
-+++ b/fs/smb/common/smbdirect/smbdirect_socket.h
-@@ -74,6 +74,19 @@ const char *smbdirect_socket_status_string(enum smbdirect_socket_status status)
- 	return "<unknown>";
- }
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 12737dfba5efb..2dda8f23c0b99 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -38,13 +38,14 @@ static int gc_thread_func(void *data)
+ 	struct f2fs_gc_control gc_control = {
+ 		.victim_segno = NULL_SEGNO,
+ 		.should_migrate_blocks = false,
+-		.err_gc_skipped = false };
++		.err_gc_skipped = false,
++		.one_time = false };
  
-+/*
-+ * This can be used with %1pe to print errors as strings or '0'
-+ * And it avoids warnings like: warn: passing zero to 'ERR_PTR'
-+ * from smatch -p=kernel --pedantic
-+ */
-+static __always_inline
-+const void * __must_check SMBDIRECT_DEBUG_ERR_PTR(long error)
-+{
-+	if (error == 0)
-+		return NULL;
-+	return ERR_PTR(error);
-+}
-+
- enum smbdirect_keepalive_status {
- 	SMBDIRECT_KEEPALIVE_NONE,
- 	SMBDIRECT_KEEPALIVE_PENDING,
+ 	wait_ms = gc_th->min_sleep_time;
+ 
+ 	set_freezable();
+ 	do {
+-		bool sync_mode, foreground = false;
++		bool sync_mode, foreground = false, gc_boost = false;
+ 
+ 		wait_event_freezable_timeout(*wq,
+ 				kthread_should_stop() ||
+@@ -52,8 +53,12 @@ static int gc_thread_func(void *data)
+ 				gc_th->gc_wake,
+ 				msecs_to_jiffies(wait_ms));
+ 
+-		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq))
++		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq)) {
+ 			foreground = true;
++			gc_control.one_time = false;
++		} else if (f2fs_sb_has_blkzoned(sbi)) {
++			gc_control.one_time = true;
++		}
+ 
+ 		/* give it a try one time */
+ 		if (gc_th->gc_wake)
+@@ -81,8 +86,6 @@ static int gc_thread_func(void *data)
+ 			continue;
+ 		}
+ 
+-		gc_control.one_time = false;
+-
+ 		/*
+ 		 * [GC triggering condition]
+ 		 * 0. GC is not conducted currently.
+@@ -132,7 +135,7 @@ static int gc_thread_func(void *data)
+ 		if (need_to_boost_gc(sbi)) {
+ 			decrease_sleep_time(gc_th, &wait_ms);
+ 			if (f2fs_sb_has_blkzoned(sbi))
+-				gc_control.one_time = true;
++				gc_boost = true;
+ 		} else {
+ 			increase_sleep_time(gc_th, &wait_ms);
+ 		}
+@@ -141,7 +144,7 @@ static int gc_thread_func(void *data)
+ 					FOREGROUND : BACKGROUND);
+ 
+ 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
+-			(gc_control.one_time && gc_th->boost_gc_greedy);
++			(gc_boost && gc_th->boost_gc_greedy);
+ 
+ 		/* foreground GC was been triggered via f2fs_balance_fs() */
+ 		if (foreground)
 -- 
 2.51.0
 
