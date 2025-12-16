@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-201835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A367CC346E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A158BCC2412
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 514073048F44
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:38:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1074F306CF6D
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A38B355045;
-	Tue, 16 Dec 2025 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C4B34214A;
+	Tue, 16 Dec 2025 11:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6loC7ZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KN6K0paJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E2535502C;
-	Tue, 16 Dec 2025 11:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9184F341645;
+	Tue, 16 Dec 2025 11:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885945; cv=none; b=PCA8Ji5gSQuyz5yuK8VcLyt5GOCwwApsUrUwk6xn4IssJQ25MDMhmjX3HgoKURLM8Lb4VG4FJwWMPQTVmRtcj+6Kv/axTRFJN9Vwqcb8VpRPeG4FVJNYuCMAf/2lo81eRfSUap7Vo8psOQrZLrdQrZi6QGp9w17VHwtOkyoRuto=
+	t=1765884353; cv=none; b=Sa52kJdV269ZVdtOTzMqeK9n9bBHKddAxkk8j74LYmpB+q1+/TWtqbxYhJi8GLymJY08l4HBAd/AFaFsCqSsJUdJNLjI+ffNW158nYsg8P4JbVTzWl++dETdeMtacCaWxnQhnWqHatiy4Jh1n5ilETrQH19WiadBT9WNKErs3MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885945; c=relaxed/simple;
-	bh=gGpwBJhD7Ce5KXM9V1ImQN2VKT5y99y8h+9SC/6ecYw=;
+	s=arc-20240116; t=1765884353; c=relaxed/simple;
+	bh=AZAO1REybMWWXmoUnIU2AvY1Iw7YkiNo5I42G5zD24A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4WK8yl+zhCpG5GFMe2SLqHfwxLf8vwbZtk69Yw8QNEqSkrWdLdR2KPB0Htg5yV3pV2pH55HzMoYqho+CD6sGW9JBus7AeWoup1R9RU/pd+cFk5jhY4rg3gnSWzv9j76S+gkqrKwTjEUUUY2rk5u2wWa/t8eAmCBg2yXHCxdCCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6loC7ZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DB2C4CEF1;
-	Tue, 16 Dec 2025 11:52:25 +0000 (UTC)
+	 MIME-Version; b=iRHMlNQTAEjiUAaRvjjp6BFa9cEZnRjLtUefuDROPBOOyV01pSU+ixKywsbzacIG9RUpnoTX3mG9puzjBRe+7JgyQgeBHC0HSuW+aaFy7bHxu2z123Ia2eEpB1Unt/RaBQ6BUaGeZ4yP51u0oPRzio3xuzkql2Jci7s/TbsRvHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KN6K0paJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3FFC4CEF1;
+	Tue, 16 Dec 2025 11:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885945;
-	bh=gGpwBJhD7Ce5KXM9V1ImQN2VKT5y99y8h+9SC/6ecYw=;
+	s=korg; t=1765884353;
+	bh=AZAO1REybMWWXmoUnIU2AvY1Iw7YkiNo5I42G5zD24A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6loC7ZFy1z4sFk1PGueFZ1uLaDKX/FNO4yd8WPf8hvW3PbKsddfuyhtLYCOuq7Ws
-	 6aWbDtl8vaUSnmhhPHJVy9ji7xIXzjvQfNwBUZC+DSZeTCFh4S7gYJ+Ke0TYH7ZVNh
-	 chQs9AT2jMvHKDj8NOocuw4eWdVRS2b6+wWf2GFY=
+	b=KN6K0paJomFySwLznMr9s07asxRQR1Qk+/is471VUGeHY0lyhrI6VZTbtHwlUF7eo
+	 xlg7cUNZbPQR6TvV471jJhchjPcsGz6uQW3pfL9cdOPLNZXoa//0ps80JiuiKylFq5
+	 U/67EHe1+GpGwho61xI58WTcxYIT7NHcbRSmMD28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 292/507] phy: freescale: Initialize priv->lock
+Subject: [PATCH 6.12 166/354] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
 Date: Tue, 16 Dec 2025 12:12:13 +0100
-Message-ID: <20251216111356.054714327@linuxfoundation.org>
+Message-ID: <20251216111326.927727753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 95e5905698983df94069e185f9eb3c67c7cf75d5 ]
+[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
 
-Initialize priv->lock to fix the following warning.
+The bpf_skb_check_mtu helper needs to use skb->transport_header when
+the BPF_MTU_CHK_SEGS flag is used:
 
-WARNING: CPU: 0 PID: 12 at kernel/locking/mutex.c:577 __mutex_lock+0x70c/0x8b8
- Modules linked in:
- Hardware name: Freescale i.MX8QM MEK (DT)
- Call trace:
-  __mutex_lock+0x70c/0x8b8 (P)
-  mutex_lock_nested+0x24/0x30
-  imx_hsio_power_on+0x4c/0x764
-  phy_power_on+0x7c/0x12c
-  imx_pcie_host_init+0x1d0/0x4d4
-  dw_pcie_host_init+0x188/0x4b0
-  imx_pcie_probe+0x324/0x6f4
-  platform_probe+0x5c/0x98
-  really_probe+0xbc/0x29c
-  __driver_probe_device+0x78/0x12c
-  driver_probe_device+0xd8/0x160
-  __device_attach_driver+0xb8/0x138
-  bus_for_each_drv+0x84/0xe4
-  __device_attach_async_helper+0xb8/0xdc
-  async_run_entry_fn+0x34/0xe0
-  process_one_work+0x220/0x694
-  worker_thread+0x1c0/0x36c
-  kthread+0x14c/0x224
+	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
 
-Fixes: 82c56b6dd24f ("phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20250925013806.569658-1-xiaolei.wang@windriver.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The transport_header is not always set. There is a WARN_ON_ONCE
+report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
+bpf_prog_test_run is used:
+
+WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
+ skb_gso_validate_network_len
+ bpf_skb_check_mtu
+ bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
+ bpf_test_run
+ bpf_prog_test_run_skb
+
+For a normal ingress skb (not test_run), skb_reset_transport_header
+is performed but there is plan to avoid setting it as described in
+commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
+
+This patch fixes the bpf helper by checking
+skb_transport_header_was_set(). The check is done just before
+skb->transport_header is used, to avoid breaking the existing bpf prog.
+The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
+
+Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/filter.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-index 5dca93cd325c8..977d21d753a59 100644
---- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-@@ -533,7 +533,7 @@ static struct phy *imx_hsio_xlate(struct device *dev,
- 
- static int imx_hsio_probe(struct platform_device *pdev)
- {
--	int i;
-+	int i, ret;
- 	void __iomem *off;
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
-@@ -545,6 +545,9 @@ static int imx_hsio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	priv->dev = &pdev->dev;
- 	priv->drvdata = of_device_get_match_data(dev);
-+	ret = devm_mutex_init(dev, &priv->lock);
-+	if (ret)
-+		return ret;
- 
- 	/* Get HSIO configuration mode */
- 	if (of_property_read_string(np, "fsl,hsio-cfg", &priv->hsio_cfg))
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 89ed625e14744..0d1f93f944f24 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6353,9 +6353,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+ 	 */
+ 	if (skb_is_gso(skb)) {
+ 		ret = BPF_MTU_CHK_RET_SUCCESS;
+-		if (flags & BPF_MTU_CHK_SEGS &&
+-		    !skb_gso_validate_network_len(skb, mtu))
+-			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		if (flags & BPF_MTU_CHK_SEGS) {
++			if (!skb_transport_header_was_set(skb))
++				return -EINVAL;
++			if (!skb_gso_validate_network_len(skb, mtu))
++				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
++		}
+ 	}
+ out:
+ 	*mtu_len = mtu;
 -- 
 2.51.0
 
