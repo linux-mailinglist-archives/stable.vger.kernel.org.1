@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-202400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9802CC2AA2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:22:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14668CC233A
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56329300500D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 094683011194
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928C036402B;
-	Tue, 16 Dec 2025 12:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CD3341AD6;
+	Tue, 16 Dec 2025 11:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VXPvoCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmwLURFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2AE364024;
-	Tue, 16 Dec 2025 12:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348D32BF22;
+	Tue, 16 Dec 2025 11:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887773; cv=none; b=uuXQkl9Tiyny/N0Dod7coAtcsDs0JtBl6PzPyUAPcchXMMLPuiOHlnNlZ2WJnb4GG3mMeh08jMQVMmEp4yninJ1y1NTrmNie6sAAmFj4VirwK8vlUr/0BjBs/bHzks375pWpzcD/k2vMr5bAGrBQNLznHSdHASP74dlPwcUiCjQ=
+	t=1765884242; cv=none; b=kOuNiQBdQgXKQu1bvlgJtbcqVm9KemwN05DF6JHVkWU1U4mS9ez0F0r3cF+ZiVrPAXas5e07y7GFxhr5+Sz0/D1/oTZYiRjYG8LxXmMplf+uGkXqpf+RpMg4jlR2upnq4DfgIn2jlWRbieFuR6jVCKJeX7HG5SxVd2V9TidyNFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887773; c=relaxed/simple;
-	bh=IIaopEyVgrn+WDlDqya3yReZYxxeK+taWKULYtK91FU=;
+	s=arc-20240116; t=1765884242; c=relaxed/simple;
+	bh=vQCMLM88mqKwxJDXWeS0ryxOZy7iVh+5O6yiyrEIOGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVec373wMZZyYs5cQ/SSmL7t93+DeR/JClMnDYjrd34AOSCUFjdyLgNNIRjZ92vihbh/kqIO5moqVpYAB1DzWAOq8LhJspUFcN4S0QGKhNmV8whWCutjogAZby6M57ePsnxpS1g96mi8yFrXstt/JvukjFLnkXJtFV5HzAfSgC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VXPvoCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED42C4CEF1;
-	Tue, 16 Dec 2025 12:22:51 +0000 (UTC)
+	 MIME-Version; b=nksP88aQmCAyNKkSecDptv5Fq3tGX8ruGCM88i/R5+oIVjqOWWxx1tfRIzV7NbJUaktAiIUMKfRZMFI8+bA7kaefhoB00h4tfdG2Obm1zUjVC45lSvMMZLvGrBkwMck+GJ+Gu8rW7PoaCjc1MxbMhKfUB8lxjwdBDl8JxCnSmLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmwLURFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F963C4CEF1;
+	Tue, 16 Dec 2025 11:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887772;
-	bh=IIaopEyVgrn+WDlDqya3yReZYxxeK+taWKULYtK91FU=;
+	s=korg; t=1765884242;
+	bh=vQCMLM88mqKwxJDXWeS0ryxOZy7iVh+5O6yiyrEIOGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VXPvoCsC1A5qti4OiOyMhm6fiKC/9m6tZUz0f9nlfMeBevkJ1BHd0CZKvxjbCNur
-	 KOpxniGV+Eal9CNvKdjO23TOmkSbuAWzD+xkOT9lR/+G3+4LvKl/fhHYAaPbahVDBA
-	 Sev48spY94XR4pf0siG8+6emu+q/SJ3IbYcyYqZw=
+	b=EmwLURFxVFqVmi0YLUPxlSL4NMAWcCr24gR2YIse9Tq0vP9oKqAUyH1ea44Z5hvGz
+	 P0L2Hi2m7w5rmaoABVTzFvOvNugvztwdLv6TrTWOXViHnMC72OAGpTfQmtE5/wCZXZ
+	 Dp27bNEBZFuFQ1XjsOAoMUpSSNyrtcSfygxQeFJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aashish Sharma <aashish@aashishsharma.net>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 333/614] iommu/vt-d: Fix unused invalidation hint in qi_desc_iotlb
+Subject: [PATCH 6.12 133/354] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
 Date: Tue, 16 Dec 2025 12:11:40 +0100
-Message-ID: <20251216111413.430254967@linuxfoundation.org>
+Message-ID: <20251216111325.739156982@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aashish Sharma <aashish@aashishsharma.net>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 6b38a108eeb3936b21643191db535a35dd7c890b ]
+[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
 
-Invalidation hint (ih) in the function 'qi_desc_iotlb' is initialized
-to zero and never used. It is embedded in the 0th bit of the 'addr'
-parameter. Get the correct 'ih' value from there.
+Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
+have region for DWC controllers as it has the Root Port and controller
+specific registers, while ELBI has optional registers.
 
-Fixes: f701c9f36bcb ("iommu/vt-d: Factor out invalidation descriptor composition")
-Signed-off-by: Aashish Sharma <aashish@aashishsharma.net>
-Link: https://lore.kernel.org/r/20251009010903.1323979-1-aashish@aashishsharma.net
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Hence, fix the binding. Though this is an ABI break, this change is needed
+to accurately describe the PCI memory map.
+
+Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index 3056583d7f56b..dcc5466d35f93 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -1097,7 +1097,7 @@ static inline void qi_desc_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
- 				 struct qi_desc *desc)
- {
- 	u8 dw = 0, dr = 0;
--	int ih = 0;
-+	int ih = addr & 1;
+diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+index 79a21ba0f9fd6..c8258ef403283 100644
+--- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+@@ -36,13 +36,13 @@ properties:
  
- 	if (cap_write_drain(iommu->cap))
- 		dw = 1;
+   reg:
+     items:
+-      - description: External local bus interface registers
++      - description: Data Bus Interface registers
+       - description: Meson designed configuration registers
+       - description: PCIe configuration space
+ 
+   reg-names:
+     items:
+-      - const: elbi
++      - const: dbi
+       - const: cfg
+       - const: config
+ 
+@@ -113,7 +113,7 @@ examples:
+     pcie: pcie@f9800000 {
+         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
+         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
+-        reg-names = "elbi", "cfg", "config";
++        reg-names = "dbi", "cfg", "config";
+         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
+         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
+         clock-names = "pclk", "port", "general";
 -- 
 2.51.0
 
