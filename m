@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-201797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A811ACC26E3
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:50:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0508CC2E38
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:46:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41E6E302CAC0
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:50:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3E6631E1865
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D9335502B;
-	Tue, 16 Dec 2025 11:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763E1363C74;
+	Tue, 16 Dec 2025 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bU+hjrUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqKleGU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C0D355026;
-	Tue, 16 Dec 2025 11:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA8A363C70;
+	Tue, 16 Dec 2025 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765885820; cv=none; b=fmvtHme3b+E2wwWQvsY/Ya76z1a7UyOqCEnok7ckjsXjc3l8UwM4HtNruX1GRm6y57EXyWlf5EH52JrmbPyitZxFezVbjzlRJxmXI19CzZD11ekWl074Iw0Dr7mZ4nqx5I2wRI8Yj7SmdUAJnPHkC5AN1AlJK2SbYYNcmmE0+qU=
+	t=1765887757; cv=none; b=Y4AXgZ78lmmoWF5Km9UIiB5X54zQR32pYVmjABWPI1SpHT5QYj1BZFw4e+TnwGVKM+PTKWCnWRywb6htS5bWxERwCOiOploLm7K4qugIvrNRlwCaHWf5lCbqE8kUhgoALE++LwtF0x+ytwOdshZFDvU3uH476/tKxgkw7tVRx94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765885820; c=relaxed/simple;
-	bh=6dISjpMt4D24aWgahCr7UnIvdOBBE6Cr+CSfvs0tSuc=;
+	s=arc-20240116; t=1765887757; c=relaxed/simple;
+	bh=8/XcvrO77IIY9Cmp6UBbkpNcUV0Bj2wwtuLk+uh7Rt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iByd2tc/+5rS8LPVdOjWChI8svVLIHZvphKupRpgqParMGlIOxsLDrSJvHH5C4UbQ2PoKmVqr1Gb1T9s2qLuj7uHpy3ylkD6cSXZCChd+w/ZCOjzmewf/VR3R0ZWuxf4BaRPPnTmfch5NjnSAB+Y/KTdiBA24i5Yr4ldycdxTvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bU+hjrUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F4FC4CEF1;
-	Tue, 16 Dec 2025 11:50:20 +0000 (UTC)
+	 MIME-Version; b=BVhvYHdhVnoYBOTPXhB+s2iE+V1W6ilpC1KMEAAY2WxcXuyxwsRgnN+/qRPMJgQv+mwjl1iUOmYBWRl5p/FC14GrExE7dnN5g2xoayxC0iKidnrdir6aAvz9YSjtZx/waTmofrmy8Md43b6hebP4wMlaR+5gdpnPj/gi31T4PUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqKleGU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B439C4CEF1;
+	Tue, 16 Dec 2025 12:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765885820;
-	bh=6dISjpMt4D24aWgahCr7UnIvdOBBE6Cr+CSfvs0tSuc=;
+	s=korg; t=1765887757;
+	bh=8/XcvrO77IIY9Cmp6UBbkpNcUV0Bj2wwtuLk+uh7Rt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bU+hjrUhm/F+HvVMmB4WpABreLF7xUN5eADaTpw47TtSflKoI4l3l8lhAUcALnydw
-	 9o4gGEJMu6a5O+1PkA2rfNbp1MNNC6L91gb0SNHk9k7YubUIUcjnogkUVB2/LK37vs
-	 Btl+4oYmiiLs6snWctxqoZCh7kI36xkBGv1JMB9Q=
+	b=cqKleGU5UBkMNZKP7813eWSjsscGDSVN0EaxssCD9tbkat3xrQ5FgDOGNyDzFFkIP
+	 y4D2ppgZFcvCw93cCg6uk/PlVnmbhWV3qWNUyAznVdOwOH28UFvzlorhnloZHl3rUG
+	 QqGMasBkuiRDVnqHEDN1g2+UCnrqKbZekDRJBgEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 255/507] NFSD/blocklayout: Fix minlength check in proc_layoutget
+Subject: [PATCH 6.18 329/614] scsi: ufs: rockchip: Reset controller on PRE_CHANGE of hce enable notify
 Date: Tue, 16 Dec 2025 12:11:36 +0100
-Message-ID: <20251216111354.729193475@linuxfoundation.org>
+Message-ID: <20251216111413.286408305@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
-References: <20251216111345.522190956@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
+[ Upstream commit b0ee72db9132bd19b1b80152b35e0cf6a6cbd9f2 ]
 
-The extent returned by the file system may have a smaller offset than
-the segment offset requested by the client. In this case, the minimum
-segment length must be checked against the requested range. Otherwise,
-the client may not be able to continue the read/write operation.
+This fixes the dme-reset failed when doing recovery. Because device
+reset is not enough, we could occasionally see the error below:
 
-Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+ufshcd-rockchip 2a2d0000.ufs: uic cmd 0x14 with arg3 0x0 completion timeout
+ufshcd-rockchip 2a2d0000.ufs: dme-reset: error code -110
+ufshcd-rockchip 2a2d0000.ufs: DME_RESET failed
+ufshcd-rockchip 2a2d0000.ufs: ufshcd_host_reset_and_restore: Host init failed -110
+
+Fix this by resetting the controller on PRE_CHANGE stage of hce enable
+notify.
+
+Fixes: d3cbe455d6eb ("scsi: ufs: rockchip: Initial support for UFS")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/1763009575-237552-1-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/ufs/host/ufs-rockchip.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index 0822d8a119c6f..eefe50a17c4a0 100644
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+diff --git a/drivers/ufs/host/ufs-rockchip.c b/drivers/ufs/host/ufs-rockchip.c
+index 8754085dd0ccf..8cecb28cdce41 100644
+--- a/drivers/ufs/host/ufs-rockchip.c
++++ b/drivers/ufs/host/ufs-rockchip.c
+@@ -20,9 +20,17 @@
+ #include "ufshcd-pltfrm.h"
+ #include "ufs-rockchip.h"
+ 
++static void ufs_rockchip_controller_reset(struct ufs_rockchip_host *host)
++{
++	reset_control_assert(host->rst);
++	udelay(1);
++	reset_control_deassert(host->rst);
++}
++
+ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
+ 					 enum ufs_notify_change_status status)
  {
- 	struct nfsd4_layout_seg *seg = &args->lg_seg;
- 	struct super_block *sb = inode->i_sb;
-+	u64 length;
- 	u32 block_size = i_blocksize(inode);
- 	struct pnfs_block_extent *bex;
- 	struct iomap iomap;
-@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- 		goto out_error;
++	struct ufs_rockchip_host *host = ufshcd_get_variant(hba);
+ 	int err = 0;
+ 
+ 	if (status == POST_CHANGE) {
+@@ -37,6 +45,9 @@ static int ufs_rockchip_hce_enable_notify(struct ufs_hba *hba,
+ 		return ufshcd_vops_phy_initialization(hba);
  	}
  
--	if (iomap.length < args->lg_minlength) {
-+	length = iomap.offset + iomap.length - seg->offset;
-+	if (length < args->lg_minlength) {
- 		dprintk("pnfsd: extent smaller than minlength\n");
- 		goto out_layoutunavailable;
++	/* PRE_CHANGE */
++	ufs_rockchip_controller_reset(host);
++
+ 	return 0;
+ }
+ 
+@@ -156,9 +167,7 @@ static int ufs_rockchip_common_init(struct ufs_hba *hba)
+ 		return dev_err_probe(dev, PTR_ERR(host->rst),
+ 				"failed to get reset control\n");
+ 
+-	reset_control_assert(host->rst);
+-	udelay(1);
+-	reset_control_deassert(host->rst);
++	ufs_rockchip_controller_reset(host);
+ 
+ 	host->ref_out_clk = devm_clk_get_enabled(dev, "ref_out");
+ 	if (IS_ERR(host->ref_out_clk))
+@@ -282,9 +291,7 @@ static int ufs_rockchip_runtime_resume(struct device *dev)
+ 		return err;
  	}
+ 
+-	reset_control_assert(host->rst);
+-	udelay(1);
+-	reset_control_deassert(host->rst);
++	ufs_rockchip_controller_reset(host);
+ 
+ 	return ufshcd_runtime_resume(dev);
+ }
 -- 
 2.51.0
 
