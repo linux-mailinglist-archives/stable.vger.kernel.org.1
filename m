@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-202459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29F2CC490A
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 18:09:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974B9CC2487
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 369543046237
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:08:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 120F53005F06
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393A734253B;
-	Tue, 16 Dec 2025 12:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1F6344058;
+	Tue, 16 Dec 2025 11:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/wmhwUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOg2TYo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07A536CDF5;
-	Tue, 16 Dec 2025 12:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE79344050;
+	Tue, 16 Dec 2025 11:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887969; cv=none; b=FpXisz/QM3V/rinzYx7ke1B7ya6+512Uaup5f05T1ANzciIZoY+ZQ/sd9faXg3YSW4T7Ac05kKUpf0GGKWXw70+j8HcHxvWvFFvPmpI6HmLtlnCu6ljjipXWMpcnMNaBgcty6DOqaDm0uHtKW36fL5oKC+nf8fA+HmOH5xx1ZUU=
+	t=1765884437; cv=none; b=CLJrdMDWW3nUoRql8kBXOBwXAcKF63lzBNAkbYpy2xJ7RV9/A5ozTC3XPUpQ+mrhViEkLRRMDq/VYKxEWimI3Drhqz4Rd09tZ3dEFVSQQOf2bR4gRUZnVhde/6HX2zCuwtyjMf8D1dKZY0Io0/9XCNENQWDJUvmeYeQwbMSUnT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887969; c=relaxed/simple;
-	bh=LWflF2gDwdnW5+jY3Kb8bvlb+MkxwNvo41EbQUf73uM=;
+	s=arc-20240116; t=1765884437; c=relaxed/simple;
+	bh=MU+I5xRfJruY98INg48Js0fsXFwFoqtZTnUMrWhynJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/vpiDUdGOe8RK4y7SgonVASwn1cMV6cPnXkToakEn5JLbyOxC3QVQBzUjBM1NsbA2KekQOieZpp+9fhLaoEA6ItkI9c6TWGXXXRTxRgpINWfaXejS7aRSvN4ADVXXIlZ7J+cPJh/DTxLMT8MyuwqV62oJ9avh+vVcaT5EciTxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/wmhwUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD975C4CEF5;
-	Tue, 16 Dec 2025 12:26:08 +0000 (UTC)
+	 MIME-Version; b=W0nNbctfeERlhsykuKFzbkMxcbHGJqOrQKzYXIWvG+3HGPH6BbBcdZXTUYdbdYF2HUk1mLID1lfm9ryXBD0iWgpaIplntt1NbZ7VIrfTSVVGFKKebYxVj0/DMhYAjAd6lVjz8c3C8xbW0aiIWaYk0/pVkcwXZt1cLTozlPiy/50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOg2TYo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0C9C16AAE;
+	Tue, 16 Dec 2025 11:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887969;
-	bh=LWflF2gDwdnW5+jY3Kb8bvlb+MkxwNvo41EbQUf73uM=;
+	s=korg; t=1765884436;
+	bh=MU+I5xRfJruY98INg48Js0fsXFwFoqtZTnUMrWhynJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/wmhwUDP6J47ywIdQ3WQV7jc4ij7DNT4yFJUtVzhLnsCc9UYpBZRSPzY9FdNv10x
-	 PzOU01kveWsKAAMMgRjRkaTTYKQubTU6I6EzDRfsu0L56K40O/u87WiZCh085925ST
-	 56E2xdybZLpnoXc9qaNDlwMkO9PlF/+ZdfqJS5Mc=
+	b=EOg2TYo/y+Met+589GkihlGcOcYoqSOVNlWsfwGF/2APPROGXG3fSFNsLe7rKWkHD
+	 KXAm9C7RAzFyBlo/F9liHgvXeUxvIrMQ+8ltx5ee+dDxM4+vyj3NtF5CDbuZmah193
+	 djZSLvXlMVuoRApWkCnq70XFh2KB0aEQOUfI28Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 393/614] wifi: mt76: mt7996: fix MLD group index assignment
+Subject: [PATCH 6.12 193/354] phy: renesas: rcar-gen3-usb2: Fix an error handling path in rcar_gen3_phy_usb2_probe()
 Date: Tue, 16 Dec 2025 12:12:40 +0100
-Message-ID: <20251216111415.614513005@linuxfoundation.org>
+Message-ID: <20251216111327.904570990@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 4fb3b4e7d1ca5453c6167816230370afc15f26bf ]
+[ Upstream commit 662bb179d3381c7c069e44bb177396bcaee31cc8 ]
 
-Fix extender mode and MBSS issues caused by incorrect assignment of the
-MLD group and remap indices.
+If an error occurs after the reset_control_deassert(),
+reset_control_assert() must be called, as already done in the remove
+function.
 
-Fixes: ed01c310eca9 ("wifi: mt76: mt7996: Fix mt7996_mcu_bss_mld_tlv routine")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-9-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Use devm_add_action_or_reset() to add the missing call and simplify the
+.remove() function accordingly.
+
+While at it, drop struct rcar_gen3_chan::rstc as it is not used aymore.
+
+[claudiu.beznea: removed "struct reset_control *rstc = data;" from
+ rcar_gen3_reset_assert(), dropped struct rcar_gen3_chan::rstc]
+
+Fixes: 4eae16375357 ("phy: renesas: rcar-gen3-usb2: Add support to initialize the bus")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251023135810.1688415-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/main.c  | 58 +++++++++++++------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 4e73854589558..dc0fcf5cb7fb1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -90,9 +90,11 @@ static void mt7996_stop(struct ieee80211_hw *hw, bool suspend)
- {
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index b45aee8f59644..256c807e7066d 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -117,7 +117,6 @@ struct rcar_gen3_chan {
+ 	struct extcon_dev *extcon;
+ 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
+ 	struct regulator *vbus;
+-	struct reset_control *rstc;
+ 	struct work_struct work;
+ 	spinlock_t lock;	/* protects access to hardware and driver data structure. */
+ 	enum usb_dr_mode dr_mode;
+@@ -671,21 +670,31 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
+ 	return candidate;
  }
  
--static inline int get_free_idx(u32 mask, u8 start, u8 end)
-+static inline int get_free_idx(u64 mask, u8 start, u8 end)
++static void rcar_gen3_reset_assert(void *data)
++{
++	reset_control_assert(data);
++}
++
+ static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
  {
--	return ffs(~mask & GENMASK(end, start));
-+	if (~mask & GENMASK_ULL(end, start))
-+		return __ffs64(~mask & GENMASK_ULL(end, start)) + 1;
-+	return 0;
- }
+ 	struct device *dev = channel->dev;
++	struct reset_control *rstc;
+ 	int ret;
+ 	u32 val;
  
- static int get_omac_idx(enum nl80211_iftype type, u64 mask)
-@@ -308,12 +310,6 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	if (idx < 0)
- 		return -ENOSPC;
+-	channel->rstc = devm_reset_control_array_get_shared(dev);
+-	if (IS_ERR(channel->rstc))
+-		return PTR_ERR(channel->rstc);
++	rstc = devm_reset_control_array_get_shared(dev);
++	if (IS_ERR(rstc))
++		return PTR_ERR(rstc);
  
--	if (!dev->mld_idx_mask) { /* first link in the group */
--		mvif->mld_group_idx = get_own_mld_idx(dev->mld_idx_mask, true);
--		mvif->mld_remap_idx = get_free_idx(dev->mld_remap_idx_mask,
--						   0, 15);
--	}
--
- 	mld_idx = get_own_mld_idx(dev->mld_idx_mask, false);
- 	if (mld_idx < 0)
- 		return -ENOSPC;
-@@ -331,10 +327,6 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret)
  		return ret;
  
- 	dev->mt76.vif_mask |= BIT_ULL(mlink->idx);
--	if (!dev->mld_idx_mask) {
--		dev->mld_idx_mask |= BIT_ULL(mvif->mld_group_idx);
--		dev->mld_remap_idx_mask |= BIT_ULL(mvif->mld_remap_idx);
--	}
- 	dev->mld_idx_mask |= BIT_ULL(link->mld_idx);
- 	phy->omac_mask |= BIT_ULL(mlink->omac_idx);
+-	ret = reset_control_deassert(channel->rstc);
++	ret = reset_control_deassert(rstc);
++	if (ret)
++		goto rpm_put;
++
++	ret = devm_add_action_or_reset(dev, rcar_gen3_reset_assert, rstc);
+ 	if (ret)
+ 		goto rpm_put;
  
-@@ -424,11 +416,6 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- 	dev->mt76.vif_mask &= ~BIT_ULL(mlink->idx);
- 	dev->mld_idx_mask &= ~BIT_ULL(link->mld_idx);
- 	phy->omac_mask &= ~BIT_ULL(mlink->omac_idx);
--	if (!(dev->mld_idx_mask & ~BIT_ULL(mvif->mld_group_idx))) {
--		/* last link */
--		dev->mld_idx_mask &= ~BIT_ULL(mvif->mld_group_idx);
--		dev->mld_remap_idx_mask &= ~BIT_ULL(mvif->mld_remap_idx);
--	}
+@@ -830,7 +839,6 @@ static void rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
+ 	if (channel->is_otg_channel)
+ 		device_remove_file(&pdev->dev, &dev_attr_role);
  
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	if (!list_empty(&msta_link->wcid.poll_list))
-@@ -2217,7 +2204,42 @@ mt7996_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			u16 old_links, u16 new_links,
- 			struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS])
- {
--	return 0;
-+	struct mt7996_dev *dev = mt7996_hw_dev(hw);
-+	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
-+	int ret = 0;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	if (!old_links) {
-+		int idx;
-+
-+		idx = get_own_mld_idx(dev->mld_idx_mask, true);
-+		if (idx < 0) {
-+			ret = -ENOSPC;
-+			goto out;
-+		}
-+		mvif->mld_group_idx = idx;
-+		dev->mld_idx_mask |= BIT_ULL(mvif->mld_group_idx);
-+
-+		idx = get_free_idx(dev->mld_remap_idx_mask, 0, 15) - 1;
-+		if (idx < 0) {
-+			ret = -ENOSPC;
-+			goto out;
-+		}
-+		mvif->mld_remap_idx = idx;
-+		dev->mld_remap_idx_mask |= BIT_ULL(mvif->mld_remap_idx);
-+	}
-+
-+	if (new_links)
-+		goto out;
-+
-+	dev->mld_idx_mask &= ~BIT_ULL(mvif->mld_group_idx);
-+	dev->mld_remap_idx_mask &= ~BIT_ULL(mvif->mld_remap_idx);
-+
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret;
- }
+-	reset_control_assert(channel->rstc);
+ 	pm_runtime_disable(&pdev->dev);
+ };
  
- static void
 -- 
 2.51.0
 
