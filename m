@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-202333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877B4CC37E4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:18:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6495DCC226B
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43B9F306E2A4
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:14:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD09430316AF
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F807339717;
-	Tue, 16 Dec 2025 12:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391C7341648;
+	Tue, 16 Dec 2025 11:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4AgDzCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBKAB9Zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2DC2E9EB5;
-	Tue, 16 Dec 2025 12:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67356B81;
+	Tue, 16 Dec 2025 11:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887560; cv=none; b=a3T/l/82UX8FT66c/jeqmhNRrF2hOgT7dZwNgniGiHLFtpopM+YajJtV0aj+tKE6zoJhg9zQwFpDyw1fsKkza6RFbX8a9chJki9Bu7mAo1+Xfmy7peICGzDaDPgtYfBk2HvgNXEg4sZV0r9H/uiMiIPI2iK46xctvwEgufnRAck=
+	t=1765884131; cv=none; b=eQGg5Lfih/y9L4hxVXoz62fQi186FEXbnkGvYG0mxAJ5hl0V7OWyGkeVJe+4lY8Lb9WaasphHitEvKH8U3oBlBNM9REm3hUKwFYXJy3aDMFNIhWzw+viI4xX5QyURec/3mh9sC2iUaFyQiiZRtIpti/2moys0tzLfUYJ7Rr0O6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887560; c=relaxed/simple;
-	bh=W4A+zh7DdNBqXZoFOYj/3jbv3m/rAVLXVmI+ZwHuHlY=;
+	s=arc-20240116; t=1765884131; c=relaxed/simple;
+	bh=OPQ9gSipo5fKfETWiCnyx8iJen4NkgilBHasUw4ipks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8YBq6Q9/JCnnhk9MGQvfed49cv4w4ieAx/Y0BlEHYtqufx0QNuCI0slrAr5gExeqBK7lrjw2VkGQxAyGoT5SwM0Ad0BIzcmbYuQBpukFxURlWYyZUE331QG+0tm7d4OQ5yTfzm+77+DuH0mRjefpgFmiP3MdWJkOv8Y1W4NWIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4AgDzCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6316C4CEF1;
-	Tue, 16 Dec 2025 12:19:19 +0000 (UTC)
+	 MIME-Version; b=TdLc4k0AC2MrovET2pKKO34iF3PfzLxdebt1BZA57OxFuZwCZEflH793U8MLE6V12APELLL1MaN5UIqHq+B0HRuOMaiVLnRN42y0NBLwaFZ3R4Sh5VEtSxQzhisk68bEf3n1z/DgzmAkUkl6KrOCbPSW8pEDvbJFyDmsZKL3cig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBKAB9Zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB5DC4CEF1;
+	Tue, 16 Dec 2025 11:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887560;
-	bh=W4A+zh7DdNBqXZoFOYj/3jbv3m/rAVLXVmI+ZwHuHlY=;
+	s=korg; t=1765884130;
+	bh=OPQ9gSipo5fKfETWiCnyx8iJen4NkgilBHasUw4ipks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4AgDzCmmUQlxVrR5m9MiZ/7KG9oIGIG2AwhOcsWjkrsfE309PziSwSPY2en4nsgf
-	 420Eky8FOm/o5SfzlDN24MJybqi6qhui+jr0c4Eq/mBpr3tSr0lGbDfHxvTpku1Aso
-	 sNjpiXpfLbuWm4zgnIF/+YFEK2wv5lgpeABpOlu4=
+	b=FBKAB9ZkSNfElGxzzlD295gwxzzdRpYq1lqexVOCpFTNXBcJ4C0CixYcZVCNvnIXC
+	 7hOlckNqm+X14bdvU+0Ta8EiTel5IT+yynirxwVwGlChvy/T8uffriuURjAzBl/2Mc
+	 jII0uY1thGlhXfkOrPNYj+ct2GM0QA06EszRdkxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Tony Battersby <tonyb@cybernetics.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 267/614] scsi: qla2xxx: Clear cmds after chip reset
+Subject: [PATCH 6.12 067/354] wifi: ath11k: fix peer HE MCS assignment
 Date: Tue, 16 Dec 2025 12:10:34 +0100
-Message-ID: <20251216111411.048361737@linuxfoundation.org>
+Message-ID: <20251216111323.353468277@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit d46c69a087aa3d1513f7a78f871b80251ea0c1ae ]
+[ Upstream commit 4a013ca2d490c73c40588d62712ffaa432046a04 ]
 
-Commit aefed3e5548f ("scsi: qla2xxx: target: Fix offline port handling
-and host reset handling") caused two problems:
+In ath11k_wmi_send_peer_assoc_cmd(), peer's transmit MCS is sent to
+firmware as receive MCS while peer's receive MCS sent as transmit MCS,
+which goes against firmwire's definition.
 
-1. Commands sent to FW, after chip reset got stuck and never freed as FW
-   is not going to respond to them anymore.
+While connecting to a misbehaved AP that advertises 0xffff (meaning not
+supported) for 160 MHz transmit MCS map, firmware crashes due to 0xffff
+is assigned to he_mcs->rx_mcs_set field.
 
-2. BUG_ON(cmd->sg_mapped) in qlt_free_cmd().  Commit 26f9ce53817a
-   ("scsi: qla2xxx: Fix missed DMA unmap for aborted commands")
-   attempted to fix this, but introduced another bug under different
-   circumstances when two different CPUs were racing to call
-   qlt_unmap_sg() at the same time: BUG_ON(!valid_dma_direction(dir)) in
-   dma_unmap_sg_attrs().
+	Ext Tag: HE Capabilities
+	    [...]
+	    Supported HE-MCS and NSS Set
+		[...]
+	        Rx and Tx MCS Maps 160 MHz
+		    [...]
+	            Tx HE-MCS Map 160 MHz: 0xffff
 
-So revert "scsi: qla2xxx: Fix missed DMA unmap for aborted commands" and
-partially revert "scsi: qla2xxx: target: Fix offline port handling and
-host reset handling" at __qla2x00_abort_all_cmds.
+Swap the assignment to fix this issue.
 
-Fixes: aefed3e5548f ("scsi: qla2xxx: target: Fix offline port handling and host reset handling")
-Fixes: 26f9ce53817a ("scsi: qla2xxx: Fix missed DMA unmap for aborted commands")
-Co-developed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://patch.msgid.link/0e7e5d26-e7a0-42d1-8235-40eeb27f3e98@cybernetics.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+As the HE rate control mask is meant to limit our own transmit MCS, it
+needs to go via he_mcs->rx_mcs_set field. With the aforementioned swapping
+done, change is needed as well to apply it to the peer's receive MCS.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Fixes: 61fe43e7216d ("ath11k: add support for setting fixed HE rate/gi/ltf")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-2-da40825c1783@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c     | 20 ++++++++++++++++++--
- drivers/scsi/qla2xxx/qla_target.c |  5 +----
- drivers/scsi/qla2xxx/qla_target.h |  1 +
- 3 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 5ffd945866527..70a579cf9c3fd 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -1881,10 +1881,26 @@ __qla2x00_abort_all_cmds(struct qla_qpair *qp, int res)
- 					continue;
- 				}
- 				cmd = (struct qla_tgt_cmd *)sp;
--				cmd->aborted = 1;
-+
-+				if (cmd->sg_mapped)
-+					qlt_unmap_sg(vha, cmd);
-+
-+				if (cmd->state == QLA_TGT_STATE_NEED_DATA) {
-+					cmd->aborted = 1;
-+					cmd->write_data_transferred = 0;
-+					cmd->state = QLA_TGT_STATE_DATA_IN;
-+					ha->tgt.tgt_ops->handle_data(cmd);
-+				} else {
-+					ha->tgt.tgt_ops->free_cmd(cmd);
-+				}
- 				break;
- 			case TYPE_TGT_TMCMD:
--				/* Skip task management functions. */
-+				/*
-+				 * Currently, only ABTS response gets on the
-+				 * outstanding_cmds[]
-+				 */
-+				ha->tgt.tgt_ops->free_mcmd(
-+					(struct qla_tgt_mgmt_cmd *) sp);
- 				break;
- 			default:
- 				break;
-diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
-index 1e81582085e38..4c6aff59fe3fb 100644
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -2443,7 +2443,7 @@ static int qlt_pci_map_calc_cnt(struct qla_tgt_prm *prm)
- 	return -1;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 9521fcb2c11ce..dd5690a4996f3 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2512,10 +2512,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 			he_tx_mcs = v;
+ 		}
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
++		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
  
--static void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd)
-+void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd)
- {
- 	struct qla_hw_data *ha;
- 	struct qla_qpair *qpair;
-@@ -3773,9 +3773,6 @@ int qlt_abort_cmd(struct qla_tgt_cmd *cmd)
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
+-		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
  
- 	spin_lock_irqsave(&cmd->cmd_lock, flags);
- 	if (cmd->aborted) {
--		if (cmd->sg_mapped)
--			qlt_unmap_sg(vha, cmd);
--
- 		spin_unlock_irqrestore(&cmd->cmd_lock, flags);
- 		/*
- 		 * It's normal to see 2 calls in this path:
-diff --git a/drivers/scsi/qla2xxx/qla_target.h b/drivers/scsi/qla2xxx/qla_target.h
-index 15a59c125c532..c483966d0a847 100644
---- a/drivers/scsi/qla2xxx/qla_target.h
-+++ b/drivers/scsi/qla2xxx/qla_target.h
-@@ -1058,6 +1058,7 @@ extern int qlt_abort_cmd(struct qla_tgt_cmd *);
- extern void qlt_xmit_tm_rsp(struct qla_tgt_mgmt_cmd *);
- extern void qlt_free_mcmd(struct qla_tgt_mgmt_cmd *);
- extern void qlt_free_cmd(struct qla_tgt_cmd *cmd);
-+extern void qlt_unmap_sg(struct scsi_qla_host *vha, struct qla_tgt_cmd *cmd);
- extern void qlt_async_event(uint16_t, struct scsi_qla_host *, uint16_t *);
- extern void qlt_enable_vha(struct scsi_qla_host *);
- extern void qlt_vport_create(struct scsi_qla_host *, struct qla_hw_data *);
+ 		arg->peer_he_mcs_count++;
+@@ -2525,10 +2525,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 
+ 	default:
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
++		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+ 
+ 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
+-		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
+ 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+ 
+ 		arg->peer_he_mcs_count++;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 6f1fd7d661a89..3b41bc5b125f4 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -2091,8 +2091,11 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
+ 				     FIELD_PREP(WMI_TLV_LEN,
+ 						sizeof(*he_mcs) - TLV_HDR_SIZE);
+ 
+-		he_mcs->rx_mcs_set = param->peer_he_tx_mcs_set[i];
+-		he_mcs->tx_mcs_set = param->peer_he_rx_mcs_set[i];
++		/* firmware interprets mcs->rx_mcs_set field as peer's
++		 * RX capability
++		 */
++		he_mcs->rx_mcs_set = param->peer_he_rx_mcs_set[i];
++		he_mcs->tx_mcs_set = param->peer_he_tx_mcs_set[i];
+ 		ptr += sizeof(*he_mcs);
+ 	}
+ 
 -- 
 2.51.0
 
