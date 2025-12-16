@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-202179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126CFCC290E
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:11:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC3ECC351F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5679630223CA
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:11:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98F8430E360F
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 13:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBFC328638;
-	Tue, 16 Dec 2025 12:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95936347FEB;
+	Tue, 16 Dec 2025 11:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6xRAdiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7Lx/sEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6DC3659E5;
-	Tue, 16 Dec 2025 12:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0C341666;
+	Tue, 16 Dec 2025 11:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887073; cv=none; b=FMzDd2vYdzNxOAsBs9NNY/uSJTCfP6jBlsfJX7yDfGIlqdkgxDTTrXo+nZMdqs5D55MjJi8zIp1lZktxV1rEep8zlzuuQEx+p3viaHggLIc16BmsIVKJkZrB8D4fVDfnIlb0zw9xM0Mniz5p3FPaH8YTeBiiVOBLWfQ9ecgtuMs=
+	t=1765885118; cv=none; b=JNjBE5opxpmc1qDyaSOwp+m5niK4jep8d+ec8T5VjdN2AUhiTzZGmjrWq0Ut9jKInSkxjVAEQ59EgWck+usIC5BIEsTQyGXjh7cPIbUSq4HB0UbFMQWx1uN9oUgKSfOWcmGOTUh1M8HyKXUn+YdY+IOZSjQ5pO2fMEIzMWUZ6/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887073; c=relaxed/simple;
-	bh=X2Rp/aknV+weuF4FuvRRvlnnKJwwHOmO+N3ucfa+YZw=;
+	s=arc-20240116; t=1765885118; c=relaxed/simple;
+	bh=2J3U9z8zxwwxL1eTCTTIlC8WHBqPP3yLM43Mv8BLUV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WS+mlW5kqPh2yvlvB0Ra0eQkCnQ5zSoaZE6y5ii6wHbrvxvctjx0N4l2VN58DvEA65FWIwgpeQpsyFD4hQcy4GlpmuySmOa6kOSRkNyn/93qIdevZlsMzv5AQjfYFjGYvzCdIQYRBbeb9tSoGPqUB1nod9SU0JBa9y+eMAaForw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6xRAdiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52674C4CEF1;
-	Tue, 16 Dec 2025 12:11:12 +0000 (UTC)
+	 MIME-Version; b=FWisTUoQn/NJNywmi726dnPP+Eu7Qfrm9xjOFWRAwppeSKbYUAKiB0Q8Cxh+2eNqoaOUMwDMQvhba7sGVPdNQtpjAsPuCx8LJfCA/be9zxHIn0o+m6RMx244Z8V9cM6vBv8kZz1w4pc4bmCypYfFe4IZrDlaHNDVPKlX97oICr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7Lx/sEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A87C4CEF1;
+	Tue, 16 Dec 2025 11:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765887072;
-	bh=X2Rp/aknV+weuF4FuvRRvlnnKJwwHOmO+N3ucfa+YZw=;
+	s=korg; t=1765885118;
+	bh=2J3U9z8zxwwxL1eTCTTIlC8WHBqPP3yLM43Mv8BLUV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6xRAdizZhnH0QlQroWArGcvkaxAFLlXludA1UPrfiQv0OzzbhG/agTxVyQAD1Ook
-	 Ut/ebuBR75lMJi09cpc6mZX4/jKQfsVCKGFxMWOrjc5Q9cSMEzS2d9FpVwUyv0FAnr
-	 qdDdAJSlvhm+fbTCTSv8QoW2ezL1aMbtraPbmAG4=
+	b=G7Lx/sEKBBO249Q+rrsexftuPo+wuXKy6AKJAC8+/Cz44pdVGTA22T2/y7uVOPIqD
+	 r3zM6UveUzYwg+MYzJ92Yp2acnfMRcrPW0ic0TE++EPIcOhD6OdbORrNe852C9iffL
+	 rcajGa+r6DqCUtZHYClkCHRqVRdBFSPKdmDbg8TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 118/614] arm64: dts: qcom: sm8650: set ufs as dma coherent
+Subject: [PATCH 6.17 044/507] irqchip/renesas-rzg2l: Fix section mismatch
 Date: Tue, 16 Dec 2025 12:08:05 +0100
-Message-ID: <20251216111405.612887894@linuxfoundation.org>
+Message-ID: <20251216111347.140511938@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c2703c90161b45bca5b65f362adbae02ed71fcc1 ]
+[ Upstream commit 5b338fbb2b5b21d61a9eaba14dcf43108de30258 ]
 
-The UFS device is ovbiously dma coherent like the other IOMMU devices
-like usb, mmc, ... let's fix this by adding the flag.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callbacks must not live in init.
 
-To be sure an extensive test has been performed to be sure it's
-safe, as downstream uses this flag for UFS as well.
-
-As an experiment, I checked how the dma-coherent could impact
-the UFS bandwidth, and it happens the max bandwidth on cached
-write is slighly highter (up to 10%) while using less cpu time
-since cache sync/flush is skipped.
-
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251007-topic-sm8650-upstream-ufs-dma-coherent-v1-1-f3cfeaee04ce@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d011c022efe27579 ("irqchip/renesas-rzg2l: Add support for RZ/Five SoC")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index ebf1971b1bfbe..3b03c13539386 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -3988,6 +3988,8 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 360d88687e4f5..32fec9aa37c49 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -597,14 +597,12 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
+ 	return 0;
+ }
  
- 			iommus = <&apps_smmu 0x60 0>;
+-static int __init rzg2l_irqc_init(struct device_node *node,
+-				  struct device_node *parent)
++static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
+ {
+ 	return rzg2l_irqc_common_init(node, parent, &rzg2l_irqc_chip);
+ }
  
-+			dma-coherent;
-+
- 			lanes-per-direction = <2>;
- 			qcom,ice = <&ice>;
- 
+-static int __init rzfive_irqc_init(struct device_node *node,
+-				   struct device_node *parent)
++static int rzfive_irqc_init(struct device_node *node, struct device_node *parent)
+ {
+ 	return rzg2l_irqc_common_init(node, parent, &rzfive_irqc_chip);
+ }
 -- 
 2.51.0
 
