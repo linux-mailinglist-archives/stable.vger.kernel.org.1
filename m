@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A158BCC2412
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:30:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26B3CC4293
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 17:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1074F306CF6D
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:25:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88CD3305B905
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 16:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C4B34214A;
-	Tue, 16 Dec 2025 11:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ED4350A36;
+	Tue, 16 Dec 2025 12:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KN6K0paJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pWi07zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9184F341645;
-	Tue, 16 Dec 2025 11:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2071E34E764;
+	Tue, 16 Dec 2025 12:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884353; cv=none; b=Sa52kJdV269ZVdtOTzMqeK9n9bBHKddAxkk8j74LYmpB+q1+/TWtqbxYhJi8GLymJY08l4HBAd/AFaFsCqSsJUdJNLjI+ffNW158nYsg8P4JbVTzWl++dETdeMtacCaWxnQhnWqHatiy4Jh1n5ilETrQH19WiadBT9WNKErs3MY=
+	t=1765887886; cv=none; b=FD2vDsfcejWyyoVm0jC8wzwqg76aUG+GXitydd9esvT8YlK+yRzY5dzLo212S801ArSTv1knN89yb3y84HmcQEHeIIjzb3p2RHAqDJhj73vMV3LRevFJEtBh1hTl0xydzv77BViIT/EkxMkiVqtZnB5wgEByLuexivZdPdn5uuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884353; c=relaxed/simple;
-	bh=AZAO1REybMWWXmoUnIU2AvY1Iw7YkiNo5I42G5zD24A=;
+	s=arc-20240116; t=1765887886; c=relaxed/simple;
+	bh=x1UEx538b8yCwjK2IXvw5GBDIz2UZ94M8/ToiHvw87I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRHMlNQTAEjiUAaRvjjp6BFa9cEZnRjLtUefuDROPBOOyV01pSU+ixKywsbzacIG9RUpnoTX3mG9puzjBRe+7JgyQgeBHC0HSuW+aaFy7bHxu2z123Ia2eEpB1Unt/RaBQ6BUaGeZ4yP51u0oPRzio3xuzkql2Jci7s/TbsRvHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KN6K0paJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3FFC4CEF1;
-	Tue, 16 Dec 2025 11:25:52 +0000 (UTC)
+	 MIME-Version; b=kURGfZlL6q+VxcVcRuYRzNqZVMxzEDwLgjVeFJEB13PALR6I47E3UfnVSRTx97wmAxemWwoM7AtAaKZ9SCu3JUQRcwhEwhHM4XUSfAI/Od+icjadJxjl08YfwwnO7eCqU+96Cwd7SFRVGN/9RBwRNnJk3EcuB0gw9Bin31ojcEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pWi07zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7D0C4CEF1;
+	Tue, 16 Dec 2025 12:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884353;
-	bh=AZAO1REybMWWXmoUnIU2AvY1Iw7YkiNo5I42G5zD24A=;
+	s=korg; t=1765887885;
+	bh=x1UEx538b8yCwjK2IXvw5GBDIz2UZ94M8/ToiHvw87I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KN6K0paJomFySwLznMr9s07asxRQR1Qk+/is471VUGeHY0lyhrI6VZTbtHwlUF7eo
-	 xlg7cUNZbPQR6TvV471jJhchjPcsGz6uQW3pfL9cdOPLNZXoa//0ps80JiuiKylFq5
-	 U/67EHe1+GpGwho61xI58WTcxYIT7NHcbRSmMD28=
+	b=2pWi07zx75355RAby1Z/DJLke3auS6qVTFxWNKTscyJoLB7hXT5fnkPadE5Dwm3Dc
+	 QtqC913UszG/lJCkzrrI5f7M0fkcwkV/dh4cfoz278Pz8cgbfopEPGsjFdb5N9IY5z
+	 0YnM0CgOp5T8T6nxdztC0w2uiNxNEuvGq/PRoS7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Song Liu <song@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/354] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
-Date: Tue, 16 Dec 2025 12:12:13 +0100
-Message-ID: <20251216111326.927727753@linuxfoundation.org>
+Subject: [PATCH 6.18 367/614] selftests/bpf: skip test_perf_branches_hw() on unsupported platforms
+Date: Tue, 16 Dec 2025 12:12:14 +0100
+Message-ID: <20251216111414.656952856@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+References: <20251216111401.280873349@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
+[ Upstream commit 27746aaf1b20172f0859546c4a3e82eca459f680 ]
 
-The bpf_skb_check_mtu helper needs to use skb->transport_header when
-the BPF_MTU_CHK_SEGS flag is used:
+Gracefully skip the test_perf_branches_hw subtest on platforms that
+do not support LBR or require specialized perf event attributes
+to enable branch sampling.
 
-	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
+For example, AMD's Milan (Zen 3) supports BRS rather than traditional
+LBR. This requires specific configurations (attr.type = PERF_TYPE_RAW,
+attr.config = RETIRED_TAKEN_BRANCH_INSTRUCTIONS) that differ from the
+generic setup used within this test. Notably, it also probably doesn't
+hold much value to special case perf event configurations for selected
+micro architectures.
 
-The transport_header is not always set. There is a WARN_ON_ONCE
-report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
-bpf_prog_test_run is used:
-
-WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
- skb_gso_validate_network_len
- bpf_skb_check_mtu
- bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
- bpf_test_run
- bpf_prog_test_run_skb
-
-For a normal ingress skb (not test_run), skb_reset_transport_header
-is performed but there is plan to avoid setting it as described in
-commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
-
-This patch fixes the bpf helper by checking
-skb_transport_header_was_set(). The check is done just before
-skb->transport_header is used, to avoid breaking the existing bpf prog.
-The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
-
-Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251120142059.2836181-1-mattbobrowski@google.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/perf_branches.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 89ed625e14744..0d1f93f944f24 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6353,9 +6353,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index bc24f83339d64..06c7986131d96 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -116,11 +116,11 @@ static void test_perf_branches_hw(void)
+ 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
+ 
+ 	/*
+-	 * Some setups don't support branch records (virtual machines, !x86),
+-	 * so skip test in this case.
++	 * Some setups don't support LBR (virtual machines, !x86, AMD Milan Zen
++	 * 3 which only supports BRS), so skip test in this case.
  	 */
- 	if (skb_is_gso(skb)) {
- 		ret = BPF_MTU_CHK_RET_SUCCESS;
--		if (flags & BPF_MTU_CHK_SEGS &&
--		    !skb_gso_validate_network_len(skb, mtu))
--			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		if (flags & BPF_MTU_CHK_SEGS) {
-+			if (!skb_transport_header_was_set(skb))
-+				return -EINVAL;
-+			if (!skb_gso_validate_network_len(skb, mtu))
-+				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		}
- 	}
- out:
- 	*mtu_len = mtu;
+ 	if (pfd < 0) {
+-		if (errno == ENOENT || errno == EOPNOTSUPP) {
++		if (errno == ENOENT || errno == EOPNOTSUPP || errno == EINVAL) {
+ 			printf("%s:SKIP:no PERF_SAMPLE_BRANCH_STACK\n",
+ 			       __func__);
+ 			test__skip();
 -- 
 2.51.0
 
