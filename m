@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-201257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B409CC22CE
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 12:24:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132F6CC3AB8
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 15:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AD9B30656E2
-	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 11:20:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84F8A3007AA2
+	for <lists+stable@lfdr.de>; Tue, 16 Dec 2025 14:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CA7341048;
-	Tue, 16 Dec 2025 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8634F48A;
+	Tue, 16 Dec 2025 11:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYTOkk7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYyMVF/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCC233F378;
-	Tue, 16 Dec 2025 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6306834F270;
+	Tue, 16 Dec 2025 11:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884043; cv=none; b=aTTJco55F1Q9+FvxiLPDxKKxHQb1S6Cqh+ovTFnNUsz8/Jh2W9TCev1ww2YGI7/6/vHRoLGJ8SGc/tRINdqqz+TXCBC0dszexwA3U+xLaZ551j6QOIXPbC/RWH0Qd037OZIJDyL+Oazlp/2vxBy2mmxwNUAqO+Ku2p7o2JXk/jI=
+	t=1765885655; cv=none; b=IgAAnaeD71QbBXuOtI9Ycwbx0416YQ2U1D+gYVgU12/qeIrxmVErgGSOrExxTQh8c9aJwIvuqr/pApZjZiYHokvhRJeeOwGqskkE5cWBG9y55u/IRRSG3BmpeGU+CZ9yCqOudK/uAlY+ZrLZzi047S5FlFBGfVEjjGYms/JIP0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884043; c=relaxed/simple;
-	bh=KaUDvvOQPE/y6YRuphB4hRBEwWmSMiL0e1pF8ckZq/w=;
+	s=arc-20240116; t=1765885655; c=relaxed/simple;
+	bh=z0+xDRTkrBLxdRi+Ujk7E7a5Vx1MNhmn6WqfkWcm3QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLiAcYQ/smKn1JmnDOTRCIqjDmHXw8d3EpP/gqk9m0eGuI9nQWVjM6uD+OUSE9TZQmhva8ciaEl9JbZd78aW+9ntJoSg5KoUDzv38SpCyjz3QUR3hDe4NmReXVod6eddMyAgeNRp2KpNzMfQzwUfLPCBI2zm1u0KfBGk6aI+iLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYTOkk7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFC4C4CEF1;
-	Tue, 16 Dec 2025 11:20:42 +0000 (UTC)
+	 MIME-Version; b=Kkg7D4ZUyvNtRg9exJo6jPDp2sH+DIUPun9/Dc6detpbZCs07N+FylHVAS6oJgrGPcocVKQeWN4ztrKImSoSnDKz5GtUxvw7ZCkVWRk5NjKGKmh5RuLlg06ExXC+9lD9Ly8XcEwr0+/mJQKOunrPClJFF36KGmspHZu46eC8e6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYyMVF/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3000C4CEF1;
+	Tue, 16 Dec 2025 11:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765884043;
-	bh=KaUDvvOQPE/y6YRuphB4hRBEwWmSMiL0e1pF8ckZq/w=;
+	s=korg; t=1765885655;
+	bh=z0+xDRTkrBLxdRi+Ujk7E7a5Vx1MNhmn6WqfkWcm3QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYTOkk7KvyUEOOVE6lgwjh0VHb7SaNjP37nIWC4iOPyDYujayjmnw41iaVsvX2s6R
-	 uqRheAetBabHxld+Ba/snBKn0OHlm1V4JCj3t4PEBjsqvSnlBNTMhQVAtJqgnLqn5Y
-	 4gJWYDVP16YYbNr9yLwcW1LRXm/a8Zzd8DCrJHQc=
+	b=pYyMVF/A56cyUgmynDBQsJlfH0CXVS9vIRl9U4BDuIMfu9tXYZCfvMd0Y17aMPPcu
+	 zbTzp52G6UwaClcIH+cdaJG3iA69LpqR3uhlJf7MkN5nlvOu6i8X3l9BDOypY+IZaB
+	 yEDu+OEKw2JJOryAorcN7wx2sF8x6IZsWEgBD+m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Martinz <amartinz@shiftphones.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Akash Goel <akash.goel@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/354] arm64: dts: qcom: qcm6490-shift-otter: Add missing reserved-memory
-Date: Tue, 16 Dec 2025 12:10:43 +0100
-Message-ID: <20251216111323.677571180@linuxfoundation.org>
+Subject: [PATCH 6.17 203/507] drm/panthor: Fix potential memleak of vma structure
+Date: Tue, 16 Dec 2025 12:10:44 +0100
+Message-ID: <20251216111352.866683634@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111345.522190956@linuxfoundation.org>
+References: <20251216111345.522190956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Martinz <amartinz@shiftphones.com>
+From: Akash Goel <akash.goel@arm.com>
 
-[ Upstream commit f404fdcb50021fdad6bc734d69468cc777901a80 ]
+[ Upstream commit 4492d54d59872bb72e119ff9f77969ab4d8a0e6b ]
 
-It seems we also need to reserve a region of 81 MiB called "removed_mem"
-otherwise we can easily hit memory errors with higher RAM usage.
+This commit addresses a memleak issue of panthor_vma (or drm_gpuva)
+structure in Panthor driver, that can happen if the GPU page table
+update operation to map the pages fail.
+The issue is very unlikely to occur in practice.
 
-Fixes: 249666e34c24 ("arm64: dts: qcom: add QCM6490 SHIFTphone 8")
-Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+v2: Add panthor_vm_op_ctx_return_vma() helper (Boris)
+
+v3: Add WARN_ON_ONCE (Boris)
+
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251021081042.1377406-1-akash.goel@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-index 75930f9576966..ce5cd758e28b4 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-@@ -118,6 +118,11 @@ cdsp_mem: cdsp@88f00000 {
- 			no-map;
- 		};
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index de6ec324c8efc..3d356a08695ab 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -1118,6 +1118,20 @@ static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
+ 	}
+ }
  
-+		removed_mem: removed@c0000000 {
-+			reg = <0x0 0xc0000000 0x0 0x5100000>;
-+			no-map;
-+		};
++static void
++panthor_vm_op_ctx_return_vma(struct panthor_vm_op_ctx *op_ctx,
++			     struct panthor_vma *vma)
++{
++	for (u32 i = 0; i < ARRAY_SIZE(op_ctx->preallocated_vmas); i++) {
++		if (!op_ctx->preallocated_vmas[i]) {
++			op_ctx->preallocated_vmas[i] = vma;
++			return;
++		}
++	}
 +
- 		rmtfs_mem: rmtfs@f8500000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0x0 0xf8500000 0x0 0x600000>;
++	WARN_ON_ONCE(1);
++}
++
+ static struct panthor_vma *
+ panthor_vm_op_ctx_get_vma(struct panthor_vm_op_ctx *op_ctx)
+ {
+@@ -2057,8 +2071,10 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
+ 	ret = panthor_vm_map_pages(vm, op->map.va.addr, flags_to_prot(vma->flags),
+ 				   op_ctx->map.sgt, op->map.gem.offset,
+ 				   op->map.va.range);
+-	if (ret)
++	if (ret) {
++		panthor_vm_op_ctx_return_vma(op_ctx, vma);
+ 		return ret;
++	}
+ 
+ 	/* Ref owned by the mapping now, clear the obj field so we don't release the
+ 	 * pinning/obj ref behind GPUVA's back.
 -- 
 2.51.0
 
