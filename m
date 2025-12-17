@@ -1,89 +1,94 @@
-Return-Path: <stable+bounces-202779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3276CC6BDE
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:13:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D61CC6C4E
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7B52300DB8E
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:13:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A04E6304DE82
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE1F33A717;
-	Wed, 17 Dec 2025 09:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCsp1n1i"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EEC33554F;
+	Wed, 17 Dec 2025 09:16:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CC0338593
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 09:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B127AC5C;
+	Wed, 17 Dec 2025 09:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765962828; cv=none; b=eRIE3JhSDXBHvmUn06ca/G8rSTvq3h1679J0nNwZWWR/DM8O/bNzDSSoWiXgvjGX+0yotiEJUujno62qkO1mHaHyoR7HjW4ez6cNGnZs5mkIRQO18Qp0Etr4iXmWQdBExEHr3KD6e4cyT2FS1+o+DN9XU9xkS6snITCGbSBctK0=
+	t=1765962968; cv=none; b=SirTQCzuC91SH0HjQ7hHYcg+UpeRdMtd3swTycYFrVvaWHM0yZTnJd4/4K0ZulfbbS2Eo6Eo33pDPn++Ggn7T56YE9AOQ9JiQwxJ/KH4Lf25ThU6uM5dHDFxXg1KDtiN4oVRudSUetXlug0/SYd04+ffg1p1WphFIBIoerZF28s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765962828; c=relaxed/simple;
-	bh=Qi+wA2U5+ViOE1C0jIKH83tbJKpbcAkHo2i5drF4YV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lqNVRon+q8mXWhd5ZgXtfc29VdUqzvrOkTlelNCEqIjup1yNzx6OTs8S23+/anZUejTgDBZqKlIr+wRSoV2RH3mcf+yxt40QdYnM1LBg1butc6SOXsoUNHhxRHnxUVJfSpRMmp50Z/gz43Q3zYboCQGGj+Esx1Wm6+G5E8RLN1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCsp1n1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB119C4CEF5
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 09:13:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765962827;
-	bh=Qi+wA2U5+ViOE1C0jIKH83tbJKpbcAkHo2i5drF4YV0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZCsp1n1itdSE9e1dCSm/uemU8dPCqaeDwHo0vPmiPl+ltqVHr+vLhCbRkAONxC6Uv
-	 YJ7LdH1QBz0KKlGgUaUvK3rOuT0K4wNVNy6d66Nseqbe+cRSfmsuUPYJqUfbuHaM8z
-	 Ok44olRXfIWjRO6rylWsYx1014+iaOGO53VPY/GHCDKO+4ok5UGUmRbMW7Zi7RYAZl
-	 CTI8qp9v1vS/Aqk/9BgS9+1aA+ZJYWo+ldH/ZZbX+GPIEGA+Z4+mczmbugBtH1zxOP
-	 QO6UlzaZiZ7+8KVV8+XFWCJ2vs98aiMFXmSDYHyYe0MJI00diKZt/EwEyUUWTvsPxV
-	 qLaBRHNJT/mZw==
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0bb2f093aso37977405ad.3
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 01:13:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXAnRhetupCe224SOWhwWAShxP49OdDxdAQNutUaDDIGci2CiLJ6Usvdv10GsbJ/2h1X4TRbfo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxME8Q9v2iA5Vn6pqoTedFRkJbfoJdIIzcmiZxP5uXoVLEIc4ll
-	ZhXEDQwR9x96xGH5p+QpbX2kxA0ztp+aAiJm+PYntc/00roU2yPZqOuh3+SCQ7c2fxl4HU4x3qj
-	/Sy4Oqh3/ZZNcA38Lye6TgZHPsmEmj9PLZTu3/flCGg==
-X-Google-Smtp-Source: AGHT+IG0Mw7xxsXgSUf+IV59o95ZmuW34B4U3eE/83AVII9OP5S5km8YkR3xrniF6HHM2hfk1AAOei+FRn/DPbovPwM=
-X-Received: by 2002:a05:7022:b902:b0:11b:a36d:a7f7 with SMTP id
- a92af1059eb24-11f34bee7d9mr8255047c88.16.1765962827350; Wed, 17 Dec 2025
- 01:13:47 -0800 (PST)
+	s=arc-20240116; t=1765962968; c=relaxed/simple;
+	bh=6DzFipEzWj4y0T/wSMWEFVVnrsWvqWUeNnKm3Cx5Ooo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KPvzUk3AA3tZTGvkTBvLbXfhEIT6wf20UjY6BWE9bLBiFGdozjS+0Wc58khyC8JpVyQMGxjzP6jq7DTySCWHqrruNxhC/f1wdmS2kAHt+QC1RHG4ODC7uw2OrGl6RWiULaEp9eqj8EeUwvH5sn9mTbVGKP3izly9pIjmgkQp3/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-01 (Coremail) with SMTP id qwCowADHbmrFdEJpPd7mAA--.15846S2;
+	Wed, 17 Dec 2025 17:15:50 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: mporter@kernel.crashing.org,
+	alex.bou9@gmail.com,
+	akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()
+Date: Wed, 17 Dec 2025 17:15:48 +0800
+Message-Id: <20251217091548.482358-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251126122219.25729-1-brgl@bgdev.pl>
-In-Reply-To: <20251126122219.25729-1-brgl@bgdev.pl>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Wed, 17 Dec 2025 10:13:28 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MeKEHwxJATuqDtdi_yWe_z2es2PYopJEe2AQJ0+L_sq-A@mail.gmail.com>
-X-Gm-Features: AQt7F2rH668SPucXCu0A1IPf2nFJh27WRRC_Wxt_SUNWgbX7khvQGJuPNhQBdT4
-Message-ID: <CAMRc=MeKEHwxJATuqDtdi_yWe_z2es2PYopJEe2AQJ0+L_sq-A@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Srinivas Kandagatla <srini@kernel.org>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	stable@vger.kernel.org, Val Packett <val@packett.cool>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHbmrFdEJpPd7mAA--.15846S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JFWkGrWfZr4Uur4rCryxuFg_yoW3Krg_WF
+	18Xrs7Ars0yF40kw45uw4SvFWF9r48XrWkuFW5t39xtFy3Zw1FkF4qgrs8Z34xXr4kJrn3
+	A34qqr1kCr47CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUehL0UUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCRETE2lCRwmvhQAAsX
 
-On Wed, Nov 26, 2025 at 1:22=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> The gpio_chip settings in this driver say the controller can't sleep
-> but it actually uses a mutex for synchronization. This triggers the
-> following BUG():
->
+When idtab allocation fails, net is not registered with rio_add_net()
+yet, so kfree(net) is sufficient to release the memory.
 
-Hi Linus,
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/rapidio/rio-scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Gentle ping for this one.
+diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
+index c12941f71e2c..03615eb2d3d7 100644
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -854,7 +854,7 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
+ 
+ 		if (idtab == NULL) {
+ 			pr_err("RIO: failed to allocate destID table\n");
+-			rio_free_net(net);
++			kfree(net);
+ 			net = NULL;
+ 		} else {
+ 			net->enum_data = idtab;
+-- 
+2.25.1
 
-Bart
 
