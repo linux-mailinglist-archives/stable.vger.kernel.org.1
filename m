@@ -1,139 +1,193 @@
-Return-Path: <stable+bounces-202834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92446CC7F45
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:49:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B087CC8B8E
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 17:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58A1630674F9
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:46:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6EB73037948
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936B5355045;
-	Wed, 17 Dec 2025 13:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28D3563CF;
+	Wed, 17 Dec 2025 13:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SZxrr2cJ"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541A4354AEF;
-	Wed, 17 Dec 2025 13:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA8135F8D0
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 13:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765977639; cv=none; b=pm+iNhM+mQ7BnUAOuY6SL9iWL6W+V/hChgGHvc9vHWgZsvR7hGWst0QBlAcYpweEmn6jPeBywtlaG23Xh26fdEngYny/7zXCOCx7kTH1u6/sV9eFeER/UmBupyX5C+dWslfwG31i8GuvB+7WdBs+AexB92L+Upi8Fi/U8sWn3NM=
+	t=1765977054; cv=none; b=QAjYV6B74s5UzLja0EixwZ54KWY+Jfut8fN4EAFMyiTdYsl+spscSLfMfsUOuQjwzug9+idTpSKLXzwpKw/TFEYo0ZS8b30p1w+V9gnmaEm6FalL4UWKfgaS3z06DRvfDpR9hiY7qPeoPnoFLtshqtl8gWJLKtw6cSEH6IaH0FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765977639; c=relaxed/simple;
-	bh=+tMzvd0ovtwGOkoVNCGKoezzLbdDwYNhBefq8E+muJ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SaKEVWrkGgkBL7DwviCbSxaGOtUzxKG+/+F/D4dXHzOGZlqMwTcemarsZ86m7nxLAuHExiLYeGVzvQXPmkF9z8bLmLwK4KnCABtz+k85PC+GebkraWKhYuWYWUhC+tYkW1papJh3WF9ub8i3kwBr5Iloou2cJPbCnEL+l2BHlcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dWZCn688dzYQtlg;
-	Wed, 17 Dec 2025 21:20:05 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id C261D40573;
-	Wed, 17 Dec 2025 21:20:32 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgDXOPkgrkJpEuYOAg--.54819S4;
-	Wed, 17 Dec 2025 21:20:32 +0800 (CST)
-From: linan666@huaweicloud.com
-To: stable@vger.kernel.org
-Cc: song@kernel.org,
-	yukuai3@huawei.com,
-	linux-raid@vger.kernel.org,
-	linan666@huaweicloud.com,
-	yangerkun@huawei.com,
-	yi.zhang@huawei.com
-Subject: [PATCH stable/6.16-5.15] md: add check_new_feature module parameter
-Date: Wed, 17 Dec 2025 21:09:35 +0800
-Message-Id: <20251217130935.2712267-1-linan666@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1765977054; c=relaxed/simple;
+	bh=k7ah473lbDl4JL4MlfAcQeYPB9OEQ+mxsApvnfPnjng=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=L6WsexyS0kWrZlFVEq3gF4XGE19Wq44ZSpkyo6EU3fPBIowmNta4ssNbJSmM7vKsG/9kBKvl4n7gXyvRF9S5s6iwk4Az0ErU9JKADfw0j50jXHNPQ0PBQNhWzpnOu+Ga8My0Cp5qco4HxaPSwx6epLgFTi2M1/DqvQKhVQz3jjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SZxrr2cJ; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779ecc3cc8so39832605e9.3
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 05:10:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765977048; x=1766581848; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=55z/kcnyK4/jomiZdp6n9WsDi2cwF/5hOkFlLeTTiF0=;
+        b=SZxrr2cJ4ECPw1llPyN9XxILj3PaEimg7a4utvfOa4hii/RZCX/3ZR1jkLiyUmt3Zg
+         EEEjeqjkQhwarc53AIWp+x/XoMMaUAIkpUz0bwAQFeQ7u0dbG/BHzsUJtYm8BV+PwR+/
+         ffvJR2E4CpYbGMmjdhtTGSRQXSg5Zm0FWc1Z9TX5jSfSdeaT0oPMH80EBRyKaWSPHcv/
+         cwBq1wQsxl6ly8arsvjvn3M1iJzKmmf0e8jHJ1KC2rRZOlC9hLYJeze93/TyGQF2j0Kn
+         LbbgcTGL+I6cCkyIypZ512D71HWIGLhtVO3Klh9FXkKWy/2UswOoMpx+2xrTY1556kPI
+         uFxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765977048; x=1766581848;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=55z/kcnyK4/jomiZdp6n9WsDi2cwF/5hOkFlLeTTiF0=;
+        b=hdfoDSnoqrJ/7V93K6N0lSocvzavObI/rsuq51MrEMn+aqIqkAxxt34wT+MGIDfkVI
+         EY2JxEz+/JWXFSmSz9Np3AMcR111OJqsmYD+oEgfaTPnULF5KVgduxRVLqLlE7fiLViw
+         H63Tkum+YKojXeKJ25YOF27uO+9U/4lTWuDI+uwo3gasv+svnpKHivOZm6dJ2OOo6MXE
+         tfr7zquPrw+hXt8+qF7iY9IXppH9nrW3voIQN+6KxtBIh2T1GizqllR+i79F+NJoV1Tl
+         16+LUvobhUvlvxVvKFu7i5H6SqblNJOStx50CwUo1hS4roKDzXlVxuNZE3FPQbd29GGs
+         Vw+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVvNiB52wxtp2Dese9EvX5HF1nz9+ZXwaYxZekRdjgH0cdfA+NGvOkizKrAIc9UjAtx5wgr1Ns=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZMU6tkoK3ejLiNnVNWQJ/3fF1Echyimge+Bo6qpS9DKbaKxKR
+	lN0N1pvzmmnvWC0YcJLr0d7h+zjvi/hqQ1qOzQa6CX8eYEwGOgCQzTJMf8s9dwR9a8pmLuiTqfV
+	ltCjgmF3CiS33GYxfOA==
+X-Google-Smtp-Source: AGHT+IGvw4zgme++j/6mCd0eYW7FhdEhTwz2nifrF5I4TlPoKnDQGwHnPqTVXe9HihQmPwoNHm1qcgNVLSM6sxA=
+X-Received: from wrbbs15.prod.google.com ([2002:a05:6000:70f:b0:430:f5d7:eb5c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:186b:b0:430:f5ab:dc8e with SMTP id ffacd0b85a97d-430f5abdec7mr14495399f8f.13.1765977048487;
+ Wed, 17 Dec 2025 05:10:48 -0800 (PST)
+Date: Wed, 17 Dec 2025 13:10:37 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDXOPkgrkJpEuYOAg--.54819S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UJr1xtFWDtrWxXr4xWFg_yoW8Kw17pa
-	1rWryaqrW7Xw12vFZ2qr18uFyrJ397tay2qrW5A34fuw1UGryrArWSk3yFqryq9ry5ZFWI
-	gF4j93Wxuw1xCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJV
-	WxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14
-	v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUb-eOJUUUUU==
-X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAMyrQmkC/x3MQQqAIBBA0avIrBtISaKuEi1KxxqolJEiiO6et
+ HyL/x/IJEwZevWA0MWZ41GgKwVunY6FkH0xmNpYbXSL+5Q2Qi8xobgTfaDWhNmGpiMoURIKfP/ DYXzfDzkU/lVgAAAA
+X-Change-Id: 20251217-maple-drop-rcu-dfe72fb5f49e
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3923; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=k7ah473lbDl4JL4MlfAcQeYPB9OEQ+mxsApvnfPnjng=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpQqvOGiHo1F5JsZO6XBpXWRgaranpPKixIVKf4
+ j/gRr7XyWyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaUKrzgAKCRAEWL7uWMY5
+ RmrUD/0cJnplKl7x0+RCQdZX0u9m7BctBfwLBjcxJu+Ihrw+JDvFUIkVbFO4JlieGSegRZuf+5B
+ 6Rzl2TIGB63yx0bfOcdKed6ABKXdxxu4fD3fwwtPRX4PUMRKp7nmCYQXhjhGn57iHHoQ6GDCRIs
+ pKlbvYWHagfWjkH0diRrw0wrili7zVWhw3DJAqK9vNwEtH+OhZJVrHTiOYfuVgYPGIVnxuALJb4
+ 2skHPG1u4KFFZYWBoRu4YJAybh9IWyqsanln3+P1YwM3HV5143x3IoMoHllIwSYQEPtJFk3bMtN
+ JpvqE2adnQ1ASHzYlLfNmliv5bYIECFYcbM+r3OK8jPW1t6nacsCZjppSs5z6lNdIxlDgXFQsQs
+ OOFnyaQifVxCKaInpWwMAdqHYwQJazIccYuFTM8fKJ4oL1SwKUuBGhB6eP3Ug6+WniFIZ8SQbE9
+ 0oECnzvBy3JG6P51A7npsmdOGxH+f1te5Y2aQNiAvWi1+0+PzleYU+Fcq+qjNTPQLK6o86vdRhK
+ VNlD+7s8OBupGifiiUGEJuaj7Gv16qdYugvaWEDOm8xExxWVNLPCPqpqnAWtu+grhHbv3Sy76qy
+ Iq+jL9GoWzwe0HnzXluEaf6bgHbFH67uUhGo7s7iszrg3CCObO1vjJnOKmQ69F5oeHksziTqWlv wu4NDmOHMnkjlDw==
+X-Mailer: b4 0.14.2
+Message-ID: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com>
+Subject: [PATCH] rust: maple_tree: rcu_read_lock() in destructor to silence lockdep
+From: Alice Ryhl <aliceryhl@google.com>
+To: Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-From: Li Nan <linan122@huawei.com>
+When running the Rust maple tree kunit tests with lockdep, you may
+trigger a warning that looks like this:
 
-commit 9c47127a807da3e36ce80f7c83a1134a291fc021 upstream.
+	lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
 
-Raid checks if pad3 is zero when loading superblock from disk. Arrays
-created with new features may fail to assemble on old kernels as pad3
-is used.
+	other info that might help us debug this:
 
-Add module parameter check_new_feature to bypass this check.
+	rcu_scheduler_active = 2, debug_locks = 1
+	no locks held by kunit_try_catch/344.
 
-Link: https://lore.kernel.org/linux-raid/20251103125757.1405796-5-linan666@huaweicloud.com
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-[ Conflict in md.c, because of a difference in the context,
-  introduced by commit 25db5f284fb8 ("md: add legacy_async_del_gendisk
-  mode"), which is not in this version. The same lines can still be
-  added at the same place. ]
-Signed-off-by: Li Nan <linan122@huawei.com>
+	stack backtrace:
+	CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                 N  6.19.0-rc1+ #2 NONE
+	Tainted: [N]=TEST
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+	Call Trace:
+	 <TASK>
+	 dump_stack_lvl+0x71/0x90
+	 lockdep_rcu_suspicious+0x150/0x190
+	 mas_start+0x104/0x150
+	 mas_find+0x179/0x240
+	 _RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10maple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEECsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
+	 rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
+	 ? lock_release+0xeb/0x2a0
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_try_run_case+0x74/0x160
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_generic_run_threadfn_adapter+0x12/0x30
+	 kthread+0x21c/0x230
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork+0x16c/0x270
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork_asm+0x11/0x20
+	 </TASK>
+
+This is because the destructor of maple tree calls mas_find() without
+taking rcu_read_lock() or the spinlock. Doing that is actually ok in
+this case since the destructor has exclusive access to the entire maple
+tree, but it triggers a lockdep warning. To fix that, take the rcu read
+lock.
+
+In the future, it's possible that memory reclaim could gain a feature
+where it reallocates entries in maple trees even if no user-code is
+touching it. If that feature is added, then this use of rcu read lock
+would become load-bearing, so I did not make it conditional on lockdep.
+
+We have to repeatedly take and release rcu because the destructor of T
+might perform operations that sleep.
+
+Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/564215108
+Fixes: da939ef4c494 ("rust: maple_tree: add MapleTree")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/md/md.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Intended for the same tree as any other maple tree patch. (I believe
+that's Andrew Morton's tree.)
+---
+ rust/kernel/maple_tree.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 0f41573fa9f5..4bcbd2ed439e 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -339,6 +339,7 @@ static int start_readonly;
-  * so all the races disappear.
-  */
- static bool create_on_open = true;
-+static bool check_new_feature = true;
- 
- /*
-  * We have a system wide 'event count' that is incremented
-@@ -1735,9 +1736,13 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
- 	}
- 	if (sb->pad0 ||
- 	    sb->pad3[0] ||
--	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1])))
--		/* Some padding is non-zero, might be a new feature */
--		return -EINVAL;
-+	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1]))) {
-+		pr_warn("Some padding is non-zero on %pg, might be a new feature\n",
-+			rdev->bdev);
-+		if (check_new_feature)
-+			return -EINVAL;
-+		pr_warn("check_new_feature is disabled, data corruption possible\n");
-+	}
- 
- 	rdev->preferred_minor = 0xffff;
- 	rdev->data_offset = le64_to_cpu(sb->data_offset);
-@@ -10422,6 +10427,7 @@ module_param_call(start_ro, set_ro, get_ro, NULL, S_IRUSR|S_IWUSR);
- module_param(start_dirty_degraded, int, S_IRUGO|S_IWUSR);
- module_param_call(new_array, add_named_array, NULL, NULL, S_IWUSR);
- module_param(create_on_open, bool, S_IRUSR|S_IWUSR);
-+module_param(check_new_feature, bool, 0600);
- 
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("MD RAID framework");
+diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+index e72eec56bf5772ada09239f47748cd649212d8b0..265d6396a78a17886c8b5a3ebe7ba39ccc354add 100644
+--- a/rust/kernel/maple_tree.rs
++++ b/rust/kernel/maple_tree.rs
+@@ -265,7 +265,16 @@ unsafe fn free_all_entries(self: Pin<&mut Self>) {
+         loop {
+             // This uses the raw accessor because we're destroying pointers without removing them
+             // from the maple tree, which is only valid because this is the destructor.
+-            let ptr = ma_state.mas_find_raw(usize::MAX);
++            //
++            // Take the rcu lock because mas_find_raw() requires that you hold either the spinlock
++            // or the rcu read lock. This is only really required if memory reclaim might
++            // reallocate entries in the tree, as we otherwise have exclusive access. That feature
++            // doesn't exist yet, so for now, taking the rcu lock only serves the purpose of
++            // silencing lockdep.
++            let ptr = {
++                let _rcu = kernel::sync::rcu::Guard::new();
++                ma_state.mas_find_raw(usize::MAX)
++            };
+             if ptr.is_null() {
+                 break;
+             }
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251217-maple-drop-rcu-dfe72fb5f49e
+
+Best regards,
 -- 
-2.39.2
+Alice Ryhl <aliceryhl@google.com>
 
 
