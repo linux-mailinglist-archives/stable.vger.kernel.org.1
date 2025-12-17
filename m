@@ -1,110 +1,113 @@
-Return-Path: <stable+bounces-202790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C6CCC7753
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 12:58:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A920CC6C45
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0268E306C2F1
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 11:55:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D3363096695
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6D433B6C3;
-	Wed, 17 Dec 2025 09:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD2C33F39F;
+	Wed, 17 Dec 2025 09:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="gm2XvMt+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA997FBA2
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 09:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8329C33F8A4
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 09:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765965049; cv=none; b=fMykL5ffrGmLBh4NWz6b26RxQc6BS26YHeko/CdUvlVo+E1enA3BQQLklolNFW1XbI1W/no5JrzZnZlSfn8CEaMdxsbk14eXtYL+QtXo7WHU3vIVkMYggfFb8gz//6iiXP2jH0fGalJ/FPgqMM0Y7mv5lZ6qnAW82GuxezSWcbs=
+	t=1765962309; cv=none; b=o8120QnzF6LRHGAnAnhBVJktS3MZLpMjzOm4WxOgzhds52r4B0L9dN3CxpvvWFUR+hqt7NvIKXZZFzFeHDaW2vzivm2kNTOiYukfmkSjXDf798kg2g6xjwTE92BJJgw0Uts245Di/bsCb9uvFggSryVUGOBgmvIfaPbKOg6WODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765965049; c=relaxed/simple;
-	bh=+d3YNfwmIyeoC2NED+GG4MA+EfH+hauMrMLExjHm8+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FX6bCw0lyADxCTnOu2vVVTfsNerfTKAI2xWEOGCJCYoMLFpIeknuxrvq1a/FRHKLt7gyV6HiaasTyTRnFCE5bbIH9CkmKvEC5a7InD0Kdk51XuX+Ne7Vwj1dxLaMf+eMPQFlw8qE+a5uWYIucXhstI9ZC5Yok1+vKQfvzPbmqlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1765963903-086e230b311c1790001-OJig3u
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id uaIQz7PdJZDKrDxO (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 17 Dec 2025 17:31:43 +0800 (CST)
-X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
- 2025 17:31:42 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Wed, 17 Dec 2025 17:31:42 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
- (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
- 2025 17:04:47 +0800
-Message-ID: <f82e5d10-4300-4f7a-befe-fed524b52d92@zhaoxin.com>
-Date: Wed, 17 Dec 2025 17:04:25 +0800
+	s=arc-20240116; t=1765962309; c=relaxed/simple;
+	bh=OM4FzyVYJXN7141I+sRVlCwJk02pcxDkeltYzT5wrfs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GW4C8V1njnP/78nGeh9P2YO85vdcHtmLE5YSq7MVqYNANc0WWVvM7G1WA3OlWcRzqn0/26cLTrXkcCJpBaFzBfJyQBCdL1GH8Iy22oSN/pKkh+/EiQUIqb7KpiJUBTJWfndcG43iCzz8qjWKHeLmOR6jvLS0vi6qTMlkvXRS8fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=gm2XvMt+; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b79d0a0537bso754431166b.2
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 01:05:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1765962305; x=1766567105; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zMkVwpIOsWUZvQIJ22N4k/LfmJnYwu2A7xQiSxZ5o6c=;
+        b=gm2XvMt+djgLUjQUj74AdesAiWPw8ZDFRqc9LhDWgcL65u64/nXp+9r900NajKD3CZ
+         ewgvFVG8w8WQJgyfQPyvzdxUHqaIWLDDQD5t32dRWHgZVZ4yEVE/U/lGdr4McYZq3+M7
+         mIW6/P0Puvyk22SbOoFd4+omReRJGVBAyTra03W5ppn3QlsNduMyuXC0dA/A//y0gZkT
+         FV2SObNh+2ehWFAmVKDHgH63Fsm07TOmAHqkWVY0BSpJC/sYeRUtRgvb0dSQBDOqkku5
+         HsqthWaxMt7ZrCJKuJ+2Qscc4pJwQMkk4akkmkcq5OFy3VgnZ3ZHgB6duSOksNA7ri9q
+         SQFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765962305; x=1766567105;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zMkVwpIOsWUZvQIJ22N4k/LfmJnYwu2A7xQiSxZ5o6c=;
+        b=qw9a2Pjsh4WM9vIlSHankYXPOqLI4WRE6DK0arj0dYBMqWT+IqV4ktgN4qmVCNz/UE
+         fZ3Eg2F+armZYHRoyMWkiFk0gdJOS1FEA2b1XdFgn0LXhtY7kDphjC2LH5hlvxJtNmvD
+         pCCF0wQn0WE+vk/CO95EVIAGd91lKWSj/nO4E/aie+K5HHZdeKn2jZXl3auMDxK3w8dD
+         TV9xRIgY/c/edYV1ixOLzlyPJnhyRl4M5lus1+QxphRqCA1Wz18Cpi11/w1/i85p3LFC
+         15AtOOsIliyRum258gTc70ACiPeBz7ynhMIwowMxusC2dY4vzFx/xrkF7ylSo/S3BBhy
+         N6vA==
+X-Gm-Message-State: AOJu0YylVh8rqzvvOWOkA5KNpGZ1Gg9mpOh/OMY4+oBC5rSRMvojmHot
+	wqpQ9lBTxKIpIMP4iLJZGFarDy9DG2CeI06E/+0H7sgN+/8ne2Gy4c8EUj80TUGPUV8mjnbX/Ka
+	NLbzlupSd34ZEOlvWPduJbSwyH3YG8ycx8jG0Mo3AgA==
+X-Gm-Gg: AY/fxX62ijxnWvmEqfNhd038UYM13+1ewm4R8UjktQyWSI82CTE9+gi/xpf58cjlHQh
+	m8aPsS26UC153wqt3yJzgasB3761PIqdPNRBifh0JHv4C9AbsEIcbFuAYtYH6rLlvYbCbF6inqk
+	AvU3GiEmbUGMCEy1SpHPvzBSZjJ0ilMJm23UF+pDuwikbdyymdrZwy3fBFD7/M7RAsbpHqOJbpC
+	r6qgkTL68WC87fJa07eChAb6tffEt1PPSZjnXDNZurJBfKWDOibe/lf0yen5QpzgHTbOlA=
+X-Google-Smtp-Source: AGHT+IHtMkc38VLU8hjjpSM7ejcsH5D0kgVDjWS6P1V7a+lKrYAhAMrBiY21QennLuHiErrmDl/2K9v41bemwj5tthk=
+X-Received: by 2002:a17:907:3d93:b0:b79:f753:68fb with SMTP id
+ a640c23a62f3a-b7d235c7f02mr1960617066b.4.1765962305265; Wed, 17 Dec 2025
+ 01:05:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-To: Herbert Xu <herbert@gondor.apana.org.au>
-X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-CC: Eric Biggers <ebiggers@kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, larryw3i <larryw3i@yeah.net>,
-	<stable@vger.kernel.org>, <CobeChen@zhaoxin.com>, <GeorgeXue@zhaoxin.com>,
-	<HansHu@zhaoxin.com>, <LeoLiu-oc@zhaoxin.com>, <TonyWWang-oc@zhaoxin.com>,
-	<YunShen@zhaoxin.com>
-References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
- <20251116183926.3969-1-ebiggers@kernel.org>
- <aRvpWqwQhndipqx-@gondor.apana.org.au> <20251118040244.GB3993@sol>
- <cd6a8143-f93a-4843-b8f6-dbff645c7555@zhaoxin.com>
- <aUI4CGp6kK7mxgEr@gondor.apana.org.au>
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-In-Reply-To: <aUI4CGp6kK7mxgEr@gondor.apana.org.au>
+References: <20251216111320.896758933@linuxfoundation.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Wed, 17 Dec 2025 14:34:28 +0530
+X-Gm-Features: AQt7F2p2uIrAAXFtmq52ONtkGaO7LLartmy4enH8lnaPNuRu7W1luKiciP3JYJc
+Message-ID: <CAG=yYwm4Q_q3ZzAUg639Tb5Ruuyo97Byq8iw+by02Bms_jUAUQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX02.zhaoxin.com (10.29.252.6)
-X-Moderation-Data: 12/17/2025 5:31:41 PM
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1765963903
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 772
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.151688
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
 
+ hello
 
-On 12/17/2025 12:56 PM, Herbert Xu wrote:
-> On Wed, Dec 17, 2025 at 12:30:57PM +0800, AlanSong-oc wrote:
->>
->> Given the lack of a verification platform for the current padlock-sha
->> driver, and the fact that these CPUs are rarely used today, extending
->> the existing padlock-sha driver to support the ZHAOXIN platform is very
->> difficult. To address the issues encountered when using the padlock-sha
->> driver on the ZHAOXIN platform, would it be acceptable to submit a
->> completely new driver that aligns with the previous advice?
-> 
-> Perhaps it would be easier if you just added Zhaoxin support to
-> lib/crypto instead?
+Compiled and booted  6.12.63-rc1+
 
-Sincere thanks for your helpful suggestion. I will add ZHAOXIN platform
-support to lib/crypto.
+No  typical new regressions   from dmesg.
 
-Best Regards
-AlanSong-oc
+As per dmidecode command.
+Version: AMD Ryzen 3 3250U with Radeon Graphics
 
+Processor Information
+        Socket Designation: FP5
+        Type: Central Processor
+        Family: Zen
+        Manufacturer: Advanced Micro Devices, Inc.
+        ID: 81 0F 81 00 FF FB 8B 17
+        Signature: Family 23, Model 24, Stepping 1
+
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+
+--
+software engineer
+rajagiri school of engineering and technology
 
