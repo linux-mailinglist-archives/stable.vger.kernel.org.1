@@ -1,111 +1,135 @@
-Return-Path: <stable+bounces-202826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80CDCC7F2A
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD46CC7D2B
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F19830F9558
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:41:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C85330C3363
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B288F34886F;
-	Wed, 17 Dec 2025 13:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzLzVrl3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63633EB1B;
+	Wed, 17 Dec 2025 13:16:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85FC347FD0;
-	Wed, 17 Dec 2025 13:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DB41487E9;
+	Wed, 17 Dec 2025 13:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765976471; cv=none; b=SOROhLq4qM1nq5T6lH4NUcbu715c9+bSTE7uFTUFl3Jm1s07xQhN/sgirAnO1hAmZ7HfkopRK/MS0H/5ylIj7IO6w3gP4ailAEtQ6hxoX2g8WJyEiEBA8Jcigtx0iMgIj4MEw3c+XA3iuV85gPMdV/aW/7emaZ6YH0WE29bDVww=
+	t=1765977380; cv=none; b=fZ7ZziB6F9YxKeEJi4kDzrHp22GNhrFY2en3rFVVr4XuXNegtphl9D7pNJ9WTnskwQqmFDHW9HNYC78EvzEanojut4mJROsW/ticcd/HdlqaRnKGsAOMiXuE28fAv5FVGrqXwOXP6nDoB3566el7PGsRAgrlxCbPXNeHfGCKHQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765976471; c=relaxed/simple;
-	bh=cjgn/BA7Ju+Q5Ubk2VcZLOA1TllX33llG7QDDvCmOpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FyLqVQe9TV3ZUhu//NcY5yK1UNK2CCCDiPlPf8lGMghcM44QM9ifPrfvn3bJvCYJzUvWhISiunuy8qm5RJ37Uk0wPHGeiWRG4BcNH3v6+mmRC3fsBZsQoIXdV2ISlNc2HOBOKtPggJIcdggvbifCPRuiVltp+ZXIqZY4gralz0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzLzVrl3; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765976469; x=1797512469;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cjgn/BA7Ju+Q5Ubk2VcZLOA1TllX33llG7QDDvCmOpk=;
-  b=gzLzVrl3PGCzwPuxHh6gZnZIP4r0/iJ86SVDdMJOBbJtPYFv7nFWnPiu
-   4LnZjga9hz3Sl3vmonnTm7WZ/GC7IoU3Y6SCXPxKEaBdRXTIhe79yxVnK
-   uxTjRfWYPQbLsMftSsognXrBy6kSbcoQA64B8yBJMNYxoutihUTyQ2/u1
-   Aevda4GjaBwbfX8eVfn+CXRk+VIz0efMnClAnM05kYI4lm7dzPfuGKI6b
-   KOMB07m17Rh0T3PXZELMJEJw2MPsBUmOvUoAzcQiiN5Q41xi14HbqGedF
-   kCPL6v+mKUxnuieF5+IRciwXgS30w0IlnB2gM6qAEMuhXO9Ty5giaVQEJ
-   w==;
-X-CSE-ConnectionGUID: z3zd+t8sSyCCVUomcrY92w==
-X-CSE-MsgGUID: Fn+UdWAmSJKvAXog1zQyvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="71542632"
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="71542632"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 05:01:09 -0800
-X-CSE-ConnectionGUID: eZp8HpbIS1ev7ELvRXINPw==
-X-CSE-MsgGUID: wv4Qa3EzQka36zqqvPnrEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="202677818"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.187]) ([10.245.246.187])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 05:01:06 -0800
-Message-ID: <e98a78fc-0b30-4af1-b6f5-2bc5cacc8115@linux.intel.com>
-Date: Wed, 17 Dec 2025 15:01:32 +0200
+	s=arc-20240116; t=1765977380; c=relaxed/simple;
+	bh=OhMWGlNdWne0AVIBdA/1mdhlw6O0iosSjrlHlJWtDwI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VrCZnOGRbsCJotLztqGIpDey1bcF7lYeScZB0e/pLkmxi8G3O+Eubt7wWsrNWD8IQyQHksCAe5zHPMQhITm738XG79qDNUmLCIQQU/jb0nAOIvBNDh2ABdKdAJgAgigADbmu7A/Jddiz40YNTVZWJNXqzXh5/m+uYA7CCpaiycA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dWZ783gS7zKHMP3;
+	Wed, 17 Dec 2025 21:16:04 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id A3F6E40583;
+	Wed, 17 Dec 2025 21:16:13 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.50.87.129])
+	by APP4 (Coremail) with SMTP id gCh0CgAXd_carUJpKY0OAg--.53331S4;
+	Wed, 17 Dec 2025 21:16:11 +0800 (CST)
+From: linan666@huaweicloud.com
+To: stable@vger.kernel.org
+Cc: song@kernel.org,
+	yukuai3@huawei.com,
+	linux-raid@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linan666@huaweicloud.com,
+	yangerkun@huawei.com,
+	yi.zhang@huawei.com
+Subject: [PATCH stable/6.18-6.17] md: add check_new_feature module parameter
+Date: Wed, 17 Dec 2025 21:05:13 +0800
+Message-Id: <20251217130513.2706844-1-linan666@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: soc-ops: Correct the max value for clamp in
- soc_mixer_reg_to_ctl()
-To: Richard Fitzgerald <rf@opensource.cirrus.com>,
- Mark Brown <broonie@kernel.org>
-Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
- kai.vehmanen@linux.intel.com, seppo.ingalsuo@linux.intel.com,
- stable@vger.kernel.org, niranjan.hy@ti.com, ckeepax@opensource.cirrus.com,
- sbinding@opensource.cirrus.com
-References: <20251217120623.16620-1-peter.ujfalusi@linux.intel.com>
- <6e97293c-71c1-40a8-8eba-4e2feda1e6ea@sirena.org.uk>
- <27404fce-b371-4003-b44b-a468572cf76d@linux.intel.com>
- <af368a9e-16c0-4512-8103-2351a9163e2c@opensource.cirrus.com>
- <56411df9-3253-439a-b8eb-75c5b0175a7a@linux.intel.com>
- <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgAXd_carUJpKY0OAg--.53331S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UJr1xtFWDtrWxXr4xWFg_yoW8uFy8pa
+	18WryavrWxXw12y3yvqr4kuryrJ392qay7KrW5A34fur1UKr95A3yfKayFqrnF9ry5ZF47
+	WF4j93Wxuw1xCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJV
+	WxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14
+	v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUbhL05UUUUU==
+X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
 
+From: Li Nan <linan122@huawei.com>
 
+commit 9c47127a807da3e36ce80f7c83a1134a291fc021 upstream.
 
-On 17/12/2025 14:40, Richard Fitzgerald wrote:
->>
->> It passes my manual tests on cs42l43, not sure how to run the unit-test
->> for SX, can you by chance test this?
->>
-> The easiest option is to run them from your kernel build tree like this:
+Raid checks if pad3 is zero when loading superblock from disk. Arrays
+created with new features may fail to assemble on old kernels as pad3
+is used.
 
-It is in my to-do list to get kunit working on my setups (Artix Linux on
-dev and DUTs), so it is really something that will take rest of the year
-easily ;)
+Add module parameter check_new_feature to bypass this check.
 
-> 
-> make mrproper
-> ./tools/testing/kunit/kunit.py run --kunitconfig=tools/testing/kunit/
-> configs/all_tests.config
+Link: https://lore.kernel.org/linux-raid/20251103125757.1405796-5-linan666@huaweicloud.com
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+---
+ drivers/md/md.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-> 
-
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 4e033c26fdd4..9d9cb7e1e6e8 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -340,6 +340,7 @@ static int start_readonly;
+  */
+ static bool create_on_open = true;
+ static bool legacy_async_del_gendisk = true;
++static bool check_new_feature = true;
+ 
+ /*
+  * We have a system wide 'event count' that is incremented
+@@ -1752,9 +1753,13 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
+ 	}
+ 	if (sb->pad0 ||
+ 	    sb->pad3[0] ||
+-	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1])))
+-		/* Some padding is non-zero, might be a new feature */
+-		return -EINVAL;
++	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1]))) {
++		pr_warn("Some padding is non-zero on %pg, might be a new feature\n",
++			rdev->bdev);
++		if (check_new_feature)
++			return -EINVAL;
++		pr_warn("check_new_feature is disabled, data corruption possible\n");
++	}
+ 
+ 	rdev->preferred_minor = 0xffff;
+ 	rdev->data_offset = le64_to_cpu(sb->data_offset);
+@@ -10459,6 +10464,7 @@ module_param(start_dirty_degraded, int, S_IRUGO|S_IWUSR);
+ module_param_call(new_array, add_named_array, NULL, NULL, S_IWUSR);
+ module_param(create_on_open, bool, S_IRUSR|S_IWUSR);
+ module_param(legacy_async_del_gendisk, bool, 0600);
++module_param(check_new_feature, bool, 0600);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("MD RAID framework");
 -- 
-Péter
+2.39.2
 
 
