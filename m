@@ -1,135 +1,203 @@
-Return-Path: <stable+bounces-202830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD46CC7D2B
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:29:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79ECACC9562
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 19:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C85330C3363
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:25:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1473030AFF2C
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 18:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63633EB1B;
-	Wed, 17 Dec 2025 13:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794C534FF75;
+	Wed, 17 Dec 2025 13:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DY29QPkB"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DB41487E9;
-	Wed, 17 Dec 2025 13:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380B234FF6C
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 13:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765977380; cv=none; b=fZ7ZziB6F9YxKeEJi4kDzrHp22GNhrFY2en3rFVVr4XuXNegtphl9D7pNJ9WTnskwQqmFDHW9HNYC78EvzEanojut4mJROsW/ticcd/HdlqaRnKGsAOMiXuE28fAv5FVGrqXwOXP6nDoB3566el7PGsRAgrlxCbPXNeHfGCKHQg=
+	t=1765976742; cv=none; b=SDk2bUw6xhoZudfqGz16Bb8fZNJplc3EoVpa1MOqRBnCnCBLp5L/7x9z/SwBjCFVQQFDCb+hnRQYqkUI4MQrdR7vEfJtZDsjwBDfon/gCE/B4ndN06zEdRrqFchp1Mdjl7pJLkEwL2N6iLHn+cHBr3Cd7exwmP8SuK8r8oFaEr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765977380; c=relaxed/simple;
-	bh=OhMWGlNdWne0AVIBdA/1mdhlw6O0iosSjrlHlJWtDwI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VrCZnOGRbsCJotLztqGIpDey1bcF7lYeScZB0e/pLkmxi8G3O+Eubt7wWsrNWD8IQyQHksCAe5zHPMQhITm738XG79qDNUmLCIQQU/jb0nAOIvBNDh2ABdKdAJgAgigADbmu7A/Jddiz40YNTVZWJNXqzXh5/m+uYA7CCpaiycA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dWZ783gS7zKHMP3;
-	Wed, 17 Dec 2025 21:16:04 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id A3F6E40583;
-	Wed, 17 Dec 2025 21:16:13 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP4 (Coremail) with SMTP id gCh0CgAXd_carUJpKY0OAg--.53331S4;
-	Wed, 17 Dec 2025 21:16:11 +0800 (CST)
-From: linan666@huaweicloud.com
-To: stable@vger.kernel.org
-Cc: song@kernel.org,
-	yukuai3@huawei.com,
-	linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linan666@huaweicloud.com,
-	yangerkun@huawei.com,
-	yi.zhang@huawei.com
-Subject: [PATCH stable/6.18-6.17] md: add check_new_feature module parameter
-Date: Wed, 17 Dec 2025 21:05:13 +0800
-Message-Id: <20251217130513.2706844-1-linan666@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1765976742; c=relaxed/simple;
+	bh=+w1uTCwONcBVyp5eI2/M7TmQteqZQCqAMEPWafZNv+U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SJ5zblGu8HdCToeejSfpF+P1YaKFp8v8jLvleIl65P6KIZDXr2/+gBUq/XWCOernJxG/E6dF3clknSOz8HiwOBOcLGuZn+CmcD2xmezz5f9zNDjkAFEJ9a1kbQJRzQXoPRImpqegtoHiQGHIw49tr+oVWjeRpBU9jCDY7CKOf7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DY29QPkB; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b7d0f26eb44so96797666b.2
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 05:05:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765976738; x=1766581538; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TypY7h1/+sYivtFKhfjf73cUHfAF4nkZLmlfMoZ28/Q=;
+        b=DY29QPkBGOfzm45hNEpcicqlHoTjKAsaKLzTdCfE1pr006gY5KrgDQ3gpU5qApZX7M
+         Vhv+F29Kmy1FAvxxZbmZisOz12JtJI88pZkabiznk5Z0VszYsuPeT92TTwKP5DgpmWhF
+         h2YsbiF+WIrAFft2aokYNJHPUe02wI3xoDJiwHNziR1MMLJDoCwuPrEG5m14CDT02IZV
+         +uDd3/VNMjGS0OHnQ0KtpKoRyJz6pSklFttu49PIfhJTX7lVj4UQwUlSWxuMhh/cHMd6
+         wX9dNKqGX2gWmJhTS83+aQEwTKZD3pxoYAA/VvqKvClABRKnKSVGqVjceSgbhJ5qk/Ts
+         F/KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765976738; x=1766581538;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TypY7h1/+sYivtFKhfjf73cUHfAF4nkZLmlfMoZ28/Q=;
+        b=T/NIH6vVmcCQZ8/TbzJBwN6tb9JCGkncx/VWUA1DXFx1DMBAvO6k05k978urAnBFVD
+         aT2KiskWAQvYrGK4M+CGZyotOfnIoUHzmJvcw0gcBdjyZWe+I836eypopZ+vp0MbBI1d
+         pTpjXJTb6gMaP9QYU72/FeCvoww4YYmTFSCSsbLPCN/TTlovLWD/36OApoYYSAuA0ChH
+         OirTdVOWW1i6fe2prLrEVbVaSP3ude5zXzyeuSTi1b+PRNcI3YuIazU0mpE0TupTHQvv
+         5P4vg0Y9zzfT/ULAr2wdHJXfiFmYkRQRrU0/au3PpDPxM4OQ3emz7NfWWxwWMUKWuWzc
+         9dnA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0SRuyeUhD79A6v9TR2oQUGiy861W5qff0xI8a05topGpnyrIjmbdTKfDvmRUhI0Lo5hijB0A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8W4UB7wtvMq3yUHexHg6Lw5DzhxVZBac6u1ocb2E06dl3YAO8
+	jf6SjtcyHit6D+gfZUn1hwUIHV390yaF4/JCaLQt5zB+hFLRD+A5/qCcgGJWcyngmu9YXGpITpN
+	ilBNY4O7vZ6+vMOAhUodUh2pzvz7twkk=
+X-Gm-Gg: AY/fxX7TuSZuKqmHT9Cv24K5zbp8OdyEJz/AOs2TYPmVn1xbIgESnh6wH0IgIIBL2yt
+	0cQaTEbIE8qNskuKCwLmTwHJ/BvuteM/IG5sRAtqL28Fk9WhgwSLx5go3DeOLsrAdBFhLTgXox8
+	+faSeRQf6KXSY1Qn2tYjwuDiAZY9nRpDMphb2zWOlhkwfWT94rEAMdKDOSHLWhmFGRMFqN/PWIH
+	Y/QmVVXqLAuJpUXVZsL4M7OemuxEzPx4vOCiIlaD9u1on3W8khR6YG1Ch7oleRTPpUQK5Jt
+X-Google-Smtp-Source: AGHT+IFazB3f4/1bhVy2oXsu6BrlIpTYELoVLleyYFPAoLjBMbc2b6in36ubjUTMEhmfp5i3UoCkHuCsyiXdhN/7b88=
+X-Received: by 2002:a17:907:9689:b0:b73:8bdb:9608 with SMTP id
+ a640c23a62f3a-b7d235b1605mr1000580666b.2.1765976738187; Wed, 17 Dec 2025
+ 05:05:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAXd_carUJpKY0OAg--.53331S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UJr1xtFWDtrWxXr4xWFg_yoW8uFy8pa
-	18WryavrWxXw12y3yvqr4kuryrJ392qay7KrW5A34fur1UKr95A3yfKayFqrnF9ry5ZF47
-	WF4j93Wxuw1xCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJV
-	WxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14
-	v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUbhL05UUUUU==
-X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
+References: <20251217124659.19274-1-pioooooooooip@gmail.com>
+ <20251217124659.19274-2-pioooooooooip@gmail.com> <ebb7cb16-781b-4f33-b7c0-3c5dd383913c@kernel.org>
+In-Reply-To: <ebb7cb16-781b-4f33-b7c0-3c5dd383913c@kernel.org>
+From: =?UTF-8?B?44GP44GV44GC44GV?= <pioooooooooip@gmail.com>
+Date: Wed, 17 Dec 2025 22:05:27 +0900
+X-Gm-Features: AQt7F2qrW6VynHp9kFV2IJSZxuez5PtnNmmRyq0ft-lTrP3B_4NuH3Kwr9fcVq4
+Message-ID: <CAFgAp7gP_yk7nF_AN+B_DRDJW--ytCKKQToG2m6y4h_SLBBaLA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] nfc: llcp: avoid double release/put on LLCP_CLOSED
+ in nfc_llcp_recv_disc()
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-nfc@lists.01.org, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Li Nan <linan122@huawei.com>
+Hi Krzysztof,
 
-commit 9c47127a807da3e36ce80f7c83a1134a291fc021 upstream.
+Sorry about that =E2=80=94 my previous response might not have made it to t=
+he
+list/thread.
+Replying here to address your concerns before sending v3.
 
-Raid checks if pad3 is zero when loading superblock from disk. Arrays
-created with new features may fail to assemble on old kernels as pad3
-is used.
+1) DM_DISC reply after LLCP_CLOSED
+This is not a new behavior introduced by my change. In the old code, the
+LLCP_CLOSED branch did release_sock() and nfc_llcp_sock_put(), but it did n=
+ot
+return/goto, so execution continued and still reached nfc_llcp_send_dm(...,
+LLCP_DM_DISC) afterwards. The disc patch only removes the redundant
+CLOSED-branch
+cleanup so release_sock()/nfc_llcp_sock_put() are performed exactly once vi=
+a the
+common exit path, while keeping the existing DM_DISC reply behavior.
 
-Add module parameter check_new_feature to bypass this check.
+2) Initial refcount / double free concern
+nfc_llcp_recv_disc()/recv_hdlc() take an extra reference via nfc_llcp_sock_=
+get()
+(sock_hold()). The issue is the mismatched put/unlock: the CLOSED branch dr=
+ops
+the reference and releases the lock, and then the common exit path does the=
+ same
+again. This is a refcount/locking imbalance regardless of whether it immedi=
+ately
+frees the object, and it may become a UAF depending on timing/refcounting.
 
-Link: https://lore.kernel.org/linux-raid/20251103125757.1405796-5-linan666@huaweicloud.com
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
----
- drivers/md/md.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Regarding your formatting notes: I will wrap commit messages per
+submitting-patches,
+use a 12-char sha in Fixes, and run scripts/checkpatch.pl (and --strict) an=
+d fix
+reported warnings before sending v3.
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 4e033c26fdd4..9d9cb7e1e6e8 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -340,6 +340,7 @@ static int start_readonly;
-  */
- static bool create_on_open = true;
- static bool legacy_async_del_gendisk = true;
-+static bool check_new_feature = true;
- 
- /*
-  * We have a system wide 'event count' that is incremented
-@@ -1752,9 +1753,13 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
- 	}
- 	if (sb->pad0 ||
- 	    sb->pad3[0] ||
--	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1])))
--		/* Some padding is non-zero, might be a new feature */
--		return -EINVAL;
-+	    memcmp(sb->pad3, sb->pad3+1, sizeof(sb->pad3) - sizeof(sb->pad3[1]))) {
-+		pr_warn("Some padding is non-zero on %pg, might be a new feature\n",
-+			rdev->bdev);
-+		if (check_new_feature)
-+			return -EINVAL;
-+		pr_warn("check_new_feature is disabled, data corruption possible\n");
-+	}
- 
- 	rdev->preferred_minor = 0xffff;
- 	rdev->data_offset = le64_to_cpu(sb->data_offset);
-@@ -10459,6 +10464,7 @@ module_param(start_dirty_degraded, int, S_IRUGO|S_IWUSR);
- module_param_call(new_array, add_named_array, NULL, NULL, S_IWUSR);
- module_param(create_on_open, bool, S_IRUSR|S_IWUSR);
- module_param(legacy_async_del_gendisk, bool, 0600);
-+module_param(check_new_feature, bool, 0600);
- 
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("MD RAID framework");
--- 
-2.39.2
+Best regards,
+Qianchang
 
+On Wed, Dec 17, 2025 at 9:57=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 17/12/2025 13:46, Qianchang Zhao wrote:
+> > nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold(=
+).
+> >
+> > In nfc_llcp_recv_disc(), when the socket is already in LLCP_CLOSED stat=
+e, the
+> > code used to perform release_sock() and nfc_llcp_sock_put() in the CLOS=
+ED branch
+> > but then continued execution and later performed the same cleanup again=
+ on the
+> > common exit path. This results in refcount imbalance (double put) and u=
+nbalanced
+>
+> Please wrap commit message according to Linux coding style / submission
+> process (neither too early nor over the limit):
+> https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/su=
+bmitting-patches.rst#L597
+>
+> > lock release.
+> >
+> > Remove the redundant CLOSED-branch cleanup so that release_sock() and
+> > nfc_llcp_sock_put() are performed exactly once via the common exit path=
+, while
+> > keeping the existing DM_DISC reply behavior.
+> >
+> > Fixes: d646960f7986fefb460a2b062d5ccc8ccfeacc3a ("NFC: Initial LLCP sup=
+port")
+>
+> 12 char sha.
+>
+> Please run scripts/checkpatch.pl on the patches and fix reported
+> warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
+> patches and (probably) fix more warnings. Some warnings can be ignored,
+> especially from --strict run, but the code here looks like it needs a
+> fix. Feel free to get in touch if the warning is not clear.
+>
+>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+> > ---
+> >  net/nfc/llcp_core.c | 5 -----
+> >  1 file changed, 5 deletions(-)
+> >
+> > diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> > index beeb3b4d2..ed37604ed 100644
+> > --- a/net/nfc/llcp_core.c
+> > +++ b/net/nfc/llcp_core.c
+> > @@ -1177,11 +1177,6 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_l=
+ocal *local,
+> >
+> >       nfc_llcp_socket_purge(llcp_sock);
+> >
+> > -     if (sk->sk_state =3D=3D LLCP_CLOSED) {
+> > -             release_sock(sk);
+> > -             nfc_llcp_sock_put(llcp_sock);
+>
+> You did not answer my previous review. You also did not answer my
+> concerns from earlier private report. Please respond before you send
+> again v3.
+>
+> > -     }
+> > -
+> >       if (sk->sk_state =3D=3D LLCP_CONNECTED) {
+> >               nfc_put_device(local->dev);
+> >               sk->sk_state =3D LLCP_CLOSED;
+>
+>
+> Best regards,
+> Krzysztof
 
