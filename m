@@ -1,46 +1,63 @@
-Return-Path: <stable+bounces-202825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1FECC7E6A
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:43:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80CDCC7F2A
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 99C023014A9F
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:42:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F19830F9558
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A02337B8C;
-	Wed, 17 Dec 2025 13:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B288F34886F;
+	Wed, 17 Dec 2025 13:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPrhLhEc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzLzVrl3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4F23A9B3;
-	Wed, 17 Dec 2025 13:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85FC347FD0;
+	Wed, 17 Dec 2025 13:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765976453; cv=none; b=VPswuuu55FQsLLfuqfvUvAGiZslA5YgvzvzdicyrmI5UAEATND9eDcMO8NrJxGINMHagTB9UXW8RIBF60aUIOSi/41SpRrV+BnWGWkytrpNYipaKYxBNL+hXRhSBjZUnONCeIR+NGvXqGwrwAbKcxEYyqfTgWdaLNzz7krQXHpE=
+	t=1765976471; cv=none; b=SOROhLq4qM1nq5T6lH4NUcbu715c9+bSTE7uFTUFl3Jm1s07xQhN/sgirAnO1hAmZ7HfkopRK/MS0H/5ylIj7IO6w3gP4ailAEtQ6hxoX2g8WJyEiEBA8Jcigtx0iMgIj4MEw3c+XA3iuV85gPMdV/aW/7emaZ6YH0WE29bDVww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765976453; c=relaxed/simple;
-	bh=Oi2B2VsgolJ7dOo9+gxrD6L357ILuwez/VTEjBlynsE=;
+	s=arc-20240116; t=1765976471; c=relaxed/simple;
+	bh=cjgn/BA7Ju+Q5Ubk2VcZLOA1TllX33llG7QDDvCmOpk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dbogWp200Jks7hUxOTHsbf02s05UpviQr3HlVcpefQJ8CWO9UUxmQR5vgESyv3mkKI+MCYVJLQ5GMKAEQxl+KKWZj8vNqhV2dth4s2NKS5RgnjILAK/YBqMqeLxDbUqjp0bH1pYdZxEYqyD3Cw0SLp2HWthw1Sm3zbwzaUxP6QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPrhLhEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44294C4CEF5;
-	Wed, 17 Dec 2025 13:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765976453;
-	bh=Oi2B2VsgolJ7dOo9+gxrD6L357ILuwez/VTEjBlynsE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EPrhLhEcnmUyyFcPSmttaU+SkNywdjCMUzCe0N9fWA7SwdrZU3ZRSD0YUklbdW9Um
-	 ZDt3FPxKiK4cO/M2FJXDQigQzEnpa5nIFVWIhFd5TKadD80EE5QjoQVJaXvTVdhQz8
-	 UItarPmyaWO6m2pL/FZzHnfR0X7a81p/zkXBKQM/LTaeDQAz0+fa8iFvJlf3p/X+s9
-	 QgYB2SZbxN4GBwMlco1EjmfMnL7JPaSTC1dVXY4WOosYSdG50xqvBeP+NSsNZaJH3A
-	 1TMchFi/aOtauh2TKudzPM7HHJRY90DWSyA0bRjHM3+joeJUq3tRinIesw2SL+3QWw
-	 Nwzfn7ROOVmHw==
-Message-ID: <4a237dd3-d818-4578-bbeb-1fbf0008c680@kernel.org>
-Date: Wed, 17 Dec 2025 14:00:49 +0100
+	 In-Reply-To:Content-Type; b=FyLqVQe9TV3ZUhu//NcY5yK1UNK2CCCDiPlPf8lGMghcM44QM9ifPrfvn3bJvCYJzUvWhISiunuy8qm5RJ37Uk0wPHGeiWRG4BcNH3v6+mmRC3fsBZsQoIXdV2ISlNc2HOBOKtPggJIcdggvbifCPRuiVltp+ZXIqZY4gralz0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzLzVrl3; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765976469; x=1797512469;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=cjgn/BA7Ju+Q5Ubk2VcZLOA1TllX33llG7QDDvCmOpk=;
+  b=gzLzVrl3PGCzwPuxHh6gZnZIP4r0/iJ86SVDdMJOBbJtPYFv7nFWnPiu
+   4LnZjga9hz3Sl3vmonnTm7WZ/GC7IoU3Y6SCXPxKEaBdRXTIhe79yxVnK
+   uxTjRfWYPQbLsMftSsognXrBy6kSbcoQA64B8yBJMNYxoutihUTyQ2/u1
+   Aevda4GjaBwbfX8eVfn+CXRk+VIz0efMnClAnM05kYI4lm7dzPfuGKI6b
+   KOMB07m17Rh0T3PXZELMJEJw2MPsBUmOvUoAzcQiiN5Q41xi14HbqGedF
+   kCPL6v+mKUxnuieF5+IRciwXgS30w0IlnB2gM6qAEMuhXO9Ty5giaVQEJ
+   w==;
+X-CSE-ConnectionGUID: z3zd+t8sSyCCVUomcrY92w==
+X-CSE-MsgGUID: Fn+UdWAmSJKvAXog1zQyvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="71542632"
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="71542632"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 05:01:09 -0800
+X-CSE-ConnectionGUID: eZp8HpbIS1ev7ELvRXINPw==
+X-CSE-MsgGUID: wv4Qa3EzQka36zqqvPnrEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="202677818"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.187]) ([10.245.246.187])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 05:01:06 -0800
+Message-ID: <e98a78fc-0b30-4af1-b6f5-2bc5cacc8115@linux.intel.com>
+Date: Wed, 17 Dec 2025 15:01:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,82 +65,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] nfc: llcp: avoid double release/put on LLCP_CLOSED
- in nfc_llcp_recv_disc()
-To: Qianchang Zhao <pioooooooooip@gmail.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- stable@vger.kernel.org
-References: <20251217125746.19304-1-pioooooooooip@gmail.com>
- <20251217125746.19304-2-pioooooooooip@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] ASoC: soc-ops: Correct the max value for clamp in
+ soc_mixer_reg_to_ctl()
+To: Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Mark Brown <broonie@kernel.org>
+Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
+ kai.vehmanen@linux.intel.com, seppo.ingalsuo@linux.intel.com,
+ stable@vger.kernel.org, niranjan.hy@ti.com, ckeepax@opensource.cirrus.com,
+ sbinding@opensource.cirrus.com
+References: <20251217120623.16620-1-peter.ujfalusi@linux.intel.com>
+ <6e97293c-71c1-40a8-8eba-4e2feda1e6ea@sirena.org.uk>
+ <27404fce-b371-4003-b44b-a468572cf76d@linux.intel.com>
+ <af368a9e-16c0-4512-8103-2351a9163e2c@opensource.cirrus.com>
+ <56411df9-3253-439a-b8eb-75c5b0175a7a@linux.intel.com>
+ <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251217125746.19304-2-pioooooooooip@gmail.com>
+In-Reply-To: <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 17/12/2025 13:57, Qianchang Zhao wrote:
-> nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold().
-> 
-> In nfc_llcp_recv_disc(), when the socket is already in LLCP_CLOSED state, the
-> code used to perform release_sock() and nfc_llcp_sock_put() in the CLOSED branch
-> but then continued execution and later performed the same cleanup again on the
-> common exit path. This results in refcount imbalance (double put) and unbalanced
-> lock release.
-> 
-> Remove the redundant CLOSED-branch cleanup so that release_sock() and
-> nfc_llcp_sock_put() are performed exactly once via the common exit path, while
-> keeping the existing DM_DISC reply behavior.
-> 
-> Fixes: d646960f7986fefb460a2b062d5ccc8ccfeacc3a ("NFC: Initial LLCP support")
-> Cc: stable@vger.kernel.org
 
-NAK, stop sending the same again and again. Respond to previous emails.
 
-Best regards,
-Krzysztof
+On 17/12/2025 14:40, Richard Fitzgerald wrote:
+>>
+>> It passes my manual tests on cs42l43, not sure how to run the unit-test
+>> for SX, can you by chance test this?
+>>
+> The easiest option is to run them from your kernel build tree like this:
+
+It is in my to-do list to get kunit working on my setups (Artix Linux on
+dev and DUTs), so it is really something that will take rest of the year
+easily ;)
+
+> 
+> make mrproper
+> ./tools/testing/kunit/kunit.py run --kunitconfig=tools/testing/kunit/
+> configs/all_tests.config
+
+> 
+
+-- 
+Péter
+
 
