@@ -1,196 +1,106 @@
-Return-Path: <stable+bounces-202776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B13CC6912
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:28:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAD1CC6AC9
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9458E300D3DB
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 08:28:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB9F430CBF7C
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 08:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D0E335551;
-	Wed, 17 Dec 2025 08:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3542F33D50C;
+	Wed, 17 Dec 2025 08:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="BFD43ixV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dUf2vRjC"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064532749FE;
-	Wed, 17 Dec 2025 08:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3972338592;
+	Wed, 17 Dec 2025 08:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765960091; cv=none; b=XFalOVDBWIMkDhp/7FgxMKSlcURE3e5IjacH2LIC1WJGnUQZ4M/qhJHyxx3SYm8ipryA18yPMPeRebatePcVonQ9TMP28QhAvsEmRy5ozHljZFO00QvSYmOzmTAXNG+Zk1QHSPsCzTmzum1neuGXcnWMo+YufrbHbon5taY9LN0=
+	t=1765961208; cv=none; b=GghNlAHxeJ5FcHkK817AsXu0Pm4M49blLBI00zziqRJmhkxmlahJIpNEfJ9N6XxlzINzkjQri7Fx+UI5awwMcZmfiKsTFCfJv3gf/22LsE58YPK8/3iegodXnlkJptOIGqilhGxSKGRQpSgVAMftTNYNSEhwqrCC8qg1/ZtSwbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765960091; c=relaxed/simple;
-	bh=51+W4VLxgsGLOJJ6gjbxsSFBigsutjzPnXbLcilUWgg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GErSn4GOLVPic1ucnpwEsTVtjJY+3O8IQFib3bfaZ/D2cZljOAUshBjyvZ2QnLC4GEkTpKWhofHU4AyED0HmCSPuXlripOjij66w9I5g2sZc6NS+9uvWoOGlcNL97JJO8P5Mho9GT8bxsD76Kp9ku5j7rxGngDpKpxRGLhr/kjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=BFD43ixV; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1765960071; x=1766564871; i=rwarsow@gmx.de;
-	bh=vMeI6jGcam/K/QFdChggliL6yESzOIEWuYF5/U5iEFU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=BFD43ixVBeyJEC9jIhxI/HM0JlFH3ZzaeLC21qMOIlT62dmgutrg4y1Kqowoncy5
-	 0csfl4LAwpY2gaFTfKXrhpgTFGyvB+tx021T1hAAT/FShlL9/HxKv9hjrywRt9lUV
-	 zwng6RuvbBq9T7KG7OAZPDaqtBjyzd9HX3twsm4TLhQ6D6zrkIxVBO6BuAqsAhsMk
-	 vmTFu25+6Dl2uqZjckeRjwDo0KpvJsHs8RZXziCvGpTV3PNV2yR114e6LmRAl+Ib2
-	 2KZUHiggKyJlo/QpMxWXCwdujR92dd2iB0151bIynmnrC9yOSIxKc0SMcVBU7g1qP
-	 juBp62UcshAZg75D5Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.243]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFbVu-1vliXJ1A0U-006ucq; Wed, 17
- Dec 2025 09:27:51 +0100
-Message-ID: <b72d4821-d3e6-4b29-96c8-6acb1fc916a8@gmx.de>
-Date: Wed, 17 Dec 2025 09:27:49 +0100
+	s=arc-20240116; t=1765961208; c=relaxed/simple;
+	bh=6EPA9C7oI1yVrLSkp2OF0U+gSoEDxDwuiYwet2UyBYE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=kc17jsSt5PT1emKW5yHx7nNoWK4356C8+HqzC74XN/R1HXi2VatYgt7kBjoBIDiXJ6T6zM8yzwIvJ3QzaNCaM+9GmcE8pfIJoHBeWRdOExfBV9ViYsgSAaMERNBRuStNCQKMf4feu+7EQA2uKBgfPIrRbKo71iSsAtDWYKYKLTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dUf2vRjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D0DC4CEF5;
+	Wed, 17 Dec 2025 08:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765961207;
+	bh=6EPA9C7oI1yVrLSkp2OF0U+gSoEDxDwuiYwet2UyBYE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=dUf2vRjCQh4YxP6uX1pqOBqvF3h5CLe66wbOZyLIffyyVla1ZrsmJrwtc4+2/NJnR
+	 NBgSuvXt251la+CkuQ5nvEE+TnSsQN5DfFAn62XdPxfKxw0ZIJLwHswlLJhBog62b/
+	 ADfqtiry4pue1v6xM2QMyCwcRLKgSx4Wh0S7bI5NtZrD5iXvOcVuxBpbSv1CA0N7Td
+	 bkiJu3CkzbizFlQ7IiKu4aYGTsM0dGrq9ERgoCG9bzWP2m7Vk7QfIzwDWnByMsPQ2q
+	 l04NF1qBnZOrqeRuZWcFDv5+NQjwGaEhJCLISGzYs4rhpsySg9Kjf/l+vxNqq8KVFJ
+	 WZkaVIVujgzuA==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ pierre-louis.bossart@linux.dev, seppo.ingalsuo@linux.intel.com, 
+ stable@vger.kernel.org
+In-Reply-To: <20251215120648.4827-1-peter.ujfalusi@linux.intel.com>
+References: <20251215120648.4827-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH 0/2] ASoC: SOF: ipc4-topology: fixes for 'exotic'
+ format handling
+Message-Id: <176596120523.335337.10043009817383930639.b4-ty@kernel.org>
+Date: Wed, 17 Dec 2025 08:46:45 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251216111401.280873349@linuxfoundation.org>
- <1056aea9-1977-440e-9ad3-8a0b8b746288@gmx.de>
- <2025121714-gory-cornhusk-eb87@gregkh>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <2025121714-gory-cornhusk-eb87@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Lnro63ojjW5JfPCzopeBemHTdgSdKuxVQu4VVvgdha8LGzjazUo
- uyFj9CmB8fKwGL9BXtzMzzrCO58N+DZlbcwXT68Ba+GxApLJLaQxE1Ukr6XgoBhVUdwbJDX
- hz3bdGdY++hNfZsJRNVf0RvvCaVcX0SQOAZdplwUgARFewqX9kLnkARvUcE3qHgmCTJZ9Fr
- 41ZKp6MwdfaKZrR2Y9+rA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dViFdeJgfYU=;eOJp9tcY5Gp6nE+yeeuDn8PgpIc
- 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
- Tm41RiXQ77Szhl+cW5f4XNCbNEsnJyhsFIAPT8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On 17.12.25 06:47, Greg Kroah-Hartman wrote:
-> On Tue, Dec 16, 2025 at 05:06:56PM +0100, Ronald Warsow wrote:
->> Hi
->>
->> no regressions here on x86_64 (RKL, Intel 11th Gen. CPU), but *only* wh=
-en
->> running GPU driver i915.
->>
->> with GPU driver xe I get here:
->>
->> [   14.391631] rfkill: input handler disabled
->> [   14.787149] ------------[ cut here ]------------
->> [   14.787153] refcount_t: underflow; use-after-free.
->> [   14.787167] WARNING: CPU: 10 PID: 2463 at lib/refcount.c:28
+On Mon, 15 Dec 2025 14:06:46 +0200, Peter Ujfalusi wrote:
+> The introduction of 8bit and FLOAT formats missed to cover the
+> new corner cases they cause when the NHLT blobs are looked up.
+> 
+> The two patch in this series fixes the 8bit and FLOAT format caused
+> cases to be able to find the correct blob from NHLT.
+> 
+> Regards,
+> Peter
+> 
+> [...]
 
-....
+Applied to
 
->> =3D=3D=3D=3D
->>
->> If I did the bisect correct, bisect-log:
->>
->> # status: waiting for both good and bad commits
->> # good: [25442251cbda7590d87d8203a8dc1ddf2c93de61] Linux 6.18.1
->> git bisect good 25442251cbda7590d87d8203a8dc1ddf2c93de61
->> # status: waiting for bad commit, 1 good commit known
->> # bad: [103c79e44ce7c81882928abab98b96517a8bce88] Linux 6.18.2-rc1
->> git bisect bad 103c79e44ce7c81882928abab98b96517a8bce88
->> # bad: [d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd] drm/msm: Fix NULL poi=
-nter
->> dereference in crashstate_get_vm_logs()
->> git bisect bad d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd
->=20
-> Is this also an issue with 6.19-rc1?  Are we missing something here?
->=20
-6.19-rc1 is okay here
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> thanks,
->=20
-> greg k-h
->=20
+Thanks!
+
+[1/2] ASoC: SOF: ipc4-topology: Prefer 32-bit DMIC blobs for 8-bit formats as well
+      commit: 26e455064983e00013c0a63ffe0eed9e9ec2fa89
+[2/2] ASoC: SOF: ipc4-topology: Convert FLOAT to S32 during blob selection
+      commit: 816f291fc23f325d31509d0e97873249ad75ae9a
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
