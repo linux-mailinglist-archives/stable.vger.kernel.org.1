@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-202785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B77ACC6D89
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97275CC6E04
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E61C5305F64E
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:40:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A1C330698C3
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB2734106A;
-	Wed, 17 Dec 2025 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544DC342505;
+	Wed, 17 Dec 2025 09:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E955cPQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAAu6qoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F11434105F;
-	Wed, 17 Dec 2025 09:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ADA328617;
+	Wed, 17 Dec 2025 09:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964108; cv=none; b=d4LWQdEg34OsAPjUQnz0er3UV970xH3LkUIxWkZfw3R8sbzAsxx6CWM/OH+5QX2ZyuqkboF8shrnZV0o+AadpTe+OO09+6LCX48BoWxQNPhy0Bc4CuT7eNedGicgPvLfRsieOvN+TS8NjEfiQjSqj6JgA64PThe59x01DTpK/58=
+	t=1765964203; cv=none; b=SfLzlZJ1c6XyC/KDGMNxzNim8DPQLs/njq+5YVm3hM70N3jwlN/F6/Vx2iVKfq2K5NFcIuwCPIrPea/H+lRPYcBRyYxowjobBlLtuinwclnjLseAgieZEdFGiEVNgtwT3LVHA9udzuH0CnS3erSrL6iTtPxjNqZlLC9e1gLMPy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964108; c=relaxed/simple;
-	bh=dMeTDFXTFnhr5jxwEwAS48XtiMRS5TijhF2JZ0IReUg=;
+	s=arc-20240116; t=1765964203; c=relaxed/simple;
+	bh=Wyh7lCOHXtqEwjyPfQhU0ee7Yb5w1waZAnxgxQlNZrQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XaVjAmu8vlc7ytYmIhB9GkfIGmHTJx4zQWnEjzoMRM/BRrRi4HCI+HQWzWhZ4B8Sc3vw2iCK6AqhFJgg+FiX0Q6gel+P86KfX7qWMM2osB8ex0HChj7mvusC2/LaZ03L8hfF8JChElWIzCMk3Obu+U7r+7/uTdgHmDqTIPvpIXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E955cPQS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778B2C4CEF5;
-	Wed, 17 Dec 2025 09:35:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TDHOcxSTLSXpsGgUuykmiQ5H2dKwK/ddy3UCSm+V6eNB2T1J6JK/yBP69GmB/XOLg4Xe/qpXnfcPR5wZA62AypcKBXtu6FGQ+GTa5/Uly6RH4HoyJzdhUg/UNwaxWQPpN+xTRA3SFbovu6zXG54Xuv914/vTM96B2O2posiUgc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAAu6qoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C1DC4CEF5;
+	Wed, 17 Dec 2025 09:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765964101;
-	bh=dMeTDFXTFnhr5jxwEwAS48XtiMRS5TijhF2JZ0IReUg=;
+	s=korg; t=1765964202;
+	bh=Wyh7lCOHXtqEwjyPfQhU0ee7Yb5w1waZAnxgxQlNZrQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E955cPQSHga6P7Wq+Nr48mQX0Enu6gej/dmpPsCfQ4pLLEFvuBzn2zHV19fLlNqCi
-	 s/IqBO+dHMCpLmmlteFiUCfxgy/HJvPQMfxNaCDAq7zFkebt5KcaXk1njijDrT7IkI
-	 Nf1oZ+mOBA97UY18cxxwIvfeSHnGUev9uvdt/EtY=
-Date: Wed, 17 Dec 2025 10:34:58 +0100
+	b=KAAu6qoOHLDeOltGzDvnDiWnu3cbtkEMVXt0DQm4MUDzVn3vL/Np6wqP6WLn43kgo
+	 ypksFQgQbYF2Q8Ic2QPMPRcakOaMA1SAvA8Rt4WBJ4u+KBT7NE9nbUfmNZPfIAaNzB
+	 tTrKD+j/Lxc0vY9CyCW48s4DfhmeopM5yS+dRT2I=
+Date: Wed, 17 Dec 2025 10:36:39 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Gu Bowen <gubowen5@huawei.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org, Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v2,stable/linux-6.6.y] fbdev: Fix out-of-bounds issue in
- sys_fillrect()
-Message-ID: <2025121715-vindicate-valium-1118@gregkh>
-References: <20251217094530.1685998-1-gubowen5@huawei.com>
+To: Ronald Warsow <rwarsow@gmx.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com,
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+Message-ID: <2025121708-chunk-sasquatch-284c@gregkh>
+References: <20251216111401.280873349@linuxfoundation.org>
+ <1056aea9-1977-440e-9ad3-8a0b8b746288@gmx.de>
+ <2025121714-gory-cornhusk-eb87@gregkh>
+ <b72d4821-d3e6-4b29-96c8-6acb1fc916a8@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,20 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251217094530.1685998-1-gubowen5@huawei.com>
+In-Reply-To: <b72d4821-d3e6-4b29-96c8-6acb1fc916a8@gmx.de>
 
-On Wed, Dec 17, 2025 at 05:45:30PM +0800, Gu Bowen wrote:
-> This issue has already been fixed by commit eabb03293087 ("fbdev:
-> Refactoring the fbcon packed pixel drawing routines") on v6.15-rc1, but it
-> still exists in the stable version.
+On Wed, Dec 17, 2025 at 09:27:49AM +0100, Ronald Warsow wrote:
+> On 17.12.25 06:47, Greg Kroah-Hartman wrote:
+> > On Tue, Dec 16, 2025 at 05:06:56PM +0100, Ronald Warsow wrote:
+> > > Hi
+> > > 
+> > > no regressions here on x86_64 (RKL, Intel 11th Gen. CPU), but *only* when
+> > > running GPU driver i915.
+> > > 
+> > > with GPU driver xe I get here:
+> > > 
+> > > [   14.391631] rfkill: input handler disabled
+> > > [   14.787149] ------------[ cut here ]------------
+> > > [   14.787153] refcount_t: underflow; use-after-free.
+> > > [   14.787167] WARNING: CPU: 10 PID: 2463 at lib/refcount.c:28
+> 
+> ....
+> 
+> > > ====
+> > > 
+> > > If I did the bisect correct, bisect-log:
+> > > 
+> > > # status: waiting for both good and bad commits
+> > > # good: [25442251cbda7590d87d8203a8dc1ddf2c93de61] Linux 6.18.1
+> > > git bisect good 25442251cbda7590d87d8203a8dc1ddf2c93de61
+> > > # status: waiting for bad commit, 1 good commit known
+> > > # bad: [103c79e44ce7c81882928abab98b96517a8bce88] Linux 6.18.2-rc1
+> > > git bisect bad 103c79e44ce7c81882928abab98b96517a8bce88
+> > > # bad: [d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd] drm/msm: Fix NULL pointer
+> > > dereference in crashstate_get_vm_logs()
+> > > git bisect bad d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd
+> > 
+> > Is this also an issue with 6.19-rc1?  Are we missing something here?
+> > 
+> 6.19-rc1 is okay here
 
-Why not take the refactoring changes instead?  That is almost always the
-proper thing to do, one-off changes are almost always wrong and cause
-extra work in the long-term.
+Odd, as you aren't even running the driver that this commit points to,
+right?  You shouldn't be building it, so why does this show up as the
+"bad" commit id?
 
-Please try backporting those changes instead please.
-
-thanks,
+totally confused,
 
 greg k-h
 
