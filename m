@@ -1,162 +1,196 @@
-Return-Path: <stable+bounces-202784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA16CC6D02
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:33:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBE2CC6E38
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC13D306E943
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:32:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4557A3004638
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E128C33A9EE;
-	Wed, 17 Dec 2025 09:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6DA3164D6;
+	Wed, 17 Dec 2025 09:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sccIq1hq"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="VhxBQTse"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD522BEFFB;
-	Wed, 17 Dec 2025 09:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5703B3358D2;
+	Wed, 17 Dec 2025 09:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765963927; cv=none; b=AMtkKTOKfHoy//AMJj9aFcoWXPx6iDZ5NakP3kk+bpGEHSb/BQwCtU6hobYNOP8/qbrXDXGUREqU9GDFUECF3HzKXuBWzHbxIr9zHiE3UBPCHo+19JXWRgM+sUZaWuBVK2MY5OGUbs6KCYsMZVFnYcSqdJi1j3HZ8CtTvVQCIAE=
+	t=1765965161; cv=none; b=LCJ8cxeNqOFDqMPSYmA0OFdiDTMEDBXWLgIgOJEvLhkU+WOfhXltSO8cVYE+/oOo3BE27Pnx140R1WjsswtrCPyO3Nxldq71MRCkCok/tUb6UEKtrVsbZH664Qit7Q8KGsXeVLZAfF+/ieOZyj60XpdRs/UARDkTSDXkzJ81sbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765963927; c=relaxed/simple;
-	bh=yN6tXc2Zl6Yp/hm66iYTcpLIG22Y84n5TcMyCW0f10I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pdy8bPVdNqqpKQNpTuF5mNYArFYuTceP1m4TY3wrAJ2XsfcoOZh8abNjJu4zVtv3XcKCLOXVfh3tXEyHAnLXyAedhRo/fhWc6tsKNsEdFb1bcs9lwBfyIvbusKaPFHy6bEansY1Tt2IWREIeqKOvUYrOcC487A7kkIjkkO6cvuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sccIq1hq; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=JNNUkji7EDDyhJPW0dB143cjgCt1mE9XvRBO/wIIyAE=;
-	b=sccIq1hq41OEvqDwYrsCmLGi+NkFl7qk1P82CLKkotkpJOGygdPFOlOnn5okwS+A4ycbuDpPk
-	OTQi5auDIIjv5n39t5XJnC/PES3Fk2QIqqS6//Y8dQkkiGTrDequ5NYz+9uOU2UsN2wQwuO0zZB
-	OU0HyMgIH1Uy02bGeyUyQjY=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dWT6B1Y4FzRhrg;
-	Wed, 17 Dec 2025 17:29:54 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id 26FCB140144;
-	Wed, 17 Dec 2025 17:31:55 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 17 Dec
- 2025 17:31:54 +0800
-From: Gu Bowen <gubowen5@huawei.com>
-To: Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<stable@vger.kernel.org>, Lu Jialin <lujialin4@huawei.com>, Gu Bowen
-	<gubowen5@huawei.com>
-Subject: [PATCH v2,stable/linux-6.6.y] fbdev: Fix out-of-bounds issue in sys_fillrect()
-Date: Wed, 17 Dec 2025 17:45:30 +0800
-Message-ID: <20251217094530.1685998-1-gubowen5@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765965161; c=relaxed/simple;
+	bh=8spUcwATbrE6wqelUezzasFm99VURT/h+5zVxLWbxrY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MqiypwtAYGvw1UWnr2pUlcbZcY77F8k4whhOVK+r9bHnRFUOH86A8FZXth6wa9aSkl5b3sMc6hvqTx5i9T4s+vvw53Dc8ZUtwCFoqZ6RsFEzj5rNDJFaQUhCtRoSfNm3IqTi61H4pwjDJMWauegSxiOynvvx4kmUSszEiXaZCrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=VhxBQTse; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1765965120; x=1766569920; i=rwarsow@gmx.de;
+	bh=BIpqjyAdub9BMjW1IU0iOc+IM5Hue82KL+03xpLDOfw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=VhxBQTseQ3M1SG+Wdw0/uBMniEy1UGLU+3F8/mjmondC60alF4SMQtqidCQTxkCu
+	 iwfQCowUqCEagUyZXdbU2vhEtqmG/ovglKRKlNbUrusCLOqOI0HAVOYSrI9Jsr9Xy
+	 WDBtWduOY0rpyiGPs0/PYqd/54imFylEqFri8Mdjs01eiObizs3cdn7uLW67GthAY
+	 6qFWPr+kVNZjK9o8xXSKl82wIf5hH0BkcjSnz/ovDMbrWYBTE9pQrtkOqA332ob++
+	 Bw+PfoFWGN9XyfnZBszJ1yzl68TIHLLFkNb4XyBGerrPpOyTPvHwdTkxPsPOxcBgI
+	 FWi8UBP9HiKztA7JzQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.243]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MRmfi-1vOY8221Uo-00RXC1; Wed, 17
+ Dec 2025 10:52:00 +0100
+Message-ID: <7842e8f0-bfe5-48a6-8a33-dac858244872@gmx.de>
+Date: Wed, 17 Dec 2025 10:51:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemh100007.china.huawei.com (7.202.181.92)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251216111401.280873349@linuxfoundation.org>
+ <1056aea9-1977-440e-9ad3-8a0b8b746288@gmx.de>
+ <2025121714-gory-cornhusk-eb87@gregkh>
+ <b72d4821-d3e6-4b29-96c8-6acb1fc916a8@gmx.de>
+ <2025121708-chunk-sasquatch-284c@gregkh>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <2025121708-chunk-sasquatch-284c@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:v+0HCBzWPgewSLFKARSry5aXbZIYiNLBwW1wUeHkLaXD3DLQmpH
+ 4QXKVQoMcy30XDUDI0SwwbTwD7wb+aOV6lNFpZIRTp7693XIeptIMF7VJltQokl123ky6qe
+ fWGKFajBBiyrsLAk3+NC9vh6ssx7j8YIDOCSZe4pTPl59SjNETiFu2e0VfZLoyeldIXVZyB
+ URIl0xohkLZvexU/o70XQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:etti9qxiso4=;XS4YhZrheN4SlihmeskUxlbgG0M
+ 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
+ yON4RWABot3BL+Gxo=
 
-There was an out-of-bounds issue found by syzkaller test on v6.6.
+On 17.12.25 10:36, Greg Kroah-Hartman wrote:
+> On Wed, Dec 17, 2025 at 09:27:49AM +0100, Ronald Warsow wrote:
+>> On 17.12.25 06:47, Greg Kroah-Hartman wrote:
+>>> On Tue, Dec 16, 2025 at 05:06:56PM +0100, Ronald Warsow wrote:
+>>>> Hi
+...
 
-BUG: unable to handle page fault for address: ffffc90000c3f000
-PGD 100000067 P4D 100000067 PUD 100c80067 PMD 10ac1c067 PTE 0
-Oops: 0002 [#1] PREEMPT SMP KASAN PTI
-CPU: 3 PID: 6521 Comm: syz.3.1365 Not tainted 6.6.0+ #82
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-RIP: 0010:memset64 arch/x86/include/asm/string_64.h:58 [inline]
-RIP: 0010:memset_l include/linux/string.h:168 [inline]
-RIP: 0010:bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:53 [inline]
-RIP: 0010:bitfill_aligned+0x144/0x1c0 drivers/video/fbdev/core/sysfillrect.c:25
-Code: 23 04 24 48 31 d0 49 89 46 f8 44 89 e0 44 29 f8 29 c3 e8 9f 39 49 fe 89 d8 31 d2 4c 89 f7 41 f7 f4 48 89 c3 48 89 c1 48 89 e8 <f3> 48 ab 31 ff 4c 89 ee e8 df 2f 49 fe 4d 85 ed 0f 84 6b ff ff ff
-RSP: 0018:ffff888119ce7418 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000180 RCX: 0000000000000180
-RDX: 0000000000000000 RSI: ffffc90003873000 RDI: ffffc90000c3f000
-RBP: 0000000000000000 R08: 0000000000006000 R09: 0000000000000040
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000040
-R13: 0000000000000000 R14: ffffc90000c3f000 R15: 0000000000000000
-FS:  00007f1704b926c0(0000) GS:ffff8881f5980000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc90000c3f000 CR3: 00000001230d0002 CR4: 0000000000770ee0
-DR0: 0000000000000000 DR1: 000000000000e000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-PKRU: 80000000
-Call Trace:
- <TASK>
- sys_fillrect+0x429/0x830 drivers/video/fbdev/core/sysfillrect.c:281
- drm_fbdev_generic_defio_fillrect+0x27/0x140 drivers/gpu/drm/drm_fbdev_generic.c:37
- bit_clear+0x183/0x220 drivers/video/fbdev/core/bitblit.c:73
- __fbcon_clear+0x5ea/0x670 drivers/video/fbdev/core/fbcon.c:1281
- fbcon_scroll+0x41e/0x560 drivers/video/fbdev/core/fbcon.c:1847
- con_scroll+0x464/0x6a0 drivers/tty/vt/vt.c:577
- lf+0x274/0x2d0 drivers/tty/vt/vt.c:1461
- do_con_trol+0x5ea/0x3d80 drivers/tty/vt/vt.c:2149
- do_con_write+0x780/0x10c0 drivers/tty/vt/vt.c:2905
- con_write+0x28/0xc0 drivers/tty/vt/vt.c:3245
- do_output_char+0x5de/0x850 drivers/tty/n_tty.c:433
- process_output drivers/tty/n_tty.c:500 [inline]
- n_tty_write+0x442/0xb00 drivers/tty/n_tty.c:2406
- iterate_tty_write+0x2b5/0x630 drivers/tty/tty_io.c:1017
- file_tty_write.constprop.0+0x20c/0x3b0 drivers/tty/tty_io.c:1088
- call_write_iter include/linux/fs.h:2085 [inline]
- do_iter_readv_writev+0x210/0x3c0 fs/read_write.c:737
- do_iter_write+0x181/0x4e0 fs/read_write.c:862
- vfs_writev+0x15b/0x4d0 fs/read_write.c:935
- do_writev+0x136/0x370 fs/read_write.c:978
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
+>>>> If I did the bisect correct, bisect-log:
+>>>>
+>>>> # status: waiting for both good and bad commits
+>>>> # good: [25442251cbda7590d87d8203a8dc1ddf2c93de61] Linux 6.18.1
+>>>> git bisect good 25442251cbda7590d87d8203a8dc1ddf2c93de61
+>>>> # status: waiting for bad commit, 1 good commit known
+>>>> # bad: [103c79e44ce7c81882928abab98b96517a8bce88] Linux 6.18.2-rc1
+>>>> git bisect bad 103c79e44ce7c81882928abab98b96517a8bce88
+>>>> # bad: [d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd] drm/msm: Fix NULL p=
+ointer
+>>>> dereference in crashstate_get_vm_logs()
+>>>> git bisect bad d32e7ccac8c6afc6a3a46fa4e7cdf0568ee919bd
+>>>
+>>> Is this also an issue with 6.19-rc1?  Are we missing something here?
+>>>
+>> 6.19-rc1 is okay here
+>=20
+> Odd, as you aren't even running the driver that this commit points to,
+> right?  You shouldn't be building it, so why does this show up as the
+> "bad" commit id?
+>=20
 
-When the virtual console is rotated in the backend state, it can lead to
-inconsistencies between the size of the virtual console's size and its
-hook functions. In such cases, clearing the screen may result in
-out-of-bounds issue.
+maybe I did something wrong with bisect ?
+- I'm no developer and not very experienced with it -
 
-This issue has already been fixed by commit eabb03293087 ("fbdev:
-Refactoring the fbcon packed pixel drawing routines") on v6.15-rc1, but it
-still exists in the stable version.
 
-It was unclear if there were other scenarios for this issue, and I tried
-to add pr_err in sys_fillrect. But as Helge pointed out[1], sys_fillrect
-is on the console printing code path and adding printing here might cause
-infinite loop. So let's just fix the known scenario.
+side note: tomorrow I'm in vacation
 
-Fix it by moving set_blitting_type() to the visible area of the VC.
-
-Link: https://lore.kernel.org/all/aef7d5fd-2926-4c58-b720-4af58aa380d3@gmx.de/ [1]
-
-CC: stable@vger.kernel.org	# for stable-6.6, fbdev had been refactored on 6.15-rc1
-Fixes: 68648ed1f58d ("fbdev: add drawing functions for framebuffers in system RAM")
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
----
- drivers/video/fbdev/core/fbcon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 78a5b22c8d15..8139ac8a666f 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2702,9 +2702,9 @@ static void fbcon_modechanged(struct fb_info *info)
- 		return;
- 
- 	p = &fb_display[vc->vc_num];
--	set_blitting_type(vc, info);
- 
- 	if (con_is_visible(vc)) {
-+		set_blitting_type(vc, info);
- 		var_to_display(p, &info->var, info);
- 		cols = FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
- 		rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
--- 
-2.43.0
+> totally confused,
+>=20
+> greg k-h
 
 
