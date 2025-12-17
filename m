@@ -1,136 +1,131 @@
-Return-Path: <stable+bounces-202756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A74CCC5EF2
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A3ACC5FD0
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:57:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FDD33063435
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 03:49:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 263A130321FB
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC18C182D0;
-	Wed, 17 Dec 2025 03:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OqvrxpDV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A506524468C;
+	Wed, 17 Dec 2025 04:56:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7362D2390
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 03:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B391DF723
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 04:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765943392; cv=none; b=sY9e9VMmFAcqffBT2J3EUbruwjEJwU39zzxgzSxsWZC0lGOYUN05heGnf+2S1mn7Qs8fFTDMfQ01Z0fd+EerOU7aWVQDkQQRwRMEhVIBVD7+tmik+A+wzSG036DoiHX/VCGTj7T0WQ8w4V+43EKrdRsWhWllbdy+C/sqGxx6Ppk=
+	t=1765947408; cv=none; b=eGsRBauWFR3JJyqH9N/y21PnfcdAf1hUekppUr6KdB6wAMIDllqV0LTMKzod0qNz9GETP/IX6kuA+mQSNteiueZ4Huklu2wJ/V155ZoQWEZWj+E+gAYqElRr9BXIv7sdqcGLlH5u8mMTrayrZgwjMUZOkJD9Mlg4VI/ByyHTdDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765943392; c=relaxed/simple;
-	bh=pW2QlE6FHidi8nNjbFZRbrCzZPMJ39+70QN3XQQVR5Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=TnvXqLX/5chW+MqGM8bpWhmdi28kzVLSIRm65ZS2Ixm7W74Tf5gJgxoioUIkBWV3oo7orS0+BvlgQh6+gGOv7EM7cAxbiCQKQ+CMlY31f3qzsap0cu+ITqlJrlPFcSlQOZaCe5yvU9CbP5t+xcwEQ7KmPK6s+bgqo1lnHBM4wgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OqvrxpDV; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH0UcW2027965;
-	Wed, 17 Dec 2025 03:49:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=pW2QlE6FHidi8nNjbFZRbrCzZPMJ
-	39+70QN3XQQVR5Y=; b=OqvrxpDVmBDx2fVN4vQ9518XGDNT5sz6WayTeCJdgFO+
-	dzw7FW0bv0bfLWPbMgwP4AH1nUGViuHTWGXf+7TLml3PHwxnPKoL2JG49uM0miia
-	Etv/fD3QO7mdMTHnx3ny0J1Z0UW7nygsgLLJRITxkstQXm4iAIbN2LXddcvKRoYS
-	oCs8XkjVWeH2S+dPEg7BLDYfS5UOd+7EIdwNAWOZcg3pwih8uF9hNcDTcPdg/lCp
-	cfFrJ2GIFptfBMEbt1cd1KCeBeB6UvQLgzUioL03J/BiXC9n9oYiX3KOQSeJbLiG
-	4dhsMYk2/f0ob9sLn4xFjXOQbwHvqaXYTSM3Qx7IqQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8jv5n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 03:49:44 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BH3nhNW017761;
-	Wed, 17 Dec 2025 03:49:43 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8jv5k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 03:49:43 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH0Xoki005762;
-	Wed, 17 Dec 2025 03:49:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1tgnxubt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 03:49:42 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BH3ndTr41615740
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 03:49:39 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E5D952007C;
-	Wed, 17 Dec 2025 03:49:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18D432007B;
-	Wed, 17 Dec 2025 03:49:37 +0000 (GMT)
-Received: from aboo.ibm.com (unknown [9.36.2.78])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 Dec 2025 03:49:36 +0000 (GMT)
-Message-ID: <7810b263e0fb16002609fba72321fabd5f0bbc4c.camel@linux.ibm.com>
-Subject: Backport 353d7a84c214f18 ("powerpc/64s/radix/kfence: map
- __kfence_pool at page granularity") to stable versions 6.1 and 6.6
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: ritesh.list@gmail.com, hbathini@linux.ibm.com, mpe@ellerman.id.au,
-        aboorvad@linux.ibm.com
-Date: Wed, 17 Dec 2025 09:19:35 +0530
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1765947408; c=relaxed/simple;
+	bh=8MscW9NMqNUNk9mVtwc1uYe4hV35ELC3iugJO391g34=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dWL7ALEpX/H63jVVEG0PqlgPUGhk9N9LAVXNT1aSyIO5StciYgAEtkqx//bnq948ADTAVuZOiMslzGuhUfHIvh8XK9jGr0uz80AlSVR+p7DY9pJ9IGBG2kI0vv2JT1RD7mZAtckywJ387+NGGCTnZ5WWG/tdsB4pHNUwVpf7wo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1765946658-1eb14e3d8af47a0001-OJig3u
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id nnuJvdCSHctPGrIN (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 17 Dec 2025 12:44:18 +0800 (CST)
+X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
+ 2025 12:44:17 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Wed, 17 Dec 2025 12:44:17 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
+ (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
+ 2025 12:31:27 +0800
+Message-ID: <cd6a8143-f93a-4843-b8f6-dbff645c7555@zhaoxin.com>
+Date: Wed, 17 Dec 2025 12:30:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAxOCBTYWx0ZWRfX8vs52zsDPeug
- f0xzidz9hM6uKntbJbvpAgVcoIeOUxoOkeXtugDzFUTKnnkWW/z5QZJWpDw70CHr10SgEqAGYCv
- q3XpGv7YaO2VrVVKWaKJFrECtUg+Tg3rR6Ae9V0+5qemaYNrikJPgS09ttZ/d2mWThvsCNeH2uj
- QR0u56iv/ghe5TlIWcUM2GXiABzT0o2MnIojT1U998X50iUpm6wcNGuBCVE+OzPbtpNR2rVImLz
- ouPo3TvryI9Ad6QRryondi112sOp4dqmRgJcaA7I2SW4GnhEdXtyiGAqtOPaqjIvNYYoKF1MFLf
- YO1oPzMuLby1swOYgnXNtmmbXwRiU+YA4qsq26tNf6pwHjBL8jckveO7pECaW3tYHR+1WKMD9Ve
- JuqpSh+j9593k/Koq0CcpMLjzAa44A==
-X-Proofpoint-GUID: _H7S4ET8Lbsi1qbwUpetLyObXawp9ZaH
-X-Proofpoint-ORIG-GUID: pyBBxJ5qPFxfVQFuOak-LEILM7RH_RjE
-X-Authority-Analysis: v=2.4 cv=LbYxKzfi c=1 sm=1 tr=0 ts=69422858 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=CMVkVpoZhnF4WN8l1R0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_03,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2512130018
-
-Hi stable maintainers,
-
-Please consider backporting upstream commit
-353d7a84c214f184d5a6b62acdec8b4424159b7c ("powerpc/64s/radix/kfence: map __=
-kfence_pool at page granularity")=C2=A0
-to the stable 6.1 and 6.6 kernels.
-
-This should be backported because it restores the intended KFENCE behaviour=
- on powerpc64 radix MMU by
-limiting page-granular mappings to the KFENCE pool, rather than all system =
-memory.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
+To: Eric Biggers <ebiggers@kernel.org>, Herbert Xu
+	<herbert@gondor.apana.org.au>
+X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
+CC: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>, larryw3i
+	<larryw3i@yeah.net>, <stable@vger.kernel.org>, <CobeChen@zhaoxin.com>,
+	<GeorgeXue@zhaoxin.com>, <HansHu@zhaoxin.com>, <LeoLiu-oc@zhaoxin.com>,
+	<TonyWWang-oc@zhaoxin.com>, <YunShen@zhaoxin.com>
+References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
+ <20251116183926.3969-1-ebiggers@kernel.org>
+ <aRvpWqwQhndipqx-@gondor.apana.org.au> <20251118040244.GB3993@sol>
+From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
+In-Reply-To: <20251118040244.GB3993@sol>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX02.zhaoxin.com (10.29.252.6)
+X-Moderation-Data: 12/17/2025 12:44:16 PM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1765946658
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1781
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.151677
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 
 
-This commit appeared upstream in v6.11-rc1, and fixes an issue introduced b=
-y=C2=A0a5edf9815dd7 ("powerpc/64s: Enable KFENCE on book3s64")
-but it is not backported to stable versions.
+On 11/18/2025 12:02 PM, Eric Biggers wrote:
+> On Tue, Nov 18, 2025 at 11:34:50AM +0800, Herbert Xu wrote:
+>> On Sun, Nov 16, 2025 at 10:39:26AM -0800, Eric Biggers wrote:
+>>> This driver is known broken, as it computes the wrong SHA-1 and SHA-256
+>>> hashes.  Correctness needs to be the first priority for cryptographic
+>>> code.  Just disable it, allowing the standard (and actually correct)
+>>> SHA-1 and SHA-256 implementations to take priority.
+>>
+>> ...
+>>
+>>> diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+>>> index a6688d54984c..16ea3e741350 100644
+>>> --- a/drivers/crypto/Kconfig
+>>> +++ b/drivers/crypto/Kconfig
+>>> @@ -38,11 +38,11 @@ config CRYPTO_DEV_PADLOCK_AES
+>>>       If unsure say M. The compiled module will be
+>>>       called padlock-aes.
+>>>
+>>>  config CRYPTO_DEV_PADLOCK_SHA
+>>>     tristate "PadLock driver for SHA1 and SHA256 algorithms"
+>>> -   depends on CRYPTO_DEV_PADLOCK
+>>> +   depends on CRYPTO_DEV_PADLOCK && BROKEN
+>>
+>> It's only broken on ZHAOXIN, so this should be conditional on
+>> CPU_SUP_ZHAOXIN.
+>>
+> 
+> I.e., it's apparently broken on at least every CPU that has this
+> hardware that's been released in the last 14 years.  How confident are
+> you that it still works on VIA CPUs from 2011 and earlier and is worth
+> maintaining for them?
 
-The patch applies cleanly to both 6.1 and 6.6 stable versions.
+Given the lack of a verification platform for the current padlock-sha
+driver, and the fact that these CPUs are rarely used today, extending
+the existing padlock-sha driver to support the ZHAOXIN platform is very
+difficult. To address the issues encountered when using the padlock-sha
+driver on the ZHAOXIN platform, would it be acceptable to submit a
+completely new driver that aligns with the previous advice?
 
-Thanks,
-Aboorva
+Best Regards
+AlanSong-oc
+
 
