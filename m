@@ -1,208 +1,201 @@
-Return-Path: <stable+bounces-202835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4869ECC7DB3
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:36:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA3ECC975B
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 21:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 395F83041E0A
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:31:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 831ED303C697
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 20:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EFC365A15;
-	Wed, 17 Dec 2025 13:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022BA2FD1DB;
+	Wed, 17 Dec 2025 20:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eh4tKIaB"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="strrEUKl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013043.outbound.protection.outlook.com [40.93.201.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5168F365A0A
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 13:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765978294; cv=none; b=tRFTmTqBQ9agymmulMN/Vzodzjq/BsGKeSiEkimtjpjZP9P+ZYwcrKxXq0mApTjPGqMYDarIVER+FdAfBleNmufQ1E7PBHuB0XhkA09jVvmXaC3mEPpQ6pOWKlqvEpSeQPnuxYMhaoXGA+N8y930euWQYK0aK8KieW/fJYe6ye4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765978294; c=relaxed/simple;
-	bh=jycgeTIPRUelVsfSx9vLjCr+REC0QC2bdOaCtVo3H7k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n3r4u1ZlbPkJ6xnfAwg3WZvMPnJ7rI9H+Pfk5TfIQRvme/bV32Er/sbyxyl2AFGTv4Jp/XgtcRcdXEC598Mklwwh4s8K1n+yWjE/DtAtrYqT5WHGqAVSmM6coVVY4Dbi0OTiXVPpYQrfWdfbDWkP0Ny4TflxF3guvoZZXUJCGXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eh4tKIaB; arc=none smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5dfc6be7df3so2035463137.0
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 05:31:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765978291; x=1766583091; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BNghk58lu6EKY1gO4PCRKN9LOFQqETUIv+rpFpVF+lA=;
-        b=eh4tKIaBhitrB+VS13PRMS6eda0AcQ+xv7kULhYVXrTfvx/lIql2jVmzhpjR/f+R1o
-         woFoIYKCQOnEuJqNHQbZh4Tsuw0Tk/8pRjV6m+u1SeprznbH4CIOeMO35r9AdTOcdhKw
-         LuyDRO99BqWMSdN7tBnqNvV0IiD6B1LgDhIF+xhW/StQ7ZzRg9AgnHFVx8qJlrYGcvJT
-         ILmQIXxmGtOshgFwRhguz7n/xj1Ww/8mxs5Pg92P+jhwBnxD31ZGvwlwh+5RG/a2z9we
-         r7hn382XxGMOwzYLvwOEnfnkkNsJnhtL88RcJoJtHJNDljFHdi+LBPzWvYA+L58Qlqx0
-         pEnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765978291; x=1766583091;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BNghk58lu6EKY1gO4PCRKN9LOFQqETUIv+rpFpVF+lA=;
-        b=UFf7peh0lzumzYvuqeBN4BMKznPUppfCIflZoO8dyctlv1GjKMRTrnCihC44LmrSZ2
-         Pao6yj08v9HvDjwyLG4aqEZ5/mEpJXCjWFGONRMb2jCtcgclN4RGfBgWgoZRL3O1SFwx
-         sTsrwk6fbhFng1vaCKaHnChUl4t3mNqoxqUQf96+ZsvvVsBjI/rmgYiTHCn1Msv9kcJO
-         TUjI6Vw0KCor/+oCk32jNbrulFUepI4sO6QaCaJlUrxxqaVhZMvISzA1O4t29dglesVs
-         GorHPXzE6nQjH07BOjZ++wXZ9eyk3BxxvVF/abrnQFasTfgcB2qoDtByX9PX0EBB+c0l
-         0zXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsx6VI4e3JWnpO+wLw6Pxqv7j5E4Gee5AQdFx1V5KWqB9fGvb4hiN/CJUee/A0QCPWqzKWN1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsMtprRQTQ110UMzOXovD2gQGL7rY40kn7Lr1mCGtUKmSk/BKH
-	NqUTrNN0QwlVytzcvf2TFGUsTFdl+zOs7wMDpXO4SoisUF7D9VI3DYArt6+ebxV2C0bGIXoonT4
-	i/xA0Ab3cWQCyq2EezUP6+xKsY+ZudBY=
-X-Gm-Gg: AY/fxX6TvAuHQYDZ7vPJ26Vl6hSj/388wT5O9vdWKSqRMqtCH7eZXXJcacVRVYr/wtA
-	pMjpSY/8mLX4qbHIL7FBkZiq9ww/NUvSYUPwcRU1Pi5aCBeUgemHNebNKTlq6FgLxdUye8b+bXt
-	FFi3FYCJx+GU2vbOAI8Npuv6pwT6LbyAgMhontN+VkAnTphOee0oGGaJpARL8gMm9Zc6scld57i
-	/oE3DHriboqspxbGBzm4tttmtkYNsovbyLP+IOJB3FHv6SsoAEeGw5+EfokcxukxuLTdsN7
-X-Google-Smtp-Source: AGHT+IF/RmZlsXBF8hckJJ3l3l7LOEf+arY6XU1Qvxr5gDxcbn1oCOjTWXewkgwQJOh1xVL1oX4CY3dHBu2MXWxp/GM=
-X-Received: by 2002:a05:6102:5e8c:b0:5df:b085:835a with SMTP id
- ada2fe7eead31-5e82780a8b6mr6164102137.30.1765978291110; Wed, 17 Dec 2025
- 05:31:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B528DB76;
+	Wed, 17 Dec 2025 20:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766002286; cv=fail; b=CBndwPZyeoLwDszA+liP1JVlBIxOyFs8SXppat9VfT2hbxTxsbOp3UeEyXxfAjfixnBxvvmEgQoWCJrehKG4dwWxtHaJBp7w6Jp6JIUu6cVVDewqQ/dlOfsely+XG5mDlOgt3tOgU4MjC3NOrtowVFp2Dgi+BYv93F2s2fowgf8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766002286; c=relaxed/simple;
+	bh=Xiv06ExJ3zS61A3L7V67ZcpUFBcJOdjju7YkWZZL8D4=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=h3QXN2Jy5vIP9Ti+YWHhiEtR5UcMKtYiHBcZxIQ/a78uNkJ1Yn+PzeeIbPTgV6ugoqbQIoFfGnyAj2ry+gtnMvzkB29zhBhVYRRG2l34EoXg4oIokcjK+Cm/rY8BUWRWJGyg+k3rAMJvcbVqq+IsajYAydgpqDcLXaMg6xyzGQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=strrEUKl; arc=fail smtp.client-ip=40.93.201.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zE8ENzs9uGuEzdJsU1OxhgAoITpSQQUJMuqnDoTgj1m64gM2iRgVo8Gct4+d/z+8J6wrM+waodj6nk2zHpdvjPQjYUNY3ZkRFwut9UfLXdWlee1FsCx40pmlCyUQRIqJins3pj6hzd7K389R5hgsUJDZURevpmB9o8/F9QAS6pFrs4RyZJyM5TAb8/AaEpziAKWiLnOpvKLN0LS0/lIf0JKnlFe5qeHum9OvJ0ZB3Wg5tH5Jg+7HAzPP91CoNZQMBAX3I9Jnaaugwdqbx1cqkyq28IaPhlxtOJKxZot7YZT8D08Y8VUPVLqy+Kyqj7E2TM9PysBaRMoL9WcJyzGtaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L8qi/7uLxRqrQjnPyH8P5+ZvmCzcVeWlh322vfKkInE=;
+ b=lhYtWxjK6bmR47GeZPkjG343UcngQonYcK3hVApG+Fhvug7xiE6itXBEbY8Nm4OgQvNhd4KYgU55fYLI0nYvznWtZrnoOa4By4BnisXCMayU49QNaQv3RpqTYX0ekv3Ut6LG4kijvNplfbbKaDnmo7eEiH4FiYaNh10lTWP6qxexLeYke89ZlLP3BbAbLa7P9sszH+ZmB9VKhHDKzwxmry8+pgdf6zx3MOhs2u26qVJAget9xsAxoEsMrY25/I/aTLA2NlOHWMfi1CbSM+tDdlcAtZp96jkdvLl3GF31cqMTKJw7cgyLjjlAZu3PrrJU1LalbvWze+wIAbgRLayv9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L8qi/7uLxRqrQjnPyH8P5+ZvmCzcVeWlh322vfKkInE=;
+ b=strrEUKlxqJllcJCKxhbBsKnzpW4mxaiVwlirt+L/wdGbWq6EAZUViZcKhlZ5fXOBIdp/oWup1k5ceNNE4fvZ5krMhKzRkCf79Zf779OBOzY9qqBTj2YguB6biiH0438rDE5ucuYSSAWSr/eGeU+vBqyB883ueMptz6WRdMkKSwj4MOkQlM1vxVnlHU1TA7OqyPnItfSpIcjYGKqmBPcfJmB134GZ/m6djBq1WqWXhIf3MHGrczIRiiZuhgQQz1tGd2B8N/vBOHg2naqONWjOBzd9bH0pqQ+XVz+qF+dNHD0WiPTZlDvCIPCKUd8vlYP7e0KulmzFNy7ITWEOXYu1g==
+Received: from CY5PR15CA0079.namprd15.prod.outlook.com (2603:10b6:930:18::15)
+ by BL4PR12MB9721.namprd12.prod.outlook.com (2603:10b6:208:4ed::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
+ 2025 13:41:14 +0000
+Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
+ (2603:10b6:930:18:cafe::f7) by CY5PR15CA0079.outlook.office365.com
+ (2603:10b6:930:18::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.7 via Frontend Transport; Wed,
+ 17 Dec 2025 13:41:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.6 via Frontend Transport; Wed, 17 Dec 2025 13:41:13 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
+ 2025 05:41:01 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Wed, 17 Dec 2025 05:41:00 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 17 Dec 2025 05:41:00 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251207072532.518547-1-lgs201920130244@gmail.com> <dc2a9d7b-0495-4365-8353-b51dc0526b74@gmx.de>
-In-Reply-To: <dc2a9d7b-0495-4365-8353-b51dc0526b74@gmx.de>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Wed, 17 Dec 2025 21:31:17 +0800
-X-Gm-Features: AQt7F2oNGE4vDCt1x87bQ5Y-ln407hzaW-GpOBdtgYUtfFCIE4EPnrzb5daGr-A
-Message-ID: <CANUHTR8O5Sn+c3KU7fithYhJYiXF3Th6QOfo_=_+MU9Q7ZnZUg@mail.gmail.com>
-Subject: Re: [PATCH] riva/fbdev: fix divide error in nv3_arb()
-To: Helge Deller <deller@gmx.de>
-Cc: Antonino Daplas <adaplas@gmail.com>, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <ed36cfe8-8c30-43d8-b0ba-8545127ab587@drhqmail201.nvidia.com>
+Date: Wed, 17 Dec 2025 05:41:00 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|BL4PR12MB9721:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bfb574e-7ed9-4d4d-a5d9-08de3d71f255
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?UU53MStFblNEcmdMa1A3UTNKMDd6Y3NoUElXRGVlQUUzNnlSTnJFL3V3N2d5?=
+ =?utf-8?B?SklzWFJGZkdwclBnV1ZVTG42cWhDZGtDS3U3REl1K0FhaDNacW13YmgrK1Qv?=
+ =?utf-8?B?Yi9FMXN0TkgxeTJQb2c0KzlvcHdzRFhPcFozUjZxejVramV6QWZ6YjdKV293?=
+ =?utf-8?B?aEo0bjdPb09zRUxCbUVsRUpHYStyYS90UDJxY0R5RjdZU014SnhpNTBBaWVS?=
+ =?utf-8?B?akVielBJdUsyVEVjNGZibG4yeElZT3BaNndDQXdORWlWQjdOVUNmZVdJOWpR?=
+ =?utf-8?B?cGhmRjd0YWI2QktNVHdURFBuSGlJWHkvb2ovZ2hjVFhjaC9iRFRxMiszRGRp?=
+ =?utf-8?B?UWVVVkpZVFhzN21ya1F4ckxlQXBpam40U2JGcXZVaDVXczJ5WEVFVmkyTDdO?=
+ =?utf-8?B?R1dkdE5jZGVsTWFlTUhmWkxTWlhnb3FHa0t1TlBXUFQ4aEcxVDBlaHlkSmEz?=
+ =?utf-8?B?cFlBSVR6b2psNEFSWVlkVjQxMktvUG9rOXd5YnZNbEV6dmJKK3BacStvWlpj?=
+ =?utf-8?B?d0QwcHIrSWhXYXZrZmhtQmx3WGtrdldkK0xXRWV4d1NieW9zaTVpNWQ5eHVK?=
+ =?utf-8?B?M3dTYmdFT2hxU0RTdzNHNUx5ZXNMbUxoaG5GK0hWNGYvZU00NGlKdTRjSENO?=
+ =?utf-8?B?MnBkTmp2ZDhacEpkMzBGZ01LUDViTHByZDNrZ2hmUmJYcmk4d1luYVVwdGJy?=
+ =?utf-8?B?a2JlU004QVRoR25EQ084cTBkd3Y3OUlzWWxCL0FOTDlDTEVDWEZTZ05Qb0Zy?=
+ =?utf-8?B?ZGQrc3R1WXVlaTVjaFludmowUVBhS1hrSHZqSnljdHc2SjFWSGhZY0VJQmd2?=
+ =?utf-8?B?ak15Rmx6cjZ3TEtxUHd5WStnd1p4dWswbXNIa2ZTaXdyMmdFSHc0S2pFVEsx?=
+ =?utf-8?B?UFhjYUJZYXZRU1c5V1AwRGJxdmVjNnlmcHRLOTcwS21sdUhpZEd3a2czcnJh?=
+ =?utf-8?B?cUc3OThtSFp1cG5MYWl5cXZSSFQvbTlCRCt2dGptWFFEN281b0pHbklpNG5T?=
+ =?utf-8?B?bFhnK2wvMTJPalBzaVBRS0haampmV2lLQm55Mk5TYU4yZ21xSjAvZ0QzOTJh?=
+ =?utf-8?B?cTJya3R2TU9odW90S3VMVE1yT3lqald2Tnd2dSt1TGJxVzJHTXl2Z0g4VkxP?=
+ =?utf-8?B?c0ZYL0dVZFZ2UURCbk9JTU9MVHY5R09vUGVuT25zT2YxZGpLT0ZORU1HZEt1?=
+ =?utf-8?B?bkplMlJUMmx2RlZJM2RRdjZ6UUlySkhnQzk2NW0ycWhydjhxbTdWaVJhWW01?=
+ =?utf-8?B?QUIwVW1lVkozbXJPTWRtc1haNzVJSXg3NUxOQnd4OXFYWnRKSnBDbndCaUxl?=
+ =?utf-8?B?Y1IzZFNESStkM3R1RVNaVGZLTDc4L2NqZnNsQS81NnFoZEtaWVR2ak1LOXBz?=
+ =?utf-8?B?Qjg0VmlWeURjVjFwMzdxbEN3SXJQZ3dwY3VYUDlrNnBhbDJKbGorRFBreGNR?=
+ =?utf-8?B?VkNaRnd6UGNhV1hvSlk2R0IyL01jR0habXpZZGNMVXdaMC91SjhybHJhZGtp?=
+ =?utf-8?B?RzdhSGpLaXRic3dCNHdsalJxLzdPd01QMFBXU3Y3V3RoSHJLZklhTjZFUWdN?=
+ =?utf-8?B?Y3lNMDVHZm1vck8vaWpsWDJkWkF0ZVFrV0JsVzF4bEZaVUJWWmtYNFV6VExx?=
+ =?utf-8?B?UzJkajR5bjhBZU1DMFlITXBjVDR6M0N4bUxNNjczQkhVbktzQkJYOVRRRzhH?=
+ =?utf-8?B?YlMzYUxQMHRqQ1dYek5USTFkcGJ3U1BnTFJHVVdVSlBPSHZQSTVZSkhQUVdy?=
+ =?utf-8?B?cXdHSTdCenVnY3NUUHdnZm5SM3N3aU1BeXlhRmViUXphbjBCMEVhQWRwcGFN?=
+ =?utf-8?B?RjZ3RWpMTDdrU0hleElIRGQ2NEYvVTlxdGpnOWhGL2FRYUdsQVRRbFRNR01u?=
+ =?utf-8?B?NVYvS0M0cmVRMks3Q09mLytENVBDVk1STm9nK1d2RnpGVTRtQzJwK1FKVnFH?=
+ =?utf-8?B?RnNVV2xHSVI3eXZvTnNsMElGdlVNRWJkU0U1eFZYd0JSZW5jWDVRdmVrc0o3?=
+ =?utf-8?B?WHg5a096alc4QVlvcWF0RDVnS1B0aklQRXlXRkIwQkoxRzUySVFiTnB6ekF0?=
+ =?utf-8?B?WmcvK0tMM25CYlJGdmNPUGRiYnhmODRFSTVYWkpJeGk0cFM5cEtrL0l1bGpv?=
+ =?utf-8?Q?Efm0=3D?=
+X-Forefront-Antispam-Report:
+ CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 13:41:13.8511
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bfb574e-7ed9-4d4d-a5d9-08de3d71f255
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+ CY4PEPF0000EE34.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9721
 
-Hi Helge,
+On Tue, 16 Dec 2025 12:09:27 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.63 release.
+> There are 354 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.63-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-thanks for your comments.
+All tests passing for Tegra ...
 
-mclk_khz is derived from the PRAMDAC MCLK PLL and then passed into the
-NV3 arbitration code. In nv3_arb() it is used as a divisor, so a zero
-value will always be fatal.
+Test results for stable-v6.12:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    120 tests:	120 pass, 0 fail
 
-For this fix I tried to keep it small and safe for stable. Putting the
-guard in nv3_arb() makes sure we never hit a divide-by-zero no matter
-how we got there. It also keeps the change local to the code that
-actually needs the invariant mclk_khz !=3D 0.
+Linux version:	6.12.63-rc1-gf8100cfd690d
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-Adding checks in rivafb_set_par() (or other callers in the trace)
-would either duplicate validation in places that do not compute
-mclk_khz, or require pushing error handling through several layers.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-About initializing mclk_khz to some default: I would rather not guess
-a clock. A made-up value can lead to wrong FIFO arbitration settings.
-If arbitration cannot be computed, bailing out and using the existing
-conservative fallback is safer.
-
-I agree it could be worth adding earlier validation of the PLL-derived
-clock as a follow-up. For the stable fix, I prefer the minimal guard
-at the division site.
-
-Best regards,
-Guangshuo
-
-Helge Deller <deller@gmx.de> =E4=BA=8E2025=E5=B9=B412=E6=9C=889=E6=97=A5=E5=
-=91=A8=E4=BA=8C 06:02=E5=86=99=E9=81=93=EF=BC=9A
->
-> On 12/7/25 08:25, Guangshuo Li wrote:
-> > A userspace program can trigger the RIVA NV3 arbitration code by
-> > calling the FBIOPUT_VSCREENINFO ioctl on /dev/fb*. When doing so,
-> > the driver recomputes FIFO arbitration parameters in nv3_arb(), using
-> > state->mclk_khz (derived from the PRAMDAC MCLK PLL) as a divisor
-> > without validating it first.
-> >
-> > In a normal setup, state->mclk_khz is provided by the real hardware
-> > and is non-zero. However, an attacker can construct a malicious or
-> > misconfigured device (e.g. a crafted/emulated PCI device) that exposes
-> > a bogus PLL configuration, causing state->mclk_khz to become zero.
-> > Once nv3_get_param() calls nv3_arb(), the division by state->mclk_khz i=
-n
-> > the gns calculation causes a divide error and crashes the kernel.
-> >
-> > Fix this by checking whether state->mclk_khz is zero and bailing out be=
-fore doing the division.
-> >
-> > The following log reveals it:
-> >
-> > rivafb: setting virtual Y resolution to 2184
-> > divide error: 0000 [#1] PREEMPT SMP KASAN PTI
-> > CPU: 0 PID: 2187 Comm: syz-executor.0 Not tainted 5.18.0-rc1+ #1
-> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-=
-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-> > RIP: 0010:nv3_arb drivers/video/fbdev/riva/riva_hw.c:439 [inline]
-> > RIP: 0010:nv3_get_param+0x3ab/0x13b0 drivers/video/fbdev/riva/riva_hw.c=
-:546
-> > Code: c1 e8 03 42 0f b6 14 38 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84=
- d2 0f 85 b7 0e 00 00 41 8b 46 18 01 d8 69 c0 40 42 0f 00 99 <41> f7 fc 48 =
-63 c8 4c 89 e8 48 c1 e8 03 42 0f b6 14 38 4c 89 e8 83
-> > RSP: 0018:ffff888013b2f318 EFLAGS: 00010206
-> > RAX: 0000000001d905c0 RBX: 0000000000000016 RCX: 0000000000040000
-> > RDX: 0000000000000000 RSI: 0000000000000080 RDI: ffff888013b2f6f0
-> > RBP: 0000000000000002 R08: ffffffff82226288 R09: 0000000000000001
-> > R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-> > R13: ffff888013b2f4d8 R14: ffff888013b2f6d8 R15: dffffc0000000000
-> > Call Trace:
-> >    nv3CalcArbitration.constprop.0+0x255/0x460 drivers/video/fbdev/riva/=
-riva_hw.c:603
-> >    nv3UpdateArbitrationSettings drivers/video/fbdev/riva/riva_hw.c:637 =
-[inline]
-> >    CalcStateExt+0x447/0x1b90 drivers/video/fbdev/riva/riva_hw.c:1246
-> >    riva_load_video_mode+0x8a9/0xea0 drivers/video/fbdev/riva/fbdev.c:77=
-9
-> >    rivafb_set_par+0xc0/0x5f0 drivers/video/fbdev/riva/fbdev.c:1196
->
-> Doesn't it make sense to check mclk_khz (or the various variables which
-> lead to mclk_khz) in rivafb_set_par() or any of the other functions menti=
-oned
-> in this trace?
-> If in doubt, mclk_khz could be initialized to a sane value?
->
-> Helge
->
->
-> >    fb_set_var+0x604/0xeb0 drivers/video/fbdev/core/fbmem.c:1033
-> >    do_fb_ioctl+0x234/0x670 drivers/video/fbdev/core/fbmem.c:1109
-> >    fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1188
-> >    __x64_sys_ioctl+0x122/0x190 fs/ioctl.c:856
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> > ---
-> >   drivers/video/fbdev/riva/riva_hw.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/video/fbdev/riva/riva_hw.c b/drivers/video/fbdev/r=
-iva/riva_hw.c
-> > index 8b829b720064..d70c6c4d28e8 100644
-> > --- a/drivers/video/fbdev/riva/riva_hw.c
-> > +++ b/drivers/video/fbdev/riva/riva_hw.c
-> > @@ -436,6 +436,9 @@ static char nv3_arb(nv3_fifo_info * res_info, nv3_s=
-im_state * state,  nv3_arb_in
-> >       vmisses =3D 2;
-> >       eburst_size =3D state->memory_width * 1;
-> >       mburst_size =3D 32;
-> > +     if (!state->mclk_khz)
-> > +             return (0);
-> > +
-> >       gns =3D 1000000 * (gmisses*state->mem_page_miss + state->mem_late=
-ncy)/state->mclk_khz;
-> >       ainfo->by_gfacc =3D gns*ainfo->gdrain_rate/1000000;
-> >       ainfo->wcmocc =3D 0;
->
+Jon
 
