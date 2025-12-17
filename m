@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-202772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B123CC663F
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 08:43:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56867CC6666
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 08:46:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA30F30CCA4F
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 07:40:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48C9E303ACA4
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 07:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D654E3446A0;
-	Wed, 17 Dec 2025 07:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16BA346FD0;
+	Wed, 17 Dec 2025 07:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQbybXgF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQ+djcBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3FB3358D5;
-	Wed, 17 Dec 2025 07:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3939346FC0;
+	Wed, 17 Dec 2025 07:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765956858; cv=none; b=VyVYahYdEP9pcuaTOdt77Y1lr1XxMqXd9nvs9ArnJ9pF54U5D5L8M6TllfC31AyfE5PXU4U+nehz16jZWVOgbF05EFr9fWC6GgAMuJIQQJG+3sGzO6ScdMIQ/YMhjjhjAsypPyKPso/hkhzjDOAM/06clpYg3aZvVXK3vLkBxwU=
+	t=1765956952; cv=none; b=MS/uu42w5oybfReXzPmGEDRLyqRd0faxUQBcZ3Idh+UeP+c50OIPKFWOd+x03I27Nlrc3W/pFWgCXZNfsGvtGzka7/Z4YLkHQkWJRfZ4DHvlpJr6bGmXmhLUES3P5lTBets6Di4U9D4efPC8ombzfNN/X+TGDBoUpzNlBXkNqJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765956858; c=relaxed/simple;
-	bh=QCj3f/NR0mhkrNbwRn7wEBRkVRffQb+7IpIGEpz+0hA=;
+	s=arc-20240116; t=1765956952; c=relaxed/simple;
+	bh=2XaaukzgeLgytcWUCUB6nIAs5el47mPMOlJZsiCmdRs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tzUiH+MfblhosUQ52XFGqh6nukWNI+tz1x/8rp7KSo426K3KVkTRAr+ydM+NEwRBLUB4ckOLwlFcB81mtzGjGOaXNiN6CPtI2Kp1LFIM+nwRVHC/wC0D7goXUNC3g+zqvG7WIXElwvUQr0YlkD+4Df9yJL+0so2I30xM9uuO23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQbybXgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51A3C4CEF5;
-	Wed, 17 Dec 2025 07:34:15 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=FNRyYreuNpfK6PdITBHD+UDLT1KsOg2PV6bueviPdGhoV4shxwzH5c1epw/eJMTJszOx2xp+l9AwxkkRZmHimzzdRG6pOf8WhAU3eAc/2Rux9TyKv7CliXNggZQ7ojzIrPqxEqi+MdW575iDC+KycTC41LYRUCd4cBh/KGjHkoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQ+djcBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B0DC4CEF5;
+	Wed, 17 Dec 2025 07:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765956858;
-	bh=QCj3f/NR0mhkrNbwRn7wEBRkVRffQb+7IpIGEpz+0hA=;
+	s=k20201202; t=1765956952;
+	bh=2XaaukzgeLgytcWUCUB6nIAs5el47mPMOlJZsiCmdRs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AQbybXgFQfqHJxyKElammxi3aGKChh4X8v4rllgwqWW/39Tlt8m4zY+pmegUZmjWT
-	 Be/rEU+jarmvxXYqCKphe83NQVvS2lWbs1XqSmKy3Xd9kewajT/qQAIY28ebntyqgJ
-	 +7+57WA0fT8MywE5WOtJd3XA5NTf75I3P8IuszgrpRc/PAeqewMt4cFekFzq3oPROd
-	 F6WKXzQNfAV1Aj/XBQ2i17ZKJgVoWlqGqfCslz/pel29Ls0TdNi8PmenTc58hOxA0m
-	 ohc2AyjFwma46jaiDxtjkoUylprohqyAI2ORIYejpwhQF/5sxNxQh8JLl1MMTW23hq
-	 /PiAmB7FgaH6A==
-Message-ID: <579e05b2-4124-4883-ac97-f7ad294ba635@kernel.org>
-Date: Wed, 17 Dec 2025 08:34:14 +0100
+	b=nQ+djcBonq0nRLg69vpqJvZHxWI/QnyyJYKBkmXePeGS4JZQq4kbbmUNcBxPYBKf6
+	 0JbZHjV97P9dK5N1/Vc6NLL9tthXR0COT/Vst3lnI1Qwcv9x8L7/yV0yrJCuFSWcWb
+	 VvceGWpCYYm3HJ180tmU9TRX/UwQLEyk43hbRLBeHzENE0c14RZdEMaDLCUSNNrUE0
+	 wyKkwytZkVM86n+of60I0upVcbkc5T5SrYjkenbSi8eQVfw2J3Z8MC4mfZKeU5GOL4
+	 aKQhPeZ6TjGsgGN+J678lKGfaSCkgSI9nP9XM6bqEY07BmdDFcwTFgAHR4rOos+wQg
+	 Lkv6hzkWQ0+Gg==
+Message-ID: <07e506c9-21f7-4d4a-ada3-ad0004acf6fc@kernel.org>
+Date: Wed, 17 Dec 2025 08:35:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,15 +48,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] nfc: llcp: avoid double release/put on LLCP_CLOSED in
- nfc_llcp_recv_disc()
+Subject: Re: [PATCH] nfc: llcp: stop processing on LLCP_CLOSED in
+ nfc_llcp_recv_hdlc()
 To: Qianchang Zhao <pioooooooooip@gmail.com>, Paolo Abeni
  <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, Zhitong Liu <liuzhitong1993@gmail.com>
-References: <20251217014048.16889-1-pioooooooooip@gmail.com>
+References: <307c2afe-8e8e-4edf-b6d1-1056fe8949f6@kernel.org>
+ <20251217011538.16029-1-pioooooooooip@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,59 +103,50 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251217014048.16889-1-pioooooooooip@gmail.com>
+In-Reply-To: <20251217011538.16029-1-pioooooooooip@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 17/12/2025 02:40, Qianchang Zhao wrote:
+On 17/12/2025 02:15, Qianchang Zhao wrote:
 > nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold().
 > 
-> In nfc_llcp_recv_disc(), when the socket is already in LLCP_CLOSED state, the
-> code used to perform release_sock() and nfc_llcp_sock_put() in the CLOSED branch
-> but then continued execution and later performed the same cleanup again on the
-> common exit path. This results in refcount imbalance (double put) and unbalanced
-> lock release.
-
-You did not answer to my questions, so I repeat the same question I
-already asked you. Don't ignore reviewer's feedback.
-
+> In nfc_llcp_recv_hdlc(), the LLCP_CLOSED branch releases the socket lock and
+> drops the reference, but the function continues to operate on llcp_sock/sk and
+> later runs release_sock() and nfc_llcp_sock_put() again on the common exit path.
 > 
-> Remove the redundant CLOSED-branch cleanup so that release_sock() and
-> nfc_llcp_sock_put() are performed exactly once via the common exit path, while
-> keeping the existing DM_DISC reply behavior.
+> Return immediately after the CLOSED cleanup to avoid refcount/lock imbalance and
+> to avoid using the socket after dropping the reference.
 > 
 > Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
 > Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
 
-Drop both. You are the author, there are no reported-by credits for authors.
+No, drop. Same comments as for other patch.
 
-Missing Fixes tag.
+Organize your patches in a patchset. Don't send independent works, it's
+just more work for maintainers to apply.
+
 
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
 > ---
->  net/nfc/llcp_core.c | 5 -----
->  1 file changed, 5 deletions(-)
+>  net/nfc/llcp_core.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 > diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index beeb3b4d2..ed37604ed 100644
+> index beeb3b4d2..be01ec9f4 100644
 > --- a/net/nfc/llcp_core.c
 > +++ b/net/nfc/llcp_core.c
-> @@ -1177,11 +1177,6 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_local *local,
->  
->  	nfc_llcp_socket_purge(llcp_sock);
->  
-> -	if (sk->sk_state == LLCP_CLOSED) {
-> -		release_sock(sk);
-> -		nfc_llcp_sock_put(llcp_sock);
+> @@ -1089,6 +1089,7 @@ static void nfc_llcp_recv_hdlc(struct nfc_llcp_local *local,
+>  	if (sk->sk_state == LLCP_CLOSED) {
+>  		release_sock(sk);
+>  		nfc_llcp_sock_put(llcp_sock);
+> +		return;
 
-So why now sending to closed socket is right?
+Answer my previous questions from the private thread.
 
-> -	}
-> -
->  	if (sk->sk_state == LLCP_CONNECTED) {
->  		nfc_put_device(local->dev);
->  		sk->sk_state = LLCP_CLOSED;
+>  	}
+>  
+>  	/* Pass the payload upstream */
 
 
 Best regards,
