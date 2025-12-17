@@ -1,138 +1,129 @@
-Return-Path: <stable+bounces-202764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2124CC606B
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 06:19:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12CECC607D
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 06:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A66A3001E01
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:19:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 589373016194
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD70C1DFE09;
-	Wed, 17 Dec 2025 05:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C5015CD74;
+	Wed, 17 Dec 2025 05:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlW1b0+s"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="rWNzbmpJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F11400C;
-	Wed, 17 Dec 2025 05:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0074A35
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 05:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765948745; cv=none; b=dL0aCkk3VohaeCqinKscFf5OL6sVwy1vQXfCn7p+XbZd/RwcVvG/lEHLE3FVyTIc1XF+jLYFs3cverpL+JfF13p32p7ZIsVQVc2jK+v4Y6ej65XUNlf4nBz+jBrsnAgCaipSqxwtpkyMLb5NhwOT+yC9FPNopamwL9Om0E2kJmc=
+	t=1765948984; cv=none; b=rKa9ufh0PkOQ3np3bLXSWxmneDmJDzn6QnFQvGD4Qt/FSATbSMkUj+jtbPL2nV7emttFdXFAKM6CoClYyYx46EiJKea49FYUjlnd0NbPWfaFp0C+c77At5oC0ZwQooALG8k+/BOIk6aKbsuHh/Of9PiFP59LbwCBysdM12VOtiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765948745; c=relaxed/simple;
-	bh=1fFAyZQv+MGNQs4cmN9uv+MMzLExXIooU6srjtEINYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JW+dF4RGmprxlQ5Z+QQZ4jB9HeBJA3bqywYExSRg6x5s2EWgVQH80GOCRv9N7uotHOEBfShOm4OFOi1KjSLK7XAxed1fcZ3DkoAe7s8wS+cyRh4HoqlvN/aqE+hgegWehnhtVNkhjoZKGs0fjmBHMhDhtRv15GZxJTPQlEXMYic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlW1b0+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A32C4CEF5;
-	Wed, 17 Dec 2025 05:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765948745;
-	bh=1fFAyZQv+MGNQs4cmN9uv+MMzLExXIooU6srjtEINYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tlW1b0+sp6Sny6guNI0QeHzNSkD7b0y0FuBWR30w+S9GPmvd+PDqgXo2M0MBxEgGm
-	 Fdy8hN5Iz6iOs+QddLfxaXiHojnr/fJWxjYBvsRu1W8Qlci0hWUmdMzH7831jGcRyn
-	 1gA9HzhUgsK1PWI2yiypPuDJE9bxNoIapA0IBrJM=
-Date: Wed, 17 Dec 2025 06:19:01 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Will Rosenberg <whrosenb@asu.edu>
-Cc: Paul Moore <paul@paul-moore.com>,
-	syzbot+6aaf7f48ae034ab0ea97@syzkaller.appspotmail.com,
-	stable@vger.kernel.org, Tejun Heo <tj@kernel.org>,
-	Oliver Rosenberg <olrose55@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] fs/kernfs: null-ptr deref in simple_xattrs_free()
-Message-ID: <2025121745-chatty-jogging-ac2d@gregkh>
-References: <2025121653-overfeed-giblet-5bde@gregkh>
- <20251216164335.4066425-1-whrosenb@asu.edu>
+	s=arc-20240116; t=1765948984; c=relaxed/simple;
+	bh=RmMt8lC+DNZb4qkpkFIN0JDM6NQA6YYoxZ0d9AQKUTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l4o6qNiy4mj8X7a19JtHn2PbECyqsxKsnteddIGHC3ZJssGG5ikzrWx+RJv4LDBI9OqeOF2drxLORvmEnrPlu7d7DwUO3SSkLXBg30biX3fd5dALOkah5HY21Ni7mIneXxEm920iOP3sX0izEwShOZc6NUcWaIFxbq3FImM9Ix8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=rWNzbmpJ; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
+	by cmsmtp with ESMTPS
+	id ViEmv6sJgKXDJVk05voarJ; Wed, 17 Dec 2025 05:23:01 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Vk04v7kLdV6WMVk04vHc7D; Wed, 17 Dec 2025 05:23:01 +0000
+X-Authority-Analysis: v=2.4 cv=E//Npbdl c=1 sm=1 tr=0 ts=69423e35
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=shKLvg-12WSsmoj5OQgA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1ry79zZ0BMDyGjQ1Xu6bnHTLh4S250iNMTQH9bYZbMU=; b=rWNzbmpJ+E28R4vzrQJg15XsEQ
+	tkTTcfLf8iwjbd7jctHf5H19bvl7wkeHkI4cH7xYAk4Cr1hAYU+XqVc5jxvTAqMdYvP+xPSAdMNam
+	KKCbZICfdabptG/1Y3gs3IMONWlSw3P1pqu9zeeaVRd8HD754gbRiag/ZA4PqDSQ5tnhSSjgPTgcY
+	ZwHA6o9XqvyGNFxiBJxxbNySPyeL9ZXsTvfHyC1scPm/xGsNeGfcPVXjxjHQgoeCd9NIWxmpp9lXS
+	Tt8OWUh6/A/tYAlVTsA6tpw+uUjdbsv6aXYVxhbcafIceL5yFOtNAmO5miXXW0fDe+0RJyvLyQvcd
+	U0qy/gmA==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:42952 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vVjzk-00000000Aww-0PmN;
+	Tue, 16 Dec 2025 22:22:40 -0700
+Message-ID: <09e38999-a6b2-4330-9b70-731ba1d2b4bc@w6rz.net>
+Date: Tue, 16 Dec 2025 21:22:17 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216164335.4066425-1-whrosenb@asu.edu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251216111320.896758933@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vVjzk-00000000Aww-0PmN
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:42952
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 59
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLAzfCIKMTWpwK1musUqTYSNUh/LQhzdMKQfQtaf8Q8RpXMFup/OUsQ+qClGoOI5/4Hi2h6qv/R0zcfC2xT/MzVDvBu5QEqfF4mQ9yVqtHBBKvfxmnRX
+ RCV7ux74cVusu6cIXVA1PdNaHYBXsgPtgVgexnli9HIbjnXNW4mgL/aLKr+Uwbmqd5dxHppWYeTnvw==
 
-On Tue, Dec 16, 2025 at 09:43:35AM -0700, Will Rosenberg wrote:
-> There exists a null pointer dereference in simple_xattrs_free() as
-> part of the __kernfs_new_node() routine. Within __kernfs_new_node(),
-> err_out4 calls simple_xattr_free(), but kn->iattr may be NULL if
-> __kernfs_setattr() was never called. As a result, the first argument to
-> simple_xattrs_free() may be NULL + 0x38, and no NULL check is done
-> internally, causing an incorrect pointer dereference.
-> 
-> Add a check to ensure kn->iattr is not NULL, meaning __kernfs_setattr()
-> has been called and kn->iattr is allocated. Note that struct kernfs_node
-> kn is allocated with kmem_cache_zalloc, so we can assume kn->iattr will
-> be NULL if not allocated.
-> 
-> An alternative fix could be to not call simple_xattr_free() at all. As
-> was previously discussed during the initial patch, simple_xattr_free()
-> is not strictly needed and is included to be consistent with
-> kernfs_free_rcu(), which also helps the function maintain correctness if
-> changes are made in __kernfs_new_node().
-> 
-> Reported-by: syzbot+6aaf7f48ae034ab0ea97@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=6aaf7f48ae034ab0ea97
-> Fixes: 382b1e8f30f7 ("kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-> ---
->  fs/kernfs/dir.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-> index 5c0efd6b239f..29baeeb97871 100644
-> --- a/fs/kernfs/dir.c
-> +++ b/fs/kernfs/dir.c
-> @@ -681,8 +681,10 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
->  	return kn;
->  
->   err_out4:
-> -	simple_xattrs_free(&kn->iattr->xattrs, NULL);
-> -	kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
-> +	if (kn->iattr) {
-> +		simple_xattrs_free(&kn->iattr->xattrs, NULL);
-> +		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
-> +	}
->   err_out3:
->  	spin_lock(&root->kernfs_idr_lock);
->  	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
-> 
-> base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
-> -- 
-> 2.34.1
-> 
+On 12/16/25 03:09, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.63 release.
+> There are 354 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.63-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Hi,
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Tested-by: Ron Economos <re@w6rz.net>
 
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
 
