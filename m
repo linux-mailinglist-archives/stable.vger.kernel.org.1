@@ -1,88 +1,129 @@
-Return-Path: <stable+bounces-202759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63C6CC5FD3
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:57:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C53CCC6004
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 06:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 732663025A6F
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:57:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 635DC3002D0B
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D41C224244;
-	Wed, 17 Dec 2025 04:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF2A22423A;
+	Wed, 17 Dec 2025 05:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="egBew8Hx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="yuRiqmun"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28301200113;
-	Wed, 17 Dec 2025 04:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07AC1BEF8A
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 05:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765947426; cv=none; b=ZFd+hDaHNaiwGnVtgIXpOHDWNYr0MPFGgOQr4f6ULLqWYfs7gFxYIF5TvDqui4WnkcJIIZUyL8Qz6+7so4pu37Cl5zhJmu2s1dXMkVGRRW4X5pVoSOUgO3eYv02CCH2DXZy0/6xlShSNEAIh4JFGpOy6huUvhgtvKxdPiQE1s/Y=
+	t=1765948021; cv=none; b=ga0+5n9jkxGS8t1IQjDYOzu4s0N5jK+d9Y7qjSfImUtMQ7ye/upERjGDfRV3NjIqLD+6kjgxkBWelqB5PRD7gLJlFCjsw1+ga//I5LQEjMrGpiXtrtNoAtOLTayG5SM7BEHYKib/FTWJc+ocKiSaSYAV7a0EduWtsi0jqE96zM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765947426; c=relaxed/simple;
-	bh=1txrclJv0snf0X4fkmGoGtwG4/0N9D8XeCZ9KOjm7k0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGbt7R3C5/MGkM+EWEqmBZ89/fQMKkl7t9E5buPwiJpb/CQD0itqz/02kGrWew/U9Onv1ZE/N4TzhgQacCBKY96JwmdCb8kIM980yp40dt53cZI1u/Ld6MvOa/rEQmgdHDVnCh7ASXuvLXA25sBdzbXYbWZJWBDtoID57LmmF88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=egBew8Hx; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=P22O/raoZyiNHVBGA9XGwwnTDLiTCFxywjwLpPif188=; 
-	b=egBew8HxCLvqFRxGmbireQSMmUIsNcA+aVulzocclGcnBj8Ew5a73TyEhKmXsKHonzLWaRaP1e7
-	JC+6w5smex6V6Bssoit+IjQfb5zkD64+OSnjlkQeWSdYzulflGnuACH70/tW5DXO7xJCmfk54Is+p
-	8QjBgdYEppmtFwW3MoAKloaYTroMlZV4E4BqCsvRYut6Avf2Ffc2NG7taUCFwAwnCx6yAqcQQxLFP
-	BBQGcjfA7SFiCO7W4Kb3CUOQRIgpBfjHtKgcVvWwHSSC2WKjO6MP8qKhrg7NEPF/rLoMFOhDKqju8
-	N3lVXppcdh/1KFyixFmWIuz0XUdG/TxHX98Q==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vVjaa-00Ahv1-1t;
-	Wed, 17 Dec 2025 12:56:41 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 17 Dec 2025 12:56:40 +0800
-Date: Wed, 17 Dec 2025 12:56:40 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, larryw3i <larryw3i@yeah.net>,
-	stable@vger.kernel.org, CobeChen@zhaoxin.com, GeorgeXue@zhaoxin.com,
-	HansHu@zhaoxin.com, LeoLiu-oc@zhaoxin.com, TonyWWang-oc@zhaoxin.com,
-	YunShen@zhaoxin.com
-Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-Message-ID: <aUI4CGp6kK7mxgEr@gondor.apana.org.au>
-References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
- <20251116183926.3969-1-ebiggers@kernel.org>
- <aRvpWqwQhndipqx-@gondor.apana.org.au>
- <20251118040244.GB3993@sol>
- <cd6a8143-f93a-4843-b8f6-dbff645c7555@zhaoxin.com>
+	s=arc-20240116; t=1765948021; c=relaxed/simple;
+	bh=yg5F6WdUG5kg2M6S2g+p6xuswLrbCQTfkLhaQyLpKQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RFQqS7r/KHSqHRgZNFdQc4wQgE3cOaEof1ANbuQTsX86bzElu6qDeHrEvlyY39yEaww+nPY+Dty3barehK6A85YespdCoDpT5K3EM/1j7LvMmjmeW5SoZ+Y/MDAoq+5Oy3uNdaAiA9NrB9KI8BE6+dFF0hz6dIjg1wWmd8jpXQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=yuRiqmun; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
+	by cmsmtp with ESMTPS
+	id VANsv0mcZSkcfVjj0vQ5sA; Wed, 17 Dec 2025 05:05:22 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id VjizvkMeBh8QWVjj0vRdKC; Wed, 17 Dec 2025 05:05:22 +0000
+X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=69423a12
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=shKLvg-12WSsmoj5OQgA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xSnCOqDoLiW3kXR0BfsKuf0OA7NHQQwi6c3KspOjaz0=; b=yuRiqmunWvKYAuLBa09vyUCmJf
+	I0OjTeCMUtzKrRQgns0jZw9yt5qlPeKBmKwbdJ6FuF+20hvEz0X9nHkIzqUMq9PI7+q7JfJnVC9iZ
+	V9iYUbLaDidCzOF2qxCxDu91X97bS5dx7+VF/hX0/uV4PV0JmgzvI9ekyKRuEudZT+QpKv2j+vqWS
+	xnHm2132E98NNXwH1R4rDbKB4+Xyz8ROpIu6uvF11VyIF8/+Dx/l8dkTaeqG5Eh1ja9zWLrjAxJGl
+	/bvw6M/nSLsT1yYmLhcgrCY/axkirHHEMsep1RNduPQTsohsRPnke0EdzgdxqX+kcjQKHCjPRqBd+
+	5viuVoQw==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:51870 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vVjif-000000003xe-2Oug;
+	Tue, 16 Dec 2025 22:05:01 -0700
+Message-ID: <f4064499-034c-4d8c-8600-708d49c8c1d0@w6rz.net>
+Date: Tue, 16 Dec 2025 21:04:37 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd6a8143-f93a-4843-b8f6-dbff645c7555@zhaoxin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251216111401.280873349@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vVjif-000000003xe-2Oug
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:51870
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfA5U5rjZ+zxXNhQiXp4Z/mB9oNEV62wlKZ0Wk8NDTSvtWxpsEQBrwRTXqPy7oK11tWtxwmFbsQa+v2Vxtcekl0qCWZUf03cJtDkwUYxkOfKqIxgTdfmp
+ S0fe6YHouoSXgleVaYgVgUH+Vm9fqf8cSyfDu3TEyTbT4DS1iuZw21tyssYmtyHSalBzr8/N8YDYug==
 
-On Wed, Dec 17, 2025 at 12:30:57PM +0800, AlanSong-oc wrote:
+On 12/16/25 03:06, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.2 release.
+> There are 614 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Given the lack of a verification platform for the current padlock-sha
-> driver, and the fact that these CPUs are rarely used today, extending
-> the existing padlock-sha driver to support the ZHAOXIN platform is very
-> difficult. To address the issues encountered when using the padlock-sha
-> driver on the ZHAOXIN platform, would it be acceptable to submit a
-> completely new driver that aligns with the previous advice?
+> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Perhaps it would be easier if you just added Zhaoxin support to
-lib/crypto instead?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Tested-by: Ron Economos <re@w6rz.net>
+
 
