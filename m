@@ -1,98 +1,101 @@
-Return-Path: <stable+bounces-202801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CE8CC76F8
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 12:51:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D75CC77A9
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 13:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C48513019C71
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 11:51:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 16F53300502A
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 12:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAFD29B766;
-	Wed, 17 Dec 2025 11:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1BE33C501;
+	Wed, 17 Dec 2025 12:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LxA2LVYf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMPMFNO6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09B1281370
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 11:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C2533C1A0;
+	Wed, 17 Dec 2025 12:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765972297; cv=none; b=ZNlL54Y8UlNu4PVqEcus7olK3wmG/7gridVGjoAELxsVlNCsYclfN+PpNMT+jUmPwoyRHfqJpGmXny0mV/MXke9K8s5+Qge9J6hhR+jbxAFS8QZR/C/0ySMgqaNqKH+wobZV7kMfaeQZcnt1tkRyEWvj2g6AwgIZosW9UnQnS2s=
+	t=1765973046; cv=none; b=bK6jKeQQoCy6k//gzEXByB6O6VyCtXwvedLYOcN0h1VDSss5QQZyRGk9+zHqVw+S22ic3OZ3zIb6GLiO/txipOdtamzpP5gn0PDLE8+ktsEhYAZ0WdXviqKi3E+gsMpcxhGL3h+mzw4pjoAW1k91bYVpgvJCPRl9s4Sej6DC0pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765972297; c=relaxed/simple;
-	bh=ZzW9PkeqAFB2xKrDbwheruOlKpnxJtMerSgX9hmzzEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=WsOKodWrNabjvHzmpc1ABDqBOHZORS9d74/1p/KTW18tdfiMn6xLNLmONm8VRA8tZw5ahHoEeA9T7SrsMW/2R3si6Z8m4gIRiF4CVX5+71rPbgp9M4vDNV1i3yDaA06VwpnqqrCN9FXu27Gdp/ri1ANyiCQKwhO99Y5FiJz7ops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=fail smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LxA2LVYf; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765972296; x=1797508296;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=ZzW9PkeqAFB2xKrDbwheruOlKpnxJtMerSgX9hmzzEM=;
-  b=LxA2LVYf9Dm9Xv3iP5xogrOv+o+jkrfIJXhzR5++OhdZQPfYTehqBKWY
-   Yv0qW54SguOsoAbqdnfPA+zt657rlsnqe3usmPStNv6B21ksqEGhV9yK+
-   qkuoFasuhf5YVRPyv9Qb1rBiVr3BdltYpz1Qxfl8i6CRMvpzx+aSoWrda
-   Q3JnXYKBbPhHNuhQEfgCAIq0z1DQCqpIzE1hde3z2ghtKvCsJtUL3eoJj
-   H4FuMYZW+HrtPSUuST1T4EjVLo+4cF/KIzBrlYeNCt+PdFNps7ClFTTre
-   7ZAxgcrCxiH8QUw80QH9fVyTew2blW4mNa9N6xMuCkpQ5neND9J5YQHlw
-   w==;
-X-CSE-ConnectionGUID: EmuGgYNrQgK5tgFionI8Pw==
-X-CSE-MsgGUID: jsQ6xU9rQXSqaZMe3K/Z+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="93381219"
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="93381219"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 03:51:35 -0800
-X-CSE-ConnectionGUID: xaJ6FjZ2RA6UKRjCIeiDpw==
-X-CSE-MsgGUID: VkktQAmmSKCfqhaZQ2avig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
-   d="scan'208";a="197554341"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 17 Dec 2025 03:51:34 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVq43-000000000Tp-2rcA;
-	Wed, 17 Dec 2025 11:51:31 +0000
-Date: Wed, 17 Dec 2025 19:50:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] net/smc: Initialize smc hashtables before
- registering users
-Message-ID: <aUKZCFoH_Qapt3K9@b3b84318f246>
+	s=arc-20240116; t=1765973046; c=relaxed/simple;
+	bh=T2KDTg6ox1HQefM6lQ7EP+/QKDIgXtwlmqV+CyRgR9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HA21OrbJExS7GmGxu1oDyrJ/HaWi5Y3J5ap3ehjleB+41mfq2GyJdjMH9oea+UkkT6pwl11GqUA2HiaEut4PWJ5lBqHRxIC9CCk96J36WfWNyKa111W9NHA87YrlladnO1Z2AfbTCqt7VTCzMlG2aFPNlzkPV58lcYCwpCDdC1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMPMFNO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1130C113D0;
+	Wed, 17 Dec 2025 12:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765973044;
+	bh=T2KDTg6ox1HQefM6lQ7EP+/QKDIgXtwlmqV+CyRgR9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FMPMFNO6q8kHCr0doybsn2wHWjl3f0rtc8aKj7bzuzF2sEbsVYe4uCMCTvWiqbUjl
+	 PWEMUc43EvmPxopJUlFYQlxlLD8onJnb5q2yiaWR8vgfL/KpTv3gO0h8XKavinlwhB
+	 SJcvbV1RIEpIhC92EuI7EuK/KXmQ2W3UCpkCqApMMq9OWrhGDWhTRCaTIYyT+cuMvX
+	 6EH+yWl6em3TL+jCeNahm2jGys6J5Cow/JfLIm4JpDnxdSw6ZjsKwpXEJAq3N2GIAc
+	 +2UwEjF3D1gucG9SRXK7ct1cRK4gfsAx8rqEUH3gYJN/tpYizbtQ/guuyXL9/KDbr2
+	 UHkNypnNCV4hw==
+Date: Wed, 17 Dec 2025 12:04:00 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
+	seppo.ingalsuo@linux.intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/8] ASoC: SOF: ipc4-topology: Correct the allocation
+ size for bytes controls
+Message-ID: <652a147c-2012-469f-b0e0-c73a1385cacb@sirena.org.uk>
+References: <20251215142516.11298-1-peter.ujfalusi@linux.intel.com>
+ <20251215142516.11298-3-peter.ujfalusi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="1AgTeC1z1t6H3FOZ"
+Content-Disposition: inline
+In-Reply-To: <20251215142516.11298-3-peter.ujfalusi@linux.intel.com>
+X-Cookie: For recreational use only.
+
+
+--1AgTeC1z1t6H3FOZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251217114819.2725882-1-wintera@linux.ibm.com>
 
-Hi,
+On Mon, Dec 15, 2025 at 04:25:10PM +0200, Peter Ujfalusi wrote:
 
-Thanks for your patch.
+> Fixes: a062c8899fed ("ASoC: SOF: ipc4-topology: add byte kcontrol support")
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Commit: d80b24e6a5a1 ("ASoC: SOF: ipc4-topology: Correct the allocation size for bytes controls")
+	Fixes tag: Fixes: a062c8899fed ("ASoC: SOF: ipc4-topology: add byte kcontrol support")
+	Has these problem(s):
+		- Subject does not match target commit subject
+		  Just use
+			git log -1 --format='Fixes: %h ("%s")'
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+a062c8899fed is "ASoC: SOF: ipc4-control: Add support for bytes control
+get and put".
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net] net/smc: Initialize smc hashtables before registering users
-Link: https://lore.kernel.org/stable/20251217114819.2725882-1-wintera%40linux.ibm.com
+--1AgTeC1z1t6H3FOZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlCnC8ACgkQJNaLcl1U
+h9AokQf9H1CebL9MeXnYcTFTgqOxo22lsjO9P11iEjX3KtWYLe+Wvb8V7Z8rOyFP
+h9LQuumDMiN1SWXbxCimwhk4mAe1j1APbc9H/gF26M5XoxK98HS2JZEDivCaKkcu
+wEOWmfkN795Wmst1QFKig6SjgX+J+XUmeXxmaVa+6dUmUqA2Heedb2GvY7xKuUBA
+9x6zukuoy+EMvR5OJecy4KhOqEuovHy/XIG+/EOLrzyOUtsucLkPlDCwYt2S4dqJ
+9LsqwVIWSz5nKKPavY1mXFBNZIkLQ229w0OqXM0b6EEXjlhi361C+/5jqRLmMd/s
+jggqwGVWNdICw+UJq8K6KFtoC/bndA==
+=b6iZ
+-----END PGP SIGNATURE-----
 
-
+--1AgTeC1z1t6H3FOZ--
 
