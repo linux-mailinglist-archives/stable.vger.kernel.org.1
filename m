@@ -1,138 +1,140 @@
-Return-Path: <stable+bounces-202854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4B7CC8402
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:41:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402F6CC833F
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 180C3305FB52
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:36:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C210430509B0
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE79378315;
-	Wed, 17 Dec 2025 14:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TvmOz+gC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AFB341AC6;
+	Wed, 17 Dec 2025 14:23:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817BB376BF4;
-	Wed, 17 Dec 2025 14:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CBD34216B;
+	Wed, 17 Dec 2025 14:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765981155; cv=none; b=I1YKoxUbe5f7Gvnz5oKCrRIlR834PBRyHZLfG3grJxPFA8bvJ6S+UdZM12lUJeUQdpuRxHMP9U+cJ1tZv86hT7R5D3Y23IkYWTTYtSOdGnfdDVZOAbV3hwib1c6KKFYdlDDX+vJN5XMSNcpOp1B6PDcVMxuovWRBhRssqyAFT3o=
+	t=1765981387; cv=none; b=WxnKaEWSYr7I5o7YK9iInJyA8v8pZDUTHPZ7CbBRs/fPlkajNbeMqib53p7gX1SHB8XOLuHuF0xo9jbMd6HxDb283ZKt4h9iQkksxR4iaof9r8f8Z5EK6Cm0b2r6BGwMupvbV3qBsmDzVNwZ8hOk0HGnY4qc519uPaPyp7wcS5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765981155; c=relaxed/simple;
-	bh=p5eYT7+ffI1teBj2m9yWCMHeKIxMTyhHtLaWnOvzZOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kiF5KDiowkrJM6+oRwPM1iMxkUDIyVgBQXfqibgeuKM+L5Xu01eA08Dl7LlRnfZ5strp6qh6lleVYR+ZA0GOl+RTdxS0iqvfjEE5EraeV7T5LjY8zBi1Uy3OZUtWrY63kAdiShk/7oDHZdI95m7T/3vkBuyKcO4JPoXfCM14O3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TvmOz+gC; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765981152; x=1797517152;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=p5eYT7+ffI1teBj2m9yWCMHeKIxMTyhHtLaWnOvzZOo=;
-  b=TvmOz+gCHhaObXR5Uv4UjpaiqAsoBXoUoKrA2plDN50XgmUuJXAUs+Kc
-   IYlE6V9Q/hmQZ4G35dZCRv/dYujgDEz7PCY17WsvVMAvZ5MZR0c+T8ZUU
-   3OnR9XFmhe7OfYGG/goUU6/DO3CdNB+KuXgWSiY+62+K98KovFjNPm4vE
-   A24bAHh9/euuyxz6D4nJU+eTyhSjgqCrODENa+YwQEpuSBGllRxISiBiB
-   Bslklm4LEhbI63du86X3VNSVMn5nLXIPMoFoQBJWXHuzRem8LPlz6qwFL
-   ln6ZY3SFzIKoY0cPlgQaSYr3eflgiuFwdAOOwO0BxhRofE44leF2OpAdl
-   g==;
-X-CSE-ConnectionGUID: m1dNtB1+TeGMBHpvCJftjw==
-X-CSE-MsgGUID: BrN7dgIWSZOjh/voVAsHqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="85506493"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="85506493"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:19:08 -0800
-X-CSE-ConnectionGUID: s0NG1WW9S3CtKMgqNIP6ag==
-X-CSE-MsgGUID: 1SewdYcGRNGEeao2VXU7Rg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="197931713"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.187]) ([10.245.246.187])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:19:05 -0800
-Message-ID: <e513fe97-a0b2-4d96-9987-07b41a2891a7@linux.intel.com>
-Date: Wed, 17 Dec 2025 16:19:31 +0200
+	s=arc-20240116; t=1765981387; c=relaxed/simple;
+	bh=wfHagLBBrirAy9zCqM30M9UXnu3JvbwHGnaNnmL+j+o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nDYwFyM7EZDwtBd12+qgA4ElY4QVK16izBu5mY/A3TC44qg/B9pMngPVf0D6qlvJAYZhV3EjTvZMPm2taCJzJS5IttK285uEOezOFYLSTQMiguG5BrKpIXXzagNvhKuGDpGLEyMGwBszwLUxqnA4wBzgxcVSLoer6BAP6u42nfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowACnPBCevEJpHCT7AA--.33529S2;
+	Wed, 17 Dec 2025 22:22:22 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	linux@armlinux.org.uk
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] ARM: omap2: Fix reference count leaks in omap_control_init()
+Date: Wed, 17 Dec 2025 14:21:22 +0000
+Message-Id: <20251217142122.1861292-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: soc-ops: Correct the max value for clamp in
- soc_mixer_reg_to_ctl()
-To: Mark Brown <broonie@kernel.org>
-Cc: Richard Fitzgerald <rf@opensource.cirrus.com>, lgirdwood@gmail.com,
- linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com,
- seppo.ingalsuo@linux.intel.com, stable@vger.kernel.org, niranjan.hy@ti.com,
- ckeepax@opensource.cirrus.com, sbinding@opensource.cirrus.com
-References: <6e97293c-71c1-40a8-8eba-4e2feda1e6ea@sirena.org.uk>
- <27404fce-b371-4003-b44b-a468572cf76d@linux.intel.com>
- <af368a9e-16c0-4512-8103-2351a9163e2c@opensource.cirrus.com>
- <56411df9-3253-439a-b8eb-75c5b0175a7a@linux.intel.com>
- <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
- <e98a78fc-0b30-4af1-b6f5-2bc5cacc8115@linux.intel.com>
- <9f1d5b88-e638-4b87-bee0-fc963231d20e@opensource.cirrus.com>
- <87c2d498-60fe-4339-83c8-f6d6bc256ea7@linux.intel.com>
- <8e2d0294-318c-4776-a02e-f6e6497852db@sirena.org.uk>
- <9e0c68de-c528-47f2-94e7-ddb118d3dda2@linux.intel.com>
- <ccc3f3c6-c99d-4e78-9296-f49898894c61@sirena.org.uk>
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <ccc3f3c6-c99d-4e78-9296-f49898894c61@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACnPBCevEJpHCT7AA--.33529S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF4xJr47ZF15Xr4rtry3CFg_yoW8Zr43pF
+	ZFk39Ivr1UJrs3Ga40yry8WF97K3Z7Aa1jkwnak3WIvwsayw17JryFq3WfAF98JrWrZ3W8
+	Zw4rtF1vqF4DAwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUPR6wUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRETA2lCkIR3vgAAs+
 
+The of_get_child_by_name() function increments the reference count
+of child nodes, causing multiple reference leaks in omap_control_init():
 
+1. scm_conf node never released in normal/error paths
+2. clocks node leak when checking existence
+3. Missing scm_conf release before np in error paths
 
-On 17/12/2025 16:00, Mark Brown wrote:
-> On Wed, Dec 17, 2025 at 03:59:02PM +0200, Péter Ujfalusi wrote:
->> On 17/12/2025 15:56, Mark Brown wrote:
-> 
->>> What do you mean by "kunit test setup" - that's just a self contained
->>> Python script that drives everything, it has minimal Python
->>> requirements.
-> 
->> I'm holding it wrong I'm sure:
-> 
->> [15:35:21] Configuring KUnit Kernel ...
->> [15:35:21] Building KUnit Kernel ...
->> Populating config with:
->> $ make ARCH=um O=.kunit olddefconfig
-> 
-> What did you actually run there?  Did you somehow have an existing
-> .config that it was picking up with everything turned off?
-git clean -xdf
-make mrproper
+Fix these leaks by adding proper of_node_put() calls and separate error
+handling.
 
-./tools/testing/kunit/kunit.py run --alltests
-[16:09:25] Configuring KUnit Kernel ...
-Generating .config ...
-Populating config with:
-$ make ARCH=um O=.kunit olddefconfig
-[16:09:30] Building KUnit Kernel ...
-Populating config with:
-$ make ARCH=um O=.kunit olddefconfig
-Building with:
-$ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=14
-[16:12:52] Starting KUnit Kernel (1/1)...
-[16:12:52] ============================================================
-Running tests with:
-$ .kunit/linux kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
-[16:12:52] [ERROR] Test: <missing>: Could not find any KTAP output. Did any KUnit tests run?
-[16:12:52] ============================================================
-[16:12:52] Testing complete. Ran 0 tests: errors: 1
-[16:12:52] Elapsed time: 206.260s total, 4.835s configuring, 201.418s building, 0.007s running
+Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ arch/arm/mach-omap2/control.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-well, this is for the cold and dark winter days.. ;)
-
+diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
+index 79860b23030d..eb6fc7c61b6e 100644
+--- a/arch/arm/mach-omap2/control.c
++++ b/arch/arm/mach-omap2/control.c
+@@ -732,7 +732,7 @@ int __init omap2_control_base_init(void)
+  */
+ int __init omap_control_init(void)
+ {
+-	struct device_node *np, *scm_conf;
++	struct device_node *np, *scm_conf, *clocks_node;
+ 	const struct of_device_id *match;
+ 	const struct omap_prcm_init_data *data;
+ 	int ret;
+@@ -753,16 +753,19 @@ int __init omap_control_init(void)
+ 
+ 			if (IS_ERR(syscon)) {
+ 				ret = PTR_ERR(syscon);
+-				goto of_node_put;
++				goto err_put_scm_conf;
+ 			}
+ 
+-			if (of_get_child_by_name(scm_conf, "clocks")) {
++			clocks_node = of_get_child_by_name(scm_conf, "clocks");
++			if (clocks_node) {
++				of_node_put(clocks_node);
+ 				ret = omap2_clk_provider_init(scm_conf,
+ 							      data->index,
+ 							      syscon, NULL);
+ 				if (ret)
+-					goto of_node_put;
++					goto err_put_scm_conf;
+ 			}
++			of_node_put(scm_conf);
+ 		} else {
+ 			/* No scm_conf found, direct access */
+ 			ret = omap2_clk_provider_init(np, data->index, NULL,
+@@ -780,6 +783,9 @@ int __init omap_control_init(void)
+ 
+ 	return 0;
+ 
++err_put_scm_conf:
++	if (scm_conf)
++		of_node_put(scm_conf);
+ of_node_put:
+ 	of_node_put(np);
+ 	return ret;
 -- 
-Péter
+2.34.1
 
 
