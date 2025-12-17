@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-202885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9D2CC934F
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 19:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA32CC9352
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 19:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CDB5306CF45
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 18:00:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E076E30D0DBF
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 18:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C6233CE90;
-	Wed, 17 Dec 2025 18:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481AD16A395;
+	Wed, 17 Dec 2025 18:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="EPCyk2wx"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="Djocf2Gt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D517347BD9
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 18:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C38172602
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 18:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765994410; cv=none; b=b96ubtDGMzNXz670AfOclgtHtexpXX+noQQmbBgxFEYMUbKfx91jiHocGbjBC11/qxhxXaQC4T7GCg25ZjBMbPJp4R0ttlByZg9GoAOH7+IinEvFTf5PRBxHAB4dFMcX9g72HOjQi+RqAx8w0dim0fk/lQXZi6pnVT554N0rQ98=
+	t=1765994417; cv=none; b=HwWJSa+/UnXjq3CetiEVFEhjgKUhytqNj3XvZUd7vAhaOdy5q/2/8KksNNwuk825bE3WqZrk82SVKZukhKPYYu96UI/vQ86Pd5WiCfStu9Yfy4SiIZXCIANcOAC+6i9viwdamG+4L+L6RYdVHwTYkRN1RMBFZXv/CuuWmNoPf0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765994410; c=relaxed/simple;
-	bh=rS5rEkBFRyM5fkyQI5FDiJsm9HqlVWlZVzkIuhxFbtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ahp5ndhwjqRuYIvHqzKVvcJxdLy7LhhhXg+aklMnMpRpqYvHfvKntnNYYQDWvBtFd1FkKI1UQGY7oqh2fVwX3yWYBeEkPfGhZy5Gc5ZXQaADT9vNHCVc+woELyFy/qTia7fyOLyDofFz3VbxdRSVvup2H8pZsX4Dip4GbxkpT3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=EPCyk2wx; arc=none smtp.client-ip=209.85.218.46
+	s=arc-20240116; t=1765994417; c=relaxed/simple;
+	bh=aSDgHDoj7rp/647g+TSY5tpJOVsrNbcap3sPEIhUKt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FFdQLDFZY46USFxSX23jxM6UR5h9T1Ql2Et970Yz9nx1xfnMhB5AmQ/OaiudMxg59JwErAUo8vIHZq40+VZzD/ZSmAFrxCxati7Y3zZ7pGsO84E3ZSgGHdU4ovOt68PjaDot0xtZw+i/TCfBwOet+O7vCrkBgjEUNiOQp4uPBoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=Djocf2Gt; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b728a43e410so948383066b.1
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 10:00:03 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7277324054so983010066b.0
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 10:00:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1765994402; x=1766599202; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1765994412; x=1766599212; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7MrxZX4y6r9bFu9Id5NSje4bcGhU7o4y/1UKoSdHewc=;
-        b=EPCyk2wxWopFqxzWPiBOpbNrVmF30sGUI7uIRgr5Y9p55z9vkj36TV2KRR5/zHP0ii
-         1OPxc9aspdJjyGXny0PqFMQou8FOBnThI0lJJgrbepXyYGsdJ0wKMrqNXE/6GMehyT2f
-         wrQ+IxYJKVFVdcvOKHVvZgTN6dyNWoCxdkg+JhpJImkyVw0khGmsOB8UzNGewM73xmtD
-         eLZB4K0Q+o2B+pblfu2yxSGab7nM4QusTr9dRA2GGgVCmTt+mzpXI8kH0VEPbPePwD+k
-         GUElRcxZGVtI1IjiVdfAWrz8KajfzRqy3/MgBN3ni/A+b/6huURyCtBzKGxbk1HPVCui
-         IACA==
+        bh=ZI8ojcN2oq5TmJSCwDPcbxNHaOxOrPwkfMnbA1Em2Y8=;
+        b=Djocf2GtE0Y4H2EnFAEg95tW3tBVHbH/IhNIEbNn9P0YU480SLGNwaSV8IZF7bBd9Y
+         jfhk33/6/kBkuwiHLFkfBjukEpUaia+scjwnpRxIiWg0By8uvckw8R/nhVE7pTULGcYG
+         UbmskqYcBubNkHh/bEz8jDw4fGB+1hTKhOgudKouLFBTi9pVBA7yD3mk4piGY+OIFk1R
+         Tl1jlha5MjkVcX9Awr80pLTuIRX+/W0WH0FIBB0AE8BmimRJvwZbCB1lVUx2nnmfb9id
+         oEu/MPjfDRxwdY5rsR/hq5Wg+z+AMXxk/7RtYCrY7iiAZE0qIwd/1d/kdUY1fdMi3y8f
+         +QTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765994402; x=1766599202;
+        d=1e100.net; s=20230601; t=1765994412; x=1766599212;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7MrxZX4y6r9bFu9Id5NSje4bcGhU7o4y/1UKoSdHewc=;
-        b=AB9YMS0Aasbnmo0/oEzOex17AHtsEEOFAvmKeAIt9OOTy9EeVptfZS+ortZmX89jaW
-         bjs37j0YoNctgSn8DF7Tw8eRcc5+2BTqZFL8TDfwe9tsEsDRgp1PPXxcmpf6Oh04wvb/
-         oQzmf/7krwiy0+rxljwhP/NKeJc9ZtNq42aWnbauFxI3r6x1RceCtPEBkUwMvuM7LUD3
-         mFA850bqk8PJ3igE5QOqXEY5v2ZPS5x0PLcu96FjCydFsvBswbPOg+3ZEXgR51AAumAa
-         OgApDhW5WapUZOFcIn8AdKuqATH/oywC6oIa35MCJKm/nmdQj2KCgaIlYd+8R7ukunfk
-         b1Cw==
-X-Gm-Message-State: AOJu0Yz127H0q+HD4RCbtfuD3n4Bm+eDggAHKpvrq8s4Na0c3idTReXD
-	O4aT4u5BjXpQGPdAe1tx6px+All0YGA3/Mg5ohDusnmwarNt440s3HZVrlhAYilGBdJFKakRKO1
-	1N1ue
-X-Gm-Gg: AY/fxX7Bp9BaFbNHEeqWMBp2pL4SXx6coNv3Gu2HPkulo7+EFk3r/vkfKxTyX2ZLh3c
-	3hVCt+4TkeD3C6KAsQeloO88EN3mZYWSZvf4ggkWTV7lr7lzl1vz5l4nku/4vzJD2flQE6NSI3K
-	U2Qx1Jy43VMC1g1F+JAHULd1Ovh0AqZLbCRp8G7Utu8B6TZDKELFZt1v/Nyg3ri4Nf2IE4cHZgv
-	pLJWaX6AQ6DxoczuWU989+5vToiEQtwzAUr+py7SyhOuDCuqU5+qbna1PTEzHxkrQjiRpwfRlwz
-	wfbnqcZDqLBvXUBnqMPdV85SHIgXujFf92jiXVFlZKr7E/ZKMrHwbRL56B/EU7l3Z5QrkCa3s1j
-	AgCrbbymr2/kuoZs9xuwTJwbO4SDTeTywPgZynmC27iY4G9BF8Mbwea8XOAVF1GABTH6IrTSN9z
-	nLqUHyh3P4481UYrnxxzwbKGoYUV6Umk7WULO8RYo=
-X-Google-Smtp-Source: AGHT+IEiK1kE1YKX+xGUOasc62bnyNt/wzTPn+UCQp578k/8lGvJJd4yMkRm0cbtNEpHDuEBWhgbiA==
-X-Received: by 2002:a17:907:3fa7:b0:b72:5d08:486c with SMTP id a640c23a62f3a-b7d23a9d458mr2034993466b.27.1765994401875;
-        Wed, 17 Dec 2025 10:00:01 -0800 (PST)
+        bh=ZI8ojcN2oq5TmJSCwDPcbxNHaOxOrPwkfMnbA1Em2Y8=;
+        b=is1qpSEwc4tmM2PFxOoida6jzF5SegMbi3wGHredoOSCGlsprOdYwjXrw6cwCdiXOe
+         Vk/9QDXjWwnEc+CaqcgKUi2CdFVjWlr+1Z5cu3XW0RhEUN35N4rrqsYHz8zWy+okitUL
+         b5mwAfYfDU6e7V1cOwPXW5QVe+YpqronyE9pNbHoB9OSmDlZa8oqSPOUEWofSTUjQ8Db
+         Pe+7DCDwRyLxZUgC4U5HNSvke6UUHURGOHBlDDSyBhteqQ/7eLYQ9OTFZqFib7h2cqio
+         Lhkq6pnXTrpTQ5X2OgPS5REOEnxwpITOcjLQQXP2hD5nlVGMB0YaKVxLilVMRpRPDKH7
+         SYuw==
+X-Gm-Message-State: AOJu0Yy5tyq49n8t5rgx28JpjA8nB3oliihbvlM/Yia+fL557cdQQPvZ
+	QTKoFHzpdyB2TZx7GP+fkGqLwzZqqFlhvUn119wCfNmmXUM8n8Ai/TKRVtqNBzFC+0vhy1E9qKe
+	WE0Ao
+X-Gm-Gg: AY/fxX60gL1i5zXi5Z7M1/2bNdQocbD/5RVGSJN27t65ygOQM2roSeSH2lbiVl5JRQd
+	F8JQmd227CyA4O7vpxa7KFdarhrT9WgFHRp2J+8KHIODIBtyRmPIhdm0IY+elfHp9lpBQIRnEQA
+	RQ2c6pXeqIyuM3j2/wgl0K7LsUc5p/EObT5OF2WYXoqW2ErgtO0uLdO3lJeiWIHQLAZyqptuf7f
+	AOr5CTR7rBd3XZ7mI8aMQE8Rgvhv6kA2Myja0SakYQR1rkItqZehh3PsrmuxNrxN/o6ZNjflUna
+	N46lM36SJuDby4TbqI+7+meD3Z4xaIUZWsWTqLdyJdp/1xuLBJpRhIVp9IpzzcQTKkznvBQt7dK
+	VQQjnMEjCr2ZqtV5qN8pI0jBu3qnFo0L4h1T/AeL6Yi+DHvgO3hxq8HyvqIBuwAbI6xRgHr8y0v
+	aF624o6/cgfxW4RqaWNAZca+bUGcLBAiJoQ8z3Ke4=
+X-Google-Smtp-Source: AGHT+IGAOEgvKKB6vm73FfiGWc77bejWM2zomYCIj8Yyxt/SPUxTRQEkHgOOYED8tKYH7+eYQsSr3Q==
+X-Received: by 2002:a17:907:940d:b0:b76:36ee:376 with SMTP id a640c23a62f3a-b7d23a402f5mr2119373966b.54.1765994411986;
+        Wed, 17 Dec 2025 10:00:11 -0800 (PST)
 Received: from claudiu-X670E-Pro-RS.. ([82.78.167.35])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8020c07ae3sm10535566b.48.2025.12.17.10.00.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b802095c11esm12637866b.31.2025.12.17.10.00.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 10:00:01 -0800 (PST)
+        Wed, 17 Dec 2025 10:00:11 -0800 (PST)
 From: Claudiu <claudiu.beznea@tuxon.dev>
 X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
 To: stable@vger.kernel.org
 Cc: claudiu.beznea@tuxon.dev
-Subject: [PATCH 6.12.y-stable ] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
-Date: Wed, 17 Dec 2025 20:00:00 +0200
-Message-ID: <20251217180000.721366-1-claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.17.y-stable] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
+Date: Wed, 17 Dec 2025 20:00:10 +0200
+Message-ID: <20251217180010.721533-1-claudiu.beznea.uj@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -179,22 +179,25 @@ Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Link: https://patch.msgid.link/20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 [claudiu.beznea:
- - in rzg2l_write_oen() kept v6.12 code and use
-   raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore()
- - in rzg2l_gpio_set() kept v6.12 code and use raw_spin_unlock_irqrestore()
- - in rzg2l_pinctrl_resume_noirq() kept v6.12 code
+ - in rzg2l_write_oen() kept v6.17 code and use
+   raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore
+ - in rzg2l_pinctrl_resume_noirq() kept v6.17 code
  - manually adjust rzg3s_oen_write(), rzv2h_oen_write() to use
-   raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore()]
+   raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore]
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+
+test
+
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
  drivers/pinctrl/renesas/pinctrl-rzg2l.c | 75 +++++++++++++++----------
  1 file changed, 46 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 698ab8cc970a..e834f29cdd50 100644
+index 289917a0e872..c447526e886b 100644
 --- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
 +++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -349,7 +349,7 @@ struct rzg2l_pinctrl {
+@@ -358,7 +358,7 @@ struct rzg2l_pinctrl {
  	spinlock_t			bitmap_lock; /* protect tint_slot bitmap */
  	unsigned int			hwirq[RZG2L_TINT_MAX_INTERRUPT];
  
@@ -203,7 +206,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  	struct mutex			mutex; /* serialize adding groups and functions */
  
  	struct rzg2l_pinctrl_pin_settings *settings;
-@@ -454,7 +454,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
+@@ -518,7 +518,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
  	unsigned long flags;
  	u32 reg;
  
@@ -212,7 +215,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	/* Set pin to 'Non-use (Hi-Z input protection)'  */
  	reg = readw(pctrl->base + PM(off));
-@@ -478,7 +478,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
+@@ -542,7 +542,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
  
  	pctrl->data->pwpr_pfc_lock_unlock(pctrl, true);
  
@@ -221,7 +224,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  };
  
  static int rzg2l_pinctrl_set_mux(struct pinctrl_dev *pctldev,
-@@ -805,10 +805,10 @@ static void rzg2l_rmw_pin_config(struct rzg2l_pinctrl *pctrl, u32 offset,
+@@ -857,10 +857,10 @@ static void rzg2l_rmw_pin_config(struct rzg2l_pinctrl *pctrl, u32 offset,
  		addr += 4;
  	}
  
@@ -234,7 +237,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  }
  
  static int rzg2l_caps_to_pwr_reg(const struct rzg2l_register_offsets *regs, u32 caps)
-@@ -1036,14 +1036,14 @@ static int rzg2l_write_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+@@ -1088,14 +1088,14 @@ static int rzg2l_write_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
  	if (bit < 0)
  		return bit;
  
@@ -251,7 +254,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	return 0;
  }
-@@ -1089,14 +1089,14 @@ static int rzg3s_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+@@ -1141,14 +1141,14 @@ static int rzg3s_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
  	if (bit < 0)
  		return bit;
  
@@ -268,7 +271,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	return 0;
  }
-@@ -1201,7 +1201,7 @@ static int rzv2h_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+@@ -1253,7 +1253,7 @@ static int rzv2h_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
  	u8 pwpr;
  
  	bit = rzv2h_pin_to_oen_bit(pctrl, _pin);
@@ -277,7 +280,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  	val = readb(pctrl->base + PFC_OEN);
  	if (oen)
  		val &= ~BIT(bit);
-@@ -1212,7 +1212,7 @@ static int rzv2h_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+@@ -1264,7 +1264,7 @@ static int rzv2h_oen_write(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
  	writeb(pwpr | PWPR_REGWE_B, pctrl->base + regs->pwpr);
  	writeb(val, pctrl->base + PFC_OEN);
  	writeb(pwpr & ~PWPR_REGWE_B, pctrl->base + regs->pwpr);
@@ -286,7 +289,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	return 0;
  }
-@@ -1613,14 +1613,14 @@ static int rzg2l_gpio_request(struct gpio_chip *chip, unsigned int offset)
+@@ -1702,14 +1702,14 @@ static int rzg2l_gpio_request(struct gpio_chip *chip, unsigned int offset)
  	if (ret)
  		return ret;
  
@@ -303,7 +306,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	return 0;
  }
-@@ -1635,7 +1635,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
+@@ -1724,7 +1724,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
  	unsigned long flags;
  	u16 reg16;
  
@@ -312,7 +315,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	reg16 = readw(pctrl->base + PM(off));
  	reg16 &= ~(PM_MASK << (bit * 2));
-@@ -1643,7 +1643,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
+@@ -1732,7 +1732,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
  	reg16 |= (output ? PM_OUTPUT : PM_INPUT) << (bit * 2);
  	writew(reg16, pctrl->base + PM(off));
  
@@ -321,7 +324,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  }
  
  static int rzg2l_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
-@@ -1687,7 +1687,7 @@ static void rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
+@@ -1776,7 +1776,7 @@ static int rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
  	unsigned long flags;
  	u8 reg8;
  
@@ -330,16 +333,16 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  	reg8 = readb(pctrl->base + P(off));
  
-@@ -1696,7 +1696,7 @@ static void rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
+@@ -1785,7 +1785,7 @@ static int rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
  	else
  		writeb(reg8 & ~BIT(bit), pctrl->base + P(off));
  
 -	spin_unlock_irqrestore(&pctrl->lock, flags);
 +	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
- }
  
- static int rzg2l_gpio_direction_output(struct gpio_chip *chip,
-@@ -2236,14 +2236,13 @@ static int rzg2l_gpio_get_gpioint(unsigned int virq, struct rzg2l_pinctrl *pctrl
+ 	return 0;
+ }
+@@ -2444,14 +2444,13 @@ static int rzg2l_gpio_get_gpioint(unsigned int virq, struct rzg2l_pinctrl *pctrl
  	return gpioint;
  }
  
@@ -356,7 +359,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  	void __iomem *addr;
  
  	addr = pctrl->base + ISEL(off);
-@@ -2252,12 +2251,20 @@ static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
+@@ -2460,12 +2459,20 @@ static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
  		addr += 4;
  	}
  
@@ -379,7 +382,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  }
  
  static void rzg2l_gpio_irq_disable(struct irq_data *d)
-@@ -2269,15 +2276,25 @@ static void rzg2l_gpio_irq_disable(struct irq_data *d)
+@@ -2477,15 +2484,25 @@ static void rzg2l_gpio_irq_disable(struct irq_data *d)
  	gpiochip_disable_irq(gc, hwirq);
  }
  
@@ -406,7 +409,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  static int rzg2l_gpio_irq_set_type(struct irq_data *d, unsigned int type)
  {
  	return irq_chip_set_type_parent(d, type);
-@@ -2438,11 +2455,11 @@ static void rzg2l_gpio_irq_restore(struct rzg2l_pinctrl *pctrl)
+@@ -2631,11 +2648,11 @@ static void rzg2l_gpio_irq_restore(struct rzg2l_pinctrl *pctrl)
  		 * This has to be atomically executed to protect against a concurrent
  		 * interrupt.
  		 */
@@ -421,7 +424,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  
  		if (ret)
  			dev_crit(pctrl->dev, "Failed to set IRQ type for virq=%u\n", virq);
-@@ -2765,7 +2782,7 @@ static int rzg2l_pinctrl_probe(struct platform_device *pdev)
+@@ -2965,7 +2982,7 @@ static int rzg2l_pinctrl_probe(struct platform_device *pdev)
  				     "failed to enable GPIO clk\n");
  	}
  
@@ -430,7 +433,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  	spin_lock_init(&pctrl->bitmap_lock);
  	mutex_init(&pctrl->mutex);
  	atomic_set(&pctrl->wakeup_path, 0);
-@@ -2904,7 +2921,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
+@@ -3108,7 +3125,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
  	u32 nports = pctrl->data->n_port_pins / RZG2L_PINS_PER_PORT;
  	unsigned long flags;
  
@@ -439,7 +442,7 @@ index 698ab8cc970a..e834f29cdd50 100644
  	pctrl->data->pwpr_pfc_lock_unlock(pctrl, false);
  
  	/* Restore port registers. */
-@@ -2949,7 +2966,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
+@@ -3153,7 +3170,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
  	}
  
  	pctrl->data->pwpr_pfc_lock_unlock(pctrl, true);
