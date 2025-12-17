@@ -1,196 +1,183 @@
-Return-Path: <stable+bounces-202799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7D3CC757B
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 12:30:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D894CC76EC
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 12:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7F5143003FE6
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 11:30:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8AAB303DD0C
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 11:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A840A335576;
-	Wed, 17 Dec 2025 11:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E93339841;
+	Wed, 17 Dec 2025 11:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="v5/vv4R6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3lISW4KQ";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="v5/vv4R6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3lISW4KQ"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qpi3GS4E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3384279334
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 11:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F5E1F1302;
+	Wed, 17 Dec 2025 11:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765971023; cv=none; b=aNcwwWCZ+hL8ad4VQcahE3I0cZex0yPg6aGcYzYFK0mA2tkpADbkuWZM8s+3n9mgGlp39qEH31/Yv9Zs7j3Vj47P7QqYv3RljzlUJCiOUpswR1jdxbYy1FguE0GESrTLY51vbkIbpI2GOGlsvOSu2XIe3sbeyMXUIsxRQEU4EZo=
+	t=1765972115; cv=none; b=SxzGmOAd2SzFvnjKnzK57iVLF+6lkf7zImgBDfk5dd3r9Kt2Y4BxIYrW956kQP6v6ctuHU+33Bi04ONvrhUL4cbCWBv8epbNBjsjGrznJGqcnGL1KEDrROq2zt0XG7VbZGJ6CmisMeAZK0adbrtc9+55ZjEyB7SB810N5DWVFI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765971023; c=relaxed/simple;
-	bh=gncn/pXeYtbNeFPKcyq5wl4gsKvAfSeCDDP/WxlUaFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uvxEWK2gtgLCRJzBxedF5BdeAKp1Cg6baTSbuavu579NJCta5Rmu2BTorMEzUzb1kF6x2CdyLoW30GzoN/3oU+p/bwHiQcJ9nHO/dm0xyB/u4zqhV8+Cnwlqs6pH7A1cG2hPJdGktTPmxjty+ar2PSxwjm0giu3iIDs8npjUhbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5/vv4R6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3lISW4KQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5/vv4R6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3lISW4KQ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 05E6E336CA;
-	Wed, 17 Dec 2025 11:30:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765971020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+z/KFBjig9MuWmr9AhGSFARmuOAuGrcardEU8oLHv8o=;
-	b=v5/vv4R6z5Io6CVu1IMNp1tl/oHZRzc+XTls3RntXEb0hBgMIfBOaROngTHyA492Kzbt5I
-	gbbmkkle3/Br5hP9I4OU9fEPKcDT5+sSUmMUzdB2xm4AbW3jNG8e8uxLyk1MaRa9GFKDtp
-	mRipMjriuXbKS6lW90M+7pHBPrXwgLc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765971020;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+z/KFBjig9MuWmr9AhGSFARmuOAuGrcardEU8oLHv8o=;
-	b=3lISW4KQn58dtKtkNI61aoEatutS9zc6JQVCEgEt4SZcZ7uqV+q/nakUVoXVwuxKlk3VWJ
-	AFFrrvn3xM4WCqDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765971020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+z/KFBjig9MuWmr9AhGSFARmuOAuGrcardEU8oLHv8o=;
-	b=v5/vv4R6z5Io6CVu1IMNp1tl/oHZRzc+XTls3RntXEb0hBgMIfBOaROngTHyA492Kzbt5I
-	gbbmkkle3/Br5hP9I4OU9fEPKcDT5+sSUmMUzdB2xm4AbW3jNG8e8uxLyk1MaRa9GFKDtp
-	mRipMjriuXbKS6lW90M+7pHBPrXwgLc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765971020;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+z/KFBjig9MuWmr9AhGSFARmuOAuGrcardEU8oLHv8o=;
-	b=3lISW4KQn58dtKtkNI61aoEatutS9zc6JQVCEgEt4SZcZ7uqV+q/nakUVoXVwuxKlk3VWJ
-	AFFrrvn3xM4WCqDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E00E73EA63;
-	Wed, 17 Dec 2025 11:30:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id c3GwNkuUQmkVYgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 17 Dec 2025 11:30:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 609C8A0927; Wed, 17 Dec 2025 12:30:15 +0100 (CET)
-Date: Wed, 17 Dec 2025 12:30:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-Subject: Re: [PATCH] ext4: xattr: fix wrong search.here in clone_block
-Message-ID: <4msliwnvyg6n3xdzfrh4jnqklzt6zji5vlr5qj4v3lrylaigpr@lyd36cukckl7>
-References: <20251216113504.297535-1-wangjinchao600@gmail.com>
+	s=arc-20240116; t=1765972115; c=relaxed/simple;
+	bh=2gF72S1YLF3R0pNhYu2u8i+yPBENIA+GEOWOho3xa6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aHfm8K83tGZpLqIH5kfNcOFqcLsK2Pz2KCZxB8cLhvuyimfvxVNSh6GDnol+ZnSyw5/kXRTKd/xlybedlXo7XiDpheTgOx2I8SQoMyPrmPZPSL2+5awjHJPpPMYTLK6b5SYM6Ti91O3VJo0eZAKKVuc/WmO5JLvqSfWvT62DWKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qpi3GS4E; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGMx3BU018905;
+	Wed, 17 Dec 2025 11:48:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=KozKZunQQa2HBaHNYq0kwwfVjsx26Yt4esz51T3RU
+	84=; b=Qpi3GS4E53qmdEgkecfGhiMLTRVIdO3rNEmgJu5Qa39lf0mfik8/InV8G
+	JkbUsiA4a9MnmoeQ7UXYmztlI2Ln9PvponlOr9chfACXHdusQP5XvlWO30zOqW6O
+	j08J2M3yaV04A+aA6FLMIAxt0NwGrIQ1E2HmnBtA2AYxcuSJrtWLeFaXnaGdzPbZ
+	tuHzwf4oNWH4NHTSRzFOwjBj1iQHe7cY+lc2ETzrM8aFMnMwHkegS9AMnsw3wdKt
+	vF4AHjzmRgAKRuDMVUV4nh/XgDTW1/6Y6ucR6NHeZL58Xjf2gW0NWkt4k1KnzGs1
+	Ha6fETlVpOOsXY3OJS8m6l3Bsy4dQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0wjq444t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 11:48:25 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BHBmPu7021915;
+	Wed, 17 Dec 2025 11:48:25 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0wjq444r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 11:48:24 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH8N1Y6005690;
+	Wed, 17 Dec 2025 11:48:24 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1tgp0mj0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 11:48:23 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BHBmJKE11731368
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Dec 2025 11:48:20 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD4F12004E;
+	Wed, 17 Dec 2025 11:48:19 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C87DB2004D;
+	Wed, 17 Dec 2025 11:48:19 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 17 Dec 2025 11:48:19 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id 90B12E0B19; Wed, 17 Dec 2025 12:48:19 +0100 (CET)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Aswin Karuvally <aswin@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        linux-rdma@vger.kernel.org, stable@vger.kernel.org,
+        syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
+Subject: [PATCH net] net/smc: Initialize smc hashtables before registering users
+Date: Wed, 17 Dec 2025 12:48:19 +0100
+Message-ID: <20251217114819.2725882-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216113504.297535-1-wangjinchao600@gmail.com>
-X-Spam-Flag: NO
-X-Spam-Score: -2.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[f792df426ff0f5ceb8d1];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwMSBTYWx0ZWRfXxwD6kTJvvUnO
+ U5zv0jOFsXg73v8vV/F4bde97bdp1PXZuwGVLkNky6lhjH497SV3G7z30RT7htCy/cu+hjphexu
+ xE2QO2RSzZqiqJ/vgMJouyxkFh4UsjOMlcE08nUBkspOD4lFTulWAnt+aMGjFZu1AAeKP1qRGgI
+ qD1UK3QzCGI5aAqdqKltypJowU/bFKolmEl23pGr4/pESeEFh3YnOwyxJdP61jlsQf4mSzVI88r
+ MwCm5Bw4B+1brEiYovK3JB7QvCd3tvIzeWosJSJ3QxU8FqCoP/C0rybiSFqQUs2p2a+/Q8P6U7b
+ RMSYZn33tQYMjdzzBkMuWZTXWHQL8wRXzD9aquYyr01u3PLls83ttwrJfSO7LUPW+sVWrxFtdhs
+ eUYOVKUALRlceX6Lg2ci7YxYtpMvzg==
+X-Proofpoint-GUID: fny2lBTx4ZfyHRB8CAoQpTr3_tW8_8H0
+X-Proofpoint-ORIG-GUID: 9J7UBLqWusDpmmmEcrWxT1snfOgcUXHz
+X-Authority-Analysis: v=2.4 cv=Kq5AGGWN c=1 sm=1 tr=0 ts=69429889 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8
+ a=VnNF1IyMAAAA:8 a=QX6q0mGeDEkcqCcECHkA:9 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 impostorscore=0 clxscore=1011 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130001
 
-Hello!
+During initialisation of the SMC module initialize smc_v4/6_hashinfo before
+calling smc_nl_init(), proto_register() or sock_register(), to avoid a race
+that can cause use of an uninitialised pointer in case an smc protocol is
+called before the module is done initialising.
 
-On Tue 16-12-25 19:34:55, Jinchao Wang wrote:
-> syzbot reported a KASAN out-of-bounds Read in ext4_xattr_set_entry()[1].
-> 
-> When xattr_find_entry() returns -ENODATA, search.here still points to the
-> position after the last valid entry. ext4_xattr_block_set() clones the xattr
-> block because the original block maybe shared and must not be modified in
-> place.
-> 
-> In the clone_block, search.here is recomputed unconditionally from the old
-> offset, which may place it past search.first. This results in a negative
-> reset size and an out-of-bounds memmove() in ext4_xattr_set_entry().
-> 
-> Fix this by initializing search.here correctly when search.not_found is set.
-> 
-> [1] https://syzkaller.appspot.com/bug?extid=f792df426ff0f5ceb8d1
-> 
-> Fixes: fd48e9acdf2 (ext4: Unindent codeblock in ext4_xattr_block_set)
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+syzbot report:
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+Call Trace:
+ <TASK>
+ smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:236
+ netlink_dump+0x647/0xd80 net/netlink/af_netlink.c:2325
+ __netlink_dump_start+0x59f/0x780 net/netlink/af_netlink.c:2440
+ netlink_dump_start include/linux/netlink.h:339 [inline]
+ smc_diag_handler_dump+0x1ab/0x250 net/smc/smc_diag.c:251
+ sock_diag_rcv_msg+0x3dc/0x5f0
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f0/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
 
-Thanks for the patch! But I think the problem must be somewhere else. When
-a search ends without success (-ENODATA error), s->here points to the
-4-byte zeroed word inside xattr space that terminates the part with xattr
-headers. If I understand correctly the expression which overflows is:
+Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+Reported-by: syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f69bfae0a4eb29976e44
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+---
+ net/smc/af_smc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-size_t rest = (void *)last - (void *)here + sizeof(__u32);
-
-in ext4_xattr_set_entry(). And I don't see how 'here' can be greater than
-'last' which should be pointing to the very same 4-byte zeroed word. The
-fact that 'here' and 'last' are not equal is IMO the problem which needs
-debugging and it indicates there's something really fishy going on with the
-xattr block we work with. The block should be freshly allocated one as far
-as I'm checking the disk image (as the 'file1' file doesn't have xattr
-block in the original image).
-
-								Honza
-
-> diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-> index 2e02efbddaac..cc30abeb7f30 100644
-> --- a/fs/ext4/xattr.c
-> +++ b/fs/ext4/xattr.c
-> @@ -1980,7 +1980,10 @@ ext4_xattr_block_set(handle_t *handle, struct inode *inode,
->  			goto cleanup;
->  		s->first = ENTRY(header(s->base)+1);
->  		header(s->base)->h_refcount = cpu_to_le32(1);
-> -		s->here = ENTRY(s->base + offset);
-> +		if (s->not_found)
-> +			s->here = s->first;
-> +		else
-> +			s->here = ENTRY(s->base + offset);
->  		s->end = s->base + bs->bh->b_size;
->  
->  		/*
-> -- 
-> 2.43.0
-> 
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index f97f77b041d9..b0f4405fb714 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3524,6 +3524,9 @@ static int __init smc_init(void)
+ 		goto out_pernet_subsys_stat;
+ 	smc_clc_init();
+ 
++	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
++	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
++
+ 	rc = smc_nl_init();
+ 	if (rc)
+ 		goto out_ism;
+@@ -3581,8 +3584,6 @@ static int __init smc_init(void)
+ 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
+ 		goto out_proto6;
+ 	}
+-	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
+-	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
+ 
+ 	rc = smc_ib_register_client();
+ 	if (rc) {
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.51.0
+
 
