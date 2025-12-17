@@ -1,107 +1,138 @@
-Return-Path: <stable+bounces-202853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6F4CC8234
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:19:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4B7CC8402
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9580309E8C9
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:15:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 180C3305FB52
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 14:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D943557FE;
-	Wed, 17 Dec 2025 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE79378315;
+	Wed, 17 Dec 2025 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCoJeYbK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TvmOz+gC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966E9355030;
-	Wed, 17 Dec 2025 14:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817BB376BF4;
+	Wed, 17 Dec 2025 14:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765980887; cv=none; b=W2+fpYpzC5FC9tpS0cMhSHx6Bp0fyqC2mMcspF/8sHhHcfzLo4JdpefAlJLGwrjQAKd+0yXF+cE0EUO9iaAQo9zNLb9qbjXMwmfydsr4nzIUz5MvEN0OMsjbNcqC7tGQ4Wjhx6tMMunFkyPzv+r0D4h7YJHpq1J34lgu1D9arAw=
+	t=1765981155; cv=none; b=I1YKoxUbe5f7Gvnz5oKCrRIlR834PBRyHZLfG3grJxPFA8bvJ6S+UdZM12lUJeUQdpuRxHMP9U+cJ1tZv86hT7R5D3Y23IkYWTTYtSOdGnfdDVZOAbV3hwib1c6KKFYdlDDX+vJN5XMSNcpOp1B6PDcVMxuovWRBhRssqyAFT3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765980887; c=relaxed/simple;
-	bh=DNX16y9M6/fM40PAzSir0K34pXh29R4s/L3kpN5EpBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vw0z3/YRONDxK7QxFYffUJlq3SUWJkfqOTVjiIRfF2L+PRYYiEYtYER1Kp8coTqNFbp1dSbXlLwz5Ukpnl5FZ2EyLhfuwYI0zJQriAeYPH+old+vXSE1J9wvfs+ja3wS4oxfZ0mUWgZqybozPJH542Gx6e/oNOrO5bo7GVVjFhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCoJeYbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A57C4CEF5;
-	Wed, 17 Dec 2025 14:14:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765980887;
-	bh=DNX16y9M6/fM40PAzSir0K34pXh29R4s/L3kpN5EpBI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xCoJeYbKrsvjE2E6m41B+4MSDYLRk9qwH9trEHAxWZX3bflUHq5l02ur5RVQoLFt/
-	 xeuQu9tobo8t3Hero+R2ZdVyJlVUn7y+iC7uiiipEm8o0JBF58LfnmfB57OlIvTRt4
-	 Bwh5m2QEzQqd68+Q22J0xaibVUa+RxLEe3Nl8aIQ=
-Date: Wed, 17 Dec 2025 15:14:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
-	conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com,
-	jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
-	linux@roeck-us.net, lkft-triage@lists.linaro.org,
-	patches@kernelci.org, patches@lists.linux.dev, pavel@denx.de,
-	rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com,
-	stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org, dan.carpenter@linaro.org,
-	nathan@kernel.org, llvm@lists.linux.dev, perex@perex.cz,
-	lgirdwood@gmail.com,
-	Linux Kernel Functional Testing <lkft@linaro.org>
-Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
-Message-ID: <2025121736-boogeyman-refund-24a6@gregkh>
-References: <20251216111320.896758933@linuxfoundation.org>
- <20251217135249.422394-1-naresh.kamboju@linaro.org>
+	s=arc-20240116; t=1765981155; c=relaxed/simple;
+	bh=p5eYT7+ffI1teBj2m9yWCMHeKIxMTyhHtLaWnOvzZOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kiF5KDiowkrJM6+oRwPM1iMxkUDIyVgBQXfqibgeuKM+L5Xu01eA08Dl7LlRnfZ5strp6qh6lleVYR+ZA0GOl+RTdxS0iqvfjEE5EraeV7T5LjY8zBi1Uy3OZUtWrY63kAdiShk/7oDHZdI95m7T/3vkBuyKcO4JPoXfCM14O3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TvmOz+gC; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765981152; x=1797517152;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=p5eYT7+ffI1teBj2m9yWCMHeKIxMTyhHtLaWnOvzZOo=;
+  b=TvmOz+gCHhaObXR5Uv4UjpaiqAsoBXoUoKrA2plDN50XgmUuJXAUs+Kc
+   IYlE6V9Q/hmQZ4G35dZCRv/dYujgDEz7PCY17WsvVMAvZ5MZR0c+T8ZUU
+   3OnR9XFmhe7OfYGG/goUU6/DO3CdNB+KuXgWSiY+62+K98KovFjNPm4vE
+   A24bAHh9/euuyxz6D4nJU+eTyhSjgqCrODENa+YwQEpuSBGllRxISiBiB
+   Bslklm4LEhbI63du86X3VNSVMn5nLXIPMoFoQBJWXHuzRem8LPlz6qwFL
+   ln6ZY3SFzIKoY0cPlgQaSYr3eflgiuFwdAOOwO0BxhRofE44leF2OpAdl
+   g==;
+X-CSE-ConnectionGUID: m1dNtB1+TeGMBHpvCJftjw==
+X-CSE-MsgGUID: BrN7dgIWSZOjh/voVAsHqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="85506493"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
+   d="scan'208";a="85506493"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:19:08 -0800
+X-CSE-ConnectionGUID: s0NG1WW9S3CtKMgqNIP6ag==
+X-CSE-MsgGUID: 1SewdYcGRNGEeao2VXU7Rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
+   d="scan'208";a="197931713"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.187]) ([10.245.246.187])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:19:05 -0800
+Message-ID: <e513fe97-a0b2-4d96-9987-07b41a2891a7@linux.intel.com>
+Date: Wed, 17 Dec 2025 16:19:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217135249.422394-1-naresh.kamboju@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: soc-ops: Correct the max value for clamp in
+ soc_mixer_reg_to_ctl()
+To: Mark Brown <broonie@kernel.org>
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>, lgirdwood@gmail.com,
+ linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com,
+ seppo.ingalsuo@linux.intel.com, stable@vger.kernel.org, niranjan.hy@ti.com,
+ ckeepax@opensource.cirrus.com, sbinding@opensource.cirrus.com
+References: <6e97293c-71c1-40a8-8eba-4e2feda1e6ea@sirena.org.uk>
+ <27404fce-b371-4003-b44b-a468572cf76d@linux.intel.com>
+ <af368a9e-16c0-4512-8103-2351a9163e2c@opensource.cirrus.com>
+ <56411df9-3253-439a-b8eb-75c5b0175a7a@linux.intel.com>
+ <bc6f3e66-ca9b-4ba3-bbe1-5ef31c373e6d@opensource.cirrus.com>
+ <e98a78fc-0b30-4af1-b6f5-2bc5cacc8115@linux.intel.com>
+ <9f1d5b88-e638-4b87-bee0-fc963231d20e@opensource.cirrus.com>
+ <87c2d498-60fe-4339-83c8-f6d6bc256ea7@linux.intel.com>
+ <8e2d0294-318c-4776-a02e-f6e6497852db@sirena.org.uk>
+ <9e0c68de-c528-47f2-94e7-ddb118d3dda2@linux.intel.com>
+ <ccc3f3c6-c99d-4e78-9296-f49898894c61@sirena.org.uk>
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <ccc3f3c6-c99d-4e78-9296-f49898894c61@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 17, 2025 at 07:22:48PM +0530, Naresh Kamboju wrote:
-> On Tue, 16 Dec 2025 at 16:48, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.63 release.
-> > There are 354 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.63-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> 
-> 1.
-> I'm seeing the following build failures on s390 due to,
-> 
-> ## Build errors:
-> arch/s390/include/asm/fpu-insn.h: In function 'fpu_vst':
-> arch/s390/include/asm/fpu-insn.h:381:36: error: 'size' undeclared (first use in this function); did you mean 'ksize'?
->   381 |         kmsan_unpoison_memory(vxr, size);
->       |                                    ^~~~
->       |                                    ksize
-> 
-> The commit point to,
->   s390/fpu: Fix false-positive kmsan report in fpu_vstl()
->   [ Upstream commit 14e4e4175b64dd9216b522f6ece8af6997d063b2 ]
-> 
 
-Thanks, will drop this one now.
 
-greg k-h
+On 17/12/2025 16:00, Mark Brown wrote:
+> On Wed, Dec 17, 2025 at 03:59:02PM +0200, Péter Ujfalusi wrote:
+>> On 17/12/2025 15:56, Mark Brown wrote:
+> 
+>>> What do you mean by "kunit test setup" - that's just a self contained
+>>> Python script that drives everything, it has minimal Python
+>>> requirements.
+> 
+>> I'm holding it wrong I'm sure:
+> 
+>> [15:35:21] Configuring KUnit Kernel ...
+>> [15:35:21] Building KUnit Kernel ...
+>> Populating config with:
+>> $ make ARCH=um O=.kunit olddefconfig
+> 
+> What did you actually run there?  Did you somehow have an existing
+> .config that it was picking up with everything turned off?
+git clean -xdf
+make mrproper
+
+./tools/testing/kunit/kunit.py run --alltests
+[16:09:25] Configuring KUnit Kernel ...
+Generating .config ...
+Populating config with:
+$ make ARCH=um O=.kunit olddefconfig
+[16:09:30] Building KUnit Kernel ...
+Populating config with:
+$ make ARCH=um O=.kunit olddefconfig
+Building with:
+$ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=14
+[16:12:52] Starting KUnit Kernel (1/1)...
+[16:12:52] ============================================================
+Running tests with:
+$ .kunit/linux kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
+[16:12:52] [ERROR] Test: <missing>: Could not find any KTAP output. Did any KUnit tests run?
+[16:12:52] ============================================================
+[16:12:52] Testing complete. Ran 0 tests: errors: 1
+[16:12:52] Elapsed time: 206.260s total, 4.835s configuring, 201.418s building, 0.007s running
+
+well, this is for the cold and dark winter days.. ;)
+
+-- 
+Péter
+
 
