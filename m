@@ -1,53 +1,70 @@
-Return-Path: <stable+bounces-202871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC8CCC87C7
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:37:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CBFCC89C2
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83616309BE32
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:35:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F8A0306A976
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F7D336EF9;
-	Wed, 17 Dec 2025 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4276534D389;
+	Wed, 17 Dec 2025 15:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnOVTaYR"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wyGjkeW5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28236339701;
-	Wed, 17 Dec 2025 15:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4763634BA33;
+	Wed, 17 Dec 2025 15:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985051; cv=none; b=DveICrDdEyzA7iIpm4mt+HTztGfdXyNQXAHZpW9Vdo9DQz/6kQqGUGEFbwyW7IDVrY3KHqp9raqiSVljxmB3VTJbPI0B6+tFHDElxVS2dSlhmjTElMV3WTSGEYWshIUJATj+cU4oryuHhYSXQKdiTQD4iZICi31LjF+ZcEOWkP4=
+	t=1765985153; cv=none; b=OuXw4pETCT6GYSMrfl76ta1MYxZ41Pn4+g8v1PEXGO1DjVb/TrE/CBOb1lKqZuyAd0o5pDdNLPrUMnvpi6U54mUWKhg6/A6oPfjbiE4j7vvHAMs6uCZjOqRd6a5+LRZxNvzkBqxcA/uTL8OoU0nfy0LZHd72R2iPzF+EiGyVBFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985051; c=relaxed/simple;
-	bh=optZ3FgMsY63sd4mZYgFdkTLgZVEYpWxOlXpKN3Haqo=;
+	s=arc-20240116; t=1765985153; c=relaxed/simple;
+	bh=JzAqeIxs9Y6eBR9vCupjOxU9CmPAR2zoqEEi7a1kSh0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgNAGzw8D8t2oUmsJyAV8zew8jmZXyPydiqRD7BaZ+MrN9qaQ2lqbzolPn64t/t9yvHk2GYiTDeDPc8p+ZwuevLWrRzZmRQ8ZYyVJd2pkyWJ3M2bReKmVEUXsIF2y/uZqoJ6Hd21fTeGjzisOM66yerBGp494QmxHuTD1fBgbYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnOVTaYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A362C4CEF5;
-	Wed, 17 Dec 2025 15:24:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765985050;
-	bh=optZ3FgMsY63sd4mZYgFdkTLgZVEYpWxOlXpKN3Haqo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OnOVTaYRCNCql5++Nj13Ih8ne9IWeujuNZ2YhohjPpieQTHed6/7TTaIq8Lou53NG
-	 EOrFZuW0by1H/wXAlOJfnA9GlenxgdARVIEHtAgkjhg8LrVo3LBp2B11b3fzrXtR6p
-	 m3SPmBBAltgWxff2a45Mt0UoKuFrA2zVTfooO48A=
-Date: Wed, 17 Dec 2025 16:24:02 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Barry K. Nathan" <barryn@pobox.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.18 159/614] docs: kdoc: fix duplicate section warning
- message
-Message-ID: <2025121754-drainer-blitz-9aa0@gregkh>
-References: <20251216111401.280873349@linuxfoundation.org>
- <20251216111407.097805254@linuxfoundation.org>
- <153a28b8-5933-470a-b1af-e91f6f3e8a5a@pobox.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=au6ahKQGkBZsjP6voMGpkQPrykaVl4u+niZalfFkaK0Q1C3WN95dtVk7aNVIX7vEjkOBBAgYR4yErT+58F04DU4rybdNpoGRRC0YfbNYM91fZNUsv/uDE8R0IbnS29Tb6qwwfUCG6ut2/z/N+kgkMUf8RPQ2Elt1ik2OuPENdvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wyGjkeW5; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1765985140; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=cSksazZjc+dILXEOFoB5Haajr6WS5BPannyIPcOlz1I=;
+	b=wyGjkeW58YIAmWEsdkLAApd7R+aVzlCC9yeeur2y54vS/kztINU9Sa640530Bn3G6y2KT7wn+U0YW90ctUadnKS+ZRn5bizEY7NSHeKp0hrHUhwAUl4KBln8mBoo71gDHG1sBUQ23GUGErgk3oXhLJzaQ0Q1o0WDrx4ov+Ih49k=
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0Wv4AG96_1765985139 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 17 Dec 2025 23:25:39 +0800
+Date: Wed, 17 Dec 2025 23:25:38 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Alexandra Winter <wintera@linux.ibm.com>,
+	David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-rdma@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] net/smc: Initialize smc hashtables before
+ registering users
+Message-ID: <aULLcudhF10_sZO6@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20251217114819.2725882-1-wintera@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,177 +73,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <153a28b8-5933-470a-b1af-e91f6f3e8a5a@pobox.com>
+In-Reply-To: <20251217114819.2725882-1-wintera@linux.ibm.com>
 
-On Wed, Dec 17, 2025 at 03:22:50AM -0800, Barry K. Nathan wrote:
-> On 12/16/25 03:08, Greg Kroah-Hartman wrote:
-> > 6.18-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Jacob Keller <jacob.e.keller@intel.com>
-> > 
-> > [ Upstream commit e5e7ca66a7fc6b8073c30a048e1157b88d427980 ]
-> > 
-> > The python version of the kernel-doc parser emits some strange warnings
-> > with just a line number in certain cases:
-> > 
-> > $ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
-> > Warning: 174
-> > Warning: 184
-> > Warning: 190
-> > Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
-> > Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
-> > Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
-> > Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
-> > 
-> > I eventually tracked this down to the lone call of emit_msg() in the
-> > KernelEntry class, which looks like:
-> > 
-> >    self.emit_msg(self.new_start_line, f"duplicate section name '{name}'\n")
-> > 
-> > This looks like all the other emit_msg calls. Unfortunately, the definition
-> > within the KernelEntry class takes only a message parameter and not a line
-> > number. The intended message is passed as the warning!
-> > 
-> > Pass the filename to the KernelEntry class, and use this to build the log
-> > message in the same way as the KernelDoc class does.
-> > 
-> > To avoid future errors, mark the warning parameter for both emit_msg
-> > definitions as a keyword-only argument. This will prevent accidentally
-> > passing a string as the warning parameter in the future.
-> > 
-> > Also fix the call in dump_section to avoid an unnecessary additional
-> > newline.
-> > 
-> > Fixes: e3b42e94cf10 ("scripts/lib/kdoc/kdoc_parser.py: move kernel entry to a class")
-> > Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> > Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-> > Message-ID: <20251030-jk-fix-kernel-doc-duplicate-return-warning-v2-1-ec4b5c662881@intel.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >   scripts/lib/kdoc/kdoc_parser.py | 16 ++++++++++------
-> >   1 file changed, 10 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/scripts/lib/kdoc/kdoc_parser.py b/scripts/lib/kdoc/kdoc_parser.py
-> > index 2376f180b1fa9..ccbc1fe4b7ccd 100644
-> > --- a/scripts/lib/kdoc/kdoc_parser.py
-> > +++ b/scripts/lib/kdoc/kdoc_parser.py
-> > @@ -274,6 +274,8 @@ class KernelEntry:
-> >           self.leading_space = None
-> > +        self.fname = fname
-> > +
-> >           # State flags
-> >           self.brcount = 0
-> >           self.declaration_start_line = ln + 1
-> > @@ -288,9 +290,11 @@ class KernelEntry:
-> >           return '\n'.join(self._contents) + '\n'
-> >       # TODO: rename to emit_message after removal of kernel-doc.pl
-> > -    def emit_msg(self, log_msg, warning=True):
-> > +    def emit_msg(self, ln, msg, *, warning=True):
-> >           """Emit a message"""
-> > +        log_msg = f"{self.fname}:{ln} {msg}"
-> > +
-> >           if not warning:
-> >               self.config.log.info(log_msg)
-> >               return
-> > @@ -336,7 +340,7 @@ class KernelEntry:
-> >                   # Only warn on user-specified duplicate section names
-> >                   if name != SECTION_DEFAULT:
-> >                       self.emit_msg(self.new_start_line,
-> > -                                  f"duplicate section name '{name}'\n")
-> > +                                  f"duplicate section name '{name}'")
-> >                   # Treat as a new paragraph - add a blank line
-> >                   self.sections[name] += '\n' + contents
-> >               else:
-> > @@ -387,15 +391,15 @@ class KernelDoc:
-> >               self.emit_msg(0,
-> >                             'Python 3.7 or later is required for correct results')
-> > -    def emit_msg(self, ln, msg, warning=True):
-> > +    def emit_msg(self, ln, msg, *, warning=True):
-> >           """Emit a message"""
-> > -        log_msg = f"{self.fname}:{ln} {msg}"
-> > -
-> >           if self.entry:
-> > -            self.entry.emit_msg(log_msg, warning)
-> > +            self.entry.emit_msg(ln, msg, warning=warning)
-> >               return
-> > +        log_msg = f"{self.fname}:{ln} {msg}"
-> > +
-> >           if warning:
-> >               self.config.log.warning(log_msg)
-> >           else:
-> 
-> On 6.18.2-rc1 and 6.17.13-rc2, this patch causes amd64 kernel builds with my
-> usual configs to fail with the following error:
-> 
->   CC      drivers/gpu/drm/i915/i915_driver.o
-> Traceback (most recent call last):
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/./scripts/kernel-doc.py",
-> line 339, in <module>
->     main()
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/./scripts/kernel-doc.py",
-> line 310, in main
->     kfiles.parse(args.files, export_file=args.export_file)
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_files.py",
-> line 222, in parse
->     self.parse_file(fname)
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_files.py",
-> line 120, in parse_file
->     export_table, entries = doc.parse_kdoc()
->                             ^^^^^^^^^^^^^^^^
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_parser.py",
-> line 1648, in parse_kdoc
->     self.state_actions[self.state](self, ln, line)
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_parser.py",
-> line 1123, in process_normal
->     self.reset_state(ln)
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_parser.py",
-> line 447, in reset_state
->     self.entry = KernelEntry(self.config, ln)
->                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->   File "/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/scripts/lib/kdoc/kdoc_parser.py",
-> line 277, in __init__
->     self.fname = fname
->                  ^^^^^
-> NameError: name 'fname' is not defined
-> make[6]: *** [scripts/Makefile.build:287:
-> drivers/gpu/drm/i915/i915_driver.o] Error 1
-> make[6]: *** Deleting file 'drivers/gpu/drm/i915/i915_driver.o'
-> make[5]: *** [scripts/Makefile.build:556: drivers/gpu/drm/i915] Error 2
-> make[4]: *** [scripts/Makefile.build:556: drivers/gpu/drm] Error 2
-> make[3]: *** [scripts/Makefile.build:556: drivers/gpu] Error 2
-> make[2]: *** [scripts/Makefile.build:556: drivers] Error 2
-> make[1]: ***
-> [/home/barryn/src/linux/build-amd64/linux-6.18.2-rc1/Makefile:2010: .] Error
-> 2
-> make: *** [Makefile:248: __sub-make] Error 2
-> 
-> Here is a minimal config to reproduce (make a .config with just these 6
-> lines, then run `make olddefconfig`):
-> 
-> CONFIG_64BIT=y
-> CONFIG_EXPERT=y
-> CONFIG_PCI=y
-> CONFIG_DRM=y
-> CONFIG_DRM_I915=y
-> CONFIG_DRM_I915_WERROR=y
-> 
-> This bug happens if and only if CONFIG_DRM_I915_WERROR=y. (By the way,
-> allyesconfig and allmodconfig set CONFIG_COMPILE_TEST=y, which disables
-> CONFIG_DRM_I915_DEBUG and CONFIG_DRM_I915_WERROR. So neither allyesconfig
-> nor allmodconfig reproduce this.)
-> 
-> It happens whether building for amd64 or i386 (so CONFIG_64BIT=y is not
-> strictly necessary). It happens on both fully updated Debian 12 Bookworm and
-> fully updated Debian 13 Trixie. It happens both when compiling natively on
-> amd64 and when cross-compiling from an arm64 system.
-> 
-> It happens on 6.18.2-rc1 and 6.17.13-rc2, but not on 6.19-rc1. Also, if I
-> revert this patch on 6.18.2-rc1 or 6.17.13-rc2, the bug no longer
-> reproduces.
+On 2025-12-17 12:48:19, Alexandra Winter wrote:
+>During initialisation of the SMC module initialize smc_v4/6_hashinfo before
+>calling smc_nl_init(), proto_register() or sock_register(), to avoid a race
+>that can cause use of an uninitialised pointer in case an smc protocol is
+>called before the module is done initialising.
+>
+>syzbot report:
+>KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+>Call Trace:
+> <TASK>
+> smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:236
+> netlink_dump+0x647/0xd80 net/netlink/af_netlink.c:2325
+> __netlink_dump_start+0x59f/0x780 net/netlink/af_netlink.c:2440
+> netlink_dump_start include/linux/netlink.h:339 [inline]
+> smc_diag_handler_dump+0x1ab/0x250 net/smc/smc_diag.c:251
+> sock_diag_rcv_msg+0x3dc/0x5f0
+> netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
+> netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+> netlink_unicast+0x7f0/0x990 net/netlink/af_netlink.c:1357
+> netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
 
-Thanks, I'll go drop this from all queues.
 
-greg k-h
+I don't think this is related to smc_nl_init().
+
+Here the calltrace is smc_diag_dump(), which was registered in
+sock_diag_register(&smc_diag_handler).
+
+But smc_nl_init() is registering the general netlink in SMC,
+which is unrelated to smc_diag_dump().
+
+I think the root cause should be related to the initializing between
+smc_diag.ko and smc_v4/6_hashinfo.ht.
+The change in your previous patch 'dibs: Register smc as dibs_client'
+may change the possiblity to this bug.
+
+Best regards,
+Dust
+
+>
+>Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+>Reported-by: syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
+>Closes: https://syzkaller.appspot.com/bug?extid=f69bfae0a4eb29976e44
+>Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+>---
+> net/smc/af_smc.c | 5 +++--
+> 1 file changed, 3 insertions(+), 2 deletions(-)
+>
+>diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>index f97f77b041d9..b0f4405fb714 100644
+>--- a/net/smc/af_smc.c
+>+++ b/net/smc/af_smc.c
+>@@ -3524,6 +3524,9 @@ static int __init smc_init(void)
+> 		goto out_pernet_subsys_stat;
+> 	smc_clc_init();
+> 
+>+	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
+>+	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
+>+
+> 	rc = smc_nl_init();
+> 	if (rc)
+> 		goto out_ism;
+>@@ -3581,8 +3584,6 @@ static int __init smc_init(void)
+> 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
+> 		goto out_proto6;
+> 	}
+>-	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
+>-	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
+> 
+> 	rc = smc_ib_register_client();
+> 	if (rc) {
+>-- 
+>2.51.0
 
