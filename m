@@ -1,77 +1,43 @@
-Return-Path: <stable+bounces-202866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B2ACC8842
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3772DCC856E
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14406311A1CB
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:35:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 688B330BC040
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A8D34AAFD;
-	Wed, 17 Dec 2025 14:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VeddGobW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D496837D54F;
+	Wed, 17 Dec 2025 14:42:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AC0329364;
-	Wed, 17 Dec 2025 14:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2C2382596;
+	Wed, 17 Dec 2025 14:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765982388; cv=none; b=hfOsqIWd+3LsGTcRyD4Pt3tMjg95V01wkTO58/yDzjABQbOT1LWqJABzqnUTuiYP6FYxTLALiYmPfVZ3rOf2mw626K5M5bDx0pvmmXBMG7fiVz5Se1a3Z8AuLTr1WBNhLJDFWevsnyXbfxs1GpjeNN9wxjT/v3/i+6BetcpvS5s=
+	t=1765982540; cv=none; b=C9mUgvHLJXHrTGoVvPqPF7vo156K6IfNY3Sn94/mbqo/FqkSfVpva/3ra6UDas49/z3UfUMQTzz9QIzlLMSpk0qvUyOciWy1uZ95YgLNhHaS0N0vtl4McZQwYv1zlJ+7j8MD7ChYffkR/jJYRmyk+w0O/+NUT/2K9MLz5fHgN6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765982388; c=relaxed/simple;
-	bh=rE3Ks+YCu+J7Dp7YeegytlmkFJ843FJebBEQD/mls7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YryNCqHQ6z+DEhGW8ytxfasWq6xOOS103A35XNHnpNEVSOSOkyS6zeiPBrQnwUYXvft2fu4R5SjXjDoVrw/sNEjNyUAQyRWIfMhl9EEc9ypIWS4qZefOUwzs6IY73VNHJCm9Sjx56j4GWRkCSrc9ly0bnP+prZhoMzgjYNcZB14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VeddGobW; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765982388; x=1797518388;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rE3Ks+YCu+J7Dp7YeegytlmkFJ843FJebBEQD/mls7o=;
-  b=VeddGobWkvsI6OtPcks/Puwkwr3/Z04sujMnXLlkIGzbHI+dQkiWXU1s
-   pyBtsBWBPXi1Pmpsyc/2XxR8AHV5tDuuW7opNRjhm5OCS5eO9xb9Kc0AX
-   JhltzKgvwFnBiONbjcvQpWJTpOz/UbjkOI9zoUlfpQkDPWdlAgLF0Y6X8
-   vBU86v5HFnnbMZXPwSRH5jNtOMu9TtfzmlQLVMdgHSvRJm+X5Lr50BOOF
-   AjKGxH9cRh7VUZhc/5dXAobdEBQcvf+x9OCqE+ojKUZD+99rPD3msYVbt
-   Fvcx3UKif/ASE+T2lP+9xwSFsj61BhWPh/6yNwO6sbPEJ/trMpcXAB/5j
-   A==;
-X-CSE-ConnectionGUID: aD8IijTfRCm4lu24kTi+Eg==
-X-CSE-MsgGUID: FwjHLfzOQwKIcUbqVmPb/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67859881"
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="67859881"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:39:47 -0800
-X-CSE-ConnectionGUID: c4k4eZoUQySD/i4XCmC/Bg==
-X-CSE-MsgGUID: d82gxLVvQ2ut+AaVo1flsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="198084992"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.187])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 06:39:44 -0800
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	seppo.ingalsuo@linux.intel.com,
+	s=arc-20240116; t=1765982540; c=relaxed/simple;
+	bh=BsP8dwk6hLkpxWsZHlqzydLsJu5iUH1qWGCFsmFVfOk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GEnohQBisAsDZTZ2FSG9/F2alCHIv1wvCfVhLsyCwnish1cnFFEx5E1scdD8XSLBhFTft8ASVp/CRqCo9M1Z3oqG1YKFEssDK7U0jWUK7AdbO2XCzyHuY3FNWOyJBdrOV3tgxEPKFlEBRuLl/sNFbYgENIU+1Sgv8vTw06V/d2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-03 (Coremail) with SMTP id rQCowAD3E9tBwUJpXhsCAQ--.15561S2;
+	Wed, 17 Dec 2025 22:42:09 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: gregkh@linuxfoundation.org,
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3 8/8] ASoC: SOF: ipc4-control: Add support for generic bytes control
-Date: Wed, 17 Dec 2025 16:39:45 +0200
-Message-ID: <20251217143945.2667-9-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251217143945.2667-1-peter.ujfalusi@linux.intel.com>
-References: <20251217143945.2667-1-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH] edd: fix a memory leak in edd_init()
+Date: Wed, 17 Dec 2025 22:42:07 +0800
+Message-Id: <20251217144207.505895-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,234 +45,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAD3E9tBwUJpXhsCAQ--.15561S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrAFWxtr43XFy8Kr13KF47XFb_yoWxWwc_C3
+	4j9r92gw18GrW29r1Yya9avr4Fy39rWa1fuFsFv3WfKrW7Zr4UXrZ8u3Z3Jr17Wr42kry7
+	Aa4DKrZ5Awn2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbwxFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5WlkUUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBgwTE2lCkb6BUAAAsf
 
-The generic byte control can be used in cases when the bytes data can be
-changed by the firmware and it sends a notification about the change,
-similarly to the enum and switch controls.
+After edd_device_register(), edev should be released by
+kobject_put().
 
-The generic control support is needed as from the param_id itself it is
-not possible to know which control has changed. The needed information
-is only available via generic control change notification.
-
-Generic bytes controls use param_id 202 and their change notification can
-contain payload with the change embedded or just the header message as
-notification.
-
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- sound/soc/sof/ipc4-control.c | 156 +++++++++++++++++++++++++++++++----
- 1 file changed, 142 insertions(+), 14 deletions(-)
+ drivers/firmware/edd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/ipc4-control.c b/sound/soc/sof/ipc4-control.c
-index 453ed1643b89..0500b690f9a3 100644
---- a/sound/soc/sof/ipc4-control.c
-+++ b/sound/soc/sof/ipc4-control.c
-@@ -284,6 +284,105 @@ static void sof_ipc4_refresh_generic_control(struct snd_sof_control *scontrol)
- 	kfree(data);
- }
+diff --git a/drivers/firmware/edd.c b/drivers/firmware/edd.c
+index 55dec4eb2c00..82b326ce83ce 100644
+--- a/drivers/firmware/edd.c
++++ b/drivers/firmware/edd.c
+@@ -748,7 +748,7 @@ edd_init(void)
  
-+static int
-+sof_ipc4_set_bytes_control_data(struct snd_sof_control *scontrol, bool lock)
-+{
-+	struct sof_ipc4_control_data *cdata = scontrol->ipc_control_data;
-+	struct snd_soc_component *scomp = scontrol->scomp;
-+	struct sof_ipc4_control_msg_payload *msg_data;
-+	struct sof_abi_hdr *data = cdata->data;
-+	struct sof_ipc4_msg *msg = &cdata->msg;
-+	size_t data_size;
-+	int ret;
-+
-+	data_size = struct_size(msg_data, data, data->size);
-+	msg_data = kzalloc(data_size, GFP_KERNEL);
-+	if (!msg_data)
-+		return -ENOMEM;
-+
-+	msg_data->id = cdata->index;
-+	msg_data->num_elems = data->size;
-+	memcpy(msg_data->data, data->data, data->size);
-+
-+	msg->extension = SOF_IPC4_MOD_EXT_MSG_PARAM_ID(data->type);
-+
-+	msg->data_ptr = msg_data;
-+	msg->data_size = data_size;
-+
-+	ret = sof_ipc4_set_get_kcontrol_data(scontrol, true, lock);
-+	msg->data_ptr = NULL;
-+	msg->data_size = 0;
-+	if (ret < 0)
-+		dev_err(scomp->dev, "%s: Failed to set control update for %s\n",
-+			__func__, scontrol->name);
-+
-+	kfree(msg_data);
-+
-+	return ret;
-+}
-+
-+static int
-+sof_ipc4_refresh_bytes_control(struct snd_sof_control *scontrol, bool lock)
-+{
-+	struct sof_ipc4_control_data *cdata = scontrol->ipc_control_data;
-+	struct snd_soc_component *scomp = scontrol->scomp;
-+	struct sof_ipc4_control_msg_payload *msg_data;
-+	struct sof_abi_hdr *data = cdata->data;
-+	struct sof_ipc4_msg *msg = &cdata->msg;
-+	size_t data_size;
-+	int ret = 0;
-+
-+	if (!scontrol->comp_data_dirty)
-+		return 0;
-+
-+	if (!pm_runtime_active(scomp->dev))
-+		return 0;
-+
-+	data_size = scontrol->max_size - sizeof(*data);
-+	if (data_size < sizeof(*msg_data))
-+		data_size = sizeof(*msg_data);
-+
-+	msg_data = kzalloc(data_size, GFP_KERNEL);
-+	if (!msg_data)
-+		return -ENOMEM;
-+
-+	msg->extension = SOF_IPC4_MOD_EXT_MSG_PARAM_ID(data->type);
-+
-+	msg_data->id = cdata->index;
-+	msg_data->num_elems = 0; /* ignored for bytes */
-+
-+	msg->data_ptr = msg_data;
-+	msg->data_size = data_size;
-+
-+	scontrol->comp_data_dirty = false;
-+	ret = sof_ipc4_set_get_kcontrol_data(scontrol, false, lock);
-+	if (!ret) {
-+		if (msg->data_size > scontrol->max_size - sizeof(*data)) {
-+			dev_err(scomp->dev,
-+				"%s: no space for data in %s (%zu, %zu)\n",
-+				__func__, scontrol->name, msg->data_size,
-+				scontrol->max_size - sizeof(*data));
-+			goto out;
-+		}
-+
-+		data->size = msg->data_size;
-+		scontrol->size = sizeof(*cdata) + sizeof(*data) + data->size;
-+		memcpy(data->data, msg->data_ptr, data->size);
-+	} else {
-+		dev_err(scomp->dev, "Failed to read control data for %s\n",
-+			scontrol->name);
-+		scontrol->comp_data_dirty = true;
-+	}
-+
-+out:
-+	msg->data_ptr = NULL;
-+	msg->data_size = 0;
-+
-+	kfree(msg_data);
-+
-+	return ret;
-+}
-+
- static bool sof_ipc4_switch_put(struct snd_sof_control *scontrol,
- 				struct snd_ctl_elem_value *ucontrol)
- {
-@@ -423,6 +522,13 @@ static int sof_ipc4_set_get_bytes_data(struct snd_sof_dev *sdev,
+ 		rc = edd_device_register(edev, i);
+ 		if (rc) {
+-			kfree(edev);
++			kobject_put(&edev->kobj);
+ 			goto out;
  		}
- 	}
- 
-+	if (data->type == SOF_IPC4_BYTES_CONTROL_PARAM_ID) {
-+		if (set)
-+			return sof_ipc4_set_bytes_control_data(scontrol, lock);
-+		else
-+			return sof_ipc4_refresh_bytes_control(scontrol, lock);
-+	}
-+
- 	msg->extension = SOF_IPC4_MOD_EXT_MSG_PARAM_ID(data->type);
- 
- 	msg->data_ptr = data->data;
-@@ -507,6 +613,8 @@ static int sof_ipc4_bytes_get(struct snd_sof_control *scontrol,
- 		return -EINVAL;
- 	}
- 
-+	sof_ipc4_refresh_bytes_control(scontrol, true);
-+
- 	size = data->size + sizeof(*data);
- 
- 	/* copy back to kcontrol */
-@@ -661,6 +769,8 @@ static int sof_ipc4_bytes_ext_get(struct snd_sof_control *scontrol,
- 				  const unsigned int __user *binary_data,
- 				  unsigned int size)
- {
-+	sof_ipc4_refresh_bytes_control(scontrol, true);
-+
- 	return _sof_ipc4_bytes_ext_get(scontrol, binary_data, size, false);
- }
- 
-@@ -714,6 +824,9 @@ static void sof_ipc4_control_update(struct snd_sof_dev *sdev, void *ipc_message)
- 	case SOF_IPC4_ENUM_CONTROL_PARAM_ID:
- 		type = SND_SOC_TPLG_TYPE_ENUM;
- 		break;
-+	case SOF_IPC4_BYTES_CONTROL_PARAM_ID:
-+		type = SND_SOC_TPLG_TYPE_BYTES;
-+		break;
- 	default:
- 		dev_err(sdev->dev,
- 			"%s: Invalid control type for module %u.%u: %u\n",
-@@ -764,23 +877,38 @@ static void sof_ipc4_control_update(struct snd_sof_dev *sdev, void *ipc_message)
- 		 * The message includes the updated value/data, update the
- 		 * control's local cache using the received notification
- 		 */
--		for (i = 0; i < msg_data->num_elems; i++) {
--			u32 channel = msg_data->chanv[i].channel;
-+		if (type == SND_SOC_TPLG_TYPE_BYTES) {
-+			struct sof_abi_hdr *data = cdata->data;
- 
--			if (channel >= scontrol->num_channels) {
-+			if (msg_data->num_elems > scontrol->max_size - sizeof(*data)) {
- 				dev_warn(sdev->dev,
--					 "Invalid channel index for %s: %u\n",
--					 scontrol->name, i);
--
--				/*
--				 * Mark the scontrol as dirty to force a refresh
--				 * on next read
--				 */
--				scontrol->comp_data_dirty = true;
--				break;
-+					 "%s: no space for data in %s (%u, %zu)\n",
-+					 __func__, scontrol->name, msg_data->num_elems,
-+					 scontrol->max_size - sizeof(*data));
-+			} else {
-+				memcpy(data->data, msg_data->data, msg_data->num_elems);
-+				data->size = msg_data->num_elems;
-+				scontrol->size = sizeof(*cdata) + sizeof(*data) + data->size;
-+			}
-+		} else {
-+			for (i = 0; i < msg_data->num_elems; i++) {
-+				u32 channel = msg_data->chanv[i].channel;
-+
-+				if (channel >= scontrol->num_channels) {
-+					dev_warn(sdev->dev,
-+						 "Invalid channel index for %s: %u\n",
-+						 scontrol->name, i);
-+
-+					/*
-+					 * Mark the scontrol as dirty to force a refresh
-+					 * on next read
-+					 */
-+					scontrol->comp_data_dirty = true;
-+					break;
-+				}
-+
-+				cdata->chanv[channel].value = msg_data->chanv[i].value;
- 			}
--
--			cdata->chanv[channel].value = msg_data->chanv[i].value;
- 		}
- 	} else {
- 		/*
+ 		edd_devices[i] = edev;
 -- 
-2.52.0
+2.25.1
 
 
