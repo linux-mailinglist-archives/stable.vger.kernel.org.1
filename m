@@ -1,150 +1,120 @@
-Return-Path: <stable+bounces-202873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CBFCC89C2
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:55:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A3ECC894A
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 16:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F8A0306A976
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:35:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A8AD130BCACD
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 15:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4276534D389;
-	Wed, 17 Dec 2025 15:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F757342506;
+	Wed, 17 Dec 2025 15:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wyGjkeW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3o2eRNc"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4763634BA33;
-	Wed, 17 Dec 2025 15:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA313376A3;
+	Wed, 17 Dec 2025 15:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985153; cv=none; b=OuXw4pETCT6GYSMrfl76ta1MYxZ41Pn4+g8v1PEXGO1DjVb/TrE/CBOb1lKqZuyAd0o5pDdNLPrUMnvpi6U54mUWKhg6/A6oPfjbiE4j7vvHAMs6uCZjOqRd6a5+LRZxNvzkBqxcA/uTL8OoU0nfy0LZHd72R2iPzF+EiGyVBFU=
+	t=1765985144; cv=none; b=LUS5vuB2m2ZzHnzBxwLF6NuPI9W57bTAqFpvd0UtyXukESHWIDv64oILnAltWDfuuN3er8VEzdJQEhnHEKMEINpSy4VbX6lRxJ3CmDmOvbjizPxqqXmitWsqsSTDy/448l2VLapEJ7pvMwtTSGR9IMJ68d9GCz/jaNOZSrII0Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985153; c=relaxed/simple;
-	bh=JzAqeIxs9Y6eBR9vCupjOxU9CmPAR2zoqEEi7a1kSh0=;
+	s=arc-20240116; t=1765985144; c=relaxed/simple;
+	bh=fSfF3hPb1vJBXlF4loldiSrHjhKAiqjAwSfM33spSbk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=au6ahKQGkBZsjP6voMGpkQPrykaVl4u+niZalfFkaK0Q1C3WN95dtVk7aNVIX7vEjkOBBAgYR4yErT+58F04DU4rybdNpoGRRC0YfbNYM91fZNUsv/uDE8R0IbnS29Tb6qwwfUCG6ut2/z/N+kgkMUf8RPQ2Elt1ik2OuPENdvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wyGjkeW5; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1765985140; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=cSksazZjc+dILXEOFoB5Haajr6WS5BPannyIPcOlz1I=;
-	b=wyGjkeW58YIAmWEsdkLAApd7R+aVzlCC9yeeur2y54vS/kztINU9Sa640530Bn3G6y2KT7wn+U0YW90ctUadnKS+ZRn5bizEY7NSHeKp0hrHUhwAUl4KBln8mBoo71gDHG1sBUQ23GUGErgk3oXhLJzaQ0Q1o0WDrx4ov+Ih49k=
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0Wv4AG96_1765985139 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Dec 2025 23:25:39 +0800
-Date: Wed, 17 Dec 2025 23:25:38 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Alexandra Winter <wintera@linux.ibm.com>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-rdma@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] net/smc: Initialize smc hashtables before
- registering users
-Message-ID: <aULLcudhF10_sZO6@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20251217114819.2725882-1-wintera@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J312XPPl49+rg/EGAtqijjNdQcesAx0AzADbNKMVzae8qPJtJNtatqLYLQMRO+MhKLuwxNgwKy2vz/I6UXDCyZZ3KlcbTyHbLmJprkFcBHH5VHQ365QVV0DLchfXWN3kpMeGnn8lX2bJOMpt1lVk5QEqlnMxghjUTMSy6HwGxLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3o2eRNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A63C4CEF5;
+	Wed, 17 Dec 2025 15:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765985143;
+	bh=fSfF3hPb1vJBXlF4loldiSrHjhKAiqjAwSfM33spSbk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=z3o2eRNcRPj6D3AVOyRvJo2Z3v5zCk5wLkAaPgnnoB4+Eociwv33XrPA9E3qgbLO5
+	 3+HdhRQQZTA3Fv20SN20VIWeSXsJ8ha6oM7e43HJT8EUjXYQTTORhInRva104ksn98
+	 Wg0+ebfNoIMQ2o0Z3YY+/niOCJKzr4eDR8fHPNiI=
+Date: Wed, 17 Dec 2025 16:25:40 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ronald Warsow <rwarsow@gmx.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com,
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
+Message-ID: <2025121733-glaring-imperfect-3332@gregkh>
+References: <20251216111401.280873349@linuxfoundation.org>
+ <1056aea9-1977-440e-9ad3-8a0b8b746288@gmx.de>
+ <2025121714-gory-cornhusk-eb87@gregkh>
+ <b72d4821-d3e6-4b29-96c8-6acb1fc916a8@gmx.de>
+ <2025121708-chunk-sasquatch-284c@gregkh>
+ <797b868d-ffee-401d-afca-466394a03738@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20251217114819.2725882-1-wintera@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <797b868d-ffee-401d-afca-466394a03738@gmx.de>
 
-On 2025-12-17 12:48:19, Alexandra Winter wrote:
->During initialisation of the SMC module initialize smc_v4/6_hashinfo before
->calling smc_nl_init(), proto_register() or sock_register(), to avoid a race
->that can cause use of an uninitialised pointer in case an smc protocol is
->called before the module is done initialising.
->
->syzbot report:
->KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
->Call Trace:
-> <TASK>
-> smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:236
-> netlink_dump+0x647/0xd80 net/netlink/af_netlink.c:2325
-> __netlink_dump_start+0x59f/0x780 net/netlink/af_netlink.c:2440
-> netlink_dump_start include/linux/netlink.h:339 [inline]
-> smc_diag_handler_dump+0x1ab/0x250 net/smc/smc_diag.c:251
-> sock_diag_rcv_msg+0x3dc/0x5f0
-> netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
-> netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-> netlink_unicast+0x7f0/0x990 net/netlink/af_netlink.c:1357
-> netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
-
-
-I don't think this is related to smc_nl_init().
-
-Here the calltrace is smc_diag_dump(), which was registered in
-sock_diag_register(&smc_diag_handler).
-
-But smc_nl_init() is registering the general netlink in SMC,
-which is unrelated to smc_diag_dump().
-
-I think the root cause should be related to the initializing between
-smc_diag.ko and smc_v4/6_hashinfo.ht.
-The change in your previous patch 'dibs: Register smc as dibs_client'
-may change the possiblity to this bug.
-
-Best regards,
-Dust
-
->
->Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
->Reported-by: syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=f69bfae0a4eb29976e44
->Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
->---
-> net/smc/af_smc.c | 5 +++--
-> 1 file changed, 3 insertions(+), 2 deletions(-)
->
->diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
->index f97f77b041d9..b0f4405fb714 100644
->--- a/net/smc/af_smc.c
->+++ b/net/smc/af_smc.c
->@@ -3524,6 +3524,9 @@ static int __init smc_init(void)
-> 		goto out_pernet_subsys_stat;
-> 	smc_clc_init();
+On Wed, Dec 17, 2025 at 01:45:33PM +0100, Ronald Warsow wrote:
+> On 17.12.25 10:36, Greg Kroah-Hartman wrote:
+> > On Wed, Dec 17, 2025 at 09:27:49AM +0100, Ronald Warsow wrote:
+> > > On 17.12.25 06:47, Greg Kroah-Hartman wrote:
+> > > > On Tue, Dec 16, 2025 at 05:06:56PM +0100, Ronald Warsow wrote:
+> > > > > Hi
+> ...
+> > 
+> > Odd, as you aren't even running the driver that this commit points to,
+> > right?  You shouldn't be building it, so why does this show up as the
+> > "bad" commit id?
+> > 
+> > totally confused,
+> > 
 > 
->+	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
->+	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
->+
-> 	rc = smc_nl_init();
-> 	if (rc)
-> 		goto out_ism;
->@@ -3581,8 +3584,6 @@ static int __init smc_init(void)
-> 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
-> 		goto out_proto6;
-> 	}
->-	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
->-	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
+> well I realized I left out several steps to do bisect correct.
 > 
-> 	rc = smc_ib_register_client();
-> 	if (rc) {
->-- 
->2.51.0
+> I hope this time it's correct:
+> 
+> d84236562448e634208746f0e04f725a509d4648 is the first bad commit
+> commit d84236562448e634208746f0e04f725a509d4648
+> Author: Matthew Brost <matthew.brost@intel.com>
+> Date:   Fri Oct 31 16:40:45 2025 -0700
+> 
+>     drm/xe: Enforce correct user fence signaling order using
+> 
+>     [ Upstream commit adda4e855ab6409a3edaa585293f1f2069ab7299 ]
+> 
+>     Prevent application hangs caused by out-of-order fence signaling when
+>     user fences are attached. Use drm_syncobj (via dma-fence-chain) to
+>     guarantee that each user fence signals in order, regardless of the
+>     signaling order of the attached fences. Ensure user fence writebacks to
+>     user space occur in the correct sequence.
+> 
+>     v7:
+>      - Skip drm_syncbj create of error (CI)
+> 
+>     Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel
+> GPUs")
+>     Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>     Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>     Link:
+> https://patch.msgid.link/20251031234050.3043507-2-matthew.brost@intel.com
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+>  drivers/gpu/drm/xe/xe_exec_queue.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+
+Thanks, will go drop this one now.
+
+greg k-h
 
