@@ -1,107 +1,143 @@
-Return-Path: <stable+bounces-202879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE03CC9070
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 18:20:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56EACC90FA
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 18:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 33CD9300D029
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 17:20:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEDA73009489
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 17:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017F4336EE0;
-	Wed, 17 Dec 2025 17:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9EC34E241;
+	Wed, 17 Dec 2025 17:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="CYzOzz+q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKNWmpy4"
 X-Original-To: stable@vger.kernel.org
-Received: from sg-1-19.ptr.blmpb.com (sg-1-19.ptr.blmpb.com [118.26.132.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196A32FCC0E
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 17:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20AC32E738;
+	Wed, 17 Dec 2025 17:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765991522; cv=none; b=K/QoEtG1XSuuee8L7CPl7lCK/T18vWR/3TQbwk/9EkPnoB2EMKEwo4pMfZ8TG4kwIqXJHwYMPMvQ4msYOa0PcXIjw1LG64dl5QOviTaCM9FnFIndSWJWROzbM/oMRP/GRLt2e3SIHWiw+m9O1WVuqlHnPNq6vXBHDpm7aA6BBFc=
+	t=1765991821; cv=none; b=WknkRvP6E14DIw3A23fpUtgxBQuC0icK83SmOilgQTSicrH05rUFjRgcyEWL8x/6lqePMvc/TbyQ2Ar+4hIbdnmNHpJRFHzSqoRRB6cN+u5uk3yHQq1CXyC9Y1Tv660+Ng5UsUPTt9TkdHGFngspt5byBJTgMso64RXay2vlciI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765991522; c=relaxed/simple;
-	bh=DSjq2RoIyhNvUNFOqu9um+RuSimk6KlrYztstsTZa/4=;
-	h=To:From:Subject:Date:In-Reply-To:References:Cc:Content-Type:
-	 Message-Id:Mime-Version; b=l5ZnTaSYYYYibVAFfHKF/eoBJwBqVm3UzbgFqnbHyBtQPxvlqRz7Opztlj9FEzrYM1l9m95lRUBX8ug5QCQLPIuRzTXRadSLYmUsKdDIuaWxqTXwoLcmm7oqje1Dtj35cV1h3OxjhnBDxTJLSD4qfgiNnDZDvLrwIe8e1cXOPNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=CYzOzz+q; arc=none smtp.client-ip=118.26.132.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fnnas.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1765991508;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=0EhvVRObfPvnEE8BjGaWdsdhDKkQN0iEJzYVBn07ElA=;
- b=CYzOzz+q0hcPgi+C4z9DnfxFziTsSHpAmdgfbMlr1K41alTK1jQGxnOTM66W3BdX7wWySi
- wGqoMY7+lGeFXNRxSAmqeVecbVNLRt1O0oyyOoszJQUKX6nsimemM0sYxlBC4XeBMsuL81
- tRFnr4bDgPWsNL4iEk5tjc+fWGQaOrdpy7wSenH8e79woCf8qhzDGUoUhL5VjGcm3RwRbv
- wZU7+wHj11NoYgdaw3Z4zqE4tFbxP5LPsWWEHhGWHxuwZNyGNxnTGowIEtNz4OZIiHcEAJ
- P3pyreTzddtDypG+tdNik19nFe8cQRTmr8zJAvoCF+yCwKnKPe2zVJ75yoFCuA==
-To: "Greg KH" <gregkh@linuxfoundation.org>, <linan666@huaweicloud.com>
-From: "Yu Kuai" <yukuai@fnnas.com>
-Subject: Re: [PATCH stable/6.18-6.17] md: add check_new_feature module parameter
-Date: Thu, 18 Dec 2025 01:11:43 +0800
-In-Reply-To: <2025121700-pedicure-reckless-65b9@gregkh>
-Reply-To: yukuai@fnnas.com
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-References: <20251217130513.2706844-1-linan666@huaweicloud.com> <2025121700-pedicure-reckless-65b9@gregkh>
-Cc: <stable@vger.kernel.org>, <song@kernel.org>, 
-	<linux-raid@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<yangerkun@huawei.com>, <yi.zhang@huawei.com>, <yukuai@fnnas.com>
-X-Original-From: Yu Kuai <yukuai@fnnas.com>
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26942e452+ffdab0+vger.kernel.org+yukuai@fnnas.com>
-Message-Id: <6979cd43-d38c-477d-857c-8d211bc85474@fnnas.com>
+	s=arc-20240116; t=1765991821; c=relaxed/simple;
+	bh=nCNmapLXVkzx5G0AMg0w1rDB82qxLQX+MYjj3DhiKp4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AiZY/ZPf75wMrtdt9O9/JSot46/bBFuvm4qwMh1wywMntlDh9kpUgatBLHaeBu5pbI5VhvCBq8z1B6nSmNyMWBHV1leBt5QWxAAMLphjWaQ0pGJvlkfwbJoJ1QD/rTKkvPEnbYURYqPDQmCJXL9S4G8BZa/kHYyEJ4qmKtrybJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKNWmpy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62943C4CEF5;
+	Wed, 17 Dec 2025 17:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765991821;
+	bh=nCNmapLXVkzx5G0AMg0w1rDB82qxLQX+MYjj3DhiKp4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=XKNWmpy4m79ww++MMmPrggUkdOn2gZ8gefp8Nh5CQsp/ZAqAGzKerSg95thiEkcOP
+	 NuB/EMl77H1Xmqn3WMCIRUZyy3bnCafUs+PG0ZcbmAXJst9RNckeI3KKu/b2lRKno1
+	 OL2+IZ2susK1SiaxP2rHvu8HgDWHsrmdTtFc3A6guRoc3kc+gL3YstQtU4AHQhNQGO
+	 TRYdvCbDVnkOo2JTKcPpPdkdedn6G6RoIdaudox8t0/6bIT5HfmRESsxR9MGZa24ql
+	 g8Ea5iBUWHxuWi6mLRl5T09AvLPHRcHAgpad9DDTy9BaxJoGKDR2mWDsnxxsYtocbm
+	 0KA4S7pZimAaw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46B3CD65C53;
+	Wed, 17 Dec 2025 17:17:01 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH 0/2] net: qrtr: Drop the MHI 'auto_queue' feature
+Date: Wed, 17 Dec 2025 22:46:50 +0530
+Message-Id: <20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Received: from [192.168.1.104] ([39.182.0.136]) by smtp.feishu.cn with ESMTPS; Thu, 18 Dec 2025 01:11:45 +0800
-User-Agent: Mozilla Thunderbird
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAILlQmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI0Nz3cKikiLdtMwK3WQDUwugWIpFimGiElB5QVEqUBhsVHRsbS0AovM
+ Jm1oAAAA=
+X-Change-ID: 20251217-qrtr-fix-c058251d8d1a
+To: Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
+ Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>, 
+ Oded Gabbay <ogabbay@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+ Jeff Johnson <jjohnson@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Maxim Kochetkov <fido_max@inbox.ru>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, mhi@lists.linux.dev, 
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ ath12k@lists.infradead.org, netdev@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Chris Lew <quic_clew@quicinc.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1833;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=nCNmapLXVkzx5G0AMg0w1rDB82qxLQX+MYjj3DhiKp4=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpQuWLGsKVi00BM9j9k2fzmDyfhFZKHkWaVpwxL
+ mEyD11ffiGJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaULliwAKCRBVnxHm/pHO
+ 9dflCACJcSVT7YDyfd1eVp65ty6CysudUmNCdkpwxqBUbCrnGNo3J5HA5Hjn0fxfolTcFBBLQ07
+ NeDnBv7hbBbeyy/YGPc7B2nWrkzT2oE/O6mX1dmUEBSjUBVMBq+M2qerwQHpjy3mT6EmN+lLYuk
+ EoZKz4737MjFD7GJoeu4mMQuQOXQ86hQRcwpELNcqSYNc+8fep+/5IiIPQ2NgkCKu4cKF+CAANE
+ NmFlrFhiohovN3SfcwHdt4M3dZd2Klsd1aCphMoU9i8/gw1xIHR1cGHhWU1Y6+l7SUkLrL6jBh+
+ YTWv2owV7o/wUYhLImCgqMf3xtU5X3/Kt/L/XHl60z1w9ez8
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
 Hi,
 
-=E5=9C=A8 2025/12/17 22:04, Greg KH =E5=86=99=E9=81=93:
-> On Wed, Dec 17, 2025 at 09:05:13PM +0800, linan666@huaweicloud.com wrote:
->> From: Li Nan <linan122@huawei.com>
->>
->> commit 9c47127a807da3e36ce80f7c83a1134a291fc021 upstream.
->>
->> Raid checks if pad3 is zero when loading superblock from disk. Arrays
->> created with new features may fail to assemble on old kernels as pad3
->> is used.
->>
->> Add module parameter check_new_feature to bypass this check.
-> This is a new feature, why does it need to go to stable kernels?
->
-> And a module parameter?  Ugh, this isn't the 1990's anymore, this is not
-> good and will be a mess over time (think multiple devices...)
+This series intends to fix the race between the MHI stack and the MHI client
+drivers due to the MHI 'auto_queue' feature. As it turns out often, the best
+way to fix an issue in a feature is to drop the feature itself and this series
+does exactly that.
 
-Nan didn't mention the background. We won't backport the new feature to sta=
-ble
-kernels(Although this fix a data lost problem in the case array is created
-with disks in different lbs, anyone is interested can do this). However, th=
-is
-backport is just used to provide a possible solution for user to still asse=
-mble
-arrays after switching to old LTS kernels when they are using the default l=
-bs.
+There is no real benefit in having the 'auto_queue' feature in the MHI stack,
+other than saving a few lines of code in the client drivers. Since the QRTR is
+the only client driver which makes use of this feature, this series reworks the
+QRTR driver to manage the buffer on its own.
 
-I think this is fine to provide forward compatibility, please let us know i=
-f you
-do not like this, or Nan should send a new version with explanation.
+Testing
+=======
 
->
-> thanks,
->
-> greg k-h
->
---=20
-Thansk,
-Kuai
+Tested on Qcom X1E based Lenovo Thinkpad T14s laptop with WLAN device.
+
+Merge Strategy
+==============
+
+Since this series modifies many subsystem drivers, I'd like to get acks from
+relevant subsystem maintainers and take the series through MHI tree.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Manivannan Sadhasivam (2):
+      net: qrtr: Drop the MHI auto_queue feature for IPCR DL channels
+      bus: mhi: host: Drop the auto_queue support
+
+ drivers/accel/qaic/mhi_controller.c   | 44 -------------------
+ drivers/bus/mhi/host/init.c           | 10 -----
+ drivers/bus/mhi/host/internal.h       |  3 --
+ drivers/bus/mhi/host/main.c           | 81 +----------------------------------
+ drivers/bus/mhi/host/pci_generic.c    | 20 +--------
+ drivers/net/wireless/ath/ath11k/mhi.c |  4 --
+ drivers/net/wireless/ath/ath12k/mhi.c |  4 --
+ include/linux/mhi.h                   | 14 ------
+ net/qrtr/mhi.c                        | 67 ++++++++++++++++++++++++-----
+ 9 files changed, 60 insertions(+), 187 deletions(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251217-qrtr-fix-c058251d8d1a
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+
 
