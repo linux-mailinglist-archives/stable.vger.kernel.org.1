@@ -1,131 +1,119 @@
-Return-Path: <stable+bounces-202754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74591CC5EE6
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:50:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6ACCC5EAE
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAA403045F5B
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 03:49:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CAD0D3022D0F
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 03:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79782D249A;
-	Wed, 17 Dec 2025 03:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1712E2C234A;
+	Wed, 17 Dec 2025 03:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KKoH1JAI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1EA263C7F;
-	Wed, 17 Dec 2025 03:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4906972634;
+	Wed, 17 Dec 2025 03:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765943384; cv=none; b=WwBG3xz+A79SFKd1APf3GZLEq5kiSzTN43IM0ljDBKJrQgCN2WDreFR0s+kZiJLepmVtzotEIRoE/Tuja6UvgRvOdaKthwjJiI1sK5TgUmS/rABK5eVdIS/zBES1x2Hms2bx3tQNdd4RdU+nKt/sW+oos1JHViw8ZTD2gUGv/F8=
+	t=1765942828; cv=none; b=RT5Zd1gddmH7aWt6XYpmF4lfYaYmirHbLrZxEL/MmDbFsuOYuQ7/MS5eVeS0JzdVvU717LmidFUHNPOSn+8PDhD1KqdC/D1rXQ43nq3PoqNy15EDm7nwajCTFBbb0HGdY7PwBOx2WYm5i/sI1UjpXXAPWhhUU1eHlPi1NCC/0MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765943384; c=relaxed/simple;
-	bh=lROeOcWhUnInlzVqAwbfImHEp+MDu7ampUOQE1mrDy4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PPEMyqjWgPxZ0DXNol8Stw6542IoH9hdTVJOokT4qYpL40+3NaeoRyAQ0tQ2dU3pg5WthBM63Ne+QXECJwDMJRBap2HvDHZsSkVMRZZLTrE7gvCs6Jpk91etJle2mi7SYc7M3DeiNAugXmupSAB1K3J3ybWsNy2+QZ571cIUvXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8DxvsNKKEJpzgAAAA--.8S3;
-	Wed, 17 Dec 2025 11:49:30 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front1 (Coremail) with SMTP id qMiowJCxPMJFKEJpksAAAA--.913S4;
-	Wed, 17 Dec 2025 11:49:29 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	lixianglai@loongson.cn
-Cc: stable@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 2/2] LoongArch: KVM: fix "unreliable stack" issue
-Date: Wed, 17 Dec 2025 11:24:50 +0800
-Message-Id: <20251217032450.954344-3-lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20251217032450.954344-1-lixianglai@loongson.cn>
-References: <20251217032450.954344-1-lixianglai@loongson.cn>
+	s=arc-20240116; t=1765942828; c=relaxed/simple;
+	bh=71r/FurQ3F8BoPlQPTo4XR51vncUa8a5wL6EMIoy7yI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=emeo0Tf/gtET/CAx+f5TlzQP+5kDgAo5WZUCriCO9u4KEj9q5ksNGS0pPnRl2KuPoi7AOq/VZYBsSQpP8rdaiQBjohgGq+wmIa0UxG8RpWAuShwBT26tA1MusAGoyTc+H6DlzA1njxFzCKUuqIYEcPA+bQmrx2VlmDebq6iaOg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KKoH1JAI; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BH0uPrw1620433;
+	Wed, 17 Dec 2025 03:40:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=JefgsMDvIgjDVp5l7Q6RRnRpOpslcYHcAFwbInCYynQ=; b=
+	KKoH1JAIHGZjj+/svV5RbKfMYdNY8UqKf9U2sGTfmIuo9fBLS1CtX491BxfviyR/
+	B72Eg+5gTFsQxZ4LI2AsrLybshnoX7nr5Sc/5FcdTo/uUL1W3WO9TazIMbxkIyio
+	59U+ibPAanQWqLdnUr9Vi342WzFmpSpUSLi8VKbt1v72wpj5q/n432UBZZQmAcNm
+	QCZ1wHi0I/JqFkRJdFPnajaRh8t1QzFk54MjEK1HyFNk5SttF5Ap8Zo6EqJ9CNLf
+	LQ1cv1T+z7Bw2fe1Jl9I123j6t2vvR70xgE5uAYcLysAcTD+rhcDijeoc06+tvwH
+	8Jt7AwJHhMdXoiqKiRZEwA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b0y28d7at-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Dec 2025 03:40:22 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH2Igep025257;
+	Wed, 17 Dec 2025 03:40:21 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkb9ae7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Dec 2025 03:40:21 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BH3eLwX023311;
+	Wed, 17 Dec 2025 03:40:21 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b0xkb9adw-1;
+	Wed, 17 Dec 2025 03:40:21 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org,
+        Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        sathya.prakash@broadcom.com, ranjan.kumar@broadcom.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mpi3mr: Read missing IOCFacts flag for reply queue full overflow
+Date: Tue, 16 Dec 2025 22:40:14 -0500
+Message-ID: <176594264282.1094313.6410433967402959190.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251211002929.22071-1-chandrakanth.patil@broadcom.com>
+References: <20251211002929.22071-1-chandrakanth.patil@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxPMJFKEJpksAAAA--.913S4
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_03,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2512170027
+X-Proofpoint-GUID: ZxOCGoa3TiG6Xbq5hvBOlgCrzWaUCnnA
+X-Proofpoint-ORIG-GUID: ZxOCGoa3TiG6Xbq5hvBOlgCrzWaUCnnA
+X-Authority-Analysis: v=2.4 cv=fOQ0HJae c=1 sm=1 tr=0 ts=69422626 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=mxwuzmj4nLXzRVQ8sVoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDAyNyBTYWx0ZWRfX2dVhcHc/OdN4
+ dRRbulX8D1HmxZ4j9Ii0SLmUS3fkhhwsbsJFROs63aQZofBFySEOFuvlRDZwLSvn2zRYuoeEK1C
+ hKjw0e2St8QuogEWHDH5JE+hLPU2Q/j97y9g05o2a1DfjrgTlut8sub5f4f3vspB4wy1wz1JmIh
+ jC7iuz1FBZM0T/PzykBpPfCVSSFRQBIogfZhYG8LI462EdVI4HPMUaIrGQfEu50DtQ29DXpymC4
+ CfujNcoclMapGKmrLD0kDAfGanI3/gJ88Dblqo/XiMMzynhKPt7XAXIoNeoKQTfl0Qz/RtynXd7
+ 6ZZ1wp/iuE6irKLQaBB9bAGGiQe/Eq9Ehn7IpU/2I/1iryWhw846gU2mGWCjz6UB/1c8uzfCYhh
+ 5rEAkT4os9ZRcypUz0IcMGZStGmdiQ==
 
-Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
-the assembly function to guide the generation of correct ORC table entries,
-thereby solving the timeout problem of loading the livepatch-sample module
-on a physical machine running multiple vcpus virtual machines.
+On Thu, 11 Dec 2025 05:59:29 +0530, Chandrakanth Patil wrote:
 
-While solving the above problems, we have gained an additional benefit,
-that is, we can obtain more call stack information
+> The driver was not reading the MAX_REQ_PER_REPLY_QUEUE_LIMIT
+> IOCFacts flag, so the reply-queue-full handling was never enabled
+> even on firmware that supports it. Reading this flag enables the
+> feature and prevents reply queue overflow
+> 
+> 
 
-Stack information that can be obtained before the problem is fixed:
-[<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-[<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-[<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-[<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-[<0>] kvm_handle_exit+0x160/0x270 [kvm]
-[<0>] kvm_exc_entry+0x100/0x1e0
+Applied to 6.19/scsi-fixes, thanks!
 
-Stack information that can be obtained after the problem is fixed:
-[<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-[<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-[<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-[<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-[<0>] kvm_handle_exit+0x160/0x270 [kvm]
-[<0>] kvm_exc_entry+0x100/0x1e0
-[<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
-[<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
-[<0>] sys_ioctl+0x498/0xf00
-[<0>] do_syscall+0x94/0x190
-[<0>] handle_syscall+0xb8/0x158
+[1/1] mpi3mr: Read missing IOCFacts flag for reply queue full overflow
+      https://git.kernel.org/mkp/scsi/c/d37316319498
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Xianglai Li <lixianglai@loongson.cn>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-
- arch/loongarch/kvm/switch.S | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index 93845ce53651..e3ecb24a3bc5 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
- 	/* restore per cpu register */
- 	ld.d	u0, a2, KVM_ARCH_HPERCPU
- 	addi.d	sp, sp, -PT_SIZE
-+	UNWIND_HINT_REGS
- 
- 	/* Prepare handle exception */
- 	or	a0, s0, zero
-@@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
- 	addi.d	a2, sp, -PT_SIZE
- 	/* Save host GPRs */
- 	kvm_save_host_gpr a2
-+	st.d	ra, a2, PT_ERA
- 
- 	addi.d	a2, a1, KVM_VCPU_ARCH
- 	st.d	sp, a2, KVM_ARCH_HSP
 -- 
-2.39.1
-
+Martin K. Petersen
 
