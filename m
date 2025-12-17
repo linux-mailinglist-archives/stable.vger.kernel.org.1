@@ -1,131 +1,422 @@
-Return-Path: <stable+bounces-202758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A3ACC5FD0
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B52CC5FBE
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 05:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 263A130321FB
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:56:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B49A630255A6
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 04:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A506524468C;
-	Wed, 17 Dec 2025 04:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52463224AFA;
+	Wed, 17 Dec 2025 04:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBdti7St"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B391DF723
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 04:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA9F1DF75D
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 04:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765947408; cv=none; b=eGsRBauWFR3JJyqH9N/y21PnfcdAf1hUekppUr6KdB6wAMIDllqV0LTMKzod0qNz9GETP/IX6kuA+mQSNteiueZ4Huklu2wJ/V155ZoQWEZWj+E+gAYqElRr9BXIv7sdqcGLlH5u8mMTrayrZgwjMUZOkJD9Mlg4VI/ByyHTdDM=
+	t=1765947308; cv=none; b=nyYfRLktdBzr2C+tm37HrgQHvU40Xwz3FEzhAiLnvUxF8OIm/7q2n4vSmsNdxOdrBl23G6/QaXYsGynBvBxWdM/skQpqeALJf8pwmqp69WWT9YW53npEd3LFuS1LKQ5wGNwz/L0NdsRhALlBsZzS2xngcp4yB+1gpFz5aFpYE74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765947408; c=relaxed/simple;
-	bh=8MscW9NMqNUNk9mVtwc1uYe4hV35ELC3iugJO391g34=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dWL7ALEpX/H63jVVEG0PqlgPUGhk9N9LAVXNT1aSyIO5StciYgAEtkqx//bnq948ADTAVuZOiMslzGuhUfHIvh8XK9jGr0uz80AlSVR+p7DY9pJ9IGBG2kI0vv2JT1RD7mZAtckywJ387+NGGCTnZ5WWG/tdsB4pHNUwVpf7wo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1765946658-1eb14e3d8af47a0001-OJig3u
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id nnuJvdCSHctPGrIN (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 17 Dec 2025 12:44:18 +0800 (CST)
-X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
- 2025 12:44:17 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Wed, 17 Dec 2025 12:44:17 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
- (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 17 Dec
- 2025 12:31:27 +0800
-Message-ID: <cd6a8143-f93a-4843-b8f6-dbff645c7555@zhaoxin.com>
-Date: Wed, 17 Dec 2025 12:30:57 +0800
+	s=arc-20240116; t=1765947308; c=relaxed/simple;
+	bh=lAHGMMu6N3KIyR0A+0L13L+SSADR37OawFsR2bx8C3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I7geEbMOAK/QtEpp6JTMLYJSHtN5B4K3/bubLl5zV7ceJdgfZwDCjEQmvEUGidRAUAotKdErSsr7GGg0jVF3drBmERc0vVToFqrr7k3i1PLcetTYZgJJ4hFadHmK2vDDln/ynkCgYmccGXo2MTqYLu4nmimb6nZ+6X+QPzcSpFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBdti7St; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE5FC19422
+	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 04:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765947307;
+	bh=lAHGMMu6N3KIyR0A+0L13L+SSADR37OawFsR2bx8C3w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aBdti7StnXTFGM7LF+vE6aLjHRdpibvUtPvxsJizZmh0pKscTEQa9oJf/7Jxjisxb
+	 A4ApOM1kafo2mtTThyFK25PSUwKFVk80Rw+6U01Cx3XtfUhoZiz9TFeaoiy6BnHKwf
+	 cCLe7ClSrzUHqzXu4wyJ15WdlzkBQzrF2nam6INF6znphAej89Ota+1wbKrTfd7whU
+	 kf50xufv8wtA4a0s64Zl9ZWSHDuuZv0WVApSduIR9O3JM6wvEbXoIjXZzNU1/LOVU7
+	 JL8HuanHOOHvfAzgauqTDjvHNsUmiT26KqwEXor795wGmu+S3wlDyo+Eud+eW43aoB
+	 6g/N7xvh4kLnQ==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b734fcbf1e3so1071778966b.3
+        for <stable@vger.kernel.org>; Tue, 16 Dec 2025 20:55:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX74nw8dHrNFbOQZ7l8JSaLbtYp5SpllcyWu0+8jpRYdmR8+4xfyqOd8VB374LipoJURQR/+IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzcQvSVsDZPRrahMYW/5rNnng5XeA6E4eZK9eN7OfjGhkx7ieP
+	3JwS+vG+IbBuo+Nq6sjx83ns3qZzXOISxL7UYq1UPqEazsi0f7HBy73sUfz/dIWxa2K2fpxSyN4
+	2VXQddzs+ywoMMmlxWh5nUlB3p9db9nU=
+X-Google-Smtp-Source: AGHT+IFAoom6hG9Dt8hOVD8egVwao+xt5F1b4wnA93K5h4TvpEA6sJ+Q8uA4HuejzTDAJjC/ULJyquXXRDbT5ydrExs=
+X-Received: by 2002:a17:907:3ea8:b0:b7a:9cc5:4580 with SMTP id
+ a640c23a62f3a-b7d236eeb00mr1714341866b.27.1765947306265; Tue, 16 Dec 2025
+ 20:55:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-To: Eric Biggers <ebiggers@kernel.org>, Herbert Xu
-	<herbert@gondor.apana.org.au>
-X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-CC: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>, larryw3i
-	<larryw3i@yeah.net>, <stable@vger.kernel.org>, <CobeChen@zhaoxin.com>,
-	<GeorgeXue@zhaoxin.com>, <HansHu@zhaoxin.com>, <LeoLiu-oc@zhaoxin.com>,
-	<TonyWWang-oc@zhaoxin.com>, <YunShen@zhaoxin.com>
-References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
- <20251116183926.3969-1-ebiggers@kernel.org>
- <aRvpWqwQhndipqx-@gondor.apana.org.au> <20251118040244.GB3993@sol>
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-In-Reply-To: <20251118040244.GB3993@sol>
+References: <20251217032450.954344-1-lixianglai@loongson.cn> <20251217032450.954344-2-lixianglai@loongson.cn>
+In-Reply-To: <20251217032450.954344-2-lixianglai@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 17 Dec 2025 12:55:19 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5g7KXK08vqKOR5HTsPKZ7X3CBa9fgfSTavnN7m9D_9AA@mail.gmail.com>
+X-Gm-Features: AQt7F2pwNY2gTmTWS1K0BIjtqBZO1HmebMffODnjSz6bYm5Kbe45yC7GIOglavE
+Message-ID: <CAAhV-H5g7KXK08vqKOR5HTsPKZ7X3CBa9fgfSTavnN7m9D_9AA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Compile the switch.S file directly
+ into the kernel
+To: Xianglai Li <lixianglai@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX02.zhaoxin.com (10.29.252.6)
-X-Moderation-Data: 12/17/2025 12:44:16 PM
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1765946658
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1781
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.151677
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+Content-Transfer-Encoding: quoted-printable
 
+Hi, Xianglai,
 
-On 11/18/2025 12:02 PM, Eric Biggers wrote:
-> On Tue, Nov 18, 2025 at 11:34:50AM +0800, Herbert Xu wrote:
->> On Sun, Nov 16, 2025 at 10:39:26AM -0800, Eric Biggers wrote:
->>> This driver is known broken, as it computes the wrong SHA-1 and SHA-256
->>> hashes.  Correctness needs to be the first priority for cryptographic
->>> code.  Just disable it, allowing the standard (and actually correct)
->>> SHA-1 and SHA-256 implementations to take priority.
->>
->> ...
->>
->>> diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
->>> index a6688d54984c..16ea3e741350 100644
->>> --- a/drivers/crypto/Kconfig
->>> +++ b/drivers/crypto/Kconfig
->>> @@ -38,11 +38,11 @@ config CRYPTO_DEV_PADLOCK_AES
->>>       If unsure say M. The compiled module will be
->>>       called padlock-aes.
->>>
->>>  config CRYPTO_DEV_PADLOCK_SHA
->>>     tristate "PadLock driver for SHA1 and SHA256 algorithms"
->>> -   depends on CRYPTO_DEV_PADLOCK
->>> +   depends on CRYPTO_DEV_PADLOCK && BROKEN
->>
->> It's only broken on ZHAOXIN, so this should be conditional on
->> CPU_SUP_ZHAOXIN.
->>
-> 
-> I.e., it's apparently broken on at least every CPU that has this
-> hardware that's been released in the last 14 years.  How confident are
-> you that it still works on VIA CPUs from 2011 and earlier and is worth
-> maintaining for them?
+On Wed, Dec 17, 2025 at 11:49=E2=80=AFAM Xianglai Li <lixianglai@loongson.c=
+n> wrote:
+>
+> If we directly compile the switch.S file into the kernel, the address of
+> the kvm_exc_entry function will definitely be within the DMW memory area.
+> Therefore, we will no longer need to perform a copy relocation of
+> kvm_exc_entry.
+>
+> Based on the above description, compile switch.S directly into the kernel=
+,
+> and then remove the copy relocation execution logic for the kvm_exc_entry
+> function.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Cc: Bibo Mao <maobibo@loongson.cn>
+> Cc: Charlie Jenkins <charlie@rivosinc.com>
+> Cc: Xianglai Li <lixianglai@loongson.cn>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+>
+>  arch/loongarch/Kbuild                       |  2 +-
+>  arch/loongarch/include/asm/asm-prototypes.h | 16 ++++++++++
+>  arch/loongarch/include/asm/kvm_host.h       |  5 +--
+>  arch/loongarch/include/asm/kvm_vcpu.h       | 20 ++++++------
+>  arch/loongarch/kvm/Makefile                 |  2 +-
+>  arch/loongarch/kvm/main.c                   | 35 ++-------------------
+>  arch/loongarch/kvm/switch.S                 | 22 ++++++++++---
+>  7 files changed, 49 insertions(+), 53 deletions(-)
+>
+> diff --git a/arch/loongarch/Kbuild b/arch/loongarch/Kbuild
+> index beb8499dd8ed..1c7a0dbe5e72 100644
+> --- a/arch/loongarch/Kbuild
+> +++ b/arch/loongarch/Kbuild
+> @@ -3,7 +3,7 @@ obj-y +=3D mm/
+>  obj-y +=3D net/
+>  obj-y +=3D vdso/
+>
+> -obj-$(CONFIG_KVM) +=3D kvm/
+> +obj-$(subst m,y,$(CONFIG_KVM)) +=3D kvm/
+>
+>  # for cleaning
+>  subdir- +=3D boot
+> diff --git a/arch/loongarch/include/asm/asm-prototypes.h b/arch/loongarch=
+/include/asm/asm-prototypes.h
+> index 704066b4f736..eb591276d191 100644
+> --- a/arch/loongarch/include/asm/asm-prototypes.h
+> +++ b/arch/loongarch/include/asm/asm-prototypes.h
+> @@ -20,3 +20,19 @@ asmlinkage void noinstr __no_stack_protector ret_from_=
+kernel_thread(struct task_
+>                                                                     struc=
+t pt_regs *regs,
+>                                                                     int (=
+*fn)(void *),
+>                                                                     void =
+*fn_arg);
+> +
+> +void kvm_exc_entry(void);
+> +int  kvm_enter_guest(void *run, void *vcpu);
+> +
+> +#ifdef CONFIG_CPU_HAS_LSX
+> +void kvm_save_lsx(void *fpu);
+> +void kvm_restore_lsx(void *fpu);
+> +#endif
+> +
+> +#ifdef CONFIG_CPU_HAS_LASX
+> +void kvm_save_lasx(void *fpu);
+> +void kvm_restore_lasx(void *fpu);
+> +#endif
+> +
+> +void kvm_save_fpu(void *fpu);
+> +void kvm_restore_fpu(void *fpu);
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
+de/asm/kvm_host.h
+> index e4fe5b8e8149..0aa7679536cc 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -85,7 +85,6 @@ struct kvm_context {
+>  struct kvm_world_switch {
+>         int (*exc_entry)(void);
+>         int (*enter_guest)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+> -       unsigned long page_order;
+>  };
+>
+>  #define MAX_PGTABLE_LEVELS     4
+> @@ -344,11 +343,9 @@ enum hrtimer_restart kvm_swtimer_wakeup(struct hrtim=
+er *timer);
+>  void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm, const struct kv=
+m_memory_slot *memslot);
+>  void kvm_init_vmcs(struct kvm *kvm);
+>  void kvm_exc_entry(void);
+> -int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
+> +int  kvm_enter_guest(void *run, void *vcpu);
+>
+>  extern unsigned long vpid_mask;
+> -extern const unsigned long kvm_exception_size;
+> -extern const unsigned long kvm_enter_guest_size;
+>  extern struct kvm_world_switch *kvm_loongarch_ops;
+>
+>  #define SW_GCSR                (1 << 0)
+> diff --git a/arch/loongarch/include/asm/kvm_vcpu.h b/arch/loongarch/inclu=
+de/asm/kvm_vcpu.h
+> index 3784ab4ccdb5..8af98a3d7b0c 100644
+> --- a/arch/loongarch/include/asm/kvm_vcpu.h
+> +++ b/arch/loongarch/include/asm/kvm_vcpu.h
+> @@ -53,28 +53,28 @@ void kvm_deliver_exception(struct kvm_vcpu *vcpu);
+>
+>  void kvm_own_fpu(struct kvm_vcpu *vcpu);
+>  void kvm_lose_fpu(struct kvm_vcpu *vcpu);
+> -void kvm_save_fpu(struct loongarch_fpu *fpu);
+> -void kvm_restore_fpu(struct loongarch_fpu *fpu);
+> +void kvm_save_fpu(void *fpu);
+> +void kvm_restore_fpu(void *fpu);
+Why are these modifications needed?
 
-Given the lack of a verification platform for the current padlock-sha
-driver, and the fact that these CPUs are rarely used today, extending
-the existing padlock-sha driver to support the ZHAOXIN platform is very
-difficult. To address the issues encountered when using the padlock-sha
-driver on the ZHAOXIN platform, would it be acceptable to submit a
-completely new driver that aligns with the previous advice?
+Huacai
 
-Best Regards
-AlanSong-oc
-
+>  void kvm_restore_fcsr(struct loongarch_fpu *fpu);
+>
+>  #ifdef CONFIG_CPU_HAS_LSX
+>  int kvm_own_lsx(struct kvm_vcpu *vcpu);
+> -void kvm_save_lsx(struct loongarch_fpu *fpu);
+> -void kvm_restore_lsx(struct loongarch_fpu *fpu);
+> +void kvm_save_lsx(void *fpu);
+> +void kvm_restore_lsx(void *fpu);
+>  #else
+>  static inline int kvm_own_lsx(struct kvm_vcpu *vcpu) { return -EINVAL; }
+> -static inline void kvm_save_lsx(struct loongarch_fpu *fpu) { }
+> -static inline void kvm_restore_lsx(struct loongarch_fpu *fpu) { }
+> +static inline void kvm_save_lsx(void *fpu) { }
+> +static inline void kvm_restore_lsx(void *fpu) { }
+>  #endif
+>
+>  #ifdef CONFIG_CPU_HAS_LASX
+>  int kvm_own_lasx(struct kvm_vcpu *vcpu);
+> -void kvm_save_lasx(struct loongarch_fpu *fpu);
+> -void kvm_restore_lasx(struct loongarch_fpu *fpu);
+> +void kvm_save_lasx(void *fpu);
+> +void kvm_restore_lasx(void *fpu);
+>  #else
+>  static inline int kvm_own_lasx(struct kvm_vcpu *vcpu) { return -EINVAL; =
+}
+> -static inline void kvm_save_lasx(struct loongarch_fpu *fpu) { }
+> -static inline void kvm_restore_lasx(struct loongarch_fpu *fpu) { }
+> +static inline void kvm_save_lasx(void *fpu) { }
+> +static inline void kvm_restore_lasx(void *fpu) { }
+>  #endif
+>
+>  #ifdef CONFIG_CPU_HAS_LBT
+> diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+> index cb41d9265662..fe665054f824 100644
+> --- a/arch/loongarch/kvm/Makefile
+> +++ b/arch/loongarch/kvm/Makefile
+> @@ -11,7 +11,7 @@ kvm-y +=3D exit.o
+>  kvm-y +=3D interrupt.o
+>  kvm-y +=3D main.o
+>  kvm-y +=3D mmu.o
+> -kvm-y +=3D switch.o
+> +obj-y +=3D switch.o
+>  kvm-y +=3D timer.o
+>  kvm-y +=3D tlb.o
+>  kvm-y +=3D vcpu.o
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 80ea63d465b8..67d234540ed4 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -340,8 +340,7 @@ void kvm_arch_disable_virtualization_cpu(void)
+>
+>  static int kvm_loongarch_env_init(void)
+>  {
+> -       int cpu, order, ret;
+> -       void *addr;
+> +       int cpu, ret;
+>         struct kvm_context *context;
+>
+>         vmcs =3D alloc_percpu(struct kvm_context);
+> @@ -357,30 +356,8 @@ static int kvm_loongarch_env_init(void)
+>                 return -ENOMEM;
+>         }
+>
+> -       /*
+> -        * PGD register is shared between root kernel and kvm hypervisor.
+> -        * So world switch entry should be in DMW area rather than TLB ar=
+ea
+> -        * to avoid page fault reenter.
+> -        *
+> -        * In future if hardware pagetable walking is supported, we won't
+> -        * need to copy world switch code to DMW area.
+> -        */
+> -       order =3D get_order(kvm_exception_size + kvm_enter_guest_size);
+> -       addr =3D (void *)__get_free_pages(GFP_KERNEL, order);
+> -       if (!addr) {
+> -               free_percpu(vmcs);
+> -               vmcs =3D NULL;
+> -               kfree(kvm_loongarch_ops);
+> -               kvm_loongarch_ops =3D NULL;
+> -               return -ENOMEM;
+> -       }
+> -
+> -       memcpy(addr, kvm_exc_entry, kvm_exception_size);
+> -       memcpy(addr + kvm_exception_size, kvm_enter_guest, kvm_enter_gues=
+t_size);
+> -       flush_icache_range((unsigned long)addr, (unsigned long)addr + kvm=
+_exception_size + kvm_enter_guest_size);
+> -       kvm_loongarch_ops->exc_entry =3D addr;
+> -       kvm_loongarch_ops->enter_guest =3D addr + kvm_exception_size;
+> -       kvm_loongarch_ops->page_order =3D order;
+> +       kvm_loongarch_ops->exc_entry =3D (void *)kvm_exc_entry;
+> +       kvm_loongarch_ops->enter_guest =3D (void *)kvm_enter_guest;
+>
+>         vpid_mask =3D read_csr_gstat();
+>         vpid_mask =3D (vpid_mask & CSR_GSTAT_GIDBIT) >> CSR_GSTAT_GIDBIT_=
+SHIFT;
+> @@ -414,16 +391,10 @@ static int kvm_loongarch_env_init(void)
+>
+>  static void kvm_loongarch_env_exit(void)
+>  {
+> -       unsigned long addr;
+> -
+>         if (vmcs)
+>                 free_percpu(vmcs);
+>
+>         if (kvm_loongarch_ops) {
+> -               if (kvm_loongarch_ops->exc_entry) {
+> -                       addr =3D (unsigned long)kvm_loongarch_ops->exc_en=
+try;
+> -                       free_pages(addr, kvm_loongarch_ops->page_order);
+> -               }
+>                 kfree(kvm_loongarch_ops);
+>         }
+>
+> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+> index f1768b7a6194..93845ce53651 100644
+> --- a/arch/loongarch/kvm/switch.S
+> +++ b/arch/loongarch/kvm/switch.S
+> @@ -5,6 +5,7 @@
+>
+>  #include <linux/linkage.h>
+>  #include <asm/asm.h>
+> +#include <asm/page.h>
+>  #include <asm/asmmacro.h>
+>  #include <asm/loongarch.h>
+>  #include <asm/regdef.h>
+> @@ -100,10 +101,18 @@
+>          *  -        is still in guest mode, such as pgd table/vmid regis=
+ters etc,
+>          *  -        will fix with hw page walk enabled in future
+>          * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KV=
+M_TEMP_KS
+> +        *
+> +        * PGD register is shared between root kernel and kvm hypervisor.
+> +        * So world switch entry should be in DMW area rather than TLB ar=
+ea
+> +        * to avoid page fault reenter.
+> +        *
+> +        * In future if hardware pagetable walking is supported, we won't
+> +        * need to copy world switch code to DMW area.
+>          */
+>         .text
+>         .cfi_sections   .debug_frame
+>  SYM_CODE_START(kvm_exc_entry)
+> +       .p2align PAGE_SHIFT
+>         UNWIND_HINT_UNDEFINED
+>         csrwr   a2,   KVM_TEMP_KS
+>         csrrd   a2,   KVM_VCPU_KS
+> @@ -190,8 +199,8 @@ ret_to_host:
+>         kvm_restore_host_gpr    a2
+>         jr      ra
+>
+> -SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
+>  SYM_CODE_END(kvm_exc_entry)
+> +EXPORT_SYMBOL(kvm_exc_entry)
+>
+>  /*
+>   * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
+> @@ -215,8 +224,8 @@ SYM_FUNC_START(kvm_enter_guest)
+>         /* Save kvm_vcpu to kscratch */
+>         csrwr   a1, KVM_VCPU_KS
+>         kvm_switch_to_guest
+> -SYM_INNER_LABEL(kvm_enter_guest_end, SYM_L_LOCAL)
+>  SYM_FUNC_END(kvm_enter_guest)
+> +EXPORT_SYMBOL(kvm_enter_guest)
+>
+>  SYM_FUNC_START(kvm_save_fpu)
+>         fpu_save_csr    a0 t1
+> @@ -224,6 +233,7 @@ SYM_FUNC_START(kvm_save_fpu)
+>         fpu_save_cc     a0 t1 t2
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_fpu)
+> +EXPORT_SYMBOL(kvm_save_fpu)
+>
+>  SYM_FUNC_START(kvm_restore_fpu)
+>         fpu_restore_double a0 t1
+> @@ -231,6 +241,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+>         fpu_restore_cc     a0 t1 t2
+>         jr                 ra
+>  SYM_FUNC_END(kvm_restore_fpu)
+> +EXPORT_SYMBOL(kvm_restore_fpu)
+>
+>  #ifdef CONFIG_CPU_HAS_LSX
+>  SYM_FUNC_START(kvm_save_lsx)
+> @@ -239,6 +250,7 @@ SYM_FUNC_START(kvm_save_lsx)
+>         lsx_save_data   a0 t1
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_lsx)
+> +EXPORT_SYMBOL(kvm_save_lsx)
+>
+>  SYM_FUNC_START(kvm_restore_lsx)
+>         lsx_restore_data a0 t1
+> @@ -246,6 +258,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+>         fpu_restore_csr  a0 t1 t2
+>         jr               ra
+>  SYM_FUNC_END(kvm_restore_lsx)
+> +EXPORT_SYMBOL(kvm_restore_lsx)
+>  #endif
+>
+>  #ifdef CONFIG_CPU_HAS_LASX
+> @@ -255,6 +268,7 @@ SYM_FUNC_START(kvm_save_lasx)
+>         lasx_save_data  a0 t1
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_lasx)
+> +EXPORT_SYMBOL(kvm_save_lasx)
+>
+>  SYM_FUNC_START(kvm_restore_lasx)
+>         lasx_restore_data a0 t1
+> @@ -262,10 +276,8 @@ SYM_FUNC_START(kvm_restore_lasx)
+>         fpu_restore_csr   a0 t1 t2
+>         jr                ra
+>  SYM_FUNC_END(kvm_restore_lasx)
+> +EXPORT_SYMBOL(kvm_restore_lasx)
+>  #endif
+> -       .section ".rodata"
+> -SYM_DATA(kvm_exception_size, .quad kvm_exc_entry_end - kvm_exc_entry)
+> -SYM_DATA(kvm_enter_guest_size, .quad kvm_enter_guest_end - kvm_enter_gue=
+st)
+>
+>  #ifdef CONFIG_CPU_HAS_LBT
+>  STACK_FRAME_NON_STANDARD kvm_restore_fpu
+> --
+> 2.39.1
+>
+>
 
