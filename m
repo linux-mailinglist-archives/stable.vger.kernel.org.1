@@ -1,80 +1,46 @@
-Return-Path: <stable+bounces-202788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860EFCC6DE0
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:46:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B81DCC6DE9
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAFD930CB01B
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4080E3020350
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61C933BBA3;
-	Wed, 17 Dec 2025 09:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740861A3172;
+	Wed, 17 Dec 2025 09:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="RWRJ/DzP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjBlE7VC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A976833B6DA
-	for <stable@vger.kernel.org>; Wed, 17 Dec 2025 09:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C51A2BEFFB;
+	Wed, 17 Dec 2025 09:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964511; cv=none; b=nUzwHm4EUbda6u6dxzmLnsGtEbNizHYYiYoJumzwELSiu4gDje7DLnBz5T0AgdoOOW7zPqaQKOEvqxJLCLBMYvdq5B1ILCIzDEqPCSQKNilXsTNaX15+hkyMVRMoS8bahvg/K20Gcvq0T7XqKluOxNiByTLDd+AoGKha5avwLQI=
+	t=1765964578; cv=none; b=tgmTXLIZbrFUSyF8Y3Eqm2g/sdO9Tn9S9RmZBGY8+Fj+exWwgmH4/np5nawiBN7FM2j9i+t2474HezLjPkE9Jkn5+T37iHKnY41wUU3OaaFVxJspFZeOUm6VwxdJ49QIwefTYAGdM/4xWixKk+1CoZ/Sm6kp/mleEyUpRRyKQBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964511; c=relaxed/simple;
-	bh=WB1FIXZ+ZTDeazxvypntHYbSHS0KL2l6sKZxn9djhTI=;
+	s=arc-20240116; t=1765964578; c=relaxed/simple;
+	bh=STrvD8J20okz2S7mubYnGdCz/fGgovpVdE6Vgo0vRGE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iBDuovkwLflSC66TtRtHtFumsiTjNd7ODXG7W78o6o6eHHALZw0GC14sgu38eFfwkPHVajGOGsMLxEnLIgUJZOEH92lEJRq4+pDjBRewfx7ZdozkowHAHhvs7hhRp4OKAsS/fEjSwqIgmlYIRJBggYP4E7sfyp7Mra32+9oVgRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=RWRJ/DzP; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fed090e5fso2140723f8f.1
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 01:41:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1765964506; x=1766569306; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lcxqYG6DoWTCtUBGDosjwKS+VJWtzCM2tGuWprBPGSs=;
-        b=RWRJ/DzP2t7+EsSuByGYt9QCUarMVO9b3mVFxUe6njyxz1W0B80pu3xo2Hkh1MWBfs
-         b+kgtr6OrofZCtacBTfh8taEXX6NIlxOqRIcE4s1Bhv5ngPcbwpq8SGxzLPaw6z2IROr
-         0iMqKtnMDqjCDwHegzjpsDlZAZn9KK8YtZ7ygdFi5pIrTG/lhYg3pKdg7xsJ8NkQzCgl
-         7cebz1MFLX6hggpFaB9VfwCSNSfaTvgGSUkf43SQ5evE9P1dv01q8bLAtu9I+DcjJEer
-         TujwJDSIl4hBPFR2u/0iAI2kqaRNJY1CPQA9w3xLYu3jyZ576l+Rqzf6FHCj/tTdoP5e
-         3spw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765964506; x=1766569306;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lcxqYG6DoWTCtUBGDosjwKS+VJWtzCM2tGuWprBPGSs=;
-        b=jOQfXqjLib/bPa20n87Z4hnKbgD8bAR2Pmo6bmetiblMuU7GKpKUgVNLIhBQSJLRkV
-         h/jXueGZ/uZyogcizDvJtket+1KwgfM7EZmwJuaCc4TnkAlOH97jmB6pqyE+JCOR8HR5
-         RMZCsS+vAnIoofPzgMIHVTAekmpmuJu6B5W/Vf6smpdylbvQbfo+TR8pifeRrTbpQb/I
-         ES2VIfm1bHuIrouyEgd78N+L6B/w7GKI0C1OJaq7ZmvcbXrpuBcSIQ4RzvA5uCvZZYoZ
-         qji+wqm/6ZuHK7ziCvSoWt94I83pzj2i6glNAU0BBE40EB+8RI50iKNhhm+pNY9zVYJN
-         oUdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVF7hH+3NN1RjODEyg2kilperdSQVKzv8IyNUwdMLFpVdQH2/2aozQEWcbh+8pUTTfN/PvTFB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwL9rDaCDzcFrGDD3fhsY3wfy6uHjQ2QRBDMNi4Cv7lalMCIXA
-	gTKoNTKrUxglycmuz3cOpLQLiZExmhwjosr4EcA14CuBVMLdBeydy09sVQGBtSjm2tY=
-X-Gm-Gg: AY/fxX7zYkgWp8R1mAiVz89BKtQDcb+oWO5C5+5GzhGMw1cfT+UGZ+K21ARnpCH00sf
-	D7T/sa2Gbhk+meUJD7UZMVitNJITv0BRzkEIPh4WqS15B2Sz/VczUN1vJtr1FEz7OtRaSSCTpyo
-	jHXBN7A1ihmu5RoY9jIB84WeSfvHIRId/WObGm5Yb3CHb7R7YaIIc+wPPfUCp82QhKUwZD4NriQ
-	98CsovMjD9FBBjDgbi4Jxgf5Ul6fGCtWTyHEFSkWEOmauVrWrjeYg5ux9JKDiT0GQFgnnR8SOUm
-	lk3fox4jLDIJfwQE3u3raiCqQvS9mFU4LwSGetMzJPZSCC3eI5OrNX5stngobenVxUQKrNzwEaY
-	Ov7j6Rgh4T3wf5KfQE3vpsONOcHMhunBwuAmk0HDjssmTKspqy3DjUyz/KBfghaXQwR+O2bUY5G
-	blXPBPik9/UvY80t2OzP0Z31CPeT5AAQ==
-X-Google-Smtp-Source: AGHT+IF42TMTZgmmYQk4G4FzEmAK1kBBZ8FqBRaaQX5i9kN2bMEeNbgZxuBI29NZ+Nw7ntqssvwEoA==
-X-Received: by 2002:a05:6000:18a6:b0:430:fd84:3179 with SMTP id ffacd0b85a97d-430fd8434b3mr9106013f8f.33.1765964505423;
-        Wed, 17 Dec 2025 01:41:45 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4310ade7c4asm3757054f8f.28.2025.12.17.01.41.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 01:41:44 -0800 (PST)
-Message-ID: <74a801d3-8653-404f-8531-cb99108eac33@tuxon.dev>
-Date: Wed, 17 Dec 2025 11:41:43 +0200
+	 In-Reply-To:Content-Type; b=jkkr5yjXulhAjzByrFPxbm8QgwSx5O3DJKZTfJviKXJY1/b+du+Dp4R04OIpgm6w4MVV9r6Adpo6d/8b8/CDjoWFG2qkkDzCT0xP72PfnwDXtieCeQ+mnPn1mJDnCYvuhTf8Jktuw1azU+dF85CiKauAYxfpuOntDFY/KPv/B9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjBlE7VC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712F2C4CEF5;
+	Wed, 17 Dec 2025 09:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765964577;
+	bh=STrvD8J20okz2S7mubYnGdCz/fGgovpVdE6Vgo0vRGE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bjBlE7VC13WaxmgfK1sXplA0B0M58TxJsjS7FsDyGh7qs5CTI3BDmtTD32MQG0Eni
+	 29UqNJGJi3HaDfM2m5MKxPIcEfby+haJgIINX+VuMxqji2FoTC4Yyj3LEEP2WMhJnG
+	 pRPJyBKvVnvlzYO+EUlkaux9QKUMw/zoYJySZyGBHNmY/mAC6fI89IRTld46L2VRNM
+	 7jWIsxrtNYl68VA+6auB/n2Ah1/LzXyqDQPKWzERD9Xt9Hmpf+XYuuAjh5F1PET9u0
+	 ve+MZ7u3X+xN+c7iKvgv4JLDcs1YPfqi1tkcdIOuFy1jiZ8DZg8pZ1MnUFUp15Goj6
+	 n4wmUAAw43D+Q==
+Message-ID: <25751506-e4df-4ae3-9ea8-4b2800146ba2@kernel.org>
+Date: Wed, 17 Dec 2025 10:42:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,215 +48,172 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i2c: riic: Move suspend handling to NOIRQ phase
-To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
- tomm.merciai@gmail.com
-Cc: linux-renesas-soc@vger.kernel.org, biju.das.jz@bp.renesas.com,
- Chris Brandt <chris.brandt@renesas.com>, Andi Shyti <andi.shyti@kernel.org>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <05a31af3d6caba51e8237a49853281aa49bed916.1765540678.git.tommaso.merciai.xr@bp.renesas.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: Re: [PATCH 6.18 215/614] perf annotate: Fix build with NO_SLANG=1
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Tianyou Li <tianyou.li@intel.com>,
+ Namhyung Kim <namhyung@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20251216111401.280873349@linuxfoundation.org>
+ <20251216111409.165603959@linuxfoundation.org>
 Content-Language: en-US
-In-Reply-To: <05a31af3d6caba51e8237a49853281aa49bed916.1765540678.git.tommaso.merciai.xr@bp.renesas.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20251216111409.165603959@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi, Tommaso,
+On 16. 12. 25, 12:09, Greg Kroah-Hartman wrote:
+> 6.18-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Namhyung Kim <namhyung@kernel.org>
+> 
+> [ Upstream commit 0e6c07a3c30cdc4509fc5e7dc490d4cc6e5c241a ]
+> 
+> The recent change for perf c2c annotate broke build without slang
+> support like below.
+> 
+>    builtin-annotate.c: In function 'hists__find_annotations':
+>    builtin-annotate.c:522:73: error: 'NO_ADDR' undeclared (first use in this function); did you mean 'NR_ADDR'?
+>      522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
+>          |                                                                         ^~~~~~~
+>          |                                                                         NR_ADDR
+>    builtin-annotate.c:522:73: note: each undeclared identifier is reported only once for each function it appears in
+> 
+>    builtin-annotate.c:522:31: error: too many arguments to function 'hist_entry__tui_annotate'
+>      522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
+>          |                               ^~~~~~~~~~~~~~~~~~~~~~~~
+>    In file included from util/sort.h:6,
+>                     from builtin-annotate.c:28:
+>    util/hist.h:756:19: note: declared here
+>      756 | static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+>          |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> And I noticed that it missed to update the other side of #ifdef
+> HAVE_SLANG_SUPPORT.  Let's fix it.
+> 
+> Cc: Tianyou Li <tianyou.li@intel.com>
+> Fixes: cd3466cd2639783d ("perf c2c: Add annotation support to perf c2c report")
 
-On 12/12/25 13:58, Tommaso Merciai wrote:
-> Commit 53326135d0e0 ("i2c: riic: Add suspend/resume support") added
-> suspend support for the Renesas I2C driver and following this change
-> on RZ/G3E the following WARNING is seen on entering suspend ...
-> 
-> [  134.275704] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-> [  134.285536] ------------[ cut here ]------------
-> [  134.290298] i2c i2c-2: Transfer while suspended
-> [  134.295174] WARNING: drivers/i2c/i2c-core.h:56 at __i2c_smbus_xfer+0x1e4/0x214, CPU#0: systemd-sleep/388
-> [  134.365507] Tainted: [W]=WARN
-> [  134.368485] Hardware name: Renesas SMARC EVK version 2 based on r9a09g047e57 (DT)
-> [  134.375961] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [  134.382935] pc : __i2c_smbus_xfer+0x1e4/0x214
-> [  134.387329] lr : __i2c_smbus_xfer+0x1e4/0x214
-> [  134.391717] sp : ffff800083f23860
-> [  134.395040] x29: ffff800083f23860 x28: 0000000000000000 x27: ffff800082ed5d60
-> [  134.402226] x26: 0000001f4395fd74 x25: 0000000000000007 x24: 0000000000000001
-> [  134.409408] x23: 0000000000000000 x22: 000000000000006f x21: ffff800083f23936
-> [  134.416589] x20: ffff0000c090e140 x19: ffff0000c090e0d0 x18: 0000000000000006
-> [  134.423771] x17: 6f63657320313030 x16: 2e30206465737061 x15: ffff800083f23280
-> [  134.430953] x14: 0000000000000000 x13: ffff800082b16ce8 x12: 0000000000000f09
-> [  134.438134] x11: 0000000000000503 x10: ffff800082b6ece8 x9 : ffff800082b16ce8
-> [  134.445315] x8 : 00000000ffffefff x7 : ffff800082b6ece8 x6 : 80000000fffff000
-> [  134.452495] x5 : 0000000000000504 x4 : 0000000000000000 x3 : 0000000000000000
-> [  134.459672] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c9ee9e80
-> [  134.466851] Call trace:
-> [  134.469311]  __i2c_smbus_xfer+0x1e4/0x214 (P)
-> [  134.473715]  i2c_smbus_xfer+0xbc/0x120
-> [  134.477507]  i2c_smbus_read_byte_data+0x4c/0x84
-> [  134.482077]  isl1208_i2c_read_time+0x44/0x178 [rtc_isl1208]
-> [  134.487703]  isl1208_rtc_read_time+0x14/0x20 [rtc_isl1208]
-> [  134.493226]  __rtc_read_time+0x44/0x88
-> [  134.497012]  rtc_read_time+0x3c/0x68
-> [  134.500622]  rtc_suspend+0x9c/0x170
-> 
-> The warning is triggered because I2C transfers can still be attempted
-> while the controller is already suspended, due to inappropriate ordering
-> of the system sleep callbacks.
-> 
-> Fix this by moving the system sleep suspend/resume callbacks to the NOIRQ
-> phase, ensuring the adapter is fully quiesced after late suspend and
-> properly resumed before the early resume phase.
-> 
-> To support NOIRQ resume, the hardware initialization path must not invoke
-> runtime PM APIs. Split the init code so that the low-level hardware setup
-> can be executed without pm_runtime_get/put(). This avoids violating the
-> constraint introduced by commit 1e2ef05bb8cf ("PM: Limit race conditions
-> between runtime PM and system sleep (v2)"), which forbids runtime PM
-> calls during early resume.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 53326135d0e0 ("i2c: riic: Add suspend/resume support")
-> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+That fixes line ^^^ appears to be wrong, as now I see:
+builtin-annotate.c: In function ‘hists__find_annotations’:
+builtin-annotate.c:522:10: error: too few arguments to function 
+‘hist_entry__tui_annotate’
+     key = hist_entry__tui_annotate(he, evsel, NULL);
+           ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from util/sort.h:6:0,
+                  from builtin-annotate.c:28:
+util/hist.h:757:19: note: declared here
+  static inline int hist_entry__tui_annotate(struct hist_entry *he 
+__maybe_unused,
+                    ^~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+Because in util/hist.h, we now have:
+int hist_entry__tui_annotate(struct hist_entry *he, struct evsel *evsel,
+                              struct hist_browser_timer *hbt);
+...
+static inline int hist_entry__tui_annotate(struct hist_entry *he 
+__maybe_unused,
+                                            struct evsel *evsel 
+__maybe_unused,
+                                            struct hist_browser_timer 
+*hbt __maybe_unused,
+                                            u64 al_addr __maybe_unused)
+{
+         return 0;
+}
+
+
+
+Was it meant to be
+Fixes: ad83f3b7155d perf c2c annotate: Start from the contention line
+?
+
+> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/i2c/busses/i2c-riic.c | 65 ++++++++++++++++++++++-------------
->  1 file changed, 41 insertions(+), 24 deletions(-)
+>   tools/perf/util/hist.h | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
-> index 3e8f126cb7f7..9acc8936cdf7 100644
-> --- a/drivers/i2c/busses/i2c-riic.c
-> +++ b/drivers/i2c/busses/i2c-riic.c
-> @@ -349,9 +349,8 @@ static const struct i2c_algorithm riic_algo = {
->  	.functionality = riic_func,
->  };
->  
-> -static int riic_init_hw(struct riic_dev *riic)
-> +static int __riic_init_hw(struct riic_dev *riic)
->  {
-> -	int ret;
->  	unsigned long rate;
->  	unsigned long ns_per_tick;
->  	int total_ticks, cks, brl, brh;
-> @@ -431,10 +430,6 @@ static int riic_init_hw(struct riic_dev *riic)
->  		 rate / total_ticks, ((brl + 3) * 100) / (brl + brh + 6),
->  		 t->scl_fall_ns / ns_per_tick, t->scl_rise_ns / ns_per_tick, cks, brl, brh);
->  
-> -	ret = pm_runtime_resume_and_get(dev);
-> -	if (ret)
-> -		return ret;
-> -
->  	/* Changing the order of accessing IICRST and ICE may break things! */
->  	riic_writeb(riic, ICCR1_IICRST | ICCR1_SOWP, RIIC_ICCR1);
->  	riic_clear_set_bit(riic, 0, ICCR1_ICE, RIIC_ICCR1);
-> @@ -451,10 +446,25 @@ static int riic_init_hw(struct riic_dev *riic)
->  
->  	riic_clear_set_bit(riic, ICCR1_IICRST, 0, RIIC_ICCR1);
->  
-> -	pm_runtime_put_autosuspend(dev);
->  	return 0;
->  }
->  
-> +static int riic_init_hw(struct riic_dev *riic)
-> +{
-> +	struct device *dev = riic->adapter.dev.parent;
-> +	int ret;
+> diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
+> index c64005278687c..a4f244a046866 100644
+> --- a/tools/perf/util/hist.h
+> +++ b/tools/perf/util/hist.h
+> @@ -709,6 +709,8 @@ struct block_hist {
+>   	struct hist_entry	he;
+>   };
+>   
+> +#define NO_ADDR 0
 > +
-> +	ret = pm_runtime_resume_and_get(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = __riic_init_hw(riic);
-> +
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return ret;
-> +}
-> +
->  static int riic_get_scl(struct i2c_adapter *adap)
->  {
->  	struct riic_dev *riic = i2c_get_adapdata(adap);
-> @@ -572,6 +582,8 @@ static int riic_i2c_probe(struct platform_device *pdev)
->  
->  	i2c_parse_fw_timings(dev, &riic->i2c_t, true);
->  
-> +	platform_set_drvdata(pdev, riic);
-> +
->  	/* Default 0 to save power. Can be overridden via sysfs for lower latency. */
->  	pm_runtime_set_autosuspend_delay(dev, 0);
->  	pm_runtime_use_autosuspend(dev);
-> @@ -585,8 +597,6 @@ static int riic_i2c_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto out;
->  
-> -	platform_set_drvdata(pdev, riic);
-> -
->  	dev_info(dev, "registered with %dHz bus speed\n", riic->i2c_t.bus_freq_hz);
->  	return 0;
->  
-> @@ -668,27 +678,17 @@ static const struct riic_of_data riic_rz_t2h_info = {
->  	.num_irqs = ARRAY_SIZE(riic_rzt2h_irqs),
->  };
->  
-> -static int riic_i2c_suspend(struct device *dev)
-> +static int riic_i2c_runtime_suspend(struct device *dev)
->  {
->  	struct riic_dev *riic = dev_get_drvdata(dev);
-> -	int ret;
-> -
-> -	ret = pm_runtime_resume_and_get(dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	i2c_mark_adapter_suspended(&riic->adapter);
->  
->  	/* Disable output on SDA, SCL pins. */
->  	riic_clear_set_bit(riic, ICCR1_ICE, 0, RIIC_ICCR1);
->  
-> -	pm_runtime_mark_last_busy(dev);
-> -	pm_runtime_put_sync(dev);
-> -
->  	return reset_control_assert(riic->rstc);
+>   #ifdef HAVE_SLANG_SUPPORT
+>   #include "../ui/keysyms.h"
+>   void attr_to_script(char *buf, struct perf_event_attr *attr);
+> @@ -746,14 +748,16 @@ int evlist__tui_browse_hists(struct evlist *evlist __maybe_unused,
+>   static inline int __hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+>   					     struct map_symbol *ms __maybe_unused,
+>   					     struct evsel *evsel __maybe_unused,
+> -					     struct hist_browser_timer *hbt __maybe_unused)
+> +					     struct hist_browser_timer *hbt __maybe_unused,
+> +					     u64 al_addr __maybe_unused)
+>   {
+>   	return 0;
+>   }
+>   
+>   static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
+>   					   struct evsel *evsel __maybe_unused,
+> -					   struct hist_browser_timer *hbt __maybe_unused)
+> +					   struct hist_browser_timer *hbt __maybe_unused,
+> +					   u64 al_addr __maybe_unused)
+>   {
+>   	return 0;
+>   }
 
-Reset assert/de-assert was moved to the RPM callbacks. Is this intended?
-You may want to at least mention it in the commit description.
+-- 
+js
+suse labs
 
->  }
->  
-> -static int riic_i2c_resume(struct device *dev)
-> +static int riic_i2c_runtime_resume(struct device *dev)
->  {
->  	struct riic_dev *riic = dev_get_drvdata(dev);
->  	int ret;
-> @@ -697,7 +697,7 @@ static int riic_i2c_resume(struct device *dev)
->  	if (ret)
->  		return ret;
->  
-> -	ret = riic_init_hw(riic);
-> +	ret = __riic_init_hw(riic);
-
-Moving reset assert/de-assert and controller deinit/re-initialization on
-runtime suspend/resume may increase the runtime suspend/resume latency. In
-case of consecutive requests this may translate into controller performance
-downgrade. If you keep it like this, you may want to increase the default
-autosuspend delay, at least, to avoid controller reconfiguration after each
-individual struct i2c_algorithm::xfer() call.
-
->  	if (ret) {
->  		/*
->  		 * In case this happens there is no way to recover from this
-> @@ -708,13 +708,30 @@ static int riic_i2c_resume(struct device *dev)
->  		return ret;
-
-This one could be dropped
-
->  	}
->  
-> +	return 0;
-
-And use here directly, like:
-
-	return ret;
-
-Thank you,
-Claudiu
 
