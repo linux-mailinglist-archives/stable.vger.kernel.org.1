@@ -1,219 +1,162 @@
-Return-Path: <stable+bounces-202789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B81DCC6DE9
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA16CC6D02
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 10:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4080E3020350
-	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:42:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC13D306E943
+	for <lists+stable@lfdr.de>; Wed, 17 Dec 2025 09:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740861A3172;
-	Wed, 17 Dec 2025 09:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E128C33A9EE;
+	Wed, 17 Dec 2025 09:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjBlE7VC"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sccIq1hq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C51A2BEFFB;
-	Wed, 17 Dec 2025 09:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD522BEFFB;
+	Wed, 17 Dec 2025 09:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964578; cv=none; b=tgmTXLIZbrFUSyF8Y3Eqm2g/sdO9Tn9S9RmZBGY8+Fj+exWwgmH4/np5nawiBN7FM2j9i+t2474HezLjPkE9Jkn5+T37iHKnY41wUU3OaaFVxJspFZeOUm6VwxdJ49QIwefTYAGdM/4xWixKk+1CoZ/Sm6kp/mleEyUpRRyKQBU=
+	t=1765963927; cv=none; b=AMtkKTOKfHoy//AMJj9aFcoWXPx6iDZ5NakP3kk+bpGEHSb/BQwCtU6hobYNOP8/qbrXDXGUREqU9GDFUECF3HzKXuBWzHbxIr9zHiE3UBPCHo+19JXWRgM+sUZaWuBVK2MY5OGUbs6KCYsMZVFnYcSqdJi1j3HZ8CtTvVQCIAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964578; c=relaxed/simple;
-	bh=STrvD8J20okz2S7mubYnGdCz/fGgovpVdE6Vgo0vRGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jkkr5yjXulhAjzByrFPxbm8QgwSx5O3DJKZTfJviKXJY1/b+du+Dp4R04OIpgm6w4MVV9r6Adpo6d/8b8/CDjoWFG2qkkDzCT0xP72PfnwDXtieCeQ+mnPn1mJDnCYvuhTf8Jktuw1azU+dF85CiKauAYxfpuOntDFY/KPv/B9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjBlE7VC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712F2C4CEF5;
-	Wed, 17 Dec 2025 09:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765964577;
-	bh=STrvD8J20okz2S7mubYnGdCz/fGgovpVdE6Vgo0vRGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bjBlE7VC13WaxmgfK1sXplA0B0M58TxJsjS7FsDyGh7qs5CTI3BDmtTD32MQG0Eni
-	 29UqNJGJi3HaDfM2m5MKxPIcEfby+haJgIINX+VuMxqji2FoTC4Yyj3LEEP2WMhJnG
-	 pRPJyBKvVnvlzYO+EUlkaux9QKUMw/zoYJySZyGBHNmY/mAC6fI89IRTld46L2VRNM
-	 7jWIsxrtNYl68VA+6auB/n2Ah1/LzXyqDQPKWzERD9Xt9Hmpf+XYuuAjh5F1PET9u0
-	 ve+MZ7u3X+xN+c7iKvgv4JLDcs1YPfqi1tkcdIOuFy1jiZ8DZg8pZ1MnUFUp15Goj6
-	 n4wmUAAw43D+Q==
-Message-ID: <25751506-e4df-4ae3-9ea8-4b2800146ba2@kernel.org>
-Date: Wed, 17 Dec 2025 10:42:54 +0100
+	s=arc-20240116; t=1765963927; c=relaxed/simple;
+	bh=yN6tXc2Zl6Yp/hm66iYTcpLIG22Y84n5TcMyCW0f10I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pdy8bPVdNqqpKQNpTuF5mNYArFYuTceP1m4TY3wrAJ2XsfcoOZh8abNjJu4zVtv3XcKCLOXVfh3tXEyHAnLXyAedhRo/fhWc6tsKNsEdFb1bcs9lwBfyIvbusKaPFHy6bEansY1Tt2IWREIeqKOvUYrOcC487A7kkIjkkO6cvuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sccIq1hq; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=JNNUkji7EDDyhJPW0dB143cjgCt1mE9XvRBO/wIIyAE=;
+	b=sccIq1hq41OEvqDwYrsCmLGi+NkFl7qk1P82CLKkotkpJOGygdPFOlOnn5okwS+A4ycbuDpPk
+	OTQi5auDIIjv5n39t5XJnC/PES3Fk2QIqqS6//Y8dQkkiGTrDequ5NYz+9uOU2UsN2wQwuO0zZB
+	OU0HyMgIH1Uy02bGeyUyQjY=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dWT6B1Y4FzRhrg;
+	Wed, 17 Dec 2025 17:29:54 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id 26FCB140144;
+	Wed, 17 Dec 2025 17:31:55 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 17 Dec
+ 2025 17:31:54 +0800
+From: Gu Bowen <gubowen5@huawei.com>
+To: Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<stable@vger.kernel.org>, Lu Jialin <lujialin4@huawei.com>, Gu Bowen
+	<gubowen5@huawei.com>
+Subject: [PATCH v2,stable/linux-6.6.y] fbdev: Fix out-of-bounds issue in sys_fillrect()
+Date: Wed, 17 Dec 2025 17:45:30 +0800
+Message-ID: <20251217094530.1685998-1-gubowen5@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 215/614] perf annotate: Fix build with NO_SLANG=1
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Tianyou Li <tianyou.li@intel.com>,
- Namhyung Kim <namhyung@kernel.org>, Sasha Levin <sashal@kernel.org>
-References: <20251216111401.280873349@linuxfoundation.org>
- <20251216111409.165603959@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20251216111409.165603959@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
 
-On 16. 12. 25, 12:09, Greg Kroah-Hartman wrote:
-> 6.18-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Namhyung Kim <namhyung@kernel.org>
-> 
-> [ Upstream commit 0e6c07a3c30cdc4509fc5e7dc490d4cc6e5c241a ]
-> 
-> The recent change for perf c2c annotate broke build without slang
-> support like below.
-> 
->    builtin-annotate.c: In function 'hists__find_annotations':
->    builtin-annotate.c:522:73: error: 'NO_ADDR' undeclared (first use in this function); did you mean 'NR_ADDR'?
->      522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
->          |                                                                         ^~~~~~~
->          |                                                                         NR_ADDR
->    builtin-annotate.c:522:73: note: each undeclared identifier is reported only once for each function it appears in
-> 
->    builtin-annotate.c:522:31: error: too many arguments to function 'hist_entry__tui_annotate'
->      522 |                         key = hist_entry__tui_annotate(he, evsel, NULL, NO_ADDR);
->          |                               ^~~~~~~~~~~~~~~~~~~~~~~~
->    In file included from util/sort.h:6,
->                     from builtin-annotate.c:28:
->    util/hist.h:756:19: note: declared here
->      756 | static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
->          |                   ^~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> And I noticed that it missed to update the other side of #ifdef
-> HAVE_SLANG_SUPPORT.  Let's fix it.
-> 
-> Cc: Tianyou Li <tianyou.li@intel.com>
-> Fixes: cd3466cd2639783d ("perf c2c: Add annotation support to perf c2c report")
+There was an out-of-bounds issue found by syzkaller test on v6.6.
 
-That fixes line ^^^ appears to be wrong, as now I see:
-builtin-annotate.c: In function ‘hists__find_annotations’:
-builtin-annotate.c:522:10: error: too few arguments to function 
-‘hist_entry__tui_annotate’
-     key = hist_entry__tui_annotate(he, evsel, NULL);
-           ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from util/sort.h:6:0,
-                  from builtin-annotate.c:28:
-util/hist.h:757:19: note: declared here
-  static inline int hist_entry__tui_annotate(struct hist_entry *he 
-__maybe_unused,
-                    ^~~~~~~~~~~~~~~~~~~~~~~~
+BUG: unable to handle page fault for address: ffffc90000c3f000
+PGD 100000067 P4D 100000067 PUD 100c80067 PMD 10ac1c067 PTE 0
+Oops: 0002 [#1] PREEMPT SMP KASAN PTI
+CPU: 3 PID: 6521 Comm: syz.3.1365 Not tainted 6.6.0+ #82
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+RIP: 0010:memset64 arch/x86/include/asm/string_64.h:58 [inline]
+RIP: 0010:memset_l include/linux/string.h:168 [inline]
+RIP: 0010:bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:53 [inline]
+RIP: 0010:bitfill_aligned+0x144/0x1c0 drivers/video/fbdev/core/sysfillrect.c:25
+Code: 23 04 24 48 31 d0 49 89 46 f8 44 89 e0 44 29 f8 29 c3 e8 9f 39 49 fe 89 d8 31 d2 4c 89 f7 41 f7 f4 48 89 c3 48 89 c1 48 89 e8 <f3> 48 ab 31 ff 4c 89 ee e8 df 2f 49 fe 4d 85 ed 0f 84 6b ff ff ff
+RSP: 0018:ffff888119ce7418 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000180 RCX: 0000000000000180
+RDX: 0000000000000000 RSI: ffffc90003873000 RDI: ffffc90000c3f000
+RBP: 0000000000000000 R08: 0000000000006000 R09: 0000000000000040
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000040
+R13: 0000000000000000 R14: ffffc90000c3f000 R15: 0000000000000000
+FS:  00007f1704b926c0(0000) GS:ffff8881f5980000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc90000c3f000 CR3: 00000001230d0002 CR4: 0000000000770ee0
+DR0: 0000000000000000 DR1: 000000000000e000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+PKRU: 80000000
+Call Trace:
+ <TASK>
+ sys_fillrect+0x429/0x830 drivers/video/fbdev/core/sysfillrect.c:281
+ drm_fbdev_generic_defio_fillrect+0x27/0x140 drivers/gpu/drm/drm_fbdev_generic.c:37
+ bit_clear+0x183/0x220 drivers/video/fbdev/core/bitblit.c:73
+ __fbcon_clear+0x5ea/0x670 drivers/video/fbdev/core/fbcon.c:1281
+ fbcon_scroll+0x41e/0x560 drivers/video/fbdev/core/fbcon.c:1847
+ con_scroll+0x464/0x6a0 drivers/tty/vt/vt.c:577
+ lf+0x274/0x2d0 drivers/tty/vt/vt.c:1461
+ do_con_trol+0x5ea/0x3d80 drivers/tty/vt/vt.c:2149
+ do_con_write+0x780/0x10c0 drivers/tty/vt/vt.c:2905
+ con_write+0x28/0xc0 drivers/tty/vt/vt.c:3245
+ do_output_char+0x5de/0x850 drivers/tty/n_tty.c:433
+ process_output drivers/tty/n_tty.c:500 [inline]
+ n_tty_write+0x442/0xb00 drivers/tty/n_tty.c:2406
+ iterate_tty_write+0x2b5/0x630 drivers/tty/tty_io.c:1017
+ file_tty_write.constprop.0+0x20c/0x3b0 drivers/tty/tty_io.c:1088
+ call_write_iter include/linux/fs.h:2085 [inline]
+ do_iter_readv_writev+0x210/0x3c0 fs/read_write.c:737
+ do_iter_write+0x181/0x4e0 fs/read_write.c:862
+ vfs_writev+0x15b/0x4d0 fs/read_write.c:935
+ do_writev+0x136/0x370 fs/read_write.c:978
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
+When the virtual console is rotated in the backend state, it can lead to
+inconsistencies between the size of the virtual console's size and its
+hook functions. In such cases, clearing the screen may result in
+out-of-bounds issue.
 
+This issue has already been fixed by commit eabb03293087 ("fbdev:
+Refactoring the fbcon packed pixel drawing routines") on v6.15-rc1, but it
+still exists in the stable version.
 
+It was unclear if there were other scenarios for this issue, and I tried
+to add pr_err in sys_fillrect. But as Helge pointed out[1], sys_fillrect
+is on the console printing code path and adding printing here might cause
+infinite loop. So let's just fix the known scenario.
 
-Because in util/hist.h, we now have:
-int hist_entry__tui_annotate(struct hist_entry *he, struct evsel *evsel,
-                              struct hist_browser_timer *hbt);
-...
-static inline int hist_entry__tui_annotate(struct hist_entry *he 
-__maybe_unused,
-                                            struct evsel *evsel 
-__maybe_unused,
-                                            struct hist_browser_timer 
-*hbt __maybe_unused,
-                                            u64 al_addr __maybe_unused)
-{
-         return 0;
-}
+Fix it by moving set_blitting_type() to the visible area of the VC.
 
+Link: https://lore.kernel.org/all/aef7d5fd-2926-4c58-b720-4af58aa380d3@gmx.de/ [1]
 
+CC: stable@vger.kernel.org	# for stable-6.6, fbdev had been refactored on 6.15-rc1
+Fixes: 68648ed1f58d ("fbdev: add drawing functions for framebuffers in system RAM")
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+---
+ drivers/video/fbdev/core/fbcon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Was it meant to be
-Fixes: ad83f3b7155d perf c2c annotate: Start from the contention line
-?
-
-> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   tools/perf/util/hist.h | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-> index c64005278687c..a4f244a046866 100644
-> --- a/tools/perf/util/hist.h
-> +++ b/tools/perf/util/hist.h
-> @@ -709,6 +709,8 @@ struct block_hist {
->   	struct hist_entry	he;
->   };
->   
-> +#define NO_ADDR 0
-> +
->   #ifdef HAVE_SLANG_SUPPORT
->   #include "../ui/keysyms.h"
->   void attr_to_script(char *buf, struct perf_event_attr *attr);
-> @@ -746,14 +748,16 @@ int evlist__tui_browse_hists(struct evlist *evlist __maybe_unused,
->   static inline int __hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
->   					     struct map_symbol *ms __maybe_unused,
->   					     struct evsel *evsel __maybe_unused,
-> -					     struct hist_browser_timer *hbt __maybe_unused)
-> +					     struct hist_browser_timer *hbt __maybe_unused,
-> +					     u64 al_addr __maybe_unused)
->   {
->   	return 0;
->   }
->   
->   static inline int hist_entry__tui_annotate(struct hist_entry *he __maybe_unused,
->   					   struct evsel *evsel __maybe_unused,
-> -					   struct hist_browser_timer *hbt __maybe_unused)
-> +					   struct hist_browser_timer *hbt __maybe_unused,
-> +					   u64 al_addr __maybe_unused)
->   {
->   	return 0;
->   }
-
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 78a5b22c8d15..8139ac8a666f 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2702,9 +2702,9 @@ static void fbcon_modechanged(struct fb_info *info)
+ 		return;
+ 
+ 	p = &fb_display[vc->vc_num];
+-	set_blitting_type(vc, info);
+ 
+ 	if (con_is_visible(vc)) {
++		set_blitting_type(vc, info);
+ 		var_to_display(p, &info->var, info);
+ 		cols = FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
+ 		rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
 -- 
-js
-suse labs
+2.43.0
 
 
