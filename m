@@ -1,131 +1,158 @@
-Return-Path: <stable+bounces-202924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F305CCA3A2
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:55:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59763CCA3BA
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 05:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1F3E300D40E
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:53:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E735A3007C7F
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317AE2F6900;
-	Thu, 18 Dec 2025 03:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6478B27F017;
+	Thu, 18 Dec 2025 04:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QK40YqQ3";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="k+e+s4HN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/pCWsH6"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159CB2571B8
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B793E2116F4
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 04:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766029980; cv=none; b=qxtCs8Bmcdq18N9tfb/Jc1xugEvttv5P+Hkb/xGqM8KIFKV+6ZjI65fsYx16nk7CMOCb+uIi+4tOooTmpYEEuj2dkEfimowcm20yy01Te9Mi4VkRQMgirkYZefmMv9XhD9aUEnRWMsn+epNGNrQmN+KfgPOX03rH+FXDT2zPnc8=
+	t=1766030614; cv=none; b=dzrR6Z4yFqBnQQmaixIP5vSnQyBCalKLSJzhOFthHNb7IoqMf8yLKiG6q0yg9xyR67cMPl5cu6X5TvMKtFK5cHn9rbJ3SHtuNQvq/p8jp/au+uRPUF0tnthVB48LWNOwfaNBjwRIGUYYeYHVwfsdEnMSG0GGjD6dBiXCavw2/QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766029980; c=relaxed/simple;
-	bh=QMWBJBUexqbwWDfCPvN8knkhyI690YN3Qu8L+4wssTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WbxXy/QYrkeTpvneVStwMi+lpuVGoKngc6lf8jx1bGVUdnlKoSL9W6pxyaukoNU75vvb4RzpShUQeGAp0DOtofVJRBfpEBU72uUV/ewd3cm0bucdOkRaXnYakPWnAahQ25A0cB7XiJe+iPUFFryUFbGGRO4Qp70rHlKtzVEnAtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QK40YqQ3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=k+e+s4HN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766029976;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMWBJBUexqbwWDfCPvN8knkhyI690YN3Qu8L+4wssTM=;
-	b=QK40YqQ39mPPKK0GAiQv6RT4DB7A0rVH3wbASKq+8q3cUBfjuMhLXQrAIwlBF08HaJnm9r
-	oZYJZ6y+jZyp11E8QTt9CdWIRoWeJ8OWHY7KPbO7kJvy9xtcjhUWsm5P4MBz5iSd7IJE2Y
-	X2NeFlBHPquo6qDCrgNCIQeyG0lX0EI=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-wRRPJxHvMH6qygAC3qzD_A-1; Wed, 17 Dec 2025 22:52:55 -0500
-X-MC-Unique: wRRPJxHvMH6qygAC3qzD_A-1
-X-Mimecast-MFC-AGG-ID: wRRPJxHvMH6qygAC3qzD_A_1766029975
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a0f47c0e60so5263155ad.3
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 19:52:55 -0800 (PST)
+	s=arc-20240116; t=1766030614; c=relaxed/simple;
+	bh=wipqmJTb3RPr4bYzc7MlLp/HKbCdY/GhUhkFh7D5GpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f3FL5uXSZG8b+PZvKjauLoV68ds7JE/M18H1b6dAVti3cELIPuokp2mQE8wAfXdF539v/+9VWWhkTtLP4wSMC85a2UWs4sXvBdut1o7ivo7U3EK7lKqWWlayIiObx07Zrua+ix+1tqHA5kZmzZmbhzS0CPpNM09GDpwSgo38BB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/pCWsH6; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0b4320665so2830255ad.1
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 20:03:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766029974; x=1766634774; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QMWBJBUexqbwWDfCPvN8knkhyI690YN3Qu8L+4wssTM=;
-        b=k+e+s4HNnZewU/pX5QWpphFgZNQnFcYBTaNVpMVZctsfx918Jny2rX2lMe07sh93w7
-         MNZxOWBt3AH04y6Yw5MgM73QcTXHs3UwqQUZ5l6UZo3V2LrBMTHgjb8rkAjrsD42Hoh4
-         THK8dAXe3b9kwMoyunySKb0qOwyKjyocY1SxzIL8jDn8NAtfmQqpFNgcWHNeM86aSSkd
-         gPw1y7hh82DYhbfUM2fDCLITX28gqLwwsSP8eTnN82a5+WDTsAeVnWQUs+/8LBZFXG+J
-         KsgNbtQTwOhubNL2KlJQXo1nzdcQI1IjnKVHFrxRvhcSabSiFvE9rQMX/AXIkKuwwckj
-         Q+Tg==
+        d=gmail.com; s=20230601; t=1766030612; x=1766635412; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aHI6rvtpgTrf2rQzMwqNIBav/7/ZYbn4AXdiKjSA/wA=;
+        b=J/pCWsH6ZIeXwnyY/YhHAxwuz0uapGe68KJYNP9GFw+46jadqqOkN4C/0IqlddkpqN
+         sqq60ApIy8TTkiPyDBVoeTR37fmrFajVv6AAWMzwKTYuudIKCZph+l2KvrJLhLolGrM9
+         8ObryUBGx1e3xJytQjBpp9UXG4NsDMqgz/Ng/RLPZDq8NyyugpqdrRsAhxpo0qFcK0Eu
+         4NKw6Qj9V4ynMr5f+YTXbuDghQtIX3YpCcuD89ticlqIrwACda7KlPNsdr0qbWCRKOGP
+         F1IsCrcPo+oRT1WSDAiCTpW07ppOYhe6xqalY4p9NVgAYwQHQGtnUvh7ixe3nJPKpvDm
+         zNfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766029974; x=1766634774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QMWBJBUexqbwWDfCPvN8knkhyI690YN3Qu8L+4wssTM=;
-        b=MDqmsmQNxZAxLoCyLPWbpqvVbQVDEkK0svmmh4J+DM8lO9k/vV4uRz8cjDh+GyT6hm
-         ddEXpdYxbntImAhL7S8KpF+HNfQieySagumu/VlMZ2cUFMFLAj/VI7hfvtwNcgyDfALN
-         KyUTIEZePU/EdiASzzm23l4JsN1Z9JAJy4FqQMBDo8/MoBgfbN3sEBU02yGaWylJIb2U
-         Qj2GEopTIMAVb6guJ1Q0xgJ8E2RPmkajp2oLT2Y70tfUa5VRFxhlaiwty0AWLaW5X7sC
-         MBoU5WRFdPnd4N4mf6NmUuseaZoVHMPvp7i9TV2QoHN841nuU6EMd6X93NQ9Ilh87j+k
-         3ZcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPKXl4K7LBZsYDy8KBhnAbb7q7KcRXBSgBb9XR5Y+7IyU0MUj0h9EYoNtb196H6vOT4Gu+Tck=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywd623Rh+liZXOpI+JX2SMFO0q13+T0u7dzrgkW6pWS49BBpHhd
-	A2Ud323dMsey5vm+lYZ3Fut8gwYtzswxOv1yUT82grI2KL1u+GcCn/cueEFJefgmml4ciT+2gNA
-	EKpXQ5Nue93bg7/lQ/PLBw+JSSX5gmW/z8ibg4OAUYWM6OCjE/WQEeY8HZQuZAEZC5ZCQArTGxF
-	KQkakm4aJY1c5JsVakgJebSr2QRT6SoN7r
-X-Gm-Gg: AY/fxX5m5WqEdfxuKZB5jfNfE6g4Gk6+0TcVUo+wYsQqxTRdqZYi8Dg77j+JKrBfXuN
-	yRwT4wsp8AwQ/YM05k+kQQ0wOs05625P/590vthADihxY1nbj5Vvf4X7gx9w4o2zabuoNPBEhy5
-	L2pT1MY42LvS/hA72aAZRHmLUgLorzNbOtOMKtQrmR9c65Uh90Y6eJEv4R0tO3knVfnGs=
-X-Received: by 2002:a17:903:1aac:b0:298:5fde:5a93 with SMTP id d9443c01a7336-29f23c677edmr196912265ad.32.1766029974603;
-        Wed, 17 Dec 2025 19:52:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHw9DNEwmWjxWfi+F7K4n2BB/diI3M5uZKNjbX0bS9zDqcVCQPXZbRoNc0uTilQyHet8P2VB9LVOiFRTvTgn7U=
-X-Received: by 2002:a17:903:1aac:b0:298:5fde:5a93 with SMTP id
- d9443c01a7336-29f23c677edmr196912045ad.32.1766029974179; Wed, 17 Dec 2025
- 19:52:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766030612; x=1766635412;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aHI6rvtpgTrf2rQzMwqNIBav/7/ZYbn4AXdiKjSA/wA=;
+        b=gr8l2SkC6XVEicl7E+sLC41T8gcCHVcXoGFe6NYUtqd40s75CfRO3aDqFfJtinKF6k
+         c6XZsAndcmU83kaAkiE1b3gDurS+GsMtgBMrzlRUO56g7Ok52eUHJqxkJMF39xhdnN7W
+         MwS597MT7Zo2WU2gGSHR5jRwQ92zdTeC6bKMwovdkR1d/ZWEsBPOCf1ufo6KeAptLPVG
+         PKqlbMQymTv9WuTSNXmQ7hGhlum2h0rfPAuo24cjqlRPdpi70vFlrcJ8drnx42B6G+yy
+         rL7GjHgi08ZxAIQu9Ve5u2BY6H2uTC0fvZFNH3DjTHj34N9Ud/QA/fAadgPb+q37f5hc
+         xS6A==
+X-Forwarded-Encrypted: i=1; AJvYcCVARmJd70AQkgI+gAt9ZIZum8Z9YWa14wq8MHmupR8+d628p8v9Lj0bMnpSgUCQkbtJGF5a1l0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjZoiSZ5zQxL/k00dV4eLgFxWs39SZ+Mz448aVNOFnxlMCoGsN
+	JMFVxxw8yw2jayU1uySKTTezDLsMoggeCH4pj0v9v1w7tCkqEUiSgE1z
+X-Gm-Gg: AY/fxX7/a416JkGP4i29qw5hcqIZ9r7LWLMuJqzzDAMlWwg7q7Zu5fPE8PI1N5Lt7Cm
+	XfR4erMVnYMaEtrOqUsU2SCnqEKY6Uyjh/q3jrdMzPqCbQfP/REGQpUOuJkWv1Lzzw8D9JtERaU
+	haeL9QNFWnRuNovUszDMjQwzU7zw2WgFNS4Kbpl3xKdNxJN33K/dpIZfd9vy+b2/LZYYfa2t3ye
+	WNwBGnw3SgOKKuqgvHZSRU0Ju3+UbQBn55H8yT7LYFCZrgLuoaRs6mm3h3a6vOrGwgDYixKaalJ
+	n6j8YaGNB45ins2GTF52AxhQnZoTgy+SAgSC5XWJTlbs6NcLXjf/ok6vWTiiBYdazBwgiRI+2+I
+	rJtbxE9q+wOmVhG8kPfDEXRe1kcwa2JPgjKUo7pHXhosDFAwxrxaPCRHVTXvpWwtCcE0zn5wdMs
+	VC1nE=
+X-Google-Smtp-Source: AGHT+IHa7r0mYrLhWHjYQHKjTjGzpva8/SmCDywQMnfbi/eRtfbpSa8NAyazhiN4pJFcNwjNZ5uZlg==
+X-Received: by 2002:a17:903:11c8:b0:2a1:388c:ca5b with SMTP id d9443c01a7336-2a1388cced6mr90213585ad.39.1766030611814;
+        Wed, 17 Dec 2025 20:03:31 -0800 (PST)
+Received: from localhost ([2a12:a304:100::105b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d087c690sm8680035ad.20.2025.12.17.20.03.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 20:03:31 -0800 (PST)
+Date: Thu, 18 Dec 2025 12:03:28 +0800
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Luis Chamberlain <mcgrof@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+4d3cc33ef7a77041efa6@syzkaller.appspotmail.com,
+	syzbot+fdba5cca73fee92c69d6@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/readahead: read min folio constraints under
+ invalidate lock
+Message-ID: <aUN9BFdxHQj8ThMS@ndev>
+References: <20251215141936.1045907-1-wangjinchao600@gmail.com>
+ <aUAZn1ituYtbCEdd@casper.infradead.org>
+ <aUC32PJZWFayGO-X@ndev>
+ <aUDG_vVdM03PyVYs@casper.infradead.org>
+ <aUDOCPDa-FURkeob@ndev>
+ <aUDXrYgwZAMYkXVu@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251218034846.948860-1-maobibo@loongson.cn> <20251218034846.948860-3-maobibo@loongson.cn>
-In-Reply-To: <20251218034846.948860-3-maobibo@loongson.cn>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 18 Dec 2025 11:52:42 +0800
-X-Gm-Features: AQt7F2qn7yrgQLTm-jx-zOUUwaHI5CYNjj2jNdNQeouWQKRiXmdxNRu5gCHge8I
-Message-ID: <CACGkMEv-zTNkyxQHx5v5FGZE12SHib_73Lf10wF50_7B1WrPbg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/9] crypto: virtio: Remove duplicated virtqueue_kick
- in virtio_crypto_skcipher_crypt_req
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Gonglei <arei.gonglei@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
-	Eric Biggers <ebiggers@kernel.org>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, stable@vger.kernel.org, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUDXrYgwZAMYkXVu@casper.infradead.org>
 
-On Thu, Dec 18, 2025 at 11:49=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
-te:
->
-> With function virtio_crypto_skcipher_crypt_req(), there is already
-> virtqueue_kick() call with spinlock held in function
-> __virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
-> function call here.
->
-> Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
+On Tue, Dec 16, 2025 at 03:53:17AM +0000, Matthew Wilcox wrote:
+> On Tue, Dec 16, 2025 at 11:12:21AM +0800, Jinchao Wang wrote:
+> > On Tue, Dec 16, 2025 at 02:42:06AM +0000, Matthew Wilcox wrote:
+> > > On Tue, Dec 16, 2025 at 09:37:51AM +0800, Jinchao Wang wrote:
+> > > > On Mon, Dec 15, 2025 at 02:22:23PM +0000, Matthew Wilcox wrote:
+> > > > > On Mon, Dec 15, 2025 at 10:19:00PM +0800, Jinchao Wang wrote:
+> > > > > > page_cache_ra_order() and page_cache_ra_unbounded() read mapping minimum folio
+> > > > > > constraints before taking the invalidate lock, allowing concurrent changes to
+> > > > > > violate page cache invariants.
+> > > > > > 
+> > > > > > Move the lookups under filemap_invalidate_lock_shared() to ensure readahead
+> > > > > > allocations respect the mapping constraints.
+> > > > > 
+> > > > > Why are the mapping folio size constraints being changed?  They're
+> > > > > supposed to be set at inode instantiation and then never changed.
+> > > > 
+> > > > They can change after instantiation for block devices. In the syzbot repro:
+> > > >   blkdev_ioctl() -> blkdev_bszset() -> set_blocksize() ->
+> > > >   mapping_set_folio_min_order()
+> > > 
+> > > Oh, this is just syzbot doing stupid things.  We should probably make
+> > > blkdev_bszset() fail if somebody else has an fd open.
+> > 
+> > Thanks, that makes sense.
+> > Tightening blkdev_bszset() would avoid the race entirely.
+> > This change is meant as a defensive fix to prevent BUGs.
+> 
+> Yes, but the point is that there's a lot of code which relies on
+> the AS_FOLIO bits not changing in the middle.  Syzbot found one of them,
+> but there are others.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+I've been thinking about this more, and I wanted to share another
+perspective if that's okay.
 
-Thanks
+Rather than tracking down every place that might change AS_FOLIO bits
+(like blkdev_bszset() and potentially others), what if we make the
+page cache layer itself robust against such changes?
 
+The invalidate_lock was introduced for exactly this kind of protection
+(commit 730633f0b7f9: "mm: Protect operations adding pages to page
+cache with invalidate_lock"). This way, the page cache doesn't need
+to rely on assumptions about what upper layers might do.
+
+The readahead functions already hold filemap_invalidate_lock_shared(),
+so moving the constraint reads under the lock adds no overhead. It
+would protect against AS_FOLIO changes regardless of their source.
+
+I think this separates concerns nicely: upper layers can change
+constraints through the invalidate_lock protocol, and page cache
+operations are automatically safe. But I'd really value your thoughts
+on this approach - you have much more experience with these tradeoffs
+than I do.
+
+Thanks again for taking the time to discuss this.
 
