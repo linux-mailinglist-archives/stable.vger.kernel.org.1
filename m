@@ -1,151 +1,165 @@
-Return-Path: <stable+bounces-202966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF1CCCB947
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585B9CCB956
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CDA33006A50
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:16:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BA2A30463AD
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057262853EE;
-	Thu, 18 Dec 2025 11:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6CC3164BA;
+	Thu, 18 Dec 2025 11:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oFVOvXAM"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i4kJoCI3";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bXnzrZPp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48526184
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 11:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B401F5820
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 11:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766056600; cv=none; b=EceMK4BIoWWHwOKJJfUuUd8s9KNA6Svqx65qFA9PGaAv8J2SV1aApPk25FzZKT8ONspKrYz4F3XmdkAq8IoTP9+p20DcScS3rp1JfoaqQGikBJYQx9u0uk5y8mgLINItYnq/deRzcpZOGFQkVgNBrcCxH3FuDZrKwvMJ/ipeI28=
+	t=1766056667; cv=none; b=hLuECwJSurL9yXuuAkXZgfPV2E6WUtJ0vcSQsKssv3xFYTU6obZibQkkxuQD/76FsYy3r3w83iqhFTS1QTxYqsKLFjOmqvXdPdfHnCb1wU6VzE4MOi2A1XSMvVRg2mxL1SAd9q0If1Uk0n09nCZnVcs/KCOYWC7mUECKF0wOhKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766056600; c=relaxed/simple;
-	bh=KztlaeGaKnd/OAfSmunex5j7GqNA94eUF0mYNucDr+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ajv2QOj1etE0u5QGzbpcLmGWvzTFtQy3gWjas+iZVEiNdrLlzusSzlAZo42PEg6gkt2DYGSAJxmMY85oIHObDkKFWAWQcXqhSVTYKgYd3ihYgDak2jhbE+qSu9sSUoWPhfLoqxHeU+zaC11FgOTIKpCvXxehYOHJUp8yObsC5U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oFVOvXAM; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42e2e77f519so316920f8f.2
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:16:39 -0800 (PST)
+	s=arc-20240116; t=1766056667; c=relaxed/simple;
+	bh=OS+7/7JEML2YbkeaVa3z302x33AgXUQbr185GNdARhA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lW51Eak61QLX10lE4mMY7YiSPwrUFFMkf2+iz/bDCd0wt573P3UgLN/fTp5IKkqoPZLU46aUugPhpefwOP2u3CKlesAXlSPW0BKtzYohk0rCyQ5GzDyI+rL03E02b+JZg1lOjRvv2dH5+7NZdn2LcpC3vy2MdBvmzJGbWIUwT1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i4kJoCI3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bXnzrZPp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BIB5Q541334905
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 11:17:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	J4IuhnlzREPetzQpbCh4VoBAgi6rEAGmVymF6A4kYIE=; b=i4kJoCI3Ie9L+VnS
+	Z71XlyJOKUcmTWTDqd4r58JDMW8Vcbon6Dy2RXfBmmab3y+iU6uo32GW4/bWOlae
+	fUU8YCtODtFV7WNbgBahaECo1rh1BpMQZUSPFivJACUFNBgCyUtZ201tCSAskSfs
+	LE1b5N7XkcDkhfluM2Jsrhc9nPxaBC8ynsQYSM954wmnuY0RsRrhr5EXB50XLHEf
+	huoDaOn3/Bd0ZtXPwfquoQFbS5I4FUgN7Znckwrin4lSk77Z965egWH6dyt/XT9n
+	n9BcEHNTmx6296Y8YiRiJehIN+nonBalFUMv0ItRAH73mH7U8D3xtv0sn6/6W2G9
+	ysJmOg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b4gec0160-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 11:17:44 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ee23b6b6fdso1316491cf.0
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766056598; x=1766661398; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uOXkpA8lYBVLvZTCg8IrEbi29SdqOpQhJylQGG6roho=;
-        b=oFVOvXAMF8hxSEcwv80N6KIQ+TW8wwmGs9xaVH9RcJ/ELWfgZy+gAWG3fa06EK7lEQ
-         nm7yLHc6479YjcNE4xWojXpkf9lJ498DQBQ3ZC3/m6Nrx+YnR/lcPAjIE1+y/x0/H8tg
-         kOtbmHGuDbP2j5X1pvj2/p4o3cj885fLSKgsUYF64M/v64u6AcNJZZStSGrqLvOvk8w3
-         C9ftA2fhzLrOv/9I1gJjkh+i6MRwo+GNvETtafOLNLC4HRwDLvjpAhD6UypdV8Ek3L52
-         b/62YbTufkYUYHVByHMdrNZR0LSPqN+SkE7oIjpzFHLgF0UU5+ZzIg9dg+9S6ysPtR62
-         HaNg==
+        d=oss.qualcomm.com; s=google; t=1766056663; x=1766661463; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J4IuhnlzREPetzQpbCh4VoBAgi6rEAGmVymF6A4kYIE=;
+        b=bXnzrZPptkV1XHoUiq/0aBLPQWcvUJZBOYZqmjDKA9jMjbw9znipO4B5QC0q3y5k99
+         vcCA2qcPXWsxKphSFn6d0HYvZlFAtEzFQCoEXk1Q8PNaDuwOCjmG7H96DHPBUu/N45G1
+         uJ3NGEO8ICTyllNybffP1qpUGK37PAlcPe/2cuyvED5s6BPLG3Ug6/PeYUoH2Nc3GFub
+         v/CYQUOp+fjAlv/HjkCkhG8o9JEYTPC4t26WJ0RUX4Pl7Icj439YkVqUrHhMdMx5GPny
+         oPX3mW/1cT8zCgzocMIMcRlRh4zfC9vyIQCyzRUDMSoUV12ysIR8H2S//klfMQYH8CtN
+         fbXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766056598; x=1766661398;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uOXkpA8lYBVLvZTCg8IrEbi29SdqOpQhJylQGG6roho=;
-        b=trh1xaxj5xvfhWwq9tmdOeRA5cq9alKDO5S81MAlwIRJ++1zzoeGoSW51cVAmAEcj6
-         QZVOPWqqgDpEPLBUcxDa+lQow+h4V6eJbr1CEU341RTtG63BS66kFcDRN8NY6CPRTcVS
-         /gz7cdyDi/lQqTWbv3Hhkd4z319evIPihCjM8NTm/CSP8qlZBM8L6PgMSyLFNw5mkWa8
-         7DeUL9g9zV4FbPPZwQBnY4RGnPDQk7m+bSxtF/b8zEaxtl0YB6D9RPJAOJiRPs7q0/8f
-         Ky9arVj00p2e62JWIptYbVvs8wqQHP4n6eEvaSVxWy0cmRwvfUB3XG4TYsFgnk8/M3zz
-         0o/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUO/WaWHleVftKmcJJ2LM6kpSHkwPy9Gy+6OvCv94i7LKwDue6lELr53oyh1cWhz65oaQhQYY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfcrhZOOnUoUkgKXwH81PiY2n4ffUhWGRGyBDpuGpFZqYMamdQ
-	gwOQtaZNoCGfY9zBTWesyktHDnADJHbUUpXe6y3YOtp/FriI+T0WQ7bVWu2+hHVVPz13rihlYvc
-	i6dSJI5ColIr8tvptWjsFngOWtYJU+mIji45UHzPU
-X-Gm-Gg: AY/fxX7Jw2HoAKC0dcHNM0Rg241AEL/6z+iFZkImHG74O7M2ich3M5j2RU4mshoJBoc
-	m648VRKbSExECb682c8P671o8QKMEfB+O8Z8re6UfWrk/tU4dlMFISFsuU4DOqVcze8NbqsHIda
-	7BNp/+bAcKc5vaBcP0D+av5pHpz1f/avpMZipOfMm80miM2C6FZRsDt/fEqCG43Sbmky9wVhGav
-	ifbPe9FqxSpsDVsbtNyvcan8i+PBKAApLD2fYOarUQdVKDJ7zRJMw0C22gyuxoyhQT+HTQseu2m
-	iIvH3OOwURCVbPdJaaKYdIY0DQ==
-X-Google-Smtp-Source: AGHT+IFrXoEzEmVRVSzOzT1YZ+gWxS6eF1Sdu95x/QMJlgrz+t1Ee2yozvEWMo/cVsiyiwqvxXVU3aGVoS8tAA05mWI=
-X-Received: by 2002:a05:6000:d82:b0:42f:b9c6:c89b with SMTP id
- ffacd0b85a97d-42fb9c6caccmr19207847f8f.50.1766056597425; Thu, 18 Dec 2025
- 03:16:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766056663; x=1766661463;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J4IuhnlzREPetzQpbCh4VoBAgi6rEAGmVymF6A4kYIE=;
+        b=fjZSbq59xRm2HmQTFeLausrDHOFW6EKv6kGEjIiAQd1rlEpSr8Z2+PLqHDQ/gK85Yl
+         CDTRwXKIitcYHVHzRTJ2WrrkibcDwfduDg4iiRP0K5sLf5+znXvDlLUbhYumgjmeVEWV
+         RBkwX7QPZ1kHl+zHmwu3VP0C04fQBvHXt/kbcx4tvohccohqjQJrsLvYJ9NfqHMB1JoG
+         4idWHK576rssHVj3c7gcAKMqLlJCNC+ueMcgGerx2qCDixCFnxhmhYzT+A79w9ck+2XG
+         YUO2f68wJot4YaNBeqv/+8Doi7LcUe2MHNtuZ368kdPIQ0bI4xlP1ornbrTHOHl0R5Fg
+         nkIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWe0ZiNoi47ilB5A75BfwyLtLr9HtF1k/SahtR5HU3JSbMVlIcXB3ufYXN1pH18oDhCTjEZBCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcXb59kvBUs2BHfkx0Wx8KnoJCj3VPm+Qs2O64A8+um/VnVqtV
+	SBeC/RrPr+7DbDNB21SaAghTtlHNOtB6cDMGpXD5xg0EEYHpgzdX/1IeNeDwoCsrhRV6CUWhnOx
+	La7gi52RHrUc6mi+IGG9Nbvb621xqxUIFvwBEIvsIm39OGwNiWLucRby0X84=
+X-Gm-Gg: AY/fxX7XvMGbRQSXvOr3nIhp12O0EzKQkiAhTb71MAdiwZsGD9cKUlrES9sl6CnV7qf
+	zU2lpLjEy1tvyUDLbgwg5NC/bDN62eEQEHhSB2yuBFcGvAQGc4C5aaKh4TH4SAaOl0AWK1G7pQo
+	oaGTu2e1F5dkL1HgfvEqw1IPVszlDQIQNesHbzkQrc2mtNbDui9ZXLUsBpA9TdrcG+ayytHxxv9
+	isNe4oWc6fLocbWs775VZ++uSKEoySu6OX1IIJ2u7th9RB0dsPxbPgwhwe4LaqfnPocZ37ZZ8j7
+	hS5zmQePAqiC5/bKdW3T4vTnz2IwvWMknby4s06MFgGkPV4k8oOCKzWNCG+spo3C+D8HPEmMZY8
+	Cjw+53SAzLjDdg1E53QypQRUGce/USIX1KbxDPfAOQ4UElvfcOgyO5rFB02lk3qLYKQ==
+X-Received: by 2002:ac8:5f8c:0:b0:4ee:1a3:2e79 with SMTP id d75a77b69052e-4f361153914mr15819641cf.8.1766056663151;
+        Thu, 18 Dec 2025 03:17:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESlwY5fSua4meWi5H0kHNWDJRfnToJ9lMnpz0+VlwdqbOiEwdELdgLJ508LZmUKShiPHno8g==
+X-Received: by 2002:ac8:5f8c:0:b0:4ee:1a3:2e79 with SMTP id d75a77b69052e-4f361153914mr15819401cf.8.1766056662749;
+        Thu, 18 Dec 2025 03:17:42 -0800 (PST)
+Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b585b3718sm2218739a12.1.2025.12.18.03.17.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Dec 2025 03:17:41 -0800 (PST)
+Message-ID: <139312fb-a8c9-451b-955f-444ff98b29b4@oss.qualcomm.com>
+Date: Thu, 18 Dec 2025 12:17:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com> <aUPYIm6jhceRC4J7@redhat.com>
-In-Reply-To: <aUPYIm6jhceRC4J7@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 18 Dec 2025 12:16:24 +0100
-X-Gm-Features: AQt7F2rMx8pc5mdf6C10I1W6Z_S5-bI58P6NNbu4f_kBP2JBUttYy3TkZlHcKzA
-Message-ID: <CAH5fLgjhBZRn_gPcFK41RTRgQzqOscD+tKms0QrXdYrSZ-g+Vw@mail.gmail.com>
-Subject: Re: [PATCH] rust: task: restrict Task::group_leader() to current
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: iris: Add missing platform data entries for SM8750
+To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251218-iris-sm8750-fix-v1-1-9a6df5cd6fd3@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251218-iris-sm8750-fix-v1-1-9a6df5cd6fd3@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: pBeud9BYKMmS6qKbHMKE6KurW8xtg0I-
+X-Authority-Analysis: v=2.4 cv=V51wEOni c=1 sm=1 tr=0 ts=6943e2d8 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=9YNTAxyjkWIlg3udmsYA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDA5MiBTYWx0ZWRfX1jeiQtKzwpY3
+ 2B0YpOQeBfDVxk49GQqvaBRAHzHQXOtp34lrezWvboQmK30PNJxOlG3zMtgpSs70+syMSYpwVVT
+ qxHFglFoyRJijVnrcd9WLrsTzcYxTMivEcbGTBms5SwYMseVSrVMWrINpCqdIbXwi/NxTEP+qxv
+ B8fhI7+GM+yotOu4QXQpcnrOFzO12ATaKr4t+3PGR4UtOn5omYLjqHCsynYrU4Jto4z4+HJghun
+ XbhpS1lMb0NXJWrAQJJ7Y7FNwas9CueGaq0CiM0PPV2KUO7B2gnBuazIcxlTBeEhKqJ022Tsr1l
+ CM1YPV5jiPE9DeV6HmUwAIQ7eTq8/DhhXQYk/r8Ia1YkP5gO7WowPXy9kybk2MREmbRnKSSX9C9
+ WFB4Q0xg0knuKKVrUjsk1mrB6lqzWA==
+X-Proofpoint-GUID: pBeud9BYKMmS6qKbHMKE6KurW8xtg0I-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 bulkscore=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 adultscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512180092
 
-On Thu, Dec 18, 2025 at 11:32=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> wr=
-ote:
->
-> On 12/18, Alice Ryhl wrote:
-> >
-> > The Task::group_leader() method currently allows you to access the
-> > group_leader() of any task, for example one you hold a refcount to. But
-> > this is not safe in general since the group leader could change when a
-> > task exits. See for example commit a15f37a40145c ("kernel/sys.c: fix th=
-e
-> > racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
-> >
-> > All existing users of Task::group_leader() call this method on current,
-> > which is guaranteed running, so there's not an actual issue in Rust cod=
-e
-> > today. But to prevent code in the future from making this mistake,
-> > restrict Task::group_leader() so that it can only be called on current.
-> >
-> > There are some other cases where accessing task->group_leader is okay.
-> > For example it can be safe if you hold tasklist_lock or rcu_read_lock()=
-.
-> > However, only supporting current->group_leader is sufficient for all
-> > in-tree Rust users of group_leader right now. Safe Rust functionality
-> > for accessing it under rcu or while holding tasklist_lock may be added
-> > in the future if required by any future Rust module.
->
-> I obviously can't ACK this patch ;) but just in case, it looks good to me=
-.
->
-> Although I am not sure this is a stable material... Exactly because,
-> as you mentioned, all existing users call this method on current.
+On 12/18/25 7:54 AM, Dikshita Agarwal wrote:
+> Two platform-data fields for SM8750 were missed:
+> 
+>   - get_vpu_buffer_size = iris_vpu33_buf_size
+>     Without this, the driver fails to allocate the required internal
+>     buffers, leading to basic decode/encode failures during session
+>     bring-up.
+> 
+>   - max_core_mbps = ((7680 * 4320) / 256) * 60
+>     Without this capability exposed, capability checks are incomplete and
+>     v4l2-compliance for encoder fails.
+> 
+> Fixes: a5925a2ce077 ("media: iris: add VPU33 specific encoding buffer calculation")
+> Fixes: a6882431a138 ("media: iris: Add support for ENUM_FRAMESIZES/FRAMEINTERVALS for encoder")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+> ---
 
-Well, I suppose you are right that it isn't. I would like it to land
-on Android's fork of 6.18 somehow so that nobody makes this mistake in
-future Android drivers using 6.18, but I can always do that separately
-of upstream Linux.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-> > I don't think there's a clear owner for this file, so to break ambiguit=
-y
-> > I'm doing to declare that this patch is intended for Andrew Morton's
-> > tree. Please let me know if you think a different tree is appropriate.
->
-> If Andrew agrees and nobody objects this would be nice. I am going to
-> send some tree-wide changes related to task_struct.group_leader usage,
-> it would be simpler to route them all via -mm tree.
->
-> So far I sent the trivial preparations
->
->         [PATCH 0/7] don't abuse task_struct.group_leader
->         https://lore.kernel.org/all/aTV1pbftBkH8n4kh@redhat.com/
->
-> and I am still waiting for more reviews. Alice, perhaps you can review
-> the (hopefully trivial) 1-2 which touch android/binder?
-
-Done.
-
-Alice
+Konrad
 
