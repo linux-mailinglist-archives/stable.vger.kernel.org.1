@@ -1,101 +1,131 @@
-Return-Path: <stable+bounces-202951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F28CCB104
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 10:06:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB9ACCB14C
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 10:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3ABD302D11B
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 09:06:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C4BF8304861C
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 09:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0632E9730;
-	Thu, 18 Dec 2025 09:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28191F9F7A;
+	Thu, 18 Dec 2025 09:09:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2EF2F12CA;
-	Thu, 18 Dec 2025 09:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC8D2F4A1B
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 09:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766048799; cv=none; b=PKDSL6b5nwZuDecrlSlRmsFAVpkkzjqLsILoChikd4uYeg2UtakaTaLHjHMWGN3V0ZaEsGrwgnja6iEi0mbt3MWcqvIQzEN7MxFFjr48x1jgRj9PNIdvVVhQR3LVmpXWcoyYhjexvm58FvV0b1Rh3rnmGD+fZeQ7xwwH+e5yn5w=
+	t=1766048971; cv=none; b=mt+AiWa5YelXxRnB4z7bcnEXyn6IrSu75AQiX644AxmpQbSNIusTLABD1VFE1TYoDK2ph92rw5HGvSallX7ivKSZg8DX4TtsiXS5DVk2hKfsYWN91gW64Q+AzX+I3fuTaDY3UGfa9tz0Whoj5fyPJQ19NkBzLQcrWUPfe5N5zTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766048799; c=relaxed/simple;
-	bh=woOCKuv+cQlcPBn0V3RTneI2dXC56NyhIksfDb1G45w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BhQG4QWtj6OpK7uIhY3mERCWA0i97gcehd2OjgyyMUQB47jeameqUOr8mxJ7fxHAvDICd4jYEn63E81/x9lnMkGRsFs/SbX03ck2NFBh/ul/XQjLnXNhdTfKdJxFdOJeo0Y3LqiECLE0WcxSd7LflsijwgrwONeFr4VsO4bJk/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.209])
-	by APP-05 (Coremail) with SMTP id zQCowACnPRESxENpk4kQAQ--.33403S2;
-	Thu, 18 Dec 2025 17:06:26 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: anna-maria@linutronix.de,
-	frederic@kernel.org,
-	tglx@linutronix.de
-Cc: linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] clockevents: add a error handling in tick_broadcast_init_sysfs()
-Date: Thu, 18 Dec 2025 17:06:25 +0800
-Message-Id: <20251218090625.557965-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1766048971; c=relaxed/simple;
+	bh=JLOsRuLJC0lQwq8IdJlieAKJlWnRllG5tdlb00mT5Sg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gX+D/EpJlkBsM4VDAcp6/AKqf5G90nmXKLmz/2LNQg4e6AON2Q+VyokVZDY/CEPGO9lDC/JPawqplRbl9NaHQaeSbGWGsj1nnKMtjlorJP/VjMsGJEK3sJr1MJs7vjE0Az1S5XfRhWk/4+6ArdIfMX6H4Tu2wTKE6QbvQWQnejI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1vWA0S-0000bE-Cz; Thu, 18 Dec 2025 10:09:08 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1vWA0R-006FaQ-1N;
+	Thu, 18 Dec 2025 10:09:07 +0100
+Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1vWA0R-00EXba-0t;
+	Thu, 18 Dec 2025 10:09:07 +0100
+Date: Thu, 18 Dec 2025 10:09:07 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+	Michael Tretter <michael.tretter@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 0/2] media: staging: imx: fix multiple video input
+Message-ID: <aUPEs4wUHgAyMrPX@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	Michael Tretter <michael.tretter@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnPRESxENpk4kQAQ--.33403S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrurykCrykCF4kJFWftr1UKFg_yoWfAFX_Gw
-	4jvrykXr4IkF9Ik343Cwn5ZFy09rs7KFWfCr1UtF4xGrWUXFWq9r4DXFs8Zr4DuFyjk3s8
-	ta4DKrs3Gr13ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbhvttUUUU
-	U==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsAE2lDlnO8gQAAst
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.tretter@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-If device_register() fails, call put_device() to drop
-the device reference.
+On Fri, 07 Nov 2025 11:34:32 +0100, Michael Tretter wrote:
+> If the IMX media pipeline is configured to receive multiple video
+> inputs, the second input stream may be broken on start. This happens if
+> the IMX CSI hardware has to be reconfigured for the second stream, while
+> the first stream is already running.
+> 
+> The IMX CSI driver configures the IMX CSI in the link_validate callback.
+> The media pipeline is only validated on the first start. Thus, any later
+> start of the media pipeline skips the validation and directly starts
+> streaming. This may leave the hardware in an inconsistent state compared
+> to the driver configuration. Moving the hardware configuration to the
+> stream start to make sure that the hardware is configured correctly.
+> 
+> Patch 1 removes the caching of the upstream mbus_config in
+> csi_link_validate and explicitly request the mbus_config in csi_start,
+> to get rid of this implicit dependency.
+> 
+> Patch 2 actually moves the hardware register setting from
+> csi_link_validate to csi_start to fix the skipped hardware
+> reconfiguration.
 
-Fixes: 501f867064e9 ("clockevents: Provide sysfs interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- kernel/time/clockevents.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Gentle ping.
 
-diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
-index a59bc75ab7c5..94e223cf9c74 100644
---- a/kernel/time/clockevents.c
-+++ b/kernel/time/clockevents.c
-@@ -733,8 +733,12 @@ static __init int tick_broadcast_init_sysfs(void)
- {
- 	int err = device_register(&tick_bc_dev);
- 
--	if (!err)
--		err = device_create_file(&tick_bc_dev, &dev_attr_current_device);
-+	if (err) {
-+		put_deivce(&tick_bc_dev);
-+		return err;
-+	}
-+
-+	err = device_create_file(&tick_bc_dev, &dev_attr_current_device);
- 	return err;
- }
- #else
--- 
-2.25.1
+Michael
 
+> 
+> Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
+> ---
+> Changes in v2:
+> - Document changed locking in commit message
+> - Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
+> 
+> ---
+> Michael Tretter (2):
+>       media: staging: imx: request mbus_config in csi_start
+>       media: staging: imx: configure src_mux in csi_start
+> 
+>  drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
+>  1 file changed, 48 insertions(+), 36 deletions(-)
+> ---
+> base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
+> change-id: 20251105-media-imx-fixes-acef77c7ba12
 
