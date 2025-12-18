@@ -1,178 +1,117 @@
-Return-Path: <stable+bounces-203015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B393CCCD81
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E569CCCBDD
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B7830ACB6F
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:42:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB0923011416
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6C3354AEE;
-	Thu, 18 Dec 2025 16:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3A036D4F3;
+	Thu, 18 Dec 2025 16:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Y52xKweg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aja0b9fZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3154B34AB1C
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 16:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECF132C933
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 16:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766074085; cv=none; b=DzSTJxt9Y4mnz4vt9mdz3aP9iiTZEcOz58aXGXLbPBKaorBwXh/FbKRu0AmvheZ+Go/PZqwu7ixeufMAnDSQoXSDBwlgSxbgIf1eeFn7DwoXp64AKhW1aPh/HaXobV8gbKV9Dm3+Vm+VoEM+daMU/Bp8FYEuUL8vD84MSHsN2wc=
+	t=1766074898; cv=none; b=SuxQh4vol9ag+zLAZSyLijOSD6865jja6RGSR0v+3KkkmKEeNWW3+D5wV+JsZ/u93OL5TMGZgpE8XAsMLanm55+VAIUfV9+CICV5s2Izw23aXbWsNTuZvTXIdCCt8s4Nd6feQyPAl4qaGmpZ3IUucApokS0OjnOTsLxO+IF3cGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766074085; c=relaxed/simple;
-	bh=9fY3A5b4zET37FjxItWEHTv8ADHy/IGZ3gVaaXcN4G0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LUhzknr76S/v3kTYSPNNFZr862p+EPQd7n0/T1SA8LRDnH62VNpnqfXFsmSCBufbOgV6vt7wdbGT9jmfw+vWOsixvbGZ9HybBU+bKSr4+WBH+trJ15FAxXGVrYot796bPYa4SOrV016JHdbud3RyYodMBi1M8POn3O70kwyvcto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Y52xKweg; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-430f38c7d4eso46483f8f.3
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 08:08:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766074080; x=1766678880; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ll5fg56zYYiWFQstkxfa8620KqOD1ctc79MVD69plr0=;
-        b=Y52xKwegM7mmUdCtOYl9QUFBm4JFmONTQJFs4ZgzhSC88i3iY57VH6vCNf5To3RxZd
-         3pXBhM1RQx0IzOe5pJHq6mOIs3w+LMWd4wvtxw9jaVHCn8FVGTkynKWjO8mgF3pK7H2+
-         BaDdTWwx3rRTG+Yp/9Ic2GqaR7YZChzNJZJhT63m15dlkmcPPsmUzGlPdsVTfM10gQaz
-         VS07N2O9G1JeLT7mY6K1iwVYycCF45qXCoJ09/BV7N3HVNWfybQV2/zUAoJdMBtRELYS
-         feDoiL5UL8SjkjT6gPRvbD5wrVlQsIoanlyS3p2hCe4jQyhNTATjVVSpKLBKPC7KhjVA
-         5GBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766074080; x=1766678880;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ll5fg56zYYiWFQstkxfa8620KqOD1ctc79MVD69plr0=;
-        b=Uy7bO8A9VE29SHVTuoJ99VUYR4Tex9gMjwHpvfR0prHcW7L4Ka08fNOsRyYlUqHd9g
-         81Q84VOy9lAHmCWRoiAVhizHfBjQ/iqcXAlMggxwNKJYNSmZ7mkyVs273AAiujRoT2jJ
-         qxKXSI4XkX2miAasFU+VQ4TJaOA00Mkj0wDHf1hFjGpwZi6ySF2Go4eigNZrS2Xpp8Ny
-         RLJX2zxtjpRXdsES4XnCpPaVuFEcd+MwK7iMCZRlFRLs62A9utq1BjeJ2TQw9CYtJxCi
-         NEd3fb5kr6LO4WJcj85xTPU5+3Jzk7NqFntt4+JEuedaiU//FlYBIHvjnCOEWR35mUfQ
-         iczA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6vrNwI9vST/Bg5M5FGJvJV/th5Tsts0wbx479odBrHolQpety5bHw1rAk5PAuC2qa81AUeEw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzT8atV6exMhZZTEc6E5VmRqcMN3DnByE/unbzCdKfn1//Gb0C
-	57kPN/0n6FEXHEGDXUHlY+XIa9XAFl0fdwnGgDKOQTyEVkm2mCUmI4DQoT3hXBJSyKg=
-X-Gm-Gg: AY/fxX4BZXBl1Jeev4PsRDTzP8SPZtXDselchSyv3WuD0a1sEj1pedfVAueaJnfZiQ+
-	3B6ynbq0uSAfgTLKf9/Xq8bRzhc59aIJMnU+qRsUozFCIMvhM4NTvCPkbqaUofhj2lu7jXHZFYP
-	g67ZUxiHWUYwrB5X303u4DstQxUS0+GmZicRVgjqFLzTlpBw9aMWYW7ZSUNB8IBOGlUpw67f5Y7
-	mgPe1h/Y47A66S1Y9dWlysHpcF/HE8nZ/z9NzBMwU1ildgX2w7zQKX8/RT5KOR5cZQb7WgYnduf
-	WzPDHojH2UCXhIvTh+E5LviR5T4cEZFMpgKr1ehNrqqWfDxC3lyPmDonOuUdLFDvXwrk8ss4LJR
-	eKQfV/qMRuvtj4s8t7ZDo7ANeibLQjQaMuKMIcOPKvUMuKmv0wVRhl55EDfXRvxky7uFwkzSCV2
-	sTimTU5pcGyg==
-X-Google-Smtp-Source: AGHT+IFfChPcdXBQmW4OnfiET0IribR1F0Ir/X6rOlOywgz8dsCin5NgK+sVVKYU+DaOhPJ/6fhXmg==
-X-Received: by 2002:a05:600c:4ed2:b0:471:ab1:18f5 with SMTP id 5b1f17b1804b1-47be3cffd6amr17869585e9.7.1766074080318;
-        Thu, 18 Dec 2025 08:08:00 -0800 (PST)
-Received: from localhost ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1d2fa20a22sm2673669a12.20.2025.12.18.08.07.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 08:07:59 -0800 (PST)
-Date: Fri, 19 Dec 2025 00:07:56 +0800
-From: Heming Zhao <heming.zhao@suse.com>
-To: Prithvi Tambewagh <activprithvi@gmail.com>
-Cc: mark@fasheh.com, jlbec@evilplan.org, joseph.qi@linux.alibaba.com, 
-	ocfs2-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
-	khalid@kernel.org, syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ocfs2: handle OCFS2_SUPER_BLOCK_FL flag in system dinode
-Message-ID: <njikmwfpnsdzalxump7dj7wnlvkwfmvuqwxhpwzly45v7ioj5l@yckvd3veaifi>
-References: <20251216200544.4114-1-activprithvi@gmail.com>
+	s=arc-20240116; t=1766074898; c=relaxed/simple;
+	bh=4bv3Gk1Rp61YDnZYdNpxoF/HsUv0eSFoQ9vGbwmYIKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GoczvNtw/DugBZ0y637nfyYBgJs1b9QHcQUhGlDAlH5CTHj7dN23LE6hJwlspumk95uwCUbRVXwVySvfDPNXP7mpTbf2vztu8+7YrbI2PBBAYofNdaRIX1bEn4R4msl1joiRERCkTs2urey19mvDQq9udGQnIzC4fIuFI0fCv68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aja0b9fZ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766074897; x=1797610897;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4bv3Gk1Rp61YDnZYdNpxoF/HsUv0eSFoQ9vGbwmYIKg=;
+  b=aja0b9fZ+b1kLR8dPq0NrIOLEp+12ERBPtXytSj/ws5Tzatvw/3n6eJ6
+   eJ3SshWhgIYQAZxlhLtcs5CwbONHvbJ+9U4GURHO8F9NrxC36AIk1Uz1J
+   8uEIJVRYozF/ZqIJUfh2WWgMVviX0aKapREK8mcjUVid/367GwiREMyxH
+   gwKa0vf+JdLcgmwypNnfZ7tFSleh+g9yQ/wLHbXsYfhB3fywF+pQUVtec
+   WOkpjcQANrImf+Aoq9w0vI3Ss6nXLS8WdeaBHqUfamVx5AYwjVv+optfg
+   4PLY8SXHIiSPCKwdND1TAacxZcD3w+qqMhQdX/1iqDGBftPoF61ATt7ak
+   g==;
+X-CSE-ConnectionGUID: Sa7+oTWqQ5mEZi5Pbrqoyw==
+X-CSE-MsgGUID: NLoO0jNLTW6DebWv31VAIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="70607538"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
+   d="scan'208";a="70607538"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 08:21:37 -0800
+X-CSE-ConnectionGUID: sKcbm9hASBWrsGAQiZo6/Q==
+X-CSE-MsgGUID: BnAcDUpOSlucwR+uW3AKyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
+   d="scan'208";a="203705525"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO fedora) ([10.245.244.93])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 08:21:33 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	apopple@nvidia.com,
+	airlied@gmail.com,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	felix.kuehling@amd.com,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dakr@kernel.org,
+	"Mrozek, Michal" <michal.mrozek@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH v5 01/24] drm/xe/svm: Fix a debug printout
+Date: Thu, 18 Dec 2025 17:20:38 +0100
+Message-ID: <20251218162101.605379-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251218162101.605379-1-thomas.hellstrom@linux.intel.com>
+References: <20251218162101.605379-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216200544.4114-1-activprithvi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 17, 2025 at 01:35:44AM +0530, Prithvi Tambewagh wrote:
-> When ocfs2_populate_inode() is called during mount process, if the flag
-> OCFS2_SUPER_BLOCK_FL is set in on-disk system dinode, then BUG() is
-> triggered, causing kernel to panic. This is indicative of metadata
-> corruption.
-> 
-> This is fixed by calling ocfs2_error() to print the error log and the
-> corresponding inode is marked as 'bad', so that it is not used further
-> during the mount process. It is ensured that the fact of that inode being
-> bad is propagated to caller ocfs2_populate_inode() i.e.
-> ocfs2_read_locked_inode() using is_bad_inode() and further behind along
-> the call trace as well.
-> 
-> Reported-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=779d072a1067a8b1a917
-> Tested-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-> ---
->  fs/ocfs2/inode.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
-> index 12e5d1f73325..f439dc801845 100644
-> --- a/fs/ocfs2/inode.c
-> +++ b/fs/ocfs2/inode.c
-> @@ -347,7 +347,12 @@ void ocfs2_populate_inode(struct inode *inode, struct ocfs2_dinode *fe,
->  	} else if (fe->i_flags & cpu_to_le32(OCFS2_SUPER_BLOCK_FL)) {
->  		/* we can't actually hit this as read_inode can't
->  		 * handle superblocks today ;-) */
-> -		BUG();
-> +		ocfs2_error(sb,
-> +			    "System Inode %llu has "
-> +			    "OCFS2_SUPER_BLOCK_FL set",
-> +			    (unsigned long long)le64_to_cpu(fe->i_blkno));
-> +		make_bad_inode(inode);
-> +		return;
->  	}
->  
->  	switch (inode->i_mode & S_IFMT) {
-> @@ -555,6 +560,11 @@ static int ocfs2_read_locked_inode(struct inode *inode,
->  
->  	ocfs2_populate_inode(inode, fe, 0);
->  
-> +	if (is_bad_inode(inode)) {
-> +		status = -EIO;
-> +		goto bail;
-> +	}
-> +
->  	BUG_ON(args->fi_blkno != le64_to_cpu(fe->i_blkno));
->  
->  	if (buffer_dirty(bh) && !buffer_jbd(bh)) {
-> @@ -576,7 +586,7 @@ static int ocfs2_read_locked_inode(struct inode *inode,
->  	if (can_lock)
->  		ocfs2_inode_unlock(inode, lock_level);
->  
-> -	if (status < 0)
-> +	if (status < 0 && !is_bad_inode(inode))
->  		make_bad_inode(inode);
->  
->  	brelse(bh);
-> 
-> base-commit: d76bb1ebb5587f66b0f8b8099bfbb44722bc08b3
-> -- 
-> 2.43.0
-> 
-> 
+Avoid spamming the log with drm_info(). Use drm_dbg() instead.
 
-ocfs2_populate_inode has two callers: __ocfs2_mknod_locked() and
-ocfs2_read_locked_inode()
+Fixes: cc795e041034 ("drm/xe/svm: Make xe_svm_range_needs_migrate_to_vram() public")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: <stable@vger.kernel.org> # v6.17+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ drivers/gpu/drm/xe/xe_svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Your code only works for the ocfs2_read_locked_inode() path, but not for the
-__ocfs2_mknod_locked() path.
-In __ocfs2_mknod_locked(), there are two tasks after ocfs2_populate_inode:
-"creating locks" and "updating the transaction". If you use a 'goto' to bypass
-these two tasks, ocfs2 will crash in the near future. Conversely, if you choose
-to execute the two jobs, the logic is flawed because we perform on a bad inode.
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index 93550c7c84ac..bab8e6cbe53d 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -937,7 +937,7 @@ bool xe_svm_range_needs_migrate_to_vram(struct xe_svm_range *range, struct xe_vm
+ 	xe_assert(vm->xe, IS_DGFX(vm->xe));
+ 
+ 	if (xe_svm_range_in_vram(range)) {
+-		drm_info(&vm->xe->drm, "Range is already in VRAM\n");
++		drm_dbg(&vm->xe->drm, "Range is already in VRAM\n");
+ 		return false;
+ 	}
+ 
+-- 
+2.51.1
 
-In my view, the existing code (using BUG()) is acceptable. We don't need to
-worry about this syzbot report.
-
-Thanks,
-Heming
 
