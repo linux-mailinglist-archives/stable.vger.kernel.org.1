@@ -1,88 +1,96 @@
-Return-Path: <stable+bounces-202971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9358CCBA76
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:41:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A41ACCBA4F
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:38:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC0A2301E3E4
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:41:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13385301B58D
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE0431AAA9;
-	Thu, 18 Dec 2025 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA21331771B;
+	Thu, 18 Dec 2025 11:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyXtuoZE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gzy4le77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FDD31B82E;
-	Thu, 18 Dec 2025 11:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6065331986C;
+	Thu, 18 Dec 2025 11:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766057589; cv=none; b=hspRtEc877kAn5w4VmUGNgI0C/baer7c2KmB8UV6WtQDrLhjs6H8/kXdmZRbHGXOTykb2CIASSnIUEtXprpJxhQYKUcvncRNSVcRGEA27DEIknQokc7pNZ8gj+lv57/cOVHhn3IxtjpTsPM80FAb7nl3EiIDCIiPmcRfkBHKo+o=
+	t=1766057908; cv=none; b=aOnPCSXJ3DgC7zak0efbRfQrVxnfXVDfecMiJwxXBNtXcKo1GOw7Xu+XM8Vo37IRRbWDvjCEFUX2JTNrSpHr06/8PRKv2i/et5iFtg/dL5dwMFFgL17ygsk3d169K8yEFaWCWJKPSgfKgwFYcK64CWPF84tWEz+dzIgSFT4RJnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766057589; c=relaxed/simple;
-	bh=x56vGhs99iUAGeSHiBDacCNHmj7BMmiZ4yuWTG6NNws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JzVChonl7TJuMePLztYbHfbxteN7fRWIQZjH47KBTNA9Jk5zGf1d5KVFv66rWH0Si8xQwY1fw6yPFi8P9WT8O751oAWwvW24SjUO/UYzfEtfaNUIFmglHLATgwwqTzw8romS1ok+gCT+QnCLsDj9DYdwkY+zoXjeUBNyFwgFJAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyXtuoZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE641C4CEFB;
-	Thu, 18 Dec 2025 11:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766057588;
-	bh=x56vGhs99iUAGeSHiBDacCNHmj7BMmiZ4yuWTG6NNws=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eyXtuoZEYeceLgAJYDLi/YjVNgt7Ipw33aNg5RGJIqNVOOEMQQzO6wmGyhBGYkTNq
-	 /nbU9kTXW5AI4CYtUar9wl9/tShyCWJ8ORMJRgU6Iv8adcj/qLOvromtmgDT7abxsH
-	 G+844avZ+WnmbQ9Qpzza7EVANBF3U39Vu+fZqrbg=
-Date: Thu, 18 Dec 2025 12:33:05 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PNP: add a error handling in pnpacpi_init()
-Message-ID: <2025121841-unwoven-twelve-e65b@gregkh>
-References: <20251218082903.551296-1-lihaoxiang@isrc.iscas.ac.cn>
+	s=arc-20240116; t=1766057908; c=relaxed/simple;
+	bh=yHqmtSCcycea5hP6Wq6y+hxz1wMxs1n6NwXVqG+4uFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=delsHbVrk5E7ftP0LqklMCF80+DrdoX+L97G1p1jm6bSKnnv1moM1K6z6MlpmjUo4dfRnkvOYSpicLjtPYO/okKW6Y+DO2JGcFJTZq//X1bs9ID06JNj9nLKR/c+57SHYcwYLYeomnnnOCTxnLIdWCLTqAkrm3ZzA6E7AynaUxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gzy4le77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C65C116B1;
+	Thu, 18 Dec 2025 11:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766057907;
+	bh=yHqmtSCcycea5hP6Wq6y+hxz1wMxs1n6NwXVqG+4uFA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Gzy4le77QekN+8o/RiaiPFux51AClVo2n3ax2U5HvgsjEjA2ytBOlghxhAv/2YyjJ
+	 KPkqDY6yaJpm3cmNu8LAIABg6CLud8rwRwywRQiKZKt01HqD4eEA2bmJiDbRRotWg7
+	 JgqEpu2o1BJJfc+lko9F1kqVuvflvcTZg7qNu8SUq+NtymAMI8zkR/aFRZZ8vceuIl
+	 R8EDksKiKVRkHjL61Ie3TB2Gz7ed2zN6OR8FAWquUaJDtk/mP4abwUu8iMRHSHHlBE
+	 W45RY4zfAPee00hOIu6T3UhwYNbgT2mn6lVgWPLBCeLH2LhXtRSjbHTUvuko19Nwu4
+	 /tIE/14TzbkdA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
+Date: Thu, 18 Dec 2025 12:36:39 +0100
+Message-ID: <20251218113639.72199-1-ojeda@kernel.org>
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251218082903.551296-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 18, 2025 at 04:29:03PM +0800, Haoxiang Li wrote:
-> Add a error handling for pnp_register_protocol(), and if
-> it fails, call put_device() to drop the device reference.
+On Tue, 16 Dec 2025 12:09:27 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.63 release.
+> There are 354 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
->  drivers/pnp/pnpacpi/core.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pnp/pnpacpi/core.c b/drivers/pnp/pnpacpi/core.c
-> index a0927081a003..0b63e1748b7c 100644
-> --- a/drivers/pnp/pnpacpi/core.c
-> +++ b/drivers/pnp/pnpacpi/core.c
-> @@ -304,7 +304,10 @@ static int __init pnpacpi_init(void)
->  		return 0;
->  	}
->  	printk(KERN_INFO "pnp: PnP ACPI init\n");
-> -	pnp_register_protocol(&pnpacpi_protocol);
-> +	if (pnp_register_protocol(&pnpacpi_protocol)) {
-> +		put_device(&pnpacpi_protocol.dev);
+> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
+> Anything received after that time might be too late.
 
-Again, this looks really wrong.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-What tool are you all using to "find" these issues?  Why aren't you
-properly documenting it?
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-thanks,
+Thanks!
 
-greg k-h
+Cheers,
+Miguel
 
