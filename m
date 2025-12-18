@@ -1,221 +1,259 @@
-Return-Path: <stable+bounces-202982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C769ECCC056
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 14:34:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4188CCC0CE
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 14:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D6D63028EE3
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 13:34:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D6EF300E017
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 13:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0313358CE;
-	Thu, 18 Dec 2025 13:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E6332EA1;
+	Thu, 18 Dec 2025 13:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="K6CnhYA/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ksrfDVpY"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="fD4VAWRC"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCD831B114
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 13:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A349C23A9B0;
+	Thu, 18 Dec 2025 13:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766064841; cv=none; b=XxrT4isBLhB1kZIa4EMuZtSqtaQeSBHXKv9kPvDmjNGojMFc5YZTd1VfZKalP4w8gS396vDl5I2j533qZWiC4Ql93NEaEFLj4U/aooLs5jVAb9557tBNfdF+mTnGjpuqpwGjItgJgMNY0AeBkdMh7rTTuYKjA0koBCd37qT8IQ8=
+	t=1766064951; cv=none; b=gELvAezUPTxpdqWo9BEBlbLkjh5nd/gynoQNgc/IMImrM/b3aQNfSEmc3C+jdj6IykRhLoes0JyUnPYkIJIW4YJTJaHd5Vk8IWhI3BYMKBNrbbSUBM7PP1E916TC8lWwyQ/UjNTrLFOSIDmabg1lDMJfAu3ymIog1mR/6hujcyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766064841; c=relaxed/simple;
-	bh=lnyg40KUhEFPYZNdBZjXMbfSCXX9xwcbbpFyc1U/xNk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j2N1vHpMENBoe3N6H4JfJzpBbQBJaV5MaliSyOF+zmRN9FumfYRw5V+Aq8dfiwmmq4rLZqPlLx3zV79gzQpIc6qsK1fmHcb4h0FlgGBB/EVIlDnvTtp9xiIx4OsXe2VovBDfMJhjFTWPQwhoV46TnXvFqf0lEYLyM+6oTlPiHOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=K6CnhYA/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ksrfDVpY; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BI9QCRi174240
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 13:33:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jLk8SXiYprpUvnDvLbLafiQmZVsZ135ZwhPEfPUYFJU=; b=K6CnhYA/IWTwE5Up
-	ZeJrbRhskLrlUPiFehZrVGdFfQFp+6z6vXcKXCRlLM7DP9qvDRWOwlt6KNeWe6LQ
-	Dv6Lz6KTcP1sIOAhhH9CCthZ8cMGsqV2kWAvXKmC6zR8hr3tR3zNbcfYAHqfYWt3
-	M1/LYxIsq2foNx/gUUn9SNZC7kCzFxYUNyMzriecJ7mvZo9fsLBL0+loWWdz5wbf
-	g4q8tYTccLDI1QGqxiVMJLyJ6NQtwUqwtHCzzL+yrljcm2/R+kRXiwkOQG5XCbal
-	CJvQnX7gPyi45LzIXhmTsfDIg1d8RZw1UyQbW4eShh03unS5RHDTVmrU8IxC85yW
-	JSAUlA==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b43nmtt25-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 13:33:57 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-34c6cda4a92so1287315a91.3
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 05:33:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766064837; x=1766669637; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jLk8SXiYprpUvnDvLbLafiQmZVsZ135ZwhPEfPUYFJU=;
-        b=ksrfDVpY2rsj3wMB24QCB2GwLI+SjTZyPbOZdHX2r4pfi/XtAqBPQcoYxCNxh20REG
-         O1/kg+EbOos0ntg/ASObNqflMg5LKXJA+n+mFgSe5ypdpXHs6Jk5WSfJLtN9xhCp8izn
-         8OyoZc7ZZ9qt9jEiS6ylNTOZ9ZcCG0dOPvDYiQLxbiO8qiwndqOpxRF93jkQKcYC2i1k
-         Aic1/7jYOFY9W0ZJHBqFlVMgil9l9JqdJ6DAvyDUN8MCkC3IppdXDfipvdkPgMPpEOSO
-         vX39Wb0ePGqEjHYhw7qJ0sATYtz7Zv5UE9NaxqyPAzLm0pqhNabyWM2c9Qzc/MlzGEgV
-         796Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766064837; x=1766669637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jLk8SXiYprpUvnDvLbLafiQmZVsZ135ZwhPEfPUYFJU=;
-        b=Fycd0QaZlnOoabr4f7jEECsck2Owm5W0C2TtAHkWSmEow2kzPp40+kLqkLZUSc+Sxu
-         pnJUN0yKt7vsYbK4yMwW45NcZLj2/rLRMo2ZYysrmbbI4pfecf+JFovWpi9kF3OUv9Ck
-         w4FT6N8x6o/EJRzkgpMZD5ZQyzTGxJ/swyMuNTJcoJvncFHIyFXTwv/5FAKraThG90/Y
-         6Y78iDW9uxcLjp3UE1j8OXg5Vt9aC8zdZ9Zaa3iwBRra84Tucu748HY9fcuf4USwz6G6
-         RVenD4XxjR4pyT76kZkezGh20c0mfEmjk1oiTe6d6YWPN53MtjYb2RkuXCT8uy6qqZdo
-         5myQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWz2vCyvxm6HZFyI7B70g7D9kTfE4ZFIJYA2f5rvpI/a7ir+wsx9SVN7HnGUA1FiorCf4V3BiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHEX4eo6QpM4bSbThVi7J2eBhdGvyRB1eIPKDBLt9hVKbgYL+C
-	lC2EAsHyoCuARvmsZ1ksRY7hfZfLPH5hSjGtOyRr78Xc1hcKTPKqwaY4CW99UAWsa084JYao7EQ
-	YCCGRWBG0ktUyNavSLKKnIZkjW6AEJwTr5EQfFqJ26HkGrpjyqAXlIuWPXQLxQhcP+8R93Mu7aT
-	QKv2+Pf9rooNKyQ8b3Ge0pkStIVu/ro0nODw==
-X-Gm-Gg: AY/fxX5bsCt/vo6pDQ6WCEC88oovgg7NMnr0XJZkiUxDWek4s2VU2gvOQgg5P17R38n
-	9vyhIKWuefDjJOi3qzKNYl1UP1S9MuWIMlHosrK6dYLi0+KjYC/F0lLQe7v8O36UMddnR0MKY96
-	9oinJmU411hhGgIw98ZtrIO1yW7Dpvp7iYTkBrw0ylGPZHbaJl8s7sojAHfci49JY3otQ=
-X-Received: by 2002:a17:90b:2d83:b0:334:cb89:bde6 with SMTP id 98e67ed59e1d1-34abe3e0a40mr17088248a91.4.1766064837020;
-        Thu, 18 Dec 2025 05:33:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEgsf2vQNv0CNOtxC5mwAlsF7Af8JajfyasK6Rb1q2H+nBf6Kt9oxtXSF2qLF6Kmm13hAHAbQoUfTwZZvVEmmE=
-X-Received: by 2002:a17:90b:2d83:b0:334:cb89:bde6 with SMTP id
- 98e67ed59e1d1-34abe3e0a40mr17088218a91.4.1766064836449; Thu, 18 Dec 2025
- 05:33:56 -0800 (PST)
+	s=arc-20240116; t=1766064951; c=relaxed/simple;
+	bh=kt1CFgrJoGGcg4im5yw+G42zbIzjog2txWELjrIDc+c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=m2imq0SrMUlysgFBhmTuK1jbVd+SAl244YnZijkdkIPlqz3vDNr9IDwKZwnkz2yF7mD+yReFrE+FHwYXxjbGPP8XJ0+mWO5pY7nV7VtJqLLuMUdFjL853+ex+tjoTuS+sGjwmB/+41GVSkUigTdlHBPp/wbxwuYZrpWiLs3D26M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=fD4VAWRC; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1766064948; x=1797600948;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=kt1CFgrJoGGcg4im5yw+G42zbIzjog2txWELjrIDc+c=;
+  b=fD4VAWRCPzQ96hYjLy3U/WBLllp0+hd+tykIs1WWylG90IDMcEf05bw4
+   2c7SakY5WGEXJIL4XHurMcChXgL37hXvWzMm8z7lTEdk3m+aMcgQFECsy
+   4VhMS9PMqrQU1MT0aBs+xJkJkvOEL0y0OLVBgtZwrphbai1jKofKUfx3L
+   a67kiJKyf8aVutxLcsyCuxCmmlPKRz1eRfBnREyzzC0dauL8pJ/pq9a8w
+   hBmOkWXFIP1EL5IG8KfQeP01P2H6eRjkm1AZFVwNiV5GQzQhzI7/SG4mO
+   mJ6VIe6fHuwbCaMvAlAGnD4TMaUN/A10NBXGNYGy1zdQy0wWgT2IOfxkQ
+   w==;
+X-CSE-ConnectionGUID: XkRRgBcvQem1Rm3CmAuLCw==
+X-CSE-MsgGUID: xL5deTY1QNCP3D+M0qYyQA==
+X-IronPort-AV: E=Sophos;i="6.21,158,1763449200"; 
+   d="scan'208";a="50047202"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 06:35:45 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Thu, 18 Dec 2025 06:35:15 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 18 Dec 2025 06:35:12 -0700
+From: Ludovic Desroches <ludovic.desroches@microchip.com>
+Date: Thu, 18 Dec 2025 14:34:43 +0100
+Subject: [PATCH REGRESSION v3] drm/panel: simple: restore connector_type
+ fallback
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251202-wip-obbardc-qcom-msm8096-clk-cpu-fix-downclock-v1-1-90208427e6b1@linaro.org>
- <8d769fb3-cd2a-492c-8aa3-064ebbc5eee4@oss.qualcomm.com> <CACr-zFD_Nd=r1Giu2A0h9GHgh-GYPbT1PrwBq7n7JN2AWkXMrw@mail.gmail.com>
- <CACr-zFA=4_wye-uf3NP6bOGTnV7_Cz3-S3eM_TYrg=HDShbkKg@mail.gmail.com>
- <f902ebd4-4b4a-47c3-afd7-2018facdaad6@oss.qualcomm.com> <e2eg3zk2sc7pzzlybf6wlauw7fsks3oe6jy3wvbxkgicbo3s2g@tks2pgigtbza>
- <5e255831-3e84-4f3f-8b4f-c66d05e6be09@oss.qualcomm.com>
-In-Reply-To: <5e255831-3e84-4f3f-8b4f-c66d05e6be09@oss.qualcomm.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Date: Thu, 18 Dec 2025 15:33:45 +0200
-X-Gm-Features: AQt7F2p3sO84AEGdlajb_bnGjwVEOm9heGbIyV8I4pKxXUyFoxAcwe9vyWQ_rCU
-Message-ID: <CAO9ioeVBk0CLGcdUdbixVGwGfheOaVwX=i39JovHa740mO4kRg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "clk: qcom: cpu-8996: simplify the cpu_clk_notifier_cb"
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Christopher Obbard <christopher.obbard@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: JJ5CPVgRrLfYYeidZ40c9SfsP_mOHv46
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDExMiBTYWx0ZWRfX0GEhwlV2ZGQq
- OM1c8rCeZZWYBMNYgXrIc+vWsziyYa76Q52E3OQseRs4qliM9zI4Y22xG+poVutLiFevpAReuPQ
- nGCKN2bnXEENchjOwL1m4NXt+77lATfUDqpBFveK+MbnxP/uKxmO097reH0f4ShYZdrMrcPw55D
- 9pernWkdyn0KbOCRZpWFdMyik9YF7XtJ85HMPDrLiZ4GXeeBADQJMZ3Ioi/KKzzVKy+KJvmLxAw
- Z5Ks87gxydZmjmATl1dsYg7IVwjAi1/BAFrFbOFvJiS3ftMp9PbE2YHYEGw+Wvhz6oN6r4k3Urd
- ZvYFTe01RQRYb80+S7/ieritqg8tCdva0WsXzxL/if0WdVir3Del6tdV+6XfjxzjuZncovKizgO
- Pboq8Tp1DHFgxWas2TmZGxrLMPd3Sw==
-X-Proofpoint-ORIG-GUID: JJ5CPVgRrLfYYeidZ40c9SfsP_mOHv46
-X-Authority-Analysis: v=2.4 cv=A6Zh/qWG c=1 sm=1 tr=0 ts=694402c5 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8
- a=CAFnV92_3V8pvHR-v9AA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-18_02,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 impostorscore=0 priorityscore=1501 spamscore=0
- bulkscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512180112
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251218-lcd_panel_connector_type_fix-v3-1-ddcea6d8d7ef@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAPICRGkC/43NuwrCMBQG4FeRzEZ60ovi5CLiolBHkZCentiAJ
+ iWRYJG+u6GTuOj4n8v3v1ggbyiw9ezFPEUTjLMp5PMZw07ZK3HTpsxEJkoAAfyGreyVpZtEZy3
+ hw3n5GHqS2jy5zjJN+bKqVCFYInpPaTzxZ1Zvd/X2dNofD+ySdp0J6XeYmiNMF/+VRODAdds0p
+ PNCgSo2d4PeYWf6Bbr7hEfxCVY/QJFAhHKVly3oJTbf4DiOb0ybjr0pAQAA
+X-Change-ID: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
+To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
+	<jesszhan0024@gmail.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Anusha Srivatsa <asrivats@redhat.com>, "Luca
+ Ceresoli" <luca.ceresoli@bootlin.com>, Jessica Zhang
+	<jessica.zhang@oss.qualcomm.com>
+CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5611;
+ i=ludovic.desroches@microchip.com; h=from:subject:message-id;
+ bh=kt1CFgrJoGGcg4im5yw+G42zbIzjog2txWELjrIDc+c=;
+ b=owEBbQKS/ZANAwAKAT455hP3e2QtAcsmYgBpRAMPJ4Y+1SD/eQcI5ztthiQSN1oN5XcndfVAb
+ ROaOj6gVZ+JAjMEAAEKAB0WIQQAMEvJiWmsW41tNU0+OeYT93tkLQUCaUQDDwAKCRA+OeYT93tk
+ LW3dD/9JdAtSTdSWzh1sKvN174Nx+2vMQMlwHBp+OoWOvllX3QS8Csre61VbxiwIBKR7XEDAWsS
+ hratGlsVorpnl8YmJc8u7I18yzk3UUQSWeipbKJUVSufG0uD0yjjeWTTa3u506tkvL60j/GKjKQ
+ z0TgczQr0YjpJbRcX1+yqnVf49jp7R1BM57/xBKyyJbrDNOGkygee9VGXoyfYgk1haA0ZqikvEy
+ 58oLrF630AW9EJfL/H3VUMQ48HmQptsUdGn2J1dMdE8DbxOaSvtnsrWOenk0799ltGGuYVl2apt
+ yqZhr8VhdyAuo5yzabm0ilNuEQzglb7LvY0gvt66wQwL4AkMBxg+Fs/FzXX7XJZsBAPRk5+3bKz
+ JHVouvFt1GKLfX0kgJCfbzuoQpzmh7/ETG2K1r1e/tHN4AJB5mEoa61fbVbIibst/wJP61v3N03
+ GnW48wGuAZmTTvpCO7VwBjggyOd4coZlycWYsznzXOYi5B0rJXCo28lV6trlY6U/Sg3rs1ec/oe
+ T31opBXEpWB+yskK2lYyAAv4eEPdAJVotfnakkv7zQ1II+K0VB9q4G5H/WgAqVn6nR9RvbeGl8y
+ McuLDWR5eEDci6LDBVxlOfaEz5ET3Pv6KuFpA7LMjjA+aNSBUrp6zIkQbJplLglAC4+Vd20Y5+Y
+ BqbIoJ3mxpbb3WA==
+X-Developer-Key: i=ludovic.desroches@microchip.com; a=openpgp;
+ fpr=665BAA7297BE089A28B77696E332995F09DCC11A
 
-On Thu, 18 Dec 2025 at 15:09, Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 12/17/25 5:39 PM, Dmitry Baryshkov wrote:
-> > On Wed, Dec 17, 2025 at 01:22:59PM +0100, Konrad Dybcio wrote:
-> >> On 12/14/25 8:26 PM, Christopher Obbard wrote:
-> >>> Hi Konrad,
-> >>>
-> >>> On Mon, 8 Dec 2025 at 22:36, Christopher Obbard
-> >>> <christopher.obbard@linaro.org> wrote:
-> >>>> Apologies for the late response, I was in the process of setting som=
-e
-> >>>> more msm8096 boards up again in my new workspace to test this
-> >>>> properly.
-> >>>>
-> >>>>
-> >>>>> It may be that your board really has a MSM/APQ8x96*SG* which is ano=
-ther
-> >>>>> name for the PRO SKU, which happens to have a 2 times wider divider=
-, try
-> >>>>>
-> >>>>> `cat /sys/bus/soc/devices/soc0/soc_id`
-> >>>>
-> >>>> I read the soc_id from both of the msm8096 boards I have:
-> >>>>
-> >>>> Open-Q=E2=84=A2 820 =C2=B5SOM Development Kit (APQ8096)
-> >>>> ```
-> >>>> $ cat /sys/bus/soc/devices/soc0/soc_id
-> >>>> 291
-> >>>> ```
-> >>>> (FWIW this board is not in mainline yet; but boots with a DT similar
-> >>>> enough to the db820c. I have a patch in my upstream backlog enabling
-> >>>> that board; watch this space)
-> >>>>
-> >>>> DragonBoard=E2=84=A2 820c (APQ8096)
-> >>>> ```
-> >>>> $ cat /sys/bus/soc/devices/soc0/soc_id
-> >>>> 291
-> >>>> ```
-> >>>
-> >>> Sorry to nag, but are you able to look into this soc_id and see if
-> >>> it's the PRO SKU ?
-> >>
-> >> No, it's the "normal" one
-> >>
-> >> Maybe Dmitry would know a little more what's going on
-> >
-> > Unfortunately, no.
-> >
-> > Maybe, the best option would be to really land the revert.
-> >
-> >
-> > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->
-> Is there a chance that this removal:
->
-> -       case POST_RATE_CHANGE:
-> -               if (cnd->new_rate < DIV_2_THRESHOLD)
-> -                       ret =3D clk_cpu_8996_pmux_set_parent(&cpuclk->clk=
-r.hw,
-> -                                                          SMUX_INDEX);
-> -               else
-> -                       ret =3D clk_cpu_8996_pmux_set_parent(&cpuclk->clk=
-r.hw,
-> -                                                          ACD_INDEX);
->
-> could have been the cause?
->
-> On one hand, we're removing this explicit "set ACD as parent" path, but
-> OTOH determine_rate should have taken care of this..
+The switch from devm_kzalloc() + drm_panel_init() to
+devm_drm_panel_alloc() introduced a regression.
 
-My idea was that we switch to SMUX temporarily, then CLK framework
-fixes that for us while performing the actual reparenting.
+Several panel descriptors do not set connector_type. For those panels,
+panel_simple_probe() used to compute a connector type (currently DPI as a
+fallback) and pass that value to drm_panel_init(). After the conversion
+to devm_drm_panel_alloc(), the call unconditionally used
+desc->connector_type instead, ignoring the computed fallback and
+potentially passing DRM_MODE_CONNECTOR_Unknown, which
+drm_panel_bridge_add() does not allow.
 
-Christopher, as a quick check, could possibly revert just this chunk?
+Move the connector_type validation / fallback logic before the
+devm_drm_panel_alloc() call and pass the computed connector_type to
+devm_drm_panel_alloc(), so panels without an explicit connector_type
+once again get the DPI default.
 
+Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
+Cc: stable@vger.kernel.org
+---
+Changes in v3:
+- Add the tag "Cc: stable@vger.kernel.org" in the sign-off area.
+- Link to v2: https://lore.kernel.org/r/20251126-lcd_panel_connector_type_fix-v2-1-c15835d1f7cb@microchip.com
 
---=20
-With best wishes
-Dmitry
+Changes in v2:
+- Fix a warning introduced by the code move. There is no need to jump to
+  free_ddc, we can directly return from the function.
+- Link to v1: https://lore.kernel.org/r/20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com
+---
+ drivers/gpu/drm/panel/panel-simple.c | 89 ++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 0019de93be1b663f55b04160606363cd043ab38b..5fd75b3939c635ca3e5b293ea37a759f479fa3f8 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -623,49 +623,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 	if (IS_ERR(desc))
+ 		return ERR_CAST(desc);
+ 
+-	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
+-				     &panel_simple_funcs, desc->connector_type);
+-	if (IS_ERR(panel))
+-		return ERR_CAST(panel);
+-
+-	panel->desc = desc;
+-
+-	panel->supply = devm_regulator_get(dev, "power");
+-	if (IS_ERR(panel->supply))
+-		return ERR_CAST(panel->supply);
+-
+-	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+-						     GPIOD_OUT_LOW);
+-	if (IS_ERR(panel->enable_gpio))
+-		return dev_err_cast_probe(dev, panel->enable_gpio,
+-					  "failed to request GPIO\n");
+-
+-	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
+-	if (err) {
+-		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
+-		return ERR_PTR(err);
+-	}
+-
+-	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
+-	if (ddc) {
+-		panel->ddc = of_find_i2c_adapter_by_node(ddc);
+-		of_node_put(ddc);
+-
+-		if (!panel->ddc)
+-			return ERR_PTR(-EPROBE_DEFER);
+-	}
+-
+-	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
+-	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
+-		panel_simple_parse_panel_timing_node(dev, panel, &dt);
+-
+-	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
+-		/* Optional data-mapping property for overriding bus format */
+-		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
+-		if (err)
+-			goto free_ddc;
+-	}
+-
+ 	connector_type = desc->connector_type;
+ 	/* Catch common mistakes for panels. */
+ 	switch (connector_type) {
+@@ -690,8 +647,7 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 		break;
+ 	case DRM_MODE_CONNECTOR_eDP:
+ 		dev_warn(dev, "eDP panels moved to panel-edp\n");
+-		err = -EINVAL;
+-		goto free_ddc;
++		return ERR_PTR(-EINVAL);
+ 	case DRM_MODE_CONNECTOR_DSI:
+ 		if (desc->bpc != 6 && desc->bpc != 8)
+ 			dev_warn(dev, "Expected bpc in {6,8} but got: %u\n", desc->bpc);
+@@ -720,6 +676,49 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 		break;
+ 	}
+ 
++	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
++				     &panel_simple_funcs, connector_type);
++	if (IS_ERR(panel))
++		return ERR_CAST(panel);
++
++	panel->desc = desc;
++
++	panel->supply = devm_regulator_get(dev, "power");
++	if (IS_ERR(panel->supply))
++		return ERR_CAST(panel->supply);
++
++	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
++						     GPIOD_OUT_LOW);
++	if (IS_ERR(panel->enable_gpio))
++		return dev_err_cast_probe(dev, panel->enable_gpio,
++					  "failed to request GPIO\n");
++
++	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
++	if (err) {
++		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
++		return ERR_PTR(err);
++	}
++
++	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
++	if (ddc) {
++		panel->ddc = of_find_i2c_adapter_by_node(ddc);
++		of_node_put(ddc);
++
++		if (!panel->ddc)
++			return ERR_PTR(-EPROBE_DEFER);
++	}
++
++	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
++	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
++		panel_simple_parse_panel_timing_node(dev, panel, &dt);
++
++	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
++		/* Optional data-mapping property for overriding bus format */
++		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
++		if (err)
++			goto free_ddc;
++	}
++
+ 	dev_set_drvdata(dev, panel);
+ 
+ 	/*
+
+---
+base-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+change-id: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
+
+Best regards,
+-- 
+Ludovic Desroches <ludovic.desroches@microchip.com>
+
 
