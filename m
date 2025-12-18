@@ -1,106 +1,197 @@
-Return-Path: <stable+bounces-203005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C04FCCCC70
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417F4CCC882
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95E023052D6B
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:32:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2899B3057CA2
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C4C34FF41;
-	Thu, 18 Dec 2025 15:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095EE34CFD6;
+	Thu, 18 Dec 2025 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKMAILWi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eOItW/G7";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kZopEdPm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347BB34F482;
-	Thu, 18 Dec 2025 15:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469D334D397
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 15:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766072245; cv=none; b=XM18mfS7noJnGQ7fBViGvw3Z/vd5vIBkUvk+4Ov5olGdQlXpgnzAwuoc2jvMkuVGNbkJ2O+ZoHXwfwoVhm6d+5/AW2Rv14yYZKg0balJuy1dOgOxuL/SUPZZG4mGB7L1GOSuSUWOOv2V3CdmPZIREevyW03Lgo6LIE44m+W4VC8=
+	t=1766072186; cv=none; b=YsXljkcaaqzcPKYin24Uri/OQarpHec0cB+miLHgCEPvZQTVsI+++XsbMWuCjbzV9ChpOAev9tpkOtOZvE5nwPxnAFlTjwrPpvie2MnQLqgeu5ZliyMO7B2icHYdjFRnCuiAetLV6PZ/bkNxdwNminL5k+nArsrNZHmGaYwnNdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766072245; c=relaxed/simple;
-	bh=Pez/lqPEVsmpWvjU1ySBtrqLxe0+pAjZm/LpmZXtL6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt5umA5xolg9quRY1PdbjykjolXUiDhxLvO0olskGFAN3+dBZ+fSzF+OGNrjwXVjKOGut5qGnT3Vo+GAh4yekZR7K8pU8e1R6+/hA8KvFKC5BmMfeyv14plOKeVf8mbi5BT3kA3FerYqa71aL/UNdkDn9cTtmEEp860zIInsAnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKMAILWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53FEC19423;
-	Thu, 18 Dec 2025 15:37:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766072244;
-	bh=Pez/lqPEVsmpWvjU1ySBtrqLxe0+pAjZm/LpmZXtL6A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKMAILWiU3IvfH5WvUVC9wwsOcZzJcpYZ7idEO0ybRs1ND/nUsfL7Se9teq135xPA
-	 wcJK1unOxTbSwHiUe30j0oLVHIs8ei6I3rosPYd6gh8XSARn3ZDFhqJyLKCIuBCYz7
-	 fyoYcZLIrz/5XpxjA1FXGv5f0ewGWQOK2vgZwnILrE/yQfzEi4jWBu4Q2lH+fuStXG
-	 j20RWRbTbdxF+HTcTwwo0/H5V4wxgHsUlnk/5uQEXOImBywvcpDW7tX5u+e1GYWVTa
-	 +vjTRIs+5ZBVqKD8tL3aCKLgOMAYO/4XnRrtP7a77daj42Q+fUgbQ3EWb2vYU7gMSz
-	 n8m8Mo1yoZCjg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vWG4B-0000000056C-0g0g;
-	Thu, 18 Dec 2025 16:37:23 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Ma Ke <make24@iscas.ac.cn>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/5] usb: ohci-nxp: fix device leak on probe failure
-Date: Thu, 18 Dec 2025 16:35:17 +0100
-Message-ID: <20251218153519.19453-4-johan@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251218153519.19453-1-johan@kernel.org>
-References: <20251218153519.19453-1-johan@kernel.org>
+	s=arc-20240116; t=1766072186; c=relaxed/simple;
+	bh=HcQ1T2QJAcsrKq4bBhpA/oJASDi8MBf1Z81/YkVUoCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MxPKKQn2Mr6oEJ2qwuIfUwU18Dgs5J8B8AESziYxAvF4IbScXYNxfPjg/FgUSfTMsjAVOLhacPUKR0DYhMO2wlnRr7OGBnxOLcjafGZDLpdo3VZCJSAn8CMnbrJqb41gmke/X+xffsgEHE48yF01xyto3uK+qYSBLpd86x+vJ2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eOItW/G7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kZopEdPm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766072181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kllYXFX7V4tWutE1vmgm986dWSjj3DAqVKD7yh7tPZU=;
+	b=eOItW/G7yvw5E7RfUjxf9gI/NR2rlX1vw4ssvMBSJpacxEAZVFyl/LKqx/egLL+rO8bXon
+	W+q5Iky+GWKxtiZlYPtlgdTb8Yt+Bmm/1CdF2NqWzJT9wYgyu9w9qY+YCj1OR3QxzX67EF
+	NKdLAP04WGs4w3O3QIyy8Usi7CLjMC4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-F5t7-WRANPGXhkUu23XQvw-1; Thu, 18 Dec 2025 10:36:20 -0500
+X-MC-Unique: F5t7-WRANPGXhkUu23XQvw-1
+X-Mimecast-MFC-AGG-ID: F5t7-WRANPGXhkUu23XQvw_1766072179
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47910af0c8bso7478365e9.2
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 07:36:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1766072179; x=1766676979; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kllYXFX7V4tWutE1vmgm986dWSjj3DAqVKD7yh7tPZU=;
+        b=kZopEdPmCyHl9AV1+J8QP/KusGO6TszEXNqSO10GnqThS6iXgIO4YeRJR2H5O6P1Vo
+         3nNjQ9rnplabaSVmJwLSrBxvKFN9W0HaUyhMC1ihFR6c96PSooogUTtssPy+hkmGenwk
+         DwWJmZR/G3KR9mMKbzYDHMtEw2YEIjVYMSzkdSjk9HmDpR6TsoNedjMqatrfSF4YhAPE
+         2MdGU8+BxylToOYZDU8uh1byqwhP3K++exnisT0mIrnzVT85N4gOAG58tdJyHPoG8iys
+         mpS/P1ZxGGwYBxHMcIpqwP8TOxawBwXtyinOsvdEbP+8J77wxtq7dpJEPmGSDi8TDbPm
+         bBTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766072179; x=1766676979;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kllYXFX7V4tWutE1vmgm986dWSjj3DAqVKD7yh7tPZU=;
+        b=XpgBDL8w6yE1gDwpk2zhtzehIvCekMQOviJ7PwKRotGv1A7EfsBgtLCglQah8vNZj+
+         Nj2ZciBK2/P9KxErrppxH1Esd9Am4JtX5FNdeaQ/qt5RA5e7zQBGPnRkCCgW27vxVL4r
+         1fh5LWg0emRCulES4YRUemtL8yeAvYV77sSYosx8wak0BqPsVJZQdchOxzXDpNiNrDQW
+         kB8lIHVywY4vjFnC/mdqwa+07LS2ZdwXJcKVib2v1AVoplBf9DFluRkw7oMOIZQidaXT
+         ED/FW2bhMrzBiP8KlxkrFguA7iEH8cShirLLnim0D6qIxAt/o2CY6wv151zqJiHrqK0w
+         VV4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVs8/uIN3Gn6ygQxInR0lE4gkYFpAJY85lmq2gRjzsGrlcu6qHYeRQSHIQ6ll0Fnr1U4MMj7ZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/9qSKczKj+HtB6MQ5Q4an1wTy31jaEhQnk+C/q8tW2wDmLrKr
+	2RHjsi9JMKMRimDwgFNWV+vJ6WgB0yTdhcKsQkL4Ekg8GWGeL6Z8EI0bfkCQVnxIWurIAZ/Q/U9
+	sYOrko1HZlNK1ogPl9VCbdWL70GXp/QVsPOqJeO08OqUptujQgAfoAdnxkw==
+X-Gm-Gg: AY/fxX6M6BOx/e4gvdoW8jv3krCnF65bOUgjyBvGVZJ/PWIrGkRKBJ21biXC1MW0ctb
+	cYyG9tktiTPccQWi/O9MpzcYc0eyVaK7eRVfrYt/3h+V+7ioxTKUrnm60f6s1iIUighRq9wYaMp
+	fZoWqjbN4L/okAaND7cugiQP2LvZoQHfxJC/3JnchRWH/HGGjxxqmt7Wf57rRRW0bMu3RAE10RB
+	xE3EKP6cc//9WsqDEDnFCX//Y9xu8RQeG8TEPICN2HiT9uX+Q+KhaV1EcIM9cdVqLgsWZa+JCSE
+	7nXiXwtN4qm48HlQKqCP3rdA0L68rIMjeTxdrceP6TYEDtRxs6wGkJ8rCpO5BXxC0IXs9hlm4/D
+	ueGw9jg5VsnBcRQ==
+X-Received: by 2002:a05:600c:1c9d:b0:477:9cc3:7971 with SMTP id 5b1f17b1804b1-47a8f903800mr213401765e9.20.1766072179189;
+        Thu, 18 Dec 2025 07:36:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHzPSeaBpb5nGbuAxNoRgvwXIaPYaxEWF8FWstO/zIN8aNHf3vr7XOZckTOB1XmAE6KBJF8VA==
+X-Received: by 2002:a05:600c:1c9d:b0:477:9cc3:7971 with SMTP id 5b1f17b1804b1-47a8f903800mr213401505e9.20.1766072178704;
+        Thu, 18 Dec 2025 07:36:18 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.159])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be395d9cfsm16877665e9.0.2025.12.18.07.36.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Dec 2025 07:36:18 -0800 (PST)
+Message-ID: <743244a0-41ea-4e7f-bd81-6814e852971d@redhat.com>
+Date: Thu, 18 Dec 2025 16:36:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: nfc: nci: Fix parameter validation for packet
+ data
+To: Michael Thalmeier <michael.thalmeier@hale.at>,
+ Deepak Sharma <deepak.sharma.472935@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251210081605.3855663-1-michael.thalmeier@hale.at>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251210081605.3855663-1-michael.thalmeier@hale.at>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Make sure to drop the reference taken when looking up the PHY I2C device
-during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+On 12/10/25 9:16 AM, Michael Thalmeier wrote:
+> Since commit 9c328f54741b ("net: nfc: nci: Add parameter validation for
+> packet data") communication with nci nfc chips is not working any more.
+> 
+> The mentioned commit tries to fix access of uninitialized data, but
+> failed to understand that in some cases the data packet is of variable
+> length and can therefore not be compared to the maximum packet length
+> given by the sizeof(struct).
+> 
+> For these cases it is only possible to check for minimum packet length.
+> 
+> Fixes: 9c328f54741b ("net: nfc: nci: Add parameter validation for packet data")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Thalmeier <michael.thalmeier@hale.at>
+> ---
+> Changes in v2:
+> - Reference correct commit hash
 
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Cc: stable@vger.kernel.org	# 3.5
-Reported-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/usb/host/ohci-nxp.c | 2 ++
- 1 file changed, 2 insertions(+)
+Minor nit: you should include the target tree ('net' in this case) in
+the subj prefix.
 
-diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-index 24d5a1dc5056..509ca7d8d513 100644
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -223,6 +223,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- fail_resource:
- 	usb_put_hcd(hcd);
- fail_disable:
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
- }
-@@ -234,6 +235,7 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- }
- 
--- 
-2.51.2
+>  net/nfc/nci/ntf.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+> index 418b84e2b260..5161e94f067f 100644
+> --- a/net/nfc/nci/ntf.c
+> +++ b/net/nfc/nci/ntf.c
+> @@ -58,7 +58,8 @@ static int nci_core_conn_credits_ntf_packet(struct nci_dev *ndev,
+>  	struct nci_conn_info *conn_info;
+>  	int i;
+>  
+> -	if (skb->len < sizeof(struct nci_core_conn_credit_ntf))
+> +	/* Minimal packet size for num_entries=1 is 1 x __u8 + 1 x conn_credit_entry */
+> +	if (skb->len < (sizeof(__u8) + sizeof(struct conn_credit_entry)))
+>  		return -EINVAL;
+
+You can still perform a complete check, splitting such operation in two
+steps:
+
+First ensure that input contains enough data to include the length
+related field; after reading such field check the the length is valid
+and the packet len matches it.
+
+>  
+>  	ntf = (struct nci_core_conn_credit_ntf *)skb->data;
+> @@ -364,7 +365,8 @@ static int nci_rf_discover_ntf_packet(struct nci_dev *ndev,
+>  	const __u8 *data;
+>  	bool add_target = true;
+>  
+> -	if (skb->len < sizeof(struct nci_rf_discover_ntf))
+> +	/* Minimal packet size is 5 if rf_tech_specific_params_len=0 */
+> +	if (skb->len < (5 * sizeof(__u8)))
+
+Instead of using a magic number, you could/should use:
+	 offsetof(struct nci_rf_discover_ntf, rf_tech_specific_params_len)
+
+and will make the comment unneeded. Also the same consideration about
+full validation apply here.
+
+>  		return -EINVAL;
+>  
+>  	data = skb->data;
+> @@ -596,7 +598,10 @@ static int nci_rf_intf_activated_ntf_packet(struct nci_dev *ndev,
+>  	const __u8 *data;
+>  	int err = NCI_STATUS_OK;
+>  
+> -	if (skb->len < sizeof(struct nci_rf_intf_activated_ntf))
+> +	/* Minimal packet size is 11 if
+> +	 * f_tech_specific_params_len=0 and activation_params_len=0
+> +	 */
+> +	if (skb->len < (11 * sizeof(__u8)))
+>  		return -EINVAL;
+
+Again all the above applies here, too.
+
+/P
 
 
