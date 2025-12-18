@@ -1,375 +1,389 @@
-Return-Path: <stable+bounces-202953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E533ECCB236
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 10:21:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0391CCB27B
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 10:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E69F3024AE0
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 09:20:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BF3F30210E5
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 09:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DDD30DD1A;
-	Thu, 18 Dec 2025 09:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24C3246BBA;
+	Thu, 18 Dec 2025 09:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ft2IHQO2"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="kJs49k9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010042.outbound.protection.outlook.com [52.101.228.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAA72F1FD3;
-	Thu, 18 Dec 2025 09:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D081221FBA;
+	Thu, 18 Dec 2025 09:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766049631; cv=fail; b=jqkQIrEnzTgrvMjJCL+O4K+PA6Jk9kWmRQmmQqPa3uK5IIMhnonUtr2bFMq4KPebM8dyHQww5VgyDfEwBflvb/As0tzQKQbBKwwnwtjJIB91B7vwYGxoCVx57VaJuQEgm5AuFnUDYGBCz/blbB1qWhG4R/TwLtbEkbGSl3jkMB0=
+	t=1766049807; cv=fail; b=rqPS8wpNg5nqav9fXpFD1prr3n3uHd1QB4I2kg6LqH1DfTbEGy3q5l5P9GohpmkQhiGPR4Gbdq2QV5dOcfFL/K/ClyFwqqz3926kXnr5O3hap79lk9in2OAq8OQdpy+7LmZgjKiP/ir3r4XcF8IoKcgFOfBDZcz87ppTMyXql/s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766049631; c=relaxed/simple;
-	bh=gbcpDK4kiIioeDQEsGxQcoa2Vk4SI0J5KhaCGzqy3jo=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cANGG87MwsE5AVvd4kNxGecXSXyflFqOGEiPg2P3IgkfAFudkDC5+CmF5Q+W5mfiXgW2+6QWMHC0g6sFM9LTgfmEjLFzkm1Ya9gba7MkIYuEHyrs1SlezmKFHhgZcGC86UkJLYlYriOKR+g6IGy3/hNnRtTuSwl8FZE6GkW6xic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ft2IHQO2; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766049629; x=1797585629;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=gbcpDK4kiIioeDQEsGxQcoa2Vk4SI0J5KhaCGzqy3jo=;
-  b=ft2IHQO2arsO62Qh0MyMZes221+wsY6TDWWxjP0x6fgzRl3+SyvU9zMR
-   fQlwEF+qqBK38j4LvQp6++So2tCWW0xT4iWzSxneZ23b7g253Uijxphdo
-   FR3L7P2QYrXj2gc3l9CaCj9lVky3vCXknMe/e8j4xBJP2llTOqNqj2VDN
-   R3JrQnwXmakOCvu1jHXgCcI/ubpvyBtSjB00Pr/z06QQwHyiomgc2NYaL
-   k1mw30kncXL/Rfir1VFyAnON3hjVMu9CAuzHGWx7rTiOygaCNC3CqYuZa
-   zhX2rw11BWIb6UaW9fuDy4L8vKfSgfOO04DmHeHqLP/COvOUPX/KxquDK
-   w==;
-X-CSE-ConnectionGUID: Szz5DynNRXu3xQP71Ljjng==
-X-CSE-MsgGUID: +5s5u2zfSIunhecPgwjRKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="85583879"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
-   d="scan'208";a="85583879"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 01:20:19 -0800
-X-CSE-ConnectionGUID: bWFUeIgfQpeAcMUVG6gChw==
-X-CSE-MsgGUID: gxm+8JAGQ+m66M9d9hATfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
-   d="scan'208";a="221941574"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 01:20:19 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 18 Dec 2025 01:20:18 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 18 Dec 2025 01:20:18 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.40) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 18 Dec 2025 01:20:18 -0800
+	s=arc-20240116; t=1766049807; c=relaxed/simple;
+	bh=SP24DmNFcnVIF7oUXSZa8ndht8nIhdHO2wQGGDh9DWY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iyFmq9TOnMHfaqvFdfdYz22KAI9U8OhRYs6+6FmIFaSqzK3NlunNMwlzk3rAisFghiGOiHESqYRLWB4f5HzBQ68/WKpYCFx7snZQb2RKKHEAVPD6DthW9yrs51Kbe31HpEpHWe/tLBkJZ2XfgvkHgHk9hAy7MVhwXmhV7eommpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=kJs49k9Q; arc=fail smtp.client-ip=52.101.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hx3zMw67jbRKdM7CZ2eMaqhMzpRIxx3f4vaHp1iSJfcQWyAIK8x40grkG7voL2b5Rm1FOihqx8zZSt5Uwjr6GIaT06d8/aBou1h1eT706mOVsY67kt75JOoGa1ju2xn2VzrW7JQ8ARaBoehqj/NakJ1pY0/pgz+CIqUUjiEtpTnd+Z4Zak0CF8zA9MJ6b44A/STE5ns0s7+vMRCh9tq6zVSHYuXvhuf/nbHJN5L3cuPhcsaES5/0PnuSGidjdxvjRKRO52v+bKsDvAta2NYicZeNKvU9BiOXMeUK9NGPCQU3Qm05qwGOxQraHyZrn7eSRNw7hrAczaMNTbLLYEjYoQ==
+ b=lXqyqktAYC7mn8NxL4RF1bwa6aPlYgUwkO6Lw8QYZ5bL+ta6gWK9wdjsDm5WwgbhB+TbH2jXeYEGHnq/HWZlsJF1ApqxH37iHINyKZBWSkmi2hsOtRKWKz6QzBSwORT00bsWb/0j77aDzlXL0g6qVpzkCSGTm4h7p92ZlRfOR0e+kIjSc2/E5fpRpZKo9IMe0tAgZlPTtmZae7rDIP+h1jrgrzWSVPQ9N7F+Y2c3EInRpKulnYEyEAW2fX4l9zfNOki0T8d8pInBG0dpW99cOfuecAmtwmimUt4fUmjXCyEj7eXR/th+mZl3vFVr/VmkJ390YBnZZBv9fPDaUIhX7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NzpsXefwLhygCr40IcTjhHeM4AiJDlTa/pmBrJUDCZI=;
- b=rEi7GiiR1mjm8IyC+72pPR/ItQFqUWq/225KEdECzj8USEvunKZurHu2Dzxz1JJ3uuBkO571Y+c2naPDx7+52eApdOcb8Sz3q79Xv5ddNWyzCgfb5vyTolyna9DVTx5rX3y0x5JI/ZMpwZ1tDJ+MM6NnUYYCMT9p394c71Q+wWg4hE/zCI5+0ZLyRh6nulsPvg6swRhueO6H15kth+zcrRBuOIq9cZvqSWJ6XISrjc0eMfGFX2FAYHm4/XWXx6G32I57mLEizbGu9ViFUPUzlvZde7I2IdGpSRJpzH2TRoZwl7a3DIps4zXlWRSdgazXiq3vdVm7PmI2O58X+HzqOg==
+ bh=vwdvpcGGl3uxpcpNgLs+QIOmyBmoMLqWSTohkJfeMNs=;
+ b=C0qlcmT+IvgZZaXWO4M+bKfNc5Q9AuzzFGk3pxz/+ficC8xo5iPGaBWllWSK76EOLbwa9keUX4muou47ESKxCaWrH6/r9Ax1cHe6zEr2pa964lRPhKUQo6taandFzK8d/1Sfx1jMRHyJUSI1WHJ5OcruwmOD7VOpjxSrdqWGizC6VaIZKoQ2c2YeabVft1/5SXvSoUTf+Syy59UOp8WTHySMqY9LYxpGJd9ccA88weEcqQvZvzm/Aj9TfxbacN2HnOs9d7iERZBw7yOoc5cey3vaNUcjTbBAxEjxHh5f6jVoyHl0+SKlroeqVbSRikpzbwvI1GqsZTqaXEjINztXHw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7494.namprd11.prod.outlook.com (2603:10b6:510:283::18)
- by DM4PR11MB7351.namprd11.prod.outlook.com (2603:10b6:8:104::21) with
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vwdvpcGGl3uxpcpNgLs+QIOmyBmoMLqWSTohkJfeMNs=;
+ b=kJs49k9Qjd5lnRQRgUI4WqiF4oGN/VYHnJiTn8RlG8hR8N/BbRmPZfIwJDAI8h6HI7MNyZaUgbalufva0M6bRV0auZemZE6huJ4W1oc0z/PLacF6zQPD/5XpqH47kqawZ0CW6ckwyFSBP0LJdpJKUJYrgT3K8Ew+Ql5Ra8jAsvM=
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com (2603:1096:400:3c0::7)
+ by TYYPR01MB6843.jpnprd01.prod.outlook.com (2603:1096:400:d2::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
- 2025 09:20:15 +0000
-Received: from PH0PR11MB7494.namprd11.prod.outlook.com
- ([fe80::353f:c8a8:2933:d288]) by PH0PR11MB7494.namprd11.prod.outlook.com
- ([fe80::353f:c8a8:2933:d288%6]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 09:20:15 +0000
-Message-ID: <b542507a-eb97-473e-b125-0fb602d0f4c7@intel.com>
-Date: Thu, 18 Dec 2025 17:20:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] vfio/pci: Disable qword access to the PCI ROM bar
-To: Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>
-CC: Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
-	"Shameer Kolothum" <skolothumtho@nvidia.com>, Ramesh Thomas
-	<ramesh.thomas@intel.com>, Yunxiang Li <Yunxiang.Li@amd.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20251218081650.555015-1-kevin.tian@intel.com>
- <20251218081650.555015-2-kevin.tian@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.7; Thu, 18 Dec
+ 2025 09:23:19 +0000
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::2511:10cd:e497:4d97]) by TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::2511:10cd:e497:4d97%2]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
+ 09:23:19 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, Tommaso Merciai
+	<tomm.merciai@gmail.com>
+CC: "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	Chris Brandt <Chris.Brandt@renesas.com>, Andi Shyti <andi.shyti@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] i2c: riic: Move suspend handling to NOIRQ phase
+Thread-Topic: [PATCH] i2c: riic: Move suspend handling to NOIRQ phase
+Thread-Index: AQHca17DsfRhAp0qr0GEOfw/pzuNj7UnJ/VA
+Date: Thu, 18 Dec 2025 09:23:19 +0000
+Message-ID:
+ <TYCPR01MB11332073ADC4063F21591554386A8A@TYCPR01MB11332.jpnprd01.prod.outlook.com>
+References:
+ <05a31af3d6caba51e8237a49853281aa49bed916.1765540678.git.tommaso.merciai.xr@bp.renesas.com>
+In-Reply-To:
+ <05a31af3d6caba51e8237a49853281aa49bed916.1765540678.git.tommaso.merciai.xr@bp.renesas.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-From: "Chen, Farrah" <farrah.chen@intel.com>
-In-Reply-To: <20251218081650.555015-2-kevin.tian@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2P153CA0032.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::23) To PH0PR11MB7494.namprd11.prod.outlook.com
- (2603:10b6:510:283::18)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB11332:EE_|TYYPR01MB6843:EE_
+x-ms-office365-filtering-correlation-id: 58e107e4-2879-4f28-9232-08de3e171557
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?k92Ytt3IO/5vkWm/d8JjwU6zxi6NbyEkzG6WZSrguo6fOaZBDjHSHVVTmxH4?=
+ =?us-ascii?Q?ZVvwemOhG/q+X7ykB7a0PkVeQqQdH5tFtDORodhJWZ+pIBOwfDpjhOUgINNq?=
+ =?us-ascii?Q?V7k+bpcCZ4+JedBjHcOsu4L1eM5X1JNkCmxeilGFvuao2pFTGknHZKm/45xL?=
+ =?us-ascii?Q?r4u+zfoqG0P4CRkpCQWAbiC/zZIHRrK0oAWIXgS/sL24Rc11woW8wdPuOCv3?=
+ =?us-ascii?Q?k3hCJd112C9fni4KqQOSrnncSDTb9nXHDJalr1FWXyAXgb2HJvOnWgJ6DLtZ?=
+ =?us-ascii?Q?hdPq0kQubeiVv+O1CBYd/htZuOLPPCvDv9RsTVb1IuMSul5stTvOoZMcAw4w?=
+ =?us-ascii?Q?UZO77SFMDhsedTYTXsEhkhlg8f7K7XQDVelNsdIx1jSEbcvn580u7B663sxj?=
+ =?us-ascii?Q?nmGC7JY4D4YwtEQ+Ai4MRvAcrEpXEM9pRTTH8C6Ol775Ikhi4k+8pagpgf2J?=
+ =?us-ascii?Q?FKZXbFYYkfpPCQ1DF5YntW0MOZ2z3B3uYrlxH1BNeD+A07pk8GAa4GNsOxXg?=
+ =?us-ascii?Q?5oJ+Q27+9k7f+ZT14Pm3tKX4CBj0TLEPNUgXYHxtet+lXXFb3spDPPoC/95h?=
+ =?us-ascii?Q?T0YxZ08nHJsK3eJVZrgdWV7ykmeMEAq1onyhFsvMoZEItdA7Z3Y6SBDFdSeW?=
+ =?us-ascii?Q?qGQbma+AxLCEzhdVbE5gcZlOnHECzYLqCv/P9UG7OlS5KIpgerS+sRxFcqgv?=
+ =?us-ascii?Q?aOmr1SUyvTJPqIznBuS9iHKjZxz6ZGH3hkPSj2MSthjuVY6D5cx/MYphv7zM?=
+ =?us-ascii?Q?Hg7w4D+7I60+hvHVn1jjWxyBiYrzAPOzV/HsV6HZ4L3v/V4c0KPySWIZZz/g?=
+ =?us-ascii?Q?6fDMV6AbiJx9dDAIcZ66seznW3bNcQcfN4/6DQR7wDXv+Ir7p+GJtzcpyRMN?=
+ =?us-ascii?Q?/bgpuoUfnRCxhK/ZZA8VHzTarW58VeuR/V3MqEWXTdl7I42lcRnaMeh3lUEu?=
+ =?us-ascii?Q?feiKS12yfSLYvUwDMJ8+Ip/T4tnntj6UjYE/cXojQbbp374GdrsoyD0jZbSm?=
+ =?us-ascii?Q?B+44M1TFGWuOtzRE0SLnvPyfoy2NmwY1/QunggtXesKlCs8/Q7bGVVsev7We?=
+ =?us-ascii?Q?YaAIUlhjbeH7303m0Hmf5IMAkLXt4LMIce+TaxjFeOeLfc+O0XVcXYSf3ouV?=
+ =?us-ascii?Q?YtepPRp7s+G8pmvf6rQY+nrAjbk4GoVdfKwfcIpVxOCFcrah84OseSz1o4lV?=
+ =?us-ascii?Q?Lyi+y/aWuK9p2/FR0IPp+Xw70Id06dIPCFm+oshTdURBE+V1suuhwzYWr8OO?=
+ =?us-ascii?Q?S8TO8g+yYyTJGSS2iJIEfINelU9mLxJn/d6scplIg/NBt8NiHv+mDdjInZKo?=
+ =?us-ascii?Q?886rjbVfn2a8a/C29D9Vk6gI/jxgf9EyCNpi01bJhTYAYWf39YyOa4CqfZh2?=
+ =?us-ascii?Q?Pmg2hiG7or/iOLF48s34ohrVOQ46KzA0reavaCux7kzArKcsDZV5NeqYDPB5?=
+ =?us-ascii?Q?LkniInoOrizg2dHMVjHa6iNoEnZH07cFhGpgOLJc0WgAjtTD83T7WQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11332.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XZfH0Q+o2AwVMRcvbZ4Vbh5DcGY/H39Hk3TQluL8c0S8FRI5CEq9dsiN3Jv5?=
+ =?us-ascii?Q?ExNOrqU/h1fL5e1EH5klR2US3bjeIat/ADDNhCFezNfCeZqp4bwI+t9osDbR?=
+ =?us-ascii?Q?PCj4TJcAYseLtaZktEzdl7Ipv/b5QzTWzZmdgJ7pn5W0GCsNdRoPwP5PDL+e?=
+ =?us-ascii?Q?RQBrCm8STSj4JpHJfuRsyr3LiRKqPJVlpj1VZ23WYieUJf1TeeW6qz2ZH0or?=
+ =?us-ascii?Q?2vaw7+8das6FARtGCmHgFWNdTkfmpPxLcXxtfgXsoY20tQWvn6ZCiXp22uU5?=
+ =?us-ascii?Q?UFMOdmOgPiXUiV1s/HCk8RkCI+8BUNzjQCCj3U8xRZNyIwo+q+YqO7WIAHq6?=
+ =?us-ascii?Q?B4Q6EpgzxUXnkRYLAbBIRwlgim1kuzzcjo8gUdLFB2SSMZFQxiYlMktAGtgH?=
+ =?us-ascii?Q?5L+uby3PqaGxjv1d/8N8Ik8Bm6DoZHtj8dZqPuNqxB+XcmOuZqBiGS6ju0nh?=
+ =?us-ascii?Q?WhdG+KkIGRGKEKgeBZ3vd8mlEWSLjAFeaDltRBZ/nzhoVlVkSeJZe78zmss9?=
+ =?us-ascii?Q?zc7TKfp2NmikRBDBHmHXfGGD/RjiDoEnRrw8aV7WyEIvNrMApYde0eqPNWng?=
+ =?us-ascii?Q?Js+S8dm/9Bs1PfK1D7J04FUxYy8w6vCwxQBKOAlPm12eaaihdmjXU6dCMxNR?=
+ =?us-ascii?Q?4x5p2706ZeGpptFoYg70Ib5lxHhsUOYOEKc2gJqyqjLJD5SJv5Y1FqUglU6C?=
+ =?us-ascii?Q?fT8AK+i6JG+tzycNx6uF+Ibg0D5DdApLw/PDKP77iNB1nKPqq+mkIHTf8N7H?=
+ =?us-ascii?Q?ZJBeKo1mpty3gmx2LAVMFGEkLoSyTRdD0gUu7uiqWHihlgPdINYTKHfUez3e?=
+ =?us-ascii?Q?bo8blPIYo53bTR/Sv/UYt4zZzoY8lQYtQ3hio8qvY9hr0XEVwdh3FIw08Va9?=
+ =?us-ascii?Q?CGoe/1DA9M+lXK7HPjjquHVjWurUAofjLA/H1eAW2CylYJGTslhwdFIEfgKX?=
+ =?us-ascii?Q?idNyiLEPcD64Eq86kErwHhnFmsQF7qOdBXjPjcreTq2z5cjMWBn0P1wmwKdd?=
+ =?us-ascii?Q?nZkqTeIpTvcxBIEhJe4GgsbdoJCPj3yGa5NOdqztcIwCnYuA9gg8reXoort0?=
+ =?us-ascii?Q?DT/V2BjNc1iNvJSkh1SefvyyI/HtZ02aP45bxxLKe4O46GIDlqwXk5y3UQ7E?=
+ =?us-ascii?Q?TDtLQJCLxKcKDW1NdFmw61hpIB4KtQ/j1deEtga51pxM3njz6/Dv2U2w/iG8?=
+ =?us-ascii?Q?GFHs77RcIAyvHuHMv07GBOPExbwcysRWLC1TOy8h1CGAm3geDQTf4SeTM9X9?=
+ =?us-ascii?Q?aXc+6X9q2ohO7c4hQeQ6QHHnG/oviCrchtcs7VIdw5O8qqPp51qMOTRnaV9+?=
+ =?us-ascii?Q?DVqVIQPEX7jdzzgx1qSnhGLRHoLP7GH3a4J+U35Zj+21e1a44u/ujgk9zZL7?=
+ =?us-ascii?Q?zq2uTh/rsivZ/103+cROl9hL720f9jo+xK07HjQJmVqccSPc4o7of3mOym4W?=
+ =?us-ascii?Q?Y7Wuv1ZpO1TTf1fddIqGzY1JJLwd7MYkJGrmQKTSoXeGb7ipUtxRzqbH1RG4?=
+ =?us-ascii?Q?vcL5EAM4i8wdR0jmpnaiAgS69fmhjf6FevK+DPvYZL6pThTQgZE7RNRD5wf3?=
+ =?us-ascii?Q?4yvL3leC4YTkyT7mogZc7mOA7AaZF0I2+BSnE+nCUdQFIIbQ0JE9cXEcbmUC?=
+ =?us-ascii?Q?4w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7494:EE_|DM4PR11MB7351:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94482881-c131-4828-33bb-08de3e16a746
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MzczUmhoNzFhTG91V09Kclg0c3hnTlFCVENsMnpaTzlQWlpkQVpKd1JmTHhM?=
- =?utf-8?B?Y041ZzVPbkxxMUJPNEd6ZS9zRGZndnd4dUlKeG5MMFZnc0FJbFJsRWxLMVp1?=
- =?utf-8?B?cVV4SmRmaDNaZGtBWm1LZ0V2N1o4SXp3VGxCNzREdzVoUUlmVDFtNXJFZVBC?=
- =?utf-8?B?K01pNHFTY2QyaGMxaHNrY2N0RUNYV0JpV21Xbm1OdnU1T1dNZkJ1MXRqRWdt?=
- =?utf-8?B?QUxvMjVrU0MxU0lPV25pbFc3dmUzNmUyMllOMk1PK3d1RDVFSzBIRUZublpI?=
- =?utf-8?B?dTNsVnN0TEQ3UWlPVGVBdXhEamdobUp1eTFBRGhqRG16K2I1NlhLdmUvOW1o?=
- =?utf-8?B?bmx4L3ZBRlROTFRud2VwWXZFMXFYMWNRS3p3NVdlajZVVUdkQ09uZU41VlhT?=
- =?utf-8?B?dWxVeXZmemc5aytsYzVEUVdmUERTTjZITVJBQ2RDdXRFN0EzU1VkTU90U0dv?=
- =?utf-8?B?Q0FpZUpncENFZWtoNWNlUGszME1jRjRKdkg2YURSK2RVZVFhS2l6cjJEWHBy?=
- =?utf-8?B?M3NqbTRoRTFGVWtkUDdkWnRINnY2WGZYVnk2VCsyZkN5ZllSVjFiSkY0cVE0?=
- =?utf-8?B?cjZqM0NFRldlT0FOaUVmN1Rjd0luZjZpanpGRDZHQWdpQnYxR3ZGdU01MXgv?=
- =?utf-8?B?cHB1eE8xeHpFbEUvc3FiNWpsVDNoRmhCczV0NXZwdjNPMjlxTDZOUzVTVmxC?=
- =?utf-8?B?Q2NLVFhGMHhyV2JNcWsrbDVaQTIzNFhNeVExMDArbXppUlBxU2RRdEhSYnlP?=
- =?utf-8?B?T0tWcmVZaU9YVzZUVzNSYnlmc2tQUHpNVk03S0FMRGMyZGV5MzdEaVZnbEdG?=
- =?utf-8?B?N2d5c0VVcTF5Zzh0aVR0eDNLeFpjU0s4dXhIRVRpUEVBc3UzUFI1YkU1TFM3?=
- =?utf-8?B?RGdTL3lTSHNWZ2RxR3pGc0RobGQveUgvRjVHVUlSY0N3Y3RQRGtKRWVVVSs5?=
- =?utf-8?B?b2pNVTFTdXdsUG1QVlhoYTQ3V29PQVU3Z0txdExBb0lncHFMdE9UaWt4RW5j?=
- =?utf-8?B?UUNWanh2QUs2MVhpMlB6cjc5ek9DcDV1MS9CRGRLaXR6M1FIbFYzdVFDbkhN?=
- =?utf-8?B?VmNTMFM4OFJDb0ZJWTcrdlNOTXNjUnZCYTNrekVlY04rcjFZUUZOQ2hCV29l?=
- =?utf-8?B?RElKV1IzWm5zL000Y0Q3MWcwcTRubCtHejROTDhseTdSQTk0MUJKaEFlTnBo?=
- =?utf-8?B?aUNGNG56NWRpUVVpbDVoZlZnMHVrOG03bDVYanlCMCsvL3NwVVZKZUNqSzdx?=
- =?utf-8?B?T0hqUG94cUJkQ2ttc0ZQSWhBVUFvd09vN1YvVXhVYjlyV2EyczZaSjFXQ2VU?=
- =?utf-8?B?TUNKVEVuYmg4SjM2cTZJZlhOQ1FWRWJGWlcyblRuTkFxandicFZEeWZ5dkJZ?=
- =?utf-8?B?dldUSW1BNEJnZU5VSEJPTS9RMVloL1pUclNXbzlIaWNuQWhweW9MMExDZ243?=
- =?utf-8?B?YThZdndWL0pxTlU5SWx0NUFhODZEbmZYTkJ2M3BkdGhLUVZ6Sk1vdFhHOUpj?=
- =?utf-8?B?ZVI5Y1ZLckMxZStRUHljTE1IWVNJc0IzUERCczV4UFd0ank1TUhZZi81WnBn?=
- =?utf-8?B?ZEtUUnp4TUdrM2R1UzFCajBKQ244SmtQU210VWYrS3pHOEJpZTBVbkdWc3hY?=
- =?utf-8?B?OWhoNnM5dnJCQlZzeEtvUXBoaFJYWmNsZGlpZTlQQXdKZ3FWdEdWZG9KcjBk?=
- =?utf-8?B?MEdnOGZ2T05KamtjSy9xS0pIeW14aHdxbEJYVmVhZ2NLNkJzdy81R0lhYndk?=
- =?utf-8?B?aEt6Q2dheUhtbmhGeXBxeHdTdE9GWGNDazc0bkRZY2lIU1NZSlZMZjNxWWNJ?=
- =?utf-8?B?M0ZQK2YyTzVCMTVsNWNmRFlDUGZkcm1mM25NZzJSUU03eThZem41bVFWRFc3?=
- =?utf-8?B?ckJ0UE93Q1czaXpiUGxZM3FIYkkxd1pEdEF6TWowd0JtSnA5RzBEWnNOd3Rm?=
- =?utf-8?B?VTY1U2Q1dGNZbUdKenM4S0FNR0lEUCtweDVic1ZSNDlWS3hES1h2N2NmUGJR?=
- =?utf-8?B?WXRRK2F4VXZnPT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7494.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eXN2dlpBdUpYY0VlMjd1SUU2NGFkcVFPeC9WYk9QeUJVSXN1NC9oVFlGNm1r?=
- =?utf-8?B?bVFXanJxUUpQTUFMTGRFTkxBM1hWTHR6SUh3ZFBZRjVGenhnSGdWYmZDeWVj?=
- =?utf-8?B?NHFFU0pDU09pM0xVSUFsVm1Ba2hnQ1hrelE3SDQvUlVJZXh6dFR6dzN6Zm5Q?=
- =?utf-8?B?NWhpdis0aW81RzE1REIyUmtONXpJa3FFbm5DS281Qks2NXpOcnl3dG9PdTlU?=
- =?utf-8?B?WEk0UGNjcXVlVWZVbE13ekttL3BQOXZJZXhoeU1oZk9Ub1FaUEE4bzdPVnBI?=
- =?utf-8?B?L3g0YlJ4OGN5LzZjMlRaekl0M3VVcmp3ZThtM1MwR2creE1iRzlBSWltNm5I?=
- =?utf-8?B?dGNpTXBsM0lueFRrS2pqUFZDSW5YM0R4ZExEK1NjditaU3R6eHo1V0dlTmt5?=
- =?utf-8?B?Um9OKzNQOWpLb1FPWEJkUjg3WHhJWjhibWhOQ0xmZUJ6MGZKY0kwYjkzeEZv?=
- =?utf-8?B?MTV5U3N3dWErdU1jSFAvOUZGTmlnOHZIaFFpZWVJakZCcHpPY1gvWTNFMHpG?=
- =?utf-8?B?bS85bHg1RW5hZkdQMUJyd0h2QXMrMDZEUDVaYVRkZGFjTDBCd3pUWENsWGVr?=
- =?utf-8?B?M0V4Y1d1bTRkRndzNGxpRHRvWmgwZjBDVStKMERyTDBYbVVXVkFOdVRqcU1s?=
- =?utf-8?B?MXR3Qy9HUXZiUm4ySGE0emJKMEY2M3RSMXFoV0cvYmdEbkE1cDJtQ1NzQU1P?=
- =?utf-8?B?M0plK1RJSTNsS1JmN3Z5b2Y5YkpiOHNzTDBBNzE2ZS8yRTI3cWZwZ2l2U05Y?=
- =?utf-8?B?N0dkbVMraGZkSm50Mjk2SFdSVC9KV205ekdFUkVVV0kxZ2dHVXVWRy9OUUhn?=
- =?utf-8?B?K2JhNWh6TmEveEdJbTU2OGNOYXNSdHVjclIrODkrOHJYVFVOVFl6aTVDaXov?=
- =?utf-8?B?ODBMWGRyVkZnbFlvTG1lYUwxTkVKVzJSdm9lMVVQa09kM2dnY1JZVzEzcnM5?=
- =?utf-8?B?SmNyaldoeEE3azV5QkFCQ05OY09mRUpiMS9QbXJFSllnTnVia3NjUzAzaDFE?=
- =?utf-8?B?cW5NWGpJVlJDZ1hrTGRUNlFIVlUxV2Jia05qckFsZDBqYW1jKy9wb0pjcm5E?=
- =?utf-8?B?TzFnUkdoaEU3dWZxOE1sOGZhTDA1NTBNM1pWN3BXMlQyMjFYYjdrUk5VNlpz?=
- =?utf-8?B?cHZ1MCtEMGJsbHlUQTZlZjNnRXNiMHVhVWwyUER6MmZkcmRrZkkyOHNTc3h3?=
- =?utf-8?B?NTlYT3h2dVJMbjJLRksxcDZMeUQ3dk83QjIzMGdva2xXN0N1ZHhZR0U2ZWdD?=
- =?utf-8?B?RG9tMTVLNjdrSVRWUnBFVFN1SGdha2ZjakxBaEk5dXYzd0Y0R0VtK2U1cVl3?=
- =?utf-8?B?MHVNWTllNmFQZkM1MFVnUmkxZDJRaXBza0tjVXlKaUZ1VVJiVHFVRVlJYnZJ?=
- =?utf-8?B?QWhmcXczVk5nMU5IclFscG9hd2tKRVdyQ3JpSnFtdE4ySUpYWnVXOFRQVVdD?=
- =?utf-8?B?VWI4cnVpM2ZDUGVSbnRBclJ5OXAwMFlsdStJZEFVcVNvbXluZWFWVEsySXVJ?=
- =?utf-8?B?NHBHeklVZERRNEhDZjAydjZ0SXVRWlplWDZRSGVxZTdieGJrWmVlVmJGSTMx?=
- =?utf-8?B?YllPR1RUM2hBekZVN0J1akRzOTVWRmVMS1pQMmdGVHZacEVvMlM5d1F0REVk?=
- =?utf-8?B?WUhYdVlrdWFPMXY5SkhMMTlWdUdHSkN4K3g3SlJTa1ZEY2tzOXI2M2RDT21P?=
- =?utf-8?B?Zm9WWFdoRVBjNVpnZG5iVTBMWVhsaURwUTR1Z01SdktDUEdWbVRkYnBrYmNH?=
- =?utf-8?B?TFozUWI4VGtXSWJ6c3h0aWtkOWg0RHV1YnEyQ1p4S2RIZVJSRXpNSjdlbVJG?=
- =?utf-8?B?WHlmTVMvZnVIMmJSYnc2UXNFTkpXd2pJL2Z2cHJ5cWxWVHRSTTJ6TFBaa0l6?=
- =?utf-8?B?Q2x6TWI2bjJQcmxJVjM4bDFRcy9KMURZYmw2REl4Z0N4MnJ2Ymk0Z09BaTBB?=
- =?utf-8?B?MjZNNXNuRmdOWWJoa2loM0YvSG0zU2RtOVVSTkdLMkFISWVua3Q3VHllTjVR?=
- =?utf-8?B?emY1VkI2Z0dvbkpvU0hreFhqTHZpcVZPVkJzWUFwZ0RCWlJDUzB3WUpZR0Iy?=
- =?utf-8?B?SFdrWkticE1aV0l6bWlGQVRsQ1BQMnBrem15dkhnU0I4SVBUTUM3dVNhelQ3?=
- =?utf-8?B?Sy9lMUF0OFFKS1htRDhpcDBLcG9vMEo0dTRES1ZERUpWZHBWMUlOME1oWjd5?=
- =?utf-8?B?TXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94482881-c131-4828-33bb-08de3e16a746
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7494.namprd11.prod.outlook.com
+X-OriginatorOrg: bp.renesas.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 09:20:15.2896
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11332.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58e107e4-2879-4f28-9232-08de3e171557
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2025 09:23:19.5848
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MUoyjz7KdqBpWhdK+8EXtPzftkCTcrh2hQq1IXfYTrj0Z7xWrHCKi6ny3+Pe/ZgNzVdY8oeW+WciJ4vHl/Xq7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7351
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /fstKIHBXC0K3cTH0yKJT6DfcStXMB//7RHORj98zqCdvnrjXaWqDoBUEOiDZkJFgxJiZ7rf1U2WNoFNrsQfsm4dGFgdTIzdm7L6pYHgnEM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYPR01MB6843
 
-On 12/18/2025 4:16 PM, Kevin Tian wrote:
-> Commit 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio
-> pci") enables qword access to the PCI bar resources. However certain
-> devices (e.g. Intel X710) are observed with problem upon qword accesses
-> to the rom bar, e.g. triggering PCI aer errors.
-> 
-> This is triggered by Qemu which caches the rom content by simply does a
-> pread() of the remaining size until it gets the full contents. The other
-> bars would only perform operations at the same access width as their
-> guest drivers.
-> 
-> Instead of trying to identify all broken devices, universally disable
-> qword access to the rom bar i.e. going back to the old way which worked
-> reliably for years.
-> 
-> Reported-by: Farrah Chen <farrah.chen@intel.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220740
-> Fixes: 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio pci")
+Hi Tommaso,
+
+> -----Original Message-----
+> From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> Sent: 12 December 2025 11:59
+> Subject: [PATCH] i2c: riic: Move suspend handling to NOIRQ phase
+>=20
+> Commit 53326135d0e0 ("i2c: riic: Add suspend/resume support") added suspe=
+nd support for the Renesas
+> I2C driver and following this change on RZ/G3E the following WARNING is s=
+een on entering suspend ...
+>=20
+> [  134.275704] Freezing remaining freezable tasks completed (elapsed 0.00=
+1 seconds) [  134.285536] ---
+> ---------[ cut here ]------------ [  134.290298] i2c i2c-2: Transfer whil=
+e suspended [  134.295174]
+> WARNING: drivers/i2c/i2c-core.h:56 at __i2c_smbus_xfer+0x1e4/0x214, CPU#0=
+: systemd-sleep/388
+> [  134.365507] Tainted: [W]=3DWARN [  134.368485] Hardware name: Renesas =
+SMARC EVK version 2 based on
+> r9a09g047e57 (DT) [  134.375961] pstate: 60400005 (nZCv daif +PAN -UAO -T=
+CO -DIT -SSBS BTYPE=3D--)
+> [  134.382935] pc : __i2c_smbus_xfer+0x1e4/0x214 [  134.387329] lr : __i2=
+c_smbus_xfer+0x1e4/0x214
+> [  134.391717] sp : ffff800083f23860 [  134.395040] x29: ffff800083f23860=
+ x28: 0000000000000000 x27:
+> ffff800082ed5d60 [  134.402226] x26: 0000001f4395fd74 x25: 00000000000000=
+07 x24: 0000000000000001
+> [  134.409408] x23: 0000000000000000 x22: 000000000000006f x21: ffff80008=
+3f23936 [  134.416589] x20:
+> ffff0000c090e140 x19: ffff0000c090e0d0 x18: 0000000000000006 [  134.42377=
+1] x17: 6f63657320313030 x16:
+> 2e30206465737061 x15: ffff800083f23280 [  134.430953] x14: 00000000000000=
+00 x13: ffff800082b16ce8 x12:
+> 0000000000000f09 [  134.438134] x11: 0000000000000503 x10: ffff800082b6ec=
+e8 x9 : ffff800082b16ce8
+> [  134.445315] x8 : 00000000ffffefff x7 : ffff800082b6ece8 x6 : 80000000f=
+ffff000 [  134.452495] x5 :
+> 0000000000000504 x4 : 0000000000000000 x3 : 0000000000000000 [  134.45967=
+2] x2 : 0000000000000000 x1 :
+> 0000000000000000 x0 : ffff0000c9ee9e80 [  134.466851] Call trace:
+> [  134.469311]  __i2c_smbus_xfer+0x1e4/0x214 (P) [  134.473715]  i2c_smbu=
+s_xfer+0xbc/0x120
+> [  134.477507]  i2c_smbus_read_byte_data+0x4c/0x84
+> [  134.482077]  isl1208_i2c_read_time+0x44/0x178 [rtc_isl1208] [  134.487=
+703]
+> isl1208_rtc_read_time+0x14/0x20 [rtc_isl1208] [  134.493226]  __rtc_read_=
+time+0x44/0x88 [  134.497012]
+> rtc_read_time+0x3c/0x68 [  134.500622]  rtc_suspend+0x9c/0x170
+>=20
+> The warning is triggered because I2C transfers can still be attempted whi=
+le the controller is already
+> suspended, due to inappropriate ordering of the system sleep callbacks.
+>=20
+> Fix this by moving the system sleep suspend/resume callbacks to the NOIRQ=
+ phase, ensuring the adapter
+> is fully quiesced after late suspend and properly resumed before the earl=
+y resume phase.
+>=20
+> To support NOIRQ resume, the hardware initialization path must not invoke=
+ runtime PM APIs. Split the
+> init code so that the low-level hardware setup can be executed without pm=
+_runtime_get/put(). This
+> avoids violating the constraint introduced by commit 1e2ef05bb8cf ("PM: L=
+imit race conditions between
+> runtime PM and system sleep (v2)"), which forbids runtime PM calls during=
+ early resume.
+>=20
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Kevin Tian <kevin.tian@intel.com>
+> Fixes: 53326135d0e0 ("i2c: riic: Add suspend/resume support")
+> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 > ---
->   drivers/vfio/pci/nvgrace-gpu/main.c |  4 ++--
->   drivers/vfio/pci/vfio_pci_rdwr.c    | 25 ++++++++++++++++++-------
->   include/linux/vfio_pci_core.h       | 10 +++++++++-
->   3 files changed, 29 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index 84d142a47ec6..b45a24d00387 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -561,7 +561,7 @@ nvgrace_gpu_map_and_read(struct nvgrace_gpu_pci_core_device *nvdev,
->   		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
->   					     nvdev->resmem.ioaddr,
->   					     buf, offset, mem_count,
-> -					     0, 0, false);
-> +					     0, 0, false, VFIO_PCI_IO_WIDTH_8);
->   	}
->   
->   	return ret;
-> @@ -693,7 +693,7 @@ nvgrace_gpu_map_and_write(struct nvgrace_gpu_pci_core_device *nvdev,
->   		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
->   					     nvdev->resmem.ioaddr,
->   					     (char __user *)buf, pos, mem_count,
-> -					     0, 0, true);
-> +					     0, 0, true, VFIO_PCI_IO_WIDTH_8);
->   	}
->   
->   	return ret;
-> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-> index 6192788c8ba3..25380b7dfe18 100644
-> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> @@ -135,7 +135,8 @@ VFIO_IORDWR(64)
->   ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
->   			       void __iomem *io, char __user *buf,
->   			       loff_t off, size_t count, size_t x_start,
-> -			       size_t x_end, bool iswrite)
-> +			       size_t x_end, bool iswrite,
-> +			       enum vfio_pci_io_width max_width)
->   {
->   	ssize_t done = 0;
->   	int ret;
-> @@ -150,20 +151,19 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
->   		else
->   			fillable = 0;
->   
-> -		if (fillable >= 8 && !(off % 8)) {
-> +		if (fillable >= 8 && !(off % 8) && max_width >= 8) {
->   			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
->   						io, buf, off, &filled);
->   			if (ret)
->   				return ret;
->   
-> -		} else
-> -		if (fillable >= 4 && !(off % 4)) {
-> +		} else if (fillable >= 4 && !(off % 4) && max_width >= 4) {
->   			ret = vfio_pci_iordwr32(vdev, iswrite, test_mem,
->   						io, buf, off, &filled);
->   			if (ret)
->   				return ret;
->   
-> -		} else if (fillable >= 2 && !(off % 2)) {
-> +		} else if (fillable >= 2 && !(off % 2) && max_width >= 2) {
->   			ret = vfio_pci_iordwr16(vdev, iswrite, test_mem,
->   						io, buf, off, &filled);
->   			if (ret)
-> @@ -234,6 +234,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->   	void __iomem *io;
->   	struct resource *res = &vdev->pdev->resource[bar];
->   	ssize_t done;
-> +	enum vfio_pci_io_width max_width = VFIO_PCI_IO_WIDTH_8;
->   
->   	if (pci_resource_start(pdev, bar))
->   		end = pci_resource_len(pdev, bar);
-> @@ -262,6 +263,16 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->   		if (!io)
->   			return -ENOMEM;
->   		x_end = end;
+>  drivers/i2c/busses/i2c-riic.c | 65 ++++++++++++++++++++++-------------
+>  1 file changed, 41 insertions(+), 24 deletions(-)
+>=20
+> diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.=
+c index
+> 3e8f126cb7f7..9acc8936cdf7 100644
+> --- a/drivers/i2c/busses/i2c-riic.c
+> +++ b/drivers/i2c/busses/i2c-riic.c
+> @@ -349,9 +349,8 @@ static const struct i2c_algorithm riic_algo =3D {
+>  	.functionality =3D riic_func,
+>  };
+>=20
+> -static int riic_init_hw(struct riic_dev *riic)
+> +static int __riic_init_hw(struct riic_dev *riic)
+>  {
+> -	int ret;
+>  	unsigned long rate;
+>  	unsigned long ns_per_tick;
+>  	int total_ticks, cks, brl, brh;
+> @@ -431,10 +430,6 @@ static int riic_init_hw(struct riic_dev *riic)
+>  		 rate / total_ticks, ((brl + 3) * 100) / (brl + brh + 6),
+>  		 t->scl_fall_ns / ns_per_tick, t->scl_rise_ns / ns_per_tick, cks, brl,=
+ brh);
+>=20
+> -	ret =3D pm_runtime_resume_and_get(dev);
+> -	if (ret)
+> -		return ret;
+> -
+>  	/* Changing the order of accessing IICRST and ICE may break things! */
+>  	riic_writeb(riic, ICCR1_IICRST | ICCR1_SOWP, RIIC_ICCR1);
+>  	riic_clear_set_bit(riic, 0, ICCR1_ICE, RIIC_ICCR1); @@ -451,10 +446,25 =
+@@ static int
+> riic_init_hw(struct riic_dev *riic)
+>=20
+>  	riic_clear_set_bit(riic, ICCR1_IICRST, 0, RIIC_ICCR1);
+>=20
+> -	pm_runtime_put_autosuspend(dev);
+>  	return 0;
+>  }
+>=20
+> +static int riic_init_hw(struct riic_dev *riic) {
+> +	struct device *dev =3D riic->adapter.dev.parent;
+> +	int ret;
 > +
-> +		/*
-> +		 * Certain devices (e.g. Intel X710) don't support qword
-> +		 * access to the ROM bar. Otherwise PCI AER errors might be
-> +		 * triggered.
-> +		 *
-> +		 * Disable qword access to the ROM bar universally, which
-> +		 * worked reliably for years before qword access is enabled.
-> +		 */
-> +		max_width = VFIO_PCI_IO_WIDTH_4;
->   	} else {
->   		int ret = vfio_pci_core_setup_barmap(vdev, bar);
->   		if (ret) {
-> @@ -278,7 +289,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->   	}
->   
->   	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
-> -				      count, x_start, x_end, iswrite);
-> +				      count, x_start, x_end, iswrite, max_width);
->   
->   	if (done >= 0)
->   		*ppos += done;
-> @@ -352,7 +363,7 @@ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->   	 * to the memory enable bit in the command register.
->   	 */
->   	done = vfio_pci_core_do_io_rw(vdev, false, iomem, buf, off, count,
-> -				      0, 0, iswrite);
-> +				      0, 0, iswrite, VFIO_PCI_IO_WIDTH_8);
->   
->   	vga_put(vdev->pdev, rsrc);
->   
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index 706877f998ff..1ac86896875c 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -145,6 +145,13 @@ struct vfio_pci_core_device {
->   	struct list_head	dmabufs;
->   };
->   
-> +enum vfio_pci_io_width {
-> +	VFIO_PCI_IO_WIDTH_1 = 1,
-> +	VFIO_PCI_IO_WIDTH_2 = 2,
-> +	VFIO_PCI_IO_WIDTH_4 = 4,
-> +	VFIO_PCI_IO_WIDTH_8 = 8,
-> +};
+> +	ret =3D pm_runtime_resume_and_get(dev);
+> +	if (ret)
+> +		return ret;
 > +
->   /* Will be exported for vfio pci drivers usage */
->   int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
->   				      unsigned int type, unsigned int subtype,
-> @@ -188,7 +195,8 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
->   ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
->   			       void __iomem *io, char __user *buf,
->   			       loff_t off, size_t count, size_t x_start,
-> -			       size_t x_end, bool iswrite);
-> +			       size_t x_end, bool iswrite,
-> +			       enum vfio_pci_io_width max_width);
->   bool __vfio_pci_memory_enabled(struct vfio_pci_core_device *vdev);
->   bool vfio_pci_core_range_intersect_range(loff_t buf_start, size_t buf_cnt,
->   					 loff_t reg_start, size_t reg_cnt,
-> -- 
-> 2.43.0
-> 
+> +	ret =3D __riic_init_hw(riic);
+> +
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return ret;
+> +}
+> +
+>  static int riic_get_scl(struct i2c_adapter *adap)  {
+>  	struct riic_dev *riic =3D i2c_get_adapdata(adap); @@ -572,6 +582,8 @@ s=
+tatic int
+> riic_i2c_probe(struct platform_device *pdev)
+>=20
+>  	i2c_parse_fw_timings(dev, &riic->i2c_t, true);
+>=20
+> +	platform_set_drvdata(pdev, riic);
+> +
+>  	/* Default 0 to save power. Can be overridden via sysfs for lower laten=
+cy. */
+>  	pm_runtime_set_autosuspend_delay(dev, 0);
+>  	pm_runtime_use_autosuspend(dev);
+> @@ -585,8 +597,6 @@ static int riic_i2c_probe(struct platform_device *pde=
+v)
+>  	if (ret)
+>  		goto out;
+>=20
+> -	platform_set_drvdata(pdev, riic);
+> -
+>  	dev_info(dev, "registered with %dHz bus speed\n", riic->i2c_t.bus_freq_=
+hz);
+>  	return 0;
+>=20
+> @@ -668,27 +678,17 @@ static const struct riic_of_data riic_rz_t2h_info =
+=3D {
+>  	.num_irqs =3D ARRAY_SIZE(riic_rzt2h_irqs),  };
+>=20
+> -static int riic_i2c_suspend(struct device *dev)
+> +static int riic_i2c_runtime_suspend(struct device *dev)
+>  {
+>  	struct riic_dev *riic =3D dev_get_drvdata(dev);
+> -	int ret;
+> -
+> -	ret =3D pm_runtime_resume_and_get(dev);
+> -	if (ret)
+> -		return ret;
+> -
+> -	i2c_mark_adapter_suspended(&riic->adapter);
+>=20
+>  	/* Disable output on SDA, SCL pins. */
+>  	riic_clear_set_bit(riic, ICCR1_ICE, 0, RIIC_ICCR1);
+>=20
+> -	pm_runtime_mark_last_busy(dev);
+> -	pm_runtime_put_sync(dev);
+> -
+>  	return reset_control_assert(riic->rstc);  }
+>=20
+> -static int riic_i2c_resume(struct device *dev)
+> +static int riic_i2c_runtime_resume(struct device *dev)
+>  {
+>  	struct riic_dev *riic =3D dev_get_drvdata(dev);
+>  	int ret;
+> @@ -697,7 +697,7 @@ static int riic_i2c_resume(struct device *dev)
+>  	if (ret)
+>  		return ret;
+>=20
+> -	ret =3D riic_init_hw(riic);
+> +	ret =3D __riic_init_hw(riic);
+>  	if (ret) {
+>  		/*
+>  		 * In case this happens there is no way to recover from this @@ -708,1=
+3 +708,30 @@ static
+> int riic_i2c_resume(struct device *dev)
+>  		return ret;
+>  	}
+>=20
+> +	return 0;
+> +}
+> +
+> +static int riic_i2c_suspend(struct device *dev) {
+> +	struct riic_dev *riic =3D dev_get_drvdata(dev);
+> +
+> +	i2c_mark_adapter_suspended(&riic->adapter);
+> +
+> +	return pm_runtime_force_suspend(dev);
+> +}
+> +
+> +static int riic_i2c_resume(struct device *dev) {
+> +	struct riic_dev *riic =3D dev_get_drvdata(dev);
+> +
+>  	i2c_mark_adapter_resumed(&riic->adapter);
 
-Tested-by: Farrah Chen <farrah.chen@intel.com>
 
-With this patch, I tested device passthrough with an Intel X710 NIC. No 
-PCIe errors were found, and the device works well in the guest.
+Is it not possible reconfigure i2c controller here like [1]
+
+So that we can avoid reinitializing the i2ccontroller after every transfer =
+(ie, rpm)
+
+[1]
+https://elixir.bootlin.com/linux/v6.18-rc7/source/drivers/i2c/busses/i2c-te=
+gra.c#L1965
+
+Cheers,
+Biju
+
 
