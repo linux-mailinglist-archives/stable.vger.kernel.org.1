@@ -1,186 +1,199 @@
-Return-Path: <stable+bounces-203032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A87CCDA9C
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 22:19:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEAECCDABD
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 22:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5BE8302FA00
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 21:18:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E33A300D4B0
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 21:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211832BDC03;
-	Thu, 18 Dec 2025 21:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9A025DB0D;
+	Thu, 18 Dec 2025 21:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Hmc1ZZRx"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Kydoo07D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com [209.85.167.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0BF21D3F2
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 21:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB975283FEF;
+	Thu, 18 Dec 2025 21:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766092735; cv=none; b=XI18lsBDPBKc0WnXSTvTwPyfXhfz3K/FL/2yDgCoQPueOQ9hINEmedWpCrfTAfnjtCQH3xOQmwucaMKWNuFf8OILdXEZRswa5QCHPMPVe9y8pGQde3oVDNMDiC4WKL945OByI4I1DfvZuuoCr1jLKIbGt0mQfWaLFtjEAtzBNU4=
+	t=1766092900; cv=none; b=Pies+foeDXevNxxCB2ScFi+GpXqCCaNWkous6HA2nSJ8ALkgG0YvXA+tcO52oJ0KRBqxceThCc4WvWMn6uDb2bXFpQ+S/9+m1rNv9uslyA8noQNWHCmuPoKDC1hOp3ziS5XnRoaC28B5q9k+bBLw0HUIRbn9XbMOVcb3mV4DzLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766092735; c=relaxed/simple;
-	bh=RhOEEMWeBR2NrmvwByQcIXLGBf3QLOVJPYB7vjo3TAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jwwdcM8guRdQTn6GbXKMIoIGKh1IFqaGwgFHuHifW4bSLC8crezyXmmY3pWzt5ZLB74LsHYfmEYQUctDAkuRpLdFN4xrN8w9wWwnYrWRcUXYvbB33mV21BLWUBEgteFvacz1pv7aJMX9YIuFMGtkzCdqYXxgh1uKOpicaAXIxuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Hmc1ZZRx; arc=none smtp.client-ip=209.85.167.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f196.google.com with SMTP id 5614622812f47-450ac3ed719so809273b6e.0
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 13:18:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1766092732; x=1766697532; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZhC2CbqMJRNT4ZU/m5rZ+f9MoR9/53yP9aHufxjViRE=;
-        b=Hmc1ZZRxaAkPwdMEmQ0P9SNdZ2RAaF3oU8GbfR8kvl4QzuRe8wDlUFWBu8b3m6L4yc
-         q4fFeLemYOSbT0U3NUNw1Kk7ozDS79Fl9U/x2deXKHVUNCxSyG5a/lZ1xu2wOANRRX63
-         XLzw8mU1QtsXnG/3BmTq3gbDB2lp1JKejf88nsXeqQ8PE3049HjJYXgDrQgn0iQoLrZP
-         n3JqbODcHbZ6nPq/scpWyPrBCZvur4VHxxcChEgfRndD+wsFcWHTgMZz0T3KdsL30DGw
-         4VAwazATlTjpdA4CtOVummTWN9EmcouFaoWu6rk4yY9gQs3BnFR1JXwjAcUcMH+F6rQ2
-         KdcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766092732; x=1766697532;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZhC2CbqMJRNT4ZU/m5rZ+f9MoR9/53yP9aHufxjViRE=;
-        b=ua3AKEr5XuH3lAvhhgyubGCEBX8GQwMskJSC1KzzT7bZAsW23MVso0gDmBQ1OTHXiC
-         1wZRP1ES2FUpLRUlI0V5tCG4RQLRSmnJzHTUWmys+TTuOPru1gBT1ktLHRHQIdMB5grm
-         jQq3Q47XGwhnV7W9z+ubzTdGmCqM2lUBgBwBN4E0TKfgRBnLwrm669onzAMwhDqYm6iw
-         A2aegMimg7FL3OmLncPmHFkXHmT+hNUFoF6D8Fzzc2KiNJM0gdhiyC61tcBiNXL/XHSO
-         jcjDSzRuuyr0pw0nIxkEc+hSBSIuXDFAzs1RgcGR2biXUg6LNDShy3QjDLL5yiUbCv0v
-         clqA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9BayThtqdzx0NbD8H1yQohJytP3nSq3uX1I093uPZJZga41N/H46s90OBvXNfIgMBLyeJnbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKV1MEJz68vJLAhuHT6oQlI5tjSd67Xp2QJGc5HYPwIXidZ0XH
-	c05zsI+T8ADe+Z3H5bmUyLylMlA1O6UhOvhWa50r+0QD40ebCg0Z4PWWLbutFoWJUWA=
-X-Gm-Gg: AY/fxX6x5D4Cx+TdQ5WqnbHzVBQtLhl9FpLdIp44uHS0Y/gpnLce1beHwD4F+Snyxo6
-	2+dlPtG4wlgKBqHPvjYPfcqD5XZUVfDNalZFucBCXAHYHLnYw4ex89hQ9u36erPN2cGHJLb9iWD
-	TE6g0sfgMNBL3Tjp8eKOwpDqvza2WT3M5pt5+BdA91BsDoYJkXFwOIEM5psNKHUiOQYGZGOjT3B
-	HUjkOpz3qtE3GI0zxVmYF6YAcHkqpcoc0KrXxbsazI873XWbFRKj3MahYgho3POABb0Z/dSFYmM
-	Qxx8BS3FQJjqBbE39l4E6sJ4VB696MlvRAhmyJ4B65uccWsCKXRmYnGfy+kL54CfTEXjCURH+hw
-	1gR8ANKk7GB6yoh0BtwvlZTv6fEwFexeXUD7NfJ/WOgiExOLq31wy00ClfJK/B6clhI9ijAj2ZX
-	HKchChYPr0oylx1QhwFvw=
-X-Google-Smtp-Source: AGHT+IFMNG6QuMm04WSPEQ+o5Wdf5snjMsZNR47hVm1DJmrERY17Z8C2J7I/9B/wSXr1tvKICfXRtg==
-X-Received: by 2002:a05:6808:1591:b0:450:474b:2736 with SMTP id 5614622812f47-457b2261c78mr539829b6e.45.1766092731801;
-        Thu, 18 Dec 2025 13:18:51 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-457b3edb117sm160663b6e.16.2025.12.18.13.18.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Dec 2025 13:18:50 -0800 (PST)
-Message-ID: <77e0636b-b7d4-4bbc-b4bf-a05bccb343d0@kernel.dk>
-Date: Thu, 18 Dec 2025 14:18:49 -0700
+	s=arc-20240116; t=1766092900; c=relaxed/simple;
+	bh=3pYZaXxohSvkAV3IhoGDdLwI1FBIso2wTVbEpTHUyq0=;
+	h=Date:To:From:Subject:Message-Id; b=MMFOirPNbdCk0Pnvi6sLLj36At/YygY1MwGXTFiAi5mzZ4/2y3UD1CkYSPVdXXf1fbtP4KjE2mWmGZRNmwP57HcXVxxjgdwlFxMoBHXWRbh67h6N6bALyr72de88Vua41rx/3tIcaWLqo5k81oP94jcbbuAGoeGtMU1rLBi9KbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Kydoo07D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611F6C4CEFB;
+	Thu, 18 Dec 2025 21:21:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766092899;
+	bh=3pYZaXxohSvkAV3IhoGDdLwI1FBIso2wTVbEpTHUyq0=;
+	h=Date:To:From:Subject:From;
+	b=Kydoo07Dqx7fuTb7Iu2sNB8tP+TYGQAJVBslwrj6FyErbEjtUbH5WVfyamZbu0o0N
+	 5NLTYnpoDcD0qH+xa9qTO1xKZ/9r4SWGBqHleyt4rdXFKSLD4GGjF4ubfTOgdXAuzl
+	 n++eF3MUCUAkoMzqt9nc0Gfe0sZNDHOakNFCmqQ4=
+Date: Thu, 18 Dec 2025 13:21:38 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,hch@lst.de,djwong@kernel.org,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-buildid-use-__kernel_read-for-sleepable-context.patch added to mm-nonmm-unstable branch
+Message-Id: <20251218212139.611F6C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] af_unix: don't post cmsg for SO_INQ unless explicitly
- asked for
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: io-uring@vger.kernel.org, kuba@kernel.org, kuniyu@google.com,
- willemb@google.com, stable@vger.kernel.org, Julian Orth <ju.orth@gmail.com>
-References: <20251218150114.250048-1-axboe@kernel.dk>
- <20251218150114.250048-2-axboe@kernel.dk>
- <willemdebruijn.kernel.2e22e5d8453bd@gmail.com>
- <2ed38b2d-6f87-4878-b988-450cd95f8679@kernel.dk>
- <willemdebruijn.kernel.164466b751181@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <willemdebruijn.kernel.164466b751181@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 12/18/25 2:15 PM, Willem de Bruijn wrote:
-> Jens Axboe wrote:
->> On 12/18/25 1:35 PM, Willem de Bruijn wrote:
->>> Jens Axboe wrote:
->>>> A previous commit added SO_INQ support for AF_UNIX (SOCK_STREAM), but
->>>> it posts a SCM_INQ cmsg even if just msg->msg_get_inq is set. This is
->>>> incorrect, as ->msg_get_inq is just the caller asking for the remainder
->>>> to be passed back in msg->msg_inq, it has nothing to do with cmsg. The
->>>> original commit states that this is done to make sockets
->>>> io_uring-friendly", but it's actually incorrect as io_uring doesn't
->>>> use cmsg headers internally at all, and it's actively wrong as this
->>>> means that cmsg's are always posted if someone does recvmsg via
->>>> io_uring.
->>>>
->>>> Fix that up by only posting cmsg if u->recvmsg_inq is set.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: df30285b3670 ("af_unix: Introduce SO_INQ.")
->>>> Reported-by: Julian Orth <ju.orth@gmail.com>
->>>> Link: https://github.com/axboe/liburing/issues/1509
->>>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->>>> ---
->>>>  net/unix/af_unix.c | 10 +++++++---
->>>>  1 file changed, 7 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
->>>> index 55cdebfa0da0..110d716087b5 100644
->>>> --- a/net/unix/af_unix.c
->>>> +++ b/net/unix/af_unix.c
->>>> @@ -3086,12 +3086,16 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
->>>>  
->>>>  	mutex_unlock(&u->iolock);
->>>>  	if (msg) {
->>>> +		bool do_cmsg;
->>>> +
->>>>  		scm_recv_unix(sock, msg, &scm, flags);
->>>>  
->>>> -		if (READ_ONCE(u->recvmsg_inq) || msg->msg_get_inq) {
->>>> +		do_cmsg = READ_ONCE(u->recvmsg_inq);
->>>> +		if (do_cmsg || msg->msg_get_inq) {
->>>>  			msg->msg_inq = READ_ONCE(u->inq_len);
->>>> -			put_cmsg(msg, SOL_SOCKET, SCM_INQ,
->>>> -				 sizeof(msg->msg_inq), &msg->msg_inq);
->>>> +			if (do_cmsg)
->>>> +				put_cmsg(msg, SOL_SOCKET, SCM_INQ,
->>>> +					 sizeof(msg->msg_inq), &msg->msg_inq);
->>>
->>> Is it intentional that msg_inq is set also if msg_get_inq is not set,
->>> but do_cmsg is?
->>
->> It doesn't really matter, what matters is the actual cmsg posting be
->> guarded. The msg_inq should only be used for a successful return anyway,
->> I think we're better off reading it unconditionally than having multiple
->> branches.
->>
->> Not really important, if you prefer to keep them consistent, that's fine
->> with me too.
->>
->>>
->>> It just seems a bit surprising behavior.
->>>
->>> That is an entangling of two separate things.
->>> - msg_get_inq sets msg_inq, and
->>> - cmsg_flags & TCP_CMSG_INQ inserts TCP_CM_INQ cmsg
->>>
->>> The original TCP patch also entangles them, but in another way.
->>> The cmsg is written only if msg_get_inq is requested.
->>
->> The cmsg is written iff TCP_CMSG_INQ is set, not if ->msg_get_inq is the
->> only thing set. That part is important.
->>
->> But yes, both need the data left.
-> 
-> I see, writing msg_inq if not requested is benign indeed. The inverse
-> is not true.
-> 
-> Ok. I do think it would be good to have the protocols consistent.
-> Simpler to reason about the behavior and intent long term.
 
-Sure, I can do that. Would you prefer patch 1 and 2 folded as well, or
-keep them separate? If we're mirroring the logic, seems like 1 patch
-would be better.
+The patch titled
+     Subject: lib/buildid: use __kernel_read() for sleepable context
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     lib-buildid-use-__kernel_read-for-sleepable-context.patch
 
--- 
-Jens Axboe
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-buildid-use-__kernel_read-for-sleepable-context.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: lib/buildid: use __kernel_read() for sleepable context
+Date: Thu, 18 Dec 2025 12:55:05 -0800
+
+For the sleepable context, convert freader to use __kernel_read() instead
+of direct page cache access via read_cache_folio().  This simplifies the
+faultable code path by using the standard kernel file reading interface
+which handles all the complexity of reading file data.
+
+At the moment we are not changing the code for non-sleepable context which
+uses filemap_get_folio() and only succeeds if the target folios are
+already in memory and up-to-date.  The reason is to keep the patch simple
+and easier to backport to stable kernels.
+
+Syzbot repro does not crash the kernel anymore and the selftests run
+successfully.
+
+In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+non-sleepable contexts.  In addition, I would like to replace the
+secretmem check with a more generic approach and will add fstest for the
+buildid code.
+
+Link: https://lkml.kernel.org/r/20251218205505.2415840-1-shakeel.butt@linux.dev
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/buildid.c |   47 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
+
+--- a/lib/buildid.c~lib-buildid-use-__kernel_read-for-sleepable-context
++++ a/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/fs.h>
+ #include <linux/secretmem.h>
+ 
+ #define BUILD_ID 3
+@@ -37,6 +38,29 @@ static void freader_put_folio(struct fre
+ 	r->folio = NULL;
+ }
+ 
++/*
++ * Data is read directly into r->buf. Returns pointer to the buffer
++ * on success, NULL on failure with r->err set.
++ */
++static const void *freader_fetch_sync(struct freader *r, loff_t file_off, size_t sz)
++{
++	ssize_t ret;
++	loff_t pos = file_off;
++	char *buf = r->buf;
++
++	do {
++		ret = __kernel_read(r->file, buf, sz, &pos);
++		if (ret <= 0) {
++			r->err = ret ?: -EIO;
++			return NULL;
++		}
++		buf += ret;
++		sz -= ret;
++	} while (sz > 0);
++
++	return r->buf;
++}
++
+ static int freader_get_folio(struct freader *r, loff_t file_off)
+ {
+ 	/* check if we can just reuse current folio */
+@@ -46,20 +70,9 @@ static int freader_get_folio(struct frea
+ 
+ 	freader_put_folio(r);
+ 
+-	/* reject secretmem folios created with memfd_secret() */
+-	if (secretmem_mapping(r->file->f_mapping))
+-		return -EFAULT;
+-
++	/* only use page cache lookup - fail if not already cached */
+ 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+ 
+-	/* if sleeping is allowed, wait for the page, if necessary */
+-	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
+-		filemap_invalidate_lock_shared(r->file->f_mapping);
+-		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
+-					    NULL, r->file);
+-		filemap_invalidate_unlock_shared(r->file->f_mapping);
+-	}
+-
+ 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
+ 		if (!IS_ERR(r->folio))
+ 			folio_put(r->folio);
+@@ -97,6 +110,16 @@ const void *freader_fetch(struct freader
+ 		return r->data + file_off;
+ 	}
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (secretmem_mapping(r->file->f_mapping)) {
++		r->err = -EFAULT;
++		return NULL;
++	}
++
++	/* use __kernel_read() for sleepable context */
++	if (r->may_fault)
++		return freader_fetch_sync(r, file_off, sz);
++
+ 	/* fetch or reuse folio for given file offset */
+ 	r->err = freader_get_folio(r, file_off);
+ 	if (r->err)
+_
+
+Patches currently in -mm which might be from shakeel.butt@linux.dev are
+
+mm-memcg-fix-unit-conversion-for-k-macro-in-oom-log.patch
+lib-buildid-use-__kernel_read-for-sleepable-context.patch
+
 
