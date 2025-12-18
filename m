@@ -1,142 +1,110 @@
-Return-Path: <stable+bounces-202993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBF3CCC41B
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88E5CCC547
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE5CC30ABFBD
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 14:20:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 812C13097CA7
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 14:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DCB285050;
-	Thu, 18 Dec 2025 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0B086323;
+	Thu, 18 Dec 2025 14:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1qogwPG"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hNcJnGe8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80B423D7FF;
-	Thu, 18 Dec 2025 14:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E61026299;
+	Thu, 18 Dec 2025 14:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766067646; cv=none; b=kLBjW9BI2ekgAgbwSY7o6ibPfgDIpwFPlp2JW/d4MUYKbCUghp+0Y8MT+3MHffX2d6YYGkqjQh7wQQXl09nO3tRFkrmaX3lURTCCZcL5bYQigvY7yRWqCA6kE+ucYqEYWomxIQcIOx/3g6CwxddXqWNhHSj1rKqmraLmHj7SokE=
+	t=1766069184; cv=none; b=h0U4eu5/2ln7W1uRd05uNfBjGNuJPkcqhWW8QZOqvasRUUkcNEzEUbO1lLOlpTn2h827xQUsbChOXXuUCWtByqad0oZFGNSmipgZzFEYl9utwqd6jUW8cq7Lq8NpC30cjF3ChDP2tU8OBO7oYuqCFtHrEe8ucX1MGooAVKL9On0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766067646; c=relaxed/simple;
-	bh=FhwZAwxk5GSdjJw5kwHI4Ojzyh/ABP7YaR9bgf68cMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUWKdwcpoL1g/pNskdbUgKes49bVtC8wDUAw0SleRDMnLNuGh4rh+n9clMQ2BQSSlbJm5lCz7zaCfKxBYOdSiBK0IihfICAUVV6u/0ZtCn6+zyPQPIYDeUa4lAgFkXGi21hT5bMzkK4+3Vyy7ojYU0msOc9vZLWZOOfyGY85PP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1qogwPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BC1C19422;
-	Thu, 18 Dec 2025 14:20:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766067646;
-	bh=FhwZAwxk5GSdjJw5kwHI4Ojzyh/ABP7YaR9bgf68cMY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1qogwPGzBaD9hwd1h9D1mHjLUEBpD5l1/ZK3BjjYX3SpxgvGhse9RArBzhNoWXO7
-	 0GmQbr30h9PB0Zc/m63Yn1iDySyU1z7acpVCnoKNMI/cZwKKlsoOeOy40Wo9VRIMm2
-	 PxT28n4IT2/7/j54z2fjqFASMRbcxR1jJUc9CVYGsOQAuYqYctyXfxb7QY0wbt4Fqp
-	 Knlr46/nLtmrUVmmPCyfeqDySD3YkVf3XJwmNgtquvRSBPjEGL1QJIFyYwZnV0tFJI
-	 Q+pKBm5109VsuSJgW/2gd+He05jVJ1ujP5gw8urqnUbKa/owbtAfk9KVrU6SBVYFY+
-	 /ztM9f1rQENxA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vWEs0-000000001YL-3cGR;
-	Thu, 18 Dec 2025 15:20:44 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Ma Ke <make24@iscas.ac.cn>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/5] usb: ohci-nxp: fix device leak on probe failure
-Date: Thu, 18 Dec 2025 15:19:43 +0100
-Message-ID: <20251218141945.5884-4-johan@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251218141945.5884-1-johan@kernel.org>
-References: <20251218141945.5884-1-johan@kernel.org>
+	s=arc-20240116; t=1766069184; c=relaxed/simple;
+	bh=LY4nFPiOTkGww0ISgcKF6HSfdVYUtoR3hd0EwFScy1k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=qvfyjvyhHn2vsOracaf3cxVJg6+9hwqXG8VNSWSaNwJSnLTO2g/otfDSd9R/JZQjT8h1EEUV6tekz9RjYnOpLXiZramLHHzl+CE+ociU5G+dp0B1O/YGNpgDCgGTW369zaxrrDtHF29ck5n/xQcmi4AKpWTz4AS/cWRsMP1OyI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hNcJnGe8; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D66181A22D1;
+	Thu, 18 Dec 2025 14:46:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9E1A6606B6;
+	Thu, 18 Dec 2025 14:46:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4CBF102F0B4F;
+	Thu, 18 Dec 2025 15:46:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1766069174; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LY4nFPiOTkGww0ISgcKF6HSfdVYUtoR3hd0EwFScy1k=;
+	b=hNcJnGe8TulQ23mUQr3WbbFPlKC5EDvNAgRcZijZy+tyGsTWp+wRWl8E4jXM7B1IQL7cvn
+	G6YZ4ZMa2l0YCwXVjKALw7u2UKOPnE1uVqdjlEDn4H2w2ZqDM/F8D8MCeWSib7ksE9j0b4
+	bZ6nmrdb4QIQmbi7OuwVzvuXiLPz9/6IoIG/zI7pEJAGyVLe82j8ObP5zrfHK/7elNAL2D
+	KFldh5lezJs7QtQZzT8ZPIXUxLv0FDzhFnn+rFOR4EHizyUfow1SfCCPsdOxquMAR9xxfK
+	5IfXqgn9FhEGVP5ygpRd9HY7rQEnyPa0T1LWlRfGAZMKqggzG4JE3Yjt7VtTXQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Dec 2025 15:46:09 +0100
+Message-Id: <DF1F9S3FL5XG.1D9IAMJ5FHV4Z@bootlin.com>
+To: "Ludovic Desroches" <ludovic.desroches@microchip.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Jessica Zhang" <jesszhan0024@gmail.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Anusha
+ Srivatsa" <asrivats@redhat.com>, "Jessica Zhang"
+ <jessica.zhang@oss.qualcomm.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH REGRESSION v3] drm/panel: simple: restore connector_type
+ fallback
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20251218-lcd_panel_connector_type_fix-v3-1-ddcea6d8d7ef@microchip.com>
+In-Reply-To: <20251218-lcd_panel_connector_type_fix-v3-1-ddcea6d8d7ef@microchip.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Make sure to drop the reference taken when looking up the PHY I2C device
-during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+On Thu Dec 18, 2025 at 2:34 PM CET, Ludovic Desroches wrote:
+> The switch from devm_kzalloc() + drm_panel_init() to
+> devm_drm_panel_alloc() introduced a regression.
+>
+> Several panel descriptors do not set connector_type. For those panels,
+> panel_simple_probe() used to compute a connector type (currently DPI as a
+> fallback) and pass that value to drm_panel_init(). After the conversion
+> to devm_drm_panel_alloc(), the call unconditionally used
+> desc->connector_type instead, ignoring the computed fallback and
+> potentially passing DRM_MODE_CONNECTOR_Unknown, which
+> drm_panel_bridge_add() does not allow.
+>
+> Move the connector_type validation / fallback logic before the
+> devm_drm_panel_alloc() call and pass the computed connector_type to
+> devm_drm_panel_alloc(), so panels without an explicit connector_type
+> once again get the DPI default.
+>
+> Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+> Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in p=
+lace of devm_kzalloc()")
+> Cc: stable@vger.kernel.org
 
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Cc: stable@vger.kernel.org	# 3.5
-Reported-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/usb/host/ohci-nxp.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-index 24d5a1dc5056..9a05828bbba1 100644
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -169,13 +169,13 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- 
- 	ret = dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
- 	if (ret)
--		goto fail_disable;
-+		goto err_put_client;
- 
- 	dev_dbg(&pdev->dev, "%s: " DRIVER_DESC " (nxp)\n", hcd_name);
- 	if (usb_disabled()) {
- 		dev_err(&pdev->dev, "USB is disabled\n");
- 		ret = -ENODEV;
--		goto fail_disable;
-+		goto err_put_client;
- 	}
- 
- 	/* Enable USB host clock */
-@@ -183,7 +183,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- 	if (IS_ERR(usb_host_clk)) {
- 		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
- 		ret = PTR_ERR(usb_host_clk);
--		goto fail_disable;
-+		goto err_put_client;
- 	}
- 
- 	isp1301_configure();
-@@ -192,7 +192,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- 	if (!hcd) {
- 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
- 		ret = -ENOMEM;
--		goto fail_disable;
-+		goto err_put_client;
- 	}
- 
- 	hcd->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-@@ -222,7 +222,8 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- 	ohci_nxp_stop_hc();
- fail_resource:
- 	usb_put_hcd(hcd);
--fail_disable:
-+err_put_client:
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
- }
-@@ -234,6 +235,7 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- }
- 
--- 
-2.51.2
+Side note: this function is very long, it would be nice e.g. to move the
+big mistake-checking switch (connector_type) to a function. Of course that
+would be a separate series, after this fix is done.
 
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
