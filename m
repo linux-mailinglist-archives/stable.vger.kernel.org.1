@@ -1,125 +1,187 @@
-Return-Path: <stable+bounces-202910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EAACC9E77
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 01:36:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93214CC9F99
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 02:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F20F3068D72
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 00:35:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 257D9301028F
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 01:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99ED22258C;
-	Thu, 18 Dec 2025 00:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6672459ED;
+	Thu, 18 Dec 2025 01:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="AzszOLdE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TVHqy55U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFAC2253A1
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 00:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8251C4A20
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 01:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766018095; cv=none; b=FTEBwNW4aHwYZeCaG+QSiGW5JdYO/v/WXR47D48MCujH/sFKeWijgv+PskkiN5DB9xflrRz5pBGIBgW5B/gZJxb4xKnklfSb7Ylu4338G1txr0CyHM5v2BM5DVdkDJNAvwf6uH73UQ5uDC73tQoA5iFyGdDBKn6pKcLiM+lXEJs=
+	t=1766021048; cv=none; b=hN5274ck9srOTnfgnROgQ/6vYUhIsKbjFp7TV1/LNM2x2vifObz6AYVj2eo33rts+7onMn00h2kYlPAyPXF7CDa0O421re5ea9vtVsisWYoKUNKiqqTylf2JzXTQn/7Bis68aOfDRiaCV6gFL5lHs+L3jtJbSfXz/hZP+d/nQcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766018095; c=relaxed/simple;
-	bh=FO8LIM9dc/mVTDnts2nMeCTvf4v1hrbMfsp44QYmZqU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KkSQSHGqxeYck5ewjcdn14ArdR/eNQBxy0UyOnrT4BSuwZgaSTKxBr9ZmYUM6imz9tsipwj1+LcyBczlM2lIGcdx1Gg2U3y2ZiSIQyl3a6vKGCbFpjFE6GcnzfIx7ZOHjpMrl0I8p4d6NflwUdgHxWQD2FBwtZrBPoj3CEW61AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=AzszOLdE; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47bdbc90dcaso567345e9.1
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 16:34:52 -0800 (PST)
+	s=arc-20240116; t=1766021048; c=relaxed/simple;
+	bh=e2uP0ZZrORin36qfUFZ4oiCOOcWKcoTH8uLPIBj5IWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e5c4KncILIxpdRuIJ8TgVS1Ei3cX+do4SWSvuNGrqI68uYr2soAyTO1Jb3PV+bWRllY4158tH1pEO+C4SypSDnsikSOAJxQyVtEZ9fvnWUpTFnbWjTxDTe5yt9jO5Obc1xAUVDAcwBw4dE9NpNKXiZvbCUSLbvvFL8jCz/KAbCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TVHqy55U; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so167019b3a.0
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 17:24:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1766018091; x=1766622891; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/xEWnjAIItWQZkv8o2Fx3PveWA3cvN39KVpWlhYgkBA=;
-        b=AzszOLdEX5masM8pxBegDXGKUFcgMlTXd9AUjqM4zCT2gb8dN+Eh4b9W8nqk4O1gBa
-         DjmAJacvnxFX4nsyF/2vOasir+MXe1Oka1iZBc7mz/KFRDrhvICOsAZ2NccbkExDt8Bo
-         e5Mv4QO5M8rAm2aqZCnnphxh0ITaqjY/N6pG9A8cVCcpyGl2pfCECIOyraeDGMDQAO3R
-         sBsn4S8jOrsae55Jn5aO4vi/RvIB5snxlV5l2+7pXHpZsu9MtRBi51QulnN3psjD0QpH
-         c+9+2OllZeY4HXcjbnbM0/oyhnzVlgTLEmchgTbLqHmOIPoL9zJTvV+CYd+3Tx77miVB
-         A0xQ==
+        d=gmail.com; s=20230601; t=1766021045; x=1766625845; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=emBNhNNlWqPOEEl6QlP0wn4wftIpig8p3Ziv36qR1o0=;
+        b=TVHqy55U2/kSInDIDlmdhsVS35rK3YKQYBlOoNvOXVo52PMjq7fumiaUd6oWuluHxm
+         zgX6sQxfxTWy7cvivpFvel2X42lLLVLxyYgsYdLd7xdAuOoOiq91ussaRqgD9WMKPjoo
+         LLc6gIO1DgT1rKJ3jySJlCWAyxIUSiGWpPb40C2qE9kB/FOk9moMGWgUa5P8CHLdahK8
+         v/B0QPXX7Rk/WlNYSPfQ/mbc/91pEx+iudU6rd+ck9oMw/eDVqyI0TurfJX/L9WNoYSs
+         H2mb8k3li/ew7/wfzNStBNBgK7JU2NX1R9nrn1HTyE5w1C/e2x7Sy9mQoIew63SHSjmy
+         Bwfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766018091; x=1766622891;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/xEWnjAIItWQZkv8o2Fx3PveWA3cvN39KVpWlhYgkBA=;
-        b=WFl+z059MiGs0ipxcK1aaS1DF/pUfHcOBg8QtcMVgNNdYZlbKWU2K2d6jSIZbywMhG
-         tbnU7RNRZ949ShSsqygP8trxEM95Vo1jggWXtR9VGEnMgC9XKz9vO5eunERTAnwnwcXL
-         k2r5FugrEpssd1EigdTjdRYejOoWI6pNHXkzELbb/mxVekeiCSZN2ahxvHf89MyXegWa
-         DYmG39PYnVXwmbd5l+y+2Ww8/YjCMSRgQEm3sswUhDM1d/ZQ2VNOPfUdzZVerBfmhm7R
-         uFYWmFdJs2q8+S5lLyIDbjWhkJ+Xqrk6ie+gEPGlElBkq/k4EKLybiQPfXj9JTtWNE/l
-         9GpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVD7e8getwkKaqDaD6Kde++BUwDbp67voIbZgI5ODs2rBsNw8AdRVKN1RSLhukS6sNp0Wi1GZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFabBjLyo4VL0apwgFSs8dhpLhHdx2PMggfDECJHr5XP3310HN
-	vokZexl6+fEvNip8prPAZLfGd5Ou9S+lTzUgSrfyeKRGJCBCYJKOQec=
-X-Gm-Gg: AY/fxX6q9FFvS5IMMkGRiiaQjtUEKf3eYB7mk0rWJg9a4+YdJmaUnsV5dS/vLV0Q+kW
-	YzTme+JgBJec6hEtJK0qJT2QyyoUCeoag+yAJQupolsKM7c1mi+0hnqgj3tDkTQgaL+PLZejYtd
-	9X+Bx4glHFk43sFyoJwrFgUZeUiuKE1d4wEEf2nuYHOVj33pD0f7Ksd4IytCqkT7j6wCRDoVXK7
-	zCvdTlGvKgOsGLOUouDVajsuqm5mVnspW7xgfrMSYbVNuRHZs4k0Fz+6tut+Xdu3jLhoPdQhKQO
-	Bsc9pZAj7GsoAjW+UgCcohlXSNYdURQ9teUoPzvgRy5hh5VwZoNxgvlFYq4q/J0Coy+Kr/lL0wV
-	t9QO6Ww2Vv9njDm8JfRb3VcN1NMUZTBTaUbGnlAgNqhfj9UEzSKifE1PNZvoGADHovQZ3oiv9Tf
-	OcrjZnkbPGgKEaTlrs17RIMCN1aq8SLXYUoMvFgZfvjPjv4iIrRCNgQNehLMoxGeHRYwYzjVQkT
-	w==
-X-Google-Smtp-Source: AGHT+IEC68J9z/knR6wBoufrtFqrl7wLOpE4FGQAXdxT50dVt91U6bBsTviAWFR33gVm6l/I6He+HQ==
-X-Received: by 2002:a05:600c:4f84:b0:477:7b16:5f88 with SMTP id 5b1f17b1804b1-47a8f8a7f7amr204721985e9.6.1766018090846;
-        Wed, 17 Dec 2025 16:34:50 -0800 (PST)
-Received: from [192.168.1.3] (p5b057c69.dip0.t-ipconnect.de. [91.5.124.105])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be3aa7cd0sm3149355e9.8.2025.12.17.16.34.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 16:34:50 -0800 (PST)
-Message-ID: <35c5e0a8-6134-4d65-9fe4-1778b22c8d50@googlemail.com>
-Date: Thu, 18 Dec 2025 01:34:49 +0100
+        d=1e100.net; s=20230601; t=1766021045; x=1766625845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=emBNhNNlWqPOEEl6QlP0wn4wftIpig8p3Ziv36qR1o0=;
+        b=S8PmowZBRskVLGTJlq4AAaykFXWwNBSiKBfFPq0uz/DtQIneDBsSvjdzXEbaZt8WW9
+         b5YeImBOS6WC6ERkBWSPOgMU3raseGjYK5aEeOzDjSz0sUR2S8VPZ0DU6l5fb7ty4NNa
+         C588KAuSir3q8S0djhs6zNJGkDb7DrrtxVkPZvAo5O+zOyFjo5pAYl5i24ENY0GMVQ3I
+         UjBqeGuYFfrbSmAz/APnpBrIoPQ3TKlPf6lFkISihNGwZCiVwvOEc2kCHFBIXieV/Hgw
+         IO1lxQhBcNzKiwKaNMqdY3ucoGtLIblXEMM0tceiiFbTelKaqde4UWqs5NeAiSgJ8VNZ
+         8quQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCPrVPj3e9aw5KmIDb3imzymS/0QvDc3PbKIz2aCnmfvWOZn91jo8jfc7jEN5B1aSexQanrWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeiKW3oFxAgB6MruUMbmnTiQXHMGCVtZsgh1DTpXuHjNeUSKQQ
+	e3z+5NY7XTU4ltkr+WB2BqUI0JTw9E9frl1NHIbY1cOYPILMg6qYpP9n
+X-Gm-Gg: AY/fxX53mzrTKbFtOxNFAnQw7Ft5UzhJHWOZX00VwF8GfyN/Z007iyQ2Tx3nzvsxb7r
+	1yTSYuvO61OrbEQSkifYq++FQg6vF9SqfAOBuh8XRMjnVDh2BqE++ZsslRAeav7u+V1rCGwXzvI
+	QNLxGk3f3Y/HoGkkP7Y90znKIR1/Xxb2Nl3dQFgUBVFRacFsoutBr6EW7lt1GqdoS5uD3m3UEvh
+	U1w87vRVZXz/D87MjEvFGrL2+fVlEvgLquhaV32GQSY6LkEi5qJ/aHZ+a08Ii9kUR/tJI+Kocdx
+	9xhkoiRneJmDU7P2m+rRuvvoni+bfHx6kg9HJe1JbhJwdwY4epVlFUE8XeBo1klczn7HoOESqIM
+	qHSj6sNsryzpjq2Pe6JdM4oGze2ldloroM6J8EAErmvDF5kV3wxeEA6E0dXrCP+UBl4shlsWHH2
+	/OpBHG+QzDiK9GxCaEkwUO38+0LrvIpxHs+UU2h9WTGqT7exSasutkeYcgh1OzrrTLc4A=
+X-Google-Smtp-Source: AGHT+IG8qEk4VvEgkvsi2+A4qbe7sf1FK993lwy81zhcYcsjR16OvYCzjdL3HruD2xxF4O/sLvNhJA==
+X-Received: by 2002:a05:6a00:27a4:b0:7e8:4433:8fa3 with SMTP id d2e1a72fcca58-7f6694ac050mr18922276b3a.43.1766021044963;
+        Wed, 17 Dec 2025 17:24:04 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:a45b:c390:af5a:2503])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fe12315ea4sm694602b3a.28.2025.12.17.17.24.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 17:24:04 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: krzk@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: linma@zju.edu.cn,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	stable@vger.kernel.org,
+	syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com
+Subject: [PATCH v2] net: nfc: fix deadlock between nfc_unregister_device and rfkill_fop_write
+Date: Thu, 18 Dec 2025 06:53:54 +0530
+Message-ID: <20251218012355.279940-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/354] 6.12.63-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251216111320.896758933@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 16.12.2025 um 12:09 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.63 release.
-> There are 354 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+A deadlock can occur between nfc_unregister_device() and rfkill_fop_write()
+due to lock ordering inversion between device_lock and rfkill_global_mutex.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+The problematic lock order is:
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Thread A (rfkill_fop_write):
+  rfkill_fop_write()
+    mutex_lock(&rfkill_global_mutex)
+      rfkill_set_block()
+        nfc_rfkill_set_block()
+          nfc_dev_down()
+            device_lock(&dev->dev)    <- waits for device_lock
 
+Thread B (nfc_unregister_device):
+  nfc_unregister_device()
+    device_lock(&dev->dev)
+      rfkill_unregister()
+        mutex_lock(&rfkill_global_mutex)  <- waits for rfkill_global_mutex
 
-Beste Grüße,
-Peter Schneider
+This creates a classic ABBA deadlock scenario.
 
+Fix this by moving rfkill_unregister() and rfkill_destroy() outside the
+device_lock critical section. Store the rfkill pointer in a local variable
+before releasing the lock, then call rfkill_unregister() after releasing
+device_lock.
+
+This change is safe because rfkill_fop_write() holds rfkill_global_mutex
+while calling the rfkill callbacks, and rfkill_unregister() also acquires
+rfkill_global_mutex before cleanup. Therefore, rfkill_unregister() will
+wait for any ongoing callback to complete before proceeding, and
+device_del() is only called after rfkill_unregister() returns, preventing
+any use-after-free.
+
+The similar lock ordering in nfc_register_device() (device_lock ->
+rfkill_global_mutex via rfkill_register) is safe because during
+registration the device is not yet in rfkill_list, so no concurrent
+rfkill operations can occur on this device.
+
+Fixes: 3e3b5dfcd16a ("NFC: reorder the logic in nfc_{un,}register_device")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ef89409a235d804c6c2
+Link: https://lore.kernel.org/all/20251217054908.178907-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+v2:
+  - Added explanation of why UAF is not possible
+  - Added explanation of why nfc_register_device() is safe
+  - Added Fixes and Cc: stable tags
+  - Fixed blank line after variable declaration (kept it)
+---
+ net/nfc/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/net/nfc/core.c b/net/nfc/core.c
+index ae1c842f9c64..82f023f37754 100644
+--- a/net/nfc/core.c
++++ b/net/nfc/core.c
+@@ -1154,6 +1154,7 @@ EXPORT_SYMBOL(nfc_register_device);
+ void nfc_unregister_device(struct nfc_dev *dev)
+ {
+ 	int rc;
++	struct rfkill *rfk = NULL;
+ 
+ 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
+ 
+@@ -1164,13 +1165,17 @@ void nfc_unregister_device(struct nfc_dev *dev)
+ 
+ 	device_lock(&dev->dev);
+ 	if (dev->rfkill) {
+-		rfkill_unregister(dev->rfkill);
+-		rfkill_destroy(dev->rfkill);
++		rfk = dev->rfkill;
+ 		dev->rfkill = NULL;
+ 	}
+ 	dev->shutting_down = true;
+ 	device_unlock(&dev->dev);
+ 
++	if (rfk) {
++		rfkill_unregister(rfk);
++		rfkill_destroy(rfk);
++	}
++
+ 	if (dev->ops->check_presence) {
+ 		timer_delete_sync(&dev->check_pres_timer);
+ 		cancel_work_sync(&dev->check_pres_work);
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.43.0
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
