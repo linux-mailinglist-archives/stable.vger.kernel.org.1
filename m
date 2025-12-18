@@ -1,401 +1,235 @@
-Return-Path: <stable+bounces-203017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A8CCCCBE3
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:23:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59970CCCC5E
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A320C304DEFD
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:21:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 42466301D08B
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6450E36656F;
-	Thu, 18 Dec 2025 16:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2CB347BD1;
+	Thu, 18 Dec 2025 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G2B3cu8g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpB9Qjfx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362E735FF73
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 16:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CF43451B2;
+	Thu, 18 Dec 2025 16:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766074907; cv=none; b=U1SGBUbR+tBY2DI1UXeKr2QU+PviBiXLoMA1mupeIhri5nWYANQYklo9TZDKCDIigw1IFxoJN1CKn/XUJikPOJbOVfgku3ZCXdmyPu7InpYTi06dzcp0ocXCiqH5vRsO0KYrw5LrQipLFfgBlTmp0RWugIZclQszZcli+1PBGP0=
+	t=1766075058; cv=none; b=JTRDtUOZObYUf3CzZVgGjKUDqFnWUzkVrxQA+uShYEzV/T9lxDLilPqPh2cH1UMyVUpTcXfFT/qQzV8vl1zupIAbj4LItY4wLH8GaAhZ7hFxZqjkriVazIu/Je7B7rThbzZFvyDcxAdq2ryx+rjnRBgFTkSqPUl1V6idmoH3KvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766074907; c=relaxed/simple;
-	bh=TI0IBUWHl4sgMjgjK1bipBIWSBWt7zI9VY8VtkRgfyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jdYgMgOdlE/QAb+JcrzZ9ouppdahvvJS0TnK5feoT9Y2J2iMIACZK8hQuZC09FkyU31AwiznH4w9KorIOVqw77oCwOePG0M7mcNNkOXAF5CWm6OEtjjJI/EIkAem/5eMdxKCgH0yDKaLcK5E4BI+kh6/hycL7KmGM6Kxh2eSCVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G2B3cu8g; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766074905; x=1797610905;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TI0IBUWHl4sgMjgjK1bipBIWSBWt7zI9VY8VtkRgfyI=;
-  b=G2B3cu8g3w03ToL0ccoZfvYbfgEnMZLFNM+t9/rOqgEuEsz/eM8vnNcP
-   LxjI1VYCrMjnoCXXdaRaJU22BT/IofnXaoS6ua70T1qKqlcDvrRvlkdkj
-   Y+rxWjAivK8x/hbqkN37I5v7hF78uQXpCjF0VeZPB7xoHDfS0D1gicomR
-   wUH42C1XM7q9oaMul+q30/vIwKhgWEZ7IiBmGcUNv7hWSu4px6g+IPcwf
-   QSWeoboidjezoOjLqyQoMCQG5Tfgkh3+NtUaDWmA8OpOmyZi28PC6Rj3e
-   yd9g2KkY9XhOtPRj01GWTVVhkcekrKDqKS0WwRtFRnoZiT8v74ifBXaWN
-   w==;
-X-CSE-ConnectionGUID: zFWi288+TKGEGBhNZxvtwQ==
-X-CSE-MsgGUID: sbLu3TOZTEKz+hhePht0Ng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="70607561"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
-   d="scan'208";a="70607561"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 08:21:45 -0800
-X-CSE-ConnectionGUID: kf1rfk4vSqOwxiWccZwZjg==
-X-CSE-MsgGUID: MpydGRfnSYeDUEqcqpHAvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; 
-   d="scan'208";a="203705560"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO fedora) ([10.245.244.93])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 08:21:41 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	himal.prasad.ghimiray@intel.com,
-	apopple@nvidia.com,
-	airlied@gmail.com,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	felix.kuehling@amd.com,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	dakr@kernel.org,
-	"Mrozek, Michal" <michal.mrozek@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH v5 03/24] drm/pagemap, drm/xe: Ensure that the devmem allocation is idle before use
-Date: Thu, 18 Dec 2025 17:20:40 +0100
-Message-ID: <20251218162101.605379-4-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251218162101.605379-1-thomas.hellstrom@linux.intel.com>
-References: <20251218162101.605379-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1766075058; c=relaxed/simple;
+	bh=X5gSMMJxTpeVSLwt9c3VGpJBP7cA+dKBFUTwA1R/8Mk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AyjJ0+9OpXbh7IbIbaF0QNgwcjnyWdfsiWsHyXdfsJ22ofp45tVv0FUMZ4d0Q+7IxRomHNhMBgBx9JEd/OsmvSIC1Muj7Ps1TyFlQ9bjGg6HpAcqWTMqhpZ+7Xq5liy01k8paP94YnigN4iBTlDc3ZnLDUeHzkVYTYJAGJF+038=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpB9Qjfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742D1C4CEFB;
+	Thu, 18 Dec 2025 16:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766075057;
+	bh=X5gSMMJxTpeVSLwt9c3VGpJBP7cA+dKBFUTwA1R/8Mk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CpB9QjfxUGu7QHeL+Ttl3LbAbI0T6PGcte3cn+vIPi7DalYPSikxLc4VNjs+cpLMU
+	 wAHm/NDnq3/9kUW0LDoX3+13AOelp2GqKXTYjoe50BFg7vDy3SO6luvKjh1dbx8+uX
+	 esRJC+w0UZsPyGsE4IuZLrx1NXnDPaAPK7noFXUR3Sfa757BmSMq29w2iuXqHYK48p
+	 MZaE4rqXx9iMTl7GFQzcqkHRmumgpFlPwZofAGeWpTNAx1AKVTt+Di4Upt2U7lFyTc
+	 1X3wPqiVCqHD+JYpbvtv5JKyX0UGO6Mxcto4/3HoJJkrHjbEJkKYjYI8YoSW//pXSP
+	 XLtDOMNb4Xjqg==
+Date: Thu, 18 Dec 2025 21:54:07 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, 
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>, 
+	Oded Gabbay <ogabbay@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Maxim Kochetkov <fido_max@inbox.ru>, 
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	mhi@lists.linux.dev, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
+	Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] net: qrtr: Drop the MHI auto_queue feature for IPCR
+ DL channels
+Message-ID: <pm5amorzm2bvjrvswd4phwiic7wsmitxtzwdvtwqflepxkukjf@esikj32tds7o>
+References: <20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com>
+ <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
+ <CAFEp6-0iuJNDM9hdU3rWns=Vst6Ev1iyNim1ngRH3Z44CHwTAg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFEp6-0iuJNDM9hdU3rWns=Vst6Ev1iyNim1ngRH3Z44CHwTAg@mail.gmail.com>
 
-In situations where no system memory is migrated to devmem, and in
-upcoming patches where another GPU is performing the migration to
-the newly allocated devmem buffer, there is nothing to ensure any
-ongoing clear to the devmem allocation or async eviction from the
-devmem allocation is complete.
+On Wed, Dec 17, 2025 at 09:55:01PM +0100, Loic Poulain wrote:
+> Hi Mani,
+> 
+> On Wed, Dec 17, 2025 at 6:17 PM Manivannan Sadhasivam via B4 Relay
+> <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org> wrote:
+> >
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> >
+> > MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
+> > auto queue the buffers for the RX path (DL channel). Though this feature
+> > simplifies the client driver design, it introduces race between the client
+> > drivers and the MHI stack. For instance, with auto_queue, the 'dl_callback'
+> > for the DL channel may get called before the client driver is fully probed.
+> > This means, by the time the dl_callback gets called, the client driver's
+> > structures might not be initialized, leading to NULL ptr dereference.
+> >
+> > Currently, the drivers have to workaround this issue by initializing the
+> > internal structures before calling mhi_prepare_for_transfer_autoqueue().
+> > But even so, there is a chance that the client driver's internal code path
+> > may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() is
+> > called, leading to similar NULL ptr dereference. This issue has been
+> > reported on the Qcom X1E80100 CRD machines affecting boot.
+> >
+> > So to properly fix all these races, drop the MHI 'auto_queue' feature
+> > altogether and let the client driver (QRTR) manage the RX buffers manually.
+> > In the QRTR driver, queue the RX buffers based on the ring length during
+> > probe and recycle the buffers in 'dl_callback' once they are consumed. This
+> > also warrants removing the setting of 'auto_queue' flag from controller
+> > drivers.
+> >
+> > Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
+> > So only the QRTR client driver requires the modification.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffers for DL channel")
+> > Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
+> > Reported-by: Johan Hovold <johan@kernel.org>
+> > Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com
+> > Suggested-by: Chris Lew <quic_clew@quicinc.com>
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > ---
+> >  drivers/accel/qaic/mhi_controller.c   | 44 -----------------------
+> >  drivers/bus/mhi/host/pci_generic.c    | 20 ++---------
+> >  drivers/net/wireless/ath/ath11k/mhi.c |  4 ---
+> >  drivers/net/wireless/ath/ath12k/mhi.c |  4 ---
+> >  net/qrtr/mhi.c                        | 67 +++++++++++++++++++++++++++++------
+> >  5 files changed, 58 insertions(+), 81 deletions(-)
+> [...]
+> > diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
+> > index 69f53625a049..0b4d181ea747 100644
+> > --- a/net/qrtr/mhi.c
+> > +++ b/net/qrtr/mhi.c
+> > @@ -24,13 +24,25 @@ static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
+> >         struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+> >         int rc;
+> >
+> > -       if (!qdev || mhi_res->transaction_status)
+> > +       if (!qdev || (mhi_res->transaction_status && mhi_res->transaction_status != -ENOTCONN))
+> >                 return;
+> >
+> > +       /* Channel got reset. So just free the buffer */
+> > +       if (mhi_res->transaction_status == -ENOTCONN) {
+> > +               devm_kfree(&mhi_dev->dev, mhi_res->buf_addr);
+> > +               return;
+> > +       }
+> > +
+> >         rc = qrtr_endpoint_post(&qdev->ep, mhi_res->buf_addr,
+> >                                 mhi_res->bytes_xferd);
+> >         if (rc == -EINVAL)
+> >                 dev_err(qdev->dev, "invalid ipcrouter packet\n");
+> > +
+> > +       /* Done with the buffer, now recycle it for future use */
+> > +       rc = mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, mhi_res->buf_addr,
+> > +                          mhi_dev->mhi_cntrl->buffer_len, MHI_EOT);
+> > +       if (rc)
+> > +               dev_err(&mhi_dev->dev, "Failed to recycle the buffer: %d\n", rc);
+> >  }
+> >
+> >  /* From QRTR to MHI */
+> > @@ -72,6 +84,27 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
+> >         return rc;
+> >  }
+> >
+> > +static int qcom_mhi_qrtr_queue_dl_buffers(struct mhi_device *mhi_dev)
+> > +{
+> > +       void *buf;
+> > +       int ret;
+> > +
+> > +       while (!mhi_queue_is_full(mhi_dev, DMA_FROM_DEVICE)) {
+> 
+> This approach might be a bit racy, since a buffer could complete
+> before the alloc+queue loop finishes. That could e.g lead to recycle
+> error in a concurrent DL callback.
 
-Address that by passing a struct dma_fence down to the copy
-functions, and ensure it is waited for before migration is marked
-complete.
+I don't think the race is possible as we just queue the buffers during probe and
+resume. But I get your point, using mhi_get_free_desc_count() is more
+straightforward.
 
-v3:
-- New patch.
-v4:
-- Update the logic used for determining when to wait for the
-  pre_migrate_fence.
-- Update the logic used for determining when to warn for the
-  pre_migrate_fence since the scheduler fences apparently
-  can signal out-of-order.
-v5:
-- Fix a UAF (CI)
-- Remove references to source P2P migration (Himal)
-- Put the pre_migrate_fence after migration.
+- Mani
 
-Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc functions")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/drm_pagemap.c | 17 ++++++---
- drivers/gpu/drm/xe/xe_svm.c   | 65 ++++++++++++++++++++++++++++++-----
- include/drm/drm_pagemap.h     | 17 +++++++--
- 3 files changed, 83 insertions(+), 16 deletions(-)
+> It might be simpler to just queue
+> the number of descriptors returned by mhi_get_free_desc_count().
+> 
+> > +               buf = devm_kmalloc(&mhi_dev->dev, mhi_dev->mhi_cntrl->buffer_len, GFP_KERNEL);
+> > +               if (!buf)
+> > +                       return -ENOMEM;
+> > +
+> > +               ret = mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, buf, mhi_dev->mhi_cntrl->buffer_len,
+> > +                                   MHI_EOT);
+> > +               if (ret) {
+> > +                       dev_err(&mhi_dev->dev, "Failed to queue buffer: %d\n", ret);
+> > +                       return ret;
+> > +               }
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +
+> >  static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+> >                                const struct mhi_device_id *id)
+> >  {
+> > @@ -87,20 +120,30 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+> >         qdev->ep.xmit = qcom_mhi_qrtr_send;
+> >
+> >         dev_set_drvdata(&mhi_dev->dev, qdev);
+> > -       rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
+> > -       if (rc)
+> > -               return rc;
+> >
+> >         /* start channels */
+> > -       rc = mhi_prepare_for_transfer_autoqueue(mhi_dev);
+> > -       if (rc) {
+> > -               qrtr_endpoint_unregister(&qdev->ep);
+> > +       rc = mhi_prepare_for_transfer(mhi_dev);
+> > +       if (rc)
+> >                 return rc;
+> > -       }
+> > +
+> > +       rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
+> > +       if (rc)
+> > +               goto err_unprepare;
+> > +
+> > +       rc = qcom_mhi_qrtr_queue_dl_buffers(mhi_dev);
+> > +       if (rc)
+> > +               goto err_unregister;
+> >
+> >         dev_dbg(qdev->dev, "Qualcomm MHI QRTR driver probed\n");
+> >
+> >         return 0;
+> > +
+> > +err_unregister:
+> > +       qrtr_endpoint_unregister(&qdev->ep);
+> > +err_unprepare:
+> > +       mhi_unprepare_from_transfer(mhi_dev);
+> > +
+> > +       return rc;
+> >  }
+> 
+> Regards,
+> Loic
 
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 4cf8f54e5a27..ac3832f85190 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -3,6 +3,7 @@
-  * Copyright © 2024-2025 Intel Corporation
-  */
- 
-+#include <linux/dma-fence.h>
- #include <linux/dma-mapping.h>
- #include <linux/migrate.h>
- #include <linux/pagemap.h>
-@@ -408,10 +409,14 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
- 		drm_pagemap_get_devmem_page(page, zdd);
- 	}
- 
--	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
-+	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
-+				  devmem_allocation->pre_migrate_fence);
- 	if (err)
- 		goto err_finalize;
- 
-+	dma_fence_put(devmem_allocation->pre_migrate_fence);
-+	devmem_allocation->pre_migrate_fence = NULL;
-+
- 	/* Upon success bind devmem allocation to range and zdd */
- 	devmem_allocation->timeslice_expiration = get_jiffies_64() +
- 		msecs_to_jiffies(timeslice_ms);
-@@ -596,7 +601,7 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -719,7 +724,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(migrate.src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -800,11 +805,14 @@ EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
-  * @ops: Pointer to the operations structure for GPU SVM device memory
-  * @dpagemap: The struct drm_pagemap we're allocating from.
-  * @size: Size of device memory allocation
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size)
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence)
- {
- 	init_completion(&devmem_allocation->detached);
- 	devmem_allocation->dev = dev;
-@@ -812,6 +820,7 @@ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 	devmem_allocation->ops = ops;
- 	devmem_allocation->dpagemap = dpagemap;
- 	devmem_allocation->size = size;
-+	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
- }
- EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
- 
-diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-index bab8e6cbe53d..b806a1fce188 100644
---- a/drivers/gpu/drm/xe/xe_svm.c
-+++ b/drivers/gpu/drm/xe/xe_svm.c
-@@ -472,11 +472,12 @@ static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
- 
- static int xe_svm_copy(struct page **pages,
- 		       struct drm_pagemap_addr *pagemap_addr,
--		       unsigned long npages, const enum xe_svm_copy_dir dir)
-+		       unsigned long npages, const enum xe_svm_copy_dir dir,
-+		       struct dma_fence *pre_migrate_fence)
- {
- 	struct xe_vram_region *vr = NULL;
- 	struct xe_gt *gt = NULL;
--	struct xe_device *xe;
-+	struct xe_device *xe = NULL;
- 	struct dma_fence *fence = NULL;
- 	unsigned long i;
- #define XE_VRAM_ADDR_INVALID	~0x0ull
-@@ -485,6 +486,16 @@ static int xe_svm_copy(struct page **pages,
- 	bool sram = dir == XE_SVM_COPY_TO_SRAM;
- 	ktime_t start = xe_gt_stats_ktime_get();
- 
-+	if (pre_migrate_fence && dma_fence_is_container(pre_migrate_fence)) {
-+		/*
-+		 * This would typically be a composite fence operation on the destination memory.
-+		 * Ensure that the other GPU operation on the destination is complete.
-+		 */
-+		err = dma_fence_wait(pre_migrate_fence, true);
-+		if (err)
-+			return err;
-+	}
-+
- 	/*
- 	 * This flow is complex: it locates physically contiguous device pages,
- 	 * derives the starting physical address, and performs a single GPU copy
-@@ -621,10 +632,28 @@ static int xe_svm_copy(struct page **pages,
- 
- err_out:
- 	/* Wait for all copies to complete */
--	if (fence) {
-+	if (fence)
- 		dma_fence_wait(fence, false);
--		dma_fence_put(fence);
-+
-+	/*
-+	 * If migrating to devmem, we should have pipelined the migration behind
-+	 * the pre_migrate_fence. Verify that this is indeed likely. If we
-+	 * didn't perform any copying, just wait for the pre_migrate_fence.
-+	 */
-+	if (pre_migrate_fence && !dma_fence_is_signaled(pre_migrate_fence)) {
-+		if (xe && fence &&
-+		    (pre_migrate_fence->context != fence->context ||
-+		     dma_fence_is_later(pre_migrate_fence, fence))) {
-+			drm_WARN(&xe->drm, true, "Unsignaled pre-migrate fence");
-+			drm_warn(&xe->drm, "fence contexts: %llu %llu. container %d\n",
-+				 (unsigned long long)fence->context,
-+				 (unsigned long long)pre_migrate_fence->context,
-+				 dma_fence_is_container(pre_migrate_fence));
-+		}
-+
-+		dma_fence_wait(pre_migrate_fence, false);
- 	}
-+	dma_fence_put(fence);
- 
- 	/*
- 	 * XXX: We can't derive the GT here (or anywhere in this functions, but
-@@ -641,16 +670,20 @@ static int xe_svm_copy(struct page **pages,
- 
- static int xe_svm_copy_to_devmem(struct page **pages,
- 				 struct drm_pagemap_addr *pagemap_addr,
--				 unsigned long npages)
-+				 unsigned long npages,
-+				 struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM,
-+			   pre_migrate_fence);
- }
- 
- static int xe_svm_copy_to_ram(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages)
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM,
-+			   pre_migrate_fence);
- }
- 
- static struct xe_bo *to_xe_bo(struct drm_pagemap_devmem *devmem_allocation)
-@@ -663,6 +696,7 @@ static void xe_svm_devmem_release(struct drm_pagemap_devmem *devmem_allocation)
- 	struct xe_bo *bo = to_xe_bo(devmem_allocation);
- 	struct xe_device *xe = xe_bo_device(bo);
- 
-+	dma_fence_put(devmem_allocation->pre_migrate_fence);
- 	xe_bo_put_async(bo);
- 	xe_pm_runtime_put(xe);
- }
-@@ -857,6 +891,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 				      unsigned long timeslice_ms)
- {
- 	struct xe_vram_region *vr = container_of(dpagemap, typeof(*vr), dpagemap);
-+	struct dma_fence *pre_migrate_fence = NULL;
- 	struct xe_device *xe = vr->xe;
- 	struct device *dev = xe->drm.dev;
- 	struct drm_buddy_block *block;
-@@ -883,8 +918,20 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			break;
- 		}
- 
-+		/* Ensure that any clearing or async eviction will complete before migration. */
-+		if (!dma_resv_test_signaled(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL)) {
-+			err = dma_resv_get_singleton(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						     &pre_migrate_fence);
-+			if (err)
-+				dma_resv_wait_timeout(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						      false, MAX_SCHEDULE_TIMEOUT);
-+			else if (pre_migrate_fence)
-+				dma_fence_enable_sw_signaling(pre_migrate_fence);
-+		}
-+
- 		drm_pagemap_devmem_init(&bo->devmem_allocation, dev, mm,
--					&dpagemap_devmem_ops, dpagemap, end - start);
-+					&dpagemap_devmem_ops, dpagemap, end - start,
-+					pre_migrate_fence);
- 
- 		blocks = &to_xe_ttm_vram_mgr_resource(bo->ttm.resource)->blocks;
- 		list_for_each_entry(block, blocks, link)
-diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
-index f6e7e234c089..70a7991f784f 100644
---- a/include/drm/drm_pagemap.h
-+++ b/include/drm/drm_pagemap.h
-@@ -8,6 +8,7 @@
- 
- #define NR_PAGES(order) (1U << (order))
- 
-+struct dma_fence;
- struct drm_pagemap;
- struct drm_pagemap_zdd;
- struct device;
-@@ -174,6 +175,8 @@ struct drm_pagemap_devmem_ops {
- 	 * @pages: Pointer to array of device memory pages (destination)
- 	 * @pagemap_addr: Pointer to array of DMA information (source)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to device memory. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -183,13 +186,16 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_devmem)(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages);
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence);
- 
- 	/**
- 	 * @copy_to_ram: Copy to system RAM (required for migration)
- 	 * @pages: Pointer to array of device memory pages (source)
- 	 * @pagemap_addr: Pointer to array of DMA information (destination)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to system RAM. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -199,7 +205,8 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_ram)(struct page **pages,
- 			   struct drm_pagemap_addr *pagemap_addr,
--			   unsigned long npages);
-+			   unsigned long npages,
-+			   struct dma_fence *pre_migrate_fence);
- };
- 
- /**
-@@ -212,6 +219,8 @@ struct drm_pagemap_devmem_ops {
-  * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
-  * @size: Size of device memory allocation
-  * @timeslice_expiration: Timeslice expiration in jiffies
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- struct drm_pagemap_devmem {
- 	struct device *dev;
-@@ -221,6 +230,7 @@ struct drm_pagemap_devmem {
- 	struct drm_pagemap *dpagemap;
- 	size_t size;
- 	u64 timeslice_expiration;
-+	struct dma_fence *pre_migrate_fence;
- };
- 
- int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
-@@ -238,7 +248,8 @@ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size);
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence);
- 
- int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			    unsigned long start, unsigned long end,
 -- 
-2.51.1
-
+மணிவண்ணன் சதாசிவம்
 
