@@ -1,86 +1,90 @@
-Return-Path: <stable+bounces-202919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A845CCA201
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:01:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32234CCA2A6
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3048C3028D8F
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:00:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A64A1301E6CF
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABE22620FC;
-	Thu, 18 Dec 2025 03:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54F12C0284;
+	Thu, 18 Dec 2025 03:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODkciTn7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aaTA2qCQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f66.google.com (mail-yx1-f66.google.com [74.125.224.66])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87C0221F12
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F4023D294
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766026833; cv=none; b=gbSN2Qcw6Mol+TdMyD7/QKUOPMa+6zMFIMRC9lvz0YiIGz0fUg0wFu8elM+lueoxgSP04wQcIfGY4+NUZVdBG/JSMXqhDUOZM8+Kfe+okZ+zP41/s44F2l2pQE39k/4BZry4DEgDyqnVb6uF72bvEDI8o8tn8Wqnr4uA+XkTJh8=
+	t=1766028216; cv=none; b=M04FxPOEZNwXD9v2X29EPDgm1glRPSiCNoVkfA4QGYr0U2hLuknBWJNdSqfQVdrmW3m4GMX9uigabM4hDp4EMv+kUeL+GVNwAoIh9MfnXa0fTXY0odFzYI6uuTiu3Pd23Of5dqy+IQiA+F/dZbqsAQTmqilHJHyPLomSxr0PxhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766026833; c=relaxed/simple;
-	bh=Vm++0UfiI7mTMG7UcqfeOA+uxyR8LCbfyx1yxXxyHSo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kpK2Y5uujSJ6fj1wahXZcO4Jq9dUgiMkKd9LsSJVMQPWrRhngnfbhDrPCtYdxQVuFa3eoxrAcpeFxzFfVDSZUsM7q3MskMXsNZvYjA04TVloedHWBv0tGqx+AXCx8EWjLD1pB7DnOCzRzBgKX7ddzp9mpbiOOiWsybEqdBhnBWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODkciTn7; arc=none smtp.client-ip=74.125.224.66
+	s=arc-20240116; t=1766028216; c=relaxed/simple;
+	bh=hFFblwx86ZqfGEV3nxo2B7GDHQAhuu5OeGAZxPRChv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j7wGUFssWV87yS+enflCqeIbHatx1ITu9Uq8AdDe1eUOWThDUF0rjkkmY+o20DcUm2sGEt4z52lXk1SeBiC8YCnPwh0nLOtl7UlQxld9R3RvkUr0Ia8KzcgcT3ZhWNfUGe7D4yVA/fKocZbHZYOIXYwAkyz26SEaDlEYSBo3zxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aaTA2qCQ; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f66.google.com with SMTP id 956f58d0204a3-644795bf5feso164015d50.2
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 19:00:31 -0800 (PST)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7ade456b6abso171506b3a.3
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 19:23:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766026831; x=1766631631; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766028214; x=1766633014; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1aW+idYYoTpGggNMnP1gIvl+I8Ac1YfYU7BJVbP8Vk=;
-        b=ODkciTn7QovESv863Wsiyh/h0tHGmaFu+zj5raTRO9WBC4QeHN9QKTaihFo/yh1552
-         HVMr+NRdAzvTMU8zQBqVTAQXo6c3KBOTNcqtwIQfjaX0VwwyFWCHBA/wzLcM9NMMRue7
-         0Z5ZhQOiYhfj44OxIJmgX/g5tiPY0aeijN978VndvrztXGnbOvulGRLmVzn70o63mEew
-         dIWke/Ge5np0me26QkH3uM8AQ8eEge60QOAFgeNRj88FcSaTyuYSG2zdb5xD2ax70Ze0
-         9wTaJ00SHw4A/ITdg1dh2BgO3MYXBywc4JjY6RNLEa3OHfP3Z0euGUdBR6Ln4Sd4mOU1
-         Megg==
+        bh=UG7pfV58XRZ1xvXhlyO6OK4zqz4Y181lJscZD1whg/U=;
+        b=aaTA2qCQPtiF9SLs+dGvKc8W6z3dGHr3OdEJka2EKWKnaf/8Samx3IGpXUbMXqOX49
+         pshFajsx5Y4zE/EyOlB503An+7PJb0Wb/cu5DX5Bp0bWs5UcG/JLL2F8TBOGMebN5Fbc
+         LsYoeEIP7QYQ8TTJYQ2lrGeAiofIvdJ4gTXS3opoUV6BZyDVcNUTCkkqB8hn7Ti3P6eL
+         aGZPcgQw3TbdAIzQBQYHY1yGejpFtLkCZNIc/qvwoxpMNuiSlE1uvqQVDfhetZOAI3RT
+         06kEdy8CQuPAUL3/waPxDsoc1LN/H/gfp/rlQzkJCKlBLirlb3enFiICupq+ckiWmtBU
+         wYLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766026831; x=1766631631;
+        d=1e100.net; s=20230601; t=1766028214; x=1766633014;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f1aW+idYYoTpGggNMnP1gIvl+I8Ac1YfYU7BJVbP8Vk=;
-        b=qv6cvWutdmtAtyDZTjkK/NvgoPH5db9OSokVAh5tLlf2FqwjGslGgs9o416ZNfg1XJ
-         zDjA7jB/v+K3XTtYXH+/pO3irfSAYdBt6qNZn/s6W6RVnvt3E/SO12Awr3qT1iEiYm9S
-         HUc48RPnuO43CzuM9xpEepG+qQ7OYz/WeaVp0lygPjMgI6p/i6Dfv35xxhudjtVUqzf/
-         w5+sGS5BGx/IGCPys5gUdgSXMOAw2c9iv3KFzYrCt8kwzhcYUwJ1yW73LeqjYrcPr/RL
-         wDY/ofE7k99B9iAijzjBIPXHE864+LGNpl9fYS0fHgZqIbqvW1oEqkRn0JG+00wdoz8s
-         fs2g==
-X-Forwarded-Encrypted: i=1; AJvYcCX94OZMY1OeA3b9MOsL9ARIEepXxf1+RNsuNi0T+YOne+Nih18W+ZBBGep8VNAOT/1NiLU57tc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzmnMIiDb/pwFNRZI01+qku5f2doRfKYdKHsgYfoQVAg7o+aFl
-	yoJkD2ntlt1VZ1B9os0I3fprbt7p+/1BKMP8ANIi1dS+NJVZSkyL6het
-X-Gm-Gg: AY/fxX5dEfLnzK5QRjJyrmbwN3E8Fy91Wik+Mb0BeFBc7wZUNprlF+Diunb7zAhT7rf
-	Hbn3RUENGbo/wVnNuz2CXLnPdBMI3YyjufXw4P2tgNKLVBtVTFIF9QiUdasUic4GtxDrwQBJ736
-	cPt2aEFsRcsJGWOuIyqrhIFAN7TCfL/ThEeMS71Ljjn9hr0od/BAzB5lqSdbweOGIh0h7rWO1hw
-	fRDRmSLE6YwlmtxzUXoWBZgVHBJH8MC281qEmteDx44zcZxd8Y4KLaOl3bbjU5Ej6ZSqDzCC21T
-	HtMERvv6M9Pf+Sa1tWDa62DUhWvBA5iBwrgudAfQZU0jdnCF00UgQev5n2AoIXiAJvXCEWuQ5VF
-	si7XRduREZ0rtPe+dr694eAnL370xN3TmnFPbBwP4rcI4I/naR91v+7aUOmBrjleN1hHujaPHtm
-	Ybx6gofDHLzpCw/HtYD+bNyM0QKFuJhSjDHpIf7Po0/JFvdrysXc9U2uB83pbC
-X-Google-Smtp-Source: AGHT+IFLtp/YJVgdDwF2T2NRVscU9ohhAIZGe3jf1diZBtUCBHkPwsifUpFmbcBIew2yjf6ZKbexmg==
-X-Received: by 2002:a05:690e:13c4:b0:644:60d9:866e with SMTP id 956f58d0204a3-6455567be0dmr15248816d50.95.1766026830540;
-        Wed, 17 Dec 2025 19:00:30 -0800 (PST)
-Received: from abc-virtual-machine.localdomain ([170.246.157.94])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fa728f8b7sm3638087b3.45.2025.12.17.19.00.29
+        bh=UG7pfV58XRZ1xvXhlyO6OK4zqz4Y181lJscZD1whg/U=;
+        b=m7TeTvZla45LV+0qm4JFvwXMMmrO3Zc0gtgU08r6ywfTsUtp19sDesq4+8HuG/24ek
+         rxGafsV8dHCqaPtyvDfWc/KmOsnByQtiuB9DzbDIfsmPdRYm8n1xvb+h+uzT1M0U9b4c
+         Q43CkIwZbmk2q1o7BGTCjmYr2TJGRLQcOclTHXBTi1RsYPUHq0TGXFvvcgvisEFDrH58
+         O/6zn5gkIpe2Ah1X3L4dRu6RFjO8F2B0kTtMiJdnt0kVIflDG7M+EHNNtylyE8LuRD0D
+         aLYUQc/AFpeVjobPb235+u++SoCoXRm0vS9gYtkk146SSn3Gl5AfD9gQHavox2twPeXP
+         +YpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWt20r903Y4dHg5mbw3p+izKsz5aj+ookj8tAfl9Ko4knaC6y4JOykNqbN9XPxvaBd2cYQiOYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVm05MaaqLRiYvxn23aQ6TsqY79qhKku7aEM0cga69rVhcLicL
+	R4tmvekOo+x17EqycV/XARBd4/b7yyL0n9008cHeJx7uVRY4nxetpA+x
+X-Gm-Gg: AY/fxX4LaSnWIJ81M7pWXM7bl569puP7QrIaZ0aBTYLkDMzT/EpT3oaQLSeUOwk5evC
+	TNr4TsD+GNxLVfdQ3HyNY7FXZQHBNo8fVfh5CGkpiDVE+NMvhbNV8qbhmcSfGCDk6gwfLCwVsi6
+	hQvCobFFtRmbcNH1HmtqlHOdOBX2+PNbzl+malX5+3U5KORw1v1Wt51Bgi2L4raPNBr16wJtIwd
+	vEKA/jT8BBqqyxdMTg7A78cGg0yweoHLoz9gE2P6jzqA+xoj7ItEqYHu7ufXyntjc/t4DzDafYs
+	aFhfSTjHG7whci26pMclZgfiLV0UrY/0voIQLqGI2R7jlButy5erSVkeGx+qONG9NTwzrMIuSfM
+	WUb+eT+o4B0wXK0F0OLKSEzqJyr8WSSGWhXu5ac1GHNNqlmbNpL0/2QsZNunAFL9f/3FM9TUOe/
+	z06uk=
+X-Google-Smtp-Source: AGHT+IGQvq/DdZI6Fp9wfMB+YHKDour/ZpI/dwBFNByAuJ3jrP5gtK30k5BaErSIpjYma/as4s6gNg==
+X-Received: by 2002:a05:6a00:bb84:b0:7e8:4471:8e4 with SMTP id d2e1a72fcca58-7f66a470cd1mr18789906b3a.69.1766028214396;
+        Wed, 17 Dec 2025 19:23:34 -0800 (PST)
+Received: from localhost ([2a12:a304:100::105b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fe12125b0fsm884992b3a.20.2025.12.17.19.23.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 19:00:30 -0800 (PST)
-From: Yuhao Jiang <danisjiang@gmail.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Cc: io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass via compound page accounting
-Date: Wed, 17 Dec 2025 20:59:47 -0600
-Message-Id: <20251218025947.36115-1-danisjiang@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Wed, 17 Dec 2025 19:23:33 -0800 (PST)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Jinchao Wang <wangjinchao600@gmail.com>,
+	stable@vger.kernel.org,
+	syzbot+9ca2c6e6b098bf5ae60a@syzkaller.appspotmail.com
+Subject: [PATCH] exec: do not call sched_mm_cid_after_execve() on exec fail
+Date: Thu, 18 Dec 2025 11:23:23 +0800
+Message-ID: <20251218032327.199721-1-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,124 +93,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When multiple registered buffers share the same compound page, only the
-first buffer accounts for the memory via io_buffer_account_pin(). The
-subsequent buffers skip accounting since headpage_already_acct() returns
-true.
+sched_mm_cid_after_execve() is called from the failure path
+of bprm_execve(). At that point exec has not completed successfully,
+so updating the mm CID state is incorrect and can trigger a panic,
+as reported by syzbot.
 
-When the first buffer is unregistered, the accounting is decremented,
-but the compound page remains pinned by the remaining buffers. This
-creates a state where pinned memory is not properly accounted against
-RLIMIT_MEMLOCK.
+Remove the call from the exec failure path.
 
-On systems with HugeTLB pages pre-allocated, an unprivileged user can
-exploit this to pin memory beyond RLIMIT_MEMLOCK by cycling buffer
-registrations. The bypass amount is proportional to the number of
-available huge pages, potentially allowing gigabytes of memory to be
-pinned while the kernel accounting shows near-zero.
-
-Fix this by recalculating the actual pages to unaccount when unmapping
-a buffer. For regular pages, always unaccount. For compound pages, only
-unaccount if no other registered buffer references the same compound
-page. This ensures the accounting persists until the last buffer
-referencing the compound page is released.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Fixes: 57bebf807e2a ("io_uring/rsrc: optimise registered huge pages")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: syzbot+9ca2c6e6b098bf5ae60a@syzkaller.appspotmail.com
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
- io_uring/rsrc.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 67 insertions(+), 2 deletions(-)
+ fs/exec.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index a63474b331bf..dcf2340af5a2 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -139,15 +139,80 @@ static void io_free_imu(struct io_ring_ctx *ctx, struct io_mapped_ubuf *imu)
- 		kvfree(imu);
- }
+diff --git a/fs/exec.c b/fs/exec.c
+index 9d5ebc9d15b0..9044a75d26ab 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1773,7 +1773,6 @@ static int bprm_execve(struct linux_binprm *bprm)
+ 	if (bprm->point_of_no_return && !fatal_signal_pending(current))
+ 		force_fatal_sig(SIGSEGV);
  
-+/*
-+ * Calculate pages to unaccount when unmapping a buffer. Regular pages are
-+ * always counted. Compound pages are only counted if no other registered
-+ * buffer references them, ensuring accounting persists until the last user.
-+ */
-+static unsigned long io_buffer_calc_unaccount(struct io_ring_ctx *ctx,
-+					      struct io_mapped_ubuf *imu)
-+{
-+	struct page *last_hpage = NULL;
-+	unsigned long acct = 0;
-+	unsigned int i;
-+
-+	for (i = 0; i < imu->nr_bvecs; i++) {
-+		struct page *page = imu->bvec[i].bv_page;
-+		struct page *hpage;
-+		unsigned int j;
-+
-+		if (!PageCompound(page)) {
-+			acct++;
-+			continue;
-+		}
-+
-+		hpage = compound_head(page);
-+		if (hpage == last_hpage)
-+			continue;
-+		last_hpage = hpage;
-+
-+		/* Check if we already processed this hpage earlier in this buffer */
-+		for (j = 0; j < i; j++) {
-+			if (PageCompound(imu->bvec[j].bv_page) &&
-+			    compound_head(imu->bvec[j].bv_page) == hpage)
-+				goto next_hpage;
-+		}
-+
-+		/* Only unaccount if no other buffer references this page */
-+		for (j = 0; j < ctx->buf_table.nr; j++) {
-+			struct io_rsrc_node *node = ctx->buf_table.nodes[j];
-+			struct io_mapped_ubuf *other;
-+			unsigned int k;
-+
-+			if (!node)
-+				continue;
-+			other = node->buf;
-+			if (other == imu)
-+				continue;
-+
-+			for (k = 0; k < other->nr_bvecs; k++) {
-+				struct page *op = other->bvec[k].bv_page;
-+
-+				if (!PageCompound(op))
-+					continue;
-+				if (compound_head(op) == hpage)
-+					goto next_hpage;
-+			}
-+		}
-+		acct += page_size(hpage) >> PAGE_SHIFT;
-+next_hpage:
-+		;
-+	}
-+	return acct;
-+}
-+
- static void io_buffer_unmap(struct io_ring_ctx *ctx, struct io_mapped_ubuf *imu)
- {
-+	unsigned long acct;
-+
- 	if (unlikely(refcount_read(&imu->refs) > 1)) {
- 		if (!refcount_dec_and_test(&imu->refs))
- 			return;
- 	}
+-	sched_mm_cid_after_execve(current);
+ 	rseq_force_update();
+ 	current->in_execve = 0;
  
--	if (imu->acct_pages)
--		io_unaccount_mem(ctx->user, ctx->mm_account, imu->acct_pages);
-+	acct = io_buffer_calc_unaccount(ctx, imu);
-+	if (acct)
-+		io_unaccount_mem(ctx->user, ctx->mm_account, acct);
- 	imu->release(imu->priv);
- 	io_free_imu(ctx, imu);
- }
 -- 
-2.34.1
+2.43.0
 
 
