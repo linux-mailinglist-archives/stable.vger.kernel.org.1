@@ -1,194 +1,115 @@
-Return-Path: <stable+bounces-202915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705F2CCA1B8
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D197FCCA1E2
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41582301670F
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 02:46:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E798C3018F7E
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 02:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D862C21FB;
-	Thu, 18 Dec 2025 02:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF012F5485;
+	Thu, 18 Dec 2025 02:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kf/KF8kA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D9D214A9B
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 02:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ED31F9F7A
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 02:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766025967; cv=none; b=UeZ3cdkjAQt3OaqlqXRCdsXl3FykIGWoZ5YWcTLrtsnw9UI0k09yeShZGR0Zoapm5Ammi9FgTznv73jf4x0Fp0MwOEMwPJ10yel7kruSL+Ac692pHUxG6rtm1nXH6eq8YATIP50E2TQ1vh3IvDDmm5yxZhGfWwcEkL4hcv6f/fE=
+	t=1766026782; cv=none; b=kh53Yhivwk8hemwG7uMEIVtQEhysx5WHNhpTm41YnczKdiTOLzYw5co0c3S7tKBDANQ+34LcxqJ9PjfMKUtwHBphb8hoVd4CNxlhujVZD2Mq/0r5OYExnAtXnvMS8h63g3BOv5GLu3qWoDty4TLskxDE8Gd+7FDKxBVXQjfoVkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766025967; c=relaxed/simple;
-	bh=4y/zZ8jxS/YgRJOz8RjmfDvBzoC9sJtbMNSFwzLXqAA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Gnc4xpe5xg70LZZPyWw9t4YIxQeruAozmi6apYpVRLqubibvMospID5l6R1NBT1dvFEgHdmjvMpPa7vt42h1XUH2vmPZafzpW+wB7fp3uvz42nbAzoNvwsXeJyAFLWPFC1lV/D6I+qvNtHyRVzaS+XJtlA3o9YQfVzLMInM75So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-3ec31d72794so2486791fac.0
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 18:46:03 -0800 (PST)
+	s=arc-20240116; t=1766026782; c=relaxed/simple;
+	bh=3yJqIUEUeZVkFXlqRTAntvExydA8frPoRSgPiza+JEo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F3eMazALVMZYycJNeE29cfFhp1RSmQt3Jx7NntjErfIMtXBET4XYaHN77eBEJP9U7go8zem4ENmFicRQNwTN6+yIXIT/7J+p2p7Mkcgyopo9822O4BO/NMRAAH4WwlC1XxD3TZA0sFlyVg3ufXICPFIBF5v9K1z3hNfxgxz2pGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kf/KF8kA; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29f3018dfc3so383325ad.0
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 18:59:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766026781; x=1766631581; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oEuwYEAlKeJ7VBeR49Tc0CIfJrf1FLJO2ifR5/NXxnU=;
+        b=Kf/KF8kAWAhe5SrbJeFnD4qZOL2c/yZtigs/SYDh55h1EbUoBC9GJIBicGCpo3c07X
+         s81yVmQIEsl/2MLjjtD9SPQmJtCJX2DQRdeU8J0QNV/TPn5lbN547sxxwd+qT5l9E/CL
+         JfMok/nR5v7YSLRPjIoP1Yo2ijufYx/L/bK1tmwlddJp/9e8n8LrhwxnLzVBJUcaynYh
+         zzBvzyJRDhcjJZsDrZ3oeXnDiGcSWfGeHPwMciOvQylXcZoyWPnxpg6pjUBZkJ3Kq+lS
+         ORWy70qcbdst8NI/LsfK2UOIGtm1mGBKwNu2l9ZzVYc4KhC4c1jRMpH7JHIuM4XfpUuv
+         BEzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766025962; x=1766630762;
-        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
-         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1766026781; x=1766631581;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lSO9yb2p1vSk90uXUhOeb+mECUdcMxxOCOnouX4N2NA=;
-        b=HLV2+T447LAPi57p6iyCPK6/4XWaFv8Ln+VCqrX/Ad7V0jUE3TOwi2v1FvKSs8oyVO
-         GTY9xI0ImhlILxU9I+xCLK30ITXiEAt7sXIgmQ4Jvgq1Xo44bddV+THzaBpMOyK38E1y
-         cmbcHOO1voy/WPAigoAjWweVrqf8FQdBA68rg2XGfuYgz9errbU8unpM8wcj6IEHes+b
-         mK//VsItXMyL5uDoMEqT9swk9VFET/0/rbODT2tfKNNHn2Uss7qz3eLvOHOUteaDtZFb
-         /lzvV3LM0Czq9/gQZzSk5zf74Bi2wef3XkJuWqiEvGUII+cReiVktfbjqscrIFm9v1Sw
-         BqVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGtROVDyWZ2oPfNbfg3LlRxxzAOZEzPGWR9S3U2n4uPFdhW8t21s3ytoybQXsUxI6DgqxvFDo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7onMvwC8oNxxdAc6Q3cxUARcgb9mw8U2xwfO4QpRZ+elYip/Z
-	Z/AEIivfPV7q0CfGsFMnR8P9Dkz0HP9+9UCht9qKi0mvihgHCJiu2pTSYJOZIv5EXgiffsf05Ty
-	EyRiId9+8X8cjWmInFjCCxIvTefolujaSwJp/Qhqy/vyUCJzAEG2Mg20bww8=
-X-Google-Smtp-Source: AGHT+IEMbqrplQQ5a3Qn9ywA3mjZ69bpR8Hq8ieBsDYVWj01otiONiXFaktKeiL9VkP6L82xZfh9sbBkP4B/Fx3fOLV66l0698O/
+        bh=oEuwYEAlKeJ7VBeR49Tc0CIfJrf1FLJO2ifR5/NXxnU=;
+        b=I3uPadPnKXJTtt686IZfyICjFCaAjrwdouI0oZdBfmnYC9PpD8qpqji2JIlUJRGXfR
+         OcStanRbfiwIMpmKK01PlAQAdcSxOynkMRu5D44E7oLorKT7M6oopl8gu5voFX3Tvslp
+         CKllUib7oeUdOKcUE8ciOqGyjnmgXH0Hmuj+Fzms7QQxJIQqv/mUJS7uwMRo1qww6Whw
+         IOhRBOwGFTlxliHKY1RHFwFLxFazBHP9cPstKKbXfH/1AMftZztYCp0h6GgSpWZZD4P3
+         clp3ZN3RGuzSwD2dZ54xUad9neAdUVBNDpB6VqIDKF399tN06hC1VA4CBNgsjZDnBUtx
+         KOZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVd2uXVH0wurQTmpVmvt9HVEey1j5PEx92CJQ9dINIXrgI949AiJ8HIF933wnxcSpgU1d6J8vI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHJFxVws3wn3wkdsURiT8JbIPC8zapyoiHst7l6KoHsxskG0Ia
+	XyUiw1VZGp6Pd8WrlbsiJnoRkoYO2E6lVX/czZ3iCsrl1fXlddGIKi5v
+X-Gm-Gg: AY/fxX7kS3K8nzM2+jOkBXYdLeVcnnykroMuCn8CQNtRFBEYU9/KYegLkxBfeyI1MkJ
+	supCqGZpuMfeZfXprpi56RORaufgu74RHmwnEHEaqn6wd5qsJbAajuEKdXpWF1lGe//paWvufvB
+	KrziZfoAi7VAZjxQaIKBmUdVWbq//Jtti1AKIy7ylhz6PUpk9Zml/NllQAPN7CNGIk24yhFRJMo
+	UHg4GCV5iGqOCzx5XxnNRvpB3zDD0I9UK6UyVnveiGS/PEJaMhmeXLB6r55oftRjWIFSPU+iSGp
+	egKxVZ9DvBXGHG9HIOsq9G7AKu3D6xsVHZBzMRJWPWOE/7i8kmdAZQ/+mSoaHzYkfcDiWgNvzSq
+	spdvj30Ei0bguUgjyr66PQOuikDzOSR7U6i+n9WgRzzz4RlKAMG/NgrqkCQ6FtHJv25M7ysEVKu
+	d10blpPdpYYdB26vF/RHmdQJHqHYIQ1lmP/fYnjQBHIt8K/kz2IqBIIeu6wDDfhILgE9OHCbvd
+X-Google-Smtp-Source: AGHT+IFCBiK4vkjcQkByNE/wNdhbQo7lMtKJmkgvLn2E0ZvZv7wYpskVlyPQVdr53mJhO4ELd2OXcA==
+X-Received: by 2002:a05:6a21:6da2:b0:341:fcbf:90b9 with SMTP id adf61e73a8af0-37590b7592amr547611637.4.1766026780872;
+        Wed, 17 Dec 2025 18:59:40 -0800 (PST)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fe14a5727fsm800985b3a.69.2025.12.17.18.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 18:59:40 -0800 (PST)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Qianchang Zhao <pioooooooooip@gmail.com>
+Subject: [PATCH v3 0/2] nfc: llcp: fix double put/unlock on LLCP_CLOSED in recv handlers
+Date: Thu, 18 Dec 2025 11:59:21 +0900
+Message-Id: <20251218025923.22101-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:488f:b0:659:9a49:8e25 with SMTP id
- 006d021491bc7-65cfe746e25mr482368eaf.23.1766025962671; Wed, 17 Dec 2025
- 18:46:02 -0800 (PST)
-Date: Wed, 17 Dec 2025 18:46:02 -0800
-In-Reply-To: <20251218022439.44238-1-wangjinchao600@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69436aea.a70a0220.207337.00c7.GAE@google.com>
-Subject: Re: [syzbot] [fs?] [mm?] WARNING in sched_mm_cid_fork
-From: syzbot <syzbot+9ca2c6e6b098bf5ae60a@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, wangjinchao600@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello,
-
-syzbot tried to test the proposed patch but the build/boot failed:
-
-failed to copy binary to VM: failed to run ["scp" "-P" "1814" "-F" "/dev/nu=
-ll" "-o" "UserKnownHostsFile=3D/dev/null" "-o" "IdentitiesOnly=3Dyes" "-o" =
-"BatchMode=3Dyes" "-o" "StrictHostKeyChecking=3Dno" "-o" "ConnectTimeout=3D=
-10" "/tmp/syz-executor2977063156" "root@localhost:/syz-executor2977063156"]=
-: exit status 255
+Changes in v3:
+- Wrap commit messages to <= 75 columns
+- Use 12-char SHA in Fixes tags
+- Verify Fixes with git blame (both handlers trace back to d646960f7986)
+- Run scripts/checkpatch.pl --strict
 
 
+Qianchang Zhao (2):
+  nfc: llcp: avoid double release/put on LLCP_CLOSED in
+    nfc_llcp_recv_disc()
+  nfc: llcp: stop processing on LLCP_CLOSED in nfc_llcp_recv_hdlc()
 
-syzkaller build log:
-go env (err=3D<nil>)
-AR=3D'ar'
-CC=3D'gcc'
-CGO_CFLAGS=3D'-O2 -g'
-CGO_CPPFLAGS=3D''
-CGO_CXXFLAGS=3D'-O2 -g'
-CGO_ENABLED=3D'1'
-CGO_FFLAGS=3D'-O2 -g'
-CGO_LDFLAGS=3D'-O2 -g'
-CXX=3D'g++'
-GCCGO=3D'gccgo'
-GO111MODULE=3D'auto'
-GOAMD64=3D'v1'
-GOARCH=3D'amd64'
-GOAUTH=3D'netrc'
-GOBIN=3D''
-GOCACHE=3D'/syzkaller/.cache/go-build'
-GOCACHEPROG=3D''
-GODEBUG=3D''
-GOENV=3D'/syzkaller/.config/go/env'
-GOEXE=3D''
-GOEXPERIMENT=3D''
-GOFIPS140=3D'off'
-GOFLAGS=3D''
-GOGCCFLAGS=3D'-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=3D0=
- -ffile-prefix-map=3D/tmp/go-build1046867334=3D/tmp/go-build -gno-record-gc=
-c-switches'
-GOHOSTARCH=3D'amd64'
-GOHOSTOS=3D'linux'
-GOINSECURE=3D''
-GOMOD=3D'/syzkaller/jobs/linux/gopath/src/github.com/google/syzkaller/go.mo=
-d'
-GOMODCACHE=3D'/syzkaller/jobs/linux/gopath/pkg/mod'
-GONOPROXY=3D''
-GONOSUMDB=3D''
-GOOS=3D'linux'
-GOPATH=3D'/syzkaller/jobs/linux/gopath'
-GOPRIVATE=3D''
-GOPROXY=3D'https://proxy.golang.org,direct'
-GOROOT=3D'/usr/local/go'
-GOSUMDB=3D'sum.golang.org'
-GOTELEMETRY=3D'local'
-GOTELEMETRYDIR=3D'/syzkaller/.config/go/telemetry'
-GOTMPDIR=3D''
-GOTOOLCHAIN=3D'auto'
-GOTOOLDIR=3D'/usr/local/go/pkg/tool/linux_amd64'
-GOVCS=3D''
-GOVERSION=3D'go1.24.4'
-GOWORK=3D''
-PKG_CONFIG=3D'pkg-config'
+ net/nfc/llcp_core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-git status (err=3D<nil>)
-HEAD detached at d1b870e1003b
-nothing to commit, working tree clean
-
-
-tput: No value for $TERM and no -T specified
-tput: No value for $TERM and no -T specified
-Makefile:31: run command via tools/syz-env for best compatibility, see:
-Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
-ing.md#using-syz-env
-go list -f '{{.Stale}}' -ldflags=3D"-s -w -X github.com/google/syzkaller/pr=
-og.GitRevision=3Dd1b870e1003b52891d2196c1e2ee42fe905010ba -X github.com/goo=
-gle/syzkaller/prog.gitRevisionDate=3D20251128-125159"  ./sys/syz-sysgen | g=
-rep -q false || go install -ldflags=3D"-s -w -X github.com/google/syzkaller=
-/prog.GitRevision=3Dd1b870e1003b52891d2196c1e2ee42fe905010ba -X github.com/=
-google/syzkaller/prog.gitRevisionDate=3D20251128-125159"  ./sys/syz-sysgen
-make .descriptions
-tput: No value for $TERM and no -T specified
-tput: No value for $TERM and no -T specified
-Makefile:31: run command via tools/syz-env for best compatibility, see:
-Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
-ing.md#using-syz-env
-bin/syz-sysgen
-touch .descriptions
-GOOS=3Dlinux GOARCH=3Damd64 go build -ldflags=3D"-s -w -X github.com/google=
-/syzkaller/prog.GitRevision=3Dd1b870e1003b52891d2196c1e2ee42fe905010ba -X g=
-ithub.com/google/syzkaller/prog.gitRevisionDate=3D20251128-125159"  -o ./bi=
-n/linux_amd64/syz-execprog github.com/google/syzkaller/tools/syz-execprog
-mkdir -p ./bin/linux_amd64
-g++ -o ./bin/linux_amd64/syz-executor executor/executor.cc \
-	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wfr=
-ame-larger-than=3D16384 -Wno-stringop-overflow -Wno-array-bounds -Wno-forma=
-t-overflow -Wno-unused-but-set-variable -Wno-unused-command-line-argument -=
-static-pie -std=3Dc++17 -I. -Iexecutor/_include   -DGOOS_linux=3D1 -DGOARCH=
-_amd64=3D1 \
-	-DHOSTGOOS_linux=3D1 -DGIT_REVISION=3D\"d1b870e1003b52891d2196c1e2ee42fe90=
-5010ba\"
-/usr/bin/ld: /tmp/cc3BBp1I.o: in function `Connection::Connect(char const*,=
- char const*)':
-executor.cc:(.text._ZN10Connection7ConnectEPKcS1_[_ZN10Connection7ConnectEP=
-KcS1_]+0x104): warning: Using 'gethostbyname' in statically linked applicat=
-ions requires at runtime the shared libraries from the glibc version used f=
-or linking
-./tools/check-syzos.sh 2>/dev/null
-
-
-
-Tested on:
-
-commit:         ea1013c1 Merge tag 'bpf-fixes' of git://git.kernel.org..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D513255d80ab78f2=
-b
-dashboard link: https://syzkaller.appspot.com/bug?extid=3D9ca2c6e6b098bf5ae=
-60a
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-=
-1~exp1~20250708183702.136), Debian LLD 20.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=3D1439631a5800=
-00
+-- 
+2.34.1
 
 
