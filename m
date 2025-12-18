@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682BBCCC94B
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:55:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440A5CCCE8A
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 18:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98ACB301C3C4
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:54:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 328C63029BA7
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5E435CB8C;
-	Thu, 18 Dec 2025 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE83136D4FF;
+	Thu, 18 Dec 2025 16:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeJjZaRx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LhOYVXGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA7935CB85;
-	Thu, 18 Dec 2025 15:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67679376BF5;
+	Thu, 18 Dec 2025 16:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766073289; cv=none; b=tY+fWi5O3B/MBhtOHY4yuaQPu6nJk96MVjuMEkHb+5g9Upc6tw6mttcQoe+MX/4mIch9e7KlPjilQ1q57fOI49AE8k+xlNCnHgLOZXqfM08RtK3hgKAobV4RvaX6cq7jin2Ht8hbZqkiqN02aUpDBebJM8SLpSaqGZFEEYv1mBs=
+	t=1766073661; cv=none; b=OPqonMQ5ntZF6/cfmHV2Fxf4al3Tqi/H+eA8xWpuoqOz+TiDWJdVikMwCCUCLWfp3BeCFdebApGhrkhrheaXbTN4cYxlrAO+ihUCfuHsXkgGTjqc2omgoUoyLSZH3WnESdlh5H/FLsxf/YYmVRVSvBWDwaAtxrxeYVAhg0u5bwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766073289; c=relaxed/simple;
-	bh=PIcwNPF0z2d0IyxyFF3Gh6dDWnKdP/WyLYsnOEmBPxE=;
+	s=arc-20240116; t=1766073661; c=relaxed/simple;
+	bh=JiRanrjlwCgapuCfimp4TtHSB9yJdz1fUajbBEpVy4A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N0A3ZAm5HZrEdQlpLkecfAs18O1P9u3ft+rTn2DZu1p3HHUfVQRc/amwa7XpT6egt9DYCZEDlQmpD4awg2vWH3EtvhGWSO5YST8DZKJsH47WZdBxP4UuyYzYDhrtjqEWfGDLuIn1S1lliRPcGQyTHaTusHYJw5R6A92UGBx4VkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeJjZaRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C7FC4CEFB;
-	Thu, 18 Dec 2025 15:54:45 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=jvxVBnf3Ur9z0znu2QvmmnK1ccF5Q8fw4RzMswzapu9AY8jepqVe4L7n7VtnofMyUKOgowUSWyKQR5fQpt88vhZlrp6bHbZ/TFu27H5rDnQS2PjuFB5H1ymneDHm5C92BonjImgBHGJgUFbv9St7BmfqGxGPnK1kDMwB2v5YhNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LhOYVXGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C19C4CEFB;
+	Thu, 18 Dec 2025 16:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766073288;
-	bh=PIcwNPF0z2d0IyxyFF3Gh6dDWnKdP/WyLYsnOEmBPxE=;
+	s=k20201202; t=1766073661;
+	bh=JiRanrjlwCgapuCfimp4TtHSB9yJdz1fUajbBEpVy4A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jeJjZaRxbaVBzrruHYyH1MITKnBU5ORIIfJmBkjenU+1hy3/VzXOZpjHyxa54t17T
-	 IaFxISmDSpdfBLQlTpFRhQOoY9vrmgHFV7yaGKkagr00PW/i1oCHJmUCduI8+0X3La
-	 aAMwSS3CejWfD27o6AbqlMGWYbbNcpJymIEpGpYT3bF3W/Smp/IseIUJcdZrdXZvrn
-	 Tn2XjRfLWfdDBmWETN1/6w0+CP8+idQWZp54SCNZ/GJiNU673dwp/tSCsnkM8eXjCP
-	 BHG5cjkJf6Kg5DNFTn033HvJT0hpqadDMkQ/5r0gS1V/G71vGQycpOWpMsTMcAASkw
-	 uC/TU0IPg1gkg==
-Message-ID: <b4c39e80-0ae5-480b-b2e7-e1b9d33d9e42@kernel.org>
-Date: Thu, 18 Dec 2025 16:54:43 +0100
+	b=LhOYVXGxi1b0lDqVFk2XXCGl9jm41PVL1fycrIcYjSWO9mWszwOzABR7V5XK1gPSv
+	 AtDqlpJMjjnm7i0TUo7fCaLFvQsT3+8PO+RW675bsDS8NuoUcDQYBgAbd1au3RkzXB
+	 wgtY/tmfnKOL4/x+oLBlbCYmvbmudY4meE4PnddrFhrrpfdAOJ0c6cZu+z1+g8ujs6
+	 xI6h0Sn28/UmVA8UkHy+ajebMOSG1obSdu+a7GrGxsB8ZR3xMEfalRjwBwsrN/M9w1
+	 m8oW7sAuQGB75D/LrzNAwzXX647hazKvG4qgtB8xdqgy9qDzb8jCIHg+UMG/GLIcmO
+	 LNfrCHq3e3HNQ==
+Message-ID: <ad221cac-0b1c-41f0-9fd9-b2717de3ea06@kernel.org>
+Date: Thu, 18 Dec 2025 17:00:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,13 +48,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] net: nfc: fix deadlock between nfc_unregister_device
- and rfkill_fop_write
-To: Deepanshu Kartikey <kartikey406@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: linma@zju.edu.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com
-References: <20251218012355.279940-1-kartikey406@gmail.com>
+Subject: Re: [PATCH v5] w1: therm: Fix off-by-one buffer overflow in
+ alarms_store
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+ David Laight <david.laight.linux@gmail.com>,
+ Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251216145007.44328-2-thorsten.blum@linux.dev>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -100,27 +101,141 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251218012355.279940-1-kartikey406@gmail.com>
+In-Reply-To: <20251216145007.44328-2-thorsten.blum@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 18/12/2025 02:23, Deepanshu Kartikey wrote:
-> A deadlock can occur between nfc_unregister_device() and rfkill_fop_write()
-> due to lock ordering inversion between device_lock and rfkill_global_mutex.
+On 16/12/2025 15:50, Thorsten Blum wrote:
+> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+> bytes and a NUL terminator is appended. However, the 'size' argument
+> does not account for this extra byte. The original code then allocated
+> 'size' bytes and used strcpy() to copy 'buf', which always writes one
+> byte past the allocated buffer since strcpy() copies until the NUL
+> terminator at index 'size'.
 > 
-> The problematic lock order is:
+> Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+> without allocating any intermediate memory or string copying. This
+> removes the overflow while simplifying the code.
 > 
-> Thread A (rfkill_fop_write):
->   rfkill_fop_write()
->     mutex_lock(&rfkill_global_mutex)
->       rfkill_set_block()
->         nfc_rfkill_set_block()
->           nfc_dev_down()
->             device_lock(&dev->dev)    <- waits for device_lock
+> Cc: stable@vger.kernel.org
+> Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Compile-tested only.
 > 
+> Changes in v5:
+> - Replace gotos with return size (Krzysztof)
+> - Link to v4: https://lore.kernel.org/lkml/20251111204422.41993-2-thorsten.blum@linux.dev/
+> 
+> Changes in v4:
+> - Use simple_strtoll because kstrtoint also parses long long internally
+> - Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
+> - Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
+>   while maintaining the same behavior and return values as before
+> - Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
+> 
+> Changes in v3:
+> - Add integer range check for 'temp' to match kstrtoint() behavior
+> - Explicitly cast 'temp' to int when calling int_to_short()
+> - Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
+> 
+> Changes in v2:
+> - Fix buffer overflow instead of truncating the copy using strscpy()
+> - Parse buffer directly using simple_strtol() as suggested by David
+> - Update patch subject and description
+> - Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
+> ---
+>  drivers/w1/slaves/w1_therm.c | 63 ++++++++++++------------------------
+>  1 file changed, 20 insertions(+), 43 deletions(-)
+> 
+> diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+> index 9ccedb3264fb..5c4e40883400 100644
+> --- a/drivers/w1/slaves/w1_therm.c
+> +++ b/drivers/w1/slaves/w1_therm.c
+> @@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
+>  	struct w1_slave *sl = dev_to_w1_slave(device);
+>  	struct therm_info info;
+>  	u8 new_config_register[3];	/* array of data to be written */
+> -	int temp, ret;
+> -	char *token = NULL;
+> +	long long temp;
+> +	int ret = 0;
+>  	s8 tl, th;	/* 1 byte per value + temp ring order */
+> -	char *p_args, *orig;
+> -
+> -	p_args = orig = kmalloc(size, GFP_KERNEL);
+> -	/* Safe string copys as buf is const */
+> -	if (!p_args) {
+> -		dev_warn(device,
+> -			"%s: error unable to allocate memory %d\n",
+> -			__func__, -ENOMEM);
+> -		return size;
+> -	}
+> -	strcpy(p_args, buf);
+> -
+> -	/* Split string using space char */
+> -	token = strsep(&p_args, " ");
+> -
+> -	if (!token)	{
+> -		dev_info(device,
+> -			"%s: error parsing args %d\n", __func__, -EINVAL);
+> -		goto free_m;
+> -	}
+> -
+> -	/* Convert 1st entry to int */
+> -	ret = kstrtoint (token, 10, &temp);
+> +	const char *p = buf;
+> +	char *endp;
+> +
+> +	temp = simple_strtoll(p, &endp, 10);
+> +	if (p == endp || *endp != ' ')
+> +		ret = -EINVAL;
+> +	else if (temp < INT_MIN || temp > INT_MAX)
+> +		ret = -ERANGE;
+>  	if (ret) {
+>  		dev_info(device,
+>  			"%s: error parsing args %d\n", __func__, ret);
+> -		goto free_m;
+> +		return size;
+>  	}
+>  
+>  	tl = int_to_short(temp);
+>  
+> -	/* Split string using space char */
+> -	token = strsep(&p_args, " ");
+> -	if (!token)	{
+> -		dev_info(device,
+> -			"%s: error parsing args %d\n", __func__, -EINVAL);
+> -		goto free_m;
+> -	}
+> -	/* Convert 2nd entry to int */
+> -	ret = kstrtoint (token, 10, &temp);
+> +	p = endp + 1;
+> +	temp = simple_strtoll(p, &endp, 10);
+> +	if (p == endp)
+> +		ret = -EINVAL;
+> +	else if (temp < INT_MIN || temp > INT_MAX)
+> +		ret = -ERANGE;
+>  	if (ret) {
+>  		dev_info(device,
+>  			"%s: error parsing args %d\n", __func__, ret);
+> -		goto free_m;
+> +		return size;
+>  	}
+> -
 
+That's another unusual change appearing in v5. Please pay attention to
+differences you introduce between versions, so to what you exactly do.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+>  	/* Prepare to cast to short by eliminating out of range values */
+>  	th = int_to_short(temp);
+>  
+> @@ -1905,7 +1886,7 @@ static ssize_t alarms_store(struct device *device,
+>  		dev_info(device,
+>  			"%s: error reading from the slave device %d\n",
+>  			__func__, ret);
+> -		goto free_m;
+
 
 Best regards,
 Krzysztof
