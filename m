@@ -1,100 +1,88 @@
-Return-Path: <stable+bounces-203007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334F8CCC8D3
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:47:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB607CCCD45
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F9003027BEB
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:47:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F8CE3051317
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5738B3563D5;
-	Thu, 18 Dec 2025 15:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2276A3590C4;
+	Thu, 18 Dec 2025 15:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ijCJjywC";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="cJxdH32s";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BqpSIMhH";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="KNETyq3S"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="J0z0AW9h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF90A3559DF
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 15:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E45347BD2
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 15:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766072353; cv=none; b=nR9oVoiTTlLNNQF5+bJnbLf+zVvdEUGQ4XRcAG0rJOglnsC6FpzOI+RkP1owtOBARsiXuNzRB3JwZLU1Y6oZxZGVGDZy2z2Epar6GZyQrpJOz3C7RWfNSbNOXvSxedetG3Ya6K6FWo20zbJM9qMZC4HFCSLwhDLssfp4RedoQ28=
+	t=1766073139; cv=none; b=BN8ug/3JlnwDv2og5+a5HGCVuFdFRNrgt9alYxSmcqHm6U4Rd4aJXNYVFlSTkMD3WClJps0mPICSSIT/WSHnpOKeg8cFu6CSd79sBDxYgz3L/ecpnTmKML6z4RkiZ8iOlTX+c4G72xpQVJxHu9kvG99X50mTVvM1ThGWYnwlYrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766072353; c=relaxed/simple;
-	bh=BYnXZKfbNxWxUw7kbhutdj0s05hj2kVuAKjkQDXpq3M=;
+	s=arc-20240116; t=1766073139; c=relaxed/simple;
+	bh=Xh1E3qsm/qasJNMVvvqXFxuDKwQq6V1HA7yNPOSOlCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C81IScS26utBwpXDPfCmVwlD362LA1WVB7EQieA5XJGXz3IV4X7PbeJbHvicCxi4rxFQUNkDfwNqDNvveJF7M180IYgie0jFZBCOitspbHOEi3GLBqNGcmhcfc9rEyPPcy4Vi5cdnv1ZJ+MtMF9u/25VruAHrMy3ctS4GamDw5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ijCJjywC; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=cJxdH32s; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BqpSIMhH; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=KNETyq3S; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BAE5F33697;
-	Thu, 18 Dec 2025 15:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766072350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SdldBYzBnT450QSkjeDvAde+ejOK/G7H0j77WSB1tE0=;
-	b=ijCJjywCoQxd97M557g3/ei8rJSdzDjAofFEFfcrvKkHogBQjy19VDSXCkuP6H4WwVtTTk
-	Lv6NNSivBpqlbVmgR7q7yRtRGAqOYjzIAONGcq5cY2Y9mYpEwJKdfD7kxl7t4Siw7uWBHo
-	dOuJY9/je19R8R2rd4XdcXp9ybJ0S7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766072350;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SdldBYzBnT450QSkjeDvAde+ejOK/G7H0j77WSB1tE0=;
-	b=cJxdH32stB7B+p+D7tmXTrKfgY03cz/GgTni0ztwU2Ne03F4aPdAVlK3+PmXb3+lvWj1GO
-	QGzhUcZbR0MPXvDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766072348; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SdldBYzBnT450QSkjeDvAde+ejOK/G7H0j77WSB1tE0=;
-	b=BqpSIMhH/BpTE95kQJtWhFSIqw/Of5GHtIgqXpaD34E31kkjia2d91eaiXDqbuioDXbzPb
-	naYcChBxxkFmN3MrRzXMo4HwpAbxVeKRCNACzhuRoWgJhNji4+8nIaRh8LPFiRlXGOJpVy
-	l4WnkS+FcyjQmXFQ01ZgviStSxBJK7c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766072348;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SdldBYzBnT450QSkjeDvAde+ejOK/G7H0j77WSB1tE0=;
-	b=KNETyq3SKE0IZIOzlTNka/gPgP2HuJjUKumwgv8HqlLzLIMS0W09OUYhiT/CzYz6iWMIgq
-	9de9GodoYbH8xyDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AEF883EA63;
-	Thu, 18 Dec 2025 15:39:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id i0GyKhwgRGlxIQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 18 Dec 2025 15:39:08 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 601D3A0918; Thu, 18 Dec 2025 16:39:08 +0100 (CET)
-Date: Thu, 18 Dec 2025 16:39:08 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-Subject: Re: [PATCH] ext4: xattr: fix wrong search.here in clone_block
-Message-ID: <qn25xtvqu76womw47qq6uhlhmudymvfqableicrodalzfkeo4r@qjwl5oegvlpd>
-References: <20251216113504.297535-1-wangjinchao600@gmail.com>
- <4msliwnvyg6n3xdzfrh4jnqklzt6zji5vlr5qj4v3lrylaigpr@lyd36cukckl7>
- <aUNbhrPEY9Aa2U4L@ndev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bUJHU+iYybiw1EC6YenAXGr6b1x1noIn7qK4TFxk0RzIqzly7d1t1DrE70L6P34ujRPmeipZeDiHGf+SKW/s2dN1pF81H8u4ltXI5IOJemZyJrg0OS+O5x13g9jzMqeTjjFG3J6hjpXa+m98A3Ij1XFyUNAYuc8kUxs2h84X6yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=J0z0AW9h; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so7835396d6.2
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 07:52:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1766073137; x=1766677937; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cW1M7fqhwlN10fdEj0fPal9hwmmZjLYjufee+fkgnhM=;
+        b=J0z0AW9hKzi615k9wVeEjklkDNiUsuVhMB73ArCAzXQFZEy98P6rsaOIlgu5bUa/Ve
+         wA/h7ENiu+pb4HXbQN8Vgu1fZ9UXar6Cb72lIMmQpTgHbXJx4YB6iRe1VSa446LR+A6o
+         o8HXVGmPS0yei3Bb94GpwY4aCgLGcou1BPnDHJL/SINWaJ3+6HrVfgsuRhkfdjcM6UcU
+         HK3JiURUtsNRY46F/xMvb4LRh83y64W9qi1kaOXq8W6fE0dHah5C5SK2d/RGOL+bndRD
+         fHzgKBCN31aT82S8FdM+AlZGIfG7ORh+yzGNk6b+iLowBGGOnUSKfFOjNmdgToJ/v/wV
+         G5HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766073137; x=1766677937;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cW1M7fqhwlN10fdEj0fPal9hwmmZjLYjufee+fkgnhM=;
+        b=hsb0BeBCkcQwAK2Px3w8Ze00E1wmr8PY6wtd8iRRrAUlb5HCE07qnL302XyRV4hIqm
+         EDGNRS9AA/pO+f0kpAn3T+C5U1n9eZgICqSPA+uV0bYvwj5zavXJl0kPCc6GQBS9jHCm
+         XQVrHbPnOgaNlkMZCw5BjrleNk6ROUo/h/UNEj4GQZQptk2SHTZKSDLWDq2vmdSwK69V
+         c5LgKxXBKQAM5BcJCDvuJBA7SloOYXuaXQ42teqqqTWru0Ppq4cdtKXa9wlTU7nyKXfD
+         ywOCNY7HTOH6BZrAFW2k0LIrH7YdESaQz+9a61mHqW3QsllfrYekA0OcsVDEJN8XfXbQ
+         aN0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWLtL/6JcOLSdlmOv/IIUjRV+ld63wYcLSBZSECbcEuHto1XxDCrRvd+u55KSisV+HZAyCTx8Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkeYI3SqtSfPT71QD0zz2X6KtSwI2QofqhWOvZjk+cijOIdYBY
+	GFGx9+KrA7Yys62pRlTLWH0wYN+Bopvo32WT1Yr2Rz4SP2MKS3wIoCyz6mSzxhA6mQ==
+X-Gm-Gg: AY/fxX5b5LJkFg3jTciVhU3gRjx3D/X+ENd5mkYONGPQPohVBzgNi1ZQCoiQMI9fM2j
+	1kR3HWI13xah20MEwrtsyOv1f22uBXEOk3X3qQ6bRwWUB5JnYCjxIkk3qPquQETFwxqN409pWqJ
+	uxg8y40eqShzgMhCiyjwItcS73sPZ/NUcNLWQuI03RqsSUO8c5HSJfzDv1PCVxn8NxWc7TMabfe
+	v8k8EA16bIi1QhKiOXd8S4GfGrlpf83MHllxvKdXMuHn9Tp9RGz26UXCd6Suqm11FbSgSGoLpnN
+	LIUgCeBONd/GfC9fJEVrfQpF7PE/XbVuTw8gVBXERyeVVeu/jYgfMVl0nsNGzvEFDALXTMl/woA
+	2js3l1QwY83KKqMA44y+uwgw5E48SuZWw1RSEJAhUGnSM4GLXKebBKvKn6tNW4Vdfg0ryqlWlhn
+	2PHcMKt93j9WTfoSMUMaCXZRaPHkGMYA==
+X-Google-Smtp-Source: AGHT+IEVS0EMW5+YUzuROLbK1pP+erdv1sbXdrakeuxuQx1ssbC7QlrMadTMdJ49F/XbA4Ay1I+Whg==
+X-Received: by 2002:a05:6214:4015:b0:880:5a06:3a64 with SMTP id 6a1803df08f44-88d855df020mr637876d6.66.1766073137178;
+        Thu, 18 Dec 2025 07:52:17 -0800 (PST)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c616751b1sm20448046d6.54.2025.12.18.07.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 07:52:15 -0800 (PST)
+Date: Thu, 18 Dec 2025 10:52:12 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Ma Ke <make24@iscas.ac.cn>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] usb: ohci-nxp: fix device leak on probe failure
+Message-ID: <6c056004-666f-467f-bbbe-a67aec4d5dac@rowland.harvard.edu>
+References: <20251218153519.19453-1-johan@kernel.org>
+ <20251218153519.19453-4-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,160 +91,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUNbhrPEY9Aa2U4L@ndev>
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[f792df426ff0f5ceb8d1];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,s.base:url,syzkaller.appspot.com:url,search.here:url,appspotmail.com:email]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -2.30
+In-Reply-To: <20251218153519.19453-4-johan@kernel.org>
 
-On Thu 18-12-25 09:40:36, Jinchao Wang wrote:
-> On Wed, Dec 17, 2025 at 12:30:15PM +0100, Jan Kara wrote:
-> > Hello!
-> > 
-> > On Tue 16-12-25 19:34:55, Jinchao Wang wrote:
-> > > syzbot reported a KASAN out-of-bounds Read in ext4_xattr_set_entry()[1].
-> > > 
-> > > When xattr_find_entry() returns -ENODATA, search.here still points to the
-> > > position after the last valid entry. ext4_xattr_block_set() clones the xattr
-> > > block because the original block maybe shared and must not be modified in
-> > > place.
-> > > 
-> > > In the clone_block, search.here is recomputed unconditionally from the old
-> > > offset, which may place it past search.first. This results in a negative
-> > > reset size and an out-of-bounds memmove() in ext4_xattr_set_entry().
-> > > 
-> > > Fix this by initializing search.here correctly when search.not_found is set.
-> > > 
-> > > [1] https://syzkaller.appspot.com/bug?extid=f792df426ff0f5ceb8d1
-> > > 
-> > > Fixes: fd48e9acdf2 (ext4: Unindent codeblock in ext4_xattr_block_set)
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by: syzbot+f792df426ff0f5ceb8d1@syzkaller.appspotmail.com
-> > > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> > 
-> > Thanks for the patch! But I think the problem must be somewhere else. 
-> The first syzbot test report was run without the patch applied,
-> which caused confusion.
-> The correct usage and report show that this patch fixes the crash:
-> https://lore.kernel.org/all/20251216123945.391988-2-wangjinchao600@gmail.com/
-> https://lore.kernel.org/all/6941580e.a70a0220.33cd7b.013d.GAE@google.com/
-
-I was not arguing that your patch doesn't fix this syzbot issue. Just that
-I don't understand how what you describe can happen and thus I'm not sure
-whether the fix is really the best one...
-
-> > in ext4_xattr_set_entry(). And I don't see how 'here' can be greater than
-> > 'last' which should be pointing to the very same 4-byte zeroed word. The
-> > fact that 'here' and 'last' are not equal is IMO the problem which needs
-> > debugging and it indicates there's something really fishy going on with the
-> > xattr block we work with. The block should be freshly allocated one as far
-> > as I'm checking the disk image (as the 'file1' file doesn't have xattr
-> > block in the original image).
+On Thu, Dec 18, 2025 at 04:35:17PM +0100, Johan Hovold wrote:
+> Make sure to drop the reference taken when looking up the PHY I2C device
+> during probe on probe failure (e.g. probe deferral) and on driver
+> unbind.
 > 
-> I traced the crash path and find how this hapens:
+> Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
+> Cc: stable@vger.kernel.org	# 3.5
+> Reported-by: Ma Ke <make24@iscas.ac.cn>
+> Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
 
-Thanks for sharing the details!
+For this patch and the 5/5 patch:
 
-> entry_SYSCALL_64
-> ...
-> ext4_xattr_move_to_block
->   ext4_xattr_block_find (){
->     error = xattr_find_entry(inode, &bs->s.here, ...); // bs->s.here updated 
->                                                        // to ENTRY(header(s->first)+1);
->     if (error && error != -ENODATA)
->       return error;
->     bs->s.not_found = error; // and returned to the caller
->   }
->   ext4_xattr_block_set (bs) {
->     s = bs->s;
->     offset = (char *)s->here - bs->bh->b_data; // bs->bh->b_data == bs->s.base
->                                                // offset = ENTRY(header(s->first)+1) - s.base
->                                                // leads to wrong offset
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
-Why do you think the offset is wrong here? The offset is correct AFAICS -
-it will be the offset of the 0 word from the beginning of xattr block. I
-have run the reproducer myself and as I guessed in my previous email the
-real problem is that someone modifies the xattr block between we compute
-the offset here and the moment we call kmemdup() in clone_block. Thus the
-computation of 'last' in ext4_xattr_set_entry() yields a different result
-that what we saw in ext4_xattr_block_set(). The block modification happens
-because the xattr block - block 33 is used for it - is also referenced from
-file3 (but it was marked as unused in the block bitmap and so xattr block
-got placed there).
+Alan Stern
 
-So your patch was fixing the problem only by chance and slightly different
-syzbot reproducer (overwriting the block 33 with a different contents)
-would trigger the crash again.
-
-So far I wasn't able to figure out how exactly the block 33 got zeroed out
-but with corrupted filesystem it can happen in principle rather easily. The
-question is how we can possibly fix this because this is one of the nastier
-cases of fs corrution to deal with. The overhead of re-verifying fs
-metadata each time we relock the buffer is just too big... So far no great
-ideas for this.
-
-								Honza
-
->     clone_block: {
-> 	s->base = kmemdup(BHDR(bs->bh), bs->bh->b_size, GFP_NOFS);
-> 	s->first = ENTRY(header(s->base)+1);
-> 	s->here = ENTRY(s->base + offset); // wrong s->here
->     }
->     ext4_xattr_set_entry (s) {
->       last = s->first; // last < here
->       rest = (void *)last - (void *)here + sizeof(__u32); // negative rest
->       memmove((void *)here + size, here, rest); // crash
->     }
->   }
-> > 
-> > 								Honza
-> > 
-> > > diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-> > > index 2e02efbddaac..cc30abeb7f30 100644
-> > > --- a/fs/ext4/xattr.c
-> > > +++ b/fs/ext4/xattr.c
-> > > @@ -1980,7 +1980,10 @@ ext4_xattr_block_set(handle_t *handle, struct inode *inode,
-> > >  			goto cleanup;
-> > >  		s->first = ENTRY(header(s->base)+1);
-> > >  		header(s->base)->h_refcount = cpu_to_le32(1);
-> > > -		s->here = ENTRY(s->base + offset);
-> > > +		if (s->not_found)
-> > > +			s->here = s->first;
-> > > +		else
-> > > +			s->here = ENTRY(s->base + offset);
-> > >  		s->end = s->base + bs->bh->b_size;
-> > >  
-> > >  		/*
-> > > -- 
-> > > 2.43.0
-> > > 
-> > -- 
-> > Jan Kara <jack@suse.com>
-> > SUSE Labs, CR
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>  drivers/usb/host/ohci-nxp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
+> index 24d5a1dc5056..509ca7d8d513 100644
+> --- a/drivers/usb/host/ohci-nxp.c
+> +++ b/drivers/usb/host/ohci-nxp.c
+> @@ -223,6 +223,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
+>  fail_resource:
+>  	usb_put_hcd(hcd);
+>  fail_disable:
+> +	put_device(&isp1301_i2c_client->dev);
+>  	isp1301_i2c_client = NULL;
+>  	return ret;
+>  }
+> @@ -234,6 +235,7 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
+>  	usb_remove_hcd(hcd);
+>  	ohci_nxp_stop_hc();
+>  	usb_put_hcd(hcd);
+> +	put_device(&isp1301_i2c_client->dev);
+>  	isp1301_i2c_client = NULL;
+>  }
+>  
+> -- 
+> 2.51.2
+> 
 
