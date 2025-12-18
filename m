@@ -1,401 +1,273 @@
-Return-Path: <stable+bounces-203027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ABF5CCD66E
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 20:33:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F1DCCDABA
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 22:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E3933016EE8
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 19:33:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92B87301F1CE
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 21:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC2D337102;
-	Thu, 18 Dec 2025 19:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009692E9EAA;
+	Thu, 18 Dec 2025 21:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQaO+5zp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSE46mvZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FA432E73E
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 19:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766086394; cv=fail; b=M9ZQTc/x1OkiPucmNEuz9ueBxVBuWi9zQFLrCsCQaMBToPhgPbVP1jLBsckRqqby/x/lSAlim+9nI1fdp5iqHqlxdBI8AJU/Vzlf27IOMki7RqlaYMA1lBzkD95h9UXQvpgrTUAeB2NzTiSXt774hNvCwaiaQELcu8afzVJMljE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766086394; c=relaxed/simple;
-	bh=jwdaSpt3G1f4Qots5Ta9KFbMhIOq+EoQM9LE63TiHrw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pkgBK8QKrLeMhcbTFguZcEMwlkKA2o3iNJ0sKxCMv9qUk21ibAp3Lmzm1KmF447bjHrDqI5ha/qmi1m7mW7vOLOC9cNfbme2XohhaKqhmmzPqMaqd4X6GGaoMRQXtqM1/CY1cqqvw6mIvUu7R7GIJhJ90j/LjVYi+ZPVJSuzWxQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQaO+5zp; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766086393; x=1797622393;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=jwdaSpt3G1f4Qots5Ta9KFbMhIOq+EoQM9LE63TiHrw=;
-  b=JQaO+5zpKzDgL4vsRXSVHXUxh+JFQbo6WBD5qy9uCzHAmbeAgb48RVeA
-   GGeE+ILMIbWVswIxyCd84IUC4ZkKD0aNOPTJujfXlCXGp3GdVKSKxmHG9
-   /NUNZfX4hQvFG6QQ5MtjiIK4xLaNXkogxU1efJc5veslh0qZYqYVXDfH6
-   xrlofxtgqo1Th/2/umP0Q96BQU+0QvuReqtWFhLlHkfjYNcpFyy/ttIKm
-   kt8ewlF2bapkSZX8CREJwx2yGpSNtL4YJ6QngsiDPWLEfFc2Hok40Gws0
-   0M4PCvKenm3Edho0DWRkQ08iRmRvZDprjFmKtj9WYevqQAy5W10u7q6v0
-   A==;
-X-CSE-ConnectionGUID: br0mbiLiS5Oyp2pP8vEhiw==
-X-CSE-MsgGUID: dPQAwOLnR9OBGRPYzPrWDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67047635"
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="67047635"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 11:33:12 -0800
-X-CSE-ConnectionGUID: 8O/KzKzMTVqCR2N/B/4DiA==
-X-CSE-MsgGUID: nr3GCCbZSqWbWeSgIfWvkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="197809741"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 11:33:12 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 18 Dec 2025 11:33:11 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 18 Dec 2025 11:33:11 -0800
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.35) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 18 Dec 2025 11:33:11 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jtYIJE7SIFQBg+E2CksadAktU54CNSDhfYN+V2c+SAgh4o05cH+fBr8nB7B0v7e7UcS3kJL7cKthJ86Dq8corRYDsJuAFJ1CSwhAEu8lupQ+cJbtrv4sknJWMuKdPKM9QNTp7sI7r+9dKe4NWbqcHoX1d/Lbk7eUq3lFSIZPAUZY0yRRz3KtK7R+HwNzWPYw1PSuvFiL2dQwLBwrZvhC+devESINomenQnVk9envL+5pfYcj4P/wAmA/VJmaphr1g7LZ0RLfWY1bA58h63A+bm5FZK2kejOo1hXp4FXFKxVhUUpDvPJrBM9ClV82EeC3weINffMjqXKHBiBr5mmiJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PO/l8h1l34mB52soVvQ9T1p1lNwLfLibUccTt9DA0PM=;
- b=JhmEH9O47hqh0/AB3Lhj94bV4f8SRdPDc7cb4HBArJLoRNQWOzd1piLZDee5Ifw2LuV0oief3BB37QQD38AtQC3hdcb81DoKVY0okThgRCJKllhz7gHs6yUJ6kAtM1wUElsgwDLaq8cQJxTNF7bpB3iaEkAJ6xNsxH7/9SQn6PLCqCY/vDgZgw9EngUcoNw8dRl0x07tFNsKp/dhy2rjaaCmn8Wx4FojTY4V/Gx7NUc2/WWtpdpkJT4dFvFI+nUhWD1aYsZTFDABx6aXTXFYhcBuRBKgl7btlw7U/A69eZzYouA4RU/I10T/ogmChz6gzWqe7I7KuQz70JekPyLiqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by MW4PR11MB6861.namprd11.prod.outlook.com (2603:10b6:303:213::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Thu, 18 Dec
- 2025 19:33:09 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 19:33:08 +0000
-Date: Thu, 18 Dec 2025 11:33:06 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <himal.prasad.ghimiray@intel.com>,
-	<apopple@nvidia.com>, <airlied@gmail.com>, Simona Vetter
-	<simona.vetter@ffwll.ch>, <felix.kuehling@amd.com>, Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, <dakr@kernel.org>,
-	"Mrozek, Michal" <michal.mrozek@intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>
-Subject: Re: [PATCH v5 03/24] drm/pagemap, drm/xe: Ensure that the devmem
- allocation is idle before use
-Message-ID: <aURW8sAjF7fDlU0n@lstrano-desk.jf.intel.com>
-References: <20251218162101.605379-1-thomas.hellstrom@linux.intel.com>
- <20251218162101.605379-4-thomas.hellstrom@linux.intel.com>
- <aURI/tEMA6GInnCh@lstrano-desk.jf.intel.com>
- <8ed95ebd4525bbedbf62aa2ca26bcaf8ae1e4526.camel@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8ed95ebd4525bbedbf62aa2ca26bcaf8ae1e4526.camel@linux.intel.com>
-X-ClientProxiedBy: SJ0PR03CA0085.namprd03.prod.outlook.com
- (2603:10b6:a03:331::30) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2294137C52
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 21:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766092898; cv=none; b=BTwkxDKhQ5OQVZY4mtBXVlthFU+VTE1GFVFwKGrFsRmFhUaAPXlT3wOQP+aVNEHwxcD+/2QwvDJF0etAaGV0MmEofnAglP+Awuejsn1LrKxJ7wiKoe9P9FZaR3EVvdgTLNWD1i4H+usaPwokkOCziIea7QPU4RbbUj4rjS/l0D8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766092898; c=relaxed/simple;
+	bh=GQN+laEnjKV1etZy2XOiYUJmcjexQ5SNBo3MDTPTC0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=InnvMos2y5y12t8JoWGoMWv1BPwCcOvG9P56eCpq2+kVuYHK/qBpLEbqpfC4pi/huKbF1VOC2kKwv8yB9deHjzMP3f/R2aOaopcSybe6YnRrkDGYYAo4TWc+BRp04GDk8h4lcwkFJWsBzgCYExk30bA5cNwPqdTD/gexj8mipU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSE46mvZ; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59584301f0cso1231281e87.0
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 13:21:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766092895; x=1766697695; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=LoEaEPqer7trL7hEB1F0pzjRs0IVfQzmh9nvm3m1CgU=;
+        b=eSE46mvZ9EAsjvokOn0DOtJe0QgpPi38+3krcJpqYDOZ+d4n9WatOkIgeRHcs1AltC
+         9A+ZTJFmsPh1a2L0XE48UTGJqSoOHEEPtPrP24QL/6f0YyuiJ3KS9sXi5wlBfqlvUhxw
+         hjO20OMLewKvuLY4I/ERXyqa/g2kRQ9Q/4YaaQXp5r3eDS6TcNaAFvmWKPzQswB8hHuh
+         O6vfudQ74xCyQqmBkzPDmiFglfIPE6wFXuRocQ/H8MOZ2dS06rDuexf6KXi/tmUemgXV
+         qeP/yvUlVywdFezVCRxbvQ1vYk0secik3hZZ+E+WwP6n28X6+uRvNbWlWIol/K6edpEn
+         K2Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766092895; x=1766697695;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LoEaEPqer7trL7hEB1F0pzjRs0IVfQzmh9nvm3m1CgU=;
+        b=fyG04J2jHzH89Q+b7OoUG/a5bo5lHUeXSH/ECztOXbzPVU3yeWL7ZvWrQc47ywdfws
+         1CkjhjIt+EWcjyvtaLMMM4OFoVSFIJs7luDf5H0dmnVhKiKWWqEneZUlseTegy+mK+fj
+         qzfE/tK3vp9OHUx1xzcmsAHeVdA39wySMDBiVSfdbjdz36zMMII1+jarabPAfkqEYd62
+         4IqgBYvvYlU3qs4uPYzZ89A4A4ebPN4Tm4xFREH+oR2C5MTEofrj+ICekffnfIfu4rhh
+         ZmZqpbNyvFzSEVCfouYJkWV3KqUBHROgA2ksX3RyqkIomAiAAJqnp31N+jc7meKwd/FC
+         hC8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV80H+yhtVhQgyjhaQwRmwBezQuL0tLFT5rxiU9wnAdY2Me/DONVOm2da1i0jnix/3LnMKFaDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRd3Z0Cb9TPe4NbFS2NgUg75g3vilkyFaTSqp0Xo29RXIE3YTF
+	8WOTExnFmwPZQDRa5pUvu1WRJXpTN+Ud9T2N3gqxFtf9XCYenYfdJCS9sOhPp4zY
+X-Gm-Gg: AY/fxX4Kix8vRHZXdSuHFIdg4UsPw+dg/Er8A6KRff8hEz9lP0aIvt1Kch0B4Kw/bme
+	SmrkS+0eXCtUblM+6cQzKyROqsgG690oRuXWfxSUj8vNmWZ4uC+hhLCrAr+gb8NxHm84giVGSAc
+	95yarIwB8UigPdQo4V3YeJLQ7ScoOQHTO/FjzEABCmV0ziDbiBYG8vSsqzt+LZgSS9JDEVkQglF
+	/bWOuw/yAVuv5FepgKSGO5VBMbJ7kusKxSVmONqe6uP94cv/7nds8falX0tncKpnbbwrBVGPVR2
+	2+FYziw6+isAUnyP9Y/Gk676GhH0br/heJwTWoNyfUjKoknzLcFtikGCWki4ZyLY4j++vyzLpZ/
+	dWFxZSP4Wd935Qdg84wiqHE2KjNaxTkPJJHisu7+AqfNw1+aIjUXgiYvADcu5cMB5p0hHA3s7AL
+	C0ogvlqao22NbWD6K1EhijJGhaLzknzmmmvYWd622p1N3o
+X-Google-Smtp-Source: AGHT+IG3cf/+juHMev1aCrHLNdhdXhWEaNe+diRLQkCcLaCevLb5Y5ayIN8a1Ev6mf8ozquz4VLrCA==
+X-Received: by 2002:a05:6000:2892:b0:42f:b683:b3ce with SMTP id ffacd0b85a97d-4324e4c70f0mr705017f8f.3.1766087445416;
+        Thu, 18 Dec 2025 11:50:45 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea82fddsm602195f8f.25.2025.12.18.11.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 11:50:44 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id E6232BE2EE7; Thu, 18 Dec 2025 20:50:43 +0100 (CET)
+Date: Thu, 18 Dec 2025 20:50:43 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Cc: debian-kernel@lists.debian.org, Ben Hutchings <benh@debian.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: [regression 5.10.y] Libvirt can no longer delete macvtap devices
+ after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
+ flag") to 5.10.y series (Debian 11)
+Message-ID: <176608738558.457059.16166844651150713799@eldamar.lan>
+Mail-Followup-To: Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
+	Ben Hutchings <benh@debian.org>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
+ <aUMEVm1vb7bdhlcK@eldamar.lan>
+ <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|MW4PR11MB6861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 947d4b8a-5874-451f-4215-08de3e6c4626
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?ZMT88HsAeGk2mIh4RDdW9GzxJK2PUXvO1gVGjru/DshHcjRvJ5QLYMNJWc?=
- =?iso-8859-1?Q?UFhwR53mKhQd8uyquyziN2WMaUO+7/1kpUOkzke3w5E+DKgQCTxWTZ7NU3?=
- =?iso-8859-1?Q?PktrdRMS7FUrcwwVdDYOyufA62Aam6OJZ94c0K3wrTVlNKj82ZTM2UwYG7?=
- =?iso-8859-1?Q?3pE8BoPzsruKG/C5DyU8qQfk1/e5w/7tRrakoPDdY/biC+ND/7bed4m5u7?=
- =?iso-8859-1?Q?Fd63v9Fjx96z6qiB7ZV7M8lZ6C/+f/mm3predo5bDapECV1haD1uvS/IzS?=
- =?iso-8859-1?Q?+Rsk6ZasdP+uKqBC5d8+cdpa5iHupo0aYlxF83vHg4+ZUHUrYm6Hf4rPIt?=
- =?iso-8859-1?Q?swpusvt2Tyc6UHF0pwwBWfW12EM40LyYtWR23XRs7rVbe19tr7EzW/wgeC?=
- =?iso-8859-1?Q?DXmHHkunsKPXT6QoXf3QIendMiAAo86glOYqCaOzyTzcq1uI8HXLkXfu7t?=
- =?iso-8859-1?Q?/slG5Ox0JlpiGsI/tEepp0zjqHZ43HZoYsanxKRfkbMGJNYwnXKMAKkHdk?=
- =?iso-8859-1?Q?KcHMLdkjJABTHSnMJDKtx9VXjVKCegKhls5jKnMkx+X5NfFofkZgW3mxxo?=
- =?iso-8859-1?Q?BmCvstEs1j2U2MiS7CJ6rswyrntRLom+TME3sSWAEX3HGZDgElNaMyVaxw?=
- =?iso-8859-1?Q?XO1q4XU2VnZBA843cvlBKmAzn7uNX86Au1dVx8aSdKISSq0pSe93TILLW7?=
- =?iso-8859-1?Q?ZYQEd6dU7gAHxjd/BvcJ2jfXdPeMj1GHE7jUhdlDQVpvR78MhqvIxqITZx?=
- =?iso-8859-1?Q?OnsdQyY80ashvtrJxcly4yXw2QGpCqaUFyqXl+EDEBCIf1dNgg9ZPYdng6?=
- =?iso-8859-1?Q?Aiwjvsi8x13j1ia0SwdhqusKUAnyV+UhYX0LHJSDi/4kKmHQ35gc/OkqAV?=
- =?iso-8859-1?Q?8BQRw24mXb1CL9IXURbgnEnnYmpK2914s38+tbJF304MPI134mFW+uktCW?=
- =?iso-8859-1?Q?T9rJohLdHDsozvJ+312jNYAMnSBEtbae60Z6yfwh0iJHMbfchUwZbpSB6U?=
- =?iso-8859-1?Q?MiVK1/evwmjFCv9MXlvGMRyoD8piJLc4StbfvT184Vofs8g+8/tD8NGbB5?=
- =?iso-8859-1?Q?rCxreacNd/9HoLvh4pxyzFBamZR8Ct+A07apRngsWJSoCmW1T3HzLVtfKe?=
- =?iso-8859-1?Q?BNp7Rg003xF5RO+ScaC0WmVgFZbbMVqUJQiMHwhJF88/iovyFqTRNmF7AH?=
- =?iso-8859-1?Q?Z2auDWGQxB3lapmQEtRvHnKQNUIj4iBVR8jKnuJK9NqYyhrQ4aRHo0PApC?=
- =?iso-8859-1?Q?ZnHkpphADfKO/uoyOyksCY8XDfqboSzpCrT2HzhYy1zARXo6BDRWl0Ax3+?=
- =?iso-8859-1?Q?lCEFYWrlwYpOSUM2yVub2YrMUb1x9K1aHhp+i51qt1tOqL9MIHtSZFn1LW?=
- =?iso-8859-1?Q?JqxNihulLpHRxAURYIsd0cmwOO3YTiPA5fj2MmGl6Y8oohV/SAa3bFVNNE?=
- =?iso-8859-1?Q?rdnHRsnYfhXfRNwpNR60pHsNo+ThRXWgpJhI+2vjCYkTEdhitN58L+Tk47?=
- =?iso-8859-1?Q?oye4jxMZsBsKrQzeZrrsAY?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?l3pbeD6XedoDXPBj2kyYVc0lZWNGedFirHpOcN8c7H68BdEjBws8LDYD8q?=
- =?iso-8859-1?Q?lTI8FBGci/aZuUD0q2p2Xhfa9yuSPbVnektWVwohvnzSUJQAsmNbJ2rwYN?=
- =?iso-8859-1?Q?j8B64R6QuYJJNaq8Bld7Q5J3QByaM/iH3Mae6pcGrn4I0uo6IHUsPfZ7r+?=
- =?iso-8859-1?Q?U+8IpjRLqBkF3+TyQlP7sYPt1XhpOkrvwy6Io9vn8NKCciBgnCnXR7G3cB?=
- =?iso-8859-1?Q?iFur4ihZDx985g159oyxN4T+1n4i15yPcPWcJiVnu74TI1EbTdGZysasS0?=
- =?iso-8859-1?Q?2DhStRs9B+1336XcUnMYkEbXiaZz4Z2e0HaOUDobFf7HgpjJR2qYTFaqKH?=
- =?iso-8859-1?Q?vdBNYedRqflLqnnBCeg8pLkqG55HYRtpzTa0fNP9d3itNvOoAwXOY2yM07?=
- =?iso-8859-1?Q?mq+5Pdz8T0wPgw/AO6Hzk55ZSsA5rjAZapF5Yb5DEHWLMHU2T0o/bGcRCs?=
- =?iso-8859-1?Q?X1hYhmDPEOSb/hNKW+6EBI+0LHgQEjB5aBkKbJ+xES/iOFAJCqO6gaKJx1?=
- =?iso-8859-1?Q?azqLVqokwdRleFNxed0V8TS+Rvn/PPdJY1I28zQguPnZDLzBnUKVHFD/Pb?=
- =?iso-8859-1?Q?LgbQFy942/5PyOrxdkDssBAOajDFR4I2DESm5GSVZm94K83mIJC7Cx1Gq6?=
- =?iso-8859-1?Q?ZWaqmuGZf2M0vCuyApFgNcKDtlCD5sCc8EKZhFdWHckWc0PPKKdl57dBh9?=
- =?iso-8859-1?Q?FGx8MHmbnJu8Cx8p6jsDsbUkH9Pamved1MkBWkzPFccmyHbiB/CqJhT42O?=
- =?iso-8859-1?Q?k+kdFMFE52L0ILo3jdF2S4g7oINPZvcwojyL1k4HBWYOLg7bvXmeBoCexK?=
- =?iso-8859-1?Q?jK3Al7un/E7jfgshn0cPwHvjtk50fs5VVJrxq8dK+5ySP9kWXXk6VPNvas?=
- =?iso-8859-1?Q?PQk6CUZwqtpOEv3VwBcSx/02gPVAhdZN+XqyXM4HNdQCa6eu7eLNhZD9H0?=
- =?iso-8859-1?Q?t+IpCEnG8pRZ7UD1aDDvrgonn2L1lf5SpSbnKmG5INrDVDpiEi63R+v4RS?=
- =?iso-8859-1?Q?ks+FFC0Rkmc0R+kf4s6taWoodQQ0I1WbVeyl8WOspZhJFlsayBnAQ/8KmG?=
- =?iso-8859-1?Q?WuOZkrHcsokxKa56iSqPwOJRNSfL4bH78cWJLc4rX4gu6bTXz+vMG9/xfB?=
- =?iso-8859-1?Q?l7tHi3C6QVdJ5LC6QJog+yNX0uyx44/XvwFz6I0vBEbAgMf1l3OSVKmbu3?=
- =?iso-8859-1?Q?NvbN7jUtgvyyLWbiTKjGQvWcsxTfv+9egkECieGB+rSGrrCu6uhx80xE/w?=
- =?iso-8859-1?Q?rgXK9y6WDA4wwGOPuwEv0e2ScOEuge6XBSd6fNfBl27GuTocrhmXHamFy+?=
- =?iso-8859-1?Q?mtaHjFRXLU4GG74eSz2v/dixKfBC9yMLDUF94zYwBLtE+f6baFq2HnyqEF?=
- =?iso-8859-1?Q?BPqwfkRz02Y7d1U9CYS9luha5H54eiZxlGAAmacxFXV8E5WLnqP3QiZHgO?=
- =?iso-8859-1?Q?jCMFS1IcmLQqI74+ZrPkMdE8fyjVTZr1TQvu5xgg9eeE2ZDmBfFdWAp7wA?=
- =?iso-8859-1?Q?VzYKKr4G9G2adr+7lfVMNDj1fnmMKdpglsTtP/y9Bf415WorQR9ZvFnE73?=
- =?iso-8859-1?Q?4upNHZD6ucI1Oc4onnpaebXSvDL/EkhAZcvgyuhNLfIyBwnTXqpy+WNvOH?=
- =?iso-8859-1?Q?pl2/SdZP+IOJSUU9xQxeB2DGCPjmGuCUDplb827b91Z0ErxfdX+PK+cA?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 947d4b8a-5874-451f-4215-08de3e6c4626
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 19:33:08.8974
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Fl429TRnq4x69F13VZgzPYomEAzTHOlR3iQDEATWXir3PYqSMQezJKO4WxTyQ+L+UHNCxpBIDXB02eGobbZBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6861
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
 
-On Thu, Dec 18, 2025 at 08:18:24PM +0100, Thomas Hellström wrote:
-> On Thu, 2025-12-18 at 10:33 -0800, Matthew Brost wrote:
-> > On Thu, Dec 18, 2025 at 05:20:40PM +0100, Thomas Hellström wrote:
-> > > In situations where no system memory is migrated to devmem, and in
-> > > upcoming patches where another GPU is performing the migration to
-> > > the newly allocated devmem buffer, there is nothing to ensure any
-> > > ongoing clear to the devmem allocation or async eviction from the
-> > > devmem allocation is complete.
+Hi all,
+
+Roland Schwarzkopf reported to the Debian mailing list a problem which
+he encountered once updating in Debian from 5.10.244 to 5.10.247. The
+report is quoted below and found in
+https://lists.debian.org/debian-kernel/2025/12/msg00223.html
+
+Roland did bisect the changes between 5.10.244 to 5.10.247 and found
+that the issue is introduced with 1550f3673972 ("net: rtnetlink: add
+bulk delete support flag") which is the backport to the 5.10.y series.
+
+On Thu, Dec 18, 2025 at 02:59:55PM +0100, Roland Schwarzkopf wrote:
+> Hi Salvatore,
 > 
-> 
-> > > 
-> > > Address that by passing a struct dma_fence down to the copy
-> > > functions, and ensure it is waited for before migration is marked
-> > > complete.
-> > > 
-> > > v3:
-> > > - New patch.
-> > > v4:
-> > > - Update the logic used for determining when to wait for the
-> > >   pre_migrate_fence.
-> > > - Update the logic used for determining when to warn for the
-> > >   pre_migrate_fence since the scheduler fences apparently
-> > >   can signal out-of-order.
-> > > v5:
-> > > - Fix a UAF (CI)
-> > > - Remove references to source P2P migration (Himal)
-> > > - Put the pre_migrate_fence after migration.
-> > > 
-> > > Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc
-> > > functions")
-> > > Cc: Matthew Brost <matthew.brost@intel.com>
-> > > Cc: <stable@vger.kernel.org> # v6.15+
-> > > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> > > ---
-> > >  drivers/gpu/drm/drm_pagemap.c | 17 ++++++---
-> > >  drivers/gpu/drm/xe/xe_svm.c   | 65 ++++++++++++++++++++++++++++++-
-> > > ----
-> > >  include/drm/drm_pagemap.h     | 17 +++++++--
-> > >  3 files changed, 83 insertions(+), 16 deletions(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/drm_pagemap.c
-> > > b/drivers/gpu/drm/drm_pagemap.c
-> > > index 4cf8f54e5a27..ac3832f85190 100644
-> > > --- a/drivers/gpu/drm/drm_pagemap.c
-> > > +++ b/drivers/gpu/drm/drm_pagemap.c
-> > > @@ -3,6 +3,7 @@
-> > >   * Copyright © 2024-2025 Intel Corporation
-> > >   */
-> > >  
-> > > +#include <linux/dma-fence.h>
-> > >  #include <linux/dma-mapping.h>
-> > >  #include <linux/migrate.h>
-> > >  #include <linux/pagemap.h>
-> > > @@ -408,10 +409,14 @@ int drm_pagemap_migrate_to_devmem(struct
-> > > drm_pagemap_devmem *devmem_allocation,
-> > >  		drm_pagemap_get_devmem_page(page, zdd);
-> > >  	}
-> > >  
-> > > -	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
-> > > +	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
-> > > +				  devmem_allocation-
-> > > >pre_migrate_fence);
-> > >  	if (err)
-> > >  		goto err_finalize;
-> > >  
-> > > +	dma_fence_put(devmem_allocation->pre_migrate_fence);
-> > > +	devmem_allocation->pre_migrate_fence = NULL;
-> > > +
-> > >  	/* Upon success bind devmem allocation to range and zdd */
-> > >  	devmem_allocation->timeslice_expiration = get_jiffies_64()
-> > > +
-> > >  		msecs_to_jiffies(timeslice_ms);
-> > > @@ -596,7 +601,7 @@ int drm_pagemap_evict_to_ram(struct
-> > > drm_pagemap_devmem *devmem_allocation)
-> > >  	for (i = 0; i < npages; ++i)
-> > >  		pages[i] = migrate_pfn_to_page(src[i]);
-> > >  
-> > > -	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-> > > +	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
-> > >  	if (err)
-> > >  		goto err_finalize;
-> > >  
-> > > @@ -719,7 +724,7 @@ static int __drm_pagemap_migrate_to_ram(struct
-> > > vm_area_struct *vas,
-> > >  	for (i = 0; i < npages; ++i)
-> > >  		pages[i] = migrate_pfn_to_page(migrate.src[i]);
-> > >  
-> > > -	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-> > > +	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
-> > >  	if (err)
-> > >  		goto err_finalize;
-> > >  
-> > > @@ -800,11 +805,14 @@
-> > > EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
-> > >   * @ops: Pointer to the operations structure for GPU SVM device
-> > > memory
-> > >   * @dpagemap: The struct drm_pagemap we're allocating from.
-> > >   * @size: Size of device memory allocation
-> > > + * @pre_migrate_fence: Fence to wait for or pipeline behind before
-> > > migration starts.
-> > > + * (May be NULL).
-> > >   */
-> > >  void drm_pagemap_devmem_init(struct drm_pagemap_devmem
-> > > *devmem_allocation,
-> > >  			     struct device *dev, struct mm_struct
-> > > *mm,
-> > >  			     const struct drm_pagemap_devmem_ops
-> > > *ops,
-> > > -			     struct drm_pagemap *dpagemap, size_t
-> > > size)
-> > > +			     struct drm_pagemap *dpagemap, size_t
-> > > size,
-> > > +			     struct dma_fence *pre_migrate_fence)
-> > >  {
-> > >  	init_completion(&devmem_allocation->detached);
-> > >  	devmem_allocation->dev = dev;
-> > > @@ -812,6 +820,7 @@ void drm_pagemap_devmem_init(struct
-> > > drm_pagemap_devmem *devmem_allocation,
-> > >  	devmem_allocation->ops = ops;
-> > >  	devmem_allocation->dpagemap = dpagemap;
-> > >  	devmem_allocation->size = size;
-> > > +	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
-> > >  
-> > > diff --git a/drivers/gpu/drm/xe/xe_svm.c
-> > > b/drivers/gpu/drm/xe/xe_svm.c
-> > > index bab8e6cbe53d..b806a1fce188 100644
-> > > --- a/drivers/gpu/drm/xe/xe_svm.c
-> > > +++ b/drivers/gpu/drm/xe/xe_svm.c
-> > > @@ -472,11 +472,12 @@ static void xe_svm_copy_us_stats_incr(struct
-> > > xe_gt *gt,
-> > >  
-> > >  static int xe_svm_copy(struct page **pages,
-> > >  		       struct drm_pagemap_addr *pagemap_addr,
-> > > -		       unsigned long npages, const enum
-> > > xe_svm_copy_dir dir)
-> > > +		       unsigned long npages, const enum
-> > > xe_svm_copy_dir dir,
-> > > +		       struct dma_fence *pre_migrate_fence)
-> > >  {
-> > >  	struct xe_vram_region *vr = NULL;
-> > >  	struct xe_gt *gt = NULL;
-> > > -	struct xe_device *xe;
-> > > +	struct xe_device *xe = NULL;
-> > >  	struct dma_fence *fence = NULL;
-> > >  	unsigned long i;
-> > >  #define XE_VRAM_ADDR_INVALID	~0x0ull
-> > > @@ -485,6 +486,16 @@ static int xe_svm_copy(struct page **pages,
-> > >  	bool sram = dir == XE_SVM_COPY_TO_SRAM;
-> > >  	ktime_t start = xe_gt_stats_ktime_get();
-> > >  
-> > > +	if (pre_migrate_fence &&
-> > > dma_fence_is_container(pre_migrate_fence)) {
-> > > +		/*
-> > > +		 * This would typically be a composite fence
-> > > operation on the destination memory.
-> > > +		 * Ensure that the other GPU operation on the
-> > > destination is complete.
-> > > +		 */
-> > > +		err = dma_fence_wait(pre_migrate_fence, true);
-> > > +		if (err)
-> > > +			return err;
-> > > +	}
-> > > +
+> On 12/17/25 20:28, Salvatore Bonaccorso wrote:
+> > Hi Roland,
 > > 
-> > I'm not fully convienced this code works. Consider the case where we
-> > allocate memory a device A and we copying from device B. In this case
-> > device A issues the clear but device B issues the copy. The
-> > pre_migrate_fence is not going be a container and I believe our
-> > ordering
-> > breaks.
-> 
-> So the logic to handle that case was moved to the patch that enables
-> source migration, as per Himal's review comment. So consider this patch
-> only for destination migration where the devmem allocation is allocated
-> on the same gpu that migrates.
->
-
-Ah, yes I see that logic in patch 23.
- 
+> > I'm CC'ing Ben Hutchings directly as well as he takes care of the
+> > Debian LTS kernel updates. Idellly we make this as well a proper bug
+> > for easier tracking.
 > > 
-> > Would it be simplier to pass in the pre_migrate_fence fence a
-> > dependency
-> > to the first copy job issued, then set it to NULL. The drm scheduler
-> > is
-> > smart enough to squash the input fence into a NOP if a copy / clear
-> > are
-> > from the same devices queues.
+> > On Wed, Dec 17, 2025 at 01:35:54PM +0100, Roland Schwarzkopf wrote:
+> > > Hi there,
+> > > 
+> > > after upgrading to the latest kernel on Debian 11
+> > > (linux-image-5.10.0-37-amd64) I have an issue using libvirt with qemu/kvm
+> > > virtual machines and macvtap networking. When a machine is shut down,
+> > > libvirt can not delete the corresponding macvtap device. Thus, starting the
+> > > machine again is not possible. After manually removing the macvtap device
+> > > using `ip link delete` the vm can be started again.
+> > > 
+> > > In the journal the following message is shown:
+> > > 
+> > > Dec 17 13:19:27 iblis libvirtd[535]: error destroying network device macvtap0: Operation not supported
+> > > 
+> > > After downgrading the kernel to linux-image-5.10.0-36-amd64, the problem
+> > > disappears. I tested this on a fresh minimal install of Debian 11 - to
+> > > exclude that anything else on my production machines is causing this issue.
+> > > 
+> > > Since the older kernel does not have this issue, I assume this is related to
+> > > the kernel and not to libvirt?
+> > > 
+> > > I tried to check for bug reports of the kernel package, but the bug tracker
+> > > finds no reports and even states that the package does not exist (I used the
+> > > "Bug reports" link on
+> > > https://packages.debian.org/bullseye/linux-image-5.10.0-37-amd64). This left
+> > > me a bit puzzled. Since I don't have experience with the debian bug
+> > > reporting process, I had no other idea than writing to this list.
+> > You would need to search for inhttps://bugs.debian.org/src:linux ,
+> > but that said I'm not aware of any bug reports in that direction.
+> > 
+> > Would you be in the position of bisecting the problem as you can say
+> > that 5.10.244 is good and 5.10.247 is bad and regressed? If you can do
+> > that that would involve compiling a couple of kernels to narrow down
+> > where the problem is introduced:
+> > 
+> >      git clone --single-branch -b linux-5.10.yhttps://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+> >      cd linux-stable
+> >      git checkout v5.10.244
+> >      cp /boot/config-$(uname -r) .config
+> >      yes '' | make localmodconfig
+> >      make savedefconfig
+> >      mv defconfig arch/x86/configs/my_defconfig
+> > 
+> >      # test 5.10.244 to ensure this is "good"
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install the resulting .deb package and confirm it successfully boots / problem does not exist
+> > 
+> >      # test 5.10.247 to ensure this is "bad"
+> >      git checkout v5.10.247
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install the resulting .deb package and confirm it fails to boot / problem exists
+> > 
+> > With that confirmed, the bisection can start:
+> > 
+> >      git bisect start
+> >      git bisect good v5.10.244
+> >      git bisect bad v5.10.247
+> > 
+> > In each bisection step git checks out a state between the oldest
+> > known-bad and the newest known-good commit. In each step test using:
+> > 
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install, try to boot / verify if problem exists
+> > 
+> > and if the problem is hit run:
+> > 
+> >      git bisect bad
+> > 
+> > and if the problem doesn't trigger run:
+> > 
+> >      git bisect good
+> > 
+> > . Please pay attention to always select the just built kernel for
+> > booting, it won't always be the default kernel picked up by grub.
+> > 
+> > Iterate until git announces to have identified the first bad commit.
+> > 
+> > Then provide the output of
+> > 
+> >      git bisect log
+> > 
+> > In the course of the bisection you might have to uninstall previous
+> > kernels again to not exhaust the disk space in /boot. Also in the end
+> > uninstall all self-built kernels again.
 > 
-> I intended to do that as a follow-up if needed but since this is a fix
-> that fixes an existing problem I wanted it to be lightweight. But let
-> me take a quick look at that and probably resend only that patch.
+> I just did my first bisection \o/ (sorry)
 > 
+> Here are the results:
+> 
+> git bisect start
+> # bad: [f964b940099f9982d723d4c77988d4b0dda9c165] Linux 5.10.247
+> git bisect bad f964b940099f9982d723d4c77988d4b0dda9c165
+> # good: [863b76df7d1e327979946a2d3893479c3275bfa4] Linux 5.10.244
+> git bisect good f52ee6ea810273e527a5d319e5f400be8c8424c1
+> # good: [dc9fdb7586b90e33c766eac52b6f3d1c9ec365a1] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+> git bisect good dc9fdb7586b90e33c766eac52b6f3d1c9ec365a1
+> # bad: [2272d5757ce5d3fb416d9f2497b015678eb85c0d] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+> git bisect bad 2272d5757ce5d3fb416d9f2497b015678eb85c0d
+> # bad: [547539f08b9e3629ce68479889813e58c8087e70] ALSA: usb-audio: fix control pipe direction
+> git bisect bad 547539f08b9e3629ce68479889813e58c8087e70
+> # bad: [3509c748e79435d09e730673c8c100b7f0ebc87c] most: usb: hdm_probe: Fix calling put_device() before device initialization
+> git bisect bad 3509c748e79435d09e730673c8c100b7f0ebc87c
+> # bad: [a6ebcafc2f5ff7f0d1ce0c6dc38ac09a16a56ec0] net: add ndo_fdb_del_bulk
+> git bisect bad a6ebcafc2f5ff7f0d1ce0c6dc38ac09a16a56ec0
+> # good: [b8a72692aa42b7dcd179a96b90bc2763ac74576a] hfsplus: fix KMSAN uninit-value issue in __hfsplus_ext_cache_extent()
+> git bisect good b8a72692aa42b7dcd179a96b90bc2763ac74576a
+> # good: [2b42a595863556b394bd702d46f4a9d0d2985aaa] m68k: bitops: Fix find_*_bit() signatures
+> git bisect good 2b42a595863556b394bd702d46f4a9d0d2985aaa
+> # good: [9d9f7d71d46cff3491a443a3cf452cecf87d51ef] net: rtnetlink: use BIT for flag values
+> git bisect good 9d9f7d71d46cff3491a443a3cf452cecf87d51ef
+> # bad: [1550f3673972c5cfba714135f8bf26784e6f2b0f] net: rtnetlink: add bulk delete support flag
+> git bisect bad 1550f3673972c5cfba714135f8bf26784e6f2b0f
+> # good: [c8879afa24169e504f78c9ca43a4d0d7397049eb] net: netlink: add NLM_F_BULK delete request modifier
+> git bisect good c8879afa24169e504f78c9ca43a4d0d7397049eb
+> # first bad commit: [1550f3673972c5cfba714135f8bf26784e6f2b0f] net: rtnetlink: add bulk delete support flag
+> 
+> Is there anything else I can do to help?
 
-I'm fine with doing this in a follow up if that is the preference, I do
-think that would be cleaner.
+Is there soemthing missing?
 
-So if you prefer to leave this as is:
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Roland I think it would be helpful if you can test as well more recent
+stable series versions to confirm if the issue is present there as
+well or not, which might indicate a 5.10.y specific backporting
+problem.
 
-> /Thomas
-> 
-> 
+#regzbot introduced: 1550f3673972c5cfba714135f8bf26784e6f2b0f
+
+Regards,
+Salvatore
 
