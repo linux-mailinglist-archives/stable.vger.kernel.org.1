@@ -1,126 +1,127 @@
-Return-Path: <stable+bounces-202998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42666CCC605
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:02:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F883CCC83D
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2753089B87
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:01:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0F43307C2E6
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 15:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BBA2C1597;
-	Thu, 18 Dec 2025 15:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07184314A70;
+	Thu, 18 Dec 2025 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="g3SnUHkD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eMMPfqiD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD17283FEE
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 15:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB4D30C611
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 15:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766070092; cv=none; b=Td2NIDt6oCnh0Sbx9kuoqPNE8fy5Dyi7QT/J3+ttqVTHPIXH9Tv/9EuCjhQ+S9k9ineXpikrvEX5lMgFGZbna3P218OULzh1C2u71uXpABsgmxgjJ6EDByvnTVZ3KQq1ULhOMipKYOAy3tV3efsPHUshz4Fjy+zlY6nQaSkURXk=
+	t=1766070407; cv=none; b=TW+i/C+VoXwvCnQSn9IP59cGR0TOjvOgIg+5CJcsZKF8qiXm3yQeM11v2mXkKj4cub7CVnsjG6hOMFKgyUL7lFamprJu8q0lkPxLXUWRjaoyiZ2qCwsGMT0kEuPE9aM/CIMP8FLBSCQ/5WlS5FBI+eu77JpCIUfxmKQBs6fdPkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766070092; c=relaxed/simple;
-	bh=xuxYpHZyXgdRB12usLdOT6BuulW7JinEFCOoVCvBrAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grADvQKt1BxIqecJWjTmbJjqNpoh5PArCdDWsNrvQlp2AzIC/rgfwaR6GCLxHNsAi+n8VuFDVWaijVcXNptQQU835JqNDZDu7nvGIDS6x+4665c/iqd5SCJi3EBLHXRoP6RSVKraLu/mAW5iIuWzicvBsz0be2/gIJbGYWy23do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=g3SnUHkD; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-450be85b7d9so441486b6e.0
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 07:01:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1766070089; x=1766674889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fkCfuBffdvy1ahpgO4ryU5C0fH+X3z2hQTwZhDTxw+o=;
-        b=g3SnUHkDciTxN12qlWxzvZUkmedWYbBO69JzHDDwudvobB1qIx72cgggsuycg8yu98
-         PabIvLqOgca+y+McDIMCelU4Uh3cr3gH0tOsxFhy01WUQrK8OelEnAjfLNaI27ee6myc
-         fyDZz5ASJpBkAfT7tdDlDW2IzVNFk1X11UaV332+G8kRsQwtKkuaxn57ZC+W/WP5ek9+
-         s6nbbxMjVBnqV0VBwNm2ab1bDxwaHh/lvSOzhTIfVafRZTq6uFANDuGq/bGx+7MiiXiQ
-         w3sd/XQ89aihs1AdBKDbbhwT1SQ3EMKCvx53s9W6wfZ4p3DGzO6vEh87cUO1XEEcc8oq
-         qVag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766070089; x=1766674889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fkCfuBffdvy1ahpgO4ryU5C0fH+X3z2hQTwZhDTxw+o=;
-        b=Z14oDw+OGwo6TfGRSqGasu+afp6aZr4EsZciYtQrQ+XqBUBkQaqLoSqn3mDdQlrb/h
-         ZmlkkgI5Og1UVAcK0UQfqO6P3Sh0PtNyj/zHIGrK9Y0mhHvctMbiD9yVVzGN6vBPRNwy
-         CLBr/dVXX9ZjkfgXnqWurFY810ONhGrOlQ0y+eJwz024Zq/J2XpO0Nv1kk9u6xa2+0YW
-         coRo9dZBOjAaY/rES8SSC6HxUpYdpB5GyrNSe0XcRNmTpoOHxPHZ2Cf7YoTxPYVG/6xG
-         W7SNo4R+kSyLxpysRof0FYAGbWeOP6l4pAkmNSnyv6dhrwrMT6cgFZaXdJbgdUWIwtfs
-         6Kfg==
-X-Forwarded-Encrypted: i=1; AJvYcCX07OI1yBQ8ZcaCwm/cq+PGLXfBYss5JoMMfTtrAWMKTwH6/7MO21ZBiD6nYOdlb5kEFNez5Kg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCDB0HKf82fMSSNRWHDe+RxCeRY+9bR1a8hM9o1JnsD5H6X4fF
-	hlgq4zZQGtuyyaxFXzDaDR2rkbVJxuxZ6SQlIDBDft5v7J37dYFeIIm9JBOSio6jNgY=
-X-Gm-Gg: AY/fxX68OF8Ehjylqe1tJ9AZV9vBljF4LZR/e2DZDUSV/bAeCfl69BWQj1EesLkEDZI
-	4xVhA9IoXfTT72UZeq3wETpwOyhLS5pMvDvvtwGE0uFBvgWclIZtY3fvr/Ru+JFTE/f+QYopqrH
-	x5FYlHGR/MTrX1PwFp4sX/vG8FclEE7GTp9nQOyCEhwQXuuA+/fK+fWWq5KEhJ7aol5zv+pHI0c
-	vrkFZYqnj91fYAXP2eEWgWpP9LtMlt01vB5qvEg8Q6Z1qWaK/JkaYyODfv71CMsvArLRK6muKkt
-	BFOx+ZDC2en6oTaj1ZSycRp7u4Lc6Yr76Frw4UpOpk4vBJPVg1h5h7ObAeYBwNxrV2A5jHTfpCv
-	86fiyG9W9ikwbXL6UxHseqQamGx333Vmqvr2ImO/Cm97AxNBKGSjD2MassKIRhz3I/N+Qig==
-X-Google-Smtp-Source: AGHT+IHNqQEyO2+zm0WZX6kMf8tMyinPk4DY7+372q7upiugrQB8KXle70xpWHUfWtjzKhWHklipKw==
-X-Received: by 2002:a05:6808:c291:b0:453:746a:c61c with SMTP id 5614622812f47-455aca2f25amr9904875b6e.66.1766070088843;
-        Thu, 18 Dec 2025 07:01:28 -0800 (PST)
-Received: from m2max ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-457a42fe963sm1327816b6e.1.2025.12.18.07.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 07:01:27 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: netdev@vger.kernel.org
-Cc: io-uring@vger.kernel.org,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	willemb@google.com,
-	Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org,
-	Julian Orth <ju.orth@gmail.com>
-Subject: [PATCH 2/2] af_unix: only post SO_INQ cmsg for non-error case
-Date: Thu, 18 Dec 2025 07:59:14 -0700
-Message-ID: <20251218150114.250048-3-axboe@kernel.dk>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251218150114.250048-1-axboe@kernel.dk>
-References: <20251218150114.250048-1-axboe@kernel.dk>
+	s=arc-20240116; t=1766070407; c=relaxed/simple;
+	bh=sLosKdwEM5n3UBcakIlkHvb8i0UYiD1THUjBocLTyNQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eGlHsq56R+jXJyHonvF0jMOuNjnrcKnPjZLzTdnJDByiBDbavkuBwZkD4KE+LuPpMf6P05TtPHPWrRafwVRYzNQOciOAeUt/XJKTsftJoVm1b7EA2EliApkwHuYwxBt3sNx4vdd1LqhImr8AH6AnNfFDTUThLPYVaDCjAyXk8jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eMMPfqiD; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D76DD4E41C8A;
+	Thu, 18 Dec 2025 15:06:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9605A606B6;
+	Thu, 18 Dec 2025 15:06:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 871FE102F0ADC;
+	Thu, 18 Dec 2025 16:06:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1766070396; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=KqMH9eLoxiWaVsR+YYUkxeCUobHi5E/7MJZmMY6hEFE=;
+	b=eMMPfqiDj/cnkF8d5yS8qCqqjXk61dCNbwGMU5PuukI6kUf46rCVa0mLhgTbc+K9DTmlX+
+	Rd2aDFIVVTLbGzsctxNqkXVEoXwrn/A+6jCg4CGox5TkfXsoqEN7Kdf+QoX3ZdAEbdilTq
+	8etl1EVLSvdZxZujtKqsvoDV8Y3hyQbVHoZkFmhXG45tLqxZkehPhhQTJDvc6dTPkGXzfJ
+	g3GTF729IAkUUZer3oxkT0RbGgvN90OgheH0JMSoRCTJl0FANmkWTqyWxJu/If9fnAJGDQ
+	rdHeicWPLJkbwePJyo/3hJFebXIysA4JXdK218kXmypXyExjUic/sGpVnUEujg==
+From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Subject: [PATCH v5 0/2] Enable 1GHz OPP am335x-bonegreen-eco
+Date: Thu, 18 Dec 2025 16:06:27 +0100
+Message-Id: <20251218-fix_tps65219-v5-0-8bb511417f3a@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHMYRGkC/33MyQ7CIBSF4VdpWIuBW6DDyvcwxlAGS6KlgYZom
+ r67tCuH6PLcm++fUTTBmYjaYkbBJBedH/LguwKpXg4Xg53OGwEBTikR2Lr7eRqj4EAbrLUAyqg
+ GUBZlMgaT/1vueMq7d3Hy4bHVE6zXH6EEmGBZaUFqxaACe+i8n65u2Ct/Q2sqlS+cwgcvMzes6
+ WTHFKHKfHP2j7PMRSMksZxrrut3vizLE1T7J24oAQAA
+X-Change-ID: 20251106-fix_tps65219-dd62141d22cf
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Lee Jones <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-As is done for TCP sockets, don't post an SCM_INQ cmsg for an error
-case. Only post them for the non-error case, which is when
-unix_stream_read_generic will return >= 0.
+The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
+which prevented the CPU from reaching the 1GHz operating point. This
+limitation was put in place because voltage changes were not working
+correctly, causing the board to stall when attempting higher frequencies.
+Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
+used.
 
-Cc: stable@vger.kernel.org
-Fixes: df30285b3670 ("af_unix: Introduce SO_INQ.")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Link: https://github.com/axboe/liburing/issues/1509
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
+handling, to make voltage transitions work reliably.
+
+Changes in v5:
+- Add a error message.
+- Link to v4: https://lore.kernel.org/r/20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com
+
+Changes in v4:
+- Move the registers unlock in the probe instead of a custom regmap write
+  operation.
+- Link to v3: https://lore.kernel.org/r/20251112-fix_tps65219-v3-0-e49bab4c01ce@bootlin.com
+
+Changes in v3:
+- Remove an unused variable
+- Link to v2: https://lore.kernel.org/r/20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com
+
+Changes in v2:
+- Setup a custom regmap_bus only for the TPS65214 instead of checking
+  the chip_id every time reg_write is called.
+- Add the am335x-bonegreen-eco devicetree change in the same patch
+  series.
+
+Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Kory Maincent (TI.com) (2):
+      mfd: tps65219: Implement LOCK register handling for TPS65214
+      ARM: dts: am335x-bonegreen-eco: Enable 1GHz OPP by increasing vdd_mpu voltage
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 110d716087b5..72dc5d5bcac8 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3091,7 +3091,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 		scm_recv_unix(sock, msg, &scm, flags);
- 
- 		do_cmsg = READ_ONCE(u->recvmsg_inq);
--		if (do_cmsg || msg->msg_get_inq) {
-+		if ((do_cmsg || msg->msg_get_inq) && (copied ?: err) >= 0) {
- 			msg->msg_inq = READ_ONCE(u->inq_len);
- 			if (do_cmsg)
- 				put_cmsg(msg, SOL_SOCKET, SCM_INQ,
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 2 +-
+ drivers/mfd/tps65219.c                             | 9 +++++++++
+ include/linux/mfd/tps65219.h                       | 2 ++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+---
+base-commit: 2bb202416d33347102b12bbd1db4837fb6685617
+change-id: 20251106-fix_tps65219-dd62141d22cf
+
+Best regards,
 -- 
-2.51.0
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
 
