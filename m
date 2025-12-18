@@ -1,199 +1,514 @@
-Return-Path: <stable+bounces-203034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEAECCDABD
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 22:22:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0B9CCDDB3
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 23:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E33A300D4B0
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 21:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D04F3012760
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 22:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9A025DB0D;
-	Thu, 18 Dec 2025 21:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E192D6E64;
+	Thu, 18 Dec 2025 22:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Kydoo07D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ri248ZUE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB975283FEF;
-	Thu, 18 Dec 2025 21:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43501175D53
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 22:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766092900; cv=none; b=Pies+foeDXevNxxCB2ScFi+GpXqCCaNWkous6HA2nSJ8ALkgG0YvXA+tcO52oJ0KRBqxceThCc4WvWMn6uDb2bXFpQ+S/9+m1rNv9uslyA8noQNWHCmuPoKDC1hOp3ziS5XnRoaC28B5q9k+bBLw0HUIRbn9XbMOVcb3mV4DzLw=
+	t=1766097879; cv=none; b=F2i0H6t1fDRzasQd7uQQFK+hx3PaMzTDYUtLH4Ol8HJ+/4n5TwUaNoyL61BmVI2pQO6/WhClZOQ+avF6EiD3JszdKoI+bp/Smmzp6lc7lSe8dt0HmHO6tblXtiE/F4Tr+s2EFQyFD5OafFaeawNyNsq88AgdbipLQKDBmt8hS9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766092900; c=relaxed/simple;
-	bh=3pYZaXxohSvkAV3IhoGDdLwI1FBIso2wTVbEpTHUyq0=;
-	h=Date:To:From:Subject:Message-Id; b=MMFOirPNbdCk0Pnvi6sLLj36At/YygY1MwGXTFiAi5mzZ4/2y3UD1CkYSPVdXXf1fbtP4KjE2mWmGZRNmwP57HcXVxxjgdwlFxMoBHXWRbh67h6N6bALyr72de88Vua41rx/3tIcaWLqo5k81oP94jcbbuAGoeGtMU1rLBi9KbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Kydoo07D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611F6C4CEFB;
-	Thu, 18 Dec 2025 21:21:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766092899;
-	bh=3pYZaXxohSvkAV3IhoGDdLwI1FBIso2wTVbEpTHUyq0=;
-	h=Date:To:From:Subject:From;
-	b=Kydoo07Dqx7fuTb7Iu2sNB8tP+TYGQAJVBslwrj6FyErbEjtUbH5WVfyamZbu0o0N
-	 5NLTYnpoDcD0qH+xa9qTO1xKZ/9r4SWGBqHleyt4rdXFKSLD4GGjF4ubfTOgdXAuzl
-	 n++eF3MUCUAkoMzqt9nc0Gfe0sZNDHOakNFCmqQ4=
-Date: Thu, 18 Dec 2025 13:21:38 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,hch@lst.de,djwong@kernel.org,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-buildid-use-__kernel_read-for-sleepable-context.patch added to mm-nonmm-unstable branch
-Message-Id: <20251218212139.611F6C4CEFB@smtp.kernel.org>
+	s=arc-20240116; t=1766097879; c=relaxed/simple;
+	bh=+Fj++VPMSm50auGOBT0rf1fpUCmlhjyC6Bw45LJ6WQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lUUBFlAPkK8EcFunB+3eplwbBWIKSr3JE0N9X2YvoQqTHSFx5xw8Hz6WmX/n9L+W7hkPCNhx0z5e5ycCoN+hbpchNMeqRQ50FVZmAgKK7BWs+arRGEcCw0sVlPwCuyCCnNfuZZ8HcbmWn7DF7WVM7kU6+t4vxxAxpmmI0bowonE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ri248ZUE; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766097878; x=1797633878;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+Fj++VPMSm50auGOBT0rf1fpUCmlhjyC6Bw45LJ6WQA=;
+  b=Ri248ZUE8pXTS9CVkz/om+udX+AcJP4pC8piKDSx0cUbIrqH29gXWhAu
+   jxya7P6zbWYOb4cQxuUjgXaHWOWM1IKhKPEpxPDnuzDsJ/1ziWiWJQvNU
+   Nep5KP34gD/5kzgnYgsFjyEd8fvY30RjUFby79oVbhocu8APxG54wLDfa
+   TGX6R1i7CK5eNUrTlIzzL6gQUMaIMyA5T3TZA6uEwchhnRqJgFgw/35Wo
+   MDT2CWunLaCtfk0o1kaiasiyLWKHlEfzQkrv7W8xHU3k6YoKgxekjWz6c
+   Opma0hrO+mE0/hlrqKXXwNXFOoIhT8mep/7wa2K0nad9QHS9AiMdaOMQf
+   A==;
+X-CSE-ConnectionGUID: byK7y68HRVa8/asWmjGY8g==
+X-CSE-MsgGUID: b1CywuIAQWWzyvxPZHHMgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="85482533"
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="85482533"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 14:44:37 -0800
+X-CSE-ConnectionGUID: i5LJNgXzR2yjTgKh0ZymuQ==
+X-CSE-MsgGUID: SrsPxeJDRdaOtKIs2FOvmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
+   d="scan'208";a="203788317"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO fedora) ([10.245.244.93])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 14:44:32 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	himal.prasad.ghimiray@intel.com,
+	apopple@nvidia.com,
+	airlied@gmail.com,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	felix.kuehling@amd.com,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dakr@kernel.org,
+	"Mrozek, Michal" <michal.mrozek@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH v6] drm/pagemap, drm/xe: Ensure that the devmem allocation is idle before use
+Date: Thu, 18 Dec 2025 23:44:00 +0100
+Message-ID: <20251218224400.30246-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+In situations where no system memory is migrated to devmem, and in
+upcoming patches where another GPU is performing the migration to
+the newly allocated devmem buffer, there is nothing to ensure any
+ongoing clear to the devmem allocation or async eviction from the
+devmem allocation is complete.
 
-The patch titled
-     Subject: lib/buildid: use __kernel_read() for sleepable context
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     lib-buildid-use-__kernel_read-for-sleepable-context.patch
+Address that by passing a struct dma_fence down to the copy
+functions, and ensure it is waited for before migration is marked
+complete.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-buildid-use-__kernel_read-for-sleepable-context.patch
+v3:
+- New patch.
+v4:
+- Update the logic used for determining when to wait for the
+  pre_migrate_fence.
+- Update the logic used for determining when to warn for the
+  pre_migrate_fence since the scheduler fences apparently
+  can signal out-of-order.
+v5:
+- Fix a UAF (CI)
+- Remove references to source P2P migration (Himal)
+- Put the pre_migrate_fence after migration.
+v6:
+- Pipeline the pre_migrate_fence dependency (Matt Brost)
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Subject: lib/buildid: use __kernel_read() for sleepable context
-Date: Thu, 18 Dec 2025 12:55:05 -0800
-
-For the sleepable context, convert freader to use __kernel_read() instead
-of direct page cache access via read_cache_folio().  This simplifies the
-faultable code path by using the standard kernel file reading interface
-which handles all the complexity of reading file data.
-
-At the moment we are not changing the code for non-sleepable context which
-uses filemap_get_folio() and only succeeds if the target folios are
-already in memory and up-to-date.  The reason is to keep the patch simple
-and easier to backport to stable kernels.
-
-Syzbot repro does not crash the kernel anymore and the selftests run
-successfully.
-
-In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
-non-sleepable contexts.  In addition, I would like to replace the
-secretmem check with a more generic approach and will add fstest for the
-buildid code.
-
-Link: https://lkml.kernel.org/r/20251218205505.2415840-1-shakeel.butt@linux.dev
-Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Daniel Borkman <daniel@iogearbox.net>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc functions")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
+ drivers/gpu/drm/drm_pagemap.c   | 17 +++++++++---
+ drivers/gpu/drm/xe/xe_migrate.c | 25 +++++++++++++----
+ drivers/gpu/drm/xe/xe_migrate.h |  6 ++--
+ drivers/gpu/drm/xe/xe_svm.c     | 49 +++++++++++++++++++++++++--------
+ include/drm/drm_pagemap.h       | 17 ++++++++++--
+ 5 files changed, 88 insertions(+), 26 deletions(-)
 
- lib/buildid.c |   47 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 35 insertions(+), 12 deletions(-)
-
---- a/lib/buildid.c~lib-buildid-use-__kernel_read-for-sleepable-context
-+++ a/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
+diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+index 37d7cfbbb3e8..06c1bd8fc4d1 100644
+--- a/drivers/gpu/drm/drm_pagemap.c
++++ b/drivers/gpu/drm/drm_pagemap.c
+@@ -3,6 +3,7 @@
+  * Copyright © 2024-2025 Intel Corporation
+  */
+ 
++#include <linux/dma-fence.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/migrate.h>
  #include <linux/pagemap.h>
-+#include <linux/fs.h>
- #include <linux/secretmem.h>
- 
- #define BUILD_ID 3
-@@ -37,6 +38,29 @@ static void freader_put_folio(struct fre
- 	r->folio = NULL;
- }
- 
-+/*
-+ * Data is read directly into r->buf. Returns pointer to the buffer
-+ * on success, NULL on failure with r->err set.
-+ */
-+static const void *freader_fetch_sync(struct freader *r, loff_t file_off, size_t sz)
-+{
-+	ssize_t ret;
-+	loff_t pos = file_off;
-+	char *buf = r->buf;
-+
-+	do {
-+		ret = __kernel_read(r->file, buf, sz, &pos);
-+		if (ret <= 0) {
-+			r->err = ret ?: -EIO;
-+			return NULL;
-+		}
-+		buf += ret;
-+		sz -= ret;
-+	} while (sz > 0);
-+
-+	return r->buf;
-+}
-+
- static int freader_get_folio(struct freader *r, loff_t file_off)
- {
- 	/* check if we can just reuse current folio */
-@@ -46,20 +70,9 @@ static int freader_get_folio(struct frea
- 
- 	freader_put_folio(r);
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping))
--		return -EFAULT;
--
-+	/* only use page cache lookup - fail if not already cached */
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
- 
--	/* if sleeping is allowed, wait for the page, if necessary */
--	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
--		filemap_invalidate_lock_shared(r->file->f_mapping);
--		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
--					    NULL, r->file);
--		filemap_invalidate_unlock_shared(r->file->f_mapping);
--	}
--
- 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
- 		if (!IS_ERR(r->folio))
- 			folio_put(r->folio);
-@@ -97,6 +110,16 @@ const void *freader_fetch(struct freader
- 		return r->data + file_off;
+@@ -408,10 +409,14 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 		drm_pagemap_get_devmem_page(page, zdd);
  	}
  
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (secretmem_mapping(r->file->f_mapping)) {
-+		r->err = -EFAULT;
-+		return NULL;
+-	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
++	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
++				  devmem_allocation->pre_migrate_fence);
+ 	if (err)
+ 		goto err_finalize;
+ 
++	dma_fence_put(devmem_allocation->pre_migrate_fence);
++	devmem_allocation->pre_migrate_fence = NULL;
++
+ 	/* Upon success bind devmem allocation to range and zdd */
+ 	devmem_allocation->timeslice_expiration = get_jiffies_64() +
+ 		msecs_to_jiffies(timeslice_ms);
+@@ -596,7 +601,7 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
+ 	for (i = 0; i < npages; ++i)
+ 		pages[i] = migrate_pfn_to_page(src[i]);
+ 
+-	err = ops->copy_to_ram(pages, pagemap_addr, npages);
++	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+ 	if (err)
+ 		goto err_finalize;
+ 
+@@ -732,7 +737,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
+ 	for (i = 0; i < npages; ++i)
+ 		pages[i] = migrate_pfn_to_page(migrate.src[i]);
+ 
+-	err = ops->copy_to_ram(pages, pagemap_addr, npages);
++	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+ 	if (err)
+ 		goto err_finalize;
+ 
+@@ -813,11 +818,14 @@ EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
+  * @ops: Pointer to the operations structure for GPU SVM device memory
+  * @dpagemap: The struct drm_pagemap we're allocating from.
+  * @size: Size of device memory allocation
++ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
++ * (May be NULL).
+  */
+ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+ 			     struct device *dev, struct mm_struct *mm,
+ 			     const struct drm_pagemap_devmem_ops *ops,
+-			     struct drm_pagemap *dpagemap, size_t size)
++			     struct drm_pagemap *dpagemap, size_t size,
++			     struct dma_fence *pre_migrate_fence)
+ {
+ 	init_completion(&devmem_allocation->detached);
+ 	devmem_allocation->dev = dev;
+@@ -825,6 +833,7 @@ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+ 	devmem_allocation->ops = ops;
+ 	devmem_allocation->dpagemap = dpagemap;
+ 	devmem_allocation->size = size;
++	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
+ }
+ EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
+ 
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index f3b66b55acfb..284b575346ee 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -2113,6 +2113,7 @@ static struct dma_fence *xe_migrate_vram(struct xe_migrate *m,
+ 					 unsigned long sram_offset,
+ 					 struct drm_pagemap_addr *sram_addr,
+ 					 u64 vram_addr,
++					 struct dma_fence *deps,
+ 					 const enum xe_migrate_copy_dir dir)
+ {
+ 	struct xe_gt *gt = m->tile->primary_gt;
+@@ -2201,6 +2202,14 @@ static struct dma_fence *xe_migrate_vram(struct xe_migrate *m,
+ 
+ 	xe_sched_job_add_migrate_flush(job, MI_INVALIDATE_TLB);
+ 
++	if (deps && !dma_fence_is_signaled(deps)) {
++		dma_fence_get(deps);
++		err = drm_sched_job_add_dependency(&job->drm, deps);
++		if (err)
++			dma_fence_wait(deps, false);
++		err = 0;
 +	}
 +
-+	/* use __kernel_read() for sleepable context */
-+	if (r->may_fault)
-+		return freader_fetch_sync(r, file_off, sz);
+ 	mutex_lock(&m->job_mutex);
+ 	xe_sched_job_arm(job);
+ 	fence = dma_fence_get(&job->drm.s_fence->finished);
+@@ -2226,6 +2235,8 @@ static struct dma_fence *xe_migrate_vram(struct xe_migrate *m,
+  * @npages: Number of pages to migrate.
+  * @src_addr: Array of DMA information (source of migrate)
+  * @dst_addr: Device physical address of VRAM (destination of migrate)
++ * @deps: struct dma_fence representing the dependencies that need
++ * to be signaled before migration.
+  *
+  * Copy from an array dma addresses to a VRAM device physical address
+  *
+@@ -2235,10 +2246,11 @@ static struct dma_fence *xe_migrate_vram(struct xe_migrate *m,
+ struct dma_fence *xe_migrate_to_vram(struct xe_migrate *m,
+ 				     unsigned long npages,
+ 				     struct drm_pagemap_addr *src_addr,
+-				     u64 dst_addr)
++				     u64 dst_addr,
++				     struct dma_fence *deps)
+ {
+ 	return xe_migrate_vram(m, npages * PAGE_SIZE, 0, src_addr, dst_addr,
+-			       XE_MIGRATE_COPY_TO_VRAM);
++			       deps, XE_MIGRATE_COPY_TO_VRAM);
+ }
+ 
+ /**
+@@ -2247,6 +2259,8 @@ struct dma_fence *xe_migrate_to_vram(struct xe_migrate *m,
+  * @npages: Number of pages to migrate.
+  * @src_addr: Device physical address of VRAM (source of migrate)
+  * @dst_addr: Array of DMA information (destination of migrate)
++ * @deps: struct dma_fence representing the dependencies that need
++ * to be signaled before migration.
+  *
+  * Copy from a VRAM device physical address to an array dma addresses
+  *
+@@ -2256,10 +2270,11 @@ struct dma_fence *xe_migrate_to_vram(struct xe_migrate *m,
+ struct dma_fence *xe_migrate_from_vram(struct xe_migrate *m,
+ 				       unsigned long npages,
+ 				       u64 src_addr,
+-				       struct drm_pagemap_addr *dst_addr)
++				       struct drm_pagemap_addr *dst_addr,
++				       struct dma_fence *deps)
+ {
+ 	return xe_migrate_vram(m, npages * PAGE_SIZE, 0, dst_addr, src_addr,
+-			       XE_MIGRATE_COPY_TO_SRAM);
++			       deps, XE_MIGRATE_COPY_TO_SRAM);
+ }
+ 
+ static void xe_migrate_dma_unmap(struct xe_device *xe,
+@@ -2435,7 +2450,7 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 		__fence = xe_migrate_vram(m, current_bytes,
+ 					  (unsigned long)buf & ~PAGE_MASK,
+ 					  &pagemap_addr[current_page],
+-					  vram_addr, write ?
++					  vram_addr, NULL, write ?
+ 					  XE_MIGRATE_COPY_TO_VRAM :
+ 					  XE_MIGRATE_COPY_TO_SRAM);
+ 		if (IS_ERR(__fence)) {
+diff --git a/drivers/gpu/drm/xe/xe_migrate.h b/drivers/gpu/drm/xe/xe_migrate.h
+index 464c05dde1ba..1522afb37dcf 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.h
++++ b/drivers/gpu/drm/xe/xe_migrate.h
+@@ -116,12 +116,14 @@ int xe_migrate_init(struct xe_migrate *m);
+ struct dma_fence *xe_migrate_to_vram(struct xe_migrate *m,
+ 				     unsigned long npages,
+ 				     struct drm_pagemap_addr *src_addr,
+-				     u64 dst_addr);
++				     u64 dst_addr,
++				     struct dma_fence *deps);
+ 
+ struct dma_fence *xe_migrate_from_vram(struct xe_migrate *m,
+ 				       unsigned long npages,
+ 				       u64 src_addr,
+-				       struct drm_pagemap_addr *dst_addr);
++				       struct drm_pagemap_addr *dst_addr,
++				       struct dma_fence *deps);
+ 
+ struct dma_fence *xe_migrate_copy(struct xe_migrate *m,
+ 				  struct xe_bo *src_bo,
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index 93550c7c84ac..a985148b6820 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -472,7 +472,8 @@ static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
+ 
+ static int xe_svm_copy(struct page **pages,
+ 		       struct drm_pagemap_addr *pagemap_addr,
+-		       unsigned long npages, const enum xe_svm_copy_dir dir)
++		       unsigned long npages, const enum xe_svm_copy_dir dir,
++		       struct dma_fence *pre_migrate_fence)
+ {
+ 	struct xe_vram_region *vr = NULL;
+ 	struct xe_gt *gt = NULL;
+@@ -561,7 +562,8 @@ static int xe_svm_copy(struct page **pages,
+ 					__fence = xe_migrate_from_vram(vr->migrate,
+ 								       i - pos + incr,
+ 								       vram_addr,
+-								       &pagemap_addr[pos]);
++								       &pagemap_addr[pos],
++								       pre_migrate_fence);
+ 				} else {
+ 					vm_dbg(&xe->drm,
+ 					       "COPY TO VRAM - 0x%016llx -> 0x%016llx, NPAGES=%ld",
+@@ -570,13 +572,14 @@ static int xe_svm_copy(struct page **pages,
+ 					__fence = xe_migrate_to_vram(vr->migrate,
+ 								     i - pos + incr,
+ 								     &pagemap_addr[pos],
+-								     vram_addr);
++								     vram_addr,
++								     pre_migrate_fence);
+ 				}
+ 				if (IS_ERR(__fence)) {
+ 					err = PTR_ERR(__fence);
+ 					goto err_out;
+ 				}
+-
++				pre_migrate_fence = NULL;
+ 				dma_fence_put(fence);
+ 				fence = __fence;
+ 			}
+@@ -599,20 +602,22 @@ static int xe_svm_copy(struct page **pages,
+ 					       vram_addr, (u64)pagemap_addr[pos].addr, 1);
+ 					__fence = xe_migrate_from_vram(vr->migrate, 1,
+ 								       vram_addr,
+-								       &pagemap_addr[pos]);
++								       &pagemap_addr[pos],
++								       pre_migrate_fence);
+ 				} else {
+ 					vm_dbg(&xe->drm,
+ 					       "COPY TO VRAM - 0x%016llx -> 0x%016llx, NPAGES=%d",
+ 					       (u64)pagemap_addr[pos].addr, vram_addr, 1);
+ 					__fence = xe_migrate_to_vram(vr->migrate, 1,
+ 								     &pagemap_addr[pos],
+-								     vram_addr);
++								     vram_addr,
++								     pre_migrate_fence);
+ 				}
+ 				if (IS_ERR(__fence)) {
+ 					err = PTR_ERR(__fence);
+ 					goto err_out;
+ 				}
+-
++				pre_migrate_fence = NULL;
+ 				dma_fence_put(fence);
+ 				fence = __fence;
+ 			}
+@@ -625,6 +630,8 @@ static int xe_svm_copy(struct page **pages,
+ 		dma_fence_wait(fence, false);
+ 		dma_fence_put(fence);
+ 	}
++	if (pre_migrate_fence)
++		dma_fence_wait(pre_migrate_fence, false);
+ 
+ 	/*
+ 	 * XXX: We can't derive the GT here (or anywhere in this functions, but
+@@ -641,16 +648,20 @@ static int xe_svm_copy(struct page **pages,
+ 
+ static int xe_svm_copy_to_devmem(struct page **pages,
+ 				 struct drm_pagemap_addr *pagemap_addr,
+-				 unsigned long npages)
++				 unsigned long npages,
++				 struct dma_fence *pre_migrate_fence)
+ {
+-	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM);
++	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM,
++			   pre_migrate_fence);
+ }
+ 
+ static int xe_svm_copy_to_ram(struct page **pages,
+ 			      struct drm_pagemap_addr *pagemap_addr,
+-			      unsigned long npages)
++			      unsigned long npages,
++			      struct dma_fence *pre_migrate_fence)
+ {
+-	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM);
++	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM,
++			   pre_migrate_fence);
+ }
+ 
+ static struct xe_bo *to_xe_bo(struct drm_pagemap_devmem *devmem_allocation)
+@@ -663,6 +674,7 @@ static void xe_svm_devmem_release(struct drm_pagemap_devmem *devmem_allocation)
+ 	struct xe_bo *bo = to_xe_bo(devmem_allocation);
+ 	struct xe_device *xe = xe_bo_device(bo);
+ 
++	dma_fence_put(devmem_allocation->pre_migrate_fence);
+ 	xe_bo_put_async(bo);
+ 	xe_pm_runtime_put(xe);
+ }
+@@ -857,6 +869,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ 				      unsigned long timeslice_ms)
+ {
+ 	struct xe_vram_region *vr = container_of(dpagemap, typeof(*vr), dpagemap);
++	struct dma_fence *pre_migrate_fence = NULL;
+ 	struct xe_device *xe = vr->xe;
+ 	struct device *dev = xe->drm.dev;
+ 	struct drm_buddy_block *block;
+@@ -883,8 +896,20 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ 			break;
+ 		}
+ 
++		/* Ensure that any clearing or async eviction will complete before migration. */
++		if (!dma_resv_test_signaled(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL)) {
++			err = dma_resv_get_singleton(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
++						     &pre_migrate_fence);
++			if (err)
++				dma_resv_wait_timeout(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
++						      false, MAX_SCHEDULE_TIMEOUT);
++			else if (pre_migrate_fence)
++				dma_fence_enable_sw_signaling(pre_migrate_fence);
++		}
 +
- 	/* fetch or reuse folio for given file offset */
- 	r->err = freader_get_folio(r, file_off);
- 	if (r->err)
-_
-
-Patches currently in -mm which might be from shakeel.butt@linux.dev are
-
-mm-memcg-fix-unit-conversion-for-k-macro-in-oom-log.patch
-lib-buildid-use-__kernel_read-for-sleepable-context.patch
+ 		drm_pagemap_devmem_init(&bo->devmem_allocation, dev, mm,
+-					&dpagemap_devmem_ops, dpagemap, end - start);
++					&dpagemap_devmem_ops, dpagemap, end - start,
++					pre_migrate_fence);
+ 
+ 		blocks = &to_xe_ttm_vram_mgr_resource(bo->ttm.resource)->blocks;
+ 		list_for_each_entry(block, blocks, link)
+diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
+index f6e7e234c089..70a7991f784f 100644
+--- a/include/drm/drm_pagemap.h
++++ b/include/drm/drm_pagemap.h
+@@ -8,6 +8,7 @@
+ 
+ #define NR_PAGES(order) (1U << (order))
+ 
++struct dma_fence;
+ struct drm_pagemap;
+ struct drm_pagemap_zdd;
+ struct device;
+@@ -174,6 +175,8 @@ struct drm_pagemap_devmem_ops {
+ 	 * @pages: Pointer to array of device memory pages (destination)
+ 	 * @pagemap_addr: Pointer to array of DMA information (source)
+ 	 * @npages: Number of pages to copy
++	 * @pre_migrate_fence: dma-fence to wait for before migration start.
++	 * May be NULL.
+ 	 *
+ 	 * Copy pages to device memory. If the order of a @pagemap_addr entry
+ 	 * is greater than 0, the entry is populated but subsequent entries
+@@ -183,13 +186,16 @@ struct drm_pagemap_devmem_ops {
+ 	 */
+ 	int (*copy_to_devmem)(struct page **pages,
+ 			      struct drm_pagemap_addr *pagemap_addr,
+-			      unsigned long npages);
++			      unsigned long npages,
++			      struct dma_fence *pre_migrate_fence);
+ 
+ 	/**
+ 	 * @copy_to_ram: Copy to system RAM (required for migration)
+ 	 * @pages: Pointer to array of device memory pages (source)
+ 	 * @pagemap_addr: Pointer to array of DMA information (destination)
+ 	 * @npages: Number of pages to copy
++	 * @pre_migrate_fence: dma-fence to wait for before migration start.
++	 * May be NULL.
+ 	 *
+ 	 * Copy pages to system RAM. If the order of a @pagemap_addr entry
+ 	 * is greater than 0, the entry is populated but subsequent entries
+@@ -199,7 +205,8 @@ struct drm_pagemap_devmem_ops {
+ 	 */
+ 	int (*copy_to_ram)(struct page **pages,
+ 			   struct drm_pagemap_addr *pagemap_addr,
+-			   unsigned long npages);
++			   unsigned long npages,
++			   struct dma_fence *pre_migrate_fence);
+ };
+ 
+ /**
+@@ -212,6 +219,8 @@ struct drm_pagemap_devmem_ops {
+  * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
+  * @size: Size of device memory allocation
+  * @timeslice_expiration: Timeslice expiration in jiffies
++ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
++ * (May be NULL).
+  */
+ struct drm_pagemap_devmem {
+ 	struct device *dev;
+@@ -221,6 +230,7 @@ struct drm_pagemap_devmem {
+ 	struct drm_pagemap *dpagemap;
+ 	size_t size;
+ 	u64 timeslice_expiration;
++	struct dma_fence *pre_migrate_fence;
+ };
+ 
+ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+@@ -238,7 +248,8 @@ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+ 			     struct device *dev, struct mm_struct *mm,
+ 			     const struct drm_pagemap_devmem_ops *ops,
+-			     struct drm_pagemap *dpagemap, size_t size);
++			     struct drm_pagemap *dpagemap, size_t size,
++			     struct dma_fence *pre_migrate_fence);
+ 
+ int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ 			    unsigned long start, unsigned long end,
+-- 
+2.51.1
 
 
