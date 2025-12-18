@@ -1,54 +1,49 @@
-Return-Path: <stable+bounces-202970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD4ECCB99B
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:25:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9358CCBA76
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B001A30387A8
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:25:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC0A2301E3E4
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 11:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD32316917;
-	Thu, 18 Dec 2025 11:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE0431AAA9;
+	Thu, 18 Dec 2025 11:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTFcb/y4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyXtuoZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ECD284890;
-	Thu, 18 Dec 2025 11:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FDD31B82E;
+	Thu, 18 Dec 2025 11:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766057108; cv=none; b=i6z9u3FGmIdNIDSocE2knqMJxBonzrpwtYNS8lz07a3jV12G5euHbEAzH/BRLzcPTCj0FM1c/sp6BpVvKnx+zNvPkt6RL8KQ/4FIHXi+dFlulCwOfByDgVAPS4A9AUqX/nSR/Byq4dPD7fX7ccGlUaj7lEy5l8UkbSkZLOafY3o=
+	t=1766057589; cv=none; b=hspRtEc877kAn5w4VmUGNgI0C/baer7c2KmB8UV6WtQDrLhjs6H8/kXdmZRbHGXOTykb2CIASSnIUEtXprpJxhQYKUcvncRNSVcRGEA27DEIknQokc7pNZ8gj+lv57/cOVHhn3IxtjpTsPM80FAb7nl3EiIDCIiPmcRfkBHKo+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766057108; c=relaxed/simple;
-	bh=tdW8fnXupCOSsN96mXMeTs2wlT6YThU2zVhoHzFQylM=;
+	s=arc-20240116; t=1766057589; c=relaxed/simple;
+	bh=x56vGhs99iUAGeSHiBDacCNHmj7BMmiZ4yuWTG6NNws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X/cJM7mq9U/zlDmINkOWaFf8AL4tHeznp4XgXyNDMKcmVYglytILzKwHxirFCfhgFKx/iLLQlrcbRjO9tdK7y3OgwygFDBb9piP40BfCVz5MvyNutiYb1WMGDajhvD39j+XOBwhX8o+JJI3kFAquWiPViHGljaSUwoOUXHenRCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTFcb/y4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE73C4CEFB;
-	Thu, 18 Dec 2025 11:25:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JzVChonl7TJuMePLztYbHfbxteN7fRWIQZjH47KBTNA9Jk5zGf1d5KVFv66rWH0Si8xQwY1fw6yPFi8P9WT8O751oAWwvW24SjUO/UYzfEtfaNUIFmglHLATgwwqTzw8romS1ok+gCT+QnCLsDj9DYdwkY+zoXjeUBNyFwgFJAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyXtuoZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE641C4CEFB;
+	Thu, 18 Dec 2025 11:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766057106;
-	bh=tdW8fnXupCOSsN96mXMeTs2wlT6YThU2zVhoHzFQylM=;
+	s=korg; t=1766057588;
+	bh=x56vGhs99iUAGeSHiBDacCNHmj7BMmiZ4yuWTG6NNws=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OTFcb/y4kotOZN5iBp3ALKSPNpdIyZhmnZvgDWLO6vJeRgu65fPgcMKmG1DmQUSkN
-	 4KY0m2JnNCKghd1a7YvzcCymtBbgrKziuu/qJHcaA5zGnkVnery7agAyBQt4O4+mOM
-	 OOqAtoeLvrB65XrpA85X4Oe9RhFYzoj3cEBIc0QM=
-Date: Thu, 18 Dec 2025 12:25:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.18 280/614] perf vendor metrics s390: Avoid
- has_event(INSTRUCTIONS)
-Message-ID: <2025121839-outbreak-handed-29bf@gregkh>
-References: <20251216111401.280873349@linuxfoundation.org>
- <20251216111411.519418812@linuxfoundation.org>
- <4e90e4dc-e0d7-492f-a45f-30a53be3899b@kernel.org>
+	b=eyXtuoZEYeceLgAJYDLi/YjVNgt7Ipw33aNg5RGJIqNVOOEMQQzO6wmGyhBGYkTNq
+	 /nbU9kTXW5AI4CYtUar9wl9/tShyCWJ8ORMJRgU6Iv8adcj/qLOvromtmgDT7abxsH
+	 G+844avZ+WnmbQ9Qpzza7EVANBF3U39Vu+fZqrbg=
+Date: Thu, 18 Dec 2025 12:33:05 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] PNP: add a error handling in pnpacpi_init()
+Message-ID: <2025121841-unwoven-twelve-e65b@gregkh>
+References: <20251218082903.551296-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,31 +52,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4e90e4dc-e0d7-492f-a45f-30a53be3899b@kernel.org>
+In-Reply-To: <20251218082903.551296-1-lihaoxiang@isrc.iscas.ac.cn>
 
-On Thu, Dec 18, 2025 at 07:16:06AM +0100, Jiri Slaby wrote:
-> On 16. 12. 25, 12:10, Greg Kroah-Hartman wrote:
-> > 6.18-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Ian Rogers <irogers@google.com>
-> > 
-> > [ Upstream commit c1932fb85af8e51ac9f6bd9947145b06c716106e ]
-> > 
-> > The instructions event is now provided in json meaning the has_event
-> > test always succeeds. Switch to using non-legacy event names in the
-> > affected metrics.
-> > 
-> > Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-> > Closes: https://lore.kernel.org/linux-perf-users/3e80f453-f015-4f4f-93d3-8df6bb6b3c95@linux.ibm.com/
-> > Fixes: 0012e0fa221b ("perf jevents: Add legacy-hardware and legacy-cache json")
+On Thu, Dec 18, 2025 at 04:29:03PM +0800, Haoxiang Li wrote:
+> Add a error handling for pnp_register_protocol(), and if
+> it fails, call put_device() to drop the device reference.
 > 
-> Hmm, this ^^^ is also a 19-rc1 commit, not present in .18-stable. Why were
-> these patches added?
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+> ---
+>  drivers/pnp/pnpacpi/core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pnp/pnpacpi/core.c b/drivers/pnp/pnpacpi/core.c
+> index a0927081a003..0b63e1748b7c 100644
+> --- a/drivers/pnp/pnpacpi/core.c
+> +++ b/drivers/pnp/pnpacpi/core.c
+> @@ -304,7 +304,10 @@ static int __init pnpacpi_init(void)
+>  		return 0;
+>  	}
+>  	printk(KERN_INFO "pnp: PnP ACPI init\n");
+> -	pnp_register_protocol(&pnpacpi_protocol);
+> +	if (pnp_register_protocol(&pnpacpi_protocol)) {
+> +		put_device(&pnpacpi_protocol.dev);
 
-Ugh, let me go drop this and then verify _all_ of the commits in the
-tree are actually fixing something in the right branch.
+Again, this looks really wrong.
+
+What tool are you all using to "find" these issues?  Why aren't you
+properly documenting it?
 
 thanks,
 
