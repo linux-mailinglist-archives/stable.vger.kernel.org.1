@@ -1,93 +1,84 @@
-Return-Path: <stable+bounces-203012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B90CCCA68
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:08:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DF9CCCA7A
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 17:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A57D30341D3
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:05:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FD7F3026AFD
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 16:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B9738257F;
-	Thu, 18 Dec 2025 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A1838258E;
+	Thu, 18 Dec 2025 16:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDd4alPF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vO8qvjSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993E129AAF7;
-	Thu, 18 Dec 2025 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90358382588;
+	Thu, 18 Dec 2025 16:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766073927; cv=none; b=WcVew2lVwIS5wG/bX7DVwTIfXNK8YAMiypYdhNnU2telXiBL7rG5Eo//A72vHIndJjTB1IkmrrUgFXFoqK0e++CB0DMHP/9t9KZ5hqocPyMTqR1V8Bl+qKqszeAWX6d0ZG+ID8OT+bJg6QpoUrF9AvzPyo4ivf9gztvwCsFGu6A=
+	t=1766073993; cv=none; b=JPIyGW3r+Ak5ut4DalAYH81vPFmrVJGzgUjTht/hyxx6VkVYX6nJwZvRrV6smTKqQwqqIhgL7peJn7i//JWZ6N3zbUBXJqz5lN9fqxVETtPzqed7pfVn7l2eNFLn3NPENdccxqbQ7GB33p9fjh9KH2bde5m7ya8QLQzH0L2O7qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766073927; c=relaxed/simple;
-	bh=SxMlS0kJb6kvCoZ7nnXsWRulxsWUUdMu1Y7QIuZa8ik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qWdt3EIf8GXb5AnJA4SYOUWScli1YN/4rWaLhW2ME0WLYUmXC0i+XSNKQ6DH3lCAwhuEgmuP7aprmx0hSbvaKmDUG5MLTWwsVbHS8zQRxV4Fg32YPRhGmj+r9qzbzAHuc9Kdzv90IKd+qbsQlPuaewcKIAy2sf0XAOXVAa3KDKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDd4alPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7DCC116B1;
-	Thu, 18 Dec 2025 16:05:26 +0000 (UTC)
+	s=arc-20240116; t=1766073993; c=relaxed/simple;
+	bh=3j2pXJo7FhgX3qJ5BcR7GaFeucTZyFzRz/m+Vr000vA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sdH2gcKtRBciWRM0t8NJTb6tvzQn3aLeI6NVMZ9xHSnHwgy/MmADDTmGQv4QuWXt7JyVeKYaG5m6uBZzMRVjUkg+B0aSXZx0xnTa3Uqwz3PlML3Xha6un2bKr1GYS/Ysrxi0qbNjsizcE0A7/fwFgyYUKFDqzhoXPOh4oaeJH/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vO8qvjSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBFCC4CEFB;
+	Thu, 18 Dec 2025 16:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766073927;
-	bh=SxMlS0kJb6kvCoZ7nnXsWRulxsWUUdMu1Y7QIuZa8ik=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rDd4alPFLKF+zpgrHNLS3dnnXto4Vm84e3JHl2WoWIcHGEk3AipV6T5PsOBA0crq4
-	 gGAez3towVTr+B3985GsOEFHQ67Q9DiTV4lVcTXYXJkG4fz3M1O9SnqkRErp3LrCdu
-	 6WqpYO70koPvjSRS1r6DhENclb2ZDRkAP1hCAj4pA86pmcW12iL5JQU2G3rj/sSlbD
-	 mHEtZYXM275ynfKfRON30SKz/VQR6AcBC5/+DxYOBw2/pBRQVsTh5feMz2AF59uBly
-	 XDs+zHufiGyQjFb9b9rsW4Q/zDosuiQacWhvE1x9AmKkXm4Ou+1fHAe3GKGmk5NDt/
-	 KpxGEhm76OJiw==
-Date: Thu, 18 Dec 2025 18:05:23 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: bharat@chelsio.com, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/cxgb4: fix dst refcount leak in pass_accept_req()
- error path
-Message-ID: <20251218160523.GD400630@unreal>
-References: <20251215153356.1783489-1-vulab@iscas.ac.cn>
+	s=k20201202; t=1766073993;
+	bh=3j2pXJo7FhgX3qJ5BcR7GaFeucTZyFzRz/m+Vr000vA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=vO8qvjSjCnXDzzUA9kFNGQRYPg4btxW1tF3eJOdUJsi826dS0ynO/6DxvNpaqP0dW
+	 +sRn68xvh7Sm5qvLD04ITM5gBTq8SaTlLYMWTPybauxA2Ip520jkmTZiq16+EiMKXp
+	 Bmk18egc/MO1rqHaTvGH7MLhPmZv0DFrgI0Wxgap5kQ7DUbsvfs2XF42bGDP6PTy8i
+	 xw8B3jbmIRm6VwmXWP+notJFha+D5kXs0gJbIUYZUzCEvkpNKhWYh6sdjFoCvsPUc2
+	 oMTbdT7QyTIIo4jQxvAIiOEyg0+l6m4BnMKSTPNyc7KO5GezpG7E2/gyCiZx0ExnkO
+	 aj6PaeC56TuvA==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Laight <david.laight.linux@gmail.com>, 
+ Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Thorsten Blum <thorsten.blum@linux.dev>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251216145007.44328-2-thorsten.blum@linux.dev>
+References: <20251216145007.44328-2-thorsten.blum@linux.dev>
+Subject: Re: [PATCH v5] w1: therm: Fix off-by-one buffer overflow in
+ alarms_store
+Message-Id: <176607399046.16637.3813737221857423754.b4-ty@kernel.org>
+Date: Thu, 18 Dec 2025 17:06:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215153356.1783489-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Mon, Dec 15, 2025 at 03:33:56PM +0000, Wentao Liang wrote:
-> Add missing dst_release() when alloc_ep_skb_list() fails to prevent
-> reference count leak of the dst obtained from route lookup.
 
-I'm not convinced this path is correct. I also don't see a call to  
-"kfree(child_ep);" in that case.
-
-Thanks
-
+On Tue, 16 Dec 2025 15:50:03 +0100, Thorsten Blum wrote:
+> The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+> bytes and a NUL terminator is appended. However, the 'size' argument
+> does not account for this extra byte. The original code then allocated
+> 'size' bytes and used strcpy() to copy 'buf', which always writes one
+> byte past the allocated buffer since strcpy() copies until the NUL
+> terminator at index 'size'.
 > 
-> Fixes: 4a740838bf44 ("RDMA/iw_cxgb4: Low resource fixes for connection manager")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/infiniband/hw/cxgb4/cm.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
-> index b3b45c49077d..3490b8920cf0 100644
-> --- a/drivers/infiniband/hw/cxgb4/cm.c
-> +++ b/drivers/infiniband/hw/cxgb4/cm.c
-> @@ -2665,6 +2665,7 @@ static int pass_accept_req(struct c4iw_dev *dev, struct sk_buff *skb)
->  	}
->  	goto out;
->  fail:
-> +	dst_release(dst);
->  	c4iw_put_ep(&child_ep->com);
->  reject:
->  	reject_cr(dev, hwtid, skb);
-> -- 
-> 2.34.1
-> 
+> [...]
+
+Applied, thanks!
+
+[1/1] w1: therm: Fix off-by-one buffer overflow in alarms_store
+      https://git.kernel.org/krzk/linux-w1/c/761fcf46a1bd797bd32d23f3ea0141ffd437668a
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzk@kernel.org>
+
 
