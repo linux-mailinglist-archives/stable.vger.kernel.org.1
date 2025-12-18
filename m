@@ -1,77 +1,107 @@
-Return-Path: <stable+bounces-202977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAF0CCBD09
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 13:40:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438C8CCBD93
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 13:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EBF02301E349
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:40:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B25243014D91
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 12:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892CC3328F9;
-	Thu, 18 Dec 2025 12:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850A83346BC;
+	Thu, 18 Dec 2025 12:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFj1ZYty"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvIZGS7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295703314CE;
-	Thu, 18 Dec 2025 12:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4083346A8;
+	Thu, 18 Dec 2025 12:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766061613; cv=none; b=sA7gmYDAOvDG+YldEC8M1FE87cLiO8DGciSXlmhOJLMbz/O6w6C9BCp2bp/h6jaq2uRdiQ6IQMSweUYGDq4Fq37d/XHA4FDzShqzIoD8EzdtvCYPmz86flAIAIUTGXE9w1WBrpboMCtaLWKKcjOr6oLABae+wQAa1l2jOX2yJrw=
+	t=1766062373; cv=none; b=mgq4UFmoUvyxbziFU0lSqeaKyj2BYUcHZrmh+YkZVkyK8NcJBadkq8YAJfAtj6CuMCpdeAs4772HQr68a8zfq9fSPmz7g+tcnhb2pyOAw+cQAmf8UiSeSJGn0QLRcHJKjM2QTMUR+wXGdjyDmU0HWFSplAy/vT2D58OF/nRuLpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766061613; c=relaxed/simple;
-	bh=sre1twFs1oaMSWJWmMpYhlzmqOCAaTMsnJ9nVhzfEvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MErXX4XLlgJopibPWEvDIcIBZEq3lpcwAk1NeadeHljckTFb26Zvb7BDXV6MqyMsAYRrnFmZ60UHCJCqoNHATEuQNQde21XUP4EUP2Fe+uKMK1FJ2MBwkrlbwuqh0OGNMZz8ccoK435IRmxhI7KbM0OL5r+FRZ5ptHKQ+Zh97bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFj1ZYty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3E9C4CEFB;
-	Thu, 18 Dec 2025 12:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766061612;
-	bh=sre1twFs1oaMSWJWmMpYhlzmqOCAaTMsnJ9nVhzfEvg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZFj1ZYtyUlODolz7RGNALvEqy31J7fNPPQefSXOY1SRUJ/ghBHpSBKBgIROHDeoTw
-	 76/rTGWCN5PtcX025cTFj+Fuo33YcMpCPK/5p1+Yfa4DggkH3GjsoXCj8GLNK17nMp
-	 tys81Kp9Unm22LyzjbkQNN5QaUylgCiAZd/ERpEw=
-Date: Thu, 18 Dec 2025 13:40:09 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rafael@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PNP: add a error handling in pnpacpi_init()
-Message-ID: <2025121811-password-reroute-6880@gregkh>
-References: <2025121841-unwoven-twelve-e65b@gregkh>
- <20251218122422.573466-1-lihaoxiang@isrc.iscas.ac.cn>
+	s=arc-20240116; t=1766062373; c=relaxed/simple;
+	bh=4PcjO3AAv5DkTbbnZnTkTeokRBEqI4f7EfDmqqxEmUw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XDDoKAtGGJaR8pkcbbSQVTtA4XqCUP3U+CbZ2+yS3q769WUY5VLspIXh040UHAclW3pWUD30iIe3Yg5Pq2LwLhgYyCvlL+zgw1saPGX3xuRu7+qfeeTCeSuMqWK4BaU/E8qTqs6hRfbFj8FOAWOJrMl0Y+/ulSsHQhJZhfLiASU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvIZGS7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38B5C4CEFB;
+	Thu, 18 Dec 2025 12:52:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766062372;
+	bh=4PcjO3AAv5DkTbbnZnTkTeokRBEqI4f7EfDmqqxEmUw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jvIZGS7s+QzMFSaoNVysN2TYamdUXJ6Jl2Hq+DlBuaQ9w0DqxheKIKHVn+qEvL9CF
+	 MXJDMfIJBmMDBzJJpSSiuu09BHn41tV9pd5zPSsNpTja8mk2kIpPLDz8e4l3M8N840
+	 EPq6EDrm+IhG7D6GU/Vve8TalEjb0lT0M/XQ+LbSAJvC0SPXXs5cvIdoORRCayMpE7
+	 acTa7HIVMGHHyDbSKEbYR/MmJXmAGB6eIjQ/cFcSuibOY2j2GTqsQn3IoGwubJuxFa
+	 aKjPd+GnmBgBfCGQ3piUSHEfdmomASe8Y68QKAD6P74ib5NrZXSE7Bu0rw94XhWYRP
+	 BUePV3JMHVoIQ==
+Message-ID: <e10cf4de-6c00-4ed0-a1d4-d8e719f86a3e@kernel.org>
+Date: Thu, 18 Dec 2025 13:52:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251218122422.573466-1-lihaoxiang@isrc.iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
+ unsharing PMD tables using mmu_gather
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
+References: <20251205213558.2980480-1-david@kernel.org>
+ <20251205213558.2980480-5-david@kernel.org>
+ <c641335e-39aa-490a-b587-4a2586917bc9@lucifer.local>
+ <9ac7c53e-04ae-49f3-976d-44d1e29587d1@kernel.org>
+ <07e8b94e-b4a1-4541-84ed-a5d57058d5a1@lucifer.local>
+ <937a4525-910d-4596-a9c4-29e47ca53667@kernel.org>
+ <4037214b-d1c6-4e0b-ad9d-6722aea7aba9@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <4037214b-d1c6-4e0b-ad9d-6722aea7aba9@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 18, 2025 at 08:24:22PM +0800, Haoxiang Li wrote:
-> On Thu, 18 Dec 2025 12:33:05 +0100, Greg KH Wrote:
-> > What tool are you all using to "find" these issues?  Why aren't you
-> > properly documenting it?
+>>>
+>>> Isn't really the correct comment here that ranges that previously mapped the
+>>> shared pages might no longer, so we must clear the TLB? I may be missing
+>>> something :)
+>>
+>> There are cases where we defer flushing the TLB until we dropped all (exclusive) locks.
+>> In particular, MADV_DONTNEED does that in some cases, essentially deferring the flush
+>> to the tlb_finish_mmu().
+>>
+>> free_pgtables() will also defer the flush, performing the TLB flush during tlb_finish_mmu(),
+>> before
+>>
+>> The point is (as I tried to make clear in the comment), for unsharing we have no control
+>> whenn the page table gets freed after we drop the lock.
+>>
+>> So we must flush the TLB now and cannot defer it like we do in the other cases.
 > 
-> Sorry for the inconvenience. I found these through manual code review.
+> Yeah I guess because of the above - that is - other users may unshare for their
+> CPUs but not unshare for ours?
+Yes :)
 
-Manually?  Really?  Why are you manually reviewing pnp code?  Do you
-have this hardware?  Why not focus on code for hardware you have and can
-test the fix for?
+It's all very complicated, therefore I decided to rather add more 
+comments describing what we depend on.
 
-> I will document how the issue was identified later.
+-- 
+Cheers
 
-It should be in the changelog text, as is required.
-
-thanks,
-
-greg k-h
+David
 
