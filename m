@@ -1,95 +1,86 @@
-Return-Path: <stable+bounces-202918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-202919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6610CCA1FB
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:01:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A845CCA201
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 04:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F5F4305860A
-	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 02:59:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3048C3028D8F
+	for <lists+stable@lfdr.de>; Thu, 18 Dec 2025 03:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98B72F7440;
-	Thu, 18 Dec 2025 02:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABE22620FC;
+	Thu, 18 Dec 2025 03:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHoNMrAz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODkciTn7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-yx1-f66.google.com (mail-yx1-f66.google.com [74.125.224.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81225CC40
-	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 02:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87C0221F12
+	for <stable@vger.kernel.org>; Thu, 18 Dec 2025 03:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766026792; cv=none; b=gxvsrmqyJK6pqs8/H+xHKcVwaVQ0yUQNMD0/sy6mhizoPom73Wx3LN3b81EaV1pVO6wsCMx6gi+/s3d9BEcq6z9x27DninDDQEGgoNRmqao4KAbfbVLF8B9Kmarf03qEksCqTQrs8QqkMTLp4mJPJH0lGFLTc7VeIlhICXI806A=
+	t=1766026833; cv=none; b=gbSN2Qcw6Mol+TdMyD7/QKUOPMa+6zMFIMRC9lvz0YiIGz0fUg0wFu8elM+lueoxgSP04wQcIfGY4+NUZVdBG/JSMXqhDUOZM8+Kfe+okZ+zP41/s44F2l2pQE39k/4BZry4DEgDyqnVb6uF72bvEDI8o8tn8Wqnr4uA+XkTJh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766026792; c=relaxed/simple;
-	bh=JMe1NKX9+LRlV6iB7gIIlQogjxDZeA3/lEGWMoqAGZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UkSv+oT6ENPIXr+rbssrDshqb3v07WLsziH1Lhvf6LggFJVnXaSWEIljCmS4C+TopW6PcTksJ1rMSDQ+TMQp5HxQnG2X+0KKyENKU24YA9Mk7BZalmvdYZWRr06JQVzQv8MFeBbkBDkUS9PJnoEYRweyMaRmG2Vhb62ebBy5skw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHoNMrAz; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1766026833; c=relaxed/simple;
+	bh=Vm++0UfiI7mTMG7UcqfeOA+uxyR8LCbfyx1yxXxyHSo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kpK2Y5uujSJ6fj1wahXZcO4Jq9dUgiMkKd9LsSJVMQPWrRhngnfbhDrPCtYdxQVuFa3eoxrAcpeFxzFfVDSZUsM7q3MskMXsNZvYjA04TVloedHWBv0tGqx+AXCx8EWjLD1pB7DnOCzRzBgKX7ddzp9mpbiOOiWsybEqdBhnBWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODkciTn7; arc=none smtp.client-ip=74.125.224.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bc144564e07so3971a12.3
-        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 18:59:50 -0800 (PST)
+Received: by mail-yx1-f66.google.com with SMTP id 956f58d0204a3-644795bf5feso164015d50.2
+        for <stable@vger.kernel.org>; Wed, 17 Dec 2025 19:00:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766026790; x=1766631590; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lhtvv/nnzcntvywC/tr4tbEvzKikdNZmh60gHEEDoPQ=;
-        b=bHoNMrAzTAOPHm8y/yiVGYlGhAgePCkPtvKXARRfsg55uZFV/yJ6iHvQlqmc4z3uiB
-         4Q0zZWiI/L4O5x+E2ufVlsBS64g3TKr6+1rxC+zODI4NbMhN5s1iQVgBkGZ2+cK8v0xH
-         uXpMDBW9WFe6ARRo98aTlum5j9ofR4MzFOJ5TBcBFKzTsJdwi35d0AtRSBmjXuFxa0O8
-         N0vDp6urArWyx/fuAWK6PW7BJft+5m4am3fWkY3BXzlfrylDMANesE2XLy8Gr6qPMqb3
-         yp6zk1no+IcEBMhNIg+3JR28UJBeSZVzuRL9QGc6FgXoxzbtQyh/PODwr0h3VAblIiTM
-         dDug==
+        d=gmail.com; s=20230601; t=1766026831; x=1766631631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f1aW+idYYoTpGggNMnP1gIvl+I8Ac1YfYU7BJVbP8Vk=;
+        b=ODkciTn7QovESv863Wsiyh/h0tHGmaFu+zj5raTRO9WBC4QeHN9QKTaihFo/yh1552
+         HVMr+NRdAzvTMU8zQBqVTAQXo6c3KBOTNcqtwIQfjaX0VwwyFWCHBA/wzLcM9NMMRue7
+         0Z5ZhQOiYhfj44OxIJmgX/g5tiPY0aeijN978VndvrztXGnbOvulGRLmVzn70o63mEew
+         dIWke/Ge5np0me26QkH3uM8AQ8eEge60QOAFgeNRj88FcSaTyuYSG2zdb5xD2ax70Ze0
+         9wTaJ00SHw4A/ITdg1dh2BgO3MYXBywc4JjY6RNLEa3OHfP3Z0euGUdBR6Ln4Sd4mOU1
+         Megg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766026790; x=1766631590;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lhtvv/nnzcntvywC/tr4tbEvzKikdNZmh60gHEEDoPQ=;
-        b=K3gZvoO8+8DY6LGik0H0cMK4ceeKHW44DUhyChryHQdTpNOUUF5xdnMAcuqs7RgUEv
-         BOJhKZK6W2cQ0iFpRy2/Pm3q9J6TVlcF6A3Orova71rVa4XRFCwXcop8YFi2bocY/MYI
-         ZtVPmGWgIgMom5m+JEPkekH1m61YzgYZWMCUXRIXAH/SJxiVoXWu5trkSBSZCDGj6FoO
-         EPj+LUJ5r+rcfzLsQa6luYD5QgOvSsClVgM3cyA1CgA7qLFm9YpPUBgPZjB29bkG9plZ
-         zpcohKRvyY6Yrk+hiZwydjRgrUcgrYj+BObU+pwygIilMp+/VxSeQR4ompRN0GHHmC8/
-         npJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJw3jfFGj2XLe1BlQ14z19u6r+MoDOAPBCB2ErepRN5VK8dAdXFzvkaiVW84MPaQzhvWz+sV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGZUqykTrOtrDu8HNTe7lkblFD0NQLg4IVWfjMfUam3AmYTwfP
-	rQbwvQEr/9lbxJZA1rm9Z/MiWVyDfTA3KX+apLAwrDPPqA5U7ayOUF2S
-X-Gm-Gg: AY/fxX6gM5ViIaTOZq6ISULSuEUBrADk8dS5z1mvwpzTs9+ZkWa/KlRqvg3zCHy5aac
-	kepNyJ0z19HGrcmp6Mx5O9iwvkAzi7ZDFg/Z68MoA5seXPEOd3AlndVBal1nA8xnbbyVavIZzjz
-	GQF0K0JVgsBCjtCIwSeJshrcdOMadJtTwZT6kwh1pZ387BymAULPpQ0ge8f3bjwlZS9AxrQI4fS
-	KXg+G1DZR+aIPntE6FoZEbl6o0DvqJElEsoTbPKlrduMcrSMSVTA/4/0gNpuBhN7E4UuqX5qBSA
-	f5Tjb7LKBJWRTz/Igwtme13TP2231TwFoCGnwbOzQSNqyTkTsyCWBfx54RmwrGmiq5LqUfu80Bg
-	WYvjnP6fJM3kQTypvo8wu1X9MtJ2PCvCABiMdIGQN2SPnYRJN251D5L3avdiEvr/rQP40HeGvFQ
-	Nqh2CEPe29f6Ox3ych1IJdWUqLmODV6cnNFTQ1R7+FQKTqV3t2S92oHb+y960ikXc4lVms3sE/
-X-Google-Smtp-Source: AGHT+IEXXsNXo4V+iPeVdeilF/ogXTHJKXHWyVHS1SyqG1zKI5aoRlu8AfsEk4yQBcYSiqZPunOd3A==
-X-Received: by 2002:a05:6a00:2d8d:b0:7ab:9850:25fb with SMTP id d2e1a72fcca58-7fe5188753cmr535463b3a.2.1766026789805;
-        Wed, 17 Dec 2025 18:59:49 -0800 (PST)
-Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fe14a5727fsm800985b3a.69.2025.12.17.18.59.47
+        d=1e100.net; s=20230601; t=1766026831; x=1766631631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f1aW+idYYoTpGggNMnP1gIvl+I8Ac1YfYU7BJVbP8Vk=;
+        b=qv6cvWutdmtAtyDZTjkK/NvgoPH5db9OSokVAh5tLlf2FqwjGslGgs9o416ZNfg1XJ
+         zDjA7jB/v+K3XTtYXH+/pO3irfSAYdBt6qNZn/s6W6RVnvt3E/SO12Awr3qT1iEiYm9S
+         HUc48RPnuO43CzuM9xpEepG+qQ7OYz/WeaVp0lygPjMgI6p/i6Dfv35xxhudjtVUqzf/
+         w5+sGS5BGx/IGCPys5gUdgSXMOAw2c9iv3KFzYrCt8kwzhcYUwJ1yW73LeqjYrcPr/RL
+         wDY/ofE7k99B9iAijzjBIPXHE864+LGNpl9fYS0fHgZqIbqvW1oEqkRn0JG+00wdoz8s
+         fs2g==
+X-Forwarded-Encrypted: i=1; AJvYcCX94OZMY1OeA3b9MOsL9ARIEepXxf1+RNsuNi0T+YOne+Nih18W+ZBBGep8VNAOT/1NiLU57tc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzmnMIiDb/pwFNRZI01+qku5f2doRfKYdKHsgYfoQVAg7o+aFl
+	yoJkD2ntlt1VZ1B9os0I3fprbt7p+/1BKMP8ANIi1dS+NJVZSkyL6het
+X-Gm-Gg: AY/fxX5dEfLnzK5QRjJyrmbwN3E8Fy91Wik+Mb0BeFBc7wZUNprlF+Diunb7zAhT7rf
+	Hbn3RUENGbo/wVnNuz2CXLnPdBMI3YyjufXw4P2tgNKLVBtVTFIF9QiUdasUic4GtxDrwQBJ736
+	cPt2aEFsRcsJGWOuIyqrhIFAN7TCfL/ThEeMS71Ljjn9hr0od/BAzB5lqSdbweOGIh0h7rWO1hw
+	fRDRmSLE6YwlmtxzUXoWBZgVHBJH8MC281qEmteDx44zcZxd8Y4KLaOl3bbjU5Ej6ZSqDzCC21T
+	HtMERvv6M9Pf+Sa1tWDa62DUhWvBA5iBwrgudAfQZU0jdnCF00UgQev5n2AoIXiAJvXCEWuQ5VF
+	si7XRduREZ0rtPe+dr694eAnL370xN3TmnFPbBwP4rcI4I/naR91v+7aUOmBrjleN1hHujaPHtm
+	Ybx6gofDHLzpCw/HtYD+bNyM0QKFuJhSjDHpIf7Po0/JFvdrysXc9U2uB83pbC
+X-Google-Smtp-Source: AGHT+IFLtp/YJVgdDwF2T2NRVscU9ohhAIZGe3jf1diZBtUCBHkPwsifUpFmbcBIew2yjf6ZKbexmg==
+X-Received: by 2002:a05:690e:13c4:b0:644:60d9:866e with SMTP id 956f58d0204a3-6455567be0dmr15248816d50.95.1766026830540;
+        Wed, 17 Dec 2025 19:00:30 -0800 (PST)
+Received: from abc-virtual-machine.localdomain ([170.246.157.94])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fa728f8b7sm3638087b3.45.2025.12.17.19.00.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 18:59:49 -0800 (PST)
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
+        Wed, 17 Dec 2025 19:00:30 -0800 (PST)
+From: Yuhao Jiang <danisjiang@gmail.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Qianchang Zhao <pioooooooooip@gmail.com>
-Subject: [PATCH v3 2/2] nfc: llcp: stop processing on LLCP_CLOSED in nfc_llcp_recv_hdlc()
-Date: Thu, 18 Dec 2025 11:59:23 +0900
-Message-Id: <20251218025923.22101-3-pioooooooooip@gmail.com>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass via compound page accounting
+Date: Wed, 17 Dec 2025 20:59:47 -0600
+Message-Id: <20251218025947.36115-1-danisjiang@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251218025923.22101-1-pioooooooooip@gmail.com>
-References: <20251218025923.22101-1-pioooooooooip@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,35 +89,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold().
+When multiple registered buffers share the same compound page, only the
+first buffer accounts for the memory via io_buffer_account_pin(). The
+subsequent buffers skip accounting since headpage_already_acct() returns
+true.
 
-In nfc_llcp_recv_hdlc(), the LLCP_CLOSED branch releases the socket lock
-and drops the reference, but the function continues to operate on
-llcp_sock/sk and later runs release_sock() and nfc_llcp_sock_put() again
-on the common exit path.	
+When the first buffer is unregistered, the accounting is decremented,
+but the compound page remains pinned by the remaining buffers. This
+creates a state where pinned memory is not properly accounted against
+RLIMIT_MEMLOCK.
 
-Return immediately after the CLOSED cleanup to avoid refcount/lock 
-imbalance and to avoid using the socket after dropping the reference.
+On systems with HugeTLB pages pre-allocated, an unprivileged user can
+exploit this to pin memory beyond RLIMIT_MEMLOCK by cycling buffer
+registrations. The bypass amount is proportional to the number of
+available huge pages, potentially allowing gigabytes of memory to be
+pinned while the kernel accounting shows near-zero.
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Fix this by recalculating the actual pages to unaccount when unmapping
+a buffer. For regular pages, always unaccount. For compound pages, only
+unaccount if no other registered buffer references the same compound
+page. This ensures the accounting persists until the last buffer
+referencing the compound page is released.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: 57bebf807e2a ("io_uring/rsrc: optimise registered huge pages")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
 ---
- net/nfc/llcp_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/rsrc.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 67 insertions(+), 2 deletions(-)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index ed37604ed..f6c1d79f9 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1089,6 +1089,7 @@ static void nfc_llcp_recv_hdlc(struct nfc_llcp_local *local,
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index a63474b331bf..dcf2340af5a2 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -139,15 +139,80 @@ static void io_free_imu(struct io_ring_ctx *ctx, struct io_mapped_ubuf *imu)
+ 		kvfree(imu);
+ }
+ 
++/*
++ * Calculate pages to unaccount when unmapping a buffer. Regular pages are
++ * always counted. Compound pages are only counted if no other registered
++ * buffer references them, ensuring accounting persists until the last user.
++ */
++static unsigned long io_buffer_calc_unaccount(struct io_ring_ctx *ctx,
++					      struct io_mapped_ubuf *imu)
++{
++	struct page *last_hpage = NULL;
++	unsigned long acct = 0;
++	unsigned int i;
++
++	for (i = 0; i < imu->nr_bvecs; i++) {
++		struct page *page = imu->bvec[i].bv_page;
++		struct page *hpage;
++		unsigned int j;
++
++		if (!PageCompound(page)) {
++			acct++;
++			continue;
++		}
++
++		hpage = compound_head(page);
++		if (hpage == last_hpage)
++			continue;
++		last_hpage = hpage;
++
++		/* Check if we already processed this hpage earlier in this buffer */
++		for (j = 0; j < i; j++) {
++			if (PageCompound(imu->bvec[j].bv_page) &&
++			    compound_head(imu->bvec[j].bv_page) == hpage)
++				goto next_hpage;
++		}
++
++		/* Only unaccount if no other buffer references this page */
++		for (j = 0; j < ctx->buf_table.nr; j++) {
++			struct io_rsrc_node *node = ctx->buf_table.nodes[j];
++			struct io_mapped_ubuf *other;
++			unsigned int k;
++
++			if (!node)
++				continue;
++			other = node->buf;
++			if (other == imu)
++				continue;
++
++			for (k = 0; k < other->nr_bvecs; k++) {
++				struct page *op = other->bvec[k].bv_page;
++
++				if (!PageCompound(op))
++					continue;
++				if (compound_head(op) == hpage)
++					goto next_hpage;
++			}
++		}
++		acct += page_size(hpage) >> PAGE_SHIFT;
++next_hpage:
++		;
++	}
++	return acct;
++}
++
+ static void io_buffer_unmap(struct io_ring_ctx *ctx, struct io_mapped_ubuf *imu)
+ {
++	unsigned long acct;
++
+ 	if (unlikely(refcount_read(&imu->refs) > 1)) {
+ 		if (!refcount_dec_and_test(&imu->refs))
+ 			return;
  	}
  
- 	/* Pass the payload upstream */
+-	if (imu->acct_pages)
+-		io_unaccount_mem(ctx->user, ctx->mm_account, imu->acct_pages);
++	acct = io_buffer_calc_unaccount(ctx, imu);
++	if (acct)
++		io_unaccount_mem(ctx->user, ctx->mm_account, acct);
+ 	imu->release(imu->priv);
+ 	io_free_imu(ctx, imu);
+ }
 -- 
 2.34.1
 
