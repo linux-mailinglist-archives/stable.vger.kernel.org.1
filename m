@@ -1,46 +1,55 @@
-Return-Path: <stable+bounces-203092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D196ECD0114
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:30:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F044DCD01C7
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 766B8307A20C
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 13:28:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C56EF303DD02
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 13:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D562727E0;
-	Fri, 19 Dec 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276811E7C34;
+	Fri, 19 Dec 2025 13:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uX6qRUcf"
+	dkim=pass (2048-bit key) header.d=freenet.de header.i=@freenet.de header.b="Q6PnFlPO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.freenet.de (mout.freenet.de [194.97.204.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C122DFF1D;
-	Fri, 19 Dec 2025 13:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D61322B95
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 13:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.97.204.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766150916; cv=none; b=uLspZC76Il1h9yrZ8zY08wMUBQlJLqCrVQwTZzCBD7qB0uX14H9xrXct6G98XwVxahI75qp523Pq7ykA4QG1bRQD+tLvWo2L3oNwD3ylCQqmalTgInhE8qJvPlqizTR/4QPAExdqKAiM+rw+N+KsR7OW721gtBV8wFdadit5dUY=
+	t=1766152012; cv=none; b=nwa1ipzSLkQ46Xh1tjJCYR2Fu0F55s7mV8bIxWvZeGvpDTzFvV1+fJazIGYyznWBNxnG7xxCzNzb06s36o23OPVfkEMePDzCCfyjGg+O4LtGD5FsQJndcHWzT78e+yfADSGO++TLVWilWOk/hKnW78jiH+x3S9Yll6RkW24t3BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766150916; c=relaxed/simple;
-	bh=grt80Fs21dKu/lM/0FgmzdSHYH8cSIZ/yWr1pQU7Zbo=;
+	s=arc-20240116; t=1766152012; c=relaxed/simple;
+	bh=OJQghQIYa+kJxY8X6d0If3IbUVHn9kbw05hfP5Vers4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XO2qfP9e9c1tKr6NkRLhz916Cg3sBkr3UHI9bD8XHVP29XEacGnVrQVPwEOmM5ZpoTZm8b9qHI3jWE7F1ax6La0gDKtOMC+zZPB1PstBBlcvftYPcmTmdFKQaBnELXbX10ezAv40rjql6FfxDCypR0gPQodFoCecmKWzVO7Gx3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uX6qRUcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF28C116D0;
-	Fri, 19 Dec 2025 13:28:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766150915;
-	bh=grt80Fs21dKu/lM/0FgmzdSHYH8cSIZ/yWr1pQU7Zbo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uX6qRUcfU7LJzO+/X8GYGoANKkteaT8BS+HqI713hTo86zl4Vaf/h9wArSl9sPoe8
-	 atxqwwUrgpkRifjtPOXYIrPAOnz5tOI61wNX7vSG1Y1UAo9wKLe9GfZfOt6b3hPgqu
-	 cl7aab0R4O425ze5zfN87TITZ6Kmmb4UhWJ2c4bWlOrQFdFzS4Wd8fSMRV0u6ovnbr
-	 LRYoP9yR3tmLctly5EN4+0xv9LRUmItQbQtYep7g0fgj0if0FTXDyGZzuombTDFcP2
-	 SspST0Z6ejitorPklZqP4A/CPlUEkLcQf5tvGepecZuxPu50FIz4s3SQ8uilsMdf1e
-	 OCutdJbuQf26A==
-Message-ID: <ebf34531-e017-430d-b663-55bf2f68ddc7@kernel.org>
-Date: Fri, 19 Dec 2025 14:28:30 +0100
+	 In-Reply-To:Content-Type; b=PQvdckWtTJJb2dhVzHFm3rEYeZVP3m4/oGWBch60pDkrBn91e1o/5i3UBRO7w4F5/S26mFlO01ndbw0dpZEuqX1ziGYv/gl10CXViiyDOjHXLc5Iip2kkuOobDPHXTveK+CiIX9y2LhXkLaNBB7CiMLvbI0TC/b6/VM27Wz5LSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freenet.de; spf=pass smtp.mailfrom=freenet.de; dkim=pass (2048-bit key) header.d=freenet.de header.i=@freenet.de header.b=Q6PnFlPO; arc=none smtp.client-ip=194.97.204.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freenet.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freenet.de
+Received: from [2001:748:400:1319::5] (helo=sub7.mail.fnrz.de)
+	by mout5.mail.fnrz.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (port 25) (Exim 4.96 #2)
+	id 1vWajU-00DUxI-1T;
+	Fri, 19 Dec 2025 14:41:24 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=freenet.de;
+	s=mjaymdexmjqk; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=5k1DhQk1Nv53G3Eu2pTGP1PdYEwH2Uv+D5jfzmQOTrI=; b=Q6PnFlPOdegpO0JaNsxDqv5ihq
+	qgggmsr3HDPpUR8B13P4rBcJMBOxonS3/6lLcQJKZDB0alV+yemoRfLTIgCYYi6oYj1gptJrJ7eeq
+	v3vEYAsnhFgqswH9bTStU1UR9HPe2WYERSbBr87LK0RooGs9LJc096bs5CN20E+6VuO8g/yrsxY2D
+	6d5wtqEbsdXbO2TeeIHQKnXqcTxYHvBHbzl1kSXIXIA7kW6VqWg0K8pQc3VsOdSy/8/MQkyxpXAm1
+	7VqWjUxrDnwwRxdObG0H9Rz1VPRwl8GMm0+0y5ybF5gKS1sxnTp/craLk0E8t3quf5H3B9UPunUE1
+	NyQ5PxfQ==;
+Received: from [2a02:8071:a85:f020:a8:6478:ce84:36e2] (port=45260 helo=[127.0.0.1])
+	by sub7.mail.fnrz.de with esmtpsa (ID viktor.jaegerskuepper@freenet.de) (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (port 465) (Exim 4.96 #2)
+	id 1vWajU-00AZTi-0x;
+	Fri, 19 Dec 2025 14:41:24 +0100
+Message-ID: <e67f2f0b-e9ce-4dfb-a4b4-1ff0425b52dd@freenet.de>
+Date: Fri, 19 Dec 2025 14:41:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,83 +57,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: exynos_adc: fix OF populate on driver rebind
-To: Johan Hovold <johan@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, linux-iio@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251219110545.23813-1-johan@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] drm/amdgpu: don't attach the tlb fence for SI
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Timur_Krist=C3=B3f?= <timur.kristof@gmail.com>,
+ =?UTF-8?B?VmlrdG9yIErDpGdlcnNrw7xwcGVy?= <viktor_jaegerskuepper@freenet.de>
+References: <20251214095336.224610-1-johannes.goede@oss.qualcomm.com>
+ <2025121502-amenity-ragged-720c@gregkh>
+ <b78aadb1-d2ca-459c-8078-b1cd9a500398@oss.qualcomm.com>
+ <2025121500-portside-coleslaw-915b@gregkh>
+ <0f92d42d-5df8-423b-82a4-7fa9342d69ef@oss.qualcomm.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251219110545.23813-1-johan@kernel.org>
+From: =?UTF-8?B?VmlrdG9yIErDpGdlcnNrw7xwcGVy?=
+ <viktor_jaegerskuepper@freenet.de>
+In-Reply-To: <0f92d42d-5df8-423b-82a4-7fa9342d69ef@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-FN-MUUID: 176615168481794966051BO
+X-Scan-TS: Fri, 19 Dec 2025 14:41:24 +0100
 
-On 19/12/2025 12:05, Johan Hovold wrote:
-> Since commit c6e126de43e7 ("of: Keep track of populated platform
-> devices") child devices will not be created by of_platform_populate()
-> if the devices had previously been deregistered individually so that the
-> OF_POPULATED flag is still set in the corresponding OF nodes.
+(Adding Sasha to this thread)
+
+Hans de Goede wrote:
+> Hi Greg,
 > 
-> Switch to using of_platform_depopulate() instead of open coding so that
-> the child devices are created if the driver is rebound.
+> On 15-Dec-25 10:05 AM, Greg KH wrote:
+>> On Mon, Dec 15, 2025 at 09:15:17AM +0100, Hans de Goede wrote:
+>>> Hi greg,
+>>>
+>>> On 15-Dec-25 9:12 AM, Greg KH wrote:
+>>>> On Sun, Dec 14, 2025 at 10:53:36AM +0100, Hans de Goede wrote:
+>>>>> From: Alex Deucher <alexander.deucher@amd.com>
+>>>>>
+>>>>> commit eb296c09805ee37dd4ea520a7fb3ec157c31090f upstream.
+>>>>>
+>>>>> SI hardware doesn't support pasids, user mode queues, or
+>>>>> KIQ/MES so there is no need for this.  Doing so results in
+>>>>> a segfault as these callbacks are non-existent for SI.
+>>>>>
+>>>>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4744
+>>>>> Fixes: f3854e04b708 ("drm/amdgpu: attach tlb fence to the PTs update")
+>>>>> Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+>>>>> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>>>>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+>>>>> ---
+>>>>>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 4 +++-
+>>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>
+>>>> What kernel tree(s) should this go to?
+>>>
+>>> This fixes a regression introduced in at least 6.17.y (6.17.11)
+>>> and 6.18.y (6.18.1). So it should at least go to those branches.
+>>
+>> But that commit is in 6.19-rc1, not anything older.
+>>
+>>> If any other branches also have gotten commit f3854e04b708
+>>> backported then those should get this too.
+>>
+>> I don't see that commit in any stable tree, what am I missing?
 > 
-> Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-> Cc: stable@vger.kernel.org	# 3.16
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
->  drivers/iio/adc/exynos_adc.c | 15 ++-------------
->  1 file changed, 2 insertions(+), 13 deletions(-)
+> Ah, I see now the Fixes tag in the original fix (which I cherry
+> picked) is wrong and does not point to the canonical commit id as
+> merged into Torvalds tree, sorry.
+> 
+> This is b4a7f4e7ad2b120a94f3111f92a11520052c762d  ("drm/amdgpu:
+> attach tlb fence to the PTs update") in Torvalds' tree:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b4a7f4e7ad2b120a94f3111f92a11520052c762d
+> 
+> and this actually made it into the v6.18 tag (vs being introduced
+> in 6.18.1 as I originally thought).
+> 
+> This is also in 6.17.11 as 23316ed02c228b52f871050f98a155f3d566c450
+> 
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/gpu/drm/amd?h=linux-6.17.y&id=23316ed02c228b52f871050f98a155f3d566c450
+> 
+> FWIW I don't see it in 6.12.y (and I did not look further back).
+> 
+> Regards,
+> 
+> Hans
+Can this fix be added to the 6.18 queue, please? All relevant
+information can be found in the previous email from Hans.
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-
-Best regards,
-Krzysztof
+Thanks,
+Viktor
 
