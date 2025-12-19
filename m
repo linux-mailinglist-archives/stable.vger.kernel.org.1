@@ -1,129 +1,149 @@
-Return-Path: <stable+bounces-203041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8054DCCE1CA
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 02:02:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61295CCE47C
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 03:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C31630517D6
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 01:01:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 636CF3017384
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 02:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A604227EA8;
-	Fri, 19 Dec 2025 01:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b="l08dQAmd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B60B27A477;
+	Fri, 19 Dec 2025 02:40:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.ci.icloud.com (ci-2006g-snip4-4.eps.apple.com [57.103.90.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557355477E
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 01:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.90.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5673F258CE5;
+	Fri, 19 Dec 2025 02:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766106106; cv=none; b=JseeW0DqzZpmgo7P+zIqY0cch4rBMC1tgFOn1PHN0vVDngVBiEQpXSXVgbdr7bMxBejS67U+twHolPKv3PlPOA52bul0nOotEDNJH64Gl4tspLEKrNQI8gMfJ692cZ9JA2vSXySsqkdiCx+2VnLiTFaAFwnPI65wu3/hgkyX0OM=
+	t=1766112019; cv=none; b=NuzV4d1D8nNLR6FidTqRvyqBpYXzGpo2YBJKkCx4lG9QCQBKinmbRADTUl5+9oit8OGtRzV6omvqSPrLjBsA2edGjClOLwHbQJ4CJZdOAAyaq4eErHJftbtTx17ZLTG7h6uCOgbT1cASSlPPlbi9iJwpJLJ8F4+Nvf5Khxsb5g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766106106; c=relaxed/simple;
-	bh=AhGbHnP05T541cYr30aKQmlP+d4jAKXFQRViMnW0JO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o52t9MaUiQt813WBR0o8FtDUlAmolGitFmnhkHH/VOxz8KSA4SInGmZEeNZmkTXICdIJjlIdocHq73ueUGxmC96yHfrgxQGmCFnUuVl9v2HaIoVAb2a4qXbylfLRfspdVSzWpZXO38rlTE/vULfB9/cNoBDrJ3SusP96QFakUUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space; spf=pass smtp.mailfrom=ariadne.space; dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b=l08dQAmd; arc=none smtp.client-ip=57.103.90.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariadne.space
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-9 (Postfix) with ESMTPS id 379DA1800976;
-	Fri, 19 Dec 2025 01:01:41 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariadne.space; s=sig1; bh=k/sGFpxfsXXE4bG/gLuHDwciH+XbI6Fj1Tr7xEr6v5E=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=l08dQAmdWxd78K9aTsjzZqQqJP20hlqWzb9XcSdc7O2beVBuqN5KJLLi68TMY5qS3fivMURmk7JkWRnxMmF4L3YuWUxVC9qvV+/fEn32BrjLmkzqUXSMNRl/vnbFhLl8xGPUvMscAb+1/axGSaDjH75cNi4BYfUPhH7/YYeauqNLp072Wrgt6RTYflDXEATzONN2x4pbf9KLjAU0C3UZelUN19B+1oS9Ijh/+RNVOeSRL9KG4EGn9AQFXdYKrXNTGBes2WRj4MO2FCfyk8ZZiITj/CHDF4nnvlKPho8nAFMcSl/DZ/aZccu5gJcGqcVKMeN7TWZ6LFxa5ukT3Jyr4Q==
-mail-alias-created-date: 1688796967087
-Received: from phoebe.my.domain (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-9 (Postfix) with ESMTPSA id 581AD1800950;
-	Fri, 19 Dec 2025 01:01:36 +0000 (UTC)
-From: Ariadne Conill <ariadne@ariadne.space>
-To: linux-kernel@vger.kernel.org
-Cc: mario.limonciello@amd.com,
-	darwi@linutronix.de,
-	sandipan.das@amd.com,
-	kai.huang@intel.com,
-	me@mixaill.net,
-	yazen.ghannam@amd.com,
-	riel@surriel.com,
-	peterz@infradead.org,
-	hpa@zytor.com,
-	x86@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	Ariadne Conill <ariadne@ariadne.space>,
-	xen-devel@lists.xenproject.org,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-Date: Thu, 18 Dec 2025 17:01:31 -0800
-Message-ID: <20251219010131.12659-1-ariadne@ariadne.space>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1766112019; c=relaxed/simple;
+	bh=jLo+9GzO2eKFFyAxjJxsT9oTAZ0wrblV399Te4BvM2E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=XEskMOhdCUVnQFCIsdQpHLsobAgM1n0qg0Eu7fZL5fYjrFgF8wHMcCd75gMedgHnDgIr7cwjUYhlyudVxM4nkOshuqgaV2RkeIo1JajU+lqwNXobOyMPBgfdaOTUGvV1LFEfr083VJz2PAsJuFGpZxgYgiuLn0qaC7bo3LodXaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowAAHKeD1ukRpAMAsAQ--.24254S2;
+	Fri, 19 Dec 2025 10:40:03 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jie.gan@oss.qualcomm.com,
+	leo.yan@arm.com,
+	james.clark@linaro.org
+Cc: akpm@linux-foundation.org,
+	alexander.shishkin@linux.intel.com,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	make24@iscas.ac.cn,
+	mathieu.poirier@linaro.org,
+	mike.leach@linaro.org,
+	stable@vger.kernel.org,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v2 RESEND] coresight: etm-perf: Fix reference count leak in etm_setup_aux
+Date: Fri, 19 Dec 2025 10:39:49 +0800
+Message-Id: <20251219023949.12699-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <f85c7d37-4980-46f0-9136-353a35a8f0ed@oss.qualcomm.com>
+References: <f85c7d37-4980-46f0-9136-353a35a8f0ed@oss.qualcomm.com>
+X-CM-TRANSID:rQCowAAHKeD1ukRpAMAsAQ--.24254S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJF1xCrykZF4kAF17XrykGrg_yoW5XrWrpr
+	WUGay5trWDGF10k392qw15Z3yI93ySyrsagr4fGrnxuw1Yqr9IvryjqrWF9Fn3CrWkJr10
+	qw12qayxZFWUXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Info: v=2.4 cv=EvbfbCcA c=1 sm=1 tr=0 ts=6944a3f6 cx=c_apl:c_pps
- a=2G65uMN5HjSv0sBfM2Yj2w==:117 a=2G65uMN5HjSv0sBfM2Yj2w==:17
- a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=cWRNjhkoAAAA:8 a=VwQbUJbxAAAA:8
- a=64mAIdLp92yHhwu-ie0A:9 a=sVa6W5Aao32NNC1mekxh:22
-X-Proofpoint-ORIG-GUID: 1g18WFCENcLrMa1DtA2XBcKaizFIFmka
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDAwNSBTYWx0ZWRfX/XpCqHGo7QO8
- XVEEd3U/KM52M38w2R3bbNH4op/A1zG3zWse8yplnN98hfQQ5GScFAaMWZDNnLjSsobxsn9wtMv
- oQD4cfxn1mcvBW42+XnjIq0uudpEieWbdtuH9wxL27zMjW38iPPiqYyOSazNxAL2Tflxazp73XC
- o6ltxRDRu65VSwW8mzkBKilupg+8at7y2zzy/nNK/fGqxggSYEp/UWRvvdWkzOot3zxqLpBOgsg
- MNX1TelkMr9UmLZ3yKxck5uWvPMpZAAcbShqnu1jujqsLH9nn02wKOgehR45nur8sPRegqbAJFv
- 0Vjb/iS5jZOhSuLHKjZ
-X-Proofpoint-GUID: 1g18WFCENcLrMa1DtA2XBcKaizFIFmka
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-18_04,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=873
- adultscore=0 suspectscore=0 malwarescore=0 bulkscore=0 phishscore=0
- clxscore=1030 spamscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512190005
-X-JNJ: AAAAAAABr0Q3G94xuvIY8bsEvQNKzbJxhRRxFTbgzGxeuuI6C4zYTCLLh4fyc9dUpyIayNXyTsbSuWjV2AV54y4wdepy1oZRzxT1yakRmjtaGyrQW2y3wNZQTnMfpq7Ugrm8fiopawQF4k5T+2TL9XAykNLaotdeii7CwWE+aS/fDwEgTr/Vdya1EC76gKNdiQiU2Ikhj4OpKbau8+Wmz9+XrYGvly7BbqWkmc6rWCepubDzm03rOas3Pu8Ua3sqZtFsKeh+/ujqEC41cG3j8JOcyybKSb9pwuEw7q+0Sg4C/DsFUrBQ9vGmPZNeQXK5BxB8a2AUCJULS7XY/cU8qUrlgl1+gWwOBjQPrFjnyW9Delr8Us3j3WK3HyNEZQYXEEOkqzW1Lf1En3sIdS4PmdmfJJS2S7a3IM5z+Pcv6uEm+xTWRKCeXHF3BZ1xGimnSePcGtkbpLJP5RLw5fbOK/wM6T/cSP8d9RYbr50D1XJWoRw9o1rBQg3B12lHUc681qn8HgtRRf0OegUnzTTLD6J3Uk22T9Ek9iqvSBZJzTqG6FtiBZTLO01NTv4Aox6FZCjw84u4HXBBVd8dnjbueW6thg69a5AeocA2wQwl/5VSwx9M4CLpIm3g7tt62oVdJkxVcc6TxOWjgE8rqnJKDPzZ2dP8N2XTE5+WjgtJ3735dNOIm9AHEHuepai7KoKUxpI78edlvtC1Oo+1tY7zcauaPbJ89OHwXDGE/Icm4ZmhNUpHr8sIKO/3MxZD/6VPHqhroh4rd5OivC8uzGsxZCbH06iOmNFiD/FBPFvK6n1oh0Bj0ESDDeTQzvFX0SpT1y3bhx/KSjvEjmEfCVU=
 
-Xen domU cannot access the given MMIO address for security reasons,
-resulting in a failed hypercall in ioremap() due to permissions.
+On 12/15/2025 10:09 AM, Jie Gan wrote:
+> On 12/15/2025 5:51 PM, Leo Yan wrote:
+>> On Mon, Dec 15, 2025 at 11:02:08AM +0200, James Clark wrote:
+>>>
+>>>
+>>> On 15/12/2025 04:27, Ma Ke wrote:
+>>>> In etm_setup_aux(), when a user sink is obtained via
+>>>> coresight_get_sink_by_id(), it increments the reference count of the
+>>>> sink device. However, if the sink is used in path building, the path
+>>>> holds a reference, but the initial reference from
+>>>> coresight_get_sink_by_id() is not released, causing a reference count
+>>>> leak. We should release the initial reference after the path is built.
+>>>>
+>>>> Found by code review.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 0e6c20517596 ("coresight: etm-perf: Allow an event to use different sinks")
+>>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>>>> ---
+>>>> Changes in v2:
+>>>> - modified the patch as suggestions.
+>>>
+>>> I think Leo's comment on the previous v2 is still unaddressed. But releasing
+>>> it in coresight_get_sink_by_id() would make it consistent with
+>>> coresight_find_csdev_by_fwnode() and prevent further mistakes.
+>> 
+>> The point is the coresight core layer uses coresight_grab_device() to
+>> increase the device's refcnt.  This is why we don't need to grab a
+>> device when setup AUX.
+>
+> That make sense. We dont need to hold the refcnt for a while and it 
+> should be released immediately after locating the required device.
+>
+> Thanks,
+> Jie
 
-Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
-Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-Cc: xen-devel@lists.xenproject.org
-Cc: stable@vger.kernel.org
----
- arch/x86/kernel/cpu/amd.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+>> 
+>>> It also leads me to see that users of coresight_find_device_by_fwnode()
+>>> should also release it, but only one out of two appears to.
+>> 
+>> Good finding!
+>> 
+>> Thanks,
+>> Leo
+>> 
+Hi all,
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index a6f88ca1a6b4..99308fba4d7d 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -29,6 +29,8 @@
- # include <asm/mmconfig.h>
- #endif
- 
-+#include <xen/xen.h>
-+
- #include "cpu.h"
- 
- u16 invlpgb_count_max __ro_after_init = 1;
-@@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
- 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
- 		return 0;
- 
-+	/* Xen PV domU cannot access hardware directly, so bail for domU case */
-+	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
-+		return 0;
-+
- 	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
- 	if (!addr)
- 		return 0;
--- 
-2.51.0
+Thank you for the insightful discussion. I've carefully read the 
+feedback from Leo, James, and Jie, and now have a clear understanding 
+of the reference count management.
+
+The core issue: coresight_get_sink_by_id() internally calls 
+bus_find_device(), which increases reference count via get_device().
+
+From the discussion, I note two possible fix directions:
+
+1. Release the initial reference in etm_setup_aux() (current v2 patch)
+2. Modify the behavior of coresight_get_sink_by_id() itself so it 
+doesn't increase the reference count. 
+
+Leo mentioned referencing how acpi_dev_present() does it, and James 
+also pointed out that APIs should be consistent. I think it makes 
+sense that following the principle like "lookup doesn't hold a 
+reference" could prevent similar leaks in the future.
+
+To ensure the correctness of the v3 patch, I'd like to confirm which 
+patch is preferred. If option 2 is the consensus, I'm happy to modify 
+the implementation of coresight_get_sink_by_id() as suggested.
+
+Looking forward to your further guidance.
+
+Thanks!
 
 
