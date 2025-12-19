@@ -1,129 +1,142 @@
-Return-Path: <stable+bounces-203043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23453CCE68C
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 05:01:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CACCCCE6E1
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 05:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2296302AE16
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 03:57:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51D043015A88
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 04:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00ED21ABBB;
-	Fri, 19 Dec 2025 03:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB8524677B;
+	Fri, 19 Dec 2025 04:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PNs3f/EK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MADK7HD9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F313D405F7;
-	Fri, 19 Dec 2025 03:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B937405A
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 04:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766116651; cv=none; b=V2HmYaJVkj0Ylm6Vn2BYqLOOUyt0MvwEfSwBw9nZf2b5bbWkp8ZX6qy9SJK+lzhKcEeov8/6m1YcB1vyJUVc7PPK2Kthh98UThoEirD9I3r+e2D01V+Gc390wkXWEM4c5P9HzsWu2jQkUMW5tJjKMge3Bv/Y4mv5pPFwylGNMpE=
+	t=1766118416; cv=none; b=a4hXku2RdLh2BijP3PHAnpbQUXw7XRH3QdIZxV3LYAKnKA2G2NKWuCSaiytSkTP9f6MBCX/qfDJgyahyOL+TFUtlHJrIO2UWtuvYci6l2EdTo+HbQgoQh/s1ogwyU58E5PiCJM6au6XrjKEg+2+JUoAW+vpR+xZhKXOrZH5JzLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766116651; c=relaxed/simple;
-	bh=xXt1NvgL4gL9GY7u1OgJrWSf0VPYNNMl7jaUNc35aEg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=RMdWORFUqldmouhkqh69i27tlAhVBl8LZ+bFphNQHYeG5oEzu5vRbZaFrumWlI6COed6yYGfa9huMOvtxG2L+7GoIntvoiAHEdtnTU8yfz+jjAzgzTBtwil7h70C9GwpTMmw7vhx7F7H3GgcnX5e7ByQ1CBaMUUjP8zv2295AxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PNs3f/EK; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 35C5540E00DA;
-	Fri, 19 Dec 2025 03:57:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id a_tIQDRRnMi3; Fri, 19 Dec 2025 03:57:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1766116625; bh=9OoWm0rpVmuvoWbrBcuEyBUT/k9kR14cD7LfwTMMKnA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PNs3f/EK4SVpDLpJ1O4Z4JOT0NWqoiva2DRw0lFhC8vdabJkEzGCvAhVJIbzZwqO0
-	 f65NhPmk8rdKYOIJsX8e4aNtBfKKYbgUoq5Dx3d1GeHA2tNePAkH2bjjA7RuK4Xr80
-	 bXGaS4zMGQioLXh4/VRlU4lufTF9wvUU8zqFIHM3w+79gwZj6yMEIEE2FnG6dRc31g
-	 Oelx7cry8MSLE9aqD/NxoELKQ3uZcyvFEpNLIVf9pXx0BrBbOj0y5PGhSx6yl5CEk/
-	 n8FHhDE5Afc2KYq9mVXRP+J/jvZxzkVHw8DZxpHJjHxVwhDKTa+cLmjPuvftZYQAzH
-	 L/QDL9XYIUIbKUUKbV6E1Mq9Zczz+oi6VgDJHtZjRpMV18TbOz+srKdavu27adrvEw
-	 RiU0jvHdwgkqzvAAqFsx0MBW4sL9iGCUh9xsD8m8yx6kdCZ2WWPoiCB6Dv9b5DxbHC
-	 yjY+4cFJxQf4CxqwshHOCkvoZ9UW7uor92OqUmUK14m96F+NyBBqH6eeoucOiRCbB9
-	 7qZ9EBbJn2mrWRlJbUg1Hn+35dfYZhHAuKxVjfyPnJHokLr0R7VMINEdDQFQyB97bc
-	 4LZZwuV6KoyuRaece5fovss1/02B7HcSBlnrXqtTiq9SaVcJtyq3SgOu3sq7sePR3R
-	 uC0r+KLG26iYcCgKbmaHGDhM=
-Received: from ehlo.thunderbird.net (unknown [IPv6:2a02:3036:262:5a0b:90b5:59c8:4fa2:6e0e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EED6A40E0200;
-	Fri, 19 Dec 2025 03:56:45 +0000 (UTC)
-Date: Fri, 19 Dec 2025 03:56:33 +0000
-From: Borislav Petkov <bp@alien8.de>
-To: Ariadne Conill <ariadne@ariadne.space>, linux-kernel@vger.kernel.org,
- seanjc@google.com
-CC: mario.limonciello@amd.com, darwi@linutronix.de, sandipan.das@amd.com,
- kai.huang@intel.com, me@mixaill.net, yazen.ghannam@amd.com, riel@surriel.com,
- peterz@infradead.org, hpa@zytor.com, x86@kernel.org, tglx@linutronix.de,
- mingo@redhat.com, dave.hansen@linux.intel.com,
- xen-devel@lists.xenproject.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20251219010131.12659-1-ariadne@ariadne.space>
-References: <20251219010131.12659-1-ariadne@ariadne.space>
-Message-ID: <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
+	s=arc-20240116; t=1766118416; c=relaxed/simple;
+	bh=ovP8gtD5+BQjcK3f08wnRmMgzhRYiUcGHCdTgxzmvAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D24d0tDXhfE1KNLwJZZcgTwspYz4ZGkeA053ZrxZD+u6cay4LseWlKb9lCnJ33OyplxLxSGY0UQLFs7ep/5G0YWEJJ/KdEOEtPg97/IUD0wW1jW4dpYnuS8CpQmdVYcaqDjrTz1yQyuqJjZHNKAqg37gMONdvA3IsZlgQOabf8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MADK7HD9; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7aa9be9f03aso1218433b3a.2
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 20:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766118414; x=1766723214; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fBG9PpPme/oEFkesYFx2PkIuis/93o74SUhSLz5uG+w=;
+        b=MADK7HD9jWbaLvs5WaZboSCVA6Xwl/HoEXjbpRhPQedDRv4trBHEdBf+gpVk8gNSYP
+         D0C/5UAuSz61NW7UhOsedindvjCREV/YvSTV3BwJBhj5lMdwIvHwELtpJuEUjmxSc3Q3
+         t3eKWIV9zmPdcGJResKhAkncXQ7ig2N177dlVgotc1SnlaQVNPu2ASv1UT7li6ngjayq
+         YBdR1dUEmQqGqL+Un5mFj0miDdIu/UgashsObNL5wYHQCx9kEF0166dt589rAaKihuDw
+         C1PM3b3yyra0W6Vy7LV1x7fNNcduT1Ib/I+BcIwyVM0QXQff0v07xOkCovCcmLImHTMB
+         eibA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766118414; x=1766723214;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fBG9PpPme/oEFkesYFx2PkIuis/93o74SUhSLz5uG+w=;
+        b=g/qCKH4MBkQYK9T1qjLeZQuKgeEYjHEkJ5dLJtXfS4+iDoJWIjE9ojBr1uNQQnZuZe
+         PIEyLK8ymHg6MQqyYzaGUq9FjoX6gDHahk1K4UXKb84ZjrCrp7gV3MsDNA+PKDPg1CbL
+         LB+2aWR/rNCor5TQze84yy8TbF7DORureua8tKc8nJTM9PeYcppK5PRMW/7XpqU2e0aK
+         fCnB/yjMpAcBnwYxzUMGQjZ8rqdSt08J7tTkXZaH+ug+Q6PGBuNEVcYCp8QXEh9/8TUy
+         iqQNtoYoXiSYa+3xGziATy+4GEPuyS/5vxQNyZM+Fqd5t5C9UdH3JmHvoDjXRjT9+jg/
+         kSxA==
+X-Gm-Message-State: AOJu0YwXlhoswgfDQQdVT3uHK04PbYR2WFyEI1sV+kjMorva2zn2h03s
+	q6mjelk48cT5Mmy5tPH440A3lZUVO47L9CGtRloBvom0d1rSeQhYI13q
+X-Gm-Gg: AY/fxX5LQPgTT9TIErR3fd31hDtpHgnUAgqOcNn//O0jOxRPYzqtHoJekttChPbXjFT
+	1gNbXzyD65SxBuBR+fVq+Rpn/k9Mpxf6WOG11jxriAZdwYblirFoVHI8HFG4sIEO6N3Z0SQkh6a
+	zn6N7ajid+Ax7td94clieYvg9xvFdTTIcMNMBQn5yKBEvqw0tOQusEAphgigSGxD2b8fbO24YPz
+	bpW/5JpCfnB0fGUvkmkygs/NgBMA3qiXcLqlCln9DF1TwXKz8RCsPADlWbicP6OIkxmdW4ow/4M
+	ZVFGxXnlm0aNghBeUqsGusUlc/xCtgi5A8XdN72rMR/T10o+dq53BmNyGzg0HOGSSTPtEu6kxWv
+	0xEQ/C53qDMIXlyPvph2h3b7C8zXuTdjqAOJ5DI6LAW4T737COLEPPdibPLV1/ryhdSv/5wIXTd
+	WGFPnVW3QeAa0IgmU=
+X-Google-Smtp-Source: AGHT+IHCiMv56rKEQaRTYYMRQhUob5RGCnNu96JLoZnHitHxGiAJLdrqCrchzotqvv2BNLNQm8bFOg==
+X-Received: by 2002:a05:6a21:3282:b0:366:14b0:4b05 with SMTP id adf61e73a8af0-376aa500900mr1760867637.65.1766118413985;
+        Thu, 18 Dec 2025 20:26:53 -0800 (PST)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70dbc9d6sm3833090a91.10.2025.12.18.20.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 20:26:53 -0800 (PST)
+Date: Fri, 19 Dec 2025 04:26:48 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH 6.12.y] hsr: hold rcu and dev lock for hsr_get_port_ndev
+Message-ID: <aUTUCAdm92qjaXqt@fedora>
+References: <2025121829-aloof-cresting-f057@gregkh>
+ <20251218153736.3435271-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218153736.3435271-1-sashal@kernel.org>
 
-On December 19, 2025 1:01:31 AM UTC, Ariadne Conill <ariadne@ariadne=2Espac=
-e> wrote:
->Xen domU cannot access the given MMIO address for security reasons,
->resulting in a failed hypercall in ioremap() due to permissions=2E
->
->Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
->Signed-off-by: Ariadne Conill <ariadne@ariadne=2Espace>
->Cc: xen-devel@lists=2Exenproject=2Eorg
->Cc: stable@vger=2Ekernel=2Eorg
->---
-> arch/x86/kernel/cpu/amd=2Ec | 6 ++++++
-> 1 file changed, 6 insertions(+)
->
->diff --git a/arch/x86/kernel/cpu/amd=2Ec b/arch/x86/kernel/cpu/amd=2Ec
->index a6f88ca1a6b4=2E=2E99308fba4d7d 100644
->--- a/arch/x86/kernel/cpu/amd=2Ec
->+++ b/arch/x86/kernel/cpu/amd=2Ec
->@@ -29,6 +29,8 @@
-> # include <asm/mmconfig=2Eh>
-> #endif
->=20
->+#include <xen/xen=2Eh>
->+
-> #include "cpu=2Eh"
->=20
-> u16 invlpgb_count_max __ro_after_init =3D 1;
->@@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
-> 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-> 		return 0;
->=20
->+	/* Xen PV domU cannot access hardware directly, so bail for domU case *=
-/
->+	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
->+		return 0;
->+
-> 	addr =3D ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
-> 	if (!addr)
-> 		return 0;
+On Thu, Dec 18, 2025 at 10:37:36AM -0500, Sasha Levin wrote:
+> From: Hangbin Liu <liuhangbin@gmail.com>
+> 
+> [ Upstream commit 847748fc66d08a89135a74e29362a66ba4e3ab15 ]
+> 
+> hsr_get_port_ndev calls hsr_for_each_port, which need to hold rcu lock.
+> On the other hand, before return the port device, we need to hold the
+> device reference to avoid UaF in the caller function.
+> 
+> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+> Fixes: 9c10dd8eed74 ("net: hsr: Create and export hsr_get_port_ndev()")
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Link: https://patch.msgid.link/20250905091533.377443-4-liuhangbin@gmail.com
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> [ Drop multicast filtering changes ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  net/hsr/hsr_device.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 386aba50930a3..acbd77ce6afce 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -682,9 +682,14 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+>  	struct hsr_priv *hsr = netdev_priv(ndev);
+>  	struct hsr_port *port;
+>  
+> +	rcu_read_lock();
+>  	hsr_for_each_port(hsr, port)
+> -		if (port->type == pt)
+> +		if (port->type == pt) {
+> +			dev_hold(port->dev);
+> +			rcu_read_unlock();
+>  			return port->dev;
+> +		}
+> +	rcu_read_unlock();
+>  	return NULL;
+>  }
+>  EXPORT_SYMBOL(hsr_get_port_ndev);
+> -- 
+> 2.51.0
+> 
 
-Sean, looka here=2E The other hypervisor wants other checks=2E
+Thanks for the fix. This looks good to me since we are missing commit
+161087db66d6 ("net: ti: icssg-prueth: Add Support for Multicast filtering with VLAN in HSR mode")
+on 6.12.
 
-Time to whip out the X86_FEATURE_HYPERVISOR check=2E
---=20
-Small device=2E Typos and formatting crap
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
 
