@@ -1,255 +1,201 @@
-Return-Path: <stable+bounces-203111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A244CD1343
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 18:43:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D10CD1478
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 19:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1393330B11B2
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:41:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18B2B30B11B3
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 18:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C11433A023;
-	Fri, 19 Dec 2025 17:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449FA34CFCF;
+	Fri, 19 Dec 2025 17:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AdZW13Mm"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="C5YomseO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74482F7AB0;
-	Fri, 19 Dec 2025 17:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D534C121;
+	Fri, 19 Dec 2025 17:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766166065; cv=none; b=XI0i5OAn/U6YPXaRrA/cwZuLW3SDoo7yNVf3wKiDYCp8ejNrDUtgeSC8l3b6/TKmAuikzLm0cmM/kvWZXDsN3IwT9/HU5XWvtSO2kuJ26cybk6QptJo2MRtMqOcZQ80OZHLNh032QBEpH58QUjIAI1WdJFBgQ7Uo11U/TgDfSRQ=
+	t=1766166967; cv=none; b=rT+cgU5nqb9cXQd1aFFkdNguN44x9qLUeJaCU3PuoVoLlJbwou4UAsTuhNztM2yc71/RmM98zRtsSjg2csAAdcyTodmJVpIDpNf2nPqmHCEIwur0fBmFeucvcyVy6XOVv1jP/K2p7cwbQNI/Kn3/OgrlOG3H9n3ZstU3735ZUJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766166065; c=relaxed/simple;
-	bh=iDk5PDFyCbkxThYZSXCCggnIbQTec9fz3huwZNw1Nfg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HiZxAw0DAT9SmadAZMhrh9ZxFMI8i7p5kBrO71xrheba+U08tzYyK+aFCoxSgDr6mKX6tExrpMVvHwkhD1j9TcyXN5ORuO8wY9+XlDB7nrW76FyJhKci7ttC5IOJZf5m0gm61G2vY/IFdSM459pPGP5GYgq3mJZBuTFQLBKjxfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AdZW13Mm; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766166064; x=1797702064;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iDk5PDFyCbkxThYZSXCCggnIbQTec9fz3huwZNw1Nfg=;
-  b=AdZW13Mm+t0yKW0fcd7uN1Lq8JKb0LNrZ3ASbjzAjg6Y+1Y2Nlu5AkUz
-   aJybeH2mL4AOZcPrs5QrfuqOVK3LN6+Cq0V2pbBDV3gM5fy3WFs5xZGFQ
-   4pTaO+FFt8fekPz2mvCOLOO/Qmcgz/jbGBn+BKccwsDkRX23mWC3TaTis
-   gtrhSzAFLBYj0NmhSTOrKzYZFd0YkRrIkanjflZDZUOyd899P3kAEdT5i
-   oc9HbRWdfT8MBL5PsOiYcTOkX/DakbU4gMHBVX8qjFD+Bq9DdwCvmvHtK
-   O/FDJaHAO668Aoq2JoKAq0HN8uA2H7/7aqyLyUQmbTYxFOqBW6VSu4Aj7
-   A==;
-X-CSE-ConnectionGUID: wX+rZM77Qd6Hbk6y53mmxg==
-X-CSE-MsgGUID: a+CwPzFrRb6DxbedzunCqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68173796"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
-   d="scan'208";a="68173796"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:41:03 -0800
-X-CSE-ConnectionGUID: FGM9Y0nBQKWT7mp1g/DL1A==
-X-CSE-MsgGUID: YdgUYVN6SHS1IN/srEpldw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
-   d="scan'208";a="198974810"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:41:00 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-pci@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	=?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 02/23] PCI: Rewrite bridge window head alignment function
-Date: Fri, 19 Dec 2025 19:40:15 +0200
-Message-Id: <20251219174036.16738-3-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251219174036.16738-1-ilpo.jarvinen@linux.intel.com>
-References: <20251219174036.16738-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1766166967; c=relaxed/simple;
+	bh=GR1Rwdmws6f8QkL3KUPdolzzc53/OcIe9woYRWrgESY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t4Ww+ksYsumCQahK4y5bCffV+0ZRkymLOmKos1Xlvcwt8SDBkp0/IA/ENCBhyHchiiccTXg5yrHlIckbpjklvmmIrjBUvOSmlhxQnjuSld/S9aOkm4P702rZdnC4TZI3Slm3knfOG9bQ3Q51Xv0NbMHBoX5QYKCBsrwYGN9sBoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=C5YomseO; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJGaEGc2980959;
+	Fri, 19 Dec 2025 17:55:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=sNe/0MAXAOC1VNXdnuf7J8X0YhBVV
+	BH20168b+oieb8=; b=C5YomseOba3BQsI1NdbPM6SVMDzclhnRb/CGjwqf0gjzn
+	eGS+kgNYoo0JQwopoipUM1641QraMXjNy/gdqbYOnTntqHs0z1qQzEL9V894mXbb
+	yXrdPvl9fG8Tc2gYhs9PBbNGfTkW3eHyQCmNmtXHucj4KwOLHt1NoqTDtDoprjWV
+	iy1Mg9XkHshXAqEhBWnSzg3Xjs3DA5MzD9f6wE01kZMcHYO73nn/u1E0nPKblC3j
+	dH4Q+MVvku5yDpCJie9Hhfdrg7DVSvQWX7DjN0dJsYVaNYo5JxIQPxJ7Np1UoagE
+	LtDDA10+f8O+SiYuf72z78FhYgHdvKJ+kA5PXaJlA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b4r291h5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 17:55:35 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJGgUiV023755;
+	Fri, 19 Dec 2025 17:55:34 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b4qtb984y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Dec 2025 17:55:34 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BJHtYGX015634;
+	Fri, 19 Dec 2025 17:55:34 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b4qtb9844-1;
+	Fri, 19 Dec 2025 17:55:34 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
+        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
+        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
+        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
+        mhocko@suse.com
+Subject: [PATCH v2] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
+Date: Fri, 19 Dec 2025 10:55:16 -0700
+Message-ID: <20251219175516.2656093-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_06,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2512190150
+X-Authority-Analysis: v=2.4 cv=WZgBqkhX c=1 sm=1 tr=0 ts=69459197 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
+ a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=f-Xke4JHVjhQjhv6I2sA:9
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-ORIG-GUID: i9u8nulIWI20L2djzK7Y8_P-03FJISUO
+X-Proofpoint-GUID: i9u8nulIWI20L2djzK7Y8_P-03FJISUO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDE1MCBTYWx0ZWRfX2SrnGd1Q1guE
+ zmC0VgapUQCEqw5sPzeXeHlV+sET1e0cdKC+zAprTS3hiS8UROJKxzuU+tHRteBm1trTn1xsJji
+ 8VvJwEkPN4svxeGNsIksCKurKHjRmWH7gCXp3flRznry7VmET+qlUDewanBnds7dHpjxWv4wBK8
+ rLlGI+qMrliSdKkICnoPegHaQI3jkR9unI1NyJQejC9DwylPYCV2Ec3vUubgcxeFCXAw+fGIId3
+ cP8eZW7wnedSnOM3GP3g4ob6cK4Qumd/xW/7p+ZR1HEM6A6SwcvJTx+W23ZuoQevutlxKNVOHFN
+ 6q48YAoRCHfOa9P7ruNfmsyrgkWbnt6E5APd8R4v+Sv7Y+peBB17h6vBeufDohc9xy0v50OynLE
+ 12RdbNj1PdxvPjaRPqdQamuVqIDplV0xDyVBd6QlsPpYRkvZhWNPDxcVXDcKZkhzmPPNIavAYOR
+ Vlp9HrUEH+weJOgonUQ==
 
-The calculation of bridge window head alignment is done by
-calculate_mem_align() [*]. With the default bridge window alignment, it
-is used for both head and tail alignment.
+When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
+passed head pfn to kill_accessing_process(), that is not right.
+The precise pfn of the poisoned page should be used in order to
+determine the precise vaddr as the SIGBUS payload.
 
-The selected head alignment does not always result in tight-fitting
-resources (gap at d4f00000-d4ffffff):
+This issue has already been taken care of in the normal path, that is,
+hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
+correctly in the hugetlb repoisoning case, it's essential to inform
+VM the precise poisoned page, not the head page.
 
-    d4800000-dbffffff : PCI Bus 0000:06
-      d4800000-d48fffff : PCI Bus 0000:07
-        d4800000-d4803fff : 0000:07:00.0
-          d4800000-d4803fff : nvme
-      d4900000-d49fffff : PCI Bus 0000:0a
-        d4900000-d490ffff : 0000:0a:00.0
-          d4900000-d490ffff : r8169
-        d4910000-d4913fff : 0000:0a:00.0
-      d4a00000-d4cfffff : PCI Bus 0000:0b
-        d4a00000-d4bfffff : 0000:0b:00.0
-          d4a00000-d4bfffff : 0000:0b:00.0
-        d4c00000-d4c07fff : 0000:0b:00.0
-      d4d00000-d4dfffff : PCI Bus 0000:15
-        d4d00000-d4d07fff : 0000:15:00.0
-          d4d00000-d4d07fff : xhci-hcd
-      d4e00000-d4efffff : PCI Bus 0000:16
-        d4e00000-d4e7ffff : 0000:16:00.0
-        d4e80000-d4e803ff : 0000:16:00.0
-          d4e80000-d4e803ff : ahci
-      d5000000-dbffffff : PCI Bus 0000:0c
+[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
+[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
 
-This has not been caused problems (for years) with the default bridge
-window tail alignment that grossly over-estimates the required tail
-alignment leaving more tail room than necessary. With the introduction
-of relaxed tail alignment that leaves no extra tail room whatsoever,
-any gaps will immediately turn into assignment failures.
-
-Introduce head alignment calculation that ensures no gaps are left and
-apply the new approach when using relaxed alignment. We may want to
-consider using it for the normal alignment eventually, but as the first
-step, solve only the problem with the relaxed tail alignment.
-
-([*] I don't understand the algorithm in calculate_mem_align().)
-
-Fixes: 5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220775
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 ---
-
-Little annoyingly, there's difference in what aligns array contains
-between the legacy alignment approach (which I dare not to touch as I
-really don't understand what the algorithm tries to do) and this new
-head aligment algorithm, both consuming stack space. After making the
-new approach the only available approach in the follow-up patch, only
-one array remains (however, that follow-up change is also somewhat
-riskier when it comes to regressions).
-
-That being said, the new head alignment could work with the same aligns
-array as the legacy approach, it just won't necessarily produce an
-optimal (the smallest possible) head alignment when if (r_size <=
-align) condition is used. Just let me know if that approach is
-preferred (to save some stack space).
+v1 -> v2:
+  pickup R-B, add stable to cc list.
 ---
- drivers/pci/setup-bus.c | 53 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 9 deletions(-)
+ mm/memory-failure.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 4b918ff4d2d8..80e5a8fc62e7 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1228,6 +1228,45 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
- 	return min_align;
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3edebb0cda30..c9d87811b1ea 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -681,9 +681,11 @@ static void set_to_kill(struct to_kill *tk, unsigned long addr, short shift)
  }
  
-+/*
-+ * Calculate bridge window head alignment that leaves no gaps in between
-+ * resources.
-+ */
-+static resource_size_t calculate_head_align(resource_size_t *aligns,
-+					    int max_order)
-+{
-+	resource_size_t head_align = 1;
-+	resource_size_t remainder = 0;
-+	int order;
-+
-+	/* Take the largest alignment as the starting point. */
-+	head_align <<= max_order + __ffs(SZ_1M);
-+
-+	for (order = max_order - 1; order >= 0; order--) {
-+		resource_size_t align1 = 1;
-+
-+		align1 <<= order + __ffs(SZ_1M);
-+
-+		/*
-+		 * Account smaller resources with alignment < max_order that
-+		 * could be used to fill head room if alignment less than
-+		 * max_order is used.
-+		 */
-+		remainder += aligns[order];
-+
-+		/*
-+		 * Test if head fill is enough to satisfy the alignment of
-+		 * the larger resources after reducing the alignment.
-+		 */
-+		while ((head_align > align1) && (remainder >= head_align / 2)) {
-+			head_align /= 2;
-+			remainder -= head_align;
-+		}
-+	}
-+
-+	return head_align;
-+}
-+
- /**
-  * pbus_upstream_space_available - Check no upstream resource limits allocation
-  * @bus:	The bus
-@@ -1315,13 +1354,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+-				unsigned long poisoned_pfn, struct to_kill *tk)
++				unsigned long poisoned_pfn, struct to_kill *tk,
++				int pte_nr)
  {
- 	struct pci_dev *dev;
- 	resource_size_t min_align, win_align, align, size, size0, size1 = 0;
--	resource_size_t aligns[28]; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns[28] = {}; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns2[28] = {};/* Alignments from 1MB to 128TB */
- 	int order, max_order;
- 	struct resource *b_res = pbus_select_window_for_type(bus, type);
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t relaxed_align;
- 	resource_size_t old_size;
+ 	unsigned long pfn = 0;
++	unsigned long hwpoison_vaddr;
  
- 	if (!b_res)
-@@ -1331,7 +1370,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (b_res->parent)
- 		return;
+ 	if (pte_present(pte)) {
+ 		pfn = pte_pfn(pte);
+@@ -694,10 +696,11 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+ 			pfn = swp_offset_pfn(swp);
+ 	}
  
--	memset(aligns, 0, sizeof(aligns));
- 	max_order = 0;
- 	size = 0;
+-	if (!pfn || pfn != poisoned_pfn)
++	if (!pfn || (pfn > poisoned_pfn || (pfn + pte_nr - 1) < poisoned_pfn))
+ 		return 0;
  
-@@ -1382,6 +1420,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 			 */
- 			if (r_size <= align)
- 				aligns[order] += align;
-+			aligns2[order] += align;
- 			if (order > max_order)
- 				max_order = order;
+-	set_to_kill(tk, addr, shift);
++	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
++	set_to_kill(tk, hwpoison_vaddr, shift);
+ 	return 1;
+ }
  
-@@ -1406,9 +1445,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+@@ -749,7 +752,7 @@ static int hwpoison_pte_range(pmd_t *pmdp, unsigned long addr,
  
- 	if (bus->self && size0 &&
- 	    !pbus_upstream_space_available(bus, b_res, size0, min_align)) {
--		relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--		relaxed_align = max(relaxed_align, win_align);
--		min_align = min(min_align, relaxed_align);
-+		min_align = calculate_head_align(aligns2, max_order);
- 		size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
- 		resource_set_range(b_res, min_align, size0);
- 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
-@@ -1422,9 +1459,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 	for (; addr != end; ptep++, addr += PAGE_SIZE) {
+ 		ret = check_hwpoisoned_entry(ptep_get(ptep), addr, PAGE_SHIFT,
+-					     hwp->pfn, &hwp->tk);
++					     hwp->pfn, &hwp->tk, 1);
+ 		if (ret == 1)
+ 			break;
+ 	}
+@@ -772,8 +775,8 @@ static int hwpoison_hugetlb_range(pte_t *ptep, unsigned long hmask,
  
- 		if (bus->self && size1 &&
- 		    !pbus_upstream_space_available(bus, b_res, size1, add_align)) {
--			relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--			relaxed_align = max(relaxed_align, win_align);
--			min_align = min(min_align, relaxed_align);
-+			min_align = calculate_head_align(aligns2, max_order);
- 			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
- 						  old_size, win_align);
- 			pci_info(bus->self,
+ 	ptl = huge_pte_lock(h, walk->mm, ptep);
+ 	pte = huge_ptep_get(walk->mm, addr, ptep);
+-	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h),
+-					hwp->pfn, &hwp->tk);
++	ret = check_hwpoisoned_entry(pte, addr, huge_page_shift(h), hwp->pfn,
++				&hwp->tk, pages_per_huge_page(h));
+ 	spin_unlock(ptl);
+ 	return ret;
+ }
+@@ -2023,10 +2026,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 		*hugetlb = 0;
+ 		return 0;
+ 	} else if (res == -EHWPOISON) {
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
++		if (flags & MF_ACTION_REQUIRED)
++			res = kill_accessing_process(current, pfn, flags);
+ 		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		return res;
+ 	} else if (res == -EBUSY) {
+@@ -2037,6 +2038,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+ 	}
+ 
++
+ 	folio = page_folio(p);
+ 	folio_lock(folio);
+ 
 -- 
-2.39.5
+2.43.5
 
 
