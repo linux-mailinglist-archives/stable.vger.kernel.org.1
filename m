@@ -1,91 +1,45 @@
-Return-Path: <stable+bounces-203100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B154CCD07B5
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 16:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BFCCD0DDF
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BF33305BC79
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 15:20:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6C5D30EEB9B
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 16:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23950347FEE;
-	Fri, 19 Dec 2025 15:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKmWG048"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D213587B4;
+	Fri, 19 Dec 2025 15:49:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E35348899
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 15:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4B1357A54;
+	Fri, 19 Dec 2025 15:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766157651; cv=none; b=U4qtjpHfRiNNdAU4TlKn41SL3tjG46nrDuePsGVnH3GGT1Jp+hi301/OK8IiQprL3M001uhJJQL03nEe8hgusorPTBKajRqxR/T8h8GKMwhg7RK2LoY2Oi3K/0nK6CwRBBxdCQgdQlTILbr13Hz9pSUoal9gFYX1swcdxnqvUk8=
+	t=1766159360; cv=none; b=KbV3Y2KxC0z8G7afvzl8yf1nI8nPqnkLO3t2U4pZbbXpu/lDSlXboK6oBII+wiw+Y3eZP+fDOne2iIoHOHeT2uFjzcos8wJsMzaZoNTqOY5ffNNA3h8RFNXdpNAGB7LVyc94micilJBydWfLnCVd00+v/5/3g/ohEGG5v6csxnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766157651; c=relaxed/simple;
-	bh=yHNdgzqc/4lAM8dbFsHeaviI2nF5q/YpEVMw74Bnsuk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GZfk/GC8g4haXM0f8F233R8bzpxS6eDe4WYuL8X8Su6aMTHMXXWnRNsvw+8+ApG6qmqEw5F58dDNs0yAvaT4MlgXgmQum5WgC1AVHH9hn+Fg+YbNNqdh6M7N9fVnu9fsCxR7WAolWoAt3MwvWWjjQ81pyI9FBlnSvcucwMjwmZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKmWG048; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7bc248dc16aso1656696b3a.0
-        for <stable@vger.kernel.org>; Fri, 19 Dec 2025 07:20:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766157649; x=1766762449; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FRLyHIcaTYgGGdTbN+5lMzudMmbrt4aktasmpYS38uM=;
-        b=cKmWG048BaPXQBBqK3wUWEs6NmAoyhpC9TxTNyvxJzavY/jMCksKSqBwLMd3KuD78d
-         81zn/rUco3vAWp/s+7sTPo6WO6mn58ziVOIf8OS6qruJ6Ejk2ymUbRUdNj+naGzpYrpa
-         SUANyjH9LcOcbhFFRUuLWs1KH4C3c+zJ02NW6WV1yqRuqSoCy+sfnIMHsp4+1yRaGVmG
-         tPlQ3GQWfZFjuUs0Z04ma/NXJEt4uVE17VqobZ/NEXW4aF3ajNe6aRiz93G7gMTZO98X
-         RD/U5juM6VdEwREKuPWotiVNCevj2cV/HBMu0iReoFA2iakq0FDFW7FQZgS4UmpruttA
-         2MIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766157649; x=1766762449;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FRLyHIcaTYgGGdTbN+5lMzudMmbrt4aktasmpYS38uM=;
-        b=u7rC8HptbshA1On/9cL4NdA7Za2QMkPo2BPlJrJc6eZayGC7zlmeQ0wSeWg7LrrDVJ
-         zU1k/iCgrCIuntom+717RI9sO0AUMlj/EVr5+uxXCvjLPoidyfSjFg7rwikG8bIt3JYO
-         wXqJnTKjX+bJCJ3I30o1S8piMKLphmkjCY5JaITYM5zF13CkvHXVcoV4yoxVALVsZguj
-         ShYcAk2kBaadCI7yznG5f1uYHLE3uq3TXZuAKDtiOuGEb3FP4ZGWiK19qXAipiMQIXCf
-         KrMxIAmOj4Z3nd5cS74h8h9vRsiRnHcf+/Qt+DcLkHu9a6YYm7PhTP34H+5kTF4Ehu0Y
-         isrw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+Gg3Me1vKDP9aVXbZyF31Mjn0juyPG0rXOVS6tpr7IjgwDtDpYGRhuAFMojC+gq7+GREFYM4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe0FGo66jSe8ZAIGsZVteS4XLvA/AMWv4GeOc+PwoicPBQZ9Li
-	tdv26KvMkMYF+fV51QJ0MIiCcddVz5HLAZ5sj3N26npAZ0c/i6FCu/Ay
-X-Gm-Gg: AY/fxX46G+98GBdrydCq8k4gL92tII/YEPor6T+WKFrMrZNwHyARDsUJtaP5u3DVRjD
-	bLnUoom01vTHUnvkA66tUiMEqglXHOwhylzDKa9LKJZoDq0QN/CWH1B5T6zoEmjZ4gkRd39mi3Y
-	WjkVhr9pZYJOcSPiENzH3t26V72I8/0KOvVeixVgmYJE0BH0tsvAQBWrDhdSp90+rlXhzYWxzJW
-	7gZNOqIXRWpnD957doow8yWuuvZHguPxbCkFg7mQ1a+V3oI04/ceDPoCT70osZR9i3xG/8GqZlj
-	i5J5Kf6rONUef4etdHkcsdejHd5d5dSOFwxi6QdvJWasIaNq2KjfbqSn4rqV6KJreLQ9MA+06B+
-	46ABHoLewUuFCqBSADLBHluIOSmYQFDIejQZiyUn5VT0IzXa2tFFlk4ApQKLvwgKIKGs7NggiO7
-	uHbPBZPE9Kcg/u
-X-Google-Smtp-Source: AGHT+IHZF6dThhbGJCz/FfsvtZUXhVynNTqCbs4rVadVbBB844qGhg3Y+x98uNRKysilHK4dqgzXuw==
-X-Received: by 2002:a05:6a20:7d9f:b0:366:14b2:31a with SMTP id adf61e73a8af0-376aa6eadcbmr3041159637.77.1766157648759;
-        Fri, 19 Dec 2025 07:20:48 -0800 (PST)
-Received: from c45b92c47440.. ([202.120.234.58])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c1e7bd61b40sm2459612a12.23.2025.12.19.07.20.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 07:20:48 -0800 (PST)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Stefan Agner <stefan@agner.ch>,
-	Alison Wang <alison.wang@nxp.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
+	s=arc-20240116; t=1766159360; c=relaxed/simple;
+	bh=qQz9RwgBslT+g58gNrRKbTwfu8PBxFCNcaNz4G/mb2c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B46rRfpA1lpo7xYv36kQi2a+m+s7D/SrU8tHlRaFWBOSAWM4llHaJk35zqyROF1enC59d6uM92UsmKlT7GLNhHcSaYPxYv8+ERFmS5040H0Po4iSBodC7w7srzpCw+aM3JK5KrQV/18fI/5RvJWXGLWpk0GO7vmNJc/3dmnbar4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-03 (Coremail) with SMTP id rQCowAAnR97tc0Vp2FY8AQ--.28876S2;
+	Fri, 19 Dec 2025 23:49:02 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: heikki.krogerus@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	sean.anderson@seco.com
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/fsl-dcu: fix clock reference leak in fsl_tcon_init error path
-Date: Fri, 19 Dec 2025 19:20:35 +0400
-Message-Id: <20251219152036.2958051-1-linmq006@gmail.com>
+Subject: [PATCH] usb: ulpi: fix a double free in ulpi_register_interface()
+Date: Fri, 19 Dec 2025 23:48:59 +0800
+Message-Id: <20251219154859.650819-1-lihaoxiang@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,46 +48,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAnR97tc0Vp2FY8AQ--.28876S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7try8Kr47JFyfCF48uFyfJFb_yoW8uF1rpa
+	13Ca4ftFyFqr4xuF45ZF48Xa4Y9F47t3yxuFW7Cw42krnrZr9YyF1UJFyYvFy5JFykCF1U
+	Ars7Jw48uan8AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
+	WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYCJmUU
+	UUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBg0BE2lFNrJyvwACs+
 
-In fsl_tcon_init(), when of_clk_get_by_name() succeeds but
-clk_prepare_enable() fails, the function jumps to err_node_put label
-without releasing the clock reference obtained.
-This causes a clock reference leak.
+If ulpi_register() fails, put_device() is called in ulpi_register(),
+kfree() in ulpi_register_interface() will result in a double free.
 
-Fix by calling clk_put() that properly releases the clock
-reference.
+Also, refactor the device registration sequence to use a unified
+put_device() cleanup path, addressing multiple error returns in
+ulpi_register().
 
-Found via static analysis and code review.
+Found by code review and compiled on ubuntu 20.04.
 
-Fixes: fb127b7943c9 ("drm/fsl-dcu: add TCON driver")
+Fixes: 0a907ee9d95e ("usb: ulpi: Call of_node_put correctly")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/gpu/drm/fsl-dcu/fsl_tcon.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/common/ulpi.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_tcon.c b/drivers/gpu/drm/fsl-dcu/fsl_tcon.c
-index 49bbd00c77ae..b7ba90814b0e 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_tcon.c
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_tcon.c
-@@ -86,7 +86,7 @@ struct fsl_tcon *fsl_tcon_init(struct device *dev)
- 	ret = clk_prepare_enable(tcon->ipg_clk);
- 	if (ret) {
- 		dev_err(dev, "Couldn't enable the TCON clock\n");
--		goto err_node_put;
-+		goto err_clk_put;
- 	}
+diff --git a/drivers/usb/common/ulpi.c b/drivers/usb/common/ulpi.c
+index 4a2ee447b213..c81a0cb24067 100644
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -278,6 +278,7 @@ static int ulpi_register(struct device *dev, struct ulpi *ulpi)
+ 	int ret;
+ 	struct dentry *root;
  
- 	of_node_put(np);
-@@ -94,6 +94,8 @@ struct fsl_tcon *fsl_tcon_init(struct device *dev)
++	device_initialize(&ulpi->dev);
+ 	ulpi->dev.parent = dev; /* needed early for ops */
+ 	ulpi->dev.bus = &ulpi_bus;
+ 	ulpi->dev.type = &ulpi_dev_type;
+@@ -287,19 +288,15 @@ static int ulpi_register(struct device *dev, struct ulpi *ulpi)
  
- 	return tcon;
+ 	ret = ulpi_of_register(ulpi);
+ 	if (ret)
+-		return ret;
++		goto err_register;
  
-+err_clk_put:
-+	clk_put(tcon->ipg_clk);
- err_node_put:
- 	of_node_put(np);
- 	return NULL;
+ 	ret = ulpi_read_id(ulpi);
+-	if (ret) {
+-		of_node_put(ulpi->dev.of_node);
+-		return ret;
+-	}
++	if (ret)
++		goto err_register;
+ 
+-	ret = device_register(&ulpi->dev);
+-	if (ret) {
+-		put_device(&ulpi->dev);
+-		return ret;
+-	}
++	ret = device_add(&ulpi->dev);
++	if (ret)
++		goto err_register;
+ 
+ 	root = debugfs_create_dir(dev_name(&ulpi->dev), ulpi_root);
+ 	debugfs_create_file("regs", 0444, root, ulpi, &ulpi_regs_fops);
+@@ -308,6 +305,10 @@ static int ulpi_register(struct device *dev, struct ulpi *ulpi)
+ 		ulpi->id.vendor, ulpi->id.product);
+ 
+ 	return 0;
++
++err_register:
++	put_device(&ulpi->dev);
++	return ret;
+ }
+ 
+ /**
+@@ -331,10 +332,8 @@ struct ulpi *ulpi_register_interface(struct device *dev,
+ 	ulpi->ops = ops;
+ 
+ 	ret = ulpi_register(dev, ulpi);
+-	if (ret) {
+-		kfree(ulpi);
++	if (ret)
+ 		return ERR_PTR(ret);
+-	}
+ 
+ 	return ulpi;
+ }
 -- 
 2.25.1
 
