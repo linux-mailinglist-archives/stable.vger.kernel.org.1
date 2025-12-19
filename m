@@ -1,156 +1,119 @@
-Return-Path: <stable+bounces-203095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB14CD02EA
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 15:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47697CD036E
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 15:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACC993053B39
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8720305D7A3
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FB132695C;
-	Fri, 19 Dec 2025 14:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16722DF13E;
+	Fri, 19 Dec 2025 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxOhiDdn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTPlngP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5436C23E342;
-	Fri, 19 Dec 2025 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD935264628;
+	Fri, 19 Dec 2025 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766152802; cv=none; b=lzaMPMqaWRYMtY9H7YF0tOurRVnPistsJ+c52ruJGwEzy0Al+HNAOA24WU0GvEOgrVDLLRnprpaqjw0/lhWieMYXpDZ9vRrMiyGD9vTsSpghbSJhf1FnptSizL7CgMN4fkQtGYa2y4z0U2VmaM1MLeTzA4SMSYe3RRSXyFNPDLo=
+	t=1766153371; cv=none; b=MDKfLfJMdQaFZwiRv2GXNpeFW2Gvnq6E5+4Vpr/TyRnkelMiS2uDP+AOkvC7L6yhSn/Jw8e6TZp9vGkONWjL1WKwv2MLlfhEWEdLwNzpQcjQb3uVmtM9Kt641vhjeMCmx6r+zxDokfk9oJlUkP1CvzrBfoxo27knEmSFsw4/9Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766152802; c=relaxed/simple;
-	bh=JWaw934JDfHKlA5sInvUxyZBA437IYufIDK3wABOHk0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YIQbRS5FLwOIq4LwKi6Y4Pnb09boig6XvPwAshUGun/E8aWBUPYZJBAqMbzCdJWY0vm6vVbgdFgZ3oRTzIx7dzOK4h+5yaIIuhFR3EVGDNski3M5dwVY/b4bNuSs0tApjXP80qHyylJyWs/UWfx/xey1IsjGTKbECU3y6iRAAz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxOhiDdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97208C4CEF1;
-	Fri, 19 Dec 2025 13:59:55 +0000 (UTC)
+	s=arc-20240116; t=1766153371; c=relaxed/simple;
+	bh=RsohaNGjAAyCO4ow/UBaQkjTs9uq8T3jmxOXAnd7LBw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=uXlql8nFaPsZA9aq7vG4gRnIeNngEnDgTiJ2IJwvgBxtTZ4CU7lmIE8V4vonLUcAlhcL1JM6CdIPKqbXqhfzeNvehg1bRFeOS8MfGoHd/wajYs9awm4RTobaUyTw4iLluYPz1AjvZ3FDEx7B+U6aEtgng25s/crtfOaJGh5zF04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTPlngP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B477C4CEF1;
+	Fri, 19 Dec 2025 14:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766152800;
-	bh=JWaw934JDfHKlA5sInvUxyZBA437IYufIDK3wABOHk0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=uxOhiDdn5eNZtMqBuJSX4ivs/799liqB+DIx8GXZ5MehitAvEfEXlwvU0Z3T30ohy
-	 7n/Tz90frJB1NvwJWfQ9cdDH7w1OK7iDT3YNnXrSPrCdhacEajjJscD8a5d/1lGyg2
-	 b3E/Lo5yexghi+PacPVmA31lfSLDo0JR1YTUbKOFQBvuvWMmWzFunAWO2DaKiM12nd
-	 dNiN9smTTqUXTDkIa2G2nX9yBGpdDMiUjy+M6BYrVZf09gFJbjPRsQxMlIo5B4zJGj
-	 cEXr3TOPYu9w0FdmzB1aLgRpI74Uo8kfewMV6tRbVHr/zKVm7vdOonj0CIrzSsJ80E
-	 +pI+sn3yhU1+w==
-Message-ID: <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
-Date: Fri, 19 Dec 2025 14:59:52 +0100
+	s=k20201202; t=1766153371;
+	bh=RsohaNGjAAyCO4ow/UBaQkjTs9uq8T3jmxOXAnd7LBw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=kTPlngP8oOQx4elQrkofz4GvfESIbAqkLQAcTNQLV+R5666AIMMbEg8l5zcsq3FB0
+	 rrqBBIsnpVWPa7fUMS/FQqMwDloMgMTzJm87kCF3eIVqHiGWktZSMBul0D8tY32dj8
+	 KdGMFKjtm8xtdwVEoVT7d7qTrusICFtgOXee8yl5xMsS75qACzEUt8Ea26gT0w1j6w
+	 xQ+/xze9rt4CnoNaXLp0puA3cBc2T/6VjQrfpR8+446XYhqIqDakdK4SXUZY2VxX61
+	 XEx8mzPZS+V+vL/qU+/CuWfecKJpBb/8Lna4dsH4JGw+ej/z7XAKIROnlQRe5km4RL
+	 cLAxacHAgZxFw==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ pierre-louis.bossart@linux.dev, seppo.ingalsuo@linux.intel.com, 
+ stable@vger.kernel.org
+In-Reply-To: <20251215142516.11298-1-peter.ujfalusi@linux.intel.com>
+References: <20251215142516.11298-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH v2 0/8] ASoC: SOF: ipoc4: Support for generic bytes
+ controls
+Message-Id: <176615336928.412520.1247060955061505587.b4-ty@kernel.org>
+Date: Fri, 19 Dec 2025 14:09:29 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
- <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
-Content-Language: en-US
-In-Reply-To: <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On 12/19/25 14:52, David Hildenbrand (Red Hat) wrote:
-> On 12/19/25 13:37, Harry Yoo wrote:
->> On Fri, Dec 12, 2025 at 08:10:19AM +0100, David Hildenbrand (Red Hat) wrote:
->>> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
->>> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
->>> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
->>> tables that it severely regresses some workloads.
->>>
->>> In particular, when we fork()+exit(), or when we munmap() a large
->>> area backed by many shared PMD tables, we perform one IPI broadcast per
->>> unshared PMD table.
->>>
->>
->> [...snip...]
->>
->>> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
->>> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
->>> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
->>> Tested-by: Laurence Oberman <loberman@redhat.com>
->>> Cc: <stable@vger.kernel.org>
->>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>> ---
->>>    include/asm-generic/tlb.h |  74 ++++++++++++++++++++++-
->>>    include/linux/hugetlb.h   |  19 +++---
->>>    mm/hugetlb.c              | 121 ++++++++++++++++++++++----------------
->>>    mm/mmu_gather.c           |   7 +++
->>>    mm/mprotect.c             |   2 +-
->>>    mm/rmap.c                 |  25 +++++---
->>>    6 files changed, 179 insertions(+), 69 deletions(-)
->>>
->>> @@ -6522,22 +6511,16 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->>>    				pte = huge_pte_clear_uffd_wp(pte);
->>>    			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
->>>    			pages++;
->>> +			tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
->>>    		}
->>>    
->>>    next:
->>>    		spin_unlock(ptl);
->>>    		cond_resched();
->>>    	}
->>> -	/*
->>> -	 * There is nothing protecting a previously-shared page table that we
->>> -	 * unshared through huge_pmd_unshare() from getting freed after we
->>> -	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
->>> -	 * succeeded, flush the range corresponding to the pud.
->>> -	 */
->>> -	if (shared_pmd)
->>> -		flush_hugetlb_tlb_range(vma, range.start, range.end);
->>> -	else
->>> -		flush_hugetlb_tlb_range(vma, start, end);
->>> +
->>> +	tlb_flush_mmu_tlbonly(tlb);
->>> +	huge_pmd_unshare_flush(tlb, vma);
->>
->> Shouldn't we teach mmu_gather that it has to call
+On Mon, 15 Dec 2025 16:25:08 +0200, Peter Ujfalusi wrote:
+> Changes since v1:
+> - correct SHAs for fixes tags
+> - add Cc stable tag
 > 
-> I hope not :) In the worst case we could keep the
-> flush_hugetlb_tlb_range() in the !shared case in. Suboptimal but I am
-> sick and tired of dealing with this hugetlb mess.
+> We support bytes control type for set and get, but these are module specific
+> controls and there is no way to handle notifications from them in a generic way.
+> Each control have module specific param_id and this param_id is only valid in
+> the module's scope, other modules might use the same id for different functions
+> for example.
 > 
-> 
-> Let me CC Ryan and Catalin for the arm64 pieces and Christophe on the
-> ppc pieces: See [1] where we convert away from some
-> flush_hugetlb_tlb_range() users to operate on mmu_gather using
-> * tlb_remove_huge_tlb_entry() for mremap() and mprotect(). Before we
->     would only use it in __unmap_hugepage_range().
-> * tlb_flush_pmd_range() for unsharing of shared PMD tables. We already
->     used that in one call path.
+> [...]
 
-To clarify, powerpc does not select ARCH_WANT_HUGE_PMD_SHARE, so the 
-second change does not apply to ppc.
+Applied to
 
--- 
-Cheers
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-David
+Thanks!
+
+[1/8] ASoC: SOF: ipc4-control: If there is no data do not send bytes update
+      commit: 2fa74713744dc5e908fff851c20f5f89fd665fb7
+[2/8] ASoC: SOF: ipc4-topology: Correct the allocation size for bytes controls
+      commit: a653820700b81c9e6f05ac23b7969ecec1a18e85
+[3/8] ASoC: SOF: ipc4-control: Use the correct size for scontrol->ipc_control_data
+      commit: c1876fc33c5976837e4c73719c7582617efc6919
+[4/8] ASoC: SOF: ipc4-control: Keep the payload size up to date
+      commit: ebcfdbe4add923dfb690e6fb9d158da87ae0b6bf
+[5/8] ASoC: SOF: ipc4-topology: Set initial param_id for bytes control type
+      commit: 2fdde18a2cb1631c01e4ab87d949564c7d134dd8
+[6/8] ASoC: SOF: ipc4: Support for sending payload along with LARGE_CONFIG_GET
+      commit: d96cb0b86d6e8bbbbfa425771606f6c1aebc318e
+[7/8] ASoC: SOF: ipc4: Add definition for generic bytes control
+      commit: 7fd8c216c422c5d42addc3e46d5d26630ff646d1
+[8/8] ASoC: SOF: ipc4-control: Add support for generic bytes control
+      commit: 2a28b5240f2b328495c6565d277f438dbc583d61
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
