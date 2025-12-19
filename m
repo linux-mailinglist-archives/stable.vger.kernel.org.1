@@ -1,158 +1,137 @@
-Return-Path: <stable+bounces-203122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22896CD22DF
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 00:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC59CD22EE
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 00:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B62C303A0B0
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 23:19:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EDAB302CB85
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 23:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6562741C6;
-	Fri, 19 Dec 2025 23:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17CC21CC44;
+	Fri, 19 Dec 2025 23:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b="UZR+u9l2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTimUv/g"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.qs.icloud.com (p-east3-cluster7-host1-snip4-3.eps.apple.com [57.103.84.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737362192FA
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 23:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.84.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134851E230E
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 23:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766186390; cv=none; b=tK4eRfSWFxPdFESETQ4nOj5+qPtoFmmPH854ax159jKKpApSHUKxXtU/2O5Ps9u3WOStWHDLAZphwmDGYAYMCo3sMOcbqiR3Xo4MpQ+sdeOQnmiFRkyAQf4ngMyxQUXihI8bSyVOiF9mRNu7Kz3OvDpmv2TkWC6XwBJSKMthfbU=
+	t=1766186954; cv=none; b=olutUX2A2tfSyyJpkVsEDatRtB0kmeE0FwOu5OZMlLmiPdPJ2wt9V+4zJgcRdMbIhT2r8mHl3VF6kzER10FOlRPSZd/c291oBmCiLrpwXx6eVval1Z3R21mywEzD6elcMTmElLafjZcfgh1earrNJerfKgW3ThjxQF/m+IbUgXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766186390; c=relaxed/simple;
-	bh=+r7UfYNT5bhdmuN9M3q047krgyCxyLgRSGWYZOpKbVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KVMMR/jmft1HQeb8vlOeSFfKyWOMTBf+lPLxY2qRYdXRVdss0cWR+AToIM/sL9zBoGGsfXI+lreZnXPLF2aXuI2dsRKUEMqy9GqaeYLq6YZjnMyXLm43vqi7ioOjdz0L0+wo6GTEHRlXxWESzgSZRk7a9yEDJtqJloZDbxrg7Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space; spf=pass smtp.mailfrom=ariadne.space; dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b=UZR+u9l2; arc=none smtp.client-ip=57.103.84.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariadne.space
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-4 (Postfix) with ESMTPS id 1713118003FA;
-	Fri, 19 Dec 2025 23:19:42 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariadne.space; s=sig1; bh=iy2tMr+pcOGokCditubD3qK8tyKEldr37Ursg+rfWGI=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=UZR+u9l2HxdBvSGpQV5DGeFCU9Ihv26qknN/BRL2tsorcEAbc/oINwnAeN64HO1qLkKWjlqZe2Zxw797UlXxzO+h/AYJcACNe8CTSpzD+F8QhBi6NLgST3aaGkWUfTHwHn646JmS9e/cQrJeeAC75j5vnHMYx1gYdmSRa/B9A3mfQ9Qufmzr3tr/QUr5Koh0h38WG3l0iGU2Yq3rP30vZIKrZ+r7Y7g3knD1Au3UJYLBYA9eOSwh9uTLDwRzgFiBLkkzwT8oPHBK5Uq3R0i4DfOGJZhq7wHp924kkORslsj7gHH7pcRi6o19KWsCeOj+YLtE33fsvR+9wbc5fIDVjA==
-mail-alias-created-date: 1688796967087
-Received: from [10.0.0.250] (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-4 (Postfix) with ESMTPSA id E271A18000B0;
-	Fri, 19 Dec 2025 23:19:29 +0000 (UTC)
-Message-ID: <a5c4dd0b-d524-43d5-8d33-0aad02adc541@ariadne.space>
-Date: Fri, 19 Dec 2025 15:19:28 -0800
+	s=arc-20240116; t=1766186954; c=relaxed/simple;
+	bh=adFXeQNI4vqiMPvngz8td20WYTVAoPMdUUs9n4pXOpo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JLQdoxUsSlLYxLXye4r9q1/0cJjLu3d7agQ8sMz/hfl8EhR4m8Ul+URu0NUjl6h0WALaO607Dxe2tzji1rW/Gk8/a6qPo7fzD3aQ7lV+Nk7bh7U5905IyFPEzhRrI9Mcec8UFo/NTuOFbsD+p+1GW/gSYHY8KO/fZJclNKC8iDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTimUv/g; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0fe77d141so24506555ad.1
+        for <stable@vger.kernel.org>; Fri, 19 Dec 2025 15:29:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766186952; x=1766791752; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ErjFuEJhPVnB4S+GRnbOY1fFSnoTGmemqnk+wlSyH5w=;
+        b=kTimUv/gQ2tHQECxE8ZyaasVUYss1vEXec11ZHABfFafGpgllD0Aqt99JA7JkhG7nz
+         Vac0y4vmfkyj4NKdYYNGOOFskN1Z3dGx5LLMqKd2LGsKBiIDR7o3ojvE+syYpzxzU1Qd
+         hIjgBQ3WKB0g6XhOSiNGuN+2m/EfEDGAFaNpyYf+jqOiSCJPGputrzXhqrx05ZhkAP+U
+         JEbpeVhfPiZizYdqS3UnbnjgxmIBObR/fq+E/10J/AAp5jf3xJTLNQixcPaZP6xIlNSc
+         S6OXvInWDcCXTRlcrOCY8ezs765S6j1NVO4gevBRczb13DARXcUK5o/8tkBph98LOB26
+         /yAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766186952; x=1766791752;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ErjFuEJhPVnB4S+GRnbOY1fFSnoTGmemqnk+wlSyH5w=;
+        b=PivqTx7cXL5oqIrfU0CdCoI/KpYzQ+X79sWX3VEOB0LGsuj8OmiLDrEvgFiWalhiuU
+         BSJLcO+8MVnjC+GorRUMzJocSY0IODe3p8ansAwML7IhsdhBHKgyCKNj2kdxOkfWemIC
+         STJlKHwKkPbJe9dRhPf97U4lx/Kf0HNObhWC37iD9APlK42z76t7g7VqS4STGQ8+694o
+         wl9chZtP29kI2SXOlWSJqERQS0zowYMNtkIgOdH43u/piLS4e7mOGXwVF3wS1fruo8Z/
+         VREl2WFdPT4YNtZ0rgAaTNz2mNhOywakM5TEmeda+pmmmEDDcpHG/Ucwa36P7cdegnBO
+         jyjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnm2KECXkxpC7AhOvyvykpQBEjnyCxNkr5y+JyhXza+BNeaWZ1uV4MF66hPwCEo+Ss65udso4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP0VgDf1Dk3KYYI1oICbPs07PskvfF/PaAZyklmFktXh0l1jDZ
+	9zSG3NkXC5rOQBWZfSznQ1Zk/JNsEIlQ/6o5EYTd6SNgP4pE6Wvb3pgo
+X-Gm-Gg: AY/fxX4ugsmxiQLP2iT6rHV7PPtcKtby7SHBw0jH2PpcMMq5fmWiu8UTmQfs4fiayw1
+	V557KiNcfnDLIP3UCfXe8Q3bDWio2AOknN1KTqyZISOwHVBlnYrumOquXxtysq8z6miC1s4Nf3E
+	rCV33JjR2A9WaR+ondmvuNq8Yf0V/0ZdhRCzCJLwEXNghb6ii+VG2nBdLVoPna9LpNy2d19qraq
+	RqEyL9Mmc9G4mCwY9Q4MSmnukUFBih6qmKtqcBhAgb6DZFuTeR5ygWLVmkLAOQwhZjt0+hmKwcW
+	GFv+bG1n19BjGW69SzUauLfp5boz97m088D3TkIEHWsvFlfnUCJ7aMK45Nm8Qj4NFKMAwKSIw1o
+	gURuzKSmnTwffZpG2EePljrqOpXA8n0Ig/yOfIhstNGthjkEz7srhB6tEXyGcLhttD2NvW3zjDi
+	g2+N98F5vXSODRgoioHDg6BUNoPfi6fENuI51kvDAQQVs44KI=
+X-Google-Smtp-Source: AGHT+IFBamXzou/oh7mGxZfRc6PCq8nbVOl9oxyNqBD1zmlXSfuI/gIlWD5JXgOfYVY0WlEzZGORsw==
+X-Received: by 2002:a05:7022:1a81:b0:11b:9386:a3cc with SMTP id a92af1059eb24-12172310afemr4232239c88.45.1766186952099;
+        Fri, 19 Dec 2025 15:29:12 -0800 (PST)
+Received: from localhost (ip70-175-132-216.oc.oc.cox.net. [70.175.132.216])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05fe99410sm11055685eec.2.2025.12.19.15.29.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 15:29:11 -0800 (PST)
+From: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
+To: will@kernel.org,
+	robin.murphy@arm.com,
+	joro@8bytes.org,
+	robin.clark@oss.qualcomm.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	kch@nvidia.com,
+	Chaitanya Kulkarni <ckulkarnilinux@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] iommu/io-pgtable-arm: fix size_t signedness bug in unmap path
+Date: Fri, 19 Dec 2025 15:28:58 -0800
+Message-Id: <20251219232858.51902-1-ckulkarnilinux@gmail.com>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, mario.limonciello@amd.com,
- darwi@linutronix.de, sandipan.das@amd.com, kai.huang@intel.com,
- me@mixaill.net, yazen.ghannam@amd.com, riel@surriel.com,
- peterz@infradead.org, hpa@zytor.com, x86@kernel.org, tglx@linutronix.de,
- mingo@redhat.com, dave.hansen@linux.intel.com,
- xen-devel@lists.xenproject.org, stable@vger.kernel.org
-References: <20251219010131.12659-1-ariadne@ariadne.space>
- <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
- <aUV4u0r44V5zHV5f@google.com>
-Content-Language: en-US
-From: Ariadne Conill <ariadne@ariadne.space>
-In-Reply-To: <aUV4u0r44V5zHV5f@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Info: v=2.4 cv=Fas6BZ+6 c=1 sm=1 tr=0 ts=6945dd90 cx=c_apl:c_pps
- a=bsP7O+dXZ5uKcj+dsLqiMw==:117 a=bsP7O+dXZ5uKcj+dsLqiMw==:17
- a=IkcTkHD0fZMA:10 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kmYkUENqAAAA:8 a=cWRNjhkoAAAA:8 a=VwQbUJbxAAAA:8
- a=jQPEHyspVSHZgeuGXSQA:9 a=QEXdDO2ut3YA:10 a=p9kz6gysRiz6SGr9lVkz:22
- a=sVa6W5Aao32NNC1mekxh:22
-X-Proofpoint-ORIG-GUID: PrgxWHdnMqmT56j-36miK5PuOTkgt8vm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDE5NiBTYWx0ZWRfX1hQobANrkcwi
- fAOYdQ6SalVAYZ50ZyICd6lmGxyNCstXgvN2h7qvEzqWepamC0HYV1qNjmQl/noKu06j9ynh5PB
- X6I8nwhJKKoUnE78HqPDq2tdd+5nEdhDQuZFOrg6vOZH5N7bW6pSlMN9qflPI73b8z0a86ftDyP
- NsTuzn14/2gDFY253bCFbEk0DNTqKgqJiwOeMN3xh1Z2CFdiAfMIHq1atBGHHl0o5NmdH+oz/MS
- mK0bYKQfff0zG3/0IRmZUdziAXbHX1CM5qcZVF7epZISJod1ri5IihY/OPirX1oGmM6ZmfoD3UL
- 0HsaPtA01XwwRL9+yGf
-X-Proofpoint-GUID: PrgxWHdnMqmT56j-36miK5PuOTkgt8vm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-19_08,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 spamscore=0
- phishscore=0 adultscore=0 suspectscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512190196
-X-JNJ: AAAAAAABCeDZeZABUl1JBQZUFV5IHr6VVYAh9hTgMK6DZMe7v9k9M5CZQCnXlaMiG2N5UpfcrLgKZJJrQoSKX2mJqV1pPPecVXEiW+S0H4n+gHaK0zTzj6Winp6wvqXLScyHgtvQ1K7MzL+Gktqfc7PBGbCsHKCSK6GLnqX9aTleGPFku21OKp49OQGlMVZlTFGFnPnVIhRibRG5zVWPUbV38vqZD1b12pzR9D1mvk6wNFDR8yZF1JcjSORncY5j0k8LDwSS5SviG59MsRhSSAjvhR03IiFPfevkdzoRyDde3geX8m8UV0KXP3EndWv9BFLPkj6D0ht4H+fXq2SaFf6KFEOG7GtK2+yYHBEnc1UBz2ZotTFfFLNQW/E8Cme0DshfAT0xIVHEWWTFjobZvtL8psRlam0SDNi6oktfi7nGCoD6u+ybqdUWDTF0ob1eSQDsIAiDXZqAIHH7ed1ZkcKhxDYWc18t0IcAwMpPOAOks+0X6fHn/Yc52HluCLS4Mr0MHAMsOh1REPSkahqeePtML95elCEZKpG5QGCshkrpLjnDwWrbq1I0pnr523aKP7fDsEZ5ldO1dKwSWJwFsjUuu8NlXPzRT8irDivscY7FVY26tiM/ntPHJJwBijs7JF8V3bXdP9DR6BoX4dGRte5qPzqYY7W2ij1UmblqIYpoEwhoYYBrHOv/BT29g61raMcLMlRQOXj6Rb4sAVEXoP9dFiEwnfBvx3Wt1TH3k2Pb3f0tjSl8eO9jxaCsidx++26dX98H7097CpjwjDdkvSrOpSKa23zAKTLBR8OnL5k14kVmLNYe9fCVe0bhO3ExpBAyad20d1veTQk3NebdxBuYEKkYqXndk55NkEZluk4f7u5HOtr80eDwmU/k08ZQLTw=
+Content-Transfer-Encoding: 8bit
 
-Hi,
+__arm_lpae_unmap() returns size_t but was returning -ENOENT (negative
+error code) when encountering an unmapped PTE. Since size_t is unsigned,
+-ENOENT (typically -2) becomes a huge positive value (0xFFFFFFFFFFFFFFFE
+on 64-bit systems).
 
-On 12/19/25 08:09, Sean Christopherson wrote:
-> On Fri, Dec 19, 2025, Borislav Petkov wrote:
->> On December 19, 2025 1:01:31 AM UTC, Ariadne Conill <ariadne@ariadne.space> wrote:
->>> Xen domU cannot access the given MMIO address for security reasons,
->>> resulting in a failed hypercall in ioremap() due to permissions.
-> Why does that matter though?  Ah, because set_pte() assumes success, and so
-> presumably the failed hypercall goes unnoticed and trying to access the MMIO
-> #PFs due to !PRESENT mapping.
+This corrupted value propagates through the call chain:
+  __arm_lpae_unmap() returns -ENOENT as size_t
+  -> arm_lpae_unmap_pages() returns it
+  -> __iommu_unmap() adds it to iova address
+  -> iommu_pgsize() triggers BUG_ON due to corrupted iova
 
-Yes, which results in the guest panicing on Zen platforms.
+This can cause IOVA address overflow in __iommu_unmap() loop and
+trigger BUG_ON in iommu_pgsize() from invalid address alignment.
 
->>> Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
->>> Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
->>> Cc: xen-devel@lists.xenproject.org
->>> Cc: stable@vger.kernel.org
->>> ---
->>> arch/x86/kernel/cpu/amd.c | 6 ++++++
->>> 1 file changed, 6 insertions(+)
->>>
->>> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
->>> index a6f88ca1a6b4..99308fba4d7d 100644
->>> --- a/arch/x86/kernel/cpu/amd.c
->>> +++ b/arch/x86/kernel/cpu/amd.c
->>> @@ -29,6 +29,8 @@
->>> # include <asm/mmconfig.h>
->>> #endif
->>>
->>> +#include <xen/xen.h>
->>> +
->>> #include "cpu.h"
->>>
->>> u16 invlpgb_count_max __ro_after_init = 1;
->>> @@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
->>> 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
->>> 		return 0;
->>>
->>> +	/* Xen PV domU cannot access hardware directly, so bail for domU case */
-> Heh, Xen on Zen crime.
->
->>> +	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
->>> +		return 0;
->>> +
->>> 	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
->>> 	if (!addr)
->>> 		return 0;
->> Sean, looka here. The other hypervisor wants other checks.
->>
->> Time to whip out the X86_FEATURE_HYPERVISOR check.
-> LOL, Ariadne, be honest, how much did Boris pay you?  :-D
+Fix by returning 0 instead of -ENOENT. The WARN_ON already signals
+the error condition, and returning 0 (meaning "nothing unmapped")
+is the correct semantic for size_t return type. This matches the
+behavior of other io-pgtable implementations (io-pgtable-arm-v7s,
+io-pgtable-dart) which return 0 on error conditions.
 
-Nothing :)
+Fixes: 3318f7b5cefb ("iommu/io-pgtable-arm: Add quirk to quiet WARN_ON()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
+---
+ drivers/iommu/io-pgtable-arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-At Edera we have been running with this patch for a few months, I just 
-forgot to upstream it.
-
-I was reminded of this patch when an Alpine user opened a bug[0] 
-demonstrating the same behavior on 6.18.
-
-[0]: https://gitlab.alpinelinux.org/alpine/aports/-/issues/17789
-
-> Jokes aside, I suppose I'm fine adding a HYPERVISOR check, but at the same time,
-> how is this not a Xen bug?  Refusing to create a mapping because the VM doesn't
-> have a device defined at a given GPA is pretty hostile behavior for a hypervisor.
-
-I think it would be better to fix this in a more generic way if we can.
-
-Ariadne
+diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
+index e6626004b323..05d63fe92e43 100644
+--- a/drivers/iommu/io-pgtable-arm.c
++++ b/drivers/iommu/io-pgtable-arm.c
+@@ -637,7 +637,7 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
+ 	pte = READ_ONCE(*ptep);
+ 	if (!pte) {
+ 		WARN_ON(!(data->iop.cfg.quirks & IO_PGTABLE_QUIRK_NO_WARN));
+-		return -ENOENT;
++		return 0;
+ 	}
+ 
+ 	/* If the size matches this level, we're in the right place */
+-- 
+2.40.0
 
 
