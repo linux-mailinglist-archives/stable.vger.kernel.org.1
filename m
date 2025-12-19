@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-203096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47697CD036E
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 15:10:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0F8CD0377
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 15:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8720305D7A3
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:09:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61F4730B4FFB
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 14:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16722DF13E;
-	Fri, 19 Dec 2025 14:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A91328B73;
+	Fri, 19 Dec 2025 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTPlngP8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gq9MzjsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD935264628;
-	Fri, 19 Dec 2025 14:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2490D329C5F;
+	Fri, 19 Dec 2025 14:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766153371; cv=none; b=MDKfLfJMdQaFZwiRv2GXNpeFW2Gvnq6E5+4Vpr/TyRnkelMiS2uDP+AOkvC7L6yhSn/Jw8e6TZp9vGkONWjL1WKwv2MLlfhEWEdLwNzpQcjQb3uVmtM9Kt641vhjeMCmx6r+zxDokfk9oJlUkP1CvzrBfoxo27knEmSFsw4/9Cs=
+	t=1766153381; cv=none; b=XJfWbDZ2FBvI8lTqqSahdskjmw5DZifAsEnPWeUykejJl2wxYHYwxbAlGYBOHCza53puMdvTGLvfSmFi6CWGvEKTwpgQE6yPTe3DhxA93e2jlI8PGR1F3YeMXtGPyiNsb1gzbWghyqNi17CjcLiLbBQJ+7S1SlHlD61XwVymAc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766153371; c=relaxed/simple;
-	bh=RsohaNGjAAyCO4ow/UBaQkjTs9uq8T3jmxOXAnd7LBw=;
+	s=arc-20240116; t=1766153381; c=relaxed/simple;
+	bh=3Y1mJw5AklsR4Q1u7kodeIcaXTuzWdVqNRFxY89/6k8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uXlql8nFaPsZA9aq7vG4gRnIeNngEnDgTiJ2IJwvgBxtTZ4CU7lmIE8V4vonLUcAlhcL1JM6CdIPKqbXqhfzeNvehg1bRFeOS8MfGoHd/wajYs9awm4RTobaUyTw4iLluYPz1AjvZ3FDEx7B+U6aEtgng25s/crtfOaJGh5zF04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTPlngP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B477C4CEF1;
-	Fri, 19 Dec 2025 14:09:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BV16LmGdJRmI3m9kqD8FxmH05OqjqXnH2+6H+tZcKi284JueHFcOcPys2P5D7G3uq8JhOL0C8pfxjbCvPxetLMjMNwkEF+5Hos5azLLdBCzk4HfRcR1fq17AZsxrCLhTOkEauI1GQ/H2R1LRRT1CtyecxcusnVu2RfNIh45ZEXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gq9MzjsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE50DC116C6;
+	Fri, 19 Dec 2025 14:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766153371;
-	bh=RsohaNGjAAyCO4ow/UBaQkjTs9uq8T3jmxOXAnd7LBw=;
+	s=k20201202; t=1766153380;
+	bh=3Y1mJw5AklsR4Q1u7kodeIcaXTuzWdVqNRFxY89/6k8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=kTPlngP8oOQx4elQrkofz4GvfESIbAqkLQAcTNQLV+R5666AIMMbEg8l5zcsq3FB0
-	 rrqBBIsnpVWPa7fUMS/FQqMwDloMgMTzJm87kCF3eIVqHiGWktZSMBul0D8tY32dj8
-	 KdGMFKjtm8xtdwVEoVT7d7qTrusICFtgOXee8yl5xMsS75qACzEUt8Ea26gT0w1j6w
-	 xQ+/xze9rt4CnoNaXLp0puA3cBc2T/6VjQrfpR8+446XYhqIqDakdK4SXUZY2VxX61
-	 XEx8mzPZS+V+vL/qU+/CuWfecKJpBb/8Lna4dsH4JGw+ej/z7XAKIROnlQRe5km4RL
-	 cLAxacHAgZxFw==
+	b=gq9MzjsZ2vluG3wCnt80FsizP9rDQ2dbS5hFkOtd6u/hPOWXSf/lcU/hxWvQAk8Q3
+	 Dx5khi7k8ngDEI8XtMga6LcCDRt+ASCyK+ksid4Mg2HMnUzHGMO0a1Mghg8XAmmg1b
+	 ZzpjzmOG9ycrNSHIJGkrMHjNh3GpoaEwgIDiNtsy4lgakJ0f6iWl547DeOnUvuyY7c
+	 nO4AVcE7H12cgZDp5yZ985XKQFrt3B6TfkoqlD2gOO5NKe7O9Y/0Fm0O2HGR2ZXwbN
+	 ssXLeez9m5hk1ALpTMtb2gr2ySdsIJFQukXEdYcLD6QmM8WSWjhYwm2sYB5Rn4YMWC
+	 EYXXlikO78Ktw==
 From: Mark Brown <broonie@kernel.org>
 To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
  ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
  pierre-louis.bossart@linux.dev, seppo.ingalsuo@linux.intel.com, 
  stable@vger.kernel.org
-In-Reply-To: <20251215142516.11298-1-peter.ujfalusi@linux.intel.com>
-References: <20251215142516.11298-1-peter.ujfalusi@linux.intel.com>
-Subject: Re: [PATCH v2 0/8] ASoC: SOF: ipoc4: Support for generic bytes
+In-Reply-To: <20251217143945.2667-1-peter.ujfalusi@linux.intel.com>
+References: <20251217143945.2667-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH v3 0/8] ASoC: SOF: ipoc4: Support for generic bytes
  controls
-Message-Id: <176615336928.412520.1247060955061505587.b4-ty@kernel.org>
-Date: Fri, 19 Dec 2025 14:09:29 +0000
+Message-Id: <176615337870.412520.14252524036895395324.b4-ty@kernel.org>
+Date: Fri, 19 Dec 2025 14:09:38 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,16 +61,13 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Mon, 15 Dec 2025 16:25:08 +0200, Peter Ujfalusi wrote:
+On Wed, 17 Dec 2025 16:39:37 +0200, Peter Ujfalusi wrote:
+> Changes since v2:
+> - correct the fixes tag for the second path
+> 
 > Changes since v1:
 > - correct SHAs for fixes tags
 > - add Cc stable tag
-> 
-> We support bytes control type for set and get, but these are module specific
-> controls and there is no way to handle notifications from them in a generic way.
-> Each control have module specific param_id and this param_id is only valid in
-> the module's scope, other modules might use the same id for different functions
-> for example.
 > 
 > [...]
 
