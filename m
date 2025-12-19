@@ -1,140 +1,247 @@
-Return-Path: <stable+bounces-203103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09D1CD11D1
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 18:21:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EFBCD0E4B
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD94F303F5F6
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:21:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84B633073FF2
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 16:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74834350D79;
-	Fri, 19 Dec 2025 16:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B1135581F;
+	Fri, 19 Dec 2025 16:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D0gO9Y7l"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="wXZgzcq1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94E0350288
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 16:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766160575; cv=none; b=aofexIaJ2mUXgsKMAj5DkKy4G/VEZe/t8kOSazXwn1/EM52jpDh9rbCj3m0F7OEFxfxZozSvhnhD2xKJVvmBvuYKs9k2bBiX/USGdrLnGjzGbHuP4E2tAELIKD9Y+NKG4OW8qz8fcSZlKCMvhVzWdNG7KAA7dePSpfnjExPbjxA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766160575; c=relaxed/simple;
-	bh=zyGZvdow4WsQp8tmO5WglXphtJoWsZLzh35S+zd8XqU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GpW87U/n3LMrShK5aPb1FG/gZUfkNY7iII89qSMtkLw+IW9avhMWvVqHgxDXzEA4CrUzq5AI318gTELw5trSxgjnfv9GTkn8lM/DNHasHhI+XOUynzpkVGb6DcVFYiRCOAMjuJx8SecN83QqspUB/R3bDsTozjbMgIgFefNJllM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D0gO9Y7l; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so4334074a91.0
-        for <stable@vger.kernel.org>; Fri, 19 Dec 2025 08:09:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766160573; x=1766765373; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WvkkN/JVfJ0/HpY6p1MGYv4ARJvfILZSEbErMl1MA/4=;
-        b=D0gO9Y7lvW8gJtT2obDsqdLWDwenxQ+coKnamyA1cvoJtRo4+VzsoU4sbPKCbRk/S6
-         RDxTi7Iigb9j39aH73WGOviMNJ2oRgE9epK3rGYGrDO92VhAd/a/4UTrmwhod3ICQ0co
-         3F/Qyop767/JQ6a6IEneBalbMlA0cH/MU5OaJAJmURrRuiN7SsJX+6v6KSuyqwA9aYd7
-         Kag017NOFGtqhj8aJlUeG09FY2xVlNMXUdzoGpd0NfnSeKQ89Kjy1hQ8PeiMSSBPBw4M
-         IGkssek0uWCnyd+z0+YzCHFVI5rgGqjQDEi6usL0ERh1L+Y/yb6pjrT9d/VbnM0j1vpv
-         MPyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766160573; x=1766765373;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WvkkN/JVfJ0/HpY6p1MGYv4ARJvfILZSEbErMl1MA/4=;
-        b=ST6Irw0GBfxatjn3YtGU6d7ex/NHlVrvRACcLrkpQk3NlbrsV5QgWZu1QBoBfzpi/z
-         K+vHbzgK19Rm6QvtveIYfVUxy/0Vf+er27BsqteFCjlF4W7liHT3hsPBCXfUgOrv9tjO
-         svjKRqlLQjYCja+pjDAutXdpWsVZWJrBa2F34u+Joblt8Je35jsy65P5UOWjZdzuipq/
-         ElwpsN2WPYJz73stZ0xqVTwfYo7sGCYdNcqDBXlGTKzNyvAC42vFJGTd7VEyFdkMS0y0
-         JOE640A4bb8wvqDz6aGXs8yBrMujV3caLGZxcUqrE52sY/n1LO8NzU9CUNnTmgdcY3Nk
-         y9tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOndZv5Eo6vWBFQLJRki/gw1Jb6EH0WkpbDfs59/v3V1YrKbDhd88OGZZMsX2gwzPTBlxWcOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuY0yER58bYUi0RYe/qo62pKRwvyOjEyjz+mhHRqBpXpzbi+CR
-	OWB3xbnpBYy3gqVe+zX8UMHgGdp0B3NkGr2kYxYZQAX8+Fwxxyz6cEDU1xJg9mAYgNFYISTuw9E
-	2Shc9GA==
-X-Google-Smtp-Source: AGHT+IFi0EOmNsJLwNWNd+F7YnuERxayE0iVrblPiIXpt/oQKEFPGSZPOu2wHmeTgNma9jT1j9/KpGT8+c8=
-X-Received: from pjso12.prod.google.com ([2002:a17:90a:c08c:b0:34c:6892:136f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f90:b0:340:c261:f9f3
- with SMTP id 98e67ed59e1d1-34e92130102mr3375788a91.14.1766160573108; Fri, 19
- Dec 2025 08:09:33 -0800 (PST)
-Date: Fri, 19 Dec 2025 08:09:31 -0800
-In-Reply-To: <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4169D2F9C39;
+	Fri, 19 Dec 2025 16:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766161578; cv=fail; b=Me/kS/PIhv04w1qRVLvEp3zewfZotgc7+RlKnjk3ALYBHIpLN+HKC4OnN0h+g204BvggcTM8ZiiMuNOg/8KmFiBhPD1SbOIayx/DUOzKsOsCBl0VMs4l9S7acwgOD/kMJdK2d1oSntI0tb0Oue1GiH5vGC+7UFv0TLPycKsZhCA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766161578; c=relaxed/simple;
+	bh=yLAtGWcANVp56oUHXMaWVuEcnG90WMjjMLzVBqJb5Ro=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cfDm8ndt/6bH905nsmQP86OWHc2S2xFq+cUv/QxiNVia5xYQz1TTinVI25Bhgjlnv/OPr9DJFeoKo6Y+IpAtMP8kktdgDWiPLyRhOjtxGKl/WhXRoZv9hLDFDLPORGXojWGuMkEqiCQxyHJEnqA5GGUJ6QsYma0P129TwuAp6Mo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=wXZgzcq1; arc=fail smtp.client-ip=52.101.62.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uNjXOg59bgcoVE4G5Fztjhzyn6x+96UEEs6mPQ2ZHgrFW/Qwa/O2LIKXLG1sQimio8jA9yKimwWpIE1L8AB0tAYUYcO4ImJRDV2MXXr9jWPnFu7aGEl2hyXmBIci5KbZVEto11QX/MTJqf2m+dUa0i9Za8boyELhyOBYsShacSTUZSDMe6ofx9d5PGVqd4nW4YhdzdTkRNXSHvoAVs3TWEdDIa7eqIQMyO1Q51yG1yuHX988GgO/udfTU0VoSeYYh2bTmWFpKznMVRfwTwA7R4cq5Kne6gqb4n/ThPjDGFnGhv2jbPss4UXA9084yrF3SIvVpz5uIzAXdcNEPDTq+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vDsF8Xu9xsyj7dZCtHwBGEEK7+pNe90yIC5FmhpDiR4=;
+ b=dLRKxAJIZ8ls1Y+UJsKz05m7dLvYoCDrakhkIi9TC8IZt9+uQAZRFTJGygfiQl2jvcApv1Kx1YTiqKlhLp0rG97HdHP3kH/dUC/sla+Y2Fr8EuQrBtneEuPb7IhbfIzw1HugV712aKhgbX8WppRvmwMUJ2NjLOuSkjkpHktTEPdlh61UZTpS2q+7xxAqhvWs+JH95IgJHMbEJGhivYGSLvDMkli0vGRk9baILIKeKKxdCDYCK1F4Z0rZaJIRHZzjllsB9WnJHTUDBbVHcO+J7WduLO0aUB/sax1paksht4my2VJVc2qOwlJ6tVh0y6tkGHt69U+Iun7O6XBVMRS5vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vDsF8Xu9xsyj7dZCtHwBGEEK7+pNe90yIC5FmhpDiR4=;
+ b=wXZgzcq1GGbg8+h6iV+kfs7y9kINNTw95ByLJI2Qh/KaDCUZesBZffvCQdJ6jOgEnN+jFcWmXOmRRVtg0FKLKL3Bi+Vr5zpKKKpjGX9qdmpLndmREtEphmjx4Q4xqd6AJSrwe0Q4XUXYXpZiIzXBN2V6Um7jYlsfsb8DYGZieZo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
+ by SA1PR03MB6452.namprd03.prod.outlook.com (2603:10b6:806:1c3::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Fri, 19 Dec
+ 2025 16:26:13 +0000
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37%4]) with mapi id 15.20.9434.001; Fri, 19 Dec 2025
+ 16:26:12 +0000
+Message-ID: <e2632ad6-6721-4697-a923-53b5bb0c9f0f@citrix.com>
+Date: Fri, 19 Dec 2025 16:26:07 +0000
+User-Agent: Mozilla Thunderbird
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+ Ariadne Conill <ariadne@ariadne.space>, linux-kernel@vger.kernel.org,
+ mario.limonciello@amd.com, darwi@linutronix.de, sandipan.das@amd.com,
+ kai.huang@intel.com, me@mixaill.net, yazen.ghannam@amd.com,
+ riel@surriel.com, peterz@infradead.org, hpa@zytor.com, x86@kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ xen-devel@lists.xenproject.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
+To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
+References: <20251219010131.12659-1-ariadne@ariadne.space>
+ <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
+ <aUV4u0r44V5zHV5f@google.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+In-Reply-To: <aUV4u0r44V5zHV5f@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0490.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1ab::9) To CH8PR03MB8275.namprd03.prod.outlook.com
+ (2603:10b6:610:2b9::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251219010131.12659-1-ariadne@ariadne.space> <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
-Message-ID: <aUV4u0r44V5zHV5f@google.com>
-Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ariadne Conill <ariadne@ariadne.space>, linux-kernel@vger.kernel.org, 
-	mario.limonciello@amd.com, darwi@linutronix.de, sandipan.das@amd.com, 
-	kai.huang@intel.com, me@mixaill.net, yazen.ghannam@amd.com, riel@surriel.com, 
-	peterz@infradead.org, hpa@zytor.com, x86@kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, xen-devel@lists.xenproject.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|SA1PR03MB6452:EE_
+X-MS-Office365-Filtering-Correlation-Id: da5c88e4-f490-485b-38ca-08de3f1b5317
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WUtpYU81OHJnNzZ3bmJUS2F2VDlwOXlkTW9hcHJBTzdQbXlXd3JqNzNtK3pN?=
+ =?utf-8?B?cFhxRFppTTVsZ0VQbk5GaHZHWW5LOWw2eGlkR2RiQUNvR0ZNaGcyVVNqQk5I?=
+ =?utf-8?B?d04yMTl3bEhOZW9QNzRQSWJleWZ6U3dEQ3g4Yi9meFliaWNnL0NsSjIxSXdL?=
+ =?utf-8?B?eXo1UGhBbjJIcXZ6ZDNsRWFUaVQ0ck05YUx1a2RWN1ZNc0dqUjVZa2xJdGo5?=
+ =?utf-8?B?dnpiZlZtZGJzTTZpZkZETjduZjhNb2ZRS2w1QUx1dWVXWWdTZVl4Z2NXZlJO?=
+ =?utf-8?B?Q0lhT3hQVmY4SVBrZWdqUVQxQUNWOVgrQy9HS2I2aFZRRjJnMUZ5d1BFTmxo?=
+ =?utf-8?B?VnlsaUMyUWpoMFhsTmJNQXdOYUtiOTB6cGZ0b3k1NnFheFpKQkxzc2hVS05S?=
+ =?utf-8?B?anRnNVVOMnExakxsaTlBK281T0R3WVVFaFJZWWF2Y2E4bWNzYmZmMGM4WG5h?=
+ =?utf-8?B?NTJLK3IwaHpJd0Q3WnVvdi84T3l5VzZXNWJZVExFcTNtaitjbmw2MytCYmtV?=
+ =?utf-8?B?MWZPbEdZb1pWbmpLSERtUW5hNE5OL2Y1ajA4aHpFSFkvWFpsKy91VXlSaU1r?=
+ =?utf-8?B?YlVwQytMd3BzSGtybE9iNmM1cnY0WUFid2RicTY2ODFSWFpIblNlelE1eVVB?=
+ =?utf-8?B?YnBOdk9MWXZRcjd0R1A2dHFBczhTSktMdHQ0U0gwU0tFWCt4OHJ6UkErS21x?=
+ =?utf-8?B?WXV4SFJXMDVzRUZmMW45YVJTbmY3dlpRbHpEKzg3SVh2WkVnQi9VLzBkSzNw?=
+ =?utf-8?B?b1V0RmxVUVJsdlZDL0hIeFhHdGZMaS9DTGlLZTNFelpJMThwbWYzYjZZbFoz?=
+ =?utf-8?B?M215bVkyYmFZU1J6ZmtOS1ZtblpvSWd0OUhPUCtKOWpTRUM3V3dRdTJkdmFq?=
+ =?utf-8?B?N1J1R2R3SU82R0pPT3VlNTladnBEUmRDbHBoQm1vclA3WFFldktwUlNVaHZG?=
+ =?utf-8?B?UmFzRGhlbStGU1EvOXZPS0tUTDlhTXluRDdUaW90dDFGNDhkYnFmdlNEbmRX?=
+ =?utf-8?B?REcrdkxJRG1aYWRoRzZpazFIZkh6bVVPMjNhRExJcVdNSTdTTzQzQVpNUUVq?=
+ =?utf-8?B?SXZiNzdhVXFFdE1iMGN1RWViN0VxdDNqcnlWMHRPVHF3ai9xVkwvWEp4dHZq?=
+ =?utf-8?B?SjBnK1VSTjdsdjlycnlvb3J0UjE3djZlVVQxVjhIZTdrVVN5b0YwSU95SEpo?=
+ =?utf-8?B?R3VRSFBwR2JiZGhoY0N5TlBMWFFjSGpCbm1pME1pSDBwVW1UMExYajMzaWtI?=
+ =?utf-8?B?TUI5emhrbGRaZmlKaXJTbm93MUZUZ1ZGcDVEMlR5L09WOHUvblh6ak5wS0JW?=
+ =?utf-8?B?WHNTK1Q2NGhOUnRlUU9IeUdLdDF1TWc0Vk9IVWVNa2xVbytFaFROOVR5TWkz?=
+ =?utf-8?B?SmlETFA1aXQ0RWs2d1lGQzJxeVJsYmZDRmZBSHNGdWd5d1NyWVBpTkpidnhO?=
+ =?utf-8?B?ODAvODAvQUtNSnE0YXZOZ1RnbVZjNkpabTFIak95WDNPVlFWZjFua2g5WHZY?=
+ =?utf-8?B?VStZOU9IVmZMOWNKYnhKVlpTZWsxazdlWGhJR1prVGlQTjF2S25DV1RHOXFV?=
+ =?utf-8?B?SG1RaGRJSmJqanFPcUtYQklrWDJyWWh4bzlEWjFaUHFROStNbnZneW1BL0p2?=
+ =?utf-8?B?QzMxSTJFWTRmUlBpUmV2ZjBIK0IzME9KL2JGdzRrc3h5YVpDZEJFaDVSMHZw?=
+ =?utf-8?B?MTRjUGRBK1E4Sm1GQk1zdXp1Z3RyUTFPQnRFRytidjRLQXRFQXRDZ3d0VWhw?=
+ =?utf-8?B?c29ZNzEyQlZ6TjZZVEh1ZHVEYXJsVkQ4VWlnV0tDa2R4TkdaU0g1TUVLekp2?=
+ =?utf-8?B?STNqYmJ1cnVVWFBMTUtVWlQ3Qm41SHk0Smx5bXozMy92cElYcldac3VlWjB6?=
+ =?utf-8?B?TlpEN1YwdHRiSHVzS1dhODNTdWRiRnlkUXJwMUw3WjlVZ0lIYWRYS09GUWxU?=
+ =?utf-8?Q?cVoqPtu//dmumZpROFrkMgjk/5DilBVp?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TjBMcE5IWXM1MUlXUWRsTUN5OUc1c3hjKzBMRmgxcTFwNEZmQTJFYUhIUmh3?=
+ =?utf-8?B?OFNKa3dCMm1OKzBsenY2dkpCVWtobXlBY0M3NTl0QWNEcitwcjE3cEZLMnly?=
+ =?utf-8?B?bEI0Nm1Va2lTTlJJK1hzVFk5M0JZS3lFWVVONVB5em11eng0Q1podVQxYTll?=
+ =?utf-8?B?T1J4akVSck9XQUoxNFYxQ283WmQwaERuYjZzVW1La2h0bGQ0UXZSR3cxdXhC?=
+ =?utf-8?B?V292bzdhU1JCdk5EVW1QZHNLc1hRUTlGdnVFQ0FWNVlsR2VYbFpBYkxZaU41?=
+ =?utf-8?B?WUU5eVZsWlZoc3RJZWl4TGFRYmRFQzZoUUVyb2xkM1JMOERPS1V2dWR4WEZO?=
+ =?utf-8?B?ZmxQK0RuMkVyaERIL3RuSUZ4VTRneUhzZGtIZ1ZzQkRickFlT3lwQnV5ek5C?=
+ =?utf-8?B?WUFHa3I4UE9JQkQycFlEeGpycnJINGFqVm5hSU4wSjNVb29tV2lXcmZNU1o5?=
+ =?utf-8?B?dk0yRDBBUjNtZVlQMGZ2RWsvQTJMMkVCbWdqYnFJb1ZmU3NpTXZqVUpncUo4?=
+ =?utf-8?B?SzQvd2NnZ2drM2k1c2tvY3RlNkRSbkJ0MUdJOGptUDBZZUdrUW93UGUvMGlm?=
+ =?utf-8?B?RnJvbE83Q2E2eDQ2c0RmKytHSU9XZ3lwR2hKejgvRDFmMm0wc095WmtVdEN3?=
+ =?utf-8?B?cXpiVFRaalpFTkR6YUdFa1FIQ1N5SUp3c0kvb1dUdGx2N3FPSEhpSVlMZjdN?=
+ =?utf-8?B?cE9jeUlGNnpYMWdneER0UDk2TE9tYituUWNtMWtpK3ZGZ3VlTWxLQUFyb1ox?=
+ =?utf-8?B?YkQzbGJHbC9SSHZtZEVNU0wrbCtzU0Q3UHUzcUNkT25IT0dlQzlTakJDOElH?=
+ =?utf-8?B?NUFTZGkyTDJhNEJaWkowQ3VwbG0vYVpJN0lEOFdZQnQ1Nk12SVZCdkJMaUIv?=
+ =?utf-8?B?QmMxVG83Qi9rbXlickFMWTI5bHduOFJONzRvT3duUEFFWnhxa2ZSelE3QTFJ?=
+ =?utf-8?B?S2szT29wRkczLy9ZSTJJTzE3YUJtaGdEWkVpTlJoRmZQT01DRXNuYWsvbHZL?=
+ =?utf-8?B?U0plT2YwZzU5MFZWNmttWURGOHp0RkJKck00cUtjbVBKeXdNR2JBRFJTL0oy?=
+ =?utf-8?B?Mys0Y0NJWHoxekp5T25LdkdIRHlzM3RJNTk0Ujk4alFRYzN2RWRuNWZ1amp6?=
+ =?utf-8?B?amtDYWQ0dTZCdjhVRThRUVY3TjRmbzJXTUJKWW55MFV6VE11VEJVRXo5V2lU?=
+ =?utf-8?B?eHc0V09LbFd5WENSTWlHZ2E5V3JVT2hLODU0c2pYNDg3bHhwckhneWdtZmUw?=
+ =?utf-8?B?aVJlU3dmRDlYZDhzbE15MVY4NnVGV0p0ekMvS2RzR3kvMEJqaVRxY0ViT3Bz?=
+ =?utf-8?B?ZUNTNTIvWUNudmJxZFdlVnIwbkRyOVdZZmV4Skk4cDVRYk1GV0lqYW91OVo0?=
+ =?utf-8?B?MEtNYWF2TkJkN0Y4VkNrekpNTHAwaEx4WVEvRUJsS3ZpYTdCYSsxU09tV3Qz?=
+ =?utf-8?B?bVpvOEhVSlRaQXZlUm16NmZJejVabDgxanl1STVWUU5CWHAxK3NaOG1Hb29u?=
+ =?utf-8?B?WDNPQWxGUGN5bWZMVTZDMlpxN3lzSjdQTU1QVjZKaW9ZUUt5VmRYSnU0MG03?=
+ =?utf-8?B?cFlnV29FUjhOTkNxZ0lFVTk3bG4vS3gycENOa3dKTGs2NHVjTjIvbFBjMmZ2?=
+ =?utf-8?B?MjZYNm1FSURKQ0xxWCs2U3JHNFJZRlNSbWJ0a0dlei9LZlZIRXYxSmlkU0FW?=
+ =?utf-8?B?bGhscTZMQkN4akxSUmpVNU9xS01HSG9LRUdNbUdBTzhsYmZzVnBrSkR5a1VR?=
+ =?utf-8?B?UzNBMzBZKzQ3TWFrLzFvTEVDK3JNY0htQ0dNbHUraTR2bVA4UkVlSEtnVDBO?=
+ =?utf-8?B?bi9uZUVFbkFxVUlPZjNPVzN0eGhiTXNFM2FUMXlvbkJ4STNwTjY5NTBNUjNZ?=
+ =?utf-8?B?STA1ZzRPaUd4ejN6SDNnSFhMcCtZaFdGYnJmTmhIaUMyT1N5RFhIZTBRYjQr?=
+ =?utf-8?B?Q0NRQlFGbEprZHowZ1ZzNlVkd0NDZFhKb1hHbHkxSkUyU0xMbDBac2hKd0ls?=
+ =?utf-8?B?VmRQQ25rOHgxUnBUTk9TK0JyTjRaQUhweUpiQVUzTWJITzhRS285dnYrSjhW?=
+ =?utf-8?B?YlRtRFBCK2U4V0JtbUdXczE5eldTc0VUOUFCb0M3SHpTdE9WYktVYnJraEdr?=
+ =?utf-8?B?alQ1QThnWHB6L3craHlnK0JXRGpidktnQjUyMUhZV1lhYXQyamp0YVdCNmcr?=
+ =?utf-8?B?VjEyOGpCaGlJNnhBazkwYkNKTmllYTFvYTBRN0x1cGVqUEZaUkw1anVUV1Qw?=
+ =?utf-8?B?Ti9xT1NYUG5FS0VLMXp5bnYyRGNBTWdXUjVTVmVkV2ZxTGtxcE91TjVCbVU0?=
+ =?utf-8?B?RlN2QnJvL1dGM2RaSTJtaW5vbXdpWCszQ1BhYjBnMnIyTnV2UXFGQT09?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: da5c88e4-f490-485b-38ca-08de3f1b5317
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 16:26:12.4540
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t704DWbjOPljgtdQTfedmqkt431+iO6Vo1oCTfOPbfd0FfCdql7VykL4XWMmcm2GsKMPkKioprZ4+f8NSn4UoAeUUI+LiY3yekuGinfLcvY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR03MB6452
 
-On Fri, Dec 19, 2025, Borislav Petkov wrote:
-> On December 19, 2025 1:01:31 AM UTC, Ariadne Conill <ariadne@ariadne.space> wrote:
-> >Xen domU cannot access the given MMIO address for security reasons,
-> >resulting in a failed hypercall in ioremap() due to permissions.
-
-Why does that matter though?  Ah, because set_pte() assumes success, and so
-presumably the failed hypercall goes unnoticed and trying to access the MMIO
-#PFs due to !PRESENT mapping.
-
-> >Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
-> >Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-> >Cc: xen-devel@lists.xenproject.org
-> >Cc: stable@vger.kernel.org
-> >---
-> > arch/x86/kernel/cpu/amd.c | 6 ++++++
-> > 1 file changed, 6 insertions(+)
-> >
-> >diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> >index a6f88ca1a6b4..99308fba4d7d 100644
-> >--- a/arch/x86/kernel/cpu/amd.c
-> >+++ b/arch/x86/kernel/cpu/amd.c
-> >@@ -29,6 +29,8 @@
-> > # include <asm/mmconfig.h>
-> > #endif
-> > 
-> >+#include <xen/xen.h>
-> >+
-> > #include "cpu.h"
-> > 
-> > u16 invlpgb_count_max __ro_after_init = 1;
-> >@@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
-> > 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-> > 		return 0;
-> > 
-> >+	/* Xen PV domU cannot access hardware directly, so bail for domU case */
-
-Heh, Xen on Zen crime.
-
-> >+	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
-> >+		return 0;
-> >+
-> > 	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
-> > 	if (!addr)
-> > 		return 0;
-> 
-> Sean, looka here. The other hypervisor wants other checks.
+On 19/12/2025 4:09 pm, Sean Christopherson wrote:
+> On Fri, Dec 19, 2025, Borislav Petkov wrote:
+>> On December 19, 2025 1:01:31 AM UTC, Ariadne Conill <ariadne@ariadne.space> wrote:
+>>> Xen domU cannot access the given MMIO address for security reasons,
+>>> resulting in a failed hypercall in ioremap() due to permissions.
+> Why does that matter though?  Ah, because set_pte() assumes success, and so
+> presumably the failed hypercall goes unnoticed and trying to access the MMIO
+> #PFs due to !PRESENT mapping.
 >
-> Time to whip out the X86_FEATURE_HYPERVISOR check.
+>>> Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
+>>> Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+>>> Cc: xen-devel@lists.xenproject.org
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>> arch/x86/kernel/cpu/amd.c | 6 ++++++
+>>> 1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+>>> index a6f88ca1a6b4..99308fba4d7d 100644
+>>> --- a/arch/x86/kernel/cpu/amd.c
+>>> +++ b/arch/x86/kernel/cpu/amd.c
+>>> @@ -29,6 +29,8 @@
+>>> # include <asm/mmconfig.h>
+>>> #endif
+>>>
+>>> +#include <xen/xen.h>
+>>> +
+>>> #include "cpu.h"
+>>>
+>>> u16 invlpgb_count_max __ro_after_init = 1;
+>>> @@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
+>>> 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
+>>> 		return 0;
+>>>
+>>> +	/* Xen PV domU cannot access hardware directly, so bail for domU case */
+> Heh, Xen on Zen crime.
+>
+>>> +	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
+>>> +		return 0;
+>>> +
+>>> 	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
+>>> 	if (!addr)
+>>> 		return 0;
+>> Sean, looka here. The other hypervisor wants other checks.
+>>
+>> Time to whip out the X86_FEATURE_HYPERVISOR check.
+> LOL, Ariadne, be honest, how much did Boris pay you?  :-D
+>
+> Jokes aside, I suppose I'm fine adding a HYPERVISOR check, but at the same time,
+> how is this not a Xen bug?  Refusing to create a mapping because the VM doesn't
+> have a device defined at a given GPA is pretty hostile behavior for a hypervisor.
+>
 
-LOL, Ariadne, be honest, how much did Boris pay you?  :-D
+This is a Xen PV guest.  No SVM/VT-x.
 
-Jokes aside, I suppose I'm fine adding a HYPERVISOR check, but at the same time,
-how is this not a Xen bug?  Refusing to create a mapping because the VM doesn't
-have a device defined at a given GPA is pretty hostile behavior for a hypervisor.
+A PV Guest (by it's contract with Xen) cannot create mappings to host
+physical addresses it doesn't own.  Xen rejects the attempt, and Linux
+is ignoring the failure in this case.  This has been ABI for 25 years.
+
+From a more practical point of view, because guests can read their own
+pagetables, Xen can't swap the requested PTE for safe alternative to
+trap the MMIO access, because that violates Linux's model of what's
+mapped in this position.
+
+~Andrew
 
