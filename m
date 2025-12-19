@@ -1,223 +1,192 @@
-Return-Path: <stable+bounces-203045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCC0CCE7B8
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 06:03:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF61DCCEA14
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 07:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDBF7301130D
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 05:03:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2B9E33024CB0
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 06:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5792C0298;
-	Fri, 19 Dec 2025 05:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C91295DBD;
+	Fri, 19 Dec 2025 06:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iyer4/7Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EijRxJkD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC17122688C
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 05:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF7422126D
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 06:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766120620; cv=none; b=oJVm614MspBssMeQVWAlREPIDhrbwfczM6Sekfarw+JpUuh2Rfre+tUlw/7Dz8HKMBn+BapGBb+4XgNDJA8anNo4P6dvPWzJMtin1yXGOMWJHIYsa1dh1nICZZNxQc2S4LPeUpqJxfV2J4cfhn4BwvR8sHcUkupu5ocnvzKYnwg=
+	t=1766124991; cv=none; b=tWZsK5We4EfkQEk+xem4pxTSmKLZAE/liiWTBvji4+hQqFHjX5LtKSPFUug/XOSG6fYD5CINT09rWJ26WK5kbchCjNnES2dDybbuMKQpMXp3ArChHcqquQKh9djXt41SxGxlVRD0sg3Csato8R5raSgGnwk7AKa22002CagkkUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766120620; c=relaxed/simple;
-	bh=kaURwmhdJjY8j91/nuYsMJxS/M+9Ly7tIAquBQJLkUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KFJE7Sl/7lYfgE+ZW0AFnFClO3IagGGKoNgQ/4vF1x6S0STUO5dDIwLfILtNEQUvpnYB5L3qohsrlzJZ+TdzIjSUlyLsp/honKHQK4DtTvgtz4PzitTKUfYjAuIwuADgrbsdJpR/g0GPuHaK9mXsM8Q+PyY/U4d+9tW+bM8BL4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iyer4/7Z; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1766124991; c=relaxed/simple;
+	bh=OnrIFQUB4ExlEwB1YTATumAbARUFTj28yPXWy8+zlWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hpib5v7dEAt2IN43YdhKeGV+UeJX5cC1nbUsWjjhxDUjkD65r3QJbqaPjm0hb9nnwGIgkru47pfWnvBXWStAU0BOv/GlHPPx1S4J7mmAES6S58j7PsFCEaWiuwufjM7czpn/tO02ifaUGZM8T8TvEPaXUjZ/N/4wuP/ZVdUk4HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EijRxJkD; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29f1bc40b35so24812365ad.2
-        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 21:03:37 -0800 (PST)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7aab7623f42so1763982b3a.2
+        for <stable@vger.kernel.org>; Thu, 18 Dec 2025 22:16:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766120617; x=1766725417; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zZTCvbTwNrP8p42X+dpd7k1dFq41aRyw/GMHSDy5acE=;
-        b=Iyer4/7ZW4Hy69dmR5GPqwHheqkmQR8/thVF17jlwpulr6jvINxSl1/A6a25uIhehg
-         /cI68wYritWKGcpHIAg8KIz20aieDnO7mfIxrj1txYe/Yz+aMRCeV9dgK4FVUBDU9b4S
-         xHvwhp7i/Z4M9r3gC0nrNUDjCEeTFGK6hWVNV+K1KkFqNpWV6g6IiPkJHd91AGlMqlXe
-         F9M2CRwSp3gMDbwoYJ2YJomLhLXxNgcTYISg5IWqHrlkbVYZX/ZRVpKSp+xdUcMVQ+9Q
-         ry7PR3yeVOt2GLMN5txlY4SlO90ZF2b6m2QCpaBn8Zl9N57ABQs/tZM+cT9WGDRWZFTq
-         5iRg==
+        d=gmail.com; s=20230601; t=1766124989; x=1766729789; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hHzT4fbzJhXllsJLzXfqINlUIg8kKKYMhv+QaXph3dI=;
+        b=EijRxJkDlhf5JZHIzN17ZdTrxRU43C4tt9HtekamCsTZXmlHeed/q1GbGJPhcuRHe4
+         +IZUBIG3aAgsn1zGj7VqAHT6e1Jwp4nEkXbkPxHnW6n0bmI0le+UtXzScuSsr/XFuuOZ
+         GPFlB+00tk0qZV0n/Jfn1CRPp45PbOmmbq8dXbb5pYiRimc04b2xq/TOWKvB+jr+xEet
+         5y6Hn51g8dBx5uIj13zpIo7iAt/WxBOENq24LYGhHo8xtikIALEy6N0LkqzftwgWTWhW
+         Z5DQ6YPmcp1TruRdIowI95tPOALD01hGMRe3wVlexfNSyYq6uwnut2OMicCz1OWRPi/g
+         NBeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766120617; x=1766725417;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zZTCvbTwNrP8p42X+dpd7k1dFq41aRyw/GMHSDy5acE=;
-        b=FE0g7MY2LSQbR46HUO7795PVIpX1sZfc9lIXOztOKDDKkCC9RYBf4qMKJdnXV+fPzy
-         f10LbtN1A7P0xM+L4W1sYpPA2bgz4rWq7ECfIOJvINBEpzcSis9A2eke01rxQ0hwaByg
-         PoowGB5csTqEvCe1VBoEY5aA2q01oQc5H9d/Kv5e9a4XnIDfS9dfHVW2B80bc/mf/6dv
-         1imv10xivVmXE6yZzZ/wPbhZC27nVyiRX3l8Xpf+BSQUi+WRDY/XjbbyXJ19yqK/jOCN
-         kiePYzPDQ/xvlCYkbGMJp9ebzzsqxmGKHJEIPA0iybP/8xpwakX4y3Y5mMpBVd3sffoO
-         xFOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxF7CfrLFbVtUzb7FpL0C/3MjOh3NzdKVrd2ra7nZZERXG1xcuWy+BhGYFNOCQkPswmK9Vi7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi9mxoy5Y5UV8gdW+bwZGidfQuuwyeOG1uRXkiYdImcxjkpMa9
-	YM9gJpQssooj4th31Q0JSPQd5kfvLUSyjv9Z8T/gb2kDU/tgOlvI4Xeh
-X-Gm-Gg: AY/fxX4ber2tv2Djv+pYh26IebJnA7xnfBuMdRlvlEInvB1Z79rmf1H5q4IiCEryn88
-	kzm8iUtGqs7DfhfFKU8/G57S7ocIqvssUz8QEp5uq4BPgpnK1ul9qM3wW8JH597ZHgtxajoQw6b
-	jy2IcMwrRxpeyGxpnsl2ZMSRP9XfID3ow1k0epww/HiIq1aM/8MMzwKJ0dX7hwJiH1F/GCADgk1
-	yOApUkQ/8FF6mB6emSQW9NoeA/3s+Ryo74KFE0f+/QMmfhj4HORPZrtcmbEATKkvzuQas4x5qpQ
-	wDOAFIYzGEuEI01AVI1h/fjv2VtSA5HOMTBDtmCNeSEo/0y4z3TJyzGWBTiJ3zFUL/RqEplOUpc
-	j41vunrZLrquPXc9qrK3fofy7EFGlv98v5k09JIdNoYRcgNEVGhGfVmBKHpnCS6gZiFewzWNpJo
-	UI/C98nGujiY4QarBTbMrlhEKMyDIvklitQXo5ck4jWIUijA5m5FDe/mO4jM4=
-X-Google-Smtp-Source: AGHT+IEMNwtnT5HSACs7KJDQv87Ul7tb9qZwcx6898sXznsIUuzVEP7oMOI9Ae1p0oHl8YKCnExepA==
-X-Received: by 2002:a17:902:e74c:b0:24b:270e:56c7 with SMTP id d9443c01a7336-2a2f22069e3mr16825885ad.7.1766120617119;
-        Thu, 18 Dec 2025 21:03:37 -0800 (PST)
-Received: from ?IPV6:2001:ee0:4f4c:210:2598:f3ef:512:c5a9? ([2001:ee0:4f4c:210:2598:f3ef:512:c5a9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d77451sm8994465ad.96.2025.12.18.21.03.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Dec 2025 21:03:36 -0800 (PST)
-Message-ID: <5434a67e-dd6e-4cd1-870b-fdd32ad34a28@gmail.com>
-Date: Fri, 19 Dec 2025 12:03:29 +0700
+        d=1e100.net; s=20230601; t=1766124989; x=1766729789;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hHzT4fbzJhXllsJLzXfqINlUIg8kKKYMhv+QaXph3dI=;
+        b=ZQH8YB+H2rN98fRgJHrvPjDp36PrvRscOC56fNwZi6oe0uSCkRHpl878t0xlowf2U4
+         B20+/xCenA8uX71KRQW/WH351IJ2Kl4h/ZyBMkfzENge/G6xOav2j3dCFETCsRh1UY0l
+         YE4h1DKBj+/Ww8RycryvFBlix4is2KIti7AG09AEJzTyNF44dmEaWCjm9QxxXUtn4dlT
+         g9BGEG4Ph+ElhOwNTOPShpaqPRgFumktEqDC4zLgvUPyPAkgGPmvMsBn7h+ewo4mwiFi
+         NAwELyPjA4GqRitCaj73hDNnpsUKxoiisEeijze5NRoH9amBgL+uL7Fa8/bkp6sDahch
+         XOpw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9g953+/qiIg3WVYSg404LoX+UI2PQTYumOkbHrLXgJ6bjeAJTDxkcDE58E82RcjZCJJEx4CI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3SvwiHlTD3TtaNiM8D98xcI7MAre1D9E/u+tKoDOz3Z2UuN4o
+	b9uIm8041ENIZxLGD3QSrgEdFomQLkVxLvJ460JhHBtkP6xLH5HLYHPU
+X-Gm-Gg: AY/fxX5c3C+3/75mcURXPB9rmTbUEwN8zUHcB80AcI91UNa+qIZJJ6EiGi/c7iHaj/y
+	bK3rVWw/vZ5NASFaDXauL4M0AcTWzCxxGr1HUi0b6mnpNwr1vvcmy9MRriglp4JqL+DA3cnoQaz
+	d5pi+ET5WAz9nMtCMtu0vBJBSM7F4k/JMw0qGWfhQB4cm8EpTjlY+91UYHCcL8fgTPpITyn++cm
+	428zpHlxUOJfO5zNBZyhhPUDREU4DUwv9tCxmrFHgno9CyxHS03fbjAU+ephG9kQY9r9XossNrY
+	cL8Tx3BNFkCNapjiEPCWt5IMGOBNRWHF8SWXuAK39ftsYkkJQHQxLSjRhvHRl4PEUA8dPnsivKk
+	LWS39QKFDoXAJJ8a1FJ/rxuY3XHBxGL4mYtFq0ctkXEpZjCY4qCEBaRDHpZriOL73Nezi3M6fEb
+	XvkMHXWO8W8DwF
+X-Google-Smtp-Source: AGHT+IGm+pTFWYSXcQQMWOucEyKVmnCmUebgq+Il8Pibic3B3tOz9LPo6oilZYuoVTiA/YryeB412w==
+X-Received: by 2002:a05:6a00:a90e:b0:7a5:396d:76be with SMTP id d2e1a72fcca58-7ff64ad9e96mr1731687b3a.27.1766124988927;
+        Thu, 18 Dec 2025 22:16:28 -0800 (PST)
+Received: from prithvi-HP ([103.47.105.130])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7a84368dsm1229348b3a.2.2025.12.18.22.16.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 22:16:28 -0800 (PST)
+Date: Fri, 19 Dec 2025 11:46:21 +0530
+From: Prithvi <activprithvi@gmail.com>
+To: Heming Zhao <heming.zhao@suse.com>
+Cc: mark@fasheh.com, jlbec@evilplan.org, joseph.qi@linux.alibaba.com, 
+	ocfs2-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	khalid@kernel.org, syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ocfs2: handle OCFS2_SUPER_BLOCK_FL flag in system dinode
+Message-ID: <l6ksp2hk72pzciidqnzjmaupocngobj6e44exuko565jtrepwn@f7f42tby5oov>
+References: <20251216200544.4114-1-activprithvi@gmail.com>
+ <njikmwfpnsdzalxump7dj7wnlvkwfmvuqwxhpwzly45v7ioj5l@yckvd3veaifi>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] virtio-net: enable all napis before scheduling
- refill work
-To: Jason Wang <jasowang@redhat.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-References: <20251212152741.11656-1-minhquangbui99@gmail.com>
- <CACGkMEtzXmfDhiQiq=5qPGXG+rJcxGkWk0CZ4X_2cnr2UVH+eQ@mail.gmail.com>
- <3f5613e9-ccd0-4096-afc3-67ee94f6f660@gmail.com>
- <CACGkMEs+Mse7nhPPiqbd2doeGtPD2QD3BM_cztr6e=VfuiobHQ@mail.gmail.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <CACGkMEs+Mse7nhPPiqbd2doeGtPD2QD3BM_cztr6e=VfuiobHQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <njikmwfpnsdzalxump7dj7wnlvkwfmvuqwxhpwzly45v7ioj5l@yckvd3veaifi>
 
-On 12/17/25 09:58, Jason Wang wrote:
-> On Wed, Dec 17, 2025 at 12:23 AM Bui Quang Minh
-> <minhquangbui99@gmail.com> wrote:
->> On 12/16/25 11:16, Jason Wang wrote:
->>> On Fri, Dec 12, 2025 at 11:28 PM Bui Quang Minh
->>> <minhquangbui99@gmail.com> wrote:
->>>> Calling napi_disable() on an already disabled napi can cause the
->>>> deadlock. In commit 4bc12818b363 ("virtio-net: disable delayed refill
->>>> when pausing rx"), to avoid the deadlock, when pausing the RX in
->>>> virtnet_rx_pause[_all](), we disable and cancel the delayed refill work.
->>>> However, in the virtnet_rx_resume_all(), we enable the delayed refill
->>>> work too early before enabling all the receive queue napis.
->>>>
->>>> The deadlock can be reproduced by running
->>>> selftests/drivers/net/hw/xsk_reconfig.py with multiqueue virtio-net
->>>> device and inserting a cond_resched() inside the for loop in
->>>> virtnet_rx_resume_all() to increase the success rate. Because the worker
->>>> processing the delayed refilled work runs on the same CPU as
->>>> virtnet_rx_resume_all(), a reschedule is needed to cause the deadlock.
->>>> In real scenario, the contention on netdev_lock can cause the
->>>> reschedule.
->>>>
->>>> This fixes the deadlock by ensuring all receive queue's napis are
->>>> enabled before we enable the delayed refill work in
->>>> virtnet_rx_resume_all() and virtnet_open().
->>>>
->>>> Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
->>>> Reported-by: Paolo Abeni <pabeni@redhat.com>
->>>> Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->>>> ---
->>>> Changes in v2:
->>>> - Move try_fill_recv() before rx napi_enable()
->>>> - Link to v1: https://lore.kernel.org/netdev/20251208153419.18196-1-minhquangbui99@gmail.com/
->>>> ---
->>>>    drivers/net/virtio_net.c | 71 +++++++++++++++++++++++++---------------
->>>>    1 file changed, 45 insertions(+), 26 deletions(-)
->>>>
->>>> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
->>>> index 8e04adb57f52..4e08880a9467 100644
->>>> --- a/drivers/net/virtio_net.c
->>>> +++ b/drivers/net/virtio_net.c
->>>> @@ -3214,21 +3214,31 @@ static void virtnet_update_settings(struct virtnet_info *vi)
->>>>    static int virtnet_open(struct net_device *dev)
->>>>    {
->>>>           struct virtnet_info *vi = netdev_priv(dev);
->>>> +       bool schedule_refill = false;
->>>>           int i, err;
->>>>
->>>> -       enable_delayed_refill(vi);
->>>> -
->>>> +       /* - We must call try_fill_recv before enabling napi of the same receive
->>>> +        * queue so that it doesn't race with the call in virtnet_receive.
->>>> +        * - We must enable and schedule delayed refill work only when we have
->>>> +        * enabled all the receive queue's napi. Otherwise, in refill_work, we
->>>> +        * have a deadlock when calling napi_disable on an already disabled
->>>> +        * napi.
->>>> +        */
->>>>           for (i = 0; i < vi->max_queue_pairs; i++) {
->>>>                   if (i < vi->curr_queue_pairs)
->>>>                           /* Make sure we have some buffers: if oom use wq. */
->>>>                           if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
->>>> -                               schedule_delayed_work(&vi->refill, 0);
->>>> +                               schedule_refill = true;
->>>>
->>>>                   err = virtnet_enable_queue_pair(vi, i);
->>>>                   if (err < 0)
->>>>                           goto err_enable_qp;
->>>>           }
->>> So NAPI could be scheduled and it may want to refill but since refill
->>> is not enabled, there would be no refill work.
->>>
->>> Is this a problem?
->> You are right. It is indeed a problem.
->>
->> I think we can unconditionally schedule the delayed refill after
->> enabling all the RX NAPIs (don't check the boolean schedule_refill
->> anymore) to ensure that we will have refill work. We can still keep the
->> try_fill_recv here to fill the receive buffer earlier in normal case.
->> What do you think?
-> Or we can have a reill_pending
+On Fri, Dec 19, 2025 at 12:07:56AM +0800, Heming Zhao wrote:
+> On Wed, Dec 17, 2025 at 01:35:44AM +0530, Prithvi Tambewagh wrote:
+> > When ocfs2_populate_inode() is called during mount process, if the flag
+> > OCFS2_SUPER_BLOCK_FL is set in on-disk system dinode, then BUG() is
+> > triggered, causing kernel to panic. This is indicative of metadata
+> > corruption.
+> > 
+> > This is fixed by calling ocfs2_error() to print the error log and the
+> > corresponding inode is marked as 'bad', so that it is not used further
+> > during the mount process. It is ensured that the fact of that inode being
+> > bad is propagated to caller ocfs2_populate_inode() i.e.
+> > ocfs2_read_locked_inode() using is_bad_inode() and further behind along
+> > the call trace as well.
+> > 
+> > Reported-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=779d072a1067a8b1a917
+> > Tested-by: syzbot+779d072a1067a8b1a917@syzkaller.appspotmail.com
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+> > ---
+> >  fs/ocfs2/inode.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+> > index 12e5d1f73325..f439dc801845 100644
+> > --- a/fs/ocfs2/inode.c
+> > +++ b/fs/ocfs2/inode.c
+> > @@ -347,7 +347,12 @@ void ocfs2_populate_inode(struct inode *inode, struct ocfs2_dinode *fe,
+> >  	} else if (fe->i_flags & cpu_to_le32(OCFS2_SUPER_BLOCK_FL)) {
+> >  		/* we can't actually hit this as read_inode can't
+> >  		 * handle superblocks today ;-) */
+> > -		BUG();
+> > +		ocfs2_error(sb,
+> > +			    "System Inode %llu has "
+> > +			    "OCFS2_SUPER_BLOCK_FL set",
+> > +			    (unsigned long long)le64_to_cpu(fe->i_blkno));
+> > +		make_bad_inode(inode);
+> > +		return;
+> >  	}
+> >  
+> >  	switch (inode->i_mode & S_IFMT) {
+> > @@ -555,6 +560,11 @@ static int ocfs2_read_locked_inode(struct inode *inode,
+> >  
+> >  	ocfs2_populate_inode(inode, fe, 0);
+> >  
+> > +	if (is_bad_inode(inode)) {
+> > +		status = -EIO;
+> > +		goto bail;
+> > +	}
+> > +
+> >  	BUG_ON(args->fi_blkno != le64_to_cpu(fe->i_blkno));
+> >  
+> >  	if (buffer_dirty(bh) && !buffer_jbd(bh)) {
+> > @@ -576,7 +586,7 @@ static int ocfs2_read_locked_inode(struct inode *inode,
+> >  	if (can_lock)
+> >  		ocfs2_inode_unlock(inode, lock_level);
+> >  
+> > -	if (status < 0)
+> > +	if (status < 0 && !is_bad_inode(inode))
+> >  		make_bad_inode(inode);
+> >  
+> >  	brelse(bh);
+> > 
+> > base-commit: d76bb1ebb5587f66b0f8b8099bfbb44722bc08b3
+> > -- 
+> > 2.43.0
+> > 
+> > 
+> 
+> ocfs2_populate_inode has two callers: __ocfs2_mknod_locked() and
+> ocfs2_read_locked_inode()
+> 
+> Your code only works for the ocfs2_read_locked_inode() path, but not for the
+> __ocfs2_mknod_locked() path.
+> In __ocfs2_mknod_locked(), there are two tasks after ocfs2_populate_inode:
+> "creating locks" and "updating the transaction". If you use a 'goto' to bypass
+> these two tasks, ocfs2 will crash in the near future. Conversely, if you choose
+> to execute the two jobs, the logic is flawed because we perform on a bad inode.
+> 
+> In my view, the existing code (using BUG()) is acceptable. We don't need to
+> worry about this syzbot report.
+> 
+> Thanks,
+> Heming
 
-Okay, let me implement this in the next version.
+Hello Heming,
 
-> but basically I think we need something
-> that is much more simple. That is, using a per rq work instead of a
-> global one?
-
-I think we can leave this in a net-next patch later.
+Thanks for the detailed explanation . I now understand more clearly how
+removing BUG() from ocfs2_populate_inode() for inode having 
+OCFS2_SUPER_BLOCK_FL set would cause problems in OCFS2 for the path
+including __ocfs2_mknod_locked(). Since OCFS2_SUPER_BLOCK_FL flag on a
+system dinode is indicative of metadata corruption and considering our
+discussion, keeping BUG() for the same is appropriate.
 
 Thanks,
-Quang Minh
-
->
-> Thanks
->
->>>
->>>> +       enable_delayed_refill(vi);
->>>> +       if (schedule_refill)
->>>> +               schedule_delayed_work(&vi->refill, 0);
->>>> +
->>>>           if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STATUS)) {
->>>>                   if (vi->status & VIRTIO_NET_S_LINK_UP)
->>>>                           netif_carrier_on(vi->dev);
->>>> @@ -3463,39 +3473,48 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
->>>>           __virtnet_rx_pause(vi, rq);
->>>>    }
->>>>
->>> Thanks
->>>
->> Thanks,
->> Quang Minh.
->>
-
+Prithvi
 
