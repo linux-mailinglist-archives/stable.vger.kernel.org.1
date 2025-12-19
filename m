@@ -1,96 +1,124 @@
-Return-Path: <stable+bounces-203066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D783CCCF603
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:33:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F06CCF64E
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12A273021769
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 10:31:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A721300DBA5
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 10:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABC3302CC0;
-	Fri, 19 Dec 2025 10:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE6330BF67;
+	Fri, 19 Dec 2025 10:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUMo/AUp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMEB9DQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB3730103A;
-	Fri, 19 Dec 2025 10:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEAE30BF65
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 10:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766139864; cv=none; b=PX0Ow9IR16yfYH7RGof3kIn7Xbgv0s5dRD7WXFde9328rnJcqV7svZmTcw7ReyCw73dURGE5OOowVPiJgjMWmvEDAuEvRixDvWd5iCN+M868bJ8aW9tuoUn4sPzlLzixsOKnIs+ry3Ywesxmm7tGvxYXyOEF8h40UOSeXSRtAtc=
+	t=1766140071; cv=none; b=D/YwOpREtmIpQWgXSicALLM9gqc/id30tGr+JY2FIuIQNNL0Oi6i9e2YDSVkXuMiQfeEP0iwK5ZDAGtAtmzvB0k7iamSFMTCxO20LomfNLxhyXzQPDxB+duP73efJFwSPXw/hvEEZD5KbwhWee93IYV+/wbBcYw7pC0QmKtHMZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766139864; c=relaxed/simple;
-	bh=wSKyNDjvJgFlUPvhdLHb2g9n4p3P5THT9cDaRQbeVSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJj2zitYQpyoAvgZHv9mu8PeOA4NM5yBSiliZxSSB4ZhOBlBbvkiMNuIv+MK4ibr1NM6RzcMUOjjqncuY18kJDcqzYaN/UXuTgAYP6ysJkmP7u6sqakMJzBub2H57ipqrD7leX5rYPr411syaYf55JtNjiF9aeK/3L2P3An/h+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUMo/AUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36205C4CEF1;
-	Fri, 19 Dec 2025 10:24:18 +0000 (UTC)
+	s=arc-20240116; t=1766140071; c=relaxed/simple;
+	bh=P3YIs7ujvRNv4jYY9L24QTgajE4FWifdYTp2cM0hGn8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rreeHujS3dsL3LwL0FBM61zJr+24wulCN5QSvX+CIwRSH1hu6Iu9zMFHLTcCZ3lLolABbBojW1CnaEFPky02n/vcKp3MS4QRpFr6VeVDVoYZDPj+wevux7jYFXG4sjmC5jHFjzlZenYWgJGq0+uy9xF8u6ANQb71F0x/D8bi3GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMEB9DQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B7DC4CEF1;
+	Fri, 19 Dec 2025 10:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766139863;
-	bh=wSKyNDjvJgFlUPvhdLHb2g9n4p3P5THT9cDaRQbeVSA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUMo/AUpvVpAFy1KTUsg7PvXaoMEBcFUrPgpZBC9Ppwd0s99fKyVTyXuCVqZHPxAI
-	 0YkLbof3icPfyqRzHnqcRxL7XHFackIskpce4KYhsyfK1eFmegYxUGAQbyklT9qSLH
-	 PISJivxpp83eRhOwfuUipQryFrsAi2OBWbe27qJpfaIyF09OL8RDAAnvr54xEl7cHL
-	 u3t41FLJ54D2hAzjnNBtJd9q9oLpTG2M+2g1B1gJc+UZG90u4OMsJvhPvNCCJCx3Iw
-	 VV7UhhpZQcS8vaONezygjg9DwG2nOc3gPQf4aQap80yrKzeMVMBHcfKYflJYNZcN5f
-	 ckSrm48aOxeDg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.18 000/614] 6.18.2-rc1 review
-Date: Fri, 19 Dec 2025 11:24:08 +0100
-Message-ID: <20251219102408.96358-1-ojeda@kernel.org>
-In-Reply-To: <20251216111401.280873349@linuxfoundation.org>
-References: <20251216111401.280873349@linuxfoundation.org>
+	s=k20201202; t=1766140071;
+	bh=P3YIs7ujvRNv4jYY9L24QTgajE4FWifdYTp2cM0hGn8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NMEB9DQpEs4wqWhKeCFNKKknXeJYJyv+1l5mhp2y1I/QyVfrzbNvPB7Ak08js8DUh
+	 odz+QelOAt24P/K5JSbyE0P9nQyDze1YV08fW1GzcdasQ/YaRGirnzh8pwG6OhPyGm
+	 J3XR9xTqMomPSkVNMSmTU3128dmssojoz4XQ9ULKJ/JpHBg96hs7QDaxomrT+VSo7i
+	 w+pq4F/otBeIDbtn6ppIFiyuO4qMH9K5Us6gZNurE3T9vmGu/cnq/R46uOdz0QmKBg
+	 PXf23OnNneTIS3bXzJ1uSDD8gO5f4Lc0T++ir6dGUJ69EjF+bh7eLHDiwzxvwRARMo
+	 B03ZDLsHs2q+Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vWXi9-0000000DvXQ-0S5B;
+	Fri, 19 Dec 2025 10:27:49 +0000
+Date: Fri, 19 Dec 2025 10:27:48 +0000
+Message-ID: <86sed6n4uz.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: stable@vger.kernel.org,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 6.12.y 0/3] arm64: Early system register initialization fixes
+In-Reply-To: <20251219102123.730823-1-weilin.chang@arm.com>
+References: <20251219102123.730823-1-weilin.chang@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: weilin.chang@arm.com, stable@vger.kernel.org, mark.rutland@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 16 Dec 2025 12:06:07 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.18.2 release.
-> There are 614 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 18 Dec 2025 11:12:22 +0000.
-> Anything received after that time might be too late.
+On Fri, 19 Dec 2025 10:21:20 +0000,
+Wei-Lin Chang <weilin.chang@arm.com> wrote:
+> 
+> Hi,
+> 
+> This series is a v6.12-only backport (based on v6.12.62) of fixes for
+> system register initialization issues affecting protected KVM on arm64.
+> This affects some contemporary and upcoming hardware which will run the
+> v6.12.y stable kernel, or something derived from it, such as the Android
+> common kernel.
+> 
+> The FEAT_E2H0 patches fix code introduced after v6.6, and so only
+> need to be backported to v6.12.
+> 
+> The SCTLR_EL1 patch fixes code introduced in v5.11, but practically
+> speaking only affects recent hardware which is unlikely to run
+> something older than v6.12.
+> 
+> Note: Marc Zyngier performed the initial backport, which I have
+> rebased and tested, hence both of our sign-offs being added to the
+> tags from the upstream commits.
+> 
+> I have tested the backport and observed they solve the problems as
+> expected.
+> 
+> Ahmed Genidi (1):
+>   KVM: arm64: Initialize SCTLR_EL1 in __kvm_hyp_init_cpu()
+> 
+> Marc Zyngier (1):
+>   arm64: Revamp HCR_EL2.E2H RES1 detection
+> 
+> Mark Rutland (1):
+>   KVM: arm64: Initialize HCR_EL2.E2H early
+> 
+>  arch/arm64/include/asm/el2_setup.h   | 57 +++++++++++++++++++++++++---
+>  arch/arm64/kernel/head.S             | 22 ++---------
+>  arch/arm64/kvm/hyp/nvhe/hyp-init.S   | 10 +++--
+>  arch/arm64/kvm/hyp/nvhe/psci-relay.c |  3 ++
+>  4 files changed, 65 insertions(+), 27 deletions(-)
+> 
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+Great, thanks for going through this and having tested it!
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
+Hopefully Greg will be able to take it at the next opportunity for a
+stable 6.12 release.
 
 Cheers,
-Miguel
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
