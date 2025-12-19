@@ -1,156 +1,355 @@
-Return-Path: <stable+bounces-203074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B92BCCF914
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4D4CCF935
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BBE1302EF7A
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:26:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 417983024116
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E94311C09;
-	Fri, 19 Dec 2025 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F683176F4;
+	Fri, 19 Dec 2025 11:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YiMdrmX5";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XWDpKc7q"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CXsrrY90"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B352311958
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4B41D432D
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766143587; cv=none; b=oosyxToZ/8KVYerTntMjEX7nqZ4i94N2DWMWdbQ3cnTV2B51xRHewz3Ppka1p7utemw9TxOcCZ9n6seBJreRTjh4vIo8m6W5wE6NYIIMhNaK5nfVbIypzvR/sEcBqDx3T2CV2rTz0ylnPuVhufm4SEWwf5AZ5N5cy7HZ4aIYPJ8=
+	t=1766143860; cv=none; b=EXdVDFkACJJoRSgGQ94TUbIZ5RHKoU9kmV16b9qzKk844b8lvykYcqApQXPT+k5jAR3ohLIOxhLODBdsBm5W6BBVdxfvKr7mw3MSUxngHL7StBi5ODyZTOtcpitgm76V1D5lgprV8ikxIN0RBX4XdjsjO0w7nSD4pETf1RCk684=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766143587; c=relaxed/simple;
-	bh=8pJSuO9KIUWmfdi7w+3+9HoMOfbr+58miWs+1C6zH50=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sPnSHgMlQI1ZsDj6jXJvzD5WqP/fzI1VDibNelMQRhBObS/qxeirtemdPjJZKcmW4qjiP2VGTbesAPrUbt4FuuLKs6b/vdCNCrbL1699yO0etmbGA0oUOqo36btMlhQHHGozQ5jijnKOuaQahUP09F0jFROgpxkWvsITevdeGk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YiMdrmX5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XWDpKc7q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJB83rV3939127
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:26:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qgIkZckTvFqsmG+otJwpZvPH1RpWL7olKv7lb9pkgWM=; b=YiMdrmX5HvbOCtXI
-	Gjd8vb97B3RzuvFYodaQrjZ1/HifKixRGBTy+0g5jdiOox4zgXgd+QY80U1M6loL
-	nG9gEyzSJrf3xUlV4Z4G/4N+0P1CpCU1sRYZTPxEY4JKMClUen77thCyq+IeNzzZ
-	6C+TvsAgAoN+LT9fSbU2rUTEGC9WNQzMk1erVcnVlN2hEuB0FJ1HCYQtjw44b2pd
-	RkDrj5j9csFBC/N2mj8Gwlfzybsb/rHsNoY8B0ShrdvP08HtJhYAIBgx5PKHmgc/
-	AwaYc5rqBfx0GvN8rvo7cmG2GkD9rXgMfp48nEsG0yc6IbNNx94iZZI28byRzlYF
-	cjQ8pQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b4r2c2fnt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:26:25 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b2fd6ec16aso35931985a.1
-        for <stable@vger.kernel.org>; Fri, 19 Dec 2025 03:26:25 -0800 (PST)
+	s=arc-20240116; t=1766143860; c=relaxed/simple;
+	bh=6UHL87TeSv0OHIATlt+T60NW7xZ/6e2CMxNcCb8fhp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=rNwY8fYvSUn0ugGSXx3ALCw3VfxQ9I6D/rK7bsmRC9tEbflZ774zh72mEdUBEEPDujTiscwJ1OChHMSVpsh3erDRsxslHs4UMtp9gVjevj5hV/zaAdaom7lAnWaV0jzipOy3b95ASuoapoPsFdCF78l1bI0QPenNR4XNdDZChjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CXsrrY90; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766143585; x=1766748385; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qgIkZckTvFqsmG+otJwpZvPH1RpWL7olKv7lb9pkgWM=;
-        b=XWDpKc7q+V9OtFSDL7bUVAbxxx09EnAgWlCVf8OmTH6x/O+PUc5ImhZVKQALPTQr+2
-         KS/FMZDYgBYqTWhbFW7OnYDEOGbteglEv7IPHPND6K8WJLB6WaleFSSbrXzLcW1ibgqG
-         9DQEaB4plV0HYW4fmCkCCnotHAGxaUfEm6UPGIXDi9rw5vlANlgPEiR8XtIzHkHpapF1
-         nC9z+SeWbVFTZIFF4kkc65dzlM6IdHen0blx9KeiqzXZCC2jwALGZJ83nrNKelT3s2rL
-         Paw6l1c36WPKvsC8N9FnZtUeKZJ++pcRQ2uAYSzmP+hdDEQ6ttzV7O6mPDj46rxahPT9
-         Boig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766143585; x=1766748385;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qgIkZckTvFqsmG+otJwpZvPH1RpWL7olKv7lb9pkgWM=;
-        b=q6iQdfph0nDtuaVJV2SDOqSPff5V0yibNY/f9TfDiVYvQbGg9mbDh2bubUPxUlVlqm
-         PtJNNAXi4npZpie99C/1Xa1UbMecFyIGAw+tb8rpSo62jluLYzajcfHBpJNYtD7QZjOX
-         SqWroGKdflRvZD8iK0IEyIUsLGnlMDToGMGjetNLl4wcGsBYUMo9MS7oWyBY1A28J24G
-         FiJeAfLMCJYkUv6ZQFlOgb0fHLpYctq/qukbf4uNXDEKECe/V+KK4L6v3Bce94Cerz5A
-         Fpwp7nHUAijuY4TZakkVaL58c5uIK7FtyB+Ky6DzQhP+5YeWkpR7GntMrBQ+YbMwZgDy
-         X4Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQNj2Uh9tE6CGNAp3jFNDlRjmfLbaDUWVFaV1HED7V+U46/lqVIeijtTfZMpprfW2EYzYC0eA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi4QTUr6n7Agb8+Jbr14WOBhLlQg65epT42jSoiZ6CopMNAHA3
-	1mbDQ2Z0radseE+XA/FE9G7SaZFaDIWGUuUWPjwa+SDFA2Py1He8u1qEfF6QCS0HuPKehhV6OCb
-	9ysIqEcFenLVxZM/Cmd6OEUXp/9yEJQj/B3w7z1TwPtCQykZPc+QJ8muXm2mnH2oJRWo=
-X-Gm-Gg: AY/fxX5FQw4HXJwj65PLs1skBSCQ6HLP81mcT33tNWtFffoFHgiRlVEDg/659OdGsdb
-	274BvQeR9h3tLHl6M9wbpeqS0CnHkTmQHnM3CyX4wKzdiGNIoAQgfZ0Nfvz16WvAGbsqW+8U3vJ
-	KTaMWXwhkc8v4gPVUDyQGVt6OgGNOeYY7T1chqE5FBHw2Gn3clWrtm4ZEECSPE7Pr1Lhd1lax+C
-	gmHF98ChFr8zgt9SGY3cdkrDzE4sF0kTbm3HXTwMrl96hYfFfTG6MoXXtWxCpe1qFLYrO3c8hQ+
-	XnKnu1XIDx0S9WW2EVJIrLAtpzQkJXaZBxrDIQOdd5dDexbcpvTVteCSk2BXG4+AfDKQpkXH3GY
-	rQMafX/cc0OdWjLAeU6Y1BSZU/zBsczxM789yTaHAinhfNvXLhFN4jQ3nEwIEqZ0PMw==
-X-Received: by 2002:ac8:5744:0:b0:4ed:b7f0:c76e with SMTP id d75a77b69052e-4f4abdcbf88mr25276421cf.8.1766143584605;
-        Fri, 19 Dec 2025 03:26:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEQYdnxNsnG1bLW+kQ2/cqPw9VinGQT/IzvI6aLregUbGRCz0G+G/WNWgUTZ9OauQUxpPN6vg==
-X-Received: by 2002:ac8:5744:0:b0:4ed:b7f0:c76e with SMTP id d75a77b69052e-4f4abdcbf88mr25276231cf.8.1766143584203;
-        Fri, 19 Dec 2025 03:26:24 -0800 (PST)
-Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ad83dasm211412366b.25.2025.12.19.03.26.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 03:26:23 -0800 (PST)
-Message-ID: <328e0750-29f8-4020-b4fd-e2e70a38005f@oss.qualcomm.com>
-Date: Fri, 19 Dec 2025 12:26:21 +0100
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=CXsrrY90Hp9LHpOlmZheiwKsw3uM8QWwZqsQAYnPahFdhRWPBRlbglUnYL24bub9DCE66yf5BohVW
+	 XXIhN/GakotVwvmDqoJ++12BvzycHu9cg2Etap9fI3CUWfkP0JB5Uf33+lQnNboQjQKtv2YCA99b+F
+	 PXUDajta+sxTna9o=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.224])
+	by rmsmtp-lg-appmail-21-12024 (RichMail) with SMTP id 2ef8694536a0961-0da3a;
+	Fri, 19 Dec 2025 19:27:31 +0800 (CST)
+X-RM-TRANSID:2ef8694536a0961-0da3a
+From: Rajani Kantha <681739313@139.com>
+To: harshit@nutanix.com,
+	jon@nutanix.com,
+	gauri.patwardhan@nutanix.com,
+	rahul.chunduru@nutanix.com,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	pauld@redhat.com,
+	william.ton@nutanix.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.12 1/1] sched/rt: Fix race in push_rt_task
+Date: Fri, 19 Dec 2025 19:27:23 +0800
+Message-Id: <20251219112724.1960-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: qcom-pm8xxx: fix OF populate on driver rebind
-To: Johan Hovold <johan@kernel.org>, Lee Jones <lee@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20251219110947.24101-1-johan@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251219110947.24101-1-johan@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: GlvOAKT0byNyUgAp2GD-YsMjG8DOdWIl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA5NCBTYWx0ZWRfX9hzmskh0rdqx
- YdCTimVjNlzFIRn/RBrhcdtACuUoCBe7ii6QYE+BDfTcKwvIohYHSZ6tJ3k2kl0gKQMghABTwcy
- Ia07XtxtjxgqWDmIehEyWAOiB/knAlrdk7vPXDGgDP2EaywJ4T/iez5E+XXDMnYKnauvcvJIpcM
- 25VPw4X8tGF0H86Cqmspdz4KzFde11E43NVR9nDEF9ySHSXQpPym1Ftg4Ua2tRrclD25yApoG2I
- 0CEq0mUnFj4jV0fTnsX10jzipwkO7C2mf+dNFevE1tJXdR6MoGUUEOEc3DObaAEtjluuqsedLY8
- ZkFkgIFxMS8uHdTZ9wPdWKjYn3IkwBRIIyyokc3Rsz32Bionb2idWzSyQ+yVlkAUpaXHY7zrZfW
- E22+RhagN76U5r4BNjqaWqMabPDwc/iYojWQ56P2FjNvrlGWN21zeXHlDP9mycARugwbZCPH4Jx
- 8VheAfj1zp6cSy6Jk3Q==
-X-Authority-Analysis: v=2.4 cv=feSgCkQF c=1 sm=1 tr=0 ts=69453661 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=wTlNtMXEErMED71dkKYA:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: GlvOAKT0byNyUgAp2GD-YsMjG8DOdWIl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-19_03,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512190094
+Content-Transfer-Encoding: 8bit
 
-On 12/19/25 12:09 PM, Johan Hovold wrote:
-> Since commit c6e126de43e7 ("of: Keep track of populated platform
-> devices") child devices will not be created by of_platform_populate()
-> if the devices had previously been deregistered individually so that the
-> OF_POPULATED flag is still set in the corresponding OF nodes.
-> 
-> Switch to using of_platform_depopulate() instead of open coding so that
-> the child devices are created if the driver is rebound.
-> 
-> Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-> Cc: stable@vger.kernel.org	# 3.16
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
+From: Harshit Agarwal <harshit@nutanix.com>
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+[ Upstream commit 690e47d1403e90b7f2366f03b52ed3304194c793 ]
 
-Konrad
+Overview
+========
+When a CPU chooses to call push_rt_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_lowest_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
+
+Crashes
+=======
+This bug resulted in quite a few flavors of crashes triggering kernel
+panics with various crash signatures such as assert failures, page
+faults, null pointer dereferences, and queue corruption errors all
+coming from scheduler itself.
+
+Some of the crashes:
+-> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? do_error_trap+0x64/0xa0
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? exc_invalid_op+0x4c/0x60
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? pick_next_task_rt+0x6e/0x1d0
+   __schedule+0x5cb/0x790
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: kernel NULL pointer dereference, address: 00000000000000c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? __warn+0x8a/0xe0
+   ? exc_page_fault+0x3d6/0x520
+   ? asm_exc_page_fault+0x1e/0x30
+   ? pick_next_task_rt+0xb5/0x1d0
+   ? pick_next_task_rt+0x8c/0x1d0
+   __schedule+0x583/0x7e0
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: unable to handle page fault for address: ffff9464daea5900
+   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
+
+-> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? do_error_trap+0x64/0xa0
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? exc_invalid_op+0x4c/0x60
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   dequeue_rt_entity+0x1f/0x70
+   dequeue_task_rt+0x2d/0x70
+   __schedule+0x1a8/0x7e0
+   ? blk_finish_plug+0x25/0x40
+   schedule+0x3c/0xb0
+   futex_wait_queue_me+0xb6/0x120
+   futex_wait+0xd9/0x240
+   do_futex+0x344/0xa90
+   ? get_mm_exe_file+0x30/0x60
+   ? audit_exe_compare+0x58/0x70
+   ? audit_filter_rules.constprop.26+0x65e/0x1220
+   __x64_sys_futex+0x148/0x1f0
+   do_syscall_64+0x30/0x80
+   entry_SYSCALL_64_after_hwframe+0x62/0xc7
+
+-> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? spurious_kernel_fault+0x171/0x1c0
+   ? exc_page_fault+0x3b6/0x520
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? asm_exc_page_fault+0x1e/0x30
+   ? _cond_resched+0x15/0x30
+   ? futex_wait_queue_me+0xc8/0x120
+   ? futex_wait+0xd9/0x240
+   ? try_to_wake_up+0x1b8/0x490
+   ? futex_wake+0x78/0x160
+   ? do_futex+0xcd/0xa90
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? plist_del+0x6a/0xd0
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? dequeue_pushable_task+0x20/0x70
+   ? __schedule+0x382/0x7e0
+   ? asm_sysvec_reschedule_ipi+0xa/0x20
+   ? schedule+0x3c/0xb0
+   ? exit_to_user_mode_prepare+0x9e/0x150
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_sysvec_reschedule_ipi+0x12/0x20
+
+Above are some of the common examples of the crashes that were observed
+due to this issue.
+
+Details
+=======
+Let's look at the following scenario to understand this race.
+
+1) CPU A enters push_rt_task
+  a) CPU A has chosen next_task = task p.
+  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
+  c) CPU A identifies CPU X as a destination CPU (X < Z).
+  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
+  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
+     locked CPU X’s rq, and thus, CPU A must wait.
+
+2) At CPU Z
+  a) Previous task has completed execution and thus, CPU Z enters
+     schedule, locks its own rq after CPU A releases it.
+  b) CPU Z dequeues previous task and begins executing task p.
+  c) CPU Z unlocks its rq.
+  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+     lock) which triggers the schedule function on CPU Z.
+  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+
+3) At CPU B
+  a) CPU B enters try_to_wake_up with input task p.
+  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
+     B.state = WAKING.
+  c) CPU B via select_task_rq determines CPU Y as the target CPU.
+
+4) The race
+  a) CPU A acquires CPU X’s lock and relocks CPU Z.
+  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
+     still on CPU Z.
+  c) CPU A failed to notice task p had been dequeued from CPU Z while
+     CPU A was waiting for locks in double_lock_balance. If CPU A knew
+     that task p had been dequeued, it would return NULL forcing
+     push_rt_task to give up the task p's migration.
+  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
+  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+     p.on_rq = 1.
+  f) CPU B unlocks CPU Y, triggering memory synchronization.
+  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
+     has not migrated.
+  h) CPU A decides to migrate p to CPU X.
+
+This leads to A dequeuing p from Y's queue and various crashes down the
+line.
+
+Solution
+========
+The solution here is fairly simple. After obtaining the lock (at 4a),
+the check is enhanced to make sure that the task is still at the head of
+the pushable tasks list. If not, then it is anyway not suitable for
+being pushed out.
+
+Testing
+=======
+The fix is tested on a cluster of 3 nodes, where the panics due to this
+are hit every couple of days. A fix similar to this was deployed on such
+cluster and was stable for more than 30 days.
+
+Co-developed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Will Ton <william.ton@nutanix.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ kernel/sched/rt.c | 52 +++++++++++++++++++++++------------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
+
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 6ad6717084ed..c437a1502623 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1895,6 +1895,26 @@ static int find_lowest_rq(struct task_struct *task)
+ 	return -1;
+ }
+ 
++static struct task_struct *pick_next_pushable_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_tasks(rq))
++		return NULL;
++
++	p = plist_first_entry(&rq->rt.pushable_tasks,
++			      struct task_struct, pushable_tasks);
++
++	BUG_ON(rq->cpu != task_cpu(p));
++	BUG_ON(task_current(rq, p));
++	BUG_ON(p->nr_cpus_allowed <= 1);
++
++	BUG_ON(!task_on_rq_queued(p));
++	BUG_ON(!rt_task(p));
++
++	return p;
++}
++
+ /* Will lock the rq it finds */
+ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -1925,18 +1945,16 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 			/*
+ 			 * We had to unlock the run queue. In
+ 			 * the mean time, task could have
+-			 * migrated already or had its affinity changed.
+-			 * Also make sure that it wasn't scheduled on its rq.
++			 * migrated already or had its affinity changed,
++			 * therefore check if the task is still at the
++			 * head of the pushable tasks list.
+ 			 * It is possible the task was scheduled, set
+ 			 * "migrate_disabled" and then got preempted, so we must
+ 			 * check the task migration disable flag here too.
+ 			 */
+-			if (unlikely(task_rq(task) != rq ||
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !rt_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     task != pick_next_pushable_task(rq))) {
+ 
+ 				double_unlock_balance(rq, lowest_rq);
+ 				lowest_rq = NULL;
+@@ -1956,26 +1974,6 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 	return lowest_rq;
+ }
+ 
+-static struct task_struct *pick_next_pushable_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_tasks(rq))
+-		return NULL;
+-
+-	p = plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
+-
+-	BUG_ON(rq->cpu != task_cpu(p));
+-	BUG_ON(task_current(rq, p));
+-	BUG_ON(p->nr_cpus_allowed <= 1);
+-
+-	BUG_ON(!task_on_rq_queued(p));
+-	BUG_ON(!rt_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * If the current CPU has more than one RT task, see if the non
+  * running task can migrate over to a CPU that is running a task
+-- 
+2.17.1
+
+
 
