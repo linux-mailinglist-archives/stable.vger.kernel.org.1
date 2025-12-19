@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-203071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0A3CCF862
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:06:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEE2CCF88C
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 148C1300A222
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:06:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEC833030929
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8DE306490;
-	Fri, 19 Dec 2025 11:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF907307AD8;
+	Fri, 19 Dec 2025 11:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="horS8V6v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7fe9Rgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF11A4502F;
-	Fri, 19 Dec 2025 11:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FC0306B3E;
+	Fri, 19 Dec 2025 11:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766142384; cv=none; b=myODqq93xn+2PUetAUt5DDO0BYVc3m/FI/SvN5VmilaX9Lf3i+l2Gdz3ea2ejuRv5TsukJdASlAZk+/bduds/xiKqeP6yLkOrgXwTxa7+G9NwYUsVUct2q5UNlhgY0SOZrfEiVQXXCgCYXsA6DKFGWJVtJRkedOr/IiRvM7met4=
+	t=1766142513; cv=none; b=gn7bAWuM5PLICJbkumYLW+t7Q21HlI3RXpN+0gb6TXP17G4Gij+o2FRz3yL66urf4hXYx9aYR1j93A1yHjErRNncbu/5JaxZtPt7Ph0/lpO5iyreWiIqmbGW+6njcmAHcjPcwEgrC6Nqmkl6n+cNVbaExfMs88x+tXA/ERUAamk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766142384; c=relaxed/simple;
-	bh=PAXIyJUlggXI8zQiq+IY019DDPUmBWYVgy8mHm7Ahv8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nxvQF6FcLMgJN5TFvU79au2q6vfyu4L+sBck3tfw6jvWnObXc7WVjEv0czny8hzk0UZrq52pjb2xDCEjDiHgVYQ1DcIp+Xgt/zfM74y0smj69po2TUYzYEexseGmDp0g0cXe9FhzaGnVwaX+LLKtMGAo8580Tq2nKiYvr9TLxvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=horS8V6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B60DC4CEF1;
-	Fri, 19 Dec 2025 11:06:23 +0000 (UTC)
+	s=arc-20240116; t=1766142513; c=relaxed/simple;
+	bh=sKAiRQgbNh6DubSpf0Ek/qtbAQMYnVH/c3Drf/wAKtA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fyIOQ0b3juIRF6d7qZ4Lm6dsHYy9yLI03CQ0dBdpfuQ53cPj2CvVb+fiRAa+e5UNzXzqmZYDY9x4GmTfuFLgtMgqyVJCYzq5sRSrQXYsz/B8gNUI3UTTlJAxxU79+W4yOPl3y3W9NULwKV5dgsk+/Gbx1hc8Wz0/B7heSBws18A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7fe9Rgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE0EC4CEF1;
+	Fri, 19 Dec 2025 11:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766142383;
-	bh=PAXIyJUlggXI8zQiq+IY019DDPUmBWYVgy8mHm7Ahv8=;
+	s=k20201202; t=1766142513;
+	bh=sKAiRQgbNh6DubSpf0Ek/qtbAQMYnVH/c3Drf/wAKtA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=horS8V6vzZBmuilXir9AMb9W+hAxzzx3eBcXtZh9AQXsxPM6m+KPGmzJolp+JbFv6
-	 3HIKHuXHNY23fVHcQUlMFy5fA2ptftuNORxxMmlOIvTu3cQQXvRSIk9+UHbtpuZhsD
-	 C4jwunNGZDSzYRaF0PJikX3B9GGfyyN28J6c+d9gu7mj11LD1OJCYdVlMGacYsrT8R
-	 qEmZuaZOTCL4s02Oo3zdYXmNiTzTBht5NFPp/KdCPRUirvrIpNT3U6Ga+W245v/9Cj
-	 G88i5UgsnvTehmoyIN7CIwDuXUKcQcXNPc/N/QuOkWW3s0VJUs1fHuFULE8gBeZT9H
-	 XqUq2n3i0U4BA==
+	b=R7fe9RgdM0+IzE4FM649eayf822BbSRC0mOLMg8I7n0AjLerSrbcnzHh/KBb1PNkm
+	 BdMX3PicJxspIEUspplMWHazgBw9m8ZbmDEC8ufGxVxQVHfwLveYcL+meElTFN58Sw
+	 CW9G4Ovblbe7kwm3M4jKVNf/fxs28/1XnupK7QrOhrt6/w2/DJ+g1x9vG/PXubfhVf
+	 Z+lJIKmKFE88CLboIKUip9Q4u24TnoiqnQu2Y/eAZzAhjZjbuRx/EDixCPdY+UAtIJ
+	 mks3jbJAOVh3cpfXKDXkwK5XwwWFj6xxS4x2dvmgoirws6+g4KT7zX/hMW6HzoXg/Z
+	 KuMwHKlx1GT7A==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vWYJR-000000006CZ-3cAk;
-	Fri, 19 Dec 2025 12:06:21 +0100
+	id 1vWYLX-000000006Ex-3uvx;
+	Fri, 19 Dec 2025 12:08:31 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	linux-iio@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
+To: Lee Jones <lee@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] iio: adc: exynos_adc: fix OF populate on driver rebind
-Date: Fri, 19 Dec 2025 12:05:45 +0100
-Message-ID: <20251219110545.23813-1-johan@kernel.org>
+Subject: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
+Date: Fri, 19 Dec 2025 12:07:14 +0100
+Message-ID: <20251219110714.23919-1-johan@kernel.org>
 X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,49 +77,26 @@ Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
 Cc: stable@vger.kernel.org	# 3.16
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/iio/adc/exynos_adc.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ drivers/mfd/omap-usb-host.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 1484adff00df..f2400897818c 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -540,15 +540,6 @@ static const struct iio_chan_spec exynos_adc_iio_channels[] = {
- 	ADC_CHANNEL(9, "adc9"),
- };
- 
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
--
--	return 0;
--}
--
- static int exynos_adc_probe(struct platform_device *pdev)
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index a77b6fc790f2..4d29a6e2ed87 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
+@@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
  {
- 	struct exynos_adc *info = NULL;
-@@ -660,8 +651,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	return 0;
+ 	pm_runtime_disable(&pdev->dev);
  
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- err_irq:
- 	free_irq(info->irq, info);
-@@ -681,8 +671,7 @@ static void exynos_adc_remove(struct platform_device *pdev)
- 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
- 	struct exynos_adc *info = iio_priv(indio_dev);
+-	/* remove children */
+-	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
++	if (pdev->dev.of_node)
++		of_platform_depopulate(&pdev->dev);
++	else
++		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+ }
  
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
+ static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
 -- 
 2.51.2
 
