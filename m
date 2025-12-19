@@ -1,102 +1,158 @@
-Return-Path: <stable+bounces-203121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D671CD22D3
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 00:17:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22896CD22DF
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 00:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1E42302514E
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 23:17:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B62C303A0B0
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 23:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F03218821;
-	Fri, 19 Dec 2025 23:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6562741C6;
+	Fri, 19 Dec 2025 23:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kwcXV0HY"
+	dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b="UZR+u9l2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from outbound.qs.icloud.com (p-east3-cluster7-host1-snip4-3.eps.apple.com [57.103.84.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AF92E65D;
-	Fri, 19 Dec 2025 23:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737362192FA
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 23:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.84.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766186248; cv=none; b=loWUMQNrj9LSM9A3hWeR4Et1i2D+/EmijgQOnfNrjudi5px9s2ja0vUzna8EOIijsYquFY/zulDTC869IWmmNRdCkQY6QRC0Lr+9+G4KqS/z9Psi5AeKYvMb8G2GWxnj+fx7ACu3tMRrBssyT8g9F6e26CVlRMdY841ZvbwcnC0=
+	t=1766186390; cv=none; b=tK4eRfSWFxPdFESETQ4nOj5+qPtoFmmPH854ax159jKKpApSHUKxXtU/2O5Ps9u3WOStWHDLAZphwmDGYAYMCo3sMOcbqiR3Xo4MpQ+sdeOQnmiFRkyAQf4ngMyxQUXihI8bSyVOiF9mRNu7Kz3OvDpmv2TkWC6XwBJSKMthfbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766186248; c=relaxed/simple;
-	bh=Jg1VJkIwcv0bS8WWwBpZiwQRdI+MvQm0uT8C/izctQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O1Kohdp75sLgrL58MuS3voZljIn2URq9B6JliRT3qzGqTfXDWm9ROzzM/C3A4/p0ckSlgYlfJ6lVz52Iciz3DA4O/A3P5cfKzUsbchMMl5YJ/1mUUoFHh6FhCkhWNvLuRVGA+qV6cr88lLGv3IBfclfc5wBqNvGJhnZgMEiUDzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kwcXV0HY; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E036640E0200;
-	Fri, 19 Dec 2025 23:17:23 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SQDhptCoBjrJ; Fri, 19 Dec 2025 23:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1766186240; bh=6boN+F4A/pT4AlbOs61ix3VzmmJwzgX0zEnSa5IGRCQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kwcXV0HYmY/lo4y7kDbE8NjeTDwJTUDod+wyslvgT+Y4EWnYPnCC9KEzZv30LbNZx
-	 Ht2jxfnjkL53cShPwnKDYBgZoWSJ/GYJBNY0Di/tas0yP3jNwt84aAGuZENal6Ensa
-	 8TEIZkJZX+zhnIMECHZESW7weKkF5LdRSppcXc7DzQg4t7kqlFVbA71tbTkVFh1siG
-	 JKYOepyZsPaX/heFhkALGRizPE5YIdaqk3F9RdOsT79lkvab0ydk2OuTvrbfYsPUJz
-	 8NW9LiMMGio65PtT9t4B4xza5rh6JYz2m6C11uFcWlf6fdygfEGIEL3kCmE85rSpIJ
-	 /IYjn7SyRBiGZg6eDiuR8W1uCIIpPvPpoqaluBJ15fKegsDv6WSc7/8aK0RjN496Up
-	 It8GkqEA0Kt0iB+hIlaLseQhwJBdDbm5PuaaVoSdOwn8fGNFqyrPl/biYY3xRYcAEw
-	 yXe0un+E+w4Ubw9sQlYoWCH5mpu/zzEowfADeci/ON6R5kDkkgGwSUp0Qh4cKWLwEM
-	 wcRBwv+1oYRTykj+mL7tgdm1zo8/hQxFX8ADm3Utn/48+Q5fKuyxzi0bZxX1d5xcc1
-	 UBmh95cMRwkLJCmNZi5R7VAb2iD7ODGuiaTzrrJAIkm3Tm5JjwJm24NJuRi5ouY64O
-	 YXrslqXWdbwbn6w6sHqNYbwg=
-Received: from rn.tnic (unknown [160.86.253.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5F17C40E00DA;
-	Fri, 19 Dec 2025 23:17:01 +0000 (UTC)
-Date: Sat, 20 Dec 2025 00:16:53 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ariadne Conill <ariadne@ariadne.space>, linux-kernel@vger.kernel.org,
-	mario.limonciello@amd.com, darwi@linutronix.de,
-	sandipan.das@amd.com, kai.huang@intel.com, me@mixaill.net,
-	yazen.ghannam@amd.com, riel@surriel.com, peterz@infradead.org,
-	hpa@zytor.com, x86@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, xen-devel@lists.xenproject.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-Message-ID: <20251219231653.GBaUXc5c0GoVAvICoa@renoirsky.local>
-References: <20251219010131.12659-1-ariadne@ariadne.space>
- <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
- <aUV4u0r44V5zHV5f@google.com>
+	s=arc-20240116; t=1766186390; c=relaxed/simple;
+	bh=+r7UfYNT5bhdmuN9M3q047krgyCxyLgRSGWYZOpKbVs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KVMMR/jmft1HQeb8vlOeSFfKyWOMTBf+lPLxY2qRYdXRVdss0cWR+AToIM/sL9zBoGGsfXI+lreZnXPLF2aXuI2dsRKUEMqy9GqaeYLq6YZjnMyXLm43vqi7ioOjdz0L0+wo6GTEHRlXxWESzgSZRk7a9yEDJtqJloZDbxrg7Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space; spf=pass smtp.mailfrom=ariadne.space; dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b=UZR+u9l2; arc=none smtp.client-ip=57.103.84.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariadne.space
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-100-percent-4 (Postfix) with ESMTPS id 1713118003FA;
+	Fri, 19 Dec 2025 23:19:42 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariadne.space; s=sig1; bh=iy2tMr+pcOGokCditubD3qK8tyKEldr37Ursg+rfWGI=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=UZR+u9l2HxdBvSGpQV5DGeFCU9Ihv26qknN/BRL2tsorcEAbc/oINwnAeN64HO1qLkKWjlqZe2Zxw797UlXxzO+h/AYJcACNe8CTSpzD+F8QhBi6NLgST3aaGkWUfTHwHn646JmS9e/cQrJeeAC75j5vnHMYx1gYdmSRa/B9A3mfQ9Qufmzr3tr/QUr5Koh0h38WG3l0iGU2Yq3rP30vZIKrZ+r7Y7g3knD1Au3UJYLBYA9eOSwh9uTLDwRzgFiBLkkzwT8oPHBK5Uq3R0i4DfOGJZhq7wHp924kkORslsj7gHH7pcRi6o19KWsCeOj+YLtE33fsvR+9wbc5fIDVjA==
+mail-alias-created-date: 1688796967087
+Received: from [10.0.0.250] (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-100-percent-4 (Postfix) with ESMTPSA id E271A18000B0;
+	Fri, 19 Dec 2025 23:19:29 +0000 (UTC)
+Message-ID: <a5c4dd0b-d524-43d5-8d33-0aad02adc541@ariadne.space>
+Date: Fri, 19 Dec 2025 15:19:28 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
+To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, mario.limonciello@amd.com,
+ darwi@linutronix.de, sandipan.das@amd.com, kai.huang@intel.com,
+ me@mixaill.net, yazen.ghannam@amd.com, riel@surriel.com,
+ peterz@infradead.org, hpa@zytor.com, x86@kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, dave.hansen@linux.intel.com,
+ xen-devel@lists.xenproject.org, stable@vger.kernel.org
+References: <20251219010131.12659-1-ariadne@ariadne.space>
+ <7C6C14C2-ABF8-4A94-B110-7FFBE9D2ED79@alien8.de>
+ <aUV4u0r44V5zHV5f@google.com>
+Content-Language: en-US
+From: Ariadne Conill <ariadne@ariadne.space>
 In-Reply-To: <aUV4u0r44V5zHV5f@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Info: v=2.4 cv=Fas6BZ+6 c=1 sm=1 tr=0 ts=6945dd90 cx=c_apl:c_pps
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:117 a=bsP7O+dXZ5uKcj+dsLqiMw==:17
+ a=IkcTkHD0fZMA:10 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kmYkUENqAAAA:8 a=cWRNjhkoAAAA:8 a=VwQbUJbxAAAA:8
+ a=jQPEHyspVSHZgeuGXSQA:9 a=QEXdDO2ut3YA:10 a=p9kz6gysRiz6SGr9lVkz:22
+ a=sVa6W5Aao32NNC1mekxh:22
+X-Proofpoint-ORIG-GUID: PrgxWHdnMqmT56j-36miK5PuOTkgt8vm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDE5NiBTYWx0ZWRfX1hQobANrkcwi
+ fAOYdQ6SalVAYZ50ZyICd6lmGxyNCstXgvN2h7qvEzqWepamC0HYV1qNjmQl/noKu06j9ynh5PB
+ X6I8nwhJKKoUnE78HqPDq2tdd+5nEdhDQuZFOrg6vOZH5N7bW6pSlMN9qflPI73b8z0a86ftDyP
+ NsTuzn14/2gDFY253bCFbEk0DNTqKgqJiwOeMN3xh1Z2CFdiAfMIHq1atBGHHl0o5NmdH+oz/MS
+ mK0bYKQfff0zG3/0IRmZUdziAXbHX1CM5qcZVF7epZISJod1ri5IihY/OPirX1oGmM6ZmfoD3UL
+ 0HsaPtA01XwwRL9+yGf
+X-Proofpoint-GUID: PrgxWHdnMqmT56j-36miK5PuOTkgt8vm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_08,2025-12-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 spamscore=0
+ phishscore=0 adultscore=0 suspectscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512190196
+X-JNJ: AAAAAAABCeDZeZABUl1JBQZUFV5IHr6VVYAh9hTgMK6DZMe7v9k9M5CZQCnXlaMiG2N5UpfcrLgKZJJrQoSKX2mJqV1pPPecVXEiW+S0H4n+gHaK0zTzj6Winp6wvqXLScyHgtvQ1K7MzL+Gktqfc7PBGbCsHKCSK6GLnqX9aTleGPFku21OKp49OQGlMVZlTFGFnPnVIhRibRG5zVWPUbV38vqZD1b12pzR9D1mvk6wNFDR8yZF1JcjSORncY5j0k8LDwSS5SviG59MsRhSSAjvhR03IiFPfevkdzoRyDde3geX8m8UV0KXP3EndWv9BFLPkj6D0ht4H+fXq2SaFf6KFEOG7GtK2+yYHBEnc1UBz2ZotTFfFLNQW/E8Cme0DshfAT0xIVHEWWTFjobZvtL8psRlam0SDNi6oktfi7nGCoD6u+ybqdUWDTF0ob1eSQDsIAiDXZqAIHH7ed1ZkcKhxDYWc18t0IcAwMpPOAOks+0X6fHn/Yc52HluCLS4Mr0MHAMsOh1REPSkahqeePtML95elCEZKpG5QGCshkrpLjnDwWrbq1I0pnr523aKP7fDsEZ5ldO1dKwSWJwFsjUuu8NlXPzRT8irDivscY7FVY26tiM/ntPHJJwBijs7JF8V3bXdP9DR6BoX4dGRte5qPzqYY7W2ij1UmblqIYpoEwhoYYBrHOv/BT29g61raMcLMlRQOXj6Rb4sAVEXoP9dFiEwnfBvx3Wt1TH3k2Pb3f0tjSl8eO9jxaCsidx++26dX98H7097CpjwjDdkvSrOpSKa23zAKTLBR8OnL5k14kVmLNYe9fCVe0bhO3ExpBAyad20d1veTQk3NebdxBuYEKkYqXndk55NkEZluk4f7u5HOtr80eDwmU/k08ZQLTw=
 
-On Fri, Dec 19, 2025 at 08:09:31AM -0800, Sean Christopherson wrote:
+Hi,
+
+On 12/19/25 08:09, Sean Christopherson wrote:
+> On Fri, Dec 19, 2025, Borislav Petkov wrote:
+>> On December 19, 2025 1:01:31 AM UTC, Ariadne Conill <ariadne@ariadne.space> wrote:
+>>> Xen domU cannot access the given MMIO address for security reasons,
+>>> resulting in a failed hypercall in ioremap() due to permissions.
+> Why does that matter though?  Ah, because set_pte() assumes success, and so
+> presumably the failed hypercall goes unnoticed and trying to access the MMIO
+> #PFs due to !PRESENT mapping.
+
+Yes, which results in the guest panicing on Zen platforms.
+
+>>> Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
+>>> Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+>>> Cc: xen-devel@lists.xenproject.org
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>> arch/x86/kernel/cpu/amd.c | 6 ++++++
+>>> 1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+>>> index a6f88ca1a6b4..99308fba4d7d 100644
+>>> --- a/arch/x86/kernel/cpu/amd.c
+>>> +++ b/arch/x86/kernel/cpu/amd.c
+>>> @@ -29,6 +29,8 @@
+>>> # include <asm/mmconfig.h>
+>>> #endif
+>>>
+>>> +#include <xen/xen.h>
+>>> +
+>>> #include "cpu.h"
+>>>
+>>> u16 invlpgb_count_max __ro_after_init = 1;
+>>> @@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(void)
+>>> 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
+>>> 		return 0;
+>>>
+>>> +	/* Xen PV domU cannot access hardware directly, so bail for domU case */
+> Heh, Xen on Zen crime.
+>
+>>> +	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
+>>> +		return 0;
+>>> +
+>>> 	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
+>>> 	if (!addr)
+>>> 		return 0;
+>> Sean, looka here. The other hypervisor wants other checks.
+>>
+>> Time to whip out the X86_FEATURE_HYPERVISOR check.
 > LOL, Ariadne, be honest, how much did Boris pay you?  :-D
 
-Ha, now there's a thought: win the lottery and then pay people to do
-specially crafted reports influencing the kernel design. Woahahahah, /me
-laughs ominously.
+Nothing :)
 
-One problem though: winning the lottery.
+At Edera we have been running with this patch for a few months, I just 
+forgot to upstream it.
 
-;-P
+I was reminded of this patch when an Alpine user opened a bug[0] 
+demonstrating the same behavior on 6.18.
 
--- 
-Regards/Gruss,
-    Boris.
+[0]: https://gitlab.alpinelinux.org/alpine/aports/-/issues/17789
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> Jokes aside, I suppose I'm fine adding a HYPERVISOR check, but at the same time,
+> how is this not a Xen bug?  Refusing to create a mapping because the VM doesn't
+> have a device defined at a given GPA is pretty hostile behavior for a hypervisor.
+
+I think it would be better to fix this in a more generic way if we can.
+
+Ariadne
+
 
