@@ -1,62 +1,82 @@
-Return-Path: <stable+bounces-203075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6904FCCF932
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:31:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523D9CCF96B
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 12:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FE543019B42
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:31:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C083930181D3
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 11:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D1C3176EB;
-	Fri, 19 Dec 2025 11:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4746B2BDC03;
+	Fri, 19 Dec 2025 11:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="BG0Xw7qK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jvjOWicc"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E528316917
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DB43191AF
+	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 11:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766143860; cv=none; b=nqj07hAUOfz9NwX29HHWzie70asnfTWMS0XglZcFrh2I8HE5fxYzZwL5fOAllx2gtGSnzQBT9Pch9nTY8q/ZvcJEkeMEYdUxQAZxnitFXFAlxItcE9TxdtDv6yW7If5V7DqzVBh0hTyrLCQq7bQ3wA1eTpR8l88SxLVprDWyJhk=
+	t=1766144050; cv=none; b=ttPvc+9O3/O8S8Fk/TnYXkgYYeGuhMoRHECkzPgkCLLiimt+ODibTlldXZ5uNQJ6xmPwvydKBVd9HNzOa2qrqmrREOraUvy/reCt+qZVgw6asklNHENply09WDbW7bQh+nd5GkaOGb/H7qzoFw1LvOKCUWbeZVhLYEgGg4CzWu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766143860; c=relaxed/simple;
-	bh=mNgWqOCOsQ6WD6Sa3R9N6nDM2gk1cL3HeNVSNZG8O/c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjfSVewJK6ayLPCN4Bewu2c41uCjXyq9dX9+RqAKUlin6xZcRnilimXadfd/LWZZKfRxxLwvGDGdwjhuZ9B7ikn4wYEDNdUT+1O6xY4YRIOw3CT25mjzCboOZ/MZPoMzRFG0/1yEyn5Sv2Y8bTcsfp3PZAHhFGpKwU6PQM8B5rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=BG0Xw7qK; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=BG0Xw7qKPBPCpqwPMHsf61wJIhPCL5WyB8soMJVjJ/h3Itc7BXEa3ialCwpCQ8SpL6AVnsHbiSdZ2
-	 Ngi+2b38QhU0wbsybPLu25Ug+xocacgjVp5Ki12mMNK0KjRncoXjLfrzKx3mEaUiLstHpSk77y1srH
-	 xN+DxrtMdXW85cIM=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[117.129.7.224])
-	by rmsmtp-lg-appmail-21-12024 (RichMail) with SMTP id 2ef8694536a0961-0da3e;
-	Fri, 19 Dec 2025 19:27:32 +0800 (CST)
-X-RM-TRANSID:2ef8694536a0961-0da3e
-From: Rajani Kantha <681739313@139.com>
-To: harshit@nutanix.com,
-	jon@nutanix.com,
-	gauri.patwardhan@nutanix.com,
-	rahul.chunduru@nutanix.com,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	pauld@redhat.com,
-	william.ton@nutanix.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.12 0/1] Proposal to backport Fix race in push_rt_task to 6.12 kernel.
-Date: Fri, 19 Dec 2025 19:27:24 +0800
-Message-Id: <20251219112724.1960-2-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251219112724.1960-1-681739313@139.com>
-References: <20251219112724.1960-1-681739313@139.com>
+	s=arc-20240116; t=1766144050; c=relaxed/simple;
+	bh=4bv3Gk1Rp61YDnZYdNpxoF/HsUv0eSFoQ9vGbwmYIKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G2oaEENwN5ZlXoP1GsyeMizm9wznN25abxa2tkCNhikO0+qaBHZ6cYnnFKuom9nimni3yMLDMbgpPmiLgqYBa6o6NXqzXHmtujAwNFWM41mRS3rZmxL5VZTkN6ho4LUtPGdKAD4M8o3Eka98UNUo0bbToGF7n2ZsBuxIZV4YqJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jvjOWicc; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766144048; x=1797680048;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4bv3Gk1Rp61YDnZYdNpxoF/HsUv0eSFoQ9vGbwmYIKg=;
+  b=jvjOWiccvrn0lh+1uyMRuGWGFOq9R0kxoCjCiRHmwCn5NjLfcV2mHfFV
+   KrEYlsQfqfPPoTmI8NP2BGwXc8daDdh6tVedHevydw1ilQcl8/8q2O5gT
+   JKuuCkDSrBR52tZj+n+NOaobhA96KEgCjTHRZvLYzqLdM0rXP1UBcGp/k
+   nqdjLd9MxGoA6rIZ+TLF4N32cdQw8tGC0soDB0CFVTskBSFCw+noIVP55
+   IbwCOo1mBA9m9idKJ5FhQAL3ykgFRsnmFsEWzHbv7NAukV987MARiIBUC
+   TgzFdVmNHf7LlOfuSyNPZbnnhkKFx5nEGBNI1vDC7OM8aSUX/sU7HniX/
+   w==;
+X-CSE-ConnectionGUID: J7UeYumnRlSz2LoWfS9PyA==
+X-CSE-MsgGUID: PKZn9USfTtK6K1iMWa40jA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79224464"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="79224464"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 03:34:04 -0800
+X-CSE-ConnectionGUID: rZ0vhxzAR3SXyyqV3KRJrw==
+X-CSE-MsgGUID: I3dRx54VSmqFJNSDJ+7U7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="203005574"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO fedora) ([10.245.244.251])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 03:34:00 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	apopple@nvidia.com,
+	airlied@gmail.com,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	felix.kuehling@amd.com,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dakr@kernel.org,
+	"Mrozek, Michal" <michal.mrozek@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH v6 01/24] drm/xe/svm: Fix a debug printout
+Date: Fri, 19 Dec 2025 12:32:57 +0100
+Message-ID: <20251219113320.183860-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251219113320.183860-1-thomas.hellstrom@linux.intel.com>
+References: <20251219113320.183860-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,31 +86,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Harshit,
+Avoid spamming the log with drm_info(). Use drm_dbg() instead.
 
-This is a backport of upstream commit 690e47d1403e90b7f2366f03b52ed3304194c793
-("sched/rt: Fix race in push_rt_task") for the 6.12 stable series
-(and potentially 6.6 if applicable).
+Fixes: cc795e041034 ("drm/xe/svm: Make xe_svm_range_needs_migrate_to_vram() public")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: <stable@vger.kernel.org> # v6.17+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ drivers/gpu/drm/xe/xe_svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-From code analysis, the same underlying race issue should exist in the 6.12 and 6.6 kernels.
-
-Since 6.12 or older kernel doesn't have commit:af0c8b2bf67b("sched: Split scheduler and execution contexts"),
-so the backport patch removed BUG_ON(task_current_donor(rq, p)) in pick_netxt_pushable_task().
-
-Please help to review if we can safty backport this fix to an older
-kernel, thanks.
-
-Regards,
-Raj.
-
-Harshit Agarwal (1):
-  sched/rt: Fix race in push_rt_task
-
- kernel/sched/rt.c | 52 +++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index 93550c7c84ac..bab8e6cbe53d 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -937,7 +937,7 @@ bool xe_svm_range_needs_migrate_to_vram(struct xe_svm_range *range, struct xe_vm
+ 	xe_assert(vm->xe, IS_DGFX(vm->xe));
+ 
+ 	if (xe_svm_range_in_vram(range)) {
+-		drm_info(&vm->xe->drm, "Range is already in VRAM\n");
++		drm_dbg(&vm->xe->drm, "Range is already in VRAM\n");
+ 		return false;
+ 	}
+ 
 -- 
-2.17.1
-
+2.51.1
 
 
