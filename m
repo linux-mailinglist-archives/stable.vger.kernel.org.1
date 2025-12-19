@@ -1,146 +1,174 @@
-Return-Path: <stable+bounces-203109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4820CD12FB
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 18:40:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D81CD1310
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 18:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38336302EA0C
-	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:38:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C34E43036A50
+	for <lists+stable@lfdr.de>; Fri, 19 Dec 2025 17:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADA433A710;
-	Fri, 19 Dec 2025 17:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635F233BBD5;
+	Fri, 19 Dec 2025 17:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f7J+Jsiq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kXQtDNM7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB002BEC4A
-	for <stable@vger.kernel.org>; Fri, 19 Dec 2025 17:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D372DC32B;
+	Fri, 19 Dec 2025 17:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766165912; cv=none; b=XIabraY2fZPBNTfnNv1516Xhe6DaWBmHOGRK4zkS2gCJLb3/q/3z97SyktoBG3dmQqtwhud0E5SQCF1M2xH02oxrYiVIHiMnjufSeCuwBSCi4OmfqziM8sP208fsT0hls2JZCggKtTOeZQMiikry20bLm15fquMghOQI82fGcKM=
+	t=1766166059; cv=none; b=OGxIEHsOjy+iKkMejO/XYr3KieSm3ibG3Q5QGTXuq8QG5BQhQDMPkT6osx2C3tWT0yRMo2bDizLOfXrxoKo7AtXJHq+V85u1riZ44ypStkrd55+xvG4jQvnJ3+jwME+9AkY/WVnzzRjuGSYABvIRVLUfsMhJYyaXZTamj6FKOz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766165912; c=relaxed/simple;
-	bh=ASfT4gSNSrvEamX0B/fST3i4V9CA9tioQB1/+KicrRg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XErLSmj2NF4dhR3fsonUq5KcNDwQrv91H5IlC15IVkYkIOqyO/nh090TInHp4d9+TysElCJ9TZLlaDqgMQWMOt3zos1TD7t9J4HkD5xBEcWn8n+h6AXDK1/njka0/dHMGqj0yd9F+SyA265ufW2jun8abY/xFfocPWfoZi7Gyrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f7J+Jsiq; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7dd05696910so3071362b3a.2
-        for <stable@vger.kernel.org>; Fri, 19 Dec 2025 09:38:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766165911; x=1766770711; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kbOhKn22cTFMoKpf/GXkxISQsKfNfALH2jWSUuo5nak=;
-        b=f7J+JsiqwoiSUgezDiegKOa6zpmptFntlUJU6zGin06BAHV98XD1vNi4MgSviuyt8t
-         bCLrWOzXfMWpvNtGhSXONOF8FnJyu9GKtTTtwkzZy6NEO+fv4HNWqff8On3qdSoQ4Lrv
-         dqxzhK40+1hE0iJWrUvxkne/x//eJjRtmu4fEgIlpoX83MNLQVNWPCmnvNn9Zn/Ztbom
-         ioWwefi/zvDblpdpIzJg/qOfc8p/INCAwZEW4bcZtOhT+vVFnq9jSDFSd4QSK+YzjOJr
-         qvQqlpmnRE6s6vDuufnUxgOI+7l2OYeSHSk1/NH7C0SnECtPd5PF1Vmtd2mO7CcZkrUr
-         ngYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766165911; x=1766770711;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kbOhKn22cTFMoKpf/GXkxISQsKfNfALH2jWSUuo5nak=;
-        b=T11OgvqZg4ti6XJRZuafhWVyx6uV2RdvH+B0zcpI+bvwLN30Stcz7vrWLWFF6kr+ez
-         5wVTY60QDWNMzbwkjY1U2c/3BRelRkRXkeAAYfLEEuEfe9vd9zDqx9NxOQ/JQowCdF8T
-         0+uuSjaccQAvghjYktvTjAhbRhOuwMwRnBvjW8FypfAOJzL3dT+JLehSW4D9b1rTu8XM
-         L1yCn7ZtERGTatl28g4K9OFueCBBf5Sg5nmqQxOlor5ngXPxltTbABMPKzjOdkSf9QXU
-         AcFLXRh+Jfql1vPHm4618AAihKM6VtPDLwGLcBWbJPMcss9l75oFhWJ/G9G1gc34AqAz
-         2Nyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwZ3JtxPd4qXWpX9yP8LJJuoHFSkwh3N+cjcvdvyxywoB4kEps5qmUaXvZExgPfbAgosnAM6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGnrd7/jbOKw1HIoUVkdhGsG/ALvWAPO/UQGwGBhRZ0Sa3Pn5H
-	SgBDqFTPfL4RcGE2SoD+N6EexD0YQWEdeoPclXItT66LEUQIbtd2ma/RolMoy7K5NIMMJP9KLTh
-	aHvjmaQ==
-X-Google-Smtp-Source: AGHT+IFwzWgtPptIOyQJLby5S982+3QC2rN4V2KVy1J/lj/jLP6cxRNrCIT8QnhPtZST1lAtZV6zpA10OhY=
-X-Received: from pfbfb38.prod.google.com ([2002:a05:6a00:2da6:b0:76b:f0d4:ac71])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140e:b0:7ff:885f:9c2a
- with SMTP id d2e1a72fcca58-7ff885fa2d7mr3264079b3a.12.1766165910740; Fri, 19
- Dec 2025 09:38:30 -0800 (PST)
-Date: Fri, 19 Dec 2025 09:38:29 -0800
-In-Reply-To: <dbe68678-0bc4-483f-aef3-e4c7462bcaff@vates.tech>
+	s=arc-20240116; t=1766166059; c=relaxed/simple;
+	bh=6k6XnSLCX0J/usKJONUDwI7bCA9yVh1g+rcsjInq7KI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LH032ePjp+PS9MHgEhJoJ2NUTWAwzt39U3j8j3c7EDvoGyrr191lzClHNs4JYl4YTtZT6nBFua1YQT7zgu78G4z2E+U1qA5iT4MH37GwSUnZEIOJw6YdNX1qVeZ7uxWhiqbH4isTlSq8qNPSq8WTXcGWu/xwM4K94ex9482RWbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kXQtDNM7; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766166057; x=1797702057;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=6k6XnSLCX0J/usKJONUDwI7bCA9yVh1g+rcsjInq7KI=;
+  b=kXQtDNM7SiQa7+zMkMG+FE89qevGlN8ctePhltiE0roO7p+cfwpLXTna
+   QPOHeJ8A6xUJfqPx6wk/2aZogvhTAQM4Zoow92JqBghkCoVLVPHx4JJoa
+   FMIe1qadleMFASiVwm1tBEhZSvsvFrjoPh49leZnjunJYTquGEGCMu2hi
+   VRqVEFEVEQhxwVMI2RVggI1eC6495EtOGZwRqBN71r/FAO2fObYEcyd2F
+   uupZfE8Ruytdz2iiFFj+QMN7pAmnokMT0wPSICiltcRJrmejfvRkmhK1f
+   iQTQbvZk6u8ZvV+UCU4b9dOEGCYQOhdj5+E/bab6dnUa7YObjcFSEbtcr
+   w==;
+X-CSE-ConnectionGUID: 6jMljgSiRbyMOtJixyzisw==
+X-CSE-MsgGUID: Dl0SJl1VTseSzyjFifU6Nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68173769"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="68173769"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:40:55 -0800
+X-CSE-ConnectionGUID: mzIiNWYsQvayGFFC1KzCdw==
+X-CSE-MsgGUID: 5jGnh02wR+Ou6ciWVrBFbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="198974779"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:40:51 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: linux-pci@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Wei Yang <weiyang@linux.vnet.ibm.com>,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/23] PCI: Fix bridge window alignment with optional resources
+Date: Fri, 19 Dec 2025 19:40:14 +0200
+Message-Id: <20251219174036.16738-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251219174036.16738-1-ilpo.jarvinen@linux.intel.com>
+References: <20251219174036.16738-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251219010131.12659-1-ariadne@ariadne.space> <dbe68678-0bc4-483f-aef3-e4c7462bcaff@vates.tech>
-Message-ID: <aUWNlTAmbSTXsBDE@google.com>
-Subject: Re: [PATCH] x86/CPU/AMD: avoid printing reset reasons on Xen domU
-From: Sean Christopherson <seanjc@google.com>
-To: Teddy Astie <teddy.astie@vates.tech>
-Cc: Ariadne Conill <ariadne@ariadne.space>, linux-kernel@vger.kernel.org, 
-	mario.limonciello@amd.com, darwi@linutronix.de, sandipan.das@amd.com, 
-	kai.huang@intel.com, me@mixaill.net, yazen.ghannam@amd.com, riel@surriel.com, 
-	peterz@infradead.org, hpa@zytor.com, x86@kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-	xen-devel@lists.xenproject.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 19, 2025, Teddy Astie wrote:
-> Le 19/12/2025 =C3=A0 02:04, Ariadne Conill a =C3=A9crit=C2=A0:
-> > Xen domU cannot access the given MMIO address for security reasons,
-> > resulting in a failed hypercall in ioremap() due to permissions.
-> >
-> > Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset"=
-)
-> > Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-> > Cc: xen-devel@lists.xenproject.org
-> > Cc: stable@vger.kernel.org
-> > ---
-> >   arch/x86/kernel/cpu/amd.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> >
-> > diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> > index a6f88ca1a6b4..99308fba4d7d 100644
-> > --- a/arch/x86/kernel/cpu/amd.c
-> > +++ b/arch/x86/kernel/cpu/amd.c
-> > @@ -29,6 +29,8 @@
-> >   # include <asm/mmconfig.h>
-> >   #endif
-> >
-> > +#include <xen/xen.h>
-> > +
-> >   #include "cpu.h"
-> >
-> >   u16 invlpgb_count_max __ro_after_init =3D 1;
-> > @@ -1333,6 +1335,10 @@ static __init int print_s5_reset_status_mmio(voi=
-d)
-> >   	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-> >   		return 0;
-> >
-> > +	/* Xen PV domU cannot access hardware directly, so bail for domU case=
- */
-> > +	if (cpu_feature_enabled(X86_FEATURE_XENPV) && !xen_initial_domain())
-> > +		return 0;
-> > +
-> >   	addr =3D ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value)=
-);
-> >   	if (!addr)
-> >   		return 0;
->=20
-> Such MMIO only has a meaning in a physical machine, but the feature
-> check is bogus as being on Zen arch is not enough for ensuring this.
->=20
-> I think this also translates in most hypervisors with odd reset codes
-> being reported; without being specific to Xen PV (Zen CPU is
-> unfortunately not enough to ensuring such MMIO exists).
->=20
-> Aside that, attempting unexpected MMIO in a SEV-ES/SNP guest can cause
-> weird problems since they may not handled MMIO-NAE and could lead the
-> hypervisor to crash the guest instead (unexpected NPF).
+pbus_size_mem() has two alignments, one for required resources in
+min_align and another in add_align that takes account optional
+resources.
 
-IMO, terminating an SEV-ES+ guest because it accesses an unknown MMIO range=
- is
-unequivocally a hypervisor bug.  The right behavior there is to configure a
-reserved NPT entry to reflect the access into the guest as a #VC.
+The add_align is applied to the bridge window through the realloc_head
+list. It can happen, however, that add_align is larger than min_align
+but calculated size1 and size0 are equal due to extra tailroom (e.g.,
+hotplug reservation, tail alignment), and therefore no entry is created
+to the realloc_head list. Without the bridge appearing in the realloc
+head, add_align is lost when pbus_size_mem() returns.
+
+The problem is visible in this log for 0000:05:00.0 which lacks
+add_size ... add_align ... line that would indicate it was added into
+the realloc_head list:
+
+pci 0000:05:00.0: PCI bridge to [bus 06-16]
+...
+pci 0000:06:00.0: bridge window [mem 0x00100000-0x001fffff] to [bus 07] requires relaxed alignment rules
+pci 0000:06:06.0: bridge window [mem 0x00100000-0x001fffff] to [bus 0a] requires relaxed alignment rules
+pci 0000:06:07.0: bridge window [mem 0x00100000-0x003fffff] to [bus 0b] requires relaxed alignment rules
+pci 0000:06:08.0: bridge window [mem 0x00800000-0x00ffffff 64bit pref] to [bus 0c-14] requires relaxed alignment rules
+pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
+pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
+pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] add_size 100000 add_align 1000000
+pci 0000:06:0c.0: bridge window [mem 0x00100000-0x001fffff] to [bus 15] requires relaxed alignment rules
+pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
+pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
+pci 0000:05:00.0: bridge window [mem 0xd4800000-0xd97fffff]: assigned
+pci 0000:05:00.0: bridge window [mem 0x1060000000-0x10607fffff 64bit pref]: assigned
+pci 0000:06:08.0: bridge window [mem size 0x04900000]: can't assign; no space
+pci 0000:06:08.0: bridge window [mem size 0x04900000]: failed to assign
+
+While this bug itself seems old, it has likely become more visible
+after the relaxed tail alignment that does not grossly overestimate the
+size needed for the bridge window.
+
+Make sure add_align > min_align too results in adding an entry into the
+realloc head list. In addition, add handling to the cases where
+add_size is zero while only alignment differs.
+
+Fixes: d74b9027a4da ("PCI: Consider additional PF's IOV BAR alignment in sizing and assigning")
+Reported-by: Malte Schröder <malte+lkml@tnxip.de>
+Tested-by: Malte Schröder <malte+lkml@tnxip.de>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/pci/setup-bus.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 6e90f46f52af..4b918ff4d2d8 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -14,6 +14,7 @@
+  *	     tighter packing. Prefetchable range support.
+  */
+ 
++#include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <linux/bug.h>
+ #include <linux/init.h>
+@@ -456,7 +457,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
+ 					"%s %pR: ignoring failure in optional allocation\n",
+ 					res_name, res);
+ 			}
+-		} else if (add_size > 0) {
++		} else if (add_size > 0 || !IS_ALIGNED(res->start, align)) {
+ 			res->flags |= add_res->flags &
+ 				 (IORESOURCE_STARTALIGN|IORESOURCE_SIZEALIGN);
+ 			if (pci_reassign_resource(dev, idx, add_size, align))
+@@ -1442,12 +1443,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 
+ 	resource_set_range(b_res, min_align, size0);
+ 	b_res->flags |= IORESOURCE_STARTALIGN;
+-	if (bus->self && size1 > size0 && realloc_head) {
++	if (bus->self && realloc_head && (size1 > size0 || add_align > min_align)) {
+ 		b_res->flags &= ~IORESOURCE_DISABLED;
+-		add_to_list(realloc_head, bus->self, b_res, size1-size0, add_align);
++		add_size = size1 > size0 ? size1 - size0 : 0;
++		add_to_list(realloc_head, bus->self, b_res, add_size, add_align);
+ 		pci_info(bus->self, "bridge window %pR to %pR add_size %llx add_align %llx\n",
+ 			   b_res, &bus->busn_res,
+-			   (unsigned long long) (size1 - size0),
++			   (unsigned long long) add_size,
+ 			   (unsigned long long) add_align);
+ 	}
+ }
+-- 
+2.39.5
+
 
