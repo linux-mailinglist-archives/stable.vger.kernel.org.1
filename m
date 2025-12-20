@@ -1,209 +1,175 @@
-Return-Path: <stable+bounces-203146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C09ECD32FB
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 17:01:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A63CD334C
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 17:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE11530206BF
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 16:00:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC55F3011F87
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 16:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289602D8792;
-	Sat, 20 Dec 2025 16:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E102FB09A;
+	Sat, 20 Dec 2025 16:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="kVQ7HwJG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A3E2D593E
-	for <stable@vger.kernel.org>; Sat, 20 Dec 2025 16:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A68126F2B6;
+	Sat, 20 Dec 2025 16:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766246433; cv=none; b=TAwwoKfV62/BklxNbfXMz/nAL1AEFnKb+F+00LvQ12iKer/t4J5LMkEM8Oyfk1Rg/YO4kN+LHEaSdIop7dkaRxNXTKq3D9+lOXwqAq0swx7cSi5kDGVyUoIxtBSfXQQc3VQFqELzSJtVJoH9ghKWBfokDWdTOINuRvvZvteQ2ko=
+	t=1766247007; cv=none; b=cltqpkPbcKENL+pwmAKSurCa5qctZGysSBi3JDwHz0o7PEImeILcsiYXNhed44ccuU342tTdhqZx2xva/YaKQV32LsC7MIWhlFGcFE5gJwdmcyKrfY2pw74diFxoOy5DiLBhZT495opayWbeWNaYGhSn7xth1rWvNE2Cj8lWBak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766246433; c=relaxed/simple;
-	bh=1OL1eqj8HoVIjLIyUb30+BrxQWHr6UQhlRc7+uK2SjA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=X8/eZtqk/T4G29HviWn7MVHSnWGYEXVXMN7GdNB14MRO7z1lOH1bFuhZdFaBDIvPlwSb5B4Iwpka9ao0gfhzLN81bS/h1RuaDw6ArcXoUKdKwZNQ8ARehJZ05NVimpA+OF8dfQVlC1/eQQFA+nIZrkud5BTVY48J+fGLiM7TB2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7c7542602a7so4964245a34.2
-        for <stable@vger.kernel.org>; Sat, 20 Dec 2025 08:00:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766246430; x=1766851230;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7SqT+yNRhkPZ0TwvpPyQ7+AiEKwn1SwkM+MBUYkzeQ=;
-        b=hsQwMzkSw/k34G+ARAyj3hV5Xlu1aVyEr7ZtfkZAbRelwTEVrmXpk+t0/uBzcAv/kc
-         9LhhjRD3Sw2fACMgyVWdTZ46glGgof/8VESPP0SI26S44U1G9jfHFoSHvjARS3DYz6LX
-         KA25RdT5SeGMdTm1OZULrfjQ4j1IEhsD0ER3WesPAydLVOb9KGP/CXTSjUQvBg+kagLs
-         woVbNTZzQfnL7Jw7FTv4x9pdMowMz5IGkLYTUPNLX6JFPSfzEp9tALnTwFty7f/HexgB
-         wiXllKmy5Af0ANO1Ho6RVsUAr0u6JT7gbZadYn86l39ZsdYOT+xP+c9V7nyH7yF6uKrJ
-         gyjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsL4qPmrwrTktmugoLTtvvxWpWNHh8327uh3wNdW/nXESSuvtCxtm+9/CnFYVJ3dXDeBTIOh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUgbEq7cWf+8f0CHrtLLQs0lVWdWB5VB2LbzVcOmJxUd93NdNT
-	L/te/Z1B4qJE/WZIoNTF59il4XG/xk4Yvh4NKLm3pvmfhgbwbfmH8GxTM+0GIEsWu2mBHoOH8CB
-	bu7byPzbReFuh3tEAJTOkswr1bCd2UGkHaWY/YzTWBaRp2S7czNssMnXHxoo=
-X-Google-Smtp-Source: AGHT+IFaLI8u4Bd7SjOx4K0e5dAzsFc4LnHQPEtoFG/dNplb1HXtK6D7L7lg+QRoNvgT7u2AjJ2sIE1Gi9xmr8EP3qinuZo259Nv
+	s=arc-20240116; t=1766247007; c=relaxed/simple;
+	bh=3xsV0oI2wQr121cNCBKzs4dljwqZHphncWQPYAn7Pig=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=g5sWjR44W7xUUnHt7aFUxj5NoFIfE5kTxagHoIiblbYypZqsX75GUjrOTMZwItFHJovp5YQNXcU0lYfkFYEugvzQfV8fzpofbVOgw3ImJyWibNGh7r609TlPUFqWrQiTL8vHqJhPVOq1HqO5uodjrQY4Y9LIZWfS9zllQuPAsyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=kVQ7HwJG; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1766246996; x=1766851796; i=markus.elfring@web.de;
+	bh=ClvdF52tyBTj1vQnvRx1egcfnAzuavIbXHLKNDt764Y=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=kVQ7HwJGw8T3d1NiQOYj0dB6Nv9ZTYkSLlXuUzoSsNyDx9+oiBA1XXmOORlDEJPH
+	 DoRqYElaWkqwxaY1PjIJxU/QAwIb6LMmJjkyTbCGBIxCFKmgo226m3wIqJe3ET/yC
+	 3pTpE1di+n0DkQbNAlvcpmd0W6wHHapN35hKCtRgEHu6tubrO+z+a1+3/kGc0/5x0
+	 65fGZxqwD/ilA3d/QFPIq7DGWUGfx4VOr+nbeNGlGXCT2W58sEZpt1d2gCm6t3awx
+	 WgrFYrAKdz7HF90KbvjIB5iSYpOCMCr9805iekMdz6H1CrGNZR38ZS+ZFeM1/GDhS
+	 3qivAvERAlvubAG+jg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.215]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MBS71-1vge310fMt-005yXo; Sat, 20
+ Dec 2025 17:09:56 +0100
+Message-ID: <53c5a56b-81fc-44af-bade-21aea79682f8@web.de>
+Date: Sat, 20 Dec 2025 17:09:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1691:b0:659:9a49:8f6b with SMTP id
- 006d021491bc7-65d0ea9a1e5mr2458037eaf.48.1766246430220; Sat, 20 Dec 2025
- 08:00:30 -0800 (PST)
-Date: Sat, 20 Dec 2025 08:00:30 -0800
-In-Reply-To: <20251220110241.8435-1-ionut.nechita@windriver.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6946c81e.a70a0220.207337.013a.GAE@google.com>
-Subject: [syzbot ci] Re: block/blk-mq: fix RT kernel performance regressions
-From: syzbot ci <syzbot+ci366dec97baf89841@syzkaller.appspotmail.com>
-To: axboe@kernel.dk, djiony2011@gmail.com, gregkh@linuxfoundation.org, 
-	ionut.nechita@windriver.com, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ming.lei@redhat.com, muchun.song@linux.dev, 
-	sashal@kernel.org, stable@vger.kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, linux-scsi@vger.kernel.org,
+ Hannes Reinecke <hare@suse.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
+ Ketan Mukadam <ketan.mukadam@broadcom.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH] scsi: be2iscsi: fix a memory leak in
+ beiscsi_boot_get_sinfo()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:HWJGfzw82e2VS6ty9ih7yk/E1AYV5vSWbsAX91+CDKeNLFCEAZF
+ PEbtZkcLCzzbe7a972L5cv/XbPTY7HZqRjwvIU5rjZfAq8rZhNiVkFIt5wYqtsbOL9gxQ81
+ B3PyMC6eOJsk1lepGB08sP+pCLEiUoFUJ9gxYb0w0hxFQysBPLaUSgITtOVDaZN+ep+TYJ2
+ daDYqyW/FeOUTrZ24RYbw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:rKamhJrhLiA=;MV2aYO6MevRMquWNxBs70LMK9FG
+ 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
+ tD/dcnUumwqMRy0v3QfgcX8gb8t4KSHIzL3nis
 
-syzbot ci has tested the following series
+> If nonemb_cmd->va fails to be allocated, call free_mcc_wrb()
+> to restore the impact caused by alloc_mcc_wrb().
 
-[v1] block/blk-mq: fix RT kernel performance regressions
-https://lore.kernel.org/all/20251220110241.8435-1-ionut.nechita@windriver.com
-* [PATCH 1/2] block/blk-mq: fix RT kernel regression with queue_lock in hot path
-* [PATCH 2/2] block/blk-mq: convert blk_mq_cpuhp_lock to raw_spinlock for RT
-
-and found the following issues:
-* BUG: sleeping function called from invalid context in __cpuhp_state_add_instance
-* BUG: sleeping function called from invalid context in __cpuhp_state_remove_instance
-
-Full report is available here:
-https://ci.syzbot.org/series/632f4721-6256-44fd-83f5-bf439d5f33f9
-
-***
-
-BUG: sleeping function called from invalid context in __cpuhp_state_add_instance
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      dd9b004b7ff3289fb7bae35130c0a5c0537266af
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/9ad1c682-13b1-4626-b61a-a2156384698d/config
-C repro:   https://ci.syzbot.org/findings/f999a055-07f3-4d7a-acfd-8bc0be61e2ec/c_repro
-syz repro: https://ci.syzbot.org/findings/f999a055-07f3-4d7a-acfd-8bc0be61e2ec/syz_repro
-
-BUG: sleeping function called from invalid context at ./include/linux/percpu-rwsem.h:51
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 5982, name: syz.0.17
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 1 UID: 0 PID: 5982 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT(full) 
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- __might_resched+0x495/0x610 kernel/sched/core.c:8827
- percpu_down_read_internal include/linux/percpu-rwsem.h:51 [inline]
- percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
- cpus_read_lock+0x1b/0x160 kernel/cpu.c:491
- __cpuhp_state_add_instance+0x19/0x40 kernel/cpu.c:2454
- cpuhp_state_add_instance_nocalls include/linux/cpuhotplug.h:401 [inline]
- __blk_mq_add_cpuhp block/blk-mq.c:3858 [inline]
- blk_mq_add_hw_queues_cpuhp+0x19a/0x250 block/blk-mq.c:3906
- blk_mq_realloc_hw_ctxs block/blk-mq.c:4611 [inline]
- blk_mq_init_allocated_queue+0x366/0x1350 block/blk-mq.c:4635
- blk_mq_alloc_queue block/blk-mq.c:4416 [inline]
- __blk_mq_alloc_disk+0x1f0/0x340 block/blk-mq.c:4459
- loop_add+0x411/0xad0 drivers/block/loop.c:2050
- loop_control_ioctl+0x128/0x5a0 drivers/block/loop.c:2216
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1dc598f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff2134d08 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f1dc5be5fa0 RCX: 00007f1dc598f7c9
-RDX: 00000000004080f9 RSI: 0000000000004c80 RDI: 0000000000000003
-RBP: 00007f1dc59f297f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1dc5be5fa0 R14: 00007f1dc5be5fa0 R15: 0000000000000003
- </TASK>
-
-
-***
-
-BUG: sleeping function called from invalid context in __cpuhp_state_remove_instance
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      dd9b004b7ff3289fb7bae35130c0a5c0537266af
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/9ad1c682-13b1-4626-b61a-a2156384698d/config
-C repro:   https://ci.syzbot.org/findings/f39691bc-570a-4163-9791-31ce10e18fb6/c_repro
-syz repro: https://ci.syzbot.org/findings/f39691bc-570a-4163-9791-31ce10e18fb6/syz_repro
-
-BUG: sleeping function called from invalid context at ./include/linux/percpu-rwsem.h:51
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 5975, name: syz.0.17
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 0 UID: 0 PID: 5975 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT(full) 
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- __might_resched+0x495/0x610 kernel/sched/core.c:8827
- percpu_down_read_internal include/linux/percpu-rwsem.h:51 [inline]
- percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
- cpus_read_lock+0x1b/0x160 kernel/cpu.c:491
- __cpuhp_state_remove_instance+0x77/0x2e0 kernel/cpu.c:2565
- cpuhp_state_remove_instance_nocalls include/linux/cpuhotplug.h:502 [inline]
- __blk_mq_remove_cpuhp+0x140/0x1a0 block/blk-mq.c:3835
- blk_mq_remove_cpuhp block/blk-mq.c:3844 [inline]
- blk_mq_exit_hw_queues block/blk-mq.c:3974 [inline]
- blk_mq_exit_queue+0xe8/0x380 block/blk-mq.c:4670
- __del_gendisk+0x832/0x9e0 block/genhd.c:774
- del_gendisk+0xe8/0x160 block/genhd.c:823
- loop_remove+0x42/0xc0 drivers/block/loop.c:2121
- loop_control_remove drivers/block/loop.c:2180 [inline]
- loop_control_ioctl+0x4ac/0x5a0 drivers/block/loop.c:2218
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f911d78f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd4f0e1fb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f911d9e5fa0 RCX: 00007f911d78f7c9
-RDX: 0000000000000006 RSI: 0000000000004c81 RDI: 0000000000000003
-RBP: 00007f911d7f297f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f911d9e5fa0 R14: 00007f911d9e5fa0 R15: 0000000000000003
- </TASK>
+     avoid?
 
 
-***
+=E2=80=A6
+> +++ b/drivers/scsi/be2iscsi/be_mgmt.c
+> @@ -1025,6 +1025,7 @@ unsigned int beiscsi_boot_get_sinfo(struct beiscsi=
+_hba *phba)
+>  					      &nonemb_cmd->dma,
+>  					      GFP_KERNEL);
+>  	if (!nonemb_cmd->va) {
+> +		free_mcc_wrb(ctrl, tag);
+>  		mutex_unlock(&ctrl->mbox_lock);
+>  		return 0;
+>  	}
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+I suggest to avoid also repeated mutex_unlock() calls in this function imp=
+lementation.
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Regards,
+Markus
 
