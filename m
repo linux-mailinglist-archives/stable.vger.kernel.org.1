@@ -1,73 +1,88 @@
-Return-Path: <stable+bounces-203132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9F3CD2C92
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 10:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6421CD2D8D
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 11:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3284430141C3
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 09:53:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6297A3010A84
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 10:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BA626ED4A;
-	Sat, 20 Dec 2025 09:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3A62877EA;
+	Sat, 20 Dec 2025 10:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OBAorIJv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEf6wFu3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA1F1E32CF
-	for <stable@vger.kernel.org>; Sat, 20 Dec 2025 09:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3083168BD
+	for <stable@vger.kernel.org>; Sat, 20 Dec 2025 10:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766224432; cv=none; b=lMVKN0Ipr3/JKETsLGeSPvtU/uIXfYyMTmJLe3AqzbVnjG1LgaSBv93Twuom8gUJW6YqgjtflpTuiVVdjUd/dg9dGYB0pi41Zbw316vn2IVkR0YBiuGLuBnJhkKgdYJr7lDPiRhSAAXyNuy1Rq0/GGhwDZk8NEDiLk7MU2KfaeU=
+	t=1766228132; cv=none; b=fhvcYZ4AC+fSsL6eYDJaVh/siaG8ZA4E4C8M29f8Em74hiR89NIBgrNq346sOg5fpvM+vt/3AXipKqNXqGn37iy9RfDcw7nVGNfdGDYP9jcWoZWY33L+W5PaSS6FBwoRLwAIawSDnDqGWyV6WslMbgyDrXYFuAa/zN3PklC9dvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766224432; c=relaxed/simple;
-	bh=cfGRIvoRFwldOIdoP4UoZl4oq7VxJAjD7tT7H2wj40g=;
+	s=arc-20240116; t=1766228132; c=relaxed/simple;
+	bh=o+vEFROiqUoDAPTJIDN1NXPMAkTeLu+cB5g1KoffBU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deKxVT3SM2ePmqyzukj8tPC1ZI+THW8IZEpamPaj9/OvaTLszakUuDNQRZTl8370xCtBT60x78qohLJNPynFr+HMb7ukYFGm7Qj4IBWq8z8O30EjTw/2GeKvr2257uVF58jzltJj5EYizzqHawqeuU3FlkCUvaBWKvSNsINEmaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OBAorIJv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766224429;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h6yvGnSigmA+pxotnbB3NwXbrMAvGRw8cK7NvycKke0=;
-	b=OBAorIJvYP4MkHN0nHWNKnHXv8pT8LDjXVlQ1nq74YklDJJTGeBosHHCPAL7YBRcosD9U7
-	D0b7mOOwkcIy4iKfQfWr5oSL6F/WoaDJ3VMWi2NVvF06MLeOqDac3o8k/saCDOvIpOct8U
-	qaytsnRGCN4D1jKYcQevhxad7HmHEcc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-NqMs3wjbOWSea1a9lLLpSg-1; Sat,
- 20 Dec 2025 04:53:47 -0500
-X-MC-Unique: NqMs3wjbOWSea1a9lLLpSg-1
-X-Mimecast-MFC-AGG-ID: NqMs3wjbOWSea1a9lLLpSg_1766224426
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62E441956050;
-	Sat, 20 Dec 2025 09:53:46 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.4])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D099F30001A2;
-	Sat, 20 Dec 2025 09:53:44 +0000 (UTC)
-From: Ming Lei <ming.lei@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Yoav Cohen <yoav@nvidia.com>,
-	Ming Lei <ming.lei@redhat.com>,
+	 MIME-Version; b=BcZ30kxux7iXmD57EALJ2mxlAy8zBV//tdyDUEDImaGoKzV3EMBxywBMBeV7fDNEo7jmgftZOG1HvC/HYFyD4kLSEz1hwP2FufyEyXmo9gR8W131L7ZuhWfYDwHcoeY/9TxQ75YN+mfJ6EAHzDDO9xzddviEMLltb9LXkLN36uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEf6wFu3; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso3683976b3a.1
+        for <stable@vger.kernel.org>; Sat, 20 Dec 2025 02:55:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766228130; x=1766832930; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QmUq8CHI3JkNtGWiGFMZyA0zmDp2QcgRy2thJxu/yXE=;
+        b=YEf6wFu3O75GYsV5lUjhvtvGRvpGIH1r39J5JkHOO/ckUJghuBesIIYxEddnncxv6U
+         u9nYFYId1z3ToSGzvR+HECTcHYgRACdpPIHwq3zZgSsIgAcTITG22rD17V65tiWUUjMF
+         jLJLGooXhl9St0kqY83P4klI3s+T6sSpsSrpPTP8t8njezbmKZ+tqctg+b6yiycRHAWU
+         DJzT9pA3Fxmmre3bS71TkOZ5TRf3QBLdP49kT4G6sfOXSkwTkAw0/eyJ0t6WV629whS8
+         crY1i36cDP3lKppi7tPRsmX2aeqzW/puz6kZWJOuWjNnO5QSc80S/CAJYx0NS8comsmj
+         SWWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766228130; x=1766832930;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QmUq8CHI3JkNtGWiGFMZyA0zmDp2QcgRy2thJxu/yXE=;
+        b=wXHZdevTHGgZc+dx8WpSe3e3m9q5O8s+wc2jn6B65HbbgdXoQ9c1GnMzwnZSk2nuXf
+         3TqvpZIYZ7i6vvZubRBn+zRzrqqXMV4GbBcoQPMWdPgBi+ikHD6AycsaW9LbJtGyCjAo
+         7h9XVgKuusx8r6XrwEWbu/d6x0axlQCONIDiFT8gqcDmhy+apvnEZvtQDKh3jbbadhy2
+         /9PDu7XLCmIkwORK7INrxvB2adCfvfeSdE6wuDAz830aslAVbuDWCzRmAwTiswx+Hyvx
+         wdCI/LIBuVBF0bNVXLYFCw2emZ0COK2l96Z8PGe5H8Xf2H4mYkltj/oUS8fBb8APC4h5
+         UVbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKPAFBPFXFB1nbKDHYBeZrb9Y6QYV9rzSUMacXliMjMwKzAGcgLei3Sae1POgeECvTPYq8nKk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5JnNQheJamPZNmGW7IC3sywoBABKUIw12dlUVDOoWmvaBv611
+	xIOqfynC8XW6oKzr05dj3uJ1pKweHdVvFJKJsM2aKQ0NreitcuY2PKMvnjtrjQ==
+X-Gm-Gg: AY/fxX695fjfZVuRXIQvoLBg3aSJZvT67ovC+mHGBpxu272pVVR4wQxhwy6A6a1Qrzc
+	jrzCI9UaWS0hyZIajiCuimiz8kclHclV6bUvkE8CegUWuX7CdeC+9zTYvlO97HqJ7MawmCNvsVs
+	QVV2CfsrgaAE4QJrA6FvyIU8UAc5Zez6ewqItzLsf66dOj/N8SWNJplCvpOXIdCCaxK/+HcZw7D
+	euq8eB1Cr9CIkLqAk77VX6dZFkjxN8WKuKFGFpd+ZiIEJbsmZXo5I+HEPshgZU4Lcmd9ouEqE9v
+	IELiWHSfxB9v0nJqJRRlRrGMslEJSgQNYu369dK25djIfrGsiOAI+ngIHrCVgsIEQR/S6p47Qrg
+	SodeCtQCv4rMSUdhewwRhy+3p99S9RbIGXNZR8uLGYtXnDwHnQm2VRUKxwCUpfS8xHirpwcBE9d
+	r8dX0gkpCBb3O56Kf6tyCnNQIAoMl5849b2xTA27vO1kNCwqsfwML9QOXdS9b1UQ==
+X-Google-Smtp-Source: AGHT+IHG2QmxV9/fFFIzdKkXfEvMByaR3GOU1putADLjycKCDfCuCgMLesPURRicsUaJI09J8HdI7A==
+X-Received: by 2002:a05:6a21:6d98:b0:366:14ac:e1f6 with SMTP id adf61e73a8af0-376aa5f5dd9mr6438275637.72.1766228129779;
+        Sat, 20 Dec 2025 02:55:29 -0800 (PST)
+Received: from ionutnechita-arz2022.localdomain ([2a02:2f0e:c406:a500:4e4:f8f7:202b:9c23])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70dcc4dcsm7704222a91.14.2025.12.20.02.55.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Dec 2025 02:55:29 -0800 (PST)
+From: "Ionut Nechita (WindRiver)" <djiony2011@gmail.com>
+X-Google-Original-From: "Ionut Nechita (WindRiver)" <ionut.nechita@windriver.com>
+To: ionut_n2001@yahoo.com
+Cc: Ionut Nechita <ionut.nechita@windriver.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] ublk: add UBLK_F_NO_AUTO_PART_SCAN feature flag
-Date: Sat, 20 Dec 2025 17:53:21 +0800
-Message-ID: <20251220095322.1527664-2-ming.lei@redhat.com>
-In-Reply-To: <20251220095322.1527664-1-ming.lei@redhat.com>
-References: <20251220095322.1527664-1-ming.lei@redhat.com>
+Subject: [PATCH 1/2] block/blk-mq: fix RT kernel regression with queue_lock in hot path
+Date: Sat, 20 Dec 2025 12:54:47 +0200
+Message-ID: <20251220105448.8065-2-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251220105448.8065-1-ionut.nechita@windriver.com>
+References: <20251220105448.8065-1-ionut.nechita@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,94 +90,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Add a new feature flag UBLK_F_NO_AUTO_PART_SCAN to allow users to suppress
-automatic partition scanning when starting a ublk device.
+From: Ionut Nechita <ionut.nechita@windriver.com>
 
-This is useful for network-backed devices where partition scanning
-can cause issues:
-- Partition scan triggers synchronous I/O during device startup
-- If userspace server crashes during scan, recovery is problematic
-- For remotely-managed devices, partition probing may not be needed
+Commit 679b1874eba7 ("block: fix ordering between checking
+QUEUE_FLAG_QUIESCED request adding") introduced queue_lock acquisition
+in blk_mq_run_hw_queue() to synchronize QUEUE_FLAG_QUIESCED checks.
 
-Users can manually trigger partition scanning later when appropriate
-using standard tools (e.g., partprobe, blockdev --rereadpt).
+On RT kernels (CONFIG_PREEMPT_RT), regular spinlocks are converted to
+rt_mutex (sleeping locks). When multiple MSI-X IRQ threads process I/O
+completions concurrently, they contend on queue_lock in the hot path,
+causing all IRQ threads to enter D (uninterruptible sleep) state. This
+serializes interrupt processing completely.
 
-Reported-by: Yoav Cohen <yoav@nvidia.com>
-Link: https://lore.kernel.org/linux-block/DM4PR12MB63280C5637917C071C2F0D65A9A8A@DM4PR12MB6328.namprd12.prod.outlook.com/
+Test case (MegaRAID 12GSAS with 8 MSI-X vectors on RT kernel):
+- Good (v6.6.52-rt):  640 MB/s sequential read
+- Bad  (v6.6.64-rt):  153 MB/s sequential read (-76% regression)
+- 6-8 out of 8 MSI-X IRQ threads stuck in D-state waiting on queue_lock
+
+The original commit message mentioned memory barriers as an alternative
+approach. Use full memory barriers (smp_mb) instead of queue_lock to
+provide the same ordering guarantees without sleeping in RT kernel.
+
+Memory barriers ensure proper synchronization:
+- CPU0 either sees QUEUE_FLAG_QUIESCED cleared, OR
+- CPU1 sees dispatch list/sw queue bitmap updates
+
+This maintains correctness while avoiding lock contention that causes
+RT kernel IRQ threads to sleep in the I/O completion path.
+
+Fixes: 679b1874eba7 ("block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
 ---
+ block/blk-mq.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-- suggest to backport to stable, which is useful for avoiding problematic
-  recovery, also the change is simple enough
-
- drivers/block/ublk_drv.c      | 16 +++++++++++++---
- include/uapi/linux/ublk_cmd.h |  8 ++++++++
- 2 files changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 78f3e22151b9..ca6ec8ed443f 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -73,7 +73,8 @@
- 		| UBLK_F_AUTO_BUF_REG \
- 		| UBLK_F_QUIESCE \
- 		| UBLK_F_PER_IO_DAEMON \
--		| UBLK_F_BUF_REG_OFF_DAEMON)
-+		| UBLK_F_BUF_REG_OFF_DAEMON \
-+		| UBLK_F_NO_AUTO_PART_SCAN)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 5da948b07058..5fb8da4958d0 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2292,22 +2292,19 @@ void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
  
- #define UBLK_F_ALL_RECOVERY_FLAGS (UBLK_F_USER_RECOVERY \
- 		| UBLK_F_USER_RECOVERY_REISSUE \
-@@ -2930,8 +2931,13 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 	might_sleep_if(!async && hctx->flags & BLK_MQ_F_BLOCKING);
  
- 	ublk_apply_params(ub);
- 
--	/* don't probe partitions if any daemon task is un-trusted */
--	if (ub->unprivileged_daemons)
 +	/*
-+	 * Don't probe partitions if:
-+	 * - any daemon task is un-trusted, or
-+	 * - user explicitly requested to suppress partition scan
++	 * First lockless check to avoid unnecessary overhead.
++	 * Memory barrier below synchronizes with blk_mq_unquiesce_queue().
 +	 */
-+	if (ub->unprivileged_daemons ||
-+	    (ub->dev_info.flags & UBLK_F_NO_AUTO_PART_SCAN))
- 		set_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
+ 	need_run = blk_mq_hw_queue_need_run(hctx);
+ 	if (!need_run) {
+-		unsigned long flags;
+-
+-		/*
+-		 * Synchronize with blk_mq_unquiesce_queue(), because we check
+-		 * if hw queue is quiesced locklessly above, we need the use
+-		 * ->queue_lock to make sure we see the up-to-date status to
+-		 * not miss rerunning the hw queue.
+-		 */
+-		spin_lock_irqsave(&hctx->queue->queue_lock, flags);
++		/* Synchronize with blk_mq_unquiesce_queue() */
++		smp_mb();
+ 		need_run = blk_mq_hw_queue_need_run(hctx);
+-		spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
+-
+ 		if (!need_run)
+ 			return;
++		/* Ensure dispatch list/sw queue updates visible before execution */
++		smp_mb();
+ 	}
  
- 	ublk_get_device(ub);
-@@ -2947,6 +2953,10 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
- 	if (ret)
- 		goto out_put_cdev;
- 
-+	/* allow user to probe partitions from userspace */
-+	if (!ub->unprivileged_daemons &&
-+	    (ub->dev_info.flags & UBLK_F_NO_AUTO_PART_SCAN))
-+		clear_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
- 	set_bit(UB_STATE_USED, &ub->state);
- 
- out_put_cdev:
-diff --git a/include/uapi/linux/ublk_cmd.h b/include/uapi/linux/ublk_cmd.h
-index ec77dabba45b..0827db14a215 100644
---- a/include/uapi/linux/ublk_cmd.h
-+++ b/include/uapi/linux/ublk_cmd.h
-@@ -311,6 +311,14 @@
-  */
- #define UBLK_F_BUF_REG_OFF_DAEMON (1ULL << 14)
- 
-+/*
-+ * If this feature is set, the kernel will not automatically scan for partitions
-+ * when the device is started. This is useful for network-backed devices where
-+ * partition scanning can cause deadlocks if the userspace server crashes during
-+ * the scan. Users can manually trigger partition scanning later when appropriate.
-+ */
-+#define UBLK_F_NO_AUTO_PART_SCAN (1ULL << 15)
-+
- /* device state */
- #define UBLK_S_DEV_DEAD	0
- #define UBLK_S_DEV_LIVE	1
+ 	if (async || !cpumask_test_cpu(raw_smp_processor_id(), hctx->cpumask)) {
 -- 
-2.47.0
+2.52.0
 
 
