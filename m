@@ -1,94 +1,93 @@
-Return-Path: <stable+bounces-203130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99F1CD2C12
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 10:20:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E43CD2C83
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 10:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E020A3013388
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 09:20:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 05088300B91A
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 09:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5728D2FFDEB;
-	Sat, 20 Dec 2025 09:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A4C305E01;
+	Sat, 20 Dec 2025 09:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxRVzNp3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWuVbxjg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F52FFDD8
-	for <stable@vger.kernel.org>; Sat, 20 Dec 2025 09:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55E930497C
+	for <stable@vger.kernel.org>; Sat, 20 Dec 2025 09:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766222423; cv=none; b=Sk84hjUS6OZfgURjYWQ3rYohZc2WCChZ2UUJMfXOokwqAwfMFZHMG23Ei7sOUbRLp5YWUn7QFgZ0UlQYUw9KKo0VI8lD9QVUe+EwuJmCJI9Z3VNz8sWuKIG0DCcPzC7RAvYsP6gJkEC3rL+1ilDtKvE2/kIevRTEGtLmzMo9rDE=
+	t=1766224183; cv=none; b=e25AD+VWguCVL2q9SvboLiXWFhdSpeFuE6du0i4/h0FYOaoXI5LEju5CYRSZGPJtYJoDenspIT+D7mqw/o9kufsw08h9dpLpo74i/BIG2lbLc/gjAf6TdCwX8WQ2/+G3jHXegJTsDoHVyaaqhVD7Ux28mBvO5N/y4+YFhVogOPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766222423; c=relaxed/simple;
-	bh=Daaz4o2vbQEuaBUAI80RqVDPPgdoj+8ZAOZ5YUluhgI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LPcIqD+Rct3GYqT+EhwGrHGBDFe2trFHtYm9uMfEXjqolgpLq0GCKocNetqWZ5LKMl6qab9jCmTiIQ6ZJj86gULkRtxMOL0+oDlp3H2nGiwFBPycjtXUHKqeGKNXO6C+9tOYk+H5guS4a5yhowe5bZJEZyZfo785RRmMMqZPFrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxRVzNp3; arc=none smtp.client-ip=209.85.160.181
+	s=arc-20240116; t=1766224183; c=relaxed/simple;
+	bh=8vPBBIVGC/F5q2+wWMM4e4vlGTNbzIZZ4fuMbWYwOnI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a+s0uUtec+WmYzHJUHelTapI/iTJ7YjEQxHGB6BQCshaE599OVDSwkbCyEhVrxR7pfxGEY5DIRJo0J3FdJ03Z712PPhXrkpsPeZcIDaKge0GBteDwCme6on5WMzGOu9ct7Hca71ldZApWm6XAFVxawNlgWXfSqbTn0lT7N7F+80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWuVbxjg; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed82ee9e57so31459011cf.0
-        for <stable@vger.kernel.org>; Sat, 20 Dec 2025 01:20:21 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a1022dda33so21726725ad.2
+        for <stable@vger.kernel.org>; Sat, 20 Dec 2025 01:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766222420; x=1766827220; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766224181; x=1766828981; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vNisCTFh/jvdeWyigS/01un+TGTuRdNBQti/UMEC4vk=;
-        b=hxRVzNp3LGchbE9Y4As7FOOLEZmASRR2YEAqx/eRxEObLi+3t45LQmM6KCNCmcmUw+
-         veLxnJc6t5LXWjaM6o1v69mJYufAc90Z+C9qsm0ZuZ56UzNNRAJbfH6j4G2o9RK0cfDU
-         GwXoyA5b0HhpF1maXPQaeOseBQNdWs1fAnMLQTegwaw/jVDkykbkQlaj8v5yLzlUh6No
-         QHxsEIjy0F1bglsDH1G2J/Yh7PTSCryLV6h2SlHM/GKn44uhD+mefFfTbZw+woo267/y
-         yTYQTubSzyzn1LvudLnfQnklbiABo/05ZjRAtoQQA3z/oW/8MUQvorzpcZGJRGlag9ZH
-         XsbA==
+        bh=j7IJxF6HMphYNWv4fklqBcjfxDWSKokfkAddGStMOYE=;
+        b=KWuVbxjg3KwXfxmai9CNjkjgxmb6duf7JQ/izyBn06seeeWlM4wdtJMetCzE5AdLTY
+         wOlBQV20iGsOHMiSFYGiNB8kUe18ZbKyCXrAyNT5j2nyuG3ISIr5HWtBNQi4TZxfoIiW
+         ZuvCmC+Krb2mAWLxsfVD8n3Oacay1PFA05FM5vMB1wyFnuxC1YTEteFHzFjFvqOW+H/J
+         G/7JUPRgromvd8iX0sJUPoZUGt22gctLS6oqWg0X6Gqy5/cNXO5OI2ssrXNjXo/Dsqbb
+         cjn66Ff7X/gcl/GLMtK0XRGS19ZIAkRvNWG3OCJqGoZZdyVOpdbBrtOYFtArcHQaWGVt
+         tHmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766222420; x=1766827220;
+        d=1e100.net; s=20230601; t=1766224181; x=1766828981;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vNisCTFh/jvdeWyigS/01un+TGTuRdNBQti/UMEC4vk=;
-        b=SkO3eEwlxmzNiK1QptpICPZYR88mAhjVrXDMucofl9lAfp6bRi1w7PISQVtomWjQG6
-         lKSsd73gtEivenQjaXUCk43lYXqDOfbRPUY60Arqwrr8nFcreGQvwk8XRuUabqEc3k6/
-         z7/SvihdGHHJiwGJjCUPq57XZtW2bvlByFOYYbqrymedEyXuCLuuj9QdfS9jq7b1epc7
-         i0hNmsnnvtUy0XwhmnCA1GIyEalPBcmEbkp1cULzun5F5FUW0zppsgdYp/vGtN3CzeUm
-         YW65uKvYwCWwPhis+sdw3kW2C6KZ2Onf1hkcT/LJGntcWS9C8vPZVejyvHq8yG/a8cdN
-         r9kQ==
-X-Gm-Message-State: AOJu0Yy03YGZNAVFA74j+o8GrPW/i2DhIg5XCMhwacQb+3cfk8m+41Hs
-	loZflHTkAFpKiC2nJD50UIueQ0qyHwec2twYI5/13GMaPJJIajVwKzrqhWRNVGsz
-X-Gm-Gg: AY/fxX4POeEMr5pM8aHgEFBRfGeMcZKSWf2Zxt0oWTP1LSw26gZlNwpY73sX/qg3Yyf
-	iFAUV7Ne+FUU+uVsALNo8VioSRvZnydWrD+hVC8/cGnlfomPSS2mQ3d5Dryq423ppauRJrTfw5/
-	kWjztf9/WTp1QQEP8OMEbz/mMVkAK3n7L5Z7WXxsl/5I7Y5eo3cRebtRrNvo0qtvgojpBCoNV6E
-	yW3JSnkto799NADmTumc87+f758mRRdJLZECLpo3kv/KdqkITRdqL7Hya+4Ftk8b5+1uFZCjVFe
-	vpas/8vMnJ2vS3iSRSmTgRDszzN2yXoUtFA93UfdkKYyU25tkbjyeR1MOUJyWfgSOTxUdtsGQ8M
-	jdbk8yjv7iIsHLsqjqdMrsy9jsb07sUbmp+XflOWjCwDVyXng5Fcq+QKUZqug/rZy9JS/6zrYaV
-	TSimILAX11pUWJVR1k/kHprH490N0i2pB7sCzPWDJYGPm3dzOUgSv0VMl36NY=
-X-Google-Smtp-Source: AGHT+IH4H4ZkvasR68lLmuX0dZ89HpmVFzvwt19Y2Ioa5zSggk5Vy5oNmMJVbQfs+uP7Jh5uMApNzQ==
-X-Received: by 2002:ac8:5d8a:0:b0:4b6:24ba:dc6a with SMTP id d75a77b69052e-4f4abd80e8dmr83852041cf.38.1766222420211;
-        Sat, 20 Dec 2025 01:20:20 -0800 (PST)
-Received: from nairdora (108-75-189-46.lightspeed.wchtks.sbcglobal.net. [108.75.189.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d973ad605sm36305876d6.23.2025.12.20.01.20.18
+        bh=j7IJxF6HMphYNWv4fklqBcjfxDWSKokfkAddGStMOYE=;
+        b=Jj+HJZR282gbaEZT/FOWiw2k44j3nOLj9qZYtKvd24sx/TPRN6H23IuScRgLRYD66h
+         2yYum1yUMF5qttSoOWHk6GKVtjSbge76vuAG07PoeMOQxrI19/5siiRcGI32g/Teni99
+         r4zjc4C5SyY+quPQmtkVtMeivLIJ+qX+ocDH3lgoyCiY6l5cLhfoUL6Dzakz3VkTvy93
+         qJ7D090PxrnnMzYV4vL/k6yFGPbqvCL84Sr8AN6FFz21NB2SLagmKbym59cAq8FWp+T5
+         VKe1/UsFIfSwZXRJTofULHaPY3SR+jYkvLEBzVyQMto9dIm1PKCrMfpgZdfACerLRAIx
+         6mhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcR3cdfN0g2nID0PpZWW76grUsKqXzOp+ys78wxJ5Rov/BNnnduE3JSGgG7/DDeKLl3SP77xE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3ECGJEuoknlabOIPoRQBGtbRQD9a2z0PASdCrztvtbGaohwvo
+	wC8jszn6m8U4goxJPlb/L7FDOnupTNZhfwjH5DwnqUynnu9eR6HbUwg3
+X-Gm-Gg: AY/fxX6+oOtHluBFxGEvpQIWqWoLDWc3q+x4GzERKdG89B0tWr5iQbkqVl3B01Kdh4y
+	NNj5MvTbP6pXbXIUbtM6El2AfCzpOgekw7I+d48pWSGIx+IjVxigmW79IWFPI9hQAoa+dQNpP5/
+	3Y8v8f2JWvOA408cmAdlMeaUgdHIC8Ii7ejZnEyZzXUO+ZPs4J4r/yIPJxSbxafGZR0/bBLgphP
+	UCQ7EtDOMTEzj+snnSJKJhBm2hdhEhfO+TGnw41Sg7w4b4710/j4zbIYgHiDk9qopZEjePK/lb6
+	r3a8DWTPjoNA73vl4DJjHMX2y+lmC5Yz7GgBgwB0vndKDSECB9XuDTTCT3OrVPHqSUcwdG1N7u7
+	XFweGWA4NVIjFITN3v6vAM+8uLR4gTzXUPBDxNACJYLoWiobP4hQj3YxABh9zFyhyRSJDgy3gKh
+	0q6amBRdc8nGzu1zjwdkCp/RSgunGz
+X-Google-Smtp-Source: AGHT+IHMytYlzWCq2SFmQytqElgOtJeFb21rSHQ0neO72vPgyAQ4/pAf5fT0MOb+oYKbYoeapmzQNg==
+X-Received: by 2002:a17:903:38c3:b0:269:82a5:f9e9 with SMTP id d9443c01a7336-2a2f2836764mr57108345ad.29.1766224180679;
+        Sat, 20 Dec 2025 01:49:40 -0800 (PST)
+Received: from localhost.localdomain ([111.125.231.172])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c66bd3sm45107635ad.1.2025.12.20.01.49.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Dec 2025 01:20:19 -0800 (PST)
-From: Adrian Yip <adrian.ytw@gmail.com>
-To: stable@vger.kernel.org
-Cc: Ilya Maximets <i.maximets@ovn.org>,
-	Pravin B Shelar <pshelar@ovn.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+        Sat, 20 Dec 2025 01:49:40 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com
+Cc: heming.zhao@suse.com,
+	ocfs2-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-kernel-mentees@lists.linux.dev,
 	skhan@linuxfoundation.org,
 	david.hunter.linux@gmail.com,
 	khalid@kernel.org,
-	Junvy Yang <zhuque@tencent.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Adrian Yip <adrian.ytw@gmail.com>
-Subject: [PATCH 6.17.y] net: openvswitch: fix middle attribute validation in push_nsh() action
-Date: Sat, 20 Dec 2025 03:18:17 -0600
-Message-ID: <20251220091818.562528-1-adrian.ytw@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+af14efe17dfa46173239@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] ocfs2: Add check for total number of chains in chain list
+Date: Sat, 20 Dec 2025 15:19:28 +0530
+Message-Id: <20251220094928.134849-1-activprithvi@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,111 +96,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ilya Maximets <i.maximets@ovn.org>
+The functions ocfs2_reserve_suballoc_bits(), ocfs2_block_group_alloc(),
+ocfs2_block_group_alloc_contig() and ocfs2_find_smallest_chain() trust
+the on-disk values related to the allocation chain. However, KASAN bug
+was triggered in these functions, and the kernel panicked when accessing
+redzoned memory. This occurred due to the corrupted value of `cl_count`
+field of `struct ocfs2_chain_list`. Upon analysis, the value of `cl_count`
+was observed to be overwhemingly large, due to which the code accessed
+redzoned memory.
 
-[ Upstream commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e ]
+The fix introduces an if statement which validates value of `cl_count`
+(both lower and upper bounds). Lower bound check ensures the value of
+`cl_count` is not zero and upper bound check ensures that the value of
+`cl_count` is in the range such that it has a value less than the total
+size of struct ocfs2_chain_list and maximum number of chains that can be
+present, so as to fill one block.
 
-The push_nsh() action structure looks like this:
-
- OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
-
-The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
-nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
-OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
-inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
-in the middle is OK.  We don't even check that this attribute is the
-OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
-calls - first time directly while calling validate_push_nsh() and the
-second time as part of the nla_for_each_nested() macro, which isn't
-safe, potentially causing invalid memory access if the size of this
-attribute is incorrect.  The failure may not be noticed during
-validation due to larger netlink buffer, but cause trouble later during
-action execution where the buffer is allocated exactly to the size:
-
- BUG: KASAN: slab-out-of-bounds in nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
- Read of size 184 at addr ffff88816459a634 by task a.out/22624
-
- CPU: 8 UID: 0 PID: 22624 6.18.0-rc7+ #115 PREEMPT(voluntary)
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x51/0x70
-  print_address_description.constprop.0+0x2c/0x390
-  kasan_report+0xdd/0x110
-  kasan_check_range+0x35/0x1b0
-  __asan_memcpy+0x20/0x60
-  nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
-  push_nsh+0x82/0x120 [openvswitch]
-  do_execute_actions+0x1405/0x2840 [openvswitch]
-  ovs_execute_actions+0xd5/0x3b0 [openvswitch]
-  ovs_packet_cmd_execute+0x949/0xdb0 [openvswitch]
-  genl_family_rcv_msg_doit+0x1d6/0x2b0
-  genl_family_rcv_msg+0x336/0x580
-  genl_rcv_msg+0x9f/0x130
-  netlink_rcv_skb+0x11f/0x370
-  genl_rcv+0x24/0x40
-  netlink_unicast+0x73e/0xaa0
-  netlink_sendmsg+0x744/0xbf0
-  __sys_sendto+0x3d6/0x450
-  do_syscall_64+0x79/0x2c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  </TASK>
-
-Let's add some checks that the attribute is properly sized and it's
-the only one attribute inside the action.  Technically, there is no
-real reason for OVS_KEY_ATTR_NSH to be there, as we know that we're
-pushing an NSH header already, it just creates extra nesting, but
-that's how uAPI works today.  So, keeping as it is.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Reported-by: Junvy Yang <zhuque@tencent.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251204105334.900379-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e)
-Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
+Reported-by: syzbot+af14efe17dfa46173239@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=af14efe17dfa46173239
+Tested-by: syzbot+af14efe17dfa46173239@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
 ---
- net/openvswitch/flow_netlink.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/ocfs2/suballoc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 1cb4f97335d8..2d536901309e 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2802,13 +2802,20 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	return err;
- }
+diff --git a/fs/ocfs2/suballoc.c b/fs/ocfs2/suballoc.c
+index f7b483f0de2a..7ea63e9cc4f8 100644
+--- a/fs/ocfs2/suballoc.c
++++ b/fs/ocfs2/suballoc.c
+@@ -671,6 +671,21 @@ static int ocfs2_block_group_alloc(struct ocfs2_super *osb,
+ 	BUG_ON(ocfs2_is_cluster_bitmap(alloc_inode));
  
--static bool validate_push_nsh(const struct nlattr *attr, bool log)
-+static bool validate_push_nsh(const struct nlattr *a, bool log)
- {
-+	struct nlattr *nsh_key = nla_data(a);
- 	struct sw_flow_match match;
- 	struct sw_flow_key key;
- 
-+	/* There must be one and only one NSH header. */
-+	if (!nla_ok(nsh_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(nsh_key)) != nla_len(a) ||
-+	    nla_type(nsh_key) != OVS_KEY_ATTR_NSH)
-+		return false;
+ 	cl = &fe->id2.i_chain;
++	unsigned int block_size = osb->sb->s_blocksize;
++	unsigned int max_cl_count =
++	(block_size - offsetof(struct ocfs2_chain_list, cl_recs)) /
++	sizeof(struct ocfs2_chain_rec);
 +
- 	ovs_match_init(&match, &key, true, NULL);
--	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
-+	return !nsh_key_put_from_nlattr(nsh_key, &match, false, true, log);
- }
- 
- /* Return false if there are any non-masked bits set.
-@@ -3389,7 +3396,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 					return -EINVAL;
- 			}
- 			mac_proto = MAC_PROTO_NONE;
--			if (!validate_push_nsh(nla_data(a), log))
-+			if (!validate_push_nsh(a, log))
- 				return -EINVAL;
- 			break;
- 
++	if (!le16_to_cpu(cl->cl_count) ||
++	    le16_to_cpu(cl->cl_count) > max_cl_count) {
++		ocfs2_error(osb->sb,
++			    "Invalid chain list: cl_count %u "
++			    "exceeds max %u",
++			    le16_to_cpu(cl->cl_count), max_cl_count);
++		status = -EIO;
++		goto bail;
++	}
++
+ 	status = ocfs2_reserve_clusters_with_limit(osb,
+ 						   le16_to_cpu(cl->cl_cpg),
+ 						   max_block, flags, &ac);
+
+base-commit: 36c254515dc6592c44db77b84908358979dd6b50
 -- 
-2.52.0
+2.34.1
 
 
