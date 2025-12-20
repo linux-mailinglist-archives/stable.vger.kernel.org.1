@@ -1,110 +1,158 @@
-Return-Path: <stable+bounces-203141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA13CD30AA
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 15:14:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A88CCD30E5
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 15:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 647E830161AB
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 14:14:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B0593011A9E
+	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 14:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1176127CCF0;
-	Sat, 20 Dec 2025 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0DE2C029A;
+	Sat, 20 Dec 2025 14:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="Sz9mcQw6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="leZxWeYH"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109AD279324;
-	Sat, 20 Dec 2025 14:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400AB2BE629;
+	Sat, 20 Dec 2025 14:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766240064; cv=none; b=n5ops74SjzwsONDpN7AxBMz8dgqRAaBhbatW+2mVrFJWzN3xqxUAzhD446EYaToyzQ/kwPTvNwjoieblXl2/DsZHIhKrHvCSK3MUsIVCSIWYBtvaZwU10n5Is+jehsIurs/XabNSG9O/QES5GZCPEopfTezRMdBV1WpDdc7qqsk=
+	t=1766241315; cv=none; b=eDj4yD1OnirAKpr0sAzXxKe2ElQKSD6vSNhnugs/a97XjURp3SqMFlZdEIqxQhdgA1NFXDKNnS5Obi1yOj5+W1nD9LQz3Dz9hZrHM/mGhWFVSvVrMmJIaYk1IRqcCa7Z+bHi5BB+FwkSIUJLSXY1y3HwDfxXbPjXI49LNeAAOn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766240064; c=relaxed/simple;
-	bh=YEzxeLIX/V3itJEthvnOKudLOVJDuP5doFkX8lvuW30=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=awtt9NEucKczWf/bZ8ZlmqvBbco2gGaGLFJqingnqo8DvAW9zscDG/4WxyxhQjKtVd2gnTnbqyTVTPcnElQ4uAtJE8VWUAH4BczjruCnrdprU5JJdiVznNy/NBPfKfqMEAfQN47sjHZtho9pVP89BDZORjk5yv1WxxKFjQQmdEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=Sz9mcQw6; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=lauU+5688IX3I5PXOmeuDmru+LUy7bDpIBynxGOgDIo=; t=1766240061;
-	x=1766844861; b=Sz9mcQw6ZJwhb7Hm3udixrD27auaGxriI1+P2f7DydUI5o6bWi4/Q2tELtxet
-	n0Os7HNlONp3QKNLtsd5u/eNaYc0VVIhIwtzRcBNEmQZwld0XF4w1YiMK91x1TK26o9vFOAqcZEgd
-	Mee7s2wdLwPR2HTfaaVq22jBzinuuqnUagiyXl9FBt7bNrZvv+xnqv377KDsfAdJAyCCsDYKLkz2w
-	MDGcop1lXSm/kMYiT26zSYTIHnh7tor+Rqss9pfpGPpmnz1AVoqKQAm2J/D7FjwkXTiQuB2bRDIiA
-	5kRw2kSUBJN4DjjlUy2YscpWZ+B/pFOmOOknGr5Il96/+qI9LA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.99)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1vWxfn-00000002ekv-3PHl; Sat, 20 Dec 2025 15:11:07 +0100
-Received: from dynamic-089-012-116-231.89.12.pool.telefonica.de ([89.12.116.231] helo=[192.168.178.50])
-          by inpost2.zedat.fu-berlin.de (Exim 4.99)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1vWxfn-00000000wKT-2LfJ; Sat, 20 Dec 2025 15:11:07 +0100
-Message-ID: <8e412a9834ced553c4eb757362a122d26f16213f.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH] sh: dma-sysfs: add missing put_device() in
- dma_create_sysfs_files()
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Markus Elfring <Markus.Elfring@web.de>, Haoxiang Li	
- <lihaoxiang@isrc.iscas.ac.cn>, linux-sh@vger.kernel.org, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>, Kay Sievers <kay.sievers@vrfy.org>, Rich
- Felker	 <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Date: Sat, 20 Dec 2025 15:11:06 +0100
-In-Reply-To: <8552e5b2-16ea-42d9-978e-5d26ad0b1f15@web.de>
-References: <20251220062836.683611-1-lihaoxiang@isrc.iscas.ac.cn>
-	 <8552e5b2-16ea-42d9-978e-5d26ad0b1f15@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1766241315; c=relaxed/simple;
+	bh=wu8+gZqmV/Q3cWvG2M+eBTaZALLGCI+Ay02j/Vys4Ac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DAUnpv1YuP4kCeGbaxIT8qSQD1ERkhtmOiXXXgxoczfWBquiXnJ04qHdlTtkwy0N6Rt9QdmH8+7joLrWhCPcWnlU2U2+fk6z9bzSQxS6fGnKyIakx/Tx4/ksauMlukZj8Y7GkKvc6W/MnavGLX0NUamBMUhl7yERRdyUtv+AS1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=leZxWeYH; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766241313; x=1797777313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wu8+gZqmV/Q3cWvG2M+eBTaZALLGCI+Ay02j/Vys4Ac=;
+  b=leZxWeYHPMWdZ946RXxWaeA/3eJtQk0wR8FAFdAN3GgwyHK9443ywToe
+   LFqXxrd7hmZv0UOCr+k8VK5bykjhHuwjf2JExVhfjyN0i7BaYKsaIHg0s
+   NFUhoxT91MWFpwVKxNhqrQ+bOKxNcTXpjcV63/POakRIubETL46g9n4u5
+   E4cgOQU2ssZLMK3gpLJkmfvfU23aVycOC4378+NQQhzMMPPYQ+bc4BGz+
+   rvYpB3i8+DeqELqC1KZpudY43Iojxw0qkkejPYdolaMju2DP/G8vKuL2n
+   DKQV3DJroVayBZR7Tqnj7ZUFSIxMU8e6N4AOhrwxTjhaYJaSDA3eR9HNZ
+   A==;
+X-CSE-ConnectionGUID: c/qU09+ZRomH76J8CXUdrw==
+X-CSE-MsgGUID: TL/H0CDoTxKsVLd7z3qiKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="93650020"
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="93650020"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 06:35:10 -0800
+X-CSE-ConnectionGUID: iqGqRvucS4OQca/iF3aKKQ==
+X-CSE-MsgGUID: fBSaOj+4Tw+rSqPEqPjy/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="199023546"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 20 Dec 2025 06:35:07 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vWy2z-000000004eS-12Ne;
+	Sat, 20 Dec 2025 14:35:05 +0000
+Date: Sat, 20 Dec 2025 22:34:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>, andrew@lunn.ch, olteanv@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, tobias@waldekranz.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: dsa: Fix error handling in dsa_port_parse_of
+Message-ID: <202512202210.PkOvVaCv-lkp@intel.com>
+References: <20251214131204.4684-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251214131204.4684-1-make24@iscas.ac.cn>
 
-Hi Markus,
+Hi Ma,
 
-On Sat, 2025-12-20 at 14:56 +0100, Markus Elfring wrote:
-> > If device_register() fails, call put_device() to drop the device
-> > reference. Also, call device_unregister() if device_create_file()
-> > fails.
->=20
-> See also once more:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/submitting-patches.rst?h=3Dv6.19-rc1#n659
->=20
->=20
-> You propose to complete the exception handling for two cases.
-> Is there a need to indicate such a detail in the summary phrase according=
-ly?
+kernel test robot noticed the following build errors:
 
-Maybe I'm completely missing something here, but I find the description sho=
-rt
-and reasonable. As the SH maintainer, I haven't started reviewing these pat=
-ches
-themselves yet, I definitely interested to understand what the problem is.
+[auto build test ERROR on net-next/main]
+[also build test ERROR on net/main linus/master v6.19-rc1 next-20251219]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks,
-Adrian
+url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/net-dsa-Fix-error-handling-in-dsa_port_parse_of/20251214-211443
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20251214131204.4684-1-make24%40iscas.ac.cn
+patch subject: [PATCH v2] net: dsa: Fix error handling in dsa_port_parse_of
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20251220/202512202210.PkOvVaCv-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202210.PkOvVaCv-lkp@intel.com/reproduce)
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512202210.PkOvVaCv-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> net/dsa/dsa.c:1266:15: error: incompatible pointer types passing 'struct net_device *' to parameter of type 'struct device *' [-Werror,-Wincompatible-pointer-types]
+    1266 |                         put_device(conduit);
+         |                                    ^~~~~~~
+   include/linux/device.h:1181:32: note: passing argument to parameter 'dev' here
+    1181 | void put_device(struct device *dev);
+         |                                ^
+   1 error generated.
+
+
+vim +1266 net/dsa/dsa.c
+
+  1244	
+  1245	static int dsa_port_parse_of(struct dsa_port *dp, struct device_node *dn)
+  1246	{
+  1247		struct device_node *ethernet = of_parse_phandle(dn, "ethernet", 0);
+  1248		const char *name = of_get_property(dn, "label", NULL);
+  1249		bool link = of_property_read_bool(dn, "link");
+  1250		int err = 0;
+  1251	
+  1252		dp->dn = dn;
+  1253	
+  1254		if (ethernet) {
+  1255			struct net_device *conduit;
+  1256			const char *user_protocol;
+  1257	
+  1258			conduit = of_find_net_device_by_node(ethernet);
+  1259			of_node_put(ethernet);
+  1260			if (!conduit)
+  1261				return -EPROBE_DEFER;
+  1262	
+  1263			user_protocol = of_get_property(dn, "dsa-tag-protocol", NULL);
+  1264			err = dsa_port_parse_cpu(dp, conduit, user_protocol);
+  1265			if (err)
+> 1266				put_device(conduit);
+  1267	
+  1268			return err;
+  1269		}
+  1270	
+  1271		if (link)
+  1272			return dsa_port_parse_dsa(dp);
+  1273	
+  1274		return dsa_port_parse_user(dp, name);
+  1275	}
+  1276	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
