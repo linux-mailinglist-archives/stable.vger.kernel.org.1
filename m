@@ -1,193 +1,158 @@
-Return-Path: <stable+bounces-203155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC13CCD394E
-	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 01:34:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707DFCD3BF8
+	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 06:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C0D543008D77
-	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 00:34:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BCB2300E025
+	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 05:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0781C8FBA;
-	Sun, 21 Dec 2025 00:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62703221F1C;
+	Sun, 21 Dec 2025 05:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NiVQeZqm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="W4eXRv+6";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WMxYSGbQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02761373;
-	Sun, 21 Dec 2025 00:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCBB219FC
+	for <stable@vger.kernel.org>; Sun, 21 Dec 2025 05:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766277265; cv=none; b=VmNwoh6ubw34xc5F0ZBuhDlCMufjpCDdQuQ03QkIc6SNAZ0Xbb8oVkfSkqgghJh2EEdtxF2jEu1IefpLqITMXTz5gXBtfzUwtFqt+fhugZq0SrxU3B6OCzyCZrms6GeoYftO9kWEb9u+xcdWglOQxchk1gLxhawWIAcAsMXfP5A=
+	t=1766293285; cv=none; b=N/G6ay61ZV7H2/7hh1d8sxM91y6gK9vix4vDF5RzoIaxkLQTWnJMrox/T7N5SHajBzpRuWrtVuIqtekflo3Ps6Cu/PVVwj72gHH2Br3r3JCFB9y8AQlMFOQC2kzhdxrzHQgc6T8t11MOBd/3RjvToviIs3l3ZbR9raCChh62VTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766277265; c=relaxed/simple;
-	bh=mt19WlHMn4QDFFY72gkaNDN9At3wZPfrx2tUE6tKYV4=;
-	h=Date:To:From:Subject:Message-Id; b=TjLjDEvbUPqnAtfsCaRvJIoJcItMROBvEAtp1sVkB3pwrmXVO40ZqjTj4wdIRdK+0KbVDF80+9zBMkVXPZqgMRjcjeF6rSako8Cm9YFUVrrixtOkIEycDj7Qsw5fPJWw3ne88kfa33iBCi8t/4GjVvB9bOg8jdQ2DHQuewbEXLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NiVQeZqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA8FC4CEF5;
-	Sun, 21 Dec 2025 00:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766277265;
-	bh=mt19WlHMn4QDFFY72gkaNDN9At3wZPfrx2tUE6tKYV4=;
-	h=Date:To:From:Subject:From;
-	b=NiVQeZqms9w+4S/MvgXBd9M/Od3Aq1HxT8ea3L4oMxx8YN2dt2q5bkp2KOYIr4eoU
-	 AFGxEeQSnzHHPvlE3X5Uk3C0AXIAzo0rsOClLFYa/GvZ8MZ6SMbfvmAVtHsp0Ib6nR
-	 2XxvwBxB3Dnh3x53q6FgAtK7f9QS4LIGf7R9z/CM=
-Date: Sat, 20 Dec 2025 16:34:24 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,pfalcato@suse.de,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,jannh@google.com,david@redhat.com,christian.koenig@amd.com,alexander.deucher@amd.com,mpatocka@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fix-amdgpu-failure-with-periodic-signal.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251221003425.3BA8FC4CEF5@smtp.kernel.org>
+	s=arc-20240116; t=1766293285; c=relaxed/simple;
+	bh=+u6jNQF+kxafGUZCklMCAdTtEh+nCgCjY7zCKfMo+rY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UXxs2b5nG/tqpdthZ1t4Kg5K++JzdX+9g15R7UPzG9PQxIHHMAdoOhaXk7Alejbi9FBJMcjMd4Y8+mfAHpIEGZiYvMoWV0hp9AWRVpA7v/1krgz5Yz/rPhC1D/63L6sxKyoXH+LmFzafQ5QzYAw4nFDflRjxlmH5ogjxg09D0C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=W4eXRv+6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WMxYSGbQ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BL1WSL31611059
+	for <stable@vger.kernel.org>; Sun, 21 Dec 2025 05:01:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=Gg/igCHGddmXF3t2QB24Ayk9
+	sySh3OwVkPubaBg3Oxg=; b=W4eXRv+6n9gtHLx+kn592ZuuDPIlErRKuYeNaAob
+	qVbaR7FG8undXKxw2s4TPCKHeL5RyHSNd854i0Hq8YqNyWstVX3F+KbGM6Nf0C+2
+	avzYPBvCXTVTTuXIfNR24IB2JFne01xersy8V28UJ1mMzXmz+ZYpvRv9wtj7L4+E
+	vDGcHfIHmVcoyo8y1PkNDKc73YBAWq5xMfbToq7AYyGLxt6yP0fprHjV7KOCQ4cE
+	MVbEcqtEcjktnzXj42wjqluuU1oK5ICVGnmPsKFCLGysul+qWtuq+/P3H7RY+AR6
+	sckwqFLdTM3Q7oAFMOdch9zgWNMmQQ+ZiWgaIVP6wyFUBQ==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b5mvfht01-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Sun, 21 Dec 2025 05:01:21 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-88888397482so87173256d6.1
+        for <stable@vger.kernel.org>; Sat, 20 Dec 2025 21:01:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766293281; x=1766898081; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gg/igCHGddmXF3t2QB24Ayk9sySh3OwVkPubaBg3Oxg=;
+        b=WMxYSGbQE7JXGPXubTcL3qH8niju8EhLFD5exYQaOBhGf085IHIDsg3+Cp1ei3B+LE
+         55Fzt2gn1/Yxyxmm70/nRcNYWNOXucmhJg24zDogaGSDoCg3L3lYHmEr0YY+38XfQ7PC
+         mmeHyHK0ALFEyTGmuXH/BfmwVKt4m+hMom9SGTzzEFxhj73XiI2Qyczi6PLOVO1Ds+P3
+         yvTJwmScpNK4tyOZoi9nFdwNy6aY4V+Nda8D8e+4JzxCuLb9Oy79vALB45mKbyTjIXBi
+         xq8GRnvnDGbBTe3b8sTc4UUVDyzidMcZzjz84ouP0WsqGN9jjZxzPxsN7iZTTr6uYCvE
+         Fi+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766293281; x=1766898081;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gg/igCHGddmXF3t2QB24Ayk9sySh3OwVkPubaBg3Oxg=;
+        b=MNIDarZrqI7iAXhNhPy5U1DGS1BMG9xPAm20diJWbVgSOEG70MV3MHWUdYfz60GdsR
+         ig2mvtAQnmkcHZCwsZDNUU+NnvukjWxg27gENdaOOCLIc9wKjQCpUC15V6mBolz6nSsF
+         SseMlujnVDMwveClc2NT0cDAgMxRw+tAa5RA2hem4ovXZFRMRW34keL0G8cy3+4TSRMp
+         GJSyoCDCc9uDIps9RJa/ldFFfptDEakaVnLemiRPnOISScLLLMoY/aharjIWAl/tKXR9
+         esKCK6kvgyDpYhn7+bROOl+txPNGiR26fHbxHamDWJkFvCbe959GyOpfLqNzt82N+0Ds
+         QS6g==
+X-Forwarded-Encrypted: i=1; AJvYcCV5wafT7wQd+mrg5di3bB/suLU1AovKO224o3NGg4ceoI7IahPW2HoQR7xJwmUP9Wg7aIy+GYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEVjHlRHd4K4uDTyyYqwe74H0oLe/pIWHGMZv0bVLI5tM3sn4x
+	vJXNZvGkDiIro3uG1C+bMcD5mCq+sMLmnuahEZTVhxZ4SoMYjyNRQqPSRKjw+lM8nUZHoT2uFGd
+	v8zH2TGdFZNto3BJD+9alsmVtoapxgZUnt2K72JH93BEqiDgfytevej20/Nk=
+X-Gm-Gg: AY/fxX4DeVpT6Nz4qLRaz84swbbo4Zdw5GVn4PnEyBarotOCNove8/kI34NC5uGgxyK
+	7HaJoEVIv9PxT/E5wxcmKFAPkhGtLU70Duaj28KSUI0RGyroo3mGwSh0Kgd+4K2xH8biqksUBjB
+	ijU2LSUgzIEJINRQ6hcfc2J8CsOrBfzJV2qSYe2rOUxmDnr02cOZyABToE3oTNXuIiX1raaOHYv
+	tKbIY2zZnlAE76BsS2jf1bQhXuAeCDbIZyVX99AuEWY+ezH037JA7JDS8dI9C0EutzGcns5NYJb
+	1b/TZjvmVngwIw+dwFTeBYqAkUY/lCI1YQFUIFoqh3Hj7KQKt8vB7ciSGuOPe2RWYwox05uWJqL
+	SsjvIA10f560oW2+MdND0ugUUwJzyN+N3ykTh7xVbopgeWnM9MZiwhot3O2U8YBETHWf9ipI/Hq
+	vOqhP8bthyAH7kidGZEps+hbk=
+X-Received: by 2002:a05:6214:4413:b0:88a:2e5a:261b with SMTP id 6a1803df08f44-88d8369eaf5mr118232206d6.41.1766293280930;
+        Sat, 20 Dec 2025 21:01:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPp5cBRlRTRCcuu26i8vacBZiOXfb8ihvUUlU/SG7YOw0ALSZVP73w1KaKm9VvKFnoviFo3A==
+X-Received: by 2002:a05:6214:4413:b0:88a:2e5a:261b with SMTP id 6a1803df08f44-88d8369eaf5mr118232016d6.41.1766293280462;
+        Sat, 20 Dec 2025 21:01:20 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d5e5csm2059684e87.15.2025.12.20.21.01.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Dec 2025 21:01:18 -0800 (PST)
+Date: Sun, 21 Dec 2025 07:01:16 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mfd: qcom-pm8xxx: fix OF populate on driver rebind
+Message-ID: <saptquofele5jd764hkqzq7s6vhsu2427nw2jtm7h5uswf6asu@dvrhg5dekuyd>
+References: <20251219110947.24101-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219110947.24101-1-johan@kernel.org>
+X-Authority-Analysis: v=2.4 cv=H8rWAuYi c=1 sm=1 tr=0 ts=69477f21 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=wTlNtMXEErMED71dkKYA:9 a=CjuIK1q_8ugA:10
+ a=pJ04lnu7RYOZP9TFuWaZ:22
+X-Proofpoint-ORIG-GUID: _mPTJHWRVFjXFdjcQmL4CtYeZsloinzn
+X-Proofpoint-GUID: _mPTJHWRVFjXFdjcQmL4CtYeZsloinzn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIxMDA0MyBTYWx0ZWRfX6h26gY8d2V+Z
+ re6vrhR6aSPHToJvlvXGWiV7wecbP1z0w6eqIXXgp1BlAhFw6VVyat0BxZbiqHNyhKqF3RAZjqu
+ l9rDfEkS55RQNuKuiuolmW7R1LmwCbzmK4aenHmJu/qLJrNrqbO1WLH9cRuYxZ02DxBk8LTRByg
+ n36egFZSu49bCpZvGuk29C9oqwwIwAMVeoJDsyNQ6gxogiB6VFrdFqlewSBkrYPxUgC6dy8DmP5
+ bIdKF/Gpvr34vyz55E2fWn18nDOr47iI/2g1K8RfU2qzapAt7qtCPABjFgUoUCkkJwf3mfLq7aw
+ ddXdRA+P/2HPpfI/SZe9mywnpcYlM8q6oC8hzC5FIIu9UWxJFtl3H4of5p9H4rE4jV/8bFz+goH
+ ojAaC8xpipA30kTqhmJas5iCnhaQnSm0DR6vp6RRKvw9Hj12l2px8ngWsvYcZMsH9ArcfrednTz
+ 9EXfs6z5FsDDGZVP5dg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-21_01,2025-12-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512210043
+
+On Fri, Dec 19, 2025 at 12:09:47PM +0100, Johan Hovold wrote:
+> Since commit c6e126de43e7 ("of: Keep track of populated platform
+> devices") child devices will not be created by of_platform_populate()
+> if the devices had previously been deregistered individually so that the
+> OF_POPULATED flag is still set in the corresponding OF nodes.
+> 
+> Switch to using of_platform_depopulate() instead of open coding so that
+> the child devices are created if the driver is rebound.
+> 
+> Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+> Cc: stable@vger.kernel.org	# 3.16
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/mfd/qcom-pm8xxx.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> 
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
 
-The patch titled
-     Subject: AMDGPU: fix failure with periodic signal
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fix-amdgpu-failure-with-periodic-signal.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-amdgpu-failure-with-periodic-signal.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Mikulas Patocka <mpatocka@redhat.com>
-Subject: AMDGPU: fix failure with periodic signal
-Date: Fri, 7 Nov 2025 18:48:01 +0100 (CET)
-
-If a process sets up a timer that periodically sends a signal in short
-intervals and if it uses OpenCL on AMDGPU at the same time, we get random
-errors.  Sometimes, probing the OpenCL device fails (strace shows that
-open("/dev/kfd") failed with -EINTR).  Sometimes we get the message
-"amdgpu: init_user_pages: Failed to register MMU notifier: -4" in the
-syslog.
-
-The bug can be reproduced with this program:
-http://www.jikos.cz/~mikulas/testcases/opencl/opencl-bug-small.c
-
-The root cause for these failures is in the function mm_take_all_locks. 
-This function fails with -EINTR if there is pending signal.  The -EINTR is
-propagated up the call stack to userspace and userspace fails if it gets
-this error.
-
-There is the following call chain: kfd_open -> kfd_create_process ->
-create_process -> mmu_notifier_get -> mmu_notifier_get_locked ->
-__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
-
-If the failure happens in init_user_pages, there is the following call
-chain: init_user_pages -> amdgpu_hmm_register ->
-mmu_interval_notifier_insert -> mmu_notifier_register ->
-__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
-
-In order to fix these failures, this commit changes
-signal_pending(current) to fatal_signal_pending(current) in
-mm_take_all_locks, so that it is interrupted only if the signal is
-actually killing the process.
-
-Also, this commit skips pr_err in init_user_pages if the process is being
-killed - in this situation, there was no error and so we don't want to
-report it in the syslog.
-
-I'm submitting this patch for the stable kernels, because this bug may
-cause random failures in any OpenCL code.
-
-Link: https://lkml.kernel.org/r/6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Alexander Deucher <alexander.deucher@amd.com>
-Cc: Christan König <christian.koenig@amd.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    9 +++++++--
- mm/vma.c                                         |    8 ++++----
- 2 files changed, 11 insertions(+), 6 deletions(-)
-
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c~fix-amdgpu-failure-with-periodic-signal
-+++ a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1070,8 +1070,13 @@ static int init_user_pages(struct kgd_me
- 
- 	ret = amdgpu_hmm_register(bo, user_addr);
- 	if (ret) {
--		pr_err("%s: Failed to register MMU notifier: %d\n",
--		       __func__, ret);
-+		/*
-+		 * If we got EINTR because the process was killed, don't report
-+		 * it, because no error happened.
-+		 */
-+		if (!(fatal_signal_pending(current) && ret == -EINTR))
-+			pr_err("%s: Failed to register MMU notifier: %d\n",
-+			       __func__, ret);
- 		goto out;
- 	}
- 
---- a/mm/vma.c~fix-amdgpu-failure-with-periodic-signal
-+++ a/mm/vma.c
-@@ -2166,14 +2166,14 @@ int mm_take_all_locks(struct mm_struct *
- 	 * is reached.
- 	 */
- 	for_each_vma(vmi, vma) {
--		if (signal_pending(current))
-+		if (fatal_signal_pending(current))
- 			goto out_unlock;
- 		vma_start_write(vma);
- 	}
- 
- 	vma_iter_init(&vmi, mm, 0);
- 	for_each_vma(vmi, vma) {
--		if (signal_pending(current))
-+		if (fatal_signal_pending(current))
- 			goto out_unlock;
- 		if (vma->vm_file && vma->vm_file->f_mapping &&
- 				is_vm_hugetlb_page(vma))
-@@ -2182,7 +2182,7 @@ int mm_take_all_locks(struct mm_struct *
- 
- 	vma_iter_init(&vmi, mm, 0);
- 	for_each_vma(vmi, vma) {
--		if (signal_pending(current))
-+		if (fatal_signal_pending(current))
- 			goto out_unlock;
- 		if (vma->vm_file && vma->vm_file->f_mapping &&
- 				!is_vm_hugetlb_page(vma))
-@@ -2191,7 +2191,7 @@ int mm_take_all_locks(struct mm_struct *
- 
- 	vma_iter_init(&vmi, mm, 0);
- 	for_each_vma(vmi, vma) {
--		if (signal_pending(current))
-+		if (fatal_signal_pending(current))
- 			goto out_unlock;
- 		if (vma->anon_vma)
- 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
-_
-
-Patches currently in -mm which might be from mpatocka@redhat.com are
-
-fix-amdgpu-failure-with-periodic-signal.patch
-
+-- 
+With best wishes
+Dmitry
 
