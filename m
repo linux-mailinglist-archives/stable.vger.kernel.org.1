@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2CFCD38AB
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 23:59:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC13CCD394E
+	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 01:34:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DB36300F58F
-	for <lists+stable@lfdr.de>; Sat, 20 Dec 2025 22:59:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0D543008D77
+	for <lists+stable@lfdr.de>; Sun, 21 Dec 2025 00:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D912FBE00;
-	Sat, 20 Dec 2025 22:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0781C8FBA;
+	Sun, 21 Dec 2025 00:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BoAnmKZZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NiVQeZqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7659254654;
-	Sat, 20 Dec 2025 22:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02761373;
+	Sun, 21 Dec 2025 00:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766271542; cv=none; b=GzIZAHfj6e/9Qkb1pBkk5YVNB2xZnNvGRFL+iHEs4fPcWSeVE/Mj4Td0w9c5sFfuTkgNkh7IzKwq5GYS2aUbRPEqH3RZugWtR8X/P/365bfq3ZdCR2P13q7tyUupaQA9aaXO7GLfrsZtY/cCFE6KBkDgRMPO5H2UBKYql5IRjLw=
+	t=1766277265; cv=none; b=VmNwoh6ubw34xc5F0ZBuhDlCMufjpCDdQuQ03QkIc6SNAZ0Xbb8oVkfSkqgghJh2EEdtxF2jEu1IefpLqITMXTz5gXBtfzUwtFqt+fhugZq0SrxU3B6OCzyCZrms6GeoYftO9kWEb9u+xcdWglOQxchk1gLxhawWIAcAsMXfP5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766271542; c=relaxed/simple;
-	bh=q4oNtkC3wknNN4pJt8OW+tay8jgj9vpsuwNrLHwi1ms=;
-	h=Date:To:From:Subject:Message-Id; b=WBLtM2H8lJkyK6+Js3H55Bar946UhObDzA7lUF4XGAL9rUiz3GFJqJ7ck9CuTPKU/YS8VBFdg4WIkLzdGRnDsXQyWgPwdtktDFLLAVDX5Wt625aOZKss4tmOyk/61VsC6BBR0n69QScGh7cuwczpFC3msDPqqMPrfFaPhTRD2zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BoAnmKZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCBCC4CEF5;
-	Sat, 20 Dec 2025 22:59:01 +0000 (UTC)
+	s=arc-20240116; t=1766277265; c=relaxed/simple;
+	bh=mt19WlHMn4QDFFY72gkaNDN9At3wZPfrx2tUE6tKYV4=;
+	h=Date:To:From:Subject:Message-Id; b=TjLjDEvbUPqnAtfsCaRvJIoJcItMROBvEAtp1sVkB3pwrmXVO40ZqjTj4wdIRdK+0KbVDF80+9zBMkVXPZqgMRjcjeF6rSako8Cm9YFUVrrixtOkIEycDj7Qsw5fPJWw3ne88kfa33iBCi8t/4GjVvB9bOg8jdQ2DHQuewbEXLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NiVQeZqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA8FC4CEF5;
+	Sun, 21 Dec 2025 00:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766271542;
-	bh=q4oNtkC3wknNN4pJt8OW+tay8jgj9vpsuwNrLHwi1ms=;
+	s=korg; t=1766277265;
+	bh=mt19WlHMn4QDFFY72gkaNDN9At3wZPfrx2tUE6tKYV4=;
 	h=Date:To:From:Subject:From;
-	b=BoAnmKZZhF5lRfPl25rJHBxzmZgZVIO+dqIoMrlI0ick/y9irBjPVVbFBAHsk9Aeg
-	 3nmY8FA9U/JvpbOA/Gy0HtRI8wOppvBPzqY37enRcAhde2ErlT8wV3GSDqX2mHR1bO
-	 iCyiHq6mnIP8HiQdq4yPvNOEi4xu5JmpJWlzCKIw=
-Date: Sat, 20 Dec 2025 14:59:01 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,elver@google.com,andreyknvl@gmail.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
+	b=NiVQeZqms9w+4S/MvgXBd9M/Od3Aq1HxT8ea3L4oMxx8YN2dt2q5bkp2KOYIr4eoU
+	 AFGxEeQSnzHHPvlE3X5Uk3C0AXIAzo0rsOClLFYa/GvZ8MZ6SMbfvmAVtHsp0Ib6nR
+	 2XxvwBxB3Dnh3x53q6FgAtK7f9QS4LIGf7R9z/CM=
+Date: Sat, 20 Dec 2025 16:34:24 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,pfalcato@suse.de,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,jannh@google.com,david@redhat.com,christian.koenig@amd.com,alexander.deucher@amd.com,mpatocka@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251220225901.EBCBCC4CEF5@smtp.kernel.org>
+Subject: + fix-amdgpu-failure-with-periodic-signal.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251221003425.3BA8FC4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,12 +48,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
+     Subject: AMDGPU: fix failure with periodic signal
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch
+     fix-amdgpu-failure-with-periodic-signal.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-amdgpu-failure-with-periodic-signal.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -71,48 +71,123 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
-Date: Fri, 19 Dec 2025 07:42:32 +0000
+From: Mikulas Patocka <mpatocka@redhat.com>
+Subject: AMDGPU: fix failure with periodic signal
+Date: Fri, 7 Nov 2025 18:48:01 +0100 (CET)
 
-The page_owner_stack_fops->open() callback invokes seq_open_private(),
-therefore its corresponding ->release() callback must call
-seq_release_private().  Otherwise it will cause a memory leak of struct
-stack_print_ctx.
+If a process sets up a timer that periodically sends a signal in short
+intervals and if it uses OpenCL on AMDGPU at the same time, we get random
+errors.  Sometimes, probing the OpenCL device fails (strace shows that
+open("/dev/kfd") failed with -EINTR).  Sometimes we get the message
+"amdgpu: init_user_pages: Failed to register MMU notifier: -4" in the
+syslog.
 
-Link: https://lkml.kernel.org/r/20251219074232.136482-1-ranxiaokai627@163.com
-Fixes: 765973a098037 ("mm,page_owner: display all stacks and their count")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
+The bug can be reproduced with this program:
+http://www.jikos.cz/~mikulas/testcases/opencl/opencl-bug-small.c
+
+The root cause for these failures is in the function mm_take_all_locks. 
+This function fails with -EINTR if there is pending signal.  The -EINTR is
+propagated up the call stack to userspace and userspace fails if it gets
+this error.
+
+There is the following call chain: kfd_open -> kfd_create_process ->
+create_process -> mmu_notifier_get -> mmu_notifier_get_locked ->
+__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
+
+If the failure happens in init_user_pages, there is the following call
+chain: init_user_pages -> amdgpu_hmm_register ->
+mmu_interval_notifier_insert -> mmu_notifier_register ->
+__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
+
+In order to fix these failures, this commit changes
+signal_pending(current) to fatal_signal_pending(current) in
+mm_take_all_locks, so that it is interrupted only if the signal is
+actually killing the process.
+
+Also, this commit skips pr_err in init_user_pages if the process is being
+killed - in this situation, there was no error and so we don't want to
+report it in the syslog.
+
+I'm submitting this patch for the stable kernels, because this bug may
+cause random failures in any OpenCL code.
+
+Link: https://lkml.kernel.org/r/6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Alexander Deucher <alexander.deucher@amd.com>
+Cc: Christan König <christian.koenig@amd.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_owner.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    9 +++++++--
+ mm/vma.c                                         |    8 ++++----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
---- a/mm/page_owner.c~mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release
-+++ a/mm/page_owner.c
-@@ -952,7 +952,7 @@ static const struct file_operations page
- 	.open		= page_owner_stack_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= seq_release_private,
- };
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c~fix-amdgpu-failure-with-periodic-signal
++++ a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1070,8 +1070,13 @@ static int init_user_pages(struct kgd_me
  
- static int page_owner_threshold_get(void *data, u64 *val)
+ 	ret = amdgpu_hmm_register(bo, user_addr);
+ 	if (ret) {
+-		pr_err("%s: Failed to register MMU notifier: %d\n",
+-		       __func__, ret);
++		/*
++		 * If we got EINTR because the process was killed, don't report
++		 * it, because no error happened.
++		 */
++		if (!(fatal_signal_pending(current) && ret == -EINTR))
++			pr_err("%s: Failed to register MMU notifier: %d\n",
++			       __func__, ret);
+ 		goto out;
+ 	}
+ 
+--- a/mm/vma.c~fix-amdgpu-failure-with-periodic-signal
++++ a/mm/vma.c
+@@ -2166,14 +2166,14 @@ int mm_take_all_locks(struct mm_struct *
+ 	 * is reached.
+ 	 */
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		vma_start_write(vma);
+ 	}
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->vm_file && vma->vm_file->f_mapping &&
+ 				is_vm_hugetlb_page(vma))
+@@ -2182,7 +2182,7 @@ int mm_take_all_locks(struct mm_struct *
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->vm_file && vma->vm_file->f_mapping &&
+ 				!is_vm_hugetlb_page(vma))
+@@ -2191,7 +2191,7 @@ int mm_take_all_locks(struct mm_struct *
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->anon_vma)
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
 _
 
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
+Patches currently in -mm which might be from mpatocka@redhat.com are
 
-mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch
+fix-amdgpu-failure-with-periodic-signal.patch
 
 
