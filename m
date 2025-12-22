@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-203179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD2BCD48BA
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 03:10:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FD4CD4B82
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 06:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 111BC3005E9B
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 02:10:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D379D3007FE7
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 05:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FF7320CCB;
-	Mon, 22 Dec 2025 02:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EAE3009C3;
+	Mon, 22 Dec 2025 05:29:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2115.outbound.protection.partner.outlook.cn [139.219.17.115])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2093.outbound.protection.partner.outlook.cn [139.219.17.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04813248F5C;
-	Mon, 22 Dec 2025 02:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B882522A7;
+	Mon, 22 Dec 2025 05:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.93
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766369399; cv=fail; b=qZE5GtdvVHGosg93A/Fe/Feahxb2L8Tyrpw11KzRJ40lXBNbgv5eBVIOfYjNnlK9MdnbyzSt+F7TIkxCkcU8P0o/t6Q4r7/LNlCAcncIJ83lVvcksMIt+fbZynhmlQKJLGijNIn4uVw0FzG1UFmYwDaNDcgyHumblHA2R53YLdI=
+	t=1766381340; cv=fail; b=HyUrUWVB1d0mK7Ewwd4WHKtx4B/gnSTrYUj+kRfuv1evtdx5M8kuEG/QvWazPNrCbRoDKwhms3WVjkpLTSUR+HPcWLiHeobumZGPoTxcecGOLIFHjno3Ywi3EyfiI6BJXq4iDp8noqDhu6I0Wwr+7BxbzpH8mtv9pgWP/NPBLgo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766369399; c=relaxed/simple;
-	bh=3C/+vBakEWo+kEGIzjgQYxwfzeJKK8Wai+un8awz60U=;
+	s=arc-20240116; t=1766381340; c=relaxed/simple;
+	bh=cmHvKLrFAPPrzG9q1NC96qBpkkmsTzXD9yn5im2A/DQ=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YULOBoc4WsVM1ISyud6WX2CoJIXkd7jEY47uNkYMsWsFyFKGH+YBK+SbeyjCSWUlabmPB1E8C13ddekzwksj1TeuQZtuPZ3R+QXlfo1/tCITs4w/ZSe6yRoq67q9hizaN6Hp0PK1raUz5144YWPT054LcGc+Q5cpr9g0iz4dzjM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.115
+	 Content-Type:MIME-Version; b=GLj/okMC3V39x5VOsCTPWPY89Sbi91eNwbjbHrbJ73oYBfsDiY27mBG4q/NZ3OZNoZrzOcXMHQ8bh8pD6v9DG0IxK/iUeXjLPBySpSAIYIEdvNOzEC/Kue4uqMxTNqniaJS7T8l/CgutZCS25SjmlR1hdLG3GzN7UzLj6k9U0B8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XMkI4sQxFJ5jNHLOdYfco7dm3EXP4jBAIH0ZdWA02ol40cKlkxaArCncSDfLlhFQjXmtRijA3ZTOPqr3r9foP9ntxkCabBH4x6AsGMI7gAUFx0pgdMeING6YjbAcdx4Qk2JwS1yJCMo6VBOh4/J1Y+eJ2Mn8HvxfJvdbkJhLp+LknuyEfeUm6lr3srl3eAAf39yBIVj0UJ6BUZeJCrn30xRfJu+YfVxYAk+xQqfd5JouGYoOLzk7XUjgRL5SzHA7nftAIufAsqj1pAjpvg/ai369TX/NXQW3LzObJgC3PF4qS1gbUv9SrNQ8lQcqwpSatc5pa9N8/NDIiyKev84wQQ==
+ b=mTko4SvSNnCAGozZpGhkppM3E4D18bT3oq1PzGRCHXN0m/b/YRaGl6mfCLB3+l0QSom83OGYfOUH1F17Co7Td2kttt+lmBqATPqn5MRppeHQKD1l5J35Kv8DtqNjvZ5y+aTFGfoT6foEuuc8JSkLTGknF5d9E/w9Jp/DcOzqSlEW3ajgfr2hvEWdbjZhvm4pIVfbrC5vF8CK1TFRzceYi1/BEIMDliiREeXGKhlWKhsgGe8cXhF6hR4IVYhtgAmqkTeHkLl3iuVhaJAd9+8jjoDaeasgX4rLRjGo/FRQZJpBPahFADKFMkWhOCT0hbwnCJHFrNv3pLMT6v9PXlPAmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gcB5DxmKe9x5pTeERSvLiufAo+ObvitNOTw0oasP028=;
- b=eF23oPB02nzLLUZxUadhefHVZ5qqcxvEKMKEpGy10TOz0ZKyZrXtUiVn+YQbSq3i+yLdeg7M0H7MyionCrzTRJklB6w3zFQz3jSJBhmeR2RBNqyMwd9b7TNcEjsNO2i/z3x0bkyWAGwNo7MAcDgetWSQQl5ELBWhDayDJ+VfskYPB0u9V3YWUhxElr51RJA7xiYw+Jc/5kg3RuxIGD/XVRFqo37WF1HEZXKrkc8aITCUj0UVzZqgg3GUpJy7l8Ya37mNnEKhxWdxwqKsJKykfv/AFDa3gLSo2Fs8wBUbgNdo3oOoETLfw0XTRl6SrmwqdyX5GzKKJOsl25OmR4VBtQ==
+ bh=0A+B2dBHLxx5S37M/r6hJhOLlYAeSAKNxLFleRdnUbo=;
+ b=YvHD6LPUDArMg2wNoUBubR8woIvYmjuQBxyvF/1q4JNyHa2eeZxVYpeXjM8ghLx+0YswztmkMHE51kWHGX+QlYkpQQFgy1YF/Vn/6boE8hC8GRpq8Xi2rST7YpW6+9W0iJeBFG9Q6PRYMSkM3ncC7F/9rWYGcT+jTmo6QAUkN9C9mVmqdC1ooFyyEQK+RznA5yvncdMjF8z5+L6HH1AJcFFRJiUUGFUwVOqykOi/cxydqEtHIHxFk2krAWQfnZtDgsQLNBGlaEsXTpKScg58lgcCD2GkHH9v2lB7FYu84QDeYCeXuCwr4awGgyst4xxDAHmdRBV0WJT48PEb+3bIRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
 Received: from ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:7::14) by ZQ2PR01MB1212.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:12::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Mon, 22 Dec
- 2025 01:54:03 +0000
+ (2406:e500:c550:7::14) by ZQ2PR01MB1259.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:12::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.17; Mon, 22 Dec
+ 2025 01:56:07 +0000
 Received: from ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn
  ([fe80::2595:ef4d:fae:37d7]) by ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn
  ([fe80::2595:ef4d:fae:37d7%4]) with mapi id 15.20.9434.001; Mon, 22 Dec 2025
- 01:54:03 +0000
+ 01:56:06 +0000
 From: Hal Feng <hal.feng@starfivetech.com>
 To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
 	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>
 CC: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar
 	<viresh.kumar@linaro.org>
 Subject: RE: Patch "cpufreq: dt-platdev: Add JH7110S SOC to the allowlist" has
- been added to the 6.18-stable tree
+ been added to the 6.12-stable tree
 Thread-Topic: Patch "cpufreq: dt-platdev: Add JH7110S SOC to the allowlist"
- has been added to the 6.18-stable tree
-Thread-Index: AQHccONOvAffeaL2GUGphLISAHqLn7Us5z1Q
-Date: Mon, 22 Dec 2025 01:54:03 +0000
+ has been added to the 6.12-stable tree
+Thread-Index: AQHccOORi0END/dw0kqivmvmxbAe+bUs6hHw
+Date: Mon, 22 Dec 2025 01:56:06 +0000
 Message-ID:
- <ZQ2PR01MB1307AE907F8899DA89F1085CE6B42@ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn>
-References: <20251219123039.977903-1-sashal@kernel.org>
-In-Reply-To: <20251219123039.977903-1-sashal@kernel.org>
+ <ZQ2PR01MB13078B8FE3D7EA7D50A8A59FE6B42@ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn>
+References: <20251219123234.980671-1-sashal@kernel.org>
+In-Reply-To: <20251219123234.980671-1-sashal@kernel.org>
 Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -68,44 +68,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=starfivetech.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZQ2PR01MB1307:EE_|ZQ2PR01MB1212:EE_
-x-ms-office365-filtering-correlation-id: 606717ee-fb0b-4615-5879-08de40fcfbd9
+x-ms-traffictypediagnostic: ZQ2PR01MB1307:EE_|ZQ2PR01MB1259:EE_
+x-ms-office365-filtering-correlation-id: f5c82831-dad8-45ac-2ffe-08de40fd4577
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|41320700013|38070700021;
+ BCL:0;ARA:13230040|41320700013|366016|1800799024|38070700021;
 x-microsoft-antispam-message-info:
- RsqfOUZUWx9MbhqbnnL8Zb9SUDA5RD0Bdx3fTWUJyFy/LibMkhdzW0hGaPgWLprQlWJFjlJQSV66H6MLB2bWp0wYCSiID9k3TSxFcTX6D8xIQiTBe7OrBWqGuhpkXYmeuvo5EySJnUWAtmO7XpBd0yyp7rKwnIVx3BbWfOkfftJ8+tKOE2eUbZ1JpOzwS8Oh796UOcocdf+RpBKzsn67KlwVXnt6doWkBMTKeuqBScCl/wMwI4N8KRytB2CHl1xCuaAJ2OX4O0npVt7CQYbtauZtlQDiBr0ofv46Wcg96RGj3DPcJYPHh+OdVQnDGTleGvVXH/TT/lO/guw/kJHM/kdVqiF1UOqkD5/qM3DyECn3Poc4IUYd+hFsUP76gFlgNGW5/QP0NW/i5FwIer5ZLmmkOxe/oNtKSoPhORQSUQLI3CW1h+l9VQ5sfGVyR5zPix0yrtmvTjhnLgRG0cmoEh84HsbRxFAwSrlo5Jnu5pVbWezZ1/fQT9hN0IzlSZ2wXDxo9ShFV3HXyLzXIZLCueZw6X/wrv+uEu9QaOh39tJCUnA+mbYH9bUJ8GWhcdW5Am6TmmoGy/9r9xI/oGkqVQ==
+ wPzxZpgXJoatWpH28Ja1Z3A2kyrJNfsqarakq7Sz4PsqwIIkHdn+fmZN07rDg+tPjEGVHOPwmCQiCcTGLn9YI+6g/Do7h/42x0fF8OsJXgAn1Y6oWYxWla4Ws/tDUcRoPMaInMEoLXxyOQbruIwwkQ57z2nB1/RVIiwoncKJi2zGRaXnuQGMD/eHoXRd+FjVJNj8+vcWi+NKA07AkmSZzgu1b3CNCMbdD3paHsYn2GgD04q9z4sFjcs+ii5c085++tUQlOs/i64ea3Hto94dIoqc6oJTPqaGqh6f0XnoeFOJ52ki/EnaDeINTcC4l1LXBU/gRSFXUdK+IXHLOoi9+OarsddHsGNFsqE+wMXyspdL7FIM5m0vqrXCVaeJbowlgFKICs9VsTAlO9LDRlGsDdJKAG4NMnPB8VJoevbKRiVPlIL/wMNqG2WvOFwjuSEMgs5FMPShIK45/RFKjRNLpPk8ns9zKK1YBuwDX2kkRuhcFNiJPOF5SDOiDWg5by7tvjdhn3K9T65EUcuS+0QHbFB9jjkR41T1ybjyrLgJIR4Tub/Tw+Y+OoWsOx2tR28yLJkMjTgUGbzZ4pxYnGQ5tA==
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(41320700013)(38070700021);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(41320700013)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?g4cg01CmXV0PxMg5Y44XvsXKM8s1MC4JiRABLuGq6xF4Q70VymGtzzj2eLBt?=
- =?us-ascii?Q?Y0kdtafVaHLueBE9RWEYfmIB95QK9d2TM6mjLCsbmAcn95Se4Aghxb/hJJwk?=
- =?us-ascii?Q?gLKV5svN6zNRuAA9hpTY8iasramjYsrEQXCMreroTxLG5+LSxEX9wJ0Xnih/?=
- =?us-ascii?Q?LqUaOpa9G7p2Q/0FB+x7Gsnz64vjccyniYslsZxZMnp9Lec3R0N/PY/m8B5+?=
- =?us-ascii?Q?GoN3pFQydIzAIHoWAZL23fCF2ECWEx7Sr0DNL/O106kRHZt1UMymLi9X663p?=
- =?us-ascii?Q?I2L2hblee38Mz8MM0vQ+5k9DSGNXb48RZx9EDzKLLW10tooDyUz7u4x0oLMj?=
- =?us-ascii?Q?PhNEmw7Ka1M9psFnpXIBZXgZYWRv+NGK7XjbIXOLn+3K8XG/b7ZJ+iX9oR/j?=
- =?us-ascii?Q?0SOXMXp4GOy5ff2hfWpjPaXe+lsTH/rizFwK0PYBti2Or4PegcJe1jIDnFdZ?=
- =?us-ascii?Q?KCOGDFY6EX2ySEBhTwEMTx2PSvQshbaL520OAdh3LEEBEv1FZGYrw0BpEEFG?=
- =?us-ascii?Q?pStSrCUGpO9NaLBSXI0XkjG75KTNaTPaD3tly6C/HcaSCY1mbNbU2jiTaPVX?=
- =?us-ascii?Q?Z4Z6rhIDP630kIAdEWciTvbk4S8CZtZqvlvJGcBY6GHqtfARmm/uchzKc3+t?=
- =?us-ascii?Q?lGky7G72rIiKON/GOGAAxS3xcxIS1eBBH4J3VObcGJLlybPNDAEYOnCnN3Su?=
- =?us-ascii?Q?kMA6BZZMn034YQa0ybgXk0dOwHQx9yO8bO+U9bUEt08Hhm2Q/yGRDLH5QhxN?=
- =?us-ascii?Q?kr08HTp/WlpPxwUjkcrqejzRwrANnma3LCxVgMBsykoNDzjuz6bAai2T15uo?=
- =?us-ascii?Q?zKNimgCEaIDxAnTOYSJ8gTQuiPd9k+vsga+lYie2hbfamIEGrdOyuKLfn7vj?=
- =?us-ascii?Q?813sy5e7AZDhxyQ0R1aD7Syv0CFw4wpUcnOJEblzfr2j2YBr8uGALLgj9dCh?=
- =?us-ascii?Q?DnHc7gxxysDdJUXD8OAq5U8shmcADLB7MdwAdpW1ZlwiI2FcqmLmtblLh068?=
- =?us-ascii?Q?SanZrdfDkedo8I4RXNYCXSQXn8om55ZT7AiOFup30Yps+k1gfXl6jbeXKomY?=
- =?us-ascii?Q?JUGFaTkIJ0VVxYoSJXkqzPl5f0B4NdXSZLIlNHvL1S4T4Fnebvv1gkS4iYhi?=
- =?us-ascii?Q?kdLUQv4bTBlN2tm4wY1t/FpG6rn2CL69YngSG3KgiWcmgSQMaMAlBrNDDZDz?=
- =?us-ascii?Q?bTe0S0hDIyN1qO76BybcORghIqmh9tyukOtqB1ix1hWmM/hRQvJjtRaJxWsF?=
- =?us-ascii?Q?eUqPxPTM3ZpTOd/C39goFSzC1Gt2GWjKwcV8FrNH7Y+IoY/e5z/ftp1/IXH4?=
- =?us-ascii?Q?DdkCbIyFU63oXzPXky076KKxBiP7FBTSi6KPso0x6FQCWi56EvnosiKkc6QQ?=
- =?us-ascii?Q?Sk4L1pfvR6hs/pTEnZ8cu9WRrOirXOtWPQK30ephu8NxyZowGWKs4z0/6+sZ?=
- =?us-ascii?Q?xfOipkGY00RkrMA1b+qOMI8Expj0W4k21W3MXm1dSkV/AbM1KO6Yeqm250Yi?=
- =?us-ascii?Q?aGCo2yrMx3nOnX3NgAWNcBMTs++gcdtsIo+t3R0YOoa10tr0Oy9ooYbKriYE?=
- =?us-ascii?Q?4pw2uduWx24UI16QkcY71PkexynSptqI/OAwOyit?=
+ =?us-ascii?Q?DZi3FA7j12mY3YukuIxrbBmgUtxAzBI0QenOPJHfmYFnDtIQBBcOt9WHIk0M?=
+ =?us-ascii?Q?vesBm6CcoqYnlnlK8rT9ZkDqpEOO90gWwwXWddXg3d8v2ZpCcF+Tc6Vm2MoN?=
+ =?us-ascii?Q?y0p09e5aiHLF5wcvAd1lhMOdWn8mNksSJ70f+YdW0hC+5qryQQEN5MWbjghk?=
+ =?us-ascii?Q?x1j/vwrwS2Jx0GmA0vvnxqPrLcrXxD9jIzn8cwvSailRVRLC7wBzpNU64l9p?=
+ =?us-ascii?Q?wDvmYRbGX+FK8PcEKz3LXxvEa8HgTWNG51mziFbVGO47Atx+2hru1r66+30c?=
+ =?us-ascii?Q?W1RG9tFWCwyjDT13OAw/2dLGDJDuLmGZk1p3UfKsG746x7D7HAcv6xhQVuyX?=
+ =?us-ascii?Q?VLlOLRgEkg6dp2UE9wT1xLrmHbJn8FaWn4GUgP3gj6LC4DkjzB7rp5V7nCPZ?=
+ =?us-ascii?Q?ZG+hxULHZFBGn84OK2JQQyGvV+D4oeyUd1ouUf4Uy4h0HiaF2mRopegJdYy6?=
+ =?us-ascii?Q?mJ3cF/n92/XSeUDlWrRSJjVc/47wLE73ALLSNjyBvl4PkL89DZLlNi/WaNHz?=
+ =?us-ascii?Q?9OlInh4LeG0eg9s0sL3uhiJghqlBmQwtP7bK+j/53b9AWDH0tiHPAFObNHYG?=
+ =?us-ascii?Q?vG2yvxFNqvMGBAUCxJyBze02Lhc5AkFaqBR1HyfJmHCEriTNzNMtw1HdXl0q?=
+ =?us-ascii?Q?nCTXFuza2GEmRWdeKdvpH7OYJszYdJV0ZGuTXYxtqWhDCFFSZ68aliUC18ZZ?=
+ =?us-ascii?Q?OhMk3uMUuBU85MyNjPmBXvdZGR+xLK1BTramaR1id1vpz1wjSSZ7n9egJp8v?=
+ =?us-ascii?Q?cIhCIQRhOmqDHdApdWQaAsn2RHLv5j59+iHSEGhrGnxRmrWCL3NcTkgVB3a6?=
+ =?us-ascii?Q?yR0/VuPaSRLOC2nLjA1TBMVUcfUlj0QjepERxsCaHm34qnXtNpjcphFBwiX/?=
+ =?us-ascii?Q?LZoPOEjnnP411J4YnZlzeDZVBxzlukdo9M+v10Hb6KavbLViGbriTNgrOgYj?=
+ =?us-ascii?Q?He3sBKkWB79SSfc8UsKR3raOEaoW+Jeeo0sHY7aiyaFQBfEaLQGTqSN3AZEy?=
+ =?us-ascii?Q?/UAZQVFVD8IwliEvLZqiPLBwcuFxRmjLvE6+H0+frlrYOurbEU9UauVn+EUb?=
+ =?us-ascii?Q?Q60vYFBax4yKqEFfaKDyS+gEZKtbxxlM5W2fV077rn9VHg6y16c0JIWGYKyo?=
+ =?us-ascii?Q?YI8B6HIsObnmqNypNAmg4h6aMMF8ZTpl6DFtMgBYkgsadekiHQfd3K3pZFhr?=
+ =?us-ascii?Q?KqBhQQiRnGcziiqwabngyIL5EPa7ltGS8i6Lax/26GIZ0ZrHn1MyBKNkJMp9?=
+ =?us-ascii?Q?nfJCpEoL40bG4dHKkNVWIe+YE2yVKkMfs8J9/c6MyMUse6dVY3GbQDA9hs5v?=
+ =?us-ascii?Q?Zu97rBgq7uFgW436Hj7VcFS498jdHMCdaNhlTUAK1zvQ+qTAUmBWV8qpEPhN?=
+ =?us-ascii?Q?0nvy2qBZVcj+0sTRc3DbQrzdXO867MNSaCcBo4xfHLtGyJvjlybD1Gp6SOkP?=
+ =?us-ascii?Q?/uShU+3AooVG0VNfhe/mcGQ5cbkTyOJh7MPCsTC5UdShe1iJMmwr2iOnF5C0?=
+ =?us-ascii?Q?S4qfV78haTSW4D/bnfzcUhX6dZwdKNENfLQbXA7uECC+CYdbskGvGxYIHh3j?=
+ =?us-ascii?Q?jciqYfodYQspPswtWzNKsIP0xZIn6wrDwu/h52tX?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -117,27 +117,28 @@ MIME-Version: 1.0
 X-OriginatorOrg: starfivetech.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 606717ee-fb0b-4615-5879-08de40fcfbd9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2025 01:54:03.3925
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5c82831-dad8-45ac-2ffe-08de40fd4577
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2025 01:56:06.8961
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AuHlbNwLZthyNq0ed8ZUck0eySSJgaeBJs45eRS8v+doMed8l7/ciVZbPX1GJh6QQFNFoPEDGPF1eP1sFKloF+iJLRGQfJ7FNIP3ZRBTJ7M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ2PR01MB1212
+X-MS-Exchange-CrossTenant-userprincipalname: QkK5DgTXJjw6dYLzN0DUgDPG14Feb83BLRBzKfSmDU4luFlIPo5Rufl53K3CRcyZziibwi/1rMh9RCNCSLlkPZjbdGxr598ZFrKCfEVExTc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ2PR01MB1259
 
-> On 19.12.25 20:31, Sasha Levin wrote:
+> On 19.12.25 20:33, Sasha Levin wrote:
+>=20
 > This is a note to let you know that I've just added the patch titled
 >=20
 >     cpufreq: dt-platdev: Add JH7110S SOC to the allowlist
 >=20
-> to the 6.18-stable tree which can be found at:
+> to the 6.12-stable tree which can be found at:
 >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-
 > queue.git;a=3Dsummary
 >=20
 > The filename of the patch is:
 >      cpufreq-dt-platdev-add-jh7110s-soc-to-the-allowlist.patch
-> and it can be found in the queue-6.18 subdirectory.
+> and it can be found in the queue-6.12 subdirectory.
 >=20
 > If you, or anyone else, feels it should not be added to the stable tree, =
 please let
@@ -156,7 +157,7 @@ Hal
 >=20
 >=20
 >=20
-> commit f922a9b37397e7db449e3fa61c33c542ad783f87
+> commit fb0dfa5be2ce8716ed8a7a6c8ffb8d36f5e03541
 > Author: Hal Feng <hal.feng@starfivetech.com>
 > Date:   Thu Oct 16 16:00:48 2025 +0800
 >=20
@@ -175,7 +176,7 @@ Hal
 > diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufr=
 eq-
 > dt-platdev.c
-> index cd1816a12bb99..dc11b62399ad5 100644
+> index 67bac12d4d55b..dbd73cd0cf535 100644
 > --- a/drivers/cpufreq/cpufreq-dt-platdev.c
 > +++ b/drivers/cpufreq/cpufreq-dt-platdev.c
 > @@ -87,6 +87,7 @@ static const struct of_device_id allowlist[] __initcons=
