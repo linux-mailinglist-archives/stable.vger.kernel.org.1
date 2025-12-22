@@ -1,80 +1,100 @@
-Return-Path: <stable+bounces-203205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D212CD53E1
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 10:07:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AE6CD559E
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 10:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6811E300C0CB
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 09:07:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09FB23020C4C
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 09:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DC52FC011;
-	Mon, 22 Dec 2025 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9E7311967;
+	Mon, 22 Dec 2025 09:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aq3mkN1S"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="buB7uoF3"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD69226CF1;
-	Mon, 22 Dec 2025 09:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E788830F949;
+	Mon, 22 Dec 2025 09:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766394464; cv=none; b=EY0jwuUf9qZhcmzYVBTWXFS4hczyD7qOm81gf/TUlgKwPA6gvOzYY820MEFv5qGEFS9TdO8Gr8NDnN3tybktQe4hhh8ABNcqfzCzlknYN52pzeVZ82HqO5Gt56RIV2+QTw5n3nQI15+Wi2a2O233MFKYNfusqyQh86X2Jh0kLdk=
+	t=1766396265; cv=none; b=Ug0iDxeRLqnqRsjnQFNCvASqiF7pwa8MMKWhDKMlEfV47905LoWJvhY6q8DSi9yyCfXY4FJteZ5k6e6hJdVAebKgza8qYr19FJYCmySTlgTKAuflPvVjZLSVy+/4LtVSZFD5UTBOpsxzm+Pqpreai9yNBASmUhesn/WKYB40ytA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766394464; c=relaxed/simple;
-	bh=FZO8A1oCiEKduFgK/VgdOVArquSOAEjpCTbXaSs51Cw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EqcfB/gQ3j+Q92vQ/m/UP/JHhZt9HQNVD7b8PUGPzkw2iGrzDAczPbC2mJ1yrgY9vpDyJ9dIHBAvT9DR7o22TcpUTryA8XFfWVEAz9ViK5t+F2A9v+3dcDy6Ykw/W5/fku/Bd7d4bDx3jlnwvWG64vvUGijhTWQtu23b22Rvn44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aq3mkN1S; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=UFJ2hQrr9TPFdahxPW3to7FdtjsagKdsAQCxdi7EZ5M=; b=aq
-	3mkN1SgkcbPpgiwudxWF3Oy7LjZkw1CDM4pXywR5aZl1TgA6NfF34n/FLdXYdYsF1qqeMW5aefh03
-	weW052WjwuQSQDpQFXZoYkK/3bjfLCpr5z5YtzBK5iVStLrxge/DZaqWR9BCGWk2C56vckpeQYAbF
-	0OoF52PGlS+RmB0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vXbtC-000A56-IC; Mon, 22 Dec 2025 10:07:38 +0100
-Date: Mon, 22 Dec 2025 10:07:38 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: usb: sr9700: fix incorrect command used to write
- single register
-Message-ID: <5be10af1-e7ca-4bed-bf19-0127e2eeb556@lunn.ch>
-References: <20251221082400.50688-1-enelsonmoore@gmail.com>
- <4eb474ac-5e12-4237-bec8-f0cc08b00bb1@lunn.ch>
- <CADkSEUhW5+=mo8nLK9cSa7Nh0SKP-RXV=_z7RY73BZgUH=kV9w@mail.gmail.com>
+	s=arc-20240116; t=1766396265; c=relaxed/simple;
+	bh=VwOk0KrORHi4rzm7L7X2SEpvILp0jvuywJgDjew0cN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dKear/0SQZESvIb8s4jGF363aqgvcitGq0T1N/owKlt/i84jGEN7wPE8y/ipzNSHBOf8PGMdzP3HdCCQhDGp75qGVc7uYpe/JlA0yCXkxdu9g7yYUWHUwidueklRcHmzkF9WJ4RJTSfHun+FJL7jbkFWgDhWkdmCj1VKH7qg6/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=buB7uoF3; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=AN
+	Md3WXbGHnt1eZja1yDTXINJmeObLlJnACM7kb9+Kw=; b=buB7uoF34Boj5aM20H
+	gLTNOXDJm6KmuNKDCB9kCzPeSehledCFaMlBwIorUo0WdaP0N1EDWe6LZsmO28bP
+	zyznh+Nr1sf6W36STHinaGpZPPwWaFdLof/veQN0oIhKm1E568iIgfR6YH8QGuaP
+	g12EiFR8EaGgIiTYcuGMIDN8I=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgB3y6s5EUlpL+Z3IQ--.37483S4;
+	Mon, 22 Dec 2025 17:37:01 +0800 (CST)
+From: yangshiguang1011@163.com
+To: gregkh@linuxfoundation.org
+Cc: rafael@kernel.org,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	linux-kernel@vger.kernel.org,
+	yangshiguang@xiaomi.com,
+	stable@vger.kernel.org
+Subject: [PATCH] debugfs: Fix NULL pointer dereference at debugfs_read_file_str
+Date: Mon, 22 Dec 2025 17:36:16 +0800
+Message-ID: <20251222093615.663252-2-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADkSEUhW5+=mo8nLK9cSa7Nh0SKP-RXV=_z7RY73BZgUH=kV9w@mail.gmail.com>
+X-CM-TRANSID:PygvCgB3y6s5EUlpL+Z3IQ--.37483S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4xXw18ury5ur1DCFykZrb_yoWDCrbEq3
+	48Xayktw45JrW7Xr4xC345ZrWv9a1rCr4furZxtrZxtrW7J397Gw1kuwn3Xr93G3y8Gr1r
+	Jry5Jr9xGF1IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1WSrUUUUUU==
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbC3h0A5WlJET1fIAAA3V
 
-On Sun, Dec 21, 2025 at 03:42:58PM -0800, Ethan Nelson-Moore wrote:
-> Hi, Andrew,
-> 
-> The other two are correct because they intend to write multiple registers -
-> they are used with a length parameter. 
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-Please don't top post.
+Check in debugfs_read_file_str() if the string pointer is NULL.
 
-How finished do you think this driver is? Are there likely to be more
-instances of SR_WR_REG/SR_WR_REGS added in the future? If so, it might
-make sense to change the code to make this sort of error less likely.
+When creating a node using debugfs_create_str(), the string parameter
+value can be NULL to indicate empty/unused/ignored.
+However, reading this node using debugfs_read_file_str() will cause a
+kernel panic.
+This should not be fatal, so return an invalid error.
 
-SR_WR_MULTIPLE_REG and SR_WR_ONE_REG?
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 9af0440ec86e ("debugfs: Implement debugfs_create_str()")
+Cc: stable@vger.kernel.org
+---
+ fs/debugfs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-		   Andrew
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 3ec3324c2060..a22ff0ceb230 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -1026,6 +1026,9 @@ ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
+ 		return ret;
+ 
+ 	str = *(char **)file->private_data;
++	if (!str)
++		return -EINVAL;
++
+ 	len = strlen(str) + 1;
+ 	copy = kmalloc(len, GFP_KERNEL);
+ 	if (!copy) {
+-- 
+2.43.0
+
 
