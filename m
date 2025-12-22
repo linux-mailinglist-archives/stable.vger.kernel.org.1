@@ -1,131 +1,94 @@
-Return-Path: <stable+bounces-203215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B03CD5E53
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:59:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A876ECD5DEF
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03F023015758
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:59:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0EC7B300EDC0
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5A731AF1B;
-	Mon, 22 Dec 2025 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FBE32F753;
+	Mon, 22 Dec 2025 11:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNw7RytL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1002C30B50D;
-	Mon, 22 Dec 2025 11:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8425F32E730;
+	Mon, 22 Dec 2025 11:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766404748; cv=none; b=DcaIKcVhUDUKjf7EifPOEDsAEFt7lxwwBwdmHhZ/vVkLEGD7K5o7S9abZEDdNmgJoHMSuhlP5TCwn/wQsXAx97BHXDuv+vvDlcuIfbXtAiED4a+FywsyEH2PVoC8nw5ZiOLA/Lp8pJ6JwHH2pqbQc32D9HOu3jXAGOYnIt7gUYQ=
+	t=1766404352; cv=none; b=PGjHLsHFqy++TXZOxQOWgp61tIMZ+L8EIxhKQig4xBeYJQJ+9zCaDE79/6KzNc9vrSFh1+T6l491BfrwHJVf2Nn5VouITN/POdQ28bWB6xBABqOGoUpPAoFwYVU4vTrQlap2f8KoY4obFR/8G2KSeVSMTW2yIW9HiieVBBply+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766404748; c=relaxed/simple;
-	bh=lROeOcWhUnInlzVqAwbfImHEp+MDu7ampUOQE1mrDy4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W1T14ffzX8gmvoPypZWmUubFpTN2Q4Tvws5uulM/jbGqRYemLy8wdPSf5V4zJ1YfFWHWUEeqG7R7pxpOiVZfGTGUjpcBxjTIbwvRCWCzHhpsoSriDjkSxRYk3G2kYU/dKY39T6+fuzZ2DoDr0ngc1PIOq8W8qIDXh2SNz6B3Qzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8CxMvGAMklpwvEBAA--.6644S3;
-	Mon, 22 Dec 2025 19:58:56 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front1 (Coremail) with SMTP id qMiowJCxGOB6MklpP2IDAA--.10467S4;
-	Mon, 22 Dec 2025 19:58:54 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	lixianglai@loongson.cn
-Cc: stable@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
-Date: Mon, 22 Dec 2025 19:34:09 +0800
-Message-Id: <20251222113409.2343711-3-lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20251222113409.2343711-1-lixianglai@loongson.cn>
-References: <20251222113409.2343711-1-lixianglai@loongson.cn>
+	s=arc-20240116; t=1766404352; c=relaxed/simple;
+	bh=vg7/adpD/1uCZFZ5FETf5AMIGjbfdcAZDucMWV87Hzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E+L7aKAiRsR1JWO1NV4B4Jz+X3o/R74EfhQZNWF4g3gSwOnpGIuS1/2nhZxN1X6fbe/vd0YUQPXw4Iv7Wk9P8dP8mPZ87Sjey3F7Rbl7VhQKJBsCnticzjHn97Yq9yYFSUOJkFYlfSjV2RbNhbRV1tdC+o34edtxpMf2EBCltqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNw7RytL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2AAC116C6;
+	Mon, 22 Dec 2025 11:52:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766404352;
+	bh=vg7/adpD/1uCZFZ5FETf5AMIGjbfdcAZDucMWV87Hzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fNw7RytL0T22OBM0RlgrShS40Ffh4GGreYAu9fE930EHChGuPXlRHHsH9ZaxfxbBO
+	 J4VrHHDQFuPe9+8bfw/CBX4Fr0AM85r8bwb8QzHN8iUUrhTiUiQ7RMv0bnkMJVBoU0
+	 efDSWoa5GMWVsTmdFYjuBB4KahHLWPFInOZZwjomKiGoc0OW7QBH/VVFqGKyEWPd2r
+	 J2U4sXrNbh8g0mr/kdUyDMlOs/8vvV1O6FTEkVVDPOGiwFCOlyPYUnE/tzw96TuOxK
+	 W4MTkYlhRyetbKHqYN2VrOyzfvcEm5IyrLPvmnwEIsRFCouo2JQqit0Auw71DlVZx8
+	 TqTPStguUYjFQ==
+Date: Mon, 22 Dec 2025 17:22:17 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Shawn Lin <shawn.lin@rock-chips.com>, FUKAUMI Naoki <naoki@radxa.com>, 
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>, Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] Revert "PCI: qcom: Enumerate endpoints based on
+ Link up event in 'global_irq' interrupt"
+Message-ID: <xgmb6yllvoowfap5j55x4pd2j6a5k547s2qb72ektrddh2kujo@ueohphquccve>
+References: <20251222064207.3246632-8-cassel@kernel.org>
+ <20251222064207.3246632-13-cassel@kernel.org>
+ <efa4b3e2-7239-4002-ad92-5ce4f3d1611b@oss.qualcomm.com>
+ <aUjv2FwfoDqNMKoR@ryzen>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxGOB6MklpP2IDAA--.10467S4
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+In-Reply-To: <aUjv2FwfoDqNMKoR@ryzen>
 
-Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
-the assembly function to guide the generation of correct ORC table entries,
-thereby solving the timeout problem of loading the livepatch-sample module
-on a physical machine running multiple vcpus virtual machines.
+On Mon, Dec 22, 2025 at 08:14:32AM +0100, Niklas Cassel wrote:
+> Hello Krishna,
+> 
+> On Mon, Dec 22, 2025 at 12:21:16PM +0530, Krishna Chaitanya Chundru wrote:
+> > Removing patch 3/6 should be sufficient, don't remove global IRQ patch, this
+> > will be helpful
+> > when endpoint is connected at later point of time.
+> 
+> Please see Mani's reply here:
+> https://lore.kernel.org/linux-pci/fle74skju2rorxmfdvosmeyrx3g75rysuszov5ofvde2exj4ir@3kfjyfyhczmn/
+> 
+> "And neither the controller driver."
+> 
+> Sounds to me like he still wants this patch
+> (which removes the support from the controller driver).
+> 
 
-While solving the above problems, we have gained an additional benefit,
-that is, we can obtain more call stack information
+Yes, allowing hotplug for a non-hotplug Root Port is a bad idea. Too bad that I
+proposed it in the first place... Let's revert for all platforms to avoid
+setting bad precedence.
 
-Stack information that can be obtained before the problem is fixed:
-[<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-[<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-[<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-[<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-[<0>] kvm_handle_exit+0x160/0x270 [kvm]
-[<0>] kvm_exc_entry+0x100/0x1e0
+- Mani
 
-Stack information that can be obtained after the problem is fixed:
-[<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-[<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-[<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-[<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-[<0>] kvm_handle_exit+0x160/0x270 [kvm]
-[<0>] kvm_exc_entry+0x100/0x1e0
-[<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
-[<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
-[<0>] sys_ioctl+0x498/0xf00
-[<0>] do_syscall+0x94/0x190
-[<0>] handle_syscall+0xb8/0x158
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Xianglai Li <lixianglai@loongson.cn>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-
- arch/loongarch/kvm/switch.S | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index 93845ce53651..e3ecb24a3bc5 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
- 	/* restore per cpu register */
- 	ld.d	u0, a2, KVM_ARCH_HPERCPU
- 	addi.d	sp, sp, -PT_SIZE
-+	UNWIND_HINT_REGS
- 
- 	/* Prepare handle exception */
- 	or	a0, s0, zero
-@@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
- 	addi.d	a2, sp, -PT_SIZE
- 	/* Save host GPRs */
- 	kvm_save_host_gpr a2
-+	st.d	ra, a2, PT_ERA
- 
- 	addi.d	a2, a1, KVM_VCPU_ARCH
- 	st.d	sp, a2, KVM_ARCH_HSP
 -- 
-2.39.1
-
+மணிவண்ணன் சதாசிவம்
 
