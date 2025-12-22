@@ -1,118 +1,142 @@
-Return-Path: <stable+bounces-203187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A52CD4AF7
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 05:16:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA4CCD4C7F
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 07:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E854F3007ECC
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 04:16:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF162300B9B1
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 06:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1A827FD71;
-	Mon, 22 Dec 2025 04:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B174F327BF4;
+	Mon, 22 Dec 2025 06:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TOaFo7N6"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23B433993;
-	Mon, 22 Dec 2025 04:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7C326D6B
+	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 06:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766376988; cv=none; b=MYU6ilgkbk0DKmf869rFr/dK8qYcQVjoKobfg3kAfSFC5coMXs/D4MAw7fgWy7yJ87bhtN94f2xGW4XkMDZpYkPsYdwMT8vxeevAqgOKpu5jYEySn/LvdUUJkSraHcOud2v8H+Q5+pAVF+3lDBGj5CwU9XZQZGKaxUH3TWLKdso=
+	t=1766383809; cv=none; b=ZnkP4G8RgM8fvHu4dH0gLb3nXNz7OIF/jMUHhF/TKaXTGcJz5ss8l55HbAVZTKTeNRKyJbLUkhVfTDf60mtmY1Q9VAgTMHLBOsq1KTqd7VA5yyIqOnrJmIIy9u5Tq6CllXpY7jBhhLX/kaHJUnivaRq2kM3FOmb31sMuvc2Q0C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766376988; c=relaxed/simple;
-	bh=ScVIEfLOJnXIXYnj68t/1imJqAgx5SDhZJ51F+SMhLI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gPXHLPAcqb68FIb+ehBv1OftiBiFDHQpPOcMq7nqr7AfkZ+YiugMmPuw2ZtXufCGGIgHQnVgzNVS9xWgtxqHl54PJkDdC/Vhb36UtIV5MD0eSF0rDZLx58wPLex5mOv1jSXx4ktw+TSbzWia+KwSYMN2k4S2QNQ2X4VrXnZb5ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.209])
-	by APP-03 (Coremail) with SMTP id rQCowACXs9pExEhpobSKAQ--.56029S2;
-	Mon, 22 Dec 2025 12:08:36 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: vkoul@kernel.org,
-	dave.jiang@intel.com
-Cc: dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] dmaengine: fix a reference leak in __dma_async_device_channel_register()
-Date: Mon, 22 Dec 2025 12:08:34 +0800
-Message-Id: <20251222040834.975443-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1766383809; c=relaxed/simple;
+	bh=2ZLm6y+vDWz/IlruQLkF1a1UAxU3uOV5Gb4PE6qBNwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzbzSbY4AjNyDwyIyejYBeJeTV+viePgTEQaNdOTYRe4z90N8KN+tWJZ1G2wo5pfzCw/LyE+LoiEMk7BP7zLYoHoptfNo0mv91XqjTTbbDGpELGDQR+LfL8Vrj0+j5PYCqzgPPpEveA+mt4utui5sO8WDkq8ZWsBdM/ab1D+kps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TOaFo7N6; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a1462573caso461665ad.0
+        for <stable@vger.kernel.org>; Sun, 21 Dec 2025 22:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766383806; x=1766988606; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4d4yIf4cTLhpX8RECsjI9Ii+PJ5wkNjuQ9k20d0TZc4=;
+        b=TOaFo7N6mLf/qJubLvZ+KvpRUg0oaVehBqgYbjMALcjbdFM0wXRNlHnEWjNFzZ8OZU
+         tkH2Gt5pj4hm/Loi+Soe7P93Q3amndGpkhkOZudcCIbzFVr2G2t/UpGOHQ9M7uM8X7uG
+         gDImXuOKD+hw7ChYhYQi52adS0hbNucd/18AvlnLjYgxPYm1jCCYMwYUTUf5G8rbNAoA
+         D6XOCsuQ6EViIdYy//FEZhUMNY1jCLMIH5U9mL+RGJKjphSrybN8uFdz1p8zFbAXwIX1
+         lBFEt9kAPNeGyVgTzI4DQ0XEJ0m8yadMYpKOCIDgNpj2Qkxi0o7A1x+BbF3t6iwXPzZX
+         WdBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766383806; x=1766988606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4d4yIf4cTLhpX8RECsjI9Ii+PJ5wkNjuQ9k20d0TZc4=;
+        b=KbxfJLGIihr/Jg4Z/nxeMEvMXY9K5+rcGq+n/cp/4lgNb759GOy8R+RQgoXc2CFtRR
+         0+DcYZNnWkYyhrMPY2pg1a7ETramrje8rRtlp4hrnmNxkK4SOyWVqQOy1O1eDEc34fIe
+         8UiJaaZRohw8/JilTIkWBomS89LOZAXwC88qAKXjr5SzHhvc3/qmOIOMmM4wcL/GHNAc
+         sSXbTBAAPd1yJ7xhCz9xE69z58qr4XvBESaZ+jDXf7gXJhzqgp823cnq89sYjNaluzd9
+         UeUDEstG9q7k2+PPjBbDEmMSm+8pybmSsezzYsXE7KJLPjwnmH8Hmxtlg8pwrmmJuKOq
+         ceKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSROB5pOD06b6FHBRnHqoQlGslWa+1tToLfIKo7VreHztOx2OGsULy+W9/VVI8EUrtOam2QVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlDY+YcQtygGbFvvCv63u2ldS3BONtxSkl42VSJLaP+iNowch2
+	QbyexNHFqK9fBKpzpqz0+hqffWEUxA9WEamQDvQ+sWaedUmLwMryNPqfoi5WmRCAsw==
+X-Gm-Gg: AY/fxX7o7S0EyWgKHz3mhwvUcrafxiPiR5qTqhGyr1iMnOn7MhGBV5IZiHFdLhPNkWi
+	3kOIdzpLrJeafWZleFsTUhmOGhkdFq2TFfd55oi3YpVJzExgh1ias3VEZDVVhLW+Uz7VCLqSPyC
+	DDKtr3aoyoFiTQ4aPQDRQ3crveSHPlK8a/uzV+NzwggInn/kWR2Kl+0bImVov5bY6f7XTFPj2Sx
+	u0LifJOBZfdKSdM62UCUUxmokaw/dbZeygDZJsFLkFW7CD53UDu8cfp3fVb3Hz6VOMwI+rLm+Ac
+	vTCYe/dfQ8GjLTqlIZSiq048+HEjvHbPDbSDa+/zLiYjsCoaET6E2Af5f6P7Po9+zj2XCFIjAR1
+	D51o1RvEJuQRGWKuvYBVJgFA9dHfmAaV7yEcfqSL3kAH56XC0vYtT/R1Vb1roMtcGk58vndgobn
+	rzT1SR3jViAK+TF91NUefH2Ruaamf4QtSisruFwWJ8IQx9H+QRD60c
+X-Google-Smtp-Source: AGHT+IGJHMHvQ2BiL8kGi+L1NEiyq9evaHsD0bUwM82dYISq+7N3XOj+vRLmNpWXWMhfzBHm5bRjRg==
+X-Received: by 2002:a17:902:e788:b0:2a0:7fac:c031 with SMTP id d9443c01a7336-2a311806e37mr2693085ad.14.1766383804712;
+        Sun, 21 Dec 2025 22:10:04 -0800 (PST)
+Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f30bsm9091090b3a.48.2025.12.21.22.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Dec 2025 22:10:04 -0800 (PST)
+Date: Mon, 22 Dec 2025 06:09:59 +0000
+From: Bing Jiao <bingjiao@google.com>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, akpm@linux-foundation.org,
+	gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/vmscan: check all allowed targets in
+ can_demote()
+Message-ID: <aUjgt4EdBv4UyrTM@google.com>
+References: <20251220061022.2726028-1-bingjiao@google.com>
+ <20251221233635.3761887-1-bingjiao@google.com>
+ <20251221233635.3761887-3-bingjiao@google.com>
+ <d5df710a-e0e1-4254-b58f-60ddc5adcbd5@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACXs9pExEhpobSKAQ--.56029S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KryUur4DZFyrKF18uFWxWFg_yoW8WrWrpr
-	srGa45trWUtan5uanxXF1Fva4UCanYy3yS9ryrG343Cr9xXr9Yya40ya4jq3WDA39xJF4x
-	tFZxXw48uF1UCr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
-	UU=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwkEE2lIrP1SDwAAs0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d5df710a-e0e1-4254-b58f-60ddc5adcbd5@huaweicloud.com>
 
-After device_register() is called, put_device() is required to drop the
-device reference. In this case, put_device() -> chan_dev_release() will
-finally release chan->dev. Thus there is no need to call kfree again to
-release the chan->dev.
+On Mon, Dec 22, 2025 at 10:51:49AM +0800, Chen Ridong wrote:
+>
+>
+> On 2025/12/22 7:36, Bing Jiao wrote:
+> > -void cpuset_node_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
+> > -{
+> > -	struct cgroup_subsys_state *css;
+> > -	struct cpuset *cs;
+> > -
+> > -	if (!cpuset_v2())
+> > -		return;
+> > -
+> > -	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
+> > -	if (!css)
+> > -		return;
+> > -
+> > -	/* Follows the same assumption in cpuset_node_allowed() */
+> > -	cs = container_of(css, struct cpuset, css);
+> >  	nodes_and(*mask, *mask, cs->effective_mems);
+> >  	css_put(css);
+> >  }
+>
+> Oh, I see you merged these two functions here.
+>
+> However, I think cpuset_get_mem_allowed would be more versatile in general use.
+>
+> You can then check whether the returned nodemask intersects with your target mask. In the future,
+> there may be scenarios where users simply want to retrieve the effective masks directly.
+>
 
-Found by code review.
+Hi Ridong, thank you for the suggestions.
 
-Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- drivers/dma/dmaengine.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+I agree that returning a nodemask would provide greater versatility.
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index ca13cd39330b..9d7cea1d6e91 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1071,6 +1071,7 @@ static int __dma_async_device_channel_register(struct dma_device *device,
- 					       const char *name)
- {
- 	int rc;
-+	bool dev_registered = false;
- 
- 	chan->local = alloc_percpu(typeof(*chan->local));
- 	if (!chan->local)
-@@ -1102,6 +1103,7 @@ static int __dma_async_device_channel_register(struct dma_device *device,
- 	else
- 		dev_set_name(&chan->dev->device, "%s", name);
- 	rc = device_register(&chan->dev->device);
-+	dev_registered = true;
- 	if (rc)
- 		goto err_out_ida;
- 	chan->client_count = 0;
-@@ -1112,7 +1114,10 @@ static int __dma_async_device_channel_register(struct dma_device *device,
-  err_out_ida:
- 	ida_free(&device->chan_ida, chan->chan_id);
-  err_free_dev:
--	kfree(chan->dev);
-+	if (dev_registered)
-+		put_device(&chan->dev->device);
-+	else
-+		kfree(chan->dev);
-  err_free_local:
- 	free_percpu(chan->local);
- 	chan->local = NULL;
--- 
-2.25.1
+I think cpuset_get_mem_allowed_relax() would be a better name,
+since we do not need the locking and online mem guarantees
+compared to an similar function cpuset_mems_allowed().
 
+Best,
+Bing
 
