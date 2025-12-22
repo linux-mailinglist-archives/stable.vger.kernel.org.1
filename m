@@ -1,225 +1,302 @@
-Return-Path: <stable+bounces-203208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC63BCD583D
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:13:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2089CD5BFC
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCED430456D4
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 10:10:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C3A3300AFE1
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7563128BE;
-	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A600314D24;
+	Mon, 22 Dec 2025 11:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glwFxBeJ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fvCQIaDx";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="x585Jv4L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60691301002;
-	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766398239; cv=none; b=HOt8+uQev/ea0TAbv4SZqyYswKPGoKzy+xcrgBKqHnLAzQHARqOeDUUsrFE9mnl9B1mLCMxKTi6SQMEG5IJj3eSkboXeBDf4Z80N+NNFUFcyR5xYfgQQzmSSbrUPCr+0xs5k1SUFwwfvrsVTfNMePdjaih++rOTMgcOLcdH1vaU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766398239; c=relaxed/simple;
-	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vew6eDv1QeH+ja+dHmmWPwW7yX/LCZ7q5bt1twNionCwJxD/puB96q9znmO1fdJV4UEHaqH/lG2jTLxyKjlZhZEm32EXe+bIR9IbD64pi5Mc5UwMFaqr4xxL+0mFXcC3v+XXgAaJUjirDKOGwGCNG7zR6eaz/yzhSDBIYqfhwqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glwFxBeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1F7C116D0;
-	Mon, 22 Dec 2025 10:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766398238;
-	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=glwFxBeJHfy/Hxw8E0IhkNQF2D75sUaWPBU97dBGqQz6RmNddi4AuNDGVRXl11MW5
-	 /2XRcRjtcuW+PNO3XYgXDly/+1nqW71Z8wNkiivCJ3Jg7vi/qaEUg8J4toGx7nqkkz
-	 RC2z+fWsSeanfTQwGH23Y6Vf5tNpm4TWdbplzUT0YtbQ8eTMrchSyhXYxYhA/YeQFZ
-	 OPRiIuCw/OtPCmBpFpOqhk6zayMlQB8WgR7rXpsqEZFJyUY/Z+c80MqXHtj/CR8vcF
-	 w1ay/Q/COiczt1kmwNYCUFJSSQcNJyIAUj3oSuM1C7TYwA6NT4ooYHb4wIaUUIsZFD
-	 XSI866D9bbWPg==
-Message-ID: <c66cb4e4-820e-419a-ae9f-efd2c15aa570@kernel.org>
-Date: Mon, 22 Dec 2025 11:10:32 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A892314A7F;
+	Mon, 22 Dec 2025 11:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766401788; cv=fail; b=FGt9CQzsMTcvsHiqQoTIzWeHjys/KstbNjgnarnlpXAokszkrHX1LDjo1WsXdXKieMPesmHiInnvRgxu1QK0k/ozVEe/uOLiCVLYoFAZc0y+uNVqJEet0ZqmgzmOiaOH1Ztfv8PFAZ30S5aiU8z2ckn0+/emLtLKGQbDTfRVlPg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766401788; c=relaxed/simple;
+	bh=LlWUwy6VHw0xZilkI4/XLt7SY6jSX5eoVPqx+sqBwe8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JV0LcuzBHUpNxaudnBUMOAPwQoa5jPNypHQZ5ChShWpjWcFSQONdqj0AtoA4rG9GiK+uhEqToRJjpEUprA4eE23e/VhPPgIKiq/tecOzlDYGBGLQ5WqA7cyQRR2kfsErD2qF9d6E15YwD/bjS3Hel7qmNGz3n1Qxa3ANBwuPCsI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fvCQIaDx; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=x585Jv4L; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMB6Nhe2055828;
+	Mon, 22 Dec 2025 11:09:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=; b=
+	fvCQIaDxvJs+cKBtgVTvjxZt4GpHkkHytam9ju7g9nZZaSFav7SGCxrFP8oPemVI
+	woZwzI6SY1S7wMa7g/tmnEUJQUhOx1noHRF73ZD0ZeZ6KBfipnmZNGrDXWqeikeU
+	cZXqTP/aHJMu3uhDIm9H+HfhY5HpE/EqkrkTD3hl9PWVfFMomggQKbi8Muq7BggN
+	hjyB4rUrngDHAC5LhvHMZe8797DYWoDXQRkeEvAKRtYtFFQmTW1O1JMjBA61gHcx
+	zqlYj2PkunLGW1L6NP75NPYmJNFoV3j/RRMfpHA1rQbwjFvt+iTN7+Vw6VKNw/Vr
+	HFgzAwAh8o7cEof8fV9FZg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b74ttg0bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Dec 2025 11:09:04 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMALjuQ039962;
+	Mon, 22 Dec 2025 11:09:03 GMT
+Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b5j876nbq-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Dec 2025 11:09:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sldnBMOGUGn3VvPhh+ZLR1TikoiwXohxBJa8fgJLQCB8x/ZQRZW2dPe9Ykn8uW9Ul9ElrqO4hPNQaXN39X8F7yldTZYv5Y6GEiShh2hJ/0OOnqEUouKBueuyDUvWNg2QbaTf5YYDPdXRDKOO423u7m95T9uO2gDYfzPtAYT4vizDp6joGurbLqSiF1Dsm0m8exl2MzPCnXu7Pm0ueiS2vHiARx8zdIsvWRMV43xGS+OlLKPhkXrizo8mUNF80tMa3mmm98LmXhtdMg2IPy4deoQxeu607+v6uZ0PZ0H25USH/+sG2b3BQyFkV0Sm8QHc9APIC52KrC0xmmDSCfnVVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=;
+ b=HJIjQatFyDv6Xjef7azDqTDXir2RCzRaFKhJkSpTDDgf+k2ABzl/6SSnRk9ZUgdtiilDR9WOCSpYBl8sYXn8kaF0huYb+L+zWgqnSHJWE52eQBeIKZXBrYuLCAtzNU6scQz5gHv6jSoDAxjaB7XK7oVGh6LNxzS2Q/uLRxb5ed0+O7LCWpsCN0yWesDNKraALIgXTF//BR/1+Gg6THESiDLOPt71nXJkvhs82+ni4ozNUh9tDFY2+Yhdf6F/Z29utnFBxztDkYNxfw5pft53kfXzezy+e8yPmicfxYM6QJGtg2uQZoMf+pS9/FYv3N466gyT/nd+MUNFX1KpEWS7iQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=;
+ b=x585Jv4LyPfmMWW28XWfbbjpUVkaABNUgLM8BhmNB+FFPx/eJuhXuhZfXFIZwQzA7WEyOh+Sz4FuHon7S1NibjDIl6YB1yR+K+a/yMCDVpfOQAAmeiD4G9bkg3l0kmvsuBBocMl6gLFKMjmP2ACdoLQ9rDVxJ0ffU7FGr4v4/nM=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by PH0PR10MB4741.namprd10.prod.outlook.com (2603:10b6:510:3d::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Mon, 22 Dec
+ 2025 11:09:00 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
+ 11:09:00 +0000
+From: Harry Yoo <harry.yoo@oracle.com>
+To: akpm@linux-foundation.org, vbabka@suse.cz
+Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com, glider@google.com,
+        hannes@cmpxchg.org, linux-mm@kvack.org, mhocko@kernel.org,
+        muchun.song@linux.dev, rientjes@google.com, roman.gushchin@linux.dev,
+        ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, surenb@google.com,
+        vincenzo.frascino@arm.com, yeoreum.yun@arm.com, harry.yoo@oracle.com,
+        tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+        hao.li@linux.dev, stable@vger.kernel.org
+Subject: [PATCH V4 1/8] mm/slab: use unsigned long for orig_size to ensure proper metadata align
+Date: Mon, 22 Dec 2025 20:08:36 +0900
+Message-ID: <20251222110843.980347-2-harry.yoo@oracle.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251222110843.980347-1-harry.yoo@oracle.com>
+References: <20251222110843.980347-1-harry.yoo@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SEWP216CA0043.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2bd::13) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251212071019.471146-1-david@kernel.org>
- <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
- <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
- <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
- <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org> <aUioS4dkTrKgsHGP@hyeyoo>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aUioS4dkTrKgsHGP@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH0PR10MB4741:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b0ef00d-29a2-42ef-561a-08de414a824f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bdPDEVi7FYsreM0p9el21dswSl89tzWkB2ny5bYXFffYNvBoZrZ5yqnGakkh?=
+ =?us-ascii?Q?J83+K5bily3qhd8E5+3QB1hHV+1E7V/7asRKLoxdQGia8xU30pOV/cjmVibe?=
+ =?us-ascii?Q?feVTOOv2ki51v5DATGhIH3EzT9MlvE4qCX+gDqTWSvMSzBqFWn5QtCTPTbSa?=
+ =?us-ascii?Q?/X9l5GJO/mcOW0PJUOF5htUDuxqyjJ5T2WdeG1ZX02TDpuBf7E647cnavamb?=
+ =?us-ascii?Q?25MPVJh0lTrWazpK+6L4lx8Z6ig5uMW/6+xSs+0XxuVDQ37XX/NvxTEqy3Et?=
+ =?us-ascii?Q?GM5LGIlZRDUlSnSI40w7AK/HCSgSrNIZ7QpFOgInZKyfOaDcQWuz+vRsU/iY?=
+ =?us-ascii?Q?/3vI6azu1W9TFTrA2VEPJSu80z4e0odqKF0EpLjQuEjHQRfdq7T8+vfSvlLv?=
+ =?us-ascii?Q?d8MfvgmBFyXuaP6rkEYs0cg32FlgIeqgvgppNO+lCb/wCMwO2Mpdg4hi7hyj?=
+ =?us-ascii?Q?fcvUDIzTYO86y0xjz+BeAXdj4yIB6gEBGZbVjnSI32WXQNIfcIfiBdB5VN6/?=
+ =?us-ascii?Q?Er82p2/qMct48cRHm2hlBVbBG972m4qRx/aBgErZbbUBtGVa6IxcocqHNk1s?=
+ =?us-ascii?Q?yeHuxrcE7M0T6RIJzy/m/MVIhLwTvjOD2n7bMjcANxTS0ATrXx/oK11/iaOT?=
+ =?us-ascii?Q?tTBD4QI8OK+ViEAzBzCoyjEb28I4Uron5qvrBfvp91riTQWL5o9nDs/JiZd7?=
+ =?us-ascii?Q?X7xCnG7nc9PcYjnqCPj8viqtxDa2K2BLHKyakkcxPoDXAJAte0QDpFV5eIkS?=
+ =?us-ascii?Q?ZVNmsoRpNN2bgjtUWn3DXSxP8kf+k/dBdec9JEZO0XA9/yeH/JDz7H1RyX40?=
+ =?us-ascii?Q?MZmNvprFS/rptNpxT6Qj0DkOFMh29TyptScldTLEbJWWH6yhZ2A/VsHS1drS?=
+ =?us-ascii?Q?k2ZjgUQ9SXJ/Jd/jPGyrjePCWNUFATofwI/xv8ujDLta84lP9lnydnBsuC61?=
+ =?us-ascii?Q?G6tLtnnfxWGIaws8SXVGmjuBrkyVn5fkPrzD8ZPyiAhopDJIj+lv2BYJ5pop?=
+ =?us-ascii?Q?PJldwp2FSN9GQab4yBBv1K/iPacrgP5mL7UcNXgMY/5xd0nf22TFbDyBXKps?=
+ =?us-ascii?Q?0fn3syBGPKKV62pV4PuNrCn0Q0TKOWw9X1gPEot+dd+3rbEc5lUhj7HHjD9A?=
+ =?us-ascii?Q?kOSXEDfdjX2xdEPH9ZWsfpHoT96usyhjcn4pl3+qLv3H9fz/tPw98pCh5+IL?=
+ =?us-ascii?Q?8tfWAv5zvCPOhryVbJU43dBPC43ulj6H3aH1b67P76KVRu2BA9aGeg/Jg0+K?=
+ =?us-ascii?Q?/1FJ9i+cvGzmiIahN+Ye0Hij5atc2aeWkR3/H+GrS4IQ3ZQvub2/wC10A3aS?=
+ =?us-ascii?Q?drCYJtB7ninnfA5G+HrLmRG2iJKR7lO9oprgQGIceEBMu0ufd0kBsD4Ca874?=
+ =?us-ascii?Q?36p+/ONb3CabQd1Um34g7AyEs/Kyzeq9BVQfCAMCZ8/sQb/FokFEngw8H7gT?=
+ =?us-ascii?Q?xHEE4VfUksdFVKiqcoBQkzcS90fbkrAu?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FNcRERFWt5atM26m94ub6Y4PPT1VWpP0ihVX4gl42cHKcrME4AbM/28oib0s?=
+ =?us-ascii?Q?HZ9w7phPyIiUqHyY+S0ol81bhyTiKYQFBEzY5UOt3bfjb9aOFlcbmjVDLXIt?=
+ =?us-ascii?Q?MwlHUr+/rOwCpeN+hrzVHxyGMM1nRob5vGNJYTITA1QSNYYoS13xQKYJ2VzG?=
+ =?us-ascii?Q?MJfdNzgVWnh4trr+4u2vBtr/wtp5iX8IY7S/3fuxV8aU7xFcKTXlS2evBmZw?=
+ =?us-ascii?Q?U1rLxrZc+4z/WUKXyMaSvv7eMT90kFLXWcgtyxjObojkulTrtzXQqodm6yTt?=
+ =?us-ascii?Q?CItOYRTSi5xzGbQlyj2xwhMuMgTqraD3KuDsv7bQTICwf3hQ3ewTZUpwbVNk?=
+ =?us-ascii?Q?mSvbaCBj/mxohozb3sidiMT0+QQuQLZ+KYAoKkCSsF4psY3H5KDmaS1y4iWJ?=
+ =?us-ascii?Q?aQTTYc93EGAMjyfLLuYMjzcGqrZXLZf4ZcEMYPuS7rnwd3dOuQDkztNxRjM9?=
+ =?us-ascii?Q?EMvcAoRmTR6srOGdLjYWHBM0VEya7/mwc9XfvuPTzpyOQbZWdofXo1FrSNAu?=
+ =?us-ascii?Q?6bY26nFXCrwWw/xwz2QBBfE5uO4fQlGDv3EAjj8vAC5lGjUTBnGWav+sc8YK?=
+ =?us-ascii?Q?LKvDNAIz0KiS7CpFDB3Z31qSfnet24HFyqtYAKfV8ntdvl0NsJYyRWQi/bpM?=
+ =?us-ascii?Q?1E4Qy+gn1y6y9gwrcxQuGmiM0VcshU9FWj9Qh2IqVfyjWoqVdIY3MAbGGnqx?=
+ =?us-ascii?Q?m/rjfTmqyoN7+opHeVdGxmgPrgdaQqEhtKV+M+CmtMR+x1SYsO7I8maqBwuZ?=
+ =?us-ascii?Q?cQTDXxGcGZuQ8nKR/c8qm9+vMPmTp3e9Qpo1teaP3Vf/rkvnC+xzVbYaiOoG?=
+ =?us-ascii?Q?mgMwzhT5RE+koOLOMiBMB+a2WNokJv7yDu7fAaHgQc/h2KBPixq6MjsGE9it?=
+ =?us-ascii?Q?FKT71yqZKJz/AMIJzGvVW433Go0E8bjBhVeaGkWqhrK+EozsmFMZV/Dz4peX?=
+ =?us-ascii?Q?POb0rV07SpJ55buVWcg4ZYiBACpxkin5HU7acNM4rYMnImm94VK11ByywhCG?=
+ =?us-ascii?Q?Nu0JAewQkYgGQeoJF+my5XNcEVwMx7RGXj18iHw1HCcvJOYQ+5eEknuKk/Oc?=
+ =?us-ascii?Q?/vPX1tTxCX5nhRRk0d4nU1OP3NITP8M8aTT3iG6ljVFPOnIJnMuEu5wa4geE?=
+ =?us-ascii?Q?3dnZBDtPSA4VSdRAqjQrBnxnysb9uSHfoPjIeBfpoIyIk0H3XiCgKTHECGnz?=
+ =?us-ascii?Q?t2iFXC7H2NWhJ01OGQ0YxTlz2RPhsYpyg9Q5s4ZziMpGH2whn4s4uZTDy1GI?=
+ =?us-ascii?Q?P3MucRsXrnU9Cv4H1JgKE9V9afFTcUa9bYDUlRX1uVjQe65JWxNfXVID49Bs?=
+ =?us-ascii?Q?INEogxBPaZY3wWpA2Cx7kpfpcOmUiqPuen6xq9fejzOUCv3lS4v5DNX8fFpK?=
+ =?us-ascii?Q?Ht/dF07PSYGdpIxUudm7TIiEnOM3WMU5EA2/JxKK0mfkzSK+87tYcIC628Ay?=
+ =?us-ascii?Q?yRTWLFWn9uKsm4StZH7229PwSWavfoeo5N05Kf3WHOGqnUbyrQJVCUmr3BFq?=
+ =?us-ascii?Q?NwP2whZLoyypa1FfzNaoHs9Dp2G696JAl6IPshVNtrRfSwZyJzvZZVixz+Ts?=
+ =?us-ascii?Q?dZxn+cpG3VMOmzvWljRfVCT75Wc7PxICT2DAG7L145R0AMPtYTbr9hi1JJDM?=
+ =?us-ascii?Q?t+Gq621cySZH+uxjJdXqDUsKRO/Srgay27b+5PsSB0vCKvos0crw/WsJKlt/?=
+ =?us-ascii?Q?sQK1d79hkd3cYKpcV3ohLjXX+s3ZBjFit6JAgy0mu69DW1OChseI+LKf3mvM?=
+ =?us-ascii?Q?wJVj+wW6Ow=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	fjx+mBHX6dTw987m/XgU8YavroUxGzReoarXMjiB5pAv2hXRuWYZ/LSn74UXTfJ++gtvMZUh8/xMPhwZC9IxfNEM5uyQyDgtS7fTbZwLhb8u5PX3vE3lvsFyUPFfU8qKvLwptGANZcph6uOQMna3lwWOdl+6wreHIVQdVMGupG+mNDsOY/H5FxQo3kHlWIDTcZb735zx/M8hLTrLUL/m+pGslvw97K4gD4pUEMXhKYS8wecAQHL2LFUOt+lTdglVvz6lW0anstCfJ9zVMA/9m1k/QwZqCUazMfEpfbgisJcw0XugBwkG9GfvGljRpZuIUYl5g8ORxql1KLA4kSY/RW9ObvlyGi8LsYxINg/uSW5+Fl8WMys/VoRN+17F0fWnCtrDNIOvD0gJfmvuP9Z26IEEmkIGpRPc7lng7dCq7TDCiKjnLAOY4T6Q//emD2fs0VLZZGqDAL1GlJ1tTVcAlH9+HVNdplw0P7M1WL9/djHQMoSRAvyh5hgAA1xW6LWZTb7PiN0zO3OD3ZsGprTb/chbRpjObbRSYQU17vD4IQBad0KEPAZW7qwjZTXUEkRI+bbVMiZPQVar4g3qB6E/VMBH8GlbHy+Q9lGeLxV80R8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b0ef00d-29a2-42ef-561a-08de414a824f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 11:09:00.3843
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k0SCZoYlWNkC29GIKx/PKetnlsWHrjPq7WcqvrU7fWH/TORtBMSd0DN7Cod2wa3AxudzIdnLMioJzJ2EU1lSMw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4741
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2512220101
+X-Proofpoint-ORIG-GUID: MeVxCst5-Ofv9Y3YRZ47abTnvo097w4i
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDEwMSBTYWx0ZWRfXyNp5OVblQPio
+ 8qaAJHNy1RHp2x/h071YruOaxAAuD4i+GJ++qtYhUGEH3WJRHsFC1aziLLpyT7QfAL9GUZHSBfx
+ ynevV2B9jZEVnTrZPkLphEgU82dR0GpBDw4zoTOOpBCETwt8MqtXUZa5BFGcymB81JpEA1VknFs
+ b9wrpPUFL9b7yA7VKhyuZYFxGfvvhcu7oLr8+1LcF/YmU+jU+6OT1JoBYUuk5OOZUM48Eyapeyg
+ MOSiPDYhqL1r2wpkyHo1q6Ewpj8lYRnsJD/GeObDIgqcbdc79TZc2DSv3le8xLal2jRK61VLnUD
+ YHWFzho8oxq+JOWIwv0qXC5Ia94I2p720ziU/lcULPlpY8M+fFcdT46Fg6fR39aq/pijDXMQ1ar
+ 4EL1Ow4AaanBBMwAampf+UxgFrOVyvnOYAbl4RzJjzNiGzIVBOHE+sHmhMSvQyGBwtwok/T9wgx
+ dremAD7EK3KdC565d/w==
+X-Proofpoint-GUID: MeVxCst5-Ofv9Y3YRZ47abTnvo097w4i
+X-Authority-Analysis: v=2.4 cv=d8H4CBjE c=1 sm=1 tr=0 ts=694926d0 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
+ a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8
+ a=yPCof4ZbAAAA:8 a=60bAUpEqyJ0hnt3RZ0MA:9
 
->> Okay, the existing hugetlb mmu_gather integration is hell on earth.
->>
->> I *think* to get everything right (work around all the hacks we have) we might have to do a
->>
->> 	tlb_change_page_size(tlb, sz);
->> 	tlb_start_vma(tlb, vma);
->>
->> before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
->> don't immediately call tlb_finish_mmu() already.
-> 
-> Good point, indeed!
-> 
->> tlb_change_page_size() will set page_size accordingly (as required for
->> ppc IIUC).
-> 
-> Right. PPC wants to flush TLB when the page size changes.
-> 
->> tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
->> some very good reason I am sure.
-> 
-> :)
-> 
->> So something like the following might do the trick:
->>
->>  From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
->> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
->> Date: Sun, 21 Dec 2025 12:57:43 +0100
->> Subject: [PATCH] tmp
->>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> ---
->>   mm/hugetlb.c | 12 +++++++++++-
->>   mm/rmap.c    |  4 ++++
->>   2 files changed, 15 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 7fef0b94b5d1e..14521210181c9 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	/* Prevent race with file truncation */
->>   	hugetlb_vma_lock_write(vma);
->>   	i_mmap_lock_write(mapping);
->> +
->> +	tlb_change_page_size(&tlb, sz);
->> +	tlb_start_vma(&tlb, vma);
->>   	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
->>   		src_pte = hugetlb_walk(vma, old_addr, sz);
->>   		if (!src_pte) {
->> @@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   			new_addr |= last_addr_mask;
->>   			continue;
->>   		}
->> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->>   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
->>   		if (!dst_pte)
->>   			break;
->>   		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
->> +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->>   	}
->>   	tlb_flush_mmu_tlbonly(&tlb);
->> @@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
->>   	BUG_ON(address >= end);
->>   	flush_cache_range(vma, range.start, range.end);
->> +	tlb_change_page_size(tlb, psize);
->> +	tlb_start_vma(tlb, vma);
->>   	mmu_notifier_invalidate_range_start(&range);
->>   	hugetlb_vma_lock_write(vma);
->> @@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
->>   	hugetlb_vma_unlock_write(vma);
->>   	mmu_notifier_invalidate_range_end(&range);
->> +	tlb_end_vma(tlb, vma);
->> +
->>   	return pages > 0 ? (pages << h->order) : pages;
->>   }
->> @@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->>   	} else {
->>   		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->>   	}
->> +
->> +	tlb_change_page_size(&tlb, sz);
->> +	tlb_start_vma(&tlb, vma);
->>   	for (address = start; address < end; address += PUD_SIZE) {
->>   		ptep = hugetlb_walk(vma, address, sz);
->>   		if (!ptep)
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index d6799afe11147..27210bc6fb489 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>   					goto walk_abort;
->>   				tlb_gather_mmu(&tlb, mm);
->> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
->> +				tlb_start_vma(&tlb, vma);
->>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
->>   					hugetlb_vma_unlock_write(vma);
->>   					huge_pmd_unshare_flush(&tlb, vma);
->> @@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>   				}
->>   				tlb_gather_mmu(&tlb, mm);
->> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
->> +				tlb_start_vma(&tlb, vma);
->>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
->>   					hugetlb_vma_unlock_write(vma);
->>   					huge_pmd_unshare_flush(&tlb, vma);
->> -- 
->> 2.52.0
->>
->>
->>
->> But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
->> to a later point and only focus on the IPI flushes.
-> 
-> You mean defer TLB flushing to which point? For unmapping or
-> changing permission of VMAs, flushing at VMA boundary already makes sense?
+When both KASAN and SLAB_STORE_USER are enabled, accesses to
+struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
+This occurs because orig_size is currently defined as unsigned int,
+which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
+placed after orig_size, it may end up at a 4-byte boundary rather than
+the required 8-byte boundary on 64-bit systems.
 
-Defer converting to mmu_gather to a later patch set :)
+Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
+are assumed to require 64-bit accesses to be 64-bit aligned.
+See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
+"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
 
-I gave it a try yesterday, but it's also a bit ugly.
+Change orig_size from unsigned int to unsigned long to ensure proper
+alignment for any subsequent metadata. This should not waste additional
+memory because kmalloc objects are already aligned to at least
+ARCH_KMALLOC_MINALIGN.
 
-In the code above, primarily the rmap change is nasty.
+Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+---
+ mm/slub.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> 
-> Or if you meant batching TLB flushes in try_to_{migrate,unmap}_one()...
-> 
-> /me starts wondering...
-> 
-> "Hmm... for RMAP, we already have TLB flush batching
->   via struct tlbflush_unmap_batch. Why not use this framework
->   when unmapping shared hugetlb pages as well?"
-
-Hm, also not what we really want in most cases. I don't think we should 
-be using that outside of rmap.c (and I have the gut feeling that we 
-should maybe make use of mmu_gather in there instead at some point).
-
-Let me try a bit to see if I can clean the code here up, or if I just 
-add a temporary custom batching data structure.
-
-Thanks for bringing this up!
-
+diff --git a/mm/slub.c b/mm/slub.c
+index ad71f01571f0..1c747435a6ab 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -857,7 +857,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
+  * request size in the meta data area, for better debug and sanity check.
+  */
+ static inline void set_orig_size(struct kmem_cache *s,
+-				void *object, unsigned int orig_size)
++				void *object, unsigned long orig_size)
+ {
+ 	void *p = kasan_reset_tag(object);
+ 
+@@ -867,10 +867,10 @@ static inline void set_orig_size(struct kmem_cache *s,
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
+ 
+-	*(unsigned int *)p = orig_size;
++	*(unsigned long *)p = orig_size;
+ }
+ 
+-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
++static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+ {
+ 	void *p = kasan_reset_tag(object);
+ 
+@@ -883,7 +883,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
+ 
+-	return *(unsigned int *)p;
++	return *(unsigned long *)p;
+ }
+ 
+ #ifdef CONFIG_SLUB_DEBUG
+@@ -1198,7 +1198,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 	if (slub_debug_orig_size(s))
+-		off += sizeof(unsigned int);
++		off += sizeof(unsigned long);
+ 
+ 	off += kasan_metadata_size(s, false);
+ 
+@@ -1394,7 +1394,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 		if (s->flags & SLAB_KMALLOC)
+-			off += sizeof(unsigned int);
++			off += sizeof(unsigned long);
+ 	}
+ 
+ 	off += kasan_metadata_size(s, false);
+@@ -7949,7 +7949,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 
+ 		/* Save the original kmalloc request size */
+ 		if (flags & SLAB_KMALLOC)
+-			size += sizeof(unsigned int);
++			size += sizeof(unsigned long);
+ 	}
+ #endif
+ 
 -- 
-Cheers
+2.43.0
 
-David
 
