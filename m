@@ -1,80 +1,46 @@
-Return-Path: <stable+bounces-203207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DCECD565B
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 10:51:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC63BCD583D
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7B28300AC52
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 09:51:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCED430456D4
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 10:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FF131062E;
-	Mon, 22 Dec 2025 09:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7563128BE;
+	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tQTAnT3F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glwFxBeJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD6D24A04A;
-	Mon, 22 Dec 2025 09:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60691301002;
+	Mon, 22 Dec 2025 10:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766397058; cv=none; b=H7CXxcNdTN+Kj1hEljw7muf3mqkNJ41K5TdYEPuVkZpOE4U6LVupN3tPkPeR8j/pY3NE/SiqsS2ChhmMMfISxmJfjmIZeh8jLfROu1/YvsumQ3+t6p2CK8jN/FeHW4hZrZRTTtmKfesfYlhGH6pv0EpPUqf5H2S93eH6055Og2E=
+	t=1766398239; cv=none; b=HOt8+uQev/ea0TAbv4SZqyYswKPGoKzy+xcrgBKqHnLAzQHARqOeDUUsrFE9mnl9B1mLCMxKTi6SQMEG5IJj3eSkboXeBDf4Z80N+NNFUFcyR5xYfgQQzmSSbrUPCr+0xs5k1SUFwwfvrsVTfNMePdjaih++rOTMgcOLcdH1vaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766397058; c=relaxed/simple;
-	bh=glo719DX1Zd80hIeTJHGzl22RKxkYDY53K+Q6S1vRkY=;
+	s=arc-20240116; t=1766398239; c=relaxed/simple;
+	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lyIyRgKwcGoEzy2X34SXHBtiM9IW753gCvV2/bXEULdsDrOmPdXZLvTGhDwD7pbWVqFjeMtl2QRaM1PfZGmwCJTue+x8YB1x7Uad4lp+yIElq2zdBZRKLEgminj89JrLEE1sG78trzVQeJPoLFHTYXvyZ8cvllF+6cKSec/h/98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tQTAnT3F; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BM5MPVJ025467;
-	Mon, 22 Dec 2025 09:50:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/2ocVL
-	rE96AD61iqB3NileaMuo9yP0a+8NfcVL4Anv4=; b=tQTAnT3FKA7fEUQndgkWvc
-	6iOkSYFUYS+nB1fh6KxiNtc63gHFNhqA3dZ7rhYBkcNEmTd4KNUYd3qNPK41ysz5
-	bjSblV1lZpHISatSGQLmxYbds9PZ5oNgWg7Q52M9gltsTlBV9ub0KKfiTpOQWcHM
-	K5FHhL2PsQs9Qw+JnS1M8u+FWV9ALcTHDIaPWe4iLEh6jOuOXE+3SlllVQagD3a0
-	GBVnXMlnZ8Y4eRWAu94fBLFgy3oaMAr6v56Jto1djIfJe3SATqzOpeiOI6fJ8iul
-	JPNZmP6oeSIFfudn/UmLROtX4YtUl8mT7/QaCOP+5Ur2gVlo5v/p/gq3kOBqUqmQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5kh47ajh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 09:50:43 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BM9gIkp031093;
-	Mon, 22 Dec 2025 09:50:42 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5kh47ajf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 09:50:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BM90hjJ001126;
-	Mon, 22 Dec 2025 09:50:41 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b664s5hjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 09:50:41 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BM9ocDa49021418
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 09:50:38 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2191B20049;
-	Mon, 22 Dec 2025 09:50:38 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F9CF20040;
-	Mon, 22 Dec 2025 09:50:37 +0000 (GMT)
-Received: from [9.111.154.103] (unknown [9.111.154.103])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 22 Dec 2025 09:50:37 +0000 (GMT)
-Message-ID: <64405058-23a9-49df-aed0-891fa0a19fbb@linux.ibm.com>
-Date: Mon, 22 Dec 2025 10:50:37 +0100
+	 In-Reply-To:Content-Type; b=Vew6eDv1QeH+ja+dHmmWPwW7yX/LCZ7q5bt1twNionCwJxD/puB96q9znmO1fdJV4UEHaqH/lG2jTLxyKjlZhZEm32EXe+bIR9IbD64pi5Mc5UwMFaqr4xxL+0mFXcC3v+XXgAaJUjirDKOGwGCNG7zR6eaz/yzhSDBIYqfhwqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glwFxBeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1F7C116D0;
+	Mon, 22 Dec 2025 10:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766398238;
+	bh=oqvDU7EcxPgLIt7kqJ6tUYvc7fh9oOd7r5g2Qh/KjTU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=glwFxBeJHfy/Hxw8E0IhkNQF2D75sUaWPBU97dBGqQz6RmNddi4AuNDGVRXl11MW5
+	 /2XRcRjtcuW+PNO3XYgXDly/+1nqW71Z8wNkiivCJ3Jg7vi/qaEUg8J4toGx7nqkkz
+	 RC2z+fWsSeanfTQwGH23Y6Vf5tNpm4TWdbplzUT0YtbQ8eTMrchSyhXYxYhA/YeQFZ
+	 OPRiIuCw/OtPCmBpFpOqhk6zayMlQB8WgR7rXpsqEZFJyUY/Z+c80MqXHtj/CR8vcF
+	 w1ay/Q/COiczt1kmwNYCUFJSSQcNJyIAUj3oSuM1C7TYwA6NT4ooYHb4wIaUUIsZFD
+	 XSI866D9bbWPg==
+Message-ID: <c66cb4e4-820e-419a-ae9f-efd2c15aa570@kernel.org>
+Date: Mon, 22 Dec 2025 11:10:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,122 +48,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: Initialize smc hashtables before registering
- users
-To: dust.li@linux.alibaba.com, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Wenjia Zhang
- <wenjia@linux.ibm.com>,
-        Wang Liang <wangliang74@huawei.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Aswin Karuvally <aswin@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        linux-rdma@vger.kernel.org, stable@vger.kernel.org,
-        syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
-References: <20251217114819.2725882-1-wintera@linux.ibm.com>
- <aULLcudhF10_sZO6@linux.alibaba.com>
+Subject: Re: [PATCH v2 4/4] mm/hugetlb: fix excessive IPI broadcasts when
+ unsharing PMD tables using mmu_gather
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20251212071019.471146-1-david@kernel.org>
+ <20251212071019.471146-5-david@kernel.org> <aUVHAD9G5_HKlYsR@hyeyoo>
+ <d5bf88d9-aedf-4e6d-b5a0-e860bf0ed2e4@kernel.org>
+ <3d9ce821-a39d-4164-a225-fcbe790ea951@kernel.org>
+ <e78f5457-43fb-4656-ad53-bfda72936ef5@kernel.org> <aUioS4dkTrKgsHGP@hyeyoo>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <aULLcudhF10_sZO6@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <aUioS4dkTrKgsHGP@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=bulBxUai c=1 sm=1 tr=0 ts=69491473 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=YQ-vFakxYTWRgb4ZP7sA:9 a=QEXdDO2ut3YA:10
- a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
-X-Proofpoint-ORIG-GUID: LIrkudiWjmkqKPNqDh8stQ7lJOXjZu9N
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDA4OCBTYWx0ZWRfXzLSsyDO2ecsw
- +fLJgGKxdsEnlylE7f/kEaOFTPrA87AlDdmDCPwmf0nbaM9B+y0yuhYICKcmekjkRlEGW2bKq/d
- I+lvtvJNC8V4SCN/FzfFqS27Z5rVW/I/aTPwH5Leyl1ZB88nMqniobSPYhtZfsv63jgdOqZPqWG
- lA6nsSHR45+FKN3MoI/YFXmPjks95UKoXQ8sNLG7oolcKkO2mu95eM85jzbCA9ekQdAc3gDR5UH
- NfiOgreBIkSAJ8cUt7UVvEnBRyvtE7eKOtpKmhtooyYIBTlr/pt238ALuEtzcXlGh4vrMvn/RC2
- xZXPGnkOcmBowgfSjliGLCPB0WdVxS00yMSBk6f8JYtcFXHeOUTB6VXw90kKjZfBk1iEVpKhAuP
- 3DQEtjhmhhmXHv19NsxBlB85lsst1Z4X/RoFscCs3c3uVK19RAp+SdQr3K02E3+dUuy7r8vuv2J
- F4iV1a8S4Zns+eRZ7sA==
-X-Proofpoint-GUID: MpCb1q-ylE7ZzNqxnYVieCHTJABQT_mO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0
- priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 phishscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2512220088
 
-
-
-On 17.12.25 16:25, Dust Li wrote:
-> On 2025-12-17 12:48:19, Alexandra Winter wrote:
->> During initialisation of the SMC module initialize smc_v4/6_hashinfo before
->> calling smc_nl_init(), proto_register() or sock_register(), to avoid a race
->> that can cause use of an uninitialised pointer in case an smc protocol is
->> called before the module is done initialising.
+>> Okay, the existing hugetlb mmu_gather integration is hell on earth.
 >>
->> syzbot report:
->> KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
->> Call Trace:
->> <TASK>
->> smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:236
->> netlink_dump+0x647/0xd80 net/netlink/af_netlink.c:2325
->> __netlink_dump_start+0x59f/0x780 net/netlink/af_netlink.c:2440
->> netlink_dump_start include/linux/netlink.h:339 [inline]
->> smc_diag_handler_dump+0x1ab/0x250 net/smc/smc_diag.c:251
->> sock_diag_rcv_msg+0x3dc/0x5f0
->> netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
->> netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
->> netlink_unicast+0x7f0/0x990 net/netlink/af_netlink.c:1357
->> netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+>> I *think* to get everything right (work around all the hacks we have) we might have to do a
+>>
+>> 	tlb_change_page_size(tlb, sz);
+>> 	tlb_start_vma(tlb, vma);
+>>
+>> before adding something to the tlb and a tlb_end_vma(tlb, vma) if we
+>> don't immediately call tlb_finish_mmu() already.
 > 
-> I don't think this is related to smc_nl_init().
+> Good point, indeed!
 > 
-> Here the calltrace is smc_diag_dump(), which was registered in
-> sock_diag_register(&smc_diag_handler).
+>> tlb_change_page_size() will set page_size accordingly (as required for
+>> ppc IIUC).
 > 
-> But smc_nl_init() is registering the general netlink in SMC,
-> which is unrelated to smc_diag_dump().
+> Right. PPC wants to flush TLB when the page size changes.
+> 
+>> tlb_start_vma()->tlb_update_vma_flags() will set tlb->vma_huge for ...
+>> some very good reason I am sure.
+> 
+> :)
+> 
+>> So something like the following might do the trick:
+>>
+>>  From b0b854c2f91ce0931e1462774c92015183fb5b52 Mon Sep 17 00:00:00 2001
+>> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>> Date: Sun, 21 Dec 2025 12:57:43 +0100
+>> Subject: [PATCH] tmp
+>>
+>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> ---
+>>   mm/hugetlb.c | 12 +++++++++++-
+>>   mm/rmap.c    |  4 ++++
+>>   2 files changed, 15 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 7fef0b94b5d1e..14521210181c9 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5113,6 +5113,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   	/* Prevent race with file truncation */
+>>   	hugetlb_vma_lock_write(vma);
+>>   	i_mmap_lock_write(mapping);
+>> +
+>> +	tlb_change_page_size(&tlb, sz);
+>> +	tlb_start_vma(&tlb, vma);
+>>   	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+>>   		src_pte = hugetlb_walk(vma, old_addr, sz);
+>>   		if (!src_pte) {
+>> @@ -5128,13 +5131,13 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   			new_addr |= last_addr_mask;
+>>   			continue;
+>>   		}
+>> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+>>   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
+>>   		if (!dst_pte)
+>>   			break;
+>>   		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+>> +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+>>   	}
+>>   	tlb_flush_mmu_tlbonly(&tlb);
+>> @@ -6416,6 +6419,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+>>   	BUG_ON(address >= end);
+>>   	flush_cache_range(vma, range.start, range.end);
+>> +	tlb_change_page_size(tlb, psize);
+>> +	tlb_start_vma(tlb, vma);
+>>   	mmu_notifier_invalidate_range_start(&range);
+>>   	hugetlb_vma_lock_write(vma);
+>> @@ -6532,6 +6537,8 @@ long hugetlb_change_protection(struct mmu_gather *tlb, struct vm_area_struct *vm
+>>   	hugetlb_vma_unlock_write(vma);
+>>   	mmu_notifier_invalidate_range_end(&range);
+>> +	tlb_end_vma(tlb, vma);
+>> +
+>>   	return pages > 0 ? (pages << h->order) : pages;
+>>   }
+>> @@ -7259,6 +7266,9 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+>>   	} else {
+>>   		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>>   	}
+>> +
+>> +	tlb_change_page_size(&tlb, sz);
+>> +	tlb_start_vma(&tlb, vma);
+>>   	for (address = start; address < end; address += PUD_SIZE) {
+>>   		ptep = hugetlb_walk(vma, address, sz);
+>>   		if (!ptep)
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index d6799afe11147..27210bc6fb489 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2015,6 +2015,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>   					goto walk_abort;
+>>   				tlb_gather_mmu(&tlb, mm);
+>> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
+>> +				tlb_start_vma(&tlb, vma);
+>>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+>>   					hugetlb_vma_unlock_write(vma);
+>>   					huge_pmd_unshare_flush(&tlb, vma);
+>> @@ -2413,6 +2415,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>   				}
+>>   				tlb_gather_mmu(&tlb, mm);
+>> +				tlb_change_page_size(&tlb, huge_page_size(hstate_vma(vma)));
+>> +				tlb_start_vma(&tlb, vma);
+>>   				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+>>   					hugetlb_vma_unlock_write(vma);
+>>   					huge_pmd_unshare_flush(&tlb, vma);
+>> -- 
+>> 2.52.0
+>>
+>>
+>>
+>> But now I'm staring at it and wonder whether we should just defer the TLB flushing changes
+>> to a later point and only focus on the IPI flushes.
+> 
+> You mean defer TLB flushing to which point? For unmapping or
+> changing permission of VMAs, flushing at VMA boundary already makes sense?
 
+Defer converting to mmu_gather to a later patch set :)
 
-I had assumed some dependency between the smc netlink diag socket and smc_nl_init()
-and wrongly assumed that the smc_diag_init() and smc_init() could race.
-I now understand that modprobe will ensure smc_diag_init() is called before smc_init(),
-so you are right: this patch is indeed NOT a fix for this sysbot report [1]
+I gave it a try yesterday, but it's also a bit ugly.
 
+In the code above, primarily the rmap change is nasty.
 
-> I think the root cause should be related to the initializing between
-> smc_diag.ko and smc_v4/6_hashinfo.ht.
+> 
+> Or if you meant batching TLB flushes in try_to_{migrate,unmap}_one()...
+> 
+> /me starts wondering...
+> 
+> "Hmm... for RMAP, we already have TLB flush batching
+>   via struct tlbflush_unmap_batch. Why not use this framework
+>   when unmapping shared hugetlb pages as well?"
 
-Given modprobe initializes the modules sequentially, I do not see how these could race.
+Hm, also not what we really want in most cases. I don't think we should 
+be using that outside of rmap.c (and I have the gut feeling that we 
+should maybe make use of mmu_gather in there instead at some point).
 
-I guess this syszbot report was fixed by
-f584239a9ed2 ("net/smc: fix general protection fault in __smc_diag_dump")
-as reported in [2] .
+Let me try a bit to see if I can clean the code here up, or if I just 
+add a temporary custom batching data structure.
 
-I'm not sure about the correct procedure, if nobody recommends a better action, I'll send a
+Thanks for bringing this up!
 
-#syz dup: general protection fault in __smc_diag_dump
-to
-syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
-(this one: general protection fault in smc_diag_dump_proto [1])
+-- 
+Cheers
 
-
-I still think initializing the hashtables before smc_nl_init()
-makes sense. I'll resend this patch without mentioning syzbot.
-
------
-[1] https://syzkaller.appspot.com/bug?extid=f69bfae0a4eb29976e44
-[2] https://syzkaller.appspot.com/bug?extid=f775be4458668f7d220e
+David
 
