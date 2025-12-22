@@ -1,302 +1,359 @@
-Return-Path: <stable+bounces-203209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2089CD5BFC
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:09:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9788ACD5CB3
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C3A3300AFE1
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08B7D301670E
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A600314D24;
-	Mon, 22 Dec 2025 11:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80C1313555;
+	Mon, 22 Dec 2025 11:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fvCQIaDx";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="x585Jv4L"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ANCqLoFS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-104.ptr.blmpb.com (sg-1-104.ptr.blmpb.com [118.26.132.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A892314A7F;
-	Mon, 22 Dec 2025 11:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766401788; cv=fail; b=FGt9CQzsMTcvsHiqQoTIzWeHjys/KstbNjgnarnlpXAokszkrHX1LDjo1WsXdXKieMPesmHiInnvRgxu1QK0k/ozVEe/uOLiCVLYoFAZc0y+uNVqJEet0ZqmgzmOiaOH1Ztfv8PFAZ30S5aiU8z2ckn0+/emLtLKGQbDTfRVlPg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766401788; c=relaxed/simple;
-	bh=LlWUwy6VHw0xZilkI4/XLt7SY6jSX5eoVPqx+sqBwe8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JV0LcuzBHUpNxaudnBUMOAPwQoa5jPNypHQZ5ChShWpjWcFSQONdqj0AtoA4rG9GiK+uhEqToRJjpEUprA4eE23e/VhPPgIKiq/tecOzlDYGBGLQ5WqA7cyQRR2kfsErD2qF9d6E15YwD/bjS3Hel7qmNGz3n1Qxa3ANBwuPCsI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fvCQIaDx; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=x585Jv4L; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMB6Nhe2055828;
-	Mon, 22 Dec 2025 11:09:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=; b=
-	fvCQIaDxvJs+cKBtgVTvjxZt4GpHkkHytam9ju7g9nZZaSFav7SGCxrFP8oPemVI
-	woZwzI6SY1S7wMa7g/tmnEUJQUhOx1noHRF73ZD0ZeZ6KBfipnmZNGrDXWqeikeU
-	cZXqTP/aHJMu3uhDIm9H+HfhY5HpE/EqkrkTD3hl9PWVfFMomggQKbi8Muq7BggN
-	hjyB4rUrngDHAC5LhvHMZe8797DYWoDXQRkeEvAKRtYtFFQmTW1O1JMjBA61gHcx
-	zqlYj2PkunLGW1L6NP75NPYmJNFoV3j/RRMfpHA1rQbwjFvt+iTN7+Vw6VKNw/Vr
-	HFgzAwAh8o7cEof8fV9FZg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b74ttg0bg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 11:09:04 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMALjuQ039962;
-	Mon, 22 Dec 2025 11:09:03 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b5j876nbq-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Dec 2025 11:09:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sldnBMOGUGn3VvPhh+ZLR1TikoiwXohxBJa8fgJLQCB8x/ZQRZW2dPe9Ykn8uW9Ul9ElrqO4hPNQaXN39X8F7yldTZYv5Y6GEiShh2hJ/0OOnqEUouKBueuyDUvWNg2QbaTf5YYDPdXRDKOO423u7m95T9uO2gDYfzPtAYT4vizDp6joGurbLqSiF1Dsm0m8exl2MzPCnXu7Pm0ueiS2vHiARx8zdIsvWRMV43xGS+OlLKPhkXrizo8mUNF80tMa3mmm98LmXhtdMg2IPy4deoQxeu607+v6uZ0PZ0H25USH/+sG2b3BQyFkV0Sm8QHc9APIC52KrC0xmmDSCfnVVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=;
- b=HJIjQatFyDv6Xjef7azDqTDXir2RCzRaFKhJkSpTDDgf+k2ABzl/6SSnRk9ZUgdtiilDR9WOCSpYBl8sYXn8kaF0huYb+L+zWgqnSHJWE52eQBeIKZXBrYuLCAtzNU6scQz5gHv6jSoDAxjaB7XK7oVGh6LNxzS2Q/uLRxb5ed0+O7LCWpsCN0yWesDNKraALIgXTF//BR/1+Gg6THESiDLOPt71nXJkvhs82+ni4ozNUh9tDFY2+Yhdf6F/Z29utnFBxztDkYNxfw5pft53kfXzezy+e8yPmicfxYM6QJGtg2uQZoMf+pS9/FYv3N466gyT/nd+MUNFX1KpEWS7iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LutcvEd58bIa+FBZh8bC07A6Xg+DVVD42vxRy1H9Qzo=;
- b=x585Jv4LyPfmMWW28XWfbbjpUVkaABNUgLM8BhmNB+FFPx/eJuhXuhZfXFIZwQzA7WEyOh+Sz4FuHon7S1NibjDIl6YB1yR+K+a/yMCDVpfOQAAmeiD4G9bkg3l0kmvsuBBocMl6gLFKMjmP2ACdoLQ9rDVxJ0ffU7FGr4v4/nM=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH0PR10MB4741.namprd10.prod.outlook.com (2603:10b6:510:3d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Mon, 22 Dec
- 2025 11:09:00 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 11:09:00 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: akpm@linux-foundation.org, vbabka@suse.cz
-Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com, glider@google.com,
-        hannes@cmpxchg.org, linux-mm@kvack.org, mhocko@kernel.org,
-        muchun.song@linux.dev, rientjes@google.com, roman.gushchin@linux.dev,
-        ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, surenb@google.com,
-        vincenzo.frascino@arm.com, yeoreum.yun@arm.com, harry.yoo@oracle.com,
-        tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-        hao.li@linux.dev, stable@vger.kernel.org
-Subject: [PATCH V4 1/8] mm/slab: use unsigned long for orig_size to ensure proper metadata align
-Date: Mon, 22 Dec 2025 20:08:36 +0900
-Message-ID: <20251222110843.980347-2-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251222110843.980347-1-harry.yoo@oracle.com>
-References: <20251222110843.980347-1-harry.yoo@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0043.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2bd::13) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195711D432D
+	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 11:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.104
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766402426; cv=none; b=H9qHUh0qkWQVVXFMm5sofr/9Ywp/Q05X4hsEWqb3mdO1++HF6uTjtzFSV5dtiQxEXYK9wLrrj1NYJm337b9tvHtag/FH/Itmbtuat586+stWB12iLRYUiHYw4czoQklz+0hLWm/CcGHyY+sUYW/AzQH/ZTfjA27559PoY2OJszQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766402426; c=relaxed/simple;
+	bh=mHQthMzxJu3E+atsEgJQh4T/uxmRDuUn+84ljSm4FT0=;
+	h=Subject:Mime-Version:To:References:Date:Message-Id:In-Reply-To:
+	 From:Content-Type:Cc; b=mJ/NB8kMVaOztMLY0lfPKLov1RfZVxIHsFQpVZ9vxhzz6/eUCb9hH710I+ea0uaGrCQJY1eXvkW8tV3M+Il3QTdyXs2M78Tsof5SA4+WOYIx7Si+9H1Hu1A4bP/YCFlwjxukm4JPPetFLJMkZ9gu9+MNAB58P+03AC8zSsYEEqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ANCqLoFS; arc=none smtp.client-ip=118.26.132.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1766402410; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gzAcAzeaZxzdmZKFrZ4lKUOQGmGL9jeDaLQFRn4XriE=;
+ b=ANCqLoFSx2z4KuqQ0/r6FGum5/NGTaxaoFMdo/ohNdBNb0pqvAZIYf2+OYGpLv3NXfg1Gj
+ CfuWa6fs5Il5jL78qWiV+//tYZczkngnWNiT1PtVeVrMLFBR5A8SbLLf/u4wfUXpRbAfJC
+ h6+rZ5ttoi9rpYhkENMpgDtS0HL6gRUeu0k6bxDHcMzsN7MxOE0FUYB3Bcmw0XrECwJZ4F
+ eNb4jo95Qcnq4ynQRvD2RH4pQrnKvSN0T6852wYKJyfdAjAVgwmJPO6uf99CRV47jQbHL8
+ y8Vf8/kxO2wQacYFNMkm7MJyIp+qe2vFIsXoFsBPm+/9re1n8yga934C+jnNdg==
+Subject: Re: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in scalable mode
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH0PR10MB4741:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b0ef00d-29a2-42ef-561a-08de414a824f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bdPDEVi7FYsreM0p9el21dswSl89tzWkB2ny5bYXFffYNvBoZrZ5yqnGakkh?=
- =?us-ascii?Q?J83+K5bily3qhd8E5+3QB1hHV+1E7V/7asRKLoxdQGia8xU30pOV/cjmVibe?=
- =?us-ascii?Q?feVTOOv2ki51v5DATGhIH3EzT9MlvE4qCX+gDqTWSvMSzBqFWn5QtCTPTbSa?=
- =?us-ascii?Q?/X9l5GJO/mcOW0PJUOF5htUDuxqyjJ5T2WdeG1ZX02TDpuBf7E647cnavamb?=
- =?us-ascii?Q?25MPVJh0lTrWazpK+6L4lx8Z6ig5uMW/6+xSs+0XxuVDQ37XX/NvxTEqy3Et?=
- =?us-ascii?Q?GM5LGIlZRDUlSnSI40w7AK/HCSgSrNIZ7QpFOgInZKyfOaDcQWuz+vRsU/iY?=
- =?us-ascii?Q?/3vI6azu1W9TFTrA2VEPJSu80z4e0odqKF0EpLjQuEjHQRfdq7T8+vfSvlLv?=
- =?us-ascii?Q?d8MfvgmBFyXuaP6rkEYs0cg32FlgIeqgvgppNO+lCb/wCMwO2Mpdg4hi7hyj?=
- =?us-ascii?Q?fcvUDIzTYO86y0xjz+BeAXdj4yIB6gEBGZbVjnSI32WXQNIfcIfiBdB5VN6/?=
- =?us-ascii?Q?Er82p2/qMct48cRHm2hlBVbBG972m4qRx/aBgErZbbUBtGVa6IxcocqHNk1s?=
- =?us-ascii?Q?yeHuxrcE7M0T6RIJzy/m/MVIhLwTvjOD2n7bMjcANxTS0ATrXx/oK11/iaOT?=
- =?us-ascii?Q?tTBD4QI8OK+ViEAzBzCoyjEb28I4Uron5qvrBfvp91riTQWL5o9nDs/JiZd7?=
- =?us-ascii?Q?X7xCnG7nc9PcYjnqCPj8viqtxDa2K2BLHKyakkcxPoDXAJAte0QDpFV5eIkS?=
- =?us-ascii?Q?ZVNmsoRpNN2bgjtUWn3DXSxP8kf+k/dBdec9JEZO0XA9/yeH/JDz7H1RyX40?=
- =?us-ascii?Q?MZmNvprFS/rptNpxT6Qj0DkOFMh29TyptScldTLEbJWWH6yhZ2A/VsHS1drS?=
- =?us-ascii?Q?k2ZjgUQ9SXJ/Jd/jPGyrjePCWNUFATofwI/xv8ujDLta84lP9lnydnBsuC61?=
- =?us-ascii?Q?G6tLtnnfxWGIaws8SXVGmjuBrkyVn5fkPrzD8ZPyiAhopDJIj+lv2BYJ5pop?=
- =?us-ascii?Q?PJldwp2FSN9GQab4yBBv1K/iPacrgP5mL7UcNXgMY/5xd0nf22TFbDyBXKps?=
- =?us-ascii?Q?0fn3syBGPKKV62pV4PuNrCn0Q0TKOWw9X1gPEot+dd+3rbEc5lUhj7HHjD9A?=
- =?us-ascii?Q?kOSXEDfdjX2xdEPH9ZWsfpHoT96usyhjcn4pl3+qLv3H9fz/tPw98pCh5+IL?=
- =?us-ascii?Q?8tfWAv5zvCPOhryVbJU43dBPC43ulj6H3aH1b67P76KVRu2BA9aGeg/Jg0+K?=
- =?us-ascii?Q?/1FJ9i+cvGzmiIahN+Ye0Hij5atc2aeWkR3/H+GrS4IQ3ZQvub2/wC10A3aS?=
- =?us-ascii?Q?drCYJtB7ninnfA5G+HrLmRG2iJKR7lO9oprgQGIceEBMu0ufd0kBsD4Ca874?=
- =?us-ascii?Q?36p+/ONb3CabQd1Um34g7AyEs/Kyzeq9BVQfCAMCZ8/sQb/FokFEngw8H7gT?=
- =?us-ascii?Q?xHEE4VfUksdFVKiqcoBQkzcS90fbkrAu?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FNcRERFWt5atM26m94ub6Y4PPT1VWpP0ihVX4gl42cHKcrME4AbM/28oib0s?=
- =?us-ascii?Q?HZ9w7phPyIiUqHyY+S0ol81bhyTiKYQFBEzY5UOt3bfjb9aOFlcbmjVDLXIt?=
- =?us-ascii?Q?MwlHUr+/rOwCpeN+hrzVHxyGMM1nRob5vGNJYTITA1QSNYYoS13xQKYJ2VzG?=
- =?us-ascii?Q?MJfdNzgVWnh4trr+4u2vBtr/wtp5iX8IY7S/3fuxV8aU7xFcKTXlS2evBmZw?=
- =?us-ascii?Q?U1rLxrZc+4z/WUKXyMaSvv7eMT90kFLXWcgtyxjObojkulTrtzXQqodm6yTt?=
- =?us-ascii?Q?CItOYRTSi5xzGbQlyj2xwhMuMgTqraD3KuDsv7bQTICwf3hQ3ewTZUpwbVNk?=
- =?us-ascii?Q?mSvbaCBj/mxohozb3sidiMT0+QQuQLZ+KYAoKkCSsF4psY3H5KDmaS1y4iWJ?=
- =?us-ascii?Q?aQTTYc93EGAMjyfLLuYMjzcGqrZXLZf4ZcEMYPuS7rnwd3dOuQDkztNxRjM9?=
- =?us-ascii?Q?EMvcAoRmTR6srOGdLjYWHBM0VEya7/mwc9XfvuPTzpyOQbZWdofXo1FrSNAu?=
- =?us-ascii?Q?6bY26nFXCrwWw/xwz2QBBfE5uO4fQlGDv3EAjj8vAC5lGjUTBnGWav+sc8YK?=
- =?us-ascii?Q?LKvDNAIz0KiS7CpFDB3Z31qSfnet24HFyqtYAKfV8ntdvl0NsJYyRWQi/bpM?=
- =?us-ascii?Q?1E4Qy+gn1y6y9gwrcxQuGmiM0VcshU9FWj9Qh2IqVfyjWoqVdIY3MAbGGnqx?=
- =?us-ascii?Q?m/rjfTmqyoN7+opHeVdGxmgPrgdaQqEhtKV+M+CmtMR+x1SYsO7I8maqBwuZ?=
- =?us-ascii?Q?cQTDXxGcGZuQ8nKR/c8qm9+vMPmTp3e9Qpo1teaP3Vf/rkvnC+xzVbYaiOoG?=
- =?us-ascii?Q?mgMwzhT5RE+koOLOMiBMB+a2WNokJv7yDu7fAaHgQc/h2KBPixq6MjsGE9it?=
- =?us-ascii?Q?FKT71yqZKJz/AMIJzGvVW433Go0E8bjBhVeaGkWqhrK+EozsmFMZV/Dz4peX?=
- =?us-ascii?Q?POb0rV07SpJ55buVWcg4ZYiBACpxkin5HU7acNM4rYMnImm94VK11ByywhCG?=
- =?us-ascii?Q?Nu0JAewQkYgGQeoJF+my5XNcEVwMx7RGXj18iHw1HCcvJOYQ+5eEknuKk/Oc?=
- =?us-ascii?Q?/vPX1tTxCX5nhRRk0d4nU1OP3NITP8M8aTT3iG6ljVFPOnIJnMuEu5wa4geE?=
- =?us-ascii?Q?3dnZBDtPSA4VSdRAqjQrBnxnysb9uSHfoPjIeBfpoIyIk0H3XiCgKTHECGnz?=
- =?us-ascii?Q?t2iFXC7H2NWhJ01OGQ0YxTlz2RPhsYpyg9Q5s4ZziMpGH2whn4s4uZTDy1GI?=
- =?us-ascii?Q?P3MucRsXrnU9Cv4H1JgKE9V9afFTcUa9bYDUlRX1uVjQe65JWxNfXVID49Bs?=
- =?us-ascii?Q?INEogxBPaZY3wWpA2Cx7kpfpcOmUiqPuen6xq9fejzOUCv3lS4v5DNX8fFpK?=
- =?us-ascii?Q?Ht/dF07PSYGdpIxUudm7TIiEnOM3WMU5EA2/JxKK0mfkzSK+87tYcIC628Ay?=
- =?us-ascii?Q?yRTWLFWn9uKsm4StZH7229PwSWavfoeo5N05Kf3WHOGqnUbyrQJVCUmr3BFq?=
- =?us-ascii?Q?NwP2whZLoyypa1FfzNaoHs9Dp2G696JAl6IPshVNtrRfSwZyJzvZZVixz+Ts?=
- =?us-ascii?Q?dZxn+cpG3VMOmzvWljRfVCT75Wc7PxICT2DAG7L145R0AMPtYTbr9hi1JJDM?=
- =?us-ascii?Q?t+Gq621cySZH+uxjJdXqDUsKRO/Srgay27b+5PsSB0vCKvos0crw/WsJKlt/?=
- =?us-ascii?Q?sQK1d79hkd3cYKpcV3ohLjXX+s3ZBjFit6JAgy0mu69DW1OChseI+LKf3mvM?=
- =?us-ascii?Q?wJVj+wW6Ow=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	fjx+mBHX6dTw987m/XgU8YavroUxGzReoarXMjiB5pAv2hXRuWYZ/LSn74UXTfJ++gtvMZUh8/xMPhwZC9IxfNEM5uyQyDgtS7fTbZwLhb8u5PX3vE3lvsFyUPFfU8qKvLwptGANZcph6uOQMna3lwWOdl+6wreHIVQdVMGupG+mNDsOY/H5FxQo3kHlWIDTcZb735zx/M8hLTrLUL/m+pGslvw97K4gD4pUEMXhKYS8wecAQHL2LFUOt+lTdglVvz6lW0anstCfJ9zVMA/9m1k/QwZqCUazMfEpfbgisJcw0XugBwkG9GfvGljRpZuIUYl5g8ORxql1KLA4kSY/RW9ObvlyGi8LsYxINg/uSW5+Fl8WMys/VoRN+17F0fWnCtrDNIOvD0gJfmvuP9Z26IEEmkIGpRPc7lng7dCq7TDCiKjnLAOY4T6Q//emD2fs0VLZZGqDAL1GlJ1tTVcAlH9+HVNdplw0P7M1WL9/djHQMoSRAvyh5hgAA1xW6LWZTb7PiN0zO3OD3ZsGprTb/chbRpjObbRSYQU17vD4IQBad0KEPAZW7qwjZTXUEkRI+bbVMiZPQVar4g3qB6E/VMBH8GlbHy+Q9lGeLxV80R8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b0ef00d-29a2-42ef-561a-08de414a824f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 11:09:00.3843
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k0SCZoYlWNkC29GIKx/PKetnlsWHrjPq7WcqvrU7fWH/TORtBMSd0DN7Cod2wa3AxudzIdnLMioJzJ2EU1lSMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4741
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 bulkscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2512220101
-X-Proofpoint-ORIG-GUID: MeVxCst5-Ofv9Y3YRZ47abTnvo097w4i
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDEwMSBTYWx0ZWRfXyNp5OVblQPio
- 8qaAJHNy1RHp2x/h071YruOaxAAuD4i+GJ++qtYhUGEH3WJRHsFC1aziLLpyT7QfAL9GUZHSBfx
- ynevV2B9jZEVnTrZPkLphEgU82dR0GpBDw4zoTOOpBCETwt8MqtXUZa5BFGcymB81JpEA1VknFs
- b9wrpPUFL9b7yA7VKhyuZYFxGfvvhcu7oLr8+1LcF/YmU+jU+6OT1JoBYUuk5OOZUM48Eyapeyg
- MOSiPDYhqL1r2wpkyHo1q6Ewpj8lYRnsJD/GeObDIgqcbdc79TZc2DSv3le8xLal2jRK61VLnUD
- YHWFzho8oxq+JOWIwv0qXC5Ia94I2p720ziU/lcULPlpY8M+fFcdT46Fg6fR39aq/pijDXMQ1ar
- 4EL1Ow4AaanBBMwAampf+UxgFrOVyvnOYAbl4RzJjzNiGzIVBOHE+sHmhMSvQyGBwtwok/T9wgx
- dremAD7EK3KdC565d/w==
-X-Proofpoint-GUID: MeVxCst5-Ofv9Y3YRZ47abTnvo097w4i
-X-Authority-Analysis: v=2.4 cv=d8H4CBjE c=1 sm=1 tr=0 ts=694926d0 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=60bAUpEqyJ0hnt3RZ0MA:9
+Mime-Version: 1.0
+To: <kevin.tian@intel.com>
+References: <BN9PR11MB52763E38B4C8B59C9A9AD9E18CA8A@BN9PR11MB5276.namprd11.prod.outlook.com>
+Date: Mon, 22 Dec 2025 19:19:35 +0800
+Message-Id: <20251222111935.489-1-guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: git-send-email 2.17.1
+X-Lms-Return-Path: <lba+269492968+f90f92+vger.kernel.org+guojinhui.liam@bytedance.com>
+In-Reply-To: <BN9PR11MB52763E38B4C8B59C9A9AD9E18CA8A@BN9PR11MB5276.namprd11.prod.outlook.com>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc: <baolu.lu@linux.intel.com>, <dwmw2@infradead.org>, 
+	<guojinhui.liam@bytedance.com>, <iommu@lists.linux.dev>, 
+	<joro@8bytes.org>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>, <will@kernel.org>
 
-When both KASAN and SLAB_STORE_USER are enabled, accesses to
-struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
-This occurs because orig_size is currently defined as unsigned int,
-which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
-placed after orig_size, it may end up at a 4-byte boundary rather than
-the required 8-byte boundary on 64-bit systems.
+On Thu, Dec 18, 2025 08:04:20AM +0000, Tian, Kevin wrote:
+> > From: Jinhui Guo <guojinhui.liam@bytedance.com>
+> > Sent: Thursday, December 11, 2025 12:00 PM
+> >=20
+> > Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
+> > request when device is disconnected") relies on
+> > pci_dev_is_disconnected() to skip ATS invalidation for
+> > safely-removed devices, but it does not cover link-down caused
+> > by faults, which can still hard-lock the system.
+>=20
+> According to the commit msg it actually tries to fix the hard lockup
+> with surprise removal. For safe removal the device is not removed
+> before invalidation is done:
+>=20
+> "
+>     For safe removal, device wouldn't be removed until the whole software
+>     handling process is done, it wouldn't trigger the hard lock up issue
+>     caused by too long ATS Invalidation timeout wait.
+> "
+>=20
+> Can you help articulate the problem especially about the part
+> 'link-down caused by faults"? What are those faults? How are
+> they different from the said surprise removal in the commit
+> msg to not set pci_dev_is_disconnected()?
+>=20
 
-Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-are assumed to require 64-bit accesses to be 64-bit aligned.
-See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+Hi, kevin, sorry for the delayed reply.
 
-Change orig_size from unsigned int to unsigned long to ensure proper
-alignment for any subsequent metadata. This should not waste additional
-memory because kmalloc objects are already aligned to at least
-ARCH_KMALLOC_MINALIGN.
+A normal or surprise removal of a PCIe device on a hot-plug port normally
+triggers an interrupt from the PCIe switch.
 
-Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/slub.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+We have, however, observed cases where no interrupt is generated when the
+device suddenly loses its link; the behaviour is identical to setting the
+Link Disable bit in the switch=E2=80=99s Link Control register (offset 10h)=
+. Exactly
+what goes wrong in the LTSSM between the PCIe switch and the endpoint remai=
+ns
+unknown.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index ad71f01571f0..1c747435a6ab 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -857,7 +857,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
-  * request size in the meta data area, for better debug and sanity check.
-  */
- static inline void set_orig_size(struct kmem_cache *s,
--				void *object, unsigned int orig_size)
-+				void *object, unsigned long orig_size)
- {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -867,10 +867,10 @@ static inline void set_orig_size(struct kmem_cache *s,
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	*(unsigned int *)p = orig_size;
-+	*(unsigned long *)p = orig_size;
- }
- 
--static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-+static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
- {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -883,7 +883,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	return *(unsigned int *)p;
-+	return *(unsigned long *)p;
- }
- 
- #ifdef CONFIG_SLUB_DEBUG
-@@ -1198,7 +1198,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += sizeof(unsigned long);
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1394,7 +1394,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += sizeof(unsigned long);
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -7949,7 +7949,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 
- 		/* Save the original kmalloc request size */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += sizeof(unsigned long);
- 	}
- #endif
- 
--- 
-2.43.0
+> >=20
+> > For example, if a VM fails to connect to the PCIe device,
+>=20
+> 'failed' for what reason?
+>=20
+> > "virsh destroy" is executed to release resources and isolate
+> > the fault, but a hard-lockup occurs while releasing the group fd.
+> >=20
+> > Call Trace:
+> >  qi_submit_sync
+> >  qi_flush_dev_iotlb
+> >  intel_pasid_tear_down_entry
+> >  device_block_translation
+> >  blocking_domain_attach_dev
+> >  __iommu_attach_device
+> >  __iommu_device_set_domain
+> >  __iommu_group_set_domain_internal
+> >  iommu_detach_group
+> >  vfio_iommu_type1_detach_group
+> >  vfio_group_detach_container
+> >  vfio_group_fops_release
+> >  __fput
+> >=20
+> > Although pci_device_is_present() is slower than
+> > pci_dev_is_disconnected(), it still takes only ~70 =C2=B5s on a
+> > ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
+> > and width increase.
+> >=20
+> > Besides, devtlb_invalidation_with_pasid() is called only in the
+> > paths below, which are far less frequent than memory map/unmap.
+> >=20
+> > 1. mm-struct release
+> > 2. {attach,release}_dev
+> > 3. set/remove PASID
+> > 4. dirty-tracking setup
+> >=20
+>=20
+> surprise removal can happen at any time, e.g. after the check of
+> pci_device_is_present(). In the end we need the logic in
+> qi_check_fault() to check the presence upon ITE timeout error
+> received to break the infinite loop. So in your case even with
+> that logici in place you still observe lockup (probably due to
+> hardware ITE timeout is longer than the lockup detection on=20
+> the CPU?
 
+Are you referring to the timeout added in patch
+https://lore.kernel.org/all/20240222090251.2849702-4-haifeng.zhao@linux.int=
+el.com/ ?
+
+Our lockup-detection timeout is the default 10 s.
+
+We see ITE-timeout messages in the kernel log. Yet the system still
+hard-locks=E2=80=94probably because, as you mentioned, the hardware ITE tim=
+eout
+is longer than the CPU=E2=80=99s lockup-detection window. I=E2=80=99ll repr=
+oduce the
+case and follow up with a deeper analysis.
+
+kernel: [ 2402.642685][  T607] vfio-pci 0000:3f:00.0: Unable to change powe=
+r state from D0 to D3hot, device inaccessible
+kernel: [ 2403.441828][T49880] DMAR: VT-d detected Invalidation Time-out Er=
+ror: SID 0
+kernel: [ 2403.441830][    C0] DMAR: DRHD: handling fault status reg 40
+kernel: [ 2403.441831][T49880] DMAR: QI HEAD: Invalidation Wait qw0 =3D 0x2=
+00000025, qw1 =3D 0x1003a07fc
+kernel: [ 2403.441833][T49880] DMAR: QI PRIOR: Invalidation Wait qw0 =3D 0x=
+200000025, qw1 =3D 0x1003a07f8
+kernel: [ 2403.441879][T49880] DMAR: Invalidation Time-out Error (ITE) clea=
+red
+kernel: [ 2423.643527][    C7] rcu: INFO: rcu_preempt detected stalls on CP=
+Us/tasks:
+kernel: [ 2423.643551][    C7] rcu:        8-...0: (0 ticks this GP) idle=
+=3D198c/1/0x4000000000000000 softirq=3D19450/19450 fqs=3D4403
+kernel: [ 2423.643567][    C7] rcu:        (detected by 7, t=3D21002 jiffie=
+s, g=3D238909, q=3D4932 ncpus=3D96)
+kernel: [ 2423.643578][    C7] Sending NMI from CPU 7 to CPUs 8:
+kernel: [ 2423.643581][    C8] NMI backtrace for cpu 8
+kernel: [ 2423.643585][    C8] CPU: 8 UID: 0 PID: 49880 Comm: vfio_test Kdu=
+mp: loaded Tainted: G S          E       6.18.0 #5 PREEMPT(voluntary)
+kernel: [ 2423.643588][    C8] Tainted: [S]=3DCPU_OUT_OF_SPEC, [E]=3DUNSIGN=
+ED_MODULE
+kernel: [ 2423.643589][    C8] Hardware name: Inspur NF5468M5/YZMB-01130-10=
+5, BIOS 4.2.0 04/28/2021
+kernel: [ 2423.643590][    C8] RIP: 0010:qi_submit_sync+0x6cf/0x8d0
+kernel: [ 2423.643597][    C8] Code: 89 4c 24 50 89 70 34 48 c7 c7 f0 f5 4a=
+ a5 e8 48 15 89 ff 48 8b 4c 24 50 8b 54 24 58 49 8b 76 10 49 63 c7 48 8d 04=
+ 86 83 38 01 <75> 06 c7 00 03 00 00 00 41 81 c7 fe 00 00 00 44 89 f8 c1 f8 =
+1f c1
+kernel: [ 2423.643598][    C8] RSP: 0018:ffffb5a3bd0a7a30 EFLAGS: 00000097
+kernel: [ 2423.643600][    C8] RAX: ffff9dac803a06bc RBX: 0000000000000000 =
+RCX: 0000000000000000
+kernel: [ 2423.643601][    C8] RDX: 00000000000000fe RSI: ffff9dac803a0400 =
+RDI: ffff9ddb0081d480
+kernel: [ 2423.643602][    C8] RBP: ffff9dac8037fe00 R08: 0000000000000000 =
+R09: 0000000000000003
+kernel: [ 2423.643603][    C8] R10: ffffb5a3bd0a78e0 R11: ffff9e0bbff3c068 =
+R12: 0000000000000040
+kernel: [ 2423.643605][    C8] R13: ffff9dac80314600 R14: ffff9dac8037fe00 =
+R15: 00000000000000af
+kernel: [ 2423.643606][    C8] FS:  0000000000000000(0000) GS:ffff9ddb5a262=
+000(0000) knlGS:0000000000000000
+kernel: [ 2423.643607][    C8] CS:  0010 DS: 0000 ES: 0000 CR0: 00000000800=
+50033
+kernel: [ 2423.643608][    C8] CR2: 000000002aee3000 CR3: 000000024a27b002 =
+CR4: 00000000007726f0
+kernel: [ 2423.643610][    C8] PKRU: 55555554
+kernel: [ 2423.643611][    C8] Call Trace:
+kernel: [ 2423.643613][    C8]  <TASK>
+kernel: [ 2423.643616][    C8]  ? __pfx_domain_context_clear_one_cb+0x10/0x=
+10
+kernel: [ 2423.643620][    C8]  qi_flush_dev_iotlb+0xd5/0xe0
+kernel: [ 2423.643622][    C8]  __context_flush_dev_iotlb.part.0+0x3c/0x80
+kernel: [ 2423.643625][    C8]  domain_context_clear_one_cb+0x16/0x20
+kernel: [ 2423.643626][    C8]  pci_for_each_dma_alias+0x3b/0x140
+kernel: [ 2423.643631][    C8]  device_block_translation+0x122/0x180
+kernel: [ 2423.643634][    C8]  blocking_domain_attach_dev+0x39/0x50
+kernel: [ 2423.643636][    C8]  __iommu_attach_device+0x1b/0x90
+kernel: [ 2423.643639][    C8]  __iommu_device_set_domain+0x5d/0xb0
+kernel: [ 2423.643642][    C8]  __iommu_group_set_domain_internal+0x60/0x11=
+0
+kernel: [ 2423.643644][    C8]  iommu_detach_group+0x3a/0x60
+kernel: [ 2423.643650][    C8]  vfio_iommu_type1_detach_group+0x106/0x610 [=
+vfio_iommu_type1]
+kernel: [ 2423.643654][    C8]  ? __dentry_kill+0x12a/0x180
+kernel: [ 2423.643660][    C8]  ? __pm_runtime_idle+0x44/0xe0
+kernel: [ 2423.643666][    C8]  vfio_group_detach_container+0x4f/0x160 [vfi=
+o]
+kernel: [ 2423.643672][    C8]  vfio_group_fops_release+0x3e/0x80 [vfio]
+kernel: [ 2423.643677][    C8]  __fput+0xe6/0x2b0
+kernel: [ 2423.643682][    C8]  task_work_run+0x58/0x90
+kernel: [ 2423.643688][    C8]  do_exit+0x29b/0xa80
+kernel: [ 2423.643694][    C8]  do_group_exit+0x2c/0x80
+kernel: [ 2423.643696][    C8]  get_signal+0x8f9/0x900
+kernel: [ 2423.643700][    C8]  arch_do_signal_or_restart+0x29/0x210
+kernel: [ 2423.643704][    C8]  ? __schedule+0x582/0xe80
+kernel: [ 2423.643708][    C8]  exit_to_user_mode_loop+0x8e/0x4f0
+kernel: [ 2423.643712][    C8]  do_syscall_64+0x262/0x630
+kernel: [ 2423.643717][    C8]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+kernel: [ 2423.643720][    C8] RIP: 0033:0x7fde19078514
+kernel: [ 2423.643722][    C8] Code: Unable to access opcode bytes at 0x7fd=
+e190784ea.
+kernel: [ 2423.643723][    C8] RSP: 002b:00007ffd0e1dc7e8 EFLAGS: 00000246 =
+ORIG_RAX: 0000000000000022
+kernel: [ 2423.643724][    C8] RAX: fffffffffffffdfe RBX: 0000000000000000 =
+RCX: 00007fde19078514
+kernel: [ 2423.643726][    C8] RDX: 00007fde1916e8c0 RSI: 000055b217303260 =
+RDI: 0000000000000000
+kernel: [ 2423.643727][    C8] RBP: 00007ffd0e1dc8a0 R08: 00007fde19173500 =
+R09: 0000000000000000
+kernel: [ 2423.643728][    C8] R10: fffffffffffffbea R11: 0000000000000246 =
+R12: 000055b1f8d8d0b0
+kernel: [ 2423.643729][    C8] R13: 00007ffd0e1dc980 R14: 0000000000000000 =
+R15: 0000000000000000
+kernel: [ 2423.643731][    C8]  </TASK>
+kernel: [ 2424.375254][T81463] vfio-pci 0000:3f:00.0: Unable to change powe=
+r state from D3cold to D0, device inaccessible
+...
+kernel: [ 2448.327929][    C8] watchdog: CPU8: Watchdog detected hard LOCKU=
+P on cpu 8
+kernel: [ 2448.327932][    C8] Modules linked in: vfio_pci(E) vfio_pci_core=
+(E) vfio_iommu_type1(E) vfio(E) udp_diag(E) tcp_diag(E) inet_diag(E) binfmt=
+_misc(E) ip_set_hash_net(E) nft_compat(E) x_tables(E) ip_set(E) msr(E) nf_t=
+ables(E) ...
+kernel: [ 2448.327963][    C8]  ib_core(E) hid_generic(E) usbhid(E) hid(E) =
+ahci(E) libahci(E) xhci_pci(E) libata(E) nvme(E) xhci_hcd(E) i2c_i801(E) nv=
+me_core(E) usbcore(E) scsi_mod(E) mlx5_core(E) i2c_smbus(E) lpc_ich(E) usb_=
+common(E) scsi_common(E) wmi(E)
+kernel: [ 2448.327972][    C8] CPU: 8 UID: 0 PID: 49880 Comm: vfio_test Kdu=
+mp: loaded Tainted: G S          EL      6.18.0 #5 PREEMPT(voluntary)
+kernel: [ 2448.327975][    C8] Tainted: [S]=3DCPU_OUT_OF_SPEC, [E]=3DUNSIGN=
+ED_MODULE, [L]=3DSOFTLOCKUP
+kernel: [ 2448.327976][    C8] Hardware name: Inspur NF5468M5/YZMB-01130-10=
+5, BIOS 4.2.0 04/28/2021
+kernel: [ 2448.327977][    C8] RIP: 0010:qi_submit_sync+0x6e7/0x8d0
+kernel: [ 2448.327981][    C8] Code: 8b 54 24 58 49 8b 76 10 49 63 c7 48 8d=
+ 04 86 83 38 01 75 06 c7 00 03 00 00 00 41 81 c7 fe 00 00 00 44 89 f8 c1 f8=
+ 1f c1 e8 18 <41> 01 c7 45 0f b6 ff 41 29 c7 44 39 fa 75 cb 48 85 c9 0f 85 =
+05 01
+kernel: [ 2448.327983][    C8] RSP: 0018:ffffb5a3bd0a7a30 EFLAGS: 00000046
+kernel: [ 2448.327984][    C8] RAX: 0000000000000000 RBX: 0000000000000000 =
+RCX: 0000000000000000
+kernel: [ 2448.327985][    C8] RDX: 00000000000000fe RSI: ffff9dac803a0400 =
+RDI: ffff9ddb0081d480
+kernel: [ 2448.327986][    C8] RBP: ffff9dac8037fe00 R08: 0000000000000000 =
+R09: 0000000000000003
+kernel: [ 2448.327987][    C8] R10: ffffb5a3bd0a78e0 R11: ffff9e0bbff3c068 =
+R12: 0000000000000040
+kernel: [ 2448.327988][    C8] R13: ffff9dac80314600 R14: ffff9dac8037fe00 =
+R15: 00000000000001b3
+kernel: [ 2448.327989][    C8] FS:  0000000000000000(0000) GS:ffff9ddb5a262=
+000(0000) knlGS:0000000000000000
+kernel: [ 2448.327990][    C8] CS:  0010 DS: 0000 ES: 0000 CR0: 00000000800=
+50033
+kernel: [ 2448.327991][    C8] CR2: 000000002aee3000 CR3: 000000024a27b002 =
+CR4: 00000000007726f0
+kernel: [ 2448.327992][    C8] PKRU: 55555554
+kernel: [ 2448.327993][    C8] Call Trace:
+kernel: [ 2448.327995][    C8]  <TASK>
+kernel: [ 2448.327997][    C8]  ? __pfx_domain_context_clear_one_cb+0x10/0x=
+10
+kernel: [ 2448.328000][    C8]  qi_flush_dev_iotlb+0xd5/0xe0
+kernel: [ 2448.328002][    C8]  __context_flush_dev_iotlb.part.0+0x3c/0x80
+kernel: [ 2448.328004][    C8]  domain_context_clear_one_cb+0x16/0x20
+kernel: [ 2448.328006][    C8]  pci_for_each_dma_alias+0x3b/0x140
+kernel: [ 2448.328010][    C8]  device_block_translation+0x122/0x180
+kernel: [ 2448.328012][    C8]  blocking_domain_attach_dev+0x39/0x50
+kernel: [ 2448.328014][    C8]  __iommu_attach_device+0x1b/0x90
+kernel: [ 2448.328017][    C8]  __iommu_device_set_domain+0x5d/0xb0
+kernel: [ 2448.328019][    C8]  __iommu_group_set_domain_internal+0x60/0x11=
+0
+kernel: [ 2448.328021][    C8]  iommu_detach_group+0x3a/0x60
+kernel: [ 2448.328023][    C8]  vfio_iommu_type1_detach_group+0x106/0x610 [=
+vfio_iommu_type1]
+kernel: [ 2448.328026][    C8]  ? __dentry_kill+0x12a/0x180
+kernel: [ 2448.328030][    C8]  ? __pm_runtime_idle+0x44/0xe0
+kernel: [ 2448.328035][    C8]  vfio_group_detach_container+0x4f/0x160 [vfi=
+o]
+kernel: [ 2448.328041][    C8]  vfio_group_fops_release+0x3e/0x80 [vfio]
+kernel: [ 2448.328046][    C8]  __fput+0xe6/0x2b0
+kernel: [ 2448.328049][    C8]  task_work_run+0x58/0x90
+kernel: [ 2448.328053][    C8]  do_exit+0x29b/0xa80
+kernel: [ 2448.328057][    C8]  do_group_exit+0x2c/0x80
+kernel: [ 2448.328060][    C8]  get_signal+0x8f9/0x900
+kernel: [ 2448.328064][    C8]  arch_do_signal_or_restart+0x29/0x210
+kernel: [ 2448.328068][    C8]  ? __schedule+0x582/0xe80
+kernel: [ 2448.328070][    C8]  exit_to_user_mode_loop+0x8e/0x4f0
+kernel: [ 2448.328074][    C8]  do_syscall_64+0x262/0x630
+kernel: [ 2448.328076][    C8]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+kernel: [ 2448.328078][    C8] RIP: 0033:0x7fde19078514
+kernel: [ 2448.328080][    C8] Code: Unable to access opcode bytes at 0x7fd=
+e190784ea.
+kernel: [ 2448.328081][    C8] RSP: 002b:00007ffd0e1dc7e8 EFLAGS: 00000246 =
+ORIG_RAX: 0000000000000022
+kernel: [ 2448.328082][    C8] RAX: fffffffffffffdfe RBX: 0000000000000000 =
+RCX: 00007fde19078514
+kernel: [ 2448.328083][    C8] RDX: 00007fde1916e8c0 RSI: 000055b217303260 =
+RDI: 0000000000000000
+kernel: [ 2448.328085][    C8] RBP: 00007ffd0e1dc8a0 R08: 00007fde19173500 =
+R09: 0000000000000000
+kernel: [ 2448.328085][    C8] R10: fffffffffffffbea R11: 0000000000000246 =
+R12: 000055b1f8d8d0b0
+kernel: [ 2448.328086][    C8] R13: 00007ffd0e1dc980 R14: 0000000000000000 =
+R15: 0000000000000000
+kernel: [ 2448.328088][    C8]  </TASK>
+kernel: [ 2450.245901][    C7] watchdog: BUG: soft lockup - CPU#7 stuck for=
+ 41s! [mongoosev3-agen:4727]
+
+>=20
+> In any case this change cannot 100% fix the lockup. It just
+> reduces the possibility which should be made clear.
+
+I agree with the above, but it's better to cover more corner cases.
+
+Best Regards,
+Jinhui
 
