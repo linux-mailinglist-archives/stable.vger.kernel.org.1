@@ -1,226 +1,195 @@
-Return-Path: <stable+bounces-203232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CF8CD6C6D
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 18:12:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B24CD6FCE
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 20:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8CDA301BE8A
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 17:11:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D12EB3000B1E
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 19:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B79262A6;
-	Mon, 22 Dec 2025 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6793B337BAB;
+	Mon, 22 Dec 2025 19:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="gXAhgWJq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jQrwaqUR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kiPrOeAX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B2B322B73
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 17:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766423479; cv=pass; b=SXtOVcuVfG/j09Au0Kn7X6IP0RW6R8l6XH660SUzVt+Y+tKBg/iFgZK92RObwZ2/EpUmMxz9bA+rFUPJ2OzRwq2UsudqQgr1sJlmU2KBlproSMiEwKZP60eGw0ALAa+7/WgzP59U2btn1aGX47BruzXLgOST+ThWgT6K7OCWGDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766423479; c=relaxed/simple;
-	bh=JqacWfAt0ZXZ69hE4OkTIVIFQV9cJx9Hva6On2owtTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kcmDe7uUvEi4WOb6wVkFswmQtRBCz1mEoRUrKMyCjASGB4HL6fQY2PJEUnqKOQW1EhFMaG7RuBMqwuxFoP/+dRThIxkpTsTplr/xzsgmb04YMQxmtrolJ8rJ+iAcJrKPRu6rCfU4a0IuWg4WpHM4oQLLbJY2z7EW53qbTA3fLL4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=gXAhgWJq; arc=pass smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7c9011d6039so148018b3a.2
-        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 09:11:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1766423476; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dg+UhGVAY9CFcz+QGAqkanezutwiRaDC00pyqL8eVR3GuaJtK4w0+86Y3N3J177oEL
-         DWpxD6jCRnkhiyuAUgAPPN+NOSadMis1XIPx7G0iBkqty3Re7fNbL+kiE945J6/cD74N
-         6buQRu2anduz7tUdzElQ14Szk46NOhL9yp7nIrmdcohKp0MFNaiKLXemvvtHqHJ3cMUQ
-         NZlOu3Hk6WWHnJBYGRG6oGRTsCG5M9P1BAvY583UIbqHHPs5NoGj3n7Q05lBPLZfgtdi
-         SJdVvb9vBk+EH5m795UVXvxNzNwNLEhlYxfJi1FJzL+taQOzLoxp2ndHtLWPNl9yizRM
-         3HGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WyI3oyBXBFxhrviz8e5X3C6yj6KOriffXerfRYoiv9M=;
-        fh=ot7XfEiwh6T3kPKOvYBi2KWZMKVLttI/mumtOlptddM=;
-        b=P3mTTukzHFhRxWCFOsp3rAGHfiJVCw6iTQh0C3UbBD9eqVBWaoh5ctz0oXiGibRweV
-         x/ZlzvYzt2cGRuijsFc7zkXLJbsc/N3wlk8txKU6UpC5YBXpXTYWY1CpiRi8JLi7d9w1
-         uYDUKHT2ADRfG865Zq9mwQ94kakZU6yAUYEgw4kr31svSMJWmULyJvzsDaUWarORWc9h
-         VOsa7tqT/Zj98caXJzhXTc9ZAsR0wmciMVHQxA/3mhRWQ4txBwAUD37BgbA7lcnbfytD
-         PtxPtJ70vmklrWmotxI2enWiOl5oZSUTgISO1tDi/TFSQPgMAMucxSFAdKbhbaCqdXwm
-         k2FA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA5E1EFFB4
+	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 19:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766432197; cv=none; b=bPjySZZsCfKYOvy6bx4Adhm50kjJt/vHfegvvUCDim9YiQwPWVEb0YoBc5iyXTkBT4iKmU0IxSB3/fTSN3Scr6l8SbKr2fK9UN9KtVlSqJNdSW7cnpKVV+J0BiuQ9vjqVHu2VQDi01jtUhwEpiMxWJQUr94bVpJ2VNt9FHGRv2M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766432197; c=relaxed/simple;
+	bh=hFP8wNqan67bFKWAJvdODGqeW6LGRWIvu/1ZkhiDoGY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OoOQtNox8jVfDoidk/OGWwHQfYfySis0SUqgKAFOo1IrHA4NS5dM7i0lWS5+aUdIb+FuD3ALG7VIDbRY0zpPrO4Skza+KDwfcfhW8N6ygkjvWt6uUvCvFJihrzZGYsLMFN0Y56Mm3tDBMC6phEw1msvXjdgNga95pNAMwTDyYXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jQrwaqUR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kiPrOeAX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMEDKS91531701
+	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 19:36:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nn+s1homNWQHMLWddz1S2iuslw+Ts3/5yDOH/7TAz+o=; b=jQrwaqURDpMYcJ+g
+	BSunj32sgTKzILCDPr2RUtA4nv6oA7xkzmsMN+BKPJNV6N07ytkTm8Kz3v2lPa2B
+	+8ltcFOGUHtdEGMAeHKwQTs8qV1PiyuovZX6PsakWAYFBkLXMbFbtzlGPSQ38sAs
+	Sfoj4UOQwWOYuNOKGCzxSNQkspht5lCyRUzgQ7F2t7gb70mPhd3KLTai+KEqRFyV
+	mma7EZQEKqxao53EY7li/mjqxtjycMv/nNL4n1MlCuCg5PMNvBEvbfXa4g9YnK8M
+	BH+8wzVbmTCuRMplFVyjal8/5Oe6WzbJSiZ+0QvxROLrL5VpJJ1BBzUpXW/HyGeV
+	h0trww==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b758y18kf-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 19:36:35 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7b9321b9312so8649374b3a.1
+        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 11:36:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1766423476; x=1767028276; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WyI3oyBXBFxhrviz8e5X3C6yj6KOriffXerfRYoiv9M=;
-        b=gXAhgWJqu+hgR4ekHjrujxpRlBeI68PVwRESwXvkBuPyt+HOOuqT7a7CtdXOilzXUX
-         KN0MBm/+inJwU6ZfdL1bJ9FcUhncH/S9T8tMQGnBk9jyWKV8prWRcyQH6yrPqI04oTZb
-         dJer1lttS5AsUdCQhMEh5rspzuRxXz65Bay9xhlNYMzzGwtxx6FthDdlgr5+YjNq8FCd
-         sVjQkRL7FXX/CgKlP596NWFA8+mb7PtwxbWrpq33J1a/gWfmkQoHNQ01TtKZF+pcwZeo
-         YBjozgz4pgReegBfyciip4zHA1oB0Nfcrm1bI0m3GiVE2kqpBaYqjVm+ZLHlBTQUoh8F
-         LE1A==
+        d=oss.qualcomm.com; s=google; t=1766432195; x=1767036995; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nn+s1homNWQHMLWddz1S2iuslw+Ts3/5yDOH/7TAz+o=;
+        b=kiPrOeAXjBxDjNDBypWt9uFG6KZ0kerbKqkZO01aFdpyyArLLFk8NtBuC/wV0xsFov
+         yWqBdL1hSVrqMS6jfTxqxfZOdm8Ufyja1OWfqB38Bo5WzU1ee1MRMS/V4NBC46a3PUkh
+         22LW6VvY6LvCX1niBrTPdbMHi7VNUh0BMEXmbAr1G3+78dOeKhdq6GHDWirRhKOBkghv
+         M9T0aTgvF01NMpyygtkP/LUeLzJtEv+E21Axv43HfSIO3QKzq2PPfN/eyq+SSc2YS5+a
+         TGM6HOdvuxFCS5MlElVa6uXBr/mJNjnH213riSXjns0pSCgX6YLhN78G/MBp/wz1Qk9J
+         1zkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766423476; x=1767028276;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WyI3oyBXBFxhrviz8e5X3C6yj6KOriffXerfRYoiv9M=;
-        b=VgUItFT/9UIBsTHb8V8R26CeIfytI3jGmh8f5hhuXsAR/CVlyIyAV6woJccKcGdPXh
-         boLg3xn0SCE+oCo4QjiT46Iv+yqPBxeEjcdepQkEUbbPuupYKMSN1Kv1yY9bCapeQHez
-         leW3N5E0sLs5e3i8HFGFSHt/CztJgixbLDV/C7Gg65gz7yMKONYD/CmZ47OjqhXbX/1y
-         uadrU0VjxASkTSqByQKyOG9n1V/V7XF0CHCKakGAi3ksHvQ2dhxKvmy78GFgUs13bOG6
-         bMlqS1IKscr2j8d9VXGfRcBKeZF56pkRI0oV7B95B0b/JHHdRuNjkqVDTTIQzIkrnP4b
-         I82w==
-X-Forwarded-Encrypted: i=1; AJvYcCWM5r2xMSR3FlD4/boHnj/qiH/5FEaU409sFLJB+lMKqRiQVUaLw5rF2G9T4DAcEAzvdf2ck4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNMQpWB0sl64MoBCTwQhXoZ4nepZ8K1bPd16DJ8c2UHyxmGdMi
-	h5PiOu+NIswcDM0pmyGQ6fY0/cTYTMRzBsuodOzgZyRcpjm9zX/bcmvCvffv+m58Wwu8y23zzI2
-	q62ZxjhORg2zHlqGtWmIM9RHH/gxfBEhZxZ89Zg5xWQ==
-X-Gm-Gg: AY/fxX4LWKcHAvUfgemePfkCWdup2mWRYzbnjHI1W80EXd//kT93bi3NCCHW0hL7uQP
-	a1VOBEwDH6fd2K0b0aGcYzzuHN3QxC3rxZeDTlThEDm+eSx4+tTwtoK6Qn0LzlYrQv4T3tubX0l
-	d0bxWEjq35RS/4GqZkGLU2Ug6EjWqJbdoK55J2DhaFUETgVCb/e8slPR/y4RcRoE4npx4zjLL5q
-	91EqqcNkMhdYqkuJgVOyApLD+T78qgjer7hFhtg+F0mXUNMD2YFKtPt9/acj2tTygJPVcY=
-X-Google-Smtp-Source: AGHT+IEgoFt5onRyuFBvCdWzpye1MCSgMGvEELbkTWdAfyq9Bby3/aulgO/3PI5bxZIcAsJz2e+7U/96+CK/y5Z9WUo=
-X-Received: by 2002:a05:7022:e1b:b0:119:e56a:4ffb with SMTP id
- a92af1059eb24-1217215cb5bmr7000590c88.0.1766423475371; Mon, 22 Dec 2025
- 09:11:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766432195; x=1767036995;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nn+s1homNWQHMLWddz1S2iuslw+Ts3/5yDOH/7TAz+o=;
+        b=G3yVJtSt48nnZnzdtlOnhDe/Z/fyj3LZ1glThj6I4b/Gg1M60KXDO1TpGtO4n3/grz
+         P0AgK5aMO+NgqZsUMOBGr4YlzVXAs6fTJDs3zuxU13JGMU8X6JlvkOKDquY1aaMFgWXo
+         HSASjwwjIiRz7eCFWF1AjX7pAfbU1s4vYYz+vu3x4tmPKsH7v5W/Rb+1ZIJhUzeS7M0B
+         WIB4duhbg3K2EXUYBojzHH6WZdKL01ThXvL0N/jzw5rcM/PnDuo7nJWTzW7vSFLqAVhm
+         203lSxSBTKhMJLo98ajrf1EKkvcCethsaec9rlgDH9Q2yYwm12DM3HlekiQMAIf08s52
+         MCXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXV+BEWk2IavwkoFogS7CwpS1dyvT5SUa7EsM7A/s15bIoYNviuInEl1VAyyz246i88xVBKE+g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4Cz0sdUA85ztP99vRa0+OUf2IlZGcSe2xebhIva8+GiMcq3h0
+	XiPPelW9jJBNYVZgeAOoIQZe16Vu1I41gZDEPK0XksadHH9bQVPcbswO46v+UBlIWbIQ5eH+9ii
+	PdMFZXBElwYo660S25qEBW+17SUDwjQHNBN06kr5gRleVstXc2kp96YJ63I4=
+X-Gm-Gg: AY/fxX7NQY748ClOI2GT1yhlnTasNVC3y1xIy8sFmpClGzxGdSOUIXU20Kvw1ptQ+Vd
+	4HZeAL2GoOnstKb9ls6RX+Z0V/li0++AQlXLlSySp4N2gg66CRopo/oX9EYb8GW61Mij8V+YqwF
+	drydJqcZLX7ZB0oeghFIJ/3O4uuv/9wZozB2HhDoE9o13a6csw5PNcivOZsWXgCNdnbVhOGBlEt
+	93/gC7+sW1/RX1l1B3lqTNPdb7QaXSKE5emBPtxYE5bwEqZMRHf403FXFC8qt+95ze2Xx5L+wzW
+	ibv4PecP8Pvbqmso3keUbyZ0ks13KAoi3G4tY7HLUnbnzc4RAiMqq8i3oq81KoEvzhkQzuCnVWo
+	S4jFbSAhmljnQHn/wrqPShpQl7iSUJnxhTA==
+X-Received: by 2002:a05:6a00:4105:b0:7b2:2d85:ae74 with SMTP id d2e1a72fcca58-7ff65d7e724mr10088514b3a.29.1766432194757;
+        Mon, 22 Dec 2025 11:36:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFYTrKbRHCEjE4Of6gK0jRIFuxMxi8T8wLXlsDgiw9a+p7RRCcbDeWEWpFFi4cgP/vYgY1lxw==
+X-Received: by 2002:a05:6a00:4105:b0:7b2:2d85:ae74 with SMTP id d2e1a72fcca58-7ff65d7e724mr10088499b3a.29.1766432194320;
+        Mon, 22 Dec 2025 11:36:34 -0800 (PST)
+Received: from [192.168.1.5] ([106.222.228.240])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48e1d6sm8647579b3a.53.2025.12.22.11.36.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Dec 2025 11:36:34 -0800 (PST)
+Message-ID: <0e592574-9e8f-4bb0-b875-3a437fd340fb@oss.qualcomm.com>
+Date: Tue, 23 Dec 2025 01:06:28 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251220095322.1527664-1-ming.lei@redhat.com> <20251220095322.1527664-2-ming.lei@redhat.com>
-In-Reply-To: <20251220095322.1527664-2-ming.lei@redhat.com>
-From: Caleb Sander Mateos <csander@purestorage.com>
-Date: Mon, 22 Dec 2025 12:11:03 -0500
-X-Gm-Features: AQt7F2rdEb1Bo1fkp8d0Z7EFB8KTv6YCIzuB9VKDVyEzrXaw4etsbK_h7EA5mAU
-Message-ID: <CADUfDZprek_M_vkru277HK+h7BuNNv1N+2tFX7zqvGj8chN36g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ublk: add UBLK_F_NO_AUTO_PART_SCAN feature flag
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
-	Uday Shankar <ushankar@purestorage.com>, Yoav Cohen <yoav@nvidia.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
+To: Johan Hovold <johan@kernel.org>, Rob Clark
+ <robin.clark@oss.qualcomm.com>,
+        Sean Paul <sean@poorly.run>
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar
+ <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251221164552.19990-1-johan@kernel.org>
+Content-Language: en-US
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+In-Reply-To: <20251221164552.19990-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=TOdIilla c=1 sm=1 tr=0 ts=69499dc3 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=oy5nMm26i85I/VS19bmskg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=dk0i7xQ4PQfej7aG6gsA:9 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-ORIG-GUID: RRaDwSLNraOrZZODrYsXXTD11JuN9Wip
+X-Proofpoint-GUID: RRaDwSLNraOrZZODrYsXXTD11JuN9Wip
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDE3OSBTYWx0ZWRfX0yYt4uVuRw51
+ U6B2OiRUbyEz3q+QVsNpy6TNbpiu2Ph5UI/7JIv8QcQjxAZQvWgkvDgYCUfUypH14sanjRTra4G
+ EfCM8fJpjSsGAfoLuxYsy+H9Xb6n2ahbIbWyDa6bKJFNBdbWLAqSFcp8vWCbE70eDhREsCAo58c
+ AIlRSmrUrb3U3kEWHuHUb47jD1Eks+DWUTN0PWd7W8fTLshcxo9Gh19dnLJZmQ2VoWwJ6N+qqeJ
+ 1F6+UtzCXBXXoR/cT7vEcw3o1QCqAFA5ykisS4UUeooOsDTEd0lrzghI6lh3VDJRviE4flJorX3
+ DllfbsbZ4zyd1x5S7mEQplOm4vDuIvCJATWUAn1dnTCvgZKosDsVdz/VO/nQAWH+eJil9sCf2Ta
+ fksO7HO0QD7EBf1qM1fD9TBt1icZbFBFgbQ0CL/5QBGiYWpGFy3pZDde7q23hyOhsDl+LDRbRig
+ q8o08nwihXgt+c9tFNw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-22_03,2025-12-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512220179
 
-On Sat, Dec 20, 2025 at 4:53=E2=80=AFAM Ming Lei <ming.lei@redhat.com> wrot=
-e:
->
-> Add a new feature flag UBLK_F_NO_AUTO_PART_SCAN to allow users to suppres=
-s
-> automatic partition scanning when starting a ublk device.
+On 12/21/2025 10:15 PM, Johan Hovold wrote:
+> The hw clock gating register sequence consists of register value pairs
+> that are written to the GPU during initialisation.
+> 
+> The a690 hwcg sequence has two GMU registers in it that used to amount
+> to random writes in the GPU mapping, but since commit 188db3d7fe66
+> ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+> the updated offsets now lie outside the mapping. This in turn breaks
+> boot of machines like the Lenovo ThinkPad X13s.
+> 
+> Note that the updates of these GMU registers is already taken care of
+> properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+> properties on a6xx too"), but for some reason these two entries were
+> left in the table.
+> 
+> Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+> Cc: stable@vger.kernel.org	# 6.5
+> Cc: Bjorn Andersson <andersson@kernel.org>
+> Cc: Konrad Dybcio <konradybcio@kernel.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Is this approach superseded by your patch series "ublk: scan partition
-in async way", or are you expecting both to coexist?
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
->
-> This is useful for network-backed devices where partition scanning
-> can cause issues:
-> - Partition scan triggers synchronous I/O during device startup
-> - If userspace server crashes during scan, recovery is problematic
-> - For remotely-managed devices, partition probing may not be needed
->
-> Users can manually trigger partition scanning later when appropriate
-> using standard tools (e.g., partprobe, blockdev --rereadpt).
->
-> Reported-by: Yoav Cohen <yoav@nvidia.com>
-> Link: https://lore.kernel.org/linux-block/DM4PR12MB63280C5637917C071C2F0D=
-65A9A8A@DM4PR12MB6328.namprd12.prod.outlook.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+I fixed a similar out of bound access issue in the coredump path last
+month. This pattern indicates that we should consider combining the IO
+accessors of both gpu and gmu.
+
+-Akhil
+
 > ---
->
-> - suggest to backport to stable, which is useful for avoiding problematic
->   recovery, also the change is simple enough
+>  drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> index 29107b362346..4c2f739ee9b7 100644
+> --- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> +++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> @@ -501,8 +501,6 @@ static const struct adreno_reglist a690_hwcg[] = {
+>  	{REG_A6XX_RBBM_CLOCK_CNTL_GMU_GX, 0x00000222},
+>  	{REG_A6XX_RBBM_CLOCK_DELAY_GMU_GX, 0x00000111},
+>  	{REG_A6XX_RBBM_CLOCK_HYST_GMU_GX, 0x00000555},
+> -	{REG_A6XX_GPU_GMU_AO_GMU_CGC_DELAY_CNTL, 0x10111},
+> -	{REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL, 0x5555},
+>  	{}
+>  };
+>  
 
-Not sure backporting to stable makes sense. It's a new feature that
-requires the ublk server to opt in, so any existing ublk server being
-used on a stable kernel won't be able to make use of it.
-
->
->  drivers/block/ublk_drv.c      | 16 +++++++++++++---
->  include/uapi/linux/ublk_cmd.h |  8 ++++++++
->  2 files changed, 21 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-> index 78f3e22151b9..ca6ec8ed443f 100644
-> --- a/drivers/block/ublk_drv.c
-> +++ b/drivers/block/ublk_drv.c
-> @@ -73,7 +73,8 @@
->                 | UBLK_F_AUTO_BUF_REG \
->                 | UBLK_F_QUIESCE \
->                 | UBLK_F_PER_IO_DAEMON \
-> -               | UBLK_F_BUF_REG_OFF_DAEMON)
-> +               | UBLK_F_BUF_REG_OFF_DAEMON \
-> +               | UBLK_F_NO_AUTO_PART_SCAN)
->
->  #define UBLK_F_ALL_RECOVERY_FLAGS (UBLK_F_USER_RECOVERY \
->                 | UBLK_F_USER_RECOVERY_REISSUE \
-> @@ -2930,8 +2931,13 @@ static int ublk_ctrl_start_dev(struct ublk_device =
-*ub,
->
->         ublk_apply_params(ub);
->
-> -       /* don't probe partitions if any daemon task is un-trusted */
-> -       if (ub->unprivileged_daemons)
-> +       /*
-> +        * Don't probe partitions if:
-> +        * - any daemon task is un-trusted, or
-> +        * - user explicitly requested to suppress partition scan
-> +        */
-> +       if (ub->unprivileged_daemons ||
-> +           (ub->dev_info.flags & UBLK_F_NO_AUTO_PART_SCAN))
->                 set_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
->
->         ublk_get_device(ub);
-> @@ -2947,6 +2953,10 @@ static int ublk_ctrl_start_dev(struct ublk_device =
-*ub,
->         if (ret)
->                 goto out_put_cdev;
->
-> +       /* allow user to probe partitions from userspace */
-> +       if (!ub->unprivileged_daemons &&
-> +           (ub->dev_info.flags & UBLK_F_NO_AUTO_PART_SCAN))
-> +               clear_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
->         set_bit(UB_STATE_USED, &ub->state);
->
->  out_put_cdev:
-> diff --git a/include/uapi/linux/ublk_cmd.h b/include/uapi/linux/ublk_cmd.=
-h
-> index ec77dabba45b..0827db14a215 100644
-> --- a/include/uapi/linux/ublk_cmd.h
-> +++ b/include/uapi/linux/ublk_cmd.h
-> @@ -311,6 +311,14 @@
->   */
->  #define UBLK_F_BUF_REG_OFF_DAEMON (1ULL << 14)
->
-> +/*
-> + * If this feature is set, the kernel will not automatically scan for pa=
-rtitions
-> + * when the device is started. This is useful for network-backed devices=
- where
-> + * partition scanning can cause deadlocks if the userspace server crashe=
-s during
-> + * the scan. Users can manually trigger partition scanning later when ap=
-propriate.
-> + */
-> +#define UBLK_F_NO_AUTO_PART_SCAN (1ULL << 15)
-
-This is the same bit you've used for UBLK_F_BATCH_IO in your other
-patch series. Are you planning to change that one?
-
-Best,
-Caleb
-
-> +
->  /* device state */
->  #define UBLK_S_DEV_DEAD        0
->  #define UBLK_S_DEV_LIVE        1
-> --
-> 2.47.0
->
 
