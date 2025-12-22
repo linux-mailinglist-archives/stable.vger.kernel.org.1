@@ -1,94 +1,98 @@
-Return-Path: <stable+bounces-203211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A876ECD5DEF
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:52:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9714CD5E28
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 12:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0EC7B300EDC0
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:52:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81278305B93B
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 11:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FBE32F753;
-	Mon, 22 Dec 2025 11:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30226312814;
+	Mon, 22 Dec 2025 11:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNw7RytL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e13DDMaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8425F32E730;
-	Mon, 22 Dec 2025 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D1B1AAE13;
+	Mon, 22 Dec 2025 11:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766404352; cv=none; b=PGjHLsHFqy++TXZOxQOWgp61tIMZ+L8EIxhKQig4xBeYJQJ+9zCaDE79/6KzNc9vrSFh1+T6l491BfrwHJVf2Nn5VouITN/POdQ28bWB6xBABqOGoUpPAoFwYVU4vTrQlap2f8KoY4obFR/8G2KSeVSMTW2yIW9HiieVBBply+w=
+	t=1766404467; cv=none; b=PTp4W2GquzJTsxNcv47x1Of0Nb5ckD0mUg9NUot0+eUkTgUWfZnJfD8EwcjV8gzNEhUONsUR/1iTayb83luENt+baujwA03gj0uxLv3qWm2B6Pu/4Nhx/CwL3vpdMrK468jYKEXOTqkEwyjd22hzAHVtuWmWPs8B16jPhOehcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766404352; c=relaxed/simple;
-	bh=vg7/adpD/1uCZFZ5FETf5AMIGjbfdcAZDucMWV87Hzg=;
+	s=arc-20240116; t=1766404467; c=relaxed/simple;
+	bh=a1OYB19ECEXChDroUupBf2Ouf4nQd7/6B98eFdrDRa4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+L7aKAiRsR1JWO1NV4B4Jz+X3o/R74EfhQZNWF4g3gSwOnpGIuS1/2nhZxN1X6fbe/vd0YUQPXw4Iv7Wk9P8dP8mPZ87Sjey3F7Rbl7VhQKJBsCnticzjHn97Yq9yYFSUOJkFYlfSjV2RbNhbRV1tdC+o34edtxpMf2EBCltqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNw7RytL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2AAC116C6;
-	Mon, 22 Dec 2025 11:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766404352;
-	bh=vg7/adpD/1uCZFZ5FETf5AMIGjbfdcAZDucMWV87Hzg=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=FVoO2//yNSUS5iHYc6GpHTdPSOYNwlVuVYp+ZlbHlipIPTXTtkG/ljCsgBj2tMXEWzUJQ1LGVwfnVrg4jj2dHw/sPAfh0oqzhgpqMtTSAFgsOwEN9asVKtRj2v2AJqgvwVFxd53b1RV6U2gKn1QGlXEeGS9pi+C7RPnVadbFfko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e13DDMaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55226C4CEF1;
+	Mon, 22 Dec 2025 11:54:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1766404466;
+	bh=a1OYB19ECEXChDroUupBf2Ouf4nQd7/6B98eFdrDRa4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fNw7RytL0T22OBM0RlgrShS40Ffh4GGreYAu9fE930EHChGuPXlRHHsH9ZaxfxbBO
-	 J4VrHHDQFuPe9+8bfw/CBX4Fr0AM85r8bwb8QzHN8iUUrhTiUiQ7RMv0bnkMJVBoU0
-	 efDSWoa5GMWVsTmdFYjuBB4KahHLWPFInOZZwjomKiGoc0OW7QBH/VVFqGKyEWPd2r
-	 J2U4sXrNbh8g0mr/kdUyDMlOs/8vvV1O6FTEkVVDPOGiwFCOlyPYUnE/tzw96TuOxK
-	 W4MTkYlhRyetbKHqYN2VrOyzfvcEm5IyrLPvmnwEIsRFCouo2JQqit0Auw71DlVZx8
-	 TqTPStguUYjFQ==
-Date: Mon, 22 Dec 2025 17:22:17 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Shawn Lin <shawn.lin@rock-chips.com>, FUKAUMI Naoki <naoki@radxa.com>, 
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>, Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] Revert "PCI: qcom: Enumerate endpoints based on
- Link up event in 'global_irq' interrupt"
-Message-ID: <xgmb6yllvoowfap5j55x4pd2j6a5k547s2qb72ektrddh2kujo@ueohphquccve>
-References: <20251222064207.3246632-8-cassel@kernel.org>
- <20251222064207.3246632-13-cassel@kernel.org>
- <efa4b3e2-7239-4002-ad92-5ce4f3d1611b@oss.qualcomm.com>
- <aUjv2FwfoDqNMKoR@ryzen>
+	b=e13DDMaK+ppcAYaY9fitcHCvuWtE5EQr12Ck3pr+V72KB1gU+FovX86WwP0WslFAp
+	 hMX6Jw1/fxVuZyj021pj16DPlmXEAXLiMI/6B1C0ExvMKsvQ5vUBex6KoBnW2luCI0
+	 7/xAv0ntcAlpCnrCWA8Uye6SRFzx0SJv7Hm6Dflc=
+Date: Mon, 22 Dec 2025 12:54:22 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: yangshiguang1011@163.com
+Cc: rafael@kernel.org, dakr@kernel.org, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, yangshiguang@xiaomi.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] debugfs: Fix NULL pointer dereference at
+ debugfs_read_file_str
+Message-ID: <2025122234-crazy-remix-3098@gregkh>
+References: <20251222093615.663252-2-yangshiguang1011@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aUjv2FwfoDqNMKoR@ryzen>
+In-Reply-To: <20251222093615.663252-2-yangshiguang1011@163.com>
 
-On Mon, Dec 22, 2025 at 08:14:32AM +0100, Niklas Cassel wrote:
-> Hello Krishna,
+On Mon, Dec 22, 2025 at 05:36:16PM +0800, yangshiguang1011@163.com wrote:
+> From: yangshiguang <yangshiguang@xiaomi.com>
 > 
-> On Mon, Dec 22, 2025 at 12:21:16PM +0530, Krishna Chaitanya Chundru wrote:
-> > Removing patch 3/6 should be sufficient, don't remove global IRQ patch, this
-> > will be helpful
-> > when endpoint is connected at later point of time.
+> Check in debugfs_read_file_str() if the string pointer is NULL.
 > 
-> Please see Mani's reply here:
-> https://lore.kernel.org/linux-pci/fle74skju2rorxmfdvosmeyrx3g75rysuszov5ofvde2exj4ir@3kfjyfyhczmn/
-> 
-> "And neither the controller driver."
-> 
-> Sounds to me like he still wants this patch
-> (which removes the support from the controller driver).
-> 
+> When creating a node using debugfs_create_str(), the string parameter
+> value can be NULL to indicate empty/unused/ignored.
 
-Yes, allowing hotplug for a non-hotplug Root Port is a bad idea. Too bad that I
-proposed it in the first place... Let's revert for all platforms to avoid
-setting bad precedence.
+Why would you create an empty debugfs string file?  That is not ok, we
+should change that to not allow this.
 
-- Mani
+> However, reading this node using debugfs_read_file_str() will cause a
+> kernel panic.
+> This should not be fatal, so return an invalid error.
+> 
+> Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+> Fixes: 9af0440ec86e ("debugfs: Implement debugfs_create_str()")
+> Cc: stable@vger.kernel.org
+> ---
+>  fs/debugfs/file.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+> index 3ec3324c2060..a22ff0ceb230 100644
+> --- a/fs/debugfs/file.c
+> +++ b/fs/debugfs/file.c
+> @@ -1026,6 +1026,9 @@ ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
+>  		return ret;
+>  
+>  	str = *(char **)file->private_data;
+> +	if (!str)
+> +		return -EINVAL;
 
--- 
-மணிவண்ணன் சதாசிவம்
+What in kernel user causes this to happen?  Let's fix that up instead
+please.
+
+thanks,
+
+greg k-h
 
