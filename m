@@ -1,53 +1,75 @@
-Return-Path: <stable+bounces-203191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29EFCD4C98
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 07:20:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622A8CD4CB6
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 07:25:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8286F30084C7
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 06:20:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 023173009F93
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 06:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C99324B24;
-	Mon, 22 Dec 2025 06:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37441326D63;
+	Mon, 22 Dec 2025 06:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIPSrzns"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MbuPQIiI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF943002C8;
-	Mon, 22 Dec 2025 06:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398A3326937;
+	Mon, 22 Dec 2025 06:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766384405; cv=none; b=mZ5tA8AgE+V71I9ZTxIb1ej7GP1kpDtEX1wS9bYonkCSuRYqgLiuooVjt8I0sZCgpTecr1Dzpuvjrq5haxACV5FrxtX/Y+ehNswIpgOxJnYJExmskP9dsboTj6XIvKnf103jpm9cHqmF/buaxOdIaNRAMkHHOo1CWXnJGcr4Ymw=
+	t=1766384719; cv=none; b=aSsjOiLsN5S2CgyqdM9HJ6oEH5MVLTKzLgPWz2YkHYPWYmAOq/YWisp9ya86EW5KG5nsh7BHhDAc7clDSchYckyVYrlD7R9a8oDfrp0q733Fr5DZFsJLNIzvf6geEfYk79bM8veCLCw8HVBPC/p9CCsRV225U8V4eD5FR50qhSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766384405; c=relaxed/simple;
-	bh=YGkELqsIKU8rBjyfo2gCT07jzGxgx9BW3JXVX/lfT4g=;
+	s=arc-20240116; t=1766384719; c=relaxed/simple;
+	bh=NajQSvDFj6afByzC4DUuAXLFKxQGM0BHmRcJVNFTln0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fBKtDa3wWIjONKYFjTrOBxPv1CfHJz7qQwa8/BpL9S7n0WTYJ+xNPB6oUcEF0lYJqS0++1gcfudTpT2MOw85gfDm8NfDjSgfjL5dQGY8cKpltBXk36UMhGI1Bn1BhskAvSoMqxKyvQtmHcbQUIKp5uGX4mbyPRc6sK2hAURx9eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIPSrzns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E4DC4CEF1;
-	Mon, 22 Dec 2025 06:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766384404;
-	bh=YGkELqsIKU8rBjyfo2gCT07jzGxgx9BW3JXVX/lfT4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VIPSrznsWaB+SAA4R19WJuv7g80xiVd+ss+g9racXlGqm4Mec73FjxMdxs+yrcvTj
-	 rltvWpowMowB5dMDGV8MioAjDN4uJoyfvHanYm1xZdqQhwHWHzVthxQ9ydtHTo/CGd
-	 W+90/8K4xw7uj5PbaJztrKle88fhwLklOmOIQCBM=
-Date: Mon, 22 Dec 2025 07:20:01 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	chleroy@kernel.org, akpm@linux-foundation.org, david@kernel.org,
-	ritesh.list@gmail.com, byungchul@sk.com, abarnas@google.com,
-	kay.sievers@vrfy.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/pseries/cmm: fix the error handling in
- cmm_sysfs_register()
-Message-ID: <2025122248-obsession-urgent-648f@gregkh>
-References: <20251222031225.968472-1-lihaoxiang@isrc.iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DuitpkZfrsHl1HZtQbVQQOJdbOXCwuN7vGJMIiYpkqY0SLo4o2TigyG972CqFDqZ8VwmXLGGyXLeb0f1TMDPYKVL3OugpQqqMW8o6tqdMuTf/s94Dw0mS3LbEByEiKEPF0zAewwM5wXFNUCPg3QoBSfp6h7G90lCuYiZZdU27Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MbuPQIiI; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766384717; x=1797920717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NajQSvDFj6afByzC4DUuAXLFKxQGM0BHmRcJVNFTln0=;
+  b=MbuPQIiIDX832atEF6L/AXBHGJyfSVl+FtKZb2K+hEayw2yY+h+5oV8M
+   UP6vRzNsXH535ziYyYzX9PeLWzxwnBVkxUlrbzs/uqDpl9Hf0abFyqt8I
+   3/QzBtdAEoAtgkuODoNTh/TleAzhCvuFPYgDmWKAKXT1df9M6JIz9ZxTv
+   dUK0dkv6lJicyTMHRs7Tz2b57yvry/M1Uiovrd3JOby+TmSDiQPXgZxDx
+   /780bnTLsnAACDl7OPOGpxlAb/GajsspqBilbP+D6je5KBRp1zoBocmUU
+   AmpQqVcn1c5IiIN2Zvl4tQSl447MoXa75XBq4DMQf1tK2AzfwhM/eaCxI
+   Q==;
+X-CSE-ConnectionGUID: zBlC6BvNQyGjoZeI+RLoeA==
+X-CSE-MsgGUID: 2RdahreoSwiSreXI4ZzK5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="68177615"
+X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
+   d="scan'208";a="68177615"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 22:25:17 -0800
+X-CSE-ConnectionGUID: r2148qVwQYu8R3u2PYubKg==
+X-CSE-MsgGUID: nZW1nG+XT/2Gs0JkICEANw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="199202111"
+Received: from igk-lkp-server01.igk.intel.com (HELO 8a0c053bdd2a) ([10.211.93.152])
+  by orviesa009.jf.intel.com with ESMTP; 21 Dec 2025 22:25:15 -0800
+Received: from kbuild by 8a0c053bdd2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXZM0-000000005O0-2lCW;
+	Mon, 22 Dec 2025 06:25:12 +0000
+Date: Mon, 22 Dec 2025 07:24:30 +0100
+From: kernel test robot <lkp@intel.com>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, anna-maria@linutronix.de,
+	frederic@kernel.org, tglx@linutronix.de
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] clockevents: add a error handling in
+ tick_broadcast_init_sysfs()
+Message-ID: <202512220734.2gooRBi1-lkp@intel.com>
+References: <20251218090625.557965-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,48 +78,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251222031225.968472-1-lihaoxiang@isrc.iscas.ac.cn>
+In-Reply-To: <20251218090625.557965-1-lihaoxiang@isrc.iscas.ac.cn>
 
-On Mon, Dec 22, 2025 at 11:12:25AM +0800, Haoxiang Li wrote:
-> If device_register() fails, put_device() should be called to drop
-> the device reference.
-> Thus add put_device() after subsys_unregister label and change
-> device_unregister() to device_del() in fail label.
-> 
-> Found by code review.
-> 
-> Fixes: 6c9d29095264 ("power: cmm - convert sysdev_class to a regular subsystem")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
->  arch/powerpc/platforms/pseries/cmm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 4cbbe2ee58ab..0666d3300bdb 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -419,8 +419,9 @@ static int cmm_sysfs_register(struct device *dev)
->  fail:
->  	while (--i >= 0)
->  		device_remove_file(dev, cmm_attrs[i]);
-> -	device_unregister(dev);
-> +	device_del(dev);
->  subsys_unregister:
-> +	put_device(dev);
->  	bus_unregister(&cmm_subsys);
->  	return rc;
->  }
+Hi Haoxiang,
 
-this does not look to be correct, how was it tested?
+kernel test robot noticed the following build errors:
 
-Also, why not fix all of this up properly by calling the correct
-functions so that you don't have to manually add/remove the sysfs files?
-That would resolve the "problem" you seem to think is here in a much
-simpler way, and also fix the real bug in this function (i.e. it races
-with userspace and looses.)
+[auto build test ERROR on tip/timers/core]
+[also build test ERROR on linus/master v6.19-rc2 next-20251219]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-thanks,
+url:    https://github.com/intel-lab-lkp/linux/commits/Haoxiang-Li/clockevents-add-a-error-handling-in-tick_broadcast_init_sysfs/20251218-170931
+base:   tip/timers/core
+patch link:    https://lore.kernel.org/r/20251218090625.557965-1-lihaoxiang%40isrc.iscas.ac.cn
+patch subject: [PATCH] clockevents: add a error handling in tick_broadcast_init_sysfs()
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20251222/202512220734.2gooRBi1-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512220734.2gooRBi1-lkp@intel.com/reproduce)
 
-greg k-h
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512220734.2gooRBi1-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   kernel/time/clockevents.c: In function 'tick_broadcast_init_sysfs':
+>> kernel/time/clockevents.c:737:17: error: implicit declaration of function 'put_deivce'; did you mean 'put_device'? [-Wimplicit-function-declaration]
+     737 |                 put_deivce(&tick_bc_dev);
+         |                 ^~~~~~~~~~
+         |                 put_device
+
+
+vim +737 kernel/time/clockevents.c
+
+   731	
+   732	static __init int tick_broadcast_init_sysfs(void)
+   733	{
+   734		int err = device_register(&tick_bc_dev);
+   735	
+   736		if (err) {
+ > 737			put_deivce(&tick_bc_dev);
+   738			return err;
+   739		}
+   740	
+   741		err = device_create_file(&tick_bc_dev, &dev_attr_current_device);
+   742		return err;
+   743	}
+   744	#else
+   745	static struct tick_device *tick_get_tick_dev(struct device *dev)
+   746	{
+   747		return &per_cpu(tick_cpu_device, dev->id);
+   748	}
+   749	static inline int tick_broadcast_init_sysfs(void) { return 0; }
+   750	#endif
+   751	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
