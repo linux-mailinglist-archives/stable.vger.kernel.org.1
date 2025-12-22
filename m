@@ -1,312 +1,99 @@
-Return-Path: <stable+bounces-203200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898DDCD4D2E
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 07:51:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6C0CD4D56
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 08:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C5EF3004D2F
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 06:51:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24C7430076A1
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 07:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BCD23EAB3;
-	Mon, 22 Dec 2025 06:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6ECE1C3C08;
+	Mon, 22 Dec 2025 07:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RkYhFwd7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aDtX+z5E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YsVPbODU"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EB116DC28
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 06:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D633A1E66;
+	Mon, 22 Dec 2025 07:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766386286; cv=none; b=s/nh7YC5s05Sk89Q8CquNWJFQmCNyUKUBwl1V+FP8O5IfOv5aKn9rhJwiFZiln+VGYe7AE1OfdCobZw1fVbZkKmV1c7UezEZXVytQXpRZYYmE+fgIN/qk7vlTa2kiPlLuK3H9Te/TWx6B7JivdLmvOOPnyxNniwmXE2udqv/6YQ=
+	t=1766386863; cv=none; b=MF8FNXVz/3ZMGL6kd+RtrHXvUHlyLtZ59fkC1OyJL6sTxru4balGgXKcsTNwwVQKanjO+7iYJhn2nqVemOVmYTYofRR7Kv2HCg1I+qa6zp/PxBcQ+hjmqp5BkLi9jINhu+4JlQy0Jpa18stZwPnQt8LkTIoFohQHPZqlNx663CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766386286; c=relaxed/simple;
-	bh=p7ApNdtHB2Xso3s8fjoNKww0TbV+dZf1r4pQxjwJks0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f/Uk/zU8B5CRndvZIdGMqic/EMuc62FRdySleQ+WAbBkwGw94WCU0W35D/t8J0UEQD+rmZSNIefxOvwg1xGF5vSoeC6CPewt3lqQLNe9TyhIauKNJBGM2Kiox2SmXD9DSozKv3Fv60R8Sn3ut+IXT9kEmM0EUh4gitO4dylzjRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RkYhFwd7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aDtX+z5E; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BLLF4rD3917609
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 06:51:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	G5IBEk5VGJnkWt3hXkCW0xh6EACRykLwKHgEX/vbT48=; b=RkYhFwd7Ko48pB+t
-	omqAlkll0OiNLIz6/Xi1RC3CpKuyEV2PW8O8v8i3l1LRM744Pr56TDhxdOfkB7H5
-	zFitxrgbkMfov8BJdHPibjgHLEp8BCLuw/rVncmuUBr4mjr4YZ6Oz2iDSf1LMRZn
-	WvgjGH7ceZXKZ8jC6xjJ6rUulfkvu1ronyWOBsxe+rsJ8RCUQ7FxEg9zcpbAGHNS
-	nnHRqauViEU1gXx7vVV9h7sXuTmrufYLcRYScZfjX6yDdthq/lVm6k7rYHJe7u0o
-	LY21VFofOLqw67zFcIsL7Mx1gFeSU46pubYynCdIrTEOq2ke39hsJu1tQAS4GWrs
-	VK4s8Q==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b5mux40a2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 06:51:23 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a08cbeb87eso56417555ad.3
-        for <stable@vger.kernel.org>; Sun, 21 Dec 2025 22:51:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766386282; x=1766991082; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G5IBEk5VGJnkWt3hXkCW0xh6EACRykLwKHgEX/vbT48=;
-        b=aDtX+z5E+j4FpvmNEz1BPDbknMHLaWwOtca9yXpTKcdwtoRY6PQmYbUycJz1dHyog4
-         WkuigaEtTa74K09AEMC38IIgHpr9VkHpmECOuwUk6WDSAI4mDC6R/CKffwPOyqY6Qia8
-         2WnpvkeZQl6LL7TEaqBDVP5tzyjWv1MQxbIUOPV2XYrV3dde3dGdY8UWyKqmP22txQZv
-         o7GS9QvtAY/Q1z1DOQ8neae9vs5xV8udj2wdqa3asliz7SHnB1G+100VOWplgbNE8Z/q
-         oP637Iec7hxDwmoaS6DE0VLzmSMYtIseUAekcik3UsDJWuGhAK8yZwCuXSnKl9PvYTSw
-         SiTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766386282; x=1766991082;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G5IBEk5VGJnkWt3hXkCW0xh6EACRykLwKHgEX/vbT48=;
-        b=bXCGQFzHfMC0xk3ySw8NmKAnV1ECp7iemPMd70QvOqmvWQx5dwjRSQcmHnOBSYmyAc
-         XfiQkiDC2K1GlXaIcWRLsmFHTkZSEqtRsIfD90ss30LQby3MkZBQ1tyEGSyijsFshiRC
-         YQbZHEl0sCfkp4T/5yfOegnHgQ6gseiUCTCZytnmsSSdAYa100kouxkGg2sTZGRyEP6g
-         bhlRbdcM1RaOvlESbxctri4XdM4Y2v4faX+oMxz603AAVNeGCAjo19YOViJjCxJvD7Xi
-         Fplv0QsZykVtYFJFnuIFvGw2pOvlwTtinqKfKQCj+xg0REiROkWC84SgHg7IQGNkjPuj
-         5M6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWInmTNME33XJEYtqsYMV7sbOUQkgLO/N4fqiEm188VLLhIu07ednby6Fio2d2HRUlLT8bBeMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrYHSupdjUygH8jOegph5rRUQNEWq27OWw+0nf+CYhv80jgVXB
-	kH0UlunopxstDKebgkPyOUqeGCLv8o/2AQVubLldriZCo7rcEkkwXRa+gwzhgbgT6GUd6uTvfyA
-	xHVPdqmCEHjoDxJ6FFcQRhwIc8BLuDxAsDu8ytrpEfdgJ2oiaPvtHIIyoDHA=
-X-Gm-Gg: AY/fxX6Vnpb4/uhwwZiExBLfWdKr8DIyNfKAEJqCa4NbjGvq04gB81RlrrJGEWWoEfH
-	7/wxwnxmFqR1oLjkiRLRaHauih+J83F9+C0HF9GKvOYNELqIr3fXSdm1IRXsyiOFUFYk5VnqGR4
-	nX25fSgWudWhNruWak+G49gtfpkdWCxXdHBr6ec35CUrcSxBd8m9dNLrCA0ZTZlfmAKa0gAPj6D
-	w6gWfxt1sp9rA/lHSSXAbQnKgg1M3s5Ef3Nr9P89v+JRGjlEuzFop/S/Z0+onUc5UfoWU6sXy5W
-	rcr6Z682yu4EATZkGVaEX6Lw6cUcmjhzyT0DVAnbDx9bLXw4ek32NADcUMqcilNJXMWUUmfRzJX
-	Iu/oh7yqLZt1AbCUd3YBmgCYrcod9tF9B+xa48cwD8Q==
-X-Received: by 2002:a17:902:be0a:b0:2a0:e5da:febf with SMTP id d9443c01a7336-2a2f283de4bmr63910875ad.46.1766386282447;
-        Sun, 21 Dec 2025 22:51:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGTvgv1hHER1oJ5VEZI/LUm+x0Rgz+j+dmzfrj2FJyfQHSPSjcRw6dQUbfv/KXkbw7LePCVTA==
-X-Received: by 2002:a17:902:be0a:b0:2a0:e5da:febf with SMTP id d9443c01a7336-2a2f283de4bmr63910805ad.46.1766386281921;
-        Sun, 21 Dec 2025 22:51:21 -0800 (PST)
-Received: from [10.218.35.45] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c66932sm88235205ad.11.2025.12.21.22.51.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Dec 2025 22:51:21 -0800 (PST)
-Message-ID: <efa4b3e2-7239-4002-ad92-5ce4f3d1611b@oss.qualcomm.com>
-Date: Mon, 22 Dec 2025 12:21:16 +0530
+	s=arc-20240116; t=1766386863; c=relaxed/simple;
+	bh=l6Le9EfF5iu3J3eDZsIQ4DQ27umO6XIZS6ESVUTIYGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k428Ag8HFd3+nWBVkD3qY1l+YUzMBqZf1PJwy5rkFJDInbkWnX9PwTlFiQ0OfOazJ8dDVc5GIKk88L+E06avUrl30uZpUSNbWL4OrxeqXUqBXRjpYsAjv+f8ukvltMgZTIxAiyVQMXJljB62tx4o1UQS9GLegUKaL/BIh8JAZv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YsVPbODU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058EFC4CEF1;
+	Mon, 22 Dec 2025 07:00:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766386863;
+	bh=l6Le9EfF5iu3J3eDZsIQ4DQ27umO6XIZS6ESVUTIYGM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YsVPbODUGO1S7bocQG0KpzlrAButeEUnV6Xc4ckq2w33Mtr5TopNCXFcSBwtsmRs0
+	 zgqzFTCr4cYs8P9ymC+gLr1aMDHmN1nEw1QRLZykHqi+kQ4FO7PEZ2BJtLt7jjIYWh
+	 BI5QDPLFQ2mL7lJwzow26UC9Oki1QuO4bPDcHXRPlDGiNGxowpn8TG7P8bJPK0pY5T
+	 ieotUgprtfZi+zCsLV5O5pzCSGyMk2ylVChmB5M0SGI58LVgb5hVfQ7UiDDmuqNZI1
+	 rVlXW2j4JvXGesEcAcAq8KkNv2b7QegcNAGzCPqDPxHKJatY+EpPsq6YspUplF0LBo
+	 CcCzZkxIan9hg==
+Date: Mon, 22 Dec 2025 08:00:57 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] Revert "PCI: qcom: Enable MSI interrupts together
+ with Link up if 'Global IRQ' is supported"
+Message-ID: <aUjsqbIaL86Kj1AA@ryzen>
+References: <20251222064207.3246632-8-cassel@kernel.org>
+ <20251222064207.3246632-12-cassel@kernel.org>
+ <6f4eba26-86ba-4510-ac0d-b6e54fd5f51c@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] Revert "PCI: qcom: Enumerate endpoints based on
- Link up event in 'global_irq' interrupt"
-To: Niklas Cassel <cassel@kernel.org>,
-        Manivannan Sadhasivam
- <mani@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: Shawn Lin <shawn.lin@rock-chips.com>, FUKAUMI Naoki <naoki@radxa.com>,
-        Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-        Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20251222064207.3246632-8-cassel@kernel.org>
- <20251222064207.3246632-13-cassel@kernel.org>
-Content-Language: en-US
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-In-Reply-To: <20251222064207.3246632-13-cassel@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: RucVpasiFyjVg9fgngRqb7UomMQSjCLM
-X-Authority-Analysis: v=2.4 cv=EvnfbCcA c=1 sm=1 tr=0 ts=6948ea6b cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=s8YR1HE3AAAA:8
- a=gPGEdhGqammTKEiSqskA:9 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
- a=jGH_LyMDp9YhSvY-UuyI:22
-X-Proofpoint-GUID: RucVpasiFyjVg9fgngRqb7UomMQSjCLM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDA2MCBTYWx0ZWRfX8tt6/xcl0wGq
- f/fAT3H/ilTrMjo8Ldb4ar9jFAN3LLj7jtD88lQaxb27HKDnK3jZf5dZGDcwC/Gn1djhQ2weJXY
- YYnZDZG0z3jDYNiJ6oBjvpZ8mZ8sAqUqyMwULzlAx3lOLkqYzJjEYxXdk1gj9JxEiCan5/H4zbA
- aKJEpGkRwFG4KeAetXDZHmaFRtHWKF9g6dA5+Hm/HW3Itc5Vy7OVtB8tXd8Pzv5PRxyj49g2MUi
- aj42RMIE71jr/b74N0mRoLEAV7DR+js+m39zl97tp83IWH7xHE1Vw0rsl19YkU/Y33OBSROT/vd
- 3nXGmKHyQmNmgR4zyn4j5O1g5DqHIG4My+fH5XuhuAAcn4MMdNIB8ZwzDiDAIL2qsrCJS06WjeY
- Xj/97lNWsMPfpbq0BIN1N2PkJK/hlm20pEK46KNGB65haGVRRzNVtHJ6KZz1juEDFN7jpOngPQ0
- UfAaFo0POjM7kGHQqNA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 phishscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2512220060
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f4eba26-86ba-4510-ac0d-b6e54fd5f51c@oss.qualcomm.com>
+
+On Mon, Dec 22, 2025 at 12:18:32PM +0530, Krishna Chaitanya Chundru wrote:
+> > @@ -1982,8 +1981,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+> >   			goto err_host_deinit;
+> >   		}
+> > -		writel_relaxed(PARF_INT_ALL_LINK_UP | PARF_INT_MSI_DEV_0_7,
+> > -			       pcie->parf + PARF_INT_ALL_MASK);
+> MSI's needs to be enabled irrespective of this series as part of global IRQ
+> otherwise
+> MSI's will not be triggered in few platforms.
+> 
+> Mani, exclude this patch while applying.
+
+From the commit message of the reverted patch:
+
+  The MSI bits in PARF_INT_ALL_MASK register are enabled
+  by default in the hardware, but commit 4581403f6792 ("PCI: qcom: Enumerate
+  endpoints based on Link up event in 'global_irq' interrupt") disabled them
+  and enabled only the Link up interrupt.
 
 
+Thus, applying this patch should be safe, or at least bring back the
+original behavior as it was before the Link Up IRQ patches got applied.
 
-On 12/22/2025 12:12 PM, Niklas Cassel wrote:
-> This reverts commit 4581403f67929d02c197cb187c4e1e811c9e762a.
->
-> While this fake hotplugging was a nice idea, it has shown that this feature
-> does not handle PCIe switches correctly:
-> pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
-> pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
-> pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
-> pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
-> pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
-> pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
-> pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
-> pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
-> pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
-> pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
-> pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
-> pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
->
-> During the initial scan, PCI core doesn't see the switch and since the Root
-> Port is not hot plug capable, the secondary bus number gets assigned as the
-> subordinate bus number. This means, the PCI core assumes that only one bus
-> will appear behind the Root Port since the Root Port is not hot plug
-> capable.
->
-> This works perfectly fine for PCIe endpoints connected to the Root Port,
-> since they don't extend the bus. However, if a PCIe switch is connected,
-> then there is a problem when the downstream busses starts showing up and
-> the PCI core doesn't extend the subordinate bus number after initial scan
-> during boot.
->
-> The long term plan is to migrate this driver to the pwrctrl framework,
-> once it adds proper support for powering up and enumerating PCIe switches.
->
-> Cc: stable@vger.kernel.org
-> Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
-> Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-> Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Removing patch 3/6 should be sufficient, don't remove global IRQ patch, 
-this will be helpful
-when endpoint is connected at later point of time.
+But if you prefer to enable the MSI bits explicitly, in order to not
+rely on HW defaults, that should also be fine.
 
-- Krishna Chaitanya.
-> ---
->   drivers/pci/controller/dwc/pcie-qcom.c | 58 +-------------------------
->   1 file changed, 1 insertion(+), 57 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-> index c5fcb87972e9..13e6c334e10d 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
-> @@ -55,9 +55,6 @@
->   #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
->   #define PARF_Q2A_FLUSH				0x1ac
->   #define PARF_LTSSM				0x1b0
-> -#define PARF_INT_ALL_STATUS			0x224
-> -#define PARF_INT_ALL_CLEAR			0x228
-> -#define PARF_INT_ALL_MASK			0x22c
->   #define PARF_SID_OFFSET				0x234
->   #define PARF_BDF_TRANSLATE_CFG			0x24c
->   #define PARF_DBI_BASE_ADDR_V2			0x350
-> @@ -134,9 +131,6 @@
->   /* PARF_LTSSM register fields */
->   #define LTSSM_EN				BIT(8)
->   
-> -/* PARF_INT_ALL_{STATUS/CLEAR/MASK} register fields */
-> -#define PARF_INT_ALL_LINK_UP			BIT(13)
-> -
->   /* PARF_NO_SNOOP_OVERRIDE register fields */
->   #define WR_NO_SNOOP_OVERRIDE_EN			BIT(1)
->   #define RD_NO_SNOOP_OVERRIDE_EN			BIT(3)
-> @@ -1635,32 +1629,6 @@ static void qcom_pcie_init_debugfs(struct qcom_pcie *pcie)
->   				    qcom_pcie_link_transition_count);
->   }
->   
-> -static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
-> -{
-> -	struct qcom_pcie *pcie = data;
-> -	struct dw_pcie_rp *pp = &pcie->pci->pp;
-> -	struct device *dev = pcie->pci->dev;
-> -	u32 status = readl_relaxed(pcie->parf + PARF_INT_ALL_STATUS);
-> -
-> -	writel_relaxed(status, pcie->parf + PARF_INT_ALL_CLEAR);
-> -
-> -	if (FIELD_GET(PARF_INT_ALL_LINK_UP, status)) {
-> -		msleep(PCIE_RESET_CONFIG_WAIT_MS);
-> -		dev_dbg(dev, "Received Link up event. Starting enumeration!\n");
-> -		/* Rescan the bus to enumerate endpoint devices */
-> -		pci_lock_rescan_remove();
-> -		pci_rescan_bus(pp->bridge->bus);
-> -		pci_unlock_rescan_remove();
-> -
-> -		qcom_pcie_icc_opp_update(pcie);
-> -	} else {
-> -		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
-> -			      status);
-> -	}
-> -
-> -	return IRQ_HANDLED;
-> -}
-> -
->   static void qcom_pci_free_msi(void *ptr)
->   {
->   	struct dw_pcie_rp *pp = (struct dw_pcie_rp *)ptr;
-> @@ -1805,8 +1773,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
->   	struct dw_pcie_rp *pp;
->   	struct resource *res;
->   	struct dw_pcie *pci;
-> -	int ret, irq;
-> -	char *name;
-> +	int ret;
->   
->   	pcie_cfg = of_device_get_match_data(dev);
->   	if (!pcie_cfg) {
-> @@ -1963,27 +1930,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
->   		goto err_phy_exit;
->   	}
->   
-> -	name = devm_kasprintf(dev, GFP_KERNEL, "qcom_pcie_global_irq%d",
-> -			      pci_domain_nr(pp->bridge->bus));
-> -	if (!name) {
-> -		ret = -ENOMEM;
-> -		goto err_host_deinit;
-> -	}
-> -
-> -	irq = platform_get_irq_byname_optional(pdev, "global");
-> -	if (irq > 0) {
-> -		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
-> -						qcom_pcie_global_irq_thread,
-> -						IRQF_ONESHOT, name, pcie);
-> -		if (ret) {
-> -			dev_err_probe(&pdev->dev, ret,
-> -				      "Failed to request Global IRQ\n");
-> -			goto err_host_deinit;
-> -		}
-> -
-> -		writel_relaxed(PARF_INT_ALL_LINK_UP, pcie->parf + PARF_INT_ALL_MASK);
-> -	}
-> -
->   	qcom_pcie_icc_opp_update(pcie);
->   
->   	if (pcie->mhi)
-> @@ -1991,8 +1937,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
->   
->   	return 0;
->   
-> -err_host_deinit:
-> -	dw_pcie_host_deinit(pp);
->   err_phy_exit:
->   	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
->   		phy_exit(port->phy);
 
+Kind regards,
+Niklas
 
