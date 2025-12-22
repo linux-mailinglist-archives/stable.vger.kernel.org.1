@@ -1,83 +1,121 @@
-Return-Path: <stable+bounces-203224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA8BCD6846
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 16:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AF1CD688E
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 16:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39243303C9E5
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 15:22:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46F42307572A
+	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 15:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F352F320CD1;
-	Mon, 22 Dec 2025 15:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B892732C924;
+	Mon, 22 Dec 2025 15:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KyOpUdt2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkUuyEHk"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04AB2F5328
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 15:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708B332ABDC;
+	Mon, 22 Dec 2025 15:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766416925; cv=none; b=o+GOmaj+mLfVtPDxSL7xHzUYY0x5/FZqd3O/80Tpj4d8jLoiwRxqqKjRFjpxu5sQWAxPA7TCQNwJmwqws+bkrAbVpqU98l/HhVaHg2Mo6/U2OCg5bkWduUxrAZdgVPtpTbVxF0Su/ut6p+c1N5LSTMzGE407ja2KiBQ66fQTsa8=
+	t=1766417355; cv=none; b=WapqyGWBjInTXggd5hPuC5OSP1ITJ8JqKYK6/XkK0jErhkIdin6kTABe0AhjGoMsEJfXS8/PiJ+KJwOKO7WSjcrLke0JPB1fxJUeDXInDgsc+EuZLtjmITorbd5HE0F5EC9f/vCgCEBz+FpYgjRhyg7WuLuOQrxyIz/EnSrGQUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766416925; c=relaxed/simple;
-	bh=rsfsZQFUXvUgzB5b7ipEisB489aciHhgsARMx8BUDXU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H/5tXNIjhyj2sQGyTDrwGBk+3doeOcxS1IiRq8ktqZQcfx02IBwgMOglLMZF0xZXn8s9AWrgFixSzVRtKntLk4cYQyvq7RoKh09mSMgiLMJ5Cmm+OHtFEpHasV/xT6RD/UCmlektzJxCVQsagqXnjjKIbdoaJE+zn9j69bwD5sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KyOpUdt2; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <059d9fbb-7383-441c-9368-1c96eafae1f8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766416921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fI5w9UdO/kkIcZxLRIb64c8Q+gNUOfD8NA1o77mtVOo=;
-	b=KyOpUdt2qXZAHwApTZEn+TK7+V5b2/mHxe5pCCZ6m7LYrWZtCgUSL+6Boab2kVZIsSbNst
-	Av7vrU5ixPqFtXolhl6wKxLrxuHGNJaCo/wkP3TSMrAOH+tU7sXEsotNGn9lYoSROvmkJv
-	d8Qm8eR0LuwXI0fMxzPXUFcPGtK1F8k=
-Date: Mon, 22 Dec 2025 15:21:59 +0000
+	s=arc-20240116; t=1766417355; c=relaxed/simple;
+	bh=xRQ3b06a5JLWhwSVbcemTk8WY4nIK9DBabCjDwYML8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2W29O9oAWWo2jUG5n0EP2nMEiqwacWTLhYji0c36ASkS1pR4CZEXnUg9pRuTAHyvEu9P0nmF88pF3QboAUdaoR1pcwOiVTfjx1GFkAS1P8DBiiXQ1r9St8dhaVfYQN6AkJYRkMdnATMFTG1RdTkZiBN2I/aP/bYOmPgxngxhW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkUuyEHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E904BC4CEF1;
+	Mon, 22 Dec 2025 15:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766417355;
+	bh=xRQ3b06a5JLWhwSVbcemTk8WY4nIK9DBabCjDwYML8g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IkUuyEHkzJvdETtq7fQGD3yhMUvMCMq8Pmkbpa/MZoe5nquWhremtgS40oZ/c4tEE
+	 vT26HqicwwimEZhYN9WsMa26mxGGwSLht4o4YIlBm5cdn401LkFcCOvzboyWc4v7hH
+	 T9mb4kMdSloLTGQe3onvJ3RCexzS0wI/3X50cPr/vF0S0fYWLsj4/nnw5EpTSzfmgs
+	 S/nZ2nJEybY4WAI6nqzFVSF1PHIgmki4UbpsxfLiK4cYsssz+8mjWI6EGpfOvXp34T
+	 DEkmaRZWmZVt+ES/XDrYz1glul+QO44DRhX4yGKTd48Qi4F0nZ/T9Vewg841z7GQys
+	 Z9bMW1GWi8EBA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vXhqZ-000000000qv-38v3;
+	Mon, 22 Dec 2025 16:29:20 +0100
+Date: Mon, 22 Dec 2025 16:29:19 +0100
+From: Johan Hovold <johan@kernel.org>
+To: "Mario Limonciello (AMD)" <superm1@kernel.org>
+Cc: mario.limonciello@amd.com, heikki.krogerus@linux.intel.com,
+	gregkh@linuxfoundation.org, lumag@kernel.org, ukaszb@chromium.org,
+	stable@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: ucsi: Fix null pointer dereference in
+ ucsi_sync_control_common
+Message-ID: <aUljz-PbCwCHR3hU@hovoldconsulting.com>
+References: <20251216122210.5457-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v3] net: nfc: nci: Fix parameter validation for packet
- data
-To: Michael Thalmeier <michael.thalmeier@hale.at>,
- Deepak Sharma <deepak.sharma.472935@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Simon Horman <horms@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Michael Thalmeier <michael@thalmeier.at>, stable@vger.kernel.org
-References: <20251222143143.256980-1-michael.thalmeier@hale.at>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20251222143143.256980-1-michael.thalmeier@hale.at>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216122210.5457-1-superm1@kernel.org>
 
-On 22/12/2025 14:31, Michael Thalmeier wrote:
-> @@ -668,6 +679,11 @@ static int nci_rf_intf_activated_ntf_packet(struct nci_dev *ndev,
->   		}
->   	}
->   
-> +	if (skb->len < (data - skb->data) + sizeof(ntf.data_exch_rf_tech_and_mode) +
-> +				sizeof(ntf.data_exch_tx_bit_rate) + sizeof (ntf.data_exch_rx_bit_rate) +
+On Tue, Dec 16, 2025 at 06:22:02AM -0600, Mario Limonciello (AMD) wrote:
+> Add missing null check for cci parameter before dereferencing it in
+> ucsi_sync_control_common(). The function can be called with cci=NULL
+> from ucsi_acknowledge(), which leads to a null pointer dereference
+> when accessing *cci in the condition check.
+> 
+> The crash occurs because the code checks if cci is not null before
+> calling ucsi->ops->read_cci(ucsi, cci), but then immediately
+> dereferences cci without a null check in the following condition:
+> (*cci & UCSI_CCI_COMMAND_COMPLETE).
+> 
+> KASAN trace:
+>   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>   RIP: 0010:ucsi_sync_control_common+0x2ae/0x4e0 [typec_ucsi]
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 667ecac55861 ("usb: typec: ucsi: return CCI and message from sync_control callback")
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+> ---
+> v2:
+>  * Add stable tag
+>  * Add Heikki's tag
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index 9b3df776137a1..7129973f19e7e 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -97,7 +97,7 @@ int ucsi_sync_control_common(struct ucsi *ucsi, u64 command, u32 *cci)
+>  	if (!ret && cci)
+>  		ret = ucsi->ops->read_cci(ucsi, cci);
+>  
+> -	if (!ret && ucsi->message_in_size > 0 &&
+> +	if (!ret && cci && ucsi->message_in_size > 0 &&
+>  	    (*cci & UCSI_CCI_COMMAND_COMPLETE))
+>  		ret = ucsi->ops->read_message_in(ucsi, ucsi->message_in,
+>  						 ucsi->message_in_size);
 
-extra space between sizeof and the bracket
+No, this is just papering over the NULL pointer dereference while
+leaving the UCSI driver broken.
 
-> +				sizeof(ntf.activation_params_len))
-> +		return -EINVAL;
-> +
->   	ntf.data_exch_rf_tech_and_mode = *data++;
->   	ntf.data_exch_tx_bit_rate = *data++;
->   	ntf.data_exch_rx_bit_rate = *data++;
+The problem is the new buffer management code which clearly has not been
+tested properly. It completely ignores concurrency so that another
+thread can update the ucsi->message_in_size above while an ack is being
+processed (with cci being NULL).
+
+As fixing this requires going back to the drawing board I've just send a
+revert of this mess to fix the regression:
+
+	https://lore.kernel.org/lkml/20251222152204.2846-1-johan@kernel.org/
+
+Johan
 
