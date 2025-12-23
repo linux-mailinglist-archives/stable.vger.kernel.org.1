@@ -1,84 +1,86 @@
-Return-Path: <stable+bounces-203268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67833CD838F
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 06:51:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51759CD8405
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 07:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DEE3305DCC3
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 05:49:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 527983016EFC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 06:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCC12E62CE;
-	Tue, 23 Dec 2025 05:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B982C11C4;
+	Tue, 23 Dec 2025 06:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="ZIY9rLj3"
+	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="NsQLe06q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44599288C2F
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 05:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099FC1A275
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 06:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766468960; cv=none; b=Lh/Spd8spNvXGuqc24NOJQuNN8XXdj0ElGOFgTne2je0hts+v/OTcMwp7inocRTJzESQ34+8qjmM7S+NRlHrGyiCVBDLraLgTZQ/sOLjN8aswLsvyEAYJdbva24HmfUFr+K2g/2SWcKgOT6L0r4ye8g/2yKQ/5R2Snq/XWWMvsM=
+	t=1766471429; cv=none; b=GXx0oFma5/vkHHhxr9ACKVUUTY1EeyC3t2aKdXy/e3TIwAafcxLQ/q4FSuHhzWHrLyC4fSvfQTnB5+Knt58AY1xbLb3XNUWfk25jaFME3C0lo8RgZ3XktQkj7HdMw3JeZc1IzyKMlHjMmzX/w93qdr1uosopty5lVn9MY+V5i2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766468960; c=relaxed/simple;
-	bh=xY8s6ztPgI0v3eE5F9o/RQZ+CCnOvINklT570r72Aho=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GWiub92kfCQjh6LHZz3L1Hxaz8ihfw/ztREvVNCZ54MrQkdBVAI+nbtcNuKXSQCOHDUGkmzXOND1gpLYkUMZYuU+kIbiutBnPRBs5AK/BmTdnza8SCyUegZ8ZstsZ8Dy1fczRt2CWwbwi3FgegPjBoLj/kiIwGPGtkOBwtE14Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=ZIY9rLj3; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1766471429; c=relaxed/simple;
+	bh=UOwytaD1y1ivrxR36EtXG7k6vUSMWBbdELoZYS/80io=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pdHu7qpPQvcOUcp/qrAQW5CL0cfXbCLuJQ77PHdtaUsp3bJUKiHDXhnzoq9duysBtE9U24SfsHLWJ11FLE1yoL7jhNswB4VovmjyM81i2REGtE+cqI/vdzGkdC8E9k/Ltuzmtj58u17OIFDNOUGiQOywWH7eS3i2GeCR3enmctQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=NsQLe06q; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7aab7623f42so5354568b3a.2
-        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 21:49:17 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0c20ee83dso59136175ad.2
+        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 22:30:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1766468956; x=1767073756; darn=vger.kernel.org;
+        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1766471426; x=1767076226; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ghnk27Lh375IVPczUN98HcLESFSEZJiCHxM52A0wZU8=;
-        b=ZIY9rLj3RneCyEkq0PyYBRJLRQxlOQaeHcMBbQBCoky7Oks1vxhaRnqVJp6BV86DkR
-         KM0bXXvmJVufvCsc9b6X16CwxNfhnJOKC5BingKtfUrcP8n52S9LItFQDiFpomjZzaPu
-         yTo5jqW8rG8kNPPykLhiFAj71NfCx0cnWRbd6aP5wwXp5a5PC2M0hljzY3eQsmWTwbff
-         fSo2VILb1FFCu5yp7ItdSUy6vgvry6Wnhbs6yCQVxMHhYFQm4eP+i6KNcrqxHr2l7xW2
-         PdQX8WTKQT2tIgyb6IlwuPDI1dsgfGSb1m2SF7M7yttaIgvCGFgk3zYD/ktGzFgeoe3Y
-         lKzQ==
+        bh=txAko9zSpGY/XVp6x32IGp3T6LuAmbYnWNpv6bzw+e0=;
+        b=NsQLe06quPlxn1aj3i75rRZHkx2ViwWIeW0sdVpN03nK1qKQz9h89lmExZNqnEae9H
+         uGrc30SOhPThzEhMdG6GuOY189xRy+K4Va1K8HRTfe7JXPzGuZxYsx8D6S6ZC9wzEMzK
+         oG/HN2iEFjKu+/GmMS0V+e2g+vpzIBoUEz+H0cDzakdh4wWAiEjrrbNNop3DoRbn3qux
+         WrBvswHWG+lQVkDZphdqfd3AktBMuwRi3vJdje6Zv9Y+nP8Pt9wdvRjdqYt05m6Y+cHl
+         T56Y1QN5KO2ZPkhxQXo+I0/XTSg6cEiZKf7lEfDiMBuOKc1BI4z38qgVvrfOpGTUt8dc
+         lBXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766468956; x=1767073756;
+        d=1e100.net; s=20230601; t=1766471426; x=1767076226;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ghnk27Lh375IVPczUN98HcLESFSEZJiCHxM52A0wZU8=;
-        b=N0z/CTA+Z80/GMH1JR88At84XJdZBRkRNwtZpYY+G9ERRlSeE2tF18bdY3QRdd9zvi
-         38z+AkPGnS5+JQJ369TvhDPx60ZkNZ//Z9CXusdF8FpqVeYfYKiMwxBNjp0Az/TeebkD
-         bPqyYTmHzMur/RwcW17T5wkVot3tdH//BAoCbUXiG5KyiNELYp9giLgb2UnCxqBtdKzr
-         Ixj/F/V3OfuxbNCKy2Ej+f34ZEqM4/U+NExGygEyvHS/lW5oFnxUKORu43IV7wtqDWCh
-         uKthjSEDbl8UGSvDIp1WKxSN/Ec8qUfsMspinPehtDkT+0L5o6ObB0dpXCJDWICXQ0q1
-         jajQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUaPiTQd7InDpbKBwh3nsVsLhPaGjjacs6S5Zz5yG+S4AejjXzasN0voFO27hIzgLts3kA00Zc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8deTy4E2qVuqOSjXVIrdo2FpJaKTQIUFvsoAavC3GM+j0MTMH
-	eok6LnSY75EC2+aRT9USKq3PGSjIUe/Qk04aPgiarjxRoIx4uXekfMRoZ4zZXmalIhU=
-X-Gm-Gg: AY/fxX4N3gFoxK0MutpjKadW2J8Rld8MqepR2BkNMxwfmvgbElOBcXpGpE7/kJxxsuC
-	uKNRjgHia/B6/aPqm+imqN3wi1YRfIixfROf2N3JIBX/DbgoJQDf0YO3RwvKZz/0cabbJ0pfNG4
-	UF77hXYuO/ffCYHEt9ZTxEUsLZnlPdwOBi3YaiJURzvqkuyidz0CzdFVg22ZHRTolLB8fHd4OZV
-	vp0SBrLIHgdPWu9sHvbghNLpBph9Rw4qIpq/w76cg+AZi9QEaiqdbrdjcLYIHuN0bAD4blKaCME
-	UEwzwtO5s4922rPrRCB3fEK7rCnV+R/yTZtaAU2JoukUapeZUl4Q20a2nPn985I1cOQ+jq+Qy3n
-	SYRoSq8vPjEPTzFhmJm/HTeYpPy4A81rxMa217L1mpttnIHhQVNzvvcE+DQ4ZIv0TzhRoWDP/GT
-	1NoJ3LnA99NrVIy8Xx5stZWyMp
-X-Google-Smtp-Source: AGHT+IESOyjjQEV9cmHpzOZNpIr+8MrRuRllRcSqhZYjGKbchs0xAx7vP4yzg/aNsBH7TSdefCA1sg==
-X-Received: by 2002:a05:6a20:244c:b0:361:3bdd:65f7 with SMTP id adf61e73a8af0-376a75ef393mr13550597637.13.1766468956481;
-        Mon, 22 Dec 2025 21:49:16 -0800 (PST)
+        bh=txAko9zSpGY/XVp6x32IGp3T6LuAmbYnWNpv6bzw+e0=;
+        b=QPSmk1Hq1TWLFrS7EgaA7u0+CWpnUFYkvTo4dTQ29Ak7Muz4q/QqcdaC8zp6mxzwjN
+         7AXiOz23ic5WL3ub4aWw6ZnaZyk/vnbpudxbADVnOkZ0irkUrE5PQFYhU4K21oxSdz1b
+         W+gifnXgubnvYMzXHataHtGMFmVLCMfnWhA9/ObB1dayaVl8FeMSdmg+rzGk1LtobE3G
+         Spv7BjjMP10NhKMIo7M47WnwXoj17sh+xF+NJP9idcM+Ae3gZyXsiDfeL7Jgh+WD8YJR
+         VTka3Is89lVhqyUS+im156pxfwHRVWqeptAvGRmKcDDLdpBv8gwfeUXHIWZVklWkFBfd
+         Pw9w==
+X-Forwarded-Encrypted: i=1; AJvYcCW2wrHbRw4o6Ox3RIYmhZMAZ8Pvv8AjUOLkaHX6jrx7LjgfjaIbUTYUdUS7bXq3g1t6K9FJcGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/7yx+dPw06kIpD5nG/rbt3iIGXV6Nbe9tCT1oE4FUgtm5+hYB
+	QP+6GNKcvq0IvugNp/+nhtcbfesYozFdeevO/C/zA6M31JvMxANkBpbdoNxTTk5hDUM=
+X-Gm-Gg: AY/fxX5ohjmuVnGkoZ6oK8/CheDLs8sn3SSf6jZzhNO1PmoL68MpAd4wcEDig+Lkp+A
+	DNSbPn/zbVap8aDJ+qe7Itr1F+cewQSWCJXXZYntnEuqm27b7sd1l5wih/4h5kUDGU975N2Zg8R
+	EKawUxsFJrGLzDcCBMo3mxPVyi61uvHAXaHt7g5cG6GGSXkD1ERhLbplgdeStRn/lV9OP7XTH4I
+	BLhOBY3wdWdM5XJHqGWVbtCNn/Cb5w/AQ9ePzg0/OYoP4JPXRdUjbXeSA7mbf0Z8Wp2whEKfKDA
+	TOs2Hb9LANJ1SnCDn0bHP4UCVgIL/q/fg47KHgkha0X+3Ptdkm3o9vaWMIfTZhasOPbcqc3EzNB
+	W4dud+iVToyW+d0duut5c8ZCsWln71HxYEJc+mBknLZBJhfTWs5dGA1GyxaMBI1oh9B5b88Md/j
+	rGQE6HAjuKJDHu9sKj3yMOGRUv
+X-Google-Smtp-Source: AGHT+IGgb03I6lSiPUZBtWVnd1QchQMvNYrRHjdG4XZUhFVdzG/yKL5vDYSme6j4qe45ab0hfvjdeQ==
+X-Received: by 2002:a17:903:2a8e:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-2a2f2426c79mr137786605ad.14.1766471426463;
+        Mon, 22 Dec 2025 22:30:26 -0800 (PST)
 Received: from localhost.localdomain ([103.158.43.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a2f3d5d3fasm115282995ad.69.2025.12.22.21.49.14
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a2f3d5d32dsm116266405ad.70.2025.12.22.22.30.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 21:49:16 -0800 (PST)
+        Mon, 22 Dec 2025 22:30:26 -0800 (PST)
 From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: mchehab@kernel.org
+To: jgross@suse.com
 Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	linux-media@vger.kernel.org,
+	sstabellini@kernel.org,
+	oleksandr_tyshchenko@epam.com,
+	linux-scsi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] media: i2c/tw9906: Fix potential memory leak in tw9906_probe()
-Date: Tue, 23 Dec 2025 11:19:01 +0530
-Message-ID: <20251223054903.69043-1-nihaal@cse.iitm.ac.in>
+Subject: [PATCH] xen/scsiback: fix potential memory leak in scsiback_remove()
+Date: Tue, 23 Dec 2025 12:00:11 +0530
+Message-ID: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -88,31 +90,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In one of the error paths in tw9906_probe(), the memory allocated in
-v4l2_ctrl_handler_init() and v4l2_ctrl_new_std() is not freed. Fix that
-by calling v4l2_ctrl_handler_free() on the handler in that error path.
+Memory allocated for struct vscsiblk_info in scsiback_probe() is not
+freed in scsiback_remove() leading to potential memory leaks on remove,
+as well as in the scsiback_probe() error paths. Fix that by freeing it
+in scsiback_remove().
 
 Cc: stable@vger.kernel.org
-Fixes: a000e9a02b58 ("[media] tw9906: add Techwell tw9906 video decoder")
+Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
 Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 ---
 Compile tested only. Issue found using static analysis.
 
- drivers/media/i2c/tw9906.c | 1 +
+ drivers/xen/xen-scsiback.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/tw9906.c b/drivers/media/i2c/tw9906.c
-index 6220f4fddbab..0ab43fe42d7f 100644
---- a/drivers/media/i2c/tw9906.c
-+++ b/drivers/media/i2c/tw9906.c
-@@ -196,6 +196,7 @@ static int tw9906_probe(struct i2c_client *client)
+diff --git a/drivers/xen/xen-scsiback.c b/drivers/xen/xen-scsiback.c
+index 0c51edfd13dc..7d5117e5efe0 100644
+--- a/drivers/xen/xen-scsiback.c
++++ b/drivers/xen/xen-scsiback.c
+@@ -1262,6 +1262,7 @@ static void scsiback_remove(struct xenbus_device *dev)
+ 	gnttab_page_cache_shrink(&info->free_pages, 0);
  
- 	if (write_regs(sd, initial_registers) < 0) {
- 		v4l2_err(client, "error initializing TW9906\n");
-+		v4l2_ctrl_handler_free(hdl);
- 		return -EINVAL;
- 	}
+ 	dev_set_drvdata(&dev->dev, NULL);
++	kfree(info);
+ }
  
+ static int scsiback_probe(struct xenbus_device *dev,
 -- 
 2.43.0
 
