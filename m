@@ -1,110 +1,139 @@
-Return-Path: <stable+bounces-203319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF973CDA159
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 18:21:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48230CDA1B6
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 18:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2030E3039321
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 17:20:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F3A030069AF
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 17:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDE52F2604;
-	Tue, 23 Dec 2025 17:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8B9346FB7;
+	Tue, 23 Dec 2025 17:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="bfVaSIZ2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h8Dtpoay"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCBC3446C5;
-	Tue, 23 Dec 2025 17:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D095D2F290E;
+	Tue, 23 Dec 2025 17:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766510435; cv=none; b=pLOrzbXVD919WCtWxduIr/uQhHefLcmjX299DHeNq14denmi0GA7pEecgDTeH3oPnTtQMZR+ZA7+EJcxK3krHN4yh5mYjQKpD+gvxIMQdAiRkUNWbOHVWjol42tnEPJp2w9Z2nNL7FHCvK0dH2oPdGUlFn2Un7ugMO1iUcYQnf4=
+	t=1766511005; cv=none; b=kmekWo+rmNpCqZwMyv1MxjLSSGYurBFJADzGg9Jt+jsJiVAPlkxdkiuRgUOycY2qjDwT5nDYdi5PojK6Uu8sVBwIG05qnr6K603336r/3Nq6GAPoTorSSeLMs6r4Re+qZ9mk+pAkOwRvP0MDdNGduzAm4Vl6J0ZslhDUpoxCJfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766510435; c=relaxed/simple;
-	bh=z4DQUzCCy9A0c/Hf5lvP7ZtopB6V7r4uQdBwN/oigFA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eiSgiXp1Gd0i/8JHySwyK6ZJZrPTdQLs+bACGqUMQe5Cq7QCDqzixnc6aQS71xDhbibUGCYdwxQ8eueMp0SDqBehpO4gYCiUDc0blBWLDyEVuuS+Npo8L2ooHxMAWig8SCu++niadY75RdIXMf8sKM4r68bc2Mi2DkteiWFByt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=bfVaSIZ2; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
-	t=1766509500; h=from:subject:to:date:message-id;
-	bh=z4DQUzCCy9A0c/Hf5lvP7ZtopB6V7r4uQdBwN/oigFA=;
-	b=bfVaSIZ2lIEuSqMQFhrv7O6thpJ/LKf0tWqI2IQrnJxLT8RHNPgQdaEf+poTos4K4MbO9EepDua
-	d4RuNuYRIhnNjKvCz3z/4kSyVIKXe5wcHbyTETfGMqYRsNpqbOgoS1FqMeyZqG/EabxjiouXtBJz3
-	T/jn8NnqVVW4yvVqcBM4hesQWLc9If5ynXlKnXXyoyxLPyeIrO3u9kiFGDI0QIn5p48CqahsSPkiD
-	0gdemNuL9GLa5hnsBTpFk6cm0cQpPyrD76Xz4q56ou83BCmwkMUqCSjjO71iPngiBddCdVOijJ+gV
-	2bgvoH+MDonIqt/yqar4HP53MAYEhzrMKiNg==
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, "John W. Linville"
-	<linville@tuxdriver.com>, <linux-wireless@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] wifi: cfg80211: Fix use-after-free in cfg80211_shutdown_all_interfaces
-Date: Tue, 23 Dec 2025 20:04:52 +0300
-Message-ID: <20251223170452.75358-1-d.dulov@aladdin.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1766511005; c=relaxed/simple;
+	bh=gouiFRQzEpMMM671aiKCRi9kgVHmM95JkI+GLNEqg5E=;
+	h=Date:To:From:Subject:Message-Id; b=DMdoBTnKEVoIPq6vhyihYrRo2oaV4JhoTYgZHuLDP2acpHVfv/Kg2To/LDGuh3Y4UAnuQ6YUqqQbnhW8f/zvlhgkn9lgpYx7PhoppqvTdH6249wBKzBC+2z15I3qxnegfE2ccWPxYk9q6lflR+9KTMyuapRPWJdwkf9ZPH85Wx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h8Dtpoay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305BDC113D0;
+	Tue, 23 Dec 2025 17:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766511005;
+	bh=gouiFRQzEpMMM671aiKCRi9kgVHmM95JkI+GLNEqg5E=;
+	h=Date:To:From:Subject:From;
+	b=h8DtpoayJqGKuDV99jgRsnUHVvf4cEjngaFoL6RTUaxcTWczilRaeLth0ZH6qonY0
+	 07Ggy+eCUF4S0Yv63u9FX1LNQ5lJ7e7BhcuBDrrMa3uDS8HZ8iWJaiRye3XhWCez73
+	 H3ke575rl3h6vbvAt9IlnCpelZntNCjPYUl6Py6M=
+Date: Tue, 23 Dec 2025 09:30:04 -0800
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,yonghong.song@linux.dev,weixugc@google.com,syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com,stable@vger.kernel.org,song@kernel.org,shakeel.butt@linux.dev,sdf@fomichev.me,osandov@fb.com,mhocko@kernel.org,martin.lau@linux.dev,lorenzo.stoakes@oracle.com,kpsingh@kernel.org,kartikey406@gmail.com,jolsa@kernel.org,john.fastabend@gmail.com,haoluo@google.com,hannes@cmpxchg.org,eddyz87@gmail.com,david@kernel.org,daniel@iogearbox.net,axelrasmussen@google.com,ast@kernel.org,andrii@kernel.org,wangjinchao600@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + buildid-validate-page-backed-file-before-parsing-build-id.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251223173005.305BDC113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-2016-04.aladdin.ru (192.168.1.104) To
- EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-There is a use-after-free error in cfg80211_shutdown_all_interfaces found
-by syzkaller:
 
-BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
-Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
-CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: events cfg80211_rfkill_block_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x116/0x1f0
- print_report+0xcd/0x630
- kasan_report+0xe0/0x110
- cfg80211_shutdown_all_interfaces+0x213/0x220
- cfg80211_rfkill_block_work+0x1e/0x30
- process_one_work+0x9cf/0x1b70
- worker_thread+0x6c8/0xf10
- kthread+0x3c5/0x780
- ret_from_fork+0x56d/0x700
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+The patch titled
+     Subject: buildid: validate page-backed file before parsing build ID
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     buildid-validate-page-backed-file-before-parsing-build-id.patch
 
-The problem arises due to the rfkill_block work is not cancelled when
-cfg80211 device is being freed. In order to fix the issue cancel the
-corresponding work before destroying rfkill in cfg80211_dev_free().
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/buildid-validate-page-backed-file-before-parsing-build-id.patch
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Jinchao Wang <wangjinchao600@gmail.com>
+Subject: buildid: validate page-backed file before parsing build ID
+Date: Tue, 23 Dec 2025 18:32:07 +0800
+
+__build_id_parse() only works on page-backed storage.  Its helper paths
+eventually call mapping->a_ops->read_folio(), so explicitly reject VMAs
+that do not map a regular file or lack valid address_space operations.
+
+Link: https://lkml.kernel.org/r/20251223103214.2412446-1-wangjinchao600@gmail.com
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+Reported-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
+Tested-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
+  Link: https://lkml.kernel.org/r/694a67ab.050a0220.19928e.001c.GAE@google.com
+Closes: https://lkml.kernel.org/r/693540fe.a70a0220.38f243.004c.GAE@google.com
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Omar Sandoval <osandov@fb.com>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Song Liu <song@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Yonghong Song <yonghong.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 54a34d8d356e..e94f69205f50 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1226,6 +1226,7 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
- 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
- 	cancel_work_sync(&rdev->wiphy_work);
+ lib/buildid.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/lib/buildid.c~buildid-validate-page-backed-file-before-parsing-build-id
++++ a/lib/buildid.c
+@@ -288,7 +288,10 @@ static int __build_id_parse(struct vm_ar
+ 	int ret;
  
-+	cancel_work_sync(&rdev->rfkill_block);
- 	rfkill_destroy(rdev->wiphy.rfkill);
- 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
- 		list_del(&reg->list);
--- 
-2.34.1
+ 	/* only works for page backed storage  */
+-	if (!vma->vm_file)
++	if (!vma->vm_file ||
++	    !S_ISREG(file_inode(vma->vm_file)->i_mode) ||
++	    !vma->vm_file->f_mapping->a_ops ||
++	    !vma->vm_file->f_mapping->a_ops->read_folio)
+ 		return -EINVAL;
+ 
+ 	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
+_
+
+Patches currently in -mm which might be from wangjinchao600@gmail.com are
+
+buildid-validate-page-backed-file-before-parsing-build-id.patch
 
 
