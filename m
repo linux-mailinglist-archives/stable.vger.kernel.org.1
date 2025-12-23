@@ -1,147 +1,103 @@
-Return-Path: <stable+bounces-203304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE16CCD9266
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 12:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DFECD9432
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 13:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DDCD3013EB6
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 11:49:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94807301AD1C
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 12:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E071324B1B;
-	Tue, 23 Dec 2025 11:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uVliIrwm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB4A2F83B2;
+	Tue, 23 Dec 2025 12:32:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D334230FC32;
-	Tue, 23 Dec 2025 11:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211842BCF5;
+	Tue, 23 Dec 2025 12:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766490542; cv=none; b=i4V63AdgNiZYMWEknlxD92NjiiXw4o5BVGHIjvu7m9bEmwHfLXNj81Lj5yIL+aMwlMhRW4o5TKrBZjrTZgd3YWFEZ1P7M9Xf9GCIE3HDSUPid/XyigifKUsUtS4klMfMUdr2WJJyFFKLCxMgrlP19INuOZ+JhZtHFfsi5g+Nhio=
+	t=1766493144; cv=none; b=Vyg0GlfOTrjomvwGg4dBgehaUmtYt0Cyk5pDtsR3HNAEXALM82nTKqz0UW7Lf6v1vBKn9GDj8Hx6IKUaZsHBzqGG9DztginLU9u24aLXyGhRw6zbOo7eupKJpwS4GXrHV0zU9W2YlyYtr/nnD/3f5/I1mqDUWzXuKfan8aEdf6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766490542; c=relaxed/simple;
-	bh=uvoPM21Dc5HliRazPRZqeEC5jOHBy6erFn+UaQOlPO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Me2Du+QcB0UuRFnBx7QOVsm2gNCdKStkry/0y+Fu8DF8K3EeAHwnve3hmh/RC/fnhurgM3l4H76LEJomXdf4qGcAkBlCRtBtNX9afm30b+RmMqaqabJgNusw2COx+37Nh1XlpkuAyfKCeKtQ7xEacr948tIjHcqLSysLTH0vT38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uVliIrwm; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 50F69557;
-	Tue, 23 Dec 2025 12:48:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1766490524;
-	bh=uvoPM21Dc5HliRazPRZqeEC5jOHBy6erFn+UaQOlPO4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uVliIrwmTfHltU4vyhIiYz6FkkOlLc4U6mKLs+IzsE3zgAQv5xnDX3StoG29bNVn5
-	 /fHn4jK5GbsXiDslyrkTXrM10qv7MY22ERwcibxe8W9wSUpA8xiN/IFJ7KW50EWdMC
-	 IQu1Ri4Q+I53qDFJsGSPsB/ejowcgjifWiF0l5B8=
-Message-ID: <6be8aaf6-b01d-4444-9850-967f8e316896@ideasonboard.com>
-Date: Tue, 23 Dec 2025 13:48:48 +0200
+	s=arc-20240116; t=1766493144; c=relaxed/simple;
+	bh=F4Zbt6BFiUEwCI6lB5nhMMjYRUrVsBiuMfR8skdvWYk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QllDaQ+sXJAUSGrsCYtIBh1yZJQFNUbgjdMiHps1ct1KzKSm4TInB3wC110mBt/I92g/s1cktq4/n+wrtdj4ZsDGB4XyBEzXwPTQCD4TPjX0ueaFMnvZ8LzrDxMPto9Zoow9LvdUmRqMaGq0k/hqJAQ9v7MucybhMyFXCDK/cdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-03 (Coremail) with SMTP id rQCowACXs9rDi0ppe+yzAQ--.3070S2;
+	Tue, 23 Dec 2025 20:32:03 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: bp@alien8.de,
+	tony.luck@intel.com,
+	dougthompson@xmission.com,
+	akpm@linux-foundation.org,
+	juhlenko@akamai.com
+Cc: linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] edac: fix a resource leak in i3200_probe1()
+Date: Tue, 23 Dec 2025 20:32:02 +0800
+Message-Id: <20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-To: Linus Walleij <linusw@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu
- <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jyri Sarha <jyri.sarha@iki.fi>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
- Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Chaoyi Chen <chaoyi.chen@rock-chips.com>, Vicente Bergas
- <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>,
- stable@vger.kernel.org
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
- <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com>
- <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
- <817b2358-0920-4b7a-abb1-133103d0f9fe@ideasonboard.com>
- <CAD++jLm_0xweD4tRJ8ZfwmcOe2BBGCsUuL1UWUiNM+Gpbq3Zuw@mail.gmail.com>
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Content-Language: en-US
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <CAD++jLm_0xweD4tRJ8ZfwmcOe2BBGCsUuL1UWUiNM+Gpbq3Zuw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACXs9rDi0ppe+yzAQ--.3070S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JF1fJw1fAF48ArWxuw13XFb_yoWfWrc_ua
+	y0qF17XF4qkrWqkr4xJr4fZry0kFnY9r93WF4Ig343AryxWwn2q39IgFZ8Zw1xXay3CryD
+	tw1qqF93AF12gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbckFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_
+	GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAgFE2lKdbQ1SwAAsO
 
-Hi,
+If edac_mc_alloc() fails, also unmap the window.
+Add a goto to do so.
 
-On 23/12/2025 01:18, Linus Walleij wrote:
-> On Sun, Dec 14, 2025 at 1:42 PM Tomi Valkeinen
-> <tomi.valkeinen@ideasonboard.com> wrote:
-> 
->>>> Should we merge this series as a fix for 6.18 rcs?
->>>
->>> Too late now, so let's merge it as a fix for v6.19 rcs!
->>
->> Ah, right. Indeed, I meant v6.19 rcs.
-> 
-> Are you applying it or should I?
-> Not sure if you want some special timing, like outside of
-> holidays.
-Oh. No, I'm not a DRM maintainer, so I was waiting for someone to merge
-this. From my point of view it's ready for merging.
+Found by code review and compiled on ubuntu 20.04
 
- Tomi
+Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/edac/i3200_edac.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/edac/i3200_edac.c b/drivers/edac/i3200_edac.c
+index afccdebf5ac1..fd5dc33c406f 100644
+--- a/drivers/edac/i3200_edac.c
++++ b/drivers/edac/i3200_edac.c
+@@ -360,8 +360,10 @@ static int i3200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	layers[1].is_virt_csrow = false;
+ 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
+ 			    sizeof(struct i3200_priv));
+-	if (!mci)
+-		return -ENOMEM;
++	if (!mci) {
++		rc = -ENOMEM;
++		goto fail;
++	}
+ 
+ 	edac_dbg(3, "MC: init mci\n");
+ 
+-- 
+2.25.1
 
 
