@@ -1,122 +1,114 @@
-Return-Path: <stable+bounces-203343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5424DCDA5E4
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:30:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165EECDA703
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 21:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD7CE3040A40
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:27:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C09713012CF5
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D6834B66F;
-	Tue, 23 Dec 2025 19:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682BE2D060E;
+	Tue, 23 Dec 2025 20:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DLYIi9pp"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="MLMwxp/o"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760A34B433;
-	Tue, 23 Dec 2025 19:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65C6288C2B
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 20:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766518052; cv=none; b=R7SQKGdRwynGskb5rGLBFD02qBPU6CtlbwIDCZpxARBNey0rjZsvvm6/EO6rDny6zAw0Gumhqzpgr0hSx27RMoO80obgWFNIPiCyiP24cAaKMYys6rR1zNuczOG/fcvA+n6hYbOnKCDs8Gp55eX9YoBcc1M4JflQWFPg5KVuB6Q=
+	t=1766520229; cv=none; b=PglTq3NpSWb3AjMfXTIu9jzqdmzW52UNhkp0DZxtGmzvrkuJx1XH8/vJWpLGpeSEmB0FmSn8frmMDyt5BZ0i3nwuZuoa47tWzcS5QHe0Omic8BOMAnJF5b3eZ21GZLxHYqFhQ4STV8u4LtGLp9jDuMuJyDFoohkolUBhCxdyPK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766518052; c=relaxed/simple;
-	bh=w/mM1RtlPC6+5CfYRU4ZgCWz1IFYWz8OSAL7MrhqG8s=;
-	h=Date:To:From:Subject:Message-Id; b=SE8ufSQC5akR3kwWCMUM5ydfktkLnEbPUrveGj1gF/FmYwJX8ptwRVELxF6VEU946P7hiLuOscBuz2I+q27RgjFQAnVo3BwQVGifIIOwV7FnAh0IWcWoCi5UPPArAESUbA44EjhORJk20S9kALRtz+EkCm5AkX2iYuLii2FBzRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DLYIi9pp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787F1C113D0;
-	Tue, 23 Dec 2025 19:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766518052;
-	bh=w/mM1RtlPC6+5CfYRU4ZgCWz1IFYWz8OSAL7MrhqG8s=;
-	h=Date:To:From:Subject:From;
-	b=DLYIi9ppdiw4Z3b7OQImI2BDcPCCly4JBSKLukHiefcHJdpNHfHnjnZY2Q0tZVnlR
-	 8pgF7hioIEvLRPPMpeh7MjrL0JnB60zH+vxjp2EFM2ENLcAwkLOJMELjr+PsL4oY23
-	 MS5AOGCQ57VEqwghQMVXiLkNM3FBB+A2hojptt7Q=
-Date: Tue, 23 Dec 2025 11:27:31 -0800
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,yonghong.song@linux.dev,weixugc@google.com,syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com,stable@vger.kernel.org,song@kernel.org,shakeel.butt@linux.dev,sdf@fomichev.me,osandov@fb.com,mhocko@kernel.org,martin.lau@linux.dev,lorenzo.stoakes@oracle.com,kpsingh@kernel.org,kartikey406@gmail.com,jolsa@kernel.org,john.fastabend@gmail.com,haoluo@google.com,hannes@cmpxchg.org,eddyz87@gmail.com,david@kernel.org,daniel@iogearbox.net,axelrasmussen@google.com,ast@kernel.org,andrii@kernel.org,wangjinchao600@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] buildid-validate-page-backed-file-before-parsing-build-id.patch removed from -mm tree
-Message-Id: <20251223192732.787F1C113D0@smtp.kernel.org>
+	s=arc-20240116; t=1766520229; c=relaxed/simple;
+	bh=EXQmZ+ozp92HfDFtU0evQ90fcQtPfdOWiSV8UAQt5MI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L5xWOB1LL715Ys0uFsxgpedErB8rzJOt5mmmUe+4rKbaEc4nlxIfzHpcNLLkJEibcsmgbz8F9ehErw4H2gZ2aJPT6OmM7rVy44Q60TNODkTEMqqtBqEhqW01lXIGBerHYq5oBPWvLWWAI4QSowekgdxCVvMNtnG6+kQGpM8hQLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=MLMwxp/o; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a07fb1527cso12353955ad.3
+        for <stable@vger.kernel.org>; Tue, 23 Dec 2025 12:03:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1766520227; x=1767125027; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EXQmZ+ozp92HfDFtU0evQ90fcQtPfdOWiSV8UAQt5MI=;
+        b=MLMwxp/osmLovVn0YNNEHO3LMWMGDo0dtwQr52ZvP3Jp/TwraAtvUVn1+WNm33dwBD
+         ypvlTtmVLPck4I7Wsm6dAg1l7AudN1AgODexfoVQhAeG5vVoD74pbuQFt0KQvY95rbwR
+         uWIMiCSrBkNJvUXttsnHoYGwzlzCknC462jOTHCCfu7EIYjGeyiOR22Ozs3LDjqfVNeO
+         3pnCGHDElWx1OD8N3VkAs0ehWsh77ausLN/+M/bc22evdgqyalgcIhMIBT7OetVecYTx
+         QOg8vhMi/S1dSyJxpsxruDgks7oWJa5sY0L1WgYVXOc8i1g19jDActBIUgurTd//ScrZ
+         1Sow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766520227; x=1767125027;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EXQmZ+ozp92HfDFtU0evQ90fcQtPfdOWiSV8UAQt5MI=;
+        b=pf08Yi4u92BzLL2nH1YfFDukTdz1B+UM0xh6nlyVTT7rNYpTaPDOIdIFr/JXe/L79J
+         1ABSz4RtRt9U627Eqxg+uXD9TIRZ5q6Ld/9Ucqn0wZ4tiWil/ZlbWtOJLdi3tGb2PfM8
+         kw13bOQIMnXUBSFtg/2c03KWYQ7bkChMT7fVi31JTx7J7TrQtaq2oCVehuGCXqBjt5ry
+         +p27ObHqVRfNdgbIpYeQ9RQCrLYoa5HOTDfsUY/0uHV+dQM4dQluJQj6kpKVdBq9s1uR
+         RB/+kXDy4yHoSqIf3GWbIsjN+zqR+HPG6TbUahjucx2nvTs731CCBwcj3U8nFYTZqSFY
+         zvVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUb1o72nXKw8H++y1ntrh3fxfA9kBp6arRUQRgP5PiYOEGPWHU4R9PUcQiEKEQzpaOoOWAxnlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySWs18ZszSYknPR0LUwfRwRQ338tgfuWiHYRoxgXog2QMO5Cma
+	SX7UGssTkNoMDB+YJ3ow8XRkp57i+At+2XSfxB0UQ5442lFFxvVIvb5hKCTm3/LHlLRc/ExTfqS
+	3V+zj5JU8ZHZ8fEyp6pZFKyQNBPlnhrb7wVmjcTxB3Q==
+X-Gm-Gg: AY/fxX6PX73TvkL69zHES63rDAAhsAE2Vk68AGC2c6++ds60gaBhLs5gBeerBn4uB5N
+	zClewEaj5RORej93CQXlach4NmSugFVU9SLzruQuZiHnqBuFjCcDZiiVIHUYuuw6dO8zQzoGVwk
+	jB/mOo9n0ncbtzHqXi7afIsTz5pdIKAeTKKNQUNpaGtfXa/QTmBul32Em6qMfYQuPkvVwu2TAhI
+	bKl8zq2cerH+MIdgP1nBlKtn9FOnKJOeFn1Y7RQdFODqpzMHIie1LZzzjAdwgmvTGEdh+s=
+X-Google-Smtp-Source: AGHT+IGEI2UFmVAB4gllSBCn35IWH7aIKwKwDq37q/Gg/8+joJI9uLy9sV66UHOMqlihr3VacCQHuLlnSQLFMc7ZjsI=
+X-Received: by 2002:a05:7022:698a:b0:11e:3e9:3ea4 with SMTP id
+ a92af1059eb24-121722ec1bbmr10272339c88.6.1766520226788; Tue, 23 Dec 2025
+ 12:03:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251220095322.1527664-1-ming.lei@redhat.com> <20251220095322.1527664-2-ming.lei@redhat.com>
+ <CADUfDZprek_M_vkru277HK+h7BuNNv1N+2tFX7zqvGj8chN36g@mail.gmail.com> <aUn_PVBQ7dtcV_-l@fedora>
+In-Reply-To: <aUn_PVBQ7dtcV_-l@fedora>
+From: Caleb Sander Mateos <csander@purestorage.com>
+Date: Tue, 23 Dec 2025 15:03:34 -0500
+X-Gm-Features: AQt7F2r9LaRDNvbGZXYzIITBheOEsP1_Fp83pg5yHWOiPm7yaPAaLXCI_g3bweo
+Message-ID: <CADUfDZogz4ZdVQw5O5stBuheyX-D4CfdZ8XoGqiXBqdp1oQHQA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ublk: add UBLK_F_NO_AUTO_PART_SCAN feature flag
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
+	Uday Shankar <ushankar@purestorage.com>, Yoav Cohen <yoav@nvidia.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Dec 22, 2025 at 9:32=E2=80=AFPM Ming Lei <ming.lei@redhat.com> wrot=
+e:
+>
+> On Mon, Dec 22, 2025 at 12:11:03PM -0500, Caleb Sander Mateos wrote:
+> > On Sat, Dec 20, 2025 at 4:53=E2=80=AFAM Ming Lei <ming.lei@redhat.com> =
+wrote:
+> > >
+> > > Add a new feature flag UBLK_F_NO_AUTO_PART_SCAN to allow users to sup=
+press
+> > > automatic partition scanning when starting a ublk device.
+> >
+> > Is this approach superseded by your patch series "ublk: scan partition
+> > in async way", or are you expecting both to coexist?
+>
+> This one probably is useful too, but it should belong to v6.20 because
+> "ublk: scan partition in async way" can fix the issue now, and backport
+> to stable isn't needed any more.
 
-The quilt patch titled
-     Subject: buildid: validate page-backed file before parsing build ID
-has been removed from the -mm tree.  Its filename was
-     buildid-validate-page-backed-file-before-parsing-build-id.patch
+Sure, I think it could be useful for other ublk servers too that know
+the block devices they expose won't be partitioned or want to more
+finely control when/whether the partition scan happens.
 
-This patch was dropped because an alternative patch was or shall be merged
-
-------------------------------------------------------
-From: Jinchao Wang <wangjinchao600@gmail.com>
-Subject: buildid: validate page-backed file before parsing build ID
-Date: Tue, 23 Dec 2025 18:32:07 +0800
-
-__build_id_parse() only works on page-backed storage.  Its helper paths
-eventually call mapping->a_ops->read_folio(), so explicitly reject VMAs
-that do not map a regular file or lack valid address_space operations.
-
-Link: https://lkml.kernel.org/r/20251223103214.2412446-1-wangjinchao600@gmail.com
-Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
-Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-Reported-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
-Tested-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
-  Link: https://lkml.kernel.org/r/694a67ab.050a0220.19928e.001c.GAE@google.com
-Closes: https://lkml.kernel.org/r/693540fe.a70a0220.38f243.004c.GAE@google.com
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Omar Sandoval <osandov@fb.com>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkman <daniel@iogearbox.net>
-Cc: Hao Luo <haoluo@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Song Liu <song@kernel.org>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Yonghong Song <yonghong.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/buildid.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
---- a/lib/buildid.c~buildid-validate-page-backed-file-before-parsing-build-id
-+++ a/lib/buildid.c
-@@ -288,7 +288,10 @@ static int __build_id_parse(struct vm_ar
- 	int ret;
- 
- 	/* only works for page backed storage  */
--	if (!vma->vm_file)
-+	if (!vma->vm_file ||
-+	    !S_ISREG(file_inode(vma->vm_file)->i_mode) ||
-+	    !vma->vm_file->f_mapping->a_ops ||
-+	    !vma->vm_file->f_mapping->a_ops->read_folio)
- 		return -EINVAL;
- 
- 	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
-_
-
-Patches currently in -mm which might be from wangjinchao600@gmail.com are
-
-
+Best,
+Caleb
 
