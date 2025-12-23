@@ -1,128 +1,174 @@
-Return-Path: <stable+bounces-203284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E710CD889B
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 10:16:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1BACD88F3
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 10:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0171530334DC
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:13:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE8993002771
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A439F322B70;
-	Tue, 23 Dec 2025 09:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48562F691F;
+	Tue, 23 Dec 2025 09:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFqHRM+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQP5GmPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537501E2834;
-	Tue, 23 Dec 2025 09:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BD52B2D7;
+	Tue, 23 Dec 2025 09:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766481189; cv=none; b=jjmZXZoeWs0eI/5RTHgtlToCdqnQf3WFF3px5fDtJ9vYE2WemEr9wRF5wTDk89dSaQvrkVIeZH8UnHd+eVrUZIInOC8UCOTiksnxy3dCHc9zfV51hEINACwEHStbi3U2smpDEA5Z06y8IMIZYB5r2+7gOUipJ1Y26Ow9Omq3iqo=
+	t=1766481576; cv=none; b=FAvS6ngy8X8KYmKdaMkiogoolNremzUDAOgslWWOLWgwXNEAAGG6XIa71YI0a3pCNFU13f3+gZZJyC07tqRZteU5Yj576r92XGMMQlwi+3GYfSNyDUBTeH/M6SekCTNbkI1nH4Hr12I/DT9ylJMMtIMpn+t2PhoEW2Md6162SQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766481189; c=relaxed/simple;
-	bh=L+jctpl8CY/Z02R3KgkzKjrbQKw1ezIptg6y1ooTjxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BUxSQsEE36oxbhjnfkHO0IWpIU+fyrBDjPdw4Xy+53r8aCzsvyJ8pbsQtosVOCmbF/gpPnhTFqYdZK1g0Q8CJs2Mde+wvgzYOIfZXnYr6mbMKrC6zaliXt6IhMBi44tgKF1OyHk+YWmGMZx3I4gZePNuQ7rLz61rUppaqrPv4Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFqHRM+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B4AC116B1;
-	Tue, 23 Dec 2025 09:13:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766481188;
-	bh=L+jctpl8CY/Z02R3KgkzKjrbQKw1ezIptg6y1ooTjxk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BFqHRM+3GiKOoc+GhwMOq7LMBM8VqNTuJ4N/Bdlz8FfL8fyfvXJsEnjqxbbIse5wR
-	 kenOtswGDIm6gAuikCico9w59FwPIejyy6tj6/ragC/1zcNH5T707l/TPcFkDW1XpB
-	 jn6IncOKwQh5t1D7J7CfuX6F5ntk4RYRfFimak0yNkzCAt7BoPCxnNLEa0CNPrxxZ7
-	 GP2Q6mLSKqJ5uIeZBwy7Zqas4Y+FKATL1gWJWlOBGvajsXsBcWwMuPWN61i+r8P1hj
-	 kRNDZhSiMcy1gJFfwZ24MvMwLmjPTO+RG96lc6nYx3Wn+pvWujSRcZaiDKr9MA571i
-	 hs5cM9IwTLxeQ==
-Message-ID: <12032402-b541-4776-a716-c93f16ec7eca@kernel.org>
-Date: Tue, 23 Dec 2025 10:13:01 +0100
+	s=arc-20240116; t=1766481576; c=relaxed/simple;
+	bh=VzvoVI3etT0APm7HG+qTcGwy4MLWTSrogBEsYHCX5F0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hbrINi5dWjAPyiXZLV95N58BVeOTjRxjDeA9omVEN23cJUOM4ndwFEU5i3UYLRMjCah4WhbCaZIV0zZ8A2p1Q5WlG0xu/Y39vCH7mDpAM94MtkfQKz2l2m4XH0pQZPEXfvYCMnQc0nEeNuCmI6da6hfS53413kR5Ftu9WLYvGOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQP5GmPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73865C113D0;
+	Tue, 23 Dec 2025 09:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1766481575;
+	bh=VzvoVI3etT0APm7HG+qTcGwy4MLWTSrogBEsYHCX5F0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kQP5GmPMKx5jG6JQJetX6Xrx04/ORX8/j83K+VqC8OmUIIgxS3V2evf+5eEz5vkUM
+	 3WEQIxOqHQK+RbZTfoRoOiMV9TMA+JdN7LUGCHuXCgiWjcN0rT80zP3rI+LV109uzD
+	 JTnLNzGir+zOdbrrK85y4j5I4BQDoEXanUp3rQOY=
+Date: Tue, 23 Dec 2025 10:19:32 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: yangshiguang <yangshiguang1011@163.com>
+Cc: rafael@kernel.org, dakr@kernel.org, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, yangshiguang@xiaomi.com,
+	stable@vger.kernel.org
+Subject: Re: Re: Re: [PATCH] debugfs: Fix NULL pointer dereference at
+ debugfs_read_file_str
+Message-ID: <2025122311-earflap-deploy-e32d@gregkh>
+References: <20251222093615.663252-2-yangshiguang1011@163.com>
+ <2025122234-crazy-remix-3098@gregkh>
+ <17647e4c.d461.19b46144a4e.Coremail.yangshiguang1011@163.com>
+ <2025122221-gag-malt-75ba@gregkh>
+ <2de8b181.5007.19b48fb047f.Coremail.yangshiguang1011@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm/memory-failure: teach kill_accessing_process to
- accept hugetlb tail page pfn
-To: Jane Chu <jane.chu@oracle.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
- osalvador@suse.de, linmiaohe@huawei.com, jiaqiyan@google.com,
- william.roche@oracle.com, rientjes@google.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, willy@infradead.org
-References: <20251223012113.370674-1-jane.chu@oracle.com>
- <20251223012113.370674-2-jane.chu@oracle.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251223012113.370674-2-jane.chu@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2de8b181.5007.19b48fb047f.Coremail.yangshiguang1011@163.com>
 
-On 12/23/25 02:21, Jane Chu wrote:
-> When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-> passed head pfn to kill_accessing_process(), that is not right.
-> The precise pfn of the poisoned page should be used in order to
-> determine the precise vaddr as the SIGBUS payload.
+On Tue, Dec 23, 2025 at 10:12:48AM +0800, yangshiguang wrote:
+> At 2025-12-22 22:11:38, "Greg KH" <gregkh@linuxfoundation.org> wrote:
+> >On Mon, Dec 22, 2025 at 08:41:33PM +0800, yangshiguang wrote:
+> >> 
+> >> At 2025-12-22 19:54:22, "Greg KH" <gregkh@linuxfoundation.org> wrote:
+> >> >On Mon, Dec 22, 2025 at 05:36:16PM +0800, yangshiguang1011@163.com wrote:
+> >> >> From: yangshiguang <yangshiguang@xiaomi.com>
+> >> >> 
+> >> >> Check in debugfs_read_file_str() if the string pointer is NULL.
+> >> >> 
+> >> >> When creating a node using debugfs_create_str(), the string parameter
+> >> >> value can be NULL to indicate empty/unused/ignored.
+> >> >
+> >> >Why would you create an empty debugfs string file?  That is not ok, we
+> >> >should change that to not allow this.
+> >> 
+> >> Hi greg k-h,
+> >> 
+> >> Thanks for your reply.
+> >> 
+> >> This is due to the usage step, should write first and then read.
+> >> However, there is no way to guarantee that everyone will know about this step.
+> >
+> >True.
+> >
+> >> And debugfs_create_str() allows passing in a NULL string. 
+> >
+> >Then we should fix that :)
+> >
+> >> Therefore, when reading a NULL string, should return an invalid error 
+> >> instead of panic.
+> >
+> >If you call write on a NULL string, then you could call strlen() of that
+> >NULL string, and do a memcpy out of that NULL string.  All not good
+> >things, so your quick fix here really doesn't solve the root problem :(
+> >
 > 
-> This issue has already been taken care of in the normal path, that is,
-> hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-> correctly in the hugetlb repoisoning case, it's essential to inform
-> VM the precise poisoned page, not the head page.
+> We all know that the problem is a NULL pointer exceptions that occur in strlen().
+> However, strlen() is basic function, and we cannot pass abnormal parameters.
+> We should intercept them, and this is common in the kernel.
+> That's why I submitted this patch.
 > 
-> [1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-> [2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
-> [3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
+> >> >>  	str = *(char **)file->private_data;
+> >> >> +	if (!str)
+> >> >> +		return -EINVAL;
+> >> >
+> >> >What in kernel user causes this to happen?  Let's fix that up instead
+> >> >please.
+> >> >
+> >> 
+> >> Currently I known problematic nodes in the kernel:
+> >> 
+> >> drivers/interconnect/debugfs-client.c:
+> >>   155: 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
+> >>   156: 	debugfs_create_str("dst_node", 0600, client_dir, &dst_node);
+> >
+> >Ick, ok, that should be fixed.
+> >
+> >> drivers/soundwire/debugfs.c:
+> >>   362: 	debugfs_create_str("firmware_file", 0200, d, &firmware_file);
+> >
+> >That too should be fixed, all should just create an "empty" string to
+> >start with.
+> >
+> >> test case:
+> >> 1. create a NULL string node
+> >> char *test_node = NULL;
+> >> debugfs_create_str("test_node", 0600, parent_dir, &test_node);
+> >> 
+> >> 2. read the node, like bellow:
+> >> cat /sys/kernel/debug/test_node
+> >
+> >With your patch, you could change step 2 to do a write, and still cause
+> >a crash :)
+> >
 > 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
-> v2 -> v3:
->    incorporated suggestions from Miaohe and Matthew.
-> v1 -> v2:
->    pickup R-B, add stable to cc list.
+> This shouldn't happen. The write node calls debugfs_write_file_str().
+> My test results:
+> $: cat dst_node
+> $: cat: dst_node: Invalid argument
 
-Please don't send new versions when the discussions on your old 
-submissions are still going on. Makes the whole discussion hard to follow.
+I would argue that this is not ok, it should just return an empty value.
 
-You asked in the old version:
+> 1|&: echo 1 > dst_node
+> $: cat dst_node
+> $: 1
+> 
+> Anyway, please show the stack.
 
-"
-What happens if non-head PFN of hugetlb is indicated in a SIGBUG to
-QEMU?  Because, the regular path, the path via hwpoison_user_mappings()
-already behave this way.
+If you call write on a NULL string, with an offset set, it will crash
+based on the code paths.  I don't have a traceback as I don't want to
+write the code to crash my running system at the moment :)
 
-I'm not familiar with QEMU. AFAIK, the need for this patch came from our
-VM/QEMU team.
-"
+> >So let's fix this properly, let's just fail the creation of NULL
+> >strings, and fix up all callers.
+> >
+> 
+> As mentioned above, we shold allow the creation of NULL string nodes
+> to indicate empty/unused/ignored.
 
-I just took a look and I think it's ok. I remembered a discussion around 
-[1] where we concluded that the kernel would always give us the first 
-PFN, but essentially the whole hugetlb folio will vanish.
+No, that's not a good idea, let's just fix this properly and not allow
+such things at all.  If someone really wants to do this "no value set is
+illegal", then they can write their own debugfs callbacks and not use
+the built-in helper.
 
-But in QEMU we work completely on the given vaddr, and are able to 
-identify that it's a hugetlb folio through our information on memory 
-mappings.
+And really, the string debugfs helper has been such a pain over the
+years, I'm regretting even accepting it at all :(
 
-QEMU stores a list of positioned vaddrs, to remap them (e.g., 
-fallocate(PUNCH_HOLE)) when restarting the VM. If we get various vaddrs 
-for the same hugetlb folio we will simply try to remap a hugetlb folio 
-several times, which is not a real problem. I think we discussed that 
-that could get optimized as part of [1] (or follow-up versions) if ever 
-required.
+thanks,
 
-[1] 
-https://lore.kernel.org/qemu-devel/20240910090747.2741475-1-william.roche@oracle.com/
-
-
--- 
-Cheers
-
-David
+greg k-h
 
