@@ -1,188 +1,89 @@
-Return-Path: <stable+bounces-203265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC59CD8066
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 05:06:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D3CD81CC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 06:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFA3D3031CF2
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 04:05:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C90FA3016DE9
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 05:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3491EDA3C;
-	Tue, 23 Dec 2025 04:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AE62F2910;
+	Tue, 23 Dec 2025 05:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IzObc+2B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gTZEHlUN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA7D13DDAE;
-	Tue, 23 Dec 2025 04:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF502DA76C
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 05:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766462745; cv=none; b=jKObOjdEKftmZjTfSU1jzGoP/r0z5mzGn8MW9sTm0LtkUZD5KiflqYv6tdJpK3ZvKO9NIIWhIJizDMgaMsE+JBjiEkZhooQRgunTzy4AzeRlVuHV4fKzwGSWh9Zmqju/VultVGfMS7tOmaJtdVOEDZKCikD5wNj0LhYoyMRuLrw=
+	t=1766466339; cv=none; b=LrF42niIFuFzJpvbLngRRzW6HNfGAT3p36B7YBpfQfxr/oiLyeMfs/M/LnGf8XppJ79TzaEbDkf9O4OJVg1MfNQqkYgZ24HpMUJWPWVav+Vh6FPNMQSHWnOeEiXuS56mJ73W3C54IrtkhCY+YVAjSwCbCppt20c7OYdse/xfWrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766462745; c=relaxed/simple;
-	bh=XGpM1Fdl3pIWzFbZw0bYmRLO6aLVsRVc990n/X0l9l8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YoKXY+oPNKtpV/b0EW4gWu6msRqqkVURjRps70e6vlCb5Iz/TpzZ+r9Z+YP/GNhj9eERTu6qWQUc53pV54C3t7vPmvAG8codwUFJwo2wRkVKel+59vhgbrip3LrNA7AmBkQ4ZiEnnnvH2I8/Y8bnxG1DpFMxDLi8tu5u9yxcmq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IzObc+2B; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766462744; x=1797998744;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XGpM1Fdl3pIWzFbZw0bYmRLO6aLVsRVc990n/X0l9l8=;
-  b=IzObc+2BJAu24Of44UXCwXEr3YQNgtRRXc+xq0AY2lOYxad02b1N1nOi
-   a+malGfny7lnlfxIldOZU0TjqlckTOkY7s8H1XMHhrStV5oxSXPH5dVV/
-   gfuCzUywmoouIHMVedd8udddd4REZS4/7XOJTjAqLNzb2ui1KE/nmGqzG
-   TsVg7+AM5rLWP9YVjMJ3DyZG/+awvqjAeUpkmOGu8KolaxZgI6Fn2nsbL
-   Z7nS4Ox5PIAJdoYdG7RQ//IfET7b5+gO5sNPgpuTE8zX3Qm4K/S3xCJkM
-   WY89TMp7kER73ecfcoLel4AaBXjBD1sBh+1hvIgJip5sqfnpK5UkDTFl1
-   Q==;
-X-CSE-ConnectionGUID: 8MjsjJHiRKiIcY83UdHFFQ==
-X-CSE-MsgGUID: 7633XiAoSy2rzB4Qn+jrRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="79431609"
-X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
-   d="scan'208";a="79431609"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 20:05:43 -0800
-X-CSE-ConnectionGUID: uA9OKgalSb6SWaiqyajz+w==
-X-CSE-MsgGUID: evQAdVrEQ5y2J3/29RhcHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
-   d="scan'208";a="200590632"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 20:05:41 -0800
-Message-ID: <aa1eda8a-4463-467a-b157-c6155882f293@linux.intel.com>
-Date: Tue, 23 Dec 2025 12:06:24 +0800
+	s=arc-20240116; t=1766466339; c=relaxed/simple;
+	bh=RieUY6Qi1xGapDDlOUiKSqVN3iI9rePab92e7LB55hw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=d8aE0N531SJXJk+G52hHaSVFYyAlPPbNNbvRZX9kBe6CNgmN0iKdBikgdqe0mt+WeODNHIcGrFIQ4jdehk+L2s1X9Ir1qwTYJ0JnM+GRGDvv0e8HqNuFLK1jFmqe5QYKID8XNC/NNaRqzbbRpSgjAwgorqXfJmhgE6SWe0MPrSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gTZEHlUN; arc=none smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6446c2bbfe3so3715205d50.1
+        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 21:05:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766466337; x=1767071137; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RieUY6Qi1xGapDDlOUiKSqVN3iI9rePab92e7LB55hw=;
+        b=gTZEHlUNwbPh/aNUxluHdzw7M95IOpDxkm1aVz3fKn1IPQps3WattCVoTUnY8F6+v1
+         5w5FSzAtjX0uiruTGZ58KO/Jv1ErxZh3MAhQHNVqtMp6oMxCckF874C+V+vvjeb5ozb5
+         zrZM0JT0DosLUUrMYF8WMXed0aQpJTOkIJRBJi9SGDl9J5EhzeMcRqLbP4PADrQuvEMv
+         ek2N5tRzU9GIvAwSSPQp5V4vAsix/cZDwRL+EufXIVocevAxSmOBS+KMp4esOZVMRNFa
+         WTgE/5Plr6ithwZg2eaPzI920ndYmKhiQqdrxSa/ZrB3K2aPdtXLZQioziIV1AEHz00R
+         nnPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766466337; x=1767071137;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RieUY6Qi1xGapDDlOUiKSqVN3iI9rePab92e7LB55hw=;
+        b=txccyVJmepmb5KEvJ9KlaUr7h0PBVtO40pre6BxSvkeEwnTngHt4Y/Ldo6xFRbqPni
+         P3yfi4DVdOgwyxB5KvRwgvBiMtpHCODy9V+553tMLeduA96PB8Pmp6LXtB6yQMWblL7I
+         4AsJ79MgQq+atZLlO9vQOlHx5OUxHj1/riEnh859Q/W5qL1z0TJikKbXfv14wL7wBar6
+         SjAlIu9tqzHSmg0ZBu+zHHB+alqEDdd6N6aHKBQ6R+PNF8FpP/hzcHJCLsKs80qM04v2
+         KmQSqM5j3hnWKm/WU6j8i+0+PNa2ZZE6o3egmtJguoLtbiE5CgB/Bd1SKHbxvRkxrWFW
+         u9Dg==
+X-Gm-Message-State: AOJu0Yxp6WxddJJ8NwB74Y4WHARrWAGTJxI6/Eu2bhEP2KceQ91m+ZsF
+	3uifVMvklXM/Py9ENKyls+QTSGxhUuFY8woNH082tgi0tsga/rr1zb4OY7WWo9Lr77uqGjWiXCp
+	Pl6EYcOebMcz1KMqji/mug8WQ3JzjgJGCOvCM1g==
+X-Gm-Gg: AY/fxX6jIpVHrlCh+lYqlwnhDR2sia0An7OB7VrW1b70yx0UxwfWfXtepWdg75W3aEI
+	fjx0RI/ZXlCwRMWJT0/X0Vd+FMpbTQzcWYUEK17jvY2yA6mE1LD6h7g1ssQN4MBxMkUhZbX7VyP
+	zdqoU2IZ18P2N5PFw/D0KmBxWnVSU7mHvfEnk2qCbzg09psuLrGcPyX/o8asbDsJEjpekY0mPRP
+	AB1MdsHWdlmLM5m2FxhwWuqh94xP2RSb4j4MyvVvaCxZ3oYZGC1B3cndt1iyiQsQHfCyHE=
+X-Google-Smtp-Source: AGHT+IGrDGuBoWwf4coyABhX/fP34Ls3x8DDjl+huGe0vI71VKxouBfSE81Dullt/xZyPtNgFHUPXkVv0EggEHRhKss=
+X-Received: by 2002:a05:690e:1482:b0:63f:c019:23ee with SMTP id
+ 956f58d0204a3-6466a8415f4mr9857941d50.21.1766466336875; Mon, 22 Dec 2025
+ 21:05:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device
- is accessible in scalable mode
-To: Jinhui Guo <guojinhui.liam@bytedance.com>, kevin.tian@intel.com
-Cc: dwmw2@infradead.org, iommu@lists.linux.dev, joro@8bytes.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, will@kernel.org,
- Bjorn Helgaas <bhelgaas@google.com>
-References: <BN9PR11MB52763E38B4C8B59C9A9AD9E18CA8A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <20251222111935.489-1-guojinhui.liam@bytedance.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20251222111935.489-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: JP Dehollain <jpdehollain@gmail.com>
+Date: Tue, 23 Dec 2025 16:05:24 +1100
+X-Gm-Features: AQt7F2pr3D6lj6oIC0DzBUveK2F3vFlURKnj_1X9-tKVkEIb9HgLPceOvHDbc6A
+Message-ID: <CAH1aAjJkf0iDxNPwPqXBUN2Bj7+KaRXCFxUOYx9yrrt2DCeE_g@mail.gmail.com>
+Subject: Request to add mainline merged patch to stable kernels
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/22/25 19:19, Jinhui Guo wrote:
-> On Thu, Dec 18, 2025 08:04:20AM +0000, Tian, Kevin wrote:
->>> From: Jinhui Guo<guojinhui.liam@bytedance.com>
->>> Sent: Thursday, December 11, 2025 12:00 PM
->>>
->>> Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
->>> request when device is disconnected") relies on
->>> pci_dev_is_disconnected() to skip ATS invalidation for
->>> safely-removed devices, but it does not cover link-down caused
->>> by faults, which can still hard-lock the system.
->> According to the commit msg it actually tries to fix the hard lockup
->> with surprise removal. For safe removal the device is not removed
->> before invalidation is done:
->>
->> "
->>      For safe removal, device wouldn't be removed until the whole software
->>      handling process is done, it wouldn't trigger the hard lock up issue
->>      caused by too long ATS Invalidation timeout wait.
->> "
->>
->> Can you help articulate the problem especially about the part
->> 'link-down caused by faults"? What are those faults? How are
->> they different from the said surprise removal in the commit
->> msg to not set pci_dev_is_disconnected()?
->>
-> Hi, kevin, sorry for the delayed reply.
-> 
-> A normal or surprise removal of a PCIe device on a hot-plug port normally
-> triggers an interrupt from the PCIe switch.
-> 
-> We have, however, observed cases where no interrupt is generated when the
-> device suddenly loses its link; the behaviour is identical to setting the
-> Link Disable bit in the switch’s Link Control register (offset 10h). Exactly
-> what goes wrong in the LTSSM between the PCIe switch and the endpoint remains
-> unknown.
-
-In this scenario, the hardware has effectively vanished, yet the device
-driver remains bound and the IOMMU resources haven't been released. I’m
-just curious if this stale state could trigger issues in other places
-before the kernel fully realizes the device is gone? I’m not objecting
-to the fix. I'm just interested in whether this 'zombie' state creates
-risks elsewhere.
-
-> 
->>> For example, if a VM fails to connect to the PCIe device,
->> 'failed' for what reason?
->>
->>> "virsh destroy" is executed to release resources and isolate
->>> the fault, but a hard-lockup occurs while releasing the group fd.
->>>
->>> Call Trace:
->>>   qi_submit_sync
->>>   qi_flush_dev_iotlb
->>>   intel_pasid_tear_down_entry
->>>   device_block_translation
->>>   blocking_domain_attach_dev
->>>   __iommu_attach_device
->>>   __iommu_device_set_domain
->>>   __iommu_group_set_domain_internal
->>>   iommu_detach_group
->>>   vfio_iommu_type1_detach_group
->>>   vfio_group_detach_container
->>>   vfio_group_fops_release
->>>   __fput
->>>
->>> Although pci_device_is_present() is slower than
->>> pci_dev_is_disconnected(), it still takes only ~70 µs on a
->>> ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
->>> and width increase.
->>>
->>> Besides, devtlb_invalidation_with_pasid() is called only in the
->>> paths below, which are far less frequent than memory map/unmap.
->>>
->>> 1. mm-struct release
->>> 2. {attach,release}_dev
->>> 3. set/remove PASID
->>> 4. dirty-tracking setup
->>>
->> surprise removal can happen at any time, e.g. after the check of
->> pci_device_is_present(). In the end we need the logic in
->> qi_check_fault() to check the presence upon ITE timeout error
->> received to break the infinite loop. So in your case even with
->> that logici in place you still observe lockup (probably due to
->> hardware ITE timeout is longer than the lockup detection on
->> the CPU?
-> Are you referring to the timeout added in patch
-> https://lore.kernel.org/all/20240222090251.2849702-4- 
-> haifeng.zhao@linux.intel.com/ ?
-
-This doesn't appear to be a deterministic solution, because ...
-
-> Our lockup-detection timeout is the default 10 s.
-> 
-> We see ITE-timeout messages in the kernel log. Yet the system still
-> hard-locks—probably because, as you mentioned, the hardware ITE timeout
-> is longer than the CPU’s lockup-detection window. I’ll reproduce the
-> case and follow up with a deeper analysis.
-
-... as you see, neither the PCI nor the VT-d specifications mandate a
-specific device-TLB invalidation timeout value for hardware
-implementations. Consequently, the ITE timeout value may exceed the CPU
-watchdog threshold, meaning a hard lockup will be detected before the
-ITE even occurs.
-
+Hello,
+I recently used the patch misc: rtsx_pci: Add separate CD/WP pin
+polarity reversal support with commit ID 807221d, to fix a bug causing
+the cardreader driver to always load sd cards in read-only mode.
+On the suggestion of the driver maintainer, I am requesting that this
+patch be applied to all stable kernel versions, as it is currently
+only applied to >=6.18.
 Thanks,
-baolu
+JP
 
