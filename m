@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CCCCDA5C9
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5424DCDA5E4
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55AD730336B6
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:24:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD7CE3040A40
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A981F34B1B2;
-	Tue, 23 Dec 2025 19:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D6834B66F;
+	Tue, 23 Dec 2025 19:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PHiXvE1q"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DLYIi9pp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E6C34B404;
-	Tue, 23 Dec 2025 19:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760A34B433;
+	Tue, 23 Dec 2025 19:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766517871; cv=none; b=J1Bmtya32ark2uLrXnKF3eGqwCE/OiPqv5gCKI49bJ4acz58sn6Jdrtfu714Y7HZf4dD3QtZL5xXnwsVAPeMiKoycrb5PL+vz6Gn5EW5Sx7ejcR3fWTE2wu4r3fPvilZJ22X0BFE7ou97Qf0EtP62NKfS9ox7zRKjFCUbbGdst8=
+	t=1766518052; cv=none; b=R7SQKGdRwynGskb5rGLBFD02qBPU6CtlbwIDCZpxARBNey0rjZsvvm6/EO6rDny6zAw0Gumhqzpgr0hSx27RMoO80obgWFNIPiCyiP24cAaKMYys6rR1zNuczOG/fcvA+n6hYbOnKCDs8Gp55eX9YoBcc1M4JflQWFPg5KVuB6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766517871; c=relaxed/simple;
-	bh=kBnYi6edvkpqki1EwKhFzz2Ql7S9JOJI2u3U0xzI3nY=;
-	h=Date:To:From:Subject:Message-Id; b=EFIF1MYl9wj7vJCxlFy+v/F5slbKS4PsjrusR96fg2RdCN46xYDkXSzwVsfP24l6UEfPaIw+bT3Krv50d9vRb9OstpPPNUxpeZsN2dDRxodGjHGXm+vTDc242UW+FBxyOj/OzB+W70r1Y2qASWaSVhIZcqOwrUftvl8gcz8c7z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PHiXvE1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816D8C113D0;
-	Tue, 23 Dec 2025 19:24:30 +0000 (UTC)
+	s=arc-20240116; t=1766518052; c=relaxed/simple;
+	bh=w/mM1RtlPC6+5CfYRU4ZgCWz1IFYWz8OSAL7MrhqG8s=;
+	h=Date:To:From:Subject:Message-Id; b=SE8ufSQC5akR3kwWCMUM5ydfktkLnEbPUrveGj1gF/FmYwJX8ptwRVELxF6VEU946P7hiLuOscBuz2I+q27RgjFQAnVo3BwQVGifIIOwV7FnAh0IWcWoCi5UPPArAESUbA44EjhORJk20S9kALRtz+EkCm5AkX2iYuLii2FBzRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DLYIi9pp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787F1C113D0;
+	Tue, 23 Dec 2025 19:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766517870;
-	bh=kBnYi6edvkpqki1EwKhFzz2Ql7S9JOJI2u3U0xzI3nY=;
+	s=korg; t=1766518052;
+	bh=w/mM1RtlPC6+5CfYRU4ZgCWz1IFYWz8OSAL7MrhqG8s=;
 	h=Date:To:From:Subject:From;
-	b=PHiXvE1qfWscIVpKxKxkAQnhSg1zkrGs+blgchofLDCSZcFaNHENCZG1VE8uEfOrJ
-	 nHExi11gpbjfSYXOJVf2KYkkdw3VPu9ZjAX/TQ4kc0uWxIpjav/1AQCyVqgM7RM8sZ
-	 xkIDJNnHbWxteeRGRsObFtNOexxqJkIhgbYx4iE0=
-Date: Tue, 23 Dec 2025 11:24:29 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,elver@google.com,andreyknvl@gmail.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
+	b=DLYIi9ppdiw4Z3b7OQImI2BDcPCCly4JBSKLukHiefcHJdpNHfHnjnZY2Q0tZVnlR
+	 8pgF7hioIEvLRPPMpeh7MjrL0JnB60zH+vxjp2EFM2ENLcAwkLOJMELjr+PsL4oY23
+	 MS5AOGCQ57VEqwghQMVXiLkNM3FBB+A2hojptt7Q=
+Date: Tue, 23 Dec 2025 11:27:31 -0800
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,yonghong.song@linux.dev,weixugc@google.com,syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com,stable@vger.kernel.org,song@kernel.org,shakeel.butt@linux.dev,sdf@fomichev.me,osandov@fb.com,mhocko@kernel.org,martin.lau@linux.dev,lorenzo.stoakes@oracle.com,kpsingh@kernel.org,kartikey406@gmail.com,jolsa@kernel.org,john.fastabend@gmail.com,haoluo@google.com,hannes@cmpxchg.org,eddyz87@gmail.com,david@kernel.org,daniel@iogearbox.net,axelrasmussen@google.com,ast@kernel.org,andrii@kernel.org,wangjinchao600@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch removed from -mm tree
-Message-Id: <20251223192430.816D8C113D0@smtp.kernel.org>
+Subject: [alternative-merged] buildid-validate-page-backed-file-before-parsing-build-id.patch removed from -mm tree
+Message-Id: <20251223192732.787F1C113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,55 +48,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
+     Subject: buildid: validate page-backed file before parsing build ID
 has been removed from the -mm tree.  Its filename was
-     mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch
+     buildid-validate-page-backed-file-before-parsing-build-id.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This patch was dropped because an alternative patch was or shall be merged
 
 ------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
-Date: Fri, 19 Dec 2025 07:42:32 +0000
+From: Jinchao Wang <wangjinchao600@gmail.com>
+Subject: buildid: validate page-backed file before parsing build ID
+Date: Tue, 23 Dec 2025 18:32:07 +0800
 
-The page_owner_stack_fops->open() callback invokes seq_open_private(),
-therefore its corresponding ->release() callback must call
-seq_release_private().  Otherwise it will cause a memory leak of struct
-stack_print_ctx.
+__build_id_parse() only works on page-backed storage.  Its helper paths
+eventually call mapping->a_ops->read_folio(), so explicitly reject VMAs
+that do not map a regular file or lack valid address_space operations.
 
-Link: https://lkml.kernel.org/r/20251219074232.136482-1-ranxiaokai627@163.com
-Fixes: 765973a09803 ("mm,page_owner: display all stacks and their count")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
+Link: https://lkml.kernel.org/r/20251223103214.2412446-1-wangjinchao600@gmail.com
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+Reported-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
+Tested-by: <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
+  Link: https://lkml.kernel.org/r/694a67ab.050a0220.19928e.001c.GAE@google.com
+Closes: https://lkml.kernel.org/r/693540fe.a70a0220.38f243.004c.GAE@google.com
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Omar Sandoval <osandov@fb.com>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Song Liu <song@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Yonghong Song <yonghong.song@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_owner.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/buildid.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/page_owner.c~mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release
-+++ a/mm/page_owner.c
-@@ -952,7 +952,7 @@ static const struct file_operations page
- 	.open		= page_owner_stack_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= seq_release_private,
- };
+--- a/lib/buildid.c~buildid-validate-page-backed-file-before-parsing-build-id
++++ a/lib/buildid.c
+@@ -288,7 +288,10 @@ static int __build_id_parse(struct vm_ar
+ 	int ret;
  
- static int page_owner_threshold_get(void *data, u64 *val)
+ 	/* only works for page backed storage  */
+-	if (!vma->vm_file)
++	if (!vma->vm_file ||
++	    !S_ISREG(file_inode(vma->vm_file)->i_mode) ||
++	    !vma->vm_file->f_mapping->a_ops ||
++	    !vma->vm_file->f_mapping->a_ops->read_folio)
+ 		return -EINVAL;
+ 
+ 	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
 _
 
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
+Patches currently in -mm which might be from wangjinchao600@gmail.com are
 
 
 
