@@ -1,102 +1,181 @@
-Return-Path: <stable+bounces-203244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA160CD772E
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 00:19:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD6BCD77DC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88BC3301FF79
-	for <lists+stable@lfdr.de>; Mon, 22 Dec 2025 23:18:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C9EB3012CCE
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 00:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4362F225785;
-	Mon, 22 Dec 2025 23:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBA31F3B87;
+	Tue, 23 Dec 2025 00:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHKlr+6G"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Px4DCXCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022E31917CD
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 23:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DAB1DF736;
+	Tue, 23 Dec 2025 00:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766445534; cv=none; b=ZtElY8O7fUGLX3OqHfes0Ri7WrJdkWGff2jFqNn1EWLdqu0K3WlALIM+/HsD9PI5dAsgGY2k2ZuusjVIhmGrrkLKLr6zLR9wJ3QnkubcjMdLUOdkCwHijj6W8GCKu7Wsrc7IM/LR6aN0np1HBby656RErrteg4fL3MnWDQv8M34=
+	t=1766450182; cv=none; b=OfTTbPlmK/DkB3M/9BfnHC7ZipItL7LLTX09YwbIoXCr5Enq0ynOeVpk1MOz4WPDUrZSuqKnwfRlmvf6ry0d45T6whse8T48HpIuSh6JQ10GIVx27gjFLfAmb7U2Sp5RM5RSub+UaLthAZZoEjFOTzVK2hhFPJm4YUS99VW5UWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766445534; c=relaxed/simple;
-	bh=1PTRj5IbPheHyKPLUeQn09lt7a0KA8xUVM3vs4ytqHE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OGeL4aiADN1PLbMnSBJkFBmlwGk4Mc01Cmkq+Lmsr+hlogAV6/4VWxpKoAJi/zwX160mpj/scLvf4G0KcdULUGv8n6GLtI0T0CxcYv3grlbiLqbIepfKNNDUJXU/mW8e1YXik5oYI5wCZv0AOr1DD61OiEDA8O0Rr2rtJmqtqDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHKlr+6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E30C2BCB1
-	for <stable@vger.kernel.org>; Mon, 22 Dec 2025 23:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766445533;
-	bh=1PTRj5IbPheHyKPLUeQn09lt7a0KA8xUVM3vs4ytqHE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IHKlr+6Gl+QA6DaryNduIe7WNRMfP/E6B1HbR+itsvFugogI1qMmYADh8rnIcXmNK
-	 PKRGX1Eb/Hn/078PsXt6gwtRFo7Gg1sFUlfWavz7rQFCxG5psWmo49HEAKbqti2/fz
-	 A2il37qqTBEs6Cw1bCzYM6zJeOUKjulJ1zJo8luVkqsRxNWYfeB+D6XxKrCu8UW3At
-	 JNrDfJJ1XxNdiY86a6wVSUUf0yCo42r0DBj931tkjFHjJfmryQmXqOEIDoAdcEjBbH
-	 s9nXS7azO2fxm1zST5j1Ek8F2UutDiI6uNawqwZzIkim17PjDCkfsgtx5Qql5JmZlY
-	 r7c7KNDBSTy+A==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78c66bdf675so37024847b3.2
-        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 15:18:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVUuR377qp+4ouoGILB+bLM0AB8aeOvapAL3Ic43DUh0OSbono1zBZmHZRhI7pCSpsjFJ/oKrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxHDP9NqkrUAX+jpN5DTm8pwgX4uN32lBCt7AhgjNSbbLH3Vjs
-	M+8VgQmu5v0Ed6VniU1Hd1JXAI8lWchyBun0dCITjU7R3DVE4jIAefUABhIfUgr1z7yVK9xRM/7
-	7PpJ9x+aqo84AuTCQjefDaLSf9izhpeA=
-X-Google-Smtp-Source: AGHT+IFLuNG5vfFv+hvdMwlVrLtVEINXP+UqBdcB4yXJij0JrDbJSKnUkVy8zi/D+KeXicJLx2KQRsl8vzD85DfIxMQ=
-X-Received: by 2002:a05:690c:6c84:b0:786:827f:6fe8 with SMTP id
- 00721157ae682-78fb41ac9e0mr105561577b3.58.1766445532634; Mon, 22 Dec 2025
- 15:18:52 -0800 (PST)
+	s=arc-20240116; t=1766450182; c=relaxed/simple;
+	bh=cVQl2SFKLEK4K92yzymemUS+sSWEstr0zTH0p7BPN7A=;
+	h=Date:To:From:Subject:Message-Id; b=qgqL5++TN/w0UTwdvlh6xcMdjwNya3HhL4gr8+ekoJCJN6CAMT7pRVhH69UtNLhNJel/bDl++HTt352aT9V094JARIimK1Z/bdSjblRcazaJEukQzuC7VIc6xLLXHOB9byZWLMXRZRwJ0QNlUMt8iQuXz7Y7KACVEznWXSyKOHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Px4DCXCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA6CC4CEF1;
+	Tue, 23 Dec 2025 00:36:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766450181;
+	bh=cVQl2SFKLEK4K92yzymemUS+sSWEstr0zTH0p7BPN7A=;
+	h=Date:To:From:Subject:From;
+	b=Px4DCXCNhxltkqKzNJE2mQGl2Afplj6fDQtJyI4cIxdqqsqxHuKW7VkiDIQTnYjq6
+	 VSDSTS915tZ7sro7oGfVl8Mgz6tBRTGaFgEDOapok8Kgla5mTbFvfnO1i9Qwt6OC15
+	 YjxEjOCLuFaiYRPSB+VCSJSdwKg00iO6uw7BX5yQ=
+Date: Mon, 22 Dec 2025 16:36:20 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,hch@lst.de,djwong@kernel.org,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-buildid-use-__kernel_read-for-sleepable-context.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251223003621.3CA6CC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
- <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com> <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
- <817b2358-0920-4b7a-abb1-133103d0f9fe@ideasonboard.com>
-In-Reply-To: <817b2358-0920-4b7a-abb1-133103d0f9fe@ideasonboard.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 23 Dec 2025 00:18:39 +0100
-X-Gmail-Original-Message-ID: <CAD++jLm_0xweD4tRJ8ZfwmcOe2BBGCsUuL1UWUiNM+Gpbq3Zuw@mail.gmail.com>
-X-Gm-Features: AQt7F2qVusB26rJf3VFnv1cbbMcmw7gQTV_3PZwZEvdew2fS2i_2TmDT15TKrTs
-Message-ID: <CAD++jLm_0xweD4tRJ8ZfwmcOe2BBGCsUuL1UWUiNM+Gpbq3Zuw@mail.gmail.com>
-Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, 
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>, Chaoyi Chen <chaoyi.chen@rock-chips.com>, 
-	Vicente Bergas <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 14, 2025 at 1:42=E2=80=AFPM Tomi Valkeinen
-<tomi.valkeinen@ideasonboard.com> wrote:
 
-> >> Should we merge this series as a fix for 6.18 rcs?
-> >
-> > Too late now, so let's merge it as a fix for v6.19 rcs!
->
-> Ah, right. Indeed, I meant v6.19 rcs.
+The patch titled
+     Subject: lib/buildid: use __kernel_read() for sleepable context
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     lib-buildid-use-__kernel_read-for-sleepable-context.patch
 
-Are you applying it or should I?
-Not sure if you want some special timing, like outside of
-holidays.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-buildid-use-__kernel_read-for-sleepable-context.patch
 
-Yours,
-Linus Walleij
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: lib/buildid: use __kernel_read() for sleepable context
+Date: Mon, 22 Dec 2025 12:58:59 -0800
+
+Prevent a "BUG: unable to handle kernel NULL pointer dereference in
+filemap_read_folio".
+
+For the sleepable context, convert freader to use __kernel_read() instead
+of direct page cache access via read_cache_folio().  This simplifies the
+faultable code path by using the standard kernel file reading interface
+which handles all the complexity of reading file data.
+
+At the moment we are not changing the code for non-sleepable context which
+uses filemap_get_folio() and only succeeds if the target folios are
+already in memory and up-to-date.  The reason is to keep the patch simple
+and easier to backport to stable kernels.
+
+Syzbot repro does not crash the kernel anymore and the selftests run
+successfully.
+
+In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+non-sleepable contexts.  In addition, I would like to replace the
+secretmem check with a more generic approach and will add fstest for the
+buildid code.
+
+Link: https://lkml.kernel.org/r/20251222205859.3968077-1-shakeel.butt@linux.dev
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/buildid.c |   32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
+
+--- a/lib/buildid.c~lib-buildid-use-__kernel_read-for-sleepable-context
++++ a/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/fs.h>
+ #include <linux/secretmem.h>
+ 
+ #define BUILD_ID 3
+@@ -46,20 +47,9 @@ static int freader_get_folio(struct frea
+ 
+ 	freader_put_folio(r);
+ 
+-	/* reject secretmem folios created with memfd_secret() */
+-	if (secretmem_mapping(r->file->f_mapping))
+-		return -EFAULT;
+-
++	/* only use page cache lookup - fail if not already cached */
+ 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+ 
+-	/* if sleeping is allowed, wait for the page, if necessary */
+-	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
+-		filemap_invalidate_lock_shared(r->file->f_mapping);
+-		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
+-					    NULL, r->file);
+-		filemap_invalidate_unlock_shared(r->file->f_mapping);
+-	}
+-
+ 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
+ 		if (!IS_ERR(r->folio))
+ 			folio_put(r->folio);
+@@ -97,6 +87,24 @@ const void *freader_fetch(struct freader
+ 		return r->data + file_off;
+ 	}
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (secretmem_mapping(r->file->f_mapping)) {
++		r->err = -EFAULT;
++		return NULL;
++	}
++
++	/* use __kernel_read() for sleepable context */
++	if (r->may_fault) {
++		ssize_t ret;
++
++		ret = __kernel_read(r->file, r->buf, sz, &file_off);
++		if (ret != sz) {
++			r->err = (ret < 0) ? ret : -EIO;
++			return NULL;
++		}
++		return r->buf;
++	}
++
+ 	/* fetch or reuse folio for given file offset */
+ 	r->err = freader_get_folio(r, file_off);
+ 	if (r->err)
+_
+
+Patches currently in -mm which might be from shakeel.butt@linux.dev are
+
+mm-memcg-fix-unit-conversion-for-k-macro-in-oom-log.patch
+lib-buildid-use-__kernel_read-for-sleepable-context.patch
+
 
