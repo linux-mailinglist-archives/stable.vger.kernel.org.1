@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-203248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D81CD7B4D
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:48:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5AFCD7B4A
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 27A093028DAA
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:47:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22EAE307C41E
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD113128AE;
-	Tue, 23 Dec 2025 01:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D2D2765ED;
+	Tue, 23 Dec 2025 01:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="mWT+8AQE"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bSmd0JZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFF330F956;
-	Tue, 23 Dec 2025 01:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9B62737FC;
+	Tue, 23 Dec 2025 01:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766452969; cv=none; b=WLx+9o1W/7T31IaO2eUdpqP8Cqs9Vi9bqAMNpWce3TmAexJKOkJ09zl38ZlY5RAPXUm8H/SaFEOmE/miP2uYkJITfox74Qm5nNHi6mfm8rqGvO9Oy989pjGqc1oCq0FxIWKmw7NS1C2PSrZly950bnTuCEJ01hfPWBY/9g9vN24=
+	t=1766452920; cv=none; b=qZj8SpgFp5HEXEn18cFFDz4brc8KGNofJuxA9oC8G0PGygasjckrM1IrwEWmWMGY99bi6JwMWMPh4UFvGTizb35PJnJ6p/eDpy8wButXWSY3Lf2twOBd4FM/voDhVCQhrOMlYoVk6C5oj1nO0MDw4ivdHUosscdPLAu00EEyH3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766452969; c=relaxed/simple;
-	bh=RlJGZSlVUYFK2gVNEN4coR+Ft9kLILQEUtZsvU07ExE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ipGngoNkRFmq1+Zg/NU5BltExOLxFmR0TzKgrsEwSiGciPrQ4WgTLfUwp3YP0vtA96w3tzGwx0f8hTFanIuZmYvWqBsxFOdw3eyjOS0VwHlMK5E90kzZ4PAEl31cIe5uw71N+i5LEtX0rJ1/YJrHU7ShyL0CmsGD+LeLEv7bEGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=mWT+8AQE; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1766452920; c=relaxed/simple;
+	bh=7ujObCNC4gD/KMN7DjExhLtnUNjWr8GP7Mj8AmGN5Ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I5AKrrpjiWoKZh5ryXm18mUQ7EVyhPtAv2yS4anT/7qG6/Qy1cKL+bwY5H6i2Qt9f27q7w7F7A5lZUioD6nglL6xerlzcRd8RJM/on6PYw7UbrqtFkkSJJd/DmbdvbIwbS+ia9+EhNWpKKfHI5n1IST+aQ2EmVEjfIqn6F7FV4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bSmd0JZ7; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BN18pPj3528396;
-	Tue, 23 Dec 2025 01:21:25 GMT
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BN1A1u83530557;
+	Tue, 23 Dec 2025 01:21:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=UnzJUYZBEsWJFG5paNuHbrUsuHHsv
-	7hIatCncppAjXo=; b=mWT+8AQE5Ia17dtR98K33BGPCYt4nZdLEbOYA+5Q/VG/k
-	Z+3TM3s0/z3uYc1GxFmZlSqKWineNHamccMW6Q9mE3l1a/wsbSMVWNSWwCjApbIB
-	6MtqmqybSyqnTZyQDnYWFNSx2U4PolrATOjAT8fO28YPPBMSvkMM/sV6+UK23oh6
-	hGuK2JQZs2fTcUwjjdq5Kqrv2P2Jns6bmympfaREJix/Zk53aSNatpyLgFbqv52y
-	RiUMWBAI4jJtGX7gqZIQWZdXdm7fzVJTw7XnIiaYuqk2iOV+KT3dmqtfELG1jvml
-	G+hrGbXtDnC2uPT0bLiOhgijAkWpCKr8HM8WgjXaA==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=g8vI6
+	UeUIC5rlql2XyjZDS+hvGt7ge2waCZe4vBSUiE=; b=bSmd0JZ71DQdSCrWKMh3s
+	+HeHah9kkrHv9OlJnWd0eXzeGK7eHzcwynIM6g3j7AHGNrBN3GrA0h+R6dKi3RPn
+	14xI7QmQDxp69bpoah4vWLRyBQnfeudpQfsROjHvT/PcnSSLhswqD8O/qebyN1GH
+	Rvamc+mkH5MjvqS8Hk36Q07q7i7Ycs1vSFrotgeIurYB6Yc+RVdtui6wUOV6WCnm
+	2hcf0/cZjrpLmnEivJI9CVS5vLklB6giqSrc7ft77iGZ6mDv67psAEIyqu0aBHib
+	8ucBOYoP9V++zuFyxr50At1F3PVO40broEJqS+ap9+FQMHEE68Vkgy4NWfz3aOzK
+	A==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b7h5p007j-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b7h5p007m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Dec 2025 01:21:25 +0000 (GMT)
+	Tue, 23 Dec 2025 01:21:28 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMMjDmL001818;
-	Tue, 23 Dec 2025 01:21:24 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMM6cmQ002549;
+	Tue, 23 Dec 2025 01:21:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b5j87x0dx-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4b5j87x0fh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Dec 2025 01:21:24 +0000
+	Tue, 23 Dec 2025 01:21:27 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BN1LNiC016978;
-	Tue, 23 Dec 2025 01:21:23 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BN1LNiE016978;
+	Tue, 23 Dec 2025 01:21:26 GMT
 Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b5j87x0df-1;
-	Tue, 23 Dec 2025 01:21:23 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4b5j87x0df-2;
+	Tue, 23 Dec 2025 01:21:26 +0000
 From: Jane Chu <jane.chu@oracle.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
@@ -65,10 +67,12 @@ Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
         akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
         Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
         mhocko@suse.com, willy@infradead.org
-Subject: [PATCH v3 1/2] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
-Date: Mon, 22 Dec 2025 18:21:11 -0700
-Message-ID: <20251223012113.370674-1-jane.chu@oracle.com>
+Subject: [PATCH v3 2/2] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
+Date: Mon, 22 Dec 2025 18:21:12 -0700
+Message-ID: <20251223012113.370674-2-jane.chu@oracle.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20251223012113.370674-1-jane.chu@oracle.com>
+References: <20251223012113.370674-1-jane.chu@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,187 +87,89 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spams
  phishscore=0 adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
  definitions=main-2512230009
-X-Proofpoint-ORIG-GUID: -oFl7g_-F8DkPV5WNQf7l7Ig8btqXkOX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDAwOSBTYWx0ZWRfX+iNC4LzzLn9N
- ygaS+gPftlpuBhs4Yi6F7c2W4zcNEbPdzNJYX6LYDiEi3Req4sWuKrfndB2GoUkxNY1xTfTMbUN
- fBkmDkwmbmJOwjSB/B2SM9tigcV7j5Dy2NndO+Lbqsi8/r4FrZax4XqnLbxAXmW4R62WEy+P+GG
- KJfEbdVZ1HtKCgCijtQiQ28yXOh/VYevoYlP7PC9HedxH0I6yudddGTdXemsLgeY8mdRUNnebWG
- nPfe4J9pOMoL0Hzp4+LgBwBdOMUpa0gdoM2L2DVcmlUVqJtWcOk9CwGuEZ6KY0hlETi9QQnc6Za
- Juvz/Q5L9dx2B8JD0Fg7SY2S4Ac37KoG1wB2rugE0nEdhb9apGxKqKejH3RS1ZVoi/40VZHLJhe
- mcs3Qc0HpFNnypQplYPXkd9rDyLIzIS5P5utJaGoHaXW9Xmp2HZemsDbaMvCPA5H9KiQF/kSuNx
- X6RbBUIK9uWfbbuIrgg==
-X-Authority-Analysis: v=2.4 cv=S5/UAYsP c=1 sm=1 tr=0 ts=6949ee95 cx=c_pps
+X-Proofpoint-ORIG-GUID: SNTz1od7Q6g2sZiLwfgm_J9kJ9Xg7Udy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDAwOSBTYWx0ZWRfX1g7XaczizzLi
+ 8NtApq7fTlAU8KspGhDJKWjfJ2BHFNNj3Br8fl9DNpBHZw5GEKXTrRsNy1pVQ/tIGMVYnCdU4qI
+ BvN98hK5+HTTWhmtJ/NmgPypRFK81e1idkbW/2chZqdD9io5/xPqDJh7sm9uwfeqy1MHd4fjoYd
+ 9I5ROCxPenSkDLoUr7wHcHUZQNryWZbn+LhIuJKDF/Lx5fSpIgFmIx9wk+R46kDXhBOmVShg6y0
+ 9cYbD9NYU2KLijj4QCCstGkl6ZhwbuI3tcxojDAy1zJvdgqNUx0Osc/D7DoPqtA+Fvujiut/500
+ YvCpNO2mOmLmS01y+ofXgJkxzNUa48ae02DmQmkaU7JSTGZIyGJfC+YV3C8K6YdImFwyNlutqDE
+ g7heQh+rf0hwbk+CKp6SxnKqPjTy3XnpzVg71Er8BKHc/3oFNZl23c2e1z4akZqe6ts6F/j8zLU
+ Ww6UgYTH0J8p47UsR/g==
+X-Authority-Analysis: v=2.4 cv=S5/UAYsP c=1 sm=1 tr=0 ts=6949ee98 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=0f2F8jj5qo72ZdTnQt8A:9
-X-Proofpoint-GUID: -oFl7g_-F8DkPV5WNQf7l7Ig8btqXkOX
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
+ a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=DOqXzVRdv2y7BJT1fF0A:9
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: SNTz1od7Q6g2sZiLwfgm_J9kJ9Xg7Udy
 
-When a newly poisoned subpage ends up in an already poisoned hugetlb
-folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
-is not. Fix the inconsistency by designating action_result() to update
-them both.
+When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
+passed head pfn to kill_accessing_process(), that is not right.
+The precise pfn of the poisoned page should be used in order to
+determine the precise vaddr as the SIGBUS payload.
 
-While at it, define __get_huge_page_for_hwpoison() return values in terms
-of symbol names for better readibility. Also rename
-folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
-function does more than the conventional bit setting and the fact
-three possible return values are expected.
+This issue has already been taken care of in the normal path, that is,
+hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
+correctly in the hugetlb repoisoning case, it's essential to inform
+VM the precise poisoned page, not the head page.
 
-Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
+[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
+
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 ---
 v2 -> v3:
-  No change.
+  incorporated suggestions from Miaohe and Matthew.
 v1 -> v2:
-  adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
-return values in terms of symbol names instead of naked integers for better
-readibility.  #define instead of enum is used since the function has footprint
-outside MF, just try to limit the MF specifics local.
-  also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
-since the function does more than the conventional bit setting and the
-fact three possible return values are expected.
-
+  pickup R-B, add stable to cc list.
 ---
- mm/memory-failure.c | 56 ++++++++++++++++++++++++++-------------------
- 1 file changed, 33 insertions(+), 23 deletions(-)
+ mm/memory-failure.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index fbc5a01260c8..8b47e8a1b12d 100644
+index 8b47e8a1b12d..98612ac961b0 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -1883,12 +1883,18 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
- 	return count;
- }
- 
--static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
-+#define	MF_HUGETLB_ALREADY_POISONED	3  /* already poisoned */
-+#define	MF_HUGETLB_ACC_EXISTING_POISON	4  /* accessed existing poisoned page */
-+/*
-+ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-+ * to keep track of the poisoned pages.
-+ */
-+static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+@@ -692,6 +692,8 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+ 				unsigned long poisoned_pfn, struct to_kill *tk)
  {
- 	struct llist_head *head;
- 	struct raw_hwp_page *raw_hwp;
- 	struct raw_hwp_page *p;
--	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
-+	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_ALREADY_POISONED : 0;
+ 	unsigned long pfn = 0;
++	unsigned long hwpoison_vaddr;
++	unsigned long mask;
  
- 	/*
- 	 * Once the hwpoison hugepage has lost reliable raw error info,
-@@ -1896,20 +1902,18 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
- 	 * so skip to add additional raw error info.
- 	 */
- 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
--		return -EHWPOISON;
-+		return MF_HUGETLB_ALREADY_POISONED;
-+
- 	head = raw_hwp_list_head(folio);
- 	llist_for_each_entry(p, head->first, node) {
- 		if (p->page == page)
--			return -EHWPOISON;
-+			return MF_HUGETLB_ACC_EXISTING_POISON;
+ 	if (pte_present(pte)) {
+ 		pfn = pte_pfn(pte);
+@@ -702,10 +704,12 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
+ 			pfn = softleaf_to_pfn(entry);
  	}
  
- 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
- 	if (raw_hwp) {
- 		raw_hwp->page = page;
- 		llist_add(&raw_hwp->node, head);
--		/* the first error event will be counted in action_result(). */
--		if (ret)
--			num_poisoned_pages_inc(page_to_pfn(page));
- 	} else {
- 		/*
- 		 * Failed to save raw error info.  We no longer trace all
-@@ -1955,32 +1959,30 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
- 	folio_free_raw_hwp(folio, true);
- }
- 
-+#define	MF_HUGETLB_FREED			0	/* freed hugepage */
-+#define	MF_HUGETLB_IN_USED			1	/* in-use hugepage */
-+#define	MF_NOT_HUGETLB				2	/* not a hugepage */
-+
- /*
-  * Called from hugetlb code with hugetlb_lock held.
-- *
-- * Return values:
-- *   0             - free hugepage
-- *   1             - in-use hugepage
-- *   2             - not a hugepage
-- *   -EBUSY        - the hugepage is busy (try to retry)
-- *   -EHWPOISON    - the hugepage is already hwpoisoned
-  */
- int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 				 bool *migratable_cleared)
- {
- 	struct page *page = pfn_to_page(pfn);
- 	struct folio *folio = page_folio(page);
--	int ret = 2;	/* fallback to normal page handling */
-+	int ret = MF_NOT_HUGETLB;
- 	bool count_increased = false;
-+	int rc;
- 
- 	if (!folio_test_hugetlb(folio))
- 		goto out;
- 
- 	if (flags & MF_COUNT_INCREASED) {
--		ret = 1;
-+		ret = MF_HUGETLB_IN_USED;
- 		count_increased = true;
- 	} else if (folio_test_hugetlb_freed(folio)) {
--		ret = 0;
-+		ret = MF_HUGETLB_FREED;
- 	} else if (folio_test_hugetlb_migratable(folio)) {
- 		ret = folio_try_get(folio);
- 		if (ret)
-@@ -1991,8 +1993,9 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 			goto out;
- 	}
- 
--	if (folio_set_hugetlb_hwpoison(folio, page)) {
--		ret = -EHWPOISON;
-+	rc = hugetlb_update_hwpoison(folio, page);
-+	if (rc >= MF_HUGETLB_ALREADY_POISONED) {
-+		ret = rc;
- 		goto out;
- 	}
- 
-@@ -2029,22 +2032,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 	*hugetlb = 1;
- retry:
- 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
--	if (res == 2) { /* fallback to normal page handling */
-+	switch (res) {
-+	case MF_NOT_HUGETLB:	/* fallback to normal page handling */
- 		*hugetlb = 0;
+-	if (!pfn || pfn != poisoned_pfn)
++	mask = ~((1UL << (shift - PAGE_SHIFT)) - 1);
++	if (!pfn || ((pfn & mask) != (poisoned_pfn & mask)))
  		return 0;
--	} else if (res == -EHWPOISON) {
-+	case MF_HUGETLB_ALREADY_POISONED:
-+	case MF_HUGETLB_ACC_EXISTING_POISON:
- 		if (flags & MF_ACTION_REQUIRED) {
- 			folio = page_folio(p);
- 			res = kill_accessing_process(current, folio_pfn(folio), flags);
- 		}
--		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-+		if (res == MF_HUGETLB_ALREADY_POISONED)
-+			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-+		else
-+			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
- 		return res;
--	} else if (res == -EBUSY) {
-+	case -EBUSY:
- 		if (!(flags & MF_NO_RETRY)) {
- 			flags |= MF_NO_RETRY;
- 			goto retry;
- 		}
- 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-+	default:
-+		break;
- 	}
  
- 	folio = page_folio(p);
+-	set_to_kill(tk, addr, shift);
++	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
++	set_to_kill(tk, hwpoison_vaddr, shift);
+ 	return 1;
+ }
+ 
+@@ -2038,10 +2042,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 		return 0;
+ 	case MF_HUGETLB_ALREADY_POISONED:
+ 	case MF_HUGETLB_ACC_EXISTING_POISON:
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
++		if (flags & MF_ACTION_REQUIRED)
++			res = kill_accessing_process(current, pfn, flags);
+ 		if (res == MF_HUGETLB_ALREADY_POISONED)
+ 			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		else
 -- 
 2.43.5
 
