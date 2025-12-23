@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25AECDA57E
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:24:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8246ACDA5A2
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 258EA301C42D
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:24:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14C28303D6B2
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E815434B183;
-	Tue, 23 Dec 2025 19:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2FC34B190;
+	Tue, 23 Dec 2025 19:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cvmWGUzL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n6SuuJAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91041346765;
-	Tue, 23 Dec 2025 19:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639AD34AB00;
+	Tue, 23 Dec 2025 19:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766517848; cv=none; b=a5Dxgd/NnuvyT9gY4Fik6gtRBFBIaBvS8FHLkXkz2J0LYl5/sA0gefYC91TxH3AWQ72FPMcmpxU4QwZtQofbNxpqPlzWSnFHWnm2iNCud+IwgP17B6cqHLXOO7qEevteUe9bI+HZ2CWqKujqiNLMJf3lx6AGaBqF32S6NMAt+vs=
+	t=1766517854; cv=none; b=elSbI+z9VU6JEJTUxEZ6CDdffpuCDss0XduuwoBYkdpZuuD8kKUEQ8cnPlMwLPKFP0KVZpJD1CSiir2KzcpWLskwYthexi084UVbgssX9MogSS9l0lp0JcHMGzxTukj+sJPlVCUa5XfmDGVzK2PktvOMp0jCW4iKoxKUnK0fOjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766517848; c=relaxed/simple;
-	bh=j0c7mZJ31QumxubvjL4OaiTQ7Kmx8ivUqfddAkj5v/M=;
-	h=Date:To:From:Subject:Message-Id; b=lCJcRKPiXhyTycNimeg0fbTUQiqiFrvxHM40pc6HIjF/TlrGdW4a2Egmk2vSLpoEjFCaxAYiW+ABBIfsqs0mXnNJ0tbVp2hTObRLwFIF1wfUp2t+6ix6+9JCwX7Y/xiOzZftwvqbY4bmdLGj8xMJHWfYzgQdX61YVO7ZQgM6QgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cvmWGUzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071CAC116B1;
-	Tue, 23 Dec 2025 19:24:07 +0000 (UTC)
+	s=arc-20240116; t=1766517854; c=relaxed/simple;
+	bh=jYQX8Ewqzf61bUusqX4Uv6gE0amhnE6sXK+SqVg5VUc=;
+	h=Date:To:From:Subject:Message-Id; b=UBht7o9Mm65BnOPtcSGsRalAggWuei3ThIWvOUy9yBcZK5bM3iIyaOUEbI5vY/SGaoESjP4c7UbY6Ni7mlGqTB4ww/aKYAOueNQ7dCtrowbEmFdp2vG5L3bmfXNBWXFJVqaRsT71jJhdnytBzB0Ji9ZclOSbJOFsBUwXY8KnNR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n6SuuJAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB6AC113D0;
+	Tue, 23 Dec 2025 19:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766517847;
-	bh=j0c7mZJ31QumxubvjL4OaiTQ7Kmx8ivUqfddAkj5v/M=;
+	s=korg; t=1766517853;
+	bh=jYQX8Ewqzf61bUusqX4Uv6gE0amhnE6sXK+SqVg5VUc=;
 	h=Date:To:From:Subject:From;
-	b=cvmWGUzLUhzdVe+m3mWBWEpurFhBJBnPFA3Yoce/w8JDKQwvvpOwTGQva6AGU20Ax
-	 4icvozITlthzfX5shGojO6tjCH33M0VIYKuXcROs8Bcp29iAOT85Bd3Te/Y3FdsyZP
-	 Sz013edZK0T4XoQGneYFm4GgyRc0g8maPvFqJJaI=
-Date: Tue, 23 Dec 2025 11:24:06 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,richard.weiyang@gmail.com,mhartmay@linux.ibm.com,hannes@cmpxchg.org,agordeev@linux.ibm.com,akpm@linux-foundation.org
+	b=n6SuuJAjJ55RwpHuL/R7Mdowkiu9YLSweM5rnsXX/LgA4/8Y9fKARHOseOAWjgxQg
+	 hywZCZ4f9PVk3qlQC3/5l7nG/YWSaRuSc10lFYHCcHKBPSH1K5iGJFYnTutyiHtQ6S
+	 Y1NVbMaLtW+ZpDnnNlicqJFNPey2qSL2dMe1SDO0=
+Date: Tue, 23 Dec 2025 11:24:13 -0800
+To: mm-commits@vger.kernel.org,zohar@linux.ibm.com,stable@vger.kernel.org,roberto.sassu@huawei.com,graf@amazon.com,chenste@linux.microsoft.com,bhe@redhat.com,piliu@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch removed from -mm tree
-Message-Id: <20251223192407.071CAC116B1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kernel-kexec-change-the-prototype-of-kimage_map_segment.patch removed from -mm tree
+Message-Id: <20251223192413.CAB6AC113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,202 +48,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/page_alloc: change all pageblocks migrate type on coalescing
+     Subject: kernel/kexec: change the prototype of kimage_map_segment()
 has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch
+     kernel-kexec-change-the-prototype-of-kimage_map_segment.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: mm/page_alloc: change all pageblocks migrate type on coalescing
-Date: Fri, 12 Dec 2025 16:14:57 +0100
+From: Pingfan Liu <piliu@redhat.com>
+Subject: kernel/kexec: change the prototype of kimage_map_segment()
+Date: Tue, 16 Dec 2025 09:48:51 +0800
 
-When a page is freed it coalesces with a buddy into a higher order page
-while possible.  When the buddy page migrate type differs, it is expected
-to be updated to match the one of the page being freed.
+The kexec segment index will be required to extract the corresponding
+information for that segment in kimage_map_segment().  Additionally,
+kexec_segment already holds the kexec relocation destination address and
+size.  Therefore, the prototype of kimage_map_segment() can be changed.
 
-However, only the first pageblock of the buddy page is updated, while the
-rest of the pageblocks are left unchanged.
-
-That causes warnings in later expand() and other code paths (like below),
-since an inconsistency between migration type of the list containing the
-page and the page-owned pageblocks migration types is introduced.
-
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
-
-Link: https://lkml.kernel.org/r/20251215081002.3353900A9c-agordeev@linux.ibm.com
-Link: https://lkml.kernel.org/r/20251212151457.3898073Add-agordeev@linux.ibm.com
-Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20251216014852.8737-1-piliu@redhat.com
+Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_alloc.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ include/linux/kexec.h              |    4 ++--
+ kernel/kexec_core.c                |    9 ++++++---
+ security/integrity/ima/ima_kexec.c |    4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/mm/page_alloc.c~mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing
-+++ a/mm/page_alloc.c
-@@ -914,6 +914,17 @@ buddy_merge_likely(unsigned long pfn, un
- 			NULL) != NULL;
+--- a/include/linux/kexec.h~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/include/linux/kexec.h
+@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
+ #define kexec_dprintk(fmt, arg...) \
+         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+ 
+-extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
++extern void *kimage_map_segment(struct kimage *image, int idx);
+ extern void kimage_unmap_segment(void *buffer);
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
+@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct
+ static inline void crash_kexec(struct pt_regs *regs) { }
+ static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+ static inline int kexec_crash_loaded(void) { return 0; }
+-static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
++static inline void *kimage_map_segment(struct kimage *image, int idx)
+ { return NULL; }
+ static inline void kimage_unmap_segment(void *buffer) { }
+ #define kexec_in_progress false
+--- a/kernel/kexec_core.c~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/kernel/kexec_core.c
+@@ -953,17 +953,20 @@ int kimage_load_segment(struct kimage *i
+ 	return result;
  }
  
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
-+{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
-+
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
-+	}
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1000,7 +1011,7 @@ static inline void __free_one_page(struc
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
- 		combined_pfn = buddy_pfn & pfn;
-@@ -2147,17 +2158,6 @@ bool pageblock_unisolate_and_move_free_p
- 
- #endif /* CONFIG_MEMORY_ISOLATION */
- 
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- static inline bool boost_watermark(struct zone *zone)
+-void *kimage_map_segment(struct kimage *image,
+-			 unsigned long addr, unsigned long size)
++void *kimage_map_segment(struct kimage *image, int idx)
  {
- 	unsigned long max_boost;
++	unsigned long addr, size, eaddr;
+ 	unsigned long src_page_addr, dest_page_addr = 0;
+-	unsigned long eaddr = addr + size;
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	addr = image->segment[idx].mem;
++	size = image->segment[idx].memsz;
++	eaddr = addr + size;
++
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+--- a/security/integrity/ima/ima_kexec.c~kernel-kexec-change-the-prototype-of-kimage_map_segment
++++ a/security/integrity/ima/ima_kexec.c
+@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *
+ 	if (!image->ima_buffer_addr)
+ 		return;
+ 
+-	ima_kexec_buffer = kimage_map_segment(image,
+-					      image->ima_buffer_addr,
+-					      image->ima_buffer_size);
++	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
+ 	if (!ima_kexec_buffer) {
+ 		pr_err("Could not map measurements buffer.\n");
+ 		return;
 _
 
-Patches currently in -mm which might be from agordeev@linux.ibm.com are
+Patches currently in -mm which might be from piliu@redhat.com are
 
-powerpc-64s-do-not-re-activate-batched-tlb-flush.patch
 
 
