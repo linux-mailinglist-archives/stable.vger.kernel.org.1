@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E57CDA5C0
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CCCCDA5C9
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 20:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCAF230ACA66
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:24:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55AD730336B6
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 19:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF81134AB1C;
-	Tue, 23 Dec 2025 19:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A981F34B1B2;
+	Tue, 23 Dec 2025 19:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CLt+k5qJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PHiXvE1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB448279DCC;
-	Tue, 23 Dec 2025 19:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E6C34B404;
+	Tue, 23 Dec 2025 19:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766517863; cv=none; b=hUCMim8MgDwEUlvpFzkS/u3fTWwX+yLfzNHcUfGX2jxwViEahiuQK2uLnjX2iChOcymk7VDFXp1j0s+U8CCOArnSyslBqccepPkvJhWUq74z7x8mujWpCYox1ijgOc8lTO+MKgUXWz0AWMJOqHvDdmQgQj0AFWt7xzgclqMFFoE=
+	t=1766517871; cv=none; b=J1Bmtya32ark2uLrXnKF3eGqwCE/OiPqv5gCKI49bJ4acz58sn6Jdrtfu714Y7HZf4dD3QtZL5xXnwsVAPeMiKoycrb5PL+vz6Gn5EW5Sx7ejcR3fWTE2wu4r3fPvilZJ22X0BFE7ou97Qf0EtP62NKfS9ox7zRKjFCUbbGdst8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766517863; c=relaxed/simple;
-	bh=dzJhG2dYwTx1crbhFCeE3gsWOQ3pqzg6kKWs1xvm2wE=;
-	h=Date:To:From:Subject:Message-Id; b=qE093PQwhOs0U+ZiJLz911Oij+Td7zKMoPnDsNPkBkun6Sz5bSkB/8NPdSG/cHSrhk1RIRJAsxvyVBRzTeNbBhXdQR5DixO1Emjo+DDOcGFGYJ0G1ztSmdWETpcQVXNpDB9ivJm34iCACJGSAiSBTRFaexUY2+0JH3OTOQXuMPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CLt+k5qJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FDEC116D0;
-	Tue, 23 Dec 2025 19:24:23 +0000 (UTC)
+	s=arc-20240116; t=1766517871; c=relaxed/simple;
+	bh=kBnYi6edvkpqki1EwKhFzz2Ql7S9JOJI2u3U0xzI3nY=;
+	h=Date:To:From:Subject:Message-Id; b=EFIF1MYl9wj7vJCxlFy+v/F5slbKS4PsjrusR96fg2RdCN46xYDkXSzwVsfP24l6UEfPaIw+bT3Krv50d9vRb9OstpPPNUxpeZsN2dDRxodGjHGXm+vTDc242UW+FBxyOj/OzB+W70r1Y2qASWaSVhIZcqOwrUftvl8gcz8c7z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PHiXvE1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816D8C113D0;
+	Tue, 23 Dec 2025 19:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766517863;
-	bh=dzJhG2dYwTx1crbhFCeE3gsWOQ3pqzg6kKWs1xvm2wE=;
+	s=korg; t=1766517870;
+	bh=kBnYi6edvkpqki1EwKhFzz2Ql7S9JOJI2u3U0xzI3nY=;
 	h=Date:To:From:Subject:From;
-	b=CLt+k5qJHzLBBG4XO7xDJ0py3fwMBPW6mebmiR3vGkWsA9ADcccEfHUncnsbqU823
-	 Bpveq42ulMRXlhBuJoQD5D+gAMaUMRN62uv6COZ53GPSJ1MhRo/pabD981117nheAt
-	 rbTxKehRDg72Sxn63KBB2fyMpqJ4GON7+5rGTAoo=
-Date: Tue, 23 Dec 2025 11:24:22 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shivankg@amd.com,ryncsn@gmail.com,rppt@kernel.org,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,david@kernel.org,baolin.wang@linux.alibaba.com,bijan311@gmail.com,akpm@linux-foundation.org
+	b=PHiXvE1qfWscIVpKxKxkAQnhSg1zkrGs+blgchofLDCSZcFaNHENCZG1VE8uEfOrJ
+	 nHExi11gpbjfSYXOJVf2KYkkdw3VPu9ZjAX/TQ4kc0uWxIpjav/1AQCyVqgM7RM8sZ
+	 xkIDJNnHbWxteeRGRsObFtNOexxqJkIhgbYx4iE0=
+Date: Tue, 23 Dec 2025 11:24:29 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,elver@google.com,andreyknvl@gmail.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-consider-non-anon-swap-cache-folios-in-folio_expected_ref_count.patch removed from -mm tree
-Message-Id: <20251223192423.47FDEC116D0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch removed from -mm tree
+Message-Id: <20251223192430.816D8C113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,128 +48,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: consider non-anon swap cache folios in folio_expected_ref_count()
+     Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
 has been removed from the -mm tree.  Its filename was
-     mm-consider-non-anon-swap-cache-folios-in-folio_expected_ref_count.patch
+     mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Bijan Tabatabai <bijan311@gmail.com>
-Subject: mm: consider non-anon swap cache folios in folio_expected_ref_count()
-Date: Tue, 16 Dec 2025 14:07:27 -0600
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Subject: mm/page_owner: fix memory leak in page_owner_stack_fops->release()
+Date: Fri, 19 Dec 2025 07:42:32 +0000
 
-Currently, folio_expected_ref_count() only adds references for the swap
-cache if the folio is anonymous.  However, according to the comment above
-the definition of PG_swapcache in enum pageflags, shmem folios can also
-have PG_swapcache set.  This patch makes sure references for the swap
-cache are added if folio_test_swapcache(folio) is true.
+The page_owner_stack_fops->open() callback invokes seq_open_private(),
+therefore its corresponding ->release() callback must call
+seq_release_private().  Otherwise it will cause a memory leak of struct
+stack_print_ctx.
 
-This issue was found when trying to hot-unplug memory in a QEMU/KVM
-virtual machine.  When initiating hot-unplug when most of the guest memory
-is allocated, hot-unplug hangs partway through removal due to migration
-failures.  The following message would be printed several times, and would
-be printed again about every five seconds:
-
-[   49.641309] migrating pfn b12f25 failed ret:7
-[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
-[   49.641311] aops:swap_aops
-[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
-[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
-[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
-[   49.641315] page dumped because: migration failure
-
-When debugging this, I found that these migration failures were due to
-__migrate_folio() returning -EAGAIN for a small set of folios because the
-expected reference count it calculates via folio_expected_ref_count() is
-one less than the actual reference count of the folios.  Furthermore, all
-of the affected folios were not anonymous, but had the PG_swapcache flag
-set, inspiring this patch.  After applying this patch, the memory
-hot-unplug behaves as expected.
-
-I tested this on a machine running Ubuntu 24.04 with kernel version
-6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
-and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
-mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
-and 48GB of memory.  The libvirt XML definition for the VM can be found at
-[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
-kernel so the hot-pluggable memory is automatically onlined.
-
-Below are the steps to reproduce this behavior:
-
-1) Define and start and virtual machine
-  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
-  host$ virsh -c qemu:///system start test_vm
-
-2) Setup swap in the guest
-  guest$ sudo fallocate -l 32G /swapfile
-  guest$ sudo chmod 0600 /swapfile
-  guest$ sudo mkswap /swapfile
-  guest$ sudo swapon /swapfile
-
-3) Use alloc_data [2] to allocate most of the remaining guest memory
-  guest$ ./alloc_data 45
-
-4) In a separate guest terminal, monitor the amount of used memory
-  guest$ watch -n1 free -h
-
-5) When alloc_data has finished allocating, initiate the memory
-hot-unplug using the provided xml file [3]
-  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
-
-After initiating the memory hot-unplug, you should see the amount of
-available memory in the guest decrease, and the amount of used swap data
-increase.  If everything works as expected, when all of the memory is
-unplugged, there should be around 8.5-9GB of data in swap.  If the
-unplugging is unsuccessful, the amount of used swap data will settle below
-that.  If that happens, you should be able to see log messages in dmesg
-similar to the one posted above.
-
-Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
-Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>
+Link: https://lkml.kernel.org/r/20251219074232.136482-1-ranxiaokai627@163.com
+Fixes: 765973a09803 ("mm,page_owner: display all stacks and their count")
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Marco Elver <elver@google.com>
 Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mm.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/page_owner.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/mm.h~mm-consider-non-anon-swap-cache-folios-in-folio_expected_ref_count
-+++ a/include/linux/mm.h
-@@ -2459,10 +2459,10 @@ static inline int folio_expected_ref_cou
- 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+--- a/mm/page_owner.c~mm-page_owner-fix-memory-leak-in-page_owner_stack_fops-release
++++ a/mm/page_owner.c
+@@ -952,7 +952,7 @@ static const struct file_operations page
+ 	.open		= page_owner_stack_open,
+ 	.read		= seq_read,
+ 	.llseek		= seq_lseek,
+-	.release	= seq_release,
++	.release	= seq_release_private,
+ };
  
--	if (folio_test_anon(folio)) {
--		/* One reference per page from the swapcache. */
--		ref_count += folio_test_swapcache(folio) << order;
--	} else {
-+	/* One reference per page from the swapcache. */
-+	ref_count += folio_test_swapcache(folio) << order;
-+
-+	if (!folio_test_anon(folio)) {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+ static int page_owner_threshold_get(void *data, u64 *val)
 _
 
-Patches currently in -mm which might be from bijan311@gmail.com are
+Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
 
 
 
