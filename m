@@ -1,146 +1,100 @@
-Return-Path: <stable+bounces-203254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916A7CD7D85
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 03:16:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30CCCD7DA1
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 03:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F34D3018D5C
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:16:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99156300D31A
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862B0214228;
-	Tue, 23 Dec 2025 02:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580A221CC4F;
+	Tue, 23 Dec 2025 02:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XjN9m1Ac"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TAMZmxAY"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633527456
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 02:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386EC1E5B68
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 02:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766456160; cv=none; b=AG86hR+ACTyYuAhEoZqL9Wv6ytH28bjWQfYpVCcVd8An0roJ6rmlAzJ0T7x+TuyHS/x01X9CC/xj5GGO7yVF3A8vH06Nkl79kyRJwCITM2k/5xzfx2U29GyuJBQRWtUNVEJzX8UykKG0pa5oE/usmjLaHsmYIYxYJzbkNLKXpuQ=
+	t=1766456362; cv=none; b=DZGR7s4/bRBHeYf/jtzteGBhOXnCVBym/+35La32vMnGoKUn4L4joalvSZJkMCXLZ7VwvQGCc91ZUF19JJW83EK2UlI28WlKtIMNq9CvvEakgGD7Ju3+7ZHVmzG0Lc3XcNd7OAbDoZmOerlOb4ICBro7DJQYq7XlG/+RC4SN8e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766456160; c=relaxed/simple;
-	bh=lkj+ngCulR1DGsrEFD6J+Al56ZX8zxycT4OcncRsl58=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FjFvKZkRKzz98aiSkYqIIHayygc9PIWUFUHNWqRRViJ3KllaRsO2HNakyMZZD6l39GD/S+yuQ1B/FsbwZkXea7H9WS1NOdQsvXjUoLa4f/pp3DBqhL9lDwBnjmkSSdKSxCYPQUMnKlFYzF7zqd65Mmk0WbWENL8L6FISX5t3Frk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XjN9m1Ac; arc=none smtp.client-ip=91.218.175.188
+	s=arc-20240116; t=1766456362; c=relaxed/simple;
+	bh=My1A8eZdeudIyv7qw13CGUN2vtMhj7s1ZhtlELvi1gY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jPz5SlHPz6tBGu7c4lkgutNxYY9vw7nZOrZ8q119Hn61rW+oTTkdzrdQ/oiByGfGGo+AGbGX2Ob4TgA+KywK/AH9yKw+JysnjVRVvFuHhciABtVS1WK+TfopAhHXHBs7K0VARsFJO3Ki7FfY9dpH1k2SziH7sjzODt0uGlUwusg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TAMZmxAY; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <73000e7f-14a7-40be-a137-060e5c2c49dc@linux.dev>
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766456146;
+	t=1766456358;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9JYLQphHkHhc+TsJBvOUTEPuArWJ7oSHXKFUYWfY75I=;
-	b=XjN9m1Acw1vW2E+BxTN/Hk7tqQHJwFAmtBdMDXenlPrmk6ZiRB3pbdBEs4+Blc3JfsO2/P
-	pPptdT0ol+DBAkOzZusVXhrCEHRuw41fYxIP7WLttWzUnXLAiWIc/87aS5n+N8u/J8jgLW
-	9tloDKuQG33yQNNkN1tvmuXjT4/uXxM=
-Date: Tue, 23 Dec 2025 10:15:33 +0800
+	bh=My1A8eZdeudIyv7qw13CGUN2vtMhj7s1ZhtlELvi1gY=;
+	b=TAMZmxAY9FwhbLj22oNpHKavUx5cuXi/9rmxV+iGNyZcpNmKZUPY2g/wmOWI70r8S60mLX
+	H+xD0Y1uSxo1V5rtcAcNxzdNzC1FJK8z17oLiH7oDM3I+0JilkPW6nNS49bIsLS4FsTQf0
+	MECwSzHxgMx5xtdwf9wZrZpo/oWttg0=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/2] block/blk-mq: fix RT kernel regression with
- queue_lock in hot path
-To: "Ionut Nechita (WindRiver)" <djiony2011@gmail.com>
-Cc: axboe@kernel.dk, gregkh@linuxfoundation.org, ionut.nechita@windriver.com,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- sashal@kernel.org, stable@vger.kernel.org, ming.lei@redhat.com
-References: <20251222201541.11961-1-ionut.nechita@windriver.com>
- <20251222201541.11961-2-ionut.nechita@windriver.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when
+ called from interrupt context
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251222201541.11961-2-ionut.nechita@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20251222201541.11961-3-ionut.nechita@windriver.com>
+Date: Tue, 23 Dec 2025 10:18:39 +0800
+Cc: ming.lei@redhat.com,
+ axboe@kernel.dk,
+ gregkh@linuxfoundation.org,
+ ionut.nechita@windriver.com,
+ linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ sashal@kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4006496F-8A9D-492E-8264-6B1FE7910C20@linux.dev>
+References: <20251222201541.11961-1-ionut.nechita@windriver.com>
+ <20251222201541.11961-3-ionut.nechita@windriver.com>
+To: "Ionut Nechita (WindRiver)" <djiony2011@gmail.com>
 X-Migadu-Flow: FLOW_OUT
 
 
 
-On 2025/12/23 04:15, Ionut Nechita (WindRiver) wrote:
+> On Dec 23, 2025, at 04:15, Ionut Nechita (WindRiver) =
+<djiony2011@gmail.com> wrote:
+>=20
 > From: Ionut Nechita <ionut.nechita@windriver.com>
->
-> Commit 679b1874eba7 ("block: fix ordering between checking
-> QUEUE_FLAG_QUIESCED request adding") introduced queue_lock acquisition
-> in blk_mq_run_hw_queue() to synchronize QUEUE_FLAG_QUIESCED checks.
->
-> On RT kernels (CONFIG_PREEMPT_RT), regular spinlocks are converted to
-> rt_mutex (sleeping locks). When multiple MSI-X IRQ threads process I/O
-> completions concurrently, they contend on queue_lock in the hot path,
-> causing all IRQ threads to enter D (uninterruptible sleep) state. This
-> serializes interrupt processing completely.
->
-> Test case (MegaRAID 12GSAS with 8 MSI-X vectors on RT kernel):
-> - Good (v6.6.52-rt):  640 MB/s sequential read
-> - Bad  (v6.6.64-rt):  153 MB/s sequential read (-76% regression)
-> - 6-8 out of 8 MSI-X IRQ threads stuck in D-state waiting on queue_lock
->
-> The original commit message mentioned memory barriers as an alternative
-> approach. Use full memory barriers (smp_mb) instead of queue_lock to
-> provide the same ordering guarantees without sleeping in RT kernel.
->
-> Memory barriers ensure proper synchronization:
-> - CPU0 either sees QUEUE_FLAG_QUIESCED cleared, OR
-> - CPU1 sees dispatch list/sw queue bitmap updates
->
-> This maintains correctness while avoiding lock contention that causes
-> RT kernel IRQ threads to sleep in the I/O completion path.
->
-> Fixes: 679b1874eba7 ("block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
-> ---
->   block/blk-mq.c | 19 ++++++++-----------
->   1 file changed, 8 insertions(+), 11 deletions(-)
->
-> diff --git a/block/blk-mq.c b/block/blk-mq.c
-> index 5da948b07058..5fb8da4958d0 100644
-> --- a/block/blk-mq.c
-> +++ b/block/blk-mq.c
-> @@ -2292,22 +2292,19 @@ void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
->   
->   	might_sleep_if(!async && hctx->flags & BLK_MQ_F_BLOCKING);
->   
-> +	/*
-> +	 * First lockless check to avoid unnecessary overhead.
-> +	 * Memory barrier below synchronizes with blk_mq_unquiesce_queue().
-> +	 */
->   	need_run = blk_mq_hw_queue_need_run(hctx);
->   	if (!need_run) {
-> -		unsigned long flags;
-> -
-> -		/*
-> -		 * Synchronize with blk_mq_unquiesce_queue(), because we check
-> -		 * if hw queue is quiesced locklessly above, we need the use
-> -		 * ->queue_lock to make sure we see the up-to-date status to
-> -		 * not miss rerunning the hw queue.
-> -		 */
-> -		spin_lock_irqsave(&hctx->queue->queue_lock, flags);
-> +		/* Synchronize with blk_mq_unquiesce_queue() */
+>=20
+> Fix warning "WARN_ON_ONCE(!async && in_interrupt())" that occurs =
+during
+> SCSI device scanning when blk_freeze_queue_start() calls =
+blk_mq_run_hw_queues()
+> synchronously from interrupt context.
+>=20
+> The issue happens during device removal/scanning when:
+> 1. blk_mq_destroy_queue() -> blk_queue_start_drain()
+> 2. blk_freeze_queue_start() calls blk_mq_run_hw_queues(q, false)
+> 3. This triggers the warning in blk_mq_run_hw_queue() when in =
+interrupt context
+>=20
+> Change the synchronous call to asynchronous to avoid running in =
+interrupt context.
+>=20
+> Fixes: Warning in blk_mq_run_hw_queue+0x1fa/0x260
 
-Memory barriers must be used in pairs. So how to synchronize?
-
-> +		smp_mb();
->   		need_run = blk_mq_hw_queue_need_run(hctx);
-> -		spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
-> -
->   		if (!need_run)
->   			return;
-> +		/* Ensure dispatch list/sw queue updates visible before execution */
-> +		smp_mb();
-
-Why we need another barrier? What order does this barrier guarantee?
+You've added a wrong format of Fixes tag.
 
 Thanks.
->   	}
->   
->   	if (async || !cpumask_test_cpu(raw_smp_processor_id(), hctx->cpumask)) {
 
+> Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
 
