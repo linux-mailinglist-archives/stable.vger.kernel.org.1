@@ -1,122 +1,123 @@
-Return-Path: <stable+bounces-203269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51759CD8405
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 07:30:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCACCD8423
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 07:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 527983016EFC
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 06:30:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DBF630173B8
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 06:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B982C11C4;
-	Tue, 23 Dec 2025 06:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A172FFDCB;
+	Tue, 23 Dec 2025 06:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="NsQLe06q"
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="lA39fu/B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099FC1A275
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 06:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714882C11C4;
+	Tue, 23 Dec 2025 06:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766471429; cv=none; b=GXx0oFma5/vkHHhxr9ACKVUUTY1EeyC3t2aKdXy/e3TIwAafcxLQ/q4FSuHhzWHrLyC4fSvfQTnB5+Knt58AY1xbLb3XNUWfk25jaFME3C0lo8RgZ3XktQkj7HdMw3JeZc1IzyKMlHjMmzX/w93qdr1uosopty5lVn9MY+V5i2c=
+	t=1766471520; cv=none; b=mmKgB1lPDuU6BgdFRVEdouVgpPxVpSpNqmi+aLGZc41HmCl4UFoGNuDUBZEttOVIG4/6ypO4YA3XfEXW5mZWdf8jPcUSE4OkQUzcPdx26nWFXNI9o8WzJsy9maHdHCYKgklHYgFQx88oh8skz2/lhhCL/gr3dIKtr08WhtruRLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766471429; c=relaxed/simple;
-	bh=UOwytaD1y1ivrxR36EtXG7k6vUSMWBbdELoZYS/80io=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pdHu7qpPQvcOUcp/qrAQW5CL0cfXbCLuJQ77PHdtaUsp3bJUKiHDXhnzoq9duysBtE9U24SfsHLWJ11FLE1yoL7jhNswB4VovmjyM81i2REGtE+cqI/vdzGkdC8E9k/Ltuzmtj58u17OIFDNOUGiQOywWH7eS3i2GeCR3enmctQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=NsQLe06q; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0c20ee83dso59136175ad.2
-        for <stable@vger.kernel.org>; Mon, 22 Dec 2025 22:30:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1766471426; x=1767076226; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=txAko9zSpGY/XVp6x32IGp3T6LuAmbYnWNpv6bzw+e0=;
-        b=NsQLe06quPlxn1aj3i75rRZHkx2ViwWIeW0sdVpN03nK1qKQz9h89lmExZNqnEae9H
-         uGrc30SOhPThzEhMdG6GuOY189xRy+K4Va1K8HRTfe7JXPzGuZxYsx8D6S6ZC9wzEMzK
-         oG/HN2iEFjKu+/GmMS0V+e2g+vpzIBoUEz+H0cDzakdh4wWAiEjrrbNNop3DoRbn3qux
-         WrBvswHWG+lQVkDZphdqfd3AktBMuwRi3vJdje6Zv9Y+nP8Pt9wdvRjdqYt05m6Y+cHl
-         T56Y1QN5KO2ZPkhxQXo+I0/XTSg6cEiZKf7lEfDiMBuOKc1BI4z38qgVvrfOpGTUt8dc
-         lBXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766471426; x=1767076226;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=txAko9zSpGY/XVp6x32IGp3T6LuAmbYnWNpv6bzw+e0=;
-        b=QPSmk1Hq1TWLFrS7EgaA7u0+CWpnUFYkvTo4dTQ29Ak7Muz4q/QqcdaC8zp6mxzwjN
-         7AXiOz23ic5WL3ub4aWw6ZnaZyk/vnbpudxbADVnOkZ0irkUrE5PQFYhU4K21oxSdz1b
-         W+gifnXgubnvYMzXHataHtGMFmVLCMfnWhA9/ObB1dayaVl8FeMSdmg+rzGk1LtobE3G
-         Spv7BjjMP10NhKMIo7M47WnwXoj17sh+xF+NJP9idcM+Ae3gZyXsiDfeL7Jgh+WD8YJR
-         VTka3Is89lVhqyUS+im156pxfwHRVWqeptAvGRmKcDDLdpBv8gwfeUXHIWZVklWkFBfd
-         Pw9w==
-X-Forwarded-Encrypted: i=1; AJvYcCW2wrHbRw4o6Ox3RIYmhZMAZ8Pvv8AjUOLkaHX6jrx7LjgfjaIbUTYUdUS7bXq3g1t6K9FJcGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/7yx+dPw06kIpD5nG/rbt3iIGXV6Nbe9tCT1oE4FUgtm5+hYB
-	QP+6GNKcvq0IvugNp/+nhtcbfesYozFdeevO/C/zA6M31JvMxANkBpbdoNxTTk5hDUM=
-X-Gm-Gg: AY/fxX5ohjmuVnGkoZ6oK8/CheDLs8sn3SSf6jZzhNO1PmoL68MpAd4wcEDig+Lkp+A
-	DNSbPn/zbVap8aDJ+qe7Itr1F+cewQSWCJXXZYntnEuqm27b7sd1l5wih/4h5kUDGU975N2Zg8R
-	EKawUxsFJrGLzDcCBMo3mxPVyi61uvHAXaHt7g5cG6GGSXkD1ERhLbplgdeStRn/lV9OP7XTH4I
-	BLhOBY3wdWdM5XJHqGWVbtCNn/Cb5w/AQ9ePzg0/OYoP4JPXRdUjbXeSA7mbf0Z8Wp2whEKfKDA
-	TOs2Hb9LANJ1SnCDn0bHP4UCVgIL/q/fg47KHgkha0X+3Ptdkm3o9vaWMIfTZhasOPbcqc3EzNB
-	W4dud+iVToyW+d0duut5c8ZCsWln71HxYEJc+mBknLZBJhfTWs5dGA1GyxaMBI1oh9B5b88Md/j
-	rGQE6HAjuKJDHu9sKj3yMOGRUv
-X-Google-Smtp-Source: AGHT+IGgb03I6lSiPUZBtWVnd1QchQMvNYrRHjdG4XZUhFVdzG/yKL5vDYSme6j4qe45ab0hfvjdeQ==
-X-Received: by 2002:a17:903:2a8e:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-2a2f2426c79mr137786605ad.14.1766471426463;
-        Mon, 22 Dec 2025 22:30:26 -0800 (PST)
-Received: from localhost.localdomain ([103.158.43.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a2f3d5d32dsm116266405ad.70.2025.12.22.22.30.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 22:30:26 -0800 (PST)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: jgross@suse.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	sstabellini@kernel.org,
-	oleksandr_tyshchenko@epam.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] xen/scsiback: fix potential memory leak in scsiback_remove()
-Date: Tue, 23 Dec 2025 12:00:11 +0530
-Message-ID: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1766471520; c=relaxed/simple;
+	bh=uIyoHWdWNu6d1ClWbNYZx1UJseEfMekq0zayGia+/zg=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tzQ/xDhIoUx7ZhyVa6PipiK0pD3qeZEnkTOabhNvTdTBdR1jSqFAP+1p1DtBY0SL37sWU8KJVTjYz8t/6n1tv89u2OIWneDt9QIs52fFmUwTEsyTy35ax7Iv2UJEuIAeAXgwxCniTsjsmHWasg80eNQXwcLrdmx95fysVAhGXdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=lA39fu/B; arc=none smtp.client-ip=91.236.205.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+Received: from mail.crpt.ru ([192.168.60.4])
+	by mail.crpt.ru  with ESMTPS id 5BN6V7ol026179-5BN6V7on026179
+	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
+	Tue, 23 Dec 2025 09:31:07 +0300
+Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 23 Dec
+ 2025 09:31:06 +0300
+Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
+ ([192.168.60.4]) with mapi id 15.01.2507.044; Tue, 23 Dec 2025 09:31:06 +0300
+From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
+To: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Samasth Norway Ananda
+	<samasth.norway.ananda@oracle.com>, Zsolt Kajtar <soci@c64.rulez.org>, "Lucas
+ De Marchi" <lucas.demarchi@intel.com>, "Antonino A. Daplas"
+	<adaplas@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH 5.10] fbcon: Add check for return value
+Thread-Topic: [PATCH 5.10] fbcon: Add check for return value
+Thread-Index: AQHcc9W32zQUeRD9Y0S9vQt0S50zYg==
+Date: Tue, 23 Dec 2025 06:31:06 +0000
+Message-ID: <20251223063055.77545-1-a.vatoropin@crpt.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: EX2.crpt.local, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 12/22/2025 10:06:00 PM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhaXEgKRhIHBAYBDRoDAQ0oGwkFGx0GD0YLBwVIWEhaSFlaSFlRWkZZXlBGXlhGXEhQSFhIWEhZWUhYSFhIWEhZX0gJDAkYBAkbKA8FCQEERgsHBUhYSFpdSAkDGAUoBAEGHRBFDgcdBgwJHAEHBkYHGg9IWEhaXEgKRhIHBAYBDRoDAQ0oGwkFGx0GD0YLBwVIWEhbWUgMGgFFDA0eDQQoBAEbHBtGDhoNDQwNGwMcBxhGBxoPSFhIWl5IDxoNDwMAKAQBBh0QDgcdBgwJHAEHBkYHGg9IWEhaX0gEAQYdEEUOCgwNHigeDw0aRgMNGgYNBEYHGg9IWEhaXEgEHQsJG0YMDQUJGgsAASgBBhwNBEYLBwVIWEhaUEgEHgtFGBoHAg0LHCgEAQYdEBwNGxwBBg9GBxoPSFhIW1pIGwkFCRscAEYGBxofCRFGCQYJBgwJKAcaCQsEDUYLBwVIWEhZUEgbBwsBKAteXEYaHQQNEkYHGg9IWEhZUUgcEgEFBQ0aBQkGBigbHRsNRgwNSFg=
+X-FEAS-Client-IP: 192.168.60.4
+X-FE-Policy-ID: 2:4:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:content-type:mime-version;
+ bh=NmXWo8cqnFNX78iJ5OKHOK6zwMhrZ7kh7/MERegNA/g=;
+ b=lA39fu/BqQS/xZVIKnQL+bzgWvxLLD+qKKh8hSbRK62x1rAjm+mP3xZRoEjD3futJ2e2dADCuQKt
+	wlUoYWm1b8opOQ5SiAaPRv57OfJt4wpgCDuaKC5IvFffkb5cDzZS0t8ryXjMvl9YyYx8o7Iiyo2g
+	D9pku7j8FM7HbfLeGAlwzUKJxAgSvgnvqSxLIOWIy1SOdyNEK+/lXJKPK6//xNT7z4tKTwECs7fg
+	V5zRKCs8PP4VCIbvRddkLF+J7uoWeq6Qy2gCat8CnBFRKGTv2DZKC8OLTr5pZiOr2z3pSvduTJGK
+	xyhbLWatUT1YzZ+pMc+nc/VCVXc208yF3/jxQg==
 
-Memory allocated for struct vscsiblk_info in scsiback_probe() is not
-freed in scsiback_remove() leading to potential memory leaks on remove,
-as well as in the scsiback_probe() error paths. Fix that by freeing it
-in scsiback_remove().
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
+If fbcon_open() fails when called from con2fb_acquire_newinfo() then
+info->fbcon_par pointer remains NULL which is later dereferenced.
+
+Add check for return value of the function con2fb_acquire_newinfo() to
+avoid it.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: d1baa4ffa677 ("fbcon: set_con2fb_map fixes")
 Cc: stable@vger.kernel.org
-Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
 ---
-Compile tested only. Issue found using static analysis.
+ drivers/video/fbdev/core/fbcon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- drivers/xen/xen-scsiback.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/xen/xen-scsiback.c b/drivers/xen/xen-scsiback.c
-index 0c51edfd13dc..7d5117e5efe0 100644
---- a/drivers/xen/xen-scsiback.c
-+++ b/drivers/xen/xen-scsiback.c
-@@ -1262,6 +1262,7 @@ static void scsiback_remove(struct xenbus_device *dev)
- 	gnttab_page_cache_shrink(&info->free_pages, 0);
- 
- 	dev_set_drvdata(&dev->dev, NULL);
-+	kfree(info);
- }
- 
- static int scsiback_probe(struct xenbus_device *dev,
--- 
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fb=
+con.c
+index 3dd03e02bf97..d9b2b54f00db 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1057,7 +1057,8 @@ static void fbcon_init(struct vc_data *vc, int init)
+ 		return;
+=20
+ 	if (!info->fbcon_par)
+-		con2fb_acquire_newinfo(vc, info, vc->vc_num, -1);
++		if (con2fb_acquire_newinfo(vc, info, vc->vc_num, -1))
++			return;
+=20
+ 	/* If we are not the first console on this
+ 	   fb, copy the font from that console */
+--=20
 2.43.0
-
 
