@@ -1,174 +1,159 @@
-Return-Path: <stable+bounces-203285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1BACD88F3
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 10:19:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F2FCD8A08
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 10:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE8993002771
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:19:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D1383053B36
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48562F691F;
-	Tue, 23 Dec 2025 09:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEB92DEA78;
+	Tue, 23 Dec 2025 09:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQP5GmPM"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cs3L+Tcn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Q55W66tg";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K3o23JPZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0OWwYcDR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BD52B2D7;
-	Tue, 23 Dec 2025 09:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EE4328B79
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 09:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766481576; cv=none; b=FAvS6ngy8X8KYmKdaMkiogoolNremzUDAOgslWWOLWgwXNEAAGG6XIa71YI0a3pCNFU13f3+gZZJyC07tqRZteU5Yj576r92XGMMQlwi+3GYfSNyDUBTeH/M6SekCTNbkI1nH4Hr12I/DT9ylJMMtIMpn+t2PhoEW2Md6162SQc=
+	t=1766483067; cv=none; b=Cg7spiQLSKsBRWp3odJh9KIzaSzHwY1nxD0GU36l9/r3XzyfpXb5p7M9Ivi9xS/2MKjd5fJyrgxKpSTqnRpY8JtStE2hpqBGDXtdvE152sFyFQk2P6pseBe7e0Ip6EHA97gCV+lQ3dQNmDNjic50LXdRFSo8DaP9JXWGvlZJNTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766481576; c=relaxed/simple;
-	bh=VzvoVI3etT0APm7HG+qTcGwy4MLWTSrogBEsYHCX5F0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hbrINi5dWjAPyiXZLV95N58BVeOTjRxjDeA9omVEN23cJUOM4ndwFEU5i3UYLRMjCah4WhbCaZIV0zZ8A2p1Q5WlG0xu/Y39vCH7mDpAM94MtkfQKz2l2m4XH0pQZPEXfvYCMnQc0nEeNuCmI6da6hfS53413kR5Ftu9WLYvGOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQP5GmPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73865C113D0;
-	Tue, 23 Dec 2025 09:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766481575;
-	bh=VzvoVI3etT0APm7HG+qTcGwy4MLWTSrogBEsYHCX5F0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kQP5GmPMKx5jG6JQJetX6Xrx04/ORX8/j83K+VqC8OmUIIgxS3V2evf+5eEz5vkUM
-	 3WEQIxOqHQK+RbZTfoRoOiMV9TMA+JdN7LUGCHuXCgiWjcN0rT80zP3rI+LV109uzD
-	 JTnLNzGir+zOdbrrK85y4j5I4BQDoEXanUp3rQOY=
-Date: Tue, 23 Dec 2025 10:19:32 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: yangshiguang <yangshiguang1011@163.com>
-Cc: rafael@kernel.org, dakr@kernel.org, peterz@infradead.org,
-	linux-kernel@vger.kernel.org, yangshiguang@xiaomi.com,
+	s=arc-20240116; t=1766483067; c=relaxed/simple;
+	bh=hyqKqLKYrhhRb+iZ7HA2ifsFD63meib3IShgRJi+43w=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PXd1QEJt3tlYamcP6vBXzXmSd2rcNKoYMEg8zFUbEYOAKCFk7A52t7mdlpFTQCwGnWeTI9AZXP1EvSOxe5pgkGyPnKMp/OvIo6lbKyTcycbA/DwRkLNAGbPzpMl1+LHtbWyb0bYlQh0SkO9rR3fQTR7W2yJwxh+uNifnfrY2lNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cs3L+Tcn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Q55W66tg; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K3o23JPZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0OWwYcDR; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2F5BF336A0;
+	Tue, 23 Dec 2025 09:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766483062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MSLJBDAPSfb3msP2C66IWohWd4oOrB6SRphHJh3DKaA=;
+	b=cs3L+TcnMHtpb5Pk6LTvsu5k6LKflCDxwRUJdLAd6DoD1oA9I6eFHQkkKOkktZdsPy/2t3
+	9CgBEUyNuctHgijKUzWe9ZRZmJFh7UoLhgcdG7xw6lygQaE+P9FMwnEp9B/OfndLRH+HEA
+	91E7E9EgdXfT3PB3f/tz+yhbeYCkqRI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766483062;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MSLJBDAPSfb3msP2C66IWohWd4oOrB6SRphHJh3DKaA=;
+	b=Q55W66tgMD5cYBb+ZJkEnQPLRMByyjixlB3jLB8OVP/g5wchHu+3xW1IfjcWvDjvpWuVat
+	MkyEGuioiQb0VsCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=K3o23JPZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0OWwYcDR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766483061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MSLJBDAPSfb3msP2C66IWohWd4oOrB6SRphHJh3DKaA=;
+	b=K3o23JPZjZXF1Ymxn3ZGzVbO6A8Q/N0ehGtYfs450VxKqfyYr8XEVTtI/JwPJYczYi98k+
+	RZWHji5MKhDDnALjtLOQTQWXpnB3j6pQ1FYqgx40e5wTdLMCilulz5R8aMSrJy4NyO14DV
+	OMZ+TlL7U6CQ13efvEJ4JPMH8+5cdWE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766483061;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MSLJBDAPSfb3msP2C66IWohWd4oOrB6SRphHJh3DKaA=;
+	b=0OWwYcDRuM2D0xgiz7vLFRnRCSMKeRWChg9oPBjl3zlM3oFqr2OI1V6g4/X66uBlW3OxBm
+	NC02RM9qBeuy0IAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 943683EA63;
+	Tue, 23 Dec 2025 09:44:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7HEYIXRkSmmFOwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 23 Dec 2025 09:44:20 +0000
+Date: Tue, 23 Dec 2025 10:44:04 +0100
+Message-ID: <87qzslilcr.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	robert.jarzmik@free.fr,
+	broonie@kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: Re: Re: [PATCH] debugfs: Fix NULL pointer dereference at
- debugfs_read_file_str
-Message-ID: <2025122311-earflap-deploy-e32d@gregkh>
-References: <20251222093615.663252-2-yangshiguang1011@163.com>
- <2025122234-crazy-remix-3098@gregkh>
- <17647e4c.d461.19b46144a4e.Coremail.yangshiguang1011@163.com>
- <2025122221-gag-malt-75ba@gregkh>
- <2de8b181.5007.19b48fb047f.Coremail.yangshiguang1011@163.com>
+Subject: Re: [PATCH] ALSA: ac97: fix a double free in snd_ac97_controller_register()
+In-Reply-To: <20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn>
+References: <20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2de8b181.5007.19b48fb047f.Coremail.yangshiguang1011@163.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[free.fr];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[perex.cz,suse.com,free.fr,kernel.org,vger.kernel.org];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,iscas.ac.cn:email,suse.de:dkim,suse.de:mid];
+	URIBL_BLOCKED(0.00)[iscas.ac.cn:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 2F5BF336A0
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
 
-On Tue, Dec 23, 2025 at 10:12:48AM +0800, yangshiguang wrote:
-> At 2025-12-22 22:11:38, "Greg KH" <gregkh@linuxfoundation.org> wrote:
-> >On Mon, Dec 22, 2025 at 08:41:33PM +0800, yangshiguang wrote:
-> >> 
-> >> At 2025-12-22 19:54:22, "Greg KH" <gregkh@linuxfoundation.org> wrote:
-> >> >On Mon, Dec 22, 2025 at 05:36:16PM +0800, yangshiguang1011@163.com wrote:
-> >> >> From: yangshiguang <yangshiguang@xiaomi.com>
-> >> >> 
-> >> >> Check in debugfs_read_file_str() if the string pointer is NULL.
-> >> >> 
-> >> >> When creating a node using debugfs_create_str(), the string parameter
-> >> >> value can be NULL to indicate empty/unused/ignored.
-> >> >
-> >> >Why would you create an empty debugfs string file?  That is not ok, we
-> >> >should change that to not allow this.
-> >> 
-> >> Hi greg k-h,
-> >> 
-> >> Thanks for your reply.
-> >> 
-> >> This is due to the usage step, should write first and then read.
-> >> However, there is no way to guarantee that everyone will know about this step.
-> >
-> >True.
-> >
-> >> And debugfs_create_str() allows passing in a NULL string. 
-> >
-> >Then we should fix that :)
-> >
-> >> Therefore, when reading a NULL string, should return an invalid error 
-> >> instead of panic.
-> >
-> >If you call write on a NULL string, then you could call strlen() of that
-> >NULL string, and do a memcpy out of that NULL string.  All not good
-> >things, so your quick fix here really doesn't solve the root problem :(
-> >
+On Fri, 19 Dec 2025 17:28:45 +0100,
+Haoxiang Li wrote:
 > 
-> We all know that the problem is a NULL pointer exceptions that occur in strlen().
-> However, strlen() is basic function, and we cannot pass abnormal parameters.
-> We should intercept them, and this is common in the kernel.
-> That's why I submitted this patch.
+> If ac97_add_adapter() fails, put_device() is the correct way to drop
+> the device reference. kfree() is not required.
+> Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
+> the cleanup.
 > 
-> >> >>  	str = *(char **)file->private_data;
-> >> >> +	if (!str)
-> >> >> +		return -EINVAL;
-> >> >
-> >> >What in kernel user causes this to happen?  Let's fix that up instead
-> >> >please.
-> >> >
-> >> 
-> >> Currently I known problematic nodes in the kernel:
-> >> 
-> >> drivers/interconnect/debugfs-client.c:
-> >>   155: 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
-> >>   156: 	debugfs_create_str("dst_node", 0600, client_dir, &dst_node);
-> >
-> >Ick, ok, that should be fixed.
-> >
-> >> drivers/soundwire/debugfs.c:
-> >>   362: 	debugfs_create_str("firmware_file", 0200, d, &firmware_file);
-> >
-> >That too should be fixed, all should just create an "empty" string to
-> >start with.
-> >
-> >> test case:
-> >> 1. create a NULL string node
-> >> char *test_node = NULL;
-> >> debugfs_create_str("test_node", 0600, parent_dir, &test_node);
-> >> 
-> >> 2. read the node, like bellow:
-> >> cat /sys/kernel/debug/test_node
-> >
-> >With your patch, you could change step 2 to do a write, and still cause
-> >a crash :)
-> >
+> Found by code review.
 > 
-> This shouldn't happen. The write node calls debugfs_write_file_str().
-> My test results:
-> $: cat dst_node
-> $: cat: dst_node: Invalid argument
+> Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-I would argue that this is not ok, it should just return an empty value.
+Thanks, applied now.
 
-> 1|&: echo 1 > dst_node
-> $: cat dst_node
-> $: 1
-> 
-> Anyway, please show the stack.
 
-If you call write on a NULL string, with an offset set, it will crash
-based on the code paths.  I don't have a traceback as I don't want to
-write the code to crash my running system at the moment :)
-
-> >So let's fix this properly, let's just fail the creation of NULL
-> >strings, and fix up all callers.
-> >
-> 
-> As mentioned above, we shold allow the creation of NULL string nodes
-> to indicate empty/unused/ignored.
-
-No, that's not a good idea, let's just fix this properly and not allow
-such things at all.  If someone really wants to do this "no value set is
-illegal", then they can write their own debugfs callbacks and not use
-the built-in helper.
-
-And really, the string debugfs helper has been such a pain over the
-years, I'm regretting even accepting it at all :(
-
-thanks,
-
-greg k-h
+Takashi
 
