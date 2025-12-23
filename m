@@ -1,94 +1,151 @@
-Return-Path: <stable+bounces-203247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36999CD7C49
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:58:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF78CCD7B38
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7929630505A4
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:52:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2884F3038963
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8862F30E0EE;
-	Tue, 23 Dec 2025 01:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FYlBigxW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE58E352942;
+	Tue, 23 Dec 2025 01:27:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D250B30E826
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 01:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C1E350D58;
+	Tue, 23 Dec 2025 01:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766452967; cv=none; b=i35ObTaB1shdTppNYK5JHZ9aM2vEFYjy2NKM15ysJmAp8GhiAVIcWc3uN5liKOSxjBeHWNPRnh/GRknEUeA0Zpn9LN5/gJ4yzcsbXsPJVxMz62fa3QRTTNZQ0+Q+FZk4N2wbyyuB2Q09/ry40EpG6ccPNVE/tpk5TWPpAMsnu54=
+	t=1766453274; cv=none; b=TP5juCCHMWeTSOCvsBK5IEvwKw5MPigj5gUJ8mitNCEd2vGjqC/uML4Ob2Dygf+BkWslK9JXJQyX6mJn0+d6+NXnQQ6nJ2M3r6uaSmlUrvhY2mf2RXeDvjozPM8r3stF+Z74NQi9Mdk9eINua5Lb6GPbRK3DFxKY5k+QgAmXiIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766452967; c=relaxed/simple;
-	bh=5eBPm0TA6nyP2udOPIJcJDkQtXVGsSrcTmdOy8w0faM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lli03EHP/wQVZ2zr8pCamAghNak6/PmP4e+DIT3kpJHgrtfGofazU7yNRDTxRCpxS5CDuaDGnYmU5TAl2+PsQmQjbDPFa73IUNL3voc4nsq7JqcSqcNvis6y7R3p1u8IrfliXo2tA8PWZLtahsqMrv5jdfHInjDR2S7+VMLJ3g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=fail smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FYlBigxW; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766452964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0QIv+rEiDfd08F+MOw32Rp4Ucek9Daa5OsoIob9logs=;
-	b=FYlBigxWMlCrrsApt1FgfUzvK09T3jRyJjsKa03YD/gKc82tkMDJkVXm3gwmvMfmxue9wI
-	tlExEIIYP9hKYn4/bU4lnkbG9SZmLcC92Um4Iz4ro9jJfaPLkB4+00S1djpUNkDm2S6KcE
-	pSCvJwVBAT6VBZTKT2cn17ihfgG4a08=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-97rey7fJM5KKeSLw_q3uTA-1; Mon,
- 22 Dec 2025 20:22:41 -0500
-X-MC-Unique: 97rey7fJM5KKeSLw_q3uTA-1
-X-Mimecast-MFC-AGG-ID: 97rey7fJM5KKeSLw_q3uTA_1766452959
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D2B019560B2;
-	Tue, 23 Dec 2025 01:22:39 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.97])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29BC9180045B;
-	Tue, 23 Dec 2025 01:22:33 +0000 (UTC)
-Date: Tue, 23 Dec 2025 09:22:28 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: "Ionut Nechita (WindRiver)" <djiony2011@gmail.com>
-Cc: axboe@kernel.dk, gregkh@linuxfoundation.org,
-	ionut.nechita@windriver.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when
- called from interrupt context
-Message-ID: <aUnu1HdMqQbksLeY@fedora>
-References: <20251222201541.11961-1-ionut.nechita@windriver.com>
- <20251222201541.11961-3-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1766453274; c=relaxed/simple;
+	bh=EiSccUwHH1y9gPi/yQ/Pfx3UYwckUvKIjhlNFOmdrXI=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ua0gIrSdP5cBa4D6tW3L22YWQp0i8dMyHmPvO9IHxXhfE8M+TOms6jjYIhfndkjGrxECq3DMkpkLU0DIjBpv5Ug/yF10ABHTWFMcrZI7Ji7MTt3/LBy8I1zaKLw0+e76KmKG4b5eiVYAwrm4QDygbCYqd03qwDcS5E+z/fgoSwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxisIR8ElpAzoCAA--.6899S3;
+	Tue, 23 Dec 2025 09:27:45 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxSeAN8ElpnaMDAA--.11084S3;
+	Tue, 23 Dec 2025 09:27:43 +0800 (CST)
+Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
+To: Xianglai Li <lixianglai@loongson.cn>, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20251222113409.2343711-1-lixianglai@loongson.cn>
+ <20251222113409.2343711-3-lixianglai@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
+Date: Tue, 23 Dec 2025 09:25:08 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222201541.11961-3-ionut.nechita@windriver.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <20251222113409.2343711-3-lixianglai@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxSeAN8ElpnaMDAA--.11084S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxuF1Dur48tr1xKFyftrW5Jwc_yoW5GFWxpa
+	4avF1qqF4kKw1vga1DG34qkr4xZFWkWr1xWrn7tryrZr1kWryrXF18GwsxAFn8Gw48WF4k
+	XFy8KFn0vay8AwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4AhLUUUUU
 
-On Mon, Dec 22, 2025 at 10:15:41PM +0200, Ionut Nechita (WindRiver) wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
+
+
+On 2025/12/22 下午7:34, Xianglai Li wrote:
+> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
+> the assembly function to guide the generation of correct ORC table entries,
+> thereby solving the timeout problem of loading the livepatch-sample module
+> on a physical machine running multiple vcpus virtual machines.
 > 
-> Fix warning "WARN_ON_ONCE(!async && in_interrupt())" that occurs during
-> SCSI device scanning when blk_freeze_queue_start() calls blk_mq_run_hw_queues()
-> synchronously from interrupt context.
+> While solving the above problems, we have gained an additional benefit,
+> that is, we can obtain more call stack information
+> 
+> Stack information that can be obtained before the problem is fixed:
+> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+> [<0>] kvm_exc_entry+0x100/0x1e0
+> 
+> Stack information that can be obtained after the problem is fixed:
+> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+> [<0>] kvm_exc_entry+0x100/0x1e0
+> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
+> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
+> [<0>] sys_ioctl+0x498/0xf00
+> [<0>] do_syscall+0x94/0x190
+> [<0>] handle_syscall+0xb8/0x158
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Cc: Bibo Mao <maobibo@loongson.cn>
+> Cc: Charlie Jenkins <charlie@rivosinc.com>
+> Cc: Xianglai Li <lixianglai@loongson.cn>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> 
+>   arch/loongarch/kvm/switch.S | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+> index 93845ce53651..e3ecb24a3bc5 100644
+> --- a/arch/loongarch/kvm/switch.S
+> +++ b/arch/loongarch/kvm/switch.S
+> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
+>   	/* restore per cpu register */
+>   	ld.d	u0, a2, KVM_ARCH_HPERCPU
+>   	addi.d	sp, sp, -PT_SIZE
+> +	UNWIND_HINT_REGS
+>   
+>   	/* Prepare handle exception */
+>   	or	a0, s0, zero
+> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>   	addi.d	a2, sp, -PT_SIZE
+>   	/* Save host GPRs */
+>   	kvm_save_host_gpr a2
+> +	st.d	ra, a2, PT_ERA
+Had better add some comments here to show that it is special for unwind 
+usage since there is "st.d ra, a2, PT_R1" already in macro 
+kvm_save_host_gpr().
 
-Can you show the whole stack trace in the warning? The in-code doesn't
-indicate that freeze queue can be called from scsi's interrupt context.
-
-
-Thanks, 
-Ming
+Regards
+Bibo Mao
+>   
+>   	addi.d	a2, a1, KVM_VCPU_ARCH
+>   	st.d	sp, a2, KVM_ARCH_HSP
+> 
 
 
