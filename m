@@ -1,50 +1,64 @@
-Return-Path: <stable+bounces-203281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B271ECD86E0
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:09:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086E4CD8756
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A331303C9A7
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 08:09:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 617A530022EC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 08:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FBF311C19;
-	Tue, 23 Dec 2025 08:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C08D2E764B;
+	Tue, 23 Dec 2025 08:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="LsYd986y"
 X-Original-To: stable@vger.kernel.org
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D27311597
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 08:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ED731E0F2;
+	Tue, 23 Dec 2025 08:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766477374; cv=none; b=FxmdpV6Gus7XK+CUrELfNbpN7RR0DyvE+wwzediLHw3ZjBuESmaNcG6DTbPKZOvhShAB8RzCpaRNthTpdUakRdZjZxnGUUARF2GHOx7my41mY6wZSM/BU7dzo33bNRVoKTqPLxTmV4CZryoHMEEj56aQ+wtKRlJL35S50ocu3hg=
+	t=1766479063; cv=none; b=Bqp9MNyAVDj4yGF9T4q6n5HTmvcmunl8erYN5OPV8yCE1FeVmir2Zo6d7wxvr0yAsGUU+lQ2E1ToXUFD4eT37FEo8dIiSI4ef03yQGsSu5nT9v0j0VfL3OQc4w9W1ZVqUKM2vwzzpH5rRtVCghqj+X/p+uhF9iGtXjghcB2rDZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766477374; c=relaxed/simple;
-	bh=C1hHXfG9yGqOaVz9kLlFeD4izo8MSg0/B7q1kejbQV8=;
+	s=arc-20240116; t=1766479063; c=relaxed/simple;
+	bh=oxyTSW6SlyYi5vFKMdQTkvBu2VeRUTuVVBWtB1TAfGY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k12XY0EM/1IvanmbGTitgFg372vkuyO+3tN/sUFpS47OSzHHr8Rk/9B5Vn64wDEA8roVT+HMdcXu6LuYgb+JtQGr333tEUFNk5cmnSHBrWKcrG+X97WGvBB7odJGc2+iCfBv/fpPH4h1uMFPdqnYxpb5KITbg3yO2gyIK6tomlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
-	by 156.147.23.53 with ESMTP; 23 Dec 2025 17:09:27 +0900
-X-Original-SENDERIP: 156.147.1.125
-X-Original-MAILFROM: chanho.min@lge.com
-Received: from unknown (HELO BRUNHILD) (10.178.31.97)
-	by 156.147.1.125 with ESMTP; 23 Dec 2025 17:09:27 +0900
-X-Original-SENDERIP: 10.178.31.97
-X-Original-MAILFROM: chanho.min@lge.com
-Date: Tue, 23 Dec 2025 17:09:27 +0900
-From: Chanho Min <chanho.min@lge.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Oscar Maes <oscmaes92@gmail.com>, stable@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	Chanho Min <chanho.min@lge.com>
-Subject: Re: [PATCH] net: ipv4: fix regression in local-broadcast routes
-Message-ID: <aUpON69dFQkgL9w/@BRUNHILD>
-References: <20251223065911.11660-1-chanho.min@lge.com>
- <2025122311-animating-lettuce-ed6a@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UHGNiFdIBOjV67GgUPsCd1Yuxk/uTcOPZMpwi3wM6Aa2qM3BzTcUm6/hFfM2nlI6+ng8rnbYTIO92UKFuSiZIEm6BpojwYHD+g9Suc//h5c3o/RL7ucdr5VPJXo6aOXWI0vttSXyyNhOg1ar2l4w8Bbaypv1R0tR9u9n6IgFJOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=LsYd986y; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 75CBB1FA65;
+	Tue, 23 Dec 2025 09:37:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1766479051;
+	bh=8wuJHDWjaGLzXiqjbQ5KAqwu4/yLolE49hadsWsYnko=; h=From:To:Subject;
+	b=LsYd986y7/LfVxODKxkxdM5aXB2gjX4iwNaf0oAmaFBcA197ohCba+C/DTd+oNO3d
+	 RX5hKR5by9NkKfnrqcl+PO9rReCmhnjQjE4m0y33VaeGEnOnq7z9BRs5sSACVuirwr
+	 YDT03Mt88p5bq+wC414JpVEPkhTfc4I79FhXWol013I/HDFqn4+9w2e/Edd+Iv6a7l
+	 kVOhu6KtDki1QAow1qszh9uwE8ML5JWW0F81RQ0XwyV0HFc9bh9a6L6bHBJYCQkc6s
+	 Felrmzyst9VlG97uAQTOzRuDAauh8hWzE/KInMbppa+9EYZPDiHQ4AlbHlQjVR44U2
+	 c7TrSQpvl7Rig==
+Date: Tue, 23 Dec 2025 09:37:26 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Vinod Koul <vkoul@kernel.org>, Franz Schnyder <fra.schnyder@gmail.com>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Franz Schnyder <franz.schnyder@toradex.com>,
+	linux-phy@lists.infradead.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>, stable@vger.kernel.org,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: Re: [PATCH v2] phy: fsl-imx8mq-usb: fix typec orientation switch
+ when built as module
+Message-ID: <20251223083726.GA24283@francesco-nb>
+References: <20251126140136.1202241-1-fra.schnyder@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,48 +67,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025122311-animating-lettuce-ed6a@gregkh>
+In-Reply-To: <20251126140136.1202241-1-fra.schnyder@gmail.com>
 
-On Tue, Dec 23, 2025 at 08:44:32AM +0100, Greg KH wrote:
-> On Tue, Dec 23, 2025 at 03:59:11PM +0900, Chanho Min wrote:
-> > From: Oscar Maes <oscmaes92@gmail.com>
-> > 
-> > [ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
-> > 
-> > Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-> > introduced a regression where local-broadcast packets would have their
-> > gateway set in __mkroute_output, which was caused by fi = NULL being
-> > removed.
-> > 
-> > Fix this by resetting the fib_info for local-broadcast packets. This
-> > preserves the intended changes for directed-broadcast packets.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-> > Reported-by: Brett A C Sheffield <bacs@librecast.net>
-> > Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
-> > Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-> > Reviewed-by: David Ahern <dsahern@kernel.org>
-> > Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
-> > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  net/ipv4/route.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> You forgot to sign off on this :(
-> 
-> Also, what tree do you want this backported to?
-> 
-> thanks,
-> 
-> greg k-h
+Hello Vinod,
 
+On Wed, Nov 26, 2025 at 03:01:33PM +0100, Franz Schnyder wrote:
+> From: Franz Schnyder <franz.schnyder@toradex.com>
+> 
+> Currently, the PHY only registers the typec orientation switch when it
+> is built in. If the typec driver is built as a module, the switch
+> registration is skipped due to the preprocessor condition, causing
+> orientation detection to fail.
+> 
+> With commit
+> 45fe729be9a6 ("usb: typec: Stub out typec_switch APIs when CONFIG_TYPEC=n")
+> the preprocessor condition is not needed anymore and the orientation
+> switch is correctly registered for both built-in and module builds.
+> 
+> Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Xu Yang <xu.yang_2@nxp.com>
+> Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
 
-Please ignore this patch. It was sent to the list by mistake.
-
-Sorry for the noise.
+Just a gentle ping on this.
 
 Thanks,
-Chanho Min
+Francesco
+
 
