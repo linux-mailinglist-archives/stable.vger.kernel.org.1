@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C412CD7C82
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 03:01:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648FBCD7CD0
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 03:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D20730185EE
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:01:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C3D307F8CC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C426E706;
-	Tue, 23 Dec 2025 02:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F9720C490;
+	Tue, 23 Dec 2025 02:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j1lsA8QB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N4LoHTkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F3420C490;
-	Tue, 23 Dec 2025 02:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754A5202C48;
+	Tue, 23 Dec 2025 02:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766455286; cv=none; b=HwH0L7uFWTQtK9OCwon5FbI/Sem/4nmrHe3ntq+O+YB2XJT1P4gNvjnrntTqDo/DfBuamz9qo7ndHDvW3fqzNlQvimAKk+M/pQuhcNTj4odZ/Dzf3ylemgbXpC0yCZ/cg0g9K99qi/oW6lx/p0GiVEABhRztI/OnSp/0gszKe/U=
+	t=1766455291; cv=none; b=lP5Bx9r+Iphd6bHTig85Srjn8j9BH5gVwHK7S1qWJZqb8WK7SCAvu14uWsKSbDE4j1w2DSvOFsvxS7s385aNdNlIzyzVSl1vNemm7/EAvvOMic08WsrE9RX1xvfsy4poYE1aabR0IgZF6GqRLweSn359iyMceEYZPJ/Oam1kZz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766455286; c=relaxed/simple;
-	bh=VibKW4rFrlqEVk5lvNzEgf8tiJl1ks8BIBvxSH4K4qE=;
-	h=Date:To:From:Subject:Message-Id; b=JVzLYLB7bJyZLJ9yzzF0fHoyX6+2ddAKzOjLPE7P2Vx4G9ouzX+vZ6csx0ToxgKP1qoVe88myE6HH7xuLvVcJkMvjBh7iAYXHgYOcPV9+t+abs/m5cCQkO7Y3zc7SHqUl1+g3uFS18SK2YbQqsNdBBn0pO3j/rij3bzkKznx0Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j1lsA8QB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B6C4CEF1;
-	Tue, 23 Dec 2025 02:01:25 +0000 (UTC)
+	s=arc-20240116; t=1766455291; c=relaxed/simple;
+	bh=+kRSPTURYiA3TPBCEdUP1R47TaZ/HlTx8LIdT8o7Mdk=;
+	h=Date:To:From:Subject:Message-Id; b=D3qyBVL0PKoYP1QxTCRxc3jODDFy3Dlep5lmD+mUQTt+itlnkYvSd299uJDXB2Dk6bWly3jwSUNcq6GeWQbQVIg0FUJVdwKhFChmHoj4LSX38NIfFrCz1vzh2aqp6BsfTO7HfzGQNDVODkbDgEfBKrOmTw4VVVvJXVhF8zSIAjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N4LoHTkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB50C4CEF1;
+	Tue, 23 Dec 2025 02:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766455285;
-	bh=VibKW4rFrlqEVk5lvNzEgf8tiJl1ks8BIBvxSH4K4qE=;
+	s=korg; t=1766455291;
+	bh=+kRSPTURYiA3TPBCEdUP1R47TaZ/HlTx8LIdT8o7Mdk=;
 	h=Date:To:From:Subject:From;
-	b=j1lsA8QBnkfKnaR1+nwrSLxHdhY0fOP1hZWqcWZAzqG7obDiTpFrHvzlYNRs0zBs/
-	 x9fvzAxnv0UcD9IMZNiErNMrqlIw33ZdUHexGl/Dv0E0/Op721DFFOMDmH1ptRXuiU
-	 13Bv4UhsNR81aR7DS0imT2i+IM5Y33eC08JrNkJY=
-Date: Mon, 22 Dec 2025 18:01:25 -0800
+	b=N4LoHTkX4DXq6bAKiVkYYGvRWHhp2G+4Gl+WL+35MjxaD9ffCqWKP07OWLTVC1R/3
+	 /XLhViFyR0qZH/FrjEjnKTEIDqaaFLHhPZ8OPGLj0AUm/hl1CKn5dGll2l0X95IWQ8
+	 3LFjsWSsuN7OEwBBWnwveN3Sspvvwfa5jOZxtDms=
+Date: Mon, 22 Dec 2025 18:01:30 -0800
 To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,broonie@kernel.org,mathieu.desnoyers@efficios.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch added to mm-new branch
-Message-Id: <20251223020125.A86B6C4CEF1@smtp.kernel.org>
+Subject: + mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch added to mm-new branch
+Message-Id: <20251223020130.ECB50C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,12 +48,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: add missing static initializer for init_mm::mm_cid.lock
+     Subject: mm: take into account mm_cid size for mm_struct static definitions
 has been added to the -mm mm-new branch.  Its filename is
-     mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
+     mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -80,27 +80,16 @@ and is updated there most days
 
 ------------------------------------------------------
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: mm: add missing static initializer for init_mm::mm_cid.lock
-Date: Sun, 21 Dec 2025 18:29:22 -0500
+Subject: mm: take into account mm_cid size for mm_struct static definitions
+Date: Sun, 21 Dec 2025 18:29:24 -0500
 
-Patch series "MM_CID and HPCC mm_struct static init fixes".
+Both init_mm and efi_mm static definitions need to make room for the
+2 mm_cid cpumasks.
 
-Mark Brown reported a regression [1] on linux next due to the hierarchical
-percpu counters (HPCC).  You mentioned they were only in mm-new (and
-therefore not pulled into -next) [2], but it looks like they got more
-exposure that we expected.  :)
+This fixes possible out-of-bounds accesses to init_mm and efi_mm.
 
-This bug hunting got me to fix static initialization issues in both MM_CID
-(for upstream) and HPCC (mm-new).  Mark tested my series and confirmed
-that it fixes his issues.
-
-
-This patch (of 5):
-
-Initialize the mm_cid.lock struct member of init_mm.
-
-Link: https://lkml.kernel.org/r/20251221232926.450602-2-mathieu.desnoyers@efficios.com
-Fixes: 8cea569ca785 ("sched/mmcid: Use proper data structures")
+Link: https://lkml.kernel.org/r/20251221232926.450602-4-mathieu.desnoyers@efficios.com
+Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Mark Brown <broonie@kernel.org>
@@ -108,21 +97,46 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/init-mm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/mm_types.h |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/mm/init-mm.c~mm-add-missing-static-initializer-for-init_mm-mm_cidlock
-+++ a/mm/init-mm.c
-@@ -44,6 +44,9 @@ struct mm_struct init_mm = {
- 	.mm_lock_seq	= SEQCNT_ZERO(init_mm.mm_lock_seq),
- #endif
- 	.user_ns	= &init_user_ns,
-+#ifdef CONFIG_SCHED_MM_CID
-+	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
-+#endif
- 	.cpu_bitmap	= CPU_BITS_NONE,
- 	INIT_MM_CONTEXT(init_mm)
- };
+--- a/include/linux/mm_types.h~mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions
++++ a/include/linux/mm_types.h
+@@ -1368,7 +1368,7 @@ extern struct mm_struct init_mm;
+ 
+ #define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
+ {								\
+-	[0 ... sizeof(cpumask_t)-1] = 0				\
++	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
+ }
+ 
+ /* Pointer magic because the dynamic array size confuses some compilers. */
+@@ -1500,7 +1500,7 @@ static inline int mm_alloc_cid_noprof(st
+ 	mm_init_cid(mm, p);
+ 	return 0;
+ }
+-#define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
++# define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
+ 
+ static inline void mm_destroy_cid(struct mm_struct *mm)
+ {
+@@ -1514,6 +1514,8 @@ static inline unsigned int mm_cid_size(v
+ 	return cpumask_size() + bitmap_size(num_possible_cpus());
+ }
+ 
++/* Use NR_CPUS as worse case for static allocation. */
++# define MM_CID_STATIC_SIZE	(2 * sizeof(cpumask_t))
+ #else /* CONFIG_SCHED_MM_CID */
+ static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
+ static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
+@@ -1522,6 +1524,7 @@ static inline unsigned int mm_cid_size(v
+ {
+ 	return 0;
+ }
++# define MM_CID_STATIC_SIZE	0
+ #endif /* CONFIG_SCHED_MM_CID */
+ 
+ struct mmu_gather;
 _
 
 Patches currently in -mm which might be from mathieu.desnoyers@efficios.com are
