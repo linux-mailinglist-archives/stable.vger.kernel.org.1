@@ -1,145 +1,176 @@
-Return-Path: <stable+bounces-203279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198C1CD86B0
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5127CD86BC
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 09:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7453C301E1AA
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 08:00:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73A7F3021040
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 08:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A743303A3B;
-	Tue, 23 Dec 2025 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5932FF160;
+	Tue, 23 Dec 2025 08:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="dAMUbkl3"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aOxPLi3c"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166A521ADCB;
-	Tue, 23 Dec 2025 08:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5278D2D7387
+	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 08:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766476841; cv=none; b=CfgkclQ1PKoYOhnpLu7zyZR2MRgiVCA+yE09qD54JsWTxuXNPdgto/xfmg/ehGC78k77nyxvpHevDbksDOHGc2DinTBwkAeKBw8B9N2ZM4P/PAhfIVrNKPKfhIEI4ggg5+VW4Vl2hY74/0o3FmxNk3ZVUagUuamW8sGx34rIboI=
+	t=1766476971; cv=none; b=I7U9Cn2Uh0v5rz/lx+Fy0wxBt5aP9ZvLLpKOMLnIuj3/km89cRvJrtwB2bpmEnubORT5pKYiwy3KFVEEum6HavP9DmmU+xyshVc3bTbD8xcTXRL1ku912DH+1TXKts6SWEJG1eNcdd/8ZOBy9hzpy+gWC3TuqEaL19A7URV7awg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766476841; c=relaxed/simple;
-	bh=1D5pNj/TkMBhi5V3Ck3ECaJCkWlEDv2CKJGPHJjgyrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UD5DlH71ZiMXQ59b1vEQ0c9LZtu5/mbwSEd74qKD6OLE6Z0i0zEmGpdh0og3BfWV6Ms562w8ZdgMY6GLkdwLlgMAT0mjGCM6IQuowxfU5i3fvRaptGw866lQdVjCu1nukMM1aUq0zmEn5ILphM3MLgYG/oA/l2W/DLXqv5Ps/e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=dAMUbkl3; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766476833; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=IKcBNqtAnVdReDXaI7KKxldVsvfTjEsR07PqZbBV0cE=;
-	b=dAMUbkl3e64kVnUKil2FvVKzYHXmI2Hq06TdoorMUB+Af6RMpqDykbwpapBG1iYG9abufs3BEM/Jh0WmyjJbokMxg7HfF+A1YtfMrO6CMyJnJjrCfNMTnH+jcIKnbMTYrcjDRBgCuIkqz0CfqqgvkeWj7UNnsiZSX7SZAQYYAZQ=
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0WvX26rM_1766476831 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 23 Dec 2025 16:00:32 +0800
-Date: Tue, 23 Dec 2025 16:00:31 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Alexandra Winter <wintera@linux.ibm.com>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Wang Liang <wangliang74@huawei.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-rdma@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] net/smc: Initialize smc hashtables before
- registering users
-Message-ID: <aUpMH7_lHm1pFXcZ@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20251217114819.2725882-1-wintera@linux.ibm.com>
- <aULLcudhF10_sZO6@linux.alibaba.com>
- <64405058-23a9-49df-aed0-891fa0a19fbb@linux.ibm.com>
+	s=arc-20240116; t=1766476971; c=relaxed/simple;
+	bh=9sxiLrElTI5Ztk43MEmWpEu6IKgM9WAgv2dhiRlK6Kg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CXPC+Dfs6/LGv+r2xnSZDihtyacf8FjPkPETULSRCFHDi7PCaA8o3wlrXtOgIwBNlFbksJZNPu6/ojptwvHrJ0A2DeY1RwPv0YG6hvsNaMElZ2AAzVCZwcEMS6bwDvAXkN0GKybM01+T7CvdLLH9VhhzlqIa9V+/YcCfZVo0mHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aOxPLi3c; arc=none smtp.client-ip=209.85.214.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2a08c65fceeso9166265ad.2
+        for <stable@vger.kernel.org>; Tue, 23 Dec 2025 00:02:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766476969; x=1767081769;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OTUH1SPKBV/BQ5rzdoe3NdUj8Uqe/XoIX8txSdtTxSM=;
+        b=fjU9Sa9bTKJQ88wMkyqWS05oQzVjwHZNMgNmbU/mOw/IhCnCP9g1ihnUz+OTDeVqDJ
+         WyeXYYix6MXeoqaQrKncSdogZ4WMT3ZJu4+GqZuK13tUYOnns255kI/t3klz5Le1pWjw
+         5R3xqTzSTCvKihIUZK9BuQIXruvUYIsmoI9KnzUnNpZfDxUolorH/p5zC747ibaj4yKZ
+         HMTHo2rJuHOFDAl+8OAeG1nQEVd/R9dRGGOZ41M6a+HJEg/xyYwzK+PuUPI3Svtvgcu7
+         RNVhbzYHnwdxf7yb/7AiclDzJvCE6+kBw6+AiIwESLguwYZjeVQNLKERim5o/5Xgapon
+         ijXA==
+X-Gm-Message-State: AOJu0YwoDvw0krKpkz+C58Gpq6hAWapKHW/cz894VdUtGfIDNWQHYgGr
+	r2T+eMrubugP4xzHoIXT6IciYnAZHXLghH4EjZptCVRBrgVWcs2uYKnRtpS64lQBAPFBJD2Fikq
+	zpbA/XNPMBmWqfuYpEEwUBT4APhqANmAzpvD39HWhY939pDWXlc3KVU/DTHFGoBFvKKY9jgs7MQ
+	SOFOfCYJHMYpyalgsbfk+X6XYnBpTaPrJBjKi8Ja615dmN4iimvglpoK+DRSDFl6DhLPKk2vSpo
+	FAqr5/6RxAZCA6wgdKhiiYkdETDvf4=
+X-Gm-Gg: AY/fxX6BuIsAXIXVjShHRI4qCFX+CFPZB4xXuFR2huZe/oxU54AyWnLGQvMA4pEWaRl
+	v+MsvEodNuZDdys2CWBq0FQih4KvpFoKCmCpW4wM8fRtXlcYHILTrO65cF54xNMk2+AO9UVCfob
+	0WNxeeFsxhwEv/E7/yyddlQLcqyC25P/Lxl4fpz2gyLSrvV6c/7bY476YXhmppwT6nW9ILdnXM6
+	F1Z2s3UxWj82lEPo3ITGVGTIkj7pMIXsCHywXUEbzg1MqjwAuonvtwr+gejLMWLQ1qNFH/1GsLf
+	SCriEBDgQDPqZmCySMgIsOadzDKlhoCvqPJccKrAjlQP1f1x5BOHe1fCnWQpvZB10VNvaqueOx/
+	ghfa+yla/L4Q9OIqTQIMBOQs4drbtRoe4hdtf8xByL5EYD7KXNMa4uHGIqfdvXLVBdT0/JPCGV6
+	2nXvcluZvdotuxM4D3YhaPcslb/BLN6FxzH+ENPXPuT20oOQJVsZrtBI62dR0AlA==
+X-Google-Smtp-Source: AGHT+IFaxbn37Ccyl8SVDBieSK5S6rXeOAoSgVfpjmjejNLABEhMf9bLFW1E2IiNKUZp3pHxYWR/n4nQR1Ra
+X-Received: by 2002:a17:903:15ce:b0:298:9a1:88e8 with SMTP id d9443c01a7336-2a2f2736638mr92794285ad.5.1766476969507;
+        Tue, 23 Dec 2025 00:02:49 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a2f3d1b8e6sm14299185ad.43.2025.12.23.00.02.49
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Dec 2025 00:02:49 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b1be0fdfe1so201974185a.2
+        for <stable@vger.kernel.org>; Tue, 23 Dec 2025 00:02:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1766476968; x=1767081768; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OTUH1SPKBV/BQ5rzdoe3NdUj8Uqe/XoIX8txSdtTxSM=;
+        b=aOxPLi3cmG7xNLQbzY81NKyu+rRR6l+tjiEJ0KXp+yP1dDq35nn/DX+SRydMnLGrTz
+         p4osyAUEWGiIUbrUPkqeurmuYAN6OQ/vAiGdPb4VEYiFRjqe9fjU85rfKxaWLdcYRRQl
+         b9i3K2fz6rZIA83SXRXi2Y/oCuY334/i057wc=
+X-Received: by 2002:a05:622a:11d4:b0:4f3:616c:dbed with SMTP id d75a77b69052e-4f4abbc85d9mr156899441cf.0.1766476967751;
+        Tue, 23 Dec 2025 00:02:47 -0800 (PST)
+X-Received: by 2002:a05:622a:11d4:b0:4f3:616c:dbed with SMTP id d75a77b69052e-4f4abbc85d9mr156899141cf.0.1766476967188;
+        Tue, 23 Dec 2025 00:02:47 -0800 (PST)
+Received: from keerthanak-ph5-dev.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4c46e4aabsm53636071cf.16.2025.12.23.00.02.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Dec 2025 00:02:46 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: clm@fb.com,
+	josef@toxicpanda.com,
+	dsterba@suse.com,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Boris Burkov <boris@bur.io>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.10.y] btrfs: do not clean up repair bio if submit fails
+Date: Tue, 23 Dec 2025 08:00:41 +0000
+Message-ID: <20251223080041.1428811-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64405058-23a9-49df-aed0-891fa0a19fbb@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 2025-12-22 10:50:37, Alexandra Winter wrote:
->
->
->On 17.12.25 16:25, Dust Li wrote:
->> On 2025-12-17 12:48:19, Alexandra Winter wrote:
->>> During initialisation of the SMC module initialize smc_v4/6_hashinfo before
->>> calling smc_nl_init(), proto_register() or sock_register(), to avoid a race
->>> that can cause use of an uninitialised pointer in case an smc protocol is
->>> called before the module is done initialising.
->>>
->>> syzbot report:
->>> KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
->>> Call Trace:
->>> <TASK>
->>> smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:236
->>> netlink_dump+0x647/0xd80 net/netlink/af_netlink.c:2325
->>> __netlink_dump_start+0x59f/0x780 net/netlink/af_netlink.c:2440
->>> netlink_dump_start include/linux/netlink.h:339 [inline]
->>> smc_diag_handler_dump+0x1ab/0x250 net/smc/smc_diag.c:251
->>> sock_diag_rcv_msg+0x3dc/0x5f0
->>> netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
->>> netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
->>> netlink_unicast+0x7f0/0x990 net/netlink/af_netlink.c:1357
->>> netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
->> 
->> I don't think this is related to smc_nl_init().
->> 
->> Here the calltrace is smc_diag_dump(), which was registered in
->> sock_diag_register(&smc_diag_handler).
->> 
->> But smc_nl_init() is registering the general netlink in SMC,
->> which is unrelated to smc_diag_dump().
->
->
->I had assumed some dependency between the smc netlink diag socket and smc_nl_init()
->and wrongly assumed that the smc_diag_init() and smc_init() could race.
->I now understand that modprobe will ensure smc_diag_init() is called before smc_init(),
->so you are right: this patch is indeed NOT a fix for this sysbot report [1]
->
->
->> I think the root cause should be related to the initializing between
->> smc_diag.ko and smc_v4/6_hashinfo.ht.
->
->Given modprobe initializes the modules sequentially, I do not see how these could race.
->
->I guess this syszbot report was fixed by
->f584239a9ed2 ("net/smc: fix general protection fault in __smc_diag_dump")
->as reported in [2] .
->
->I'm not sure about the correct procedure, if nobody recommends a better action, I'll send a
->
->#syz dup: general protection fault in __smc_diag_dump
->to
->syzbot+f69bfae0a4eb29976e44@syzkaller.appspotmail.com
->(this one: general protection fault in smc_diag_dump_proto [1])
->
->
->I still think initializing the hashtables before smc_nl_init()
->makes sense. I'll resend this patch without mentioning syzbot.
+From: Josef Bacik <josef@toxicpanda.com>
 
-Agree.
+[ Upstream commit 8cbc3001a3264d998d6b6db3e23f935c158abd4d ]
 
-Best regards,
-Dust
+The submit helper will always run bio_endio() on the bio if it fails to
+submit, so cleaning up the bio just leads to a variety of use-after-free
+and NULL pointer dereference bugs because we race with the endio
+function that is cleaning up the bio.  Instead just return BLK_STS_OK as
+the repair function has to continue to process the rest of the pages,
+and the endio for the repair bio will do the appropriate cleanup for the
+page that it was given.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[Minor context change fixed.]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Keerthana: Backported the patch to v5.10.y ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+---
+ fs/btrfs/extent_io.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 489d370ddd60..3d0b854e0c19 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2655,7 +2655,6 @@ blk_status_t btrfs_submit_read_repair(struct inode *inode,
+ 	bool need_validation;
+ 	struct bio *repair_bio;
+ 	struct btrfs_io_bio *repair_io_bio;
+-	blk_status_t status;
+ 
+ 	btrfs_debug(fs_info,
+ 		   "repair read error: read error at %llu", start);
+@@ -2699,13 +2698,13 @@ blk_status_t btrfs_submit_read_repair(struct inode *inode,
+ "repair read error: submitting new read to mirror %d, in_validation=%d",
+ 		    failrec->this_mirror, failrec->in_validation);
+ 
+-	status = submit_bio_hook(inode, repair_bio, failrec->this_mirror,
+-				 failrec->bio_flags);
+-	if (status) {
+-		free_io_failure(failure_tree, tree, failrec);
+-		bio_put(repair_bio);
+-	}
+-	return status;
++	/*
++	 * At this point we have a bio, so any errors from submit_bio_hook()
++	 * will be handled by the endio on the repair_bio, so we can't return an
++	 * error here.
++	 */
++	submit_bio_hook(inode, repair_bio, failrec->this_mirror, failrec->bio_flags);
++	return BLK_STS_OK;
+ }
+ 
+ /* lots and lots of room for performance fixes in the end_bio funcs */
+-- 
+2.43.7
+
 
