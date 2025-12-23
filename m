@@ -1,134 +1,130 @@
-Return-Path: <stable+bounces-203346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D129CDAAFF
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 22:37:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78203CDAB1A
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 22:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB0E930133BC
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 21:36:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BF9E30194D6
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 21:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3015E30B50B;
-	Tue, 23 Dec 2025 21:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B6E31196C;
+	Tue, 23 Dec 2025 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4ozchTt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQZLwkdd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1222D6E4B
-	for <stable@vger.kernel.org>; Tue, 23 Dec 2025 21:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C2230F7F8;
+	Tue, 23 Dec 2025 21:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766525814; cv=none; b=BhDxJ6k+W9XO7d8XIsopC2daOqad4EFg0QUrygFs6B3fN481aMBMSlRl4UuHoONHgNXaTgNs/Z0toj2qiRQMngRZ+DX3A3fpDLxbRU8COQgt7vMrhfpfrHyhzAePcsD52SJliWXHRoSWM4SI6V9qnB4fWwgsrIqITIh9vd2joVg=
+	t=1766526052; cv=none; b=VhDth5kngqkawC6caWaOnpPdZMCV3nnG+Dcx48BLhlXIbZ9plVybHdn0vdm7ttqud6NOMK3jHqmHuR3p+NT7csNuweOct8bAtXy3z8Y29ehgmZy8ZEV3QsqposMqmn+pdaqpJq2pPFNnoejRd1lTYB0l2TAynrK4+HjOfEUpA8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766525814; c=relaxed/simple;
-	bh=gUdUk2X7+RSxU+5LaToWss7k5SP9k1Z4vEiO6zzXczE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jghIOsrawhmiFIUsHjAPLP/Zfrt5uXYCm0aTB809N9lO9WLWLtMvX28n2Odn4LSuhVwn5pPehlr0qJLV2gsPT6/E80xIwjCbjuzvK6X8PWasXVXJQCy860x1oB0QhW1dABaXp3tA9ymO4jkzafyZmxZao0Kf5xQzrOD+1mTWxgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4ozchTt; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b79e7112398so908937566b.3
-        for <stable@vger.kernel.org>; Tue, 23 Dec 2025 13:36:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766525811; x=1767130611; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gUdUk2X7+RSxU+5LaToWss7k5SP9k1Z4vEiO6zzXczE=;
-        b=O4ozchTttih9GCU1snHjabcaDiEUb9TtfOv01/dE+xCXOq+cQ7mZ9LdfVrdcyj+D+L
-         zTuzm3TTSyNspQ0ZnsW/55jUL0lHkg9A3d6Q5R/luivwbkYxkDPr+ZwocwvHV6kX4mYj
-         CYULAWoUU8Kiv4VQ+hl00ZMZpjmpnVXgDHIP8O7e4bqFDB0a2gI9xorV4n4FvnjeAm01
-         uAuRGTlXyvs9+CDv0y3wAeO3BwpbKVzt5MeGsVRaW621uKR0Cu8r1DGy9/yPxgS/7Sm4
-         ej5mvGZK/vPNBk4VCiUyPa3bEoq33zNXoiHNukodU4ujkpj8ceP1VCQQBLqiqvNET46b
-         7XnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766525811; x=1767130611;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gUdUk2X7+RSxU+5LaToWss7k5SP9k1Z4vEiO6zzXczE=;
-        b=OVa+W+hxKloZQKeIuKuYdlfbtthqLnNNgSDY9Q/7XUqS5JNjg6LYUGAoVCeHM2Q2cn
-         CPAq01cnsDli2lGuRIR/YvkjbWwTNs2z6D0BcGPPiodN2UuVNnXJq2b+ay86O+ZfxpbL
-         JQDi87KzNk5/nPVyXOta3raNOFAGPkHRix5kvJvuMEOvACaSMPu2m4/hGNQd8GBGgaTt
-         LuLX3jzXyDtV3h5qnrNY7TghVybZ18D400NTPK1dJBR5dquvA1PymkXTtXhR/x5iZAWM
-         jT80cpUnv9p9At5ICpt8olSZHKcEpyJHD7tpE1o63GvI3zJkCQLERcs+IVlU73K6mnZv
-         UEDQ==
-X-Gm-Message-State: AOJu0YzmsyqAxVtZdtmOor8BLeLJUKnwmic66z9QlJTznX41Yy4cXPk8
-	FmhIQoITIV7n4F+jZj6jVP4zN87jzW8Scc1TD0jYULHhKwOjH5ev3+XxUSBehA==
-X-Gm-Gg: AY/fxX71moGchbDWSjMLg6Pfsqzg6jtLZbmac/MvWLlKs79TxsXWLm89O9vFCYdZm72
-	mdTlkXnYox/wf0TNfshAR/3vDrtb59aE0R/cW4qf0wViOtn2nEqk9Jo+Ypo9D246qCrGHw3hsEv
-	IIXWMdzm4tOXxL3F3glH5YLV1xqmovaj8dITt6u4jhGeCj708Jf14nbr3Q+82i3Qb+lbknh8svW
-	dWm3gLoR8vUdkqKgpGtdabKG0v6a67QssmFvhWE3nzSAAfptvN0L0KjNVM3uIoEOm9/ebB6H4cf
-	XI5U4tCMYpWCX8jyeKjdShRZBHjceJf+0wPNKAiHWhyDNogyqcuYy5ZEf9z4Gm8uq2FwQEHDcFQ
-	UwlHkIGloLrnOrAmAEMLl7nTAmbiGgb+RWSHFmv8UhHhMK3BY9wuQZBuU2rcnzp1H7AW0JoB/+7
-	4zghmyJ2xi5+C1cgbo86bXFaQXAA1i7WqVsxcyGq0c6vXh7g==
-X-Google-Smtp-Source: AGHT+IEOKCU+ecErprVHNUinzwMQMU/A+Vj2HrOU9NUH54HaNAaJTE17Fm5T0tT6yY58oECtSAB36A==
-X-Received: by 2002:a17:907:3f20:b0:b71:cec2:d54 with SMTP id a640c23a62f3a-b80371f6e11mr1575022866b.57.1766525810413;
-        Tue, 23 Dec 2025 13:36:50 -0800 (PST)
-Received: from [10.33.80.40] (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037de004fsm1551254666b.45.2025.12.23.13.36.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 13:36:49 -0800 (PST)
-Message-ID: <b905018d5ac8a852759e8483ccf8d396eac4380b.camel@gmail.com>
-Subject: Re: Backport request for commit 5326ab737a47 ("virtio_console: fix
- order of fields cols and rows")
-From: Filip Hejsek <filip.hejsek@gmail.com>
-To: stable@vger.kernel.org
-Cc: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, "Michael S.
- Tsirkin"	 <mst@redhat.com>, Daniel Verkamp <dverkamp@chromium.org>, Amit
- Shah	 <amit@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	virtualization@lists.linux.dev
-Date: Tue, 23 Dec 2025 22:36:48 +0100
-In-Reply-To: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
-References: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1766526052; c=relaxed/simple;
+	bh=Dw8ngcXvfO/801VaaTPwfZV46DR1ilbRLvNzIebB3mY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XyKsguf6wO1hEh2ZjhofEHf7xt9OWeqsKliBCDmCz5cLi6cuPlIR0PzA/OT022CPNtDuztD+LGZMI0N7O3beUHMcKki/t7U9GhMv/AGcRsrJS1QNZlsxTxHPWKc0SbmocCB3GcmHazuAhr10JeqDjDnR1f4DeE/SOYuHN+K+T50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQZLwkdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D290DC113D0;
+	Tue, 23 Dec 2025 21:40:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766526052;
+	bh=Dw8ngcXvfO/801VaaTPwfZV46DR1ilbRLvNzIebB3mY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VQZLwkddwu0TOjpJpvCT0+kwHRe1R21Fr+XRRme80mPpGUGpf6rsiE3wvIfWbZ6TX
+	 0rsdzKQezUzqVDnWgKOBvw7U3+SE6xtzwbbApJeG5zOHsx+DlLD9CaakccvKgBXJ0W
+	 CMnSk9ClrJ2BXjzXkXNF7K7vIOzH48I72+GVSrmisNSsTgUVVPXWZgA29xWDmOiHYr
+	 N1Z7W5LrcykEPz9XYsxfV3LHn8HPu41mdYzS2z80+7G8oSS+SRiqIliTPpXqxOl5Aq
+	 TEeqAZVmbciioOkYUoms7NkENBK1kv6eu+4zpOgl8R5QU48034Lj965/z35jmejK9B
+	 NiaFeAvfHdzaQ==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	stable@vger.kernel.org,
+	Liu Shixin <liushixin2@huawei.com>
+Subject: [PATCH RESEND v3 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+Date: Tue, 23 Dec 2025 22:40:34 +0100
+Message-ID: <20251223214037.580860-2-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251223214037.580860-1-david@kernel.org>
+References: <20251223214037.580860-1-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi,
+We switched from (wrongly) using the page count to an independent
+shared count. Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to
+identify sharing.
 
-I would like to once again request backporting 5326ab737a47
-("virtio_console: fix order of fields cols and rows") to LTS kernels
-(6.12.x, 6.6.x, 6.1.x, 5.15.x and 5.10.x). The patch fixes a
-discrepancy between the Virtio spec and the Linux implementation.
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
 
-Previously, we were considering changing the spec instead, however, a
-decision has been made [1] to keep the spec and backport the kernel
-fix.
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are
+not exclusive. In smaps we would account them as "private" although they
+are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
 
-[1]: https://lore.kernel.org/virtio-comment/20251013035826-mutt-send-email-=
-mst@kernel.org/
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
 
-Thanks,
-Filip Hejsek
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+ include/linux/hugetlb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Thu, 2025-09-18 at 01:13 +0200, Filip Hejsek wrote:
-> Hi,
->=20
-> I would like to request backporting 5326ab737a47 ("virtio_console: fix
-> order of fields cols and rows") to all LTS kernels.
->=20
-> I'm working on QEMU patches that add virtio console size support.
-> Without the fix, rows and columns will be swapped.
->=20
-> As far as I know, there are no device implementations that use the
-> wrong order and would by broken by the fix.
->=20
-> Note: A previous version [1] of the patch contained "Cc: stable" and
-> "Fixes:" tags, but they seem to have been accidentally left out from
-> the final version.
->=20
-> [1]: https://lore.kernel.org/all/20250320172654.624657-1-maxbr@linux.ibm.=
-com/
->=20
-> Thanks,
-> Filip Hejsek
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 019a1c5281e4e..03c8725efa289 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_reserve(int order)
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+ {
+-	return page_count(virt_to_page(pte)) > 1;
++	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
+ }
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+-- 
+2.52.0
+
 
