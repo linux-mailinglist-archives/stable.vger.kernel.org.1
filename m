@@ -1,151 +1,139 @@
-Return-Path: <stable+bounces-203250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF78CCD7B38
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:47:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C412CD7C82
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 03:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2884F3038963
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 01:46:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D20730185EE
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 02:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE58E352942;
-	Tue, 23 Dec 2025 01:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C426E706;
+	Tue, 23 Dec 2025 02:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j1lsA8QB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C1E350D58;
-	Tue, 23 Dec 2025 01:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F3420C490;
+	Tue, 23 Dec 2025 02:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766453274; cv=none; b=TP5juCCHMWeTSOCvsBK5IEvwKw5MPigj5gUJ8mitNCEd2vGjqC/uML4Ob2Dygf+BkWslK9JXJQyX6mJn0+d6+NXnQQ6nJ2M3r6uaSmlUrvhY2mf2RXeDvjozPM8r3stF+Z74NQi9Mdk9eINua5Lb6GPbRK3DFxKY5k+QgAmXiIs=
+	t=1766455286; cv=none; b=HwH0L7uFWTQtK9OCwon5FbI/Sem/4nmrHe3ntq+O+YB2XJT1P4gNvjnrntTqDo/DfBuamz9qo7ndHDvW3fqzNlQvimAKk+M/pQuhcNTj4odZ/Dzf3ylemgbXpC0yCZ/cg0g9K99qi/oW6lx/p0GiVEABhRztI/OnSp/0gszKe/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766453274; c=relaxed/simple;
-	bh=EiSccUwHH1y9gPi/yQ/Pfx3UYwckUvKIjhlNFOmdrXI=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ua0gIrSdP5cBa4D6tW3L22YWQp0i8dMyHmPvO9IHxXhfE8M+TOms6jjYIhfndkjGrxECq3DMkpkLU0DIjBpv5Ug/yF10ABHTWFMcrZI7Ji7MTt3/LBy8I1zaKLw0+e76KmKG4b5eiVYAwrm4QDygbCYqd03qwDcS5E+z/fgoSwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxisIR8ElpAzoCAA--.6899S3;
-	Tue, 23 Dec 2025 09:27:45 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxSeAN8ElpnaMDAA--.11084S3;
-	Tue, 23 Dec 2025 09:27:43 +0800 (CST)
-Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Xianglai Li <lixianglai@loongson.cn>, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
-References: <20251222113409.2343711-1-lixianglai@loongson.cn>
- <20251222113409.2343711-3-lixianglai@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
-Date: Tue, 23 Dec 2025 09:25:08 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1766455286; c=relaxed/simple;
+	bh=VibKW4rFrlqEVk5lvNzEgf8tiJl1ks8BIBvxSH4K4qE=;
+	h=Date:To:From:Subject:Message-Id; b=JVzLYLB7bJyZLJ9yzzF0fHoyX6+2ddAKzOjLPE7P2Vx4G9ouzX+vZ6csx0ToxgKP1qoVe88myE6HH7xuLvVcJkMvjBh7iAYXHgYOcPV9+t+abs/m5cCQkO7Y3zc7SHqUl1+g3uFS18SK2YbQqsNdBBn0pO3j/rij3bzkKznx0Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j1lsA8QB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B6C4CEF1;
+	Tue, 23 Dec 2025 02:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766455285;
+	bh=VibKW4rFrlqEVk5lvNzEgf8tiJl1ks8BIBvxSH4K4qE=;
+	h=Date:To:From:Subject:From;
+	b=j1lsA8QBnkfKnaR1+nwrSLxHdhY0fOP1hZWqcWZAzqG7obDiTpFrHvzlYNRs0zBs/
+	 x9fvzAxnv0UcD9IMZNiErNMrqlIw33ZdUHexGl/Dv0E0/Op721DFFOMDmH1ptRXuiU
+	 13Bv4UhsNR81aR7DS0imT2i+IM5Y33eC08JrNkJY=
+Date: Mon, 22 Dec 2025 18:01:25 -0800
+To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,broonie@kernel.org,mathieu.desnoyers@efficios.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch added to mm-new branch
+Message-Id: <20251223020125.A86B6C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20251222113409.2343711-3-lixianglai@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxSeAN8ElpnaMDAA--.11084S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxuF1Dur48tr1xKFyftrW5Jwc_yoW5GFWxpa
-	4avF1qqF4kKw1vga1DG34qkr4xZFWkWr1xWrn7tryrZr1kWryrXF18GwsxAFn8Gw48WF4k
-	XFy8KFn0vay8AwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4AhLUUUUU
 
 
+The patch titled
+     Subject: mm: add missing static initializer for init_mm::mm_cid.lock
+has been added to the -mm mm-new branch.  Its filename is
+     mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
 
-On 2025/12/22 下午7:34, Xianglai Li wrote:
-> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
-> the assembly function to guide the generation of correct ORC table entries,
-> thereby solving the timeout problem of loading the livepatch-sample module
-> on a physical machine running multiple vcpus virtual machines.
-> 
-> While solving the above problems, we have gained an additional benefit,
-> that is, we can obtain more call stack information
-> 
-> Stack information that can be obtained before the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x100/0x1e0
-> 
-> Stack information that can be obtained after the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x100/0x1e0
-> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
-> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
-> [<0>] sys_ioctl+0x498/0xf00
-> [<0>] do_syscall+0x94/0x190
-> [<0>] handle_syscall+0xb8/0x158
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> ---
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Charlie Jenkins <charlie@rivosinc.com>
-> Cc: Xianglai Li <lixianglai@loongson.cn>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> 
->   arch/loongarch/kvm/switch.S | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-> index 93845ce53651..e3ecb24a3bc5 100644
-> --- a/arch/loongarch/kvm/switch.S
-> +++ b/arch/loongarch/kvm/switch.S
-> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
->   	/* restore per cpu register */
->   	ld.d	u0, a2, KVM_ARCH_HPERCPU
->   	addi.d	sp, sp, -PT_SIZE
-> +	UNWIND_HINT_REGS
->   
->   	/* Prepare handle exception */
->   	or	a0, s0, zero
-> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
->   	addi.d	a2, sp, -PT_SIZE
->   	/* Save host GPRs */
->   	kvm_save_host_gpr a2
-> +	st.d	ra, a2, PT_ERA
-Had better add some comments here to show that it is special for unwind 
-usage since there is "st.d ra, a2, PT_R1" already in macro 
-kvm_save_host_gpr().
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
 
-Regards
-Bibo Mao
->   
->   	addi.d	a2, a1, KVM_VCPU_ARCH
->   	st.d	sp, a2, KVM_ARCH_HSP
-> 
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: mm: add missing static initializer for init_mm::mm_cid.lock
+Date: Sun, 21 Dec 2025 18:29:22 -0500
+
+Patch series "MM_CID and HPCC mm_struct static init fixes".
+
+Mark Brown reported a regression [1] on linux next due to the hierarchical
+percpu counters (HPCC).  You mentioned they were only in mm-new (and
+therefore not pulled into -next) [2], but it looks like they got more
+exposure that we expected.  :)
+
+This bug hunting got me to fix static initialization issues in both MM_CID
+(for upstream) and HPCC (mm-new).  Mark tested my series and confirmed
+that it fixes his issues.
+
+
+This patch (of 5):
+
+Initialize the mm_cid.lock struct member of init_mm.
+
+Link: https://lkml.kernel.org/r/20251221232926.450602-2-mathieu.desnoyers@efficios.com
+Fixes: 8cea569ca785 ("sched/mmcid: Use proper data structures")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/init-mm.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/mm/init-mm.c~mm-add-missing-static-initializer-for-init_mm-mm_cidlock
++++ a/mm/init-mm.c
+@@ -44,6 +44,9 @@ struct mm_struct init_mm = {
+ 	.mm_lock_seq	= SEQCNT_ZERO(init_mm.mm_lock_seq),
+ #endif
+ 	.user_ns	= &init_user_ns,
++#ifdef CONFIG_SCHED_MM_CID
++	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
++#endif
+ 	.cpu_bitmap	= CPU_BITS_NONE,
+ 	INIT_MM_CONTEXT(init_mm)
+ };
+_
+
+Patches currently in -mm which might be from mathieu.desnoyers@efficios.com are
+
+lib-introduce-hierarchical-per-cpu-counters.patch
+mm-fix-oom-killer-inaccuracy-on-large-many-core-systems.patch
+mm-implement-precise-oom-killer-task-selection.patch
+mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
+mm-rename-cpu_bitmap-field-to-flexible_array.patch
+mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
+mm-take-into-account-hierarchical-percpu-tree-items-for-static-mm_struct-definitions.patch
+tsacct-skip-all-kernel-threads.patch
 
 
