@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-203291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1561CD913D
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 12:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96883CD8C46
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 11:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0912E30813CA
-	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 11:16:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6C6E3020CCA
+	for <lists+stable@lfdr.de>; Tue, 23 Dec 2025 10:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3079F352952;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2225352F96;
 	Tue, 23 Dec 2025 10:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWaN7fW6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opKpWlM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C60352931;
-	Tue, 23 Dec 2025 10:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BAC3502B6;
+	Tue, 23 Dec 2025 10:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484324; cv=none; b=aqsdDXyQ4C8px2UfF5MlBVZTrADr+V+Wvm0lyyVb0Jou90cRY8CPHje0ga033YyVro4DgTSeC+Entw+Fy2SLLzArC9bhYNXfBO9hlZY5+H1hxTxYlggSggURa/cUKVglbmfEFflc1Y8ChMVDxVRcjiLNcXaZab9Y+k8H6nrNvHw=
+	t=1766484326; cv=none; b=BIADqMPcAmkyirBs84gAJcDXSSJUpnYM3RnNaod+m2FOUNeI2EWtWNW9ML6+YTxBBEMiJ3w6s+OhIHDTAep+ryoKbCI3OKRcbwnpCghjL7Wc6LSrdXab9HNcRe/UOQvyLPcD67js27nJLss8YwshnIa3voJbodJv4L5ZqdQyLaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484324; c=relaxed/simple;
-	bh=QU3vKK3fAi+EkXtG1LRInpCrVPsy7c3PzEqqyr9a60o=;
+	s=arc-20240116; t=1766484326; c=relaxed/simple;
+	bh=gqI9aLJ5vgEv/qPbuDXITGmQgMewjpAga/d828QbJvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IdA5SrtfkCxpHaa2QdK0WL+ezeYV6jyq85gDiAwkOeiUm7Le02L6YbnxAEFVEb9Ct5fo0jHeBtZ2M35m/HaSNBejmLOnPIxMYL1CMDHSTV7p745QAyoEZ9W5JX8zF/evHIa8plC1BbNabrwHTmA4TVzENjxWj0m3lkcB0UTEdN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWaN7fW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E654C113D0;
-	Tue, 23 Dec 2025 10:05:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dEOInRb9ZyGkFRV/C5Q6wYyJLn6lwEU6jmDkFagdgHNiUeK4SLUTAEXPaUOn5AzMlsPIpgXq2P6mfL89vNtN/Yt5EbpwMxEwKhCoSABEyBTpjVGHRlWUEUC4c589nYpt+PzeFEtyRX8u5ywqB7Q9uSfyDAxAp/6AoWIH5QUnk78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opKpWlM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA110C19421;
+	Tue, 23 Dec 2025 10:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766484324;
-	bh=QU3vKK3fAi+EkXtG1LRInpCrVPsy7c3PzEqqyr9a60o=;
+	s=k20201202; t=1766484325;
+	bh=gqI9aLJ5vgEv/qPbuDXITGmQgMewjpAga/d828QbJvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWaN7fW6DhGsHZ03v0aWutGIXIk0AnySLmLRRXy08kCQ5sLNxBbR8K7QccqCJgaHO
-	 pnmnU/UChzLpi3ly3m1cTygs1eSeFC1u+33Av7XTYHwKxpzFAjQbIa67wVTo4Nk7LD
-	 MbsfhwlUDIXUpVyOMKtAQwnh40FJ1KRsufMlUnPbv+2BBMnnvyznhSaUU0Urev364R
-	 WH7K8wa5OwdqGmzLo88/Xyw4MvAeR4oPbzvqeM4Ydiyc0/jU0MappC8LwZdKavtp8v
-	 WVXRlA6DiNYq7vTbW4wBpB0EDzWo8lZrnOtKPF7FZf/nuhpxwZk9smns9YgKl0TbJ0
-	 IB5IydwAqIlKQ==
+	b=opKpWlM3qGE/sJfup6Cr7dzVmYrHbPINtm/LV/WLZr8l1WI2xrGS6QpD5PewlndAi
+	 QYTcuCAV2mM6rDLiH1AIWl4BVzsUpgrSX0Hg4Y5WpvK7Te0jYyuRw/osEKC0mi4o/N
+	 gjIc9rgEqxVqYvqh+aV0fgWoQTS/bmI1CKoj9yErdQWvLuHJexqHfkhoxe37eKKlwh
+	 RnB1bQ3iddJ/k7dW0O2bimuCvo104jWaXcGsLOiRmcX6+KVoqKO/CLNd73GxFbuUG5
+	 EYZYwrrvlhds+BVa9Lwkd23HO0//6xOhq2uSRwAsHDnBx02AsuKvYQnzNdPnPDKYJJ
+	 gQ2mGOVbq0sVw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Sumeet Pawnikar <sumeet4linux@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robin@protonic.nl,
-	linux-can@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] can: j1939: make j1939_session_activate() fail if device is no longer registered
-Date: Tue, 23 Dec 2025 05:05:08 -0500
-Message-ID: <20251223100518.2383364-4-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] powercap: fix race condition in register_control_type()
+Date: Tue, 23 Dec 2025 05:05:09 -0500
+Message-ID: <20251223100518.2383364-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251223100518.2383364-1-sashal@kernel.org>
 References: <20251223100518.2383364-1-sashal@kernel.org>
@@ -67,108 +65,113 @@ X-stable-base: Linux 6.18.2
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
 
-[ Upstream commit 5d5602236f5db19e8b337a2cd87a90ace5ea776d ]
+[ Upstream commit 7bda1910c4bccd4b8d4726620bb3d6bbfb62286e ]
 
-syzbot is still reporting
+The device becomes visible to userspace via device_register()
+even before it fully initialized by idr_init(). If userspace
+or another thread tries to register a zone immediately after
+device_register(), the control_type_valid() will fail because
+the control_type is not yet in the list. The IDR is not yet
+initialized, so this race condition causes zone registration
+failure.
 
-  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
+Move idr_init() and list addition before device_register()
+fix the race condition.
 
-even after commit 93a27b5891b8 ("can: j1939: add missing calls in
-NETDEV_UNREGISTER notification handler") was added. A debug printk() patch
-found that j1939_session_activate() can succeed even after
-j1939_cancel_active_session() from j1939_netdev_notify(NETDEV_UNREGISTER)
-has completed.
-
-Since j1939_cancel_active_session() is processed with the session list lock
-held, checking ndev->reg_state in j1939_session_activate() with the session
-list lock held can reliably close the race window.
-
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/b9653191-d479-4c8b-8536-1326d028db5c@I-love.SAKURA.ne.jp
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+[ rjw: Subject adjustment, empty line added ]
+Link: https://patch.msgid.link/20251205190216.5032-1-sumeet4linux@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
----
+This confirms the race condition mechanism:
 
-## FINAL ANALYSIS SUMMARY
+1. `control_type_valid()` walks `powercap_cntrl_list` to validate
+   control types (lines 329-345)
+2. Called at `powercap_register_zone()` entry (line 497)
+3. **Race window**: After `device_register()` but before
+   `list_add_tail()`, any zone registration fails because the
+   control_type isn't in the list yet
 
-### What the commit fixes:
-A race condition in the CAN J1939 protocol driver where
-`j1939_session_activate()` can succeed even after
-`j1939_cancel_active_session()` from the NETDEV_UNREGISTER handler has
-completed. This leaves orphaned sessions with references to devices
-being unregistered, causing the "waiting for device to become free"
-hang.
+### 8. FINAL ASSESSMENT
 
-### Why it matters to stable users:
-- **System hang**: The bug can cause network device unregistration to
-  hang indefinitely
-- **Syzbot reproducible**: The bug was found by automated fuzzing,
-  meaning it's triggerable in practice
-- **CAN J1939 users**: Affects automotive and industrial systems using
-  the CAN J1939 protocol
+| Criteria | Assessment |
+|----------|------------|
+| Fixes a real bug | ✅ Race condition causing zone registration failure
+|
+| Obviously correct | ✅ Classic init-before-publish pattern |
+| Small and contained | ✅ ~20 lines in one function |
+| No new features | ✅ Only reorders existing code |
+| No new APIs | ✅ No userspace-visible changes |
+| Low regression risk | ✅ Standard pattern, proper error handling |
+| Affects stable users | ✅ Powercap used on many Intel systems |
 
-### Stable kernel rule compliance:
+**Why this matters to stable users:**
+- Intel RAPL (Running Average Power Limit) uses powercap
+- Common on laptops and servers for power management
+- Race can cause power capping features to fail during boot/module load
+- This is an existing bug that has been present since powercap was
+  introduced
 
-| Criterion | Assessment |
-|-----------|------------|
-| Obviously correct | ✅ Yes - simple check using established kernel
-pattern |
-| Fixes real bug | ✅ Yes - syzbot-reported hang |
-| Small and contained | ✅ Yes - 2 lines added, 1 file changed |
-| No new features | ✅ Correct - only adds error path |
-| Tested | ✅ Has Acked-by from maintainer |
+**Risk vs Benefit:**
+- **Benefit**: Fixes a real race that causes functional failures
+- **Risk**: Very low - the fix follows standard kernel patterns and adds
+  proper cleanup
+- **Trade-off**: Strongly favors backporting
 
-### Risk assessment:
-- **Very low risk**: The change only adds a conditional check before
-  adding a session to the active list
-- **Uses established pattern**: `dev->reg_state != NETREG_REGISTERED` is
-  used throughout net/can/raw.c and other networking code
-- **Cannot break existing functionality**: Adds a new error return path
-  that's already properly handled (callers handle error returns)
+**Concerns:**
+- No dependencies on other commits
+- The change is self-contained and should apply cleanly to stable trees
+- The powercap subsystem has existed since kernel 3.11, so applicable to
+  all current stable trees
 
-### Dependencies:
-- The fix is logically independent - it adds a safety check that works
-  regardless of other commits
-- The related commit 93a27b5891b8 is about a different part of the fix
-  (adding missing calls in the unregister handler)
-- Both commits are improvements to the same underlying issue but can be
-  applied separately
-
-### Conclusion:
-This is a textbook example of a good stable backport candidate:
-1. Fixes a real, user-visible bug (system hang)
-2. Minimal change (2 lines)
-3. Uses established kernel patterns
-4. Has proper subsystem maintainer review
-5. Low risk of regression
+The fix is small, surgical, obviously correct, and addresses a real race
+condition that can cause user-visible failures. It meets all stable
+kernel criteria.
 
 **YES**
 
- net/can/j1939/transport.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/powercap/powercap_sys.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index fbf5c8001c9d..613a911dda10 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1567,6 +1567,8 @@ int j1939_session_activate(struct j1939_session *session)
- 	if (active) {
- 		j1939_session_put(active);
- 		ret = -EAGAIN;
-+	} else if (priv->ndev->reg_state != NETREG_REGISTERED) {
-+		ret = -ENODEV;
- 	} else {
- 		WARN_ON_ONCE(session->state != J1939_SESSION_NEW);
- 		list_add_tail(&session->active_session_list_entry,
+diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
+index 4112a0097338..d14b36b75189 100644
+--- a/drivers/powercap/powercap_sys.c
++++ b/drivers/powercap/powercap_sys.c
+@@ -625,17 +625,23 @@ struct powercap_control_type *powercap_register_control_type(
+ 	INIT_LIST_HEAD(&control_type->node);
+ 	control_type->dev.class = &powercap_class;
+ 	dev_set_name(&control_type->dev, "%s", name);
+-	result = device_register(&control_type->dev);
+-	if (result) {
+-		put_device(&control_type->dev);
+-		return ERR_PTR(result);
+-	}
+ 	idr_init(&control_type->idr);
+ 
+ 	mutex_lock(&powercap_cntrl_list_lock);
+ 	list_add_tail(&control_type->node, &powercap_cntrl_list);
+ 	mutex_unlock(&powercap_cntrl_list_lock);
+ 
++	result = device_register(&control_type->dev);
++	if (result) {
++		mutex_lock(&powercap_cntrl_list_lock);
++		list_del(&control_type->node);
++		mutex_unlock(&powercap_cntrl_list_lock);
++
++		idr_destroy(&control_type->idr);
++		put_device(&control_type->dev);
++		return ERR_PTR(result);
++	}
++
+ 	return control_type;
+ }
+ EXPORT_SYMBOL_GPL(powercap_register_control_type);
 -- 
 2.51.0
 
