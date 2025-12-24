@@ -1,107 +1,213 @@
-Return-Path: <stable+bounces-203360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4018CDBC53
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCC2CDBC63
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE7BF30393F2
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 09:11:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B93FF302106B
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 09:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A75032F756;
-	Wed, 24 Dec 2025 09:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6BC330D54;
+	Wed, 24 Dec 2025 09:17:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E3832AAB2;
-	Wed, 24 Dec 2025 09:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB27B2F1FDB;
+	Wed, 24 Dec 2025 09:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766567489; cv=none; b=Rz10Krbkpqw1+PlCPJnbt+wdYWzHF+RqDCFF2rshqPtn4ff115zWpTHf+w8Zzrc+Dj3Ad5wG5BKKIChAFZ6b7X9qt+Z2xAaLPqn2UYgaRNjwF7wJAtPSCdOx2rx7esJKmbCARRsJ/LIF9uFHYhrWmnBTYtmS1QnY/lffVWv88no=
+	t=1766567823; cv=none; b=EREcqSyH8aaFKIeQELOPwMkJ5pEY4r+Nb4JctqaNvKHEFkmaQ7P+ODDmT7HHI+biq7RyyqngqkzLdk47vL7F46MF/s7Ni08Ku2ur1vU9jZc+rX61xiWAvnTdXgoLbzKVYQ5fHs8jQ1K43XdTE+xFSH/xZuHrcrj8egoI0eXHy7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766567489; c=relaxed/simple;
-	bh=/A0A7TZaBgy3w1Dx8xtnt7eBQYDRlZawV4t/jyDmbf0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XyroIBOyezcuLcpie/GdAG6MGsJkoTZxwImAfY8QurZEVodDn4WkSFAv9LDGmTcQNancJWrov4oqAazhmIZy+U53HXzHdk9qvdj3YwptDnJZue0nNJTLMjSRtJWsij4V7MXIAOdZq1jWa08CQBAONxlmcmmclaXlAENz/Vo48Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.209])
-	by APP-03 (Coremail) with SMTP id rQCowAA3WeAqrktpKV_RAQ--.6200S2;
-	Wed, 24 Dec 2025 17:11:06 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: zack.rusin@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jakob@vmware.com,
-	thellstrom@vmware.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: Fix an error return check in vmw_compat_shader_add()
-Date: Wed, 24 Dec 2025 17:11:05 +0800
-Message-Id: <20251224091105.1569464-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1766567823; c=relaxed/simple;
+	bh=ZtWziJiqrZ0cuml3s+jrt4nWYfRTL4Qwsi5NxHwTfqc=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jt2vJDYOojhDKgtMKlI2V45PbwIXt8qO3JZlKcauZMKjVY6gkutu+/nMJ/F4ki/xLBMNrkPCiXOdoR3/ix1DuAFMfCbHL6ho3+1wcucXDV+MyPtzpbPt0jW9I8X5bPjCIDa5hOZaMTU/pl4fRJC/JErtwB8bMxN+2MlvZS3cCqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.126])
+	by gateway (Coremail) with SMTP id _____8BxXcOBr0tp1rUCAA--.8779S3;
+	Wed, 24 Dec 2025 17:16:49 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+	by front1 (Coremail) with SMTP id qMiowJBxbcJ6r0tpDzUEAA--.9953S3;
+	Wed, 24 Dec 2025 17:16:45 +0800 (CST)
+Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
+From: lixianglai <lixianglai@loongson.cn>
+To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ yangtiezhu@loongson.cn
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui
+ <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20251222113409.2343711-1-lixianglai@loongson.cn>
+ <20251222113409.2343711-3-lixianglai@loongson.cn>
+ <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
+ <CAAhV-H4PehwGm-WwEuu4ZPbQutJR6m62tOSUxLcGQAxR_YX0Eg@mail.gmail.com>
+ <7b8799d1-a4b2-58dc-187a-19c772612351@loongson.cn>
+ <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
+Message-ID: <9974d03b-bd07-04b0-c1e3-d76123c9cd2f@loongson.cn>
+Date: Wed, 24 Dec 2025 17:13:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3WeAqrktpKV_RAQ--.6200S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFy5GryxJw47AF47Jw4UXFb_yoWkGrb_Gr
-	yjyrnrZrWUZasYv3ZFk3y3Zry0kw109Fs7uws8ta43CF9IyFWjq34UCr9xXr1fGFs5Gryk
-	Gw45Ga1fJr9rCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsGE2lLmnBJlAAAsM
+Content-Language: en-US
+X-CM-TRANSID:qMiowJBxbcJ6r0tpDzUEAA--.9953S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF13WrW8Gry7WrWfWF15Awc_yoWrtFyfp3
+	WFyF1DtFWDtw18Jw4Dta4DAFyUtrWkG3WDWr1xJFy8Jr1qgr1YgryUXw1q9F1DJw48GF1k
+	XFy5tr9xZayUAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
 
-In vmw_compat_shader_add(), the return value check of vmw_shader_alloc()
-is not proper. Modify the check for the return pointer 'res'.
+Hi:
+> Add yangtiezhu@loongson.cn
+>
+> Hi :
+>>
+>>
+>> On 2025/12/23 上午10:46, Huacai Chen wrote:
+>>> On Tue, Dec 23, 2025 at 9:27 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2025/12/22 下午7:34, Xianglai Li wrote:
+>>>>> Insert the appropriate UNWIND macro definition into the 
+>>>>> kvm_exc_entry in
+>>>>> the assembly function to guide the generation of correct ORC table 
+>>>>> entries,
+>>>>> thereby solving the timeout problem of loading the 
+>>>>> livepatch-sample module
+>>>>> on a physical machine running multiple vcpus virtual machines.
+>>>>>
+>>>>> While solving the above problems, we have gained an additional 
+>>>>> benefit,
+>>>>> that is, we can obtain more call stack information
+>>>>>
+>>>>> Stack information that can be obtained before the problem is fixed:
+>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>>>
+>>>>> Stack information that can be obtained after the problem is fixed:
+>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
+>>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
+>>>>> [<0>] sys_ioctl+0x498/0xf00
+>>>>> [<0>] do_syscall+0x94/0x190
+>>>>> [<0>] handle_syscall+0xb8/0x158
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>>>> ---
+>>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>>>>> Cc: WANG Xuerui <kernel@xen0n.name>
+>>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>>> Cc: Bibo Mao <maobibo@loongson.cn>
+>>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
+>>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
+>>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>>>>
+>>>>>    arch/loongarch/kvm/switch.S | 2 ++
+>>>>>    1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/loongarch/kvm/switch.S 
+>>>>> b/arch/loongarch/kvm/switch.S
+>>>>> index 93845ce53651..e3ecb24a3bc5 100644
+>>>>> --- a/arch/loongarch/kvm/switch.S
+>>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>>> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
+>>>>>        /* restore per cpu register */
+>>>>>        ld.d    u0, a2, KVM_ARCH_HPERCPU
+>>>>>        addi.d  sp, sp, -PT_SIZE
+>>>>> +     UNWIND_HINT_REGS
+>>>>>
+>>>>>        /* Prepare handle exception */
+>>>>>        or      a0, s0, zero
+>>>>> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>>>>>        addi.d  a2, sp, -PT_SIZE
+>>>>>        /* Save host GPRs */
+>>>>>        kvm_save_host_gpr a2
+>>>>> +     st.d    ra, a2, PT_ERA
+>>>> Had better add some comments here to show that it is special for 
+>>>> unwind
+>>>> usage since there is "st.d ra, a2, PT_R1" already in macro
+>>>> kvm_save_host_gpr().
+>>> Then there is a new problem, why can unwinder not recognize the
+>>> instruction in  kvm_save_host_gpr()?
+>> maybe it need unwinder owner to answer this question.
+>>
+> kvm_save_host_gpr() is an assembler macro that has already been 
+> executed and is no longer normal on the stack.
+> Am I explaining correctly? @tiezhu
+>
+> I guess you might be wondering why unwinder didn't recognize 
+> kvm_enter_guest().
+>
+> There's something wrong with the logic that we're implementing here 
+> that we should put the current pc in era instead of ra.
+> This will allow unwind to identify the symbol kvm_enter_guest.
+>
+> So I will fix it in the next version like this:
+>
+> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>        addi.d  a2, sp, -PT_SIZE
+>        /* Save host GPRs */
+>        kvm_save_host_gpr a2
+>
+> +    /*
+> +     * The csr_era member variable of the pt_regs structure is required
+> +     * for unwinding orc to perform stack traceback, so we need to put
+> +     * pc into csr_era member variable here.
+> +     */
+> +    pcaddi    t0, 0
+> +    st.d    t0, a2, PT_ERA
+> +
+>
+We discussed it with @tiezhu internally and he was OK with the change!
 
-Found by code review and compiled on ubuntu 20.04.
+Thanks,
+Xianglai.
 
-Fixes: 18e4a4669c50 ("drm/vmwgfx: Fix compat shader namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index 69dfe69ce0f8..7ed938710342 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -923,8 +923,10 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 	ttm_bo_unreserve(&buf->tbo);
- 
- 	res = vmw_shader_alloc(dev_priv, buf, size, 0, shader_type);
--	if (unlikely(ret != 0))
-+	if (IS_ERR(res)) {
-+		ret = PTR_ERR(res);
- 		goto no_reserve;
-+	}
- 
- 	ret = vmw_cmdbuf_res_add(man, vmw_cmdbuf_res_shader,
- 				 vmw_shader_key(user_key, shader_type),
--- 
-2.25.1
+> Thanks,
+> Xianglai.
+>>>
+>>> Huacai
+>>>>
+>>>> Regards
+>>>> Bibo Mao
+>>>>>
+>>>>>        addi.d  a2, a1, KVM_VCPU_ARCH
+>>>>>        st.d    sp, a2, KVM_ARCH_HSP
+>>>>>
+>>>>
+>
 
 
