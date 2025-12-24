@@ -1,73 +1,94 @@
-Return-Path: <stable+bounces-203379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806A4CDCA56
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 16:16:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B65CDCE02
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 17:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA803016CC7
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 15:15:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82BBA300EDCE
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 16:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73004347FEB;
-	Wed, 24 Dec 2025 15:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4272328B6F;
+	Wed, 24 Dec 2025 16:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="uPUEXpZI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HIwO9sNp"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470F3346AD5;
-	Wed, 24 Dec 2025 15:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766589300; cv=pass; b=YF0D8022UGUa/RiqYIHmMZv4rTMjuHCwrbAVyDaWRmM10i6DpNtV86bp1tVQ0dZzubsWavuhxo7OOTV8B1E+U09/0GOIN/HWf7KnuvXmtJ/5bHQ/vRgthxzV9gRAuau9AekpjVCuPhe0fa6NlbaTGwZYzY/mzvx4EJIUej5OHy8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766589300; c=relaxed/simple;
-	bh=VcIpv93cs+iZCQNZMb5+B7ptBS8sL8Okxk8HsgsphSQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JrbHw81PpPrVFRK5ddP2XIYdXxSvhoDfk3NNNV+Etr435SfxayC2JARLDoNZWwIqw7KiH7N+/xTTEk5sZnPLQKT+/XPHu1t3PIZOiotENLRvV19QB3NPVXOi6JetLvwfNahmQqPQsbU3C3jqLi48fok7XX+HSEJ9GDr5A9k8efE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=uPUEXpZI; arc=pass smtp.client-ip=136.143.188.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
-ARC-Seal: i=1; a=rsa-sha256; t=1766589258; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=G/DeQEYHrOMAYl/3ZEvGu+utIxKVXG+UCn0eXBMwXBU95Zlf5AC0mcAZuRQmkXAlT4WvilWegF4uQoY8+QxBg5M0Ond8UgbKt0PIRLhWEuWtdwilkmUlCwg0DE6+lX59P6q9qCE2O3IpR9BMHhyApbkVb2/kZujz1PBhwhJdGvA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766589258; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9UERILc8qj7pv/Dyd3F97ap3cBIOjg4t7GFeSU5EK6I=; 
-	b=duOh47NQ90lEnezBrpHFfEtnPdLBzIdRYOicLsDnw5J1ydXSdudgld9N2F5+RZslBHaKFz8GofBQnBcAbpwNV4kGpT+zplOOOo1LNORxORMf6Nr6ZzRGSbOWwODs2IH0X4ms/DZuOIQN24E2XStkeEUxdOdEd2h4brXlMuR4uXs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766589258;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=9UERILc8qj7pv/Dyd3F97ap3cBIOjg4t7GFeSU5EK6I=;
-	b=uPUEXpZI+MWj6t06z7EvFwOlSmKs8btpE5o2Q5u0CExK6Is1/LkoovzUusDn+Xcv
-	+AkKsBoX0e31f12kz6jACuSZqzzum2oO044oY5Zj7LhG1iJuGpVn/fxyvulC0mF2n2/
-	7ZfWRzr/vzOwxaZxHUQZPapGc9JCl9gSCTHNPZsw=
-Received: by mx.zohomail.com with SMTPS id 1766589255667993.4447172420538;
-	Wed, 24 Dec 2025 07:14:15 -0800 (PST)
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: slava@dubeyko.com,
-	zippel@linux-m68k.org,
-	linux-fsdevel@vger.kernel.org,
-	glaubitz@physik.fu-berlin.de,
-	frank.li@vivo.com
-Cc: akpm@osdl.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0515313528
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 16:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766594607; cv=none; b=YEGCuh9KtoeClq9wKp9fJHNr9aX+qu3ub+O151RhjgKyUSiA+IKJcTxZbzgo7T9S9OQZxsxKipcxhDAfhTPaF8JHOPSK5VF98J6Bi9+CJb02b0Maggv8PT2PZAI9at4hSnZh7FHhOpOxDx4gMB4eQBb3IPRGzuBcb6sVo9+4Z9k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766594607; c=relaxed/simple;
+	bh=AiiMcR0T/Q577F9tdt0FEwOLmgTPTKSndvU3PGKdp/o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ADfWdefEcMzsALnNN5jHpn8KdwVuUCg8x5AQk/zZJQoXgtBhqOlqhHrcVQ71PRceGdvLV+Si9YJ5x4qfStpCzLLBLfe/Q3xyTNyNAq6WdF5EqmkHdok1/xN5JNIoV4X/J/J4q5CjJsbLkRdk1CaDUVCDAKcd3uomqDYJ5JrXh0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HIwO9sNp; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7f89d0b37f0so3563185b3a.0
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 08:43:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766594605; x=1767199405; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ssG8N04RBTKk33KNiGJ23C3mBaOiOd3tZk3DIrx1DLk=;
+        b=HIwO9sNp7ygPXHdecLYt65BdPrIwZ81jqG4QXbrXwjDaosmeqf35Bwt8GOQFCJANyI
+         1LlmSuzAVZ/PmhYhGxU3uqG5KWCkmZTFU/fzfeLeve/DSU6GFMfN9XV95ZG9C2oqn8uv
+         mdkb7Dfv0/7+9st5Hyy3BxICyqIOiZiEnfB6R4NUoYgt4Uzd9M+OZHxgWgpZhLNZZ7mR
+         unpy2bOU9OmcRKepWnPIwgOYE4jP0nnado616WTk3gyVfldiVhpH+LNZ27Ug6i2xKqlw
+         BhN8z3dffGJ2S8c7VOrDqEnPPiGNo9B4dKnAooSofCpu/TFqsXci5/3283CO7YBuqBTU
+         +nUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766594605; x=1767199405;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ssG8N04RBTKk33KNiGJ23C3mBaOiOd3tZk3DIrx1DLk=;
+        b=jYTXiw3fFhjmrTopEdtrv+6QonfalJex0CE8a+5yNd0wQTEj0O0qk6A9kxjAB4b5T7
+         Qnah2qs7rMk/gBFa3nZRWo4/EWa2HCXCK1lmDkWBHKMAipexcufeJyBwcLbVD9KOHL59
+         mMPnAnC9/Q8NnYYPS9KD3H1x8OwIdt/7UMhN20PhTG+isnbFFfIcdZSh4y8P65Va4ZN/
+         9HXZJdxaZZT/o5hoEWHrdWP+fIZQhSYntrATDY0XDxspEIJnedFvGT3qBp4sVcT1/Ob7
+         lRYrI1LzNmE+bbMP+l9FMK38CVNhelj/p2tlgLIF2LxpAcaic9Vj8MAJ5yKzrb14wwjn
+         WSJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWyDKpUNGoVhLIif30N/ohsBbRQUwZtg2+rXyFL3THAhkE+RcsTO7xWAU/ZiGKVooZedq1/r5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfjnd/5TALiYHnuihvscUkxGNYsYFAYrJttWtKqyLhCL1ELBNt
+	yObZtAh3ud0P4jk4G/t/jNeo8PFaV7g/saOo4OLIM2arnZCx9AqXvgCT
+X-Gm-Gg: AY/fxX64W36UrysvdJdBZfdb2lZHYsHzoSOsCINzmw9zb8dBLdCSSlPd/A1NsMzzDTD
+	VSB7igTBNBtFK5LbudjVl2KqxW2KZCEpNOsopWWUhh+GWThZVLMqOvZTjXQp2uQrV7bAtPooV8F
+	ktwsw+UTlygx5pAGDq3R0w41Zz82huDvgasi10v+SUKMA42r/kfNlWVs4yjGvosvC3xqYXUQT8S
+	Ak4FPbYxwGXsUY8twh8c0JT59Kae9GGeBRIEafJYMjavWVC9iD5e/t4xU6RuRvGqaGpzHGAXb0v
+	SHz+5jRSFnzT3a9047o+Hp5hHYwGcq0GDDJOYafl73a+9n1+ecGs0uRik/RrjswnjaHENu3b6lO
+	ElcdZC6+K2qT9fPS+svvaqRlfQHbl7RQ/pimz1D9So6PRgDDeI4LYIfWCS/kPrl6aqVXVOVJGa8
+	VTdIDK+f3SsY3ezSfroU49hJbt2CCfvU5rlIgCVEs=
+X-Google-Smtp-Source: AGHT+IESuNtdg7r6U8V3avyj/W74Bs7jNYRoapVQX/S1yMhl+s9xpYrFbDcjHGddBIRzo8KRQZaBBQ==
+X-Received: by 2002:a05:6a21:328c:b0:342:fa5:8b20 with SMTP id adf61e73a8af0-3769f9332a1mr18035364637.30.1766594604796;
+        Wed, 24 Dec 2025 08:43:24 -0800 (PST)
+Received: from localhost.localdomain ([111.125.235.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c82a10sm159726745ad.26.2025.12.24.08.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 08:43:24 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: axboe@kernel.dk
+Cc: io-uring@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	janak@mpiricsoftware.com,
-	shardulsb08@gmail.com,
-	stable@vger.kernel.org,
-	syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com,
-	Shardul Bankar <shardul.b@mpiricsoftware.com>
-Subject: [PATCH v2 2/2] hfsplus: return error when node already exists in hfs_bnode_create
-Date: Wed, 24 Dec 2025 20:43:47 +0530
-Message-Id: <20251224151347.1861896-3-shardul.b@mpiricsoftware.com>
+	brauner@kernel.org,
+	jack@suse.cz,
+	viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] io_uring: fix filename leak in __io_openat_prep()
+Date: Wed, 24 Dec 2025 22:12:47 +0530
+Message-Id: <20251224164247.103336-1-activprithvi@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251224151347.1861896-1-shardul.b@mpiricsoftware.com>
-References: <20251224151347.1861896-1-shardul.b@mpiricsoftware.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,50 +96,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-When hfs_bnode_create() finds that a node is already hashed (which should
-not happen in normal operation), it currently returns the existing node
-without incrementing its reference count. This causes a reference count
-inconsistency that leads to a kernel panic when the node is later freed
-in hfs_bnode_put():
+__io_openat_prep() allocates a struct filename using getname(), but
+it isn't freed in case the present file is installed in the fixed file
+table and simultaneously, it has the flag O_CLOEXEC set in the
+open->how.flags field.
 
-    kernel BUG at fs/hfsplus/bnode.c:676!
-    BUG_ON(!atomic_read(&node->refcnt))
+This is an erroneous condition, since for a file installed in the fixed
+file table, it won't be installed in the normal file table, due to which
+the file cannot support close on exec. Earlier, the code just returned
+-EINVAL error code for this condition, however, the memory allocated for
+that struct filename wasn't freed, resulting in a memory leak.
 
-This scenario can occur when hfs_bmap_alloc() attempts to allocate a node
-that is already in use (e.g., when node 0's bitmap bit is incorrectly
-unset), or due to filesystem corruption.
+Hence, the case of file being installed in the fixed file table as well
+as having O_CLOEXEC flag in open->how.flags set, is adressed by using
+putname() to release the memory allocated to the struct filename, then
+setting the field open->filename to NULL, and after that, returning
+-EINVAL.
 
-Returning an existing node from a create path is not normal operation.
-
-Fix this by returning ERR_PTR(-EEXIST) instead of the node when it's
-already hashed. This properly signals the error condition to callers,
-which already check for IS_ERR() return values.
-
-Reported-by: syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=1c8ff72d0cd8a50dfeaa
-Fixes: 634725a92938 ("[PATCH] hfs: cleanup HFS+ prints")
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
+Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
 ---
- v2:
- - Return ERR_PTR(-EEXIST) for already-hashed nodes, per Slava's suggestion.
- fs/hfsplus/bnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/openclose.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 191661af9677..250a226336ea 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -629,7 +629,7 @@ struct hfs_bnode *hfs_bnode_create(struct hfs_btree *tree, u32 num)
- 	if (node) {
- 		pr_crit("new node %u already hashed?\n", num);
- 		WARN_ON(1);
--		return node;
-+		return ERR_PTR(-EEXIST);
+diff --git a/io_uring/openclose.c b/io_uring/openclose.c
+index bfeb91b31bba..fc190a3d8112 100644
+--- a/io_uring/openclose.c
++++ b/io_uring/openclose.c
+@@ -75,8 +75,11 @@ static int __io_openat_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
  	}
- 	node = __hfs_bnode_create(tree, num);
- 	if (!node)
+ 
+ 	open->file_slot = READ_ONCE(sqe->file_index);
+-	if (open->file_slot && (open->how.flags & O_CLOEXEC))
++	if (open->file_slot && (open->how.flags & O_CLOEXEC)) {
++		putname(open->filename);
++		open->filename = NULL;
+ 		return -EINVAL;
++	}
+ 
+ 	open->nofile = rlimit(RLIMIT_NOFILE);
+ 	req->flags |= REQ_F_NEED_CLEANUP;
+
+base-commit: b927546677c876e26eba308550207c2ddf812a43
 -- 
 2.34.1
 
