@@ -1,150 +1,123 @@
-Return-Path: <stable+bounces-203385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF58CDCFD4
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 19:02:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C13CDD0FF
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 21:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C3943038287
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 18:02:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5031E300EDD1
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 20:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3A333B6E0;
-	Wed, 24 Dec 2025 18:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B9C2D7DE7;
+	Wed, 24 Dec 2025 20:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="IBKrHv6H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B74IU/gS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AFA329381
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 18:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4223372C
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 20:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766599322; cv=none; b=aEfY/6PoLr7QDhdRRDyUl6bQQgiyS2oc0xCYwHLUxltAiKxrESyedzrwV3y+ycjM8mfl47XKcd8D3CHJVbqQEzc84OH2RIYegtj1RY09lxaEtA9wBs+kYaCl7tkNE3xDqgaPWspon1c99KTWxUl6Kmv3cNZz+LUU9hacjxq+B9E=
+	t=1766609835; cv=none; b=YSL6Mb7TxpJ5f3iXyVJshRvErWKp5XdMu2iFC41+cyfwXOtS1OxKaXgTUdlU4OygUbLJd6W3ikFUJvunxoJnscoI96hZ32NI3FLeGMck/ppLqUdoDVVmgrY88zSNnGhMNpuQzEcy/Y67htkJG6HAQNgNldkVtk5Hs1+J56FXPMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766599322; c=relaxed/simple;
-	bh=ffr8BuiqR1HXDARhf4WRKjYaZRBbwe/ETGa9BNLzfkQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aGe08uY58rwJv+06yM2rvBbXyl5Sxj/h3I/ujwQosr/AuVCtyv0yC3zVuBvgdosLKX7aU7+EO+gEazuCvKR8aSISdWpZY1eANGaLb1bBmQdYpfUnYHV8xa3crJ3ZrDxKTfzWVzCRsudXrMtly6YlvFFeiSR7uQ5MvZRJau6qzp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=IBKrHv6H; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c75b829eb6so3822272a34.1
-        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 10:01:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1766599318; x=1767204118; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=31Zv6z83wAMfU9zE8KFoguUGkPYnxjQorySjBsQWmUo=;
-        b=IBKrHv6HrW2iA/iq3RIbQOS3QFkpkOIwhAtdCEdcMwpL5tkf9XNfhu/jGZJ5+A2jDM
-         3dzBNJI0bnbIq3ghv3WNUOkwTRPnieTWTGmH15E2lSsD41NK3reD8DmfknQzZ29whT9v
-         xUchTkByUW57AniMOcZKJtQCg5SUY8v7ETMyy57YJgUEIXrYl/qKYp8MTaW6gyBOeE5S
-         Y0ccCTPRus7SeeN+xw9iyXlbNOYQP1c9w6gORDBqwGTguIMFr7m6Dr2boEChFR2N8P3n
-         eJFV6kjDCWv1/AqKeeXd+CvvfQGzHGn1/6VHLLVSezC1O8OsbHSCoTT/TDiItGAylB/l
-         H9jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766599318; x=1767204118;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=31Zv6z83wAMfU9zE8KFoguUGkPYnxjQorySjBsQWmUo=;
-        b=nCNqoX/7DDKMtOHfyg7VaS/CK9Zq+UVQ8pvPfuto2FBQPXVwUF5TBRPg9CzCMHbnOW
-         HHAwET7/ecs7MgfuqzHU1mZcrAc7tUMiFDywSmc89mVoUkdBnhjNnTstAj5bUQ6Kr2DD
-         hGSDMdqXXIUiTdFgxaLHk1dfc8No0pRyts9IGyiuR7IXbasKomjxZSoEB6iNk7MEfELU
-         1m6bruAPp6feL1WiD/+2lIiukMKs7nQuX4nkgUW9jwkcLGXpKOb/FwwLdC7svUdeBsog
-         xZegbFYwX8lF4C66uAJZQQb01tJ2CJeZEv+MPWanSWJ8C5u2bnU/TYhVt/6mAytHYt7p
-         3rPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVI7EyH0BfFCSqim8VjlubrN+J6W0Orr46ZwfFrhpCMKNXu1ypD3wNF3F3We1Hna9aJEgqXBbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvGI6dQ0G/n7AJrNr5YGgYynEjzwiOLHb71fm+9tyIU24fAi4v
-	iP9BC/GXUy5rI/D1nj0XsCzA8xvjtk0kujU+/PRf+5K7VBRUZ5QrEA9g3OkB+oAVctA=
-X-Gm-Gg: AY/fxX41tZSCoss8Bm9V+xaCXMxU3pcW+Qp2VOLcHShSZy7bDueRy204VyLU5RG7kNJ
-	t/aF9mwReld0SmPe2GsChMPU+3wQZHuCTA8Tyi0vm884CdrBjw75Tz+UJs6j21HEnRudwbhMBTP
-	AINpfVeJQ4y3R19qsPKATlJwKHt03IbNGS3sJmLUJcH5wU73jo8ShsW3EnUh/lz0m7qCSlv/2U+
-	EUVIAe965LPKqkB7W5YIROaaEWZuwUZkNSopeVvb0g7hWBPPjSxuQ39IqLH20CuS0SnV2/VzWWD
-	iXF7CRVsJFQWbM9tnCdW3eh1q93Cxbi07RfCeT3RGyiywnjHl5hC5T6ouZ0ovmvtbsSMs2X91v9
-	2lerEWOvDJYVUqCQkAXnAamW4B6XXtLCKCiF/vOsl8u1NB5wfix63gFSoTmgJEihkYj/GBsabMB
-	0pwUe3JHwf
-X-Google-Smtp-Source: AGHT+IGfEWIgxDSU+uANNE79e+2413xwqBZuFut4L1sp7glYjUDAwIPMADbg+343p4Lu36fqv0j2bg==
-X-Received: by 2002:a05:6830:2546:b0:7ca:ee2d:fd8d with SMTP id 46e09a7af769-7cc668bb2abmr9050695a34.9.1766599318375;
-        Wed, 24 Dec 2025 10:01:58 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc66645494sm11921405a34.0.2025.12.24.10.01.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Dec 2025 10:01:57 -0800 (PST)
-Message-ID: <dc51a709-e404-4515-8023-3597c376aff5@kernel.dk>
-Date: Wed, 24 Dec 2025 11:01:55 -0700
+	s=arc-20240116; t=1766609835; c=relaxed/simple;
+	bh=rR+IqKZV2+yEt+beuh5Eb/n8EB8pgnm3N+CFdB1tJLU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fY5054KpMO9Bf5W4rui97cGhYMVyYdBe+yqJrCCTh9ZbmZymHSevJEfjbDflHSurE4+h263zD+UjNdZCFDgLb0W4ahjDUPeobmyxeSfSlpsKWVlVXwIuIxxjdHKPI1aVn4yIFzjBr2cp1EZh+wXu0h+dMQbkTzWKDAE7Szhioqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B74IU/gS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFD3C19425
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 20:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766609834;
+	bh=rR+IqKZV2+yEt+beuh5Eb/n8EB8pgnm3N+CFdB1tJLU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B74IU/gSHmJH1Hmz057c/bhb4otoef4wtVCACPubrkCkgNDQzf5trsmEIM9UBYFyV
+	 4Ub75f5XorN/9zHbW3BWGl1H6ghaFfsIrVjcCpmFOqaw6Tw7PwsESmqKZCBnS0waIW
+	 5j2wbwGJMa0XeOLcO+OyUWQhKedRwCquv56WsdTKq9ORQXoG33N0AV7qD67hlKaSBu
+	 WWPV+qdw7ny8M6s3dLClw+tEn8jHVA0MvrY33up1m7RudinlqRobaG3/SKAtGLtwNX
+	 AKlnp4BVwQEO9M0DzRN18I+5zn0+svenyYazmNS0Y7v/o8Kgbp1Q5rGZud+F03BeWW
+	 kRsg+5R9f+4iw==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78fc84772abso37286507b3.1
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 12:57:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWGXeTp1Kpk1sYjF+ZCCWxWE+JD/bJHbBCia6EC3pt2///1vqO3qatQTwqHkH2Z6izp4IQsGQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbh+DMSuNOG50bsRwcICmydvXC6z4jQNgmpQl8JHFhzLT8SpOC
+	Qo64N7V5NaonCIz4iq0mP5OsDsoMs3e76224+oaxSVS/Rj8zH4lK6EVPmzNf4J01pDUmqsNrK18
+	3UcCBDKIkljWd+k6Wrsl97JFfXAO4uR8=
+X-Google-Smtp-Source: AGHT+IHEpiYtEfh5uCgFo5PCRn5oYZ4PTGqB7Q7v0KfaxIHEA9IkOH/CVczmtklVCspfrNJwswMetaEUvQ9VmbcEId4=
+X-Received: by 2002:a05:690c:3613:b0:78f:f329:db93 with SMTP id
+ 00721157ae682-790077109cdmr18280407b3.41.1766609833858; Wed, 24 Dec 2025
+ 12:57:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring: fix filename leak in __io_openat_prep()
-To: Prithvi Tambewagh <activprithvi@gmail.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- brauner@kernel.org, jack@suse.cz, viro@zeniv.linux.org.uk,
- linux-fsdevel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
- skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org,
- syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20251224164247.103336-1-activprithvi@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20251224164247.103336-1-activprithvi@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251204164228.113587-1-visitorckw@gmail.com>
+In-Reply-To: <20251204164228.113587-1-visitorckw@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 24 Dec 2025 21:57:02 +0100
+X-Gmail-Original-Message-ID: <CAD++jLneTBUyMDod_fbJbuy2Y4errGQpWM3H8uVdYbKZeUNEAw@mail.gmail.com>
+X-Gm-Features: AQt7F2qA9XRNnTNTTvbjP3rZWDA-LIjuIfAQFySfGMJgCMAL1iMtQNPxxzDQBZg
+Message-ID: <CAD++jLneTBUyMDod_fbJbuy2Y4errGQpWM3H8uVdYbKZeUNEAw@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: integrator: Fix DMA ranges mismatch warning on IM-PD1
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: linus.walleij@linaro.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, arnd@arndb.de, jserv@ccns.ncku.edu.tw, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/24/25 9:42 AM, Prithvi Tambewagh wrote:
-> __io_openat_prep() allocates a struct filename using getname(), but
-> it isn't freed in case the present file is installed in the fixed file
-> table and simultaneously, it has the flag O_CLOEXEC set in the
-> open->how.flags field.
-> 
-> This is an erroneous condition, since for a file installed in the fixed
-> file table, it won't be installed in the normal file table, due to which
-> the file cannot support close on exec. Earlier, the code just returned
-> -EINVAL error code for this condition, however, the memory allocated for
-> that struct filename wasn't freed, resulting in a memory leak.
-> 
-> Hence, the case of file being installed in the fixed file table as well
-> as having O_CLOEXEC flag in open->how.flags set, is adressed by using
-> putname() to release the memory allocated to the struct filename, then
-> setting the field open->filename to NULL, and after that, returning
-> -EINVAL.
-> 
-> Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
-> Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-> ---
->  io_uring/openclose.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/io_uring/openclose.c b/io_uring/openclose.c
-> index bfeb91b31bba..fc190a3d8112 100644
-> --- a/io_uring/openclose.c
-> +++ b/io_uring/openclose.c
-> @@ -75,8 +75,11 @@ static int __io_openat_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
->  	}
->  
->  	open->file_slot = READ_ONCE(sqe->file_index);
-> -	if (open->file_slot && (open->how.flags & O_CLOEXEC))
-> +	if (open->file_slot && (open->how.flags & O_CLOEXEC)) {
-> +		putname(open->filename);
-> +		open->filename = NULL;
->  		return -EINVAL;
-> +	}
->  
->  	open->nofile = rlimit(RLIMIT_NOFILE);
->  	req->flags |= REQ_F_NEED_CLEANUP;
+On Thu, Dec 4, 2025 at 5:42=E2=80=AFPM Kuan-Wei Chiu <visitorckw@gmail.com>=
+ wrote:
 
-You can probably fix it similarly by just having REQ_F_NEED_CLEANUP set
-earlier in the process, then everything that needs undoing will get
-undone as part of ending the request.
+> When compiling the device tree for the Integrator/AP with IM-PD1, the
+> following warning is observed regarding the display controller node:
+>
+> arch/arm/boot/dts/arm/integratorap-im-pd1.dts:251.3-14: Warning
+> (dma_ranges_format):
+> /bus@c0000000/bus@c0000000/display@1000000:dma-ranges: empty
+> "dma-ranges" property but its #address-cells (2) differs from
+> /bus@c0000000/bus@c0000000 (1)
+>
+> The display node specifies an empty "dma-ranges" property, intended to
+> describe a 1:1 identity mapping. However, the node lacks explicit
+> "#address-cells" and "#size-cells" properties.
 
--- 
-Jens Axboe
+(...)
+> +++ b/arch/arm/boot/dts/arm/integratorap-im-pd1.dts
+> @@ -248,6 +248,8 @@ display@1000000 {
+>                 /* 640x480 16bpp @ 25.175MHz is 36827428 bytes/s */
+>                 max-memory-bandwidth =3D <40000000>;
+>                 memory-region =3D <&impd1_ram>;
+> +               #address-cells =3D <1>;
+> +               #size-cells =3D <1>;
+>                 dma-ranges;
+>
+>                 port@0 {
+
+This is for the *port* node and not for the
+stuff mentioned in the commit message, but the port is:
+
+                port@0 {
+                        #address-cells =3D <1>;
+                        #size-cells =3D <0>;
+
+                        clcd_pads_vga_dac: endpoint@0 {
+                                reg =3D <0>;
+                                remote-endpoint =3D <&vga_bridge_in>;
+                                arm,pl11x,tft-r0g0b0-pads =3D <0 8 16>;
+                        };
+                };
+
+Devoid of any reg, so who cares?
+
+Probably the empty dma-ranges should just be deleted again, it is
+pointless for the port.
+
+Yours,
+Linus Walleij
 
