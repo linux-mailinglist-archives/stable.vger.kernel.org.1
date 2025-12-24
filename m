@@ -1,102 +1,110 @@
-Return-Path: <stable+bounces-203376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CC6CDC5AF
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 14:26:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C391CDCA2C
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 16:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A996B3011417
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 13:26:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB1C4302F19D
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B75319609;
-	Wed, 24 Dec 2025 13:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65993446A6;
+	Wed, 24 Dec 2025 15:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="P+KWVcQ1"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815A620DE3;
-	Wed, 24 Dec 2025 13:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766582784; cv=none; b=A0BvXLvF2cYrQTJ0dw0WgZcmlnN8b6YkDdDH9b3baTlM+TLn3QzqGX6S9d95GSpo1lG5KJxX2YWnlzecrlOzafF12P61KL8k5QOkWeBhzUOlgIGsd/YSMMFUClVLtgMbOhHaLFgTBpk1sgdZNkM8lcjC5m57PW96iF80cxVIEiM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766582784; c=relaxed/simple;
-	bh=H+zCL2UnrgIaQDe/zx6zgPOYKGNAmgwr+oXBVxDBVXo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RxWnPJ0Mg5b/e6Zg1OK7wXR7NuHN64BA5QfVfCF776gDNh4//eZaYTJTczX0x4zomvcJk/5m7L9y37MM7kM9xhFdtt0zEqTD3CMKpxwMffXGqrX44qh4Mdtj0KNXDEhuiG+B15akPz+/gmRFnOX5+dDQBCCbA8YWLVTtB7EWCPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD70D339;
-	Wed, 24 Dec 2025 05:26:14 -0800 (PST)
-Received: from [10.57.46.118] (unknown [10.57.46.118])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DA333F694;
-	Wed, 24 Dec 2025 05:26:20 -0800 (PST)
-Message-ID: <2463b494-66dd-4f0b-9ce7-4f544a41ecbf@arm.com>
-Date: Wed, 24 Dec 2025 13:26:18 +0000
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0D230F540;
+	Wed, 24 Dec 2025 15:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766589257; cv=pass; b=Q4iLiSpktBsX4kLHwr8rIou9OFL3fv5AHPVDwnexkqaORFahBuAqm27M719xorpymM9KREeIQ8X5/5RFFhqi8VQD5biwgs6xNe2ZEunS9S5tIKQJ/toXRiltu2voEkmAoojbEJLSOdSDXmhKVNd5LsnXT5EwHwqa2U0HkLTdVEI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766589257; c=relaxed/simple;
+	bh=rbqc3UCFBSrz08h4aUFgyc8suMzsG2WeJiXabhgDrVQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h3xG3441qZfs4Sb4tcfjs/PHPEVvJVuBTou4zpuBAnrJVoFvMCmZH43GAzL7A0WO1Xc5vp6mgXXtUO00U5cA/v7Q937snBNFxlX/hf0vbDg+z51l/yBgxw+Tjdl78lFgNDx8AGJrPQ0QMr5JnQn39JNPsY3Fkq9wlrpyVTMqy7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=P+KWVcQ1; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1766589238; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QFM6xA69fBlLK8q0d0afGufRoW3kM+ZRRwyL62hgY21pXNFiD3gVn2x1uca7cVUe8FI0QDUdUy82RsgApw1ivJ/fvmqmTNhOyxxpfAUSbbTcqNeN0ZI9hvcTEJxI8c4I0PsNVcVokTmf/VXdAozknTT4uwZcoNQBpgiyu9Aq+oA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1766589238; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=AyGDzezrDL1P/4MnEhokCLVuv3bZMX9RfvNUzF4CL3I=; 
+	b=jr5LDs1/1rWiP7hBskGE2UFUBXvn2onODYVsxzhE93qHnJLju0m3ESdVyBM+sfmzij829jsRroXHQ0Lbg/mo642V11aWe8QQz6C+kDMMFkpJV/KH0/6zjpmwcXeNosOoVieJmJ3FAZy8szOs4uEhVNETFbw79de7/WvIZSRIhp0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766589238;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=AyGDzezrDL1P/4MnEhokCLVuv3bZMX9RfvNUzF4CL3I=;
+	b=P+KWVcQ1KDB0SvODC/Yd4imdnPKLf2BRFWi5T/1t3zx75Ct9ImZiqmCXPs1uFYRr
+	cAm3COA6/ZTtw170LOECzlDHXknE22LYubxcCa9UvCfs5lSvWfk0clxQacOy7sG+OZJ
+	Mwr6epYEkcJFDUTKVx92RkTZF6PZymyBLjdlFq/4=
+Received: by mx.zohomail.com with SMTPS id 1766589236772610.7105812564735;
+	Wed, 24 Dec 2025 07:13:56 -0800 (PST)
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: slava@dubeyko.com,
+	zippel@linux-m68k.org,
+	linux-fsdevel@vger.kernel.org,
+	glaubitz@physik.fu-berlin.de,
+	frank.li@vivo.com
+Cc: akpm@osdl.org,
+	linux-kernel@vger.kernel.org,
+	janak@mpiricsoftware.com,
+	shardulsb08@gmail.com,
+	stable@vger.kernel.org,
+	syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>
+Subject: [PATCH v2 0/2] hfsplus: avoid re-allocating header node 0 and stop on already-hashed nodes
+Date: Wed, 24 Dec 2025 20:43:45 +0530
+Message-Id: <20251224151347.1861896-1-shardul.b@mpiricsoftware.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [report] Performance regressions introduced via "cpuidle: menu:
- Remove iowait influence" on 6.12.y
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>, rafael.j.wysocki@intel.com,
- daniel.lezcano@linaro.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <c0b5c308-ea18-4736-b507-01cb06cb8dfc@oracle.com>
- <c44a14db-28b6-41f3-984b-bfe67fecfa66@oracle.com>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <c44a14db-28b6-41f3-984b-bfe67fecfa66@oracle.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On 12/24/25 12:18, ALOK TIWARI wrote:
-> Hi Christian,
-> 
-> 
-> On 12/3/2025 11:01 PM, ALOK TIWARI wrote:
->> Hi,
->>
->> I’m reporting a performance regression of up to 6% sequential I/O
->> vdbench regression observed on 6.12.y kernel.
->> While running performance benchmarks on v6.12.60 kernel the sequential I/O vdbench metrics are showing a 5-6% performance regression when compared to v6.12.48
->>
->> Bisect root cause commit
->> ========================
->> - commit b39b62075ab4 ("cpuidle: menu: Remove iowait influence")
->>
->> Things work fine again when the previously removed performance- multiplier code is added back.
->>
->> Test details
->> ============
->> The system is connected to a number of disks in disk array using multipathing and directio configuration in the vdbench profile.
->>
->> wd=wd1,sd=sd*,rdpct=0,seekpct=sequential,xfersize=128k
->> rd=128k64T,wd=wd1,iorate=max,elapsed=600,interval=1,warmup=300,threads=64
->>
->>
->> Thanks,
->> Alok
->>
-> 
-> Just a gentle ping in case this was missed.
-> Please let us know if we are missing anything or if there are additional things to consider.
-> 
+Hi,
 
-Hi Alok,
-indeed it was missed, sorry!
-The cpuidle sysfs dumps pre and post test would be interesting like so:
-cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
-for both would be helpful so I can see what actually changed.
-Or a trace with cpu_idle events.
-Additionally a latency distribution of the IO requests would be helpful to relate
-them to the cpuidle wakeups.
+syzbot reported a warning and crash when mounting a corrupted HFS+ image where
+the on-disk B-tree bitmap has node 0 (header node) marked free. In that case
+hfs_bmap_alloc() can try to allocate node 0 and reach hfs_bnode_create() with
+an already-hashed node number.
 
-Thanks,
-Christian
+Patch 1 prevents allocating the reserved header node (node 0) even if the bitmap
+is corrupted.
+
+Patch 2 follows Slava's review suggestion and changes the "already hashed" path
+in hfs_bnode_create() to return ERR_PTR(-EEXIST) instead of returning the existing
+node pointer, so we don't continue in a non-"business as usual" situation.
+
+v2 changes:
+  - Implement Slava's suggestion: return ERR_PTR(-EEXIST) for already-hashed nodes.
+  - Keep the node-0 allocation guard as a minimal, targeted hardening measure.
+
+Reported-by: syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=1c8ff72d0cd8a50dfeaa
+Link: https://lore.kernel.org/all/20251213233215.368558-1-shardul.b@mpiricsoftware.com/
+
+Shardul Bankar (2):
+  hfsplus: skip node 0 in hfs_bmap_alloc
+  hfsplus: return error when node already exists in hfs_bnode_create
+
+ fs/hfsplus/bnode.c | 2 +-
+ fs/hfsplus/btree.c | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
 
