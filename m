@@ -1,295 +1,203 @@
-Return-Path: <stable+bounces-203351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF95CDAE2C
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 01:14:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A30CDB30A
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 03:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 574BF30358E7
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 00:13:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3459F3026BFA
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 02:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296EA75809;
-	Wed, 24 Dec 2025 00:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NMKS1vzf";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jds33bok"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ED5298CC9;
+	Wed, 24 Dec 2025 02:43:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9066354774
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 00:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE07323BCF7;
+	Wed, 24 Dec 2025 02:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766535182; cv=none; b=aSLcWEZ61qaTsAsmvZzxQSQ28b+ogdRXDpzjGJptWhnOlEAKt8EFvdzcAc9LJvsWlbzos0t90lMDe7LPZHaG9HctNFEkrKT/JgkkSsJf9o8FaLfcLbUmgHUFFWd2zJ6AZt7Cg8tKLR1P9JGUpK2twFJbldBT/9HhAn7G/ZKlNpw=
+	t=1766544228; cv=none; b=Mtt/wLkpfHCJZt2qO6z7dTeIrz+cwpdpXhb+ihJzbCo0DI7QOF1Ju7UFul5wT6Icr8r5A50NkvCEIWhcLuM4E6g+AojuKQLHPrbG8LLJFLk2aI9CBzilef1iujsf8uiSmTX25PSgNXsvLKm5bYc0kv8wXQhNkPuBL4NLiwPPE74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766535182; c=relaxed/simple;
-	bh=SUxMB9io5kUL3hiZuCM9QEc8yZLw0GrSlV7GpF2gspc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9kRMUo8BEaD8G3OKkN9YhOrd792Kxp/vfVfmxidq9loWMLFrGIh9rthljzXG/GTGj498DTRgbCnYp0eg9QD8K3dbmsaodSZKkWy59ryy69ek0twHf6o6y4sMDTglU6akvjXgvyzQ1as2O8wQyqQssD2ERi206apd6VzugIq1Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NMKS1vzf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jds33bok; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766535179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-	b=NMKS1vzfrtsh31CTW0ktQvl7KEif3n3aG51xi+JwWhDM8D2/TlZRyEA1okC/IeL9DPCE9b
-	5lVqsfBAiPX27rOobDCOpBsZwikFWyq8U4+Yx65fKy//wT31Ch7WCQjGH9rkwv4wZY5Tc9
-	IfHmxAwJhWUaYmpiubwSZwlJ4JksVNE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-_2lRjK9rPY6ZkRuW4qeU3g-1; Tue, 23 Dec 2025 19:12:58 -0500
-X-MC-Unique: _2lRjK9rPY6ZkRuW4qeU3g-1
-X-Mimecast-MFC-AGG-ID: _2lRjK9rPY6ZkRuW4qeU3g_1766535177
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-430fcb6b2ebso2977466f8f.2
-        for <stable@vger.kernel.org>; Tue, 23 Dec 2025 16:12:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766535177; x=1767139977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-        b=Jds33bok7nUlvbx3in6cNYI1t3Y/UP3b64r+trS8YhRuZTRPdxuDPvS3c+zTdlgoP/
-         f06T9gAreEMqjiHvbJevRoUeFkyrDArh/7m8FN7m21myh01DTvO8jsXmj2GqQUies7gr
-         hrIpcXJOF2U7ersStViJ2+WEJtsribg1dgDLKU+qRrin4XSUDutcyJLr177FXr8ULYhR
-         0RaWgUmnQgN6T2uvihETJ/BEnG1wVM5fcEaTPxr0rqdxcwfXJraa9TVPnyvSDOcIJIFJ
-         RF7gHBcwMvqWi5kbHo/ruItPqvDl2DGsleEtjNKXLatmzdD665M0MhKYyWcZBpbxc/l2
-         1pNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766535177; x=1767139977;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-        b=L9fAagGl+7Nmlg/jzurEXYXNczCElceLAOjQD8zpgY1RRIsgZumsMcfKdLC9Cg+N0g
-         cs2KggsSIJa2P8Qq+LMYXOWZqwiFdAq2NZc+Bv6Om+eMrCAP39G5dDXeCFpurldr6T3c
-         HdMA2JTuKp6mLV0B5Y3SvF5jWFOpyTL3hVgKnvD4m9GPnX4NfalwTf+VfQI2FSfS3G2J
-         8uye2gfIxnUUCspL3+pfI8B05sUEuzjxGPpOVmtm2t173aoiJiQ6aXjjf3yehhrqQ21z
-         oOhQaaLvUGLu3E+Mx5fUFVpUUmnvgbhKGveq90rcKYMcBFMqgGTT9sJAkMQ1E8YYnR/r
-         o+Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCWi/Bt7z2ofEZmHNmOlg6nDZqdKlEZmoOIBQLd6/X5qA1OwjAaEt8OB0uy4EhmwlsAZ1UeXMYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfpbCFXr2bN2U3sbXh+/BdFHW1HAFFLulhSTGt26Pc4LdbGDFd
-	UPLp4b+Jy31FWHESWaOgZJzy3XSf4wr5bbzJFGmhCLfSG0AbhDuta3kbv6uOe4K+Kz/AKUmP8ov
-	NAYWcLiUwNkXWNUqafzamYthNTefjilFDI2Muu7/w7X3cwMQLzhvQ0F1UFQ==
-X-Gm-Gg: AY/fxX46nz/rq+zdz8NAruR6E9I9l95uFrDdf6LGhl+jom8oAWCzR3J2a0x/jVgKaxq
-	kbSjSpKBhS0iOuPTwa5teEf0w2YkIENxTdsdYEqLba8rUkrcHRfetT2bUmjpfH0M0L8jY1nB3Vl
-	hnPlVFtjB0zXIQehg2ybiFiTRlO+MUQVrTWlezgZM70/pznz9mYQqdRM5h09PhXKTa8jCengv2C
-	ZGjJUW79r41j0hYxuHzOakemH7/AqcSSAlPj4pb45Gy8BrQOycdWRRNtUlI60EPR+gfwb+EbWGu
-	kQw/zNNNzJqTEQA2b+yjptGSOkIz1V2XcsqRP9Jkdz+Gyljsr4gZsUnI47wwUBYjiBY1p9E7kIS
-	+Hdmx1Y+mGnVOV2G+cgL1310kUr3aDXS23vQDFmxdRV3L521VbCq5QScLijSRaa/vfGVZbQ1EQ/
-	6iS1p9zVNuJWN6Rq4=
-X-Received: by 2002:a05:600c:628c:b0:47a:7fbf:d5c8 with SMTP id 5b1f17b1804b1-47d1958296bmr142012565e9.26.1766535176814;
-        Tue, 23 Dec 2025 16:12:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7q/9gwLnCQEkdKpL0Em0GJ2ocZ6ifEAr9yGLRCJjag6irdREePfiliIJO9d7U2xigRdDUJA==
-X-Received: by 2002:a05:600c:628c:b0:47a:7fbf:d5c8 with SMTP id 5b1f17b1804b1-47d1958296bmr142012415e9.26.1766535176377;
-        Tue, 23 Dec 2025 16:12:56 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.145.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa0908sm30285139f8f.31.2025.12.23.16.12.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:12:54 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	x86@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/5] x86, fpu: separate fpstate->xfd and guest XFD
-Date: Wed, 24 Dec 2025 01:12:46 +0100
-Message-ID: <20251224001249.1041934-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224001249.1041934-1-pbonzini@redhat.com>
-References: <20251224001249.1041934-1-pbonzini@redhat.com>
+	s=arc-20240116; t=1766544228; c=relaxed/simple;
+	bh=pZoTZBKywizW5eUw8XYFLW/usgZSN+Jn27CkiJJkyoM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=uvPQwfGJw39aZTBCkHGCuN8QphAtVBxy5B34+7Wre8h9xjQ81oNKJkIh2wTu8lk3oHFylEqYvR+mRwM+pdsf9R6HrVTn1/O0Z27sLUbzCXQFcVOBrBvSZZ8EkTTKrYPpLi/dThqZfYQfFVliTutK0TceQXNbZ8hDL1Xel/YDrjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.126])
+	by gateway (Coremail) with SMTP id _____8DxPMNeU0tpyKECAA--.8179S3;
+	Wed, 24 Dec 2025 10:43:42 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+	by front1 (Coremail) with SMTP id qMiowJBxSeBXU0tp8RgEAA--.12393S3;
+	Wed, 24 Dec 2025 10:43:38 +0800 (CST)
+Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
+To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ yangtiezhu@loongson.cn
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui
+ <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20251222113409.2343711-1-lixianglai@loongson.cn>
+ <20251222113409.2343711-3-lixianglai@loongson.cn>
+ <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
+ <CAAhV-H4PehwGm-WwEuu4ZPbQutJR6m62tOSUxLcGQAxR_YX0Eg@mail.gmail.com>
+ <7b8799d1-a4b2-58dc-187a-19c772612351@loongson.cn>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
+Date: Wed, 24 Dec 2025 10:40:08 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <7b8799d1-a4b2-58dc-187a-19c772612351@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:qMiowJBxSeBXU0tp8RgEAA--.12393S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF13WrW8Gry7AF18Cw4Utrc_yoWrZF4kpa
+	yFyF1DtFWDtw1kJw4Dt34DCryUtrWkGw1DWrn7JFyrAr1qgr1YgryUXw1q9F1DJw48GF1k
+	XFW5tr9xZayUJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5xhLUUUUU=
 
-Until now, fpstate->xfd has acted as both the guest value and the value
-that the host used when executing XSAVES and XRSTORS.  This is wrong: the
-data in the guest's FPU might not be initialized even if a bit is
-set in XFD and, when that happens, XRSTORing the guest FPU will fail
-with a #NM exception *on the host*.
+Add yangtiezhu@loongson.cn
 
-Instead, store the value of XFD together with XFD_ERR in struct
-fpu_guest; it will still be synchronized in fpu_load_guest_fpstate(), but
-the XRSTOR(S) operation will be able to load any valid state of the FPU
-independent of the XFD value.
+Hi :
+>
+>
+> On 2025/12/23 上午10:46, Huacai Chen wrote:
+>> On Tue, Dec 23, 2025 at 9:27 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>
+>>>
+>>>
+>>> On 2025/12/22 下午7:34, Xianglai Li wrote:
+>>>> Insert the appropriate UNWIND macro definition into the 
+>>>> kvm_exc_entry in
+>>>> the assembly function to guide the generation of correct ORC table 
+>>>> entries,
+>>>> thereby solving the timeout problem of loading the livepatch-sample 
+>>>> module
+>>>> on a physical machine running multiple vcpus virtual machines.
+>>>>
+>>>> While solving the above problems, we have gained an additional 
+>>>> benefit,
+>>>> that is, we can obtain more call stack information
+>>>>
+>>>> Stack information that can be obtained before the problem is fixed:
+>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>>
+>>>> Stack information that can be obtained after the problem is fixed:
+>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
+>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
+>>>> [<0>] sys_ioctl+0x498/0xf00
+>>>> [<0>] do_syscall+0x94/0x190
+>>>> [<0>] handle_syscall+0xb8/0x158
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>>> ---
+>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>>>> Cc: WANG Xuerui <kernel@xen0n.name>
+>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>> Cc: Bibo Mao <maobibo@loongson.cn>
+>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
+>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
+>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>>>
+>>>>    arch/loongarch/kvm/switch.S | 2 ++
+>>>>    1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+>>>> index 93845ce53651..e3ecb24a3bc5 100644
+>>>> --- a/arch/loongarch/kvm/switch.S
+>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
+>>>>        /* restore per cpu register */
+>>>>        ld.d    u0, a2, KVM_ARCH_HPERCPU
+>>>>        addi.d  sp, sp, -PT_SIZE
+>>>> +     UNWIND_HINT_REGS
+>>>>
+>>>>        /* Prepare handle exception */
+>>>>        or      a0, s0, zero
+>>>> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>>>>        addi.d  a2, sp, -PT_SIZE
+>>>>        /* Save host GPRs */
+>>>>        kvm_save_host_gpr a2
+>>>> +     st.d    ra, a2, PT_ERA
+>>> Had better add some comments here to show that it is special for unwind
+>>> usage since there is "st.d ra, a2, PT_R1" already in macro
+>>> kvm_save_host_gpr().
+>> Then there is a new problem, why can unwinder not recognize the
+>> instruction in  kvm_save_host_gpr()?
+> maybe it need unwinder owner to answer this question.
+>
+kvm_save_host_gpr() is an assembler macro that has already been executed 
+and is no longer normal on the stack.
+Am I explaining correctly? @tiezhu
 
-Cc: stable@vger.kernel.org
-Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/include/asm/fpu/api.h   |  6 ++----
- arch/x86/include/asm/fpu/types.h |  7 +++++++
- arch/x86/kernel/fpu/core.c       | 19 ++++---------------
- arch/x86/kernel/fpu/xstate.h     | 18 ++++++++++--------
- arch/x86/kvm/x86.c               |  6 +++---
- 5 files changed, 26 insertions(+), 30 deletions(-)
+I guess you might be wondering why unwinder didn't recognize 
+kvm_enter_guest().
 
-diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-index 0820b2621416..ee9ba06b7dbe 100644
---- a/arch/x86/include/asm/fpu/api.h
-+++ b/arch/x86/include/asm/fpu/api.h
-@@ -152,11 +152,9 @@ extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
- extern int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures);
- 
- #ifdef CONFIG_X86_64
--extern void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd);
--extern void fpu_sync_guest_vmexit_xfd_state(void);
-+extern void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu);
- #else
--static inline void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd) { }
--static inline void fpu_sync_guest_vmexit_xfd_state(void) { }
-+static inline void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu) { }
- #endif
- 
- extern void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf,
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index 93e99d2583d6..7abe231e2ffe 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -545,6 +545,13 @@ struct fpu_guest {
- 	 */
- 	u64				xfeatures;
- 
-+	/*
-+	 * @xfd:			Save the guest value.  Note that this is
-+	 *				*not* fpstate->xfd, which is the value
-+	 *				the host uses when doing XSAVE/XRSTOR.
-+	 */
-+	u64				xfd;
+There's something wrong with the logic that we're implementing here that 
+we should put the current pc in era instead of ra.
+This will allow unwind to identify the symbol kvm_enter_guest.
+
+So I will fix it in the next version like this:
+
+@@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+        addi.d  a2, sp, -PT_SIZE
+        /* Save host GPRs */
+        kvm_save_host_gpr a2
+
++    /*
++     * The csr_era member variable of the pt_regs structure is required
++     * for unwinding orc to perform stack traceback, so we need to put
++     * pc into csr_era member variable here.
++     */
++    pcaddi    t0, 0
++    st.d    t0, a2, PT_ERA
 +
- 	/*
- 	 * @xfd_err:			Save the guest value.
- 	 */
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index a480fa8c65d5..ff17c96d290a 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -317,16 +317,6 @@ int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures)
- EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
- 
- #ifdef CONFIG_X86_64
--void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
--{
--	fpregs_lock();
--	guest_fpu->fpstate->xfd = xfd;
--	if (guest_fpu->fpstate->in_use)
--		xfd_update_state(guest_fpu->fpstate);
--	fpregs_unlock();
--}
--EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
--
- /**
-  * fpu_sync_guest_vmexit_xfd_state - Synchronize XFD MSR and software state
-  *
-@@ -339,14 +329,12 @@ EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
-  * Note: It can be invoked unconditionally even when write emulation is
-  * enabled for the price of a then pointless MSR read.
-  */
--void fpu_sync_guest_vmexit_xfd_state(void)
-+void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu)
- {
--	struct fpstate *fpstate = x86_task_fpu(current)->fpstate;
--
- 	lockdep_assert_irqs_disabled();
- 	if (fpu_state_size_dynamic()) {
--		rdmsrq(MSR_IA32_XFD, fpstate->xfd);
--		__this_cpu_write(xfd_state, fpstate->xfd);
-+		rdmsrq(MSR_IA32_XFD, gfpu->xfd);
-+		__this_cpu_write(xfd_state, gfpu->xfd);
- 	}
- }
- EXPORT_SYMBOL_FOR_KVM(fpu_sync_guest_vmexit_xfd_state);
-@@ -890,6 +878,7 @@ void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
- 		fpregs_restore_userregs();
- 
- 	fpregs_assert_state_consistent();
-+	xfd_set_state(gfpu->xfd);
- 	if (gfpu->xfd_err)
- 		wrmsrq(MSR_IA32_XFD_ERR, gfpu->xfd_err);
- }
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 52ce19289989..c0ce05bee637 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -180,26 +180,28 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
- #endif
- 
- #ifdef CONFIG_X86_64
--static inline void xfd_set_state(u64 xfd)
-+static inline void __xfd_set_state(u64 xfd)
- {
- 	wrmsrq(MSR_IA32_XFD, xfd);
- 	__this_cpu_write(xfd_state, xfd);
- }
- 
-+static inline void xfd_set_state(u64 xfd)
-+{
-+	if (__this_cpu_read(xfd_state) != xfd)
-+		__xfd_set_state(xfd);
-+}
-+
- static inline void xfd_update_state(struct fpstate *fpstate)
- {
--	if (fpu_state_size_dynamic()) {
--		u64 xfd = fpstate->xfd;
--
--		if (__this_cpu_read(xfd_state) != xfd)
--			xfd_set_state(xfd);
--	}
-+	if (fpu_state_size_dynamic())
-+		xfd_set_state(fpstate->xfd);
- }
- 
- extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
- #else
- static inline void xfd_set_state(u64 xfd) { }
--
-+static inline void __xfd_set_state(u64 xfd) { }
- static inline void xfd_update_state(struct fpstate *fpstate) { }
- 
- static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 01d95192dfc5..56fd082859bc 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4261,7 +4261,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (data & ~kvm_guest_supported_xfd(vcpu))
- 			return 1;
- 
--		fpu_update_guest_xfd(&vcpu->arch.guest_fpu, data);
-+		vcpu->arch.guest_fpu.xfd = data;
- 		break;
- 	case MSR_IA32_XFD_ERR:
- 		if (!msr_info->host_initiated &&
-@@ -4617,7 +4617,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_XFD))
- 			return 1;
- 
--		msr_info->data = vcpu->arch.guest_fpu.fpstate->xfd;
-+		msr_info->data = vcpu->arch.guest_fpu.xfd;
- 		break;
- 	case MSR_IA32_XFD_ERR:
- 		if (!msr_info->host_initiated &&
-@@ -11405,7 +11405,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	 * in #NM irqoff handler).
- 	 */
- 	if (vcpu->arch.xfd_no_write_intercept)
--		fpu_sync_guest_vmexit_xfd_state();
-+		fpu_sync_guest_vmexit_xfd_state(&vcpu->arch.guest_fpu);
- 
- 	kvm_x86_call(handle_exit_irqoff)(vcpu);
- 
--- 
-2.52.0
+
+Thanks,
+Xianglai.
+>>
+>> Huacai
+>>>
+>>> Regards
+>>> Bibo Mao
+>>>>
+>>>>        addi.d  a2, a1, KVM_VCPU_ARCH
+>>>>        st.d    sp, a2, KVM_ARCH_HSP
+>>>>
+>>>
 
 
