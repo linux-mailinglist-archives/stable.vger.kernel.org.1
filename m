@@ -1,101 +1,80 @@
-Return-Path: <stable+bounces-203373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EE9CDC0ED
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 11:54:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C683ECDC0FC
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 11:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3BD0307AFE8
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:53:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B917E305EB6D
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA0931A7FE;
-	Wed, 24 Dec 2025 10:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F8D31A551;
+	Wed, 24 Dec 2025 10:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XdwDREM+";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ozsxytqc"
+	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="bTEKe7Fm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDA431AA83
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 10:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66778314D21
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 10:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766573635; cv=none; b=NCbn6yCPqMdnw6E/Ke6qtSjBuYdCEYMkz3gEUQNIGAoSOr6nggYb/3vnOMEU8UkaVmakybhOUDPnaFiBuUoN12lIM56bJ5dG6erhDSzAFDgGrXI2rgN98r9CbuyK/hL1C++/yjxwvExNxTvVKNjr8JaV3WoA2gNj15kOVlPXQNM=
+	t=1766573707; cv=none; b=iRM7EuPjpYaw75IuiUAcO7zIP/4p6ZVoo0tSCgSovvNcUUem4tSrfy15jQ0CgwKQ/psy/RftrVvfiNxaq+ptY1jCdusBCVYKc5Fe3urAhCsXkL9O7EgMarVGzjmSDlsLY+o3eip/e+WPpkC2sHq2+I2zeV668HYXFum6lbSFiRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766573635; c=relaxed/simple;
-	bh=cPDoEfxg759WqZGAjy7ePjMCwqTiwM28X7LtdMqCAP0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ei+JAqSCE6T7/DY+PhJXQKNDf4TcyAU/Z1TCBw/yHLSNOtkIko5MsHGON59ywqPKKmLGZSKQ0ZSqmBOXt8MuU1QuRzwy33zxNSC2QeYtMbK/gH6x4YgiPPRNvNUSHfRfKd4k72InNZl/Y3cqyZiIwy451QRq2pQEyUTSEemjBDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XdwDREM+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ozsxytqc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BO5UsiQ1018272
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 10:53:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nWatTeODsCj9eCOPh6s/ONx5sdA0VSf8P0xfOcNmuC8=; b=XdwDREM+2/o3Gg8k
-	tTVMFQsmDRiKhkn6SKQUHPmxHw+ZpQoZrLFzilhKiHcIMbOQA938/kH4o4HHf3rq
-	RyT03iQlxDOvXRJBvP9jg+Lj5zcdEwqGOAxMUuol4my4h00PitymU+5aPRWeZwCJ
-	xvYCBI0WIJzx8tYiMQNi1h6TyP8d6PkrdkRo9cW8Z2tKI+w+zGvqM5b6bP+ooDvK
-	Qm/nnOF/yQe/4qV8aSvhnQT72vduYDi7LMVyucV9EBZe6bakSjZCOOEEjyZF9BuD
-	PPB+nAEN+oXvCCeQ+TzUwKA3OUbuIJdEddnOGXSp02ALCeCgWKTV8duiePfQrUP3
-	4p4Wwg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b7xjsan5p-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 10:53:53 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ee3dfe072dso152433971cf.2
-        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 02:53:53 -0800 (PST)
+	s=arc-20240116; t=1766573707; c=relaxed/simple;
+	bh=YJxxyVUIH0LKd1472HrqzJ1zqvb7vGfc8Y7LGrUbm8I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eNgGAoYD8SIPi7szITPARDOaDJuJrXF0TN8Wp+bgOKXIrJ/cGnBIIbZx3Rc/Y4IT8hU9zIuzldCZI1QHdqGVqXKaBjJ/+KzkrdJ3szuPv2yIDG6B7RPdSpWR5SoSXtNMY07h+1uhu6M6dW/JFDZhfRnimmV6VZ+Mq9dRA+v+yxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=bTEKe7Fm; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47a80d4a065so30307665e9.2
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 02:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766573632; x=1767178432; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nWatTeODsCj9eCOPh6s/ONx5sdA0VSf8P0xfOcNmuC8=;
-        b=OzsxytqcydpYC/vEiiT6DZc5U3Fs4HMtsL6jBnoLjmjkohGNEgMxbJvacpHC+00s2l
-         4fDsybqQzl45dt/eK/3efOCqxKREtHsBR+fZkAY8zS75bjlV4QrEk9tTUgPHgH8E5rnf
-         bEH+a2jw31FWmzHpZybU47U6YguWn6rIcEi+0y1vBP+cjZBnP9frNvv83XH6WHNvRN5H
-         UZiOfvPei//B/E9DMVLqsPw4gJwpB8yNJdeEg2ZhaKsvv80qBYS8pSguR75QIVbyG8EJ
-         agACtlriZstBXwiDEzX2bafsa5fl45LkKC9JHHormjDTgRcIUPS1NzEut2Nm2eWEFGAh
-         UmIw==
+        d=isovalent.com; s=google; t=1766573702; x=1767178502; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6YVPObAxph0NNzQqXtKmHrXXfkoVXAgC9K27LINgZDk=;
+        b=bTEKe7Fm/6UF+c0agmWCeByaLFpn6rd3mbll7WXrm8x39VrCGMbZLdOPGwBPyinfHp
+         JUqZZlZ8VyuJGNwkNrgfb6sWIli0m6j6cdM3UNpOsajiclELVF0kIseZRyLjHPcdguUB
+         sPnNjY8zGs+NyJ6gMknL3XU+W/5AYzzoX28h9mG/rswdPgqv4mQ+4jiByRKCLg9IDYrL
+         j+LrrSZzLrCProkn9xGb9cQV7EZasQQwJuzLDy81Ce4khESX8qPXQc65B8+osntNATBm
+         fAVj9HUq5M8twbW9rsrSOTYS/IyT/Awhi8oTxs12cwmYy8dcPmbROe3f6yAR7YinvsVO
+         AdVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766573632; x=1767178432;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nWatTeODsCj9eCOPh6s/ONx5sdA0VSf8P0xfOcNmuC8=;
-        b=JL1UtOnOt0mDR0wpAJw1j/BO8Vy+CWfPSSG2VfQykx0wYwoborfF5QBGPUM/q6h+4Y
-         /o5CDp7Faq5t5hvQl5nK7RH3aQb9RGJ4soGxIGs+30GS/U0SJUn6SNxUwQHRVFL0/sok
-         u4XzsYRkKw3FDf1zcWeE9X78/PyMMh/rxAXmHtj48SmMsHTsrfI4D+2B3XkJI1bc9MqT
-         gGZOFrXaj8CYVK83WVUYXdhEChS1mUknWlPpjP2Oo2gTpM8PqOluXh+vvVSgr2A+uCc4
-         T+7oBLtMo7gXlrL+T+as9VOdJw8u/vf9YE0awbwAO1lTTbkbLbNAZk3oIqmcidqAnQm5
-         TXCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXilowr8v0LHX9PIy0T2t0P/RPINUR1GAhmuMFv2+Yrx9Rdlxx96YPj1FvzVZNJukncuuOrjys=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv3TEwt4y7JYDGQEd20pHJShJ4qn+cR4IpeslNfAZ7YebqLpbl
-	+JgrCGYJDS9FZc3qAqrz/9BIJ0hLijJ0J93j/aC5Fo5x4Xk7iYkD7nEk1fBwYspnRWNaHZ2Gav6
-	KCBGNA13h7+HlkA1aWbn8vYC+fZ6WDHsndHpy0z6+EFUlorwXcMomPt17+bw=
-X-Gm-Gg: AY/fxX4n4quFP+EyHA0P7hfjDFuhl2AcRfgibGkYQs41oru0fPm1YNUsLom50f/fiX/
-	g3pNusg6Zz2jWmhRwg5kp86odBkFG9JjBmRlESwtfpm8MQkSvb4FR/w7LdAGNuedIdFsjnykliC
-	LGNoifx9XqJ0VQTgSwy3Gm50XgtD1aU/AIknFEuaW1hYHa4viclGHYkcTfnsAXIuNr33cdm177A
-	TGc7Ns0LWr571IdummbJgSLrGJxBlPp8h5IL6m5ljmeG/7Ykpi6jNIVm5wAzdtIm2sakzdrZhq8
-	MmSYmofbKWctHITknXQH+5Odi+5uXIFFFbAeOOSe6jv509l6F2I6rRJmqbHv6/33eqdiJh6obF6
-	oFuRVGf2IFQ42F1A=
-X-Received: by 2002:a05:622a:5912:b0:4f1:c6b9:b1ec with SMTP id d75a77b69052e-4f4abcf4bc6mr238685021cf.28.1766573632429;
-        Wed, 24 Dec 2025 02:53:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHeAVgBMuu8KrPTONUD5DkcqKJ9tIQm6gGeqTc0K514xaUnwQGYKjP7mhCnGalBfQmljdi2Nw==
-X-Received: by 2002:a05:622a:5912:b0:4f1:c6b9:b1ec with SMTP id d75a77b69052e-4f4abcf4bc6mr238684801cf.28.1766573631897;
-        Wed, 24 Dec 2025 02:53:51 -0800 (PST)
-Received: from hackbox.lan ([86.121.7.169])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ab86cesm1737562566b.19.2025.12.24.02.53.50
+        d=1e100.net; s=20230601; t=1766573702; x=1767178502;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6YVPObAxph0NNzQqXtKmHrXXfkoVXAgC9K27LINgZDk=;
+        b=crwyybuz+uCEaSVknhah0Escn3wS+QdHSAXZWqSXICNtelAgss3fE/g37uGC3sa42I
+         G2qk3KoMO3Fbm0EJTKeJr0l2LShJPNK1ClSkXcE0Iruxc4iJLn/J91XRGvTV18qjr5J9
+         IieXlZIb9ai8fZz8+3ZQgXBgMjkff8jUa+BrO57CkQ5d5K4sRuCAooLTaIwh1vqiXKjZ
+         jTT+9/67KBYmhlMB5ECA/YjUYEZupelnDw+kB6+ajv/pY53AZN13Xp/P/gGZOdt5FlJE
+         Q1W2FP/aIhY63qyJ6+enYN4bbSd4VL8Dv++vmLKJisEZD20BJ4eFckOEqWYCxly0VLC1
+         CBTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxNq070OUusK4OJ8jfMX1heET+hYTqfkT2RKk57Nf2ORXCi0XxSKNN3xvXpnDXjUeHJ6L72eM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDcegLPakmsOXa8xflzcjrh6Mrc5s1epdvjzmbyUWaf1Wt7aQd
+	G23YgWd1e3RqseA9nqZo7MzW0UY7KtUXtaSUhrCijoYWR6WE42PaB7aHEOW28EjQGVeGfRBUsB3
+	+ayT/
+X-Gm-Gg: AY/fxX5RoAWfesxzLcyC17Dt37CuZxbhYlj6F3txQ80woRK3pNdHRGdQZAp7Fz5sTT6
+	i/Falc3QhElyexzKz0CBIPbdWCeS0yX3L7GvmnujAcmPkTsGQKsHDqTg5vw+wLMwM7RfCNWu6Uk
+	KW/KQYn9vgVLtbZK8AKQp6eQ1BLiNwEQHpgHZVDX6ABkNt2nZVDGi/tXfTaWlDbYUn0gr+vuqJv
+	OXsMi/e+4oCjpoq6tX5eEw6I0SJi7JHC1edOomGN5ed6AIcyK1zNyFhjMFlRHj/pFO0/Js3WSfD
+	OFQ4liomUVEwhyaP63U9ziD54UtR4MUM3cyrmtrchgPAV4fIcH/1/EFOAtIri5D0fbjLHjYOfGD
+	519FD9TvlKw5DD4QnPcMgTxTYduu6bjMCOyKBUqasuhYZZ6/eK7KwOULVnhy90MUCc+vm+IiOHH
+	mbHNmTSr0432fEuxNq
+X-Google-Smtp-Source: AGHT+IG2oGo0/KRl8OLMUZV/2O7F94LGNUSLFxYl9Aa7ZK9BDlk3PbNHbqqE6+JW5GXsU4J5C4/cfQ==
+X-Received: by 2002:a05:600c:35c4:b0:475:dd9a:f791 with SMTP id 5b1f17b1804b1-47d195869e7mr203405325e9.28.1766573701534;
+        Wed, 24 Dec 2025 02:55:01 -0800 (PST)
+Received: from fedora.fritz.box ([2001:a61:11d9:dc01:f21:4d89:1b7a:e08d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be27c2260sm331937075e9.15.2025.12.24.02.55.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Dec 2025 02:53:51 -0800 (PST)
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Date: Wed, 24 Dec 2025 12:53:29 +0200
-Subject: [PATCH RESEND v5 3/3] arm64: dts: qcom: x1e80100: Add missing TCSR
- ref clock to the DP PHYs
+        Wed, 24 Dec 2025 02:55:01 -0800 (PST)
+From: Lorenz Bauer <lmb@isovalent.com>
+Date: Wed, 24 Dec 2025 11:54:46 +0100
+Subject: [PATCH v3] virtio: console: fix lost wakeup when device is written
+ and polled
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,122 +83,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-phy-qcom-edp-add-missing-refclk-v5-3-3f45d349b5ac@oss.qualcomm.com>
-References: <20251224-phy-qcom-edp-add-missing-refclk-v5-0-3f45d349b5ac@oss.qualcomm.com>
-In-Reply-To: <20251224-phy-qcom-edp-add-missing-refclk-v5-0-3f45d349b5ac@oss.qualcomm.com>
-To: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1831;
- i=abel.vesa@oss.qualcomm.com; h=from:subject:message-id;
- bh=5Xibk6A4j1wuysj5ojbntlDFb4byMzXKcnUoNHObZjw=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBpS8Y3/Vr6IAzv66eye1vfvavk7UaaAxU715ACh
- aUi2iBnE5yJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaUvGNwAKCRAbX0TJAJUV
- VhfnD/48ar5bzCyWjZ1O4avupmAUt4y+SBAWSMARAYBwa/0snPNJOaRs1Jhpe7JRDUUs75YwrBZ
- a5qA4nueyUSSvkvKbrZWuDAqexs/fp13+SuXiMdvTdT+KWxq9el2tXlxm8eso35sLTmYUitMtvt
- WFaGCvpSMfY7cb5qohomBJsdkuXozZ8tH2bCmEOpazZfLZVVnhuj9fRJyXSihKI6NG28UekUy1D
- H5G0dEaJfE2JKKBvZbebvOF8wbUJBVYg8QX1udtWN7g5Xau/H2scolUMj4yV/P46uUIiFEKOoh9
- ou0gvy4Melg9qcMaKj9gLbBQNvqRMFKhiHpjO1X1y9xMvF8iYbVJFiKSzS+opX19E1ieUip7Sai
- FOyLUL6O4ba++eWEDYYhQozltPmJXynFVKXMb6EA3+KbygzLDV10JJe8IlBXuyDD4EkpZ5Z6Ltf
- B6g63aPt7WUbBstP4b/4L8WhIagfH7qjSYrswK19qDrmVZaVOpJmHGFSJT/bpNKalT/jyu0oMWt
- IIyEaHkSwm/qZVFjBgUl3BbBxpYvHa4UbRHRwSPgd0RS/k+1AJIdE1smJeFfvsyAzZZYN/b1eaw
- vqWbrbgiSXXIQTUb0bwbgh2ieL3GB1//+9LhZ+3XUhpY32NvQQ9Na7jtLSPcOgjvTPMigBbZ3RS
- 4RLICiLwUSzGpng==
-X-Developer-Key: i=abel.vesa@oss.qualcomm.com; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI0MDA5NCBTYWx0ZWRfX2hsiPZKlVE83
- 8UXWFyfYvPh6/TBl6a1A2amOC/cXKYWGseXiUuF2jzGq0VW6mb+A3+fC3ZRlaZx/McnvbAauvBH
- PhyZl2JwPY4vAbpCEFuRivUI+rMg3e72SrWR2E1gffqMNlj+gy4UPhax4MsCEbevGGcOlHseETb
- y1GkV1XFFMuf2StVDk2Ih9Jlntjar6vHQaI9LOti77C4vO6ZjXse1iGfouGA2u2VZUYILpCA+lA
- mDPjl6JmIVqjOp5KhfvZxTj040i7FGZ7ePxVCZgQNIAw5vxsWHdorkgB3sdBuO3Z5e6LTwa0ItI
- 8Mlr27As23gbLdbnGV97x4GiV3V5DvKbbagfMd/Bqsb++v67e0nMHnUcfBOrhqenx0bHt1teZUR
- sE4zXQOB1LOQy8b1FqtWOYURuqJYRszUcvCmdWkv0sOx29YUPKHnX7xk7iHi0NJPNWqkUPakH7N
- 732ikZmTKxmYtXBMDog==
-X-Proofpoint-ORIG-GUID: -fnqyH5mQYgb0TFcQ2Kz12_YZMhHwwoh
-X-Authority-Analysis: v=2.4 cv=YcqwJgRf c=1 sm=1 tr=0 ts=694bc641 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=DdBtMnqNxkYIvXj6ev4VzQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8
- a=7z7RlTHwfbxsG2Z0DJwA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: -fnqyH5mQYgb0TFcQ2Kz12_YZMhHwwoh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-24_03,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 clxscore=1015 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2512240094
+Message-Id: <20251224-virtio-console-lost-wakeup-v3-1-b8ee6812fa68@isovalent.com>
+X-B4-Tracking: v=1; b=H4sIAHXGS2kC/43NsQ6CMBSF4Vchna2hbS6Ik+9hHGq5lRuRkrZWD
+ eHdLUzGwTj+Z/jOxAJ6wsD2xcQ8JgrkhhxqUzDT6eGCnNrcTJYShBTAE/lIjhs3BNcj712I/KG
+ veB95aaGqDJhWgWUZGD1aeq748ZS7oxCdf61fSSzrX2wSXPC60WCg3gnA+kDBJd3jELfG3dhCJ
+ /nBSfmTk5mDFhtlzsoKI765eZ7fsY5KyBcBAAA=
+X-Change-ID: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
+To: Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Lorenz Bauer <lmb@isovalent.com>
+X-Mailer: b4 0.14.2
 
-From: Abel Vesa <abel.vesa@linaro.org>
+A process issuing blocking writes to a virtio console may get stuck
+indefinitely if another thread polls the device. Here is how to trigger
+the bug:
 
-The DP PHYs on X1E80100 need the ref clock which is provided by the
-TCSR CC.
+- Thread A writes to the port until the virtqueue is full.
+- Thread A calls wait_port_writable() and goes to sleep, waiting on
+  port->waitqueue.
+- The host processes some of the write, marks buffers as used and raises
+  an interrupt.
+- Before the interrupt is serviced, thread B executes port_fops_poll().
+  This calls reclaim_consumed_buffers() via will_write_block() and
+  consumes all used buffers.
+- The interrupt is serviced. vring_interrupt() finds no used buffers
+  via more_used() and returns without waking port->waitqueue.
+- Thread A is still in wait_event(port->waitqueue), waiting for a
+  wakeup that never arrives.
 
-The current X Elite devices supported upstream work fine without this
-clock, because the boot firmware leaves this clock enabled. But we should
-not rely on that. Also, even though this change breaks the ABI, it is
-needed in order to make the driver disables this clock along with the
-other ones, for a proper bring-down of the entire PHY.
+The crux is that invoking reclaim_consumed_buffers() may cause
+vring_interrupt() to omit wakeups.
 
-So lets attach it to each of the DP PHYs in order to do that.
+Fix this by calling reclaim_consumed_buffers() in out_int() before
+waking. This is similar to the call to discard_port_data() in
+in_intr() which also frees buffer from a non-sleepable context.
+This in turn guarantees that port->outvq_full is up to date when
+handling polling. Since in_intr() already populates port->inbuf we
+use that to avoid changing reader state.
 
-Cc: stable@vger.kernel.org # v6.9
-Fixes: 1940c25eaa63 ("arm64: dts: qcom: x1e80100: Add display nodes")
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
 ---
- arch/arm64/boot/dts/qcom/hamoa.dtsi | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+As far as I can tell all currently maintained stable series kernels need
+this commit. Applies and builds cleanly on 5.10.247, verified to fix
+the issue.
+---
+Changes in v3:
+- Use spin_lock_irq in port_fops_poll (Arnd)
+- Use spin_lock in out_intr (Arnd)
+- Link to v2: https://lore.kernel.org/r/20251222-virtio-console-lost-wakeup-v2-1-5de93cb3f1c1@isovalent.com
 
-diff --git a/arch/arm64/boot/dts/qcom/hamoa.dtsi b/arch/arm64/boot/dts/qcom/hamoa.dtsi
-index a17900eacb20..59603616a3c2 100644
---- a/arch/arm64/boot/dts/qcom/hamoa.dtsi
-+++ b/arch/arm64/boot/dts/qcom/hamoa.dtsi
-@@ -5896,9 +5896,11 @@ mdss_dp2_phy: phy@aec2a00 {
- 			      <0 0x0aec2000 0 0x1c8>;
+Changes in v2:
+- Call reclaim_consumed_buffers() in out_intr instead of
+  issuing another wake.
+- Link to v1: https://lore.kernel.org/r/20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com
+---
+ drivers/char/virtio_console.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index 088182e54debd6029ea2c2a5542d7a28500e67b8..e6048e04c3b23d008caa2a1d31d4ac6b2841045f 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -971,10 +971,17 @@ static __poll_t port_fops_poll(struct file *filp, poll_table *wait)
+ 		return EPOLLHUP;
+ 	}
+ 	ret = 0;
+-	if (!will_read_block(port))
++
++	spin_lock_irq(&port->inbuf_lock);
++	if (port->inbuf)
+ 		ret |= EPOLLIN | EPOLLRDNORM;
+-	if (!will_write_block(port))
++	spin_unlock_irq(&port->inbuf_lock);
++
++	spin_lock_irq(&port->outvq_lock);
++	if (!port->outvq_full)
+ 		ret |= EPOLLOUT;
++	spin_unlock_irq(&port->outvq_lock);
++
+ 	if (!port->host_connected)
+ 		ret |= EPOLLHUP;
  
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX2_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
+@@ -1705,6 +1712,10 @@ static void out_intr(struct virtqueue *vq)
+ 		return;
+ 	}
  
- 			power-domains = <&rpmhpd RPMHPD_MX>;
- 
-@@ -5916,9 +5918,11 @@ mdss_dp3_phy: phy@aec5a00 {
- 			      <0 0x0aec5000 0 0x1c8>;
- 
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX3_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
- 
- 			power-domains = <&rpmhpd RPMHPD_MX>;
++	spin_lock(&port->outvq_lock);
++	reclaim_consumed_buffers(port);
++	spin_unlock(&port->outvq_lock);
++
+ 	wake_up_interruptible(&port->waitqueue);
+ }
  
 
+---
+base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
+change-id: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
+
+Best regards,
 -- 
-2.48.1
+Lorenz Bauer <lmb@isovalent.com>
 
 
