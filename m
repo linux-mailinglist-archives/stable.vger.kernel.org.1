@@ -1,123 +1,167 @@
-Return-Path: <stable+bounces-203386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C13CDD0FF
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 21:57:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D24CDD14D
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 22:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5031E300EDD1
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 20:57:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78E2A3019B75
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 21:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B9C2D7DE7;
-	Wed, 24 Dec 2025 20:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A9928FFF6;
+	Wed, 24 Dec 2025 21:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B74IU/gS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StBMaAZM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4223372C
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 20:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FAE220F29
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 21:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766609835; cv=none; b=YSL6Mb7TxpJ5f3iXyVJshRvErWKp5XdMu2iFC41+cyfwXOtS1OxKaXgTUdlU4OygUbLJd6W3ikFUJvunxoJnscoI96hZ32NI3FLeGMck/ppLqUdoDVVmgrY88zSNnGhMNpuQzEcy/Y67htkJG6HAQNgNldkVtk5Hs1+J56FXPMM=
+	t=1766612878; cv=none; b=CgeolA5Hhi5PabxR2kH4RFxnTuYFMtejHTVwT7CdU409yW+yIwVx/4Ib+svYidTMrMtDi+YR+4XrnXS8i3L9tTY2VbS6EFeA5KwrVcNAbxioEKtqWgDRmZ7q5ME6LM5vgXE8nAcimRTp6/0W3GJTK9zgp4pROSrV+DDt8SvefcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766609835; c=relaxed/simple;
-	bh=rR+IqKZV2+yEt+beuh5Eb/n8EB8pgnm3N+CFdB1tJLU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fY5054KpMO9Bf5W4rui97cGhYMVyYdBe+yqJrCCTh9ZbmZymHSevJEfjbDflHSurE4+h263zD+UjNdZCFDgLb0W4ahjDUPeobmyxeSfSlpsKWVlVXwIuIxxjdHKPI1aVn4yIFzjBr2cp1EZh+wXu0h+dMQbkTzWKDAE7Szhioqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B74IU/gS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFD3C19425
-	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 20:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766609834;
-	bh=rR+IqKZV2+yEt+beuh5Eb/n8EB8pgnm3N+CFdB1tJLU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B74IU/gSHmJH1Hmz057c/bhb4otoef4wtVCACPubrkCkgNDQzf5trsmEIM9UBYFyV
-	 4Ub75f5XorN/9zHbW3BWGl1H6ghaFfsIrVjcCpmFOqaw6Tw7PwsESmqKZCBnS0waIW
-	 5j2wbwGJMa0XeOLcO+OyUWQhKedRwCquv56WsdTKq9ORQXoG33N0AV7qD67hlKaSBu
-	 WWPV+qdw7ny8M6s3dLClw+tEn8jHVA0MvrY33up1m7RudinlqRobaG3/SKAtGLtwNX
-	 AKlnp4BVwQEO9M0DzRN18I+5zn0+svenyYazmNS0Y7v/o8Kgbp1Q5rGZud+F03BeWW
-	 kRsg+5R9f+4iw==
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78fc84772abso37286507b3.1
-        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 12:57:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWGXeTp1Kpk1sYjF+ZCCWxWE+JD/bJHbBCia6EC3pt2///1vqO3qatQTwqHkH2Z6izp4IQsGQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbh+DMSuNOG50bsRwcICmydvXC6z4jQNgmpQl8JHFhzLT8SpOC
-	Qo64N7V5NaonCIz4iq0mP5OsDsoMs3e76224+oaxSVS/Rj8zH4lK6EVPmzNf4J01pDUmqsNrK18
-	3UcCBDKIkljWd+k6Wrsl97JFfXAO4uR8=
-X-Google-Smtp-Source: AGHT+IHEpiYtEfh5uCgFo5PCRn5oYZ4PTGqB7Q7v0KfaxIHEA9IkOH/CVczmtklVCspfrNJwswMetaEUvQ9VmbcEId4=
-X-Received: by 2002:a05:690c:3613:b0:78f:f329:db93 with SMTP id
- 00721157ae682-790077109cdmr18280407b3.41.1766609833858; Wed, 24 Dec 2025
- 12:57:13 -0800 (PST)
+	s=arc-20240116; t=1766612878; c=relaxed/simple;
+	bh=SsQ8suhdnxoLg/BALTIe9vX5/+I9FvVwhH94aNp2h2w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SMD+XPlSwTs3XTatgsM9WZrr/6U/Y5m74DQmYUIOqtLL+NOGJeguQwHcN+M9B0WLbgAIutW3UPfGFC311kSwYO4pSAY4TAU6SiQWUBWj+yrZTuvQtjgbf8bUkwgcMVlmbSwP56aJ/qswbnp6Q/SBKIP2m2cfW1DF1/dpRN9EWS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StBMaAZM; arc=none smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-455749af2e1so4425184b6e.1
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 13:47:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766612876; x=1767217676; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ha4eKRJIz/T1ZwOob3JaZe2/+i72Uxp3TMnMs1kyDmY=;
+        b=StBMaAZM34/1D36J7sXnDIBoZlcF6MSgUTMKkbcAEn4u3F17Qigf80nfNvptyh3MF2
+         iOup1icT0YZmtpcIzikwmoYObBq3G1Ys+BOaJneqT1HEUbyJ+jq1AgLUs/yUrn6eIuLs
+         7wc2EXqvFGlQgg/tZ/5969SOSLT8ULVZNCEH0vAIra2c0kwmjskOiod0SSurfH0EYRkM
+         vt/RqRSbf+3B4sJmsWQOMZb1A3BcE4Iz0dq6jOEzWpit/gxFMJIS7UUtb1N+kZnLSlZT
+         ctMhYvOqroa/86ntRP0sRTJNq+kqQ82EmLDpRZ7jG6Ga6y7WSwnN/gaduLMk0VwAeYxj
+         v8Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766612876; x=1767217676;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ha4eKRJIz/T1ZwOob3JaZe2/+i72Uxp3TMnMs1kyDmY=;
+        b=vlX0nxjVCKwrITp8Ai9fBAdhQsjyCjCar+BB+aKFW6kobJt8Fqi7UdmFa6XAqQJPrL
+         EZtfsGnCc1pFom2VyGEke4B0sy8NAFTlFM5/fh9ULgORI/J6cTZwgwswJ8NHiJO1iG46
+         vSf6jS72dgnrKTbuyv3jX3XElpi1JeqS30MWE+z1OIFd0uenrvaXeG+dEXESrBqgkx4N
+         w7WIncNgkMedo2Gs12WqgpKKd28kbbWbNoAGGdIxGAVoHm4DhXoVPMg0mw7uCmD5vMjj
+         pq+vFC75QyfM1yLgg0kD8ObKqr9TGCbtalgNe8NWREWuOqdLzRpHfajAHBrx6bvgdGgz
+         aIBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6k7YDAdO9TlkCraRBgSV5xDpZ8wnjVS7BdnHe/QwCbBK/AGae/iGTzLdgwKyksGG6M7JX84w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw58JsQXQtVhYw5unS0rKDsXHqsTTLAWcPM5belPpnJ3o/z+km9
+	+gI3LhhHyEvwmAJpJijbTrYlb8/42bjAVRLex6oUZXkKx7CqqQgkwnRdCYiOng==
+X-Gm-Gg: AY/fxX53qOfHqBUe6hTm3qbfp04DdLOD9jLalrF1yVlRR8n1RnC2gluUxREZ8INNtFg
+	EOHe+o5oxwnfFwB/OsXW/vPqyIP2Seyy5a/Eg1NKdAO3oRjYQXCu1wXhxTlacL1tyiHEo+RpHRg
+	2EFIwIFfrU3Z04YZQZqRHnSKa+0OXcA1H1k+TB8Bac7BqQAKJPBeMO74gjceiVV5sXMDe0cvDdi
+	fhaAYA2kvozVqtZ3wRDhwuyCqqRU982OzFb3JuFO1hMaP4HGgoi0SI1A9jY05JgujId1DGs81LG
+	1O6otcwltbAw9cvMbDUdsg/+BIYEjvdEE+Tt6vh9k9wAA8x0Mg1cqlVlLgMs8ZGSpwIJajbGXEf
+	338gXe5/yq2xJvtSkmN1xtl+UUXYcoMrepRpkuOwa0O0AIOMR+GPdpODsQQ5jCUGnF2H1sCYz/y
+	B/dXM59GfwLx9/PVwKRqZzXzVzzVP+hn5Hca6pDL2dXovYCg1ndvYq/oUxXnwekczVS0aSs5kUV
+	kErIE9LoNDgJdHVtxB6DCvTuTz0Dvg=
+X-Google-Smtp-Source: AGHT+IGu5KZ4dsfgHYKgEBcNkgI5QWefcHhYRFFlHiYBwboCpljiSYdEgGO062vJLCxBROo3r+3vXw==
+X-Received: by 2002:a05:6808:180e:b0:450:d4b5:3527 with SMTP id 5614622812f47-457a29567c4mr10023379b6e.24.1766612876310;
+        Wed, 24 Dec 2025 13:47:56 -0800 (PST)
+Received: from nukework.gtech (c-98-57-15-22.hsd1.tx.comcast.net. [98.57.15.22])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667d4f62sm12176872a34.19.2025.12.24.13.47.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 13:47:55 -0800 (PST)
+From: "Alex G." <mr.nuke.me@gmail.com>
+To: jjohnson@kernel.org, ath11k@lists.infradead.org,
+ Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+ Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject:
+ Re: [PATCH] wifi: ath11k: fix qmi memory allocation logic for CALDB region
+Date: Wed, 24 Dec 2025 15:47:53 -0600
+Message-ID: <884758381.0ifERbkFSE@nukework.gtech>
+In-Reply-To: <7ef46837-7799-4ede-9f5e-88a010d5d1d4@oss.qualcomm.com>
+References:
+ <20251206175829.2573256-1-mr.nuke.me@gmail.com>
+ <7ef46837-7799-4ede-9f5e-88a010d5d1d4@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204164228.113587-1-visitorckw@gmail.com>
-In-Reply-To: <20251204164228.113587-1-visitorckw@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 24 Dec 2025 21:57:02 +0100
-X-Gmail-Original-Message-ID: <CAD++jLneTBUyMDod_fbJbuy2Y4errGQpWM3H8uVdYbKZeUNEAw@mail.gmail.com>
-X-Gm-Features: AQt7F2qA9XRNnTNTTvbjP3rZWDA-LIjuIfAQFySfGMJgCMAL1iMtQNPxxzDQBZg
-Message-ID: <CAD++jLneTBUyMDod_fbJbuy2Y4errGQpWM3H8uVdYbKZeUNEAw@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: integrator: Fix DMA ranges mismatch warning on IM-PD1
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: linus.walleij@linaro.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, arnd@arndb.de, jserv@ccns.ncku.edu.tw, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Dec 4, 2025 at 5:42=E2=80=AFPM Kuan-Wei Chiu <visitorckw@gmail.com>=
- wrote:
+On Monday, December 8, 2025 4:23:46 AM CST Baochen Qiang wrote:
+> On 12/7/2025 1:58 AM, Alexandru Gagniuc wrote:
+> > Memory region assignment in ath11k_qmi_assign_target_mem_chunk()
+> > 
+> > assumes that:
+> >   1. firmware will make a HOST_DDR_REGION_TYPE request, and
+> >   2. this request is processed before CALDB_MEM_REGION_TYPE
+> > 
+> > In this case CALDB_MEM_REGION_TYPE, can safely be assigned immediately
+> > after the host region.
+> > 
+> > However, if the HOST_DDR_REGION_TYPE request is not made, or the
+> > reserved-memory node is not present, then res.start and res.end are 0,
+> > and host_ddr_sz remains uninitialized. The physical address should
+> > fall back to ATH11K_QMI_CALDB_ADDRESS. That doesn't happen:
+> > 
+> > resource_size(&res) returns 1 for an empty resource, and thus the if
+> > clause never takes the fallback path. ab->qmi.target_mem[idx].paddr
+> > is assigned the uninitialized value of host_ddr_sz + 0 (res.start).
+> > 
+> > Use "if (res.end > res.start)" for the predicate, which correctly
+> > falls back to ATH11K_QMI_CALDB_ADDRESS.
 
-> When compiling the device tree for the Integrator/AP with IM-PD1, the
-> following warning is observed regarding the display controller node:
->
-> arch/arm/boot/dts/arm/integratorap-im-pd1.dts:251.3-14: Warning
-> (dma_ranges_format):
-> /bus@c0000000/bus@c0000000/display@1000000:dma-ranges: empty
-> "dma-ranges" property but its #address-cells (2) differs from
-> /bus@c0000000/bus@c0000000 (1)
->
-> The display node specifies an empty "dma-ranges" property, intended to
-> describe a 1:1 identity mapping. However, the node lacks explicit
-> "#address-cells" and "#size-cells" properties.
+I am ready to submit the IPQ9574 support. This patch is a dependency. Should I 
+include this change in the series that adds IPQ9574?
 
-(...)
-> +++ b/arch/arm/boot/dts/arm/integratorap-im-pd1.dts
-> @@ -248,6 +248,8 @@ display@1000000 {
->                 /* 640x480 16bpp @ 25.175MHz is 36827428 bytes/s */
->                 max-memory-bandwidth =3D <40000000>;
->                 memory-region =3D <&impd1_ram>;
-> +               #address-cells =3D <1>;
-> +               #size-cells =3D <1>;
->                 dma-ranges;
->
->                 port@0 {
+> In addition, does it make sense to do of_reserved_mem_region_to_resource()
+> before the loop, which may give CALDB_MEM_REGION_TYPE a chance even
+> HOST_DDR_REGION_TYPE request is not made?
 
-This is for the *port* node and not for the
-stuff mentioned in the commit message, but the port is:
+I'm sorry that I initially missed this question. I don't think we should move 
+&res initialization outside the loop. We also need host_ddr_sz to be 
+initialized by a HOST_DDR_REGION_TYPE (1) request. On IPQ9574, the firmware 
+doesn't make that request, so host_ddr_sz remains uninitialized. Since &res 
+and host_ddr_sz are used together, I think it's better to initialize them, 
+together.
 
-                port@0 {
-                        #address-cells =3D <1>;
-                        #size-cells =3D <0>;
 
-                        clcd_pads_vga_dac: endpoint@0 {
-                                reg =3D <0>;
-                                remote-endpoint =3D <&vga_bridge_in>;
-                                arm,pl11x,tft-r0g0b0-pads =3D <0 8 16>;
-                        };
-                };
+Without patch:
 
-Devoid of any reg, so who cares?
+    ath11k c000000.wifi: qmi firmware request memory request
+    ath11k c000000.wifi: qmi mem seg type 4 size 409600
+    ath11k c000000.wifi: qmi mem seg type 2 size 262144
+    ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+    ...
+    ath11k c000000.wifi: failed to assign qmi target memory: -5
 
-Probably the empty dma-ranges should just be deleted again, it is
-pointless for the port.
 
-Yours,
-Linus Walleij
+
+With patch:
+
+    ath11k c000000.wifi: qmi firmware request memory request
+    ath11k c000000.wifi: qmi mem seg type 4 size 409600
+    ath11k c000000.wifi: qmi mem seg type 2 size 262144
+    ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+    ath11k c000000.wifi: qmi ignore invalid mem req type 3
+    ath11k c000000.wifi: qmi req mem_seg[0] 0x000000004ba00000 409600 4
+    ath11k c000000.wifi: qmi req mem_seg[1] 0x000000004b700000 262144 2
+
+
+Tested on : WLAN.HK.2.9.0.1-01890-QCAHKSWPL_SILICONZ-1
+
+Alex
+
+
+
+
 
