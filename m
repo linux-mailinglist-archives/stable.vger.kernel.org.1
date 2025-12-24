@@ -1,213 +1,162 @@
-Return-Path: <stable+bounces-203361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCC2CDBC63
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:17:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E90CDCDBCA8
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 10:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B93FF302106B
-	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 09:17:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E76D300E3FE
+	for <lists+stable@lfdr.de>; Wed, 24 Dec 2025 09:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6BC330D54;
-	Wed, 24 Dec 2025 09:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92690330B33;
+	Wed, 24 Dec 2025 09:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ok9KKlV4";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ioimDclO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB27B2F1FDB;
-	Wed, 24 Dec 2025 09:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC356330D54
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 09:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766567823; cv=none; b=EREcqSyH8aaFKIeQELOPwMkJ5pEY4r+Nb4JctqaNvKHEFkmaQ7P+ODDmT7HHI+biq7RyyqngqkzLdk47vL7F46MF/s7Ni08Ku2ur1vU9jZc+rX61xiWAvnTdXgoLbzKVYQ5fHs8jQ1K43XdTE+xFSH/xZuHrcrj8egoI0eXHy7I=
+	t=1766568474; cv=none; b=bopTwmAB9zFxs3ZaTvibpyVnabmMmXWvt3eQkEqvqldbWF2RXS19xXe+j6QQSHpFzVoaj0Y9mh3uVWss4elIH94//wA0Y32FcLnOm6bbG82FrUczoaWPVzvyOHyGnsGvZy34P8WuxhdEEzZNqz5/qAUxajC+L9oSeqeYyXSdY/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766567823; c=relaxed/simple;
-	bh=ZtWziJiqrZ0cuml3s+jrt4nWYfRTL4Qwsi5NxHwTfqc=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=jt2vJDYOojhDKgtMKlI2V45PbwIXt8qO3JZlKcauZMKjVY6gkutu+/nMJ/F4ki/xLBMNrkPCiXOdoR3/ix1DuAFMfCbHL6ho3+1wcucXDV+MyPtzpbPt0jW9I8X5bPjCIDa5hOZaMTU/pl4fRJC/JErtwB8bMxN+2MlvZS3cCqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.126])
-	by gateway (Coremail) with SMTP id _____8BxXcOBr0tp1rUCAA--.8779S3;
-	Wed, 24 Dec 2025 17:16:49 +0800 (CST)
-Received: from [10.20.42.126] (unknown [10.20.42.126])
-	by front1 (Coremail) with SMTP id qMiowJBxbcJ6r0tpDzUEAA--.9953S3;
-	Wed, 24 Dec 2025 17:16:45 +0800 (CST)
-Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
-From: lixianglai <lixianglai@loongson.cn>
-To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- yangtiezhu@loongson.cn
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui
- <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
-References: <20251222113409.2343711-1-lixianglai@loongson.cn>
- <20251222113409.2343711-3-lixianglai@loongson.cn>
- <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
- <CAAhV-H4PehwGm-WwEuu4ZPbQutJR6m62tOSUxLcGQAxR_YX0Eg@mail.gmail.com>
- <7b8799d1-a4b2-58dc-187a-19c772612351@loongson.cn>
- <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
-Message-ID: <9974d03b-bd07-04b0-c1e3-d76123c9cd2f@loongson.cn>
-Date: Wed, 24 Dec 2025 17:13:15 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1766568474; c=relaxed/simple;
+	bh=IvZRYX5vx4jYaqd8MYeonPEkxRp+cxTKNDVVXG3VJKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VD02Mf+dcCvSmZTCKav4HW6uGTDxpc//JXw4iEHElTAsNplj3ij0eNE9QNYixjMd56djcWu4AVoNfZ9UebJVDZEsytX+vBJ+l7gTgZBjLjeAeuPVVl5KrfICsdcOTDUOc2sfWIsZG7IXTnxwOh7g/7NO5tj8CYtPdSus8t9HEow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ok9KKlV4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ioimDclO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BO3wUBn3796871
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 09:27:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	u8k+Pmhnyb1OZaX3h7hgT/iEpR5pAnzk+zg0S36ixSo=; b=ok9KKlV4XJpKq17N
+	JYsY1Fr9t9IJ04vSV89xh91SV6+VicJiRj7PpygLUVl8nro9knv+3sJFCt2QKIyG
+	Zr+QLv7q/1+IHQJAWxz8w6KLvO8stQ6y7XJWei4sjGbSR3/AM9kAkwuJ+8BMFU/E
+	L6XI+7VmjhDPd2HRl53Q2SoyLpfn4dD6kcOA+jkfR+1+GXQC0Y2SQgi/WUnEtgl+
+	iaCpArVRavfKJqPh15sOTsYi5BPddmKJY2a8B713qOjONSI5TjuKcynp3G/PYGac
+	EKmJ2vyhJ8J0xZBUltsXXfLw6vUxatmxOHdphtHGvMfCqdPQpPok0TnTENS4bzLR
+	bgpv4w==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b88r68s09-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 24 Dec 2025 09:27:52 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ee21a0d326so34398711cf.3
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 01:27:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766568471; x=1767173271; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u8k+Pmhnyb1OZaX3h7hgT/iEpR5pAnzk+zg0S36ixSo=;
+        b=ioimDclOqPphNcDR4a8i+/OM8bq5fn+Ttgy3Sq4sg071qZsNlo2eGKi/7JowRtAiP2
+         kIJYMQ8iag6vaxrd6ShL52sMGUfHEZUvImOTqESYQctIhG6tmocCLrMcQ9xzOnks/jdM
+         CIeo/qjvGza8H6odSSlcXuMGWb7UNGwXvvpx/ifRcgIrBvyNvK1P6EviRunQs9aL/sa5
+         jHiXQ1q2y6Y+kEGb5zqudqQpqnzTqJIgtN6iM5RNalVdXD03smunrN6WiebkJN75nMZi
+         AnPXe4qoHr7u/sE356Ho8nlJH1BAxDwVTzlsSwIAKqW1+zoXUF2bbkTeqbDDN32F/ZGt
+         9Uzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766568471; x=1767173271;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=u8k+Pmhnyb1OZaX3h7hgT/iEpR5pAnzk+zg0S36ixSo=;
+        b=qtSypawOXQszqhPlZxbFSvxQvRwtNf6FQqSn78I2RqdQ7ZUXaqZFAv0HFFQihLM7Ad
+         gB0H8wLXz5CTNtKbZmQkrfyk3ar6ocC6MugrjTKh/VAy3Ul6YhMBBqrp9znnCr4lLig7
+         00XEAjKRx8zRneW1At62A9rposRQhZA/wyAWZn4xdeoHhx+b0OqPqFkV5kA4SFyukhdl
+         3OsuIWHWqnXaDwBauJcr5kzDtCVtOaZKF6HCP3veoe51BsTgAGTJHhFiETVnwumyDlRT
+         i+KrdWW7hcKRA1oWIKPNn3LDw5czsbm0IuHddNB7Kn3yAzKR6CWWqlbfD6per3txUQl9
+         bcGg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+h5ID2DFXu/dmBV0ilqpr3F40cheGH+7DPo4eWs2gAKmgAu1B3uWvUpNo4YaDQ1qj8Y2xwDk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSPYwIPxk9zB9UGPUfO2lIr5w4ZSeUNMO+eqXOrmzsl9XZxFhW
+	BRPJgw+HEqz0P4juSrMAGdXAfMWU1XGAdDbbLGzpG7/meDPmdy7+lIvCEi53k3u054jqeKPwbrb
+	wiyYpafE/zKdPJnbN03hrsKNziJBwS4Ve39QhbN65UmMVrpbELf8/Byou6aY=
+X-Gm-Gg: AY/fxX4RGjaZ6DRN8ldiSEgVFiL9NjEGeho9AnKOiY+kQChhtZK9U8hFzFCnWiYv87r
+	U3G0LgvXyjZfp3DwDQCa0SwcTM7+7mQh3awpR8eYAfNv7Yoj1FQB8FzexElSJni4Q5/GBsoh4ZV
+	Yf1/qL9qTgQYkusxVQ7kfF53a6ohMhU/Bh92FdOLFaCs15JCIYGEi/mMEIJcmHFpjmMZYLso/4R
+	rRfeA44sX+LN20fBliwMTFVAFuDn71rEJWO489NCmEjO9JNNvvf5LR7PIF1hvCIIlimr6zokyJl
+	dCu7g1QoBcqH5z8PoQ2aOfuQ/e/31eo/UYJ/xj1j2JtAD0c+UXkX3TzuFkVnGoqWX1vBXjGrGiV
+	vanXhcAZZnvWLnjOO2shHWkw6DW3eKcSQBSMFh/zD94yFR4xPg41QJ1Eql/NlpZ/fu31dj/yO1z
+	n0iH+pu3/uW5jiM+Ji4P3zCEk=
+X-Received: by 2002:a05:622a:8e10:b0:4f4:c0ac:6666 with SMTP id d75a77b69052e-4f4c0ac7d89mr120700911cf.77.1766568471099;
+        Wed, 24 Dec 2025 01:27:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEnEB1jS6cRWODDStA4PaW92yVJbmN21zNKm1NrRAJ2+26mthUzC2q0CzqbuPSiUBH5J4EUXQ==
+X-Received: by 2002:a05:622a:8e10:b0:4f4:c0ac:6666 with SMTP id d75a77b69052e-4f4c0ac7d89mr120700791cf.77.1766568470698;
+        Wed, 24 Dec 2025 01:27:50 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-381224de761sm43606051fa.1.2025.12.24.01.27.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 01:27:48 -0800 (PST)
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: linux-kernel@vger.kernel.org, Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: freedreno@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-arm-msm@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Sean Paul <sean@poorly.run>, Jessica Zhang <jesszhan0024@gmail.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/msm/dpu: Add missing NULL pointer check for pingpong interface
+Date: Wed, 24 Dec 2025 11:27:44 +0200
+Message-ID: <176656845705.3796981.3831136316758674761.b4-ty@oss.qualcomm.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251211093630.171014-1-kniv@yandex-team.ru>
+References: <20251211093630.171014-1-kniv@yandex-team.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJBxbcJ6r0tpDzUEAA--.9953S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZF13WrW8Gry7WrWfWF15Awc_yoWrtFyfp3
-	WFyF1DtFWDtw18Jw4Dta4DAFyUtrWkG3WDWr1xJFy8Jr1qgr1YgryUXw1q9F1DJw48GF1k
-	XFy5tr9xZayUAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
+X-Proofpoint-GUID: VerDUQD5HcmGwRLqaJswquCJdpvqEK7o
+X-Proofpoint-ORIG-GUID: VerDUQD5HcmGwRLqaJswquCJdpvqEK7o
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI0MDA4MCBTYWx0ZWRfX7D2EaeVowDm3
+ WWDIGf1kHOo9KLIrcXHWTEhVyD2OCjKA1XT/QieuK0BKnWfXzgluNLAEbexIpmBnR4RFurlXJPO
+ 3XYHbjlAH2ihrV7pE+0xpzriMxpaVMlvdLihfeqpqdBrhrE/q/2Vo7ylOOvhd0DCUWu5BWSI9xX
+ zMJYslT+hj7X4yFoXZ18W9z5Z8JkAgYXIHZY3aQs8yxAdfgsS1pG+VfQttKl1UuTLDAjsNNLHS3
+ K6PgedytaMCDr9R/nGd+p1+69yryKmpCPsf0QTQfIQAopmuLmFSBq1QnbyNWSPOIGvaWyNTtKML
+ rMkFRH2AxCLF/190c6Qq6Y6Y+cCwlFB9gghNANfmaD1RNjPP4Z4ATblSTLmMjy/NtM8Zk4sFAyb
+ p4OuPFdxuS/jvBzBNSaAsb+5pW3CwxoZ1jqv3ca0nLxYQXE1yHf9mGhgD3BvOsD5zyO1Wch/QFu
+ RSrOpaTMNH1kcjuW/cw==
+X-Authority-Analysis: v=2.4 cv=Qahrf8bv c=1 sm=1 tr=0 ts=694bb218 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=e5mUnYsNAAAA:8 a=q4VHR2A0D8CO_ZJfzXEA:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22 a=Vxmtnl_E_bksehYqCbjh:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-24_02,2025-12-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2512240080
 
-Hi:
-> Add yangtiezhu@loongson.cn
->
-> Hi :
->>
->>
->> On 2025/12/23 上午10:46, Huacai Chen wrote:
->>> On Tue, Dec 23, 2025 at 9:27 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>>>
->>>>
->>>>
->>>> On 2025/12/22 下午7:34, Xianglai Li wrote:
->>>>> Insert the appropriate UNWIND macro definition into the 
->>>>> kvm_exc_entry in
->>>>> the assembly function to guide the generation of correct ORC table 
->>>>> entries,
->>>>> thereby solving the timeout problem of loading the 
->>>>> livepatch-sample module
->>>>> on a physical machine running multiple vcpus virtual machines.
->>>>>
->>>>> While solving the above problems, we have gained an additional 
->>>>> benefit,
->>>>> that is, we can obtain more call stack information
->>>>>
->>>>> Stack information that can be obtained before the problem is fixed:
->>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>> [<0>] kvm_exc_entry+0x100/0x1e0
->>>>>
->>>>> Stack information that can be obtained after the problem is fixed:
->>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>> [<0>] kvm_exc_entry+0x100/0x1e0
->>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
->>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
->>>>> [<0>] sys_ioctl+0x498/0xf00
->>>>> [<0>] do_syscall+0x94/0x190
->>>>> [<0>] handle_syscall+0xb8/0x158
->>>>>
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
->>>>> ---
->>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
->>>>> Cc: WANG Xuerui <kernel@xen0n.name>
->>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
->>>>> Cc: Bibo Mao <maobibo@loongson.cn>
->>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
->>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
->>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>>>
->>>>>    arch/loongarch/kvm/switch.S | 2 ++
->>>>>    1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/arch/loongarch/kvm/switch.S 
->>>>> b/arch/loongarch/kvm/switch.S
->>>>> index 93845ce53651..e3ecb24a3bc5 100644
->>>>> --- a/arch/loongarch/kvm/switch.S
->>>>> +++ b/arch/loongarch/kvm/switch.S
->>>>> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
->>>>>        /* restore per cpu register */
->>>>>        ld.d    u0, a2, KVM_ARCH_HPERCPU
->>>>>        addi.d  sp, sp, -PT_SIZE
->>>>> +     UNWIND_HINT_REGS
->>>>>
->>>>>        /* Prepare handle exception */
->>>>>        or      a0, s0, zero
->>>>> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
->>>>>        addi.d  a2, sp, -PT_SIZE
->>>>>        /* Save host GPRs */
->>>>>        kvm_save_host_gpr a2
->>>>> +     st.d    ra, a2, PT_ERA
->>>> Had better add some comments here to show that it is special for 
->>>> unwind
->>>> usage since there is "st.d ra, a2, PT_R1" already in macro
->>>> kvm_save_host_gpr().
->>> Then there is a new problem, why can unwinder not recognize the
->>> instruction in  kvm_save_host_gpr()?
->> maybe it need unwinder owner to answer this question.
->>
-> kvm_save_host_gpr() is an assembler macro that has already been 
-> executed and is no longer normal on the stack.
-> Am I explaining correctly? @tiezhu
->
-> I guess you might be wondering why unwinder didn't recognize 
-> kvm_enter_guest().
->
-> There's something wrong with the logic that we're implementing here 
-> that we should put the current pc in era instead of ra.
-> This will allow unwind to identify the symbol kvm_enter_guest.
->
-> So I will fix it in the next version like this:
->
-> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
->        addi.d  a2, sp, -PT_SIZE
->        /* Save host GPRs */
->        kvm_save_host_gpr a2
->
-> +    /*
-> +     * The csr_era member variable of the pt_regs structure is required
-> +     * for unwinding orc to perform stack traceback, so we need to put
-> +     * pc into csr_era member variable here.
-> +     */
-> +    pcaddi    t0, 0
-> +    st.d    t0, a2, PT_ERA
-> +
->
-We discussed it with @tiezhu internally and he was OK with the change!
+On Thu, 11 Dec 2025 12:36:30 +0300, Nikolay Kuratov wrote:
+> It is checked almost always in dpu_encoder_phys_wb_setup_ctl(), but in a
+> single place the check is missing.
+> Also use convenient locals instead of phys_enc->* where available.
+> 
+> 
 
-Thanks,
-Xianglai.
+Applied to msm-fixes, thanks!
 
-> Thanks,
-> Xianglai.
->>>
->>> Huacai
->>>>
->>>> Regards
->>>> Bibo Mao
->>>>>
->>>>>        addi.d  a2, a1, KVM_VCPU_ARCH
->>>>>        st.d    sp, a2, KVM_ARCH_HSP
->>>>>
->>>>
->
+[1/1] drm/msm/dpu: Add missing NULL pointer check for pingpong interface
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/88733a0b6487
+
+Best regards,
+-- 
+With best wishes
+Dmitry
+
 
 
