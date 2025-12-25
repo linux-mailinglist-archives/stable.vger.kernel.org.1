@@ -1,46 +1,101 @@
-Return-Path: <stable+bounces-203398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF49DCDD9E5
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 10:48:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA7CCDDA21
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 11:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3F823021FB8
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 09:47:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3FFD5300253D
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 10:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F43191B8;
-	Thu, 25 Dec 2025 09:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BED82F361B;
+	Thu, 25 Dec 2025 10:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sy3CW1cl"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eHokdcIF";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IhLDGdIL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B6E248F64;
-	Thu, 25 Dec 2025 09:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B62422154F
+	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 10:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766656061; cv=none; b=orFE3p+Z24uQxIc1WY2ZVrHwMdpc7uI3BwAUr+QliNPTTe5WFexFea875DF3VDcsD8fhpRNHVu7KDNKC5HBXcxnDkWtUhaRyDSLIusUK2gDPHtBYDdY7BCvbxQChwIWRjOn3bdLNZnXTGU6qf4bnK9rC0VA2dBaxxj+qcveia18=
+	t=1766657147; cv=none; b=bi0Y//yoUcjhTFyUoB1UtlrbgCBhf9kZhw3rjgIfcTxJiOHpEvIRkWshjOI5EXajw+dR2qtFAvrUlQApEyZkHwIPBaXkNs75gNm9O+ePbkdHFHlu7kSISnq4xeKhSJj5M+s2ZNtvb7qJWDXUxVp/esUvEaT4HvDqwujsVDcvd90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766656061; c=relaxed/simple;
-	bh=4iBf9Ig+t1xZ4dvyb20eBO6tby258MpacRjtRiuO0x0=;
+	s=arc-20240116; t=1766657147; c=relaxed/simple;
+	bh=pWv+I4TWZVeHJAEzrNmur8jCZ9wfV0HlczZFC4K/rXo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RG7SfwWakHA+cLLnkqjstzbekqwoomUT3ejXzFV6CxW0Qt7WGmTyuXErg73QwGfNG5xEBHsPpc9eR6GWGpiJgAaw5LP92KFLc3D1kedBQ4+md74A5bKce6qYd5rL/rPjp5/6mDajjPMIhH0hw7wObLA2kRFp2saWemX6Ya1tDF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sy3CW1cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31718C4CEFB;
-	Thu, 25 Dec 2025 09:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766656061;
-	bh=4iBf9Ig+t1xZ4dvyb20eBO6tby258MpacRjtRiuO0x0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Sy3CW1cl1V3JPg70g8bQsB4iA48x8OjbpxmQgLkgWCBxjDa/fzZujnEiktu0asc8W
-	 EgJNXpxsQNA3GmAva2xgyf7XtosKOHAm5KVaHeZLxbhBCra2qoZBHXy8+zRehzGgVJ
-	 ybiG8m1WcwgntsV43LgQmro+YiovZx4zqyM7TFiDdNScPYSRLKmcqe1QROJ/NTDn0T
-	 5UAZS4Z6cv6d4irIbm5f5d2u2UAzRef6Y3nLoFGCTDFsLEXvhzVk87CuErhbuokTe9
-	 WxtgpfE1EZT8EnaSKuVUwcBIsm2et6EEIWuvoqYu+zdLJL23l33c9NGF4yKnfkF7b4
-	 EHU5dKggAUUhg==
-Message-ID: <f223dd74-331c-412d-93fc-69e360a5006c@kernel.org>
-Date: Thu, 25 Dec 2025 10:47:32 +0100
+	 In-Reply-To:Content-Type; b=L3eVjNsZuE2xKeNs1cxIfR9lA9YziTdjiAokXcxdfsm5LjC5Ehjk74WWfK0E80ciKZ12HcaaMXMJHJaEBuV8m0LeOZOrwTwce5Y6cQ6wO67XTyp4PdEI3+beEMoQ5sl8Ai+I9wjcemuqQLC8eyHOYERroIUe54x5YCdjBUIFPNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eHokdcIF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IhLDGdIL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BP8cCAo1751380
+	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 10:05:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=; b=eHokdcIF4YJP56la
+	BGteIpjyXQKlQ4e57sPQq4hY1McvZPSnAynfqqmT70dudKiQtaqPV4/8xRmnh77n
+	XDmZX3Hfh/i45/KPE+nJwIcLcvd639eRQnRYuQY2zyuhhOSSnOzabChDvKJ7KA43
+	f9TiqL/fi9nnFN98uZEnpEmILEkILc6X+k5VfcKO2OQ3aMD6hS0JPnYvsmIUHvXz
+	0s1+mQLipd9bqVhSxwmeY5Xik8LMFHsqZgWBZoD5NoOIhBS5kZGFHLmUrnTcisj9
+	wjxxEVyJjzrs43sYqqacBlRgaLWIjjFdHiVsFasLAoBHHX6owU+Dux0M8yzPpEmx
+	t/idiQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b8v9y0pvn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 10:05:44 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ba4c6ac8406so5395927a12.0
+        for <stable@vger.kernel.org>; Thu, 25 Dec 2025 02:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766657144; x=1767261944; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=;
+        b=IhLDGdIL5zG/FS7q8FLiKEa6UzluPQjlSF/KFjdVKO6Mn+yjbJs6piDen+GG7TGBU5
+         e7ZgJ5aAknVAEWsFIiVX6G8FJqbQBD9WxnrwoQllUriMNal8hQPUUcDrEgYbkCVTxxmW
+         9sKOGlAH5x53Csvwn6uCUXRVJl8GBslGS8XH+oH/f9ZuhO0Fp8cCB0Z/PIug570LZxqG
+         PjYsSKrI9N66SIgiaiZfUzYJ6vvroJHBokqL4rDKRcIXWtKM9TfhuB9EtqxWl5FHvLVB
+         nBMG+f6vq6Zal8OlDTkCyT8ODvpgStxC+cnwCQByr2tRbxrh/dfR9QP6fIPllP3skK9V
+         ylIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766657144; x=1767261944;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=;
+        b=tOVk2DclQLJevdhw0z6UzwUc4xBr+az9zBF6OekMQpawtzoZQ3gCLF3EfZRXXjuiAc
+         hEgQdKDYkAX9foCgsYdRYY4gN23IETNHu3o0ltdY+SnW9Nm0z5kmnKJncQSWHTB7aRei
+         lTF3orXQjky1ISYkUVxHdHN8GdGEG7w8BL6c/yYpTeYt6rH3jJJG9qerJ7jiGNZ7Eimc
+         LDRk2RvqVLxUX6vXqaNJQ7kIy1Pe6HBGa/D0z87kYYqMYHBjKKwzlfEH3kekMk3PnlJu
+         GAhR6p1iAgZh1WYjMPLMeQj70YOXdXzJl5vUGnvHOfpEwD1gQx5cXh+qQr8/vunS5SjX
+         6oJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQgdd9IBuI5jz1aK+P3EG1xC4f5Zfw+sg7OfZngq/Uuf7/tl5gbBPYfTxcN175lAT4LLJJ+W4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuAEz5wzTsQ6521KzgHv6rhzbsde8H/UqALUWPr02ATeoirGKV
+	ss4vknwj99m8RSzKAuq0vS+G0qQXTJguMWw1SVwkRZ2Q2RoHunQF/R1QM1+/MgoTiURavYMcFmi
+	xV45j9M9Oi7jgLeIowh+GzUy1y0ZiA+3HULSME44NBpzo99cPkuINviV5cLw=
+X-Gm-Gg: AY/fxX6j5YGyBmK/IKtXi4ares2/8pf3+fTmLFZfwpuHOpwoZW9gLM+H3H0mLuUj3qp
+	AYDMVmd9p9qe0KMfdaA/DvY5CFPx/mw/2J/yx1QIGqlYAEIe5gAqNrX0fC1qwc5D9trIo5X6EJQ
+	Hwgqvfnhnc2LeUgWhPty2A2GVZvBHBkNFo97sQhOOVGW9zF1IkreMvCdSIC1+6dVk9B5W0I2sf3
+	Gn693fl8jFJjWbBRAUolR7/rSbWyBqY0ksoMgPFTEnKp6oeer8uHuJnUHtYBTtVVVCvc2M5I4dO
+	e6UOzTX8WOpBB6qX040BCOB3rl+ajykTMc/ZZ6CgZq5Qu508o1uv3sy5raZlHkF5bnhwPYG5WuR
+	YRaYOQlTsl+3bXTsXgM1gJFg7QPVzb2zQfMuH8c9MKQbqHS6J1H1OijVOVdkGP+SH8LsZcgHWDM
+	8kpY5J5g==
+X-Received: by 2002:a05:6a00:1f06:b0:7ae:d1d:d500 with SMTP id d2e1a72fcca58-7ff641193d9mr18300398b3a.4.1766657143933;
+        Thu, 25 Dec 2025 02:05:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGHAFIEoFagy2scNUKwIjJ20L5wmLpWPL/hZajeM9dLT/f6lWLYsRJMfgEduMnI8hA2d3pDWw==
+X-Received: by 2002:a05:6a00:1f06:b0:7ae:d1d:d500 with SMTP id d2e1a72fcca58-7ff641193d9mr18300372b3a.4.1766657143406;
+        Thu, 25 Dec 2025 02:05:43 -0800 (PST)
+Received: from [10.133.33.27] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cffesm18764071b3a.49.2025.12.25.02.05.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Dec 2025 02:05:42 -0800 (PST)
+Message-ID: <e63d61c6-a35b-421a-820c-91262f3b11a4@oss.qualcomm.com>
+Date: Thu, 25 Dec 2025 18:05:36 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,203 +103,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 4/4] mm/hugetlb: fix excessive IPI broadcasts
- when unsharing PMD tables using mmu_gather
-To: linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
-References: <20251223214037.580860-1-david@kernel.org>
- <20251223214037.580860-5-david@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: fix qmi memory allocation logic for CALDB
+ region
+To: "Alex G." <mr.nuke.me@gmail.com>, jjohnson@kernel.org,
+        ath11k@lists.infradead.org,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+References: <20251206175829.2573256-1-mr.nuke.me@gmail.com>
+ <7ef46837-7799-4ede-9f5e-88a010d5d1d4@oss.qualcomm.com>
+ <884758381.0ifERbkFSE@nukework.gtech>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20251223214037.580860-5-david@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <884758381.0ifERbkFSE@nukework.gtech>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-
-On 12/23/25 22:40, David Hildenbrand (Red Hat) wrote:
-> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
-> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
-> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
-> tables that it severely regresses some workloads.
-> 
-> In particular, when we fork()+exit(), or when we munmap() a large
-> area backed by many shared PMD tables, we perform one IPI broadcast per
-> unshared PMD table.
-> 
-> There are two optimizations to be had:
-> 
-> (1) When we process (unshare) multiple such PMD tables, such as during
->      exit(), it is sufficient to send a single IPI broadcast (as long as
->      we respect locking rules) instead of one per PMD table.
-> 
->      Locking prevents that any of these PMD tables could get reused before
->      we drop the lock.
-> 
-> (2) When we are not the last sharer (> 2 users including us), there is
->      no need to send the IPI broadcast. The shared PMD tables cannot
->      become exclusive (fully unshared) before an IPI will be broadcasted
->      by the last sharer.
-> 
->      Concurrent GUP-fast could walk into a PMD table just before we
->      unshared it. It could then succeed in grabbing a page from the
->      shared page table even after munmap() etc succeeded (and supressed
->      an IPI). But there is not difference compared to GUP-fast just
->      sleeping for a while after grabbing the page and re-enabling IRQs.
-> 
->      Most importantly, GUP-fast will never walk into page tables that are
->      no-longer shared, because the last sharer will issue an IPI
->      broadcast.
-> 
->      (if ever required, checking whether the PUD changed in GUP-fast
->       after grabbing the page like we do in the PTE case could handle
->       this)
-> 
-> So let's rework PMD sharing TLB flushing + IPI sync to use the mmu_gather
-> infrastructure so we can implement these optimizations and demystify the
-> code at least a bit. Extend the mmu_gather infrastructure to be able to
-> deal with our special hugetlb PMD table sharing implementation.
-> 
-> To make initialization of the mmu_gather easier when working on a single
-> VMA (in particular, when dealing with hugetlb), provide
-> tlb_gather_mmu_vma().
-> 
-> We'll consolidate the handling for (full) unsharing of PMD tables in
-> tlb_unshare_pmd_ptdesc() and tlb_flush_unshared_tables(), and track
-> in "struct mmu_gather" whether we had (full) unsharing of PMD tables.
-> 
-> Because locking is very special (concurrent unsharing+reuse must be
-> prevented), we disallow deferring flushing to tlb_finish_mmu() and instead
-> require an explicit earlier call to tlb_flush_unshared_tables().
-> 
->  From hugetlb code, we call huge_pmd_unshare_flush() where we make sure
-> that the expected lock protecting us from concurrent unsharing+reuse is
-> still held.
-> 
-> Check with a VM_WARN_ON_ONCE() in tlb_finish_mmu() that
-> tlb_flush_unshared_tables() was properly called earlier.
-> 
-> Document it all properly.
-> 
-> Notes about tlb_remove_table_sync_one() interaction with unsharing:
-> 
-> There are two fairly tricky things:
-> 
-> (1) tlb_remove_table_sync_one() is a NOP on architectures without
->      CONFIG_MMU_GATHER_RCU_TABLE_FREE.
-> 
->      Here, the assumption is that the previous TLB flush would send an
->      IPI to all relevant CPUs. Careful: some architectures like x86 only
->      send IPIs to all relevant CPUs when tlb->freed_tables is set.
-> 
->      The relevant architectures should be selecting
->      MMU_GATHER_RCU_TABLE_FREE, but x86 might not do that in stable
->      kernels and it might have been problematic before this patch.
-> 
->      Also, the arch flushing behavior (independent of IPIs) is different
->      when tlb->freed_tables is set. Do we have to enlighten them to also
->      take care of tlb->unshared_tables? So far we didn't care, so
->      hopefully we are fine. Of course, we could be setting
->      tlb->freed_tables as well, but that might then unnecessarily flush
->      too much, because the semantics of tlb->freed_tables are a bit
->      fuzzy.
-> 
->      This patch changes nothing in this regard.
-> 
-> (2) tlb_remove_table_sync_one() is not a NOP on architectures with
->      CONFIG_MMU_GATHER_RCU_TABLE_FREE that actually don't need a sync.
-> 
->      Take x86 as an example: in the common case (!pv, !X86_FEATURE_INVLPGB)
->      we still issue IPIs during TLB flushes and don't actually need the
->      second tlb_remove_table_sync_one().
-> 
->      This optimized can be implemented on top of this, by checking e.g., in
->      tlb_remove_table_sync_one() whether we really need IPIs. But as
->      described in (1), it really must honor tlb->freed_tables then to
->      send IPIs to all relevant CPUs.
-> 
-> Notes on TLB flushing changes:
-> 
-> (1) Flushing for non-shared PMD tables
-> 
->      We're converting from flush_hugetlb_tlb_range() to
->      tlb_remove_huge_tlb_entry(). Given that we properly initialize the
->      MMU gather in tlb_gather_mmu_vma() to be hugetlb aware, similar to
->      __unmap_hugepage_range(), that should be fine.
-> 
-> (2) Flushing for shared PMD tables
-> 
->      We're converting from various things (flush_hugetlb_tlb_range(),
->      tlb_flush_pmd_range(), flush_tlb_range()) to tlb_flush_pmd_range().
-> 
->      tlb_flush_pmd_range() achieves the same that
->      tlb_remove_huge_tlb_entry() would achieve in these scenarios.
->      Note that tlb_remove_huge_tlb_entry() also calls
->      __tlb_remove_tlb_entry(), however that is only implemented on
->      powerpc, which does not support PMD table sharing.
-> 
->      Similar to (1), tlb_gather_mmu_vma() should make sure that TLB
->      flushing keeps on working as expected.
-> 
-> Further, note that the ptdesc_pmd_pts_dec() in huge_pmd_share() is not a
-> concern, as we are holding the i_mmap_lock the whole time, preventing
-> concurrent unsharing. That ptdesc_pmd_pts_dec() usage will be removed
-> separately as a cleanup later.
-> 
-> There are plenty more cleanups to be had, but they have to wait until
-> this is fixed.
-> 
-> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
-> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
-> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
-> Tested-by: Laurence Oberman <loberman@redhat.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> ---
-
-The following doc fixup on top, reported by buildbots on my private branch:
+X-Proofpoint-GUID: hEF03Kk0BAxOp-46wBQhmeCUS-OhdXKB
+X-Proofpoint-ORIG-GUID: hEF03Kk0BAxOp-46wBQhmeCUS-OhdXKB
+X-Authority-Analysis: v=2.4 cv=Uolu9uwB c=1 sm=1 tr=0 ts=694d0c78 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=yXKDi3_BjhFrakrclucA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI1MDA5NSBTYWx0ZWRfX4mW4B7TjaFeB
+ GYftXljz6QJB6RZeT8Rb0kW0LbalrJvwjn0gJvctGdV26uPe9LfQthynMitmQgpkQoDrxbLjRrG
+ SbR8UDc+bWCzevxFUdXhIz2Lta8LtaWegtnF1SLh2FBtN6Zx0FJNA/BdTZpHAxBKXNUVgx5fmDr
+ HLBDSeexRBBPxLEBmJswZHHcJyoYsmed/zqT6+J//20IKktIldaWDo9BRRwkw8nvsX13bw9Gkkb
+ FVrkfaWf9/En5ASVUQc9yub5X01QzsxvknrIUT+7ufA2hejxhqg98Ybf4vbJO3ptajcVmQfmPBc
+ YbaFZORYOzhbL4G3a9XU5k8fmE7sGbMcPQiJMtfvVXSIbVxadQ4COQ2SMq6KtNlzEj8lihuPmvg
+ o/sjwBx4ZZlL/B239RuPSqHx/9W89mgx4xQiB+w9V9IRx8LYrAamxNxQmOn6HEjuDVxi8GajG4h
+ kURu1FaITyjmmeNob1g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-24_04,2025-12-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 adultscore=0
+ phishscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512250095
 
 
- From 3556c4ce6b645f680be8040c8512beadb5f84d38 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Thu, 25 Dec 2025 10:41:55 +0100
-Subject: [PATCH] fixup
 
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
-  mm/mmu_gather.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+On 12/25/2025 5:47 AM, Alex G. wrote:
+> On Monday, December 8, 2025 4:23:46 AM CST Baochen Qiang wrote:
+>> On 12/7/2025 1:58 AM, Alexandru Gagniuc wrote:
+>>> Memory region assignment in ath11k_qmi_assign_target_mem_chunk()
+>>>
+>>> assumes that:
+>>>   1. firmware will make a HOST_DDR_REGION_TYPE request, and
+>>>   2. this request is processed before CALDB_MEM_REGION_TYPE
+>>>
+>>> In this case CALDB_MEM_REGION_TYPE, can safely be assigned immediately
+>>> after the host region.
+>>>
+>>> However, if the HOST_DDR_REGION_TYPE request is not made, or the
+>>> reserved-memory node is not present, then res.start and res.end are 0,
+>>> and host_ddr_sz remains uninitialized. The physical address should
+>>> fall back to ATH11K_QMI_CALDB_ADDRESS. That doesn't happen:
+>>>
+>>> resource_size(&res) returns 1 for an empty resource, and thus the if
+>>> clause never takes the fallback path. ab->qmi.target_mem[idx].paddr
+>>> is assigned the uninitialized value of host_ddr_sz + 0 (res.start).
+>>>
+>>> Use "if (res.end > res.start)" for the predicate, which correctly
+>>> falls back to ATH11K_QMI_CALDB_ADDRESS.
+> 
+> I am ready to submit the IPQ9574 support. This patch is a dependency. Should I 
+> include this change in the series that adds IPQ9574?
 
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index cd32c2dbf501b..7468ec3884555 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -462,8 +462,8 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
-  }
-  
-  /**
-- * tlb_gather_mmu - initialize an mmu_gather structure for operating on a single
-- *		    VMA
-+ * tlb_gather_mmu_vma - initialize an mmu_gather structure for operating on a
-+ *			single VMA
-   * @tlb: the mmu_gather structure to initialize
-   * @vma: the vm_area_struct
-   *
--- 
-2.52.0
+Better not, first reason is for track purpose. And the second, since the patch is fixing a
+broken commit, IMO being standalone makes it easy for stable team to do backport work.
 
+> 
+>> In addition, does it make sense to do of_reserved_mem_region_to_resource()
+>> before the loop, which may give CALDB_MEM_REGION_TYPE a chance even
+>> HOST_DDR_REGION_TYPE request is not made?
+> 
+> I'm sorry that I initially missed this question. I don't think we should move 
+> &res initialization outside the loop. We also need host_ddr_sz to be 
+> initialized by a HOST_DDR_REGION_TYPE (1) request. On IPQ9574, the firmware 
+> doesn't make that request, so host_ddr_sz remains uninitialized. Since &res 
+> and host_ddr_sz are used together, I think it's better to initialize them, 
+> together.
 
--- 
-Cheers
+fine then
 
-David
+> 
+> 
+> Without patch:
+> 
+>     ath11k c000000.wifi: qmi firmware request memory request
+>     ath11k c000000.wifi: qmi mem seg type 4 size 409600
+>     ath11k c000000.wifi: qmi mem seg type 2 size 262144
+>     ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+>     ...
+>     ath11k c000000.wifi: failed to assign qmi target memory: -5
+> 
+> 
+> 
+> With patch:
+> 
+>     ath11k c000000.wifi: qmi firmware request memory request
+>     ath11k c000000.wifi: qmi mem seg type 4 size 409600
+>     ath11k c000000.wifi: qmi mem seg type 2 size 262144
+>     ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+>     ath11k c000000.wifi: qmi ignore invalid mem req type 3
+>     ath11k c000000.wifi: qmi req mem_seg[0] 0x000000004ba00000 409600 4
+>     ath11k c000000.wifi: qmi req mem_seg[1] 0x000000004b700000 262144 2
+> 
+> 
+> Tested on : WLAN.HK.2.9.0.1-01890-QCAHKSWPL_SILICONZ-1
+> 
+> Alex
+> 
+> 
+> 
+> 
+
 
