@@ -1,145 +1,156 @@
-Return-Path: <stable+bounces-203395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444D2CDD605
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 07:33:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6874CDD65E
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 08:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D16563018969
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 06:33:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 778BB30019C1
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 07:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC2928D8FD;
-	Thu, 25 Dec 2025 06:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49712E2EF2;
+	Thu, 25 Dec 2025 07:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="mR2lDkmi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bc28Fy4O"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-of-o52.zoho.com (sender4-of-o52.zoho.com [136.143.188.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214DC381AF;
-	Thu, 25 Dec 2025 06:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766644396; cv=pass; b=aPhTOXteNywoXLsxH3OP/Bqy8LoQttsAXdN2Xm4iTlx4jB6nB4FkAwOPh4zLPmTXgCEYaAyoZfWx+5YYcgQVWylfDxATdDm1RtP2V8ZSf7pKWQ7SqLv11d5wgPdAzCp8MPNDSIafYWHTxo3HAs5mPa+UHfzC7IXGRsyiruUiQGw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766644396; c=relaxed/simple;
-	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mBKuUkm6kpEZ8o9xJoRWzoTbsgGkhKw8n9dbiuzomAv/lcbM3Z43MR+isihf2eTcNRhhYpRYOis1q6YaRuT37ojv5deMvypup2ynNKTuLQI8fhwsqXdfz2iH2cEqTS1UxFSADoKDZPlPjrJcLnjbponlzK1XT3GokfUB07DEaNc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=mR2lDkmi; arc=pass smtp.client-ip=136.143.188.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
-ARC-Seal: i=1; a=rsa-sha256; t=1766644374; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lbzXpn8WiivnVnb7MrkYfxidlLafTrqPBmTp8NEa+yt0y0y3WRq+KTT/RiDEHHrkypi9Jl+ZUVc0OuD4atf99aZeYgg3c1W1IbCJ4wtQtngW2SK3UaeHPnm7fJxK9r0+KfxY9OQ10JRtKvuZyZdsF29vHFjhvwQ9XDb2kBVDN1c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766644374; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=; 
-	b=oLAiGCNoSgP32et/IvkkLCPbI1AWaOvdb8jY27aiJyd9QEz1FyohA5v7mu671/sTsb4DiPE/R0hj1GVdPr2j/Flf3WhYT6KELlRGdfV2mAd8kMeL8lqepXWxKZSlLe5eALC65211o8WP52yCzQLKhUm9d8VgLr59NiH9Tdtmkdo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766644374;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=;
-	b=mR2lDkmilQLEZsXnrHfapOppLMDUcoXuW8KKLGQrwMNCGiz/lnYJnKVn6vhuJLkA
-	WS1siLber1sekCQCmNxWNvZ8hhu8Ibr68joEepjNrM2yxmUgkAHuTpl2iUcDbGNDR8o
-	OQKzOUkHmt7zE3q4EymLsO/6UpIfmKVRWynENY4Q=
-Received: by mx.zohomail.com with SMTPS id 1766644372700994.7161841320656;
-	Wed, 24 Dec 2025 22:32:52 -0800 (PST)
-Message-ID: <de697a2fbf2464297d5e303a109b0edddddef207.camel@mpiricsoftware.com>
-Subject: Re: [PATCH v2 1/2] hfsplus: skip node 0 in hfs_bmap_alloc
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: Viacheslav Dubeyko <slava@dubeyko.com>, zippel@linux-m68k.org, 
- linux-fsdevel@vger.kernel.org, glaubitz@physik.fu-berlin.de,
- frank.li@vivo.com
-Cc: akpm@osdl.org, linux-kernel@vger.kernel.org, janak@mpiricsoftware.com, 
- stable@vger.kernel.org,
- syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com, 
- shardulsb08@gmail.com
-Date: Thu, 25 Dec 2025 12:02:46 +0530
-In-Reply-To: <63e3ff1595ebd27e9835ae7057204b7eef0c1254.camel@dubeyko.com>
-References: <20251224151347.1861896-1-shardul.b@mpiricsoftware.com>
-	 <20251224151347.1861896-2-shardul.b@mpiricsoftware.com>
-	 <63e3ff1595ebd27e9835ae7057204b7eef0c1254.camel@dubeyko.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39562294A10
+	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 07:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766646505; cv=none; b=B3WAPPzr0Y1o9o68g0k5qMJERKugS30ZuAjYqz7QZKLPFWBFd96HhcuZlSmR143nuqbWyO8p6X7XWxxgw0q3qleP2Op3R8achfnWES8Jc8Kv8DoUdK5An+wkWj9rH0Qb/5bQ8csA8TZbm3jdaldaAcP7k5XqS8oo1cYmBL7AnI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766646505; c=relaxed/simple;
+	bh=CG/moFFtL/ZvcK2sU4KPzNBuRMark1gy0LiWEe6P/58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JHtAQlGySe5/1T8tTzI4NbNJdDFxJTvJLDNxnMim+ZHeEx4wQo1IQyziuN+SsqjKmJfWeA+dX3t+6kRyakSkGWcuiLRHtVQehlg5bkewAnrAY0hHoXZWFIlTNABdDmBsorSmr3+hYbmdhaynucP6br7WFPrNsdnKcPUMygi07nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bc28Fy4O; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a09d981507so46211405ad.1
+        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 23:08:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766646503; x=1767251303; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2trtGlNXZKZVCUn7XC47iovlx+cgHeYtiSGP2VJpxo0=;
+        b=bc28Fy4OMFRs88KfIMpN8wemY+w1AVKjojemfWOPH3mB/dTFECX8bni64oj8m+7ayu
+         vehgyWFiKeCEw68RlfnEB/o+V1bdPVjA961cNxHnUsmqO5B9IOOH+DROHYNnmzyzcv2l
+         +f8eNgijpOolfosH4wU4qgaViX8SBwosdNdA+YsiZGjNY8J5z/szJsR+rHJI5AQQ2a2l
+         2vBzwKhcMsZVIvVs0jLQDLsRcanUGNUy5LV3iNpZPrZysp8aXMVeeeGiInQx6ObhHf7Y
+         6CD5YIrgvFx7Qjan1IJYdXORz28Fpinwx93zgRv6DSP17yHAJ03HiXgMD6axyahKjPNc
+         CjrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766646503; x=1767251303;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2trtGlNXZKZVCUn7XC47iovlx+cgHeYtiSGP2VJpxo0=;
+        b=Jr7IedAN94yfnA09kWOfUssgp11QqHLxTxcLwZWlR44dUP5I15y5mPJV/QDujZMkOB
+         J5a8Fvl9SgDkjyyyljf3aj0GyXosWtCQgbnPeKz26AXCl1lqXCLIqLaQ8EtgKcl7QfUW
+         hNBkOzzMKQO4Dfa9CywK32Up1/8Y/9JQaEVyKTaqYno+KbayapYhyGC7OxFCGHxCwtxn
+         hVqGN/3wweXWyfMKFMIWJrWi3pmNJcyCOCjhsK6Drs8NDdCBae31L4GQarhH3EU9OQGG
+         Iut8bcYdfYY+e/Wgl2AQn0S7upMovoOYikKQb8AmVtX1XKU64ngdgb8mVQhg8WXwIR3t
+         n0hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVP1MUjX7fulbeYUsioCgixzQ407/TkLqVI1cY60m2vHAN+oCXekg2+gtFu9aIjkFaXEsMr/5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLd3lWoCKvZFC8q9qhN+Gba5DM/em/REDj/G/BrSGox0s2VlAD
+	ibLbktV/CDEi02vP1noz1Nxk+qCX7jHD943fokEqfKI8kyCKbV9awBdb
+X-Gm-Gg: AY/fxX6eV/F43NSEshTSe26GObSxtbt9FJf97j1crG1PAL8tGP+TISWC4cnnM9wH2Az
+	NMlQl81VBedGHqVNjTa9owyr2jfoH2oLiPSU+HIm7DKoRCzkCJA45J2kAmhHTfOCTmmL4KHeQlS
+	+SRh1W0Nvf4PQr3DBYXjgmDe9iH/SzbjutODzsiyOXbPISHN1jwq6cig9Q3CGah8pQE3h4fKiie
+	A+FXWr/Zp/29oj4uYIBc42oB2d7BtmQeGIGUVOjzAtAIrw08z8qpVAWs6amTeZSV8FOe3HiPs25
+	iSlzI81Er8UmAUBROZYYbJtR517fmJUyt+YFSQbbxhxxhtIjURma3eP86+/UR0R3Gn1qVNyTUcg
+	8kC3uCTpUVWj8F/62IVNnts/jivBHbHcA/FvXETj/KoWsUwwZRy3DC02d/tISKKSLitKE24smSn
+	ik/UkunpGWtk8=
+X-Google-Smtp-Source: AGHT+IHj4b0UoCCHB7eZW9m4bhaWfyAyco74NqzkA7/3+8fypn8585Sl5u634QiMVlYAcwKXwYCnGA==
+X-Received: by 2002:a17:903:2307:b0:29f:2734:837d with SMTP id d9443c01a7336-2a2cab74c17mr267904165ad.28.1766646503484;
+        Wed, 24 Dec 2025 23:08:23 -0800 (PST)
+Received: from inspiron ([111.125.235.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d6d557sm169812195ad.84.2025.12.24.23.08.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 23:08:23 -0800 (PST)
+Date: Thu, 25 Dec 2025 12:38:15 +0530
+From: Prithvi <activprithvi@gmail.com>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+	brauner@kernel.org, jack@suse.cz, viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] io_uring: fix filename leak in __io_openat_prep()
+Message-ID: <20251225070815.s5ahm4t7yfd6irjo@inspiron>
+References: <20251224164247.103336-1-activprithvi@gmail.com>
+ <dc51a709-e404-4515-8023-3597c376aff5@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dc51a709-e404-4515-8023-3597c376aff5@kernel.dk>
 
-On Wed, 2025-12-24 at 20:02 -0800, Viacheslav Dubeyko wrote:
->=20
-> I think that it's not completely correct fix. First of all, we have
-> bitmap corruption. It means that we need to complain about it and
-> return error code. Logic cannot continue to work normally because we
-> cannot rely on bitmap anymore. It could contain multiple corrupted
-> bits.
->=20
-> Technically speaking, we need to check that bitmap is corrupted when
-> we
-> create b-trees during mount operation (we can define it for node 0
-> but
-> it could be tricky for other nodes). If we have detected the
-> corruption, then we can recommend to run FSCK tool and we can mount
-> in
-> READ-ONLY mode.
->=20
-> I think we can check the bitmap when we are trying to open/create not
-> a
-> new node but already existing in the tree. I mean if we mounted the
-> volume this b-tree containing several nodes on the volume, we can
-> check
-> that bitmap contains the set bit for these nodes. And if the bit is
-> not
-> there, then it's clear sign of bitmap corruption. Currently, I
-> haven't
-> idea how to check corrupted bits that showing presence of not
-> existing
-> nodes in the b-tree. But I suppose that we can do some check in
-> driver's logic. Finally, if we detected corruption, then we should
-> complain about the corruption. Ideally, it will be good to remount in
-> READ-ONLY mode.
->=20
-> Does it make sense to you?
->=20
-Hi Slava,
+On Wed, Dec 24, 2025 at 11:01:55AM -0700, Jens Axboe wrote:
+> On 12/24/25 9:42 AM, Prithvi Tambewagh wrote:
+> > __io_openat_prep() allocates a struct filename using getname(), but
+> > it isn't freed in case the present file is installed in the fixed file
+> > table and simultaneously, it has the flag O_CLOEXEC set in the
+> > open->how.flags field.
+> > 
+> > This is an erroneous condition, since for a file installed in the fixed
+> > file table, it won't be installed in the normal file table, due to which
+> > the file cannot support close on exec. Earlier, the code just returned
+> > -EINVAL error code for this condition, however, the memory allocated for
+> > that struct filename wasn't freed, resulting in a memory leak.
+> > 
+> > Hence, the case of file being installed in the fixed file table as well
+> > as having O_CLOEXEC flag in open->how.flags set, is adressed by using
+> > putname() to release the memory allocated to the struct filename, then
+> > setting the field open->filename to NULL, and after that, returning
+> > -EINVAL.
+> > 
+> > Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
+> > Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+> > ---
+> >  io_uring/openclose.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/io_uring/openclose.c b/io_uring/openclose.c
+> > index bfeb91b31bba..fc190a3d8112 100644
+> > --- a/io_uring/openclose.c
+> > +++ b/io_uring/openclose.c
+> > @@ -75,8 +75,11 @@ static int __io_openat_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
+> >  	}
+> >  
+> >  	open->file_slot = READ_ONCE(sqe->file_index);
+> > -	if (open->file_slot && (open->how.flags & O_CLOEXEC))
+> > +	if (open->file_slot && (open->how.flags & O_CLOEXEC)) {
+> > +		putname(open->filename);
+> > +		open->filename = NULL;
+> >  		return -EINVAL;
+> > +	}
+> >  
+> >  	open->nofile = rlimit(RLIMIT_NOFILE);
+> >  	req->flags |= REQ_F_NEED_CLEANUP;
+> 
+> You can probably fix it similarly by just having REQ_F_NEED_CLEANUP set
+> earlier in the process, then everything that needs undoing will get
+> undone as part of ending the request.
+> 
+> -- 
+> Jens Axboe
 
-Yes, that makes sense.
+Sure, I will send v2 patch incorporating this change. Thanks for the 
+feedback!
 
-Skipping node 0 indeed looks like only a local workaround: if the
-bitmap is already inconsistent, we shouldn=E2=80=99t proceed as if it is
-trustworthy for further allocations, because other bits could be wrong
-as well.
-
-For the next revision I plan to replace the =E2=80=9Cskip node 0=E2=80=9D g=
-uard with a
-bitmap sanity check during btree open/mount. At minimum, I will verify
-that the header node (node 0) is marked allocated, and I will also
-investigate whether other existing nodes can be validated as well. If
-corruption is detected, the driver will report it and force a read-only
-mount, along with a recommendation to run fsck.hfsplus. This avoids
-continuing RW operation with a known-bad allocator state.
-
-In parallel, I plan to keep the -EEXIST change in hfs_bnode_create() as
-a robustness fix for any remaining or future inconsistency paths.
-
-I=E2=80=99ll post a respin shortly.
-
-If you=E2=80=99re OK with it, I can also post the hfs_bnode_create() -EEXIS=
-T
-change as a standalone fix, since it independently prevents a refcount
-underflow and panic even outside the bitmap-corruption scenario. I=E2=80=99=
-ll
-continue working on the bitmap validation in parallel.
-
-Thanks,
-Shardul
+Best Regards, 
+Prithvi
 
