@@ -1,142 +1,173 @@
-Return-Path: <stable+bounces-203407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486B8CDDFF3
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 18:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4276ACDE236
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 23:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2877300C6D1
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 17:31:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71DC73008F9F
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 22:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142E427380A;
-	Thu, 25 Dec 2025 17:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1MVk/0x"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F051129DB64;
+	Thu, 25 Dec 2025 22:38:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F92078F4F
-	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 17:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4DC26FA4B;
+	Thu, 25 Dec 2025 22:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766683892; cv=none; b=b+AWuST+aJnmTEIRraevQsPJ+dXOXK5d8HmK/qmg6/vjXk/dpK2aO970/W0BferEeo5CtY3azZusZnai38zOXBWQMyTC0prcinWnKEnFAQ2BVVYxztDGHYuTM8rl+0RfLj5qXmpkQ/9g0kEpdKaXgPO3rBhB4zLt3eM9Pv3pPds=
+	t=1766702337; cv=none; b=rmUnj30c/tIhqiMahbm367GDpt9OAxM3cwXITf8CZocBRbeG692iR8Mbi3RMTpKEjP0udWQ3lWsP2LHE9jgHgKQRzRspaeFp+2Zj9V+JWqlVbmrayXImNn5gnojEun0P23NZSrJjlkJnxRR2vPONFjuXoH/qiAKDU/sq6mq+QoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766683892; c=relaxed/simple;
-	bh=otJZyS4fR4RnBCStR0s7tCenz56e+jMbEq+HBGAX1Xw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bFXp7AbzqMHNPDZUHz3X5kW2ZoAV84hUdCw48AN3AqcJfm3G993Q4F5VNZZDyHfDnBCeftaNMS35KWoU/dkAcBJsSyPiAuhYlFtrcfCXA88+xvM7mMiMs92LGya2m0LWpc5yJs2P3cL+yt2dFXxqKApSaYf+R4RGTt1J3IPq/Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1MVk/0x; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso9259094b3a.1
-        for <stable@vger.kernel.org>; Thu, 25 Dec 2025 09:31:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766683891; x=1767288691; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=31apXipNlf1QpVcJgO8AvAiPDS1k+UownqxyxhqGB04=;
-        b=T1MVk/0xYZCx0RR+8K81li3jTi8/1EsOZpUpxwS6kZ1XqflZ+prw+mUr6GG3OEbtJN
-         p3Bieb+AEvW09UsUwhfHpMZszfTmkIYiZm2E72dP9NW5RKwTJGEhFqhaBUQ200z1XOJn
-         O/HUlo2sJS9RWcrHKzUOaRcP7Gs64361lc0+qQwPekQB+m5W2CRrH+DaL3YG7xMGEre6
-         uZVUT96Nr2uyj15mpHQqF9HolQil0m76Ul5injujafw1NvFQD7vumzdUBH11bul7sJ/t
-         lD2dkG1ns9NrrSzFrqOViXkqt9jftSlc+9c9P3USlauMbbEx44mJDv8Rimpx36Bg8LUI
-         J80g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766683891; x=1767288691;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=31apXipNlf1QpVcJgO8AvAiPDS1k+UownqxyxhqGB04=;
-        b=guLSPB+AnJJHAG4L/O3fMAnFtWJHBdloo6XkxCd8CXGNnqgEjV9RFKEONhGh1E8rJ4
-         k7xKxiinv+C5cwipUETqy6ytqVZWplRZaJGU/9h+VpNXUBrdBctwN5MzbBPJ5g5ymA2L
-         n/QR3S6F5dpb3RWBFUK7WRIy25MjRUGB3/1m0WhS7zC0w1uQAQkUvD1J6FIneiED/VbM
-         24xKCYze4k9mhoZ6mxk8VOLa+FURrllaNAzNLCgroZiP1Snt44PucZn8ksVmOwWMN/5x
-         zdr4hQ+cd8VTGTXrf6+SRS7h1MdG7rnegJH8leDAUshWDUz2QzMNgUAJKCrLSknkYST4
-         /NWw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6q1EQI1O5cGXKL7pYGXohXoIBWJ91oQFsR4AgVEi3syCXbFd7G90FZjKf9wSu9ZK5WQBN4+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyfxugg8/nRLsuqepr9Ect17AWZlGy1CCOWtU7jjZ81169z/DJm
-	RcB3XAaDku0jBrk/nI0lEG03GLredBBltSI7KxjJMw6QJZ5ny5SRBful
-X-Gm-Gg: AY/fxX5T6Qv18uk0ijH22YcG6QorDdN7q5lwu8cp4avosGfCgTWz28m9WhRwBz+qR9M
-	pnWcgLCPwUf5PJwqNdaR0LBaN2njT4HDUlvWoB3W3ikZPcO/B58xwCQCo6NyPVntfENEAGofg4P
-	XviHaVWNpTqRYbmrL99hpUBhWluD2N1jEfJcXU9cSnCY8Kq32tg2uhBPdQZcfyRg4ym/Qjp+BDl
-	WSXaueCEFT+EwGbA8ojkVYLXt6c6oEe2H9HxKkp2Y307FlYlYso48pOrnrcMmpCOvKPjiNT9by1
-	rt316wD6ya9rRTW86psDFrZKnfNNT/90qsJIWKRKGjOhVrgzGV0OatVsBfORYFlu3EaEfYUDT18
-	DXyypcBsyiC0L53rePn8IR4SMynjBpWgZH/X6w73L/hTeVCryT1oU52gb/8YqnYJeORNqrOjpt/
-	3d8Nf/l/UUlfN81q2pffWNCrRJavChJwMq0HaYsJ0oXAUj0nhVkDoZjSQOe8jOyBZX86aSkcrIf
-	skLqx8A3pVKaXm5kgdudQ==
-X-Google-Smtp-Source: AGHT+IG+RrlusK3U5jY/HpNGFiRuvCk55ZP9KNfhnswIoqpfnEX38+YhmOAdvGnR9FlnaOygc0lLqA==
-X-Received: by 2002:aa7:9a85:0:b0:7f7:5d81:172b with SMTP id d2e1a72fcca58-7ff664807a0mr20929135b3a.42.1766683890687;
-        Thu, 25 Dec 2025 09:31:30 -0800 (PST)
-Received: from visitorckw-work01.c.googlers.com.com (25.118.81.34.bc.googleusercontent.com. [34.81.118.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f300sm19814805b3a.54.2025.12.25.09.31.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Dec 2025 09:31:30 -0800 (PST)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: linusw@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	arnd@arndb.de
-Cc: linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jserv@ccns.ncku.edu.tw,
-	eleanor15x@gmail.com,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ARM: dts: integrator: Fix DMA ranges mismatch warning on IM-PD1
-Date: Thu, 25 Dec 2025 17:31:18 +0000
-Message-ID: <20251225173118.580110-1-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.52.0.358.g0dd7633a29-goog
+	s=arc-20240116; t=1766702337; c=relaxed/simple;
+	bh=RTMVmwwt7+fBDHrbiJYj7gmoXhgCmVjePNzqaRuSsWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nr6aBs+nWO9fAYSF6JqSAUwZs2Yt4JwUCtIOHSRLDPC23VvC+PM5mTfM2KEThIJHsKdJqSAK2LeOcMAtwmibeQq84pHnUQbIfq4b9M+RLsNmWbTY14hP85suW95dDrA5OTqC5liQ5n0jlVxbwriv5TZqDlY54d62OuWM1ROaWGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id E80E172C8CC;
+	Fri, 26 Dec 2025 01:29:13 +0300 (MSK)
+Received: from pony.office.basealt.ru (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id DD5DC36D00D1;
+	Fri, 26 Dec 2025 01:29:13 +0300 (MSK)
+Received: by pony.office.basealt.ru (Postfix, from userid 500)
+	id A8082360D63C; Fri, 26 Dec 2025 01:29:13 +0300 (MSK)
+Date: Fri, 26 Dec 2025 01:29:13 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Zsolt Kajtar <soci@c64.rulez.org>, 
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [PATCH v2] fbdev: bitblit: bound-check glyph index in bit_putcs*
+Message-ID: <aU23brU4lZqIkw4Z@altlinux.org>
+References: <20251020134701.84082-1-junjie.cao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251020134701.84082-1-junjie.cao@intel.com>
 
-When compiling the device tree for the Integrator/AP with IM-PD1, the
-following warning is observed regarding the display controller node:
+Dear linux-fbdev, stable,
 
-arch/arm/boot/dts/arm/integratorap-im-pd1.dts:251.3-14: Warning
-(dma_ranges_format):
-/bus@c0000000/bus@c0000000/display@1000000:dma-ranges: empty
-"dma-ranges" property but its #address-cells (2) differs from
-/bus@c0000000/bus@c0000000 (1)
+On Mon, Oct 20, 2025 at 09:47:01PM +0800, Junjie Cao wrote:
+> bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+> character value masked by 0xff/0x1ff, which may exceed the actual font's
+> glyph count and read past the end of the built-in font array.
+> Clamp the index to the actual glyph count before computing the address.
+> 
+> This fixes a global out-of-bounds read reported by syzbot.
+> 
+> Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+> Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 
-The "dma-ranges" property is intended to describe DMA address
-translations for child nodes. However, the only child of the display
-controller is a "port" node, which does not perform DMA memory
-accesses.
+This commit is applied to v5.10.247 and causes a regression: when
+switching VT with ctrl-alt-f2 the screen is blank or completely filled
+with angle characters, then new text is not appearing (or not visible).
 
-Since the property is not required for the child node and triggers a
-warning due to default address cell mismatch, remove it.
+This commit is found with git bisect from v5.10.246 to v5.10.247:
 
-Fixes: 7bea67a99430 ("ARM: dts: integrator: Fix DMA ranges")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
----
-Changes in v2:
-- Switch approach to remove the unused "dma-ranges" property instead of
-  adding "#address-cells" and "#size-cells".
+  0998a6cb232674408a03e8561dc15aa266b2f53b is the first bad commit
+  commit 0998a6cb232674408a03e8561dc15aa266b2f53b
+  Author:     Junjie Cao <junjie.cao@intel.com>
+  AuthorDate: 2025-10-20 21:47:01 +0800
+  Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CommitDate: 2025-12-07 06:08:07 +0900
 
- arch/arm/boot/dts/arm/integratorap-im-pd1.dts | 1 -
- 1 file changed, 1 deletion(-)
+      fbdev: bitblit: bound-check glyph index in bit_putcs*
 
-diff --git a/arch/arm/boot/dts/arm/integratorap-im-pd1.dts b/arch/arm/boot/dts/arm/integratorap-im-pd1.dts
-index db13e09f2fab..0e568baf03b0 100644
---- a/arch/arm/boot/dts/arm/integratorap-im-pd1.dts
-+++ b/arch/arm/boot/dts/arm/integratorap-im-pd1.dts
-@@ -248,7 +248,6 @@ display@1000000 {
- 		/* 640x480 16bpp @ 25.175MHz is 36827428 bytes/s */
- 		max-memory-bandwidth = <40000000>;
- 		memory-region = <&impd1_ram>;
--		dma-ranges;
- 
- 		port@0 {
- 			#address-cells = <1>;
--- 
-2.52.0.358.g0dd7633a29-goog
+      commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
 
+      bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+      character value masked by 0xff/0x1ff, which may exceed the actual font's
+      glyph count and read past the end of the built-in font array.
+      Clamp the index to the actual glyph count before computing the address.
+
+      This fixes a global out-of-bounds read reported by syzbot.
+
+      Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+      Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+      Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+      Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+      Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+      Signed-off-by: Helge Deller <deller@gmx.de>
+      Cc: stable@vger.kernel.org
+      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+   drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
+   1 file changed, 12 insertions(+), 4 deletions(-)
+
+The minimal reproducer in cli, after kernel is booted:
+
+  date >/dev/tty2; chvt 2
+
+and the date does not appear.
+
+Thanks,
+
+#regzbot introduced: 0998a6cb232674408a03e8561dc15aa266b2f53b
+
+> ---
+> v1: https://lore.kernel.org/linux-fbdev/5d237d1a-a528-4205-a4d8-71709134f1e1@suse.de/
+> v1 -> v2:
+>  - Fix indentation and add blank line after declarations with the .pl helper
+>  - No functional changes
+> 
+>  drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+> index 9d2e59796c3e..085ffb44c51a 100644
+> --- a/drivers/video/fbdev/core/bitblit.c
+> +++ b/drivers/video/fbdev/core/bitblit.c
+> @@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(struct vc_data *vc, struct fb_info *info,
+>  				     struct fb_image *image, u8 *buf, u8 *dst)
+>  {
+>  	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
+> +	unsigned int charcnt = vc->vc_font.charcount;
+>  	u32 idx = vc->vc_font.width >> 3;
+>  	u8 *src;
+>  
+>  	while (cnt--) {
+> -		src = vc->vc_font.data + (scr_readw(s++)&
+> -					  charmask)*cellsize;
+> +		u16 ch = scr_readw(s++) & charmask;
+> +
+> +		if (ch >= charcnt)
+> +			ch = 0;
+> +		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+>  
+>  		if (attr) {
+>  			update_attr(buf, src, attr, vc);
+> @@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(struct vc_data *vc,
+>  				       u8 *dst)
+>  {
+>  	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
+> +	unsigned int charcnt = vc->vc_font.charcount;
+>  	u32 shift_low = 0, mod = vc->vc_font.width % 8;
+>  	u32 shift_high = 8;
+>  	u32 idx = vc->vc_font.width >> 3;
+>  	u8 *src;
+>  
+>  	while (cnt--) {
+> -		src = vc->vc_font.data + (scr_readw(s++)&
+> -					  charmask)*cellsize;
+> +		u16 ch = scr_readw(s++) & charmask;
+> +
+> +		if (ch >= charcnt)
+> +			ch = 0;
+> +		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+>  
+>  		if (attr) {
+>  			update_attr(buf, src, attr, vc);
+> -- 
+> 2.48.1
+> 
 
