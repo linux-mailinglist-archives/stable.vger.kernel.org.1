@@ -1,220 +1,145 @@
-Return-Path: <stable+bounces-203394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F291CDD462
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 05:02:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444D2CDD605
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 07:33:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBA3C300F185
-	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 04:02:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D16563018969
+	for <lists+stable@lfdr.de>; Thu, 25 Dec 2025 06:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E20224240;
-	Thu, 25 Dec 2025 04:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC2928D8FD;
+	Thu, 25 Dec 2025 06:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b="nT+xDUMz"
+	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="mR2lDkmi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f68.google.com (mail-yx1-f68.google.com [74.125.224.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-of-o52.zoho.com (sender4-of-o52.zoho.com [136.143.188.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B41B4223
-	for <stable@vger.kernel.org>; Thu, 25 Dec 2025 04:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.68
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766635347; cv=none; b=FMqnxWovAHQNZSD7wLVWUL7IHXSs1rtePunAcRmAFZ3YF2uWQswYekUMnnJr/zYQKahEfLVe7I8JaqkjaHoJDif9F5ENEYbuk4OdZ/DTUr4y01yDv3TCIiyajdp8+etS1UbiHrLSu+rNKP/f11S8SfKrwvGfcBi5Ox/7Jsz2iC0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766635347; c=relaxed/simple;
-	bh=nYqU6zxgPk/qNiPgO4IThHn+KtwJOODMSqihM7UGYfE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214DC381AF;
+	Thu, 25 Dec 2025 06:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766644396; cv=pass; b=aPhTOXteNywoXLsxH3OP/Bqy8LoQttsAXdN2Xm4iTlx4jB6nB4FkAwOPh4zLPmTXgCEYaAyoZfWx+5YYcgQVWylfDxATdDm1RtP2V8ZSf7pKWQ7SqLv11d5wgPdAzCp8MPNDSIafYWHTxo3HAs5mPa+UHfzC7IXGRsyiruUiQGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766644396; c=relaxed/simple;
+	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=THuyVbcVpqlOAfu92u/DHAqGa5py7uulXxtaFx6zaIz5s2BEvE9bM+sz1ETyPh0fMlp4lIlRCdu+J7O0kS+4mDIgipTXqKzV+d89g+s/aDeQMhm+MVq1mERekctzUF1oitLcPLgF05mm6dX5f/I1qm2yYWW/IbWoWo0AQeLzeV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com; spf=pass smtp.mailfrom=dubeyko.com; dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b=nT+xDUMz; arc=none smtp.client-ip=74.125.224.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dubeyko.com
-Received: by mail-yx1-f68.google.com with SMTP id 956f58d0204a3-640d4f2f13dso5652151d50.1
-        for <stable@vger.kernel.org>; Wed, 24 Dec 2025 20:02:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1766635344; x=1767240144; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aqWWn8IKcWEWWUsA5WL517uii5ea/a/1krkJG2emav8=;
-        b=nT+xDUMztcAQOL4J60VrMKwMcDBGxZUtCoxVoVTuff6zK+3JxSSHh/M7+VW+vS7ozR
-         Fhwa5jUwk8NSKXk4hSaWOsPbl1OExxp22vwcvlXAbujPwP6xky9k5T9lV0IrK5horgNh
-         4EMgocm+pH+nfqjxN54E3umeeezVxGTP7+vJwWa/N9gWKcqaiCnVdzrwzQ2uzOfIRBHk
-         A0DxRtiZVBstVW+XxzOllf1gAl06ODBAOVfos9FCl7eC0SsGHvu9HzzfJehk2OdbUvbc
-         ZasfOLbBEisC61GfQeTID7fI5nPvGhGjOMwJtRUHbcmjec7rZc1aP0Gec5bZ0X27U4Hn
-         tkng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766635344; x=1767240144;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aqWWn8IKcWEWWUsA5WL517uii5ea/a/1krkJG2emav8=;
-        b=KMrte7v1dDg52ZWE7t3R1WQ4YaZac1SlNihCdZTEJhopewEFgvXBBSPWfqDJQGnCYk
-         jCEPJMcGTgXfpPWPRb/aq2hr+3ktr+r9iEOe6knUE2lDyihFCfZTtRioKCfik/no9SAO
-         7KxMhl2gloX+A6X8uoVXXxPAgevekiZrFOv7Er6B24bxncIawZkozH4mBJMXFVBUYvae
-         uBNt5+NPAkjS+3QaaixXuEU+3vTDLMJWGC4qR0ZmuPQ/rphxb19nMFg1pXekjvqhvtE4
-         hh824cOAkzPX/YaV0xMA+EyFJVk9uBZswowWObn9FEFs6/JqHKswbUCAyzrCq2iJsZCX
-         CLrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVVw+tXa9uF3i72KkoaPc37rUFbnRYMqplydilOv+UVI2qx3MIksMlUIhl92lqhGnQsLSOMPUE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK6PTC4ekyP3wAHeKwWrWOBC9aM5oklMcnBg2J+A82LTlsCMm0
-	gmAnI4/8ZJWQKfblTyKRoVKoojgjRPEgdQEfiSCZS+mrd2635bjClcZCsLDI79/uUyg=
-X-Gm-Gg: AY/fxX4oAGmGanVomdynIep+ZahfyCJ3j03kKAwg1kbE5vVn88xz+S7HEm68Ph0Eqrh
-	BmACTdE+VqHSf8oQ05Os9LUnPce7cCkA34m5VHtQyqVehaTnrjLdoiMx5DLBmQxMraOhQusUVkv
-	JG6Xi9AwTmkqNOdNxUT4qQX4g5lKGVh3XC8jlVJWWGeOQBB5uACRrOqK9vZJevy8Di77/B6C94J
-	15jWn9x9sdwiluzPvT1JA6DpTr5XO44Ai/LMZB+lSzApfRuzyZFCXDIOhIxmXHv02csNlTVm9MQ
-	39anytHZOlEgQDsmvhYdDrcNyIzVEvIDfjKzrVnU3xv/8PrQFCMLvyhfAh2O4tSchG8MDVgsJX+
-	pXnPApB+UB/vBewPmFvFWEZF7J/7P4Ak1iRpP1aeVChlITSRTI7Gljk/k+mZDbi4ye7YQM5VqzZ
-	sj4AEIPKfb9p/1dmOrU2lHPf4iEl6EoWp9LWEbe52qIvQyygHEtXRR4JfJKjoX6UZPqUGQVwgCF
-	NpW2FxXX6OifwGQTOoIG9oDnkOzsGhkiyvgh+3XH4gggSMT
-X-Google-Smtp-Source: AGHT+IG8Y+cwmZ8zjr0cdykEcowVV5K3/d/B9M8WUNdSXDLtJBjo9H1y8Leh6k68q6gPgbRZeOYKOQ==
-X-Received: by 2002:a53:b84c:0:b0:640:ddf5:254f with SMTP id 956f58d0204a3-6466a8ac06dmr12338597d50.62.1766635343670;
-        Wed, 24 Dec 2025 20:02:23 -0800 (PST)
-Received: from ?IPv6:2600:1700:6476:1430:d657:3387:9f65:590a? ([2600:1700:6476:1430:d657:3387:9f65:590a])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb43790dcsm70987117b3.11.2025.12.24.20.02.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Dec 2025 20:02:23 -0800 (PST)
-Message-ID: <63e3ff1595ebd27e9835ae7057204b7eef0c1254.camel@dubeyko.com>
+	 Content-Type:MIME-Version; b=mBKuUkm6kpEZ8o9xJoRWzoTbsgGkhKw8n9dbiuzomAv/lcbM3Z43MR+isihf2eTcNRhhYpRYOis1q6YaRuT37ojv5deMvypup2ynNKTuLQI8fhwsqXdfz2iH2cEqTS1UxFSADoKDZPlPjrJcLnjbponlzK1XT3GokfUB07DEaNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=mR2lDkmi; arc=pass smtp.client-ip=136.143.188.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1766644374; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=lbzXpn8WiivnVnb7MrkYfxidlLafTrqPBmTp8NEa+yt0y0y3WRq+KTT/RiDEHHrkypi9Jl+ZUVc0OuD4atf99aZeYgg3c1W1IbCJ4wtQtngW2SK3UaeHPnm7fJxK9r0+KfxY9OQ10JRtKvuZyZdsF29vHFjhvwQ9XDb2kBVDN1c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1766644374; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=; 
+	b=oLAiGCNoSgP32et/IvkkLCPbI1AWaOvdb8jY27aiJyd9QEz1FyohA5v7mu671/sTsb4DiPE/R0hj1GVdPr2j/Flf3WhYT6KELlRGdfV2mAd8kMeL8lqepXWxKZSlLe5eALC65211o8WP52yCzQLKhUm9d8VgLr59NiH9Tdtmkdo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766644374;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=GOXBLxqo2LMwRHYZpfnLzcR4hzPaQhiZWC9cjpL3nQ4=;
+	b=mR2lDkmilQLEZsXnrHfapOppLMDUcoXuW8KKLGQrwMNCGiz/lnYJnKVn6vhuJLkA
+	WS1siLber1sekCQCmNxWNvZ8hhu8Ibr68joEepjNrM2yxmUgkAHuTpl2iUcDbGNDR8o
+	OQKzOUkHmt7zE3q4EymLsO/6UpIfmKVRWynENY4Q=
+Received: by mx.zohomail.com with SMTPS id 1766644372700994.7161841320656;
+	Wed, 24 Dec 2025 22:32:52 -0800 (PST)
+Message-ID: <de697a2fbf2464297d5e303a109b0edddddef207.camel@mpiricsoftware.com>
 Subject: Re: [PATCH v2 1/2] hfsplus: skip node 0 in hfs_bmap_alloc
-From: Viacheslav Dubeyko <slava@dubeyko.com>
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, zippel@linux-m68k.org, 
-	linux-fsdevel@vger.kernel.org, glaubitz@physik.fu-berlin.de,
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: Viacheslav Dubeyko <slava@dubeyko.com>, zippel@linux-m68k.org, 
+ linux-fsdevel@vger.kernel.org, glaubitz@physik.fu-berlin.de,
  frank.li@vivo.com
 Cc: akpm@osdl.org, linux-kernel@vger.kernel.org, janak@mpiricsoftware.com, 
-	shardulsb08@gmail.com, stable@vger.kernel.org, 
-	syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
-Date: Wed, 24 Dec 2025 20:02:21 -0800
-In-Reply-To: <20251224151347.1861896-2-shardul.b@mpiricsoftware.com>
+ stable@vger.kernel.org,
+ syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com, 
+ shardulsb08@gmail.com
+Date: Thu, 25 Dec 2025 12:02:46 +0530
+In-Reply-To: <63e3ff1595ebd27e9835ae7057204b7eef0c1254.camel@dubeyko.com>
 References: <20251224151347.1861896-1-shardul.b@mpiricsoftware.com>
 	 <20251224151347.1861896-2-shardul.b@mpiricsoftware.com>
-Autocrypt: addr=slava@dubeyko.com; prefer-encrypt=mutual;
- keydata=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
+	 <63e3ff1595ebd27e9835ae7057204b7eef0c1254.camel@dubeyko.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (by Flathub.org) 
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ZohoMailClient: External
 
-On Wed, 2025-12-24 at 20:43 +0530, Shardul Bankar wrote:
-> Node 0 is the header node in HFS+ B-trees and should always be
-> allocated.
-> However, if a filesystem image has node 0's bitmap bit unset (e.g.,
-> due to
-> corruption or a buggy image generator), hfs_bmap_alloc() will find
-> node 0
-> as free and attempt to allocate it. This causes a conflict because
-> node 0
-> already exists as the header node, leading to a WARN_ON(1) in
-> hfs_bnode_create() when the node is found already hashed.
+On Wed, 2025-12-24 at 20:02 -0800, Viacheslav Dubeyko wrote:
 >=20
-> This issue can occur with syzkaller-generated HFS+ images or
-> corrupted
-> real-world filesystems. Add a guard in hfs_bmap_alloc() to skip node
-> 0
-> during allocation, providing defense-in-depth against such
-> corruption.
+> I think that it's not completely correct fix. First of all, we have
+> bitmap corruption. It means that we need to complain about it and
+> return error code. Logic cannot continue to work normally because we
+> cannot rely on bitmap anymore. It could contain multiple corrupted
+> bits.
 >=20
-> Reported-by: syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
-> Link: https://syzkaller.appspot.com/bug?extid=3D1c8ff72d0cd8a50dfeaa
-> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-> ---
-> =C2=A0v2:
-> =C2=A0- Keep the node-0 allocation guard as targeted hardening for
-> corrupted images.
-> =C2=A0fs/hfsplus/btree.c | 3 +++
-> =C2=A01 file changed, 3 insertions(+)
+> Technically speaking, we need to check that bitmap is corrupted when
+> we
+> create b-trees during mount operation (we can define it for node 0
+> but
+> it could be tricky for other nodes). If we have detected the
+> corruption, then we can recommend to run FSCK tool and we can mount
+> in
+> READ-ONLY mode.
 >=20
-> diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
-> index 229f25dc7c49..60985f449450 100644
-> --- a/fs/hfsplus/btree.c
-> +++ b/fs/hfsplus/btree.c
-> @@ -411,6 +411,9 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree
-> *tree)
-> =C2=A0			if (byte !=3D 0xff) {
-> =C2=A0				for (m =3D 0x80, i =3D 0; i < 8; m >>=3D
-> 1, i++) {
-> =C2=A0					if (!(byte & m)) {
-> +						/* Skip node 0
-> (header node, always allocated) */
-> +						if (idx =3D=3D 0 && i =3D=3D
-> 0)
-> +							continue;
+> I think we can check the bitmap when we are trying to open/create not
+> a
+> new node but already existing in the tree. I mean if we mounted the
+> volume this b-tree containing several nodes on the volume, we can
+> check
+> that bitmap contains the set bit for these nodes. And if the bit is
+> not
+> there, then it's clear sign of bitmap corruption. Currently, I
+> haven't
+> idea how to check corrupted bits that showing presence of not
+> existing
+> nodes in the b-tree. But I suppose that we can do some check in
+> driver's logic. Finally, if we detected corruption, then we should
+> complain about the corruption. Ideally, it will be good to remount in
+> READ-ONLY mode.
+>=20
+> Does it make sense to you?
+>=20
+Hi Slava,
 
-I think that it's not completely correct fix. First of all, we have
-bitmap corruption. It means that we need to complain about it and
-return error code. Logic cannot continue to work normally because we
-cannot rely on bitmap anymore. It could contain multiple corrupted
-bits.
+Yes, that makes sense.
 
-Technically speaking, we need to check that bitmap is corrupted when we
-create b-trees during mount operation (we can define it for node 0 but
-it could be tricky for other nodes). If we have detected the
-corruption, then we can recommend to run FSCK tool and we can mount in
-READ-ONLY mode.
+Skipping node 0 indeed looks like only a local workaround: if the
+bitmap is already inconsistent, we shouldn=E2=80=99t proceed as if it is
+trustworthy for further allocations, because other bits could be wrong
+as well.
 
-I think we can check the bitmap when we are trying to open/create not a
-new node but already existing in the tree. I mean if we mounted the
-volume this b-tree containing several nodes on the volume, we can check
-that bitmap contains the set bit for these nodes. And if the bit is not
-there, then it's clear sign of bitmap corruption. Currently, I haven't
-idea how to check corrupted bits that showing presence of not existing
-nodes in the b-tree. But I suppose that we can do some check in
-driver's logic. Finally, if we detected corruption, then we should
-complain about the corruption. Ideally, it will be good to remount in
-READ-ONLY mode.
+For the next revision I plan to replace the =E2=80=9Cskip node 0=E2=80=9D g=
+uard with a
+bitmap sanity check during btree open/mount. At minimum, I will verify
+that the header node (node 0) is marked allocated, and I will also
+investigate whether other existing nodes can be validated as well. If
+corruption is detected, the driver will report it and force a read-only
+mount, along with a recommendation to run fsck.hfsplus. This avoids
+continuing RW operation with a known-bad allocator state.
 
-Does it make sense to you?
+In parallel, I plan to keep the -EEXIST change in hfs_bnode_create() as
+a robustness fix for any remaining or future inconsistency paths.
+
+I=E2=80=99ll post a respin shortly.
+
+If you=E2=80=99re OK with it, I can also post the hfs_bnode_create() -EEXIS=
+T
+change as a standalone fix, since it independently prevents a refcount
+underflow and panic even outside the bitmap-corruption scenario. I=E2=80=99=
+ll
+continue working on the bitmap validation in parallel.
 
 Thanks,
-Slava.=20
-
-> =C2=A0						idx +=3D i;
-> =C2=A0						data[off] |=3D m;
-> =C2=A0						set_page_dirty(*page
-> p);
+Shardul
 
