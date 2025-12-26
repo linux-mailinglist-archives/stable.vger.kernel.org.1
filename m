@@ -1,152 +1,149 @@
-Return-Path: <stable+bounces-203419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A964CDE5C3
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 07:04:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0570CDE63F
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 07:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F4C430050B3
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 06:04:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D01AA300B2BD
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 06:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C46F280A56;
-	Fri, 26 Dec 2025 06:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1021F21FF26;
+	Fri, 26 Dec 2025 06:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="cI+vNnf1"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="pCwrccDr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E213C1C5F27
-	for <stable@vger.kernel.org>; Fri, 26 Dec 2025 06:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBCDB652;
+	Fri, 26 Dec 2025 06:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766729076; cv=none; b=TVoqqeIzSEXXxCWsykAEQiyEygdIHR/H8fmQzpZWKRwdeFOMYs3OqRVde4rHJdIB5kBoQtnHJvCTm8ax+o/zuPJyazjhtG3nT87swIa0/WBevAHr4yAKNqtxGJN/Rlgb6oHnms8NwNgnmcW/XS5KR6ymYVFFqNDa1qfdPvVce4Q=
+	t=1766731911; cv=none; b=YtInDE4oQ68+LHyqHeqn8gLrFEjp5JGul33tTiJHuJONAcPvf5QJapuKpD2R9mnsLvjN203BdncGZcf1olLF5TJALidYvZRRsWOaDQi2P/k7b7oOEpilKmix0fFgaI9q3QTB+rwm4CMalfQhJ7Osa7kXrIoTdpIi1hikA2mS3AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766729076; c=relaxed/simple;
-	bh=OKO8pPQ2u1PVbIbGFtwSsJ8PUCHGOqHmtWYFr7S9Uf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=astQSeF1PTeti0YoK0ZA/7Ti3qmFnfcQDumkyMro4Ci8n1ZPMNfQsHTu9QielPoGuj6SiS0MIRBwM4wWG6Cd0fsNhLYYGluoayprJnrTzQbcn+1k1Pgm2z/Z7e+PuWP673c4isk34TsTuPbf1bm35T6woxDXF3m6OZiOp8w+LIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=cI+vNnf1; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7b8eff36e3bso11071497b3a.2
-        for <stable@vger.kernel.org>; Thu, 25 Dec 2025 22:04:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1766729073; x=1767333873; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4xGho7aYPu0F2BOeXnW+h7VL+kSgq0Xp5r0+dbQtUA=;
-        b=cI+vNnf1uUnYbrrx3IjPLs1moi2coHQLtkzNejX7Pka+zTg4SPoKVrG3eklXax2pxZ
-         jQCnPgjliO69vuZ7XpyxKu9czN4+9I9PixYceRrjER6FBxTB6k/0d1PaExmnT4txHmSN
-         6AiWVMgenegnSMkuieLZ3ev9x7b++OLyzTM9Sdvfu6DiI7A+qvGsKZ/dTT2Njq0ZE+3P
-         fV68IDoPNYxFR1Avh63kOx3isk1NrxUtUGRT2s5usI98opgQy1PH9kIuJuC57jDEW6RG
-         QXXou5u7I7ktESXevN7vaHELmLrE1rq7/Odc0wTqN0RkzkI+luyhiI3R3rXGRtkaiNY9
-         Z/Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766729073; x=1767333873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j4xGho7aYPu0F2BOeXnW+h7VL+kSgq0Xp5r0+dbQtUA=;
-        b=IJlfbvF/9z9ZSngLK0qO0p03LM0SYx4pizrWAckH+lM3TFBAVXSoU/khunkA4l5/U1
-         T98NrenlFTIX9+pqh5QJ+fiuhmLPV+KTu9i8lut/rLYyic5KF0PiuMY1QjRcsBVYKlbQ
-         rB0KAMKgcCGr6ayuplKrWyYX6Vkf81PXfqQBfqZJrBmWNPcooCEHhxjPia4WoPN5cCxt
-         eaMjUA4vigU/SjZMnbaRH31z7M5J71sXu0dNblFEUpu56qRFqj31SGlawpBcs8mHGsv+
-         iaNdmhiiHQx7gwR4zL2ohF7GdPjmCla8LVi+2P85V/vNFHv4q1thCQuv7PCwIk5xWN1q
-         +/vg==
-X-Forwarded-Encrypted: i=1; AJvYcCVhqA6FQSAyqJe3GfxFmjNBDDAjWanoSGjea66brStbvtZxRpDS6bDkmrl3pLueJIwPzdOtgyQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEEDVVXxaaPOLyOGz3BoFVej1nZq2c/t4XksbRauABk2f+QH+x
-	0Zlgw5A84aV0xRvRMncqKgHNrEoFEX51PTRC8WT9cEoNSBLE1ImG8CkLYu9JvuP1sy0=
-X-Gm-Gg: AY/fxX6EDbLG0/8BKxva/ztm8fhsBWoR29QfCceGwtoqonkGChVvgslELHq7ZFdGDFz
-	WGBwVJBMZOaNjvEZ3rKZISAxfS+v8ogKNpZOaK98ZWv6hCuIcipi7UaDvHJTphkjSLQ6PmipKsC
-	qDSqa08Lz7D9j1Sv4IbAtdiuqINotf9nRFX4W3HCvCjyOS5TUUl8b3FILkEhYdWLbbq53Qhph53
-	LqVFhwdfvHz34cdU9nvm7AFLY+EIiGBd12JnJKZeGfJEBVUTX7kZWGeIbX/lqptyvC/BR5bKgt6
-	h/ssUkV4YhASmcnLqRKz+u2hjXDqMzSOutvm1WfiFphfNxqQxccE9UtrcMTOSfM/WKDQ4H/fP8u
-	L323CVwtQuOTQttT9NdWjB+fPXGAmQ59UzPrjwK5M7dQbJCczjwg+WWHtHWum1FPBQ+juGnzf2a
-	mEsqvenaXXdZ1wyRLihabBfyju
-X-Google-Smtp-Source: AGHT+IG+gJCqvf6cX/cvf23QXKpxJilzTTZX3/LI0nMqhPGbDIqafJa+NVZYkW9sVgMEo5U1DYe4PA==
-X-Received: by 2002:a05:6a00:302a:b0:7b7:79ca:9a73 with SMTP id d2e1a72fcca58-7ff646f9664mr22376207b3a.10.1766729072784;
-        Thu, 25 Dec 2025 22:04:32 -0800 (PST)
-Received: from localhost.localdomain ([103.158.43.19])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm21262129b3a.45.2025.12.25.22.04.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Dec 2025 22:04:32 -0800 (PST)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: linusw@kernel.org
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	brgl@kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] gpio: mpsse: fix reference leak in gpio_mpsse_probe() error paths
-Date: Fri, 26 Dec 2025 11:34:10 +0530
-Message-ID: <20251226060414.20785-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1766731911; c=relaxed/simple;
+	bh=4WihWL+bInC+cAJOjCn/osSgBmLo8EdsB0pnCpyEZp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PD+PPlpblwnteprzYQDFkAzMouqZ3SAEHI4Y5zHBwSdhHeFoiOiksyaWRCSXUUCUMNG5QnzJo/zc523YJCZnJFvip/hhxjpVi4KZxQtYBJr2LQkPP3kEUEj3FNBJcaDfTw3L1E+HUrV+0Uz4ZrWUXwz6pDVx1GW7F5dEK6538Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=pCwrccDr; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766731898; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=0x/FfIujGwHcIqEZKKhM/7sF5/cqnIaX1YYYstX2tG4=;
+	b=pCwrccDrezWWnnnf8HDJHwDZ+bLQ3nf2wPpOlNZhR+H4E3gnSx7M5/tLOevhWXPMbwB5uJGu8tI6AKk7zSp2of8w2SDf0BLwN8Llu5BKyqgg04dkjQeclAzZ2gkMJ9v3c1odxRp2MfY4hvg036ZszbJoclF2sYRW42ng+i444MQ=
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0WvgmF6o_1766731897 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 26 Dec 2025 14:51:38 +0800
+Date: Fri, 26 Dec 2025 14:51:37 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com, 
+	x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] x86, fpu: introduce fpu_load_guest_fpstate()
+Message-ID: <ub4djdh4iqy5mhl4ea6gpalu2tpv5ymnw63wdkwehldzh477eq@frxtjt3umsqh>
+References: <20251224001249.1041934-1-pbonzini@redhat.com>
+ <20251224001249.1041934-2-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251224001249.1041934-2-pbonzini@redhat.com>
 
-The reference obtained by calling usb_get_dev() is not released in the
-gpio_mpsse_probe() error paths. Fix that by using device managed helper
-functions. Also remove the usb_put_dev() call in the disconnect function
-since now it will be released automatically.
+On Wed, Dec 24, 2025 at 01:12:45AM +0800, Paolo Bonzini wrote:
+> Create a variant of fpregs_lock_and_load() that KVM can use in its
+> vCPU entry code after preemption has been disabled.  While basing
+> it on the existing logic in vcpu_enter_guest(), ensure that
+> fpregs_assert_state_consistent() always runs and sprinkle a few
+> more assertions.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  arch/x86/include/asm/fpu/api.h |  1 +
+>  arch/x86/kernel/fpu/core.c     | 17 +++++++++++++++++
+>  arch/x86/kvm/x86.c             |  8 +-------
+>  3 files changed, 19 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+> index cd6f194a912b..0820b2621416 100644
+> --- a/arch/x86/include/asm/fpu/api.h
+> +++ b/arch/x86/include/asm/fpu/api.h
+> @@ -147,6 +147,7 @@ extern void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
+>  /* KVM specific functions */
+>  extern bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu);
+>  extern void fpu_free_guest_fpstate(struct fpu_guest *gfpu);
+> +extern void fpu_load_guest_fpstate(struct fpu_guest *gfpu);
+>  extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
+>  extern int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures);
+>
+> diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+> index 3ab27fb86618..a480fa8c65d5 100644
+> --- a/arch/x86/kernel/fpu/core.c
+> +++ b/arch/x86/kernel/fpu/core.c
+> @@ -878,6 +878,23 @@ void fpregs_lock_and_load(void)
+>  	fpregs_assert_state_consistent();
+>  }
+>
+> +void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
+> +{
+> +#ifdef CONFIG_X86_DEBUG_FPU
+> +	struct fpu *fpu = x86_task_fpu(current);
+> +	WARN_ON_ONCE(gfpu->fpstate != fpu->fpstate);
+> +#endif
+> +
+> +	lockdep_assert_preemption_disabled();
 
-Cc: stable@vger.kernel.org
-Fixes: c46a74ff05c0 ("gpio: add support for FTDI's MPSSE as GPIO")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
-Compile tested only. Not tested on real hardware.
+Hi Paolo,
 
-v1->v2:
-- Switched to use devm_add_action_or_reset() to avoid unnecessary gotos,
-  as suggested by Bartosz Golaszewski.
+Do we need make sure the irq is disabled w/ lockdep ?
 
-Link to v1: https://lore.kernel.org/all/20251223065306.131008-1-nihaal@cse.iitm.ac.in/
+The irq_fpu_usable() returns true for:
 
- drivers/gpio/gpio-mpsse.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+!in_nmi () && in_hardirq() and !softirq_count()
 
-diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
-index ace652ba4df1..12191aeb6566 100644
---- a/drivers/gpio/gpio-mpsse.c
-+++ b/drivers/gpio/gpio-mpsse.c
-@@ -548,6 +548,13 @@ static void gpio_mpsse_ida_remove(void *data)
- 	ida_free(&gpio_mpsse_ida, priv->id);
- }
- 
-+static void gpio_mpsse_usb_put_dev(void *data)
-+{
-+	struct mpsse_priv *priv = data;
-+
-+	usb_put_dev(priv->udev);
-+}
-+
- static int mpsse_init_valid_mask(struct gpio_chip *chip,
- 				 unsigned long *valid_mask,
- 				 unsigned int ngpios)
-@@ -592,6 +599,10 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
- 	INIT_LIST_HEAD(&priv->workers);
- 
- 	priv->udev = usb_get_dev(interface_to_usbdev(interface));
-+	err = devm_add_action_or_reset(dev, gpio_mpsse_usb_put_dev, priv);
-+	if (err)
-+		return err;
-+
- 	priv->intf = interface;
- 	priv->intf_id = interface->cur_altsetting->desc.bInterfaceNumber;
- 
-@@ -713,7 +724,6 @@ static void gpio_mpsse_disconnect(struct usb_interface *intf)
- 
- 	priv->intf = NULL;
- 	usb_set_intfdata(intf, NULL);
--	usb_put_dev(priv->udev);
- }
- 
- static struct usb_driver gpio_mpsse_driver = {
--- 
-2.43.0
+It's possible that the TIF_NEED_FPU_LOAD is set again
+w/ interrupt is enabled.
 
+> +	if (test_thread_flag(TIF_NEED_FPU_LOAD))
+> +		fpregs_restore_userregs();
+> +
+> +	fpregs_assert_state_consistent();
+> +	if (gfpu->xfd_err)
+> +		wrmsrq(MSR_IA32_XFD_ERR, gfpu->xfd_err);
+> +}
+> +EXPORT_SYMBOL_FOR_KVM(fpu_load_guest_fpstate);
+> +
+>  #ifdef CONFIG_X86_DEBUG_FPU
+>  /*
+>   * If current FPU state according to its tracking (loaded FPU context on this
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ff8812f3a129..01d95192dfc5 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -11300,13 +11300,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  		kvm_make_request(KVM_REQ_EVENT, vcpu);
+>  	}
+>
+> -	fpregs_assert_state_consistent();
+> -	if (test_thread_flag(TIF_NEED_FPU_LOAD))
+> -		switch_fpu_return();
+> -
+> -	if (vcpu->arch.guest_fpu.xfd_err)
+> -		wrmsrq(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
+> -
+> +	fpu_load_guest_fpstate(&vcpu->arch.guest_fpu);
+>  	kvm_load_xfeatures(vcpu, true);
+>
+>  	if (unlikely(vcpu->arch.switch_db_regs &&
+> --
+> 2.52.0
+>
 
