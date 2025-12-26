@@ -1,100 +1,118 @@
-Return-Path: <stable+bounces-203411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2409CDE357
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 02:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F3CDE363
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 02:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F31953007EF8
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 01:54:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0E94300942F
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 01:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6086F1D63F5;
-	Fri, 26 Dec 2025 01:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3891E0E08;
+	Fri, 26 Dec 2025 01:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ATYbKYUo"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EUSSsvP9"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D08B15E97;
-	Fri, 26 Dec 2025 01:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576E3B28D;
+	Fri, 26 Dec 2025 01:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766714049; cv=none; b=HlDw5n0ESUPsBU5acoF/JniUD50aIvMLef73wRNrQmah/EGQXwVr7BNd4KKMzPdJgyq+4l9jWp+6MMsUnVj5zVJPgG5NrR25GRXXbtGj0saZ3cbMrolO2R/YaJRxjVYaOaZYsiMbEq56g9FdVYbt2P8JlAiIF+GMYoSmeQhFtRY=
+	t=1766714144; cv=none; b=D9XfGaGslxWcW9CmvAq9bV0AT/fw5Wx4BHRaHqTR0UEnfSezsR6thyp5LVAZyGlhGIN+vlcy90AXqAJcQSKpK0nF3JrqCq8K/37AUx1d3PF/ikTPugtY/nOvcBK4HreUOQTK8o/VaQVALaZD/g17Xi+sJMa3tH+Kk6/10zpE5hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766714049; c=relaxed/simple;
-	bh=T5+KczoAP1NUwDlN6a69PvYkARmGNe9ONrOwxLlPiUk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H6/YI8Q4XGiwj2snpJQikWNkLT42p9nndFrSnXRj5a4b4pAQZt07+AS8ou38/SlxBR/hZjvoernQkZCEaEVTw2xhlZ1Dq5WUUNHKcQKQVlEmQL+BPr+geGScTNQDSF7gCaiWR6vp9wdatS9vAIXZ5cCq70XXHFpc0VWrSpAzc1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ATYbKYUo; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ww
-	bgMuHQZvi+yF5BLaeUFOatTaDISEHlDID+NA7oQGE=; b=ATYbKYUo7O1CwnuaGw
-	6jOY6MeT9vFhVpG5Ck52wXfT8PIEfuVZy235eztSTqLmgfJnqatAZMY+HR8HKuT3
-	H+f2figyUhZJL8ahA2QzjQR/uVVamMOyGjgk93Jd/l7gfeE0ILVXw/LtOvyaFVTh
-	HSLboVQZKmPVByPdleyToNS+Y=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3k6OW6k1pfyWDCQ--.731S2;
-	Fri, 26 Dec 2025 09:53:27 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Gyeyoung Baek <gye976@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH v6.6] genirq/irq_sim: Initialize work context pointers properly
-Date: Fri, 26 Dec 2025 09:53:07 +0800
-Message-Id: <20251226015307.1660054-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1766714144; c=relaxed/simple;
+	bh=lKUDsZEB6P4Jr599npIY4/DwlX0b3o4KcVduo8EtJ4M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=CAL3s52GHtXztld4ruB9YkIjZPym/W5tVQVRCPLNzXBqslriIhvo5Y0CqNpbnPZ+x3JFFHUFXinccSba3Rw+DCJXt0unFRiIa9P/Gz1iOS7+JEgRfYQs0VejFn4yJbeW6ZCftPcJPjZ+u8RSg56Rl/PS0EgXUIMYeq0E0G3V2+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EUSSsvP9; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ1tc6jB2697011, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1766714138; bh=Xcr311D0Fwlm6t0GpVBPTHLELg3jWFeIwOlZbazR/NY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=EUSSsvP9noJXxIDb/MjkWoMP8ocA+h4JeO6djgNjGiRWinI90qsLiFscKD3ZYhFgZ
+	 pKhBfHFLw3o98z0iDvcyBfSY3DAqs3MymVZK/qlBGhfqzQOFlwhowZ/VWwIA9UOINd
+	 HpktyZ2TDUMrFlu2DnMb2BtX4xfcR6uJY0espah+G8SWLuYl24ordP6u9dx2MV+z59
+	 OiKifw5eczG1E3a1lrCa/T6MMvRaX81pWM9JDQbxS3oWzaXuaiR338wtmi6MKWLE+Y
+	 44gK1i0t0lJYdQSXIYuP04Roh0cC4LWiXt9GnvwH5opmQpkExQqy+LFGMEpoNjOBTO
+	 KZG+YWI5LwWQQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ1tc6jB2697011
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Dec 2025 09:55:38 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 26 Dec 2025 09:55:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 26 Dec 2025 09:55:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Fri, 26 Dec 2025 09:55:38 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ali Tariq <alitariq45892@gmail.com>,
+        "Jes.Sorensen@gmail.com"
+	<Jes.Sorensen@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+Thread-Topic: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+Thread-Index: AQHcdZVkivwbOu3+UEmR84fOAq6vqbUzKaSA
+Date: Fri, 26 Dec 2025 01:55:38 +0000
+Message-ID: <678a9c63a185486d89efe46e66d71315@realtek.com>
+References: <20251225115430.13011-1-alitariq45892@gmail.com>
+In-Reply-To: <20251225115430.13011-1-alitariq45892@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3k6OW6k1pfyWDCQ--.731S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw43try5Zr4xXry7JFW8Zwb_yoW8JFyfpF
-	WfGw1Ivr4DX3WFga4UGrs2vr9Yg3WDXw47Gan8uFyfXrZ0qwnrXF1qqrWaqr10vrWFgFWj
-	vF1Fqa1jvw1DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE0eHsUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+hmOKGlN6plgVgAA3k
 
-From: Gyeyoung Baek <gye976@gmail.com>
+Ali Tariq <alitariq45892@gmail.com> wrote:
+> The driver does not set hw->sta_data_size, which causes mac80211 to
+> allocate insufficient space for driver private station data in
+> __sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
+> struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
+> slab-out-of-bounds write.
+>=20
+> KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
+>=20
+>   BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
+>   Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
+>=20
+> Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
+> probe, similar to how hw->vif_data_size is configured. This ensures
+> mac80211 allocates sufficient space for the driver's per-station
+> private data.
+>=20
+> Tested on StarFive VisionFive 2 v1.2A board.
+>=20
+> Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add=
+,remove}_interface()")
+>=20
+> Cc: stable@vger.kernel.org
+>=20
 
-[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
+No need empty lines after Fixes and Cc tags. I will remove them while getti=
+ng
+merged into rtw tree.
 
-Initialize `ops` member's pointers properly by using kzalloc() instead of
-kmalloc() when allocating the simulation work context. Otherwise the
-pointers contain random content leading to invalid dereferencing.
+> Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
 
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
-[ The context change is due to the commit 011f583781fa
-("genirq/irq_sim: add an extended irq_sim initializer")
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- kernel/irq/irq_sim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
-index dd76323ea3fd..bde31468c19d 100644
---- a/kernel/irq/irq_sim.c
-+++ b/kernel/irq/irq_sim.c
-@@ -166,7 +166,7 @@ struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
- {
- 	struct irq_sim_work_ctx *work_ctx;
- 
--	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
-+	work_ctx = kzalloc(sizeof(*work_ctx), GFP_KERNEL);
- 	if (!work_ctx)
- 		goto err_out;
- 
--- 
-2.34.1
 
 
