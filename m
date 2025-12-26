@@ -1,118 +1,111 @@
-Return-Path: <stable+bounces-203412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F3CDE363
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 02:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564D2CDE503
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 05:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0E94300942F
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 01:55:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F119300B9AA
+	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 04:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3891E0E08;
-	Fri, 26 Dec 2025 01:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EUSSsvP9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB7C1917F0;
+	Fri, 26 Dec 2025 04:17:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576E3B28D;
-	Fri, 26 Dec 2025 01:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FDB4414;
+	Fri, 26 Dec 2025 04:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766714144; cv=none; b=D9XfGaGslxWcW9CmvAq9bV0AT/fw5Wx4BHRaHqTR0UEnfSezsR6thyp5LVAZyGlhGIN+vlcy90AXqAJcQSKpK0nF3JrqCq8K/37AUx1d3PF/ikTPugtY/nOvcBK4HreUOQTK8o/VaQVALaZD/g17Xi+sJMa3tH+Kk6/10zpE5hY=
+	t=1766722649; cv=none; b=T/3Q2Gu/ivoH0XzGD4HVe3bfuWzxN/BKeBdLwV86ECEqDTYWowvRDr2LbEl0mHctTFKCnaPgW9aVnqPHNu1GjW2DMp71UoGQvl7BFZEt7+6XtZNHIew0/TYPFrlBxvmmbgsnoAJhdIsX+OKSn5Mzf68dVbInLwXC3Q1YMOpTPOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766714144; c=relaxed/simple;
-	bh=lKUDsZEB6P4Jr599npIY4/DwlX0b3o4KcVduo8EtJ4M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CAL3s52GHtXztld4ruB9YkIjZPym/W5tVQVRCPLNzXBqslriIhvo5Y0CqNpbnPZ+x3JFFHUFXinccSba3Rw+DCJXt0unFRiIa9P/Gz1iOS7+JEgRfYQs0VejFn4yJbeW6ZCftPcJPjZ+u8RSg56Rl/PS0EgXUIMYeq0E0G3V2+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EUSSsvP9; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ1tc6jB2697011, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1766714138; bh=Xcr311D0Fwlm6t0GpVBPTHLELg3jWFeIwOlZbazR/NY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=EUSSsvP9noJXxIDb/MjkWoMP8ocA+h4JeO6djgNjGiRWinI90qsLiFscKD3ZYhFgZ
-	 pKhBfHFLw3o98z0iDvcyBfSY3DAqs3MymVZK/qlBGhfqzQOFlwhowZ/VWwIA9UOINd
-	 HpktyZ2TDUMrFlu2DnMb2BtX4xfcR6uJY0espah+G8SWLuYl24ordP6u9dx2MV+z59
-	 OiKifw5eczG1E3a1lrCa/T6MMvRaX81pWM9JDQbxS3oWzaXuaiR338wtmi6MKWLE+Y
-	 44gK1i0t0lJYdQSXIYuP04Roh0cC4LWiXt9GnvwH5opmQpkExQqy+LFGMEpoNjOBTO
-	 KZG+YWI5LwWQQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ1tc6jB2697011
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Dec 2025 09:55:38 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 26 Dec 2025 09:55:38 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 26 Dec 2025 09:55:38 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Fri, 26 Dec 2025 09:55:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ali Tariq <alitariq45892@gmail.com>,
-        "Jes.Sorensen@gmail.com"
-	<Jes.Sorensen@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
-Thread-Topic: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
-Thread-Index: AQHcdZVkivwbOu3+UEmR84fOAq6vqbUzKaSA
-Date: Fri, 26 Dec 2025 01:55:38 +0000
-Message-ID: <678a9c63a185486d89efe46e66d71315@realtek.com>
-References: <20251225115430.13011-1-alitariq45892@gmail.com>
-In-Reply-To: <20251225115430.13011-1-alitariq45892@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1766722649; c=relaxed/simple;
+	bh=Pogo4etnkPqNpaamNBBLM12DtD0IXYYjfZAsBoD7QDE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G3prhi9SgqT1MVRkGkehbqw2jEGehNHSUovLS8DBtCVYNEZ4MaYl0CBB7P4ca8EWl+GBafei3A31s0/df91h8ubUJ0oMv78l8xiS7NohT4YiVoRm4IOuf3MMV7bltOceGEAbFce3THABhfSs15UNFinht+Cl4k9CWSUJGnAoCpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowAAnzWhNDE5psCHdAQ--.33559S2;
+	Fri, 26 Dec 2025 12:17:17 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: vkoul@kernel.org,
+	kishon@kernel.org,
+	heiko@sntech.de
+Cc: linux-phy@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()
+Date: Fri, 26 Dec 2025 04:17:11 +0000
+Message-Id: <20251226041711.2369638-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAnzWhNDE5psCHdAQ--.33559S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw18KF15Wr15Wry3Jr43Jrb_yoW8GrW8pa
+	yDCrWDtrW8Kay8Wr1qyrn8ZFsYyayDt3yxGFZ2k3WfZ3Zxtw1DZa4fuFyUursxJFW8ZFsx
+	Jrs8ta4UAF43Zw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26rkl6F8dMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	Jw0_GFylc2xSY4AK67AK6r45MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
+	IFyTuYvjTRAPEfUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgIA2lN4TqlYQAAs0
 
-Ali Tariq <alitariq45892@gmail.com> wrote:
-> The driver does not set hw->sta_data_size, which causes mac80211 to
-> allocate insufficient space for driver private station data in
-> __sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
-> struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
-> slab-out-of-bounds write.
->=20
-> KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
->=20
->   BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
->   Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
->=20
-> Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
-> probe, similar to how hw->vif_data_size is configured. This ensures
-> mac80211 allocates sufficient space for the driver's per-station
-> private data.
->=20
-> Tested on StarFive VisionFive 2 v1.2A board.
->=20
-> Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add=
-,remove}_interface()")
->=20
-> Cc: stable@vger.kernel.org
->=20
+The for_each_available_child_of_node() calls of_node_put() to
+release child_np in each success loop. After breaking from the
+loop with the child_np has been released, the code will jump to
+the put_child label and will call the of_node_put() again if the
+devm_request_threaded_irq() fails. These cause a double free bug.
 
-No need empty lines after Fixes and Cc tags. I will remove them while getti=
-ng
-merged into rtw tree.
+Fix by using a separate label to avoid the duplicate of_node_put().
 
-> Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+index b0f23690ec30..f754c3b1c357 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -1491,7 +1491,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+ 						rphy);
+ 		if (ret) {
+ 			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
+-			goto put_child;
++			goto ret_error;
+ 		}
+ 	}
+ 
+@@ -1499,6 +1499,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+ 
+ put_child:
+ 	of_node_put(child_np);
++ret_error:
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
 
