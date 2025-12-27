@@ -1,160 +1,257 @@
-Return-Path: <stable+bounces-203436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A973DCDF918
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 12:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464A6CDFC33
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 13:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EA9130155DD
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 11:34:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F26E0302530E
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 12:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54B6313521;
-	Sat, 27 Dec 2025 11:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D4031985E;
+	Sat, 27 Dec 2025 12:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ADqDne/d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOFEWRCs"
 X-Original-To: stable@vger.kernel.org
-Received: from sg-1-103.ptr.blmpb.com (sg-1-103.ptr.blmpb.com [118.26.132.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F8F31327E
-	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 11:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12223164BF
+	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 12:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766835259; cv=none; b=oyEi1v3uum3QdOicuC8Jwh7VZflGWRF3zVaHQlZHirzwgBvzEvb32bFzlCCjQ23lnsd5YR4g1UQv4l/SQ/L5e8NKWv7iDc78tzkBrN7/yfioJGyLN+zWDU4U3Lab+IIuPoEi+7QAKXD7kwM8fMLCS8XE8u1IZJqhdLcsQ7Z0SWo=
+	t=1766839758; cv=none; b=XPMqqJo0B9ixeXZNyp6XZekSQBte0+mefSEe2sGH8KFRjXYopN131uvLfUFn38iM3nCJnrPGQvydvnThKA8DNKPrSL86UiyeDCB7q3G9WNrBkpcBrz9T282BmjCLhThqF+aUofN2Rj1JtiHmw2oZ9nw50YFL9ejSnsWrqJifeqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766835259; c=relaxed/simple;
-	bh=BuIMaNT+UI0KsqsbHtmd0bHo46Jp/KXJIvwHEITBcSs=;
-	h=Message-Id:Mime-Version:To:Cc:From:Subject:Date:Content-Type; b=GVQrDovu7F45/6XoJ8P4KKhwn3HvbbDDY4vKcbFE5KMh6qwd4dOuazFD+sdJxV/PvU24oWw0B8EHi2ZbDwQVGD9thFoGc1M3pox/pvoLGQy2vkwAR+ozBWnGVxiRFEeOgXZbPO+QJpD0v5swV7wlHjRjj4+gQCI843I4wJ0xlr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ADqDne/d; arc=none smtp.client-ip=118.26.132.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1766835243; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=zpBY2sbAf3ugjQp1+eDZumXA4vCMZxwygzISFCEom34=;
- b=ADqDne/dNqiQY/oKhsg8YHEli8etR5VzSQZGOBquF+f2yUFiTBCHWxhwKKCskgBk/yKR4c
- YTfbIMaC9+5E/vK3v6saXGxWJz1BRv+4iRePamQBgWx6vdvqUgMU4PP5fqwcUvtSqyYT3l
- 4IP8GPsin8B9UWDxDWr2XVdW2d3An5xbNS7ztzuxIpSGA49MvF+CKpIvOmwgdnhsBnuhUU
- JHk0WeHxCq3bwaUxitcPrySe1KUw1uFEXovrHF6wNwIlGrPjntL4rDIHhrf0Pp1HNLrXhb
- 4ft1rNFmxsGscujhNi6rdIV8CbE25lIj9rTcPtSwSpce2lo4tuMQk90mtvPlmw==
-X-Mailer: git-send-email 2.17.1
-Message-Id: <20251227113326.964-1-guojinhui.liam@bytedance.com>
+	s=arc-20240116; t=1766839758; c=relaxed/simple;
+	bh=0kfMRiadnGarHTALRRW411hh4urIGuwlrxzm+obaeeo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bi6E00fP6N57E8fYcQOR3cTuhJu+d95qnaRVW8TA6BLZioX7viKnuV2iffGl1W7EvTMlIVk0rJKRGE2TAF7KMf9r7kx90mNizfzsySTfNsQfcPLpkVZWeQXlFImubEJ6F9fBUQATWc0ONZdmL+GSEQUk1QGoo+a/C1TxkfpmxWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOFEWRCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA8AC19425
+	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 12:49:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766839758;
+	bh=0kfMRiadnGarHTALRRW411hh4urIGuwlrxzm+obaeeo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UOFEWRCsnKFg9u0eMWOp7mzMvsSYqeNed7NVPxhEBoDSx8nRaCf2SZLym+t0flOTp
+	 8mpXL6oZKeEFgYTjZP9/T24300hr3pTARneiuODz1w6Om79A3ZdRjuASJ5uQDyDN0o
+	 uvALQLeXbYMbXAed4tWZgwHWHJOlxhlk5rKH7FEazqhTknGOpO7d+KA2E4uPgZNQEK
+	 aIM4Yyh04ybCv76jaB4dqLA6NUMqYcNdS8vF9ADMbSIyvXKUi17rk5dapZ09ccdJFe
+	 PzMmEEH0CSXpJu4V3gYBStDjH0ApfbvC25z2fpr1dt7aMK5kTlgRh7AdAqHstd3DYy
+	 52yicC1oi8++w==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7636c96b9aso1418977166b.2
+        for <stable@vger.kernel.org>; Sat, 27 Dec 2025 04:49:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWLdq9CcyAJDoOLQAO6xzTLE3xw6MagNu/v3CMk8/0M0VstTJdxK2KImfXXYtLMdv7DFcCN9FI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd4L3yYyIMhpRmQQt+I9A3kw86sNbNZcmBfxmnxfhodzOcRMkb
+	uP5RwvT+HK3Jtug06chI1QJeG2FEjSOVd35wQ7dLBZZKp2gLML9k9DcbgGfW0nCY30FzJDGUxqb
+	6tq/yMFChJovkNGcq87zNplr5Ndrme+o=
+X-Google-Smtp-Source: AGHT+IEsqJc6khAJ2cHADfIJcu27io1v3NCx+cZczeIdVZMpBJsCG/bgaEOBzeDbgzYZiUCK4ID38MWYx4XuE0EW6xs=
+X-Received: by 2002:a17:907:d0c:b0:b73:9280:2e7 with SMTP id
+ a640c23a62f3a-b80371a3eacmr2514207366b.34.1766839756759; Sat, 27 Dec 2025
+ 04:49:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+2694fc42a+856ee0+vger.kernel.org+guojinhui.liam@bytedance.com>
+MIME-Version: 1.0
+References: <20251227012712.2921408-1-lixianglai@loongson.cn> <20251227012712.2921408-3-lixianglai@loongson.cn>
+In-Reply-To: <20251227012712.2921408-3-lixianglai@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 27 Dec 2025 20:49:34 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6vxwDkBUQgY=YKnhk+3i_hW06E0UFLHK5F3VnG7tzdwA@mail.gmail.com>
+X-Gm-Features: AQt7F2o4bcq8N1cKAf4bYOyGrQYxTcPXCNmzgRy8noVX91JZSVXC4jPh3i1tjbc
+Message-ID: <CAAhV-H6vxwDkBUQgY=YKnhk+3i_hW06E0UFLHK5F3VnG7tzdwA@mail.gmail.com>
+Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
+To: Xianglai Li <lixianglai@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-To: <bhelgaas@google.com>, <bvanassche@acm.org>, <dan.j.williams@intel.com>, 
-	<alexander.h.duyck@linux.intel.com>, <gregkh@linuxfoundation.org>
-Cc: <guojinhui.liam@bytedance.com>, <linux-pci@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-Subject: [PATCH] PCI: Avoid work_on_cpu() in async probe workers
-Date: Sat, 27 Dec 2025 19:33:26 +0800
-Content-Type: text/plain; charset=UTF-8
 
-Commit ef0ff68351be ("driver core: Probe devices asynchronously instead of
-the driver") speeds up the loading of large numbers of device drivers by
-submitting asynchronous probe workers to an unbounded workqueue and binding
-each worker to the CPU near the device=E2=80=99s NUMA node. These workers a=
-re not
-scheduled on isolated CPUs because their cpumask is restricted to
-housekeeping_cpumask(HK_TYPE_WQ) and housekeeping_cpumask(HK_TYPE_DOMAIN).
+Hi, Xianglai,
 
-However, when PCI devices reside on the same NUMA node, all their
-drivers=E2=80=99 probe workers are bound to the same CPU within that node, =
-yet
-the probes still run in parallel because pci_call_probe() invokes
-work_on_cpu(). Introduced by commit 873392ca514f ("PCI: work_on_cpu: use
-in drivers/pci/pci-driver.c"), work_on_cpu() queues a worker on
-system_percpu_wq to bind the probe thread to the first CPU in the
-device=E2=80=99s NUMA node (chosen via cpumask_any_and() in pci_call_probe(=
-)).
+On Sat, Dec 27, 2025 at 9:52=E2=80=AFAM Xianglai Li <lixianglai@loongson.cn=
+> wrote:
+>
+> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
+> the assembly function to guide the generation of correct ORC table entrie=
+s,
+> thereby solving the timeout problem of loading the livepatch-sample modul=
+e
+> on a physical machine running multiple vcpus virtual machines.
+>
+> While solving the above problems, we have gained an additional benefit,
+> that is, we can obtain more call stack information
+>
+> Stack information that can be obtained before the problem is fixed:
+> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+> [<0>] kvm_exc_entry+0x100/0x1e0
+>
+> Stack information that can be obtained after the problem is fixed:
+> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+> [<0>] kvm_exc_entry+0x104/0x1e4
+> [<0>] kvm_enter_guest+0x38/0x11c
+> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
+> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
+> [<0>] sys_ioctl+0x498/0xf00
+> [<0>] do_syscall+0x98/0x1d0
+> [<0>] handle_syscall+0xb8/0x158
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Cc: Bibo Mao <maobibo@loongson.cn>
+> Cc: Charlie Jenkins <charlie@rivosinc.com>
+> Cc: Xianglai Li <lixianglai@loongson.cn>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+>
+>  arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
+>  1 file changed, 19 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+> index 93845ce53651..a3ea9567dbe5 100644
+> --- a/arch/loongarch/kvm/switch.S
+> +++ b/arch/loongarch/kvm/switch.S
+> @@ -10,6 +10,7 @@
+>  #include <asm/loongarch.h>
+>  #include <asm/regdef.h>
+>  #include <asm/unwind_hints.h>
+> +#include <linux/kvm_types.h>
+>
+>  #define HGPR_OFFSET(x)         (PT_R0 + 8*x)
+>  #define GGPR_OFFSET(x)         (KVM_ARCH_GGPR + 8*x)
+> @@ -110,9 +111,9 @@
+>          * need to copy world switch code to DMW area.
+>          */
+>         .text
+> +       .p2align PAGE_SHIFT
+>         .cfi_sections   .debug_frame
+>  SYM_CODE_START(kvm_exc_entry)
+> -       .p2align PAGE_SHIFT
+>         UNWIND_HINT_UNDEFINED
+>         csrwr   a2,   KVM_TEMP_KS
+>         csrrd   a2,   KVM_VCPU_KS
+> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
+>         /* restore per cpu register */
+>         ld.d    u0, a2, KVM_ARCH_HPERCPU
+>         addi.d  sp, sp, -PT_SIZE
+> +       UNWIND_HINT_REGS
+>
+>         /* Prepare handle exception */
+>         or      a0, s0, zero
+> @@ -200,7 +202,7 @@ ret_to_host:
+>         jr      ra
+>
+>  SYM_CODE_END(kvm_exc_entry)
+> -EXPORT_SYMBOL(kvm_exc_entry)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
+Why not use EXPORT_SYMBOL_FOR_KVM in the first patch directly?
 
-1. The function __driver_attach() submits an asynchronous worker with
-   callback __driver_attach_async_helper().
+>
+>  /*
+>   * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
+> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
+>         /* Save host GPRs */
+>         kvm_save_host_gpr a2
+>
+> +       /*
+> +        * The csr_era member variable of the pt_regs structure is requir=
+ed
+> +        * for unwinding orc to perform stack traceback, so we need to pu=
+t
+> +        * pc into csr_era member variable here.
+> +        */
+> +       pcaddi  t0, 0
+> +       st.d    t0, a2, PT_ERA
+I am still confused here, does this overwrite PT_ERA stored by
+kvm_save_host_gpr?
 
-   __driver_attach()
-    async_schedule_dev(__driver_attach_async_helper, dev)
-     async_schedule_node(func, dev, dev_to_node(dev))
-      async_schedule_node_domain(func, data, node, &async_dfl_domain)
-       __async_schedule_node_domain(func, data, node, domain, entry)
-        queue_work_node(node, async_wq, &entry->work)
+Huacai
 
-2. The asynchronous probe worker ultimately calls work_on_cpu() in
-   pci_call_probe(), binding the worker to the same CPU within the
-   device=E2=80=99s NUMA node.
-
-   __driver_attach_async_helper()
-    driver_probe_device(drv, dev)
-     __driver_probe_device(drv, dev)
-      really_probe(dev, drv)
-       call_driver_probe(dev, drv)
-        dev->bus->probe(dev)
-         pci_device_probe(dev)
-          __pci_device_probe(drv, pci_dev)
-           pci_call_probe(drv, pci_dev, id)
-            cpu =3D cpumask_any_and(cpumask_of_node(node), wq_domain_mask)
-            error =3D work_on_cpu(cpu, local_pci_probe, &ddi)
-             schedule_work_on(cpu, &wfc.work);
-              queue_work_on(cpu, system_percpu_wq, work)
-
-To fix the issue, pci_call_probe() must not call work_on_cpu() when it is
-already running inside an unbounded asynchronous worker. Because a driver
-can be probed asynchronously either by probe_type or by the kernel command
-line, we cannot rely on PROBE_PREFER_ASYNCHRONOUS alone. Instead, we test
-the PF_WQ_WORKER flag in current->flags; if it is set, pci_call_probe() is
-executing within an unbounded workqueue worker and should skip the extra
-work_on_cpu() call.
-
-Testing three NVMe devices on the same NUMA node of an AMD EPYC 9A64
-2.4 GHz processor shows a 35 % probe-time improvement with the patch:
-
-Before (all on CPU 0):
-  nvme 0000:01:00.0: CPU: 0, COMM: kworker/0:1, probe cost: 53372612 ns
-  nvme 0000:02:00.0: CPU: 0, COMM: kworker/0:2, probe cost: 49532941 ns
-  nvme 0000:03:00.0: CPU: 0, COMM: kworker/0:3, probe cost: 47315175 ns
-
-After (spread across CPUs 1, 2, 5):
-  nvme 0000:01:00.0: CPU: 5, COMM: kworker/u1025:5, probe cost: 34765890 ns
-  nvme 0000:02:00.0: CPU: 1, COMM: kworker/u1025:2, probe cost: 34696433 ns
-  nvme 0000:03:00.0: CPU: 2, COMM: kworker/u1025:3, probe cost: 33233323 ns
-
-The improvement grows with more PCI devices because fewer probes contend
-for the same CPU.
-
-Fixes: ef0ff68351be ("driver core: Probe devices asynchronously instead of =
-the driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- drivers/pci/pci-driver.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 7c2d9d596258..4bc47a84d330 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -366,9 +366,11 @@ static int pci_call_probe(struct pci_driver *drv, stru=
-ct pci_dev *dev,
- 	/*
- 	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
- 	 * device is probed from work_on_cpu() of the Physical device.
-+	 * Check PF_WQ_WORKER to prevent invoking work_on_cpu() in an asynchronou=
-s
-+	 * probe worker when the driver allows asynchronous probing.
- 	 */
- 	if (node < 0 || node >=3D MAX_NUMNODES || !node_online(node) ||
--	    pci_physfn_is_probed(dev)) {
-+	    pci_physfn_is_probed(dev) || (current->flags & PF_WQ_WORKER)) {
- 		cpu =3D nr_cpu_ids;
- 	} else {
- 		cpumask_var_t wq_domain_mask;
---=20
-2.20.1
+> +
+>         addi.d  a2, a1, KVM_VCPU_ARCH
+>         st.d    sp, a2, KVM_ARCH_HSP
+>         st.d    tp, a2, KVM_ARCH_HTP
+> @@ -225,7 +235,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>         csrwr   a1, KVM_VCPU_KS
+>         kvm_switch_to_guest
+>  SYM_FUNC_END(kvm_enter_guest)
+> -EXPORT_SYMBOL(kvm_enter_guest)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_enter_guest)
+>
+>  SYM_FUNC_START(kvm_save_fpu)
+>         fpu_save_csr    a0 t1
+> @@ -233,7 +243,7 @@ SYM_FUNC_START(kvm_save_fpu)
+>         fpu_save_cc     a0 t1 t2
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_fpu)
+> -EXPORT_SYMBOL(kvm_save_fpu)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_save_fpu)
+>
+>  SYM_FUNC_START(kvm_restore_fpu)
+>         fpu_restore_double a0 t1
+> @@ -241,7 +251,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+>         fpu_restore_cc     a0 t1 t2
+>         jr                 ra
+>  SYM_FUNC_END(kvm_restore_fpu)
+> -EXPORT_SYMBOL(kvm_restore_fpu)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_fpu)
+>
+>  #ifdef CONFIG_CPU_HAS_LSX
+>  SYM_FUNC_START(kvm_save_lsx)
+> @@ -250,7 +260,7 @@ SYM_FUNC_START(kvm_save_lsx)
+>         lsx_save_data   a0 t1
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_lsx)
+> -EXPORT_SYMBOL(kvm_save_lsx)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lsx)
+>
+>  SYM_FUNC_START(kvm_restore_lsx)
+>         lsx_restore_data a0 t1
+> @@ -258,7 +268,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+>         fpu_restore_csr  a0 t1 t2
+>         jr               ra
+>  SYM_FUNC_END(kvm_restore_lsx)
+> -EXPORT_SYMBOL(kvm_restore_lsx)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lsx)
+>  #endif
+>
+>  #ifdef CONFIG_CPU_HAS_LASX
+> @@ -268,7 +278,7 @@ SYM_FUNC_START(kvm_save_lasx)
+>         lasx_save_data  a0 t1
+>         jr              ra
+>  SYM_FUNC_END(kvm_save_lasx)
+> -EXPORT_SYMBOL(kvm_save_lasx)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lasx)
+>
+>  SYM_FUNC_START(kvm_restore_lasx)
+>         lasx_restore_data a0 t1
+> @@ -276,7 +286,7 @@ SYM_FUNC_START(kvm_restore_lasx)
+>         fpu_restore_csr   a0 t1 t2
+>         jr                ra
+>  SYM_FUNC_END(kvm_restore_lasx)
+> -EXPORT_SYMBOL(kvm_restore_lasx)
+> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lasx)
+>  #endif
+>
+>  #ifdef CONFIG_CPU_HAS_LBT
+> --
+> 2.39.1
+>
 
