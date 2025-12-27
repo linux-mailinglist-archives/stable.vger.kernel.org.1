@@ -1,152 +1,136 @@
-Return-Path: <stable+bounces-203434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F35CDF41E
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 05:26:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA57CCDF746
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 10:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB7FF30141CB
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 04:24:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 369793009414
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 09:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E8115E5DC;
-	Sat, 27 Dec 2025 04:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140FD1FDE01;
+	Sat, 27 Dec 2025 09:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BIA1799F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G5Fng3ju"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF9827702D;
-	Sat, 27 Dec 2025 04:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6E817A2FC;
+	Sat, 27 Dec 2025 09:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766809482; cv=none; b=N6X+BAmvqCK+4yd3gsmG7gUKSHB7rn6+koMNCRgT456WOV/mGCQYbldu0QoRcZECMHHkJPsdWqxFg5KM96OOnymSM6TGKwEOxiUiKoQbV0mcvkN69XO4NDGhV68JxbIR/oAnx5kyZAosdzAltvqcQdblA43t3jlC1JkpKcIPEH4=
+	t=1766829285; cv=none; b=huRsHnn1OMNXMG+zaZogB8CRwCbGmnHzI8hC9GbxmoAhb1nvi3fxxP378xtQEBGpW3XBRbhe6EF4LApDObQvnhxrSYGqFNkK9707oOmwkIxS7fOjsyo/5svwbF7EH5SDLSW8zbtibby8dMFaHKQxp8NDVP49Ubnxp/jbyz/2kl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766809482; c=relaxed/simple;
-	bh=6cRZaLHWevAL+LztYrQgYLiioWoOnAN9Ccgk3IAP4HM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TlUUGFIqcZ4xpWM7q2DqBEPM56/0AeRZwhkxZPWFSOmISDFYFsT1VEJO5i+XURXlZlh0PYB8R+xOFZZWm02Y0yyWlTLhrrnW/VLQp7OG1HXBPckYwWCSs9OAr615BMyaX3xX9k7L5yW00VuJ2Se/A5SJs9KdmP4Za4+gs6DILBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BIA1799F; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BR31nOL028470;
-	Sat, 27 Dec 2025 04:24:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ePhDfS
-	shvlfo2Ir0eSdlg+kEMF2sd54yQxG4zxGlF2s=; b=BIA1799FGhXa91S6TnkbkH
-	S55q5EWf/9fVolpPfYtuj+t57hF6fsci/4sYfUAj9IEqsmwMWENDLt6+THeL4Vec
-	7kJZOzD5DDEzgnnv8hogJwZnG87DpGWPatnOUL4ZlPTvzgt1HkvKjOG5/RAoioID
-	w/P5TUKgYABLvcflhWECUlPwN/8kbjxgatdmk5jrfrfZmLxS728dMb5971BaNwCy
-	fnkiItDUQo82pmhi57Qd6vxrgTsWpGqrqPDYTOkOCi4neitZP+FP0HCN2QBCRk//
-	vP2gDNYuNB42ACWb63lZ/X3Xriy5EvgD4Hh2AejODj8YhGF2BqLzzsHqwDXy0slg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba764g4td-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:16 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BR4OFjq003551;
-	Sat, 27 Dec 2025 04:24:15 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba764g4tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:15 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BR2v5pU001095;
-	Sat, 27 Dec 2025 04:24:14 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b664stnyn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:14 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BR4OA7R27459848
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 27 Dec 2025 04:24:10 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D12920049;
-	Sat, 27 Dec 2025 04:24:10 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B44220040;
-	Sat, 27 Dec 2025 04:24:07 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.124.212.100])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 27 Dec 2025 04:24:07 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
-        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
-Date: Sat, 27 Dec 2025 09:54:06 +0530
-Message-ID: <176680916364.22434.16517409166672279903.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251028105516.26258-1-nysal@linux.ibm.com>
-References: <20251025080512.85690-1-nysal@linux.ibm.com> <20251028105516.26258-1-nysal@linux.ibm.com>
+	s=arc-20240116; t=1766829285; c=relaxed/simple;
+	bh=Ky7LqFUiFeL0ivcTjN19Eav+OqAGEwFRZrjCsNjRqrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ITdPY9evZ82Y2/LcrxSh6lAuost24xfyN78zksV8pskHNF6vBds3C91Tm95ndEyBPi2/+94ZI3MNWhZHWInTiOSu2l5ItxG4IMEwkTaxU+7jkqjU/1QuhdKJIiDfG4lO89MSEmDrbtIxdt5E+YI71ZKGMdBgZli7ISkhBfFVcjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G5Fng3ju; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766829285; x=1798365285;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ky7LqFUiFeL0ivcTjN19Eav+OqAGEwFRZrjCsNjRqrw=;
+  b=G5Fng3jupZN5tQkrhwG3pnz5k1sgaDWITE0zBphZGpLX7vG6hxyNiv/6
+   skJvv92WTOLFEN6JiLDpd0ndjMltCnIo7n4PU8o7ArihK3g/96RsiuOKf
+   6n3+pTRkVfeDZNa0tHb0GKS1UiNxbmJCphYg/cfW6PlRCj2r6w1ygMALu
+   yhYHp3Vi1S32eC5JEdEEw6hELMRgts9OWamkdGuRXgp7Ck+18TRNKNFBp
+   FpLvkQ1YV365cDeXQbuLuSrUHZeubDrBDzBDDPIrgiNqwAIR0ytzvFPdZ
+   36eO2S4oNUJ4+2IQZi9gs4eI6wKG7j4suujQH61p51cMjtqzbz5367Qzu
+   g==;
+X-CSE-ConnectionGUID: Y5CF/zrQQtO8H0PlRGLfMw==
+X-CSE-MsgGUID: 8i8wtxcKQ06+r+c2MiQ+QQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="68429899"
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="68429899"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 01:54:44 -0800
+X-CSE-ConnectionGUID: /EliFEKZQeKY1t3uvyxKiw==
+X-CSE-MsgGUID: EhErDzhLS2+n1gmfMnjIoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="199665797"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 27 Dec 2025 01:54:41 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vZR0Q-000000005iv-1Rpp;
+	Sat, 27 Dec 2025 09:54:38 +0000
+Date: Sat, 27 Dec 2025 17:53:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lucas Wei <lucaswei@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: oe-kbuild-all@lists.linux.dev, sjadavani@google.com,
+	Lucas Wei <lucaswei@google.com>, stable@vger.kernel.org,
+	kernel-team@android.com, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: errata: Workaround for SI L1 downstream coherency
+ issue
+Message-ID: <202512271720.e5kDPkoP-lkp@intel.com>
+References: <20251226074106.3751725-1-lucaswei@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI3MDAzNSBTYWx0ZWRfXzJgJaxsXzA9+
- ffV98M42/HwQ9SmTnuASeAi51Q3XcxXW6ZlIkUZwY8n5PtjSuL8LuMDrT5iqrsY4dNyi0D/xSBv
- c7lEGxpAAUraMwKXysEnjaOM2iCaypbGdOCEMZgUvhWIOnjVWT/xPY8dhWp03Ob+km4LYdDNto2
- 2/G/tqzQGOVrWkQ3S5UhU3qxgNNvdGJtAVDN9z7hGf7SgZe8S/IkVrPPKH+F2Qhczt5ZF7mtxJq
- wIwvlaPz1jcC+4Ukb/7UdPzmM+OCaKfhi0S3EGChA/YUBFNE2qv0ouR2lyffQk+FHFXaH1P6cQJ
- KAVctCXytOrqLirqHvGt0GPyXYigCy1QiWAG6AMMm7i7iX5Z57zpLW0y18jD1+NyJQ3HKDChGUB
- zI6JMRhzmoINBUfsyhuhX8IgkNneLmK0mNZExU9AxEBae/bFnj75fFW+L7LnL4Pk8Sc9ROQrRd2
- YvWO1yvsFsQ/FI1ieBw==
-X-Proofpoint-GUID: HQLyhqxDp4o88OLMzo7fqsYtK5z4IQRQ
-X-Authority-Analysis: v=2.4 cv=B4+0EetM c=1 sm=1 tr=0 ts=694f5f70 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=_Tyy8SHsIPC3FbPClSgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: aFtEUnZ596LH-19Zm1x0XrXTKzmzB0KC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-27_02,2025-12-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2512270035
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251226074106.3751725-1-lucaswei@google.com>
 
-On Tue, 28 Oct 2025 16:25:12 +0530, Nysal Jan K.A. wrote:
-> If SMT is disabled or a partial SMT state is enabled, when a new kernel
-> image is loaded for kexec, on reboot the following warning is observed:
-> 
-> kexec: Waking offline cpu 228.
-> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-> [snip]
->  NIP kexec_prepare_cpus+0x1b0/0x1bc
->  LR  kexec_prepare_cpus+0x1a0/0x1bc
->  Call Trace:
->   kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
->   default_machine_kexec+0x160/0x19c
->   machine_kexec+0x80/0x88
->   kernel_kexec+0xd0/0x118
->   __do_sys_reboot+0x210/0x2c4
->   system_call_exception+0x124/0x320
->   system_call_vectored_common+0x15c/0x2ec
-> 
-> [...]
+Hi Lucas,
 
-Applied to powerpc/fixes.
+kernel test robot noticed the following build warnings:
 
-[1/1] powerpc/kexec: Enable SMT before waking offline CPUs
-      https://git.kernel.org/powerpc/c/c2296a1e42418556efbeb5636c4fa6aa6106713a
+[auto build test WARNING on arm64/for-next/core]
+[also build test WARNING on arm-perf/for-next/perf arm/for-next arm/fixes kvmarm/next soc/for-next linus/master v6.19-rc2 next-20251219]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-cheers
+url:    https://github.com/intel-lab-lkp/linux/commits/Lucas-Wei/arm64-errata-Workaround-for-SI-L1-downstream-coherency-issue/20251226-154541
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+patch link:    https://lore.kernel.org/r/20251226074106.3751725-1-lucaswei%40google.com
+patch subject: [PATCH] arm64: errata: Workaround for SI L1 downstream coherency issue
+config: arm64-randconfig-r123-20251227 (https://download.01.org/0day-ci/archive/20251227/202512271720.e5kDPkoP-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251227/202512271720.e5kDPkoP-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512271720.e5kDPkoP-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> arch/arm64/kernel/cpu_errata.c:145:1: sparse: sparse: symbol 'arm_si_l1_workaround_4311569' was not declared. Should it be static?
+   arch/arm64/kernel/cpu_errata.c:444:18: sparse: sparse: Initializer entry defined twice
+   arch/arm64/kernel/cpu_errata.c:445:17: sparse:   also defined here
+   arch/arm64/kernel/cpu_errata.c:450:18: sparse: sparse: Initializer entry defined twice
+   arch/arm64/kernel/cpu_errata.c:451:17: sparse:   also defined here
+   arch/arm64/kernel/cpu_errata.c:757:17: sparse: sparse: Initializer entry defined twice
+   arch/arm64/kernel/cpu_errata.c:758:18: sparse:   also defined here
+
+vim +/arm_si_l1_workaround_4311569 +145 arch/arm64/kernel/cpu_errata.c
+
+   143	
+   144	#ifdef CONFIG_ARM64_ERRATUM_4311569
+ > 145	DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
+   146	static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
+   147	{
+   148		static_branch_enable(&arm_si_l1_workaround_4311569);
+   149		pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
+   150	
+   151		return 0;
+   152	}
+   153	early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
+   154	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
