@@ -1,136 +1,160 @@
-Return-Path: <stable+bounces-203435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA57CCDF746
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 10:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A973DCDF918
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 12:34:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 369793009414
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 09:54:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EA9130155DD
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 11:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140FD1FDE01;
-	Sat, 27 Dec 2025 09:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54B6313521;
+	Sat, 27 Dec 2025 11:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G5Fng3ju"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ADqDne/d"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-103.ptr.blmpb.com (sg-1-103.ptr.blmpb.com [118.26.132.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6E817A2FC;
-	Sat, 27 Dec 2025 09:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F8F31327E
+	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 11:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766829285; cv=none; b=huRsHnn1OMNXMG+zaZogB8CRwCbGmnHzI8hC9GbxmoAhb1nvi3fxxP378xtQEBGpW3XBRbhe6EF4LApDObQvnhxrSYGqFNkK9707oOmwkIxS7fOjsyo/5svwbF7EH5SDLSW8zbtibby8dMFaHKQxp8NDVP49Ubnxp/jbyz/2kl8=
+	t=1766835259; cv=none; b=oyEi1v3uum3QdOicuC8Jwh7VZflGWRF3zVaHQlZHirzwgBvzEvb32bFzlCCjQ23lnsd5YR4g1UQv4l/SQ/L5e8NKWv7iDc78tzkBrN7/yfioJGyLN+zWDU4U3Lab+IIuPoEi+7QAKXD7kwM8fMLCS8XE8u1IZJqhdLcsQ7Z0SWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766829285; c=relaxed/simple;
-	bh=Ky7LqFUiFeL0ivcTjN19Eav+OqAGEwFRZrjCsNjRqrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ITdPY9evZ82Y2/LcrxSh6lAuost24xfyN78zksV8pskHNF6vBds3C91Tm95ndEyBPi2/+94ZI3MNWhZHWInTiOSu2l5ItxG4IMEwkTaxU+7jkqjU/1QuhdKJIiDfG4lO89MSEmDrbtIxdt5E+YI71ZKGMdBgZli7ISkhBfFVcjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G5Fng3ju; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766829285; x=1798365285;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ky7LqFUiFeL0ivcTjN19Eav+OqAGEwFRZrjCsNjRqrw=;
-  b=G5Fng3jupZN5tQkrhwG3pnz5k1sgaDWITE0zBphZGpLX7vG6hxyNiv/6
-   skJvv92WTOLFEN6JiLDpd0ndjMltCnIo7n4PU8o7ArihK3g/96RsiuOKf
-   6n3+pTRkVfeDZNa0tHb0GKS1UiNxbmJCphYg/cfW6PlRCj2r6w1ygMALu
-   yhYHp3Vi1S32eC5JEdEEw6hELMRgts9OWamkdGuRXgp7Ck+18TRNKNFBp
-   FpLvkQ1YV365cDeXQbuLuSrUHZeubDrBDzBDDPIrgiNqwAIR0ytzvFPdZ
-   36eO2S4oNUJ4+2IQZi9gs4eI6wKG7j4suujQH61p51cMjtqzbz5367Qzu
-   g==;
-X-CSE-ConnectionGUID: Y5CF/zrQQtO8H0PlRGLfMw==
-X-CSE-MsgGUID: 8i8wtxcKQ06+r+c2MiQ+QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="68429899"
-X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
-   d="scan'208";a="68429899"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 01:54:44 -0800
-X-CSE-ConnectionGUID: /EliFEKZQeKY1t3uvyxKiw==
-X-CSE-MsgGUID: EhErDzhLS2+n1gmfMnjIoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
-   d="scan'208";a="199665797"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 27 Dec 2025 01:54:41 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vZR0Q-000000005iv-1Rpp;
-	Sat, 27 Dec 2025 09:54:38 +0000
-Date: Sat, 27 Dec 2025 17:53:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lucas Wei <lucaswei@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: oe-kbuild-all@lists.linux.dev, sjadavani@google.com,
-	Lucas Wei <lucaswei@google.com>, stable@vger.kernel.org,
-	kernel-team@android.com, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: errata: Workaround for SI L1 downstream coherency
- issue
-Message-ID: <202512271720.e5kDPkoP-lkp@intel.com>
-References: <20251226074106.3751725-1-lucaswei@google.com>
+	s=arc-20240116; t=1766835259; c=relaxed/simple;
+	bh=BuIMaNT+UI0KsqsbHtmd0bHo46Jp/KXJIvwHEITBcSs=;
+	h=Message-Id:Mime-Version:To:Cc:From:Subject:Date:Content-Type; b=GVQrDovu7F45/6XoJ8P4KKhwn3HvbbDDY4vKcbFE5KMh6qwd4dOuazFD+sdJxV/PvU24oWw0B8EHi2ZbDwQVGD9thFoGc1M3pox/pvoLGQy2vkwAR+ozBWnGVxiRFEeOgXZbPO+QJpD0v5swV7wlHjRjj4+gQCI843I4wJ0xlr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ADqDne/d; arc=none smtp.client-ip=118.26.132.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1766835243; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=zpBY2sbAf3ugjQp1+eDZumXA4vCMZxwygzISFCEom34=;
+ b=ADqDne/dNqiQY/oKhsg8YHEli8etR5VzSQZGOBquF+f2yUFiTBCHWxhwKKCskgBk/yKR4c
+ YTfbIMaC9+5E/vK3v6saXGxWJz1BRv+4iRePamQBgWx6vdvqUgMU4PP5fqwcUvtSqyYT3l
+ 4IP8GPsin8B9UWDxDWr2XVdW2d3An5xbNS7ztzuxIpSGA49MvF+CKpIvOmwgdnhsBnuhUU
+ JHk0WeHxCq3bwaUxitcPrySe1KUw1uFEXovrHF6wNwIlGrPjntL4rDIHhrf0Pp1HNLrXhb
+ 4ft1rNFmxsGscujhNi6rdIV8CbE25lIj9rTcPtSwSpce2lo4tuMQk90mtvPlmw==
+X-Mailer: git-send-email 2.17.1
+Message-Id: <20251227113326.964-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251226074106.3751725-1-lucaswei@google.com>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+2694fc42a+856ee0+vger.kernel.org+guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+To: <bhelgaas@google.com>, <bvanassche@acm.org>, <dan.j.williams@intel.com>, 
+	<alexander.h.duyck@linux.intel.com>, <gregkh@linuxfoundation.org>
+Cc: <guojinhui.liam@bytedance.com>, <linux-pci@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Subject: [PATCH] PCI: Avoid work_on_cpu() in async probe workers
+Date: Sat, 27 Dec 2025 19:33:26 +0800
+Content-Type: text/plain; charset=UTF-8
 
-Hi Lucas,
+Commit ef0ff68351be ("driver core: Probe devices asynchronously instead of
+the driver") speeds up the loading of large numbers of device drivers by
+submitting asynchronous probe workers to an unbounded workqueue and binding
+each worker to the CPU near the device=E2=80=99s NUMA node. These workers a=
+re not
+scheduled on isolated CPUs because their cpumask is restricted to
+housekeeping_cpumask(HK_TYPE_WQ) and housekeeping_cpumask(HK_TYPE_DOMAIN).
 
-kernel test robot noticed the following build warnings:
+However, when PCI devices reside on the same NUMA node, all their
+drivers=E2=80=99 probe workers are bound to the same CPU within that node, =
+yet
+the probes still run in parallel because pci_call_probe() invokes
+work_on_cpu(). Introduced by commit 873392ca514f ("PCI: work_on_cpu: use
+in drivers/pci/pci-driver.c"), work_on_cpu() queues a worker on
+system_percpu_wq to bind the probe thread to the first CPU in the
+device=E2=80=99s NUMA node (chosen via cpumask_any_and() in pci_call_probe(=
+)).
 
-[auto build test WARNING on arm64/for-next/core]
-[also build test WARNING on arm-perf/for-next/perf arm/for-next arm/fixes kvmarm/next soc/for-next linus/master v6.19-rc2 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+1. The function __driver_attach() submits an asynchronous worker with
+   callback __driver_attach_async_helper().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lucas-Wei/arm64-errata-Workaround-for-SI-L1-downstream-coherency-issue/20251226-154541
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
-patch link:    https://lore.kernel.org/r/20251226074106.3751725-1-lucaswei%40google.com
-patch subject: [PATCH] arm64: errata: Workaround for SI L1 downstream coherency issue
-config: arm64-randconfig-r123-20251227 (https://download.01.org/0day-ci/archive/20251227/202512271720.e5kDPkoP-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251227/202512271720.e5kDPkoP-lkp@intel.com/reproduce)
+   __driver_attach()
+    async_schedule_dev(__driver_attach_async_helper, dev)
+     async_schedule_node(func, dev, dev_to_node(dev))
+      async_schedule_node_domain(func, data, node, &async_dfl_domain)
+       __async_schedule_node_domain(func, data, node, domain, entry)
+        queue_work_node(node, async_wq, &entry->work)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512271720.e5kDPkoP-lkp@intel.com/
+2. The asynchronous probe worker ultimately calls work_on_cpu() in
+   pci_call_probe(), binding the worker to the same CPU within the
+   device=E2=80=99s NUMA node.
 
-sparse warnings: (new ones prefixed by >>)
->> arch/arm64/kernel/cpu_errata.c:145:1: sparse: sparse: symbol 'arm_si_l1_workaround_4311569' was not declared. Should it be static?
-   arch/arm64/kernel/cpu_errata.c:444:18: sparse: sparse: Initializer entry defined twice
-   arch/arm64/kernel/cpu_errata.c:445:17: sparse:   also defined here
-   arch/arm64/kernel/cpu_errata.c:450:18: sparse: sparse: Initializer entry defined twice
-   arch/arm64/kernel/cpu_errata.c:451:17: sparse:   also defined here
-   arch/arm64/kernel/cpu_errata.c:757:17: sparse: sparse: Initializer entry defined twice
-   arch/arm64/kernel/cpu_errata.c:758:18: sparse:   also defined here
+   __driver_attach_async_helper()
+    driver_probe_device(drv, dev)
+     __driver_probe_device(drv, dev)
+      really_probe(dev, drv)
+       call_driver_probe(dev, drv)
+        dev->bus->probe(dev)
+         pci_device_probe(dev)
+          __pci_device_probe(drv, pci_dev)
+           pci_call_probe(drv, pci_dev, id)
+            cpu =3D cpumask_any_and(cpumask_of_node(node), wq_domain_mask)
+            error =3D work_on_cpu(cpu, local_pci_probe, &ddi)
+             schedule_work_on(cpu, &wfc.work);
+              queue_work_on(cpu, system_percpu_wq, work)
 
-vim +/arm_si_l1_workaround_4311569 +145 arch/arm64/kernel/cpu_errata.c
+To fix the issue, pci_call_probe() must not call work_on_cpu() when it is
+already running inside an unbounded asynchronous worker. Because a driver
+can be probed asynchronously either by probe_type or by the kernel command
+line, we cannot rely on PROBE_PREFER_ASYNCHRONOUS alone. Instead, we test
+the PF_WQ_WORKER flag in current->flags; if it is set, pci_call_probe() is
+executing within an unbounded workqueue worker and should skip the extra
+work_on_cpu() call.
 
-   143	
-   144	#ifdef CONFIG_ARM64_ERRATUM_4311569
- > 145	DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
-   146	static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
-   147	{
-   148		static_branch_enable(&arm_si_l1_workaround_4311569);
-   149		pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
-   150	
-   151		return 0;
-   152	}
-   153	early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
-   154	
+Testing three NVMe devices on the same NUMA node of an AMD EPYC 9A64
+2.4 GHz processor shows a 35 % probe-time improvement with the patch:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Before (all on CPU 0):
+  nvme 0000:01:00.0: CPU: 0, COMM: kworker/0:1, probe cost: 53372612 ns
+  nvme 0000:02:00.0: CPU: 0, COMM: kworker/0:2, probe cost: 49532941 ns
+  nvme 0000:03:00.0: CPU: 0, COMM: kworker/0:3, probe cost: 47315175 ns
+
+After (spread across CPUs 1, 2, 5):
+  nvme 0000:01:00.0: CPU: 5, COMM: kworker/u1025:5, probe cost: 34765890 ns
+  nvme 0000:02:00.0: CPU: 1, COMM: kworker/u1025:2, probe cost: 34696433 ns
+  nvme 0000:03:00.0: CPU: 2, COMM: kworker/u1025:3, probe cost: 33233323 ns
+
+The improvement grows with more PCI devices because fewer probes contend
+for the same CPU.
+
+Fixes: ef0ff68351be ("driver core: Probe devices asynchronously instead of =
+the driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
+ drivers/pci/pci-driver.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 7c2d9d596258..4bc47a84d330 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -366,9 +366,11 @@ static int pci_call_probe(struct pci_driver *drv, stru=
+ct pci_dev *dev,
+ 	/*
+ 	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
+ 	 * device is probed from work_on_cpu() of the Physical device.
++	 * Check PF_WQ_WORKER to prevent invoking work_on_cpu() in an asynchronou=
+s
++	 * probe worker when the driver allows asynchronous probing.
+ 	 */
+ 	if (node < 0 || node >=3D MAX_NUMNODES || !node_online(node) ||
+-	    pci_physfn_is_probed(dev)) {
++	    pci_physfn_is_probed(dev) || (current->flags & PF_WQ_WORKER)) {
+ 		cpu =3D nr_cpu_ids;
+ 	} else {
+ 		cpumask_var_t wq_domain_mask;
+--=20
+2.20.1
 
