@@ -1,257 +1,174 @@
-Return-Path: <stable+bounces-203437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464A6CDFC33
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 13:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8205CE01D5
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 21:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F26E0302530E
-	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 12:49:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8777E3012745
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 20:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D4031985E;
-	Sat, 27 Dec 2025 12:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32991D8E10;
+	Sat, 27 Dec 2025 20:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOFEWRCs"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="tGVhFh11"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12223164BF
-	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 12:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95843C2F
+	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 20:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766839758; cv=none; b=XPMqqJo0B9ixeXZNyp6XZekSQBte0+mefSEe2sGH8KFRjXYopN131uvLfUFn38iM3nCJnrPGQvydvnThKA8DNKPrSL86UiyeDCB7q3G9WNrBkpcBrz9T282BmjCLhThqF+aUofN2Rj1JtiHmw2oZ9nw50YFL9ejSnsWrqJifeqE=
+	t=1766866556; cv=none; b=AGym2KRq61HvSQFs0lyrN2W6A/y1uPc/DAhVndfkyxx6OuA2bmTaolsZ1sknwYNQT2/msCyv3roIfYPty9eDedisElYrgDh1yRyGokqVYLDQw5FcrWjzfFf4ajVQCpf/RUDp+cWLRgI3bv62GA3cJWvrOOQnIjnaBBh4KTTmlx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766839758; c=relaxed/simple;
-	bh=0kfMRiadnGarHTALRRW411hh4urIGuwlrxzm+obaeeo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bi6E00fP6N57E8fYcQOR3cTuhJu+d95qnaRVW8TA6BLZioX7viKnuV2iffGl1W7EvTMlIVk0rJKRGE2TAF7KMf9r7kx90mNizfzsySTfNsQfcPLpkVZWeQXlFImubEJ6F9fBUQATWc0ONZdmL+GSEQUk1QGoo+a/C1TxkfpmxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOFEWRCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA8AC19425
-	for <stable@vger.kernel.org>; Sat, 27 Dec 2025 12:49:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766839758;
-	bh=0kfMRiadnGarHTALRRW411hh4urIGuwlrxzm+obaeeo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UOFEWRCsnKFg9u0eMWOp7mzMvsSYqeNed7NVPxhEBoDSx8nRaCf2SZLym+t0flOTp
-	 8mpXL6oZKeEFgYTjZP9/T24300hr3pTARneiuODz1w6Om79A3ZdRjuASJ5uQDyDN0o
-	 uvALQLeXbYMbXAed4tWZgwHWHJOlxhlk5rKH7FEazqhTknGOpO7d+KA2E4uPgZNQEK
-	 aIM4Yyh04ybCv76jaB4dqLA6NUMqYcNdS8vF9ADMbSIyvXKUi17rk5dapZ09ccdJFe
-	 PzMmEEH0CSXpJu4V3gYBStDjH0ApfbvC25z2fpr1dt7aMK5kTlgRh7AdAqHstd3DYy
-	 52yicC1oi8++w==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7636c96b9aso1418977166b.2
-        for <stable@vger.kernel.org>; Sat, 27 Dec 2025 04:49:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWLdq9CcyAJDoOLQAO6xzTLE3xw6MagNu/v3CMk8/0M0VstTJdxK2KImfXXYtLMdv7DFcCN9FI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd4L3yYyIMhpRmQQt+I9A3kw86sNbNZcmBfxmnxfhodzOcRMkb
-	uP5RwvT+HK3Jtug06chI1QJeG2FEjSOVd35wQ7dLBZZKp2gLML9k9DcbgGfW0nCY30FzJDGUxqb
-	6tq/yMFChJovkNGcq87zNplr5Ndrme+o=
-X-Google-Smtp-Source: AGHT+IEsqJc6khAJ2cHADfIJcu27io1v3NCx+cZczeIdVZMpBJsCG/bgaEOBzeDbgzYZiUCK4ID38MWYx4XuE0EW6xs=
-X-Received: by 2002:a17:907:d0c:b0:b73:9280:2e7 with SMTP id
- a640c23a62f3a-b80371a3eacmr2514207366b.34.1766839756759; Sat, 27 Dec 2025
- 04:49:16 -0800 (PST)
+	s=arc-20240116; t=1766866556; c=relaxed/simple;
+	bh=RZNucMZdSXEsYbydyCV3TkMyKw7vijnpC0AIEN8KyJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qnO0KVqUuZY40pVfhIcCaidz7/LhLEEGGdQO/6h1Oj5ZJcYMhuzfF1npdjr367/xrh997A+33mImj02OUbGX0FYelzV4F0NuuMgwa/F09nMXsyv9VrEeetvayfoKH/NE9maSuOl3FXihrpIoXGsE44m1gywLk6Q3PqrDctYQw6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=tGVhFh11; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4eda6c385c0so61980431cf.3
+        for <stable@vger.kernel.org>; Sat, 27 Dec 2025 12:15:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1766866553; x=1767471353; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HtbUmqDAf3JMT1n/o4B6uqn9tkuL0rjFfjUGbj02xhk=;
+        b=tGVhFh11dAJ1sQY4Pm677H0FeDCCU40gx3ncI0JcEPJlVx9l8LWY74GGvyq87O+hOm
+         MPSa2G+6WLNpEMPJDD0eAfcfQKlqaR+sLvpb56xD0Vq4nlB1vtFijsfvnJEmIriAKVC6
+         8wJhYx1ourivhm4iXH0A0zt5ejsvasoDg+7imrpfCDyUyRaX40hUjzZXvino8v9VmdQd
+         hbNw6s7xhQHNZ19A+GvjvOf5b+VWlOnPho7PHG0jK93oCpZr3xIrMRUMPoRRI/uCytlS
+         AJ3Vpw/DKparh8yL11MqGVxG45h0vytL6uPtQO3fkdF0EebpW0/UYBhy1BqPoCqV7MyC
+         +/7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766866553; x=1767471353;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HtbUmqDAf3JMT1n/o4B6uqn9tkuL0rjFfjUGbj02xhk=;
+        b=cS0Qu2u/Fdo98IyisriTPPqQ3siSMwljXv7gdcKjosutERwvw9KjGDsitNTJtzCSVU
+         nFbdCmyrffPytrQlmcGY87AepRv6WKnOnMWBGW9ZN0Fwhp8vtiFwWWT3xpmjzwIHVm30
+         VdMc9u6qVS88WGvOyE9cIjKAaW9uflNLwJMHIZ3Z5suiWrHgLO3HDNlkQbLaPlgZ+15M
+         ogkUOUNZUcTnBfjVWuXjA+xZiyUKn56kVxNEskXMwhqJt38WxeIuK/5qn9x8X8a3iFZh
+         5slqJJSv9azoqqqIkCVOCjhTHjDdyZapkD3hIoY2SljkfH20NuVQntGjm6Ffwcp3+RNT
+         /jng==
+X-Gm-Message-State: AOJu0YwEfBaXN29evT8P51SAYI1pDlMRnphJDqbfCcZvRf0QS8XepJ+H
+	MS/vPDy+8nMsXCcmECQV50QDbNw1ACJS1Jo7ynHnZgnq4wBhzHNVrqEJR9D2YGyfXcsTeLwbpU5
+	oyRI=
+X-Gm-Gg: AY/fxX7Eaz3OEX0Pk3ooRrKBx+a1EahTtomPNayGk+16S1vjL3mMbgJMOMQSBfE9GVv
+	GwlZrsj0XrG3zUAa5vCWoAMeKiVhwGqfMYLtj6Gv9ZT6/yBydW24MDIZdZFZaNaK8VvTjXIscnS
+	EZBo8VLakuP9trx3yK7LB1GcTbSIJVxnyTsY8/Jomo2XgWt5bxjhi/ChrmB/zeXU7X8oEJsBTwg
+	0yE8kWA88c6r/Y8RvgG6U3yUeGSh8bAPJUUpZoKqBEfTKxilpXKMJ2Jz38p01gyZXf6gLChaKl2
+	KUBZNZRCSBO4+vvffEx++YLhJNRWAMUQb29hOUbsfAzlu6EI4u7Lb2o7MIUOJRS2+H4YqL/H0Qq
+	2ukAjRMrD0C+pQ7VIRHw6fzFCxlrcDY7Fsl2YHSYhPOA/HVHzTY8zsWjqeaU5jB2thmgKxhXGJU
+	wCN9u+PLuS02bo
+X-Google-Smtp-Source: AGHT+IGw8G5NE4jvVE/c264IMLg7gJn70y3l/qXZ1ETFtyYzHxaXQ+jtsqnbB9m4mvMvkePFmS8BgA==
+X-Received: by 2002:a05:622a:198b:b0:4ee:2074:4b6e with SMTP id d75a77b69052e-4f4abd8cc2amr343125311cf.45.1766866553464;
+        Sat, 27 Dec 2025 12:15:53 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::16e7])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0975ee7d5sm2004763885a.49.2025.12.27.12.15.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Dec 2025 12:15:52 -0800 (PST)
+Date: Sat, 27 Dec 2025 15:15:49 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, chenchangcheng@kylinos.cn,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: Patch "usb: usb-storage: No additional quirks need to be added
+ to the EL-R12 optical drive." has been added to the 6.18-stable tree
+Message-ID: <0c02d5d7-259d-4e4e-a556-0d86473e636c@rowland.harvard.edu>
+References: <20251227193644.48579-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251227012712.2921408-1-lixianglai@loongson.cn> <20251227012712.2921408-3-lixianglai@loongson.cn>
-In-Reply-To: <20251227012712.2921408-3-lixianglai@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 27 Dec 2025 20:49:34 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6vxwDkBUQgY=YKnhk+3i_hW06E0UFLHK5F3VnG7tzdwA@mail.gmail.com>
-X-Gm-Features: AQt7F2o4bcq8N1cKAf4bYOyGrQYxTcPXCNmzgRy8noVX91JZSVXC4jPh3i1tjbc
-Message-ID: <CAAhV-H6vxwDkBUQgY=YKnhk+3i_hW06E0UFLHK5F3VnG7tzdwA@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Xianglai Li <lixianglai@loongson.cn>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227193644.48579-1-sashal@kernel.org>
 
-Hi, Xianglai,
+On Sat, Dec 27, 2025 at 02:36:44PM -0500, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+> 
+> to the 6.18-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      usb-usb-storage-no-additional-quirks-need-to-be-adde.patch
+> and it can be found in the queue-6.18 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-On Sat, Dec 27, 2025 at 9:52=E2=80=AFAM Xianglai Li <lixianglai@loongson.cn=
-> wrote:
->
-> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
-> the assembly function to guide the generation of correct ORC table entrie=
-s,
-> thereby solving the timeout problem of loading the livepatch-sample modul=
-e
-> on a physical machine running multiple vcpus virtual machines.
->
-> While solving the above problems, we have gained an additional benefit,
-> that is, we can obtain more call stack information
->
-> Stack information that can be obtained before the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x100/0x1e0
->
-> Stack information that can be obtained after the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x104/0x1e4
-> [<0>] kvm_enter_guest+0x38/0x11c
-> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
-> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
-> [<0>] sys_ioctl+0x498/0xf00
-> [<0>] do_syscall+0x98/0x1d0
-> [<0>] handle_syscall+0xb8/0x158
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> ---
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Charlie Jenkins <charlie@rivosinc.com>
-> Cc: Xianglai Li <lixianglai@loongson.cn>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
->
->  arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
->  1 file changed, 19 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-> index 93845ce53651..a3ea9567dbe5 100644
-> --- a/arch/loongarch/kvm/switch.S
-> +++ b/arch/loongarch/kvm/switch.S
-> @@ -10,6 +10,7 @@
->  #include <asm/loongarch.h>
->  #include <asm/regdef.h>
->  #include <asm/unwind_hints.h>
-> +#include <linux/kvm_types.h>
->
->  #define HGPR_OFFSET(x)         (PT_R0 + 8*x)
->  #define GGPR_OFFSET(x)         (KVM_ARCH_GGPR + 8*x)
-> @@ -110,9 +111,9 @@
->          * need to copy world switch code to DMW area.
->          */
->         .text
-> +       .p2align PAGE_SHIFT
->         .cfi_sections   .debug_frame
->  SYM_CODE_START(kvm_exc_entry)
-> -       .p2align PAGE_SHIFT
->         UNWIND_HINT_UNDEFINED
->         csrwr   a2,   KVM_TEMP_KS
->         csrrd   a2,   KVM_VCPU_KS
-> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
->         /* restore per cpu register */
->         ld.d    u0, a2, KVM_ARCH_HPERCPU
->         addi.d  sp, sp, -PT_SIZE
-> +       UNWIND_HINT_REGS
->
->         /* Prepare handle exception */
->         or      a0, s0, zero
-> @@ -200,7 +202,7 @@ ret_to_host:
->         jr      ra
->
->  SYM_CODE_END(kvm_exc_entry)
-> -EXPORT_SYMBOL(kvm_exc_entry)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
-Why not use EXPORT_SYMBOL_FOR_KVM in the first patch directly?
+This commit will be modified by commit 0831269b5f71 ("usb: usb-storage: 
+Maintain minimal modifications to the bcdDevice range.") in Greg's 
+usb-linus branch, which has not yet been merged into the mainline 
+kernel.  The two commits should be added to the -stable kernels at the 
+same time, if possible, which probably means holding off on this one 
+until the next round.
 
->
->  /*
->   * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
-> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
->         /* Save host GPRs */
->         kvm_save_host_gpr a2
->
-> +       /*
-> +        * The csr_era member variable of the pt_regs structure is requir=
-ed
-> +        * for unwinding orc to perform stack traceback, so we need to pu=
-t
-> +        * pc into csr_era member variable here.
-> +        */
-> +       pcaddi  t0, 0
-> +       st.d    t0, a2, PT_ERA
-I am still confused here, does this overwrite PT_ERA stored by
-kvm_save_host_gpr?
+Alan Stern
 
-Huacai
-
-> +
->         addi.d  a2, a1, KVM_VCPU_ARCH
->         st.d    sp, a2, KVM_ARCH_HSP
->         st.d    tp, a2, KVM_ARCH_HTP
-> @@ -225,7 +235,7 @@ SYM_FUNC_START(kvm_enter_guest)
->         csrwr   a1, KVM_VCPU_KS
->         kvm_switch_to_guest
->  SYM_FUNC_END(kvm_enter_guest)
-> -EXPORT_SYMBOL(kvm_enter_guest)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_enter_guest)
->
->  SYM_FUNC_START(kvm_save_fpu)
->         fpu_save_csr    a0 t1
-> @@ -233,7 +243,7 @@ SYM_FUNC_START(kvm_save_fpu)
->         fpu_save_cc     a0 t1 t2
->         jr              ra
->  SYM_FUNC_END(kvm_save_fpu)
-> -EXPORT_SYMBOL(kvm_save_fpu)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_fpu)
->
->  SYM_FUNC_START(kvm_restore_fpu)
->         fpu_restore_double a0 t1
-> @@ -241,7 +251,7 @@ SYM_FUNC_START(kvm_restore_fpu)
->         fpu_restore_cc     a0 t1 t2
->         jr                 ra
->  SYM_FUNC_END(kvm_restore_fpu)
-> -EXPORT_SYMBOL(kvm_restore_fpu)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_fpu)
->
->  #ifdef CONFIG_CPU_HAS_LSX
->  SYM_FUNC_START(kvm_save_lsx)
-> @@ -250,7 +260,7 @@ SYM_FUNC_START(kvm_save_lsx)
->         lsx_save_data   a0 t1
->         jr              ra
->  SYM_FUNC_END(kvm_save_lsx)
-> -EXPORT_SYMBOL(kvm_save_lsx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lsx)
->
->  SYM_FUNC_START(kvm_restore_lsx)
->         lsx_restore_data a0 t1
-> @@ -258,7 +268,7 @@ SYM_FUNC_START(kvm_restore_lsx)
->         fpu_restore_csr  a0 t1 t2
->         jr               ra
->  SYM_FUNC_END(kvm_restore_lsx)
-> -EXPORT_SYMBOL(kvm_restore_lsx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lsx)
->  #endif
->
->  #ifdef CONFIG_CPU_HAS_LASX
-> @@ -268,7 +278,7 @@ SYM_FUNC_START(kvm_save_lasx)
->         lasx_save_data  a0 t1
->         jr              ra
->  SYM_FUNC_END(kvm_save_lasx)
-> -EXPORT_SYMBOL(kvm_save_lasx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lasx)
->
->  SYM_FUNC_START(kvm_restore_lasx)
->         lasx_restore_data a0 t1
-> @@ -276,7 +286,7 @@ SYM_FUNC_START(kvm_restore_lasx)
->         fpu_restore_csr   a0 t1 t2
->         jr                ra
->  SYM_FUNC_END(kvm_restore_lasx)
-> -EXPORT_SYMBOL(kvm_restore_lasx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lasx)
->  #endif
->
->  #ifdef CONFIG_CPU_HAS_LBT
-> --
-> 2.39.1
->
+> commit 4846de73fe267ccffe66a5bff7c7def201c34df1
+> Author: Chen Changcheng <chenchangcheng@kylinos.cn>
+> Date:   Fri Nov 21 14:40:20 2025 +0800
+> 
+>     usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+>     
+>     [ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
+>     
+>     The optical drive of EL-R12 has the same vid and pid as INIC-3069,
+>     as follows:
+>     T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+>     D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+>     P:  Vendor=13fd ProdID=3940 Rev= 3.10
+>     S:  Manufacturer=HL-DT-ST
+>     S:  Product= DVD+-RW GT80N
+>     S:  SerialNumber=423349524E4E38303338323439202020
+>     C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
+>     I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
+>     E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+>     E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+>     
+>     This will result in the optical drive device also adding
+>     the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
+>     it will fail, and the reason for the failure is as follows:
+>     [  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
+>     [  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
+>     [  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
+>     [  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
+>     [  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
+>     [  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
+>     [  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
+>     [  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
+>     [  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
+>     
+>     For the EL-R12 standard optical drive, all operational commands
+>     and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
+>     and no issues were encountered. It can be reasonably concluded
+>     that removing the IGNORE_RESIDUE quirks has no impact.
+>     
+>     Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
+>     Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
+>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
+> index 1477e31d7763..b695f5ba9a40 100644
+> --- a/drivers/usb/storage/unusual_uas.h
+> +++ b/drivers/usb/storage/unusual_uas.h
+> @@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
+>  		US_FL_NO_ATA_1X),
+>  
+>  /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
+> -UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
+> +UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
+>  		"Initio Corporation",
+>  		"INIC-3069",
+>  		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 
