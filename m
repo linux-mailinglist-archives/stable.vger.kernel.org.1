@@ -1,138 +1,137 @@
-Return-Path: <stable+bounces-203428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D323FCDF16C
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 23:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB8BCDF368
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 02:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85C993007965
-	for <lists+stable@lfdr.de>; Fri, 26 Dec 2025 22:32:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73B253017389
+	for <lists+stable@lfdr.de>; Sat, 27 Dec 2025 01:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD37276038;
-	Fri, 26 Dec 2025 22:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1HEiD2E"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3367E23A98E;
+	Sat, 27 Dec 2025 01:52:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F507E792;
-	Fri, 26 Dec 2025 22:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA0C1F4262;
+	Sat, 27 Dec 2025 01:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766788321; cv=none; b=pHm6urLVvmdae/i0HfKmLGxi8ETcbfhKk1gn+TNubWYQ3mmL3JSfeyUBHnIraxBKtWe0sRjKIW3OHddlS7x24Co+xzgXseVAHuBZTN5gttyiPOLnFN4b1v8iqnn4M0uYsVpXDI1rx/WT0zUipDXS71XPGzTuvW31eDUc4PbFeCk=
+	t=1766800331; cv=none; b=ocyMHxnHrVDLtY34ydiQZRsD8d4jTuaSBvfdqCAfJiWmf2DwsKIyV30XI/iTwvGs1paHJmsU8UsR/cXvLEchHt/Fg81jjgC8fmcnETfAuoG+1YGKMWgIdklOOjoL8vWxo6F14pwIsQuETPIhk1fiJWDIwNtV75OqHM8aMJ9jeTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766788321; c=relaxed/simple;
-	bh=J5Jqm5xsdySK6xnw1VOys1NDqCq9XV/QNBpwKwi1/rM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=RKc9dkUjaBCdgHoN/kt2gk1DmNVwbPCPw4YOpM7xmiE2o1OZKjH/zm3T63kJE495FEUXxJCB9mqV/CiyxeanLgtqhnOXKnAYWdrG+NL7JVLUojpPIxTPXnrsKFGNZ3KnY/wXvzh8sGvsj7pOVak9+3r5CFpEBV5VOVncdO2SoiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1HEiD2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D7EC4CEF7;
-	Fri, 26 Dec 2025 22:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766788321;
-	bh=J5Jqm5xsdySK6xnw1VOys1NDqCq9XV/QNBpwKwi1/rM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=b1HEiD2EHgPf9ffbPpEE6A2XqMeKh/t3qOKgip2nJydL4o3hl5o43AkPq/jBtUmIF
-	 478b6PN5m9qR3iMtaxcoWaTX90c/Yqog9RuZBT55YbNj+C4bTYrXtIKMpv9fdC+SXS
-	 NY10aMu1C4iiovc9Qh8M0wCPraOdrLjyDbUzKqLIGTP6X8FrjS2An2IMHP5zZ8L36M
-	 JHcTs1S61D01i9oLu1Ey7xcj4vVn4r9jVjmeH0V7YIe9tMVH0IRJ5iGgbxgcHDIwVa
-	 K5K3TxXbCqnsWRYKvj5+738dMefEX4SZ8ptQoSRdIv7o2EsMk22ECxvJdZh0JApuTe
-	 oqJEptSeNxHLA==
-Date: Fri, 26 Dec 2025 16:31:59 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH v2 1/6] Revert "PCI: dw-rockchip: Don't wait for link
- since we can detect Link Up"
-Message-ID: <20251226223159.GA4143516@bhelgaas>
+	s=arc-20240116; t=1766800331; c=relaxed/simple;
+	bh=gWUcfv9snK/vO1HKr+k3Zu494RdI/WXNlnQsOTIjTT8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Inh4QNkoprhZ1krnxbg+N5+qmY9pF6YC/Y6xQUKYsE4lTUP/zrX9qg/4QzR6xX2irqxaEm1gYqgeeLlUd7V+GbvgUBIPw8bpGYFdv6ppHejXs7/bWLxiMIXW3JmTJWSWhqPLwKqYNOE0qoBRvsOkkkv/x7W0DeLe+rOxAuoBCwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.185])
+	by gateway (Coremail) with SMTP id _____8BxmsLBO09pkYoDAA--.10997S3;
+	Sat, 27 Dec 2025 09:52:01 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+	by front1 (Coremail) with SMTP id qMiowJBxbcK6O09pu1oFAA--.12398S2;
+	Sat, 27 Dec 2025 09:51:54 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	lixianglai@loongson.cn
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	stable@vger.kernel.org,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: [PATCH V3 0/2] LoongArch: KVM: fix "unreliable stack" issue
+Date: Sat, 27 Dec 2025 09:27:10 +0800
+Message-Id: <20251227012712.2921408-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222064207.3246632-9-cassel@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxbcK6O09pu1oFAA--.12398S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-[+cc Ilpo]
+When starting multi-core loongarch virtualization on loongarch physical
+machine, loading livepatch on the physical machine will cause an error
+similar to the following:
+[  411.686289] livepatch: klp_try_switch_task: CPU 31/KVM:3116 has an
+unreliable stack
 
-On Mon, Dec 22, 2025 at 07:42:08AM +0100, Niklas Cassel wrote:
-> This reverts commit ec9fd499b9c60a187ac8d6414c3c343c77d32e42.
-> 
-> While this fake hotplugging was a nice idea, it has shown that this feature
-> does not handle PCIe switches correctly:
-> pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+The specific test steps are as follows:
+1.Start a multi-core virtual machine on a physical machine
 
-Apart from the actual problem you're fixing, it looks like some of our
-bus number resource setup is a little deficient here.  The "43-41" and
-"42-41" ranges are bogus and "(null)" doesn't tell us anything useful.
+2.Enter the following command on the physical machine to turn on the debug
+switch:
+  echo "file kernel/livepatch/transition.c +p"  > /sys/kernel/debug/\
+dynamic_debug/control 
 
-> pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
-> pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
-> pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
-> pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
-> pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
-> pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
-> pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
-> pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
-> pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
-> pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
-> pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
-> pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
-> pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
-> 
-> During the initial scan, PCI core doesn't see the switch and since the Root
-> Port is not hot plug capable, the secondary bus number gets assigned as the
-> subordinate bus number. This means, the PCI core assumes that only one bus
-> will appear behind the Root Port since the Root Port is not hot plug
-> capable.
-> 
-> This works perfectly fine for PCIe endpoints connected to the Root Port,
-> since they don't extend the bus. However, if a PCIe switch is connected,
-> then there is a problem when the downstream busses starts showing up and
-> the PCI core doesn't extend the subordinate bus number after initial scan
-> during boot.
 
-I suppose this is could also be viewed as a resource management
-problem.  
+3.Load livepatch:
+ modprobe  livepatch-sample 
 
-Even in the normal hotplug case, we never know what a hot-added
-hierarchy will look like, so we hack around it with the compiled-in
-DEFAULT_HOTPLUG_BUS_SIZE and the "hpbussize=" kernel parameter.
+Through the above steps, similar prints can be viewed in dmesg.
 
-It would be nice if we could allocate more bus numbers at hot-add (or
-link-up) time as needed.  That's hard after drivers have claimed
-nearby devices, but in this case there might not be anything nearby.
+The reason for this issue is that the code of the kvm_exc_entry function
+was copied in the function kvm_loongarch_env_init. When the cpu needs to
+execute kvm_exc_entry, it will switch to the copied address for execution.
+The new address of the kvm_exc_entry function cannot be recognized in ORC,
+which eventually leads to the arch_stack_walk_reliable function returning
+an error and printing an exception message.
 
-> The long term plan is to migrate this driver to the pwrctrl framework,
-> once it adds proper support for powering up and enumerating PCIe switches.
+To solve the above problems, we directly compile the switch.S file into
+the kernel instead of the module. In this way, the function kvm_exc_entry
+will no longer need to be copied.
 
-"Proper" is hiding some important details here.  pwrctrl already
-supports powering up and enumerating switches.  I think this refers to
-[1], where Mani says the plan is for pwrctrl to power up everything
-before the initial bus scan so we can figure out how many buses are
-needed.
+changlog:
+V3<-V2:
+1.Replace the EXPORT_SYMBOL macro declaration symbol with the
+EXPORT_SYMBOL_FOR_KVM macro
 
-Bjorn
+2.Add some comments in kvm_enter_guest
 
-[1] https://lore.kernel.org/linux-pci/fle74skju2rorxmfdvosmeyrx3g75rysuszov5ofvde2exj4ir@3kfjyfyhczmn/
+3.Place the correct pc address in era
+
+4.Move .p2align after .text
+
+V2<-V1:
+1.Rollback the modification of function parameter types such as
+kvm_save_fpu. In the asm-prototypes.h header file, only the parameter types
+it depends on are included
+
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Xianglai Li <lixianglai@loongson.cn>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+
+Xianglai Li (2):
+  LoongArch: KVM: Compile the switch.S file directly into the kernel
+  LoongArch: KVM: fix "unreliable stack" issue
+
+ arch/loongarch/Kbuild                       |  2 +-
+ arch/loongarch/include/asm/asm-prototypes.h | 21 +++++++++++++
+ arch/loongarch/include/asm/kvm_host.h       |  3 --
+ arch/loongarch/kvm/Makefile                 |  2 +-
+ arch/loongarch/kvm/main.c                   | 35 ++-------------------
+ arch/loongarch/kvm/switch.S                 | 32 ++++++++++++++++---
+ 6 files changed, 53 insertions(+), 42 deletions(-)
+
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.39.1
+
 
