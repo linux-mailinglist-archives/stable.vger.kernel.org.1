@@ -1,112 +1,178 @@
-Return-Path: <stable+bounces-203452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BA5CE577B
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:08:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B9FCE57B2
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 256F530022DE
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 21:08:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7AC2300350C
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 21:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD926281370;
-	Sun, 28 Dec 2025 21:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1C123875D;
+	Sun, 28 Dec 2025 21:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/bwDrBr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ftkpRA2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1E423370F
-	for <stable@vger.kernel.org>; Sun, 28 Dec 2025 21:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE49625;
+	Sun, 28 Dec 2025 21:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766956105; cv=none; b=Q7AtD6HAO0ln1Hb0tnctmCamsdP4dkyaoGD9wISkEZ9xc7AcnzWUu5njI+NJ9ZIpQxjeUNHPgx4GuRvQa1k9bZtQ9obWRi5yakp9W0HjgKyxAKmfu+EghfSLpRNVmMW65lekz5EQAoBS+BwykrvguxE3toyONrXKzzfn+gTfPQQ=
+	t=1766958544; cv=none; b=t0B2lP4iAFr11fmxGVGm/iwdRZqMVKqFmXXlnEcGxFIzvhCJPwHFfr7GErLYseRhydbMdU6sVpdC6Hs245KTHi3Ito/thRprIamylXuWkeBQ2uKZNLbZppc1kE9BzlzzDUO6Z4YIBkl9WP+/lKjZgCP8pkTOnUJCm9iX4Z3rNxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766956105; c=relaxed/simple;
-	bh=dLf/6gRGuEo/mfU4OiTF5teRzBnCSCVYi0WyxgJqHEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZT+vQ9egZIlPyTjfwIuaHyNtUV09ohls6GnfSSDnayDATZq4QWWtB6MVkQ0m1ewZBsO7cdEvOsisqUdxLmitPYRqFzYKXnlKKEuTUqvS7UzXck2jV+NV187NazAalNOOsfSius4a2IEoohTeGmPwAwiBajtuMdi5M6u3bGcR+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/bwDrBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7414DC4CEFB;
-	Sun, 28 Dec 2025 21:08:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766956104;
-	bh=dLf/6gRGuEo/mfU4OiTF5teRzBnCSCVYi0WyxgJqHEM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D/bwDrBrZM0OB6QZ54KAMFIEXcvsB4IxvGE9xmMSC1lU2Nlgfkb/lpxb/yjpqFSVB
-	 QzNGTElYPx229yLFx6/OWBIw5AkL3V9gjORap3jj+jjEFnpieP/QVQudk2OA+SC743
-	 iNvE33KSK0fm+OGWRaqLHjldIuYCA37TbrgQ8f3OhGWX4ejuXFudtDLSDO4XyRjxlM
-	 vLl6NtHYPlhtp2vtNLyFpzRBbMndOpPWLKY7QyKQc8fhtJ/xKT536hvTGLt0e5+Y/F
-	 CJH9BJehdNsmALjU1GlMTdmxMixnC7H7SVv5cjCkFDOT/mkubkZrwilAgdS4tFTDfe
-	 +hVE7UCwr7A5w==
-Date: Sun, 28 Dec 2025 22:08:17 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	stable@vger.kernel.org, =?utf-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Chris Wilson <chris.p.wilson@linux.intel.com>, 
-	Andi Shyti <andi.shyti@linux.intel.com>, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, 
-	Krzysztof Karas <krzysztof.karas@intel.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH v5] drm/i915/gem: Zero-initialize the eb.vma array in
- i915_gem_do_execbuffer
-Message-ID: <5qxmnuycar2xi4vdsamffd7xanaow7c7tajdd4jndm4me4xdbw@nkjpl4zfoegv>
-References: <20251216180900.54294-2-krzysztof.niemiec@intel.com>
+	s=arc-20240116; t=1766958544; c=relaxed/simple;
+	bh=PyoIfZuHrC0Jud/Y6As3ZLdi70V+qiNq2ysRNhMFotk=;
+	h=Date:To:From:Subject:Message-Id; b=jrRO0O7tfQPz6zlp8W8Q61OKxld56jSJozfdKvD306C0S3b89V6Wwg1nesevWCBmiTtKETlE5/NlLN1l74knp13x3sOM+XmrfU5sAI1QopC09lEox4weWbM6vnOX4hmlmoxzoeJa02BeRS2MZhqwFLzt66+7HW41JTF3LCeMb2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ftkpRA2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706D4C4CEFB;
+	Sun, 28 Dec 2025 21:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766958543;
+	bh=PyoIfZuHrC0Jud/Y6As3ZLdi70V+qiNq2ysRNhMFotk=;
+	h=Date:To:From:Subject:From;
+	b=ftkpRA2iFtcdhZfoRnNZdgSRjYiu1UoevZO1Bfo8S7QbbB7rqD9atX4CINHPJFb5R
+	 PyYux4IPiG5JY5tYZP7GrbSfo/Co1//2Sr7uUGbPitDoUldVIMoQzaT+5FWw8squ0q
+	 tmdhGE8eiWZ3+5/bBfkB/bFljlyU0Kqe3aJ11/aA=
+Date: Sun, 28 Dec 2025 13:49:02 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jiapeng.chong@linux.alibaba.com,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch added to mm-new branch
+Message-Id: <20251228214903.706D4C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251216180900.54294-2-krzysztof.niemiec@intel.com>
 
-Hi Krzysztof,
 
-On Tue, Dec 16, 2025 at 07:09:01PM +0100, Krzysztof Niemiec wrote:
-> Initialize the eb.vma array with values of 0 when the eb structure is
-> first set up. In particular, this sets the eb->vma[i].vma pointers to
-> NULL, simplifying cleanup and getting rid of the bug described below.
-> 
-> During the execution of eb_lookup_vmas(), the eb->vma array is
-> successively filled up with struct eb_vma objects. This process includes
-> calling eb_add_vma(), which might fail; however, even in the event of
-> failure, eb->vma[i].vma is set for the currently processed buffer.
-> 
-> If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-> prompts a call to eb_release_vmas() to clean up the mess. Since
-> eb_lookup_vmas() might fail during processing any (possibly not first)
-> buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-> at what point did the lookup function fail.
-> 
-> In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-> function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-> set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-> current one needs to be cleaned up by eb_release_vmas() at this point,
-> so the next one is set. If eb_add_vma() fails, neither the current nor
-> the next vma is set to NULL, which is a source of a NULL deref bug
-> described in the issue linked in the Closes tag.
-> 
-> When entering eb_lookup_vmas(), the vma pointers are set to the slab
-> poison value, instead of NULL. This doesn't matter for the actual
-> lookup, since it gets overwritten anyway, however the eb_release_vmas()
-> function only recognizes NULL as the stopping value, hence the pointers
-> are being set to NULL as they go in case of intermediate failure. This
-> patch changes the approach to filling them all with NULL at the start
-> instead, rather than handling that manually during failure.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-> Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-> Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-> Cc: <stable@vger.kernel.org> # 5.16.x
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-> Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+The patch titled
+     Subject: mm/damon/sysfs: cleanup intervals subdirs on attrs dir setup failure
+has been added to the -mm mm-new branch.  Its filename is
+     mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch
 
-merged to drm-intel-gt-next.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch
 
-Thankyou,
-Andi
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs: cleanup intervals subdirs on attrs dir setup failure
+Date: Wed, 24 Dec 2025 18:30:34 -0800
+
+Patch series "mm/damon/sysfs: free setup failures generated zombie sub-sub
+dirs".
+
+Some DAMON sysfs directory setup functions generates its sub and sub-sub
+directories.  For example, 'monitoring_attrs/' directory setup creates
+'intervals/' and 'intervals/intervals_goal/' directories under
+'monitoring_attrs/' directory.  When such sub-sub directories are
+successfully made but followup setup is failed, the setup function should
+recursively clean up the subdirectories.
+
+However, such setup functions are only dereferencing sub directory
+reference counters.  As a result, under certain setup failures, the
+sub-sub directories keep having non-zero reference counters.  It means the
+directories cannot be removed like zombies, and the memory for the
+directories cannot be freed.
+
+The user impact of this issue is limited due to the following reasons.
+
+When the issue happens, the zombie directories are still taking the path. 
+Hence attempts to generate the directories again will fail, without
+additional memory leak.  This means the upper bound memory leak is
+limited.  Nonetheless this also implies controlling DAMON with a feature
+that requires the setup-failed sysfs files will be impossible until the
+system reboots.
+
+Also, the setup operations are quite simple.  The certain failures would
+hence only rarely happen, and are difficult to artificially trigger.
+
+
+This patch (of 4):
+
+When attrs/ DAMON sysfs directory setup is failed after setup of
+intervals/ directory, intervals/intervals_goal/ directory is not cleaned
+up.  As a result, DAMON sysfs interface is nearly broken until the system
+reboots, and the memory for the unremoved directory is leaked.
+
+Cleanup the directory under such failures.
+
+Link: https://lkml.kernel.org/r/20251225023043.18579-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20251225023043.18579-2-sj@kernel.org
+Fixes: 8fbbcbeaafeb ("mm/damon/sysfs: implement intervals tuning goal directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure
++++ a/mm/damon/sysfs.c
+@@ -792,7 +792,7 @@ static int damon_sysfs_attrs_add_dirs(st
+ 	nr_regions_range = damon_sysfs_ul_range_alloc(10, 1000);
+ 	if (!nr_regions_range) {
+ 		err = -ENOMEM;
+-		goto put_intervals_out;
++		goto rmdir_put_intervals_out;
+ 	}
+ 
+ 	err = kobject_init_and_add(&nr_regions_range->kobj,
+@@ -806,6 +806,8 @@ static int damon_sysfs_attrs_add_dirs(st
+ put_nr_regions_intervals_out:
+ 	kobject_put(&nr_regions_range->kobj);
+ 	attrs->nr_regions_range = NULL;
++rmdir_put_intervals_out:
++	damon_sysfs_intervals_rm_dirs(intervals);
+ put_intervals_out:
+ 	kobject_put(&intervals->kobj);
+ 	attrs->intervals = NULL;
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-core-remove-call_control-in-inactive-contexts.patch
+mm-damon-core-introduce-nr_snapshots-damos-stat.patch
+mm-damon-sysfs-schemes-introduce-nr_snapshots-damos-stat-file.patch
+docs-mm-damon-design-update-for-nr_snapshots-damos-stat.patch
+docs-admin-guide-mm-damon-usage-update-for-nr_snapshots-damos-stat.patch
+docs-abi-damon-update-for-nr_snapshots-damos-stat.patch
+mm-damon-update-damos-kerneldoc-for-stat-field.patch
+mm-damon-core-implement-max_nr_snapshots.patch
+mm-damon-sysfs-schemes-implement-max_nr_snapshots-file.patch
+docs-mm-damon-design-update-for-max_nr_snapshots.patch
+docs-admin-guide-mm-damon-usage-update-for-max_nr_snapshots.patch
+docs-abi-damon-update-for-max_nr_snapshots.patch
+mm-damon-core-add-trace-point-for-damos-stat-per-apply-interval.patch
+mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch
+mm-damon-sysfs-cleanup-attrs-subdirs-on-context-dir-setup-failure.patch
+mm-damon-sysfs-scheme-cleanup-quotas-subdirs-on-scheme-dir-setup-failure.patch
+mm-damon-sysfs-scheme-cleanup-access_pattern-subdirs-on-scheme-dir-setup-failure.patch
+
 
