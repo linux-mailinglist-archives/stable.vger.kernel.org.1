@@ -1,189 +1,129 @@
-Return-Path: <stable+bounces-203447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29116CE522B
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 16:51:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14A2CE54C3
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 18:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9866F3002977
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 15:51:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5958F300A84E
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 17:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F5E2D130B;
-	Sun, 28 Dec 2025 15:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056E31E0E14;
+	Sun, 28 Dec 2025 17:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jRB8Vix5"
-X-Original-To: Stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DfAyTOqT"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8265E1F1315
-	for <Stable@vger.kernel.org>; Sun, 28 Dec 2025 15:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0901DFF7;
+	Sun, 28 Dec 2025 17:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766937111; cv=none; b=Ayxca/o34lmRyQVmm3zZt2PYdnO8NacPBrBwGAuJsjm0WBJd6Kd6y1Dcp1JmckHDYFqx1EV/KQ/gB0dDc2M5TLko1H1O3YLTz3Zi95tVd8BWC8v37BAgO4GrXKzsYFZt4MeTNuciIjHor+krkkSciwOYXOFS80FErEqdcWmIO+4=
+	t=1766943233; cv=none; b=MnYWKA41zBf0aZYR7VhiauM87XcKHxypp0Rcu7+YjPwYgKwBbKnC9Dt4UVJEMIJmyMxA3EsEYYQfkiE13BwEjgrveEMCfmxdiWI5sCMpgARPwXf7YyqJf5+tZx6kKbnijde98d21kI0pTrhLH6ycZhyVsHofaBVWVgq5SNlg4Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766937111; c=relaxed/simple;
-	bh=Bkavqw10CnB9Sonw91bjgCl8Du/CzS1634r7L7bue2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FQj8MRQ2G9yxdWRit7+cNBUv3EZatZ+ljyazjzd+aFOEsTAxKTWaq3idAP7NYQwSGg01gU+WstWIq3Oe4rwwyhTbkxOwCzXHqVnGhII+wjqr2tyEY7o/siEUFb66Z4+xYZkfEJWV7vI+GiZaPQ8GhatWlJF2JqjE7UIR0keCZGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jRB8Vix5; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5959d9a8eceso9504337e87.3
-        for <Stable@vger.kernel.org>; Sun, 28 Dec 2025 07:51:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1766937108; x=1767541908; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xDt2nU/HCGuLKi4YQDj2IaYM1PBWLEa/ggxeMOrlmyU=;
-        b=jRB8Vix5SUdD0H2nrMady1nzSBAF4AOYCsr40neia5s51XYopy5Sdw3kaaReLa/vwG
-         1duHP4sth6/GD4k0eQC+c7x470sc4UnlEIFI9HOikDzggckyOgCORVeIn1DZvSzEaVTx
-         78s6wiJS26u6Br3vqwuH7eb4zzYryntdZgmx09Kl6o4hZduhGNY3VcCzmN2B1+qzgUqP
-         6eKcZOYAVkrnKFJqJi36Jh7ys/KSLhfXgAuDsqpkDwYjsgKDq8RVIzgTH0FaQ6x4zamt
-         oWSZK4e0l8MVRENU4KJ0nVu9OAbDKm8Zb00qfzN+W3aYX2qABktIT3Nq48F4hZdiR3u6
-         KZ9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766937108; x=1767541908;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xDt2nU/HCGuLKi4YQDj2IaYM1PBWLEa/ggxeMOrlmyU=;
-        b=BseEbx8/aPx9BWHGFq4HNuvKxjEUbbv8udHVpYsMhVP7F3LZrxZfoGSA+KRMtyuMu0
-         izUt9eRbMeTH/1HkO0cK7zKJoHnd+P2Ly8LVXGfEcaLuMehiPigFKG+ell+zsNOspsHt
-         SF53he9LLkvkZdUOb3ElW7N/M1t/fJlPrZJ5ym8sjZEXrTwkAfSnEh4OwJ9uv3/Sc5W6
-         Mqm8rA74EG7AK7O6uDpDaCyaT8YgyZAb9xbmg7wfeUSBnL6NaoaNNWb/UXj0pY0nzBZx
-         igX6/pvcGJmwBifo+qqiqIudQCG5VWuy61vlLCbVFTbgDYIWI4uY5qcAn2/a77tw07Qo
-         D1TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4uF26kOnNNGB8qlG1Eo4K7KHN0clJfznjgWbTqqPaQPFCF/tSKcWm+aXUTurkdvRjNVFQya8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxucowcCIWAbWGNJJ44MVtXetn0tr/2JAH/cmIVN621vkHgTlpP
-	oi85DnY6i5R0k15I/votIwhSBFzAC+Dl+AoWB0BvGEcJx9X34MCjmEkS0Od+E8QEX4wEcGyPuoq
-	Xw28fjEkah7wPar24N+rVcUnX6uSpfUv5LT09JnJGPg==
-X-Gm-Gg: AY/fxX5Qq8aSk77vjB/Pvoi6FBY1aPX9JrQxAKUexFPmaR0uQu4bi8rVf4AlYszzvVa
-	ND5D7CV8O13kblj8pHC4iPx6ciF+XazgXz1yRr6YLGSYlqHP/i74JfOggQExkB6Z9HMsZ/DSRLP
-	IIXwIxGgUF/VDB3pxzzyD1gmrvVnA39Ji9qfnhVB1mhs8aBfebfcBAEiwW/547jW/PNvnqL3ASu
-	+rkN8VrNzUzncWvrXSdN3xHB5YcxBAYvgfHkLiSe5t0yZCysgaGysswPL94w7rAal8bgb0fXf1j
-	RqV0Hqk=
-X-Google-Smtp-Source: AGHT+IGU1N8QBbdq+8B2sBGxa7sL3yjutJLHsa+eD4d/4O/IOXbvlkTxqF+kvhbF6vdkbcVRxjuHnPzltz+HFIkKUD8=
-X-Received: by 2002:a05:6512:124f:b0:599:105a:67ce with SMTP id
- 2adb3069b0e04-59a17d727c3mr8952951e87.9.1766937107517; Sun, 28 Dec 2025
- 07:51:47 -0800 (PST)
+	s=arc-20240116; t=1766943233; c=relaxed/simple;
+	bh=JOrz30gbkT0qXLWquGlHhnTNVmDAFKHuy1gPVXL/wLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7+MnVkZTr2JZHAVq1ckDIUDGcU8RfHFKTB24vc/rhSAz3qm60GCdoBZDfS9T08XD3KGdImWXp4dGhRCkAtNuOajjscQcGcpQQAgLXlh0f+oH6XlpG+VjlYs0rXRx4yoqY4Xi8xSMCP7jfMHA1gr4eBGRDlMW5CNwGqWJQ6XaRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DfAyTOqT; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766943232; x=1798479232;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JOrz30gbkT0qXLWquGlHhnTNVmDAFKHuy1gPVXL/wLs=;
+  b=DfAyTOqTc7MHxgpqb3EbGj1NqfoM6R3DjqDWUGkSqfQ54I1hf+OuCWIe
+   2iCbRl1xzNLlg2Oh4CuoLu6xd1AnnBx7jBvmBqOrHSDGbbDaxjF0W4l1l
+   g/1hv5QcBNtKLC0WdCtbKXnwV7FxSGqMZ2NPjHipSDJa2L9fkZKDw6fXJ
+   9XbcF7jqF/OOns/0zo/Q3HRJhjzCtYuOIHG0fbcYnLnQJgEx/gDVJH2vo
+   UDrlhUKCXInrI3g7UE8X6A6pxqXtwTYAmYDhbapUHZJxCZ+pfWbaWRU9d
+   W5JrLF2tufYKr/wqBrLO+PhCkx9+9Qs5pzOgfLMfR+7ZCh9eQXOdlM8Zr
+   Q==;
+X-CSE-ConnectionGUID: X8vhJ/BIRb60sFYkyfQqhQ==
+X-CSE-MsgGUID: Nm2bQxVfS7mvHT011DpeTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11655"; a="67784511"
+X-IronPort-AV: E=Sophos;i="6.21,183,1763452800"; 
+   d="scan'208";a="67784511"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 09:33:52 -0800
+X-CSE-ConnectionGUID: 00XtMDVBRraVq8U3kv+eOw==
+X-CSE-MsgGUID: 42M3m4J4TkORAOX7ZHaT/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,183,1763452800"; 
+   d="scan'208";a="199885444"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.236])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 09:33:49 -0800
+Date: Sun, 28 Dec 2025 19:33:46 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: =?utf-8?B?5p6X5aaZ5YCp?= <linmq006@gmail.com>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Markus Burri <markus.burri@mt.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aVFp-peLKtvyLL9D@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+ <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+ <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
+ <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+ <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
+ <aQDXF-AIF6wNIo76@smile.fi.intel.com>
+ <aecd2e25900f2ef38f937a295e995269c433453b.camel@gmail.com>
+ <aQDe7-ienRpcfNV_@smile.fi.intel.com>
+ <CAH-r-ZE0brfZ_T0tDjV5+D90V9QVLhWUO_-zvPxS7kd=LnDrWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251128041722.3540037-1-macpaul.lin@mediatek.com>
-In-Reply-To: <20251128041722.3540037-1-macpaul.lin@mediatek.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Sun, 28 Dec 2025 16:51:11 +0100
-X-Gm-Features: AQt7F2rKehWvSimlxiGz9Dfw_4j8BvE8_7xLSPYZyFy88f7zjPyzLM7SIUxe60A
-Message-ID: <CAPDyKFranQ=UU5waLcw27E4SG30bps80DmGs+zZs6N9=iZa_zg@mail.gmail.com>
-Subject: Re: [PATCH v2] pmdomain: mtk-pm-domains: improve spinlock recursion
- fix in probe with correcting reference count
-To: Macpaul Lin <macpaul.lin@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Chen-Yu Tsai <wenst@chromium.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	Weiyi Lu <Weiyi.Lu@mediatek.com>, Jian Hui Lee <jianhui.lee@canonical.com>, 
-	Irving-CH Lin <Irving-CH.Lin@mediatek.com>, conor@kernel.org, krzk@kernel.org, 
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, Bear Wang <bear.wang@mediatek.com>, 
-	Pablo Sun <pablo.sun@mediatek.com>, Ramax Lo <ramax.lo@mediatek.com>, 
-	Macpaul Lin <macpaul@gmail.com>, 
-	MediaTek Chromebook Upstream <Project_Global_Chrome_Upstream_Group@mediatek.com>, Stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH-r-ZE0brfZ_T0tDjV5+D90V9QVLhWUO_-zvPxS7kd=LnDrWg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, 28 Nov 2025 at 05:17, Macpaul Lin <macpaul.lin@mediatek.com> wrote:
->
-> Remove scpsys_get_legacy_regmap(), replacing its usage with
-> of_find_node_with_property().  Explicitly call of_node_get(np) before each
-> of_find_node_with_property() to maintain correct node reference counting.
->
-> The of_find_node_with_property() function "consumes" its input by calling
-> of_node_put() internally, whether or not it finds a match.
-> Currently, dev->of_node (np) is passed multiple times in sequence without
-> incrementing its reference count, causing it to be decremented multiple times
-> and risking early memory release.
->
-> Adding of_node_get(np) before each call balances the reference count,
-> preventing premature node release.
->
-> Fixes: c1bac49fe91f ("pmdomains: mtk-pm-domains: Fix spinlock recursion in probe")
-> Cc: Stable@vger.kernel.org
-> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-> Tested-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+On Wed, Dec 17, 2025 at 02:47:17PM +0800, 林妙倩 wrote:
+> Hi,
+> 
+> I don’t have the actual hardware, so I built a similar demo module to
+> mirror the bug and ran it in QEMU.
+> With KASAN enabled, the PoC triggers BUG: KASAN: stack-out-of-bounds.
+> 
+> Pattern of the bug:
+> - A fixed 64-byte stack buffer is filled using count.
+> - If count > 64, the code still does buf[count] = '\0', causing an
+> out-of-bounds write on the stack.
+> 
+> PoC (what it does):
+> - Opens the device node.
+> - Writes 128 bytes of A to it.
+> - This overflows the 64-byte stack buffer and KASAN reports the stack OOB.
+> 
+> If you have the real device, you may run the similar PoC on your driver
+> to validate—just ensure KASAN is enabled to see the report.
+> I also tested the straightforward fix buf[ret] = '\0'; with that
+> change, the issue no longer reproduces.
+> Below are the trace, the demo module, and the PoC for reference.
 
-Applied for fixes, thanks!
+Thanks for the additional information, I think it would be good to have a
+summary of it in the commit message of the fix.
 
-Kind regards
-Uffe
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-
-> ---
->  drivers/pmdomain/mediatek/mtk-pm-domains.c | 21 ++++++---------------
->  1 file changed, 6 insertions(+), 15 deletions(-)
->
-> Changes for v2:
->  - Rewording commit message.
->  - Add Fixes: and Tested-by: tag, thanks.
->
-> diff --git a/drivers/pmdomain/mediatek/mtk-pm-domains.c b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> index 80561d27f2b2..f64f24d520dd 100644
-> --- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> +++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> @@ -984,18 +984,6 @@ static void scpsys_domain_cleanup(struct scpsys *scpsys)
->         }
->  }
->
-> -static struct device_node *scpsys_get_legacy_regmap(struct device_node *np, const char *pn)
-> -{
-> -       struct device_node *local_node;
-> -
-> -       for_each_child_of_node(np, local_node) {
-> -               if (of_property_present(local_node, pn))
-> -                       return local_node;
-> -       }
-> -
-> -       return NULL;
-> -}
-> -
->  static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *scpsys)
->  {
->         const u8 bp_blocks[3] = {
-> @@ -1017,7 +1005,8 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
->          * this makes it then possible to allocate the array of bus_prot
->          * regmaps and convert all to the new style handling.
->          */
-> -       node = scpsys_get_legacy_regmap(np, "mediatek,infracfg");
-> +       of_node_get(np);
-> +       node = of_find_node_with_property(np, "mediatek,infracfg");
->         if (node) {
->                 regmap[0] = syscon_regmap_lookup_by_phandle(node, "mediatek,infracfg");
->                 of_node_put(node);
-> @@ -1030,7 +1019,8 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
->                 regmap[0] = NULL;
->         }
->
-> -       node = scpsys_get_legacy_regmap(np, "mediatek,smi");
-> +       of_node_get(np);
-> +       node = of_find_node_with_property(np, "mediatek,smi");
->         if (node) {
->                 smi_np = of_parse_phandle(node, "mediatek,smi", 0);
->                 of_node_put(node);
-> @@ -1048,7 +1038,8 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
->                 regmap[1] = NULL;
->         }
->
-> -       node = scpsys_get_legacy_regmap(np, "mediatek,infracfg-nao");
-> +       of_node_get(np);
-> +       node = of_find_node_with_property(np, "mediatek,infracfg-nao");
->         if (node) {
->                 regmap[2] = syscon_regmap_lookup_by_phandle(node, "mediatek,infracfg-nao");
->                 num_regmaps++;
-> --
-> 2.45.2
->
 
