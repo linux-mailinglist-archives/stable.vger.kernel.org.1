@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451DCCE57B8
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:49:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DFBCE57BB
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3154D3009410
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4B97300B929
 	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 21:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59103285C99;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1374286D5C;
 	Sun, 28 Dec 2025 21:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zKNrHK35"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VC8ttUcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC7E2727FC;
-	Sun, 28 Dec 2025 21:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49A22571A0;
+	Sun, 28 Dec 2025 21:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766958549; cv=none; b=RVHiQ/J/xaRgAMcPFWg5H7+nQBl3WbC9ckZAZ/VjluOZcjjlCFWgDayh7P3ejw8ABsMjkGveSCz64AlqVtkYRMGM5RB2D4n8XEl8fbJ+4DWhQpoSG47M+w1h1WbiRbRdkktIqRS3ycP+8RRmznUwQJ0rhW3KbW50LPnWBZQHaPk=
+	t=1766958549; cv=none; b=nx/Y3Zl1+c4KzamWm33p0N/4TU4HWaWrhabJiZgv/pIVQZyzaqPjsfwlWxIenn97eRD7R/N0fQPPHtH+/AxMgNP0+rnJCoxqJfr4Xkq/zd+n0NqSG4m4FIP9I49dJm/AqxJ4tvZLOrHG0DNZ/mkL7F+1abhVl5/yRnIsiUQcDZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766958549; c=relaxed/simple;
-	bh=1DUegP9QIFKrdtJ6A2vIzF/NsSEp/5wbVIRRb8vdYI4=;
-	h=Date:To:From:Subject:Message-Id; b=FGnWZ0OzlD+FEEIorqRdE3F4CzQBTMPaWArUZs4sEMKZwlqFK04OoakNVelNfhOwvk6uoDthVlvJbyTEJPoVldabgLb6NgK6x3cmqCdk99akL0wW23hVMY/3F6gqtEcWxG3bR7hu/D1vXGxoJOx/6m5fTagVV8O7Ic0AxVOLvCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zKNrHK35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FFDC116B1;
-	Sun, 28 Dec 2025 21:49:07 +0000 (UTC)
+	bh=qSQuJabF5kC/d1M37FodqE+Jpw9DDF8qLcMM9h5FrT8=;
+	h=Date:To:From:Subject:Message-Id; b=Ic/5H3/rrtqmOnq4n0mQPcZz81KHLeLQwtgCYPJFgIITK1zWQmP90B2KzaoYLdccVAIl8vCe7XE4+9CsV5c1DmtUK+tDcCgZlatU4WM9w+dL8ismyQnnw9Ye8xK4pZrCHQqvePmi0hq8vlndbEFnkQL7VmjkKyOOff/L0ghtrh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VC8ttUcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75919C4CEFB;
+	Sun, 28 Dec 2025 21:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766958547;
-	bh=1DUegP9QIFKrdtJ6A2vIzF/NsSEp/5wbVIRRb8vdYI4=;
+	s=korg; t=1766958549;
+	bh=qSQuJabF5kC/d1M37FodqE+Jpw9DDF8qLcMM9h5FrT8=;
 	h=Date:To:From:Subject:From;
-	b=zKNrHK35WA8PFZaEDMZlNJfUG/Fs+BC+E+607mINtcqObu5RihUAokE6q52sV+BBI
-	 gjG65dmVzC0H755ouJ53dEXvIdf17SdI4tYgXDRlViz4N3TRhOUKmwhWxR532TJ+xr
-	 LkXTs4VxEKklZ2M6yQ3dsQIGQUDoO2KZnykBE5Sw=
-Date: Sun, 28 Dec 2025 13:49:06 -0800
+	b=VC8ttUcFwxCHzvWqHNhAJWCKSZOEoRfpXrKODMMKkdVmxKroMrnBULhgmPui/3WMr
+	 85LCk+HeHEj38tORf5IXJv19nr8Iqes6+tg6tkh4FwpSPaPR2dWorfkMZFXq4kGHJ3
+	 tkxHkgtYZa+kwmzfCmEi2VGc/znUl9CAoJNoHlMU=
+Date: Sun, 28 Dec 2025 13:49:08 -0800
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jiapeng.chong@linux.alibaba.com,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-scheme-cleanup-quotas-subdirs-on-scheme-dir-setup-failure.patch added to mm-new branch
-Message-Id: <20251228214907.73FFDC116B1@smtp.kernel.org>
+Subject: + mm-damon-sysfs-scheme-cleanup-access_pattern-subdirs-on-scheme-dir-setup-failure.patch added to mm-new branch
+Message-Id: <20251228214909.75919C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,12 +48,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/sysfs-scheme: cleanup quotas subdirs on scheme dir setup failure
+     Subject: mm/damon/sysfs-scheme: cleanup access_pattern subdirs on scheme dir setup failure
 has been added to the -mm mm-new branch.  Its filename is
-     mm-damon-sysfs-scheme-cleanup-quotas-subdirs-on-scheme-dir-setup-failure.patch
+     mm-damon-sysfs-scheme-cleanup-access_pattern-subdirs-on-scheme-dir-setup-failure.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-scheme-cleanup-quotas-subdirs-on-scheme-dir-setup-failure.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-scheme-cleanup-access_pattern-subdirs-on-scheme-dir-setup-failure.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -80,18 +80,18 @@ and is updated there most days
 
 ------------------------------------------------------
 From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs-scheme: cleanup quotas subdirs on scheme dir setup failure
-Date: Wed, 24 Dec 2025 18:30:36 -0800
+Subject: mm/damon/sysfs-scheme: cleanup access_pattern subdirs on scheme dir setup failure
+Date: Wed, 24 Dec 2025 18:30:37 -0800
 
 When a DAMOS-scheme DAMON sysfs directory setup fails after setup of
-quotas/ directory, subdirectories of quotas/ directory are not cleaned up.
-As a result, DAMON sysfs interface is nearly broken until the system
-reboots, and the memory for the unremoved directory is leaked.
+access_pattern/ directory, subdirectories of access_pattern/ directory are
+not cleaned up.  As a result, DAMON sysfs interface is nearly broken until
+the system reboots, and the memory for the unremoved directory is leaked.
 
 Cleanup the directories under such failures.
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-4-sj@kernel.org
-Fixes: 1b32234ab087 ("mm/damon/sysfs: support DAMOS watermarks")
+Link: https://lkml.kernel.org/r/20251225023043.18579-5-sj@kernel.org
+Fixes: 9bbb820a5bd5 ("mm/damon/sysfs: support DAMOS quotas")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
 Cc: <stable@vger.kernel.org> # 5.18.x
@@ -101,27 +101,27 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  mm/damon/sysfs-schemes.c |    5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-scheme-cleanup-quotas-subdirs-on-scheme-dir-setup-failure
+--- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-scheme-cleanup-access_pattern-subdirs-on-scheme-dir-setup-failure
 +++ a/mm/damon/sysfs-schemes.c
-@@ -2199,7 +2199,7 @@ static int damon_sysfs_scheme_add_dirs(s
+@@ -2193,7 +2193,7 @@ static int damon_sysfs_scheme_add_dirs(s
+ 		return err;
+ 	err = damos_sysfs_set_dests(scheme);
+ 	if (err)
+-		goto put_access_pattern_out;
++		goto rmdir_put_access_pattern_out;
+ 	err = damon_sysfs_scheme_set_quotas(scheme);
+ 	if (err)
  		goto put_dests_out;
- 	err = damon_sysfs_scheme_set_watermarks(scheme);
- 	if (err)
--		goto put_quotas_access_pattern_out;
-+		goto rmdir_put_quotas_access_pattern_out;
- 	err = damos_sysfs_set_filter_dirs(scheme);
- 	if (err)
- 		goto put_watermarks_quotas_access_pattern_out;
-@@ -2224,7 +2224,8 @@ put_filters_watermarks_quotas_access_pat
- put_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->watermarks->kobj);
- 	scheme->watermarks = NULL;
--put_quotas_access_pattern_out:
-+rmdir_put_quotas_access_pattern_out:
-+	damon_sysfs_quotas_rm_dirs(scheme->quotas);
- 	kobject_put(&scheme->quotas->kobj);
- 	scheme->quotas = NULL;
+@@ -2231,7 +2231,8 @@ rmdir_put_quotas_access_pattern_out:
  put_dests_out:
+ 	kobject_put(&scheme->dests->kobj);
+ 	scheme->dests = NULL;
+-put_access_pattern_out:
++rmdir_put_access_pattern_out:
++	damon_sysfs_access_pattern_rm_dirs(scheme->access_pattern);
+ 	kobject_put(&scheme->access_pattern->kobj);
+ 	scheme->access_pattern = NULL;
+ 	return err;
 _
 
 Patches currently in -mm which might be from sj@kernel.org are
