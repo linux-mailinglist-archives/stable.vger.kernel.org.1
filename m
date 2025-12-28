@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B9FCE57B2
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:49:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9A5CE57B5
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7AC2300350C
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 21:49:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF1023007976
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 21:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1C123875D;
-	Sun, 28 Dec 2025 21:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F1826E708;
+	Sun, 28 Dec 2025 21:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ftkpRA2i"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r/AONAng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE49625;
-	Sun, 28 Dec 2025 21:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095962571A0;
+	Sun, 28 Dec 2025 21:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766958544; cv=none; b=t0B2lP4iAFr11fmxGVGm/iwdRZqMVKqFmXXlnEcGxFIzvhCJPwHFfr7GErLYseRhydbMdU6sVpdC6Hs245KTHi3Ito/thRprIamylXuWkeBQ2uKZNLbZppc1kE9BzlzzDUO6Z4YIBkl9WP+/lKjZgCP8pkTOnUJCm9iX4Z3rNxQ=
+	t=1766958549; cv=none; b=lF652fjL7BeG4LWL+SBYlLs0Upxb+YiiG32yaN/eew9iPDkj791ijfL1V5XDk2BtqYTuhVjpNNH3rY9SWMqf1dMiJwK3JC24rpswnpPYBkUziClCQEVq/C6Gv9zhJbpmec5J4DAA3EGuIyHwrA6+eQy8matYAsAzhcqHkbxx5Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766958544; c=relaxed/simple;
-	bh=PyoIfZuHrC0Jud/Y6As3ZLdi70V+qiNq2ysRNhMFotk=;
-	h=Date:To:From:Subject:Message-Id; b=jrRO0O7tfQPz6zlp8W8Q61OKxld56jSJozfdKvD306C0S3b89V6Wwg1nesevWCBmiTtKETlE5/NlLN1l74knp13x3sOM+XmrfU5sAI1QopC09lEox4weWbM6vnOX4hmlmoxzoeJa02BeRS2MZhqwFLzt66+7HW41JTF3LCeMb2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ftkpRA2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706D4C4CEFB;
-	Sun, 28 Dec 2025 21:49:03 +0000 (UTC)
+	s=arc-20240116; t=1766958549; c=relaxed/simple;
+	bh=WiKkNqaVGyD+3WP2nxdZU5QauiKRt1HwW9QgQv4ogP8=;
+	h=Date:To:From:Subject:Message-Id; b=VPPzXFrn/i0muoGDijjGOlCeszqjcuIKW5RbxUlV/SKptacYYfiqnK7P/y+Zl3+blVqA1dj/PzD46ZGJhAk2f7Oi0WeKMgL86Jcpty0VAsKqtbJZ+pcub0DysHfxWuAkFNfpuavWrZT8GH1buwV5G5RB9nOzKahcETWq9qW4YBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r/AONAng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F91EC4CEFB;
+	Sun, 28 Dec 2025 21:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766958543;
-	bh=PyoIfZuHrC0Jud/Y6As3ZLdi70V+qiNq2ysRNhMFotk=;
+	s=korg; t=1766958545;
+	bh=WiKkNqaVGyD+3WP2nxdZU5QauiKRt1HwW9QgQv4ogP8=;
 	h=Date:To:From:Subject:From;
-	b=ftkpRA2iFtcdhZfoRnNZdgSRjYiu1UoevZO1Bfo8S7QbbB7rqD9atX4CINHPJFb5R
-	 PyYux4IPiG5JY5tYZP7GrbSfo/Co1//2Sr7uUGbPitDoUldVIMoQzaT+5FWw8squ0q
-	 tmdhGE8eiWZ3+5/bBfkB/bFljlyU0Kqe3aJ11/aA=
-Date: Sun, 28 Dec 2025 13:49:02 -0800
+	b=r/AONAng2CME21ueaY7RCdNudRp1FO1X7DtBInE6uCPSZW39jWLZTR3hDgDlkCf0W
+	 KPVSabdP17gwrcrQ3tiWUzMs4v5Z5AIczCOwl0aLPmJ/gUSpEvQWDkbyW9fVh2ZVEE
+	 Eflwy5iEGrm0ZqJ747nO5DNusINVzVXoe7182hm8=
+Date: Sun, 28 Dec 2025 13:49:04 -0800
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jiapeng.chong@linux.alibaba.com,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch added to mm-new branch
-Message-Id: <20251228214903.706D4C4CEFB@smtp.kernel.org>
+Subject: + mm-damon-sysfs-cleanup-attrs-subdirs-on-context-dir-setup-failure.patch added to mm-new branch
+Message-Id: <20251228214905.7F91EC4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,12 +48,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/sysfs: cleanup intervals subdirs on attrs dir setup failure
+     Subject: mm/damon/sysfs: cleanup attrs subdirs on context dir setup failure
 has been added to the -mm mm-new branch.  Its filename is
-     mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch
+     mm-damon-sysfs-cleanup-attrs-subdirs-on-context-dir-setup-failure.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-cleanup-attrs-subdirs-on-context-dir-setup-failure.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -80,79 +80,48 @@ and is updated there most days
 
 ------------------------------------------------------
 From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: cleanup intervals subdirs on attrs dir setup failure
-Date: Wed, 24 Dec 2025 18:30:34 -0800
+Subject: mm/damon/sysfs: cleanup attrs subdirs on context dir setup failure
+Date: Wed, 24 Dec 2025 18:30:35 -0800
 
-Patch series "mm/damon/sysfs: free setup failures generated zombie sub-sub
-dirs".
+When a context DAMON sysfs directory setup is failed after setup of attrs/
+directory, subdirectories of attrs/ directory are not cleaned up.  As a
+result, DAMON sysfs interface is nearly broken until the system reboots,
+and the memory for the unremoved directory is leaked.
 
-Some DAMON sysfs directory setup functions generates its sub and sub-sub
-directories.  For example, 'monitoring_attrs/' directory setup creates
-'intervals/' and 'intervals/intervals_goal/' directories under
-'monitoring_attrs/' directory.  When such sub-sub directories are
-successfully made but followup setup is failed, the setup function should
-recursively clean up the subdirectories.
+Cleanup the directories under such failures.
 
-However, such setup functions are only dereferencing sub directory
-reference counters.  As a result, under certain setup failures, the
-sub-sub directories keep having non-zero reference counters.  It means the
-directories cannot be removed like zombies, and the memory for the
-directories cannot be freed.
-
-The user impact of this issue is limited due to the following reasons.
-
-When the issue happens, the zombie directories are still taking the path. 
-Hence attempts to generate the directories again will fail, without
-additional memory leak.  This means the upper bound memory leak is
-limited.  Nonetheless this also implies controlling DAMON with a feature
-that requires the setup-failed sysfs files will be impossible until the
-system reboots.
-
-Also, the setup operations are quite simple.  The certain failures would
-hence only rarely happen, and are difficult to artificially trigger.
-
-
-This patch (of 4):
-
-When attrs/ DAMON sysfs directory setup is failed after setup of
-intervals/ directory, intervals/intervals_goal/ directory is not cleaned
-up.  As a result, DAMON sysfs interface is nearly broken until the system
-reboots, and the memory for the unremoved directory is leaked.
-
-Cleanup the directory under such failures.
-
-Link: https://lkml.kernel.org/r/20251225023043.18579-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20251225023043.18579-2-sj@kernel.org
-Fixes: 8fbbcbeaafeb ("mm/damon/sysfs: implement intervals tuning goal directory")
+Link: https://lkml.kernel.org/r/20251225023043.18579-3-sj@kernel.org
+Fixes: c951cd3b8901 ("mm/damon: implement a minimal stub for sysfs-based DAMON interface")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 6.15.x
+Cc: <stable@vger.kernel.org> # 5.18.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/mm/damon/sysfs.c~mm-damon-sysfs-cleanup-intervals-subdirs-on-attrs-dir-setup-failure
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-cleanup-attrs-subdirs-on-context-dir-setup-failure
 +++ a/mm/damon/sysfs.c
-@@ -792,7 +792,7 @@ static int damon_sysfs_attrs_add_dirs(st
- 	nr_regions_range = damon_sysfs_ul_range_alloc(10, 1000);
- 	if (!nr_regions_range) {
- 		err = -ENOMEM;
--		goto put_intervals_out;
-+		goto rmdir_put_intervals_out;
- 	}
+@@ -950,7 +950,7 @@ static int damon_sysfs_context_add_dirs(
  
- 	err = kobject_init_and_add(&nr_regions_range->kobj,
-@@ -806,6 +806,8 @@ static int damon_sysfs_attrs_add_dirs(st
- put_nr_regions_intervals_out:
- 	kobject_put(&nr_regions_range->kobj);
- 	attrs->nr_regions_range = NULL;
-+rmdir_put_intervals_out:
-+	damon_sysfs_intervals_rm_dirs(intervals);
- put_intervals_out:
- 	kobject_put(&intervals->kobj);
- 	attrs->intervals = NULL;
+ 	err = damon_sysfs_context_set_targets(context);
+ 	if (err)
+-		goto put_attrs_out;
++		goto rmdir_put_attrs_out;
+ 
+ 	err = damon_sysfs_context_set_schemes(context);
+ 	if (err)
+@@ -960,7 +960,8 @@ static int damon_sysfs_context_add_dirs(
+ put_targets_attrs_out:
+ 	kobject_put(&context->targets->kobj);
+ 	context->targets = NULL;
+-put_attrs_out:
++rmdir_put_attrs_out:
++	damon_sysfs_attrs_rm_dirs(context->attrs);
+ 	kobject_put(&context->attrs->kobj);
+ 	context->attrs = NULL;
+ 	return err;
 _
 
 Patches currently in -mm which might be from sj@kernel.org are
