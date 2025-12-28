@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-203458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFB7CE57F1
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 23:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77417CE5886
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 00:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01D953003523
-	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 22:23:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E0FE30038F7
+	for <lists+stable@lfdr.de>; Sun, 28 Dec 2025 23:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D212874F8;
-	Sun, 28 Dec 2025 22:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF5729BDAD;
+	Sun, 28 Dec 2025 23:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zgGnK1fv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0dj4r9cY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5305A280325;
-	Sun, 28 Dec 2025 22:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227CD625;
+	Sun, 28 Dec 2025 23:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766960584; cv=none; b=cXcF9s1mS1JojmF9DfDYE+72AVzBEdVsI4FR8g+zJ1wV3WSVYAx2weq0wt4QWLlqsY7ov2XeDLi3Y1/MU7fvTjZbQs++LNrcZiHaN9XDHx5RJfD3KzTbz390IrdoxlvsUpyTg5xFXQhi82jXFfhYxOmmFqOw2yT6FyPNckuj6Rk=
+	t=1766963481; cv=none; b=h27ruKh8KDIgCaR1mIvjYQgBE1WizWTC/VYHagE6JyUSH9pEWLtq3HC0BwH2WfAKRlQbNGCjyiFoRXzSOIIlUxIUZe5Xuv1Bvm+1sTauyEO483FdPda/sUQqEKjdPiqGsepEkuOOI3vNssC8bSDdcLbVNgrN0R+D9QasXheveQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766960584; c=relaxed/simple;
-	bh=F/4Grc31sR07x4aZBS1Okth2FORftr1RZleCK4xyHnM=;
-	h=Date:To:From:Subject:Message-Id; b=P9bK9DyLY/TMctamDYz5WM2sUqYvT7yDqEhUN7qVuJJnORZbMxrH5/e3ekXLx686ZiRHMlJOx1W1ot2xP/juz44NDdfrpcby93/M3iKKZwTN3qoVvJkPeoZnwSPMxUT/vtmrynP4jRaMINZlElvt8P/xdx43/blqcuRm/IZ3IMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zgGnK1fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFB1C4CEFB;
-	Sun, 28 Dec 2025 22:23:03 +0000 (UTC)
+	s=arc-20240116; t=1766963481; c=relaxed/simple;
+	bh=KNd1crHi2peVQ4lz55oU29PuHoEKnTw9AaOqxyEkYGQ=;
+	h=Date:To:From:Subject:Message-Id; b=OvO6lZ3rG9fRfm2Sx7cqoRFrBN8uQ6Qv3dBNfPSeX3jdngHIgsl485dOc3jWIYKxUxcZXAtNLUoJsofGtbFqLQaVvTGIslCOcyfWyD620AHyzrwxglQhYtPDNYXhT53nhdt4REih024tzhMij5kL7xUUogM9BolVaH9Fz3mAIC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0dj4r9cY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC266C4CEFB;
+	Sun, 28 Dec 2025 23:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766960583;
-	bh=F/4Grc31sR07x4aZBS1Okth2FORftr1RZleCK4xyHnM=;
+	s=korg; t=1766963480;
+	bh=KNd1crHi2peVQ4lz55oU29PuHoEKnTw9AaOqxyEkYGQ=;
 	h=Date:To:From:Subject:From;
-	b=zgGnK1fvSFVjWMGzAzUgpQBgus5GSc0wOwxxGRejATA/d57D5jG7vjNvDEUJpT9H4
-	 5S0VBgz7BARoXh/aPA2QGZ1nxW1Ka5d9hGsZgc+p/h+se4bzSqd1XAbLHW8oxRyugI
-	 wu0voto0li/fabkciUmXlU0CT5V8DAJl0pmYjrxA=
-Date: Sun, 28 Dec 2025 14:23:03 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,willy@infradead.org,viro@zeniv.linux.org.uk,vbabka@suse.cz,tj@kernel.org,tglx@linutronix.de,sweettea-kernel@dorminy.me,surenb@google.com,stable@vger.kernel.org,sj@kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,rostedt@goodmis.org,roman.gushchin@linux.dev,rientjes@google.com,richard.weiyang@gmail.com,peterz@infradead.org,paulmck@kernel.org,mjguzik@gmail.com,mhocko@suse.com,mhiramat@kernel.org,lorenzo.stoakes@oracle.com,liumartin@google.com,linmiaohe@huawei.com,liam.howlett@oracle.com,hannes@cmpxchg.org,dennis@kernel.org,david@redhat.com,cl@linux.com,christian.koenig@amd.com,broonie@kernel.org,brauner@kernel.org,baolin.wang@linux.alibaba.com,aboorvad@linux.ibm.com,mathieu.desnoyers@efficios.com,akpm@linux-foundation.org
+	b=0dj4r9cYr3SJvAE3OUnbFuRfcA3riMDXGzRhwfohdMHXIi9pA0E3Yisp5g2mFza27
+	 ReiOxSDE8THVSjWbj7E6DX4PRkgYlrOe2FENiGVwGAg/FVF/8UUTZw5B8qEPSxr1ZT
+	 IQ1B0xgChq8nmsQRBqRXk6PoH4tR6UZ+pXaM6rrk=
+Date: Sun, 28 Dec 2025 15:11:20 -0800
+To: mm-commits@vger.kernel.org,suschako@amazon.de,stable@vger.kernel.org,riel@surriel.com,osalvador@suse.de,lorenzo.stoakes@oracle.com,loberman@redhat.com,liushixin2@huawei.com,lance.yang@linux.dev,harry.yoo@oracle.com,david@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251228222303.9FFB1C4CEFB@smtp.kernel.org>
+Subject: + mm-hugetlb-fix-hugetlb_pmd_shared.patch added to mm-unstable branch
+Message-Id: <20251228231120.DC266C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,14 +48,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: take into account mm_cid size for mm_struct static definitions
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
+     Subject: mm/hugetlb: fix hugetlb_pmd_shared()
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-hugetlb-fix-hugetlb_pmd_shared.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-hugetlb_pmd_shared.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -71,108 +71,98 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: mm: take into account mm_cid size for mm_struct static definitions
-Date: Wed, 24 Dec 2025 12:33:58 -0500
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: mm/hugetlb: fix hugetlb_pmd_shared()
+Date: Tue, 23 Dec 2025 22:40:34 +0100
 
-Both init_mm and efi_mm static definitions need to make room for the 2
-mm_cid cpumasks.
+Patch series "mm/hugetlb: fixes for PMD table sharing (incl.  using
+mmu_gather)", v3.
 
-This fixes possible out-of-bounds accesses to init_mm and efi_mm.
+One functional fix, one performance regression fix, and two related
+comment fixes.
 
-Add a space between # and define for the mm_alloc_cid() definition to make
-it consistent with the coding style used in the rest of this header file.
+I cleaned up my prototype I recently shared [1] for the performance fix,
+deferring most of the cleanups I had in the prototype to a later point. 
+While doing that I identified the other things.
 
-Link: https://lkml.kernel.org/r/20251224173358.647691-4-mathieu.desnoyers@efficios.com
-Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Christan König <christian.koenig@amd.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
+
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
+
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
+
+There are plenty of cleanups in the future to be had + one reasonable
+optimization on x86. But that's all out of scope for this series.
+
+Runtime tested, with a focus on fixing the performance regression using
+the original reproducer [2] on x86.
+
+
+This patch (of 4):
+
+We switched from (wrongly) using the page count to an independent shared
+count.  Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to identify
+sharing.
+
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
+
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are not
+exclusive.  In smaps we would account them as "private" although they are
+"shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
+
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+
+Link: https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
+Link: https://lkml.kernel.org/r/20251223214037.580860-2-david@kernel.org
+Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [1]
+Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [2]
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Uschakow, Stanislav" <suschako@amazon.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mm_types.h |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/hugetlb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/mm_types.h~mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions
-+++ a/include/linux/mm_types.h
-@@ -1368,7 +1368,7 @@ extern struct mm_struct init_mm;
- 
- #define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
- {								\
--	[0 ... sizeof(cpumask_t)-1] = 0				\
-+	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
- }
- 
- /* Pointer magic because the dynamic array size confuses some compilers. */
-@@ -1500,7 +1500,7 @@ static inline int mm_alloc_cid_noprof(st
- 	mm_init_cid(mm, p);
- 	return 0;
- }
--#define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
-+# define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
- 
- static inline void mm_destroy_cid(struct mm_struct *mm)
+--- a/include/linux/hugetlb.h~mm-hugetlb-fix-hugetlb_pmd_shared
++++ a/include/linux/hugetlb.h
+@@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_re
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
  {
-@@ -1514,6 +1514,8 @@ static inline unsigned int mm_cid_size(v
- 	return cpumask_size() + bitmap_size(num_possible_cpus());
+-	return page_count(virt_to_page(pte)) > 1;
++	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
  }
- 
-+/* Use 2 * NR_CPUS as worse case for static allocation. */
-+# define MM_CID_STATIC_SIZE	(2 * sizeof(cpumask_t))
- #else /* CONFIG_SCHED_MM_CID */
- static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
- static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
-@@ -1522,6 +1524,7 @@ static inline unsigned int mm_cid_size(v
- {
- 	return 0;
- }
-+# define MM_CID_STATIC_SIZE	0
- #endif /* CONFIG_SCHED_MM_CID */
- 
- struct mmu_gather;
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
 _
 
-Patches currently in -mm which might be from mathieu.desnoyers@efficios.com are
+Patches currently in -mm which might be from david@kernel.org are
 
-mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
-mm-rename-cpu_bitmap-field-to-flexible_array.patch
-mm-take-into-account-mm_cid-size-for-mm_struct-static-definitions.patch
-tsacct-skip-all-kernel-threads.patch
-lib-introduce-hierarchical-per-cpu-counters.patch
-mm-fix-oom-killer-inaccuracy-on-large-many-core-systems.patch
-mm-implement-precise-oom-killer-task-selection.patch
+mm-hugetlb-fix-hugetlb_pmd_shared.patch
+mm-hugetlb-fix-two-comments-related-to-huge_pmd_unshare.patch
+mm-rmap-fix-two-comments-related-to-huge_pmd_unshare.patch
+mm-hugetlb-fix-excessive-ipi-broadcasts-when-unsharing-pmd-tables-using-mmu_gather.patch
+mm-hugetlb-fix-excessive-ipi-broadcasts-when-unsharing-pmd-tables-using-mmu_gather-fix.patch
 
 
