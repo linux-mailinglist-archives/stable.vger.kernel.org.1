@@ -1,334 +1,141 @@
-Return-Path: <stable+bounces-203484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27B2CE65B8
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2300ACE657F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0362F3007FF4
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 10:15:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E82E30053F9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 10:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE239287246;
-	Mon, 29 Dec 2025 10:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539AE27AC3A;
+	Mon, 29 Dec 2025 10:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5M2HxN9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FB1275B1A;
-	Mon, 29 Dec 2025 10:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E848222590
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 10:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767003308; cv=none; b=TXC1CYlj3Lj6R/eHlxtlesK3pkHO8CclUUkncdD1lw6Vt1rXnIpm0D9r8zlzzN8xJh7rEjIROtC9GKN+B+vmZL0lWkWAvDmDro/zFt2m4QNm/dSuDjlcjPxjJoImV+1YSQ8f22Jx7GkpZNdFJ4D4AnM5OfD0bbq2waHKsa7F0qo=
+	t=1767003144; cv=none; b=gISrIO0aPs6O5cFlF7D3OWjwbSSDnNeMV63DZL3ESgkMmqLwVtXhRi94Sb4TKwYdW8At1wCdqCpJ9j0Xb0uqIMVmGFeF87Sbh0262chsePQapGHpIb+n9qATlXeWNMZsD33skH/4G9w5/8ZVSSiY9kMRflhHVwKegvVpm6xJWgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767003308; c=relaxed/simple;
-	bh=zbJVtcfrE76Bh7J4/8DAH9uZq82n1d+mYg91k08j2xo=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=I/C5otKFqPNv0c/zvWC4bKO6mhp1O+BkSVKVk1VKPZzOayx/pYsqzP29CwMM9QUeHdTbXwQKZApn0uWtyfEPCuBcxpBo2uBwlz229ZxyL/OgRUwN9x18cTpcB9QpuJaLEzYu0XNsymJtRR7HdvWue5ybNF28ESu44Jx6846zX7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.126])
-	by gateway (Coremail) with SMTP id _____8Dx+8KiVFJp1A4EAA--.12125S3;
-	Mon, 29 Dec 2025 18:14:58 +0800 (CST)
-Received: from [10.20.42.126] (unknown [10.20.42.126])
-	by front1 (Coremail) with SMTP id qMiowJBx78KaVFJpYygGAA--.16928S3;
-	Mon, 29 Dec 2025 18:14:53 +0800 (CST)
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Jinyang He <hejinyang@loongson.cn>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, stable@vger.kernel.org,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner
- <tglx@linutronix.de>, Tiezhu Yang <yangtiezhu@loongson.cn>
-References: <20251227012712.2921408-1-lixianglai@loongson.cn>
- <20251227012712.2921408-3-lixianglai@loongson.cn>
- <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
- <9e1a8d4f-251f-f78e-01a3-5c483249fac8@loongson.cn>
- <dec5cb06-6858-20f2-facb-d5e7f44f5d16@loongson.cn>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <df8f52e3-fea5-763a-d5fd-629308dc6fcc@loongson.cn>
-Date: Mon, 29 Dec 2025 18:11:22 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1767003144; c=relaxed/simple;
+	bh=LCiGByx44aPo6I9zaG1ReBsxglHofWHA8KNEqBtCywk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KHHnRXxqpciKRhxfVPL8Lekbx/wFWdEsUz+12Hvx8tg0nvdFFPGI3RQ6P3ppR4CImEFLG4lIkJGiRoRaAlScfGTeFahv3LvJESyMT6IrGDeHnQGDmZyCmnAcVZssDdXunleIRNG2BzMwq4Llhq+4HSduU9ceAB4tp35F11zoteY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5M2HxN9; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47aa03d3326so56511985e9.3
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 02:12:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767003141; x=1767607941; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J1vSgRP+Bs5qbIakzCpHlzr7o7ydag8RKKrO3j8O608=;
+        b=Z5M2HxN9yV2atm05wilpkDGHYQ55FvGyBBbpFGyeQ0XscOKTfKPdZovM0quqtiumDo
+         wkLJY9NQ+8/2Ny/h6mfPogEI4+P0o099kTWnKS/aJ0cSJy58GFvC5wKClFTFqZuVjZ23
+         o/jPX2WhZOkzQK5+rTFyZ9kak/oHi8+XO5p87EQnWmMldaF70m1tZEx+/awGSc//el8U
+         cdpPSqAdoFrEmU2oa0g/X/C+XJsB26ioXaBTieXHZK08gTLWrsPPRh48pOw3RgmBVhov
+         QO2ywaNFWSwOxxWYuLbbmBBh2in9sK/sZT4yf3krDgbh+XPpilQ/8vHWYOrZMZogXHKE
+         9aFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767003141; x=1767607941;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J1vSgRP+Bs5qbIakzCpHlzr7o7ydag8RKKrO3j8O608=;
+        b=Cgo5je+JfOro7iUvduQQi4cufLjbPjOJ5OXB0K0SS66SLb0JezU9cx+8ZQ9ab6KI3P
+         lxGqIfz9g6tGKLd2Hzna3/WaaCll3FTpD7Ow1GWsegVT+MLrzAIFW9XZfA48T//DQTkj
+         51ZP562mslwJ5OrxP05iMoEBsRF+B9EJ3vr33gVgJFSoYGvkjDrUGd+OAw3soScDz5tC
+         uHpwsKV4V0QGJXJiZ1iyA6sGpTAJbvYK+hD95nJ0GJuRdDiDfgl7JIpjVOhc1es235wc
+         jVQfaGpHXOat/HoxwMtc+y4BVMM/3LW09ffTjfOhDkjvSf9SJckFDU2HkQjsLQEtRxed
+         jcGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWge5h7VVzlYAbh+iveSNU0FefU6Efjk0JkyEtVjm2SzUCSUDAHn1qLAUkAEEV4FU+YJkpddU4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY9uFbLS7xQqDkMCxC+N8VotCVWLA0ZtcJ1DkpAwz3q9xYMJbY
+	mKfpaoZreobzGvy+Attr3DzN20JcMSJ/e7qxXzeEkcaSHsSAbglNhmFj
+X-Gm-Gg: AY/fxX5LGzCFD4CxX0zT6GDVW2rcpblx+vJhWmddboXWEuyjeEIijA8gx1q/xVx5gfJ
+	w8zFZJwKhIbjoEdTaM3YBspTEam2qn4AuFyGZy3mEq1iiA9CWCD8ADcfJRTfCWbt2A1BGQ/2W2x
+	Byg41hHdTJyLV4v38MAoc5OHAsnF4XsdZJlMHn2q2w4fDFMCJCJg3aWN4ikgKD3w4qh9APPuOtB
+	WBoMHHHLyzyZRzdrLPbi/wNnsSC5efFVT0Y+Air/SrCRhfmPTkkpqzq2qtZxYQ7GkBfvf6yUYS/
+	3/Jd3C9Y7ybCQ+YjVYe4GJOFT5X82ti81xqK8tOEgQCxRqoSc6E/pdSIERq8gpnQnRG7WwpohvK
+	dXuBVS72za0+BAFPoZ/Unn+NdlswMdAu9s0LSU/sIH6vC10qkgK27Ms7ynlg+GenIM4kLS0OdCc
+	6lVsVrqsGHrEjkXLre6/xBdmFRNpQ2LxfBNpd6dmOfG+SOt2tuZ3Q6ap3wLf+Y
+X-Google-Smtp-Source: AGHT+IHlR0aXhu72J2TtWwVekmyRrRkDyvgOTcwGHqcoRX7TNY17EGN/wNGjrSuW2cqNhsN3lSNTHw==
+X-Received: by 2002:a05:600c:444b:b0:47a:8cce:2940 with SMTP id 5b1f17b1804b1-47d195468a6mr302386315e9.14.1767003140541;
+        Mon, 29 Dec 2025 02:12:20 -0800 (PST)
+Received: from alchark-surface.localdomain (bba-94-59-45-246.alshamil.net.ae. [94.59.45.246])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d583f42dasm19840735e9.6.2025.12.29.02.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 02:12:19 -0800 (PST)
+From: Alexey Charkov <alchark@gmail.com>
+Subject: [PATCH 0/7] arm64: dts: rockchip: Sound fixes and additions on
+ RK3576 boards
+Date: Mon, 29 Dec 2025 14:11:57 +0400
+Message-Id: <20251229-rk3576-sound-v1-0-2f59ef0d19b1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <dec5cb06-6858-20f2-facb-d5e7f44f5d16@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJBx78KaVFJpYygGAA--.16928S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3uw1xtF1kCr4rCw1fJrykCrX_yoWDCr4rp3
-	sayFZxtrWDA34kAw1UK3WDAryIq3y8G3WDWr1xXFyrAr4qvr1Ygr48Wr1v9ryDC3y0gFyj
-	qFWUt3ZrZan8ArcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAO1TUmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIyMj3aJsY1NzM93i/NK8FF2DZCOzVOMkQzNLIxMloJaCotS0zAqwcdG
+ xtbUAxT+MhV4AAAA=
+X-Change-ID: 20251222-rk3576-sound-0c26e3b16924
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ John Clark <inindev@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Alexey Charkov <alchark@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1436; i=alchark@gmail.com;
+ h=from:subject:message-id; bh=LCiGByx44aPo6I9zaG1ReBsxglHofWHA8KNEqBtCywk=;
+ b=owGbwMvMwCW2adGNfoHIK0sZT6slMWQGhTCec14dG1Mwy2Gm4d01F2qTdhQ7tHWq/Y+L73eZK
+ Rwj/YCxYyILgxgXg6WYIsvcb0tspxrxzdrl4fEVZg4rE8gQaZEGBiBgYeDLTcwrNdIx0jPVNtQz
+ NNQx1jFi4OIUgKn2rWf4p5r7KSIt89RE3i/cnJ6Kggsvrjovefym0jzN6p+BblfftzD8Yi76xBR
+ nNfHq4VjPX09OdLDs4fW4Oq3/zsbqY7575T/PYAAA
+X-Developer-Key: i=alchark@gmail.com; a=openpgp;
+ fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
 
-Hi Jinyang:
->
-> On 2025-12-29 11:53, lixianglai wrote:
->> Hi Jinyang:
->>> On 2025-12-27 09:27, Xianglai Li wrote:
->>>
->>>> Insert the appropriate UNWIND macro definition into the 
->>>> kvm_exc_entry in
->>>> the assembly function to guide the generation of correct ORC table 
->>>> entries,
->>>> thereby solving the timeout problem of loading the livepatch-sample 
->>>> module
->>>> on a physical machine running multiple vcpus virtual machines.
->>>>
->>>> While solving the above problems, we have gained an additional 
->>>> benefit,
->>>> that is, we can obtain more call stack information
->>>>
->>>> Stack information that can be obtained before the problem is fixed:
->>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>> [<0>] kvm_exc_entry+0x100/0x1e0
->>>>
->>>> Stack information that can be obtained after the problem is fixed:
->>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>> [<0>] kvm_exc_entry+0x104/0x1e4
->>>> [<0>] kvm_enter_guest+0x38/0x11c
->>>> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>>> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>>> [<0>] sys_ioctl+0x498/0xf00
->>>> [<0>] do_syscall+0x98/0x1d0
->>>> [<0>] handle_syscall+0xb8/0x158
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
->>>> ---
->>>> Cc: Huacai Chen <chenhuacai@kernel.org>
->>>> Cc: WANG Xuerui <kernel@xen0n.name>
->>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
->>>> Cc: Bibo Mao <maobibo@loongson.cn>
->>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
->>>> Cc: Xianglai Li <lixianglai@loongson.cn>
->>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
->>>>
->>>>   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
->>>>   1 file changed, 19 insertions(+), 9 deletions(-)
->>>>
->>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
->>>> index 93845ce53651..a3ea9567dbe5 100644
->>>> --- a/arch/loongarch/kvm/switch.S
->>>> +++ b/arch/loongarch/kvm/switch.S
->>>> @@ -10,6 +10,7 @@
->>>>   #include <asm/loongarch.h>
->>>>   #include <asm/regdef.h>
->>>>   #include <asm/unwind_hints.h>
->>>> +#include <linux/kvm_types.h>
->>>>     #define HGPR_OFFSET(x)        (PT_R0 + 8*x)
->>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
->>>> @@ -110,9 +111,9 @@
->>>>        * need to copy world switch code to DMW area.
->>>>        */
->>>>       .text
->>>> +    .p2align PAGE_SHIFT
->>>>       .cfi_sections    .debug_frame
->>>>   SYM_CODE_START(kvm_exc_entry)
->>>> -    .p2align PAGE_SHIFT
->>>>       UNWIND_HINT_UNDEFINED
->>>>       csrwr    a2,   KVM_TEMP_KS
->>>>       csrrd    a2,   KVM_VCPU_KS
->>>> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
->>>>       /* restore per cpu register */
->>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
->>>>       addi.d    sp, sp, -PT_SIZE
->>>> +    UNWIND_HINT_REGS
->>>>         /* Prepare handle exception */
->>>>       or    a0, s0, zero
->>>> @@ -200,7 +202,7 @@ ret_to_host:
->>>>       jr      ra
->>>>     SYM_CODE_END(kvm_exc_entry)
->>>> -EXPORT_SYMBOL(kvm_exc_entry)
->>>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
->>>>     /*
->>>>    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
->>>> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
->>>>       /* Save host GPRs */
->>>>       kvm_save_host_gpr a2
->>>>   +    /*
->>>> +     * The csr_era member variable of the pt_regs structure is 
->>>> required
->>>> +     * for unwinding orc to perform stack traceback, so we need to 
->>>> put
->>>> +     * pc into csr_era member variable here.
->>>> +     */
->>>> +    pcaddi    t0, 0
->>>> +    st.d    t0, a2, PT_ERA
->>> Hi, Xianglai,
->>>
->>> It should use `SYM_CODE_START` to mark the `kvm_enter_guest` rather 
->>> than
->>> `SYM_FUNC_START`, since the `SYM_FUNC_START` is used to mark "C-likely"
->>> asm functionw. 
->>
->> Ok, I will use SYM_CODE_START to mark kvm_enter_guest in the next 
->> version.
->>
->>> I guess the kvm_enter_guest is something like exception
->>> handler becuase the last instruction is "ertn". So usually it should
->>> mark UNWIND_HINT_REGS where can find last frame info by "$sp".
->>> However, all info is store to "$a2", this mark should be
->>>   `UNWIND_HINT sp_reg=ORC_REG_A2(???) type=UNWIND_HINT_TYPE_REGS`.
->>> I don't konw why save this function internal PC here by `pcaddi t0, 0`,
->>> and I think it is no meaning(, for exception handler, they save last PC
->>> by read CSR.ERA). The `kvm_enter_guest` saves registers by
->>> "$a2"("$sp" - PT_REGS) beyond stack ("$sp"), it is dangerous if IE
->>> is enable. So I wonder if there is really a stacktrace through this 
->>> function?
->>>
->> The stack backtracking issue in switch.S is rather complex because it 
->> involves the switching between cpu root-mode and guest-mode:
->> Real stack backtracking should be divided into two parts:
->> part 1:
->>     [<0>] kvm_enter_guest+0x38/0x11c
->>     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>     [<0>] sys_ioctl+0x498/0xf00
->>     [<0>] do_syscall+0x98/0x1d0
->>     [<0>] handle_syscall+0xb8/0x158
->>
->> part 2:
->>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>     [<0>] kvm_exc_entry+0x104/0x1e4
->>
->>
->> In "part 1", after executing kvm_enter_guest, the cpu switches from 
->> root-mode to guest-mode.
->> In this case, stack backtracking is indeed very rare.
->>
->> In "part 2", the cpu switches from the guest-mode to the root-mode,
->> and most of the stack backtracking occurs during this phase.
->>
->> To obtain the longest call chain, we save pc in kvm_enter_guest to 
->> pt_regs.csr_era,
->> and after restoring the sp of the root-mode cpu in kvm_exc_entry,
->> The ORC entry was re-established using "UNWIND_HINT_REGS",
->>  and then we obtained the following stack backtrace as we wanted:
->>
->>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>     [<0>] kvm_exc_entry+0x104/0x1e4
-> I found this might be a coincidence—correct behavior due to the incorrect
-> UNWIND_HINT_REGS mark and unusual stack adjustment.
->
-> First, the kvm_enter_guest contains only a single branch instruction, 
-> ertn.
-> It hardware-jump to the CSR.ERA address directly, jump into 
-> kvm_exc_entry.
->
-> At this point, the stack layout looks like this:
-> -------------------------------
->   frame from call to `kvm_enter_guest`
-> -------------------------------  <- $sp
->   PT_REGS
-> -------------------------------  <- $a2
->
-> Then kvm_exc_entry adjust stack without save any register (e.g. $ra, $sp)
-> but still marked UNWIND_HINT_REGS.
-> After the adjustment:
-> -------------------------------
->   frame from call to `kvm_enter_guest`
-> -------------------------------
->   PT_REGS
-> -------------------------------  <- $a2, new $sp
->
-> During unwinding, when the unwinder reaches kvm_exc_entry,
-> it meets the mark of PT_REGS and correctly recovers
->  pc = regs.csr_era, sp = regs.sp, ra = regs.ra
->
-Yes, here unwinder does work as you say.
+Here are some device tree updates to improve sound output on RK3576
+boards.
 
-> a) Can we avoid "ertn" rather than `jr reg (or jirl ra, reg, 0)`
-> instead, like call?
-No,  we need to rely on the 'ertn instruction return PIE to CRMD IE,
-at the same time to ensure that its atomic,
-there should be no other instruction than' ertn 'more appropriate here.
+The first two patches fix analog audio output on FriendlyElec NanoPi M5,
+as it doesn't work with the current device tree.
 
-> The kvm_exc_entry cannot back to kvm_enter_guest
-> if we use "ertn", so should the kvm_enter_guest appear on the stacktrace?
->
+The third one is purely cosmetic, to present a more user-friendly sound
+card name to the userspace on NanoPi M5.
 
-It is flexible. As I mentioned above, the cpu completes the switch from 
-host-mode to guest mode through kvm_enter_guest,
-and then the switch from guest mode to host-mode through kvm_exc_entry. 
-When we ignore the details of the host-mode
-and guest-mode switching in the middle, we can understand that the host 
-cpu has completed kvm_enter_guest->kvm_exc_entry.
- From this perspective, I think it can exist in the call stack, and at 
-the same time, we have obtained the maximum call stack information.
+The rest add new functionality: HDMI sound output on three boards that
+didn't enable it, and analog sound on RK3576 EVB1.
 
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+---
+Alexey Charkov (7):
+      arm64: dts: rockchip: Fix headphones widget name on NanoPi M5
+      arm64: dts: rockchip: Configure MCLK for analog sound on NanoPi M5
+      arm64: dts: rockchip: Use a readable audio card name on NanoPi M5
+      arm64: dts: rockchip: Enable HDMI sound on FriendlyElec NanoPi M5
+      arm64: dts: rockchip: Enable HDMI sound on Luckfox Core3576
+      arm64: dts: rockchip: Enable HDMI sound on RK3576 EVB1
+      arm64: dts: rockchip: Enable analog sound on RK3576 EVB1
 
-> b) Can we adjust $sp before entering kvm_exc_entry? Then we can mark
-> UNWIND_HINT_REGS at the beginning of kvm_exc_entry, which something
-> like ret_from_kernel_thread_asm.
->
-The following command can be used to dump the orc entries of the kernel:
-./tools/objtool/objtool --dump vmlinux
+ arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts   | 107 +++++++++++++++++++++
+ .../boot/dts/rockchip/rk3576-luckfox-core3576.dtsi |   8 ++
+ arch/arm64/boot/dts/rockchip/rk3576-nanopi-m5.dts  |  22 ++++-
+ 3 files changed, 132 insertions(+), 5 deletions(-)
+---
+base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+change-id: 20251222-rk3576-sound-0c26e3b16924
 
-You can observe that not all orc entries are generated at the beginning 
-of the function.
-For example:
-handle_tlb_protect
-ftrace_stub
-handle_reserved
-
-So, is it unnecessary for us to modify UNWIND_HINT_REGS in order to 
-place it at the beginning of the function.
-
-If you have a better solution, could you provide an example of the 
-modification?
-I can test the feasibility of the solution.
-
-Thanks!
-Xianglai.
-
->> [<0>] kvm_enter_guest+0x38/0x11c
->>     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>     [<0>] sys_ioctl+0x498/0xf00
->>     [<0>] do_syscall+0x98/0x1d0
->>     [<0>] handle_syscall+0xb8/0x158
->>
->> Doing so is equivalent to ignoring the details of the cpu root-mode 
->> and guest-mode switching.
->> About what you said in the IE enable phase is dangerous,
->> interrupts are always off during the cpu root-mode and guest-mode 
->> switching in kvm_enter_guest and kvm_exc_entry.
->>
+Best regards,
+-- 
+Alexey Charkov <alchark@gmail.com>
 
 
