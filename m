@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACCDCE68D6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:37:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31136CE68DC
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EEE173013523
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:37:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3D17A3011F64
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A03930C605;
-	Mon, 29 Dec 2025 11:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AB030C614;
+	Mon, 29 Dec 2025 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WE+SFWlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trmzUMO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55CE285C85
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5935308F35
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008238; cv=none; b=LdYfQyfkIrSWvdkzVNNwx/p1/lqHkWaaQ1QCSwJ7y7GnHyCb5DW89uQO4+plSrPPEI/rrJ7uQRbSF0dp+wVukis4qM7Fgqs1xBPD667QR3FkGxrZa1sk7nefQLvy/t85b04Bk0Hc7WWqpnEzg60gGYMoPCXwdOi4xeHS58kTnhY=
+	t=1767008240; cv=none; b=syzpME+PeJ8eNiNp79kCZTY2UebjJhx60f76pgFphDoSFXAw9THf8dkPmxk+UUU5yS4rREvHZsOIQuZa+3jePkxFZDF9Q04R1awdxw4RnmuoYBUgmKGWTmAN1QQz/urAjE48B1xkeuyEmXm6sgNLJKRdwoSbJDqKBCB49AUIoZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008238; c=relaxed/simple;
-	bh=Wj1a7yF/r6BqFoefMfY06F+yjXovCziRBq+P4itl3Lo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kQX352UVzkj1e0bdCI0BT+TbYxwhLW4F3gsnvcfi30KYW81Fh/uHwJ/q0Ts4w1nUyRacbbVAuOFRljl7vvqzIlUIG1PR2q8iIjSeOPNI1m46gqATl7aOO05wVJOKkF5w8rjZTDydNizgz8FdfA3c4awAh3TLl8+IbZvombMFDyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WE+SFWlH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E067C4CEF7;
-	Mon, 29 Dec 2025 11:37:16 +0000 (UTC)
+	s=arc-20240116; t=1767008240; c=relaxed/simple;
+	bh=sNCSvp1aSaFse8BHGuMTCmGIyynbz3V54eAyxZJolB4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DlHPiW/MwNuE51Q8y4A4/6LSJ99N3rZZv0BJxCiHt/j+hP00iq4FeWv0fkVN8OeTmYKsjRisrhGmIiKO6iXauczlYaMLmyPmI3GC5VQGV5LkGkHIwXK2m8prV+kce49//cTRctAMmcy/XpeBPFh1qB6tMu2g4d3Qtx0WWDFTFc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trmzUMO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831CCC4CEF7;
+	Mon, 29 Dec 2025 11:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008236;
-	bh=Wj1a7yF/r6BqFoefMfY06F+yjXovCziRBq+P4itl3Lo=;
+	s=korg; t=1767008239;
+	bh=sNCSvp1aSaFse8BHGuMTCmGIyynbz3V54eAyxZJolB4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WE+SFWlHGtYX3m4ew+laHh79n8RgNN9dnDhfl7TpGc2DAchFNmmdTOFino7hH7uvq
-	 VM/x05zQCkJLr9X692SNcnNWBCrJoUaCqmAq6mbxGetHq/kGm3W7cvzcKV8O4N+rlX
-	 3A72MCJwGzEHx6xH77EiXV2qWJef66jl+wLJjK4k=
-Subject: FAILED: patch "[PATCH] sched_ext: Fix incorrect sched_class settings for per-cpu" failed to apply to 6.18-stable tree
+	b=trmzUMO+GqnofzbOxne4GnkdZoF4IFkX/olRrPA9/U4Bb4detF+t1qcQh3tsXI8pz
+	 Me1phPDlKfpm0bOtsqLYsRCG1qaKTcDpyOphpZEGS5I2ETONcYQNbhuRipKbtG2WUb
+	 aC+GTaE1fmfUM1EbZwzsWECGPM26Nni92I2x/3Zk=
+Subject: FAILED: patch "[PATCH] sched_ext: Fix incorrect sched_class settings for per-cpu" failed to apply to 6.12-stable tree
 To: qiang.zhang@linux.dev,arighi@nvidia.com,tj@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:37:08 +0100
-Message-ID: <2025122908-magician-unlaced-bef4@gregkh>
+Date: Mon, 29 Dec 2025 12:37:09 +0100
+Message-ID: <2025122909-remover-casino-d84a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1dd6c84f1c544e552848a8968599220bd464e338
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122908-magician-unlaced-bef4@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122909-remover-casino-d84a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
