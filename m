@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-203889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3C7CE76D2
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:24:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193F7CE77E9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9FE93007E5C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 986CA306491D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC3631812C;
-	Mon, 29 Dec 2025 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670D7273803;
+	Mon, 29 Dec 2025 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjqIAzjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODjjZXSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B389B273803;
-	Mon, 29 Dec 2025 16:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905C723D2B2;
+	Mon, 29 Dec 2025 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025454; cv=none; b=H+eRSI2V6XDjW3jwY2BKsdrcIEv/hmfsEvuiTKGpVlzXimcfNfZu58ab5Dz7cXFwbE52LeSsFXqdcWr1/D5D38FYYAyjUbtnzcJdvmrECZYSfyfAThDptVPKeOe1Lkg8JQcWczrCOUvtsvxCmOCIW8Tm2ZJSSQXzzCsM70EsYLw=
+	t=1767025460; cv=none; b=ImzbkD5OuPCqi097tqR8sLDRFw/I7unq7kx5ZcmHu9zzIYNj1CeTpqnbBCYFPSC9EU5azPLvZOe/eHszx7obqnJ+XXR/S6dGiHSM9z2zabHU/6mYZVr6JmzN8mo2I7yDImGc/Rvq4z+J6fNyRkdxKvq5bd5WbbbWPtZdFxDdQQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025454; c=relaxed/simple;
-	bh=9Zy3p3X6Kr9mGoP9bl4QCcp8QPRF3kS+lSDk4gdI0Fs=;
+	s=arc-20240116; t=1767025460; c=relaxed/simple;
+	bh=xphKcEXnxFogSu0E0pkuo2BIVHofreM5L+pcBEYIOw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfTd2yZzjro5ZdJEyuORD4qrQD4FflasLQF79eUl5b8J7aNV9g1SxezJ51E+I8naDBwaaH7nTl35WOQjxGPp93muL1hDK77L+IA6LOyJSxKXED5GVH06d0CQ0r6cA/SgpvmXnavONheHRuQNagNNQirdmpc1x9fk5pBSZXGljyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjqIAzjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED50C4CEF7;
-	Mon, 29 Dec 2025 16:24:14 +0000 (UTC)
+	 MIME-Version; b=H93ViDe0VmH7b7Hd4VYRq2Okm+BcKJ8PIjYk2GJsjmUAnOQnECGomNaGU8pbJ37bizHRoyYn4KL0BNsJWQ//6HHN6GPw3/cveMH5oO8SOpRpLa6f0GIg6BOMIMFR3bZUxE/3SEpVXt9O2FI1GPra93PU1maeF4SR8d6vR6W0D0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODjjZXSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D74C4CEF7;
+	Mon, 29 Dec 2025 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025454;
-	bh=9Zy3p3X6Kr9mGoP9bl4QCcp8QPRF3kS+lSDk4gdI0Fs=;
+	s=korg; t=1767025460;
+	bh=xphKcEXnxFogSu0E0pkuo2BIVHofreM5L+pcBEYIOw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CjqIAzjQpK2GH8fiKQ6FjJnxzx4CCpY/M+L6CKFxnOkubl11dxgXIfwzeq7G91lXE
-	 7+fxFaKu5GrcMFJSjx2Efn/tVQ/S5unNVqf0gY0XaVKDcOt+ElHPce2Fdz7HsnWpdA
-	 FO/XHOrrgZdGNV39y0mBX5f+/IpWW6jqhk+9QZ6A=
+	b=ODjjZXSMwFSjXjxn0kCInxDzPG+7i7FIFp2fpMe0Lhm2feK5HUeHw/oGlZXAZ4XVH
+	 SJyam86euhUxSwmDsgCryqtaSZosz5300ETnWwKmmxIV4bSlo7so2NBSWqp0ibE9tA
+	 88Xqfk6CCV3N+odywJLU7Cal45gV6rF5oq59KWGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.18 220/430] rust/drm/gem: Fix missing header in `Object` rustdoc
-Date: Mon, 29 Dec 2025 17:10:22 +0100
-Message-ID: <20251229160732.448651778@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 221/430] rust_binder: avoid mem::take on delivered_deaths
+Date: Mon, 29 Dec 2025 17:10:23 +0100
+Message-ID: <20251229160732.484635685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,35 +63,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit e54ad0cd3673c93cdafda58505eaa81610fe3aef upstream.
+commit 6c37bebd8c926ad01ef157c0d123633a203e5c0d upstream.
 
-Invariants should be prefixed with a # to turn it into a header.
+Similar to the previous commit, List::remove is used on
+delivered_deaths, so do not use mem::take on it as that may result in
+violations of the List::remove safety requirements.
 
-There are no functional changes in this patch.
+I don't think this particular case can be triggered because it requires
+fd close to run in parallel with an ioctl on the same fd. But let's not
+tempt fate.
 
 Cc: stable@vger.kernel.org
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251107202603.465932-1-lyude@redhat.com
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://patch.msgid.link/20251111-binder-fix-list-remove-v1-2-8ed14a0da63d@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/drm/gem/mod.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder/process.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -184,7 +184,7 @@ impl<T: IntoGEMObject> BaseObject for T
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 27323070f30f..fd5dcdc8788c 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1362,8 +1362,12 @@ fn deferred_release(self: Arc<Self>) {
+             work.into_arc().cancel();
+         }
  
- /// A base GEM object.
- ///
--/// Invariants
-+/// # Invariants
- ///
- /// - `self.obj` is a valid instance of a `struct drm_gem_object`.
- /// - `self.dev` is always a valid pointer to a `struct drm_device`.
+-        let delivered_deaths = take(&mut self.inner.lock().delivered_deaths);
+-        drop(delivered_deaths);
++        // Clear delivered_deaths list.
++        //
++        // Scope ensures that MutexGuard is dropped while executing the body.
++        while let Some(delivered_death) = { self.inner.lock().delivered_deaths.pop_front() } {
++            drop(delivered_death);
++        }
+ 
+         // Free any resources kept alive by allocated buffers.
+         let omapping = self.inner.lock().mapping.take();
+-- 
+2.52.0
+
 
 
 
