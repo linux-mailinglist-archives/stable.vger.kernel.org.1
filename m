@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-203600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66964CE6F6D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:02:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE44CE6F7F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 736D73021E55
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:01:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD672300E786
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E8B1F4C8E;
-	Mon, 29 Dec 2025 14:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A601397;
+	Mon, 29 Dec 2025 14:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZADbDIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW2mXNl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CBB1D5ADE
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27CA137750
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767016866; cv=none; b=VvWGljwomcLZyuNeJ2LvhTEQ2Uz/Gk2WkRq35/ZpqvNS15n77RfzCzBMs3zhKTQArH8i8pxGjNkAh1GYxPdGX22ozVl1b+qR3+M4QgWHgtIdua8KsCRMo1hs2rvPX3S6lwMW189rXIM58O5gt7r3RPkUsb6/e6hcmFeTKocG+a4=
+	t=1767016948; cv=none; b=jcklvbBQgHowbq5sAP+hqVwhiQxHRf7KqgT2JUO35VaIdgEOV17P5MmJZxXBkixiw1wSh2epP+UJjW5N2+N+EoDnLADqruC28oVIH9bh/vSjn/DYqX3Kl9TpkhiFChWJWST5meX9Q2Ku0j6yXO37rReGM4b1gh/uRIQU1oM13QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767016866; c=relaxed/simple;
-	bh=K3GiwlY07wlaHGUlbm3WgAxSVpYqL+ARMj2TyWFdF94=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pBT3FIx3x0UHPUqUZceJZ+U5s4QgD3usiOOYnVsx6fppaUJxsOojhB1ECniuKd04QtiCN5S3PvawIB/kI4sUV7kH1/463sA0puJMgLoqXl0L2POWUibtFFvJDcuxNpzRUAFwyaXoRZhQYYTtCueQbP1XatRnA0+2K52HdRoX1Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZADbDIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D53C4CEF7;
-	Mon, 29 Dec 2025 14:01:04 +0000 (UTC)
+	s=arc-20240116; t=1767016948; c=relaxed/simple;
+	bh=4NSkk35Qy03vW8BoRzYfSydTee7xawEpeVuvVg+ZdII=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y5BPFaK/Gs2CLdjRHhlw4mnNDA8qCQAedGDmSChu8v9kavMJV6uY4yhNxYHZagfHhgYeMxiKqckOjN8TB3G2znUawaxWb1efjUiBwkgeuE5VwfV3NxhPx/EDnZFqFNnztxEnqIHbmHimOTdyKfXyfUSpZgQp14Ry1owkXnZbA48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW2mXNl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56CDC4CEF7;
+	Mon, 29 Dec 2025 14:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767016865;
-	bh=K3GiwlY07wlaHGUlbm3WgAxSVpYqL+ARMj2TyWFdF94=;
+	s=korg; t=1767016948;
+	bh=4NSkk35Qy03vW8BoRzYfSydTee7xawEpeVuvVg+ZdII=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RZADbDIaeTas74f9/RkX196QwXfBz+kmuw3ZGukboFF0tMko0rbBNobyEBUGlVCCd
-	 BYxvhZ2jEwxOfhMCz/R/gdySCAB2N877D/k6qW8cxoyXQRwaH6ray36MgRHVETFU+Q
-	 h+ckJZL2ju1T0MEuUz9ydm4H1kBp/pzcBdqLv++A=
-Subject: FAILED: patch "[PATCH] f2fs: fix to detect recoverable inode during dryrun of" failed to apply to 5.10-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
+	b=xW2mXNl++GFaME8oxMd6Mnb/oTOm0cS+9s9WjGUdAh/dDhLWS6dRmURPLDXJcxBve
+	 R7yX/MIc4on9L8pH0TDaM1ca/AvduvZZq92Z27HzIigsZZvWGgjkLizex3gnrZ2RSC
+	 NdXc6rIUNvxetw9z2m7Wmw+R2jMawi7Hr9NdgkiA=
+Subject: FAILED: patch "[PATCH] xhci: dbgtty: fix device unregister: fixup" failed to apply to 6.6-stable tree
+To: ukaszb@chromium.org,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 15:00:54 +0100
-Message-ID: <2025122953-federal-handclasp-1d09@gregkh>
+Date: Mon, 29 Dec 2025 15:02:17 +0100
+Message-ID: <2025122917-keenly-greyhound-4fa6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 68d05693f8c031257a0822464366e1c2a239a512
+git cherry-pick -x 74098cc06e753d3ffd8398b040a3a1dfb65260c0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122953-federal-handclasp-1d09@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122917-keenly-greyhound-4fa6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,104 +75,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 68d05693f8c031257a0822464366e1c2a239a512 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Wed, 5 Nov 2025 14:50:23 +0800
-Subject: [PATCH] f2fs: fix to detect recoverable inode during dryrun of
- find_fsync_dnodes()
+From 74098cc06e753d3ffd8398b040a3a1dfb65260c0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Date: Thu, 27 Nov 2025 11:16:44 +0000
+Subject: [PATCH] xhci: dbgtty: fix device unregister: fixup
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-mkfs.f2fs -f /dev/vdd
-mount /dev/vdd /mnt/f2fs
-touch /mnt/f2fs/foo
-sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
-touch /mnt/f2fs/bar
-f2fs_io fsync /mnt/f2fs/bar
-f2fs_io shutdown 2 /mnt/f2fs
-umount /mnt/f2fs
-blockdev --setro /dev/vdd
-mount /dev/vdd /mnt/f2fs
-mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
+This fixup replaces tty_vhangup() call with call to
+tty_port_tty_vhangup(). Both calls hangup tty device
+synchronously however tty_port_tty_vhangup() increases
+reference count during the hangup operation using
+scoped_guard(tty_port_tty).
 
-For the case if we create and fsync a new inode before sudden power-cut,
-without norecovery or disable_roll_forward mount option, the following
-mount will succeed w/o recovering last fsynced inode.
+Cc: stable <stable@kernel.org>
+Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-The problem here is that we only check inode_list list after
-find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
-there is recoverable data in the iamge, but there is a missed case, if
-last fsynced inode is not existing in last checkpoint, then, we will
-fail to get its inode due to nat of inode node is not existing in last
-checkpoint, so the inode won't be linked in inode_list.
-
-Let's detect such case in dyrun mode to fix this issue.
-
-After this change, mount will fail as expected below:
-mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
-       dmesg(1) may have more information after failed mount system call.
-demsg:
-F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
-
-Cc: stable@kernel.org
-Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index 215e442db72c..d7faebaa3c6b 100644
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -399,7 +399,7 @@ static int sanity_check_node_chain(struct f2fs_sb_info *sbi, block_t blkaddr,
- }
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index 57cdda4e09c8..90282e51e23e 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -554,7 +554,7 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+ 	 * Hang up the TTY. This wakes up any blocked
+ 	 * writers and causes subsequent writes to fail.
+ 	 */
+-	tty_vhangup(port->port.tty);
++	tty_port_tty_vhangup(&port->port);
  
- static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
--				bool check_only)
-+				bool check_only, bool *new_inode)
- {
- 	struct curseg_info *curseg;
- 	block_t blkaddr, blkaddr_fast;
-@@ -447,16 +447,19 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
- 				quota_inode = true;
- 			}
- 
--			/*
--			 * CP | dnode(F) | inode(DF)
--			 * For this case, we should not give up now.
--			 */
- 			entry = add_fsync_inode(sbi, head, ino_of_node(folio),
- 								quota_inode);
- 			if (IS_ERR(entry)) {
- 				err = PTR_ERR(entry);
--				if (err == -ENOENT)
-+				/*
-+				 * CP | dnode(F) | inode(DF)
-+				 * For this case, we should not give up now.
-+				 */
-+				if (err == -ENOENT) {
-+					if (check_only)
-+						*new_inode = true;
- 					goto next;
-+				}
- 				f2fs_folio_put(folio, true);
- 				break;
- 			}
-@@ -875,6 +878,7 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
- 	int ret = 0;
- 	unsigned long s_flags = sbi->sb->s_flags;
- 	bool need_writecp = false;
-+	bool new_inode = false;
- 
- 	f2fs_notice(sbi, "f2fs_recover_fsync_data: recovery fsync data, "
- 					"check_only: %d", check_only);
-@@ -890,8 +894,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
- 	f2fs_down_write(&sbi->cp_global_sem);
- 
- 	/* step #1: find fsynced inode numbers */
--	err = find_fsync_dnodes(sbi, &inode_list, check_only);
--	if (err || list_empty(&inode_list))
-+	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
-+	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
- 		goto skip;
- 
- 	if (check_only) {
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
 
 
