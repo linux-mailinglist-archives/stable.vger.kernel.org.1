@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-203996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A84CE7975
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:37:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A434FCE77B3
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0C5E3171AA7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:29:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 121E3300460F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8347833067D;
-	Mon, 29 Dec 2025 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2EC330B1A;
+	Mon, 29 Dec 2025 16:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZdpGOFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="au0Go21s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409053191A7;
-	Mon, 29 Dec 2025 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EFF330B05;
+	Mon, 29 Dec 2025 16:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025758; cv=none; b=BZeZPAhXinPg9Xa7TjZS6+Zbw0hcnlxWViECtl8uxO9zWoNDaueaATrNVoUapbbYuh+YmFzrWBm0n1/piO5wOtbH857TiICiDyNkTK5MqKYOmWH8fdn34PZ5LPl8E8rsgSLUW56YgcT5zUsQQYeTmlZLMTOOPpaeCfkN80/7IPA=
+	t=1767025764; cv=none; b=u2YA6Ns/PUT0zdqhjH/fMJjejajW3sMrN/iYseCZV8oBgBJ2hXGCAx6N6b90aWrCfwDBu3p/DnTv+YQnTuDvX+SjdZt0P9k+rRRLHxgijvcMr+LgBBfTijLo83EiDKju/OXmNFvmHFX7ovbUja5dqbZJsTYAq2uppQrGttHDSXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025758; c=relaxed/simple;
-	bh=NygfxiMpL25ZqyE7DYbSiWBjNUMTMkH6ZCrWIoyUWxw=;
+	s=arc-20240116; t=1767025764; c=relaxed/simple;
+	bh=wa1/vosOp/24yLomJwuxlSMSctAQKYD0+BfUcQz63+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yl/ah0fNFRR08j9yrdxGqMTO3juH6sjLJsYMEWJ/MiZ3A3I6qj77kOzb9mGcyPnpnrV0GjrSswiUen2Elxh1LN5NTsxAVlpUY/dbKSbJZE/FM6DMFpUqWI0ARS8jANKOfJ24qsxGZnNAGD13SJ6GMATnF61SiiUOmJTYV2rX+X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZdpGOFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4D5C4CEF7;
-	Mon, 29 Dec 2025 16:29:17 +0000 (UTC)
+	 MIME-Version; b=htKFH+LPwze+BJkSeKpO4EWtNjBfvmuOTtYaNoJteUqo8Zzl2iTMx3E7Dem6poC15Jy4W2jAruIYFNQRJ0K07M6PO3fdkRZaYaEumlGrvk6XeDTxWKhQQM/KxPS2cZgRAPD/UYn0KpGW8u6RGZ3C8GCQbxHNLCcv0gp+p0GamKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=au0Go21s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB6FC4CEF7;
+	Mon, 29 Dec 2025 16:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025758;
-	bh=NygfxiMpL25ZqyE7DYbSiWBjNUMTMkH6ZCrWIoyUWxw=;
+	s=korg; t=1767025763;
+	bh=wa1/vosOp/24yLomJwuxlSMSctAQKYD0+BfUcQz63+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZdpGOFBj1isF20mP7ufy8lQJJ9ZYfLrQgLqRv2CKvxhqO/U2eNkrcUN05sFbDyOE
-	 FGktJDnaRHXe96D0ITD98nywC640JzK1MOQEd86s2+WFZ78MkkDtlny/u22agjzvMP
-	 s0+do3e6y25rUkRfx2SHQfHDrQBRCkuQYe6Vns74=
+	b=au0Go21sQj0vcTcrJhSI/y8bJOCajMpownpMVy7OSGIQcJK6huiXHZL/YV0/J78EI
+	 nAkosyDKFBNEwrMYRzPGEfD9CnVJdv2wZQmZmTaI3ZRHt5AI8VNbKyMthiJpE9c3Gy
+	 AukaKQvAZ/WdCHb1rlFpHa/IpJWGo71uVisNx0cI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.18 327/430] mm/slub: reset KASAN tag in defer_free() before accessing freed memory
-Date: Mon, 29 Dec 2025 17:12:09 +0100
-Message-ID: <20251229160736.364221355@linuxfoundation.org>
+	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 328/430] media: vidtv: initialize local pointers upon transfer of memory ownership
+Date: Mon, 29 Dec 2025 17:12:10 +0100
+Message-ID: <20251229160736.400383060@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,52 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 53ca00a19d345197a37a1bf552e8d1e7b091666c upstream.
+commit 98aabfe2d79f74613abc2b0b1cef08f97eaf5322 upstream.
 
-When CONFIG_SLUB_TINY is enabled, kfree_nolock() calls kasan_slab_free()
-before defer_free(). On ARM64 with MTE (Memory Tagging Extension),
-kasan_slab_free() poisons the memory and changes the tag from the
-original (e.g., 0xf3) to a poison tag (0xfe).
+vidtv_channel_si_init() creates a temporary list (program, service, event)
+and ownership of the memory itself is transferred to the PAT/SDT/EIT
+tables through vidtv_psi_pat_program_assign(),
+vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
 
-When defer_free() then tries to write to the freed object to build the
-deferred free list via llist_add(), the pointer still has the old tag,
-causing a tag mismatch and triggering a KASAN use-after-free report:
+The problem here is that the local pointer where the memory ownership
+transfer was completed is not initialized to NULL. This causes the
+vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
+in the flow that jumps to free_eit, the memory that was freed by
+vidtv_psi_*_table_destroy() can be accessed again by
+vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
+is freed once again.
 
-  BUG: KASAN: slab-use-after-free in defer_free+0x3c/0xbc mm/slub.c:6537
-  Write at addr f3f000000854f020 by task kworker/u8:6/983
-  Pointer tag: [f3], memory tag: [fe]
+Therefore, to prevent use-after-free and double-free vulnerability,
+local pointers must be initialized to NULL when transferring memory
+ownership.
 
-Fix this by calling kasan_reset_tag() before accessing the freed memory.
-This is safe because defer_free() is part of the allocator itself and is
-expected to manipulate freed memory for bookkeeping purposes.
-
-Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7a25305a76d872abcfa1
-Tested-by: syzbot+7a25305a76d872abcfa1@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://patch.msgid.link/20251210022024.3255826-1-kartikey406@gmail.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
+Fixes: 3be8037960bc ("media: vidtv: add error checks")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/test-drivers/vidtv/vidtv_channel.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6509,6 +6509,8 @@ static void defer_free(struct kmem_cache
+--- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_m
  
- 	guard(preempt)();
+ 	/* assemble all programs and assign to PAT */
+ 	vidtv_psi_pat_program_assign(m->si.pat, programs);
++	programs = NULL;
  
-+	head = kasan_reset_tag(head);
-+
- 	df = this_cpu_ptr(&defer_free_objects);
- 	if (llist_add(head + s->offset, &df->objects))
- 		irq_work_queue(&df->work);
+ 	/* assemble all services and assign to SDT */
+ 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
++	services = NULL;
+ 
+ 	/* assemble all events and assign to EIT */
+ 	vidtv_psi_eit_event_assign(m->si.eit, events);
++	events = NULL;
+ 
+ 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
+ 								     m->pcr_pid);
 
 
 
