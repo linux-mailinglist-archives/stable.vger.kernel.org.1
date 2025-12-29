@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259F6CE692A
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:42:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E6FCE6924
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECE9D3016DCE
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:40:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BED813002D27
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5533D2DC344;
-	Mon, 29 Dec 2025 11:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D5130BF70;
+	Mon, 29 Dec 2025 11:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cdniZPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlS9KOKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502F830C618
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15109298CDC
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008450; cv=none; b=TAfxCvkvCUpFGdqkTggA5bXOXetIu6510yJ859LhIsdMW+RJ4CsZfKayRr9NIOhUUrta2ijyBDe4RaQJbgg8m0lKx+7T72j9gpA62QUCuua7MU38SktHipRq3IjoUniDZjpKvyyKUXCVgtdwbttImp+K2gG+UouHkk947+wPLc8=
+	t=1767008531; cv=none; b=MucbcCkpc5kOn2Cso+1irzhwGSNEI8Bi93h1KsYngd5CHQhXQrSv4PiIb5XSCfo89DECQ6kXditsOicKzPr7M/Tp+kdQaPg7Qv6Ni1j4xTJj+TTMUt7gc2bFmMYVHqMUzJMbzzAlgjYEK5twqli7Nc/gVwjPZ+GdJPIDD9sLsII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008450; c=relaxed/simple;
-	bh=4+1GJxsfjk/VOvPR42ftrKuTkdCWrp9k9tSwngLJb8M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iN5SBAci08hy+VhrSOO4Q+Jf918wTlbScAMXzlz/s3tTqdsxGQT01QNRwGGvHqQmxQocNu6ea9HnhPn2mxLD2gjcd9M5weOAEmoj+XrF2EPl5myvVWGsf9qsUlXyu2tRI5QXiEQvQQykT7cMPnC51/DgFpzSkr4tYO1AjKnjSgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cdniZPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DADC116C6;
-	Mon, 29 Dec 2025 11:40:48 +0000 (UTC)
+	s=arc-20240116; t=1767008531; c=relaxed/simple;
+	bh=Bhj1jvlchw2Jv7b11WzjLtVsV1C7iWS6ZPDnwhKvhxE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i/SX+tNxFPR+vQHa9I+ebYGYNfU4fzQjJdKN71DrOlz5mPvNXBpRgU0S99CYcoT7fcgTy888ILF9NjCjy55UZ2uxa3SEoLWqhgmyh/j/3SmI4td0R1SbnbppUSDOz3pC1pSfOtSE7hfXFSU7dFYg8K21P1BcbHETe5/t3RY0YR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlS9KOKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4652EC4CEF7;
+	Mon, 29 Dec 2025 11:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008448;
-	bh=4+1GJxsfjk/VOvPR42ftrKuTkdCWrp9k9tSwngLJb8M=;
+	s=korg; t=1767008530;
+	bh=Bhj1jvlchw2Jv7b11WzjLtVsV1C7iWS6ZPDnwhKvhxE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0cdniZPscytg+7Yg8lOt8VAvmknCpbhZow7Uh36xpSR54WYSl9UZmIo2UhLvBDpjb
-	 nn6nyfBC6KbsADjJf/M6tyWJN3uN/uvy459jrLCH5ipv5W8vyBuD6gbBARkzqp8wPe
-	 cybq4gxnL6xDEoqkPnvqWswE8LkxsO5dlmivKnqg=
-Subject: FAILED: patch "[PATCH] jbd2: fix the inconsistency between checksum and data in" failed to apply to 5.10-stable tree
-To: yebin10@huawei.com,djwong@kernel.org,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
+	b=nlS9KOKdplh9b79RzkiG+qGakGtTM0o2jnTKX1gMcRAThL89dHLumlS18Eh3Uq+XU
+	 VzlBU1u2QVPXEIVkKwPpjch2JPQOr7U4bCSDt4651OTjWj0kOKYc90EW68pSZ31Wll
+	 Lyho0ii05mQKO8gO7c4+TljoTKQY4XfkESeDFqAI=
+Subject: FAILED: patch "[PATCH] tpm: Cap the number of PCR banks" failed to apply to 6.1-stable tree
+To: jarkko@kernel.org,jarkko.sakkinen@opinsys.com,noodles@meta.com,roberto.sassu@huawei.com,yi1.lai@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:40:36 +0100
-Message-ID: <2025122936-jaunt-sliding-0a13@gregkh>
+Date: Mon, 29 Dec 2025 12:41:59 +0100
+Message-ID: <2025122959-dreamt-stank-d6e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6abfe107894af7e8ce3a2e120c619d81ee764ad5
+git cherry-pick -x faf07e611dfa464b201223a7253e9dc5ee0f3c9e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122936-jaunt-sliding-0a13@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122959-dreamt-stank-d6e5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,89 +75,101 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6abfe107894af7e8ce3a2e120c619d81ee764ad5 Mon Sep 17 00:00:00 2001
-From: Ye Bin <yebin10@huawei.com>
-Date: Mon, 3 Nov 2025 09:01:23 +0800
-Subject: [PATCH] jbd2: fix the inconsistency between checksum and data in
- memory for journal sb
+From faf07e611dfa464b201223a7253e9dc5ee0f3c9e Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Date: Tue, 30 Sep 2025 15:58:02 +0300
+Subject: [PATCH] tpm: Cap the number of PCR banks
 
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
+tpm2_get_pcr_allocation() does not cap any upper limit for the number of
+banks. Cap the limit to eight banks so that out of bounds values coming
+from external I/O cause on only limited harm.
 
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
+Tested-by: Lai Yi <yi1.lai@linux.intel.com>
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
-
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 2fe1786a8f1b..c973162d5b31 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2354,6 +2354,12 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 30d00219f9f3..082b910ddf0d 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -246,7 +246,6 @@ static void tpm_dev_release(struct device *dev)
  
-@@ -2383,9 +2389,17 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+-	kfree(chip->allocated_banks);
+ #ifdef CONFIG_TCG_TPM2_HMAC
+ 	kfree(chip->auth);
+ #endif
+diff --git a/drivers/char/tpm/tpm1-cmd.c b/drivers/char/tpm/tpm1-cmd.c
+index cf64c7385105..b49a790f1bd5 100644
+--- a/drivers/char/tpm/tpm1-cmd.c
++++ b/drivers/char/tpm/tpm1-cmd.c
+@@ -799,11 +799,6 @@ int tpm1_pm_suspend(struct tpm_chip *chip, u32 tpm_suspend_pcr)
+  */
+ int tpm1_get_pcr_allocation(struct tpm_chip *chip)
+ {
+-	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks)
+-		return -ENOMEM;
+-
+ 	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
+ 	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
+ 	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
+diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+index 5532e53a2dd3..dd502322f499 100644
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -550,11 +550,9 @@ ssize_t tpm2_get_pcr_allocation(struct tpm_chip *chip)
  
- 	sb = journal->j_superblock;
+ 	nr_possible_banks = be32_to_cpup(
+ 		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
+-
+-	chip->allocated_banks = kcalloc(nr_possible_banks,
+-					sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks) {
++	if (nr_possible_banks > TPM2_MAX_PCR_BANKS) {
++		pr_err("tpm: out of bank capacity: %u > %u\n",
++		       nr_possible_banks, TPM2_MAX_PCR_BANKS);
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	}
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index b15360ff78d7..53de9488c509 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -26,7 +26,9 @@
+ #include <crypto/aes.h>
  
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
- }
- EXPORT_SYMBOL(jbd2_journal_clear_features);
+ #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
+-#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
++
++#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
++#define TPM2_MAX_PCR_BANKS	8
+ 
+ struct tpm_chip;
+ struct trusted_key_payload;
+@@ -68,7 +70,7 @@ enum tpm2_curves {
+ 
+ struct tpm_digest {
+ 	u16 alg_id;
+-	u8 digest[TPM_MAX_DIGEST_SIZE];
++	u8 digest[TPM2_MAX_DIGEST_SIZE];
+ } __packed;
+ 
+ struct tpm_bank_info {
+@@ -189,7 +191,7 @@ struct tpm_chip {
+ 	unsigned int groups_cnt;
+ 
+ 	u32 nr_allocated_banks;
+-	struct tpm_bank_info *allocated_banks;
++	struct tpm_bank_info allocated_banks[TPM2_MAX_PCR_BANKS];
+ #ifdef CONFIG_ACPI
+ 	acpi_handle acpi_dev_handle;
+ 	char ppi_version[TPM_PPI_VERSION_LEN + 1];
 
 
