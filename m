@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-204144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235CFCE84A4
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 23:33:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1BDCE84AA
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 23:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C533E301176E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 22:33:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E21D3002863
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 22:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92092571DA;
-	Mon, 29 Dec 2025 22:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE35310768;
+	Mon, 29 Dec 2025 22:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlcwaBMn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loI30cCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D48230BDB
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 22:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860A24A046;
+	Mon, 29 Dec 2025 22:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767047616; cv=none; b=uiqk4y28UZ2+092BOKf7WqPScBbGm2JR6EytZMbqgYkpKgHpUnLrl9xDCFTfiSWLw0w/FEwfobOkrqH8OamBgdTejc00mQ2E3tZEfhPx0/2Q+w39RCXFEAUM+rjWXv7UOkRMlXCZyxBNPxazk4io7ljKmNKry8NUTkwPxPqDRdw=
+	t=1767047948; cv=none; b=pfvBH8gO5/k0v3jDyH/O/dm0rsRs1bdDs28X9rBX6NSi+3K8aVe2ItvsKj8vCjaJKXiwXfXy+UEApgwxAMdZflb5aAyXAXCRFjyhZsHKZkgBKDM8cTImKFNWzHZL6FNkVDKnKZVKBEB32Q6UL0d1AOM0qAw8QhU6a32Eqyotd/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767047616; c=relaxed/simple;
-	bh=GnvrUItZZbF0rg/sdBloipa6N5Xw1C2PnXy/XWW9Lz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACCamcOkKE+8ADnWzxVu0WoCJoT/6hS6Foiq7ujZ035vrlRr4PgUyqEybzjZ5fsHT60+g0ZW9+rstNvFoOtfH95UCkvSDc2Y35y1degRZYEJXKVGP05+f4rZL7eiqfSw3ZDdG4/xkjv0RJv6+5erk8Bm7m3tlvnf5wZp0hXLcmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlcwaBMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73917C4CEF7;
-	Mon, 29 Dec 2025 22:33:35 +0000 (UTC)
+	s=arc-20240116; t=1767047948; c=relaxed/simple;
+	bh=G9tQ0hkFSi73XXtRzgVQUNRUaxJUsQu73ITJfWZswWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j29lAkz+Az3shvnOqMJMqfJQrNg/mAiRGW+HBECxyzN4F3rwl10AtHzI2WnEM4d5MXZeNYwZoDTh51qMSqw1dPHI1cgCtlm932kC8ZLkqNKTCgISq6iHPBiE1ydDwMUxrkSKYRRAOmOCjeoihT0TLozoJYoVHodPKwHHKnbj/sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loI30cCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338F1C4CEF7;
+	Mon, 29 Dec 2025 22:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767047616;
-	bh=GnvrUItZZbF0rg/sdBloipa6N5Xw1C2PnXy/XWW9Lz4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlcwaBMnXDspR6j3PdGVU5bgEfsK9L+taBuSmAa+w3RX7H8K7a8Z9omdDFWg+GSs7
-	 zQWOPDdhwnyo8ESoyq7AQlN9wj2JHuD5ugbzJaHuSOzOb4J+xUrGC76LN1ICZhwmke
-	 8vUJeRsX6CEtL7FWqDnNEA+onhjym8fKb78gxTTXmE+T35F2TL1Bud0f9VJiUB3ZNg
-	 ZmTim3cv9/jl/ERHB/AoNX+6sLM1Ee49ZKJelB/cLBuqTRnERpb+9/JO0/DUo/lwKK
-	 oTggV5TFGISG1hwKuN23WITc48vTL/hinuDlRN8bEzSn5yc3VFLabxg8nzeyVkcWRs
-	 rUp7+GvUZOyQA==
-From: Sasha Levin <sashal@kernel.org>
+	s=k20201202; t=1767047947;
+	bh=G9tQ0hkFSi73XXtRzgVQUNRUaxJUsQu73ITJfWZswWI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=loI30cCvRXDdija63qGpBf6jdiWTTQes9pMyumpng4P/dbw61ZpvjYJ4rq0RoZowf
+	 Z6YAgMalwlkoYsR6R0/FbXBWJuUPejONQrm3vrdj/ZZgaivNDzFGER6WFXxnlxoJGT
+	 Clo9JPNd6SpBGBKDiNtdGeItv1w3Z0S1aEVTTQHCESH9qB7Bp4s7sPJrurWuByP1HW
+	 4xgXeh9XKUMu1YdJqzEm5Kg8UJfZthYrfX+IYrTJeW3Xa+MMweDAClNANJW491iy48
+	 c9JB9Agz6ixnvqKv+cMEvWM+CM3UjEWaJXTZRbH8m0cCTQZM3R3vBY1eS8dS8t8uPQ
+	 ggfweNn/n7Mng==
+From: Eric Biggers <ebiggers@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] gfs2: fix freeze error handling
-Date: Mon, 29 Dec 2025 17:33:32 -0500
-Message-ID: <20251229223332.1744624-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122906-preshow-nearest-b359@gregkh>
-References: <2025122906-preshow-nearest-b359@gregkh>
+Cc: linux-crypto@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12] lib/crypto: riscv/chacha: Avoid s0/fp register
+Date: Mon, 29 Dec 2025 14:37:29 -0800
+Message-ID: <20251229223729.99861-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,47 +56,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit 4cfc7d5a4a01d2133b278cdbb1371fba1b419174 ]
+commit 43169328c7b4623b54b7713ec68479cebda5465f upstream.
 
-After commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"),
-the freeze error handling is broken because gfs2_do_thaw()
-overwrites the 'error' variable, causing incorrect processing
-of the original freeze error.
+In chacha_zvkb, avoid using the s0 register, which is the frame pointer,
+by reallocating KEY0 to t5. This makes stack traces available if e.g. a
+crash happens in chacha_zvkb.
 
-Fix this by calling gfs2_do_thaw() when gfs2_lock_fs_check_clean()
-fails but ignoring its return value to preserve the original
-freeze error for proper reporting.
+No frame pointer maintenance is otherwise required since this is a leaf
+function.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b77b4a4815a9 ("gfs2: Rework freeze / thaw logic")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[ gfs2_do_thaw() only takes 2 params ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Fixes: bb54668837a0 ("crypto: riscv - add vector crypto accelerated ChaCha20")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20251202-riscv-chacha_zvkb-fp-v2-1-7bd00098c9dc@iscas.ac.cn
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- fs/gfs2/super.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/riscv/crypto/chacha-riscv64-zvkb.S | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 3b1303f97a3b..e6f8be03190c 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -759,9 +759,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
- 			break;
- 		}
+diff --git a/arch/riscv/crypto/chacha-riscv64-zvkb.S b/arch/riscv/crypto/chacha-riscv64-zvkb.S
+index bf057737ac69..fbef93503571 100644
+--- a/arch/riscv/crypto/chacha-riscv64-zvkb.S
++++ b/arch/riscv/crypto/chacha-riscv64-zvkb.S
+@@ -58,11 +58,12 @@
+ #define CONSTS3		t0
+ #define TMP		t1
+ #define VL		t2
+ #define STRIDE		t3
+ #define NROUNDS		t4
+-#define KEY0		s0
++#define KEY0		t5
++// Avoid s0/fp to allow for unwinding
+ #define KEY1		s1
+ #define KEY2		s2
+ #define KEY3		s3
+ #define KEY4		s4
+ #define KEY5		s5
+@@ -139,11 +140,10 @@
+ // The counter is treated as 32-bit, following the RFC7539 convention.
+ SYM_FUNC_START(chacha20_zvkb)
+ 	srli		LEN, LEN, 6	// Bytes to blocks
  
--		error = gfs2_do_thaw(sdp, who);
--		if (error)
--			goto out;
-+		(void)gfs2_do_thaw(sdp, who);
+ 	addi		sp, sp, -96
+-	sd		s0, 0(sp)
+ 	sd		s1, 8(sp)
+ 	sd		s2, 16(sp)
+ 	sd		s3, 24(sp)
+ 	sd		s4, 32(sp)
+ 	sd		s5, 40(sp)
+@@ -275,11 +275,10 @@ SYM_FUNC_START(chacha20_zvkb)
+ 	slli		TMP, VL, 6
+ 	add		OUTP, OUTP, TMP
+ 	add		INP, INP, TMP
+ 	bnez		LEN, .Lblock_loop
  
- 		if (error == -EBUSY)
- 			fs_err(sdp, "waiting for recovery before freeze\n");
+-	ld		s0, 0(sp)
+ 	ld		s1, 8(sp)
+ 	ld		s2, 16(sp)
+ 	ld		s3, 24(sp)
+ 	ld		s4, 32(sp)
+ 	ld		s5, 40(sp)
+
+base-commit: 567bd8cbc2fe6b28b78864cbbbc41b0d405eb83c
 -- 
-2.51.0
+2.52.0
 
 
