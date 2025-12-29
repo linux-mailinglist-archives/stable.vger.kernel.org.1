@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-203890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DC5CE77E6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:31:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A07CE7828
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C2CD306324D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3BF5307291E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D786725DD1E;
-	Mon, 29 Dec 2025 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C835A25B662;
+	Mon, 29 Dec 2025 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgCRUJ/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIC8xViS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E15330311;
-	Mon, 29 Dec 2025 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC0C32C933;
+	Mon, 29 Dec 2025 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025457; cv=none; b=p7up9PKB042G9AsbrXM7Fbqc9AOtPCmWMX/l1TuyarW/4jZXtlzDDtSTP4CGsEXGiNFyhnUvBvrJnQMLbwi48Iz62d1urAgC4+iPnkVhnE0SFS/8mttSPRvRZ+EMufkvIzogvuLTFALezUFw/4vfHFhmZajpTJPPEbrIOnUpqy8=
+	t=1767025489; cv=none; b=NDK0Diu9lFw9NLMLOpE/arT1oXTYJ4yjtkF2YFcNluIDjjCZI690tPfdrQWxBx5sId9MORFIg7d9bF84PXbsXdd5QWme5JSeFSa+pKdbqbEidOr7rNm/7zUi2o3b7549KRIDv+wj4La0+9sgo15m9PiRdG1f+WaChD1tMXgO6xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025457; c=relaxed/simple;
-	bh=LU8ENjP4Vy9/iJPgAtSPbrp3ng39YiRWeUEjzNHny80=;
+	s=arc-20240116; t=1767025489; c=relaxed/simple;
+	bh=QPdvk71Gj2U5Mms3sThvI6pXVb/NGo9iEisZPLtFQmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUOJYFUg/kGG/NCiCKLBmP23IMZ3ZUcvjPZ85UqBkvP3ZeCUGmXp4BLTFF4gT68wMm4ljKjo/zma9NH942olfBt4fu9WR96tC5eRlLQulUCTLCAMWabZSs7v0pP2zTCMG0jLeeeGX0mlZKq91FNvtlrqgb6zyMBWeO2R/vGBCyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgCRUJ/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CDAC4CEF7;
-	Mon, 29 Dec 2025 16:24:16 +0000 (UTC)
+	 MIME-Version; b=ju2fz0s7JcKdQgPgPpc9PJEZF0sKSLCggnxIyE0de/oLeSR7RPlRq3UbuL5Jny7YFemAkSqOo7b3atGAIjRGF7B4JTBW7W7XKJe+hUMWrmHTE6XaeyjXg2BQt99dVBS5FDpp6aTqFC/weYNpamqwHXZlPx8XbkhnzonUh4NM5jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIC8xViS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EA5C16AAE;
+	Mon, 29 Dec 2025 16:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025457;
-	bh=LU8ENjP4Vy9/iJPgAtSPbrp3ng39YiRWeUEjzNHny80=;
+	s=korg; t=1767025489;
+	bh=QPdvk71Gj2U5Mms3sThvI6pXVb/NGo9iEisZPLtFQmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgCRUJ/UFm9rzJO5Puwrt4yPYll2lU91eo+726n4Du0pJoix0UfNrC6HCWrXK+z2Q
-	 tR3zdaDYVc+toXv0+QPXvHp66lznaHehPekn2qfa9CPDKB0Sf1LzD7DfZgxIAXzMe9
-	 S45+49T0tYdhLQLBH70HlZsLXKxG5ATFGG5MwLC4=
+	b=HIC8xViSTddkjccQ8/Iz/dlcDrQd+JYEc0MghyRFwfFgzOHz/wYSYVCTdCD+x6dVP
+	 f0frf/ODyqZjc+Ue+d1jNhUyj2/ZkPb05OSwPgJ1UW1VkIufWS2c3f7sB7Fkvf12fm
+	 TKusrCsq6NyoDE7u+PMaV7SXvnF9TE870fJAnqng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jens Reidel <adrian@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 203/430] libperf cpumap: Fix perf_cpu_map__max for an empty/NULL map
-Date: Mon, 29 Dec 2025 17:10:05 +0100
-Message-ID: <20251229160731.824782053@linuxfoundation.org>
+Subject: [PATCH 6.18 204/430] clk: qcom: dispcc-sm7150: Fix dispcc_mdss_pclk0_clk_src
+Date: Mon, 29 Dec 2025 17:10:06 +0100
+Message-ID: <20251229160731.861503146@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,45 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jens Reidel <adrian@mainlining.org>
 
-[ Upstream commit a0a4173631bfcfd3520192c0a61cf911d6a52c3a ]
+[ Upstream commit e3c13e0caa8ceb7dec1a7c4fcfd9dbef56a69fbe ]
 
-Passing an empty map to perf_cpu_map__max triggered a SEGV. Explicitly
-test for the empty map.
+Set CLK_OPS_PARENT_ENABLE to ensure the parent gets prepared and enabled
+when switching to it, fixing an "rcg didn't update its configuration"
+warning.
 
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/aSwt7yzFjVJCEmVp@gmail.com/
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Jens Reidel <adrian@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250919-sm7150-dispcc-fixes-v1-3-308ad47c5fce@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/perf/cpumap.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/dispcc-sm7150.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
-index b20a5280f2b3..2bbbe1c782b8 100644
---- a/tools/lib/perf/cpumap.c
-+++ b/tools/lib/perf/cpumap.c
-@@ -368,10 +368,12 @@ struct perf_cpu perf_cpu_map__max(const struct perf_cpu_map *map)
- 		.cpu = -1
- 	};
- 
--	// cpu_map__trim_new() qsort()s it, cpu_map__default_new() sorts it as well.
--	return __perf_cpu_map__nr(map) > 0
--		? __perf_cpu_map__cpu(map, __perf_cpu_map__nr(map) - 1)
--		: result;
-+	if (!map)
-+		return result;
-+
-+	// The CPUs are always sorted and nr is always > 0 as 0 length map is
-+	// encoded as NULL.
-+	return __perf_cpu_map__cpu(map, __perf_cpu_map__nr(map) - 1);
- }
- 
- /** Is 'b' a subset of 'a'. */
+diff --git a/drivers/clk/qcom/dispcc-sm7150.c b/drivers/clk/qcom/dispcc-sm7150.c
+index bdfff246ed3f..ddc7230b8aea 100644
+--- a/drivers/clk/qcom/dispcc-sm7150.c
++++ b/drivers/clk/qcom/dispcc-sm7150.c
+@@ -356,7 +356,7 @@ static struct clk_rcg2 dispcc_mdss_pclk0_clk_src = {
+ 		.name = "dispcc_mdss_pclk0_clk_src",
+ 		.parent_data = dispcc_parent_data_4,
+ 		.num_parents = ARRAY_SIZE(dispcc_parent_data_4),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
 -- 
 2.51.0
 
