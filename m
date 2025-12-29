@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-203986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730AECE7783
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA907CE7978
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D0FC300E45D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D40F13058902
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F006B33066C;
-	Mon, 29 Dec 2025 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD93330B10;
+	Mon, 29 Dec 2025 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoT+PE/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiYjMXFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD830330653;
-	Mon, 29 Dec 2025 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6A4330B05;
+	Mon, 29 Dec 2025 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025729; cv=none; b=Xc5yqNfLi8FYDtuIKw/jnO/t84mu48OjaEqR040vWEDHV/tCZ2KluInQzsf+CospS0FaQZUA/+5QZ3oTjxdkw3SS+45bcgU8an/l0PElZgBykmlM+Luf9mIbOeKDdpMOGO0gFgXYTYSFnXack9aBZ88I39z3SVpxafrPYOEG6AA=
+	t=1767025761; cv=none; b=HLlZ+lhFz0mJNb1AYr76PVEgNKm/xGmyW3N9FgwHoDUI9+bUwCmW9EYbS3q/AzfOm2RsXsMK2KSfSlmmxbNNMJ85Fg+YKAxHvwoup+aQQInIbT0bpugqQqrYymW1Orv0oHVX+FLQkIfi0xI3dEFVGXQuXLDl/kse4+tWmJjC1KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025729; c=relaxed/simple;
-	bh=Vg1HqFPXy+pGz7Oo4kDJsAJCQbId9ypY/EfbJSi8x78=;
+	s=arc-20240116; t=1767025761; c=relaxed/simple;
+	bh=TUHzXw5wAwJBvCENSMD/6Zyu8FwJiqQ6nPRRUGbhx4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msrhnRbXnw84KpbijIqESJaSIufItrIQjl0zYaAmhzPJY/T3r/FlLNFhrVf0NclJrTGq2YX0oTJNkJjqFlSJGeZsXNQt26AWDuIaIHQHdGoNeiRL/ISXDkRzEjOYRq2cd7WmBLX+3oGzrWNVwIJJm8R/uwe96uSFJmfILkZPkh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoT+PE/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397D4C4CEF7;
-	Mon, 29 Dec 2025 16:28:49 +0000 (UTC)
+	 MIME-Version; b=bKQbuMhFPD3KClD2veIqNkK0qNnMf+W4vjI8Jh+5sdY/C5/+tBMGaknJNeahKXuqK2K+7+Mn1kX3X66axsL6rSmDzu0NtwKVswhQAVLsy+lP7bqkT1coJH1ifWAZ8pMm/9cwx4A3QtmgW0XZLEcLVI0Dv9Q7VdQ9dnN0PYjEPIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiYjMXFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F927C4CEF7;
+	Mon, 29 Dec 2025 16:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025729;
-	bh=Vg1HqFPXy+pGz7Oo4kDJsAJCQbId9ypY/EfbJSi8x78=;
+	s=korg; t=1767025761;
+	bh=TUHzXw5wAwJBvCENSMD/6Zyu8FwJiqQ6nPRRUGbhx4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoT+PE/n6EEujVxVXzi1PaKkojaM3/ln1jSzXYk9mJufWplFdUTyRaAZXchGpd87M
-	 OL6c2HsxYd0ZRcYuoCDiAGRBQkCxOgSrglxElqT2VgXzTHKGuKcKgUG8Plxp1i65HK
-	 obVQBh4LQTn9WXpsUGZlpnPUHNTjqGivIk6XY/r8=
+	b=DiYjMXFNRdIKq8FK/cZhqh2zXQS4T1cT7FH7nRqhx0euLZeEHd+VTLuwnwguUVpYw
+	 /RDGsdvUauev+yun/i9ClTSqf0LwdUHCURofgOPf7gyZpEAz7oemUcYqfAOVNMrHlA
+	 Wcdxne3b/wxHGMdQfI1u0cUVy7D2f1zgjdBCFiFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Mike Christie <michael.christie@oracle.com>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 309/430] scsi: target: Reset t_task_cdb pointer in error case
-Date: Mon, 29 Dec 2025 17:11:51 +0100
-Message-ID: <20251229160735.704663426@linuxfoundation.org>
+Subject: [PATCH 6.18 310/430] scsi: mpi3mr: Read missing IOCFacts flag for reply queue full overflow
+Date: Mon, 29 Dec 2025 17:11:52 +0100
+Message-ID: <20251229160735.741390479@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,39 +63,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-commit 5053eab38a4c4543522d0c320c639c56a8b59908 upstream.
+commit d373163194982f43b92c552c138c29d9f0b79553 upstream.
 
-If allocation of cmd->t_task_cdb fails, it remains NULL but is later
-dereferenced in the 'err' path.
+The driver was not reading the MAX_REQ_PER_REPLY_QUEUE_LIMIT IOCFacts
+flag, so the reply-queue-full handling was never enabled, even on
+firmware that supports it. Reading this flag enables the feature and
+prevents reply queue overflow.
 
-In case of error, reset NULL t_task_cdb value to point at the default
-fixed-size buffer.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 9e95fb805dc0 ("scsi: target: Fix NULL pointer dereference")
+Fixes: f08b24d82749 ("scsi: mpi3mr: Avoid reply queue full condition")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Link: https://patch.msgid.link/20251118084014.324940-1-a.vatoropin@crpt.ru
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Link: https://patch.msgid.link/20251211002929.22071-1-chandrakanth.patil@broadcom.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/mpi3mr/mpi/mpi30_ioc.h |    1 +
+ drivers/scsi/mpi3mr/mpi3mr_fw.c     |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -1524,6 +1524,7 @@ target_cmd_init_cdb(struct se_cmd *cmd,
- 	if (scsi_command_size(cdb) > sizeof(cmd->__t_task_cdb)) {
- 		cmd->t_task_cdb = kzalloc(scsi_command_size(cdb), gfp);
- 		if (!cmd->t_task_cdb) {
-+			cmd->t_task_cdb = &cmd->__t_task_cdb[0];
- 			pr_err("Unable to allocate cmd->t_task_cdb"
- 				" %u > sizeof(cmd->__t_task_cdb): %lu ops\n",
- 				scsi_command_size(cdb),
+--- a/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
++++ b/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
+@@ -166,6 +166,7 @@ struct mpi3_ioc_facts_data {
+ #define MPI3_IOCFACTS_FLAGS_SIGNED_NVDATA_REQUIRED            (0x00010000)
+ #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK            (0x0000ff00)
+ #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT           (8)
++#define MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT     (0x00000040)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_MASK          (0x00000030)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_SHIFT		(4)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_NOT_STARTED   (0x00000000)
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -3158,6 +3158,8 @@ static void mpi3mr_process_factsdata(str
+ 	mrioc->facts.dma_mask = (facts_flags &
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK) >>
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT;
++	mrioc->facts.max_req_limit = (facts_flags &
++			MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT);
+ 	mrioc->facts.protocol_flags = facts_data->protocol_flags;
+ 	mrioc->facts.mpi_version = le32_to_cpu(facts_data->mpi_version.word);
+ 	mrioc->facts.max_reqs = le16_to_cpu(facts_data->max_outstanding_requests);
 
 
 
