@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-204132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C42CE8213
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 21:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8151CE8231
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 21:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C77B63013EBD
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 20:23:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A82E930088B3
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 20:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C4A219E8C;
-	Mon, 29 Dec 2025 20:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D76D2C0F7B;
+	Mon, 29 Dec 2025 20:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqx8Kf/G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quq4n2jZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3EA2E413
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 20:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CD72C08BF
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 20:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767039832; cv=none; b=OUTOV1tSMtJK1i08ujiFSeKrJ1hNUCc1hHb2RY4SRFMVx++ez92KKwx+4FfcOTeh4wcIGv7DUl7dKsfNqZpTASt37a+Le4ZeJ3esf/7c14Ra7igVdI9p8ydphnly7tPEkvfopZE54LWQkiO1TVRoqVgyaYn0CVhCP4z6wNj6hhM=
+	t=1767040596; cv=none; b=R9+TybqkjvcKtuxLrl4ASLPIXgyjdHcd6QAymIHXJ2HVcbB7R6Byn6WZpwvNkaUdw1AyYVjQgniI+DXrHeLz7hIEuPPpMQQrUivTnKMT9boPxy0LZOvSakySRRK6UBN+fL4KrrFx6hv2lGI+lAeyc56JwaCnKrgCwAVmGiQlw5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767039832; c=relaxed/simple;
-	bh=sGbEtlURuvsYDDH1fmrVTU0qD4jSU/EHywdgdHhoFqA=;
+	s=arc-20240116; t=1767040596; c=relaxed/simple;
+	bh=TOhTEwR3nKkstsauZublo1gDsjdyceSBo/ZaRQD0VjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+4po5IiAtnYyHS03iTXy3/3oSTYkkXzjSAEtflLvkGSM/hxZU8uHxetgEvColoQ+25yTtCVQoNHQ/DOyWhKkHovrXIXoqBr1ho1ZnDUZH2EVAaU4pnlTZGSv2ZrW7MUpxpmKQ7UuSJC8qAY5ba79T4zKGHpWHvqoxag79PR2hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqx8Kf/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114ADC4CEF7;
-	Mon, 29 Dec 2025 20:23:51 +0000 (UTC)
+	 MIME-Version; b=Cc7yRUt8GYJwigDEXu90Ln4JHimkrscOMG61b2hhcNlWkBVnvuTpIZCjo9YksVsI1wb6a9qzyXgf/d/ed6R2cFuBOryZZML1+nu56PD7ts2bpp2HSaQlCiChMCtb2fRFt6fyF9bcCnnyooq9wTw7LhNNlzmALYbMl91lvfpm6JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quq4n2jZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E193C4CEF7;
+	Mon, 29 Dec 2025 20:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767039832;
-	bh=sGbEtlURuvsYDDH1fmrVTU0qD4jSU/EHywdgdHhoFqA=;
+	s=k20201202; t=1767040596;
+	bh=TOhTEwR3nKkstsauZublo1gDsjdyceSBo/ZaRQD0VjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqx8Kf/GQtEB1vaQ9KIRpxJdIvNzbxZ/x0Fv2AXCr8xGuPkuPElX7RlScls6wsNtq
-	 2bMAN+xkoZlXLTqpCgYMBNUouan1uxY9rvcpM8gFKEDfzc1MzsiW8ZznDgnW1K1WdD
-	 1GCQ94Qll2yJAMNBDSWPqA26CHHHWMttPecp71V71D6jglQ0z6vXMW7NvHgaC48hqm
-	 VtDDCC1OJtEValc4C/GcsBrz9DXIw20HGAUogOw1jEvOj6wtiyImi+JXe2h5mVTpPX
-	 yUTmtpNkh9LWRodostR9WbbGm1bvjauHrNYyI6v4FqGlgomHLExegftFoYJlpJRE8e
-	 8uxBUOJ877ppQ==
+	b=quq4n2jZiKkBwys440hnmC5p8iHQuOltpWyUJrgUqzZDdKr/NED3jsknEL8Lm0AZh
+	 snbXRW+06krSh1dIja58mvAP8+8dovvhOQTfB+Ck4RvjkPvuHuY6dpwcOm+HZ72S34
+	 gjtZCsWMwXdfxfnnVsgbO4JbeM0/sTi4o462Ax/tTpwkPoWbDHKk8aMMqx+h2R5EOU
+	 LI1Xy4Yk4yHsuIgT3ws3/6+WbmUuJNWPMPeVQwShzu9zZxd7f+Ch6DlBjwXZv9RCKi
+	 yR6C92SdOoBoFjJF4UwSpfqz5BBgQuZ5vonn7RqhdRPhfunDz0NE5jsrwzxtZfa2Mn
+	 9EQlKn0OCPnIA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Zicheng Qu <quzicheng@huawei.com>,
+Cc: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] sched/eevdf: Fix min_vruntime vs avg_vruntime
-Date: Mon, 29 Dec 2025 15:23:50 -0500
-Message-ID: <20251229202350.1683612-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] wifi: mt76: Fix DTS power-limits on little endian systems
+Date: Mon, 29 Dec 2025 15:36:31 -0500
+Message-ID: <20251229203631.1694637-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122902-untreated-unbiased-5922@gregkh>
-References: <2025122902-untreated-unbiased-5922@gregkh>
+In-Reply-To: <2025122936-python-fidgeting-f6f4@gregkh>
+References: <2025122936-python-fidgeting-f6f4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,324 +58,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
 
-[ Upstream commit 79f3f9bedd149ea438aaeb0fb6a083637affe205 ]
+[ Upstream commit 38b845e1f9e810869b0a0b69f202b877b7b7fb12 ]
 
-Basically, from the constraint that the sum of lag is zero, you can
-infer that the 0-lag point is the weighted average of the individual
-vruntime, which is what we're trying to compute:
+The power-limits for ru and mcs and stored in the devicetree as bytewise
+array (often with sizes which are not a multiple of 4). These arrays have a
+prefix which defines for how many modes a line is applied. This prefix is
+also only a byte - but the code still tried to fix the endianness of this
+byte with a be32 operation. As result, loading was mostly failing or was
+sending completely unexpected values to the firmware.
 
-        \Sum w_i * v_i
-  avg = --------------
-           \Sum w_i
+Since the other rates are also stored in the devicetree as bytewise arrays,
+just drop the u32 access + be32_to_cpu conversion and directly access them
+as bytes arrays.
 
-Now, since vruntime takes the whole u64 (worse, it wraps), this
-multiplication term in the numerator is not something we can compute;
-instead we do the min_vruntime (v0 henceforth) thing like:
-
-  v_i = (v_i - v0) + v0
-
-This does two things:
- - it keeps the key: (v_i - v0) 'small';
- - it creates a relative 0-point in the modular space.
-
-If you do that subtitution and work it all out, you end up with:
-
-        \Sum w_i * (v_i - v0)
-  avg = --------------------- + v0
-              \Sum w_i
-
-Since you cannot very well track a ratio like that (and not suffer
-terrible numerical problems) we simpy track the numerator and
-denominator individually and only perform the division when strictly
-needed.
-
-Notably, the numerator lives in cfs_rq->avg_vruntime and the denominator
-lives in cfs_rq->avg_load.
-
-The one extra 'funny' is that these numbers track the entities in the
-tree, and current is typically outside of the tree, so avg_vruntime()
-adds current when needed before doing the division.
-
-(vruntime_eligible() elides the division by cross-wise multiplication)
-
-Anyway, as mentioned above, we currently use the CFS era min_vruntime
-for this purpose. However, this thing can only move forward, while the
-above avg can in fact move backward (when a non-eligible task leaves,
-the average becomes smaller), this can cause trouble when through
-happenstance (or construction) these values drift far enough apart to
-wreck the game.
-
-Replace cfs_rq::min_vruntime with cfs_rq::zero_vruntime which is kept
-near/at avg_vruntime, following its motion.
-
-The down-side is that this requires computing the avg more often.
-
-Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
-Reported-by: Zicheng Qu <quzicheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251106111741.GC4068168@noisy.programming.kicks-ass.net
 Cc: stable@vger.kernel.org
-[ Adjust context in comments + init_cfs_rq ]
+Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
+Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
+Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/debug.c |  8 ++---
- kernel/sched/fair.c  | 84 ++++++++++----------------------------------
- kernel/sched/sched.h |  4 +--
- 3 files changed, 25 insertions(+), 71 deletions(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 37 +++++++++++++--------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 9815f9a0cd59..72958b31549f 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -804,7 +804,7 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 49e6c866a57f..1663090e58bb 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -245,6 +245,19 @@ mt76_get_of_array(struct device_node *np, char *name, size_t *len, int min)
+ 	return prop->value;
+ }
  
- void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
++static const s8 *
++mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
++{
++	struct property *prop = of_find_property(np, name, NULL);
++
++	if (!prop || !prop->value || prop->length < min)
++		return NULL;
++
++	*len = prop->length;
++
++	return prop->value;
++}
++
+ static struct device_node *
+ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
  {
--	s64 left_vruntime = -1, min_vruntime, right_vruntime = -1, left_deadline = -1, spread;
-+	s64 left_vruntime = -1, zero_vruntime, right_vruntime = -1, left_deadline = -1, spread;
- 	struct sched_entity *last, *first, *root;
- 	struct rq *rq = cpu_rq(cpu);
- 	unsigned long flags;
-@@ -827,15 +827,15 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- 	last = __pick_last_entity(cfs_rq);
- 	if (last)
- 		right_vruntime = last->vruntime;
--	min_vruntime = cfs_rq->min_vruntime;
-+	zero_vruntime = cfs_rq->zero_vruntime;
- 	raw_spin_rq_unlock_irqrestore(rq, flags);
+@@ -284,7 +297,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
+ }
  
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_deadline",
- 			SPLIT_NS(left_deadline));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_vruntime",
- 			SPLIT_NS(left_vruntime));
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "min_vruntime",
--			SPLIT_NS(min_vruntime));
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "zero_vruntime",
-+			SPLIT_NS(zero_vruntime));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
- 			SPLIT_NS(avg_vruntime(cfs_rq)));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 62b8c7e914eb..10da06fcd710 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -553,7 +553,7 @@ static inline bool entity_before(const struct sched_entity *a,
- 
- static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ static void
+-mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
++mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+ 		       s8 target_power, s8 nss_delta, s8 *max_power)
  {
--	return (s64)(se->vruntime - cfs_rq->min_vruntime);
-+	return (s64)(se->vruntime - cfs_rq->zero_vruntime);
- }
+ 	int i;
+@@ -293,15 +306,14 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
+ 		return;
  
- #define __node_2_se(node) \
-@@ -605,13 +605,13 @@ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
-  *
-  * Which we track using:
-  *
-- *                    v0 := cfs_rq->min_vruntime
-+ *                    v0 := cfs_rq->zero_vruntime
-  * \Sum (v_i - v0) * w_i := cfs_rq->avg_vruntime
-  *              \Sum w_i := cfs_rq->avg_load
-  *
-- * Since min_vruntime is a monotonic increasing variable that closely tracks
-- * the per-task service, these deltas: (v_i - v), will be in the order of the
-- * maximal (virtual) lag induced in the system due to quantisation.
-+ * Since zero_vruntime closely tracks the per-task service, these
-+ * deltas: (v_i - v), will be in the order of the maximal (virtual) lag
-+ * induced in the system due to quantisation.
-  *
-  * Also, we use scale_load_down() to reduce the size.
-  *
-@@ -670,7 +670,7 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
- 		avg = div_s64(avg, load);
- 	}
- 
--	return cfs_rq->min_vruntime + avg;
-+	return cfs_rq->zero_vruntime + avg;
- }
- 
- /*
-@@ -736,7 +736,7 @@ static int vruntime_eligible(struct cfs_rq *cfs_rq, u64 vruntime)
- 		load += weight;
- 	}
- 
--	return avg >= (s64)(vruntime - cfs_rq->min_vruntime) * load;
-+	return avg >= (s64)(vruntime - cfs_rq->zero_vruntime) * load;
- }
- 
- int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
-@@ -744,42 +744,14 @@ int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	return vruntime_eligible(cfs_rq, se->vruntime);
- }
- 
--static u64 __update_min_vruntime(struct cfs_rq *cfs_rq, u64 vruntime)
-+static void update_zero_vruntime(struct cfs_rq *cfs_rq)
- {
--	u64 min_vruntime = cfs_rq->min_vruntime;
--	/*
--	 * open coded max_vruntime() to allow updating avg_vruntime
--	 */
--	s64 delta = (s64)(vruntime - min_vruntime);
--	if (delta > 0) {
--		avg_vruntime_update(cfs_rq, delta);
--		min_vruntime = vruntime;
--	}
--	return min_vruntime;
--}
--
--static void update_min_vruntime(struct cfs_rq *cfs_rq)
--{
--	struct sched_entity *se = __pick_root_entity(cfs_rq);
--	struct sched_entity *curr = cfs_rq->curr;
--	u64 vruntime = cfs_rq->min_vruntime;
--
--	if (curr) {
--		if (curr->on_rq)
--			vruntime = curr->vruntime;
--		else
--			curr = NULL;
--	}
-+	u64 vruntime = avg_vruntime(cfs_rq);
-+	s64 delta = (s64)(vruntime - cfs_rq->zero_vruntime);
- 
--	if (se) {
--		if (!curr)
--			vruntime = se->min_vruntime;
--		else
--			vruntime = min_vruntime(vruntime, se->min_vruntime);
--	}
-+	avg_vruntime_update(cfs_rq, delta);
- 
--	/* ensure we never gain time by being placed backwards. */
--	cfs_rq->min_vruntime = __update_min_vruntime(cfs_rq, vruntime);
-+	cfs_rq->zero_vruntime = vruntime;
- }
- 
- static inline u64 cfs_rq_min_slice(struct cfs_rq *cfs_rq)
-@@ -852,6 +824,7 @@ RB_DECLARE_CALLBACKS(static, min_vruntime_cb, struct sched_entity,
- static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	avg_vruntime_add(cfs_rq, se);
-+	update_zero_vruntime(cfs_rq);
- 	se->min_vruntime = se->vruntime;
- 	se->min_slice = se->slice;
- 	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
-@@ -863,6 +836,7 @@ static void __dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	rb_erase_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
- 				  &min_vruntime_cb);
- 	avg_vruntime_sub(cfs_rq, se);
-+	update_zero_vruntime(cfs_rq);
- }
- 
- struct sched_entity *__pick_root_entity(struct cfs_rq *cfs_rq)
-@@ -1243,7 +1217,6 @@ static void update_curr(struct cfs_rq *cfs_rq)
- 
- 	curr->vruntime += calc_delta_fair(delta_exec, curr);
- 	resched = update_deadline(cfs_rq, curr);
--	update_min_vruntime(cfs_rq);
- 
- 	if (entity_is_task(curr)) {
- 		struct task_struct *p = task_of(curr);
-@@ -3937,15 +3910,6 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		update_load_add(&cfs_rq->load, se->load.weight);
- 		if (!curr)
- 			__enqueue_entity(cfs_rq, se);
--
--		/*
--		 * The entity's vruntime has been adjusted, so let's check
--		 * whether the rq-wide min_vruntime needs updated too. Since
--		 * the calculations above require stable min_vruntime rather
--		 * than up-to-date one, we do the update at the end of the
--		 * reweight process.
--		 */
--		update_min_vruntime(cfs_rq);
+ 	for (i = 0; i < pwr_len; i++) {
+-		pwr[i] = min_t(s8, target_power,
+-			       be32_to_cpu(data[i]) + nss_delta);
++		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
+ 		*max_power = max(*max_power, pwr[i]);
  	}
  }
  
-@@ -5614,15 +5578,6 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
- 
- 	update_cfs_group(se);
- 
--	/*
--	 * Now advance min_vruntime if @se was the entity holding it back,
--	 * except when: DEQUEUE_SAVE && !DEQUEUE_MOVE, in this case we'll be
--	 * put back on, and if we advance min_vruntime, we'll be placed back
--	 * further than we started -- i.e. we'll be penalized.
--	 */
--	if ((flags & (DEQUEUE_SAVE | DEQUEUE_MOVE)) != DEQUEUE_SAVE)
--		update_min_vruntime(cfs_rq);
--
- 	if (flags & DEQUEUE_DELAYED)
- 		finish_delayed_dequeue_entity(se);
- 
-@@ -9165,7 +9120,6 @@ static void yield_task_fair(struct rq *rq)
- 	if (entity_eligible(cfs_rq, se)) {
- 		se->vruntime = se->deadline;
- 		se->deadline += calc_delta_fair(se->slice, se);
--		update_min_vruntime(cfs_rq);
- 	}
- }
- 
-@@ -13106,7 +13060,7 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
- }
- 
- /*
-- * se_fi_update - Update the cfs_rq->min_vruntime_fi in a CFS hierarchy if needed.
-+ * se_fi_update - Update the cfs_rq->zero_vruntime_fi in a CFS hierarchy if needed.
-  */
- static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
- 			 bool forceidle)
-@@ -13120,7 +13074,7 @@ static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
- 			cfs_rq->forceidle_seq = fi_seq;
- 		}
- 
--		cfs_rq->min_vruntime_fi = cfs_rq->min_vruntime;
-+		cfs_rq->zero_vruntime_fi = cfs_rq->zero_vruntime;
- 	}
- }
- 
-@@ -13173,11 +13127,11 @@ bool cfs_prio_less(const struct task_struct *a, const struct task_struct *b,
- 
- 	/*
- 	 * Find delta after normalizing se's vruntime with its cfs_rq's
--	 * min_vruntime_fi, which would have been updated in prior calls
-+	 * zero_vruntime_fi, which would have been updated in prior calls
- 	 * to se_fi_update().
- 	 */
- 	delta = (s64)(sea->vruntime - seb->vruntime) +
--		(s64)(cfs_rqb->min_vruntime_fi - cfs_rqa->min_vruntime_fi);
-+		(s64)(cfs_rqb->zero_vruntime_fi - cfs_rqa->zero_vruntime_fi);
- 
- 	return delta > 0;
- }
-@@ -13415,7 +13369,7 @@ static void set_next_task_fair(struct rq *rq, struct task_struct *p, bool first)
- void init_cfs_rq(struct cfs_rq *cfs_rq)
+ static void
+ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+-			     const __be32 *data, size_t len, s8 target_power,
++			     const s8 *data, size_t len, s8 target_power,
+ 			     s8 nss_delta, s8 *max_power)
  {
- 	cfs_rq->tasks_timeline = RB_ROOT_CACHED;
--	cfs_rq->min_vruntime = (u64)(-(1LL << 20));
-+	cfs_rq->zero_vruntime = (u64)(-(1LL << 20));
- #ifdef CONFIG_SMP
- 	raw_spin_lock_init(&cfs_rq->removed.lock);
- #endif
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index cf541c4502d9..6070331772ea 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -660,10 +660,10 @@ struct cfs_rq {
- 	s64			avg_vruntime;
- 	u64			avg_load;
+ 	int i, cur;
+@@ -309,8 +321,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+ 	if (!data)
+ 		return;
  
--	u64			min_vruntime;
-+	u64			zero_vruntime;
- #ifdef CONFIG_SCHED_CORE
- 	unsigned int		forceidle_seq;
--	u64			min_vruntime_fi;
-+	u64			zero_vruntime_fi;
- #endif
+-	len /= 4;
+-	cur = be32_to_cpu(data[0]);
++	cur = data[0];
+ 	for (i = 0; i < pwr_num; i++) {
+ 		if (len < pwr_len + 1)
+ 			break;
+@@ -325,7 +336,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+ 		if (!len)
+ 			break;
  
- 	struct rb_root_cached	tasks_timeline;
+-		cur = be32_to_cpu(data[0]);
++		cur = data[0];
+ 	}
+ }
+ 
+@@ -336,7 +347,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct device_node *np;
+-	const __be32 *val;
++	const s8 *val;
+ 	char name[16];
+ 	u32 mcs_rates = dev->drv->mcs_rates;
+ 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
+@@ -382,21 +393,21 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ 
+ 	txs_delta = mt76_get_txs_delta(np, hweight8(phy->antenna_mask));
+ 
+-	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
++	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
+ 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ofdm",
+-				&len, ARRAY_SIZE(dest->ofdm));
++	val = mt76_get_of_array_s8(np, "rates-ofdm",
++				   &len, ARRAY_SIZE(dest->ofdm));
+ 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
+ 				     ARRAY_SIZE(dest->mcs), val, len,
+ 				     target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
+ 				     ARRAY_SIZE(dest->ru), val, len,
+ 				     target_power, txs_delta, &max_power);
 -- 
 2.51.0
 
