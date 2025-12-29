@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-204008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EFDCE77BF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF64CE7936
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 71118300FA29
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 522A23015E19
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B689331219;
-	Mon, 29 Dec 2025 16:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C0E330649;
+	Mon, 29 Dec 2025 16:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq+FdrAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/BseDG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288EA33064F;
-	Mon, 29 Dec 2025 16:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BB931B111;
+	Mon, 29 Dec 2025 16:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025792; cv=none; b=EjA6Wb6RghNM+RQc7zOUAkCzqFxZrzZcWF4ZvGVCq1S3PvDCGrsSMcqx0pZKIeoGss03WfMo6JpV0iaveshFJcaXLia8muB6Cl/PqkBCEf5xr5AgaT3YubgDn2UdEjNhKrFM/X4oboXG1k321FLc/cxE7dpcCV27BKY6MQJiyzg=
+	t=1767025809; cv=none; b=ruS+ESKuZPvtCHoJ7yNmQA6XioQpmM7ji9a0a7tJrw3C3LMHB5A6Duf6N8D6QXHk3A4MsOUUasUo7Z9eRZcAjCw3yrcqc/oUCrAH1kFfJAUrmrceE19LpvAcM//v9aMwJu5AUO/33aJ/Bc7mgplPVSnwREynC5s4DItcGtpR4yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025792; c=relaxed/simple;
-	bh=/0Cc5hSvvW6ISYpSslGOaHor7aF2T5lE48NdxIAq2cw=;
+	s=arc-20240116; t=1767025809; c=relaxed/simple;
+	bh=z6iWhTFUFQ29d1qAC9sDYX/3dzU1diKfsqSuapA0/xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PigQDaDNRKegy+h8B8f5QI7vXlY0ryBSX863QewVlYflkAboerDPsgzMWxfLYlNmvdNU2IfgHsFOcNm3hQyl79XKC1LOueNUAfyPtJ9t2w1dF0Pu4Hwvat35eFFcSwwNCub54pb4Q85JQAn+pQ0oAkOtqYSLrbeBeDNnFbuc7XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq+FdrAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A4C4CEF7;
-	Mon, 29 Dec 2025 16:29:51 +0000 (UTC)
+	 MIME-Version; b=dn9txm/B7ZnO0GUJJM70QkWfKlIiqd27VtsKRjGZxQFortm1rgGhQabedNPrUgBwekuAaVzhBeR9zE1A3B6EUB4dRfzhe4TN2xFGL8Zx4nCFKuqA/rX2dy57VC6wSkcJ5VPYE1sEusoYfhvSy1mXC6naHjOj5zee0lVNNUC7Jd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/BseDG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AE9C4CEF7;
+	Mon, 29 Dec 2025 16:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025791;
-	bh=/0Cc5hSvvW6ISYpSslGOaHor7aF2T5lE48NdxIAq2cw=;
+	s=korg; t=1767025808;
+	bh=z6iWhTFUFQ29d1qAC9sDYX/3dzU1diKfsqSuapA0/xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qq+FdrAPBwuDjVNIj8cAk6pYBDNPlEH+U8L6YEtDT7b4m2jvtRSg5EnvD1+ls1GyN
-	 aJ9TFdC1Xls0CZQBMRl3qK9/DGnkLoMwfP4mLW67ebMI1Fg+GQDyW93V12PNLE8vnG
-	 kWovKubKpYXBDAzN38SF5VtQ5Fd+NWFTGBWdq6c4=
+	b=W/BseDG5TUdHKmvsKpCHZTXpJK8j8YktyB53lxtGHsRzRU98oTIdk3uNBauqimEgV
+	 Sc/IBWhjYOxpSnA9Tx4wHy/4CWfcEV6Y/hnp1ba5tawVckJt2MkMsOLVDbj+0vcPqt
+	 vn07nUrX+VUkxpK6wnDBy8rsstYAx+s5skt00qyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghwan Baek <sh8267.baek@samsung.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 311/430] scsi: ufs: core: Add ufshcd_update_evt_hist() for UFS suspend error
-Date: Mon, 29 Dec 2025 17:11:53 +0100
-Message-ID: <20251229160735.776530021@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Prusakowski <jprusakowski@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.18 312/430] f2fs: ensure node page reads complete before f2fs_put_super() finishes
+Date: Mon, 29 Dec 2025 17:11:54 +0100
+Message-ID: <20251229160735.812317518@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,46 +65,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Jan Prusakowski <jprusakowski@google.com>
 
-commit c9f36f04a8a2725172cdf2b5e32363e4addcb14c upstream.
+commit 297baa4aa263ff8f5b3d246ee16a660d76aa82c4 upstream.
 
-If UFS resume fails, the event history is updated in ufshcd_resume(), but
-there is no code anywhere to record UFS suspend. Therefore, add code to
-record UFS suspend error event history.
+Xfstests generic/335, generic/336 sometimes crash with the following message:
 
-Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://patch.msgid.link/20251210063854.1483899-2-sh8267.baek@samsung.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+F2FS-fs (dm-0): detect filesystem reference count leak during umount, type: 9, count: 1
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/super.c:1939!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 609351 Comm: umount Tainted: G        W           6.17.0-rc5-xfstests-g9dd1835ecda5 #1 PREEMPT(none)
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_put_super+0x3b3/0x3c0
+Call Trace:
+ <TASK>
+ generic_shutdown_super+0x7e/0x190
+ kill_block_super+0x1a/0x40
+ kill_f2fs_super+0x9d/0x190
+ deactivate_locked_super+0x30/0xb0
+ cleanup_mnt+0xba/0x150
+ task_work_run+0x5c/0xa0
+ exit_to_user_mode_loop+0xb7/0xc0
+ do_syscall_64+0x1ae/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ </TASK>
+---[ end trace 0000000000000000 ]---
+
+It appears that sometimes it is possible that f2fs_put_super() is called before
+all node page reads are completed.
+Adding a call to f2fs_wait_on_all_pages() for F2FS_RD_NODE fixes the problem.
+
+Cc: stable@kernel.org
+Fixes: 20872584b8c0b ("f2fs: fix to drop all dirty meta/node pages during umount()")
+Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10223,7 +10223,7 @@ static int ufshcd_suspend(struct ufs_hba
- 	ret = ufshcd_setup_clocks(hba, false);
- 	if (ret) {
- 		ufshcd_enable_irq(hba);
--		return ret;
-+		goto out;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1988,14 +1988,6 @@ static void f2fs_put_super(struct super_
+ 		truncate_inode_pages_final(META_MAPPING(sbi));
  	}
- 	if (ufshcd_is_clkgating_allowed(hba)) {
- 		hba->clk_gating.state = CLKS_OFF;
-@@ -10235,6 +10235,9 @@ static int ufshcd_suspend(struct ufs_hba
- 	/* Put the host controller in low power mode if possible */
- 	ufshcd_hba_vreg_set_lpm(hba);
- 	ufshcd_pm_qos_update(hba, false);
-+out:
-+	if (ret)
-+		ufshcd_update_evt_hist(hba, UFS_EVT_SUSPEND_ERR, (u32)ret);
- 	return ret;
- }
  
+-	for (i = 0; i < NR_COUNT_TYPE; i++) {
+-		if (!get_pages(sbi, i))
+-			continue;
+-		f2fs_err(sbi, "detect filesystem reference count leak during "
+-			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
+-		f2fs_bug_on(sbi, 1);
+-	}
+-
+ 	f2fs_bug_on(sbi, sbi->fsync_node_num);
+ 
+ 	f2fs_destroy_compress_inode(sbi);
+@@ -2006,6 +1998,15 @@ static void f2fs_put_super(struct super_
+ 	iput(sbi->meta_inode);
+ 	sbi->meta_inode = NULL;
+ 
++	/* Should check the page counts after dropping all node/meta pages */
++	for (i = 0; i < NR_COUNT_TYPE; i++) {
++		if (!get_pages(sbi, i))
++			continue;
++		f2fs_err(sbi, "detect filesystem reference count leak during "
++			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
++		f2fs_bug_on(sbi, 1);
++	}
++
+ 	/*
+ 	 * iput() can update stat information, if f2fs_write_checkpoint()
+ 	 * above failed with error.
 
 
 
