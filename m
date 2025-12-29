@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-204092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F674CE79BA
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E107FCE79FC
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A2D63012A45
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 47B593033197
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAEE335066;
-	Mon, 29 Dec 2025 16:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19459335079;
+	Mon, 29 Dec 2025 16:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Sd1Xk7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2OA5ZTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720B2334C0A;
-	Mon, 29 Dec 2025 16:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FE33346BD;
+	Mon, 29 Dec 2025 16:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767026027; cv=none; b=SL8QcuokqQq81eEYmrF/6U6footrDHNDzTNzDRvQlCq1C8C6N/6R3c7OijjybiRaAIfrTWdRs8pYFbSpLFmw/TFPAHMTQEPDwRAetFafizNpPvWY+KWbfPj6haOkOxWsgL0ZVSNdVNhuw+VT9EJbGRYMXABronVRHRBFTOZFQJA=
+	t=1767026052; cv=none; b=CmztLy5+guNLe3IC3RWHz09q01BZsa97f6CUCYZD3aggd2Pxj2kpzF4/B3X7CjbXO5z9lNoKktf24JWB1As+Mv0lsdORIZqIuZ/vgrDvO5PFD0eNTK05JxF6o9vnL8Q3tlR68iJ6MITk8xAQss6vpYe/CjhgnoBBgLDJxpl2N2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767026027; c=relaxed/simple;
-	bh=X+Fp0aY5vsBp2Q4TcTUl/baqhRpdFb3Bw1gSqJ7oQh4=;
+	s=arc-20240116; t=1767026052; c=relaxed/simple;
+	bh=OGFWPct3NVSFV9FimeVOKHnE+YjaYrnHhL9Bb53l17w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q/Ajwu/u1UNBsDwAaPliCiC6WSkv2P1r49zuCzEwMiyde5kLeJKK9583JX+wYU7S8Gz/YxGbBNODXNDUkOkhjRTHCsggFX0fp8sLKA/APcVZIKTI0m058wYjNPdCnmjwXVlOPJsP5gLVNBbtRgm6kX4220L2EnummOlR8pTmyT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Sd1Xk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2250C4CEF7;
-	Mon, 29 Dec 2025 16:33:46 +0000 (UTC)
+	 MIME-Version; b=jPEHbPUfQmBLZRpuCb+stI4j6bxkxLBNt1hynVyQE23XL1xNQljODV3jVA7vubjxmBOXT+BefExmreb+3Mwzp38vqRrMIH6By8OSgoVUrBDNKDKIa130aKjMoG928rpv203Tofid9qMOnlSjas8U/ylgJMTfLM0YxG931YtsF64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2OA5ZTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C582C4CEF7;
+	Mon, 29 Dec 2025 16:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767026027;
-	bh=X+Fp0aY5vsBp2Q4TcTUl/baqhRpdFb3Bw1gSqJ7oQh4=;
+	s=korg; t=1767026052;
+	bh=OGFWPct3NVSFV9FimeVOKHnE+YjaYrnHhL9Bb53l17w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9Sd1Xk7TMdZt7MGo0C5UyOLl1e6GpQuf6lyriBuUa6yQmi4P9Qs10UqFDGxTjiRg
-	 N9CE0F919CuKcgCpdqhyzDIv0VuS4U/W94pbDI4Gio0185OVuz5Sc5ReDSVEZ4zRqE
-	 82o3iby4qP6w71RJZcnSy7AB8zwAZMEqKR9Vtagw=
+	b=n2OA5ZTJ7YffTEKwAeaRrUV7XtVSIhKvZl4h+5UQDaUVI2TrVPazc5LSEYydACbqd
+	 n815TmHDkeSqYNsCVzOzetqfnHRuGy1+k1rb3BTankZh8D04OoZs+j9EQdWFXSEgDT
+	 LBbXz97XEVgkAzeOFFZLDl3wQIApOSpAG7JnOTpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Subject: [PATCH 6.18 414/430] platform/x86: intel: chtwc_int33fe: dont dereference swnode args
-Date: Mon, 29 Dec 2025 17:13:36 +0100
-Message-ID: <20251229160739.548995897@linuxfoundation.org>
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Jerry Shih <jerry.shih@sifive.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.18 415/430] lib/crypto: riscv: Depend on RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+Date: Mon, 29 Dec 2025 17:13:37 +0100
+Message-ID: <20251229160739.586511544@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -60,120 +58,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 527250cd9092461f1beac3e4180a4481bffa01b5 upstream.
+commit 1cd5bb6e9e027bab33aafd58fe8340124869ba62 upstream.
 
-Members of struct software_node_ref_args should not be dereferenced
-directly but set using the provided macros. Commit d7cdbbc93c56
-("software node: allow referencing firmware nodes") changed the name of
-the software node member and caused a build failure. Remove all direct
-dereferences of the ref struct as a fix.
+Replace the RISCV_ISA_V dependency of the RISC-V crypto code with
+RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS, which implies RISCV_ISA_V as
+well as vector unaligned accesses being efficient.
 
-However, this driver also seems to abuse the software node interface by
-waiting for a node with an arbitrary name "intel-xhci-usb-sw" to appear
-in the system before setting up the reference for the I2C device, while
-the actual software node already exists in the intel-xhci-usb-role-switch
-module and should be used to set up a static reference. Add a FIXME for
-a future improvement.
+This is necessary because this code assumes that vector unaligned
+accesses are supported and are efficient.  (It does so to avoid having
+to use lots of extra vsetvli instructions to switch the element width
+back and forth between 8 and either 32 or 64.)
 
-Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
-Fixes: 53c24c2932e5 ("platform/x86: intel_cht_int33fe: use inline reference properties")
+This was omitted from the code originally just because the RISC-V kernel
+support for detecting this feature didn't exist yet.  Support has now
+been added, but it's fragmented into per-CPU runtime detection, a
+command-line parameter, and a kconfig option.  The kconfig option is the
+only reasonable way to do it, though, so let's just rely on that.
+
+Fixes: eb24af5d7a05 ("crypto: riscv - add vector crypto accelerated AES-{ECB,CBC,CTR,XTS}")
+Fixes: bb54668837a0 ("crypto: riscv - add vector crypto accelerated ChaCha20")
+Fixes: 600a3853dfa0 ("crypto: riscv - add vector crypto accelerated GHASH")
+Fixes: 8c8e40470ffe ("crypto: riscv - add vector crypto accelerated SHA-{256,224}")
+Fixes: b3415925a08b ("crypto: riscv - add vector crypto accelerated SHA-{512,384}")
+Fixes: 563a5255afa2 ("crypto: riscv - add vector crypto accelerated SM3")
+Fixes: b8d06352bbf3 ("crypto: riscv - add vector crypto accelerated SM4")
 Cc: stable@vger.kernel.org
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20251121111534.7cdbfe5c@canb.auug.org.au/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reported-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Closes: https://lore.kernel.org/r/b3cfcdac-0337-4db0-a611-258f2868855f@iscas.ac.cn/
+Reviewed-by: Jerry Shih <jerry.shih@sifive.com>
+Link: https://lore.kernel.org/r/20251206213750.81474-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/chtwc_int33fe.c |   29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ arch/riscv/crypto/Kconfig |   12 ++++++++----
+ lib/crypto/Kconfig        |    9 ++++++---
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/platform/x86/intel/chtwc_int33fe.c
-+++ b/drivers/platform/x86/intel/chtwc_int33fe.c
-@@ -77,7 +77,7 @@ static const struct software_node max170
-  * software node.
-  */
- static struct software_node_ref_args fusb302_mux_refs[] = {
--	{ .node = NULL },
-+	SOFTWARE_NODE_REFERENCE(NULL),
- };
+--- a/arch/riscv/crypto/Kconfig
++++ b/arch/riscv/crypto/Kconfig
+@@ -4,7 +4,8 @@ menu "Accelerated Cryptographic Algorith
  
- static const struct property_entry fusb302_properties[] = {
-@@ -190,11 +190,6 @@ static void cht_int33fe_remove_nodes(str
- {
- 	software_node_unregister_node_group(node_group);
+ config CRYPTO_AES_RISCV64
+ 	tristate "Ciphers: AES, modes: ECB, CBC, CTS, CTR, XTS"
+-	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		   RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_SKCIPHER
+@@ -20,7 +21,8 @@ config CRYPTO_AES_RISCV64
  
--	if (fusb302_mux_refs[0].node) {
--		fwnode_handle_put(software_node_fwnode(fusb302_mux_refs[0].node));
--		fusb302_mux_refs[0].node = NULL;
--	}
--
- 	if (data->dp) {
- 		data->dp->secondary = NULL;
- 		fwnode_handle_put(data->dp);
-@@ -202,7 +197,15 @@ static void cht_int33fe_remove_nodes(str
- 	}
- }
+ config CRYPTO_GHASH_RISCV64
+ 	tristate "Hash functions: GHASH"
+-	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		   RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	select CRYPTO_GCM
+ 	help
+ 	  GCM GHASH function (NIST SP 800-38D)
+@@ -30,7 +32,8 @@ config CRYPTO_GHASH_RISCV64
  
--static int cht_int33fe_add_nodes(struct cht_int33fe_data *data)
-+static void cht_int33fe_put_swnode(void *data)
-+{
-+	struct fwnode_handle *fwnode = data;
-+
-+	fwnode_handle_put(fwnode);
-+	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(NULL);
-+}
-+
-+static int cht_int33fe_add_nodes(struct device *dev, struct cht_int33fe_data *data)
- {
- 	const struct software_node *mux_ref_node;
- 	int ret;
-@@ -212,17 +215,25 @@ static int cht_int33fe_add_nodes(struct
- 	 * until the mux driver has created software node for the mux device.
- 	 * It means we depend on the mux driver. This function will return
- 	 * -EPROBE_DEFER until the mux device is registered.
-+	 *
-+	 * FIXME: the relevant software node exists in intel-xhci-usb-role-switch
-+	 * and - if exported - could be used to set up a static reference.
- 	 */
- 	mux_ref_node = software_node_find_by_name(NULL, "intel-xhci-usb-sw");
- 	if (!mux_ref_node)
- 		return -EPROBE_DEFER;
+ config CRYPTO_SM3_RISCV64
+ 	tristate "Hash functions: SM3 (ShangMi 3)"
+-	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		   RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	select CRYPTO_HASH
+ 	select CRYPTO_LIB_SM3
+ 	help
+@@ -42,7 +45,8 @@ config CRYPTO_SM3_RISCV64
  
-+	ret = devm_add_action_or_reset(dev, cht_int33fe_put_swnode,
-+				       software_node_fwnode(mux_ref_node));
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Update node used in "usb-role-switch" property. Note that we
- 	 * rely on software_node_register_node_group() to use the original
- 	 * instance of properties instead of copying them.
- 	 */
--	fusb302_mux_refs[0].node = mux_ref_node;
-+	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(mux_ref_node);
+ config CRYPTO_SM4_RISCV64
+ 	tristate "Ciphers: SM4 (ShangMi 4)"
+-	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		   RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_SM4
+ 	help
+--- a/lib/crypto/Kconfig
++++ b/lib/crypto/Kconfig
+@@ -50,7 +50,8 @@ config CRYPTO_LIB_CHACHA_ARCH
+ 	default y if ARM64 && KERNEL_MODE_NEON
+ 	default y if MIPS && CPU_MIPS32_R2
+ 	default y if PPC64 && CPU_LITTLE_ENDIAN && VSX
+-	default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		     RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	default y if S390
+ 	default y if X86_64
  
- 	ret = software_node_register_node_group(node_group);
- 	if (ret)
-@@ -345,7 +356,7 @@ static int cht_int33fe_typec_probe(struc
- 		return fusb302_irq;
- 	}
- 
--	ret = cht_int33fe_add_nodes(data);
-+	ret = cht_int33fe_add_nodes(dev, data);
- 	if (ret)
- 		return ret;
- 
+@@ -161,7 +162,8 @@ config CRYPTO_LIB_SHA256_ARCH
+ 	default y if ARM64
+ 	default y if MIPS && CPU_CAVIUM_OCTEON
+ 	default y if PPC && SPE
+-	default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		     RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	default y if S390
+ 	default y if SPARC64
+ 	default y if X86_64
+@@ -179,7 +181,8 @@ config CRYPTO_LIB_SHA512_ARCH
+ 	default y if ARM && !CPU_V7M
+ 	default y if ARM64
+ 	default y if MIPS && CPU_CAVIUM_OCTEON
+-	default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
++	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		     RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+ 	default y if S390
+ 	default y if SPARC64
+ 	default y if X86_64
 
 
 
