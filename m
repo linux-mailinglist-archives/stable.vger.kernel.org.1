@@ -1,54 +1,50 @@
-Return-Path: <stable+bounces-204043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68C4CE784E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:32:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8854DCE785F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A55023006713
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:31:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A936301057D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E7933469A;
-	Mon, 29 Dec 2025 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F816333453;
+	Mon, 29 Dec 2025 16:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM/vph5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfe/KhLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A2333437B;
-	Mon, 29 Dec 2025 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382D0333443;
+	Mon, 29 Dec 2025 16:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025888; cv=none; b=q9vggPAfJsIcQiLMGYK+/QZtdCLZiNXtLiK5vL6W0RKMVRs2O5jKMfy7CRYw/Kk38qiOqcSElYoVxpYqXpj03kp/qVlSsKEHhgRTzBjYPNNZEyhuROPIJ++yaCFveVQ+rqXEsk9KQJX481n7uTHuUnD2wgotEXavGGDPMJDu55U=
+	t=1767025894; cv=none; b=qccFCZQQUbvFGx32QaMo/X1tFIAvM/nZ1YPgYMT5rnPEGpnDKv0fm1W5lKVgP4PM6DVYnu2ACP7spk66x36zTiNdETWTz/QCZTKLE9dGlTDqvsSMqdWZYhKZ55l18CObSs4e+0aBc/7MeLSFnQueDewuiNnk6CRo4N96CBVc2N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025888; c=relaxed/simple;
-	bh=KvCVe2wtbtvAqUDfwny8WdpX1iiMrDhtbzBI1TYhWi4=;
+	s=arc-20240116; t=1767025894; c=relaxed/simple;
+	bh=EIWcy+4oMOT/irC9HIlle6+cPPGqh5xrqKLrSxzvrvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFhGn3p2vZGNlheGDnz5+d0iDaKmEW3KFNDw1Nm4efnU6kSYjfEwomTa2lvdtXQr2vDX7W1rSiJdt4wI8BY9LeD+UW0U1/1kBiyFD10VmaaAKre8ozI6sWzBck+SYvbcuZyOvGhY5HdSudrfz8oQyW6tnXbzyoOFUd+bzVLjoTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM/vph5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDE1C116C6;
-	Mon, 29 Dec 2025 16:31:27 +0000 (UTC)
+	 MIME-Version; b=ECQ1UwXem+Rd2PLWwoyUeNds3txW4/x/qECCwrxare+0IiBkFlUmkws4OSaCV0t+hmuQgbjQ+c/Em/UtFYGdhtDC05spYZC65722iCEeORV0Ni6Pl8CUjolzq96jWf9PszCxMLKfdVST+hB1nKTy6IyqBp4DV+yozN549g6vBPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfe/KhLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE67C4CEF7;
+	Mon, 29 Dec 2025 16:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025888;
-	bh=KvCVe2wtbtvAqUDfwny8WdpX1iiMrDhtbzBI1TYhWi4=;
+	s=korg; t=1767025893;
+	bh=EIWcy+4oMOT/irC9HIlle6+cPPGqh5xrqKLrSxzvrvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM/vph5Gb8bWkWVq6dMT1/5JP0HbVFzxl/5ERfXuwbLSTwkrMrZqHLXjqoXSCJtxg
-	 duc6Q1HJfx21BwncebGIwrTvvHQ1yW4zdyZHS9w0f/W91PDxNmRzGxksBOgxw9WJDp
-	 3qbPL+NPzPEyZxavhUuyfYFtMOO3HPOSOOmuQ000=
+	b=Gfe/KhLPrXRcdWjTbDG/E0prxbxESWubW2QenuMIREgLTEckYggkoXrBQIVIoYxgV
+	 kZUp8qNBXZpVlmg+QcbNfPaqykleadAeOQ265HIZEC0PxJUKXfe/S2qAFg6nSMi9cF
+	 eBww5a/wW7eiNbzIdRsS4k3dX4EgPEfCTRYCBqHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 372/430] ASoC: SOF: ipc4-topology: Convert FLOAT to S32 during blob selection
-Date: Mon, 29 Dec 2025 17:12:54 +0100
-Message-ID: <20251229160738.013058275@linuxfoundation.org>
+	Joshua Rogers <linux@joshua.hu>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.18 373/430] svcrdma: bound check rq_pages index in inline path
+Date: Mon, 29 Dec 2025 17:12:55 +0100
+Message-ID: <20251229160738.049571780@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,48 +63,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 816f291fc23f325d31509d0e97873249ad75ae9a upstream.
+commit d1bea0ce35b6095544ee82bb54156fc62c067e58 upstream.
 
-SSP/DMIC blobs have no support for FLOAT type, they are using S32 on data
-bus.
+svc_rdma_copy_inline_range indexed rqstp->rq_pages[rc_curpage] without
+verifying rc_curpage stays within the allocated page array. Add guards
+before the first use and after advancing to a new page.
 
-Convert the format from FLOAT_LE to S32_LE to make sure that the correct
-format is used within the path.
-
-FLOAT conversion will be done on the host side (or within the path).
-
-Fixes: f7c41911ad74 ("ASoC: SOF: ipc4-topology: Add support for float sample type")
+Fixes: d7cc73972661 ("svcrdma: support multiple Read chunks per RPC")
 Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20251215120648.4827-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4-topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma_rw.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index 47959f182f4b..32b628e2fe29 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -1843,7 +1843,7 @@ snd_sof_get_nhlt_endpoint_data(struct snd_sof_dev *sdev, struct snd_sof_dai *dai
- 	*len = cfg->size >> 2;
- 	*dst = (u32 *)cfg->caps;
+--- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
+@@ -841,6 +841,9 @@ static int svc_rdma_copy_inline_range(st
+ 	for (page_no = 0; page_no < numpages; page_no++) {
+ 		unsigned int page_len;
  
--	if (format_change) {
-+	if (format_change || params_format(params) == SNDRV_PCM_FORMAT_FLOAT_LE) {
- 		/*
- 		 * Update the params to reflect that different blob was loaded
- 		 * instead of the requested bit depth (16 -> 32 or 32 -> 16).
--- 
-2.52.0
-
++		if (head->rc_curpage >= rqstp->rq_maxpages)
++			return -EINVAL;
++
+ 		page_len = min_t(unsigned int, remaining,
+ 				 PAGE_SIZE - head->rc_pageoff);
+ 
 
 
 
