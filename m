@@ -1,51 +1,56 @@
-Return-Path: <stable+bounces-203799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2EECE7690
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:22:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6318CE772F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82D7D303EBA3
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:20:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B804308F317
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AFF3314A9;
-	Mon, 29 Dec 2025 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F031223C39A;
+	Mon, 29 Dec 2025 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYKVL1lq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSidqGir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D81D26FD9B;
-	Mon, 29 Dec 2025 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE27202F65;
+	Mon, 29 Dec 2025 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025200; cv=none; b=f80NmnitBo6YvytaGmayV1dG14P/DBZtKaKssuOeZwfslIvynNf6VEcOUYnoxaRbsXBVBLrmNTRsuyHJmFIKttohA0638vubkjtGP4WIDp/37a4+jBFX/3/zL6sm33Cjq2MyPGzivIh8UAxYNdxGKcpnOD0ePcIDGjoh1nKyLlc=
+	t=1767025321; cv=none; b=sdeFn/G5MvJ57wVdMyQ0as1DJ87iWgVs4ZpI+dhiDP4az6gnSb/tDKF8bxPAGyI9qTvqIyMpoh8+k7wjG/Nm2o5ilKDv3zisIngZvstibY8Lbhl5acMwFQqYm3pcxGQz+YmUk8ExumhyPgvBcY+iEEbytmfHe8MMW5nqNn7ZwT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025200; c=relaxed/simple;
-	bh=BrB8vFz4MbWv65ZTL4m2/5vmB/e5pMsbBFjPlLX8mng=;
+	s=arc-20240116; t=1767025321; c=relaxed/simple;
+	bh=4oz0nAfBixP1Him6illebraudrhy6n17ima7weSk8aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HC8+n//ZY297RHnWdyG5UL5mz27waeqSZtY3XuK/wKPW0cLVTY6TR/P9oAfBB/eqbO4U3HcV2iNs3beO7DE0/HbrUPVNhKHXUCTqPTQPOChqGl4lI+E7dYrsqD/leR6rCQUo7BA1tus3SW9AkekGtmGLSNvu6EcV3Ow/5nck+Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYKVL1lq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F08C4CEF7;
-	Mon, 29 Dec 2025 16:19:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=si5h8WgiJ7btlPUzlJTgBc4f9OoClhLR9JmkG8IFvoqFLsuOwFd9oNvF89BXqwQX2J8TI/uTmxD/tqiBp4xqBcpF/fvmjZzRJvsjtaay1GS6ojmIwiQdG29QmknrTXeCPvwWIZSxPwykJyzFR2Wfr4egiABMRcBKX/WfDy31Ua8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSidqGir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A1DC4CEF7;
+	Mon, 29 Dec 2025 16:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025199;
-	bh=BrB8vFz4MbWv65ZTL4m2/5vmB/e5pMsbBFjPlLX8mng=;
+	s=korg; t=1767025321;
+	bh=4oz0nAfBixP1Him6illebraudrhy6n17ima7weSk8aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYKVL1lqjGQoqiuiOisJv/4MeWZ/T9RWs4Me1ArWQUnRxk0R2IyeSgfXpIUrVf/f+
-	 v2Xqn9xS3yxaXz6hZhWKPUHrIUnLHN0u74e5+ktMBBk7ERUiK289oWahEQHIdXRXKF
-	 8HvMAvkZq2f17xnTEIAFUuytvXAy5C2Nlm7n7W9M=
+	b=rSidqGirQ/JwWlhECSqODybHSs0vDxoT3AMeOY39qXekB27d1WKEBGfmZJdzA6Lfb
+	 3STbOK5qHyoPW4esIxGbi6lyZpq7Auwb/coNbBn4ZneXwRScSEm6js/9mbVbclW3uE
+	 NjQOBJWOD5Xj3TnviM6iFLmawtuQr03AIgCHx8vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	SRINIVASAN.SHANMUGAM@amd.com,
+	vitaly.prosyak@amd.com,
+	christian.koenig@amd.com,
+	Matthew Brost <matthew.brost@intel.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 128/430] arm64: kdump: Fix elfcorehdr overlap caused by reserved memory processing reorder
-Date: Mon, 29 Dec 2025 17:08:50 +0100
-Message-ID: <20251229160729.076801064@linuxfoundation.org>
+Subject: [PATCH 6.18 129/430] drm/amdgpu: fix a job->pasid access race in gpu recovery
+Date: Mon, 29 Dec 2025 17:08:51 +0100
+Message-ID: <20251229160729.113000800@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -58,69 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 3e8ade58b71b48913d21b647b2089e03e81f117e ]
+[ Upstream commit 77f73253015cbc7893fca1821ac3eae9eb4bc943 ]
 
-Commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
-memory regions are processed") changed the processing order of reserved
-memory regions, causing elfcorehdr to overlap with dynamically allocated
-reserved memory regions during kdump kernel boot.
+Avoid a possible UAF in GPU recovery due to a race between
+the sched timeout callback and the tdr work queue.
 
-The issue occurs because:
-1. kexec-tools allocates elfcorehdr in the last crashkernel reserved
-   memory region and passes it to the second kernel
-2. The problematic commit moved dynamic reserved memory allocation
-   (like bman-fbpr) to occur during fdt_scan_reserved_mem(), before
-   elfcorehdr reservation in fdt_reserve_elfcorehdr()
-3. bman-fbpr with 16MB alignment requirement can get allocated at
-   addresses that overlap with the elfcorehdr location
-4. When fdt_reserve_elfcorehdr() tries to reserve elfcorehdr memory,
-   overlap detection identifies the conflict and skips reservation
-5. kdump kernel fails with "Unable to handle kernel paging request"
-   because elfcorehdr memory is not properly reserved
+The gpu recovery function calls drm_sched_stop() and
+later drm_sched_start().  drm_sched_start() restarts
+the tdr queue which will eventually free the job.  If
+the tdr queue frees the job before time out callback
+completes, the job will be freed and we'll get a UAF
+when accessing the pasid.  Cache it early to avoid the
+UAF.
 
-The boot log:
-Before 8a6e02d0c00e:
-  OF: fdt: Reserving 1 KiB of memory at 0xf4fff000 for elfcorehdr
-  OF: reserved mem: 0xf3000000..0xf3ffffff bman-fbpr
+Example KASAN trace:
+[  493.058141] BUG: KASAN: slab-use-after-free in amdgpu_device_gpu_recover+0x968/0x990 [amdgpu]
+[  493.067530] Read of size 4 at addr ffff88b0ce3f794c by task kworker/u128:1/323
+[  493.074892]
+[  493.076485] CPU: 9 UID: 0 PID: 323 Comm: kworker/u128:1 Tainted: G            E       6.16.0-1289896.2.zuul.bf4f11df81c1410bbe901c4373305a31 #1 PREEMPT(voluntary)
+[  493.076493] Tainted: [E]=UNSIGNED_MODULE
+[  493.076495] Hardware name: TYAN B8021G88V2HR-2T/S8021GM2NR-2T, BIOS V1.03.B10 04/01/2019
+[  493.076500] Workqueue: amdgpu-reset-dev drm_sched_job_timedout [gpu_sched]
+[  493.076512] Call Trace:
+[  493.076515]  <TASK>
+[  493.076518]  dump_stack_lvl+0x64/0x80
+[  493.076529]  print_report+0xce/0x630
+[  493.076536]  ? _raw_spin_lock_irqsave+0x86/0xd0
+[  493.076541]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[  493.076545]  ? amdgpu_device_gpu_recover+0x968/0x990 [amdgpu]
+[  493.077253]  kasan_report+0xb8/0xf0
+[  493.077258]  ? amdgpu_device_gpu_recover+0x968/0x990 [amdgpu]
+[  493.077965]  amdgpu_device_gpu_recover+0x968/0x990 [amdgpu]
+[  493.078672]  ? __pfx_amdgpu_device_gpu_recover+0x10/0x10 [amdgpu]
+[  493.079378]  ? amdgpu_coredump+0x1fd/0x4c0 [amdgpu]
+[  493.080111]  amdgpu_job_timedout+0x642/0x1400 [amdgpu]
+[  493.080903]  ? pick_task_fair+0x24e/0x330
+[  493.080910]  ? __pfx_amdgpu_job_timedout+0x10/0x10 [amdgpu]
+[  493.081702]  ? _raw_spin_lock+0x75/0xc0
+[  493.081708]  ? __pfx__raw_spin_lock+0x10/0x10
+[  493.081712]  drm_sched_job_timedout+0x1b0/0x4b0 [gpu_sched]
+[  493.081721]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[  493.081725]  process_one_work+0x679/0xff0
+[  493.081732]  worker_thread+0x6ce/0xfd0
+[  493.081736]  ? __pfx_worker_thread+0x10/0x10
+[  493.081739]  kthread+0x376/0x730
+[  493.081744]  ? __pfx_kthread+0x10/0x10
+[  493.081748]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[  493.081751]  ? __pfx_kthread+0x10/0x10
+[  493.081755]  ret_from_fork+0x247/0x330
+[  493.081761]  ? __pfx_kthread+0x10/0x10
+[  493.081764]  ret_from_fork_asm+0x1a/0x30
+[  493.081771]  </TASK>
 
-After 8a6e02d0c00e:
-  OF: reserved mem: 0xf4000000..0xf4ffffff bman-fbpr
-  OF: fdt: elfcorehdr is overlapped
-
-Fix this by ensuring elfcorehdr reservation occurs before dynamic
-reserved memory allocation.
-
-Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Link: https://patch.msgid.link/20251205015934.700016-1-jianpeng.chang.cn@windriver.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: a72002cb181f ("drm/amdgpu: Make use of drm_wedge_task_info")
+Link: https://github.com/HansKristian-Work/vkd3d-proton/pull/2670
+Cc: SRINIVASAN.SHANMUGAM@amd.com
+Cc: vitaly.prosyak@amd.com
+Cc: christian.koenig@amd.com
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 20880a3fd5dd7bca1a079534cf6596bda92e107d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index fdaee4906836..3851ce244585 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -503,8 +503,8 @@ void __init early_init_fdt_scan_reserved_mem(void)
- 	if (!initial_boot_params)
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 96b6738e6252..843770e61e42 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6476,6 +6476,8 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 	struct amdgpu_hive_info *hive = NULL;
+ 	int r = 0;
+ 	bool need_emergency_restart = false;
++	/* save the pasid here as the job may be freed before the end of the reset */
++	int pasid = job ? job->pasid : -EINVAL;
  
--	fdt_scan_reserved_mem();
- 	fdt_reserve_elfcorehdr();
-+	fdt_scan_reserved_mem();
+ 	/*
+ 	 * If it reaches here because of hang/timeout and a RAS error is
+@@ -6572,8 +6574,12 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 	if (!r) {
+ 		struct amdgpu_task_info *ti = NULL;
  
- 	/* Process header /memreserve/ fields */
- 	for (n = 0; ; n++) {
+-		if (job)
+-			ti = amdgpu_vm_get_task_info_pasid(adev, job->pasid);
++		/*
++		 * The job may already be freed at this point via the sched tdr workqueue so
++		 * use the cached pasid.
++		 */
++		if (pasid >= 0)
++			ti = amdgpu_vm_get_task_info_pasid(adev, pasid);
+ 
+ 		drm_dev_wedged_event(adev_to_drm(adev), DRM_WEDGE_RECOVERY_NONE,
+ 				     ti ? &ti->task : NULL);
 -- 
 2.51.0
 
