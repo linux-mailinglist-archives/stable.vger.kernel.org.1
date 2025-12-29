@@ -1,155 +1,171 @@
-Return-Path: <stable+bounces-204155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630EBCE85AA
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 00:41:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287F7CE85B9
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 00:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30B8F3002693
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 23:41:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1EEE301672E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 23:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADD329B8EF;
-	Mon, 29 Dec 2025 23:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929302FB0A3;
+	Mon, 29 Dec 2025 23:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umdB6fzP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ok7oz4Xh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD5A29C347
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 23:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB581EEA5F
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 23:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767051661; cv=none; b=DT8gUWKxRYUmQTk55tkhnzy9+H/X+D+OveAIsX7oKDcObJBwlLLUR0HEyHTI80ZbV8wm3vIweKYKS7h06S816eh0a/N9lz3N7dXUWJrtq8ceMyBjVooMaYnnHSGc1bjY8MXBw4Er00YdIvRT6bc1QkwwTg8trYaInaK0/1VjL00=
+	t=1767051995; cv=none; b=RaHsMT+c9yDKPqnOvl0fs2oaAROw7hpQ6Q/k/LdgWIDALazEB/qSw+CUteIqZoo1RGbm7ufT+GPYWuTmr0bXwEvE7WSJ8mH6Xtqv4IlD41S5cB8D7ifN5o1nioof5Vc/ZlBjXDrv/pv1uwh6lwalLlKe3+3ujfEyvSWx1DT5zEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767051661; c=relaxed/simple;
-	bh=EYctpN16VIocdb4/M8kK+DCaHiGix13g5d2wGBQ46Iw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhywQMwAiTxRQoyuK34gPnIdApySsT7IxFokbrxNpWpWi/1s0ak/m8WNJy0RZl041HQ/TQQIx+8up510OQhRgJT0I6MWMYnvvajgGnxntCrnDB2BJk6Fg25tJViCgORkK+NJu2dBtvUm1QrWtVyjWK+llkfOthcO43bKePM+f08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umdB6fzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B3EC4CEF7;
-	Mon, 29 Dec 2025 23:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767051661;
-	bh=EYctpN16VIocdb4/M8kK+DCaHiGix13g5d2wGBQ46Iw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umdB6fzPxKBxks4TbqJImyO3Rk8pZ9OK/V0U92LWuOWS1JESbwJz1HexZ+XCE6MAQ
-	 zwTG9tRBVBnOq209MKnuUsTwTADZKASaTAiaAk9EM90xBD0CNWEOvZqAwzqDoT2A5E
-	 rrh7zx4jvGjKvPz22KpFW1HXbxxNc+DCgciJrPY/bNU+qNX+HM5NBssoNlSbiSpHfd
-	 Y5jEi7B4HFKBuMaj1ZfqS9yKr1jGZYpHpXLpvdaH8QDExIEiKgjC9dv6MFSO7aTJ3N
-	 LPEwmo8+kUAGDu1AGwp7JpqbHrJeoDbTsZluCoekKwFt9hzJCuK6D+EJz3Uz/fQl7Q
-	 ApVSR7L2nl1cA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ye Bin <yebin10@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] jbd2: fix the inconsistency between checksum and data in memory for journal sb
-Date: Mon, 29 Dec 2025 18:40:57 -0500
-Message-ID: <20251229234057.1852171-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122901-exciting-strained-363f@gregkh>
-References: <2025122901-exciting-strained-363f@gregkh>
+	s=arc-20240116; t=1767051995; c=relaxed/simple;
+	bh=Hjv/TIV1UsxvAnQ5o/hxVXWRY8sl9BefdtdnfhdDtCU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mh57jJbwnLNqPN2M4v3LIRnfanQyTL/+hOisoNf7cKT7uv5gfhIcR7hE8V74AUqTbQ3/Y8ytevUGVY30nqKtNDMhzhgodOOylYY7/UI1VFMXN3fc7muTGXl/ujFQ3sbWbKFj7phdKjTavOLG5tlImQaeCUXP78G4mbp/hOIEKAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ok7oz4Xh; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c64cd48a8so21295013a91.0
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:46:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767051993; x=1767656793; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l4xDJPMvIXKXvP5865Cb1+QQa5XZ/DHhQPRje5/U8PA=;
+        b=ok7oz4XhZHvDJlf8nYmbn+eutgWWUTq7Y14M/qQ6IqH4vsZlbMG/hfRvSVWRTX4JNK
+         jBT5ZHUL2tNUWFPIvW5Zm50WnpHJzo+AzAzGU4RW563zb5dIkG/GTwd3YizoTnpKnp8m
+         dQWbkWY6JqEfKa7qjBx+ByYV6ElIegzZc0uD8/o02O4v8LXLDsjuOeVjkbzqYrlZMaGA
+         GbtA48Rlo3iCCyHQsQZiAl/AlJYAWTObRo1xwOzgg3kfW5N6Pij0emlpQMbZtC9mq2Is
+         b0eLJTydbFrXuE2r31C+hPxbXyxTq3pk5sOJRCvK4sJpxgdce99RL5v4l0Dp6uv0C1cj
+         bLWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767051993; x=1767656793;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=l4xDJPMvIXKXvP5865Cb1+QQa5XZ/DHhQPRje5/U8PA=;
+        b=my36jrriKUBHyo7UtM+YYnvwhIr3PPTLb/KcOB1wQ2Of77UbkzLvD3T3piYWjrxjkc
+         wf3ShDrEBQVQoMMoYYhA6WfnSe1wja5PfIqmIlv7XlKOB9wes+Sx/efP54R44P7osC+P
+         JEJHC/BlfCUKcfSwUr9L3saVxOmo6hvuqflbGove+cFlmC0d4k0sv6yg/Y2ZNu4JqvMk
+         229S85TVWmmRUHy6y0c2k0XSdB7Qs+Q3cW+mf84JXZbwsiW6DGeQPY5j+3B2e8olU35E
+         KObmy8Uc7MZJKLIHCLM7byUsGs5cylKfhKXEXPYIqEiqE1vnkKyAlS8Q1YNHiHsLeUoe
+         l/QA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSm1eso6U2dBfkBZgfonjNGOZvADQpD2tKb9ZipT7/ak2L7U01E1UjlYfTqDN3yFL626kSf48=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/IreloI30J+ndfk2w2XrZgj0mbRbBe366y9hUnAuMwjLELk/w
+	MiaJ1ovdzahozW6IiCts4HjdCH5GWPxPLwFk5wTvmLJYYgiBhH13VS/lHod8lgYE87Yj+jTryea
+	s+zbupg==
+X-Google-Smtp-Source: AGHT+IGp6fI0koV588PCow0DDG4AaijuZIFTuoh8Uj8mqtB242NSfI8x+gcm6e8CNXigvxl5p4tFT0QHKwU=
+X-Received: from pjot17.prod.google.com ([2002:a17:90a:9511:b0:349:a1a3:75fc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:524b:b0:340:e529:5572
+ with SMTP id 98e67ed59e1d1-34e9212a495mr26328433a91.8.1767051993309; Mon, 29
+ Dec 2025 15:46:33 -0800 (PST)
+Date: Mon, 29 Dec 2025 15:46:31 -0800
+In-Reply-To: <CABgObfa5ViBjb_BnmKqf0+7M6rZ5-M+yOw_7tVK_Ek6tp21Z=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251224001249.1041934-1-pbonzini@redhat.com> <20251224001249.1041934-3-pbonzini@redhat.com>
+ <aVMEcaZD_SzKzRvr@google.com> <CABgObfa5ViBjb_BnmKqf0+7M6rZ5-M+yOw_7tVK_Ek6tp21Z=w@mail.gmail.com>
+Message-ID: <aVMS1xa99GsiZpFQ@google.com>
+Subject: Re: [PATCH 2/5] x86, fpu: separate fpstate->xfd and guest XFD
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ye Bin <yebin10@huawei.com>
+On Tue, Dec 30, 2025, Paolo Bonzini wrote:
+> On Mon, Dec 29, 2025 at 11:45=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> > So, given that KVM's effective ABI is to record XSTATE_BV[i]=3D0 if XFD=
+[i]=3D=3D1, I
+> > vote to fix this by emulating that behavior when stuffing XFD in
+> > fpu_update_guest_xfd(), and then manually closing the hole Paolo found =
+in
+> > fpu_copy_uabi_to_guest_fpstate().
+>=20
+> I disagree with changing the argument from const void* to void*.
+> Let's instead treat it as a KVM backwards-compatibility quirk:
+>=20
+>     union fpregs_state *xstate =3D
+>         (union fpregs_state *)guest_xsave->region;
+>     xstate->xsave.header.xfeatures &=3D
+>         ~vcpu->arch.guest_fpu.fpstate->xfd;
+>=20
+> It keeps the kernel/ API const as expected and if anything I'd
+> consider adding a WARN to fpu_copy_uabi_to_guest_fpstate(), basically
+> asserting that there would be no #NM on the subsequent restore.
 
-[ Upstream commit 6abfe107894af7e8ce3a2e120c619d81ee764ad5 ]
+Works for me. =20
 
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
+> > @@ -319,10 +319,25 @@ EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_featur=
+es);
+> >  #ifdef CONFIG_X86_64
+> >  void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
+> >  {
+> > +       struct fpstate *fpstate =3D guest_fpu->fpstate;
+> > +
+> >         fpregs_lock();
+> > -       guest_fpu->fpstate->xfd =3D xfd;
+> > -       if (guest_fpu->fpstate->in_use)
+> > -               xfd_update_state(guest_fpu->fpstate);
+> > +       fpstate->xfd =3D xfd;
+> > +       if (fpstate->in_use)
+> > +               xfd_update_state(fpstate);
+> > +
+> > +       /*
+> > +        * If the guest's FPU state is NOT resident in hardware, clear =
+disabled
+> > +        * components in XSTATE_BV as attempting to load disabled compo=
+nents
+> > +        * will generate #NM _in the host_, and KVM's ABI is that savin=
+g guest
+> > +        * XSAVE state should see XSTATE_BV[i]=3D0 if XFD[i]=3D1.
+> > +        *
+> > +        * If the guest's FPU state is in hardware, simply do nothing a=
+s XSAVE
+> > +        * itself saves XSTATE_BV[i] as 0 if XFD[i]=3D1.
+>=20
+> s/saves/(from fpu_swap_kvm_fpstate) will save/
+>=20
+> > +        */
+> > +       if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
+> > +               fpstate->regs.xsave.header.xfeatures &=3D ~xfd;
+>=20
+> No objections to this part.  I'll play with this to adjust the
+> selftests either tomorrow or, more likely, on January 2nd, and send a
+> v2 that also includes the change from preemption_disabled to
+> irqs_disabled.
 
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
+To hopefully save you some time, I responded to the selftests with cleanups=
+ and
+adjustments to hit both bugs (see patch 3).
 
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
+> I take it that you don't have any qualms with the new
+> fpu_load_guest_fpstate function,
 
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ jbd2_superblock_csum() also takes a journal param ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/jbd2/journal.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Hmm, I don't have a strong opinion?  Actually, after looking at patch 5, I =
+agree
+that adding fpu_load_guest_fpstate() is useful.  My only hesitation was tha=
+t
+kvm_fpu_{get,put}() would be _very_ similar, but critically different, at w=
+hich
+point NOT using fpu_update_guest_xfd() in kvm_fpu_get() could be confusing.
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index ddde73299d62..9465f3f52ebb 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2403,6 +2403,12 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
- 
-@@ -2432,9 +2438,17 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
- 
- 	sb = journal->j_superblock;
- 
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
- }
- EXPORT_SYMBOL(jbd2_journal_clear_features);
--- 
-2.51.0
+> but let me know if you prefer to have it in a separate submission destine=
+d to
+> 6.20 only.
 
+I'd say don't send it to stable@, otherwise I don't have a preference on 6.=
+19
+versus 6.20.
 
