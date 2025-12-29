@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-203690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A7ACE7517
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9BDCE7601
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09B9A3014BCF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:14:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE04B303211B
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C6532ED57;
-	Mon, 29 Dec 2025 16:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7701C33066C;
+	Mon, 29 Dec 2025 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekveXfFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwWqOxAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAFC22CBD9;
-	Mon, 29 Dec 2025 16:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3448F347C6;
+	Mon, 29 Dec 2025 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024894; cv=none; b=h8SEfbE4dSaUWkGDHebisrEOD/kNWmSa/h5Fgv95PpqJLOfTwABNnIsG1QO8U14IgI4+GL13JpCv4j6nfmVe8qC9oWvHPjc0uIAGSy7N++QmrzBzG0UQ6uyXru3t9rDK7opTiSbG0pyrrVV0b6pRQ+88q9Qd9PZUq9OoGpKK0qs=
+	t=1767025019; cv=none; b=XXmyOE3qzkpqUjGmXB8elBFWstNETSkqWqed1sHnDirnoql2vmCyGVUSWNU8YCtaNRpBx4bsECUs9BtECiAUr7Dr5Jx6E+oDNjQFMk8Rd/Ctp9AODhDDmyxHNl5Gpqc1Vy4yZWO0NRSRgSu12wn7bQbNgiiB6W314FpaTd8Njn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024894; c=relaxed/simple;
-	bh=pvRr7vmZT859YDUxQZmD4dkvxc5nXnPOF9/PPwtstrI=;
+	s=arc-20240116; t=1767025019; c=relaxed/simple;
+	bh=t2WJcB8DKxlpFu3EVynIepaEYkbE1STkeM5QviiXpgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyoDpnbuyWtRSo4WPMpNQpw7T8Iv6liu/yiIWeqxSOPOwwjjVt+c7iP6jaOR5p9IgiiySp3CqpYqLUC7LX0gEnLI6Nu5iokfZ+mBhunVvzhyNZl6u3b5DY/aTUpYFcuAJLDa+ZFGbpis0qzqLYuOn9hrs8QnhKwbFlt9+DaYBcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekveXfFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92288C4CEF7;
-	Mon, 29 Dec 2025 16:14:53 +0000 (UTC)
+	 MIME-Version; b=BP+hb/xfTCnSBE7T4+AlRhr1R531inb7+VqJZnHGWhn5+/AANgQcrnh1mDoYrjvVP8y+jVfZaXPuHdO9X6wnF7TPCUTQC/XY41OcnnUQ3AWiKBktlf45tlywMmuOQo3ZYL6bHyDCta3I2Dj6v4+RrYKgtfBVEoXNYgXaiwNIXxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwWqOxAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AB0C4CEF7;
+	Mon, 29 Dec 2025 16:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024893;
-	bh=pvRr7vmZT859YDUxQZmD4dkvxc5nXnPOF9/PPwtstrI=;
+	s=korg; t=1767025019;
+	bh=t2WJcB8DKxlpFu3EVynIepaEYkbE1STkeM5QviiXpgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekveXfFt7VKBnfWFVJIva78vVOU03iNZK6VDF9lvnBBPLVLlaRnTVNmpWWQQVuJoy
-	 nUVZm+ea+vWGAZCrw3CHqh2GIajZemQWXonBdK2fktmfoxYrkQ2eNKYvxdp8WGF87q
-	 MZJVulw9ncqEhDeMsqv2iHiNGxB4OmabpA6FGy5I=
+	b=DwWqOxAUosbceIvHpJXPWKu+GrzilsaO7mCPllaGLkiohXI3aIcAxui9mkZk5ecqn
+	 IP9OjPMDFtQbJY1yp9ATO9JARwfwwSg9GtZzt2k5/u89IPzkwvgyYmXcTBKJOvVBc7
+	 KjKk7RduUXTOAGrrs+FkyJpEkFG9GJtdSqP65FfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yu Peng <pengyu@kylinos.cn>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/430] cpuidle: menu: Use residency threshold in polling state override decisions
-Date: Mon, 29 Dec 2025 17:07:03 +0100
-Message-ID: <20251229160724.935819933@linuxfoundation.org>
+Subject: [PATCH 6.18 022/430] x86/microcode: Mark early_parse_cmdline() as __init
+Date: Mon, 29 Dec 2025 17:07:04 +0100
+Message-ID: <20251229160724.972481427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,96 +64,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+From: Yu Peng <pengyu@kylinos.cn>
 
-[ Upstream commit 07d815701274d156ad8c7c088a52e01642156fb8 ]
+[ Upstream commit ca8313fd83399ea1d18e695c2ae9b259985c9e1f ]
 
-On virtualized PowerPC (pseries) systems, where only one polling state
-(Snooze) and one deep state (CEDE) are available, selecting CEDE when
-the predicted idle duration is less than the target residency of CEDE
-state can hurt performance. In such cases, the entry/exit overhead of
-CEDE outweighs the power savings, leading to unnecessary state
-transitions and higher latency.
+Fix section mismatch warning reported by modpost:
 
-Menu governor currently contains a special-case rule that prioritizes
-the first non-polling state over polling, even when its target residency
-is much longer than the predicted idle duration. On PowerPC/pseries,
-where the gap between the polling state (Snooze) and the first non-polling
-state (CEDE) is large, this behavior causes performance regressions.
+  .text:early_parse_cmdline() -> .init.data:boot_command_line
 
-Refine that special case by adding an extra requirement: the first
-non-polling state can only be chosen if its target residency is below
-the defined RESIDENCY_THRESHOLD_NS. If this condition is not satisfied,
-polling is allowed instead, avoiding suboptimal non-polling state
-entries.
+The function early_parse_cmdline() is only called during init and accesses
+init data, so mark it __init to match its usage.
 
-This change is limited to the single special-case rule for the first
-non-polling state. The general non-polling state selection logic in the
-menu governor remains unchanged.
+  [ bp: This happens only when the toolchain fails to inline the function and
+    I haven't been able to reproduce it with any toolchain I'm using. Patch is
+    obviously correct regardless. ]
 
-Performance improvement observed with pgbench on PowerPC (pseries)
-system:
-+---------------------------+------------+------------+------------+
-| Metric                    | Baseline   | Patched    | Change (%) |
-+---------------------------+------------+------------+------------+
-| Transactions/sec (TPS)    | 495,210    | 536,982    | +8.45%     |
-| Avg latency (ms)          | 0.163      | 0.150      | -7.98%     |
-+---------------------------+------------+------------+------------+
-
-CPUIdle state usage:
-+--------------+--------------+-------------+
-| Metric       | Baseline     | Patched     |
-+--------------+--------------+-------------+
-| Total usage  | 12,735,820   | 13,918,442  |
-| Above usage  | 11,401,520   | 1,598,210   |
-| Below usage  | 20,145       | 702,395     |
-+--------------+--------------+-------------+
-
-Above/Total and Below/Total usage percentages:
-+------------------------+-----------+---------+
-| Metric                 | Baseline  | Patched |
-+------------------------+-----------+---------+
-| Above % (Above/Total)  | 89.56%    | 11.49%  |
-| Below % (Below/Total)  | 0.16%     | 5.05%   |
-| Total cpuidle miss (%) | 89.72%    | 16.54%  |
-+------------------------+-----------+---------+
-
-The results indicate that restricting CEDE selection to cases where
-its residency matches the predicted idle time reduces mispredictions,
-lowers unnecessary state transitions, and improves overall throughput.
-
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-[ rjw: Changelog edits, rebase ]
-Link: https://patch.msgid.link/20251006013954.17972-1-aboorvad@linux.ibm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Yu Peng <pengyu@kylinos.cn>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/all/20251030123757.1410904-1-pengyu@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 23239b0c04f95..64d6f7a1c7766 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -317,12 +317,13 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		}
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index f75c140906d00..539edd6d6dc8c 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -136,7 +136,7 @@ bool __init microcode_loader_disabled(void)
+ 	return dis_ucode_ldr;
+ }
  
- 		/*
--		 * Use a physical idle state, not busy polling, unless a timer
--		 * is going to trigger soon enough or the exit latency of the
--		 * idle state in question is greater than the predicted idle
--		 * duration.
-+		 * Use a physical idle state instead of busy polling so long as
-+		 * its target residency is below the residency threshold, its
-+		 * exit latency is not greater than the predicted idle duration,
-+		 * and the next timer doesn't expire soon.
- 		 */
- 		if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
-+		    s->target_residency_ns < RESIDENCY_THRESHOLD_NS &&
- 		    s->target_residency_ns <= data->next_timer_ns &&
- 		    s->exit_latency_ns <= predicted_ns) {
- 			predicted_ns = s->target_residency_ns;
+-static void early_parse_cmdline(void)
++static void __init early_parse_cmdline(void)
+ {
+ 	char cmd_buf[64] = {};
+ 	char *s, *p = cmd_buf;
 -- 
 2.51.0
 
