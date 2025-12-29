@@ -1,126 +1,127 @@
-Return-Path: <stable+bounces-204134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A458CCE824C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 21:39:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92E4CE82D6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 21:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70548301AD0C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 20:39:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21A8E3000E81
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 20:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF21C2D23A4;
-	Mon, 29 Dec 2025 20:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CBB2E62B5;
+	Mon, 29 Dec 2025 20:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PA5VvINc"
+	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="izfa6ADe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730ED2C326B;
-	Mon, 29 Dec 2025 20:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767040766; cv=none; b=iYWUYAO4oDVGCzYpz6wDvW3n8x/RO1WhDSzUIiGMrZ3ATr2WTFNdTprRZXi518RWPpaxw1L/rWM+HxGLjhZwDPHGGZnPE882AZRJvA5QWH/Afg0RDf8ulwhyJN0m8rVkEY4/03E7AvAHu5o5L1DyKu1Kx2AjlwRXPBJiOEcWW0Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767040766; c=relaxed/simple;
-	bh=8HiZDGiFI1Ej64HDHXl6T0blCYp6fT2OhJ3cyCelRKU=;
-	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=nnoD7c8OyNm8HT3k8+ct5TQRMJz3ZkGR4wZ1hUWgT3dQyzjtnuKcOwwIJQCQKoRbyr9DM3/xpjUV+pLOheKqRWeytC9/DMtJW7CRHL0LiY3AHr3c+/9QwtL7YmrudkNBuLkvfjCaGKvVwKb3ppI/+AK+dEYyoUQyaWwEK5rKbbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PA5VvINc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E217CC4CEF7;
-	Mon, 29 Dec 2025 20:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767040766;
-	bh=8HiZDGiFI1Ej64HDHXl6T0blCYp6fT2OhJ3cyCelRKU=;
-	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
-	b=PA5VvINckjhy4V91bcU3EZ2+mTR8tSVR3Oy4ve5TUmnE2AMeiRMtdvDAN3oKV/6ch
-	 SuS/pYBISnOn7ZPurKX/hWny5LPJas8W3FvgZEGUpilFYsnutsmShIsmX2BkHAe5ES
-	 1F5Fyz6pxmMMjQF4xLk6QnutvUf7oEDIIDQn5XncAUWL/e3abzDMx2XX2xuh4rfnka
-	 WmiFghSe8RSjd3JRT+okRsJGWZp0PmCNskgXDFaTJ83UJNg00RTsZCiaxQ6ZEvHt9K
-	 uvW/u8A1vJO7P63IhpHuGuwRRa0ZBsec+ObGO8pOhg5egOisAnHY2vExM7zrvckxDi
-	 FvH9guXxu1dGA==
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 29 Dec 2025 14:39:25 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F3621A447;
+	Mon, 29 Dec 2025 20:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767041414; cv=pass; b=S3SaDMMtse8s6MS/x+dDkiqSloRDaPLpFZ1qJi6Wjqk1Vr2whOyZ4kBFh9hEW7rRQztyWKAIum8S6YCUYCK83Cz0mHTJv15ShxYDyWKw7Drggsnld7lF9EpHxTiGMC1IXMRy8dzJTnwCgWBFxhPBtuie8w+ECVZsb5cw6w3Tqlo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767041414; c=relaxed/simple;
+	bh=Y3act2NuFjb8W1a4upCsma+y1jTtiUIJgtkptctT/0k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hk9eEAuIZ3unjubGvwmyx9EQ/xbpSKs1211+cufd+cKMEGtFRKQY9mrGjfqIeH+G5ehEkFqmk7T3HWYnQVnhkVaAbMVarnJT2RcvrKgWveK/YiAfkp/NLtltNl/OW5GLS19Ds3l+jEq8HLT29ctiqDlqyMwA0/clpFUzxrawQwE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=izfa6ADe; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1767041390; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Hv6CGLRDl+d2dSC6RZcX61Qo+/+lJSYru0ftv3FTJ/ItjQrPlsHeLbOxMa6geRc10UnjJFG2liq0xF7Qcgzkeh6kPsRTAu3YVMJvd+4KUEI8r0l8CHNnyagTT4jk0zSFANNBgGd1Rqd20GtOBpupex6R+cyg3kVDLDrSYtF0yUk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767041390; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fmghGag9NmzzfaBGoCxzAcUoBRUzA960YzhyQ/Qa3lE=; 
+	b=VLqBGQ9PcBqDRI8p0ONb5N+Z9J6HJKkHua7nGClcRqKJ9TvzaDLBhO5yEENXyjZKfZ5JlMAHp70IQVKrGidVTW+i0mZsDJYtNxMZErFQHk2KESMoTyZyoX5dVnhzopxNQw/DZnev+7v0DlP6Mn8JLySOR3bOB/nUEJlP6z/rWvQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767041390;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=fmghGag9NmzzfaBGoCxzAcUoBRUzA960YzhyQ/Qa3lE=;
+	b=izfa6ADefJSClyPNAjcCKLndoAO+aeLx+giWkwNIVpJkT9cyB+SvmQ32Ydk8YhXA
+	lEQolIREeZxhh6I9MrZROLO4A6pgOhp69aq66/FG7H/NHAxPtjBzxcFesAZVi6btXCb
+	ooiuzgguo83mzRpXMg3QrW10PAkNEy3Jdwn8RHXQ=
+Received: by mx.zohomail.com with SMTPS id 1767041387182538.265209058355;
+	Mon, 29 Dec 2025 12:49:47 -0800 (PST)
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: slava@dubeyko.com,
+	zippel@linux-m68k.org,
+	linux-fsdevel@vger.kernel.org,
+	glaubitz@physik.fu-berlin.de,
+	frank.li@vivo.com
+Cc: akpm@osdl.org,
+	linux-kernel@vger.kernel.org,
+	janak@mpiricsoftware.com,
+	shardulsb08@gmail.com,
+	stable@vger.kernel.org,
+	syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>
+Subject: [PATCH v3] hfsplus: return error when node already exists in hfs_bnode_create
+Date: Tue, 30 Dec 2025 02:19:38 +0530
+Message-Id: <20251229204938.1907089-1-shardul.b@mpiricsoftware.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- jserv@ccns.ncku.edu.tw, conor+dt@kernel.org, eleanor15x@gmail.com, 
- linux-arm-kernel@lists.infradead.org, linusw@kernel.org, krzk+dt@kernel.org, 
- arnd@arndb.de, devicetree@vger.kernel.org
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-In-Reply-To: <20251225173118.580110-1-visitorckw@gmail.com>
-References: <20251225173118.580110-1-visitorckw@gmail.com>
-Message-Id: <176703895443.2172504.7231951665641312391.robh@kernel.org>
-Subject: Re: [PATCH v2] ARM: dts: integrator: Fix DMA ranges mismatch
- warning on IM-PD1
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
+When hfs_bnode_create() finds that a node is already hashed (which should
+not happen in normal operation), it currently returns the existing node
+without incrementing its reference count. This causes a reference count
+inconsistency that leads to a kernel panic when the node is later freed
+in hfs_bnode_put():
 
-On Thu, 25 Dec 2025 17:31:18 +0000, Kuan-Wei Chiu wrote:
-> When compiling the device tree for the Integrator/AP with IM-PD1, the
-> following warning is observed regarding the display controller node:
-> 
-> arch/arm/boot/dts/arm/integratorap-im-pd1.dts:251.3-14: Warning
-> (dma_ranges_format):
-> /bus@c0000000/bus@c0000000/display@1000000:dma-ranges: empty
-> "dma-ranges" property but its #address-cells (2) differs from
-> /bus@c0000000/bus@c0000000 (1)
-> 
-> The "dma-ranges" property is intended to describe DMA address
-> translations for child nodes. However, the only child of the display
-> controller is a "port" node, which does not perform DMA memory
-> accesses.
-> 
-> Since the property is not required for the child node and triggers a
-> warning due to default address cell mismatch, remove it.
-> 
-> Fixes: 7bea67a99430 ("ARM: dts: integrator: Fix DMA ranges")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> ---
-> Changes in v2:
-> - Switch approach to remove the unused "dma-ranges" property instead of
->   adding "#address-cells" and "#size-cells".
-> 
->  arch/arm/boot/dts/arm/integratorap-im-pd1.dts | 1 -
->  1 file changed, 1 deletion(-)
-> 
+    kernel BUG at fs/hfsplus/bnode.c:676!
+    BUG_ON(!atomic_read(&node->refcnt))
 
+This scenario can occur when hfs_bmap_alloc() attempts to allocate a node
+that is already in use (e.g., when node 0's bitmap bit is incorrectly
+unset), or due to filesystem corruption.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Returning an existing node from a create path is not normal operation.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Fix this by returning ERR_PTR(-EEXIST) instead of the node when it's
+already hashed. This properly signals the error condition to callers,
+which already check for IS_ERR() return values.
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+Reported-by: syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=1c8ff72d0cd8a50dfeaa
+Link: https://lore.kernel.org/all/784415834694f39902088fa8946850fc1779a318.camel@ibm.com/
+Fixes: 634725a92938 ("[PATCH] hfs: cleanup HFS+ prints")
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+---
+v3 changes:
+  - This is posted standalone as discussed in the v2 thread.
+v2 changes:
+  - Implement Slava's suggestion: return ERR_PTR(-EEXIST) for already-hashed nodes.
+  - Keep the node-0 allocation guard as a minimal, targeted hardening measure.
 
-  pip3 install dtschema --upgrade
+ fs/hfsplus/bnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-This patch series was applied (using b4) to base:
- Base: attempting to guess base-commit...
- Base: tags/next-20251219 (exact match)
- Base: tags/next-20251219 (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/arm/' for 20251225173118.580110-1-visitorckw@gmail.com:
-
-arch/arm/boot/dts/arm/integratorap-im-pd1.dtb: display@1000000 (arm,pl110): 'port@0' does not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/display/arm,pl11x.yaml
-
-
-
-
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index 191661af9677..250a226336ea 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -629,7 +629,7 @@ struct hfs_bnode *hfs_bnode_create(struct hfs_btree *tree, u32 num)
+ 	if (node) {
+ 		pr_crit("new node %u already hashed?\n", num);
+ 		WARN_ON(1);
+-		return node;
++		return ERR_PTR(-EEXIST);
+ 	}
+ 	node = __hfs_bnode_create(tree, num);
+ 	if (!node)
+-- 
+2.34.1
 
 
