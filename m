@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-203864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BFDCE7786
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F8BCE7780
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B65E3030598
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:23:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9433D30424AC
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A97F23C39A;
-	Mon, 29 Dec 2025 16:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AF9255F2D;
+	Mon, 29 Dec 2025 16:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzXLGsQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU1mjzli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB807202F65;
-	Mon, 29 Dec 2025 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A1E2222CB;
+	Mon, 29 Dec 2025 16:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025385; cv=none; b=QafZ97YRa8YgFrfBtC/NScwzpcJjjbJ1BsCxnyWqowWWi80WiMTWUkasKwqafKrG6S2d5t9zv99jgNZEAEAsxacdyGQL+Kpq0WuvAN81BY5xBEipz9nggNF2PE20+szX/N7qGKeNTWCqBg7ZwiRKU3fZxS5y8kDt8tQEWIC7VBY=
+	t=1767025390; cv=none; b=pQLW5/JYKm9x8xvlRmv/eVAM75rvGb7y/N3NIrtFlYCmkaB7y6CYjrKzFhgMCZP+OM4605DluOHmwDWujzUG6JBBcKww5KIDnWP8cqnWDRQF+j3gSn7P0j4w8ihXsjW+hZRu/bofHYfddK/u14ioIqZA69BJsb77QsfZfuRTKYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025385; c=relaxed/simple;
-	bh=HUbQSP1bljb9dIbPoHGgBY+r5GwNmFi8ztGKaEhWlUQ=;
+	s=arc-20240116; t=1767025390; c=relaxed/simple;
+	bh=hY0dXYB3DsF+bZGDs9jzT9BTueNbjeBv304omIn6T2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSOh3kfWwN1uNCjq2Ig39FhHvUZQVFRD8viuFQFb5EE3mnN3PVy+PYIenuMae9g0bR8/2qdWAU510Adh8nJIvRzg0DqEPvj11XuVA1Rb5NOR1W7GXb4hIX2YLibRBxA6qjsQwL7d5HLf2Un97flVgn8cEQhQqJwPqX27bqX69P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzXLGsQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF577C4CEF7;
-	Mon, 29 Dec 2025 16:23:03 +0000 (UTC)
+	 MIME-Version; b=Ee4p6Eakg3Jg77VgKZKpASYavkky33kWvdYU/IgFZKCcpJq5i4Tw9Ht4nL0jSDkxcFhAf2ERE2Mr323pS4zgQJTV9HNbPHf3y2ep5Et+Ph+4e3jePPVaevwkM3Bym2XN+IVTdKvyhOp0pE2L8WlWPS3X/AyzU+SwDKtMdL51/Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU1mjzli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F6FC4CEF7;
+	Mon, 29 Dec 2025 16:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025384;
-	bh=HUbQSP1bljb9dIbPoHGgBY+r5GwNmFi8ztGKaEhWlUQ=;
+	s=korg; t=1767025389;
+	bh=hY0dXYB3DsF+bZGDs9jzT9BTueNbjeBv304omIn6T2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzXLGsQOYTv7u6v98DBFbX2GCFMP6qusyKiaLCPFd7+SnnOHdVNS0VW5eH9TScghh
-	 BAch/Pu7l5MoXWaGhFdd9DXZP1fhR3XXWuT36Zi7E2lL26Ee+k8LBrfPbc4NvvDPDz
-	 x+cDanb3ghNGP9c2in27ztwG8ST3SO/NwTWdfKwQ=
+	b=qU1mjzliOxfFQOQ8rpwNMaaqyoMZ8rVGJt1YAemTSEEUFepzy6XcsKzI46ebcfduq
+	 4nge6Efl1TWY0Ymi76985BVpGUGA4iCp7bCwGxw33+O8Zs57itHo39tn2/tuoiSyMj
+	 Cwe1m4Fhjeew4M29rM1WcGpInOQ2vPujxPq4zlIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
 	Yuezhang Mo <Yuezhang.Mo@sony.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 194/430] exfat: fix remount failure in different process environments
-Date: Mon, 29 Dec 2025 17:09:56 +0100
-Message-ID: <20251229160731.494624182@linuxfoundation.org>
+Subject: [PATCH 6.18 195/430] exfat: zero out post-EOF page cache on file extension
+Date: Mon, 29 Dec 2025 17:09:57 +0100
+Message-ID: <20251229160731.530428700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,56 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 51fc7b4ce10ccab8ea5e4876bcdc42cf5202a0ef ]
+[ Upstream commit 4e163c39dd4e70fcdce948b8774d96e0482b4a11 ]
 
-The kernel test robot reported that the exFAT remount operation
-failed. The reason for the failure was that the process's umask
-is different between mount and remount, causing fs_fmask and
-fs_dmask are changed.
+xfstests generic/363 was failing due to unzeroed post-EOF page
+cache that allowed mmap writes beyond EOF to become visible
+after file extension.
 
-Potentially, both gid and uid may also be changed. Therefore, when
-initializing fs_context for remount, inherit these mount options
-from the options used during mount.
+For example, in following xfs_io sequence, 0x22 should not be
+written to the file but would become visible after the extension:
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511251637.81670f5c-lkp@intel.com
+  xfs_io -f -t -c "pwrite -S 0x11 0 8" \
+    -c "mmap 0 4096" \
+    -c "mwrite -S 0x22 32 32" \
+    -c "munmap" \
+    -c "pwrite -S 0x33 512 32" \
+    $testfile
+
+This violates the expected behavior where writes beyond EOF via
+mmap should not persist after the file is extended. Instead, the
+extended region should contain zeros.
+
+Fix this by using truncate_pagecache() to truncate the page cache
+after the current EOF when extending the file.
+
 Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/super.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/exfat/file.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/exfat/super.c b/fs/exfat/super.c
-index 74d451f732c7..581754001128 100644
---- a/fs/exfat/super.c
-+++ b/fs/exfat/super.c
-@@ -813,10 +813,21 @@ static int exfat_init_fs_context(struct fs_context *fc)
- 	ratelimit_state_init(&sbi->ratelimit, DEFAULT_RATELIMIT_INTERVAL,
- 			DEFAULT_RATELIMIT_BURST);
+diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+index adc37b4d7fc2..536c8078f0c1 100644
+--- a/fs/exfat/file.c
++++ b/fs/exfat/file.c
+@@ -25,6 +25,8 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	struct exfat_chain clu;
  
--	sbi->options.fs_uid = current_uid();
--	sbi->options.fs_gid = current_gid();
--	sbi->options.fs_fmask = current->fs->umask;
--	sbi->options.fs_dmask = current->fs->umask;
-+	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE && fc->root) {
-+		struct super_block *sb = fc->root->d_sb;
-+		struct exfat_mount_options *cur_opts = &EXFAT_SB(sb)->options;
++	truncate_pagecache(inode, i_size_read(inode));
 +
-+		sbi->options.fs_uid = cur_opts->fs_uid;
-+		sbi->options.fs_gid = cur_opts->fs_gid;
-+		sbi->options.fs_fmask = cur_opts->fs_fmask;
-+		sbi->options.fs_dmask = cur_opts->fs_dmask;
-+	} else {
-+		sbi->options.fs_uid = current_uid();
-+		sbi->options.fs_gid = current_gid();
-+		sbi->options.fs_fmask = current->fs->umask;
-+		sbi->options.fs_dmask = current->fs->umask;
-+	}
+ 	ret = inode_newsize_ok(inode, size);
+ 	if (ret)
+ 		return ret;
+@@ -639,6 +641,9 @@ static ssize_t exfat_file_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 
+ 	inode_lock(inode);
+ 
++	if (pos > i_size_read(inode))
++		truncate_pagecache(inode, i_size_read(inode));
 +
- 	sbi->options.allow_utime = -1;
- 	sbi->options.errors = EXFAT_ERRORS_RO;
- 	exfat_set_iocharset(&sbi->options, exfat_default_iocharset);
+ 	valid_size = ei->valid_size;
+ 
+ 	ret = generic_write_checks(iocb, iter);
 -- 
 2.51.0
 
