@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-203735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14F0CE7604
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:20:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2510CCE75BD
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5243049D05
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:17:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F35913016926
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6068133067D;
-	Mon, 29 Dec 2025 16:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4CC26FD9B;
+	Mon, 29 Dec 2025 16:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tyU+y2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlAV14wP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3E832B99B;
-	Mon, 29 Dec 2025 16:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFA8319858;
+	Mon, 29 Dec 2025 16:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025022; cv=none; b=HVYfTvQYAny+mgz2NB6s5a8ZYLB+W50FcvNaLUBmj6AUcnliDsc1vh3IZE/i0HXHzV4szXhhJQKYmCcadu7R1NDAdQiFojpLA4bg1YdRtQC1VgemNKERA2RjIE8LybdAVgxpQFzPPX381+FiHuicgm0HN7b8sSnRWeQ7pjwmuUU=
+	t=1767025053; cv=none; b=YWMguFhT5CJ7ZvpPsSiPnlOAERcItHD2kwfZG8UuFRSUSto+5jdVHKNeYaeeEX5tNb+IAuJs216SF5BLdhwhYyH8+3jeszMkTsna0y7T/acB4WoYcYAxWv6BGt5rhk0DBtX5F3oASEJw4KU7gvWC2tIjPysJBIVxOoHNZ5FYSSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025022; c=relaxed/simple;
-	bh=zPVzim21WYHV8n7CJNCftNXvOyZ3v7meoXzquWdYQOY=;
+	s=arc-20240116; t=1767025053; c=relaxed/simple;
+	bh=Nhj4gAULZ0N4U2RzaQ8slS+F3vHR8ruF+DmxqQEtx0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOikyziwnXf9rVyJgKWG0htUQMgbwKsUnuWsWjy6ow3dWU2soM/HuEVlESv1jlGZPODbC5REkZYbmY9eHqdA2Ue7FC4uwEhG1RJQJmU3l3ydjuDwTunMP2e5iGhPM0bd46vIucfg6tb0bl1BS3hYvBAY1mDrzo3k0a/cV/lOxpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tyU+y2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97934C4CEF7;
-	Mon, 29 Dec 2025 16:17:01 +0000 (UTC)
+	 MIME-Version; b=Rh7CEBuhLW42OEgKB6Ol3sLHTUiLfoEEdXyXEGVhAChFwUjF4vpgzGnF8TRV2641hR30z6KWtj2SWM+kj6svvEZTA9bNmCrQd0Fqw9qYWcJZmLcxgKFHailADc3mBlMoiKya+bxIa69yN6G1W3uhPugF0gQIos4JLFhJqsI0Q/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlAV14wP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB75C4CEF7;
+	Mon, 29 Dec 2025 16:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025022;
-	bh=zPVzim21WYHV8n7CJNCftNXvOyZ3v7meoXzquWdYQOY=;
+	s=korg; t=1767025053;
+	bh=Nhj4gAULZ0N4U2RzaQ8slS+F3vHR8ruF+DmxqQEtx0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tyU+y2/MZF1kixqmDnik018PdK9jPictECIjHGKeq6Lh4LI4HWQ4T6BSPvOMdxq/
-	 7kYiXsfWSJ9UsDmkvAiTjov0B8sVEr7wa0MBWG1hmszdy51XoR+oX2tq1M4Czv1Quv
-	 iJuTWpu5FUTnNFnPQNOOUE1JpMfuRFvhZS15OXfs=
+	b=YlAV14wPiPjQ4fMeJ2JZnJqcusuYT9magCbehX5/L45wVPQmo3LVZIWYLGWFXB+0V
+	 1SH7B7rYKss4j7MTrHBBMuBApBvYl8XOS16pTeBszd73mUH5V76zVTr627L5H9Xofs
+	 7mZpPyPxYmf5CZfKi636DUfQaq1x+kvfWxBYbROo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Clark Wang <xiaoning.wang@nxp.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 059/430] net: phy: realtek: eliminate has_phycr2 variable
-Date: Mon, 29 Dec 2025 17:07:41 +0100
-Message-ID: <20251229160726.539750407@linuxfoundation.org>
+Subject: [PATCH 6.18 060/430] net: phy: realtek: allow CLKOUT to be disabled on RTL8211F(D)(I)-VD-CG
+Date: Mon, 29 Dec 2025 17:07:42 +0100
+Message-ID: <20251229160726.576023642@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,62 +68,107 @@ Content-Transfer-Encoding: 8bit
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 910ac7bfb1af1ae4cd141ef80e03a6729213c189 ]
+[ Upstream commit e1a31c41bef678afe0d99b7f0dc3711a80c68447 ]
 
-This variable is assigned in rtl821x_probe() and used in
-rtl8211f_config_init(), which is more complex than it needs to be.
-Simply testing the same condition from rtl821x_probe() in
-rtl8211f_config_init() yields the same result (the PHY driver ID is a
-runtime invariant), but with one temporary variable less.
+Add CLKOUT disable support for RTL8211F(D)(I)-VD-CG. Like with other PHY
+variants, this feature might be requested by customers when the clock
+output is not used, in order to reduce electromagnetic interference (EMI).
 
+In the common driver, the CLKOUT configuration is done through PHYCR2.
+The RTL_8211FVD_PHYID is singled out as not having that register, and
+execution in rtl8211f_config_init() returns early after commit
+2c67301584f2 ("net: phy: realtek: Avoid PHYCR2 access if PHYCR2 not
+present").
+
+But actually CLKOUT is configured through a different register for this
+PHY. Instead of pretending this is PHYCR2 (which it is not), just add
+some code for modifying this register inside the rtl8211f_disable_clk_out()
+function, and move that outside the code portion that runs only if
+PHYCR2 exists.
+
+In practice this reorders the PHYCR2 writes to disable PHY-mode EEE and
+to disable the CLKOUT for the normal RTL8211F variants, but this should
+be perfectly fine.
+
+It was not noted that RTL8211F(D)(I)-VD-CG would need a genphy_soft_reset()
+call after disabling the CLKOUT. Despite that, we do it out of caution
+and for symmetry with the other RTL8211F models.
+
+Co-developed-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251117234033.345679-4-vladimir.oltean@nxp.com
+Link: https://patch.msgid.link/20251117234033.345679-5-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 4f0638b12451 ("net: phy: RTL8211FVD: Restore disabling of PHY-mode EEE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek/realtek_main.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/phy/realtek/realtek_main.c | 31 ++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 1625919a47be8..daf2457b378bf 100644
+index daf2457b378bf..f0348b92beec3 100644
 --- a/drivers/net/phy/realtek/realtek_main.c
 +++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -167,7 +167,6 @@ MODULE_LICENSE("GPL");
+@@ -89,6 +89,14 @@
+ #define RTL8211F_LEDCR_MASK			GENMASK(4, 0)
+ #define RTL8211F_LEDCR_SHIFT			5
  
- struct rtl821x_priv {
- 	u16 phycr1;
--	bool has_phycr2;
- 	bool disable_clk_out;
- 	struct clk *clk;
- 	/* rtl8211f */
-@@ -218,7 +217,6 @@ static int rtl821x_probe(struct phy_device *phydev)
- {
- 	struct device *dev = &phydev->mdio.dev;
- 	struct rtl821x_priv *priv;
--	u32 phy_id = phydev->drv->phy_id;
- 	int ret;
++/* RTL8211F(D)(I)-VD-CG CLKOUT configuration is specified via magic values
++ * to undocumented register pages. The names here do not reflect the datasheet.
++ * Unlike other PHY models, CLKOUT configuration does not go through PHYCR2.
++ */
++#define RTL8211FVD_CLKOUT_PAGE			0xd05
++#define RTL8211FVD_CLKOUT_REG			0x11
++#define RTL8211FVD_CLKOUT_EN			BIT(8)
++
+ /* RTL8211F RGMII configuration */
+ #define RTL8211F_RGMII_PAGE			0xd08
  
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -238,7 +236,6 @@ static int rtl821x_probe(struct phy_device *phydev)
- 	if (of_property_read_bool(dev->of_node, "realtek,aldps-enable"))
- 		priv->phycr1 |= RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF;
+@@ -626,8 +634,13 @@ static int rtl8211f_config_clk_out(struct phy_device *phydev)
+ 	if (!priv->disable_clk_out)
+ 		return 0;
  
--	priv->has_phycr2 = !(phy_id == RTL_8211FVD_PHYID);
- 	priv->disable_clk_out = of_property_read_bool(dev->of_node,
- 						      "realtek,clkout-disable");
- 
-@@ -656,7 +653,8 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+-	ret = phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE,
+-			       RTL8211F_PHYCR2, RTL8211F_CLKOUT_EN, 0);
++	if (phydev->drv->phy_id == RTL_8211FVD_PHYID)
++		ret = phy_modify_paged(phydev, RTL8211FVD_CLKOUT_PAGE,
++				       RTL8211FVD_CLKOUT_REG,
++				       RTL8211FVD_CLKOUT_EN, 0);
++	else
++		ret = phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE,
++				       RTL8211F_PHYCR2, RTL8211F_CLKOUT_EN, 0);
  	if (ret)
  		return ret;
  
--	if (!priv->has_phycr2)
-+	/* RTL8211FVD has no PHYCR2 register */
-+	if (phydev->drv->phy_id == RTL_8211FVD_PHYID)
- 		return 0;
+@@ -653,6 +666,13 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
  
- 	/* Disable PHY-mode EEE so LPI is passed to the MAC */
++	ret = rtl8211f_config_clk_out(phydev);
++	if (ret) {
++		dev_err(dev, "clkout configuration failed: %pe\n",
++			ERR_PTR(ret));
++		return ret;
++	}
++
+ 	/* RTL8211FVD has no PHYCR2 register */
+ 	if (phydev->drv->phy_id == RTL_8211FVD_PHYID)
+ 		return 0;
+@@ -663,13 +683,6 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = rtl8211f_config_clk_out(phydev);
+-	if (ret) {
+-		dev_err(dev, "clkout configuration failed: %pe\n",
+-			ERR_PTR(ret));
+-		return ret;
+-	}
+-
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
