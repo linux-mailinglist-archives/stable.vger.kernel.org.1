@@ -1,163 +1,91 @@
-Return-Path: <stable+bounces-203531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48143CE6ACC
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:23:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25673CE6AEA
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 126F23007954
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:23:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCC0F3007C67
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D7A2DA775;
-	Mon, 29 Dec 2025 12:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E7430FC13;
+	Mon, 29 Dec 2025 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FogRdGGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q210X5Vc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FB527A130
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA7730F54C;
+	Mon, 29 Dec 2025 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767011011; cv=none; b=llTr8/LxX4OGkUC9D5amureG77hhHMUJIgRq2x4qvHfT6qkWRVG9ctyNnTb1fOzjsj2pRSRDoqoe7KoFU++qtEX3vZlIdDtEoGPN4aW7Xy6rutd6uHJWVdTyo9E0zKIqUhmn3UDD5o1/2EdfxllNrUqvtkL24lAr59wORITqXx4=
+	t=1767011358; cv=none; b=XQAcPfWpTFfFlkO8JM9iDikIFDPeXOofdyOB1ZVaq2/RxVgXHjnvEFbaeaHvXzSFZ2RZ/vxd3hFFl4gnhPKA9uiW41Uopfpx+95GxMFobDjmyn8OizISu7O+8O9FKnV0b3XtoaI4Zpk+RBEnL98c4fA0/9j9eputFLAzSih8M4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767011011; c=relaxed/simple;
-	bh=HnSfvPAgXQy8olsfYpaLCNAnEA0xijlmnKgowiSzd7U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HASMuooQD+QhrAy654ZqKvw7mQbzW36LrBc/z1ZiAhtS2jhQYyxLkBP6GIQR7iWXHrhENqoTp+Qvv8NbonYicw/BPrlN1nBcwF3jdkKxns7ldkogsIj1/uQ1MS85W63z69rWc5LRHuZ+GPgb/2KyHU8JuS4bt3LhQWrxcnmOX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FogRdGGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BDACC4CEF7;
-	Mon, 29 Dec 2025 12:23:30 +0000 (UTC)
+	s=arc-20240116; t=1767011358; c=relaxed/simple;
+	bh=XyqUhb/K2htDC2r1wXWToLcYiXo1q8Eg6FXv4WSImw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uSupKS6qlskhsS8rden3/UcYlOcQh14aP0/i44nJIZhIQ3Lmcal+hUF3Z3Qbk7Uguzu/jF8Cdt3GsRJSAd5G/vesJfobi0Shk9iPzNvrLtdtJVDyqz+lPu8tVT58JOlH3n24JW9nMD6K7aEA4kstLp62wuyLS193fq6SPJP6SWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q210X5Vc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D69C4CEF7;
+	Mon, 29 Dec 2025 12:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767011010;
-	bh=HnSfvPAgXQy8olsfYpaLCNAnEA0xijlmnKgowiSzd7U=;
-	h=Subject:To:Cc:From:Date:From;
-	b=FogRdGGAWemt9RYKtGHtcXHzTgRwQHQfDCTWxR2WkqDOKG6jRPcPNd5Erm30qKjys
-	 Wh/wZVe7A4TAS17CNHWM2bM45wotQGxwFXMFw8KmlmftvhHn1Ejsa97KriEEklqkpX
-	 6TnGMwuGV4dsU/yBBEHh6/YkQvQT0qVHmWhdCmbA=
-Subject: FAILED: patch "[PATCH] jbd2: fix the inconsistency between checksum and data in" failed to apply to 6.12-stable tree
-To: yebin10@huawei.com,djwong@kernel.org,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 13:23:28 +0100
-Message-ID: <2025122927-germicide-venus-61d2@gregkh>
+	s=korg; t=1767011357;
+	bh=XyqUhb/K2htDC2r1wXWToLcYiXo1q8Eg6FXv4WSImw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q210X5VcPRx8ksKNpcYv6LnEj/eNeT0SrgBeEz7UKZMJsw07tlpGhL10rdPMnr+Hn
+	 Wf1w04hyzG31tJbo0041XDLCwi/jORumGNn/Cqq2VAiv+2I9uLtAC/8HgUELkDGcxp
+	 pH/gExVs/Rbvdwp7si2ddzPjoGy4/cbuOO8IVRBk=
+Date: Mon, 29 Dec 2025 13:29:15 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: John Ogness <john.ogness@linutronix.de>
+Cc: pmladek@suse.com, sherry.sun@nxp.com, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org
+Subject: Re: Patch "printk: Avoid scheduling irq_work on suspend" has been
+ added to the 6.18-stable tree
+Message-ID: <2025122909-unrushed-lubricate-3a07@gregkh>
+References: <2025122945-trial-frosted-cef9@gregkh>
+ <877bu58owy.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877bu58owy.fsf@jogness.linutronix.de>
 
+On Mon, Dec 29, 2025 at 01:21:25PM +0106, John Ogness wrote:
+> Hi Greg,
+> 
+> On 2025-12-29, <gregkh@linuxfoundation.org> wrote:
+> > This is a note to let you know that I've just added the patch titled
+> >
+> >     printk: Avoid scheduling irq_work on suspend
+> >
+> > to the 6.18-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> >
+> > The filename of the patch is:
+> >      printk-avoid-scheduling-irq_work-on-suspend.patch
+> > and it can be found in the queue-6.18 subdirectory.
+> >
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> 
+> This patch should be accompanied with the preceeding commit:
+> 
+> d01ff281bd9b ("printk: Allow printk_trigger_flush() to flush all types")
+> 
+> and the later commit:
+> 
+> 66e7c1e0ee08 ("printk: Avoid irq_work for printk_deferred() on suspend")
+> 
+> in order to completely avoid irq_work triggering during suspend for all
+> possible call paths.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6abfe107894af7e8ce3a2e120c619d81ee764ad5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122927-germicide-venus-61d2@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Thanks, now both queued up.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6abfe107894af7e8ce3a2e120c619d81ee764ad5 Mon Sep 17 00:00:00 2001
-From: Ye Bin <yebin10@huawei.com>
-Date: Mon, 3 Nov 2025 09:01:23 +0800
-Subject: [PATCH] jbd2: fix the inconsistency between checksum and data in
- memory for journal sb
-
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
-
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
-
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
-
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 2fe1786a8f1b..c973162d5b31 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2354,6 +2354,12 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
- 
-@@ -2383,9 +2389,17 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
- 
- 	sb = journal->j_superblock;
- 
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	jbd2_journal_init_transaction_limits(journal);
- }
- EXPORT_SYMBOL(jbd2_journal_clear_features);
-
 
