@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-204109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40305CE7A0B
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:40:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F674CE79BA
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44F4E300A3F7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:34:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A2D63012A45
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84403334C28;
-	Mon, 29 Dec 2025 16:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAEE335066;
+	Mon, 29 Dec 2025 16:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ72V9HE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Sd1Xk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418C7332EA9;
-	Mon, 29 Dec 2025 16:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720B2334C0A;
+	Mon, 29 Dec 2025 16:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767026075; cv=none; b=DZlmPl/VO7M00HfyWZfff/ACYmLRkn0zshORg7dV33GSNlNUM07p2nDGJ1n8MBAy8ogF9eG9hx0Y9CCw07aF0s+NPETCaJF9qcDQiP316U4bbd7W4Lsgd79M5aArk40Ss2b99JrnGGCPpR6iCXPgdQSZhnPK2KRpULzRXY0MqwU=
+	t=1767026027; cv=none; b=SL8QcuokqQq81eEYmrF/6U6footrDHNDzTNzDRvQlCq1C8C6N/6R3c7OijjybiRaAIfrTWdRs8pYFbSpLFmw/TFPAHMTQEPDwRAetFafizNpPvWY+KWbfPj6haOkOxWsgL0ZVSNdVNhuw+VT9EJbGRYMXABronVRHRBFTOZFQJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767026075; c=relaxed/simple;
-	bh=MLItFqNMVgZXPIDF9EFxiMnjKKx3/M28MSl0ajyHvNU=;
+	s=arc-20240116; t=1767026027; c=relaxed/simple;
+	bh=X+Fp0aY5vsBp2Q4TcTUl/baqhRpdFb3Bw1gSqJ7oQh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EFFaI94xCoJitRvaApJ0ShkameJI6pRwXjseyQmFw7tx9mqLMD9dSZZoqMpjRBNeigkJIpNXjOKEF/aar9OjY4ZdZcJaxtcSC8NgOyd9Bdtw+o6b+hot7VGKa6BZyt44G8CchR6lPPkiA3rj9wzJmIgHX6I1liKJat7Mxkesukw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ72V9HE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBE6C4CEF7;
-	Mon, 29 Dec 2025 16:34:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q/Ajwu/u1UNBsDwAaPliCiC6WSkv2P1r49zuCzEwMiyde5kLeJKK9583JX+wYU7S8Gz/YxGbBNODXNDUkOkhjRTHCsggFX0fp8sLKA/APcVZIKTI0m058wYjNPdCnmjwXVlOPJsP5gLVNBbtRgm6kX4220L2EnummOlR8pTmyT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Sd1Xk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2250C4CEF7;
+	Mon, 29 Dec 2025 16:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767026075;
-	bh=MLItFqNMVgZXPIDF9EFxiMnjKKx3/M28MSl0ajyHvNU=;
+	s=korg; t=1767026027;
+	bh=X+Fp0aY5vsBp2Q4TcTUl/baqhRpdFb3Bw1gSqJ7oQh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ72V9HE9vl9OarhCPdSNC6FTzJ9AY04ggGGz5VunLqJRT21USQH9Jj3nn3cioURC
-	 yWu2X1nkRi3gNff3GyDVzTI1+TbcoKuXPi459rfOv8ohwVRtywo31ZiprJkUy+gGi7
-	 R1PtJL4VeWK9oUiLOLFOGVAGr2ys08qm+3V19nRs=
+	b=o9Sd1Xk7TMdZt7MGo0C5UyOLl1e6GpQuf6lyriBuUa6yQmi4P9Qs10UqFDGxTjiRg
+	 N9CE0F919CuKcgCpdqhyzDIv0VuS4U/W94pbDI4Gio0185OVuz5Sc5ReDSVEZ4zRqE
+	 82o3iby4qP6w71RJZcnSy7AB8zwAZMEqKR9Vtagw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.18 413/430] pwm: rzg2l-gpt: Allow checking period_tick cache value only if sibling channel is enabled
-Date: Mon, 29 Dec 2025 17:13:35 +0100
-Message-ID: <20251229160739.512861461@linuxfoundation.org>
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: [PATCH 6.18 414/430] platform/x86: intel: chtwc_int33fe: dont dereference swnode args
+Date: Mon, 29 Dec 2025 17:13:36 +0100
+Message-ID: <20251229160739.548995897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,61 +67,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit fae00ea9f00367771003ace78f29549dead58fc7 upstream.
+commit 527250cd9092461f1beac3e4180a4481bffa01b5 upstream.
 
-The rzg2l_gpt_config() tests the rzg2l_gpt->period_tick variable when
-both channels of a hardware channel are in use. This check is not valid
-if rzg2l_gpt_config() is called after disabling all the channels, as it
-tests against the cached value. Hence, allow checking and setting the
-cached value only if the sibling channel is enabled.
+Members of struct software_node_ref_args should not be dereferenced
+directly but set using the provided macros. Commit d7cdbbc93c56
+("software node: allow referencing firmware nodes") changed the name of
+the software node member and caused a build failure. Remove all direct
+dereferences of the ref struct as a fix.
 
-While at it, drop else after return statement to fix the check patch
-warning.
+However, this driver also seems to abuse the software node interface by
+waiting for a node with an arbitrary name "intel-xhci-usb-sw" to appear
+in the system before setting up the reference for the I2C device, while
+the actual software node already exists in the intel-xhci-usb-role-switch
+module and should be used to set up a static reference. Add a FIXME for
+a future improvement.
 
-Cc: stable@kernel.org
-Fixes: 061f087f5d0b ("pwm: Add support for RZ/G2L GPT")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251126104308.142302-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
+Fixes: 53c24c2932e5 ("platform/x86: intel_cht_int33fe: use inline reference properties")
+Cc: stable@vger.kernel.org
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/all/20251121111534.7cdbfe5c@canb.auug.org.au/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-rzg2l-gpt.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/chtwc_int33fe.c |   29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
---- a/drivers/pwm/pwm-rzg2l-gpt.c
-+++ b/drivers/pwm/pwm-rzg2l-gpt.c
-@@ -96,6 +96,11 @@ static inline unsigned int rzg2l_gpt_sub
- 	return hwpwm & 0x1;
+--- a/drivers/platform/x86/intel/chtwc_int33fe.c
++++ b/drivers/platform/x86/intel/chtwc_int33fe.c
+@@ -77,7 +77,7 @@ static const struct software_node max170
+  * software node.
+  */
+ static struct software_node_ref_args fusb302_mux_refs[] = {
+-	{ .node = NULL },
++	SOFTWARE_NODE_REFERENCE(NULL),
+ };
+ 
+ static const struct property_entry fusb302_properties[] = {
+@@ -190,11 +190,6 @@ static void cht_int33fe_remove_nodes(str
+ {
+ 	software_node_unregister_node_group(node_group);
+ 
+-	if (fusb302_mux_refs[0].node) {
+-		fwnode_handle_put(software_node_fwnode(fusb302_mux_refs[0].node));
+-		fusb302_mux_refs[0].node = NULL;
+-	}
+-
+ 	if (data->dp) {
+ 		data->dp->secondary = NULL;
+ 		fwnode_handle_put(data->dp);
+@@ -202,7 +197,15 @@ static void cht_int33fe_remove_nodes(str
+ 	}
  }
  
-+static inline unsigned int rzg2l_gpt_sibling(unsigned int hwpwm)
+-static int cht_int33fe_add_nodes(struct cht_int33fe_data *data)
++static void cht_int33fe_put_swnode(void *data)
 +{
-+	return hwpwm ^ 0x1;
++	struct fwnode_handle *fwnode = data;
++
++	fwnode_handle_put(fwnode);
++	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(NULL);
 +}
 +
- static void rzg2l_gpt_write(struct rzg2l_gpt_chip *rzg2l_gpt, u32 reg, u32 data)
++static int cht_int33fe_add_nodes(struct device *dev, struct cht_int33fe_data *data)
  {
- 	writel(data, rzg2l_gpt->mmio + reg);
-@@ -271,10 +276,14 @@ static int rzg2l_gpt_config(struct pwm_c
- 	 * in use with different settings.
+ 	const struct software_node *mux_ref_node;
+ 	int ret;
+@@ -212,17 +215,25 @@ static int cht_int33fe_add_nodes(struct
+ 	 * until the mux driver has created software node for the mux device.
+ 	 * It means we depend on the mux driver. This function will return
+ 	 * -EPROBE_DEFER until the mux device is registered.
++	 *
++	 * FIXME: the relevant software node exists in intel-xhci-usb-role-switch
++	 * and - if exported - could be used to set up a static reference.
  	 */
- 	if (rzg2l_gpt->channel_request_count[ch] > 1) {
--		if (period_ticks < rzg2l_gpt->period_ticks[ch])
--			return -EBUSY;
--		else
-+		u8 sibling_ch = rzg2l_gpt_sibling(pwm->hwpwm);
+ 	mux_ref_node = software_node_find_by_name(NULL, "intel-xhci-usb-sw");
+ 	if (!mux_ref_node)
+ 		return -EPROBE_DEFER;
+ 
++	ret = devm_add_action_or_reset(dev, cht_int33fe_put_swnode,
++				       software_node_fwnode(mux_ref_node));
++	if (ret)
++		return ret;
 +
-+		if (rzg2l_gpt_is_ch_enabled(rzg2l_gpt, sibling_ch)) {
-+			if (period_ticks < rzg2l_gpt->period_ticks[ch])
-+				return -EBUSY;
-+
- 			period_ticks = rzg2l_gpt->period_ticks[ch];
-+		}
+ 	/*
+ 	 * Update node used in "usb-role-switch" property. Note that we
+ 	 * rely on software_node_register_node_group() to use the original
+ 	 * instance of properties instead of copying them.
+ 	 */
+-	fusb302_mux_refs[0].node = mux_ref_node;
++	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(mux_ref_node);
+ 
+ 	ret = software_node_register_node_group(node_group);
+ 	if (ret)
+@@ -345,7 +356,7 @@ static int cht_int33fe_typec_probe(struc
+ 		return fusb302_irq;
  	}
  
- 	prescale = rzg2l_gpt_calculate_prescale(rzg2l_gpt, period_ticks);
+-	ret = cht_int33fe_add_nodes(data);
++	ret = cht_int33fe_add_nodes(dev, data);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
