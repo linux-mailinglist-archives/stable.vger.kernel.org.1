@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-203818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429FECE76DB
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:24:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A72CE76F6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6941A30245EF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:20:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACBF53062E0A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0C73314A9;
-	Mon, 29 Dec 2025 16:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694F1331201;
+	Mon, 29 Dec 2025 16:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqg7Yd02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coLWpZe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDA7330B2A;
-	Mon, 29 Dec 2025 16:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A2C33121F;
+	Mon, 29 Dec 2025 16:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025254; cv=none; b=ntGuQg9ADv5ZR8ZSIjeYrNF7BUmxBHKkviw46FLvSH9mBe1GEltLrZPSOpahqMENm4612Lp9bKnDtdn0p8hyIlzeFrUm8xFaXij3IUX9XIi4aFTJDxaEJ2gjUqtPZKimloixAKgoz/QWFF5khSvEccNIxtIupY/t1562CbUE9Xc=
+	t=1767025285; cv=none; b=mjhE7PRHOXUTnzU3JnzgW36p9tWo8eMU3Vl93ZlconlmfqqcCQyO0OUJ9OnIX0c8e3VPqOIAGmUh2vv2FFxhtmH+Lky27XFe5UC/UTmOayqjxFsDIiAUDPHuDyWRkVa28u96tAiUYjGvI56DwyOJaqU3EZzMP7MdfuIMnWdI/78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025254; c=relaxed/simple;
-	bh=5dOZBeFwcJMhLYEAgY9gjLBbSBuff4tXHx8Hf/dRXkM=;
+	s=arc-20240116; t=1767025285; c=relaxed/simple;
+	bh=JrbYSg1sO6GI3PLi7g7gZnaFrHffUv66snvX5gHjAps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UG8i6Rv5pwlWhpSTddwKkDJzu5SudyuQkqj+XMAOzvl5LO2npgTKIOGbh/CpScK5ml66ddeunEsuKCvUOmk22E1mY3rTytoFozOEy8F8a7KoaKanjWZovOyGxwXtDj9JgpiYd8PxIL/BnBXkmQ1ac+JWEhiwomlT4Zv9pPT6O6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqg7Yd02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6591EC4CEF7;
-	Mon, 29 Dec 2025 16:20:53 +0000 (UTC)
+	 MIME-Version; b=Kgy+bu4tD32/9XlWoq5VhTW+wK3JN+lYDMBqWfToGvM0Kc8uoss157KbWIXOgPIhhqqbd5tKo30JcjgrknJjy7y4VbLodWdpM9Ko/zml7e7FrwxNSCyAnw7lHzhjasFe6w7txbgeLAN2wtKIPij1N4ZMSI2QI/Odz+eN5oYrSQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coLWpZe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BAAC4CEF7;
+	Mon, 29 Dec 2025 16:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025253;
-	bh=5dOZBeFwcJMhLYEAgY9gjLBbSBuff4tXHx8Hf/dRXkM=;
+	s=korg; t=1767025285;
+	bh=JrbYSg1sO6GI3PLi7g7gZnaFrHffUv66snvX5gHjAps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qqg7Yd02lCPx77CcupYuhzNmWE2ZaEwXEsc3gpJInSoC4x+puFhwodkEJ2SOYftzY
-	 UCGjbclyiOzO8Acze+JEuGhUrTPLz5ZsdImsXlNoftUN+QYl8q9Bw5ZhKXczTReOLq
-	 6hqte7kTULY+gWbFVSAv8J+LG/0u2DeXIhmopxcg=
+	b=coLWpZe5+pv/fDX+z2/Tp5b92cQdLxdRd/jrci5yPcvqVlYtPuMMYMEp7lt7iw9TY
+	 lcKT8uJP7A9aPOCMRiR8WCPnP5CciVJ/pGVOy8mtwflp3+YszRweJBiH5fsn6S7LSi
+	 mUSP83NG16KeNg3WzUWgbkJgC2Q8L2ZtNQ5Kthhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	huang-jl <huang-jl@deepseek.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
 	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 131/430] io_uring: fix nr_segs calculation in io_import_kbuf
-Date: Mon, 29 Dec 2025 17:08:53 +0100
-Message-ID: <20251229160729.186370737@linuxfoundation.org>
+Subject: [PATCH 6.18 132/430] ublk: add parameter `struct io_uring_cmd *` to ublk_prep_auto_buf_reg()
+Date: Mon, 29 Dec 2025 17:08:54 +0100
+Message-ID: <20251229160729.223327259@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,72 +65,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: huang-jl <huang-jl@deepseek.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 114ea9bbaf7681c4d363e13b7916e6fef6a4963a ]
+[ Upstream commit 3035b9b46b0611898babc0b96ede65790d3566f7 ]
 
-io_import_kbuf() calculates nr_segs incorrectly when iov_offset is
-non-zero after iov_iter_advance(). It doesn't account for the partial
-consumption of the first bvec.
+Add parameter `struct io_uring_cmd *` to ublk_prep_auto_buf_reg() and
+prepare for reusing this helper for the coming UBLK_BATCH_IO feature,
+which can fetch & commit one batch of io commands via single uring_cmd.
 
-The problem comes when meet the following conditions:
-1. Use UBLK_F_AUTO_BUF_REG feature of ublk.
-2. The kernel will help to register the buffer, into the io uring.
-3. Later, the ublk server try to send IO request using the registered
-   buffer in the io uring, to read/write to fuse-based filesystem, with
-O_DIRECT.
-
->From a userspace perspective, the ublk server thread is blocked in the
-kernel, and will see "soft lockup" in the kernel dmesg.
-
-When ublk registers a buffer with mixed-size bvecs like [4K]*6 + [12K]
-and a request partially consumes a bvec, the next request's nr_segs
-calculation uses bvec->bv_len instead of (bv_len - iov_offset).
-
-This causes fuse_get_user_pages() to loop forever because nr_segs
-indicates fewer pages than actually needed.
-
-Specifically, the infinite loop happens at:
-fuse_get_user_pages()
-  -> iov_iter_extract_pages()
-    -> iov_iter_extract_bvec_pages()
-Since the nr_segs is miscalculated, the iov_iter_extract_bvec_pages
-returns when finding that i->nr_segs is zero. Then
-iov_iter_extract_pages returns zero. However, fuse_get_user_pages does
-still not get enough data/pages, causing infinite loop.
-
-Example:
-  - Bvecs: [4K, 4K, 4K, 4K, 4K, 4K, 12K, ...]
-  - Request 1: 32K at offset 0, uses 6*4K + 8K of the 12K bvec
-  - Request 2: 32K at offset 32K
-    - iov_offset = 8K (8K already consumed from 12K bvec)
-    - Bug: calculates using 12K, not (12K - 8K) = 4K
-    - Result: nr_segs too small, infinite loop in fuse_get_user_pages.
-
-Fix by accounting for iov_offset when calculating the first segment's
-available length.
-
-Fixes: b419bed4f0a6 ("io_uring/rsrc: ensure segments counts are correct on kbuf buffers")
-Signed-off-by: huang-jl <huang-jl@deepseek.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c258f5c4502c ("ublk: fix deadlock when reading partition table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/ublk_drv.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 0010c4992490..5b6b73c6a62b 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1057,6 +1057,7 @@ static int io_import_kbuf(int ddir, struct iov_iter *iter,
- 	if (count < imu->len) {
- 		const struct bio_vec *bvec = iter->bvec;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 359564c40cb5..599571634b7a 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1242,11 +1242,12 @@ ublk_auto_buf_reg_fallback(const struct ublk_queue *ubq, struct ublk_io *io)
+ }
  
-+		len += iter->iov_offset;
- 		while (len > bvec->bv_len) {
- 			len -= bvec->bv_len;
- 			bvec++;
+ static bool ublk_auto_buf_reg(const struct ublk_queue *ubq, struct request *req,
+-			      struct ublk_io *io, unsigned int issue_flags)
++			      struct ublk_io *io, struct io_uring_cmd *cmd,
++			      unsigned int issue_flags)
+ {
+ 	int ret;
+ 
+-	ret = io_buffer_register_bvec(io->cmd, req, ublk_io_release,
++	ret = io_buffer_register_bvec(cmd, req, ublk_io_release,
+ 				      io->buf.index, issue_flags);
+ 	if (ret) {
+ 		if (io->buf.flags & UBLK_AUTO_BUF_REG_FALLBACK) {
+@@ -1258,18 +1259,19 @@ static bool ublk_auto_buf_reg(const struct ublk_queue *ubq, struct request *req,
+ 	}
+ 
+ 	io->task_registered_buffers = 1;
+-	io->buf_ctx_handle = io_uring_cmd_ctx_handle(io->cmd);
++	io->buf_ctx_handle = io_uring_cmd_ctx_handle(cmd);
+ 	io->flags |= UBLK_IO_FLAG_AUTO_BUF_REG;
+ 	return true;
+ }
+ 
+ static bool ublk_prep_auto_buf_reg(struct ublk_queue *ubq,
+ 				   struct request *req, struct ublk_io *io,
++				   struct io_uring_cmd *cmd,
+ 				   unsigned int issue_flags)
+ {
+ 	ublk_init_req_ref(ubq, io);
+ 	if (ublk_support_auto_buf_reg(ubq) && ublk_rq_has_data(req))
+-		return ublk_auto_buf_reg(ubq, req, io, issue_flags);
++		return ublk_auto_buf_reg(ubq, req, io, cmd, issue_flags);
+ 
+ 	return true;
+ }
+@@ -1344,7 +1346,7 @@ static void ublk_dispatch_req(struct ublk_queue *ubq,
+ 	if (!ublk_start_io(ubq, req, io))
+ 		return;
+ 
+-	if (ublk_prep_auto_buf_reg(ubq, req, io, issue_flags))
++	if (ublk_prep_auto_buf_reg(ubq, req, io, io->cmd, issue_flags))
+ 		ublk_complete_io_cmd(io, req, UBLK_IO_RES_OK, issue_flags);
+ }
+ 
 -- 
 2.51.0
 
