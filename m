@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-203984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C261FCE7A4A
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93313CE78E2
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8822D3149533
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83548313916B
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C32632FA18;
-	Mon, 29 Dec 2025 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48CF32FA29;
+	Mon, 29 Dec 2025 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGwkFVuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5q3qJEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CEB3191A7;
-	Mon, 29 Dec 2025 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850C62701D1;
+	Mon, 29 Dec 2025 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025724; cv=none; b=pDA1dtvF4s7pPc8v2kXVGIhEQ/a5awXZwb9HWlYN3QwPALxOVbd6pRUL5Pp/r81KKBDmG0RF+s4XBfW1djVZcTnur8fmF+lONzzpYeslvfMWK76vcLeTN2JZEHkpFNrRQsU+l9K579v+aLc0Yc8R6ww/jorVc7YpMo/j3gjn7Hs=
+	t=1767025631; cv=none; b=d/n8fbO45H/rINwHIHgaH6siOd/WZwxyOg9nmM/iWCYL5c1ppEByZQ5FuwIqmjj/HiChqhk6P756nGzgf8Bx10zIas/4X9iU4iuH/bQDIgGnKnR98lJiBqLGHoqI/4p0s2SpQ4tFg01XKQoM9O53KtGRj9a9oq3L9pL5dyTsbUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025724; c=relaxed/simple;
-	bh=hYxGOAoykxP55MUzs8A09ga8wXR+CFvvhu/Ketq8gtU=;
+	s=arc-20240116; t=1767025631; c=relaxed/simple;
+	bh=r3mcXsd6iyjgUzSXfFZzrz8PL5vqSBoGB5kSOhZAHrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWsK/dtSF0wejmCFrjr1mdaMrOEe/O2pgaonyaZ8nZfv0iUCMfh1WjEuKuULlwP8EFp43FcuNSdeESzDPv9mEAwlfpEq4KhNfgGnn33CK4EpXKUDaI8q0+1K3RkqISSIV+gtdyQU8WJQmYq1+Elbk04/3RBq7Icwufz++FfLXiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGwkFVuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966C7C4CEF7;
-	Mon, 29 Dec 2025 16:28:43 +0000 (UTC)
+	 MIME-Version; b=f/LALNqboqB1cc7I/0tJt9YBlCaZ2TPxwhqDjE66k9D4f7jxCxrETUX4846Mh6YnE1Ac7kufSbkbGbNwWoj/WxBo7kbEKJn5Q5TroHAiOPmyW34bT3k7C09MOG94O1Dds6rFW5B/akDpXcL8iwHI6xpijeBBhHJdgIP5V82H68c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5q3qJEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC502C4CEF7;
+	Mon, 29 Dec 2025 16:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025724;
-	bh=hYxGOAoykxP55MUzs8A09ga8wXR+CFvvhu/Ketq8gtU=;
+	s=korg; t=1767025631;
+	bh=r3mcXsd6iyjgUzSXfFZzrz8PL5vqSBoGB5kSOhZAHrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGwkFVuDQvFc4h0zbRen0sakfPEdMJZPEqq2P4zlIbw9lX3+3YnMyB96R3aI1/ld4
-	 er+bVyyFa1ZQPJECjMGqwzLafdKTJMcc5W0OeAVm4KKSfakoprXa2ZJga5sHOe6fnX
-	 epo8DsUK22f6HWgTrqVS9aFdSktTRKV+0cAl4mkE=
+	b=y5q3qJEmOp8Hgw7wf+/kB9HEN0iWpqNlMko7Msh5M3Xg9/PJu7GCUPxol/XBNLTi+
+	 //zrqGBVgFu0RtC8hrptyRKXYPbucjlg6MYs+cwPTdFpzA3U1ThPfJv82/wb29hosj
+	 gLTlnEA98Qgh+OUwEj0z811HmC31qBYJ0TLOA4EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 281/430] media: dvb-usb: dtv5100: fix out-of-bounds in dtv5100_i2c_msg()
-Date: Mon, 29 Dec 2025 17:11:23 +0100
-Message-ID: <20251229160734.688092496@linuxfoundation.org>
+Subject: [PATCH 6.18 282/430] media: pvrusb2: Fix incorrect variable used in trace message
+Date: Mon, 29 Dec 2025 17:11:24 +0100
+Message-ID: <20251229160734.724114273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,39 +63,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit b91e6aafe8d356086cc621bc03e35ba2299e4788 upstream.
+commit be440980eace19c035a0745fd6b6e42707bc4f49 upstream.
 
-rlen value is a user-controlled value, but dtv5100_i2c_msg() does not
-check the size of the rlen value. Therefore, if it is set to a value
-larger than sizeof(st->data), an out-of-bounds vuln occurs for st->data.
+The pvr2_trace message is reporting an error about control read
+transfers, however it is using the incorrect variable write_len
+instead of read_lean. Fix this by using the correct variable
+read_len.
 
-Therefore, we need to add proper range checking to prevent this vuln.
-
-Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
+Fixes: d855497edbfb ("V4L/DVB (4228a): pvrusb2 to kernel 2.6.18")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dtv5100.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/usb/pvrusb2/pvrusb2-hdw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/dvb-usb/dtv5100.c
-+++ b/drivers/media/usb/dvb-usb/dtv5100.c
-@@ -55,6 +55,11 @@ static int dtv5100_i2c_msg(struct dvb_us
+--- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
+@@ -3622,7 +3622,7 @@ static int pvr2_send_request_ex(struct p
+ 		pvr2_trace(
+ 			PVR2_TRACE_ERROR_LEGS,
+ 			"Attempted to execute %d byte control-read transfer (limit=%d)",
+-			write_len,PVR2_CTL_BUFFSIZE);
++			read_len, PVR2_CTL_BUFFSIZE);
+ 		return -EINVAL;
  	}
- 	index = (addr << 8) + wbuf[0];
- 
-+	if (rlen > sizeof(st->data)) {
-+		warn("rlen = %x is too big!\n", rlen);
-+		return -EINVAL;
-+	}
-+
- 	memcpy(st->data, rbuf, rlen);
- 	msleep(1); /* avoid I2C errors */
- 	return usb_control_msg(d->udev, pipe, request,
+ 	if ((!write_len) && (!read_len)) {
 
 
 
