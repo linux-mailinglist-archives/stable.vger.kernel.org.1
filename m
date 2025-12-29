@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-203877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29056CE77AA
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:29:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AEABCE7732
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B36D305713E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:23:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2BB309546B
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA6E32F744;
-	Mon, 29 Dec 2025 16:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7088C24EF8C;
+	Mon, 29 Dec 2025 16:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEICeRr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETE5fO6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6DF23D2B2;
-	Mon, 29 Dec 2025 16:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516223C39A;
+	Mon, 29 Dec 2025 16:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025421; cv=none; b=KSmNnL3y6J82xYVBEOzECT0CpRS/4j/kXInX7dXuNLEzGARKMrrK1VNKtcReZTiCpCC4UIwjkvx7PMSO3yISkS35s7MGxC5AnF91Q1ZsiLscViv3C9Ym6cbNC3V4DmBGW5EbjuxrTepsMC1sSfw+JES5lS84CjC2DjqtF+hufS8=
+	t=1767025327; cv=none; b=hS/ODCAzS1ZUTNI6WyIR3J2OpGQPzRTz80goYP6y6BRwSvNFG2iR6BcghKPkN+i4M5o5skKvN+qdwkCWrAIe3zdwzYNjdGmdmzJl+Ys5menKSfSU7ENsRXr2VGee7qdWctIQxcHDJFcsxhuzzgo11x6uAIjRivT2J7fXf1T03qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025421; c=relaxed/simple;
-	bh=mgs4DOMN8w/1SW9mtg7brCjDdhXUPH1T58SO1wFyNMA=;
+	s=arc-20240116; t=1767025327; c=relaxed/simple;
+	bh=9S7FymlM62HlXvvLCZ5R6vfIXq8rXY01mduNL66bHto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6tvBIP3WVUdAIk7TPIqsyTIJ5/FyTpCHbA2nFJUKZy8FW+qqWh9jx0K/TWPWMlHZBxQMS/ulQLypeYN7/5idFVx78mhD2Mfluhr6LpUkHwhCw4STCbGrfT7PsWrrBSm2KnpQE255V7LZ1sK8niiR0yHOL0jOe2bl8Jm3Xv7wqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEICeRr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91128C4CEF7;
-	Mon, 29 Dec 2025 16:23:40 +0000 (UTC)
+	 MIME-Version; b=TjncWxjY1lui04GGldKdY3wHnQtKUyT7N1AQH+9v5aqRMxTFpA+oKEMgs/WWj2BnXa21z1N+bG9zrWrkQxn9J5UbcP7EMhjQMEss19G/GjUWACW5+l8nY3MZnR1nScqRFDUiUA/S3Kvp43CKhLUpZhfC9INK2q/x178ulHHJem4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETE5fO6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A459FC116C6;
+	Mon, 29 Dec 2025 16:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025420;
-	bh=mgs4DOMN8w/1SW9mtg7brCjDdhXUPH1T58SO1wFyNMA=;
+	s=korg; t=1767025327;
+	bh=9S7FymlM62HlXvvLCZ5R6vfIXq8rXY01mduNL66bHto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEICeRr7WUvvipfZ5F6VR6HIkKoNFiTEqPHRbIdvOK0nGPsVJGMs+NhTqqKtmAWqu
-	 AcIXGYyApLi4K2IPnt4r9cdbu+jKMFJfmh472U0NiCv+qt/qpNhkrfDTriGmv14Oev
-	 Z4c8Zn4N++HjkCDSUhBdxVNm8lkcT+DYQOLWNIbg=
+	b=ETE5fO6h5gAelh6ptCR24kUbEKK6GeWyceOx9C4JHKnCLL7dfcisuFqrExmszaFU5
+	 sJXrZbm7l/83Bclh+XONmt/52EE3bfahH/i6hpCLzV9MHxGiBPak5JsMrDlIeEQCrh
+	 75itGsWkp9YJ6nvO8F7GiZL0eFlhgZeLefhTuMRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuming Fan <shumingf@realtek.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/430] ASoC: SDCA: support Q7.8 volume format
-Date: Mon, 29 Dec 2025 17:09:36 +0100
-Message-ID: <20251229160730.764474975@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: [PATCH 6.18 175/430] ASoC: ops: fix snd_soc_get_volsw for sx controls
+Date: Mon, 29 Dec 2025 17:09:37 +0100
+Message-ID: <20251229160730.801113869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,216 +66,130 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 1b0f3f9ee41ee2bdd206667f85ea2aa36dfe6e69 ]
+[ Upstream commit 095d621141826a2841dae85b52c784c147ea99d3 ]
 
-The SDCA specification uses Q7.8 volume format.
-This patch adds a field to indicate whether it is SDCA volume control
-and supports the volume settings.
+SX controls are currently broken, since the clamp introduced in
+commit a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw") does not
+handle SX controls, for example where the min value in the clamp is
+greater than the max value in the clamp.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251106093335.1363237-1-shumingf@realtek.com
+Add clamp parameter to prevent clamping in SX controls.
+The nature of SX controls mean that it wraps around 0, with a variable
+number of bits, therefore clamping the value becomes complicated and
+prone to error.
+
+Fixes 35 kunit tests for soc_ops_test_access.
+
+Fixes: a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw")
+
+Co-developed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Tested-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20251216134938.788625-1-sbinding@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 095d62114182 ("ASoC: ops: fix snd_soc_get_volsw for sx controls")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h        |  1 +
- sound/soc/sdca/sdca_asoc.c | 34 ++++++---------------
- sound/soc/soc-ops.c        | 62 +++++++++++++++++++++++++++++++-------
- 3 files changed, 61 insertions(+), 36 deletions(-)
+ sound/soc/soc-ops.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index ddc508ff7b9b..a9c058b06ab4 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1225,6 +1225,7 @@ struct soc_mixer_control {
- 	unsigned int sign_bit;
- 	unsigned int invert:1;
- 	unsigned int autodisable:1;
-+	unsigned int sdca_q78:1;
- #ifdef CONFIG_SND_SOC_TOPOLOGY
- 	struct snd_soc_dobj dobj;
- #endif
-diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
-index c493ec530cc5..892b7c028fae 100644
---- a/sound/soc/sdca/sdca_asoc.c
-+++ b/sound/soc/sdca/sdca_asoc.c
-@@ -795,7 +795,6 @@ static int control_limit_kctl(struct device *dev,
- 	struct sdca_control_range *range;
- 	int min, max, step;
- 	unsigned int *tlv;
--	int shift;
- 
- 	if (control->type != SDCA_CTL_DATATYPE_Q7P8DB)
- 		return 0;
-@@ -814,37 +813,22 @@ static int control_limit_kctl(struct device *dev,
- 	min = sign_extend32(min, control->nbits - 1);
- 	max = sign_extend32(max, control->nbits - 1);
- 
--	/*
--	 * FIXME: Only support power of 2 step sizes as this can be supported
--	 * by a simple shift.
--	 */
--	if (hweight32(step) != 1) {
--		dev_err(dev, "%s: %s: currently unsupported step size\n",
--			entity->label, control->label);
--		return -EINVAL;
--	}
--
--	/*
--	 * The SDCA volumes are in steps of 1/256th of a dB, a step down of
--	 * 64 (shift of 6) gives 1/4dB. 1/4dB is the smallest unit that is also
--	 * representable in the ALSA TLVs which are in 1/100ths of a dB.
--	 */
--	shift = max(ffs(step) - 1, 6);
--
- 	tlv = devm_kcalloc(dev, 4, sizeof(*tlv), GFP_KERNEL);
- 	if (!tlv)
- 		return -ENOMEM;
- 
--	tlv[0] = SNDRV_CTL_TLVT_DB_SCALE;
-+	tlv[0] = SNDRV_CTL_TLVT_DB_MINMAX;
- 	tlv[1] = 2 * sizeof(*tlv);
- 	tlv[2] = (min * 100) >> 8;
--	tlv[3] = ((1 << shift) * 100) >> 8;
-+	tlv[3] = (max * 100) >> 8;
-+
-+	step = (step * 100) >> 8;
- 
--	mc->min = min >> shift;
--	mc->max = max >> shift;
--	mc->shift = shift;
--	mc->rshift = shift;
--	mc->sign_bit = 15 - shift;
-+	mc->min = ((int)tlv[2] / step);
-+	mc->max = ((int)tlv[3] / step);
-+	mc->shift = step;
-+	mc->sign_bit = 15;
-+	mc->sdca_q78 = 1;
- 
- 	kctl->tlv.p = tlv;
- 	kctl->access |= SNDRV_CTL_ELEM_ACCESS_TLV_READ;
 diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index d2b6fb8e0b6c..ce86978c158d 100644
+index ce86978c158d..624e9269fc25 100644
 --- a/sound/soc/soc-ops.c
 +++ b/sound/soc/soc-ops.c
-@@ -110,6 +110,36 @@ int snd_soc_put_enum_double(struct snd_kcontrol *kcontrol,
- }
+@@ -111,7 +111,8 @@ int snd_soc_put_enum_double(struct snd_kcontrol *kcontrol,
  EXPORT_SYMBOL_GPL(snd_soc_put_enum_double);
  
-+static int sdca_soc_q78_reg_to_ctl(struct soc_mixer_control *mc, unsigned int reg_val,
-+				unsigned int mask, unsigned int shift, int max)
-+{
-+	int val = reg_val;
-+
-+	if (WARN_ON(!mc->shift))
-+		return -EINVAL;
-+
-+	val = sign_extend32(val, mc->sign_bit);
-+	val = (((val * 100) >> 8) / (int)mc->shift);
-+	val -= mc->min;
-+
-+	return val & mask;
-+}
-+
-+static unsigned int sdca_soc_q78_ctl_to_reg(struct soc_mixer_control *mc, int val,
-+					 unsigned int mask, unsigned int shift, int max)
-+{
-+	unsigned int ret_val;
-+	int reg_val;
-+
-+	if (WARN_ON(!mc->shift))
-+		return -EINVAL;
-+
-+	reg_val = val + mc->min;
-+	ret_val = (int)((reg_val * mc->shift) << 8) / 100;
-+
-+	return ret_val & mask;
-+}
-+
+ static int sdca_soc_q78_reg_to_ctl(struct soc_mixer_control *mc, unsigned int reg_val,
+-				unsigned int mask, unsigned int shift, int max)
++				   unsigned int mask, unsigned int shift, int max,
++				   bool sx)
+ {
+ 	int val = reg_val;
+ 
+@@ -141,20 +142,26 @@ static unsigned int sdca_soc_q78_ctl_to_reg(struct soc_mixer_control *mc, int va
+ }
+ 
  static int soc_mixer_reg_to_ctl(struct soc_mixer_control *mc, unsigned int reg_val,
- 				unsigned int mask, unsigned int shift, int max)
+-				unsigned int mask, unsigned int shift, int max)
++				unsigned int mask, unsigned int shift, int max,
++				bool sx)
  {
-@@ -197,19 +227,27 @@ static int soc_put_volsw(struct snd_kcontrol *kcontrol,
- 			 struct snd_ctl_elem_value *ucontrol,
- 			 struct soc_mixer_control *mc, int mask, int max)
- {
-+	unsigned int (*ctl_to_reg)(struct soc_mixer_control *, int, unsigned int, unsigned int, int);
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	unsigned int val1, val_mask;
- 	unsigned int val2 = 0;
- 	bool double_r = false;
- 	int ret;
+ 	int val = (reg_val >> shift) & mask;
  
-+	if (mc->sdca_q78) {
-+		ctl_to_reg = sdca_soc_q78_ctl_to_reg;
-+		val_mask = mask;
+ 	if (mc->sign_bit)
+ 		val = sign_extend32(val, mc->sign_bit);
+ 
+-	val = clamp(val, mc->min, mc->max);
+-	val -= mc->min;
++	if (sx) {
++		val -= mc->min; // SX controls intentionally can overflow here
++		val = min_t(unsigned int, val & mask, max);
 +	} else {
-+		ctl_to_reg = soc_mixer_ctl_to_reg;
-+		val_mask = mask << mc->shift;
++		val = clamp(val, mc->min, mc->max);
++		val -= mc->min;
 +	}
-+
- 	ret = soc_mixer_valid_ctl(mc, ucontrol->value.integer.value[0], max);
- 	if (ret)
- 		return ret;
  
--	val1 = soc_mixer_ctl_to_reg(mc, ucontrol->value.integer.value[0],
-+	val1 = ctl_to_reg(mc, ucontrol->value.integer.value[0],
- 				    mask, mc->shift, max);
--	val_mask = mask << mc->shift;
+ 	if (mc->invert)
+ 		val = max - val;
  
- 	if (snd_soc_volsw_is_stereo(mc)) {
- 		ret = soc_mixer_valid_ctl(mc, ucontrol->value.integer.value[1], max);
-@@ -217,14 +255,10 @@ static int soc_put_volsw(struct snd_kcontrol *kcontrol,
- 			return ret;
+-	return val & mask;
++	return val;
+ }
  
- 		if (mc->reg == mc->rreg) {
--			val1 |= soc_mixer_ctl_to_reg(mc,
--						     ucontrol->value.integer.value[1],
--						     mask, mc->rshift, max);
-+			val1 |= ctl_to_reg(mc, ucontrol->value.integer.value[1], mask, mc->rshift, max);
- 			val_mask |= mask << mc->rshift;
- 		} else {
--			val2 = soc_mixer_ctl_to_reg(mc,
--						    ucontrol->value.integer.value[1],
--						    mask, mc->shift, max);
-+			val2 = ctl_to_reg(mc, ucontrol->value.integer.value[1], mask, mc->shift, max);
- 			double_r = true;
- 		}
- 	}
-@@ -248,21 +282,27 @@ static int soc_get_volsw(struct snd_kcontrol *kcontrol,
+ static unsigned int soc_mixer_ctl_to_reg(struct soc_mixer_control *mc, int val,
+@@ -280,9 +287,10 @@ static int soc_put_volsw(struct snd_kcontrol *kcontrol,
+ 
+ static int soc_get_volsw(struct snd_kcontrol *kcontrol,
  			 struct snd_ctl_elem_value *ucontrol,
- 			 struct soc_mixer_control *mc, int mask, int max)
+-			 struct soc_mixer_control *mc, int mask, int max)
++			 struct soc_mixer_control *mc, int mask, int max, bool sx)
  {
-+	int (*reg_to_ctl)(struct soc_mixer_control *, unsigned int, unsigned int, unsigned int, int);
+-	int (*reg_to_ctl)(struct soc_mixer_control *, unsigned int, unsigned int, unsigned int, int);
++	int (*reg_to_ctl)(struct soc_mixer_control *, unsigned int, unsigned int,
++			  unsigned int, int, bool);
  	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
  	unsigned int reg_val;
  	int val;
+@@ -293,16 +301,16 @@ static int soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 		reg_to_ctl = soc_mixer_reg_to_ctl;
  
-+	if (mc->sdca_q78)
-+		reg_to_ctl = sdca_soc_q78_reg_to_ctl;
-+	else
-+		reg_to_ctl = soc_mixer_reg_to_ctl;
-+
  	reg_val = snd_soc_component_read(component, mc->reg);
--	val = soc_mixer_reg_to_ctl(mc, reg_val, mask, mc->shift, max);
-+	val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
+-	val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
++	val = reg_to_ctl(mc, reg_val, mask, mc->shift, max, sx);
  
  	ucontrol->value.integer.value[0] = val;
  
  	if (snd_soc_volsw_is_stereo(mc)) {
  		if (mc->reg == mc->rreg) {
--			val = soc_mixer_reg_to_ctl(mc, reg_val, mask, mc->rshift, max);
-+			val = reg_to_ctl(mc, reg_val, mask, mc->rshift, max);
+-			val = reg_to_ctl(mc, reg_val, mask, mc->rshift, max);
++			val = reg_to_ctl(mc, reg_val, mask, mc->rshift, max, sx);
  		} else {
  			reg_val = snd_soc_component_read(component, mc->rreg);
--			val = soc_mixer_reg_to_ctl(mc, reg_val, mask, mc->shift, max);
-+			val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
+-			val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
++			val = reg_to_ctl(mc, reg_val, mask, mc->shift, max, sx);
  		}
  
  		ucontrol->value.integer.value[1] = val;
+@@ -371,7 +379,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 		(struct soc_mixer_control *)kcontrol->private_value;
+ 	unsigned int mask = soc_mixer_mask(mc);
+ 
+-	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max - mc->min);
++	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max - mc->min, false);
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_get_volsw);
+ 
+@@ -413,7 +421,7 @@ int snd_soc_get_volsw_sx(struct snd_kcontrol *kcontrol,
+ 		(struct soc_mixer_control *)kcontrol->private_value;
+ 	unsigned int mask = soc_mixer_sx_mask(mc);
+ 
+-	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max);
++	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max, true);
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_sx);
+ 
 -- 
 2.51.0
 
