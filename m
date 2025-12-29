@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-203758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB747CE7613
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:20:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C04ECE764D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3572F302413A
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:18:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E12330394C6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DE6330B06;
-	Mon, 29 Dec 2025 16:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DB2330B20;
+	Mon, 29 Dec 2025 16:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjAJwCy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dytviOfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AE4330670;
-	Mon, 29 Dec 2025 16:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57183330B1F;
+	Mon, 29 Dec 2025 16:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025084; cv=none; b=TR3JKZr0cN4TQ+dwnOgqWR+2pk0fmjXzpNMzP/PA3Uej48RedQL5/60+X7Nqfb7Wr/u/TAg++/FlnPL8YsbaeZgksw9HTgRMN373ctmvC/OngIhxd6o5stNg76tRo4Py7oSHf4NMZVNap9/wQbf8FkwWp3tWRci0LllwtoaVfQ8=
+	t=1767025101; cv=none; b=KLrxDC/9EibGGE7hKhLcbQYIF9345RbjUeo6wXRYEX3RpNbba9lGOt5UXfhs/612WN4dWRFmiQLHujeAE8XaFa0i+P4U8gqU+d86j2hgAWr6n3eU4XJy3dhyxE3brjnXHChwHRJjMabJ7YLwD6seH2kvQ/MxuYYk+75OSAJwIas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025084; c=relaxed/simple;
-	bh=JzMf9jVeISK6RrIdo8ygbgs+qX5eiWuMz3+pJR6VHs4=;
+	s=arc-20240116; t=1767025101; c=relaxed/simple;
+	bh=OoIdBPRQVihQ9IiqHz2NIs4MYIRDfURFliezr1lYmOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0zEl9/gfjf9y1asW9aVr/X2HVTicff0deAkz6AD+Y39rZLLYqUnLR5W0Wgu9/X48xNP0g50mv5XAKm+VpujGqUC0xN8q41YN9RXzNEYuZZOBEUItEj81UcZRfXJ/5t57YqJdvhgvU/jqc9uUejP5/9j5VB/WOCBNF0nK9yBa90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjAJwCy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2338C4CEF7;
-	Mon, 29 Dec 2025 16:18:03 +0000 (UTC)
+	 MIME-Version; b=l2eMn9fDljDACXidhovROuswgvNnz/cfNxi/8mWf2B2UTL+uzwPYrW+ggGhfGciQGBRJZzYgFtiKJM0NcNmFLWsIOpUGJZo/rM/m9ZzSdDFgcSOvbCO5nlTTCtZUCpz/ocqnWv4ohpR8T1gGD6xiKxMs2y5XrBoWnC3859GORnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dytviOfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1544C116C6;
+	Mon, 29 Dec 2025 16:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025084;
-	bh=JzMf9jVeISK6RrIdo8ygbgs+qX5eiWuMz3+pJR6VHs4=;
+	s=korg; t=1767025101;
+	bh=OoIdBPRQVihQ9IiqHz2NIs4MYIRDfURFliezr1lYmOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjAJwCy4c8MrkTUxWbHagw848yoRZyTUeCGUplhE5XJ+8oIfqie2rB5rHNuOYol8x
-	 kXKx2BC9b8rH1WrcpmYA2/X9U2+pBpxTP9FnA3od4SPCosmSEfN4Us1zgPvK7slAat
-	 s/NGAPdbABtLk+DN57AN22xW93Qvl6Rvy7TBwyf0=
+	b=dytviOfBXP1JANa/iHFPWCkBwhHTilthk1sD7QLHKHd/5e1d4EfGNeTmyIvzKgGEW
+	 XBswEiCHoTBqQNq29nZ+l2Csa97C9IoU6zrS3XIynWgXR64D/PV6ocQZealqFbqpZY
+	 zJucp0C8h4uGaWd6zWDHW+0q2f95+NJ+zetwCoIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 061/430] net: phy: realtek: eliminate priv->phycr1 variable
-Date: Mon, 29 Dec 2025 17:07:43 +0100
-Message-ID: <20251229160726.612368017@linuxfoundation.org>
+Subject: [PATCH 6.18 062/430] net: phy: realtek: create rtl8211f_config_phy_eee() helper
+Date: Mon, 29 Dec 2025 17:07:44 +0100
+Message-ID: <20251229160726.648921583@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,114 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit bb78b71faf60d11a15f07e3390fcfd31e5e523bb ]
+[ Upstream commit 4465ae435ddc0162d5033a543658449d53d46d08 ]
 
-Previous changes have replaced the machine-level priv->phycr2 with a
-high-level priv->disable_clk_out. This created a discrepancy with
-priv->phycr1 which is resolved here, for uniformity.
-
-One advantage of this new implementation is that we don't read
-priv->phycr1 in rtl821x_probe() if we're never going to modify it.
-
-We never test the positive return code from phy_modify_mmd_changed(), so
-we could just as well use phy_modify_mmd().
-
-I took the ALDPS feature description from commit d90db36a9e74 ("net:
-phy: realtek: add dt property to enable ALDPS mode") and transformed it
-into a function comment - the feature is sufficiently non-obvious to
-deserve that.
+To simplify the rtl8211f_config_init() control flow and get rid of
+"early" returns for PHYs where the PHYCR2 register is absent, move the
+entire logic sub-block that deals with disabling PHY-mode EEE to a
+separate function. There, it is much more obvious what the early
+"return 0" skips, and it becomes more difficult to accidentally skip
+unintended stuff.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251117234033.345679-6-vladimir.oltean@nxp.com
+Link: https://patch.msgid.link/20251117234033.345679-7-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 4f0638b12451 ("net: phy: RTL8211FVD: Restore disabling of PHY-mode EEE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek/realtek_main.c | 44 ++++++++++++++++----------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+ drivers/net/phy/realtek/realtek_main.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index f0348b92beec3..35f40bfdaf113 100644
+index 35f40bfdaf113..2c661346050f1 100644
 --- a/drivers/net/phy/realtek/realtek_main.c
 +++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -174,7 +174,7 @@ MODULE_AUTHOR("Johnson Leung");
- MODULE_LICENSE("GPL");
- 
- struct rtl821x_priv {
--	u16 phycr1;
-+	bool enable_aldps;
- 	bool disable_clk_out;
- 	struct clk *clk;
- 	/* rtl8211f */
-@@ -225,7 +225,6 @@ static int rtl821x_probe(struct phy_device *phydev)
- {
- 	struct device *dev = &phydev->mdio.dev;
- 	struct rtl821x_priv *priv;
--	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -236,14 +235,8 @@ static int rtl821x_probe(struct phy_device *phydev)
- 		return dev_err_probe(dev, PTR_ERR(priv->clk),
- 				     "failed to get phy clock\n");
- 
--	ret = phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
--	if (ret < 0)
--		return ret;
--
--	priv->phycr1 = ret & (RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF);
--	if (of_property_read_bool(dev->of_node, "realtek,aldps-enable"))
--		priv->phycr1 |= RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF;
--
-+	priv->enable_aldps = of_property_read_bool(dev->of_node,
-+						   "realtek,aldps-enable");
- 	priv->disable_clk_out = of_property_read_bool(dev->of_node,
- 						      "realtek,clkout-disable");
- 
-@@ -647,17 +640,36 @@ static int rtl8211f_config_clk_out(struct phy_device *phydev)
- 	return genphy_soft_reset(phydev);
+@@ -662,6 +662,17 @@ static int rtl8211f_config_aldps(struct phy_device *phydev)
+ 				mask, mask);
  }
  
--static int rtl8211f_config_init(struct phy_device *phydev)
-+/* Advance Link Down Power Saving (ALDPS) mode changes crystal/clock behaviour,
-+ * which causes the RXC clock signal to stop for tens to hundreds of
-+ * milliseconds.
-+ *
-+ * Some MACs need the RXC clock to support their internal RX logic, so ALDPS is
-+ * only enabled based on an opt-in device tree property.
-+ */
-+static int rtl8211f_config_aldps(struct phy_device *phydev)
- {
- 	struct rtl821x_priv *priv = phydev->priv;
-+	u16 mask = RTL8211F_ALDPS_PLL_OFF |
-+		   RTL8211F_ALDPS_ENABLE |
-+		   RTL8211F_ALDPS_XTAL_OFF;
-+
-+	/* The value is preserved if the device tree property is absent */
-+	if (!priv->enable_aldps)
++static int rtl8211f_config_phy_eee(struct phy_device *phydev)
++{
++	/* RTL8211FVD has no PHYCR2 register */
++	if (phydev->drv->phy_id == RTL_8211FVD_PHYID)
 +		return 0;
 +
-+	return phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
-+				mask, mask);
++	/* Disable PHY-mode EEE so LPI is passed to the MAC */
++	return phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR2,
++				RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
 +}
 +
-+static int rtl8211f_config_init(struct phy_device *phydev)
-+{
+ static int rtl8211f_config_init(struct phy_device *phydev)
+ {
  	struct device *dev = &phydev->mdio.dev;
- 	int ret;
- 
--	ret = phy_modify_paged_changed(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
--				       RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF,
--				       priv->phycr1);
--	if (ret < 0) {
--		dev_err(dev, "aldps mode  configuration failed: %pe\n",
-+	ret = rtl8211f_config_aldps(phydev);
-+	if (ret) {
-+		dev_err(dev, "aldps mode configuration failed: %pe\n",
- 			ERR_PTR(ret));
+@@ -685,17 +696,7 @@ static int rtl8211f_config_init(struct phy_device *phydev)
  		return ret;
  	}
+ 
+-	/* RTL8211FVD has no PHYCR2 register */
+-	if (phydev->drv->phy_id == RTL_8211FVD_PHYID)
+-		return 0;
+-
+-	/* Disable PHY-mode EEE so LPI is passed to the MAC */
+-	ret = phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR2,
+-			       RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return rtl8211f_config_phy_eee(phydev);
+ }
+ 
+ static int rtl821x_suspend(struct phy_device *phydev)
 -- 
 2.51.0
 
