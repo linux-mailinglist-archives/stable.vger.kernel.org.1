@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-203714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0E3CE75C3
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:19:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1D9CE754A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB8DF3029B8E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50F52300FA08
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42259347C6;
-	Mon, 29 Dec 2025 16:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5951832FA22;
+	Mon, 29 Dec 2025 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smFNP22p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLhIXdrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16BD9460;
-	Mon, 29 Dec 2025 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15869248F72;
+	Mon, 29 Dec 2025 16:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024963; cv=none; b=NA64gN6QIUo1FcFNzXR1l3WQTkb+eVDDuUBmlEjM5Vlt+ba2xua8KyUY43KHb1Fp3HJQZN5a5hiWXKKMqtxLj+Hwj06j7rk+ZrA1Ipyaj93aHM9V0bGoBpzYGz3/7rkLkhTnMeorS18cOFFtDGmFd9BnZAZ7QMdwd0Qv0iW2ItE=
+	t=1767024969; cv=none; b=mZUfICX3w9T/IOX0U85dbTnh3fodsiFpaJ39K4jPTC/ku7UdT4C3oqwRimdL0CfujoXI7N0gbZaao9jUZldt5x67DtMukA0SfqVL/r+DAs/+ydk9flINDQbsGT4oHm+dEV8NlC3slQ6llyBlKnLWAMf6CwsDWvJdda620c4VRgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024963; c=relaxed/simple;
-	bh=j1Ywu3N2TJKTt+58cZIsiFB7/zz5KkrUq1GNi0GCQKM=;
+	s=arc-20240116; t=1767024969; c=relaxed/simple;
+	bh=yJAMixNVWJxGllhZhHxsotHn/+QjGvShklMhhh+uG+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYMYvqK/cMuPQvhcqhhWLYVHHSTfI+lkGRdmWKgOYqqRP5hdnJB3JuYLCbRDliWeolT73Es+HynKmdrvJZGRm7LRLKZkPxks/CVvDuHL3tyBgvj4f5Hk4Wnni3yI+79qOrnUiLCs+kJgbNX+aSc1xWC02fkNm2RvOACTzPs1Fp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smFNP22p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEF0C4CEF7;
-	Mon, 29 Dec 2025 16:16:02 +0000 (UTC)
+	 MIME-Version; b=O03WsGm5bvS5vMU3BJsefAGTQHqqR4o57CAzHBPTTR/2wrFzeEwQ2C5z2pNrweKiRARn3vfLY3jksjeTbETmQ22l7cjsixqpGmMC9xIqOhlJyAeaC4ssmozARhtmtNsM2xDfhiwtcdmlQcjsmSSuDyXgIr4T1X2YniYaFhGjEas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLhIXdrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399A8C4CEF7;
+	Mon, 29 Dec 2025 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024962;
-	bh=j1Ywu3N2TJKTt+58cZIsiFB7/zz5KkrUq1GNi0GCQKM=;
+	s=korg; t=1767024965;
+	bh=yJAMixNVWJxGllhZhHxsotHn/+QjGvShklMhhh+uG+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smFNP22pqDlO06WbMm1/PlEQk39cyJt82iz0r1ldw9olmZvUqMmqd5KVPPbdYTD0B
-	 kPkB0TVZG6YhW1Cj/pnZHFLTyKnZ+eIqBiNAFpqb4kdXqMSGk8xvuZ1t2OEYA5TA1Q
-	 csm1j/CEsOqd0Y7fvb3pyiLgIkdCd1TXOgDz8YW4=
+	b=oLhIXdrTSMaT2lVEHL2kavl5847LAYU+LbornjHG/aG50DX9nINdjF5ko+U4kTMRc
+	 kkjfH+TIYsRwUKwhi4wKhEWmelx1oR2+yagenuH594fvYy9T7KXHZXaWD9cdCRJ3Sp
+	 NYKEJhOwDwhXr3F16c3DD9KEsgDLCVd9eVudwC+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Chingbin Li <liqb365@163.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/430] ksmbd: vfs: fix race on m_flags in vfs_cache
-Date: Mon, 29 Dec 2025 17:07:27 +0100
-Message-ID: <20251229160726.025276596@linuxfoundation.org>
+Subject: [PATCH 6.18 046/430] Bluetooth: btusb: Add new VID/PID 2b89/6275 for RTL8761BUV
+Date: Mon, 29 Dec 2025 17:07:28 +0100
+Message-ID: <20251229160726.061737182@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,188 +64,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qianchang Zhao <pioooooooooip@gmail.com>
+From: Chingbin Li <liqb365@163.com>
 
-[ Upstream commit 991f8a79db99b14c48d20d2052c82d65b9186cad ]
+[ Upstream commit 8dbbb5423c0802ec21266765de80fd491868fab1 ]
 
-ksmbd maintains delete-on-close and pending-delete state in
-ksmbd_inode->m_flags. In vfs_cache.c this field is accessed under
-inconsistent locking: some paths read and modify m_flags under
-ci->m_lock while others do so without taking the lock at all.
+Add VID 2b89 & PID 6275 for Realtek RTL8761BUV USB Bluetooth chip.
 
-Examples:
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
- - ksmbd_query_inode_status() and __ksmbd_inode_close() use
-   ci->m_lock when checking or updating m_flags.
- - ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete() and ksmbd_fd_set_delete_on_close()
-   used to read and modify m_flags without ci->m_lock.
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  6 Spd=12   MxCh= 0
+D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2b89 ProdID=6275 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00E04C239987
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-This creates a potential data race on m_flags when multiple threads
-open, close and delete the same file concurrently. In the worst case
-delete-on-close and pending-delete bits can be lost or observed in an
-inconsistent state, leading to confusing delete semantics (files that
-stay on disk after delete-on-close, or files that disappear while still
-in use).
-
-Fix it by:
-
- - Making ksmbd_query_inode_status() look at m_flags under ci->m_lock
-   after dropping inode_hash_lock.
- - Adding ci->m_lock protection to all helpers that read or modify
-   m_flags (ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete(), ksmbd_fd_set_delete_on_close()).
- - Keeping the existing ci->m_lock protection in __ksmbd_inode_close(),
-   and moving the actual unlink/xattr removal outside the lock.
-
-This unifies the locking around m_flags and removes the data race while
-preserving the existing delete-on-close behaviour.
-
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Chingbin Li <liqb365@163.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c | 88 +++++++++++++++++++++++++++------------
- 1 file changed, 62 insertions(+), 26 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index dfed6fce89049..6ef116585af64 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -112,40 +112,62 @@ int ksmbd_query_inode_status(struct dentry *dentry)
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index fa683bb7f0b49..c70e79e69be8d 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -781,6 +781,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x2b89, 0x8761), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x2b89, 0x6275), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
- 	read_lock(&inode_hash_lock);
- 	ci = __ksmbd_inode_lookup(dentry);
--	if (ci) {
--		ret = KSMBD_INODE_STATUS_OK;
--		if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
--			ret = KSMBD_INODE_STATUS_PENDING_DELETE;
--		atomic_dec(&ci->m_count);
--	}
- 	read_unlock(&inode_hash_lock);
-+	if (!ci)
-+		return ret;
-+
-+	down_read(&ci->m_lock);
-+	if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
-+		ret = KSMBD_INODE_STATUS_PENDING_DELETE;
-+	else
-+		ret = KSMBD_INODE_STATUS_OK;
-+	up_read(&ci->m_lock);
-+
-+	atomic_dec(&ci->m_count);
- 	return ret;
- }
- 
- bool ksmbd_inode_pending_delete(struct ksmbd_file *fp)
- {
--	return (fp->f_ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	struct ksmbd_inode *ci = fp->f_ci;
-+	int ret;
-+
-+	down_read(&ci->m_lock);
-+	ret = (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	up_read(&ci->m_lock);
-+
-+	return ret;
- }
- 
- void ksmbd_set_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags |= S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags |= S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_clear_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags &= ~S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags &= ~S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_fd_set_delete_on_close(struct ksmbd_file *fp,
- 				  int file_info)
- {
--	if (ksmbd_stream_fd(fp)) {
--		fp->f_ci->m_flags |= S_DEL_ON_CLS_STREAM;
--		return;
--	}
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
--	fp->f_ci->m_flags |= S_DEL_ON_CLS;
-+	down_write(&ci->m_lock);
-+	if (ksmbd_stream_fd(fp))
-+		ci->m_flags |= S_DEL_ON_CLS_STREAM;
-+	else
-+		ci->m_flags |= S_DEL_ON_CLS;
-+	up_write(&ci->m_lock);
- }
- 
- static void ksmbd_inode_hash(struct ksmbd_inode *ci)
-@@ -257,27 +279,41 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
- 	struct file *filp;
- 
- 	filp = fp->filp;
--	if (ksmbd_stream_fd(fp) && (ci->m_flags & S_DEL_ON_CLS_STREAM)) {
--		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
--		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
--					     &filp->f_path,
--					     fp->stream.name,
--					     true);
--		if (err)
--			pr_err("remove xattr failed : %s\n",
--			       fp->stream.name);
-+
-+	if (ksmbd_stream_fd(fp)) {
-+		bool remove_stream_xattr = false;
-+
-+		down_write(&ci->m_lock);
-+		if (ci->m_flags & S_DEL_ON_CLS_STREAM) {
-+			ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
-+			remove_stream_xattr = true;
-+		}
-+		up_write(&ci->m_lock);
-+
-+		if (remove_stream_xattr) {
-+			err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
-+						     &filp->f_path,
-+						     fp->stream.name,
-+						     true);
-+			if (err)
-+				pr_err("remove xattr failed : %s\n",
-+				       fp->stream.name);
-+		}
- 	}
- 
- 	if (atomic_dec_and_test(&ci->m_count)) {
-+		bool do_unlink = false;
-+
- 		down_write(&ci->m_lock);
- 		if (ci->m_flags & (S_DEL_ON_CLS | S_DEL_PENDING)) {
- 			ci->m_flags &= ~(S_DEL_ON_CLS | S_DEL_PENDING);
--			up_write(&ci->m_lock);
--			ksmbd_vfs_unlink(filp);
--			down_write(&ci->m_lock);
-+			do_unlink = true;
- 		}
- 		up_write(&ci->m_lock);
- 
-+		if (do_unlink)
-+			ksmbd_vfs_unlink(filp);
-+
- 		ksmbd_inode_free(ci);
- 	}
- }
+ 	/* Additional Realtek 8821AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0b05, 0x17dc), .driver_info = BTUSB_REALTEK },
 -- 
 2.51.0
 
