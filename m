@@ -1,142 +1,197 @@
-Return-Path: <stable+bounces-203671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD94CE7475
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:58:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19FECE74AE
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8FBF3017EE9
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:58:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 58C113003FE7
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF2332BF21;
-	Mon, 29 Dec 2025 15:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F057632E748;
+	Mon, 29 Dec 2025 16:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h2/8SG9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRWlTgzT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C45E32B9A8
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B260332E6A8
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 16:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767023915; cv=none; b=KRPvZOTx4vuc+ZhiUSJr/RbpQu5P7zrQ3Z7pEcUFEh+R5WgnEr/j0vnlPlSkDpoCh0GuPdmsPsk0/XMin/WGFKiCGX44VuNOh+m1t+HmN6vZorB8h/AVaAc4jYL3oHs0MJk9Y1d1e1WI3jozLpGTUKBzYp0go5eVEL/zAtvfK3E=
+	t=1767024307; cv=none; b=Yfn7vl0+yJtDcWag8F/pEbB5RYqRWdqiiTRl1ZXBXsfeMiouzIlSQIKx3qarcAxY637rwJCCDJ4NR1vARTNYuQB0ugKfdSSt4i0Rsee364872aISGKUVqcZm7Z3cWcZOVSN2aMDegBj/APUIlokyeGSbiJxwjOJE06sta6l8MR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767023915; c=relaxed/simple;
-	bh=1q4GxWTKxNhBnKy5rhKHfNQPUo5qaFihuAu+sE9BCE4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WBcBOrOW6wH6LNfJxkVQvn3WdEtuYEQJJvcsERK4vnAJaf+cOZODKymiXPAHIdGLMFp7UxGN13jMUPGlDoq12JmL46OOHY6xw0EFojd5BequGRxQm1o11a6z+rKE5qUemeGMgRigZrtlzaqMGNbogLGFNnUQr7omkZAQ/6+k94Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h2/8SG9e; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b952a966d7so18995902b3a.3
-        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:58:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767023913; x=1767628713; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsY7DmCtEBPG/2V9InsEE1AQkRIUnM2k6RE8KjmAuX8=;
-        b=h2/8SG9e2kiB2JhaHXPFSxkc+WJ1MPn1mNSIQp9y1nVglKdDFsqlA4s09EC2Yq/L1o
-         JqD75zmweHzRbs2znEraTyC7E7fzA0AuytKPy63o5JW2AqJyWWUC3A+udiu7U8q3gRxW
-         dx1k6C/Eu5vHKirUyPmL66xRR2IzlWRxLJipfo6v6gbJZVN/niaRdbVyooTmdihAIPGy
-         UNkNA5BjNWgKgziw5zcEwuka+t37UQ3oIxd4LKYxdUKSle/kOPyTTn9MPIOQ9vGa4Y6R
-         6G1STHo7xXktHd+hURRwFJSsfS/7dxegbhGNAHlL/dDfeuhr3RUch2aBOiitSPD2/I2r
-         sLlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767023913; x=1767628713;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsY7DmCtEBPG/2V9InsEE1AQkRIUnM2k6RE8KjmAuX8=;
-        b=k42AePIgogk7Km/yq7FPMGU4+AQK5Ql9v4ne37Ipvmxmf0zuRb7QAV6wh3LK4pzOqH
-         qNXMjT5AgWSMdASC46Js2EIWxoXyvgxb32d/Fg18tjujt6AnpQm+07kg223BEPmseZYM
-         IWiNnnsfs+D6DMteCJ7TlY/7cY4FNKUT9A5yaP8I7iYKe00t8Vu6OHB5WK2Ufs0sJwO1
-         K8e8zh226g5x6zLQoTqKzgNn8c5wCCCH5wgSrCam4jhjTcTHCBiE9UO2wQzzwBd6sio/
-         kEV19e1FlHs5pyvOh5V/A+XvT01vc0hb+PgUvQCKzU5v6DlGFQEdrW5cTz3PPLWgXhCX
-         wcFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWU8FKYGxyKsaXScumciRUCqLkzx8zGSxmMECs1DtsB64ZISOG7Ua/Otm7hurjerty4k3LZK7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygX5lKNSqtZVKJK2bhNVnheTGfVvJYCn+fBP0ElbRKdK/isEa8
-	jq6Z3ZhMV+jLVl5i33eDgEgL/EieoOi+l1TtPaMiHNR4kgWO9yqiHToiysKjpsZFoo4xjd13Q8p
-	mDjg5Cw==
-X-Google-Smtp-Source: AGHT+IEm1Henxy7WNKshf2l4r3viWwWVwM5WWhx/D1rwx8s6sLIMg02yiyYe9UxrlES/7PAqEhXA6MKem3A=
-X-Received: from pfwp41.prod.google.com ([2002:a05:6a00:26e9:b0:776:1344:ca77])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:301f:b0:7aa:4f1d:c458
- with SMTP id d2e1a72fcca58-7ff657a303bmr27264653b3a.19.1767023913436; Mon, 29
- Dec 2025 07:58:33 -0800 (PST)
-Date: Mon, 29 Dec 2025 07:58:31 -0800
-In-Reply-To: <ub4djdh4iqy5mhl4ea6gpalu2tpv5ymnw63wdkwehldzh477eq@frxtjt3umsqh>
+	s=arc-20240116; t=1767024307; c=relaxed/simple;
+	bh=7zFP790CgcYj+YfQkmLYZzdQbrsS5QQF3BdqKTcT/5o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tENXH8pFJ/XUbDLZ0yfqX/bC/fic6wnw466XXACodtnhtLnm6Th9gNSZD4r3OQ6Cm5ir1+NcmNFykndWWQAgD9f1oNQAwAqjuTf3gBgvCXjTHC0+WkWLiAH6suSEsvtCacBdF+VbIPHqN+NJBHU1OSzaSx5TJ1a1nbsXaRWIkDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRWlTgzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C114BC4CEF7;
+	Mon, 29 Dec 2025 16:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767024307;
+	bh=7zFP790CgcYj+YfQkmLYZzdQbrsS5QQF3BdqKTcT/5o=;
+	h=Subject:To:Cc:From:Date:From;
+	b=YRWlTgzTUlh8ejnrzkY5ITYGGWt5AkooEq/5wj1uUEJWPj9l1j39b9wnLS9XoVwMI
+	 4XMx9Vg+u83q4pVtSlRSChjhgEco7DOikmpHMp7Tv9tP9oQQZn5k0AJuVtL2fK4jIe
+	 IxgMgyrddkS/aePehGhWBsJm44bB6Afvs9k7O3zo=
+Subject: FAILED: patch "[PATCH] block: freeze queue when updating zone resources" failed to apply to 6.12-stable tree
+To: dlemoal@kernel.org,axboe@kernel.dk,hare@suse.de,hch@lst.de,johannes.thumshirn@wdc.com,kch@nvidia.com,martin.petersen@oracle.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Dec 2025 17:01:27 +0100
+Message-ID: <2025122927-untapped-stimulate-e26d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251224001249.1041934-1-pbonzini@redhat.com> <20251224001249.1041934-2-pbonzini@redhat.com>
- <ub4djdh4iqy5mhl4ea6gpalu2tpv5ymnw63wdkwehldzh477eq@frxtjt3umsqh>
-Message-ID: <aVKlJ5OBc8yRqjlF@google.com>
-Subject: Re: [PATCH 1/5] x86, fpu: introduce fpu_load_guest_fpstate()
-From: Sean Christopherson <seanjc@google.com>
-To: Yao Yuan <yaoyuan@linux.alibaba.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 26, 2025, Yao Yuan wrote:
-> On Wed, Dec 24, 2025 at 01:12:45AM +0800, Paolo Bonzini wrote:
-> > Create a variant of fpregs_lock_and_load() that KVM can use in its
-> > vCPU entry code after preemption has been disabled.  While basing
-> > it on the existing logic in vcpu_enter_guest(), ensure that
-> > fpregs_assert_state_consistent() always runs and sprinkle a few
-> > more assertions.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >  arch/x86/include/asm/fpu/api.h |  1 +
-> >  arch/x86/kernel/fpu/core.c     | 17 +++++++++++++++++
-> >  arch/x86/kvm/x86.c             |  8 +-------
-> >  3 files changed, 19 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-> > index cd6f194a912b..0820b2621416 100644
-> > --- a/arch/x86/include/asm/fpu/api.h
-> > +++ b/arch/x86/include/asm/fpu/api.h
-> > @@ -147,6 +147,7 @@ extern void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
-> >  /* KVM specific functions */
-> >  extern bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu);
-> >  extern void fpu_free_guest_fpstate(struct fpu_guest *gfpu);
-> > +extern void fpu_load_guest_fpstate(struct fpu_guest *gfpu);
-> >  extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
-> >  extern int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures);
-> >
-> > diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-> > index 3ab27fb86618..a480fa8c65d5 100644
-> > --- a/arch/x86/kernel/fpu/core.c
-> > +++ b/arch/x86/kernel/fpu/core.c
-> > @@ -878,6 +878,23 @@ void fpregs_lock_and_load(void)
-> >  	fpregs_assert_state_consistent();
-> >  }
-> >
-> > +void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
-> > +{
-> > +#ifdef CONFIG_X86_DEBUG_FPU
-> > +	struct fpu *fpu = x86_task_fpu(current);
-> > +	WARN_ON_ONCE(gfpu->fpstate != fpu->fpstate);
-> > +#endif
-> > +
-> > +	lockdep_assert_preemption_disabled();
-> 
-> Hi Paolo,
-> 
-> Do we need make sure the irq is disabled w/ lockdep ?
 
-Yes please, e.g. see commit 2620fe268e80 ("KVM: x86: Revert "KVM: X86: Fix fpu
-state crash in kvm guest"").
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> The irq_fpu_usable() returns true for:
-> 
-> !in_nmi () && in_hardirq() and !softirq_count()
-> 
-> It's possible that the TIF_NEED_FPU_LOAD is set again
-> w/ interrupt is enabled.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x bba4322e3f303b2d656e748be758320b567f046f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122927-untapped-stimulate-e26d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From bba4322e3f303b2d656e748be758320b567f046f Mon Sep 17 00:00:00 2001
+From: Damien Le Moal <dlemoal@kernel.org>
+Date: Wed, 5 Nov 2025 06:22:36 +0900
+Subject: [PATCH] block: freeze queue when updating zone resources
+
+Modify disk_update_zone_resources() to freeze the device queue before
+updating the number of zones, zone capacity and other zone related
+resources. The locking order resulting from the call to
+queue_limits_commit_update_frozen() is preserved, that is, the queue
+limits lock is first taken by calling queue_limits_start_update() before
+freezing the queue, and the queue is unfrozen after executing
+queue_limits_commit_update(), which replaces the call to
+queue_limits_commit_update_frozen().
+
+This change ensures that there are no in-flights I/Os when the zone
+resources are updated due to a zone revalidation. In case of error when
+the limits are applied, directly call disk_free_zone_resources() from
+disk_update_zone_resources() while the disk queue is still frozen to
+avoid needing to freeze & unfreeze the queue again in
+blk_revalidate_disk_zones(), thus simplifying that function code a
+little.
+
+Fixes: 0b83c86b444a ("block: Prevent potential deadlock in blk_revalidate_disk_zones()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index 1621e8f78338..39381f2b2e94 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1557,8 +1557,13 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ {
+ 	struct request_queue *q = disk->queue;
+ 	unsigned int nr_seq_zones, nr_conv_zones;
+-	unsigned int pool_size;
++	unsigned int pool_size, memflags;
+ 	struct queue_limits lim;
++	int ret = 0;
++
++	lim = queue_limits_start_update(q);
++
++	memflags = blk_mq_freeze_queue(q);
+ 
+ 	disk->nr_zones = args->nr_zones;
+ 	disk->zone_capacity = args->zone_capacity;
+@@ -1568,11 +1573,10 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	if (nr_conv_zones >= disk->nr_zones) {
+ 		pr_warn("%s: Invalid number of conventional zones %u / %u\n",
+ 			disk->disk_name, nr_conv_zones, disk->nr_zones);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto unfreeze;
+ 	}
+ 
+-	lim = queue_limits_start_update(q);
+-
+ 	/*
+ 	 * Some devices can advertize zone resource limits that are larger than
+ 	 * the number of sequential zones of the zoned block device, e.g. a
+@@ -1609,7 +1613,15 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	}
+ 
+ commit:
+-	return queue_limits_commit_update_frozen(q, &lim);
++	ret = queue_limits_commit_update(q, &lim);
++
++unfreeze:
++	if (ret)
++		disk_free_zone_resources(disk);
++
++	blk_mq_unfreeze_queue(q, memflags);
++
++	return ret;
+ }
+ 
+ static int blk_revalidate_conv_zone(struct blk_zone *zone, unsigned int idx,
+@@ -1774,7 +1786,7 @@ int blk_revalidate_disk_zones(struct gendisk *disk)
+ 	sector_t zone_sectors = q->limits.chunk_sectors;
+ 	sector_t capacity = get_capacity(disk);
+ 	struct blk_revalidate_zone_args args = { };
+-	unsigned int noio_flag;
++	unsigned int memflags, noio_flag;
+ 	int ret = -ENOMEM;
+ 
+ 	if (WARN_ON_ONCE(!blk_queue_is_zoned(q)))
+@@ -1824,20 +1836,14 @@ int blk_revalidate_disk_zones(struct gendisk *disk)
+ 		ret = -ENODEV;
+ 	}
+ 
+-	/*
+-	 * Set the new disk zone parameters only once the queue is frozen and
+-	 * all I/Os are completed.
+-	 */
+ 	if (ret > 0)
+-		ret = disk_update_zone_resources(disk, &args);
+-	else
+-		pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
+-	if (ret) {
+-		unsigned int memflags = blk_mq_freeze_queue(q);
++		return disk_update_zone_resources(disk, &args);
+ 
+-		disk_free_zone_resources(disk);
+-		blk_mq_unfreeze_queue(q, memflags);
+-	}
++	pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
++
++	memflags = blk_mq_freeze_queue(q);
++	disk_free_zone_resources(disk);
++	blk_mq_unfreeze_queue(q, memflags);
+ 
+ 	return ret;
+ }
+
 
